@@ -21,7 +21,12 @@ public class OwnersController {
 	}
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public Collection<Owner> get(@RequestParam String lastName) {
+	public void get() {
+		
+	}
+	
+	@RequestMapping(value="/search", method = RequestMethod.GET)
+	public Collection<Owner> getSearchResults(@RequestParam String lastName) {
 		return repository.findOwnersByLastName(lastName);
 	}
 	

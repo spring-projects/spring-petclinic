@@ -1,6 +1,5 @@
 package org.springframework.samples.petclinic.owner;
 
-
 public class Owner {
 
 	private Long id;
