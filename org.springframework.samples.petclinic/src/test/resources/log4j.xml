@@ -12,7 +12,7 @@
 	</appender>>
 	
 	<!-- Application Loggers -->
-	<logger name="org.springframework.samples">
+	<logger name="org.springframework.samples.petclinic">
 		<level value="debug" />
 	</logger>
 	
