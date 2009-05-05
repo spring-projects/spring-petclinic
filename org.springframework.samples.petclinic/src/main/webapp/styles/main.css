@@ -1,0 +1,118 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+  background-image: url(../images/banner-graphic.png);
+  background-position: top;
+  background-repeat: no-repeat;  
+  width: 820px;
+  margin: auto;
+  margin-top: 60px;
+  font-family:verdana;
+  font-size: 62.5%;
+}
+
+h2 {
+	text-align: center;
+}
+
+/* Header */
+#header {
+    height: 50px;  
+}
+ 
+#signin {
+    float: right;
+    list-style: none;
+    width: 100px;
+    overflow: hidden;
+}
+#signin li{
+    display: inline;
+    padding: 0 2px;
+    border-left: 1px solid #000;  
+    margin-left: -1px;
+}
+#signin li a{
+
+}
+#nav {
+	margin-left: auto;
+	margin-right: auto;
+	width: 600px;
+    clear: right;
+    padding: 1em;  
+}
+#nav ul {
+    list-style: none;
+}
+#nav ul li {
+    display: inline;
+}
+#nav ul li a {
+    display: block;
+    float: left;
+    width: 150px;
+    font-size: 1.2em;
+}
+
+/* Sidebar */
+#sidebar {
+    float: left;
+    width: 200px;
+}
+#sub-nav {
+    list-style: none;
+}
+#sub-nav li {
+    display: inline;  
+}
+#sub-nav li a {
+  display: block;
+  font-size: 1.2em;
+}
+
+/* content */
+#content{
+  font-size: 1.2em;
+}
+
+#petlogo {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#main{
+	padding-left: 200px;	
+}
+#main label{
+	display: block;
+	padding: 1em 0;	
+}
+/* content - application */
+
+#footer {
+    clear: both;
+    padding-top: 1em;
+}
+#copyright{
+    float: left;
+}
+ul#legal{
+    list-style: none;
+    width: 300px;
+    overflow: hidden;
+    float: right;
+}
+ul#legal li{
+    display: inline;
+    padding: 0px 4px 0px 5px;
+    border-left: 1px solid #000;
+    margin-left: -1px;
+}
+ul#legal li a{
+
+}

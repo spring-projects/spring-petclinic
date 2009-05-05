@@ -32,5 +32,18 @@
 		<servlet-name>Spring MVC Dispatcher Servlet</servlet-name>
 		<url-pattern>/app/*</url-pattern>
 	</servlet-mapping>
+
+  	<!-- Serves static resource content from the webapp root & .jar files such as spring-js.jar -->
+	<servlet>
+		<servlet-name>Resources Servlet</servlet-name>
+		<servlet-class>org.springframework.js.resource.ResourceServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+		
+	<!-- Map all /resources requests to the Resource Servlet for handling -->
+	<servlet-mapping>
+		<servlet-name>Resources Servlet</servlet-name>
+		<url-pattern>/resources/*</url-pattern>
+	</servlet-mapping>	
 	
 </web-app>
