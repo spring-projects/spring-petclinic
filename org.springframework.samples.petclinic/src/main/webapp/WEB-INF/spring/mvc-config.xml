@@ -31,13 +31,8 @@
 	<bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">
 		<property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView" />
 	</bean>
-	
-	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/WEB-INF/"/>
-		<property name="suffix" value=".jsp"/>
-	</bean>
-	
-	<!-- Configures Tiles 2 -->
+		
+	<!-- Initializes the Apache Tiles 2 system -->
 	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer" />
 
 	<!-- Configures Apache Commons Fileupload -->
