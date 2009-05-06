@@ -12,10 +12,11 @@ public class StubOwnerRepository implements OwnerRepository {
 	}
 
 	public Owner getOwner(Long id) {
-		return null;
+		return new Owner(id);
 	}
 
-	public void saveOwner(Owner owner) {
+	public Long saveOwner(Owner owner) {
+		return 1L;
 	}
 
 }

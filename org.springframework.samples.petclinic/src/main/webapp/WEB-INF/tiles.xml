@@ -18,14 +18,50 @@
 
 	<!-- APPOINTMENTS PAGES -->
 	<definition name="appointments" extends="page">
-		<put-attribute name="title" value="Appointment" type="string" />
+		<put-attribute name="title" value="Appointments" type="string" />
 		<put-attribute name="content" value="/WEB-INF/appointments/calendar.jsp" type="template" />
 	</definition>
 	
 	<!-- OWNERS PAGES -->
+	
+	<!-- SEARCH PAGE -->
 	<definition name="owners" extends="page">
-		<put-attribute name="title" value="Owner Search" type="string" />
-		<put-attribute name="content" value="/WEB-INF/owners/search.jsp" type="template" />
-	</definition>	
+		<put-attribute name="title" value="Owners" type="string" />
+		<put-attribute name="content" value="owners.content" type="definition" />
+	</definition>
 
+	<definition name="owners.content" template="/WEB-INF/owners/content.jsp">
+		<put-attribute name="main" value="/WEB-INF/owners/searchForm.jsp" type="template" />
+	</definition>
+
+	<!-- ADD NEW PAGE -->
+	<definition name="owners/new" extends="page">
+		<put-attribute name="title" value="Owners" type="string" />
+		<put-attribute name="content" value="owners/new.content" type="definition" />
+	</definition>
+
+	<definition name="owners/new.content" template="/WEB-INF/owners/content.jsp">
+		<put-attribute name="main" value="/WEB-INF/owners/addNewForm.jsp" type="template" />
+	</definition>
+
+	<!-- SEARCH RESULTS PAGE -->
+	<definition name="owners/search" extends="page">
+		<put-attribute name="title" value="Owner Search" type="string" />
+		<put-attribute name="content" value="owners/search.content" type="definition" />
+	</definition>
+
+	<definition name="owners/search.content" template="/WEB-INF/owners/content.jsp">
+		<put-attribute name="main" value="/WEB-INF/owners/searchResults.jsp" type="template" />
+	</definition>
+	
+	<!-- OWNER DETAIL PAGE -->
+	<definition name="owner" extends="page">
+		<put-attribute name="title" value="Owner" type="string" />
+		<put-attribute name="content" value="owner.content" type="definition" />
+	</definition>
+
+	<definition name="owner.content" template="/WEB-INF/owners/content.jsp">
+		<put-attribute name="main" value="/WEB-INF/owners/owner.jsp" type="template" />
+	</definition>
+	
 </tiles-definitions>

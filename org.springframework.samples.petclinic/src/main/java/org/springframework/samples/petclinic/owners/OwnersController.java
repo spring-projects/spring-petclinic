@@ -3,7 +3,6 @@ package org.springframework.samples.petclinic.owners;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.util.ResponseContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,8 +20,8 @@ public class OwnersController {
 	}
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public void get() {
-		
+	public OwnerSearchForm get() {
+		return new OwnerSearchForm();
 	}
 	
 	@RequestMapping(value="/search", method = RequestMethod.GET)
@@ -36,9 +35,10 @@ public class OwnersController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public void post(Owner owner, ResponseContext response) {
-		repository.saveOwner(owner);
-		response.redirect(owner.getName());
+	public String post(Owner owner) {
+		Long ownerId = repository.saveOwner(owner);
+		// TODO simplify this since /owners is the current resource already?
+		return "redirect:/owners/" + ownerId;
 	}	
 
 }

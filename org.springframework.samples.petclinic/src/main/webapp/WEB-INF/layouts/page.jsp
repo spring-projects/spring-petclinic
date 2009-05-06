@@ -22,9 +22,9 @@
 			</ul>
 			<div id="nav">
 				<ul>
-					<li><a href="<c:url value="/"/>">Home</a></li>
-					<li><a href="appointments">Appointments</a></li>
-					<li><a href="owners">Owners</a></li>
+					<li><a href="${pageContext.request.contextPath}">Home</a></li>
+					<li><a href="${pageContext.request.contextPath}/appointments">Appointments</a></li>
+					<li><a href="${pageContext.request.contextPath}/owners">Owners</a></li>
 				</ul>
 			</div>
 		</div>

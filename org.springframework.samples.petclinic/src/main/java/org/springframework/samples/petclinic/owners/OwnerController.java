@@ -1,8 +1,10 @@
 package org.springframework.samples.petclinic.owners;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.util.ResponseContext;
+import org.springframework.samples.petclinic.util.ExternalContext;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -18,19 +20,20 @@ public class OwnerController {
 	}
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public Owner get(Long owner) {
-		return repository.getOwner(owner);
+	public String get(@PathVariable Long owner, Model model) {
+		model.addAttribute(repository.getOwner(owner));
+		return "owner";
 	}
 	
 	@RequestMapping(value="/edit", method=RequestMethod.GET)
-	public Owner getEditForm(Long owner) {
+	public Owner getEditForm(@PathVariable Long owner) {
 		return repository.getOwner(owner);
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT)
-	public void put(Owner owner, ResponseContext response) {
+	public void put(Owner owner, ExternalContext response) {
 		repository.saveOwner(owner);
-		response.redirect(owner.getName());
+		response.redirect(owner.getId());
 	}	
 	
 }

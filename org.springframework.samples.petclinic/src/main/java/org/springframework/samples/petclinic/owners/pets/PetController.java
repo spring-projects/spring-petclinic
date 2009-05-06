@@ -1,7 +1,7 @@
 package org.springframework.samples.petclinic.owners.pets;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.util.ResponseContext;
+import org.springframework.samples.petclinic.util.ExternalContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,13 +28,13 @@ public class PetController {
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT)
-	public void put(Pet pet, ResponseContext response) {
+	public void put(Pet pet, ExternalContext response) {
 		repository.savePet(pet);
 		response.redirect(pet.getName());
 	}
 	
 	@RequestMapping(method = RequestMethod.DELETE)
-	public void delete(Long owner, String pet, ResponseContext context) {
+	public void delete(Long owner, String pet, ExternalContext context) {
 		context.forResource("owners").redirect(owner);
 	}
 	

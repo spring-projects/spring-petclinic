@@ -8,6 +8,6 @@ public interface OwnerRepository {
 
 	Owner getOwner(Long id);
 
-	void saveOwner(Owner owner);
+	Long saveOwner(Owner owner);
 
 }
