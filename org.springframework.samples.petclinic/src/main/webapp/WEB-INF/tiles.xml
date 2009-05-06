@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>
+
+	<!-- ABSTRACT PAGE TEMPLATES -->
+	
+	<definition name="page" template="/WEB-INF/layouts/page.jsp"/>
+
+	<!-- PAGES -->
+	
+	<definition name="home" extends="page">
+		<put-attribute name="title" value="Welcome to Petclinic" type="string" />
+		<put-attribute name="content" value="/WEB-INF/home.jsp" />
+	</definition>
+
+	<!-- OWNER PAGES -->
+
+</tiles-definitions>
