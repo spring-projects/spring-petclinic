@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.pet;
+package org.springframework.samples.petclinic.owners.pets;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.util.ResponseContext;

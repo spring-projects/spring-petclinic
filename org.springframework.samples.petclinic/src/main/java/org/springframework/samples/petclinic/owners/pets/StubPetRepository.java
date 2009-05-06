@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.pet;
+package org.springframework.samples.petclinic.owners.pets;
 
 import org.springframework.stereotype.Repository;
 
