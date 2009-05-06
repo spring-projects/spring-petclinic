@@ -16,8 +16,7 @@
 						<li><a href="<c:url value="/account/signout"/>">Sign Out</a></li>
 					</c:when>
 					<c:otherwise>
-						<li><a href="<c:url value="/account/signin"/>">Sign In</a></li>				
-						<li><a href="<c:url value="/account/register"/>">Register</a></li>				
+						<li><a href="<c:url value="/account/signin"/>">Sign In</a></li>		
 					</c:otherwise>
 				</c:choose>
 			</ul>
@@ -26,7 +25,6 @@
 					<li><a href="<c:url value="/"/>">Home</a></li>
 					<li><a href="appointments">Appointments</a></li>
 					<li><a href="owners">Owners</a></li>
-					<li><a href="pets">Pets</a></li>
 				</ul>
 			</div>
 		</div>
