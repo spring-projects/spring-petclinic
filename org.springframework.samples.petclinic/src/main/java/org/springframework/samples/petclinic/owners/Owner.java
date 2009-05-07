@@ -12,7 +12,7 @@ public class Owner {
 
 	private String city;
 
-	private String telephone;
+	private String phone;
 	
 	public Owner() {
 		
@@ -58,13 +58,12 @@ public class Owner {
 		this.city = city;
 	}
 
-	public String getTelephone() {
-		return telephone;
+	public String getPhone() {
+		return phone;
 	}
 
-	public void setTelephone(String telephone) {
-		this.telephone = telephone;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
-
 
 }

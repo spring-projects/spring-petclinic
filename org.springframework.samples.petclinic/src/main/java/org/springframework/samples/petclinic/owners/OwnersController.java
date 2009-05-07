@@ -37,7 +37,6 @@ public class OwnersController {
 	@RequestMapping(method = RequestMethod.POST)
 	public String post(Owner owner) {
 		Long ownerId = repository.saveOwner(owner);
-		// TODO simplify this since /owners is the current resource already?
 		return "redirect:/owners/" + ownerId;
 	}	
 
