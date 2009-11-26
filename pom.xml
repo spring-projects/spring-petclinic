@@ -22,14 +22,6 @@
 			<artifactId>com.springsource.com.sun.syndication</artifactId>
 			<version>1.0.0</version>
 		</dependency>
-		<!--
-        <dependency>
-            <groupId>javax.el</groupId>
-            <artifactId>com.springsource.javax.el</artifactId>
-            <version>1.0.0</version>
-            <scope>provided</scope>
-        </dependency>
-        -->
 		<dependency>
 			<groupId>javax.persistence</groupId>
 			<artifactId>com.springsource.javax.persistence</artifactId>
@@ -74,14 +66,12 @@
 			<artifactId>com.springsource.org.apache.openjpa</artifactId>
 			<version>1.1.0</version>
 		</dependency>
-		<!--
 		<dependency>
 			<groupId>org.apache.taglibs</groupId>
 			<artifactId>com.springsource.org.apache.taglibs.standard</artifactId>
 			<version>1.1.2</version>
 			<scope>provided</scope>
 		</dependency>		
-		-->
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>com.springsource.org.aspectj.weaver</artifactId>
