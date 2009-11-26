@@ -3,45 +3,18 @@
 	Application context definition for PetClinic on JDBC.
 -->
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xmlns:p="http://www.springframework.org/schema/p" xmlns:aop="http://www.springframework.org/schema/aop"
-		xmlns:context="http://www.springframework.org/schema/context" xmlns:jee="http://www.springframework.org/schema/jee"
-		xmlns:tx="http://www.springframework.org/schema/tx"
+		xmlns:aop="http://www.springframework.org/schema/aop" xmlns:p="http://www.springframework.org/schema/p"
+		xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
 		xsi:schemaLocation="
 			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
 			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
 			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 	<!-- ========================= RESOURCE DEFINITIONS ========================= -->
 
-	<!-- Configurer that replaces ${...} placeholders with values from a properties file -->
-	<!-- (in this case, JDBC-related settings for the dataSource definition below) -->
-	<context:property-placeholder location="classpath:jdbc.properties"/>
-
-	<!--
-		Spring FactoryBean that creates a DataSource using Apache Commons DBCP for connection 
-		pooling. See Commons DBCP documentation for the required JAR files.  This factory bean
-		can populate the data source with a schema and data scripts if configured to do so.
-		
-		An alternate factory bean can be created for different connection pool implementations,
-		C3P0 for example.
-	-->
-	<bean id="dataSource" class="org.springframework.samples.petclinic.config.DbcpDataSourceFactory"
-			p:driverClassName="${jdbc.driverClassName}" p:url="${jdbc.url}" 
-			p:username="${jdbc.username}" p:password="${jdbc.password}" p:populate="${jdbc.populate}"
-			p:schemaLocation="${jdbc.schemaLocation}" p:dataLocation="${jdbc.dataLocation}"/>
-
-    <!-- DataSource configuration for Apache Commons DBCP. -->
-    <!--
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
-			p:driverClassName="${jdbc.driverClassName}" p:url="${jdbc.url}" p:username="${jdbc.username}"
-			p:password="${jdbc.password}"/>
-    -->
-	<!-- JNDI DataSource for JEE environments -->
-	<!--
-	<jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/petclinic"/>
-	-->
+    <!-- import the dataSource definition -->
+    <import resource="applicationContext-dataSource.xml"/>
 
 	<!-- Transaction manager for a single JDBC DataSource (alternative to JTA) -->
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
