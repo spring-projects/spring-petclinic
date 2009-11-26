@@ -43,7 +43,6 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>com.springsource.javax.servlet.jsp.jstl</artifactId>
 			<version>1.2.0</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
@@ -70,7 +69,6 @@
 			<groupId>org.apache.taglibs</groupId>
 			<artifactId>com.springsource.org.apache.taglibs.standard</artifactId>
 			<version>1.1.2</version>
-			<scope>provided</scope>
 		</dependency>		
 		<dependency>
 			<groupId>org.aspectj</groupId>
