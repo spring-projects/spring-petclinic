@@ -11,13 +11,13 @@
 			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 			http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 				
-    <!-- ========================= DATASOURCE DEFINITION ========================= -->				
-    
+	<!-- ========================= DATASOURCE DEFINITION ========================= -->				
+
 	<!-- Configurer that replaces ${...} placeholders with values from a properties file -->
 	<!-- (in this case, JDBC-related settings for the dataSource definition below) -->
 	<context:property-placeholder location="classpath:jdbc.properties"/>
 
-    <!-- DataSource configuration for Apache Commons DBCP. -->
+	<!-- DataSource configuration for Apache Commons DBCP. -->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
 			p:driverClassName="${jdbc.driverClassName}" p:url="${jdbc.url}"
 			p:username="${jdbc.username}" p:password="${jdbc.password}"/>
@@ -29,9 +29,9 @@
 
 	<!-- Database initializer. If any of the script fails, the initialization stops. -->
 	<!-- As an alternative, for embedded databases see <jdbc:embedded-database/>. -->
-    <jdbc:initialize-database data-source="dataSource">
-        <jdbc:script location="${jdbc.initLocation}"/>
-        <jdbc:script location="${jdbc.dataLocation}"/>
-    </jdbc:initialize-database>
+	<jdbc:initialize-database data-source="dataSource">
+		<jdbc:script location="${jdbc.initLocation}"/>
+		<jdbc:script location="${jdbc.dataLocation}"/>
+	</jdbc:initialize-database>
 
-</beans>    
+</beans>
