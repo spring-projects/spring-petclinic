@@ -12,6 +12,9 @@
 
 	<!-- ========================= RESOURCE DEFINITIONS ========================= -->
 
+    <!-- import the dataSource definition -->
+    <import resource="applicationContext-dataSource.xml"/>
+
 	<!-- Configurer that replaces ${...} placeholders with values from a properties file -->
 	<!-- (in this case, Hibernate-related settings for the sessionFactory definition below) -->
 	<context:property-placeholder location="classpath:jdbc.properties"/>
