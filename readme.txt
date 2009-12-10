@@ -73,6 +73,12 @@ to set up corresponding DataSources in your Java EE container.
 Notes on enabling Log4J:
  - Log4J is disabled by default due to issues with JBoss.
  - Uncomment the Log4J listener in "WEB-INF/web.xml" to enable logging.
+ 
+Notes on service static resources:
+ - Most web containers provide a 'default' servlet for serving static 
+ resources; Petclinic relies on it for its images.
+ - On containers without such a mapping (ex: GlassFish), uncomment the 
+ 'default' declaration in "WEB-INF/web.xml".
 
 ==========================================================================
 === JPA on Tomcat
