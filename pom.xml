@@ -3,12 +3,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.springframework.samples</groupId>
-	<artifactId>petclinic</artifactId>
+	<artifactId>org.springframework.samples.petclinic</artifactId>
 	<name>petclinic</name>
 	<packaging>war</packaging>
 	<version>1.0.0-SNAPSHOT</version>
 	<properties>
-		<spring.version>3.0.0.RC3</spring.version>
+		<spring.version>3.0.0.RELEASE</spring.version>
 		<slf4j.version>1.5.6</slf4j.version>
 	</properties>
 	<dependencies>
@@ -77,20 +77,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate</artifactId>
-			<version>3.2.7.ga</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>javax.transaction</groupId>
-                    <artifactId>jta</artifactId>
-                </exclusion>
-                <!--
-                <exclusion>
-                    <groupId>org.apache.log4j</groupId>
-                    <artifactId>com.springsource.org.apache.log4j</artifactId>
-                </exclusion>
-                -->
-            </exclusions>
+			<artifactId>com.springsource.org.hibernate</artifactId>
+			<version>3.3.2.GA</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -111,16 +99,6 @@
         </dependency>
         -->
 		<dependency>
-			<groupId>org.jdom</groupId>
-			<artifactId>com.springsource.org.jdom</artifactId>
-			<version>1.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.asm</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>org.springframework.aspects</artifactId>
 			<version>${spring.version}</version>
@@ -140,31 +118,6 @@
 			<artifactId>org.springframework.web.servlet</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		<!-- Test dependencies -->
-		<dependency>
-			<groupId>org.junit</groupId>
-			<artifactId>com.springsource.org.junit</artifactId>
-			<version>4.5.0</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.test</artifactId>
-			<version>${spring.version}</version>
-            <scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.transaction</groupId>
-			<artifactId>com.springsource.javax.transaction</artifactId>
-			<version>1.1.0</version>
-            <scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>com.springsource.org.hibernate.annotations</artifactId>
-			<version>3.4.0.GA</version>
-			<scope>test</scope>
-		</dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>com.springsource.slf4j.org.apache.commons.logging</artifactId>
@@ -179,17 +132,20 @@
             <groupId>org.slf4j</groupId>
             <artifactId>com.springsource.slf4j.log4j</artifactId>
             <version>${slf4j.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.log4j</groupId>
-                    <artifactId>com.springsource.org.apache.log4j</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
+		<!-- Test dependencies -->
+		<dependency>
+			<groupId>org.junit</groupId>
+			<artifactId>com.springsource.org.junit</artifactId>
+			<version>4.5.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>org.springframework.test</artifactId>
+			<version>${spring.version}</version>
+            <scope>test</scope>
+		</dependency>
 	</dependencies>
 	<repositories>
 		<repository>
@@ -198,35 +154,20 @@
 			<url>http://repository.springsource.com/maven/bundles/release</url>
 		</repository>
 		<repository>
-			<id>com.springsource.repository.bundles.milestone</id>
-			<name>SpringSource Enterprise Bundle Repository - SpringSource Milestones</name>
-			<url>http://repository.springsource.com/maven/bundles/milestone</url>
-		</repository>
-		<repository>
 			<id>com.springsource.repository.bundles.external</id>
 			<name>SpringSource Enterprise Bundle Repository - External Releases</name>
 			<url>http://repository.springsource.com/maven/bundles/external</url>
+		</repository>
+		<repository>
+			<id>com.springsource.repository.bundles.milestone</id>
+			<name>SpringSource Enterprise Bundle Repository - SpringSource Milestones</name>
+			<url>http://repository.springsource.com/maven/bundles/milestone</url>
 		</repository>
 		<repository>
 			<id>com.springsource.repository.bundles.snapshot</id>
 			<name>SpringSource Enterprise Bundle Repository - Snapshot Releases</name>
 			<url>http://repository.springsource.com/maven/bundles/snapshot</url>
 		</repository>
-        <repository>
-            <id>spring-release</id>
-            <name>Spring Portfolio Release Repository</name>
-            <url>http://maven.springframework.org/release</url>
-        </repository>
-        <repository>
-            <id>spring-external</id>
-            <name>Spring Portfolio External Repository</name>
-            <url>http://maven.springframework.org/external</url>
-        </repository>
-        <repository>
-            <id>spring-milestone</id>
-            <name>Spring Portfolio Milestone Repository</name>
-            <url>http://maven.springframework.org/milestone</url>
-        </repository>
 	</repositories>
 	<build>
 		<plugins>
