@@ -12,21 +12,126 @@
 		<slf4j.version>1.5.6</slf4j.version>
 	</properties>
 	<dependencies>
+	
+		<!-- Spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>org.springframework.context</artifactId>
+			<version>${spring.version}</version>
+			<exclusions>
+				<!-- Exclude Commons Logging in favor of SLF4j (see 'Logging' Dependency Config below) -->
+				<exclusion>
+					<groupId>org.apache.commons.logging</groupId>
+					<artifactId>com.springsource.org.apache.commons.logging</artifactId>
+		         </exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>org.springframework.aspects</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>com.springsource.org.aspectj.weaver</artifactId>
+			<version>1.6.5.RELEASE</version>
+		</dependency>		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>org.springframework.orm</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>org.springframework.oxm</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>org.springframework.web.servlet</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		
+		<!-- Logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>com.springsource.slf4j.org.apache.commons.logging</artifactId>
+            <version>${slf4j.version}</version>
+ 			<scope>runtime</scope>           
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>com.springsource.slf4j.api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>com.springsource.slf4j.log4j</artifactId>
+            <version>${slf4j.version}</version>
+			<scope>runtime</scope>           
+        </dependency>		
+		<dependency>
+			<groupId>org.apache.log4j</groupId>
+			<artifactId>com.springsource.org.apache.log4j</artifactId>
+			<version>1.2.15</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- DataSource -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>com.springsource.org.apache.commons.dbcp</artifactId>
+			<version>1.2.2.osgi</version>
+		</dependency>		
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>com.springsource.org.hsqldb</artifactId>
+			<version>1.8.0.9</version>
+		</dependency>
+		<!-- MySQL JDBC Connector -->
+		<!--
+        <dependency>
+            <groupId>com.mysql.jdbc</groupId>
+            <artifactId>com.springsource.com.mysql.jdbc</artifactId>
+            <version>5.1.6</version>
+        </dependency>
+        -->
+        		
+		<!-- Hibernate -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>com.springsource.org.hibernate</artifactId>
+			<version>3.3.2.GA</version>
+		</dependency>
+		
+		<!-- JPA -->
+		<dependency>
+			<groupId>javax.persistence</groupId>
+			<artifactId>com.springsource.javax.persistence</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<!-- Toplink JPA Provider -->
 		<dependency>
 			<groupId>com.oracle.toplink.essentials</groupId>
 			<artifactId>com.springsource.oracle.toplink.essentials</artifactId>
 			<version>2.0.0.b41-beta2</version>
 		</dependency>
+		<!-- Hibernate JPA Provider -->
 		<dependency>
-			<groupId>com.sun.syndication</groupId>
-			<artifactId>com.springsource.com.sun.syndication</artifactId>
-			<version>1.0.0</version>
+			<groupId>org.hibernate</groupId>
+			<artifactId>com.springsource.org.hibernate.ejb</artifactId>
+			<version>3.4.0.GA</version>
+			<scope>runtime</scope>
 		</dependency>
+		<!-- Open JPA Provider -->
 		<dependency>
-			<groupId>javax.persistence</groupId>
-			<artifactId>com.springsource.javax.persistence</artifactId>
-			<version>1.0.0</version>
-		</dependency>	
+			<groupId>org.apache.openjpa</groupId>
+			<artifactId>com.springsource.org.apache.openjpa</artifactId>
+			<version>1.1.0</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- Servlet -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>com.springsource.javax.servlet</artifactId>
@@ -45,94 +150,25 @@
 			<version>1.2.0</version>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.taglibs</groupId>
+			<artifactId>com.springsource.org.apache.taglibs.standard</artifactId>
+			<version>1.1.2</version>
+		</dependency>		
+
+		<!-- Rome RSS -->
+		<dependency>
+			<groupId>com.sun.syndication</groupId>
+			<artifactId>com.springsource.com.sun.syndication</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<!-- JAXB -->
+		<dependency>
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>com.springsource.javax.xml.bind</artifactId>
 			<version>2.1.7</version>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>com.springsource.org.apache.commons.dbcp</artifactId>
-			<version>1.2.2.osgi</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.log4j</groupId>
-			<artifactId>com.springsource.org.apache.log4j</artifactId>
-			<version>1.2.15</version>
-		</dependency>		
-		<dependency>
-			<groupId>org.apache.openjpa</groupId>
-			<artifactId>com.springsource.org.apache.openjpa</artifactId>
-			<version>1.1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.taglibs</groupId>
-			<artifactId>com.springsource.org.apache.taglibs.standard</artifactId>
-			<version>1.1.2</version>
-		</dependency>		
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>com.springsource.org.aspectj.weaver</artifactId>
-			<version>1.6.5.RELEASE</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>com.springsource.org.hibernate</artifactId>
-			<version>3.3.2.GA</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>com.springsource.org.hibernate.ejb</artifactId>
-			<version>3.4.0.GA</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hsqldb</groupId>
-			<artifactId>com.springsource.org.hsqldb</artifactId>
-			<version>1.8.0.9</version>
-		</dependency>
-		<!-- MySQL JDBC Connector -->
-		<!--
-        <dependency>
-            <groupId>com.mysql.jdbc</groupId>
-            <artifactId>com.springsource.com.mysql.jdbc</artifactId>
-            <version>5.1.6</version>
-        </dependency>
-        -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.aspects</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.orm</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.oxm</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.web.servlet</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>com.springsource.slf4j.org.apache.commons.logging</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>com.springsource.slf4j.api</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>com.springsource.slf4j.log4j</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
+
 		<!-- Test dependencies -->
 		<dependency>
 			<groupId>org.junit</groupId>
@@ -157,7 +193,8 @@
     		<artifactId>com.springsource.org.hibernate.annotations</artifactId>
     		<version>3.4.0.GA</version>
     		<scope>test</scope>
-		</dependency>		
+		</dependency>
+		
 	</dependencies>
 	<repositories>
 		<repository>
