@@ -26,7 +26,7 @@
 			<groupId>javax.persistence</groupId>
 			<artifactId>com.springsource.javax.persistence</artifactId>
 			<version>1.0.0</version>
-		</dependency>
+		</dependency>	
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>com.springsource.javax.servlet</artifactId>
@@ -146,6 +146,12 @@
 			<version>${spring.version}</version>
             <scope>test</scope>
 		</dependency>
+		<dependency>
+ 		   <groupId>javax.transaction</groupId>
+ 		   <artifactId>com.springsource.javax.transaction</artifactId>
+		    <version>1.1.0</version>
+		    <scope>test</scope>
+		</dependency>		
 	</dependencies>
 	<repositories>
 		<repository>
