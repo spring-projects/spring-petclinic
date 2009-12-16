@@ -151,6 +151,12 @@
  		   <artifactId>com.springsource.javax.transaction</artifactId>
 		    <version>1.1.0</version>
 		    <scope>test</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.hibernate</groupId>
+    		<artifactId>com.springsource.org.hibernate.annotations</artifactId>
+    		<version>3.4.0.GA</version>
+    		<scope>test</scope>
 		</dependency>		
 	</dependencies>
 	<repositories>
