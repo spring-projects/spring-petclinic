@@ -45,8 +45,10 @@
 
 		<!--
 			To use the JPA variant above, you will need to enable Spring load-time
-			weaving in your server environment. See PetClinic's readme and/or
-			Spring's JPA documentation for information on how to do this.
+			weaving in your server environment. Out of the box, Spring will try to
+			detect the running environment and use the appropriate weaver but if that
+			fails, one must enable one by hand or use the VM-wide weaver.
+			See PetClinic's readme and/or Spring's JPA documentation for more information.
 		-->
 	</context-param>
 

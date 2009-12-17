@@ -195,5 +195,4 @@ public abstract class AbstractJpaClinicTests extends AbstractJpaTests {
 		p7 = this.clinic.loadPet(7);
 		assertEquals(found + 1, p7.getVisits().size());
 	}
-
 }

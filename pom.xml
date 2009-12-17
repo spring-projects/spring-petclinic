@@ -28,6 +28,16 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
+			<artifactId>org.springframework.aspects</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>com.springsource.org.aspectj.weaver</artifactId>
+			<version>1.6.5.RELEASE</version>
+		</dependency>		
+		<dependency>
+			<groupId>org.springframework</groupId>
 			<artifactId>org.springframework.orm</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
@@ -42,18 +52,6 @@
 			<version>${spring.version}</version>
 		</dependency>
 		
-		<!-- AspectJ -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.aspects</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>com.springsource.org.aspectj.weaver</artifactId>
-			<version>1.6.5.RELEASE</version>
-		</dependency>
-				
 		<!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -131,13 +129,6 @@
 			<artifactId>com.springsource.org.apache.openjpa</artifactId>
 			<version>1.1.0</version>
 			<scope>runtime</scope>
-			<exclusions>
-				<!-- Exclude Commons Logging in favor of SLF4j (see 'Logging' Dependency Config below) -->
-				<exclusion>
-					<groupId>org.apache.commons.logging</groupId>
-					<artifactId>com.springsource.org.apache.commons.logging</artifactId>
-		         </exclusion>
-			</exclusions>			
 		</dependency>
 
 		<!-- Servlet -->
@@ -208,22 +199,22 @@
 	<repositories>
 		<repository>
 			<id>com.springsource.repository.bundles.release</id>
-			<name>EBR Spring Releases</name>
+			<name>SpringSource Enterprise Bundle Repository - SpringSource Releases</name>
 			<url>http://repository.springsource.com/maven/bundles/release</url>
 		</repository>
 		<repository>
 			<id>com.springsource.repository.bundles.external</id>
-			<name>EBR External Releases</name>
+			<name>SpringSource Enterprise Bundle Repository - External Releases</name>
 			<url>http://repository.springsource.com/maven/bundles/external</url>
 		</repository>
 		<repository>
 			<id>com.springsource.repository.bundles.milestone</id>
-			<name>EBR Spring Milestones</name>
+			<name>SpringSource Enterprise Bundle Repository - SpringSource Milestones</name>
 			<url>http://repository.springsource.com/maven/bundles/milestone</url>
 		</repository>
 		<repository>
 			<id>com.springsource.repository.bundles.snapshot</id>
-			<name>EBR Spring Snapshots</name>
+			<name>SpringSource Enterprise Bundle Repository - Snapshot Releases</name>
 			<url>http://repository.springsource.com/maven/bundles/snapshot</url>
 		</repository>
 	</repositories>
@@ -239,6 +230,22 @@
 					<showWarnings>true</showWarnings>
 				</configuration>
 			</plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-surefire-plugin</artifactId>
+              <configuration>
+                <includes>
+                  <include>**/*Tests.java</include>
+                </includes>
+              </configuration>
+            </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-war-plugin</artifactId>
+              <configuration>
+                <warName>petclinic</warName>
+                </configuration>
+            </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
