@@ -19,23 +19,13 @@
 			<artifactId>org.springframework.context</artifactId>
 			<version>${spring.version}</version>
 			<exclusions>
-				<!-- Exclude Commons Logging in favor of SLF4j (see 'Logging' Dependency Config below) -->
+				<!-- Exclude Commons Logging in favor of SLF4j -->
 				<exclusion>
 					<groupId>org.apache.commons.logging</groupId>
 					<artifactId>com.springsource.org.apache.commons.logging</artifactId>
 		         </exclusion>
-			</exclusions>
+			</exclusions>			
 		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.aspects</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>com.springsource.org.aspectj.weaver</artifactId>
-			<version>1.6.5.RELEASE</version>
-		</dependency>		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>org.springframework.orm</artifactId>
@@ -52,6 +42,20 @@
 			<version>${spring.version}</version>
 		</dependency>
 		
+		<!-- AspectJ -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>com.springsource.org.aspectj.weaver</artifactId>
+			<version>1.6.5.RELEASE</version>
+			<scope>optional</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>org.springframework.aspects</artifactId>
+			<version>${spring.version}</version>
+			<scope>optional</scope>
+		</dependency>
+				
 		<!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -102,6 +106,7 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>com.springsource.org.hibernate</artifactId>
 			<version>3.3.2.GA</version>
+			<scope>optional</scope>
 		</dependency>
 		
 		<!-- JPA -->
@@ -109,26 +114,56 @@
 			<groupId>javax.persistence</groupId>
 			<artifactId>com.springsource.javax.persistence</artifactId>
 			<version>1.0.0</version>
+			<scope>optional</scope>
 		</dependency>
 		<!-- Toplink JPA Provider -->
 		<dependency>
 			<groupId>com.oracle.toplink.essentials</groupId>
 			<artifactId>com.springsource.oracle.toplink.essentials</artifactId>
 			<version>2.0.0.b41-beta2</version>
+			<scope>optional</scope>
 		</dependency>
 		<!-- Hibernate JPA Provider -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>com.springsource.org.hibernate.ejb</artifactId>
 			<version>3.4.0.GA</version>
-			<scope>runtime</scope>
+			<scope>optional</scope>
+			<exclusions>
+				<!-- Exclude Commons Logging in favor of SLF4j -->
+				<exclusion>
+					<groupId>org.apache.commons.logging</groupId>
+					<artifactId>com.springsource.org.apache.commons.logging</artifactId>
+		         </exclusion>
+			</exclusions>			
 		</dependency>
+		<dependency>
+		    <groupId>org.hibernate</groupId>
+    		<artifactId>com.springsource.org.hibernate.annotations</artifactId>
+    		<version>3.4.0.GA</version>
+    		<scope>optional</scope>
+			<exclusions>
+				<!-- Exclude Commons Logging in favor of SLF4j -->
+				<exclusion>
+					<groupId>org.apache.commons.logging</groupId>
+					<artifactId>com.springsource.org.apache.commons.logging</artifactId>
+		         </exclusion>
+			</exclusions>
+		</dependency>
+				
 		<!-- Open JPA Provider -->
 		<dependency>
 			<groupId>org.apache.openjpa</groupId>
 			<artifactId>com.springsource.org.apache.openjpa</artifactId>
 			<version>1.1.0</version>
-			<scope>runtime</scope>
+			<scope>optional</scope>
+			<exclusions>
+				<!-- Exclude Commons Logging in favor of SLF4j -->
+				<exclusion>
+					<groupId>org.apache.commons.logging</groupId>
+					<artifactId>com.springsource.org.apache.commons.logging</artifactId>
+		         </exclusion>
+			</exclusions>			
 		</dependency>
 
 		<!-- Servlet -->
@@ -188,13 +223,7 @@
 		    <version>1.1.0</version>
 		    <scope>test</scope>
 		</dependency>
-		<dependency>
-		    <groupId>org.hibernate</groupId>
-    		<artifactId>com.springsource.org.hibernate.annotations</artifactId>
-    		<version>3.4.0.GA</version>
-    		<scope>test</scope>
-		</dependency>
-		
+
 	</dependencies>
 	<repositories>
 		<repository>
