@@ -47,26 +47,26 @@
 			<groupId>org.aspectj</groupId>
 			<artifactId>com.springsource.org.aspectj.weaver</artifactId>
 			<version>1.6.5.RELEASE</version>
-			<scope>optional</scope>
+			<optional>true</optional>			
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>org.springframework.aspects</artifactId>
 			<version>${spring.version}</version>
-			<scope>optional</scope>
+			<optional>true</optional>			
 		</dependency>
 				
 		<!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
+            <artifactId>com.springsource.slf4j.api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>		
+        <dependency>
+            <groupId>org.slf4j</groupId>
             <artifactId>com.springsource.slf4j.org.apache.commons.logging</artifactId>
             <version>${slf4j.version}</version>
  			<scope>runtime</scope>           
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>com.springsource.slf4j.api</artifactId>
-            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -106,7 +106,7 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>com.springsource.org.hibernate</artifactId>
 			<version>3.3.2.GA</version>
-			<scope>optional</scope>
+			<optional>true</optional>
 		</dependency>
 		
 		<!-- JPA -->
@@ -114,21 +114,20 @@
 			<groupId>javax.persistence</groupId>
 			<artifactId>com.springsource.javax.persistence</artifactId>
 			<version>1.0.0</version>
-			<scope>optional</scope>
 		</dependency>
 		<!-- Toplink JPA Provider -->
 		<dependency>
 			<groupId>com.oracle.toplink.essentials</groupId>
 			<artifactId>com.springsource.oracle.toplink.essentials</artifactId>
 			<version>2.0.0.b41-beta2</version>
-			<scope>optional</scope>
+			<optional>true</optional>			
 		</dependency>
 		<!-- Hibernate JPA Provider -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>com.springsource.org.hibernate.ejb</artifactId>
 			<version>3.4.0.GA</version>
-			<scope>optional</scope>
+			<optional>true</optional>
 			<exclusions>
 				<!-- Exclude Commons Logging in favor of SLF4j -->
 				<exclusion>
@@ -141,7 +140,7 @@
 		    <groupId>org.hibernate</groupId>
     		<artifactId>com.springsource.org.hibernate.annotations</artifactId>
     		<version>3.4.0.GA</version>
-    		<scope>optional</scope>
+			<optional>true</optional>
 			<exclusions>
 				<!-- Exclude Commons Logging in favor of SLF4j -->
 				<exclusion>
@@ -149,14 +148,14 @@
 					<artifactId>com.springsource.org.apache.commons.logging</artifactId>
 		         </exclusion>
 			</exclusions>
-		</dependency>
+		</dependency>		
 				
 		<!-- Open JPA Provider -->
 		<dependency>
 			<groupId>org.apache.openjpa</groupId>
 			<artifactId>com.springsource.org.apache.openjpa</artifactId>
 			<version>1.1.0</version>
-			<scope>optional</scope>
+			<optional>true</optional>
 			<exclusions>
 				<!-- Exclude Commons Logging in favor of SLF4j -->
 				<exclusion>
