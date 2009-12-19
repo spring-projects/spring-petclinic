@@ -188,6 +188,13 @@
 			<artifactId>com.springsource.com.sun.syndication</artifactId>
 			<version>1.0.0</version>
 		</dependency>
+		<dependency>
+    		<groupId>org.jdom</groupId>
+    		<artifactId>com.springsource.org.jdom</artifactId>
+    		<version>1.1.0</version>
+    		<scope>runtime</scope>
+		</dependency>
+				
 		<!-- JAXB -->
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
