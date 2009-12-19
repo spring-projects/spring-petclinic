@@ -21,7 +21,7 @@
 			<exclusions>
 				<!-- Exclude Commons Logging in favor of SLF4j -->
 				<exclusion>
-					<groupId>org.apache.commons.logging</groupId>
+					<groupId>org.apache.commons</groupId>
 					<artifactId>com.springsource.org.apache.commons.logging</artifactId>
 		         </exclusion>
 			</exclusions>			
@@ -134,7 +134,7 @@
 			<exclusions>
 				<!-- Exclude Commons Logging in favor of SLF4j -->
 				<exclusion>
-					<groupId>org.apache.commons.logging</groupId>
+					<groupId>org.apache.commons</groupId>
 					<artifactId>com.springsource.org.apache.commons.logging</artifactId>
 		         </exclusion>
 			</exclusions>			
@@ -147,12 +147,11 @@
 			<exclusions>
 				<!-- Exclude Commons Logging in favor of SLF4j -->
 				<exclusion>
-					<groupId>org.apache.commons.logging</groupId>
+					<groupId>org.apache.commons</groupId>
 					<artifactId>com.springsource.org.apache.commons.logging</artifactId>
 		         </exclusion>
 			</exclusions>
-		</dependency>		
-				
+		</dependency>
 		<!-- Open JPA Provider -->
 		<dependency>
 			<groupId>org.apache.openjpa</groupId>
@@ -162,7 +161,7 @@
 			<exclusions>
 				<!-- Exclude Commons Logging in favor of SLF4j -->
 				<exclusion>
-					<groupId>org.apache.commons.logging</groupId>
+					<groupId>org.apache.commons</groupId>
 					<artifactId>com.springsource.org.apache.commons.logging</artifactId>
 		         </exclusion>
 			</exclusions>			
