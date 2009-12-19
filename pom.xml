@@ -12,7 +12,7 @@
 		<slf4j.version>1.5.10</slf4j.version>
 	</properties>
 	<dependencies>
-	
+
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -23,8 +23,8 @@
 				<exclusion>
 					<groupId>org.apache.commons</groupId>
 					<artifactId>com.springsource.org.apache.commons.logging</artifactId>
-		         </exclusion>
-			</exclusions>			
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -41,32 +41,32 @@
 			<artifactId>org.springframework.web.servlet</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		
+
 		<!-- AspectJ -->
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>com.springsource.org.aspectj.weaver</artifactId>
 			<version>1.6.5.RELEASE</version>
 		</dependency>
-				
+
 		<!-- Logging -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>com.springsource.slf4j.api</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>		
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>com.springsource.slf4j.org.apache.commons.logging</artifactId>
-            <version>${slf4j.version}</version>
- 			<scope>runtime</scope>           
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>com.springsource.slf4j.log4j</artifactId>
-            <version>${slf4j.version}</version>
-			<scope>runtime</scope>           
-        </dependency>		
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>com.springsource.slf4j.api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>com.springsource.slf4j.org.apache.commons.logging</artifactId>
+			<version>${slf4j.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>com.springsource.slf4j.log4j</artifactId>
+			<version>${slf4j.version}</version>
+			<scope>runtime</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.log4j</groupId>
 			<artifactId>com.springsource.org.apache.log4j</artifactId>
@@ -79,8 +79,8 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>com.springsource.org.apache.commons.dbcp</artifactId>
 			<version>1.2.2.osgi</version>
-			<scope>runtime</scope>			
-		</dependency>		
+			<scope>runtime</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.hsqldb</groupId>
 			<artifactId>com.springsource.org.hsqldb</artifactId>
@@ -89,13 +89,11 @@
 		</dependency>
 		<!-- MySQL JDBC Connector -->
 		<!--
-        <dependency>
-            <groupId>com.mysql.jdbc</groupId>
-            <artifactId>com.springsource.com.mysql.jdbc</artifactId>
-            <version>5.1.6</version>
-        </dependency>
-        -->
-        		
+			<dependency> <groupId>com.mysql.jdbc</groupId>
+			<artifactId>com.springsource.com.mysql.jdbc</artifactId>
+			<version>5.1.6</version> </dependency>
+		-->
+
 		<!-- Hibernate -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -103,20 +101,20 @@
 			<version>3.3.2.GA</version>
 			<optional>true</optional>
 		</dependency>
-		
+
 		<!-- JPA -->
 		<dependency>
 			<groupId>javax.persistence</groupId>
 			<artifactId>com.springsource.javax.persistence</artifactId>
 			<version>1.0.0</version>
-			<optional>true</optional>			
-		</dependency>	
+			<optional>true</optional>
+		</dependency>
 		<!-- Toplink JPA Provider -->
 		<dependency>
 			<groupId>com.oracle.toplink.essentials</groupId>
 			<artifactId>com.springsource.oracle.toplink.essentials</artifactId>
 			<version>2.0.0.b41-beta2</version>
-			<optional>true</optional>			
+			<optional>true</optional>
 		</dependency>
 		<!-- Hibernate JPA Provider -->
 		<dependency>
@@ -129,20 +127,20 @@
 				<exclusion>
 					<groupId>org.apache.commons</groupId>
 					<artifactId>com.springsource.org.apache.commons.logging</artifactId>
-		         </exclusion>
-			</exclusions>			
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
-		    <groupId>org.hibernate</groupId>
-    		<artifactId>com.springsource.org.hibernate.annotations</artifactId>
-    		<version>3.4.0.GA</version>
+			<groupId>org.hibernate</groupId>
+			<artifactId>com.springsource.org.hibernate.annotations</artifactId>
+			<version>3.4.0.GA</version>
 			<optional>true</optional>
 			<exclusions>
 				<!-- Exclude Commons Logging in favor of SLF4j -->
 				<exclusion>
 					<groupId>org.apache.commons</groupId>
 					<artifactId>com.springsource.org.apache.commons.logging</artifactId>
-		         </exclusion>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<!-- Open JPA Provider -->
@@ -156,8 +154,8 @@
 				<exclusion>
 					<groupId>org.apache.commons</groupId>
 					<artifactId>com.springsource.org.apache.commons.logging</artifactId>
-		         </exclusion>
-			</exclusions>			
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- Servlet -->
@@ -182,7 +180,7 @@
 			<groupId>org.apache.taglibs</groupId>
 			<artifactId>com.springsource.org.apache.taglibs.standard</artifactId>
 			<version>1.1.2</version>
-		</dependency>		
+		</dependency>
 
 		<!-- Rome RSS -->
 		<dependency>
@@ -209,13 +207,13 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>org.springframework.test</artifactId>
 			<version>${spring.version}</version>
-            <scope>test</scope>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
- 		   <groupId>javax.transaction</groupId>
- 		   <artifactId>com.springsource.javax.transaction</artifactId>
-		    <version>1.1.0</version>
-		    <scope>test</scope>
+			<groupId>javax.transaction</groupId>
+			<artifactId>com.springsource.javax.transaction</artifactId>
+			<version>1.1.0</version>
+			<scope>test</scope>
 		</dependency>
 
 	</dependencies>
@@ -247,28 +245,28 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-                    <verbose>true</verbose>
+					<verbose>true</verbose>
 					<source>1.5</source>
 					<target>1.5</target>
 					<showWarnings>true</showWarnings>
 				</configuration>
 			</plugin>
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-surefire-plugin</artifactId>
-              <configuration>
-                <includes>
-                  <include>**/*Tests.java</include>
-                </includes>
-              </configuration>
-            </plugin>
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-war-plugin</artifactId>
-              <configuration>
-                <warName>petclinic</warName>
-                </configuration>
-            </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<includes>
+						<include>**/*Tests.java</include>
+					</includes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<warName>petclinic</warName>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
