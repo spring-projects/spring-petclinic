@@ -8,9 +8,8 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -57,7 +56,7 @@ import org.springframework.transaction.annotation.Transactional;
 @ManagedResource("petclinic:type=Clinic")
 public class SimpleJdbcClinic implements Clinic, SimpleJdbcClinicMBean {
 
-	private final Log logger = LogFactory.getLog(getClass());
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	private SimpleJdbcTemplate simpleJdbcTemplate;
 

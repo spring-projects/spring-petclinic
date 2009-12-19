@@ -1,11 +1,11 @@
 package org.springframework.samples.petclinic.aspects;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Aspect to illustrate Spring-driven load-time weaving.
@@ -16,7 +16,7 @@ import org.aspectj.lang.annotation.Pointcut;
 @Aspect
 public abstract class AbstractTraceAspect {
 
-	private static final Log logger = LogFactory.getLog(AbstractTraceAspect.class);
+	private static final Logger logger = LoggerFactory.getLogger(AbstractTraceAspect.class);
 	
 	@Pointcut
 	public abstract void traced();
