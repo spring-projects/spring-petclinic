@@ -47,13 +47,11 @@
 			<groupId>org.aspectj</groupId>
 			<artifactId>com.springsource.org.aspectj.weaver</artifactId>
 			<version>1.6.5.RELEASE</version>
-			<optional>true</optional>			
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>org.springframework.aspects</artifactId>
 			<version>${spring.version}</version>
-			<optional>true</optional>			
 		</dependency>
 				
 		<!-- Logging -->
