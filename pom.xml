@@ -9,7 +9,7 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<properties>
 		<spring.version>3.0.0.RELEASE</spring.version>
-		<slf4j.version>1.5.10</slf4j.version>
+		<slf4j.version>1.5.6</slf4j.version>
 	</properties>
 	<dependencies>
 
@@ -46,7 +46,7 @@
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>com.springsource.org.aspectj.weaver</artifactId>
-			<version>1.6.5.RELEASE</version>
+			<version>1.6.8.RELEASE</version>
 		</dependency>
 
 		<!-- Logging -->
