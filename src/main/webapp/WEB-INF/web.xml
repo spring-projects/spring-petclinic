@@ -147,16 +147,16 @@
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 
-    <filter>
-        <filter-name>httpMethodFilter</filter-name>
-        <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
-    </filter>
+	<filter>
+		<filter-name>httpMethodFilter</filter-name>
+		<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+	</filter>
 
-    <filter-mapping>
-        <filter-name>httpMethodFilter</filter-name>
-        <servlet-name>petclinic</servlet-name>
-    </filter-mapping>
-    
+	<filter-mapping>
+		<filter-name>httpMethodFilter</filter-name>
+		<servlet-name>petclinic</servlet-name>
+	</filter-mapping>
+
 	<session-config>
 		<session-timeout>10</session-timeout>
 	</session-config>
@@ -166,6 +166,12 @@
 		<!-- Displays a stack trace -->
 		<location>/WEB-INF/jsp/uncaughtException.jsp</location>
 	</error-page>
+
+	<!-- eliminate welcome files -->
+	<!-- useful for Servlet 3 container (Tomcat 7 and Jetty 6) -->
+	<welcome-file-list>
+		<welcome-file></welcome-file>
+	</welcome-file-list>
 
 	<!--
 		- Reference to PetClinic database.
