@@ -42,10 +42,10 @@
 	</mapped-superclass>
 
 	<entity class="Vet">
-		<table name="VETS"/>
+		<table name="vets"/>
 		<attributes>
 			<many-to-many name="specialtiesInternal" target-entity="Specialty" fetch="EAGER">
-				<join-table name="VET_SPECIALTIES">
+				<join-table name="vet_specialties">
 					<join-column name="VET_ID"/>
 					<inverse-join-column name="SPECIALTY_ID"/>
 				</join-table>
@@ -56,11 +56,11 @@
 	</entity>
 
 	<entity class="Specialty">
-		<table name="SPECIALTIES"/>
+		<table name="specialties"/>
 	</entity>
 
 	<entity class="Owner">
-		<table name="OWNERS"/>
+		<table name="owners"/>
 		<attributes>
 			<basic name="address"/>
 			<basic name="city"/>
@@ -75,7 +75,7 @@
 	</entity>
 
 	<entity class="Pet">
-		<table name="PETS"/>
+		<table name="pets"/>
 		<attributes>
 			<basic name="birthDate">
 				<column name="BIRTH_DATE"/>
@@ -101,11 +101,11 @@
 	</entity>
 
 	<entity class="PetType">
-		<table name="TYPES"/>
+		<table name="types"/>
 	</entity>
 
 	<entity class="Visit">
-		<table name="VISITS"/>
+		<table name="visits"/>
 		<attributes>
 			<basic name="date">
 				<column name="VISIT_DATE"/>

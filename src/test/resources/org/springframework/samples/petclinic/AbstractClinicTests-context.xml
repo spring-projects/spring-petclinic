@@ -16,9 +16,12 @@
 
 	<tx:annotation-driven/>
 
-	<jdbc:embedded-database id="dataSource">
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
+			p:driverClassName="${jdbc.driverClassName}" p:url="${jdbc.url}"
+			p:username="${jdbc.username}" p:password="${jdbc.password}"/>
+
+	<jdbc:initialize-database data-source="dataSource" ignore-failures="ALL">
 		<jdbc:script location="${jdbc.initLocation}"/>
 		<jdbc:script location="${jdbc.dataLocation}"/>
-	</jdbc:embedded-database>
-		
+	</jdbc:initialize-database>
 </beans>
