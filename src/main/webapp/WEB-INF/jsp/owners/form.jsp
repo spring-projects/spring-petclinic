@@ -1,11 +1,11 @@
 <%@ include file="/WEB-INF/jsp/includes.jsp" %>
 <%@ include file="/WEB-INF/jsp/header.jsp" %>
 <c:choose>
-	<c:when test="${owner.new}"><c:set var="method" value="post"/></c:when>
+	<c:when test="${owner['new']}"><c:set var="method" value="post"/></c:when>
 	<c:otherwise><c:set var="method" value="put"/></c:otherwise>
 </c:choose>
 
-<h2><c:if test="${owner.new}">New </c:if>Owner:</h2>
+<h2><c:if test="${owner['new']}">New </c:if>Owner:</h2>
 <form:form modelAttribute="owner" method="${method}">
   <table>
     <tr>
@@ -46,7 +46,7 @@
     <tr>
       <td>
         <c:choose>
-          <c:when test="${owner.new}">
+          <c:when test="${owner['new']}">
             <p class="submit"><input type="submit" value="Add Owner"/></p>
           </c:when>
           <c:otherwise>

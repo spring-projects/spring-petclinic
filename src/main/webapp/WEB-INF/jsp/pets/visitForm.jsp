@@ -1,7 +1,7 @@
 <%@ include file="/WEB-INF/jsp/includes.jsp" %>
 <%@ include file="/WEB-INF/jsp/header.jsp" %>
 
-<h2><c:if test="${visit.new}">New </c:if>Visit:</h2>
+<h2><c:if test="${visit['new']}">New </c:if>Visit:</h2>
 
 <form:form modelAttribute="visit">
   <b>Pet:</b>
@@ -56,7 +56,7 @@
     <th>Description</th>
   </tr>
   <c:forEach var="visit" items="${visit.pet.visits}">
-    <c:if test="${!visit.new}">
+    <c:if test="${!visit['new']}">
       <tr>
         <td><fmt:formatDate value="${visit.date}" pattern="yyyy-MM-dd"/></td>
         <td>${visit.description}</td>
