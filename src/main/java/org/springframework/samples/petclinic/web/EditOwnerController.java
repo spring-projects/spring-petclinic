@@ -11,29 +11,29 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 /**
- * JavaBean form controller that is used to add a new <code>Owner</code> to the
- * system.
+ * JavaBean Form controller that is used to edit an existing <code>Owner</code>.
  * 
  * @author Juergen Hoeller
  * @author Ken Krebs
  * @author Arjen Poutsma
  */
 @Controller
-@RequestMapping("/owners/new")
+@RequestMapping("/owners/{ownerId}/edit")
 @SessionAttributes(types = Owner.class)
-public class AddOwnerForm {
+public class EditOwnerController {
 
 	private final Clinic clinic;
 
 
 	@Autowired
-	public AddOwnerForm(Clinic clinic) {
+	public EditOwnerController(Clinic clinic) {
 		this.clinic = clinic;
 	}
 
@@ -43,13 +43,13 @@ public class AddOwnerForm {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public String setupForm(Model model) {
-		Owner owner = new Owner();
+	public String setupForm(@PathVariable("ownerId") int ownerId, Model model) {
+		Owner owner = this.clinic.loadOwner(ownerId);
 		model.addAttribute(owner);
 		return "owners/form";
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.PUT)
 	public String processSubmit(@ModelAttribute Owner owner, BindingResult result, SessionStatus status) {
 		new OwnerValidator().validate(owner, result);
 		if (result.hasErrors()) {

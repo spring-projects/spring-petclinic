@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.Clinic;
+import org.springframework.samples.petclinic.Owner;
 import org.springframework.samples.petclinic.Pet;
 import org.springframework.samples.petclinic.PetType;
 import org.springframework.samples.petclinic.validation.PetValidator;
@@ -21,22 +22,23 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 /**
- * JavaBean Form controller that is used to edit an existing <code>Pet</code>.
+ * JavaBean form controller that is used to add a new <code>Pet</code> to the
+ * system.
  * 
  * @author Juergen Hoeller
  * @author Ken Krebs
  * @author Arjen Poutsma
  */
 @Controller
-@RequestMapping("/owners/*/pets/{petId}/edit")
+@RequestMapping("/owners/{ownerId}/pets/new")
 @SessionAttributes("pet")
-public class EditPetForm {
+public class AddPetController {
 
 	private final Clinic clinic;
 
 
 	@Autowired
-	public EditPetForm(Clinic clinic) {
+	public AddPetController(Clinic clinic) {
 		this.clinic = clinic;
 	}
 
@@ -51,13 +53,15 @@ public class EditPetForm {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public String setupForm(@PathVariable("petId") int petId, Model model) {
-		Pet pet = this.clinic.loadPet(petId);
+	public String setupForm(@PathVariable("ownerId") int ownerId, Model model) {
+		Owner owner = this.clinic.loadOwner(ownerId);
+		Pet pet = new Pet();
+		owner.addPet(pet);
 		model.addAttribute("pet", pet);
 		return "pets/form";
 	}
 
-	@RequestMapping(method = { RequestMethod.PUT, RequestMethod.POST })
+	@RequestMapping(method = RequestMethod.POST)
 	public String processSubmit(@ModelAttribute("pet") Pet pet, BindingResult result, SessionStatus status) {
 		new PetValidator().validate(pet, result);
 		if (result.hasErrors()) {
@@ -68,13 +72,6 @@ public class EditPetForm {
 			status.setComplete();
 			return "redirect:/owners/" + pet.getOwner().getId();
 		}
-	}
-
-	@RequestMapping(method = RequestMethod.DELETE)
-	public String deletePet(@PathVariable int petId) {
-		Pet pet = this.clinic.loadPet(petId);
-		this.clinic.deletePet(petId);
-		return "redirect:/owners/" + pet.getOwner().getId();
 	}
 
 }

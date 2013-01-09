@@ -23,13 +23,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author Arjen Poutsma
  */
 @Controller
-public class FindOwnersForm {
+public class FindOwnersController {
 
 	private final Clinic clinic;
 
 
 	@Autowired
-	public FindOwnersForm(Clinic clinic) {
+	public FindOwnersController(Clinic clinic) {
 		this.clinic = clinic;
 	}
 
