@@ -3,11 +3,12 @@
 	- DispatcherServlet application context for PetClinic's web tier.
 -->
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
-		xmlns:oxm="http://www.springframework.org/schema/oxm"
-		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-				http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-3.0.xsd">
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:oxm="http://www.springframework.org/schema/oxm" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+		http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<!--
 		- The controllers are autodetected POJOs labeled with the @Controller annotation.
@@ -30,7 +31,7 @@
 		- for request parameter binding. It overrides the default AnnotationMethodHandlerAdapter.
 	-->
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
-		<property name="webBindingInitializer">
+		<property name="webBindingInitializer"> 
 			<bean class="org.springframework.samples.petclinic.web.ClinicBindingInitializer"/>
 		</property>
 	</bean>
@@ -58,15 +59,21 @@
 		- BeanNameViewResolver. Note the use of the expression language to refer to the contentType
 		- property of the vets view bean, setting it to 'application/vnd.springsource.samples.petclinic+xml'.
 	-->
-	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
-		<property name="mediaTypes">
-			<map>
-				<entry key="xml" value="#{vets.contentType}"/>
-				<entry key="atom" value="#{visits.contentType}"/>
-			</map>
-		</property>
-		<property name="order" value="0"/>
+	
+	<mvc:annotation-driven content-negotiation-manager="contentNegotiationManager" />
+	<mvc:resources mapping="/resources/**" location="/resources/"/>
+
+	<bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+	    <property name="favorPathExtension" value="false" />
+	    <property name="favorParameter" value="true" />
+	    <property name="mediaTypes">
+	        <value>
+	            atom=application/atom+xml
+	            xml=#{vets.contentType}
+	        </value>
+	    </property>
 	</bean>
+
 	
 	<!--
 		- The BeanNameViewResolver is used to pick up the visits view name (below).

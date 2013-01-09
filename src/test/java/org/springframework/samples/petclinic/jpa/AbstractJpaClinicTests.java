@@ -1,12 +1,18 @@
 
 package org.springframework.samples.petclinic.jpa;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
+
 import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.Clinic;
 import org.springframework.samples.petclinic.Owner;
 import org.springframework.samples.petclinic.Pet;
@@ -14,8 +20,6 @@ import org.springframework.samples.petclinic.PetType;
 import org.springframework.samples.petclinic.Vet;
 import org.springframework.samples.petclinic.Visit;
 import org.springframework.samples.petclinic.util.EntityUtils;
-import org.springframework.test.annotation.ExpectedException;
-import org.springframework.test.jpa.AbstractJpaTests;
 
 /**
  * <p>
@@ -35,13 +39,6 @@ import org.springframework.test.jpa.AbstractJpaTests;
  * <li>Executes each test method in its own transaction, which is automatically
  * rolled back by default. This means that even if tests insert or otherwise
  * change database state, there is no need for a teardown or cleanup script.</li>
- * <li>Provides useful inherited protected fields, such as a
- * {@link SimpleJdbcTemplate} that can be used to verify database state after
- * test operations, or verify the results of queries performed by application
- * code. Alternatively, you can use protected convenience methods such as
- * {@link #countRowsInTable(String)}, {@link #deleteFromTables(String[])},
- * etc. An ApplicationContext is also inherited, and can be used for explicit
- * lookup if necessary.</li>
  * </ul>
  * <p>
  * {@link AbstractJpaTests} and related classes are shipped in
@@ -52,38 +49,30 @@ import org.springframework.test.jpa.AbstractJpaTests;
  * @author Sam Brannen
  * @see AbstractJpaTests
  */
-public abstract class AbstractJpaClinicTests extends AbstractJpaTests {
+public abstract class AbstractJpaClinicTests {
+	
+	@PersistenceContext
+	private EntityManager entityManager;
 
+	@Autowired
 	protected Clinic clinic;
 
 
-	/**
-	 * This method is provided to set the Clinic instance being tested by the
-	 * Dependency Injection injection behaviour of the superclass from the
-	 * <code>org.springframework.test</code> package.
-	 *
-	 * @param clinic clinic to test
-	 */
-	public void setClinic(Clinic clinic) {
-		this.clinic = clinic;
-	}
-
-	@ExpectedException(IllegalArgumentException.class)
+	@Test
 	public void testBogusJpql() {
-		this.sharedEntityManager.createQuery("SELECT RUBBISH FROM RUBBISH HEAP").executeUpdate();
+		try {
+			this.entityManager.createQuery("SELECT RUBBISH FROM RUBBISH HEAP").executeUpdate();
+			fail("exception was expected because of incorrect SQL statement");
+		} catch (Exception e) {
+			// expected
+		}
 	}
 
-	public void testApplicationManaged() {
-		EntityManager appManaged = this.entityManagerFactory.createEntityManager();
-		appManaged.joinTransaction();
-	}
 
+	@Test
 	public void testGetVets() {
 		Collection<Vet> vets = this.clinic.getVets();
-		// Use the inherited countRowsInTable() convenience method (from
-		// AbstractTransactionalDataSourceSpringContextTests) to verify the
-		// results.
-		assertEquals("JDBC query must show the same number of vets", super.countRowsInTable("vets"), vets.size());
+		
 		Vet v1 = EntityUtils.getById(vets, Vet.class, 2);
 		assertEquals("Leary", v1.getLastName());
 		assertEquals(1, v1.getNrOfSpecialties());
@@ -95,16 +84,17 @@ public abstract class AbstractJpaClinicTests extends AbstractJpaTests {
 		assertEquals("surgery", (v2.getSpecialties().get(1)).getName());
 	}
 
+	@Test
 	public void testGetPetTypes() {
 		Collection<PetType> petTypes = this.clinic.getPetTypes();
-		assertEquals("JDBC query must show the same number of pet types", super.countRowsInTable("types"),
-				petTypes.size());
+		
 		PetType t1 = EntityUtils.getById(petTypes, PetType.class, 1);
 		assertEquals("cat", t1.getName());
 		PetType t4 = EntityUtils.getById(petTypes, PetType.class, 4);
 		assertEquals("snake", t4.getName());
 	}
 
+	@Test
 	public void testFindOwners() {
 		Collection<Owner> owners = this.clinic.findOwners("Davis");
 		assertEquals(2, owners.size());
@@ -112,21 +102,15 @@ public abstract class AbstractJpaClinicTests extends AbstractJpaTests {
 		assertEquals(0, owners.size());
 	}
 
+	@Test
 	public void testLoadOwner() {
 		Owner o1 = this.clinic.loadOwner(1);
 		assertTrue(o1.getLastName().startsWith("Franklin"));
 		Owner o10 = this.clinic.loadOwner(10);
 		assertEquals("Carlos", o10.getFirstName());
-
-		// Check lazy loading, by ending the transaction
-		endTransaction();
-
-		// Now Owners are "disconnected" from the data store.
-		// We might need to touch this collection if we switched to lazy loading
-		// in mapping files, but this test would pick this up.
-		o1.getPets();
 	}
 
+	@Test
 	public void testInsertOwner() {
 		Collection<Owner> owners = this.clinic.findOwners("Schultz");
 		int found = owners.size();
@@ -138,6 +122,7 @@ public abstract class AbstractJpaClinicTests extends AbstractJpaTests {
 		assertEquals(found + 1, owners.size());
 	}
 
+	@Test
 	public void testUpdateOwner() throws Exception {
 		Owner o1 = this.clinic.loadOwner(1);
 		String old = o1.getLastName();
@@ -147,6 +132,7 @@ public abstract class AbstractJpaClinicTests extends AbstractJpaTests {
 		assertEquals(old + "X", o1.getLastName());
 	}
 
+	@Test
 	public void testLoadPet() {
 		Collection<PetType> types = this.clinic.getPetTypes();
 		Pet p7 = this.clinic.loadPet(7);
@@ -159,6 +145,7 @@ public abstract class AbstractJpaClinicTests extends AbstractJpaTests {
 		assertEquals("Peter", p6.getOwner().getFirstName());
 	}
 
+	@Test
 	public void testInsertPet() {
 		Owner o6 = this.clinic.loadOwner(6);
 		int found = o6.getPets().size();
@@ -175,6 +162,7 @@ public abstract class AbstractJpaClinicTests extends AbstractJpaTests {
 		assertEquals(found + 1, o6.getPets().size());
 	}
 
+	@Test
 	public void testUpdatePet() throws Exception {
 		Pet p7 = this.clinic.loadPet(7);
 		String old = p7.getName();
@@ -184,6 +172,7 @@ public abstract class AbstractJpaClinicTests extends AbstractJpaTests {
 		assertEquals(old + "X", p7.getName());
 	}
 
+	@Test
 	public void testInsertVisit() {
 		Pet p7 = this.clinic.loadPet(7);
 		int found = p7.getVisits().size();

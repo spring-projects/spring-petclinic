@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.util.EntityUtils;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
@@ -81,18 +82,16 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
  * @author Sam Brannen
  */
 @ContextConfiguration
-public abstract class AbstractClinicTests extends AbstractTransactionalJUnit4SpringContextTests {
+public abstract class AbstractClinicTests {
 
 	@Autowired
 	protected Clinic clinic;
 
 
-	@Test
+	@Test @Transactional
 	public void getVets() {
 		Collection<Vet> vets = this.clinic.getVets();
-		// Use the inherited countRowsInTable() convenience method (from
-		// AbstractTransactionalJUnit4SpringContextTests) to verify the results.
-		assertEquals("JDBC query must show the same number of vets", super.countRowsInTable("vets"), vets.size());
+		
 		Vet v1 = EntityUtils.getById(vets, Vet.class, 2);
 		assertEquals("Leary", v1.getLastName());
 		assertEquals(1, v1.getNrOfSpecialties());
@@ -107,8 +106,7 @@ public abstract class AbstractClinicTests extends AbstractTransactionalJUnit4Spr
 	@Test
 	public void getPetTypes() {
 		Collection<PetType> petTypes = this.clinic.getPetTypes();
-		assertEquals("JDBC query must show the same number of pet types", super.countRowsInTable("types"),
-				petTypes.size());
+		
 		PetType t1 = EntityUtils.getById(petTypes, PetType.class, 1);
 		assertEquals("cat", t1.getName());
 		PetType t4 = EntityUtils.getById(petTypes, PetType.class, 4);

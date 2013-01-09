@@ -18,7 +18,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.jmx.export.annotation.ManagedResource;
 import org.springframework.orm.ObjectRetrievalFailureException;
@@ -58,7 +58,7 @@ public class SimpleJdbcClinic implements Clinic, SimpleJdbcClinicMBean {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
-	private SimpleJdbcTemplate simpleJdbcTemplate;
+	private JdbcTemplate simpleJdbcTemplate;
 
 	private SimpleJdbcInsert insertOwner;
 	private SimpleJdbcInsert insertPet;
@@ -69,7 +69,7 @@ public class SimpleJdbcClinic implements Clinic, SimpleJdbcClinicMBean {
 
 	@Autowired
 	public void init(DataSource dataSource) {
-		this.simpleJdbcTemplate = new SimpleJdbcTemplate(dataSource);
+		this.simpleJdbcTemplate = new JdbcTemplate(dataSource);
 
 		this.insertOwner = new SimpleJdbcInsert(dataSource)
 			.withTableName("owners")

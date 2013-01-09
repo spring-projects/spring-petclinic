@@ -1,26 +1,38 @@
-<%@ include file="/WEB-INF/jsp/includes.jsp" %>
-<%@ include file="/WEB-INF/jsp/header.jsp" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+<html lang="en">
 
-<h2>Find Owners:</h2>
+<jsp:include page="../header.jsp"/>
 
-<spring:url value="/owners" var="formUrl"/>
-<form:form modelAttribute="owner" action="${fn:escapeXml(formUrl)}" method="get">
-  <table>
-    <tr>
-      <th>
-        Last Name: <form:errors path="*" cssClass="errors"/>
-        <br/> 
-        <form:input path="lastName" size="30" maxlength="80" />
-      </th>
-    </tr>
-    <tr>
-      <td><p class="submit"><input type="submit" value="Find Owners"/></p></td>
-    </tr>
-  </table>
-</form:form>
+<body>
 
-<br/>
-<a href='<spring:url value="/owners/new" htmlEscape="true"/>'>Add Owner</a>
+  <div id="main">
 
-<%@ include file="/WEB-INF/jsp/footer.jsp" %>
+		<h2>Find Owners:</h2>
+		
+		<spring:url value="/owners" var="formUrl"/>
+		<form:form modelAttribute="owner" action="${fn:escapeXml(formUrl)}" method="get">
+					<fieldset>
+						<label class="control-label">Last name:</label>
+						<div class="controls">
+							<form:input path="lastName" size="30" maxlength="80"/>
+							<form:errors path="*" cssClass="errors"/>
+						</div>				
+						<div>
+							<button type="submit">Find Owner</button>
+						</div>
+					</fieldset>
+		</form:form>
+		
+		<br/>
+		<a href='<spring:url value="/owners/new" htmlEscape="true"/>'>Add Owner</a>
+		
+		<jsp:include page="../footer.jsp"/>
+
+  </div>
+</body>
+
+</html>

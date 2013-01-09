@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <faceted-project>
-  <fixed facet="jst.web"/>
-  <fixed facet="jst.java"/>
-  <installed facet="jst.java" version="5.0"/>
-  <installed facet="jst.web" version="2.5"/>
+  <fixed facet="wst.jsdt.web"/>
+  <installed facet="java" version="1.6"/>
+  <installed facet="jst.web" version="2.4"/>
+  <installed facet="wst.jsdt.web" version="1.0"/>
 </faceted-project>
