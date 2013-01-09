@@ -1,19 +1,30 @@
-<%@ include file="/WEB-INF/jsp/includes.jsp" %>
-<%@ include file="/WEB-INF/jsp/header.jsp" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-<%
-Exception ex = (Exception) request.getAttribute("exception");
-%>
 
-<h2>Data access failure: <%= ex.getMessage() %></h2>
-<p/>
+<html lang="en">
 
-<%
-ex.printStackTrace(new java.io.PrintWriter(out));
-%>
+<jsp:include page="header.jsp"/>
 
-<p/>
-<br/>
-<a href="<spring:url value="/" htmlEscape="true" />">Home</a>
+<body>
+	<div id="main">
+		<%
+		Exception ex = (Exception) request.getAttribute("exception");
+		%>
+		
+		<h2>Data access failure: <%= ex.getMessage() %></h2>
+		<p/>
+		
+		<%
+		ex.printStackTrace(new java.io.PrintWriter(out));
+		%>
+		
+		<p/>
+		<br/>
+		<a href="<spring:url value="/" htmlEscape="true" />">Home</a>
+		
+  </div>
+		<jsp:include page="footer.jsp"/>
 
-<%@ include file="/WEB-INF/jsp/footer.jsp" %>
+</body>
+
+</html>
