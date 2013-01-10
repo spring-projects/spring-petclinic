@@ -5,7 +5,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:oxm="http://www.springframework.org/schema/oxm" xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
@@ -30,7 +30,7 @@
 		- This bean processes annotated handler methods, applying PetClinic-specific PropertyEditors
 		- for request parameter binding. It overrides the default AnnotationMethodHandlerAdapter.
 	-->
-	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+	 <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
 		<property name="webBindingInitializer"> 
 			<bean class="org.springframework.samples.petclinic.web.ClinicBindingInitializer"/>
 		</property>
@@ -50,6 +50,7 @@
 				<prop key="org.springframework.transaction.TransactionException">dataAccessFailure</prop>
 			</props>
 		</property>
+		<property name="defaultErrorView" value="uncaughtException"/>
 	</bean>
 
 	<!--
@@ -60,7 +61,8 @@
 		- property of the vets view bean, setting it to 'application/vnd.springsource.samples.petclinic+xml'.
 	-->
 	
-	<mvc:annotation-driven content-negotiation-manager="contentNegotiationManager" />
+	<mvc:annotation-driven content-negotiation-manager="contentNegotiationManager" /> 
+
 	<mvc:resources mapping="/resources/**" location="/resources/"/>
 
 	<bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
@@ -69,7 +71,8 @@
 	    <property name="mediaTypes">
 	        <value>
 	            atom=application/atom+xml
-	            xml=#{vets.contentType}
+	            html=text/html
+	            xml=application/xml
 	        </value>
 	    </property>
 	</bean>
@@ -77,11 +80,11 @@
 	
 	<!--
 		- The BeanNameViewResolver is used to pick up the visits view name (below).
-		- It has the order property set to 2, which means that this will
+		- It has the order property set to 1, which means that this will
 		- be the first view resolver to be used after the delegating content
 		- negotiating view resolver.
 	 -->
-	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" p:order="1"/>
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />
 	<!--
 
 		- This bean configures the 'prefix' and 'suffix' properties of
@@ -90,11 +93,11 @@
 		- will be mapped to "/WEB-INF/jsp/vets.jsp".
 	-->
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:prefix="/WEB-INF/jsp/"
-			p:suffix=".jsp" p:order="2"/>
+			p:suffix=".jsp" />
 
-	<!--
-		- The AtomView rendering a Atom feed of the visits
-	 -->
+	
+	<!-- 	- The AtomView rendering a Atom feed of the visits  -->
+	 
 	<bean id="visits" class="org.springframework.samples.petclinic.web.VisitsAtomView"/>
 
 	<bean id="vets" class="org.springframework.web.servlet.view.xml.MarshallingView">
