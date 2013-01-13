@@ -7,6 +7,10 @@
 <jsp:include page="header.jsp"/>
 
 <body>
+	<div id="header">
+		<spring:url value="/resources/images/banner-graphic.png" var="banner"/>
+		<img src="${banner}" />
+	</div>
 
   	<div id="main">
 		<img src="<spring:url value="/resources/images/pets.png" htmlEscape="true" />" align="right" style="position:relative;right:30px;"></img>

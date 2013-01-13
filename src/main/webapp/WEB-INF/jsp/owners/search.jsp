@@ -9,7 +9,11 @@
 
 <body>
 
-  <div id="main">
+	<div id="header">
+		<spring:url value="/resources/images/banner-graphic.png" var="banner"/>
+		<img src="${banner}" />
+	</div>
+	<div id="main">
 
 		<h2>Find Owners:</h2>
 		
