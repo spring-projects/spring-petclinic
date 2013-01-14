@@ -9,13 +9,11 @@
 <jsp:include page="../header.jsp"/>
 
 <body>
-	<div id="header">
+
+  	<div class="container">
+
 		<spring:url value="/resources/images/banner-graphic.png" var="banner"/>
 		<img src="${banner}" />
-	</div>
-
-  	<div id="main">
-
 		<h2><c:if test="${visit['new']}">New </c:if>Visit:</h2>
 		
 		<form:form modelAttribute="visit">

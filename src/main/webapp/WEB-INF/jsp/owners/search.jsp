@@ -9,23 +9,21 @@
 
 <body>
 
-	<div id="header">
+	<div class="container">
 		<spring:url value="/resources/images/banner-graphic.png" var="banner"/>
 		<img src="${banner}" />
-	</div>
-	<div id="main">
 
-		<h2>Find Owners:</h2>
+		<h2>Find Owners</h2>
 		
 		<spring:url value="/owners" var="formUrl"/>
-		<form:form modelAttribute="owner" action="${fn:escapeXml(formUrl)}" method="get">
+		<form:form modelAttribute="owner" action="${fn:escapeXml(formUrl)}" method="get" class="form-horizontal">
 					<fieldset>
-						<label class="control-label">Last name:</label>
 						<div class="controls">
+							<label class="control-label">Last name </label>
 							<form:input path="lastName" size="30" maxlength="80"/>
-							<form:errors path="*" cssClass="errors"/>
+							<span class="help-inline"><form:errors path="*" /></span>
 						</div>				
-						<div>
+						<div class="form-actions">
 							<button type="submit">Find Owner</button>
 						</div>
 					</fieldset>
@@ -36,7 +34,7 @@
 		
 		<jsp:include page="../footer.jsp"/>
 
-  </div>
+  	</div>
 </body>
 
 </html>

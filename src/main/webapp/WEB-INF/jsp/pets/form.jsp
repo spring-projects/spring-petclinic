@@ -8,12 +8,10 @@
 <jsp:include page="../header.jsp"/>
 
 <body>
-	<div id="header">
+
+  	<div class="container">
 		<spring:url value="/resources/images/banner-graphic.png" var="banner"/>
 		<img src="${banner}" />
-	</div>
-
-  	<div id="main">
 		<c:choose>
 			<c:when test="${pet['new']}"><c:set var="method" value="post"/></c:when>
 			<c:otherwise><c:set var="method" value="put"/></c:otherwise>

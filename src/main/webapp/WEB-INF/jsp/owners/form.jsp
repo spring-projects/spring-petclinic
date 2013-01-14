@@ -10,69 +10,66 @@
 <jsp:include page="../header.jsp"/>
 
 <body>
-	<div id="header">
+	<div id="header well">
 		<spring:url value="/resources/images/banner-graphic.png" var="banner"/>
 		<img src="${banner}" />
 	</div>
-  	<div id="main">
+  	<div class="container" style="padding-top: 50px;">
 		<c:choose>
 			<c:when test="${owner['new']}"><c:set var="method" value="post"/></c:when>
 			<c:otherwise><c:set var="method" value="put"/></c:otherwise>
 		</c:choose>
 		
-		<h2><c:if test="${owner['new']}">New </c:if>Owner:</h2>
-		<form:form modelAttribute="owner" method="${method}">
-		  <table>
-		    <tr>
-		      <th>
-		        First Name: <form:errors path="firstName" cssClass="errors"/>
-		        <br/>
-		        <form:input path="firstName" size="30" maxlength="80"/>
-		      </th>
-		    </tr>
-		    <tr>
-		      <th>
-		        Last Name: <form:errors path="lastName" cssClass="errors"/>
-		        <br/>
-		        <form:input path="lastName" size="30" maxlength="80"/>
-		      </th>
-		    </tr>
-		    <tr>
-		      <th>
-		        Address: <form:errors path="address" cssClass="errors"/>
-		        <br/>
-		        <form:input path="address" size="30" maxlength="80"/>
-		      </th>
-		    </tr>
-		    <tr>
-		      <th>
-		        City: <form:errors path="city" cssClass="errors"/>
-		        <br/>
-		        <form:input path="city" size="30" maxlength="80"/>
-		      </th>
-		    </tr>
-		    <tr>
-		      <th>
-		        Telephone: <form:errors path="telephone" cssClass="errors"/>
-		        <br/>
-		        <form:input path="telephone" size="20" maxlength="20"/>
-		      </th>
-		    </tr>
-		    <tr>
-		      <td>
-		        <c:choose>
-		          <c:when test="${owner['new']}">
-		            <p class="submit"><input type="submit" value="Add Owner"/></p>
-		          </c:when>
-		          <c:otherwise>
-		            <p class="submit"><input type="submit" value="Update Owner"/></p>
-		          </c:otherwise>
-		        </c:choose>
-		      </td>
-		    </tr>
-		  </table>
+		<h2><c:if test="${owner['new']}">New </c:if>Owner</h2>
+		<form:form modelAttribute="owner" method="${method}" class="form-horizontal" id="add-owner-form">
+			<fieldset>
+					<div class="control-group" id="firstName">
+						<label class="control-label">First Name </label>
+						<div class="controls">
+							<form:input path="firstName" />
+							<span class="help-inline"><form:errors path="firstName" /></span>
+						</div>
+					</div>
+					<div class="control-group" id="lastName">
+						<label class="control-label">Last Name </label>
+						<div class="controls">
+							<form:input path="lastName" />
+							<span class="help-inline"><form:errors path="lastName" /></span>
+						</div>
+					</div>
+					<div class="control-group" id="address">
+						<label class="control-label">Address </label>
+						<div class="controls">
+							<form:input path="address" />
+							<span class="help-inline"><form:errors path="address" /></span>
+						</div>
+					</div>
+					<div class="control-group" id="city">
+						<label class="control-label">City </label>
+						<div class="controls">
+							<form:input path="city" />
+							<span class="help-inline"><form:errors path="city" /></span>
+						</div>
+					</div>
+					<div class="control-group" id="telephone">
+						<label class="control-label">Telephone </label>
+						<div class="controls">
+							<form:input path="telephone" />
+							<span class="help-inline"><form:errors path="telephone" /></span>
+						</div>
+					</div>
+					<div class="form-actions">
+						<c:choose>
+				          <c:when test="${owner['new']}">
+				            <button type="submit">Add Owner</button>
+				          </c:when>
+				          <c:otherwise>
+				            <button type="submit">Update Owner</button>
+				          </c:otherwise>
+				        </c:choose>
+					</div>
+				</fieldset>
 		</form:form>
-
   	</div>
 	<jsp:include page="../footer.jsp"/>
 </body>

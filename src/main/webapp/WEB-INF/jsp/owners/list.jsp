@@ -9,15 +9,14 @@
 <jsp:include page="../header.jsp"/>
 
 <body>
-	<div id="header">
+
+  	<div class="container">
+
 		<spring:url value="/resources/images/banner-graphic.png" var="banner"/>
 		<img src="${banner}" />
-	</div>
-  	<div id="main">
-
-	<h2>Owners:</h2>
+		<h2>Owners</h2>
 	
-		<table>
+		<table class="table table-striped">
 		  <thead>
 		  	<tr>
 			    <th>Name</th>
