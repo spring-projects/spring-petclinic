@@ -7,6 +7,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 
@@ -17,14 +25,21 @@ import org.springframework.beans.support.PropertyComparator;
  * @author Juergen Hoeller
  * @author Sam Brannen
  */
+@Entity @Table(name="pets")
 public class Pet extends NamedEntity {
 
+	@Column(name="birth_date")
 	private Date birthDate;
 
+	@ManyToOne
+    @JoinColumn(name = "type_id")
 	private PetType type;
-
+	
+	@ManyToOne
+    @JoinColumn(name = "owner_id")
 	private Owner owner;
-
+	
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="pet")
 	private Set<Visit> visits;
 
 

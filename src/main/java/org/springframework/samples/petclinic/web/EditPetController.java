@@ -52,7 +52,7 @@ public class EditPetController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String setupForm(@PathVariable("petId") int petId, Model model) {
-		Pet pet = this.clinic.loadPet(petId);
+		Pet pet = this.clinic.findPet(petId);
 		model.addAttribute("pet", pet);
 		return "pets/form";
 	}
@@ -72,7 +72,7 @@ public class EditPetController {
 
 	@RequestMapping(method = RequestMethod.DELETE)
 	public String deletePet(@PathVariable int petId) {
-		Pet pet = this.clinic.loadPet(petId);
+		Pet pet = this.clinic.findPet(petId);
 		this.clinic.deletePet(petId);
 		return "redirect:/owners/" + pet.getOwner().getId();
 	}

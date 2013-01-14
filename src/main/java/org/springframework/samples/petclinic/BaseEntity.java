@@ -1,5 +1,8 @@
 package org.springframework.samples.petclinic;
 
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+
 /**
  * Simple JavaBean domain object with an id property.
  * Used as a base class for objects needing this property.
@@ -7,9 +10,10 @@ package org.springframework.samples.petclinic;
  * @author Ken Krebs
  * @author Juergen Hoeller
  */
+@MappedSuperclass
 public class BaseEntity {
-
-	private Integer id;
+	@Id
+	protected Integer id;
 	
 
 	public void setId(Integer id) {

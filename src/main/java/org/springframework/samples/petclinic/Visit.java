@@ -2,20 +2,31 @@ package org.springframework.samples.petclinic;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
  * Simple JavaBean domain object representing a visit.
  *
  * @author Ken Krebs
  */
+@Entity @Table(name="visits")
 public class Visit extends BaseEntity {
 
 	/** Holds value of property date. */
+	@Column(name="visit_date")
 	private Date date;
 
 	/** Holds value of property description. */
+	@Column(name="description")
 	private String description;
 
 	/** Holds value of property pet. */
+	@ManyToOne
+    @JoinColumn(name = "pet_id")
 	private Pet pet;
 
 

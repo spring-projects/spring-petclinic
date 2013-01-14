@@ -16,33 +16,23 @@
 	<!-- import the dataSource definition -->
 	<import resource="applicationContext-dataSource.xml"/>
 
-	<!--
-		Activates a load-time weaver for the context. Any bean within the context that
-		implements LoadTimeWeaverAware (such as LocalContainerEntityManagerFactoryBean)
-		will receive a reference to the autodetected load-time weaver.
-	-->
-	<context:load-time-weaver/>
 
 	<!-- Configurer that replaces ${...} placeholders with values from a properties file -->
 	<!-- (in this case, JDBC-related settings for the JPA EntityManager definition below) -->
-	<context:property-placeholder location="classpath:jdbc.properties"/>
+	<context:property-placeholder location="classpath:spring/jdbc.properties"/>
 
 	<!-- JPA EntityManagerFactory -->
 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
 			p:dataSource-ref="dataSource">
-		<property name="jpaVendorAdapter">
-			<bean class="org.springframework.orm.jpa.vendor.TopLinkJpaVendorAdapter"
-					p:databasePlatform="${jpa.databasePlatform}" p:showSql="${jpa.showSql}"/>
-			<!--
-			<bean class="org.springframework.orm.jpa.vendor.OpenJpaVendorAdapter"
-					p:database="${jpa.database}" p:showSql="${jpa.showSql}"/>
-			-->
-			<!--
+		<property name="jpaVendorAdapter">			
 			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
-					p:database="${jpa.database}" p:showSql="${jpa.showSql}"/>
-			-->
+					p:database="${jpa.database}" p:showSql="${jpa.showSql}"/>			
 		</property>
-		<property name="persistenceXmlLocation" value="classpath:META-INF/jpa-persistence.xml"/>
+		<property name="packagesToScan">
+			<list>
+				<value>org/springframework/samples/petclinic</value>
+			</list>
+		</property>
 	</bean>
 
 	<!-- Transaction manager for a single JPA EntityManagerFactory (alternative to JTA) -->

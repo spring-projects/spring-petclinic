@@ -163,7 +163,7 @@ public class SimpleJdbcClinic implements Clinic, SimpleJdbcClinicMBean {
 	 * owner, if not already loaded.
 	 */
 	@Transactional(readOnly = true)
-	public Owner loadOwner(int id) throws DataAccessException {
+	public Owner findOwner(int id) throws DataAccessException {
 		Owner owner;
 		try {
 			owner = this.simpleJdbcTemplate.queryForObject(
@@ -179,7 +179,7 @@ public class SimpleJdbcClinic implements Clinic, SimpleJdbcClinicMBean {
 	}
 
 	@Transactional(readOnly = true)
-	public Pet loadPet(int id) throws DataAccessException {
+	public Pet findPet(int id) throws DataAccessException {
 		JdbcPet pet;
 		try {
 			pet = this.simpleJdbcTemplate.queryForObject(
@@ -190,7 +190,7 @@ public class SimpleJdbcClinic implements Clinic, SimpleJdbcClinicMBean {
 		catch (EmptyResultDataAccessException ex) {
 			throw new ObjectRetrievalFailureException(Pet.class, new Integer(id));
 		}
-		Owner owner = loadOwner(pet.getOwnerId());
+		Owner owner = findOwner(pet.getOwnerId());
 		owner.addPet(pet);
 		pet.setType(EntityUtils.getById(getPetTypes(), PetType.class, pet.getTypeId()));
 		loadVisits(pet);

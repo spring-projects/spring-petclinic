@@ -71,7 +71,7 @@ public class ClinicController {
 	@RequestMapping("/owners/{ownerId}")
 	public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
 		ModelAndView mav = new ModelAndView("owners/show");
-		mav.addObject(this.clinic.loadOwner(ownerId));
+		mav.addObject(this.clinic.findOwner(ownerId));
 		return mav;
 	}
 
@@ -84,7 +84,7 @@ public class ClinicController {
 	@RequestMapping(value="/owners/*/pets/{petId}/visits", method=RequestMethod.GET)
 	public ModelAndView visitsHandler(@PathVariable int petId) {
 		ModelAndView mav = new ModelAndView("visits");
-		mav.addObject("visits", this.clinic.loadPet(petId).getVisits());
+		mav.addObject("visits", this.clinic.findPet(petId).getVisits());
 		return mav;
 	}
 

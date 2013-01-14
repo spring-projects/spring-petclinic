@@ -46,7 +46,7 @@ public class AddVisitController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String setupForm(@PathVariable("petId") int petId, Model model) {
-		Pet pet = this.clinic.loadPet(petId);
+		Pet pet = this.clinic.findPet(petId);
 		Visit visit = new Visit();
 		pet.addVisit(visit);
 		model.addAttribute("visit", visit);

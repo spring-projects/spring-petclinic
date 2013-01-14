@@ -44,7 +44,7 @@ public class EditOwnerController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String setupForm(@PathVariable("ownerId") int ownerId, Model model) {
-		Owner owner = this.clinic.loadOwner(ownerId);
+		Owner owner = this.clinic.findOwner(ownerId);
 		model.addAttribute(owner);
 		return "owners/form";
 	}

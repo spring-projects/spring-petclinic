@@ -37,7 +37,7 @@
 	-->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/spring/applicationContext-jdbc.xml</param-value>
+		<param-value>classpath:spring/applicationContext-jdbc.xml</param-value>
         <!--
 		<param-value>/WEB-INF/spring/applicationContext-hibernate.xml</param-value>
 		<param-value>/WEB-INF/spring/applicationContext-jpa.xml</param-value>

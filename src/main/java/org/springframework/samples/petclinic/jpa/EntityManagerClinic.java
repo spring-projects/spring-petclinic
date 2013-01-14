@@ -55,12 +55,12 @@ public class EntityManagerClinic implements Clinic {
 	}
 
 	@Transactional(readOnly = true)
-	public Owner loadOwner(int id) {
+	public Owner findOwner(int id) {
 		return this.em.find(Owner.class, id);
 	}
 
 	@Transactional(readOnly = true)
-	public Pet loadPet(int id) {
+	public Pet findPet(int id) {
 		return this.em.find(Pet.class, id);
 	}
 
@@ -89,7 +89,7 @@ public class EntityManagerClinic implements Clinic {
 	}
 
 	public void deletePet(int id) throws DataAccessException {
-		Pet pet = loadPet(id);
+		Pet pet = findPet(id);
 		this.em.remove(pet);
 	}
 

@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.Clinic;
 import org.springframework.samples.petclinic.Owner;
@@ -20,18 +21,12 @@ import org.springframework.samples.petclinic.PetType;
 import org.springframework.samples.petclinic.Vet;
 import org.springframework.samples.petclinic.Visit;
 import org.springframework.samples.petclinic.util.EntityUtils;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * <p>
- * This class extends {@link AbstractJpaTests}, one of the valuable test
- * superclasses provided in the <code>org.springframework.test</code> package.
- * This represents best practice for integration tests with Spring for JPA based
- * tests which require <em>shadow class loading</em>. For all other types of
- * integration testing, the <em>Spring TestContext Framework</em> is
- * preferred.
- * </p>
- * <p>
- * AbstractJpaTests and its superclasses provide the following services:
+ * Provides the following services:
  * <ul>
  * <li>Injects test dependencies, meaning that we don't need to perform
  * application context lookups. See the setClinic() method. Injection uses
@@ -41,15 +36,16 @@ import org.springframework.samples.petclinic.util.EntityUtils;
  * change database state, there is no need for a teardown or cleanup script.</li>
  * </ul>
  * <p>
- * {@link AbstractJpaTests} and related classes are shipped in
- * <code>spring-test.jar</code>.
- * </p>
+  * </p>
  *
  * @author Rod Johnson
  * @author Sam Brannen
- * @see AbstractJpaTests
+ * @author Michael Isvy
  */
-public abstract class AbstractJpaClinicTests {
+
+@ContextConfiguration(locations={"classpath:spring/applicationContext-jpa.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
+public class JpaClinicTests {
 	
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -103,10 +99,10 @@ public abstract class AbstractJpaClinicTests {
 	}
 
 	@Test
-	public void testLoadOwner() {
-		Owner o1 = this.clinic.loadOwner(1);
+	public void tesFindOwner() {
+		Owner o1 = this.clinic.findOwner(1);
 		assertTrue(o1.getLastName().startsWith("Franklin"));
-		Owner o10 = this.clinic.loadOwner(10);
+		Owner o10 = this.clinic.findOwner(10);
 		assertEquals("Carlos", o10.getFirstName());
 	}
 
@@ -124,22 +120,22 @@ public abstract class AbstractJpaClinicTests {
 
 	@Test
 	public void testUpdateOwner() throws Exception {
-		Owner o1 = this.clinic.loadOwner(1);
+		Owner o1 = this.clinic.findOwner(1);
 		String old = o1.getLastName();
 		o1.setLastName(old + "X");
 		this.clinic.storeOwner(o1);
-		o1 = this.clinic.loadOwner(1);
+		o1 = this.clinic.findOwner(1);
 		assertEquals(old + "X", o1.getLastName());
 	}
 
 	@Test
-	public void testLoadPet() {
+	public void testFindPet() {
 		Collection<PetType> types = this.clinic.getPetTypes();
-		Pet p7 = this.clinic.loadPet(7);
+		Pet p7 = this.clinic.findPet(7);
 		assertTrue(p7.getName().startsWith("Samantha"));
 		assertEquals(EntityUtils.getById(types, PetType.class, 1).getId(), p7.getType().getId());
 		assertEquals("Jean", p7.getOwner().getFirstName());
-		Pet p6 = this.clinic.loadPet(6);
+		Pet p6 = this.clinic.findPet(6);
 		assertEquals("George", p6.getName());
 		assertEquals(EntityUtils.getById(types, PetType.class, 4).getId(), p6.getType().getId());
 		assertEquals("Peter", p6.getOwner().getFirstName());
@@ -147,7 +143,7 @@ public abstract class AbstractJpaClinicTests {
 
 	@Test
 	public void testInsertPet() {
-		Owner o6 = this.clinic.loadOwner(6);
+		Owner o6 = this.clinic.findOwner(6);
 		int found = o6.getPets().size();
 		Pet pet = new Pet();
 		pet.setName("bowser");
@@ -158,30 +154,30 @@ public abstract class AbstractJpaClinicTests {
 		assertEquals(found + 1, o6.getPets().size());
 		this.clinic.storeOwner(o6);
 		// assertTrue(!pet.isNew()); -- NOT TRUE FOR TOPLINK (before commit)
-		o6 = this.clinic.loadOwner(6);
+		o6 = this.clinic.findOwner(6);
 		assertEquals(found + 1, o6.getPets().size());
 	}
 
 	@Test
 	public void testUpdatePet() throws Exception {
-		Pet p7 = this.clinic.loadPet(7);
+		Pet p7 = this.clinic.findPet(7);
 		String old = p7.getName();
 		p7.setName(old + "X");
 		this.clinic.storePet(p7);
-		p7 = this.clinic.loadPet(7);
+		p7 = this.clinic.findPet(7);
 		assertEquals(old + "X", p7.getName());
 	}
 
 	@Test
 	public void testInsertVisit() {
-		Pet p7 = this.clinic.loadPet(7);
+		Pet p7 = this.clinic.findPet(7);
 		int found = p7.getVisits().size();
 		Visit visit = new Visit();
 		p7.addVisit(visit);
 		visit.setDescription("test");
 		this.clinic.storePet(p7);
 		// assertTrue(!visit.isNew()); -- NOT TRUE FOR TOPLINK (before commit)
-		p7 = this.clinic.loadPet(7);
+		p7 = this.clinic.findPet(7);
 		assertEquals(found + 1, p7.getVisits().size());
 	}
 }

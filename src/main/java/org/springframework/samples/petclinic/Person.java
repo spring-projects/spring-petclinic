@@ -1,15 +1,21 @@
 package org.springframework.samples.petclinic;
 
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+
 /**
  * Simple JavaBean domain object representing an person.
  *
  * @author Ken Krebs
  */
+@MappedSuperclass
 public class Person extends BaseEntity {
+	
+	@Column(name="first_name")
+	protected String firstName;
 
-	private String firstName;
-
-	private String lastName;
+	@Column(name="last_name")
+	protected String lastName;
 
 	public String getFirstName() {
 		return this.firstName;
