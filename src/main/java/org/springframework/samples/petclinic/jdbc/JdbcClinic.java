@@ -15,6 +15,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -42,7 +43,7 @@ import org.springframework.transaction.annotation.Transactional;
  * {@link ParameterizedBeanPropertyRowMapper} which provide automatic mapping
  * between JavaBean properties and JDBC parameters or query results.
  *
- * <p>SimpleJdbcClinic is a rewrite of the AbstractJdbcClinic which was the base
+ * <p>JdbcClinic is a rewrite of the AbstractJdbcClinic which was the base
  * class for JDBC implementations of the Clinic interface for Spring 2.0.
  *
  * @author Ken Krebs
@@ -54,11 +55,12 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @ManagedResource("petclinic:type=Clinic")
-public class SimpleJdbcClinic implements Clinic, SimpleJdbcClinicMBean {
+public class JdbcClinic implements Clinic, JdbcClinicMBean {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
-	private JdbcTemplate simpleJdbcTemplate;
+	private JdbcTemplate jdbcTemplate;
+	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
 	private SimpleJdbcInsert insertOwner;
 	private SimpleJdbcInsert insertPet;
@@ -69,7 +71,8 @@ public class SimpleJdbcClinic implements Clinic, SimpleJdbcClinicMBean {
 
 	@Autowired
 	public void init(DataSource dataSource) {
-		this.simpleJdbcTemplate = new JdbcTemplate(dataSource);
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 
 		this.insertOwner = new SimpleJdbcInsert(dataSource)
 			.withTableName("owners")
@@ -95,18 +98,18 @@ public class SimpleJdbcClinic implements Clinic, SimpleJdbcClinicMBean {
 
 			// Retrieve the list of all vets.
 			this.vets.clear();
-			this.vets.addAll(this.simpleJdbcTemplate.query(
+			this.vets.addAll(this.jdbcTemplate.query(
 					"SELECT id, first_name, last_name FROM vets ORDER BY last_name,first_name",
 					ParameterizedBeanPropertyRowMapper.newInstance(Vet.class)));
 
 			// Retrieve the list of all possible specialties.
-			final List<Specialty> specialties = this.simpleJdbcTemplate.query(
+			final List<Specialty> specialties = this.jdbcTemplate.query(
 					"SELECT id, name FROM specialties",
 					ParameterizedBeanPropertyRowMapper.newInstance(Specialty.class));
 
 			// Build each vet's list of specialties.
 			for (Vet vet : this.vets) {
-				final List<Integer> vetSpecialtiesIds = this.simpleJdbcTemplate.query(
+				final List<Integer> vetSpecialtiesIds = this.jdbcTemplate.query(
 						"SELECT specialty_id FROM vet_specialties WHERE vet_id=?",
 						new ParameterizedRowMapper<Integer>() {
 							public Integer mapRow(ResultSet rs, int row) throws SQLException {
@@ -136,7 +139,7 @@ public class SimpleJdbcClinic implements Clinic, SimpleJdbcClinicMBean {
 
 	@Transactional(readOnly = true)
 	public Collection<PetType> getPetTypes() throws DataAccessException {
-		return this.simpleJdbcTemplate.query(
+		return this.jdbcTemplate.query(
 				"SELECT id, name FROM types ORDER BY name",
 				ParameterizedBeanPropertyRowMapper.newInstance(PetType.class));
 	}
@@ -149,7 +152,7 @@ public class SimpleJdbcClinic implements Clinic, SimpleJdbcClinicMBean {
 	 */
 	@Transactional(readOnly = true)
 	public Collection<Owner> findOwners(String lastName) throws DataAccessException {
-		List<Owner> owners = this.simpleJdbcTemplate.query(
+		List<Owner> owners = this.jdbcTemplate.query(
 				"SELECT id, first_name, last_name, address, city, telephone FROM owners WHERE last_name like ?",
 				ParameterizedBeanPropertyRowMapper.newInstance(Owner.class),
 				lastName + "%");
@@ -166,7 +169,7 @@ public class SimpleJdbcClinic implements Clinic, SimpleJdbcClinicMBean {
 	public Owner findOwner(int id) throws DataAccessException {
 		Owner owner;
 		try {
-			owner = this.simpleJdbcTemplate.queryForObject(
+			owner = this.jdbcTemplate.queryForObject(
 					"SELECT id, first_name, last_name, address, city, telephone FROM owners WHERE id=?",
 					ParameterizedBeanPropertyRowMapper.newInstance(Owner.class),
 					id);
@@ -182,7 +185,7 @@ public class SimpleJdbcClinic implements Clinic, SimpleJdbcClinicMBean {
 	public Pet findPet(int id) throws DataAccessException {
 		JdbcPet pet;
 		try {
-			pet = this.simpleJdbcTemplate.queryForObject(
+			pet = this.jdbcTemplate.queryForObject(
 					"SELECT id, name, birth_date, type_id, owner_id FROM pets WHERE id=?",
 					new JdbcPetRowMapper(),
 					id);
@@ -205,7 +208,7 @@ public class SimpleJdbcClinic implements Clinic, SimpleJdbcClinicMBean {
 			owner.setId(newKey.intValue());
 		}
 		else {
-			this.simpleJdbcTemplate.update(
+			this.namedParameterJdbcTemplate.update(
 					"UPDATE owners SET first_name=:firstName, last_name=:lastName, address=:address, " +
 					"city=:city, telephone=:telephone WHERE id=:id",
 					new BeanPropertySqlParameterSource(owner));
@@ -220,7 +223,7 @@ public class SimpleJdbcClinic implements Clinic, SimpleJdbcClinicMBean {
 			pet.setId(newKey.intValue());
 		}
 		else {
-			this.simpleJdbcTemplate.update(
+			this.namedParameterJdbcTemplate.update(
 					"UPDATE pets SET name=:name, birth_date=:birth_date, type_id=:type_id, " +
 					"owner_id=:owner_id WHERE id=:id",
 					createPetParameterSource(pet));
@@ -240,7 +243,7 @@ public class SimpleJdbcClinic implements Clinic, SimpleJdbcClinicMBean {
 	}
 
 	public void deletePet(int id) throws DataAccessException {
-		this.simpleJdbcTemplate.update("DELETE FROM pets WHERE id=?", id);
+		this.jdbcTemplate.update("DELETE FROM pets WHERE id=?", id);
 	}
 
 	// END of Clinic implementation section ************************************
@@ -275,7 +278,7 @@ public class SimpleJdbcClinic implements Clinic, SimpleJdbcClinicMBean {
 	 * Loads the {@link Visit} data for the supplied {@link Pet}.
 	 */
 	private void loadVisits(JdbcPet pet) {
-		final List<Visit> visits = this.simpleJdbcTemplate.query(
+		final List<Visit> visits = this.jdbcTemplate.query(
 				"SELECT id, visit_date, description FROM visits WHERE pet_id=?",
 				new ParameterizedRowMapper<Visit>() {
 					public Visit mapRow(ResultSet rs, int row) throws SQLException {
@@ -297,7 +300,7 @@ public class SimpleJdbcClinic implements Clinic, SimpleJdbcClinicMBean {
 	 * {@link Owner}.
 	 */
 	private void loadPetsAndVisits(final Owner owner) {
-		final List<JdbcPet> pets = this.simpleJdbcTemplate.query(
+		final List<JdbcPet> pets = this.jdbcTemplate.query(
 				"SELECT id, name, birth_date, type_id, owner_id FROM pets WHERE owner_id=?",
 				new JdbcPetRowMapper(),
 				owner.getId().intValue());

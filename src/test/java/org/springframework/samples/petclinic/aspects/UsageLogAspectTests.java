@@ -5,6 +5,7 @@ import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.Clinic;
 import org.springframework.samples.petclinic.aspects.UsageLogAspect;
 import org.springframework.samples.petclinic.jpa.JpaClinicTests;
 import org.springframework.test.context.ContextConfiguration;
@@ -27,10 +28,13 @@ import static junit.framework.Assert.assertFalse;
  */
 @ContextConfiguration(locations={"classpath:spring/applicationContext-jpa.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
-public class UsageLogAspectTests extends JpaClinicTests {
+public class UsageLogAspectTests {
 
 	@Autowired
 	private UsageLogAspect usageLogAspect;
+	
+	@Autowired
+	private Clinic clinic;
 
 
 	@Test

@@ -6,14 +6,14 @@ package org.springframework.samples.petclinic.jdbc;
  * 
  * @author Rob Harrop
  * @author Juergen Hoeller
- * @see SimpleJdbcClinic
+ * @see JdbcClinic
  */
-public interface SimpleJdbcClinicMBean {
+public interface JdbcClinicMBean {
 
 	/**
 	 * Refresh the cache of Vets that the Clinic is holding.
 	 * @see org.springframework.samples.petclinic.Clinic#getVets()
-	 * @see SimpleJdbcClinic#refreshVetsCache()
+	 * @see JdbcClinic#refreshVetsCache()
 	 */
 	void refreshVetsCache();
 

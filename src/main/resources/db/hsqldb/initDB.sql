@@ -1,3 +1,12 @@
+drop table vet_specialties if exists;
+drop table vets if exists;
+drop table specialties if exists;
+drop table visits if exists;
+drop table pets if exists;
+drop table types if exists;
+drop table owners if exists;
+
+
 CREATE TABLE vets (
 	id INTEGER IDENTITY PRIMARY KEY,
 	first_name VARCHAR(30),

@@ -81,7 +81,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Juergen Hoeller
  * @author Sam Brannen
  */
-@ContextConfiguration
 public abstract class AbstractClinicTests {
 
 	@Autowired
@@ -121,8 +120,8 @@ public abstract class AbstractClinicTests {
 		assertEquals(0, owners.size());
 	}
 
-	@Test
-	public void loadOwner() {
+	@Test @Transactional
+	public void findOwner() {
 		Owner o1 = this.clinic.findOwner(1);
 		assertTrue(o1.getLastName().startsWith("Franklin"));
 		Owner o10 = this.clinic.findOwner(10);
@@ -163,7 +162,7 @@ public abstract class AbstractClinicTests {
 	}
 
 	@Test
-	public void loadPet() {
+	public void findPet() {
 		Collection<PetType> types = this.clinic.getPetTypes();
 		Pet p7 = this.clinic.findPet(7);
 		assertTrue(p7.getName().startsWith("Samantha"));
@@ -175,7 +174,7 @@ public abstract class AbstractClinicTests {
 		assertEquals("Peter", p6.getOwner().getFirstName());
 	}
 
-	@Test
+	@Test @Transactional
 	public void insertPet() {
 		Owner o6 = this.clinic.findOwner(6);
 		int found = o6.getPets().size();
@@ -204,7 +203,7 @@ public abstract class AbstractClinicTests {
 		assertEquals(old + "X", p7.getName());
 	}
 
-	@Test
+	@Test  @Transactional
 	public void insertVisit() {
 		Pet p7 = this.clinic.findPet(7);
 		int found = p7.getVisits().size();
