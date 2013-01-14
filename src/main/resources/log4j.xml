@@ -12,15 +12,15 @@
 	</appender>
 
 	<logger name="org.springframework.samples.petclinic.aspects">
-		<level value="DEBUG" />
+		<level value="info" />
 	</logger>
 	
 	<logger name="org.springframework.web">
-		<level value="DEBUG" />
+		<level value="info" />
 	</logger>
 	
 	<logger name="org.springframework.jdbc">
-		<level value="DEBUG" />
+		<level value="info" />
 	</logger>
 	
 

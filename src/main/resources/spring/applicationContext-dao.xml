@@ -53,6 +53,13 @@
 	<!-- Call monitoring aspect that monitors call count and call invocation time -->
 	<bean id="callMonitor" class="org.springframework.samples.petclinic.aspects.CallMonitoringAspect"/>	
 
+	<!--
+		Exporter that exposes the Clinic DAO and the CallMonitoringAspect via JMX,
+		based on the @ManagedResource, @ManagedAttribute, and @ManagedOperation annotations.
+	--> 
+		<context:mbean-export/> 
+	
+
 
 	<beans profile="jpa">
 		<!-- JPA EntityManagerFactory -->
@@ -94,11 +101,6 @@
 			<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
 				p:dataSource-ref="dataSource"/>
 		
-			<!--
-			Exporter that exposes the Clinic DAO and the CallMonitoringAspect via JMX,
-			based on the @ManagedResource, @ManagedAttribute, and @ManagedOperation annotations.
-		--> 
-		<context:mbean-export/> 
 	
 		<!-- PetClinic's central data access object using Spring's SimpleJdbcTemplate -->
 		<bean id="clinic" class="org.springframework.samples.petclinic.jdbc.JdbcClinic"/>
