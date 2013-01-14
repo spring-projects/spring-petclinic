@@ -11,6 +11,6 @@
 
 	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
 
-	<bean id="clinic" class="org.springframework.samples.petclinic.jpa.EntityManagerClinic" />
+	<bean id="clinic" class="org.springframework.samples.petclinic.jpa.JpaClinic" />
 
 </beans>

@@ -39,17 +39,17 @@ public class UsageLogAspectTests {
 
 	@Test
 	public void testUsageLogAspectIsInvoked() {
-		String name1 = "Schuurman";
-		String name2 = "Greenwood";
-		String name3 = "Leau";
+		String lastName1 = "Franklin";
+		String lastName2 = "Davis";
+		String lastName3 = "foo";
 
-		assertTrue(this.clinic.findOwners(name1).isEmpty());
-		assertTrue(this.clinic.findOwners(name2).isEmpty());
+		assertFalse(this.clinic.findOwners(lastName1).isEmpty());
+		assertFalse(this.clinic.findOwners(lastName2).isEmpty());
 
 		List<String> namesRequested = this.usageLogAspect.getNamesRequested();
-		assertTrue(namesRequested.contains(name1));
-		assertTrue(namesRequested.contains(name2));
-		assertFalse(namesRequested.contains(name3));
+		assertTrue(namesRequested.contains(lastName1));
+		assertTrue(namesRequested.contains(lastName2));
+		assertFalse(namesRequested.contains(lastName3));
 	}
 
 }

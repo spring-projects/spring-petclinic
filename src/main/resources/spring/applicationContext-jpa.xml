@@ -63,7 +63,10 @@
 		This aspect is defined in petclinic.jar's META-INF/aop.xml file.
 		Note that we can dependency inject this bean like any other bean.
 	-->
-	<bean class="org.springframework.samples.petclinic.aspects.UsageLogAspect" p:historySize="300"/>
+	<aop:aspectj-autoproxy>
+		<aop:include name="usageLogAspect"/>
+	</aop:aspectj-autoproxy>
+	<bean id="usageLogAspect" class="org.springframework.samples.petclinic.aspects.UsageLogAspect" p:historySize="300"/>
 
 	<!--
 		Post-processor to perform exception translation on @Repository classes (from native
@@ -76,6 +79,6 @@
 		EntityManager will be auto-injected due to @PersistenceContext.
 		PersistenceExceptions will be auto-translated due to @Repository.
 	-->
-	<bean id="clinic" class="org.springframework.samples.petclinic.jpa.EntityManagerClinic"/>
+	<bean id="clinic" class="org.springframework.samples.petclinic.jpa.JpaClinic"/>
 
 </beans>

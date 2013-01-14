@@ -29,7 +29,7 @@ import org.springframework.dao.DataAccessException;
  */
 @Repository
 @Transactional
-public class EntityManagerClinic implements Clinic {
+public class JpaClinic implements Clinic {
 
 	@PersistenceContext
 	private EntityManager em;
