@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.Clinic;
 import org.springframework.samples.petclinic.aspects.UsageLogAspect;
 import org.springframework.samples.petclinic.jpa.JpaClinicTests;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static junit.framework.Assert.assertTrue;
@@ -26,8 +27,9 @@ import static junit.framework.Assert.assertFalse;
  * @author Rod Johnson
  * @author Juergen Hoeller
  */
-@ContextConfiguration(locations={"classpath:spring/applicationContext-jpa.xml"})
+@ContextConfiguration(locations={"classpath:spring/applicationContext-dao.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
+@ActiveProfiles("jpa")
 public class UsageLogAspectTests {
 
 	@Autowired

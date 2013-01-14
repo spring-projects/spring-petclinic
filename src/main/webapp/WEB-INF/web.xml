@@ -15,7 +15,10 @@
 		<param-value>petclinic.root</param-value>
 	</context-param>
 	
-	
+	 <context-param> 
+	    <param-name>spring.profiles.active</param-name>
+	    <param-value>jdbc</param-value>
+	  </context-param>
 
 	<!--
 		Location of the Log4J config file, for initialization and refresh checks.
@@ -37,7 +40,7 @@
 	-->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:spring/applicationContext-jdbc.xml</param-value>
+		<param-value>classpath:spring/applicationContext-dao.xml</param-value>
         <!--
 		<param-value>/WEB-INF/spring/applicationContext-hibernate.xml</param-value>
 		<param-value>/WEB-INF/spring/applicationContext-jpa.xml</param-value>

@@ -21,25 +21,6 @@
 	<!-- (in this case, JDBC-related settings for the JPA EntityManager definition below) -->
 	<context:property-placeholder location="classpath:spring/jdbc.properties"/>
 
-	<!-- JPA EntityManagerFactory -->
-	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
-			p:dataSource-ref="dataSource">
-		<property name="jpaVendorAdapter">			
-			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
-					p:database="${jpa.database}" p:showSql="${jpa.showSql}"/>			
-		</property>
-		<property name="packagesToScan">
-			<list>
-				<value>org/springframework/samples/petclinic</value>
-			</list>
-		</property>
-	</bean>
-
-	<!-- Transaction manager for a single JPA EntityManagerFactory (alternative to JTA) -->
-	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
-			p:entityManagerFactory-ref="entityManagerFactory"/>
-
-
 	<!-- ========================= BUSINESS OBJECT DEFINITIONS ========================= -->
 
 	<!--
@@ -65,20 +46,62 @@
 	-->
 	<aop:aspectj-autoproxy>
 		<aop:include name="usageLogAspect"/>
+		<aop:include name="callMonitor"/>
 	</aop:aspectj-autoproxy>
 	<bean id="usageLogAspect" class="org.springframework.samples.petclinic.aspects.UsageLogAspect" p:historySize="300"/>
 
-	<!--
-		Post-processor to perform exception translation on @Repository classes (from native
-		exceptions such as JPA PersistenceExceptions to Spring's DataAccessException hierarchy).
-	-->
-	<bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+	<!-- Call monitoring aspect that monitors call count and call invocation time -->
+	<bean id="callMonitor" class="org.springframework.samples.petclinic.aspects.CallMonitoringAspect"/>	
 
-	<!--
-		Will automatically be transactional due to @Transactional.
-		EntityManager will be auto-injected due to @PersistenceContext.
-		PersistenceExceptions will be auto-translated due to @Repository.
-	-->
-	<bean id="clinic" class="org.springframework.samples.petclinic.jpa.JpaClinic"/>
 
+	<beans profile="jpa">
+		<!-- JPA EntityManagerFactory -->
+		<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+				p:dataSource-ref="dataSource">
+			<property name="jpaVendorAdapter">			
+				<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
+						p:database="${jpa.database}" p:showSql="${jpa.showSql}"/>			
+			</property>
+			<property name="packagesToScan">
+				<list>
+					<value>org/springframework/samples/petclinic</value>
+				</list>
+			</property>
+		</bean>
+	
+		<!-- Transaction manager for a single JPA EntityManagerFactory (alternative to JTA) -->
+		<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
+				p:entityManagerFactory-ref="entityManagerFactory"/>
+	
+	
+	
+		<!--
+			Post-processor to perform exception translation on @Repository classes (from native
+			exceptions such as JPA PersistenceExceptions to Spring's DataAccessException hierarchy).
+		-->
+		<bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+	
+		<!--
+			Will automatically be transactional due to @Transactional.
+			EntityManager will be auto-injected due to @PersistenceContext.
+			PersistenceExceptions will be auto-translated due to @Repository.
+		-->
+		<bean id="clinic" class="org.springframework.samples.petclinic.jpa.JpaClinic"/>
+	</beans>
+	
+	<beans profile="jdbc">
+			<!-- Transaction manager for a single JDBC DataSource (alternative to JTA) -->
+			<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+				p:dataSource-ref="dataSource"/>
+		
+			<!--
+			Exporter that exposes the Clinic DAO and the CallMonitoringAspect via JMX,
+			based on the @ManagedResource, @ManagedAttribute, and @ManagedOperation annotations.
+		--> 
+		<context:mbean-export/> 
+	
+		<!-- PetClinic's central data access object using Spring's SimpleJdbcTemplate -->
+		<bean id="clinic" class="org.springframework.samples.petclinic.jdbc.JdbcClinic"/>
+	
+	</beans>
 </beans>
