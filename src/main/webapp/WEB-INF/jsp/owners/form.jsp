@@ -10,11 +10,9 @@
 <jsp:include page="../header.jsp"/>
 
 <body>
-	<div id="header well">
+  	<div class="container" style="padding-top: 50px;">
 		<spring:url value="/resources/images/banner-graphic.png" var="banner"/>
 		<img src="${banner}" />
-	</div>
-  	<div class="container" style="padding-top: 50px;">
 		<c:choose>
 			<c:when test="${owner['new']}"><c:set var="method" value="post"/></c:when>
 			<c:otherwise><c:set var="method" value="put"/></c:otherwise>

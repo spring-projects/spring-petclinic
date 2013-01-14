@@ -92,7 +92,7 @@
 	    <table class="table-buttons">
 	      <tr>
 	        <td>
-	          <spring:url value="{ownerId}/pets/{petId}/edit" var="petUrl">
+	          <spring:url value="/owners/{ownerId}/pets/{petId}/edit" var="petUrl">
 	            <spring:param name="ownerId" value="${owner.id}"/>
 	            <spring:param name="petId" value="${pet.id}"/>
 	          </spring:url>
@@ -100,7 +100,7 @@
 	        </td>
 	        <td></td>
 	        <td>
-	          <spring:url value="{ownerId}/pets/{petId}/visits/new" var="visitUrl">
+	          <spring:url value="/owners/{ownerId}/pets/{petId}/visits/new" var="visitUrl">
 	            <spring:param name="ownerId" value="${owner.id}"/>
 	            <spring:param name="petId" value="${pet.id}"/>
 	          </spring:url>
@@ -108,7 +108,7 @@
 	        </td>
 	        <td></td>
 	        <td>
-	          <spring:url value="{ownerId}/pets/{petId}/visits.atom" var="feedUrl">
+	          <spring:url value="/owners/{ownerId}/pets/{petId}/visits.atom" var="feedUrl">
 	            <spring:param name="ownerId" value="${owner.id}"/>
 	            <spring:param name="petId" value="${pet.id}"/>
 	          </spring:url>

@@ -15,7 +15,7 @@
 
 		<h2>Veterinarians</h2>
 		
-			<table>
+			<table class="table table-stripped" style="width:600px;">
 			  <thead>
 			  	<tr>
 				    <th>Name</th>
@@ -44,8 +44,8 @@
 			  </tr>
 			</table>
 	
+			<jsp:include page="footer.jsp"/>
 	  	</div>
-		<jsp:include page="footer.jsp"/>
 	</body>
 
 </html>
