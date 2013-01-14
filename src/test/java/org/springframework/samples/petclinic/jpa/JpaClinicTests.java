@@ -23,6 +23,7 @@ import org.springframework.samples.petclinic.Visit;
 import org.springframework.samples.petclinic.util.EntityUtils;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
@@ -65,7 +66,7 @@ public class JpaClinicTests {
 	}
 
 
-	@Test
+	@Test @Transactional
 	public void testGetVets() {
 		Collection<Vet> vets = this.clinic.getVets();
 		
@@ -141,7 +142,7 @@ public class JpaClinicTests {
 		assertEquals("Peter", p6.getOwner().getFirstName());
 	}
 
-	@Test
+	@Test  @Transactional
 	public void testInsertPet() {
 		Owner o6 = this.clinic.findOwner(6);
 		int found = o6.getPets().size();
@@ -168,7 +169,7 @@ public class JpaClinicTests {
 		assertEquals(old + "X", p7.getName());
 	}
 
-	@Test
+	@Test  @Transactional
 	public void testInsertVisit() {
 		Pet p7 = this.clinic.findPet(7);
 		int found = p7.getVisits().size();
