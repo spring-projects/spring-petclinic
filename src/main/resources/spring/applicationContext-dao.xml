@@ -3,13 +3,14 @@
 	Application context definition for PetClinic on JPA.
 -->
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xmlns:p="http://www.springframework.org/schema/p" xmlns:aop="http://www.springframework.org/schema/aop"
-		xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
-		xsi:schemaLocation="
-			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
-			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<!-- ========================= RESOURCE DEFINITIONS ========================= -->
 
@@ -88,12 +89,6 @@
 		-->
 		<bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
 	
-		<!--
-			Will automatically be transactional due to @Transactional.
-			EntityManager will be auto-injected due to @PersistenceContext.
-			PersistenceExceptions will be auto-translated due to @Repository.
-		-->
-		<bean id="clinic" class="org.springframework.samples.petclinic.jpa.JpaClinic"/>
 	</beans>
 	
 	<beans profile="jdbc">
@@ -103,7 +98,22 @@
 		
 	
 		<!-- PetClinic's central data access object using Spring's SimpleJdbcTemplate -->
-		<bean id="clinic" class="org.springframework.samples.petclinic.jdbc.JdbcClinic"/>
+		<bean id="clinic" class="org.springframework.samples.petclinic.jdbc.JdbcClinicImpl"/>
+	
+	</beans>
+	
+	<beans profile="plain-jpa">
+		<!--
+			Will automatically be transactional due to @Transactional.
+			EntityManager will be auto-injected due to @PersistenceContext.
+			PersistenceExceptions will be auto-translated due to @Repository.
+		-->
+		<bean id="clinic" class="org.springframework.samples.petclinic.jpa.JpaClinicImpl"/>
+	
+	</beans>
+	
+	<beans profile="spring-data-jpa">
+		<jpa:repositories base-package="org.springframework.samples.petclinic.jpa"/>
 	
 	</beans>
 </beans>

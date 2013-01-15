@@ -43,7 +43,7 @@ import org.springframework.transaction.annotation.Transactional;
  * {@link ParameterizedBeanPropertyRowMapper} which provide automatic mapping
  * between JavaBean properties and JDBC parameters or query results.
  *
- * <p>JdbcClinic is a rewrite of the AbstractJdbcClinic which was the base
+ * <p>JdbcClinicImpl is a rewrite of the AbstractJdbcClinic which was the base
  * class for JDBC implementations of the Clinic interface for Spring 2.0.
  *
  * @author Ken Krebs
@@ -55,7 +55,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @ManagedResource("petclinic:type=Clinic")
-public class JdbcClinic implements Clinic, JdbcClinicMBean {
+public class JdbcClinicImpl implements Clinic, JdbcClinicImplMBean {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 

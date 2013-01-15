@@ -118,6 +118,15 @@
 			<version>${hibernate.version}</version>
 		</dependency>
 		
+		<!-- ********************************************************************** 
+			 ** 				SPRING DATA			 							 ** 
+			 ********************************************************************** -->
+		
+		<dependency>
+ 			<groupId>org.springframework.data</groupId>
+ 			<artifactId>spring-data-jpa</artifactId>
+ 			<version>1.1.0.RELEASE</version>
+		</dependency> 
 
 		<!-- Servlet -->
 		<dependency>

@@ -7,7 +7,7 @@ import org.springframework.samples.petclinic.Pet;
  * are only relevant for a JDBC implmentation of the Clinic.
  *
  * @author Juergen Hoeller
- * @see JdbcClinic
+ * @see JdbcClinicImpl
  */
 class JdbcPet extends Pet {
 
