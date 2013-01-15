@@ -8,7 +8,6 @@
 <jsp:include page="../header.jsp"/>
 
 <body>
-
 	<div class="container">
 		<spring:url value="/resources/images/banner-graphic.png" var="banner"/>
 		<img src="${banner}" />
@@ -16,9 +15,9 @@
 		<h2>Find Owners</h2>
 		
 		<spring:url value="/owners.html" var="formUrl"/>
-		<form:form modelAttribute="owner" action="${fn:escapeXml(formUrl)}" method="get" class="form-horizontal" style="width:600px;">
+		<form:form modelAttribute="owner" action="${fn:escapeXml(formUrl)}" method="get" class="form-horizontal" id="search-owner-form">
 					<fieldset>
-						<div class="controls">
+						<div class="control-group" id="lastName">
 							<label class="control-label">Last name </label>
 							<form:input path="lastName" size="30" maxlength="80"/>
 							<span class="help-inline"><form:errors path="*" /></span>

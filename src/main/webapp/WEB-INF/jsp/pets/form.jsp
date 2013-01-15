@@ -22,7 +22,7 @@
 		
 		<b>Owner:</b> ${pet.owner.firstName} ${pet.owner.lastName}
 		<br/>
-		<form:form modelAttribute="pet" method="${method}">
+		<form:form modelAttribute="pet" method="${method}" class="form-horizontal">
 			<fieldset>
 					<div class="control-group" id="name">
 						<label class="control-label">Name </label>
@@ -40,7 +40,7 @@
 					</div>
 					<div class="control-group" id="type">
 						<label class="control-label">Type </label>
-							<form:select path="type" items="${types}"/>
+						<form:select path="type" items="${types}"/>
 					</div>
 					<div class="form-actions">
 						<c:choose>
@@ -59,8 +59,8 @@
 			    <p class="submit"><input type="submit" value="Delete Pet"/></p>
 			  </form:form>
 			</c:if>    
+			<jsp:include page="../footer.jsp"/>
   	</div>
-	<jsp:include page="../footer.jsp"/>
 </body>
 
 </html>
