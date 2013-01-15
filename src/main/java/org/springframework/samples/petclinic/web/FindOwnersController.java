@@ -38,10 +38,10 @@ public class FindOwnersController {
 		dataBinder.setDisallowedFields("id");
 	}
 
-	@RequestMapping(value = "/owners/search", method = RequestMethod.GET)
+	@RequestMapping(value = "/owners/find", method = RequestMethod.GET)
 	public String setupForm(Model model) {
 		model.addAttribute("owner", new Owner());
-		return "owners/search";
+		return "owners/findOwners";
 	}
 
 	@RequestMapping(value = "/owners", method = RequestMethod.GET)
@@ -57,12 +57,12 @@ public class FindOwnersController {
 		if (results.size() < 1) {
 			// no owners found
 			result.rejectValue("lastName", "notFound", "not found");
-			return "owners/search";
+			return "owners/findOwners";
 		}
 		if (results.size() > 1) {
 			// multiple owners found
 			model.addAttribute("selections", results);
-			return "owners/list";
+			return "owners/ownersList";
 		}
 		else {
 			// 1 owner found

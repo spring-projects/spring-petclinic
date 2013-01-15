@@ -50,14 +50,14 @@ public class AddVisitController {
 		Visit visit = new Visit();
 		pet.addVisit(visit);
 		model.addAttribute("visit", visit);
-		return "pets/visitForm";
+		return "pets/createOrUpdateVisitForm";
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String processSubmit(@ModelAttribute("visit") Visit visit, BindingResult result, SessionStatus status) {
 		new VisitValidator().validate(visit, result);
 		if (result.hasErrors()) {
-			return "pets/visitForm";
+			return "pets/createOrUpdateVisitForm";
 		}
 		else {
 			this.clinic.storeVisit(visit);

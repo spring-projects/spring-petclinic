@@ -18,7 +18,7 @@
 		
 		<form:form modelAttribute="visit">
 		  <b>Pet:</b>
-		  <table width="333">
+		  <table  class="table table-striped">
 		    <thead>
 		    	<tr>
 			      <th>Name</th>
@@ -35,7 +35,7 @@
 		    </tr>
 		  </table>
 		
-		  <table width="333">
+		  <table class="table">
 		    <tr>
 		      <th>
 		        Date:

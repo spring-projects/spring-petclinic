@@ -40,8 +40,8 @@
                     <bean class="org.springframework.web.accept.PathExtensionContentNegotiationStrategy">
                         <constructor-arg>
                             <map>
-				 				<entry key="xml" value="#{vets.contentType}"/>
-								<entry key="atom" value="#{visits.contentType}"/>
+				 				<entry key="xml" value="#{vetsList.contentType}"/>
+								<entry key="atom" value="#{visitsList.contentType}"/>
                            </map>
                         </constructor-arg>
                     </bean>
@@ -121,9 +121,9 @@
 	
 	<!-- 	- The AtomView rendering a Atom feed of the visits  -->
 	 
-	<bean id="visits" class="org.springframework.samples.petclinic.web.VisitsAtomView"/>
+	<bean id="visitsList" class="org.springframework.samples.petclinic.web.VisitsAtomView"/>
 
-	<bean id="vets" class="org.springframework.web.servlet.view.xml.MarshallingView">
+	<bean id="vetsList" class="org.springframework.web.servlet.view.xml.MarshallingView">
 		<property name="contentType" value="application/vnd.springsource.samples.petclinic+xml"/>
 		<property name="marshaller" ref="marshaller"/>
 	</bean>
