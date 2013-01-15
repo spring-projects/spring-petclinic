@@ -15,8 +15,8 @@
 
 		<h2>Find Owners</h2>
 		
-		<spring:url value="/owners" var="formUrl"/>
-		<form:form modelAttribute="owner" action="${fn:escapeXml(formUrl)}" method="get" class="form-horizontal">
+		<spring:url value="/owners.html" var="formUrl"/>
+		<form:form modelAttribute="owner" action="${fn:escapeXml(formUrl)}" method="get" class="form-horizontal" style="width:600px;">
 					<fieldset>
 						<div class="controls">
 							<label class="control-label">Last name </label>

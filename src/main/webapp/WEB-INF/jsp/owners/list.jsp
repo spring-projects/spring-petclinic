@@ -29,7 +29,7 @@
 		  <c:forEach var="owner" items="${selections}">
 		    <tr>
 		      <td>
-		          <spring:url value="owners/{ownerId}" var="ownerUrl">
+		          <spring:url value="owners/{ownerId}.html" var="ownerUrl">
 		              <spring:param name="ownerId" value="${owner.id}"/>
 		          </spring:url>
 		          <a href="${fn:escapeXml(ownerUrl)}">${owner.firstName} ${owner.lastName}</a>

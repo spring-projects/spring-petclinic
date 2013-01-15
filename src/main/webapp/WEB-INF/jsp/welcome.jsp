@@ -14,8 +14,8 @@
 		<h2><fmt:message key="welcome"/></h2>
 		
 		<ul class="unstyled">
-		  <li><a href="<spring:url value="/owners/search" htmlEscape="true" />">Find owner</a></li>
-		  <li><a href="<spring:url value="/vets" htmlEscape="true" />">Display all veterinarians</a></li>
+		  <li><a href="<spring:url value="/owners/search.html" htmlEscape="true" />">Find owner</a></li>
+		  <li><a href="<spring:url value="/vets.html" htmlEscape="true" />">Display all veterinarians</a></li>
 		  <li><a href="<spring:url value="/resources/html/tutorial.html" htmlEscape="true" />">Tutorial</a></li>
 		</ul>
 		
