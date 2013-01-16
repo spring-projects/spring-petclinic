@@ -1,17 +1,17 @@
 
 package org.springframework.samples.petclinic.web;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.Clinic;
 import org.springframework.samples.petclinic.Pet;
 import org.springframework.samples.petclinic.Visit;
-import org.springframework.samples.petclinic.validation.VisitValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,15 +27,14 @@ import org.springframework.web.bind.support.SessionStatus;
  * @author Arjen Poutsma
  */
 @Controller
-@RequestMapping("/owners/*/pets/{petId}/visits/new")
 @SessionAttributes("visit")
-public class AddVisitController {
+public class VisitController {
 
 	private final Clinic clinic;
 
 
 	@Autowired
-	public AddVisitController(Clinic clinic) {
+	public VisitController(Clinic clinic) {
 		this.clinic = clinic;
 	}
 
@@ -44,7 +43,7 @@ public class AddVisitController {
 		dataBinder.setDisallowedFields("id");
 	}
 
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value="/owners/*/pets/{petId}/visits/new", method = RequestMethod.GET)
 	public String setupForm(@PathVariable("petId") int petId, Model model) {
 		Pet pet = this.clinic.findPet(petId);
 		Visit visit = new Visit();
@@ -53,9 +52,8 @@ public class AddVisitController {
 		return "pets/createOrUpdateVisitForm";
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
-	public String processSubmit(@ModelAttribute("visit") Visit visit, BindingResult result, SessionStatus status) {
-		new VisitValidator().validate(visit, result);
+	@RequestMapping(value="/owners/*/pets/{petId}/visits/new", method = RequestMethod.POST)
+	public String processSubmit(@Valid Visit visit, BindingResult result, SessionStatus status) {
 		if (result.hasErrors()) {
 			return "pets/createOrUpdateVisitForm";
 		}

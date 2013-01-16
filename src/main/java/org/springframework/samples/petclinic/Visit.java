@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * Simple JavaBean domain object representing a visit.
@@ -21,6 +23,7 @@ public class Visit extends BaseEntity {
 	private Date date;
 
 	/** Holds value of property description. */
+	@NotNull @Size(min = 1)
 	@Column(name="description")
 	private String description;
 
