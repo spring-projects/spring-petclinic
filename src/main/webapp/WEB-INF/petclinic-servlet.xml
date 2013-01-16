@@ -75,8 +75,6 @@
 	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource"
 			p:basename="messages/messages"/>
 	
-
-	
 	<!--
 		Processes annotated handler methods, applying PetClinic-specific request parameter binding. 
 	-->
@@ -93,32 +91,10 @@
 		- here with all other types of exceptions.
 	-->
 	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-		<property name="exceptionMappings">
-			<props>
-				<prop key="org.springframework.web.servlet.PageNotFound">pageNotFound</prop>
-				<prop key="org.springframework.dao.DataAccessException">dataAccessFailure</prop>
-				<prop key="org.springframework.transaction.TransactionException">dataAccessFailure</prop>
-			</props>
-		</property>
-		<property name="defaultErrorView" value="uncaughtException"/>
+		<property name="defaultErrorView" value="exception"/>
 	</bean>
 
-	<!--
-		- This view resolver delegates to the InternalResourceViewResolver and BeanNameViewResolver,
-		- and uses the requested media type to pick a matching view. When the media type is 'text/html',
-		- it will delegate to the InternalResourceViewResolver's JstlView, otherwise to the
-		- BeanNameViewResolver. Note the use of the expression language to refer to the contentType
-		- property of the vets view bean, setting it to 'application/vnd.springsource.samples.petclinic+xml'.
-	-->
-	
-	
 
-	
-
-	
-
-
-	
 	<!-- 	- The AtomView rendering a Atom feed of the visits  -->
 	 
 	<bean id="visitsList" class="org.springframework.samples.petclinic.web.VisitsAtomView"/>
@@ -131,7 +107,5 @@
 	<oxm:jaxb2-marshaller id="marshaller">
 		<oxm:class-to-be-bound name="org.springframework.samples.petclinic.Vets"/>
 	</oxm:jaxb2-marshaller>
-
-
 
 </beans>
