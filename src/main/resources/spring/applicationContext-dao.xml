@@ -70,6 +70,7 @@
 				<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
 						p:database="${jpa.database}" p:showSql="${jpa.showSql}"/>			
 			</property>
+			<property name="persistenceUnitName" value="petclinic" />
 			<property name="packagesToScan">
 				<list>
 					<value>org/springframework/samples/petclinic</value>

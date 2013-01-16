@@ -13,6 +13,7 @@
 		<log4j.version>1.2.17</log4j.version>
 		<hibernate.version>4.1.4.Final</hibernate.version>
 		<aspectj.version>1.7.1</aspectj.version>
+		<hibernate.validator.version>4.2.0.Final</hibernate.validator.version>
 	</properties>
 	<dependencies> 
 
@@ -117,6 +118,12 @@
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>${hibernate.version}</version>
 		</dependency>
+		
+		<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-validator</artifactId>
+				<version>${hibernate.validator.version}</version>
+			</dependency>
 		
 		<!-- ********************************************************************** 
 			 ** 				SPRING DATA			 							 ** 

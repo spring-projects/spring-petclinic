@@ -3,6 +3,8 @@ package org.springframework.samples.petclinic.web;
 
 import java.util.Collection;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.Clinic;
 import org.springframework.samples.petclinic.Owner;
@@ -11,25 +13,29 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 /**
- * JavaBean Form controller that is used to search for <code>Owner</code>s by
- * last name.
+ * JavaBean form controller that is used to handle <code>Owner</code>s .
  * 
  * @author Juergen Hoeller
  * @author Ken Krebs
  * @author Arjen Poutsma
+ * @author Michael Isvy
  */
 @Controller
-public class FindOwnersController {
+@SessionAttributes(types = Owner.class)
+public class OwnerController {
 
 	private final Clinic clinic;
 
 
 	@Autowired
-	public FindOwnersController(Clinic clinic) {
+	public OwnerController(Clinic clinic) {
 		this.clinic = clinic;
 	}
 
@@ -38,14 +44,33 @@ public class FindOwnersController {
 		dataBinder.setDisallowedFields("id");
 	}
 
+	@RequestMapping(value="/owners/new", method = RequestMethod.GET)
+	public String initCreationForm(Model model) {
+		Owner owner = new Owner();
+		model.addAttribute(owner);
+		return "owners/createOrUpdateOwnerForm";
+	}
+
+	@RequestMapping(value="/owners/new", method = RequestMethod.POST)
+	public String processCreationForm(@Valid Owner owner, BindingResult result, SessionStatus status) {
+		if (result.hasErrors()) {
+			return "owners/createOrUpdateOwnerForm";
+		}
+		else {
+			this.clinic.storeOwner(owner);
+			status.setComplete();
+			return "redirect:/owners/" + owner.getId();
+		}
+	}
+	
 	@RequestMapping(value = "/owners/find", method = RequestMethod.GET)
-	public String setupForm(Model model) {
+	public String initFindForm(Model model) {
 		model.addAttribute("owner", new Owner());
 		return "owners/findOwners";
 	}
 
 	@RequestMapping(value = "/owners", method = RequestMethod.GET)
-	public String processSubmit(Owner owner, BindingResult result, Model model) {
+	public String processFindForm(Owner owner, BindingResult result, Model model) {
 
 		// allow parameterless GET request for /owners to return all records
 		if (owner.getLastName() == null) {
@@ -67,6 +92,25 @@ public class FindOwnersController {
 		else {
 			// 1 owner found
 			owner = results.iterator().next();
+			return "redirect:/owners/" + owner.getId();
+		}
+	}
+	
+	@RequestMapping(value="/owners/{ownerId}/edit", method = RequestMethod.GET)
+	public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
+		Owner owner = this.clinic.findOwner(ownerId);
+		model.addAttribute(owner);
+		return "owners/createOrUpdateOwnerForm";
+	}
+
+	@RequestMapping(value="/owners/{ownerId}/edit", method = RequestMethod.PUT)
+	public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result, SessionStatus status) {
+		if (result.hasErrors()) {
+			return "owners/createOrUpdateOwnerForm";
+		}
+		else {
+			this.clinic.storeOwner(owner);
+			status.setComplete();
 			return "redirect:/owners/" + owner.getId();
 		}
 	}
