@@ -1,16 +1,8 @@
 
 package org.springframework.samples.petclinic.jpa;
 
-import static junit.framework.Assert.fail;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.AbstractClinicTests;
-import org.springframework.samples.petclinic.Clinic;
+import org.springframework.samples.petclinic.AbstractOwnerRepositoryTests;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -37,23 +29,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations={"classpath:spring/applicationContext-dao.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles({"jpa","plain-jpa"})
-public class JpaClinicImplTests extends AbstractClinicTests {
-	
-	@PersistenceContext
-	private EntityManager entityManager;
-
-	@Autowired
-	private Clinic clinic;
-
-
-	@Test
-	public void testBogusJpql() {
-		try {
-			this.entityManager.createQuery("SELECT RUBBISH FROM RUBBISH HEAP").executeUpdate();
-			fail("exception was expected because of incorrect SQL statement");
-		} catch (Exception e) {
-			// expected
-		}
-	}
+public class JpaOwnerRepositoryImplTests extends AbstractOwnerRepositoryTests {
 	
 }

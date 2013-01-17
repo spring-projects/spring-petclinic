@@ -96,10 +96,16 @@
 			<!-- Transaction manager for a single JDBC DataSource (alternative to JTA) -->
 			<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
 				p:dataSource-ref="dataSource"/>
-		
-	
-		<!-- PetClinic's central data access object using Spring's SimpleJdbcTemplate -->
-		<bean id="clinic" class="org.springframework.samples.petclinic.jdbc.JdbcClinicImpl"/>
+
+			<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+				<constructor-arg ref="dataSource" />			
+			</bean>
+			
+			<bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+				<constructor-arg ref="dataSource" />			
+			</bean>
+			
+			<context:component-scan base-package="org.springframework.samples.petclinic.repository.jdbc"/>
 	
 	</beans>
 	
@@ -109,12 +115,12 @@
 			EntityManager will be auto-injected due to @PersistenceContext.
 			PersistenceExceptions will be auto-translated due to @Repository.
 		-->
-		<bean id="clinic" class="org.springframework.samples.petclinic.jpa.JpaClinicImpl"/>
+		<context:component-scan base-package="org.springframework.samples.petclinic.repository.jpa"/>
 	
 	</beans>
 	
 	<beans profile="spring-data-jpa">
-		<jpa:repositories base-package="org.springframework.samples.petclinic.jpa"/>
+		<jpa:repositories base-package="org.springframework.samples.petclinic.repository.jpa"/>
 	
 	</beans>
 </beans>

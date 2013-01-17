@@ -6,8 +6,8 @@ import java.util.Collection;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.Clinic;
 import org.springframework.samples.petclinic.Owner;
+import org.springframework.samples.petclinic.repository.OwnerRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * JavaBean form controller that is used to handle <code>Owner</code>s .
@@ -31,12 +32,12 @@ import org.springframework.web.bind.support.SessionStatus;
 @SessionAttributes(types = Owner.class)
 public class OwnerController {
 
-	private final Clinic clinic;
+	private final OwnerRepository ownerRepository;
 
 
 	@Autowired
-	public OwnerController(Clinic clinic) {
-		this.clinic = clinic;
+	public OwnerController(OwnerRepository ownerRepository) {
+		this.ownerRepository = ownerRepository;
 	}
 
 	@InitBinder
@@ -57,7 +58,7 @@ public class OwnerController {
 			return "owners/createOrUpdateOwnerForm";
 		}
 		else {
-			this.clinic.storeOwner(owner);
+			this.ownerRepository.save(owner);
 			status.setComplete();
 			return "redirect:/owners/" + owner.getId();
 		}
@@ -78,7 +79,7 @@ public class OwnerController {
 		}
 
 		// find owners by last name
-		Collection<Owner> results = this.clinic.findOwners(owner.getLastName());
+		Collection<Owner> results = this.ownerRepository.findByLastName(owner.getLastName());
 		if (results.size() < 1) {
 			// no owners found
 			result.rejectValue("lastName", "notFound", "not found");
@@ -98,7 +99,7 @@ public class OwnerController {
 	
 	@RequestMapping(value="/owners/{ownerId}/edit", method = RequestMethod.GET)
 	public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
-		Owner owner = this.clinic.findOwner(ownerId);
+		Owner owner = this.ownerRepository.findById(ownerId);
 		model.addAttribute(owner);
 		return "owners/createOrUpdateOwnerForm";
 	}
@@ -109,10 +110,23 @@ public class OwnerController {
 			return "owners/createOrUpdateOwnerForm";
 		}
 		else {
-			this.clinic.storeOwner(owner);
+			this.ownerRepository.save(owner);
 			status.setComplete();
 			return "redirect:/owners/" + owner.getId();
 		}
+	}
+	
+	/**
+	 * Custom handler for displaying an owner.
+	 *
+	 * @param ownerId the ID of the owner to display
+	 * @return a ModelMap with the model attributes for the view
+	 */
+	@RequestMapping("/owners/{ownerId}")
+	public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
+		ModelAndView mav = new ModelAndView("owners/ownerDetails");
+		mav.addObject(this.ownerRepository.findById(ownerId));
+		return mav;
 	}
 
 }

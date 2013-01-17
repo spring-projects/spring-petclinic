@@ -2,8 +2,8 @@ package org.springframework.samples.petclinic.web;
 
 import java.beans.PropertyEditorSupport;
 
-import org.springframework.samples.petclinic.Clinic;
 import org.springframework.samples.petclinic.PetType;
+import org.springframework.samples.petclinic.service.ClinicService;
 
 /**
  * @author Mark Fisher
@@ -11,16 +11,16 @@ import org.springframework.samples.petclinic.PetType;
  */
 public class PetTypeEditor extends PropertyEditorSupport {
 
-	private final Clinic clinic;
+	private final ClinicService clinicService;
 
 
-	public PetTypeEditor(Clinic clinic) {
-		this.clinic = clinic;
+	public PetTypeEditor(ClinicService clinicService) {
+		this.clinicService = clinicService;
 	}
 
 	@Override
 	public void setAsText(String text) throws IllegalArgumentException {
-		for (PetType type : this.clinic.getPetTypes()) {
+		for (PetType type : this.clinicService.getPetTypes()) {
 			if (type.getName().equals(text)) {
 				setValue(type);
 			}

@@ -5,5 +5,5 @@
  * of PetClinic's persistence layer.
  *
  */
-package org.springframework.samples.petclinic.jpa;
+package org.springframework.samples.petclinic.repository.jpa;
 

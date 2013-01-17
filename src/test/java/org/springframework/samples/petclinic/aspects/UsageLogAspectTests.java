@@ -1,18 +1,17 @@
 package org.springframework.samples.petclinic.aspects;
 
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.Clinic;
-import org.springframework.samples.petclinic.aspects.UsageLogAspect;
-import org.springframework.samples.petclinic.jpa.JpaClinicImplTests;
+import org.springframework.samples.petclinic.repository.OwnerRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import static junit.framework.Assert.assertTrue;
-import static junit.framework.Assert.assertFalse;
 
 /**
  * <p>
@@ -36,7 +35,7 @@ public class UsageLogAspectTests {
 	private UsageLogAspect usageLogAspect;
 	
 	@Autowired
-	private Clinic clinic;
+	private OwnerRepository ownerRepository;
 
 
 	@Test
@@ -45,8 +44,8 @@ public class UsageLogAspectTests {
 		String lastName2 = "Davis";
 		String lastName3 = "foo";
 
-		assertFalse(this.clinic.findOwners(lastName1).isEmpty());
-		assertFalse(this.clinic.findOwners(lastName2).isEmpty());
+		assertFalse(this.ownerRepository.findByLastName(lastName1).isEmpty());
+		assertFalse(this.ownerRepository.findByLastName(lastName2).isEmpty());
 
 		List<String> namesRequested = this.usageLogAspect.getNamesRequested();
 		assertTrue(namesRequested.contains(lastName1));

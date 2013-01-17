@@ -9,7 +9,7 @@ import org.aspectj.lang.annotation.Before;
 
 /**
  * Sample AspectJ annotation-style aspect that saves
- * every owner name requested to the clinic.
+ * every owner name requested to the petRepository.
  *
  * @author Rod Johnson
  * @author Juergen Hoeller

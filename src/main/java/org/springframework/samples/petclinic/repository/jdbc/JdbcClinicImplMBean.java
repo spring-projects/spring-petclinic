@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.jdbc;
+package org.springframework.samples.petclinic.repository.jdbc;
 
 /**
  * Interface that defines a cache refresh operation.
@@ -11,8 +11,8 @@ package org.springframework.samples.petclinic.jdbc;
 public interface JdbcClinicImplMBean {
 
 	/**
-	 * Refresh the cache of Vets that the Clinic is holding.
-	 * @see org.springframework.samples.petclinic.Clinic#getVets()
+	 * Refresh the cache of Vets that the ClinicService is holding.
+	 * @see org.springframework.samples.petclinic.service.ClinicService#getVets()
 	 * @see JdbcClinicImpl#refreshVetsCache()
 	 */
 	void refreshVetsCache();

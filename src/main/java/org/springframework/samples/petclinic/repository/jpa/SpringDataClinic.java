@@ -1,22 +1,22 @@
-package org.springframework.samples.petclinic.jpa;
+package org.springframework.samples.petclinic.repository.jpa;
 
 import java.util.Collection;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
-import org.springframework.samples.petclinic.Clinic;
 import org.springframework.samples.petclinic.Owner;
 import org.springframework.samples.petclinic.Pet;
 import org.springframework.samples.petclinic.PetType;
 import org.springframework.samples.petclinic.Vet;
 import org.springframework.samples.petclinic.Visit;
+import org.springframework.samples.petclinic.service.ClinicService;
 
 /**
  *
  * @author Michael Isvy
  * @since 15.1.2013
  */
-public interface SpringDataClinic extends Clinic, Repository {
+public interface SpringDataClinic extends ClinicService, Repository {
 
 
 
