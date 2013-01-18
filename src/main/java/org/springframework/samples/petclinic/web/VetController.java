@@ -44,7 +44,7 @@ public class VetController {
 		Vets vets = new Vets();
 		vets.getVetList().addAll(this.clinicService.findVets());
 		model.addAttribute("vets", vets);
-		return "vetsList";
+		return "vets/vetsList";
 	}
 
 

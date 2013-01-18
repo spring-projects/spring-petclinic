@@ -6,14 +6,11 @@
 
 <html lang="en">
 
-<jsp:include page="../header.jsp"/>
+<jsp:include page="../fragments/headTag.jsp"/>
 
 <body>
-
   	<div class="container">
-
-		<spring:url value="/resources/images/banner-graphic.png" var="banner"/>
-		<img src="${banner}" />
+		<jsp:include page="../fragments/bodyHeader.jsp"/>
 		<h2><c:if test="${visit['new']}">New </c:if>Visit:</h2>
 		
 		<form:form modelAttribute="visit">
@@ -65,7 +62,7 @@
 		
 		<br/>
 		<b>Previous Visits:</b>
-		<table width="333">
+		<table style="width: 333px;">
 		  <tr>
 		    <th>Date</th>
 		    <th>Description</th>
@@ -81,7 +78,7 @@
 		</table>
 
   	</div>
-	<jsp:include page="../footer.jsp"/>
+	<jsp:include page="../fragments/footer.jsp"/>
 </body>
 
 </html>

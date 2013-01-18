@@ -5,12 +5,11 @@
 
 <html lang="en">
 
-<jsp:include page="../header.jsp"/>
+<jsp:include page="../fragments/headTag.jsp"/>
 
 <body>
-	<div class="container">
-		<spring:url value="/resources/images/banner-graphic.png" var="banner"/>
-		<img src="${banner}" />
+  	<div class="container">
+		<jsp:include page="../fragments/bodyHeader.jsp"/>
 
 		<h2>Find Owners</h2>
 		
@@ -31,7 +30,7 @@
 		<br/>
 		<a href='<spring:url value="/owners/new" htmlEscape="true"/>'>Add Owner</a>
 		
-		<jsp:include page="../footer.jsp"/>
+		<jsp:include page="../fragments/footer.jsp"/>
 
   	</div>
 </body>

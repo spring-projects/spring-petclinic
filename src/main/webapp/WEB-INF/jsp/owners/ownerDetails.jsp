@@ -5,13 +5,11 @@
 
 <html lang="en">
 
-<jsp:include page="../header.jsp"/>
+<jsp:include page="../fragments/headTag.jsp"/>
 
 <body>
-
-	<div class="container">
-		<spring:url value="/resources/images/banner-graphic.png" var="banner"/>
-		<img src="${banner}" />
+  	<div class="container">
+		<jsp:include page="../fragments/bodyHeader.jsp"/>
   
 		<h2>Owner Information</h2>
 	
@@ -55,24 +53,18 @@
 	  <c:forEach var="pet" items="${owner.pets}">
 	    <table class="table" style="width:600px;">
 	      <tr>
-	        <td valign="top">
-	          <table>
-	            <tr>
-	              <th>Name</th>
-	              <td><b>${pet.name}</b></td>
-	            </tr>
-	            <tr>
-	              <th>Birth Date</th>
-	              <td><fmt:formatDate value="${pet.birthDate}" pattern="yyyy-MM-dd"/></td>
-	            </tr>
-	            <tr>
-	              <th>Type</th>
-	              <td>${pet.type.name}</td>
-	            </tr>
-	          </table>
+	        <td valign="top" style="width: 120px;">
+	            <dl class="dl-horizontal">
+			    	<dt>Name</dt>
+			    	<dd>${pet.name}</dd>
+			    	<dt>Birth Date</dt>
+			    	<dd><fmt:formatDate value="${pet.birthDate}" pattern="yyyy-MM-dd"/></dd>
+			    	<dt>Type</dt>
+			    	<dd>${pet.type.name}</dd>
+			    </dl>
 	        </td>
 	        <td valign="top">
-	          <table>
+	          <table class="table-condensed">
 	            <thead>
 	            	<tr>
 		              <th>Visit Date</th>
@@ -118,7 +110,7 @@
 	    </table>
 	  </c:forEach>
 	  
-	  <jsp:include page="../footer.jsp"/>
+	  <jsp:include page="../fragments/footer.jsp"/>
   
   	</div>
 

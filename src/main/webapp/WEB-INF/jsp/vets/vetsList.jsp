@@ -6,12 +6,11 @@
 <html lang="en">
 
 
+<jsp:include page="../fragments/headTag.jsp"/>
+
 <body>
-	<div class="container">
-		<jsp:include page="header.jsp"/>
-		
-		<spring:url value="/resources/images/banner-graphic.png" var="banner"/>
-		<img src="${banner}" />
+  	<div class="container">
+		<jsp:include page="../fragments/bodyHeader.jsp"/>
 
 		<h2>Veterinarians</h2>
 		
@@ -44,7 +43,7 @@
 			  </tr>
 			</table>
 	
-			<jsp:include page="footer.jsp"/>
+			<jsp:include page="../fragments/footer.jsp"/>
 	  	</div>
 	</body>
 

@@ -1,19 +1,18 @@
 <html lang="en">
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-<jsp:include page="header.jsp"/>
+<jsp:include page="fragments/headTag.jsp"/>
 
 <body>
   	<div class="container">
-		<spring:url value="/resources/images/banner-graphic.png" var="banner"/>
-		<img src="${banner}" />
+		<jsp:include page="fragments/bodyHeader.jsp"/>
 		<spring:url value="/resources/images/pets.png" var="petsImage"/>
 		<img src="${petsImage}" />
 		<h2>Something happened...</h2>
 		<p>${exception.message}</p>
 		
 	
-		<jsp:include page="footer.jsp"/>
+		<jsp:include page="fragments/footer.jsp"/>
 
   	</div>
 </body>

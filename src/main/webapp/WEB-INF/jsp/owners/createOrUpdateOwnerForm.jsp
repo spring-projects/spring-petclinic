@@ -7,12 +7,11 @@
 
 <html lang="en">
 
-<jsp:include page="../header.jsp"/>
+<jsp:include page="../fragments/headTag.jsp"/>
 
 <body>
   	<div class="container">
-		<spring:url value="/resources/images/banner-graphic.png" var="banner"/>
-		<img src="${banner}" />
+		<jsp:include page="../fragments/bodyHeader.jsp"/>
 		<c:choose>
 			<c:when test="${owner['new']}"><c:set var="method" value="post"/></c:when>
 			<c:otherwise><c:set var="method" value="put"/></c:otherwise>
@@ -71,7 +70,7 @@
 				</fieldset>
 		</form:form>
   	</div>
-	<jsp:include page="../footer.jsp"/>
+	<jsp:include page="../fragments/footer.jsp"/>
 </body>
 
 </html>
