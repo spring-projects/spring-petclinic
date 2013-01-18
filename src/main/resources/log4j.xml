@@ -19,6 +19,14 @@
 		<level value="info" />
 	</logger>
 	
+	<logger name="javax.validation">
+		<level value="debug" />
+	</logger>
+	
+	<logger name="org.hibernate.validator">
+		<level value="trace" />
+	</logger>
+	
 	<!-- Root Logger -->
 	<root>
 		<priority value="info" /><!--

@@ -19,11 +19,11 @@
 		<table class="table table-striped">
 		  <thead>
 		  	<tr>
-			    <th>Name</th>
-			    <th>Address</th>
+			    <th style="width: 150px;">Name</th>
+			    <th style="width: 200px;">Address</th>
 			    <th>City</th>
 			    <th>Telephone</th>
-			    <th>Pets</th>
+			    <th style="width: 100px;">Pets</th>
 		    </tr>
 		  </thead>
 		  <c:forEach var="owner" items="${selections}">

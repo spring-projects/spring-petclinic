@@ -32,7 +32,7 @@
 						</div>
 					</div>
 					<div class="control-group" id="birthDate">
-						<label class="control-label">Birth Date </label>
+						<label class="control-label">Birth Date (yyyy-MM-dd)</label>
 						<div class="controls">
 							<form:input path="birthDate" />
 							<span class="help-inline"><form:errors path="birthDate" /></span>
