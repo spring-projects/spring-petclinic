@@ -20,15 +20,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.samples.petclinic.Visit;
+import org.springframework.web.servlet.view.feed.AbstractAtomFeedView;
 
 import com.sun.syndication.feed.atom.Content;
 import com.sun.syndication.feed.atom.Entry;
 import com.sun.syndication.feed.atom.Feed;
-
-import org.springframework.samples.petclinic.Visit;
-import org.springframework.web.servlet.view.feed.AbstractAtomFeedView;
 
 /**
  * A view creating a Atom representation from a list of Visit objects. 

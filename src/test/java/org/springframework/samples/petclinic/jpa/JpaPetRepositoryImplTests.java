@@ -2,7 +2,6 @@ package org.springframework.samples.petclinic.jpa;
 
 import org.junit.runner.RunWith;
 import org.springframework.samples.petclinic.AbstractPetRepositoryTests;
-import org.springframework.samples.petclinic.repository.jdbc.JdbcClinicImpl;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;

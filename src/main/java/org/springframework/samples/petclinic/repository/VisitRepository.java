@@ -23,7 +23,7 @@ public interface VisitRepository {
 	 * @param visit the <code>Visit</code> to save
 	 * @see BaseEntity#isNew
 	 */
-	void storeVisit(Visit visit) throws DataAccessException;
+	void save(Visit visit) throws DataAccessException;
 
 	List<Visit> findByPetId(Integer petId);
 

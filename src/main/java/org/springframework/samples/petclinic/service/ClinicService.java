@@ -22,18 +22,16 @@ import org.springframework.samples.petclinic.Visit;
  */
 public interface ClinicService {
 	
-	public Collection<PetType> getPetTypes() throws DataAccessException;
+	public Collection<PetType> findPetTypes() throws DataAccessException;
 	
 	public Owner findOwnerById(int id) throws DataAccessException;
 	
 	public Pet findPetById(int id) throws DataAccessException;
 
-	public void storePet(Pet pet) throws DataAccessException;
+	public void savePet(Pet pet) throws DataAccessException;
 
-	public void deletePet(int id) throws DataAccessException;
+	public void saveVisit(Visit visit) throws DataAccessException;
 	
-	public void storeVisit(Visit visit) throws DataAccessException;
-	
-	public Collection<Vet> getVets() throws DataAccessException;
+	public Collection<Vet> findVets() throws DataAccessException;
 
 }

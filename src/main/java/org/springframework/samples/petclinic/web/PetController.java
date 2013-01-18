@@ -43,7 +43,7 @@ public class PetController {
 
 	@ModelAttribute("types")
 	public Collection<PetType> populatePetTypes() {
-		return this.clinicService.getPetTypes();
+		return this.clinicService.findPetTypes();
 	}
 
 	@InitBinder
@@ -67,7 +67,7 @@ public class PetController {
 			return "pets/createOrUpdatePetForm";
 		}
 		else {
-			this.clinicService.storePet(pet);
+			this.clinicService.savePet(pet);
 			status.setComplete();
 			return "redirect:/owners/" + pet.getOwner().getId();
 		}
@@ -88,17 +88,10 @@ public class PetController {
 			return "pets/createOrUpdatePetForm";
 		}
 		else {
-			this.clinicService.storePet(pet);
+			this.clinicService.savePet(pet);
 			status.setComplete();
 			return "redirect:/owners/" + pet.getOwner().getId();
 		}
-	}
-
-	@RequestMapping(value="/owners/*/pets/{petId}/edit", method = RequestMethod.DELETE)
-	public String deletePet(@PathVariable("petId") int petId) {
-		Pet pet = this.clinicService.findPetById(petId);
-		this.clinicService.deletePet(petId);
-		return "redirect:/owners/" + pet.getOwner().getId();
 	}
 
 }

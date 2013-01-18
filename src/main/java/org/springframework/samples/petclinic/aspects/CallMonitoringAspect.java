@@ -2,11 +2,8 @@ package org.springframework.samples.petclinic.aspects;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-
 import org.springframework.jmx.export.annotation.ManagedAttribute;
 import org.springframework.jmx.export.annotation.ManagedOperation;
-import org.springframework.jmx.export.annotation.ManagedResource;
 import org.springframework.util.StopWatch;
 
 /**
@@ -17,8 +14,8 @@ import org.springframework.util.StopWatch;
  * @author Juergen Hoeller
  * @since 2.5
  */
-@ManagedResource("petclinic:type=CallMonitor")
-@Aspect
+//@ManagedResource("petclinic:type=CallMonitor")
+//@Aspect
 public class CallMonitoringAspect {
 
 	private boolean isEnabled = true;

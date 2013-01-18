@@ -1,12 +1,10 @@
 package org.springframework.samples.petclinic;
 
-import java.util.Collection;
-import java.util.Date;
-
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import org.junit.Test;
 
+import java.util.Collection;
+
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.repository.VetRepository;
 import org.springframework.samples.petclinic.service.ClinicService;
@@ -90,8 +88,8 @@ public abstract class AbstractVetRepositoryTests {
 
 
 	@Test @Transactional
-	public void getVets() {
-		Collection<Vet> vets = this.vetRepository.getVets();
+	public void findVets() {
+		Collection<Vet> vets = this.vetRepository.findAll();
 		
 		Vet v1 = EntityUtils.getById(vets, Vet.class, 2);
 		assertEquals("Leary", v1.getLastName());

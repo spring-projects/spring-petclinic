@@ -1,17 +1,12 @@
 package org.springframework.samples.petclinic;
 
-import java.util.Collection;
-import java.util.Date;
-
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import org.junit.Test;
 
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.repository.PetRepository;
 import org.springframework.samples.petclinic.repository.VisitRepository;
 import org.springframework.samples.petclinic.service.ClinicService;
-import org.springframework.samples.petclinic.util.EntityUtils;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.transaction.annotation.Transactional;
@@ -101,8 +96,8 @@ public abstract class AbstractVisitRepositoryTests {
 		p7.addVisit(visit);
 		visit.setDescription("test");
 		// both storeVisit and storePet are necessary to cover all ORM tools
-		this.visitRepository.storeVisit(visit);
-		this.petRepository.storePet(p7);
+		this.visitRepository.save(visit);
+		this.petRepository.save(p7);
 		// assertTrue(!visit.isNew()); -- NOT TRUE FOR TOPLINK (before commit)
 		p7 = this.petRepository.findById(7);
 		assertEquals(found + 1, p7.getVisits().size());

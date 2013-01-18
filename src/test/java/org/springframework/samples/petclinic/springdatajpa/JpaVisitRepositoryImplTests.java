@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.jdbc;
+package org.springframework.samples.petclinic.springdatajpa;
 
 import org.junit.runner.RunWith;
 import org.springframework.samples.petclinic.AbstractVisitRepositoryTests;
@@ -20,8 +20,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations={"classpath:spring/applicationContext-dao.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext
-@ActiveProfiles("jdbc")
-public class JdbcVisitRepositoryImplTests extends AbstractVisitRepositoryTests {
+@ActiveProfiles({"jpa","spring-data-jpa"})
+public class JpaVisitRepositoryImplTests extends AbstractVisitRepositoryTests {
 	
 	
 

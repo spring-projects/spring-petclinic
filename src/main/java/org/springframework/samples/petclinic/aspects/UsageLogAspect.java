@@ -30,7 +30,7 @@ public class UsageLogAspect {
 		this.namesRequested = new ArrayList<String>(historySize);
 	}
 
-	@Before("execution(* *.findOwners(String)) && args(name)")
+	@Before("execution(* *.find*(String)) && args(name)")
 	public synchronized void logNameRequest(String name) {
 		// Not the most efficient implementation,
 		// but we're aiming to illustrate the power of

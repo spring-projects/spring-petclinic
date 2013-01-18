@@ -20,7 +20,7 @@ public class PetTypeEditor extends PropertyEditorSupport {
 
 	@Override
 	public void setAsText(String text) throws IllegalArgumentException {
-		for (PetType type : this.clinicService.getPetTypes()) {
+		for (PetType type : this.clinicService.findPetTypes()) {
 			if (type.getName().equals(text)) {
 				setValue(type);
 			}

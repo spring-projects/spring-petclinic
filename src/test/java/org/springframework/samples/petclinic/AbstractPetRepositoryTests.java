@@ -1,12 +1,12 @@
 package org.springframework.samples.petclinic;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Collection;
 import java.util.Date;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
 import org.springframework.samples.petclinic.repository.PetRepository;
@@ -95,7 +95,7 @@ public abstract class AbstractPetRepositoryTests {
 
 	@Test
 	public void getPetTypes() {
-		Collection<PetType> petTypes = this.petRepository.getPetTypes();
+		Collection<PetType> petTypes = this.petRepository.findPetTypes();
 		
 		PetType t1 = EntityUtils.getById(petTypes, PetType.class, 1);
 		assertEquals("cat", t1.getName());
@@ -105,7 +105,7 @@ public abstract class AbstractPetRepositoryTests {
 
 	@Test
 	public void findPet() {
-		Collection<PetType> types = this.petRepository.getPetTypes();
+		Collection<PetType> types = this.petRepository.findPetTypes();
 		Pet p7 = this.petRepository.findById(7);
 		assertTrue(p7.getName().startsWith("Samantha"));
 		assertEquals(EntityUtils.getById(types, PetType.class, 1).getId(), p7.getType().getId());
@@ -122,24 +122,24 @@ public abstract class AbstractPetRepositoryTests {
 		int found = o6.getPets().size();
 		Pet pet = new Pet();
 		pet.setName("bowser");
-		Collection<PetType> types = this.petRepository.getPetTypes();
+		Collection<PetType> types = this.petRepository.findPetTypes();
 		pet.setType(EntityUtils.getById(types, PetType.class, 2));
 		pet.setBirthDate(new Date());
 		o6.addPet(pet);
 		assertEquals(found + 1, o6.getPets().size());
 		// both storePet and storeOwner are necessary to cover all ORM tools
-		this.petRepository.storePet(pet);
+		this.petRepository.save(pet);
 		this.ownerRepository.save(o6);
 		o6 = this.ownerRepository.findById(6);
 		assertEquals(found + 1, o6.getPets().size());
 	}
 
-	@Test
+	@Test @Transactional
 	public void updatePet() throws Exception {
 		Pet p7 = this.petRepository.findById(7);
 		String old = p7.getName();
 		p7.setName(old + "X");
-		this.petRepository.storePet(p7);
+		this.petRepository.save(p7);
 		p7 = this.petRepository.findById(7);
 		assertEquals(old + "X", p7.getName());
 	}

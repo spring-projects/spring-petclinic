@@ -42,7 +42,7 @@ public class VetController {
 	@RequestMapping("/vets")
 	public String showVetList(Model model) {
 		Vets vets = new Vets();
-		vets.getVetList().addAll(this.clinicService.getVets());
+		vets.getVetList().addAll(this.clinicService.findVets());
 		model.addAttribute("vets", vets);
 		return "vetsList";
 	}

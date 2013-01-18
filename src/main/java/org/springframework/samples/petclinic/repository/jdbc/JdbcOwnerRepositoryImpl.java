@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -15,7 +13,6 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.samples.petclinic.Owner;
 import org.springframework.samples.petclinic.Pet;
@@ -24,22 +21,13 @@ import org.springframework.samples.petclinic.Visit;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
 import org.springframework.samples.petclinic.repository.PetRepository;
 import org.springframework.samples.petclinic.repository.VisitRepository;
-import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.samples.petclinic.util.EntityUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * A simple JDBC-based implementation of the {@link ClinicService} interface.
+ * A simple JDBC-based implementation of the {@link OwnerRepository} interface.
  *
- * <p>This class uses Java 5 language features and the {@link SimpleJdbcTemplate}
- * plus {@link SimpleJdbcInsert}. It also takes advantage of classes like
- * {@link BeanPropertySqlParameterSource} and
- * {@link ParameterizedBeanPropertyRowMapper} which provide automatic mapping
- * between JavaBean properties and JDBC parameters or query results.
- *
- * <p>JdbcClinicImpl is a rewrite of the AbstractJdbcClinic which was the base
- * class for JDBC implementations of the ClinicService interface for Spring 2.0.
  *
  * @author Ken Krebs
  * @author Juergen Hoeller

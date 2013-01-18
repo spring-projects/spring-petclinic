@@ -11,10 +11,6 @@
 		</layout>
 	</appender>
 
-	<logger name="org.springframework.samples.petclinic.aspects">
-		<level value="info" />
-	</logger>
-	
 	<logger name="org.springframework.web">
 		<level value="info" />
 	</logger>
@@ -22,8 +18,6 @@
 	<logger name="org.springframework.jdbc">
 		<level value="info" />
 	</logger>
-	
-
 	
 	<!-- Root Logger -->
 	<root>

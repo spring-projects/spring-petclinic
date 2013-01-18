@@ -6,12 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.Owner;
-import org.springframework.samples.petclinic.Pet;
-import org.springframework.samples.petclinic.PetType;
-import org.springframework.samples.petclinic.Vet;
-import org.springframework.samples.petclinic.Visit;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +30,6 @@ public class JpaOwnerRepositoryImpl implements OwnerRepository {
 	private EntityManager em;
 
 
-	@Transactional(readOnly = true)
 	@SuppressWarnings("unchecked")
 	public Collection<Owner> findByLastName(String lastName) {
 		Query query = this.em.createQuery("SELECT owner FROM Owner owner WHERE owner.lastName LIKE :lastName");
@@ -43,7 +37,6 @@ public class JpaOwnerRepositoryImpl implements OwnerRepository {
 		return query.getResultList();
 	}
 
-	@Transactional(readOnly = true)
 	public Owner findById(int id) {
 		return this.em.find(Owner.class, id);
 	}

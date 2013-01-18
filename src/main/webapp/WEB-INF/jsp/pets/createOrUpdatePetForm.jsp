@@ -55,9 +55,6 @@
 				</fieldset>	
 			</form:form>	
 			<c:if test="${!pet['new']}">
-			  <form:form method="delete">
-			    <p class="submit"><input type="submit" value="Delete Pet"/></p>
-			  </form:form>
 			</c:if>    
 			<jsp:include page="../footer.jsp"/>
   	</div>

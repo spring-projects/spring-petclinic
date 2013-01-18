@@ -59,7 +59,7 @@ public class VisitController {
 			return "pets/createOrUpdateVisitForm";
 		}
 		else {
-			this.clinicService.storeVisit(visit);
+			this.clinicService.saveVisit(visit);
 			status.setComplete();
 			return "redirect:/owners/" + visit.getPet().getOwner().getId();
 		}

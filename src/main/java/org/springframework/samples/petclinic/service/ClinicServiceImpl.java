@@ -14,6 +14,7 @@ import org.springframework.samples.petclinic.repository.PetRepository;
 import org.springframework.samples.petclinic.repository.VetRepository;
 import org.springframework.samples.petclinic.repository.VisitRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ClinicServiceImpl implements ClinicService {
@@ -30,32 +31,34 @@ public class ClinicServiceImpl implements ClinicService {
 	@Autowired
 	private VisitRepository visitRepository;
 
-	public Collection<PetType> getPetTypes() throws DataAccessException {
-		return petRepository.getPetTypes();
+	@Transactional(readOnly=true)
+	public Collection<PetType> findPetTypes() throws DataAccessException {
+		return petRepository.findPetTypes();
 	}
 
+	@Transactional(readOnly=true)
 	public Owner findOwnerById(int id) throws DataAccessException {
 		return ownerRepository.findById(id);
 	}
 
-	public void storeVisit(Visit visit) throws DataAccessException {
-		visitRepository.storeVisit(visit);
+	@Transactional
+	public void saveVisit(Visit visit) throws DataAccessException {
+		visitRepository.save(visit);
 	}
 
+	@Transactional(readOnly=true)
 	public Pet findPetById(int id) throws DataAccessException {
 		return petRepository.findById(id);
 	}
 
-	public void storePet(Pet pet) throws DataAccessException {
-		petRepository.storePet(pet);
+	@Transactional
+	public void savePet(Pet pet) throws DataAccessException {
+		petRepository.save(pet);
 	}
 
-	public void deletePet(int id) throws DataAccessException {
-		petRepository.deletePet(id);
-	}
-
-	public Collection<Vet> getVets() throws DataAccessException {
-		return vetRepository.getVets();
+	@Transactional(readOnly=true)
+	public Collection<Vet> findVets() throws DataAccessException {
+		return vetRepository.findAll();
 	}
 	
 	

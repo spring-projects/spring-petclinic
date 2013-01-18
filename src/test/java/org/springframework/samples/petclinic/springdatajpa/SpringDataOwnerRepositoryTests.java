@@ -1,5 +1,5 @@
 
-package org.springframework.samples.petclinic.jpa;
+package org.springframework.samples.petclinic.springdatajpa;
 
 import org.junit.runner.RunWith;
 import org.springframework.samples.petclinic.AbstractOwnerRepositoryTests;

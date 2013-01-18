@@ -1,15 +1,13 @@
 package org.springframework.samples.petclinic;
 
-import java.util.Collection;
-import java.util.Date;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import org.junit.Test;
 
+import java.util.Collection;
+
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
-import org.springframework.samples.petclinic.util.EntityUtils;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.transaction.annotation.Transactional;
@@ -117,7 +115,7 @@ public abstract class AbstractOwnerRepositoryTests {
 		o1.getPets();
 	}
 
-	@Test
+	@Test @Transactional
 	public void insertOwner() {
 		Collection<Owner> owners = this.ownerRepository.findByLastName("Schultz");
 		int found = owners.size();
@@ -132,7 +130,7 @@ public abstract class AbstractOwnerRepositoryTests {
 		assertEquals("Verifying number of owners after inserting a new one.", found + 1, owners.size());
 	}
 
-	@Test
+	@Test @Transactional
 	public void updateOwner() throws Exception {
 		Owner o1 = this.ownerRepository.findById(1);
 		String old = o1.getLastName();
