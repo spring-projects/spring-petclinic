@@ -2,7 +2,9 @@ package org.springframework.samples.petclinic.repository.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
+import org.joda.time.DateTime;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 
 /**
@@ -15,7 +17,8 @@ class JdbcPetRowMapper implements ParameterizedRowMapper<JdbcPet> {
 		JdbcPet pet = new JdbcPet();
 		pet.setId(rs.getInt("id"));
 		pet.setName(rs.getString("name"));
-		pet.setBirthDate(rs.getDate("birth_date"));
+		Date birthDate = rs.getDate("birth_date");
+		pet.setBirthDate(new DateTime(birthDate));
 		pet.setTypeId(rs.getInt("type_id"));
 		pet.setOwnerId(rs.getInt("owner_id"));
 		return pet;

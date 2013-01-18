@@ -2,7 +2,6 @@ package org.springframework.samples.petclinic;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 
@@ -29,7 +30,8 @@ import org.springframework.beans.support.PropertyComparator;
 public class Pet extends NamedEntity {
 
 	@Column(name="birth_date")
-	private Date birthDate;
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	private DateTime birthDate;
 
 	@ManyToOne
     @JoinColumn(name = "type_id")
@@ -43,11 +45,11 @@ public class Pet extends NamedEntity {
 	private Set<Visit> visits;
 
 
-	public void setBirthDate(Date birthDate) {
+	public void setBirthDate(DateTime birthDate) {
 		this.birthDate = birthDate;
 	}
 
-	public Date getBirthDate() {
+	public DateTime getBirthDate() {
 		return this.birthDate;
 	}
 

@@ -104,7 +104,7 @@
 			<bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
 				<constructor-arg ref="dataSource" />			
 			</bean>
-			
+			 
 			<context:component-scan base-package="org.springframework.samples.petclinic.repository.jdbc"/>
 	
 	</beans>

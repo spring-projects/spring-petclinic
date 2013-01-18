@@ -106,7 +106,7 @@ public class JdbcPetRepositoryImpl implements PetRepository {
 		return new MapSqlParameterSource()
 			.addValue("id", pet.getId())
 			.addValue("name", pet.getName())
-			.addValue("birth_date", pet.getBirthDate())
+			.addValue("birth_date", pet.getBirthDate().toDate())
 			.addValue("type_id", pet.getType().getId())
 			.addValue("owner_id", pet.getOwner().getId());
 	}

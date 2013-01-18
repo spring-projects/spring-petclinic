@@ -1,7 +1,5 @@
 package org.springframework.samples.petclinic;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -9,6 +7,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
 
 /**
  * Simple JavaBean domain object representing a visit.
@@ -20,7 +21,8 @@ public class Visit extends BaseEntity {
 
 	/** Holds value of property date. */
 	@Column(name="visit_date")
-	private Date date;
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	private DateTime date;
 
 	/** Holds value of property description. */
 	@NotNull @Size(min = 1)
@@ -35,21 +37,21 @@ public class Visit extends BaseEntity {
 
 	/** Creates a new instance of Visit for the current date */
 	public Visit() {
-		this.date = new Date();
+		this.date = new DateTime();
 	}
 
 
 	/** Getter for property date.
 	 * @return Value of property date.
 	 */
-	public Date getDate() {
+	public DateTime getDate() {
 		return this.date;
 	}
 
 	/** Setter for property date.
 	 * @param date New value of property date.
 	 */
-	public void setDate(Date date) {
+	public void setDate(DateTime date) {
 		this.date = date;
 	}
 

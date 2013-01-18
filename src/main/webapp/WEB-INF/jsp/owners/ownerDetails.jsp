@@ -2,6 +2,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="joda" uri="http://www.joda.org/joda/time/tags" %>
 
 <html lang="en">
 
@@ -58,7 +59,7 @@
 			    	<dt>Name</dt>
 			    	<dd>${pet.name}</dd>
 			    	<dt>Birth Date</dt>
-			    	<dd><fmt:formatDate value="${pet.birthDate}" pattern="yyyy-MM-dd"/></dd>
+			    	<dd><joda:format value="${pet.birthDate}" pattern="yyyy-MM-dd" /></dd>
 			    	<dt>Type</dt>
 			    	<dd>${pet.type.name}</dd>
 			    </dl>
@@ -73,7 +74,7 @@
 	            </thead>
 	            <c:forEach var="visit" items="${pet.visits}">
 	              <tr>
-	                <td><fmt:formatDate value="${visit.date}" pattern="yyyy-MM-dd"/></td>
+	                <td><joda:format value="${visit.date}" pattern="yyyy-MM-dd"/></td>
 	                <td>${visit.description}</td>
 	              </tr>
 	            </c:forEach>

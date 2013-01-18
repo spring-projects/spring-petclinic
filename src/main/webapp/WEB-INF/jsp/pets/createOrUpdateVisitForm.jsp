@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
+<%@ taglib prefix="joda" uri="http://www.joda.org/joda/time/tags" %>
 
 <html lang="en">
 
@@ -26,7 +26,7 @@
 		    </thead>
 		    <tr>
 		      <td>${visit.pet.name}</td>
-		      <td><fmt:formatDate value="${visit.pet.birthDate}" pattern="yyyy-MM-dd"/></td>
+		      <td><joda:format value="${visit.pet.birthDate}" pattern="yyyy-MM-dd"/></td>
 		      <td>${visit.pet.type.name}</td>
 		      <td>${visit.pet.owner.firstName} ${visit.pet.owner.lastName}</td>
 		    </tr>
@@ -35,7 +35,7 @@
 		  <table class="table">
 		    <tr>
 		      <th>
-		        Date:
+		        Date
 		        <br/><form:errors path="date" cssClass="errors"/>
 		      </th>
 		      <td>
@@ -44,7 +44,7 @@
 		    <tr/>
 		    <tr>
 		      <th valign="top">
-		        Description:
+		        Description
 		        <br/><form:errors path="description" cssClass="errors"/>
 		      </th>
 		      <td>
@@ -61,7 +61,7 @@
 		</form:form>
 		
 		<br/>
-		<b>Previous Visits:</b>
+		<b>Previous Visits</b>
 		<table style="width: 333px;">
 		  <tr>
 		    <th>Date</th>
@@ -70,7 +70,7 @@
 		  <c:forEach var="visit" items="${visit.pet.visits}">
 		    <c:if test="${!visit['new']}">
 		      <tr>
-		        <td><fmt:formatDate value="${visit.date}" pattern="yyyy-MM-dd"/></td>
+		        <td><joda:format value="${visit.date}" pattern="yyyy-MM-dd"/></td>
 		        <td>${visit.description}</td>
 		      </tr>
 		    </c:if>

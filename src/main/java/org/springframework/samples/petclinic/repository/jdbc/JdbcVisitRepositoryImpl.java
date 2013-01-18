@@ -2,10 +2,12 @@ package org.springframework.samples.petclinic.repository.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -69,7 +71,7 @@ public class JdbcVisitRepositoryImpl implements VisitRepository {
 	private MapSqlParameterSource createVisitParameterSource(Visit visit) {
 		return new MapSqlParameterSource()
 			.addValue("id", visit.getId())
-			.addValue("visit_date", visit.getDate())
+			.addValue("visit_date", visit.getDate().toDate())
 			.addValue("description", visit.getDescription())
 			.addValue("pet_id", visit.getPet().getId());
 	}
@@ -84,7 +86,8 @@ public class JdbcVisitRepositoryImpl implements VisitRepository {
 					public Visit mapRow(ResultSet rs, int row) throws SQLException {
 						Visit visit = new Visit();
 						visit.setId(rs.getInt("id"));
-						visit.setDate(rs.getTimestamp("visit_date"));
+						Date visitDate = rs.getDate("visit_date");
+						visit.setDate(new DateTime(visitDate));
 						visit.setDescription(rs.getString("description"));
 						return visit;
 					}

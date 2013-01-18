@@ -46,7 +46,7 @@ public class VisitsAtomView extends AbstractAtomFeedView {
 		@SuppressWarnings("unchecked")
 		List<Visit> visits = (List<Visit>) model.get("visits");
 		for (Visit visit : visits) {
-			Date date = visit.getDate();
+			Date date = visit.getDate().toDate();
 			if (feed.getUpdated() == null || date.compareTo(feed.getUpdated()) > 0) {
 				feed.setUpdated(date);
 			}
@@ -63,11 +63,11 @@ public class VisitsAtomView extends AbstractAtomFeedView {
 
 		for (Visit visit : visits) {
 			Entry entry = new Entry();
-			String date = String.format("%1$tY-%1$tm-%1$td", visit.getDate());
+			String date = String.format("%1$tY-%1$tm-%1$td", visit.getDate().toDate());
 			// see http://diveintomark.org/archives/2004/05/28/howto-atom-id#other
 			entry.setId(String.format("tag:springsource.com,%s:%d", date, visit.getId()));
 			entry.setTitle(String.format("%s visit on %s", visit.getPet().getName(), date));
-			entry.setUpdated(visit.getDate());
+			entry.setUpdated(visit.getDate().toDate());
 
 			Content summary = new Content();
 			summary.setValue(visit.getDescription());

@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.samples.petclinic.Pet;
@@ -55,14 +56,14 @@ public class VisitsAtomViewTest {
 		bello.setType(dog);
 		Visit belloVisit = new Visit();
 		belloVisit.setPet(bello);
-		belloVisit.setDate(new Date(2009, 0, 1));
+		belloVisit.setDate(new DateTime(2009, 1, 1,1,1));
 		belloVisit.setDescription("Bello visit");
 		Pet wodan = new Pet();
 		wodan.setName("Wodan");
 		wodan.setType(dog);
 		Visit wodanVisit = new Visit();
 		wodanVisit.setPet(wodan);
-		wodanVisit.setDate(new Date(2009, 0, 2));
+		wodanVisit.setDate(new DateTime(2009, 1, 2,1,1));
 		wodanVisit.setDescription("Wodan visit");
 		List<Visit> visits = new ArrayList<Visit>();
 		visits.add(belloVisit);
@@ -80,7 +81,7 @@ public class VisitsAtomViewTest {
 
 		assertNotNull("No id set", feed.getId());
 		assertNotNull("No title set", feed.getTitle());
-		assertEquals("Invalid update set", new Date(2009, 0, 2), feed.getUpdated());
+		assertEquals("Invalid update set", new DateTime(2009, 1, 2,1,1).toDate(), feed.getUpdated());
 	}
 
 	@Test

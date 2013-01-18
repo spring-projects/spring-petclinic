@@ -4,8 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
-import java.util.Date;
 
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
@@ -124,7 +124,7 @@ public abstract class AbstractPetRepositoryTests {
 		pet.setName("bowser");
 		Collection<PetType> types = this.petRepository.findPetTypes();
 		pet.setType(EntityUtils.getById(types, PetType.class, 2));
-		pet.setBirthDate(new Date());
+		pet.setBirthDate(new DateTime());
 		o6.addPet(pet);
 		assertEquals(found + 1, o6.getPets().size());
 		// both storePet and storeOwner are necessary to cover all ORM tools
