@@ -17,19 +17,19 @@
 	  <table class="table table-striped"  style="width:600px;">
 	    <tr>
 	      <th>Name</th>
-	      <td><b>${owner.firstName} ${owner.lastName}</b></td>
+	      <td><b><c:out value="${owner.firstName} ${owner.lastName}"/></b></td>
 	    </tr>
 	    <tr>
 	      <th>Address</th>
-	      <td>${owner.address}</td>
+	      <td><c:out value="${owner.address}"/></td>
 	    </tr>
 	    <tr>
 	      <th>City</th>
-	      <td>${owner.city}</td>
+	      <td><c:out value="${owner.city}"/></td>
 	    </tr>
 	    <tr>
 	      <th>Telephone </th>
-	      <td>${owner.telephone}</td>
+	      <td><c:out value="${owner.telephone}"/></td>
 	    </tr>
 	  </table>
 	  <table class="table-buttons">
@@ -57,11 +57,11 @@
 	        <td valign="top" style="width: 120px;">
 	            <dl class="dl-horizontal">
 			    	<dt>Name</dt>
-			    	<dd>${pet.name}</dd>
+			    	<dd><c:out value="${pet.name}"/></dd>
 			    	<dt>Birth Date</dt>
 			    	<dd><joda:format value="${pet.birthDate}" pattern="yyyy-MM-dd" /></dd>
 			    	<dt>Type</dt>
-			    	<dd>${pet.type.name}</dd>
+			    	<dd><c:out value="${pet.type.name}"/></dd>
 			    </dl>
 	        </td>
 	        <td valign="top">
@@ -75,7 +75,7 @@
 	            <c:forEach var="visit" items="${pet.visits}">
 	              <tr>
 	                <td><joda:format value="${visit.date}" pattern="yyyy-MM-dd"/></td>
-	                <td>${visit.description}</td>
+	                <td><c:out value="${visit.description}"/></td>
 	              </tr>
 	            </c:forEach>
 	          </table>

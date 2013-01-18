@@ -25,10 +25,10 @@
 		      	</tr>
 		    </thead>
 		    <tr>
-		      <td>${visit.pet.name}</td>
+		      <td><c:out value="${visit.pet.name}" /></td>
 		      <td><joda:format value="${visit.pet.birthDate}" pattern="yyyy-MM-dd"/></td>
-		      <td>${visit.pet.type.name}</td>
-		      <td>${visit.pet.owner.firstName} ${visit.pet.owner.lastName}</td>
+		      <td><c:out value="${visit.pet.type.name}" /></td>
+		      <td><c:out value="${visit.pet.owner.firstName} ${visit.pet.owner.lastName}" /></td>
 		    </tr>
 		  </table>
 		
@@ -71,7 +71,7 @@
 		    <c:if test="${!visit['new']}">
 		      <tr>
 		        <td><joda:format value="${visit.date}" pattern="yyyy-MM-dd"/></td>
-		        <td>${visit.description}</td>
+		        <td><c:out value="${visit.description}" /></td>
 		      </tr>
 		    </c:if>
 		  </c:forEach>

@@ -29,14 +29,14 @@
 		          <spring:url value="owners/{ownerId}.html" var="ownerUrl">
 		              <spring:param name="ownerId" value="${owner.id}"/>
 		          </spring:url>
-		          <a href="${fn:escapeXml(ownerUrl)}">${owner.firstName} ${owner.lastName}</a>
+		          <a href="${fn:escapeXml(ownerUrl)}"><c:out value="${owner.firstName} ${owner.lastName}" /></a>
 		      </td>
-		      <td>${owner.address}</td>
-		      <td>${owner.city}</td>
-		      <td>${owner.telephone}</td>
+		      <td><c:out value="${owner.address}"/></td>
+		      <td><c:out value="${owner.city}"/></td>
+		      <td><c:out value="${owner.telephone}"/></td>
 		      <td>
 		        <c:forEach var="pet" items="${owner.pets}">
-		          ${pet.name} &nbsp;
+		          <c:out value="${pet.name}"/>
 		        </c:forEach>
 		      </td>
 		    </tr>
