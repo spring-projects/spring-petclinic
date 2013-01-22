@@ -156,6 +156,12 @@
 		    <version>2.2.1</version>
 		</dependency>
 		
+		<dependency>
+		    <groupId>org.webjars</groupId>
+		    <artifactId>jquery-ui</artifactId>
+		    <version>1.9.1</version>
+		</dependency>
+		
 		<!-- Rome RSS -->
 		<dependency>
 			<groupId>rome</groupId>

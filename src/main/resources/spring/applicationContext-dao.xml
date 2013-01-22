@@ -15,7 +15,7 @@
 	<!-- ========================= RESOURCE DEFINITIONS ========================= -->
 
 	<!-- import the dataSource definition -->
-	<import resource="applicationContext-dataSource.xml"/>
+	<import resource="applicationContext-dataSource.xml"/> 
 
 
 	<!-- Configurer that replaces ${...} placeholders with values from a properties file -->
@@ -116,7 +116,7 @@
 			PersistenceExceptions will be auto-translated due to @Repository.
 		-->
 		<context:component-scan base-package="org.springframework.samples.petclinic.repository.jpa"/>
-	
+
 	</beans>
 	
 	<beans profile="spring-data-jpa">
