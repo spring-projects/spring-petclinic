@@ -31,22 +31,22 @@
 		frameworks that can be used independently or collectively to build
 		industrial strength applications of many different types. The PetClinic
 		sample application is designed to show how the Spring
-		application frameworks can be used to build simple, but powerful
+		framework can be used to build simple, but powerful
 		database-oriented applications. It will demonstrate the use
 		of Spring's core functionality:
 	</p>
 
 	<ul>
-	  <li>JavaBeans based application configuration using Inversion-Of-Control</li>
-	  <li>Model-View-Controller web Presentation Layer</li>
-	  <li>Practical database access through JDBC, Hibernate, or Java Persistence API</li>
+	  <li>Dependency Injection using xml and annotations</li>
+	  <li>Practical database access through JDBC and JPA (Java Persistence API)</li>
 	  <li>Application monitoring based on JMX</li>
-	  <li>Declarative Transaction Management using AOP</li>
-	  <li>Data Validation that supports but is not dependent on the Presentation Layer</li>
+	  <li>Declarative Transaction Management using annotations</li>
+	  <li>Web Presentation Layer based on Spring MVC</li>
+	  <li>Data Validation based on Bean Validation (JSR 303)</li>
 	</ul>
 
 	<p>
-		The Spring frameworks provide a great deal of useful infrastructure to
+		The Spring framework provides a great deal of useful infrastructure to
 		simplify the tasks faced by application developers. This infrastructure
 		helps developers to create applications that are:
 	</p>
@@ -55,15 +55,15 @@
 	  <li>
 	  	<span style="font-weight: bold; text-decoration: underline;">concise</span>
 		by handling a lot of the complex control flow that is needed to use the
-		Java API's, such as JDBC, JNDI, JTA, RMI, and EJB.
+		Java API's, such as JDBC, JNDI, JTA, RMI.
 	  </li>
 	  <li>
 	  	<span style="font-weight: bold; text-decoration: underline;">flexible</span>
 		by simplifying the process of external application configuration
-		through the use of Reflection and JavaBeans. This allows the developer to
+		through the use of Reflection and POJOs (Plain Old Java Objects). This allows the developer to
 		achieve a clean separation of configuration data from application code.
 		All application and web application objects, including validators,
-		workflow controllers, and views, are JavaBeans that can be configured
+		workflow controllers, and views, are POJOs that can be configured
 		externally.</li>
 	  <li>
 	  	<span style="font-weight: bold; text-decoration: underline;">testable</span>
@@ -77,8 +77,7 @@
 		from the Presentation layer. PetClinic demonstrates the use of a
 		Model-View-Controller
 		based web presentation framework that can work seamlessly with many
-		different types of view technologies. The Spring web application
-		framework helps developers to implement their Presentation as a clean
+		different types of view technologies. Spring MVC helps developers implement their Presentation as a clean
 		and thin layer focused on its main missions of translating user actions
 		into application events and rendering model data.</li>
 	</ul>
@@ -133,13 +132,8 @@
 	<p>
 		The sample application should be usable with any Java EE web application
 		container that is compatible with the Servlet 2.4 and JSP 2.0
-		specifications. Some of the deployment files provided are designed
-		specifically for Apache Tomcat. These files specify container-supplied
-		connection-pooled data sources. It is not necessary to use these files.
-		The application has been configured by default to use a data source
-		with connection pooling. Configuration details are
-		provided in the Developer Instructions section. The view technologies
-		that are to be used for rendering the application are Java Server Pages
+		specifications. 
+		The view technologies that are to be used for rendering the application are Java Server Pages
 		(JSP) along with the Java Standard Tag Library (JSTL).
 	</p>
 
@@ -147,10 +141,9 @@
 	<p>
 		The sample application uses a relational database for data storage.
 		Support has been provided for a choice of 1 of 2 database selections,
-		MySql or HypersonicSQL. HypersonicSQL version 1.8.0 is the default
-		choice. It is possible to
-		easily configure the application to use either database. Configuration
-		details are provided in the Developer Instructions section.
+		MySql or HypersonicSQL. HypersonicSQL is the default
+		choice. It is possible to easily configure the application to use either database. 
+		Configuration details are provided in the Developer Instructions section.
 	</p>
 
 	<h3>Development Environment</h3>
@@ -162,10 +155,9 @@
 	</p>
 
 	<ul>
-	  <li>Java SDK 1.5.x</li>
-	  <li>Maven  2.0.10+</li>
-	  <li>Ant  1.7.1 (for executing scripts, if needed, against the in-memory database)</li>
-	  <li>Tomcat 6.x.x, or some other Java Servlet container</li>
+	  <li>Java SDK 1.6.x</li>
+	  <li>Maven  3.0+</li>
+	  <li>Tomcat 6.0+, or some other Java Servlet container</li>
 	  <li>(Optional) MySQL 5.x with MySQL Connector/J 5.x</li>
 	</ul>
 
@@ -312,16 +304,15 @@
 	<h3>Logging</h3>
 	<p>
 		Spring supports the use of the Apache Commons Logging API. This API
-		provides the ability to use Java 1.4 loggers, the simple Commons loggers,
-		and Apache log4j loggers. PetClinic uses log4j to provide sophisticated
-		and configurable logging capabilities. The file,
-		<span style="font-weight: bold; font-style: italic;">src/main/resources/log4j.properties</span>
-		configures the definition of <strong>log4j</strong>loggers.
+		provides the ability to use Java SE loggers, the simple Commons loggers,
+		and Apache Log4J loggers. PetClinic uses Log4J. The file,
+		<span style="font-weight: bold; font-style: italic;">src/main/resources/log4j.xml</span>
+		configures the definition of <strong>Log4J</strong> loggers.
 	</p>
 
 	<h3>Business Layer</h3>
 	<p>
-		The Business Layer consists of a number of basic JavaBean classes
+		The Business Layer consists of a number of basic Java classes
 		representing the application domain objects and associated validation
 		objects that are used by the Presentation Layer. The validation objects
 		used in PetClinic are all implementations of the
@@ -330,7 +321,7 @@
 
 	<ul>
 	  <li><span style="font-weight: bold; font-style: italic;">org.springframework.samples.petclinic.Entity</span>
-		is a simple JavaBean superclass used for all persistable objects.</li>
+		is a superclass used for all persistable objects.</li>
 	  <li><span style="font-weight: bold; font-style: italic;">org.springframework.samples.petclinic.NamedEntity</span>
 		is an extension of <span style="font-weight: bold;">Entity</span> that adds a name property.</li>
 	  <li><span style="font-weight: bold; font-style: italic;">org.springframework.samples.petclinic.Specialty</span>
@@ -358,18 +349,6 @@
 	  	provides utility methods for handling entities.</li>
 	</ul>
 
-	<ul>
-	  <li><span style="font-weight: bold; font-style: italic;">org.springframework.samples.petclinic.validation.OwnerValidator</span>
-		is a Spring <span style="font-weight: bold;">Validator</span> that
-		verifies correct data entry for the Add and Edit Owner forms.</li>
-	  <li><span style="font-weight: bold; font-style: italic;">org.springframework.samples.petclinic.validation.PetValidator</span>
-		is a Spring <span style="font-weight: bold;">Validator</span> that
-		verifies correct data entry for the Add and Edit Pet forms.</li>
-	  <li><span style="font-weight: bold; font-style: italic;">org.springframework.samples.petclinic.validation.VisitValidator</span>
-		is a Spring <span style="font-weight: bold;">Validator</span> that
-		verifies correct data entry for the AddVisit form.</li>
-	</ul>
-
 	<h3>Business / Persistence Layer</h3>
 
 	<p>
@@ -391,9 +370,8 @@
 	</p>
 
 	<ul>
-	  <li>JDBC</li>
-	  <li>Hibernate 3</li>
-	  <li>Java Persistence API</li>
+	  <li>JDBC (using Spring's JdbcTemplate)</li>
+	  <li>JPA</li>
 	</ul>
 
 	<p>
@@ -441,19 +419,14 @@
 		implementations of the
 		<span style="font-weight: bold;">org.springframework.transaction.PlatformTransactionManager</span>
 		interface. All of the implementations are by default configured
-		to use a local <span style="font-weight: bold;">DataSource</span> that
-		will work in any environment through the use of an instance of
-		<span style="font-weight: bold;">org.springframework.jdbc.datasource.DriverManagerDataSource</span>.
-		While this is appropriate for use in a demo or single user
-		program, a connection pooling <span style="font-weight: bold;">DataSource</span>,
-		such as an instance of <span style="font-weight: bold;">org.apache.commons.dbcp.BasicDataSource</span>,
-		is more appropriate for use in a multi-user application. Another
-		alternative is to obtain one through the Java EE environment
+		to use Database connection pooling <span style="font-weight: bold;">through</span>
+		an instance of <span style="font-weight: bold;">org.apache.commons.dbcp.BasicDataSource</span>. 
+		Another alternative would be to obtain one through the Java EE environment
 		using an instance of
 		<span style="font-weight: bold;">org.springframework.jndi.JndiObjectFactoryBean</span>.
 	</p>
 
-	<h3>JDBC Clinic Implementation</h3>
+	<h3>JDBC Repository Implementations</h3>
 	<p>
 		Spring provides a number of high-level database
 		access convenience classes in the package
@@ -479,18 +452,16 @@
 	</p>
 
 	<p>
-		The JDBC implementation of the Clinic interface is
-		<span style="font-weight: bold; font-style: italic;">org.springframework.samples.petclinic.jdbc.JdbcClinicImpl</span>,
-		which uses Java 5 language features,
-		<strong>org.springframework.jdbc.core.simple.SimpleJdbcTemplate</strong>, and
+		The JDBC Repository implementations are located inside
+		<span style="font-weight: bold; font-style: italic;">org.springframework.samples.petclinic.repository.jdbc</span>.
+		They use
+		<strong>org.springframework.jdbc.core.JdbcTemplate</strong>, and
 		<strong>org.springframework.jdbc.core.simple.SimpleJdbcInsert</strong>.
 		It also takes advantage of classes like
 		<strong>org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource</strong> and
 		<strong>org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper</strong>
 		which provide automatic mapping between JavaBean properties and JDBC
-		parameters or query results. SimpleJdbcClinic is a rewrite of the
-		AbstractJdbcClinic which was the base class for JDBC implementations of
-		the Clinic interface for Spring 2.0.
+		parameters or query results. 
 	</p>
 
 	<p>
@@ -499,30 +470,20 @@
 		that can be used for local transactions.
 	</p>
 
-	<h3>Hibernate 3 Clinic Implementation</h3>
+	<h3>Java Persistence API (JPA) Repository Implementations</h3>
 	<p>
-		The Hibernate 3 implementation of the <span style="font-weight: bold;">Clinic</span>
-		interface is
-		<span style="font-weight: bold; font-style: italic;">org.springframework.samples.petclinic.hibernate.HibernateClinic</span>.
-		To simplify using Hibernate, Spring provides the
-		<span style="font-weight: bold;">org.springframework.orm.hibernate3.LocalSessionFactoryBean</span>.
-		The Hibernate configuration is provided by the file <span style="font-style: italic;">src/main/resources/petclinic.hbm.xml</span>.
-	</p>
-
-	<h3>Java Persistence API (JPA) Clinic Implementation</h3>
-	<p>
-		The JPA implementation of the <span style="font-weight: bold;">Clinic</span>
-		interface is
-		<span style="font-weight: bold; font-style: italic;">org.springframework.samples.petclinic.jpa.JpaClinicImpl</span>,
-		which is based on native JPA usage combined with Spring's
+		The JPA Repository implementations are located inside
+		<span style="font-weight: bold; font-style: italic;">org.springframework.samples.petclinic.repository.jpa</span>.
+		They are based on native JPA usage combined with Spring's
 		<span style="font-weight: bold;">@Repository</span> and
 		<span style="font-weight: bold;">@Transactional</span> annotations but
-		otherwise has no dependencies on any Spring API's.
+		otherwise have no dependencies on any Spring API's.
 		To simplify JPA usage, Spring provides (among other classes) the
 		<span style="font-weight: bold;">org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean</span>.
 		The JPA configuration is provided by
 		<span style="font-style: italic;">src/main/resources/META-INF/orm.xml</span> and
 		<span style="font-style: italic;"> src/main/resources/META-INF/persistence.xml.</span>
+		The JPA implementation used by Petclinic is Hibernate.
 	</p>
 
 	<h3>ApplicationContext</h3>
@@ -533,7 +494,7 @@
 		constitute the <span style="font-weight: bold;">Business/Persistence
 		Layer</span> of PetClinic. The following beans are defined in all 3
 		versions (1 per access strategy) of the PetClinic
-		<span style="font-style: italic;">src/main/webapp/WEB-INF/applicationContext-*.xml</span>
+		<span style="font-style: italic;">src/main/resources/spring/applicationContext-*.xml</span>
 		file:
 	</p>
 
@@ -545,7 +506,7 @@
 		properties file, in this case, JDBC-related settings for the
 		<span style="font-weight: bold; font-style: italic;">dataSource</span> bean
 		described below
-		(see <span style="font-weight: bold; font-style: italic;">src/main/resources/jdbc.properties</span>).
+		(see <span style="font-weight: bold; font-style: italic;">src/main/resources/spring/jdbc.properties</span>).
 	  </li>
 	  <li><span style="font-weight: bold; font-style: italic;">dataSource</span>,
 		which is a singleton bean that defines the implementation of the source
