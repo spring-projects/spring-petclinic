@@ -62,7 +62,7 @@
 	
 
 
-	<beans profile="jpa">
+	<beans profile="jpa,spring-data-jpa">
 		<!-- JPA EntityManagerFactory -->
 		<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
 				p:dataSource-ref="dataSource">
@@ -109,7 +109,7 @@
 	
 	</beans>
 	
-	<beans profile="plain-jpa">
+	<beans profile="jpa">
 		<!--
 			Will automatically be transactional due to @Transactional.
 			EntityManager will be auto-injected due to @PersistenceContext.
