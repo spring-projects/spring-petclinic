@@ -17,10 +17,11 @@
 	
 	 <context-param> 
 	    <param-name>spring.profiles.active</param-name>
-	    <param-value>jdbc</param-value>
+	    <param-value>jpa</param-value>
 	    <!-- you can replace the above param with:
-	    	<param-value>jpa,plain-jpa</param-value> (in the case of plain JPA)
-	    	<param-value>jpa,spring-data</param-value> (in the case of Spring Data JPA)
+	    	<param-value>jdbc</param-value>
+	    	<param-value>jpa</param-value> (in the case of plain JPA)
+	    	<param-value>spring-data-jpa</param-value> (in the case of Spring Data JPA)
 	     -->
 	  </context-param>
 
