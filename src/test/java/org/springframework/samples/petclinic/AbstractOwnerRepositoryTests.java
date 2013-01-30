@@ -97,22 +97,13 @@ public abstract class AbstractOwnerRepositoryTests {
 	}
 
 	@Test @Transactional
-	public void findOwner() {
-		Owner o1 = this.ownerRepository.findById(1);
-		assertTrue(o1.getLastName().startsWith("Franklin"));
-		Owner o10 = this.ownerRepository.findById(10);
-		assertEquals("Carlos", o10.getFirstName());
+	public void findSingleOwner() {
+		Owner owner1 = this.ownerRepository.findById(1);
+		assertTrue(owner1.getLastName().startsWith("Franklin"));
+		Owner owner10 = this.ownerRepository.findById(10);
+		assertEquals("Carlos", owner10.getFirstName());
 
-		// XXX: Add programmatic support for ending transactions with the
-		// TestContext Framework.
-
-		// Check lazy loading, by ending the transaction:
-		// endTransaction();
-
-		// Now Owners are "disconnected" from the data store.
-		// We might need to touch this collection if we switched to lazy loading
-		// in mapping files, but this test would pick this up.
-		o1.getPets();
+		assertEquals(owner1.getPets().size(), 1);
 	}
 
 	@Test @Transactional

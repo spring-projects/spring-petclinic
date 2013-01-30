@@ -90,17 +90,16 @@ public abstract class AbstractVisitRepositoryTests {
 
 	@Test  @Transactional
 	public void insertVisit() {
-		Pet p7 = this.petRepository.findById(7);
-		int found = p7.getVisits().size();
+		Pet pet7 = this.petRepository.findById(7);
+		int found = pet7.getVisits().size();
 		Visit visit = new Visit();
-		p7.addVisit(visit);
+		pet7.addVisit(visit);
 		visit.setDescription("test");
 		// both storeVisit and storePet are necessary to cover all ORM tools
 		this.visitRepository.save(visit);
-		this.petRepository.save(p7);
-		// assertTrue(!visit.isNew()); -- NOT TRUE FOR TOPLINK (before commit)
-		p7 = this.petRepository.findById(7);
-		assertEquals(found + 1, p7.getVisits().size());
+		this.petRepository.save(pet7);
+		pet7 = this.petRepository.findById(7);
+		assertEquals(found + 1, pet7.getVisits().size());
 	}
 
 }

@@ -97,51 +97,51 @@ public abstract class AbstractPetRepositoryTests {
 	public void getPetTypes() {
 		Collection<PetType> petTypes = this.petRepository.findPetTypes();
 		
-		PetType t1 = EntityUtils.getById(petTypes, PetType.class, 1);
-		assertEquals("cat", t1.getName());
-		PetType t4 = EntityUtils.getById(petTypes, PetType.class, 4);
-		assertEquals("snake", t4.getName());
+		PetType petType1 = EntityUtils.getById(petTypes, PetType.class, 1);
+		assertEquals("cat", petType1.getName());
+		PetType petType4 = EntityUtils.getById(petTypes, PetType.class, 4);
+		assertEquals("snake", petType4.getName());
 	}
 
 	@Test
 	public void findPet() {
 		Collection<PetType> types = this.petRepository.findPetTypes();
-		Pet p7 = this.petRepository.findById(7);
-		assertTrue(p7.getName().startsWith("Samantha"));
-		assertEquals(EntityUtils.getById(types, PetType.class, 1).getId(), p7.getType().getId());
-		assertEquals("Jean", p7.getOwner().getFirstName());
-		Pet p6 = this.petRepository.findById(6);
-		assertEquals("George", p6.getName());
-		assertEquals(EntityUtils.getById(types, PetType.class, 4).getId(), p6.getType().getId());
-		assertEquals("Peter", p6.getOwner().getFirstName());
+		Pet pet7 = this.petRepository.findById(7);
+		assertTrue(pet7.getName().startsWith("Samantha"));
+		assertEquals(EntityUtils.getById(types, PetType.class, 1).getId(), pet7.getType().getId());
+		assertEquals("Jean", pet7.getOwner().getFirstName());
+		Pet pet6 = this.petRepository.findById(6);
+		assertEquals("George", pet6.getName());
+		assertEquals(EntityUtils.getById(types, PetType.class, 4).getId(), pet6.getType().getId());
+		assertEquals("Peter", pet6.getOwner().getFirstName());
 	}
 
 	@Test @Transactional
 	public void insertPet() {
-		Owner o6 = this.ownerRepository.findById(6);
-		int found = o6.getPets().size();
+		Owner owner6 = this.ownerRepository.findById(6);
+		int found = owner6.getPets().size();
 		Pet pet = new Pet();
 		pet.setName("bowser");
 		Collection<PetType> types = this.petRepository.findPetTypes();
 		pet.setType(EntityUtils.getById(types, PetType.class, 2));
 		pet.setBirthDate(new DateTime());
-		o6.addPet(pet);
-		assertEquals(found + 1, o6.getPets().size());
+		owner6.addPet(pet);
+		assertEquals(found + 1, owner6.getPets().size());
 		// both storePet and storeOwner are necessary to cover all ORM tools
 		this.petRepository.save(pet);
-		this.ownerRepository.save(o6);
-		o6 = this.ownerRepository.findById(6);
-		assertEquals(found + 1, o6.getPets().size());
+		this.ownerRepository.save(owner6);
+		owner6 = this.ownerRepository.findById(6);
+		assertEquals(found + 1, owner6.getPets().size());
 	}
 
 	@Test @Transactional
 	public void updatePet() throws Exception {
-		Pet p7 = this.petRepository.findById(7);
-		String old = p7.getName();
-		p7.setName(old + "X");
-		this.petRepository.save(p7);
-		p7 = this.petRepository.findById(7);
-		assertEquals(old + "X", p7.getName());
+		Pet pet7 = this.petRepository.findById(7);
+		String old = pet7.getName();
+		pet7.setName(old + "X");
+		this.petRepository.save(pet7);
+		pet7 = this.petRepository.findById(7);
+		assertEquals(old + "X", pet7.getName());
 	}
 
 }

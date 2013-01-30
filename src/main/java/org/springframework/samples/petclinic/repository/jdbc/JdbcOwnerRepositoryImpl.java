@@ -120,16 +120,16 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
 
 	@Transactional
 	public void save(Owner owner) throws DataAccessException {
+		BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(owner);
 		if (owner.isNew()) {
-			Number newKey = this.insertOwner.executeAndReturnKey(
-					new BeanPropertySqlParameterSource(owner));
+			Number newKey = this.insertOwner.executeAndReturnKey(parameterSource);
 			owner.setId(newKey.intValue());
 		}
 		else {
 			this.namedParameterJdbcTemplate.update(
 					"UPDATE owners SET first_name=:firstName, last_name=:lastName, address=:address, " +
 					"city=:city, telephone=:telephone WHERE id=:id",
-					new BeanPropertySqlParameterSource(owner));
+					parameterSource);
 		}
 	}
 

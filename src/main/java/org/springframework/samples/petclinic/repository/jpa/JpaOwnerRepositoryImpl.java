@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.hibernate.Hibernate;
 import org.springframework.samples.petclinic.Owner;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
 import org.springframework.stereotype.Repository;
@@ -32,13 +33,19 @@ public class JpaOwnerRepositoryImpl implements OwnerRepository {
 
 	@SuppressWarnings("unchecked")
 	public Collection<Owner> findByLastName(String lastName) {
-		Query query = this.em.createQuery("SELECT owner FROM Owner owner WHERE owner.lastName LIKE :lastName");
+		// using 'join fetch' because a single query should load both owners and pets
+		// using 'left join fetch' because it might happen that an owner does not have pets yet
+		Query query = this.em.createQuery("SELECT owner FROM Owner owner left join fetch owner.pets WHERE owner.lastName LIKE :lastName");
 		query.setParameter("lastName", lastName + "%");
 		return query.getResultList();
 	}
 
 	public Owner findById(int id) {
-		return this.em.find(Owner.class, id);
+		// using 'join fetch' because a single query should load both owners and pets
+		// using 'left join fetch' because it might happen that an owner does not have pets yet
+		Query query = this.em.createQuery("SELECT owner FROM Owner owner left join fetch owner.pets WHERE owner.id =:id");
+		query.setParameter("id", id);
+		return  (Owner) query.getSingleResult();
 	}
 
 
