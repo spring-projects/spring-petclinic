@@ -66,8 +66,7 @@ public class OwnerController {
 	
 	@RequestMapping(value = "/owners/find", method = RequestMethod.GET)
 	public String initFindForm(Model model) {
-		model.addAttribute("owner", new Owner());
-		return "owners/findOwners";
+		throw new RuntimeException("aaaaaaa");
 	}
 
 	@RequestMapping(value = "/owners", method = RequestMethod.GET)

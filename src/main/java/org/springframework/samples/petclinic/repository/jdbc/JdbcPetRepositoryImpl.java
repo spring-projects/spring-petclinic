@@ -1,13 +1,14 @@
 package org.springframework.samples.petclinic.repository.jdbc;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
@@ -35,40 +36,44 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class JdbcPetRepositoryImpl implements PetRepository {
 
-	private JdbcTemplate jdbcTemplate;
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
 	private SimpleJdbcInsert insertPet;
 	
-	@Autowired
 	private OwnerRepository ownerRepository;
 	
-	@Autowired
 	private VisitRepository visitRepository;
+	
 
 	@Autowired
-	public void init(DataSource dataSource) {
-		this.jdbcTemplate = new JdbcTemplate(dataSource);
+	public JdbcPetRepositoryImpl(DataSource dataSource, OwnerRepository ownerRepository, VisitRepository visitRepository) {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 
 		this.insertPet = new SimpleJdbcInsert(dataSource)
 			.withTableName("pets")
 			.usingGeneratedKeyColumns("id");
+		
+		this.ownerRepository = ownerRepository;
+		this.visitRepository = visitRepository;
 	}
 
 	public List<PetType> findPetTypes() throws DataAccessException {
-		return this.jdbcTemplate.query(
+		Map<String, Object> params = new HashMap<String,Object>();
+		return this.namedParameterJdbcTemplate.query(
 				"SELECT id, name FROM types ORDER BY name",
+				params,
 				ParameterizedBeanPropertyRowMapper.newInstance(PetType.class));
 	}
 
 	public Pet findById(int id) throws DataAccessException {
 		JdbcPet pet;
 		try {
-			pet = this.jdbcTemplate.queryForObject(
-					"SELECT id, name, birth_date, type_id, owner_id FROM pets WHERE id=?",
-					new JdbcPetRowMapper(),
-					id);
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("id", id);
+			pet = this.namedParameterJdbcTemplate.queryForObject(
+					"SELECT id, name, birth_date, type_id, owner_id FROM pets WHERE id=:id",
+					params,
+					new JdbcPetRowMapper());
 		}
 		catch (EmptyResultDataAccessException ex) {
 			throw new ObjectRetrievalFailureException(Pet.class, new Integer(id));

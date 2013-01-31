@@ -39,7 +39,7 @@ public class JdbcVisitRepositoryImpl implements VisitRepository {
 	private SimpleJdbcInsert insertVisit;
 
 	@Autowired
-	public void init(DataSource dataSource) {
+	public JdbcVisitRepositoryImpl(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 
 		this.insertVisit = new SimpleJdbcInsert(dataSource)

@@ -94,6 +94,7 @@
 	-->
 	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
 		<property name="defaultErrorView" value="exception"/>
+		<property name="warnLogCategory" value="warn"/>
 	</bean>
 
 
