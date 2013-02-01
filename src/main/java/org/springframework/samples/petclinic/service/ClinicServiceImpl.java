@@ -19,17 +19,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ClinicServiceImpl implements ClinicService {
 	
-	@Autowired
 	private PetRepository petRepository;
-	
-	@Autowired
 	private VetRepository vetRepository;
-	
+	private OwnerRepository ownerRepository;	
+	private VisitRepository visitRepository;	
+
 	@Autowired
-	private OwnerRepository ownerRepository;
-	
-	@Autowired
-	private VisitRepository visitRepository;
+	public ClinicServiceImpl(PetRepository petRepository, VetRepository vetRepository, OwnerRepository ownerRepository, VisitRepository visitRepository) {
+		this.petRepository = petRepository;
+		this.vetRepository = vetRepository;
+		this.ownerRepository = ownerRepository;
+		this.visitRepository = visitRepository;
+	}
 
 	@Transactional(readOnly=true)
 	public Collection<PetType> findPetTypes() throws DataAccessException {

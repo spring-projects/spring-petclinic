@@ -6,7 +6,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.hibernate.Hibernate;
 import org.springframework.samples.petclinic.Owner;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
 import org.springframework.stereotype.Repository;
@@ -29,7 +28,7 @@ public class JpaOwnerRepositoryImpl implements OwnerRepository {
 
 	@PersistenceContext
 	private EntityManager em;
-
+	
 
 	@SuppressWarnings("unchecked")
 	public Collection<Owner> findByLastName(String lastName) {

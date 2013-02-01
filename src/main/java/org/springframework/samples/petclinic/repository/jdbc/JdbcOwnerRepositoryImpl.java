@@ -41,8 +41,6 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
 
 	private VisitRepository visitRepository;
 	
-	
-	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
 	private SimpleJdbcInsert insertOwner;
@@ -72,9 +70,9 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
 	@Transactional(readOnly = true)
 	public Collection<Owner> findByLastName(String lastName) throws DataAccessException {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("lastName", lastName + "%");
+		params.put("lastName", lastName);
 		List<Owner> owners = this.namedParameterJdbcTemplate.query(
-				"SELECT id, first_name, last_name, address, city, telephone FROM owners WHERE last_name like :lastName",
+				"SELECT id, first_name, last_name, address, city, telephone FROM owners WHERE last_name like :lastName%",
 				params, 
 				ParameterizedBeanPropertyRowMapper.newInstance(Owner.class)
 				);
