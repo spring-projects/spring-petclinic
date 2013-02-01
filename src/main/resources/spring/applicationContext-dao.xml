@@ -71,11 +71,7 @@
 						p:database="${jpa.database}" p:showSql="${jpa.showSql}"/>			
 			</property>
 			<property name="persistenceUnitName" value="petclinic" />
-			<property name="packagesToScan">
-				<list>
-					<value>org/springframework/samples/petclinic</value>
-				</list>
-			</property>
+			<property name="packagesToScan" value="org/springframework/samples/petclinic" />
 		</bean>
 	
 		<!-- Transaction manager for a single JPA EntityManagerFactory (alternative to JTA) -->
