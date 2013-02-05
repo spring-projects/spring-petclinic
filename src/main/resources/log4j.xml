@@ -12,7 +12,7 @@
 	</appender>
 
 	<logger name="org.springframework.web">
-		<level value="info" />
+		<level value="debug" />
 	</logger>
 	
 	<logger name="org.springframework.jdbc">
@@ -24,7 +24,7 @@
 	</logger>
 	
 	<logger name="org.hibernate.validator">
-		<level value="trace" />
+		<level value="debug" />
 	</logger>
 	
 	<!-- Root Logger -->

@@ -22,41 +22,56 @@
 		</h2>
 		<form:form modelAttribute="owner" method="${method}" class="form-horizontal" id="add-owner-form">
 			<fieldset>
-					<div class="control-group" id="firstName">
-						<label class="control-label">First Name </label>
-						<div class="controls">
-							<form:input path="firstName" />
-							<span class="help-inline"><form:errors path="firstName" /></span>
+					<spring:bind path="firstName">
+						<c:set var="cssGroup" value="control-group ${status.error ? 'error' : '' }"/>
+						<div class="${cssGroup}" id="${firstName}">
+							<label class="control-label">First Name</label>
+							<div class="controls">
+								<form:input path="firstName"/> 
+								<span class="help-inline">${status.errorMessage}</span>
+							</div>
 						</div>
-					</div>
-					<div class="control-group" id="lastName">
-						<label class="control-label">Last Name </label>
-						<div class="controls">
-							<form:input path="lastName" />
-							<span class="help-inline"><form:errors path="lastName" /></span>
+					</spring:bind>
+					<spring:bind path="firstName">
+						<c:set var="cssGroup" value="control-group ${status.error ? 'error' : '' }"/>
+						<div class="${cssGroup}" id="${lastName}">
+							<label class="control-label">Last Name</label>
+							<div class="controls">
+								<form:input path="lastName"/> 
+								<span class="help-inline">${status.errorMessage}</span>
+							</div>
 						</div>
-					</div>
-					<div class="control-group" id="address">
-						<label class="control-label">Address </label>
-						<div class="controls">
-							<form:input path="address" />
-							<span class="help-inline"><form:errors path="address" /></span>
+					</spring:bind>	
+					<spring:bind path="address">
+						<c:set var="cssGroup" value="control-group ${status.error ? 'error' : '' }"/>
+						<div class="${cssGroup}" id="${address}">
+							<label class="control-label">Address</label>
+							<div class="controls">
+								<form:input path="address"/> 
+								<span class="help-inline">${status.errorMessage}</span>
+							</div>
 						</div>
-					</div>
-					<div class="control-group" id="city">
-						<label class="control-label">City </label>
-						<div class="controls">
-							<form:input path="city" />
-							<span class="help-inline"><form:errors path="city" /></span>
+					</spring:bind>	
+					<spring:bind path="city">
+						<c:set var="cssGroup" value="control-group ${status.error ? 'error' : '' }"/>
+						<div class="${cssGroup}" id="${city}">
+							<label class="control-label">City</label>
+							<div class="controls">
+								<form:input path="city"/> 
+								<span class="help-inline">${status.errorMessage}</span>
+							</div>
 						</div>
-					</div>
-					<div class="control-group" id="telephone">
-						<label class="control-label">Telephone </label>
-						<div class="controls">
-							<form:input path="telephone" />
-							<span class="help-inline"><form:errors path="telephone" /></span>
+					</spring:bind>	
+					<spring:bind path="telephone">
+						<c:set var="cssGroup" value="control-group ${status.error ? 'error' : '' }"/>
+						<div class="${cssGroup}" id="${telephone}">
+							<label class="control-label">Telephone</label>
+							<div class="controls">
+								<form:input path="telephone"/> 
+								<span class="help-inline">${status.errorMessage}</span>
+							</div>
 						</div>
-					</div>
+					</spring:bind>	
 					<div class="form-actions">
 						<c:choose>
 				          <c:when test="${owner['new']}">
