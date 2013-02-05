@@ -11,3 +11,7 @@
 input[type="text"] {
 	height: 25px;
 }
+
+.navbar .nav > li > a {
+	color: #000000;
+}
