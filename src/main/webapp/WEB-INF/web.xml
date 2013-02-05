@@ -17,7 +17,7 @@
 	
 	 <context-param> 
 	    <param-name>spring.profiles.active</param-name>
-	    <param-value>jpa</param-value>
+	    <param-value>jdbc</param-value>
 	    <!-- you can replace the above param with:
 	    	<param-value>jdbc</param-value>
 	    	<param-value>jpa</param-value> (in the case of plain JPA)
