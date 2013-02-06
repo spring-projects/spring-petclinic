@@ -8,13 +8,19 @@
 
 <jsp:include page="../fragments/headTag.jsp"/>
 
+
 <body>
+	<script>
+		$(function() {
+			$("#date").datepicker({ dateFormat: 'yy/mm/dd'});
+		});
+	</script>
   	<div class="container">
 		<jsp:include page="../fragments/bodyHeader.jsp"/>
 		<h2><c:if test="${visit['new']}">New </c:if>Visit:</h2>
 		
 		<form:form modelAttribute="visit">
-		  <b>Pet:</b>
+		  <b>Pet</b>
 		  <table  class="table table-striped">
 		    <thead>
 		    	<tr>
@@ -26,7 +32,7 @@
 		    </thead>
 		    <tr>
 		      <td><c:out value="${visit.pet.name}" /></td>
-		      <td><joda:format value="${visit.pet.birthDate}" pattern="yyyy-MM-dd"/></td>
+		      <td><joda:format value="${visit.pet.birthDate}" pattern="yyyy/MM/dd"/></td>
 		      <td><c:out value="${visit.pet.type.name}" /></td>
 		      <td><c:out value="${visit.pet.owner.firstName} ${visit.pet.owner.lastName}" /></td>
 		    </tr>
@@ -39,7 +45,7 @@
 		        <br/><form:errors path="date" cssClass="errors"/>
 		      </th>
 		      <td>
-		        <form:input path="date" size="10" maxlength="10"/> (yyyy-mm-dd)
+		        <form:input path="date" size="10" maxlength="10"/>
 		      </td>
 		    <tr/>
 		    <tr>
@@ -70,7 +76,7 @@
 		  <c:forEach var="visit" items="${visit.pet.visits}">
 		    <c:if test="${!visit['new']}">
 		      <tr>
-		        <td><joda:format value="${visit.date}" pattern="yyyy-MM-dd"/></td>
+		        <td><joda:format value="${visit.date}" pattern="yyyy/MM/dd"/></td>
 		        <td><c:out value="${visit.description}" /></td>
 		      </tr>
 		    </c:if>

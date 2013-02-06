@@ -10,6 +10,7 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * Simple JavaBean domain object representing a visit.
@@ -22,6 +23,7 @@ public class Visit extends BaseEntity {
 	/** Holds value of property date. */
 	@Column(name="visit_date")
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@DateTimeFormat(pattern="yyyy/MM/dd")
 	private DateTime date;
 
 	/** Holds value of property description. */
