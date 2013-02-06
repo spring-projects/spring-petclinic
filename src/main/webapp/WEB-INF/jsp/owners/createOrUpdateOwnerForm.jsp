@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 
 <html lang="en">
@@ -21,68 +22,22 @@
 			<c:if test="${owner['new']}">New </c:if> Owner
 		</h2>
 		<form:form modelAttribute="owner" method="${method}" class="form-horizontal" id="add-owner-form">
-			<fieldset>
-					<spring:bind path="firstName">
-						<c:set var="cssGroup" value="control-group ${status.error ? 'error' : '' }"/>
-						<div class="${cssGroup}" id="${firstName}">
-							<label class="control-label">First Name</label>
-							<div class="controls">
-								<form:input path="firstName"/> 
-								<span class="help-inline">${status.errorMessage}</span>
-							</div>
-						</div>
-					</spring:bind>
-					<spring:bind path="firstName">
-						<c:set var="cssGroup" value="control-group ${status.error ? 'error' : '' }"/>
-						<div class="${cssGroup}" id="${lastName}">
-							<label class="control-label">Last Name</label>
-							<div class="controls">
-								<form:input path="lastName"/> 
-								<span class="help-inline">${status.errorMessage}</span>
-							</div>
-						</div>
-					</spring:bind>	
-					<spring:bind path="address">
-						<c:set var="cssGroup" value="control-group ${status.error ? 'error' : '' }"/>
-						<div class="${cssGroup}" id="${address}">
-							<label class="control-label">Address</label>
-							<div class="controls">
-								<form:input path="address"/> 
-								<span class="help-inline">${status.errorMessage}</span>
-							</div>
-						</div>
-					</spring:bind>	
-					<spring:bind path="city">
-						<c:set var="cssGroup" value="control-group ${status.error ? 'error' : '' }"/>
-						<div class="${cssGroup}" id="${city}">
-							<label class="control-label">City</label>
-							<div class="controls">
-								<form:input path="city"/> 
-								<span class="help-inline">${status.errorMessage}</span>
-							</div>
-						</div>
-					</spring:bind>	
-					<spring:bind path="telephone">
-						<c:set var="cssGroup" value="control-group ${status.error ? 'error' : '' }"/>
-						<div class="${cssGroup}" id="${telephone}">
-							<label class="control-label">Telephone</label>
-							<div class="controls">
-								<form:input path="telephone"/> 
-								<span class="help-inline">${status.errorMessage}</span>
-							</div>
-						</div>
-					</spring:bind>	
-					<div class="form-actions">
-						<c:choose>
-				          <c:when test="${owner['new']}">
-				            <button type="submit">Add Owner</button>
-				          </c:when>
-				          <c:otherwise>
-				            <button type="submit">Update Owner</button>
-				          </c:otherwise>
-				        </c:choose>
-					</div>
-				</fieldset>
+			<petclinic:inputField label="First Name" name="firstName" />
+			<petclinic:inputField label="Last Name" name="lastName" />
+			<petclinic:inputField label="Address" name="address" />
+			<petclinic:inputField label="City" name="city" />
+			<petclinic:inputField label="Telephone" name="telephone" />
+
+			<div class="form-actions">
+				<c:choose>
+		          <c:when test="${owner['new']}">
+		            <button type="submit">Add Owner</button>
+		          </c:when>
+		          <c:otherwise>
+		            <button type="submit">Update Owner</button>
+		          </c:otherwise>
+		        </c:choose>
+			</div>
 		</form:form>
   	</div>
 	<jsp:include page="../fragments/footer.jsp"/>

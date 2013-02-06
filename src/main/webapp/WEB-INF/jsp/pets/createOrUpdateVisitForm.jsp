@@ -17,9 +17,8 @@
 	</script>
   	<div class="container">
 		<jsp:include page="../fragments/bodyHeader.jsp"/>
-		<h2><c:if test="${visit['new']}">New </c:if>Visit:</h2>
+		<h2><c:if test="${visit['new']}">New </c:if>Visit</h2>
 		
-		<form:form modelAttribute="visit">
 		  <b>Pet</b>
 		  <table  class="table table-striped">
 		    <thead>
@@ -38,32 +37,25 @@
 		    </tr>
 		  </table>
 		
-		  <table class="table">
-		    <tr>
-		      <th>
-		        Date
-		        <br/><form:errors path="date" cssClass="errors"/>
-		      </th>
-		      <td>
-		        <form:input path="date" size="10" maxlength="10"/>
-		      </td>
-		    <tr/>
-		    <tr>
-		      <th valign="top">
-		        Description
-		        <br/><form:errors path="description" cssClass="errors"/>
-		      </th>
-		      <td>
-		        <form:textarea path="description" rows="10" cols="25"/>
-		      </td>
-		    </tr>
-		    <tr>
-		      <td colspan="2">
-		        <input type="hidden" name="petId" value="${visit.pet.id}"/>
-		        <p class="submit"><input type="submit" value="Add Visit"/></p>
-		      </td>
-		    </tr>
-		  </table>
+		<form:form modelAttribute="visit">
+			<div class="control-group">
+				<label class="control-label">Date </label>
+				<div class="controls">
+					<form:input path="date" />
+					<span class="help-inline"><form:errors path="date" /></span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">Description </label>
+				<div class="controls">
+					<form:input path="description" />
+					<span class="help-inline"><form:errors path="description" /></span>
+				</div>
+			</div>
+			<div class="form-actions">
+				<input type="hidden" name="petId" value="${visit.pet.id}"/>
+				<button type="submit">Add Visit</button>
+			</div>
 		</form:form>
 		
 		<br/>

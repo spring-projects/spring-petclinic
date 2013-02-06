@@ -5,10 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Type;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -27,7 +26,7 @@ public class Visit extends BaseEntity {
 	private DateTime date;
 
 	/** Holds value of property description. */
-	@NotNull @Size(min = 1)
+	@NotEmpty
 	@Column(name="description")
 	private String description;
 

@@ -1,6 +1,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 
 <html lang="en">
@@ -36,20 +37,8 @@
 					
 					<c:out value="${pet.owner.firstName} ${pet.owner.lastName}"/>
 				</div>
-				<div class="control-group">
-					<label class="control-label">Name </label>
-					<div class="controls">
-						<form:input path="name" />
-						<span class="help-inline"><form:errors path="name" /></span>
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label">Birth Date</label>
-					<div class="controls">
-						<form:input path="birthDate" />
-						<span class="help-inline"><form:errors path="birthDate" /></span>
-					</div>
-				</div>
+				<petclinic:inputField label="Name" name="name" />
+				<petclinic:inputField label="Birth Date" name="birthDate" />
 				<div class="control-group">
 					<label class="control-label">Type </label>
 					<form:select path="type" items="${types}" size="5"/>
