@@ -11,21 +11,6 @@
 		</layout>
 	</appender>
 
-	<logger name="org.springframework.web">
-		<level value="debug" />
-	</logger>
-	
-	<logger name="org.springframework.jdbc">
-		<level value="info" />
-	</logger>
-	
-	<logger name="javax.validation">
-		<level value="debug" />
-	</logger>
-	
-	<logger name="org.hibernate.validator">
-		<level value="debug" />
-	</logger>
 	
 	<!-- Root Logger -->
 	<root>

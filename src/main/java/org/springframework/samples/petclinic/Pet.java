@@ -19,6 +19,7 @@ import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * Simple JavaBean business object representing a pet.
@@ -32,6 +33,7 @@ public class Pet extends NamedEntity {
 
 	@Column(name="birth_date")
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@DateTimeFormat(pattern="yyyy/MM/dd")
 	private DateTime birthDate;
 
 	@ManyToOne
