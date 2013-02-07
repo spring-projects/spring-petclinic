@@ -56,7 +56,7 @@
 	<!-- 	- The AtomView rendering a Atom feed of the visits  -->	 
 	<bean id="visitList" class="org.springframework.samples.petclinic.web.VisitsAtomView"/>
 
-	<bean id="vets/vetsList" class="org.springframework.web.servlet.view.xml.MarshallingView">
+	<bean id="vets/vetList" class="org.springframework.web.servlet.view.xml.MarshallingView">
 		<property name="marshaller" ref="marshaller"/>
 	</bean>
 

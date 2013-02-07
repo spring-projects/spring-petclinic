@@ -24,10 +24,10 @@
 			  <tbody>
 				  <c:forEach var="vet" items="${vets.vetList}">
 				    <tr>
-				      <td>${vet.firstName} ${vet.lastName}</td>
+				      <td><c:out value="${vet.firstName} ${vet.lastName}" /></td>
 				      <td>
 					    <c:forEach var="specialty" items="${vet.specialties}">
-				          ${specialty.name}
+				          <c:out value="${specialty.name}" />
 				        </c:forEach>
 				        <c:if test="${vet.nrOfSpecialties == 0}">none</c:if>
 				      </td>

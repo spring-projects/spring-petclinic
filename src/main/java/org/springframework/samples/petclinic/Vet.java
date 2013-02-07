@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -27,7 +28,8 @@ import org.springframework.beans.support.PropertyComparator;
 @Entity @Table(name="vets")
 public class Vet extends Person {
 
-	@ManyToMany @JoinTable (name="vet_specialties",joinColumns = @JoinColumn(name = "vet_id"), 
+	@ManyToMany(fetch=FetchType.EAGER) 
+	@JoinTable (name="vet_specialties",joinColumns = @JoinColumn(name = "vet_id"), 
 										inverseJoinColumns= @JoinColumn(name = "specialty_id"))
 	private Set<Specialty> specialties;
 
