@@ -1,38 +1,21 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" 
+id="WebApp_ID" version="2.5">
 
 	<display-name>Spring PetClinic</display-name>
-
 	<description>Spring PetClinic sample application</description>
-
-	<!--
-		Key of the system property that should specify the root directory of this
-		web app. Applied by WebAppRootListener or Log4jConfigListener.
-	-->
-	<context-param>
-		<param-name>webAppRootKey</param-name>
-		<param-value>petclinic.root</param-value>
-	</context-param>
 	
 	 <context-param> 
 	    <param-name>spring.profiles.active</param-name>
 	    <param-value>jdbc</param-value>
-	    <!-- you can replace the above param with:
+	    <!-- Available profiles:
 	    	<param-value>jdbc</param-value>
 	    	<param-value>jpa</param-value> (in the case of plain JPA)
 	    	<param-value>spring-data-jpa</param-value> (in the case of Spring Data JPA)
 	     -->
 	  </context-param>
-
-	<!--
-		Location of the Log4J config file, for initialization and refresh checks.
-		Applied by Log4jConfigListener.
-	-->
-	<context-param>
-		<param-name>log4jConfigLocation</param-name>
-		<param-value>/WEB-INF/classes/log4j.xml</param-value>
-	</context-param>
 
 	<!--
 		- Location of the XML file that defines the root application context.
@@ -41,66 +24,33 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath:spring/applicationContext-dao.xml</param-value>
-		<!--
-			To use the JPA variant above, you will need to enable Spring load-time
-			weaving in your server environment. Out of the box, Spring will try to
-			detect the running environment and use the appropriate weaver but if that
-			fails, one must enable one by hand or use the VM-wide weaver.
-			See PetClinic's readme and/or Spring's JPA documentation for more information.
-		-->
 	</context-param>
 	
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>	
-
-	<!--
-		- Configures Log4J for this web app.
-		- As this context specifies a context-param "log4jConfigLocation", its file path
-		- is used to load the Log4J configuration, including periodic refresh checks.
-		-
-		- Would fall back to default Log4J initialization (non-refreshing) if no special
-		- context-params are given.
-		-
-		- Exports a "web app root key", i.e. a system property that specifies the root
-		- directory of this web app, for usage in log file paths.
-		- This web app specifies "petclinic.root" (see log4j.properties file).
-	-->
-	<!-- Leave the listener commented-out if using JBoss -->
-	<!--
-	<listener>
-		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
-	</listener>
-	-->
 	
 	<!--
 		- Servlet that dispatches request to registered handlers (Controller implementations).
-		- Has its own application context, by default defined in "{servlet-name}-servlet.xml",
-		- i.e. "petclinic-servlet.xml".
-		-
-		- A web app can contain any number of such servlets.
-		- Note that this web app has a shared root application context, serving as parent
-		- of all DispatcherServlet contexts.
 	-->
 	<servlet>
 		<servlet-name>petclinic</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/mvc-core-config.xml</param-value>
+		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 
-	<!--
-		- Maps the petclinic dispatcher to "*.do". All handler mappings in
-		- petclinic-servlet.xml will by default be applied to this subpath.
-		- If a mapping isn't a /* subpath, the handler mappings are considered
-		- relative to the web app root.
-		-
-		- NOTE: A single dispatcher can be mapped to multiple paths, like any servlet.
-	-->
 	<servlet-mapping>
 		<servlet-name>petclinic</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 
+	<!-- used so we can use forms of method type 'PUT' and 'DELETE' 
+	see here: http://static.springsource.org/spring/docs/current/spring-framework-reference/html/view.html#rest-method-conversion
+	-->
 	<filter>
 		<filter-name>httpMethodFilter</filter-name>
 		<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
@@ -110,9 +60,5 @@
 		<filter-name>httpMethodFilter</filter-name>
 		<servlet-name>petclinic</servlet-name>
 	</filter-mapping>
-
-	<session-config>
-		<session-timeout>10</session-timeout>
-	</session-config>
 	
 </web-app>

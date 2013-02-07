@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	- DispatcherServlet application context for PetClinic's web tier.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:oxm="http://www.springframework.org/schema/oxm" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+	<!--
+		- This view resolver delegates to the InternalResourceViewResolver and BeanNameViewResolver,
+		- and uses the requested media type to pick a matching view. When the media type is 'text/html',
+		- it will delegate to the InternalResourceViewResolver's JstlView, otherwise to the
+		- BeanNameViewResolver. Note the use of the expression language to refer to the contentType
+		- property of the vets view bean, setting it to 'application/vnd.springsource.samples.petclinic+xml'.
+	-->
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="contentNegotiationManager">
+            <bean class="org.springframework.web.accept.ContentNegotiationManager">
+                <constructor-arg>
+                    <bean class="org.springframework.web.accept.PathExtensionContentNegotiationStrategy">
+                        <constructor-arg>
+                            <map>
+				 				<entry key="xml" value="application/vnd.springsource.samples.petclinic+xml"/>
+								<entry key="atom" value="#{visitsList.contentType}"/>
+                           </map>
+                        </constructor-arg>
+                    </bean>
+                </constructor-arg>
+            </bean>
+        </property>
+		<property name="order" value="0"/>
+	</bean>
+	
+	<!--
+		- The BeanNameViewResolver is used to pick up the visits view name (below).
+		- It has the order property set to 2, which means that this will
+		- be the first view resolver to be used after the delegating content
+		- negotiating view resolver.
+	 -->
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" p:order="1"/>
+	<!--
+
+		- This bean configures the 'prefix' and 'suffix' properties of
+		- InternalResourceViewResolver, which resolves logical view names
+		- returned by Controllers. For example, a logical view name of "vets"
+		- will be mapped to "/WEB-INF/jsp/vets.jsp".
+	-->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:prefix="/WEB-INF/jsp/"
+			p:suffix=".jsp" p:order="2"/>
+	
+	<!-- 	- The AtomView rendering a Atom feed of the visits  -->	 
+	<bean id="visitsList" class="org.springframework.samples.petclinic.web.VisitsAtomView"/>
+
+	<bean id="vets/vetsList" class="org.springframework.web.servlet.view.xml.MarshallingView">
+		<property name="marshaller" ref="marshaller"/>
+	</bean>
+
+	<oxm:jaxb2-marshaller id="marshaller">
+		<oxm:class-to-be-bound name="org.springframework.samples.petclinic.Vets"/>
+	</oxm:jaxb2-marshaller>
+
+</beans>
