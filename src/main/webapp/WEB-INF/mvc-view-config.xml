@@ -26,7 +26,7 @@
                         <constructor-arg>
                             <map>
 				 				<entry key="xml" value="application/vnd.springsource.samples.petclinic+xml"/>
-								<entry key="atom" value="#{visitsList.contentType}"/>
+								<entry key="atom" value="#{visitList.contentType}"/>
                            </map>
                         </constructor-arg>
                     </bean>
@@ -54,7 +54,7 @@
 			p:suffix=".jsp" p:order="2"/>
 	
 	<!-- 	- The AtomView rendering a Atom feed of the visits  -->	 
-	<bean id="visitsList" class="org.springframework.samples.petclinic.web.VisitsAtomView"/>
+	<bean id="visitList" class="org.springframework.samples.petclinic.web.VisitsAtomView"/>
 
 	<bean id="vets/vetsList" class="org.springframework.web.servlet.view.xml.MarshallingView">
 		<property name="marshaller" ref="marshaller"/>

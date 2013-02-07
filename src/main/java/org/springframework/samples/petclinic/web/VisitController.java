@@ -73,7 +73,7 @@ public class VisitController {
 	 */
 	@RequestMapping(value="/owners/*/pets/{petId}/visits", method=RequestMethod.GET)
 	public ModelAndView showVisits(@PathVariable int petId) {
-		ModelAndView mav = new ModelAndView("visits");
+		ModelAndView mav = new ModelAndView("visitList");
 		mav.addObject("visits", this.clinicService.findPetById(petId).getVisits());
 		return mav;
 	}
