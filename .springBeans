@@ -11,7 +11,6 @@
 		<config>src/main/webapp/WEB-INF/mvc-view-config.xml</config>
 		<config>src/main/resources/spring/dao-config.xml</config>
 		<config>src/main/resources/spring/datasource-config.xml</config>
-		<config>src/main/resources/spring/service-config.xml</config>
 	</configs>
 	<configSets>
 		<configSet>
@@ -24,7 +23,6 @@
 				<config>src/main/resources/spring/dao-config.xml</config>
 				<config>src/main/resources/spring/datasource-config.xml</config>
 				<config>src/main/resources/spring/jmx-aop-config.xml</config>
-				<config>src/main/resources/spring/service-config.xml</config>
 			</configs>
 			<profiles>
 			</profiles>

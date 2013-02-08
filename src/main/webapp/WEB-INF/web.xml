@@ -23,7 +23,7 @@ id="WebApp_ID" version="2.5">
 	-->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:spring/dao-config.xml, classpath:spring/service-config.xml, classpath:spring/jmx-aop-config.xml</param-value>
+		<param-value>classpath:spring/dao-config.xml, classpath:spring/jmx-aop-config.xml</param-value>
 	</context-param>
 	
 	<listener>
