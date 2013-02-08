@@ -3,19 +3,17 @@
 	Application context definition for PetClinic on JPA.
 -->
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:p="http://www.springframework.org/schema/p" xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
-	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.1.xsd
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<!-- ========================= RESOURCE DEFINITIONS ========================= -->
 
 	<!-- import the dataSource definition -->
-	<import resource="applicationContext-dataSource.xml"/> 
+	<import resource="datasource-config.xml"/> 
 
 
 	<!-- Configurer that replaces ${...} placeholders with values from a properties file -->
@@ -39,28 +37,6 @@
 		for mode="aspectj"/ see SPR-6392
 	-->
 	<tx:annotation-driven/>
-
-	<!--
-		Simply defining this bean will cause requests to owner names to be saved.
-		This aspect is defined in petclinic.jar's META-INF/aop.xml file.
-		Note that we can dependency inject this bean like any other bean.
-	-->
-	<aop:aspectj-autoproxy>
-		<aop:include name="usageLogAspect"/>
-		<aop:include name="callMonitor"/>
-	</aop:aspectj-autoproxy>
-	<bean id="usageLogAspect" class="org.springframework.samples.petclinic.aspects.UsageLogAspect" p:historySize="300"/>
-
-	<!-- Call monitoring aspect that monitors call count and call invocation time -->
-	<bean id="callMonitor" class="org.springframework.samples.petclinic.aspects.CallMonitoringAspect"/>	
-
-	<!--
-		Exporter that exposes the Clinic DAO and the CallMonitoringAspect via JMX,
-		based on the @ManagedResource, @ManagedAttribute, and @ManagedOperation annotations.
-	--> 
-		<context:mbean-export/> 
-	
-
 
 	<beans profile="jpa,spring-data-jpa">
 		<!-- JPA EntityManagerFactory -->

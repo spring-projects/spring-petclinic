@@ -22,7 +22,7 @@ import org.springframework.samples.petclinic.Visit;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
 import org.springframework.samples.petclinic.repository.VisitRepository;
 import org.springframework.samples.petclinic.util.EntityUtils;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -36,7 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Thomas Risberg
  * @author Mark Fisher
  */
-@Service
+@Repository
 public class JdbcOwnerRepositoryImpl implements OwnerRepository {
 
 	private VisitRepository visitRepository;

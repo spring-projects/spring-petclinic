@@ -17,7 +17,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.samples.petclinic.Visit;
 import org.springframework.samples.petclinic.repository.VisitRepository;
 import org.springframework.samples.petclinic.service.ClinicService;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 /**
  * A simple JDBC-based implementation of the {@link ClinicService} interface.
@@ -31,7 +31,7 @@ import org.springframework.stereotype.Service;
  * @author Mark Fisher
  * @author Michael Isvy
  */
-@Service
+@Repository
 public class JdbcVisitRepositoryImpl implements VisitRepository {
 
 	private JdbcTemplate jdbcTemplate;

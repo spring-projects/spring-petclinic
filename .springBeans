@@ -8,7 +8,26 @@
 	<enableImports><![CDATA[false]]></enableImports>
 	<configs>
 		<config>src/main/webapp/WEB-INF/mvc-core-config.xml</config>
+		<config>src/main/webapp/WEB-INF/mvc-view-config.xml</config>
+		<config>src/main/resources/spring/dao-config.xml</config>
+		<config>src/main/resources/spring/datasource-config.xml</config>
+		<config>src/main/resources/spring/service-config.xml</config>
 	</configs>
 	<configSets>
+		<configSet>
+			<name><![CDATA[config]]></name>
+			<allowBeanDefinitionOverriding>true</allowBeanDefinitionOverriding>
+			<incomplete>false</incomplete>
+			<configs>
+				<config>src/main/webapp/WEB-INF/mvc-core-config.xml</config>
+				<config>src/main/webapp/WEB-INF/mvc-view-config.xml</config>
+				<config>src/main/resources/spring/dao-config.xml</config>
+				<config>src/main/resources/spring/datasource-config.xml</config>
+				<config>src/main/resources/spring/jmx-aop-config.xml</config>
+				<config>src/main/resources/spring/service-config.xml</config>
+			</configs>
+			<profiles>
+			</profiles>
+		</configSet>
 	</configSets>
 </beansProjectDescription>
