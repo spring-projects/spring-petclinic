@@ -22,7 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * JavaBean form controller that is used to add a new <code>Visit</code> to the
  * system.
- * 
+ *
  * @author Juergen Hoeller
  * @author Ken Krebs
  * @author Arjen Poutsma
@@ -53,7 +53,7 @@ public class VisitController {
 		return "pets/createOrUpdateVisitForm";
 	}
 
-	@RequestMapping(value="/owners/*/pets/{petId}/visits/new", method = RequestMethod.POST)
+	@RequestMapping(value="/owners/{ownerId}/pets/{petId}/visits/new", method = RequestMethod.POST)
 	public String processNewVisitForm(@Valid Visit visit, BindingResult result, SessionStatus status) {
 		if (result.hasErrors()) {
 			return "pets/createOrUpdateVisitForm";
@@ -61,10 +61,10 @@ public class VisitController {
 		else {
 			this.clinicService.saveVisit(visit);
 			status.setComplete();
-			return "redirect:/owners/" + visit.getPet().getOwner().getId();
+			return "redirect:/owners/{ownerId}";
 		}
 	}
-	
+
 	/**
 	 * Custom handler for displaying an list of visits.
 	 *

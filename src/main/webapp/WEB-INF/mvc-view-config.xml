@@ -19,23 +19,19 @@
 		- property of the vets view bean, setting it to 'application/vnd.springsource.samples.petclinic+xml'.
 	-->
 	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
-		<property name="contentNegotiationManager">
-            <bean class="org.springframework.web.accept.ContentNegotiationManager">
-                <constructor-arg>
-                    <bean class="org.springframework.web.accept.PathExtensionContentNegotiationStrategy">
-                        <constructor-arg>
-                            <map>
-				 				<entry key="xml" value="application/vnd.springsource.samples.petclinic+xml"/>
-								<entry key="atom" value="#{visitList.contentType}"/>
-                           </map>
-                        </constructor-arg>
-                    </bean>
-                </constructor-arg>
-            </bean>
-        </property>
+		<property name="contentNegotiationManager" ref="cnManager"/>
 		<property name="order" value="0"/>
 	</bean>
 	
+	<bean id="cnManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+		<property name="mediaTypes">
+			<value>
+				xml=application/vnd.springsource.samples.petclinic+xml
+				atom=#{visitList.contentType}
+			</value>
+		</property>
+	</bean>
+
 	<!--
 		- The BeanNameViewResolver is used to pick up the visits view name (below).
 		- It has the order property set to 2, which means that this will
