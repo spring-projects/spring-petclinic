@@ -22,7 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 /**
  * JavaBean form controller that is used to handle <code>Owner</code>s .
- * 
+ *
  * @author Juergen Hoeller
  * @author Ken Krebs
  * @author Arjen Poutsma
@@ -63,7 +63,7 @@ public class OwnerController {
 			return "redirect:/owners/" + owner.getId();
 		}
 	}
-	
+
 	@RequestMapping(value = "/owners/find", method = RequestMethod.GET)
 	public String initFindForm(Model model) {
 		model.addAttribute("owner", new Owner());
@@ -96,7 +96,7 @@ public class OwnerController {
 			return "redirect:/owners/" + owner.getId();
 		}
 	}
-	
+
 	@RequestMapping(value="/owners/{ownerId}/edit", method = RequestMethod.GET)
 	public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
 		Owner owner = this.ownerRepository.findById(ownerId);
@@ -112,10 +112,10 @@ public class OwnerController {
 		else {
 			this.ownerRepository.save(owner);
 			status.setComplete();
-			return "redirect:/owners/" + owner.getId();
+			return "redirect:/owners/{ownerId}";
 		}
 	}
-	
+
 	/**
 	 * Custom handler for displaying an owner.
 	 *

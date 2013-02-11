@@ -24,7 +24,7 @@ import org.springframework.web.bind.support.SessionStatus;
 /**
  * JavaBean form controller that is used to add a new <code>Pet</code> to the
  * system.
- * 
+ *
  * @author Juergen Hoeller
  * @author Ken Krebs
  * @author Arjen Poutsma
@@ -35,7 +35,7 @@ public class PetController {
 
 	private final ClinicService clinicService;
 
- 
+
 	@Autowired
 	public PetController(ClinicService clinicService) {
 		this.clinicService = clinicService;
@@ -69,10 +69,10 @@ public class PetController {
 		else {
 			this.clinicService.savePet(pet);
 			status.setComplete();
-			return "redirect:/owners/" + pet.getOwner().getId();
+			return "redirect:/owners/{ownerId}";
 		}
 	}
-	
+
 	@RequestMapping(value="/owners/*/pets/{petId}/edit", method = RequestMethod.GET)
 	public String initUpdateForm(@PathVariable("petId") int petId, Model model) {
 		Pet pet = this.clinicService.findPetById(petId);
@@ -80,7 +80,7 @@ public class PetController {
 		return "pets/createOrUpdatePetForm";
 	}
 
-	@RequestMapping(value="/owners/*/pets/{petId}/edit", method = { RequestMethod.PUT, RequestMethod.POST })
+	@RequestMapping(value="/owners/{ownerId}/pets/{petId}/edit", method = { RequestMethod.PUT, RequestMethod.POST })
 	public String processUpdateForm(@ModelAttribute("pet") Pet pet, BindingResult result, SessionStatus status) {
 		// we're not using @Valid annotation here because it is easier to define such validation rule in Java
 		new PetValidator().validate(pet, result);
@@ -90,7 +90,7 @@ public class PetController {
 		else {
 			this.clinicService.savePet(pet);
 			status.setComplete();
-			return "redirect:/owners/" + pet.getOwner().getId();
+			return "redirect:/owners/{ownerId}";
 		}
 	}
 
