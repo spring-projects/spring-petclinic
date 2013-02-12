@@ -19,6 +19,7 @@ import org.springframework.samples.petclinic.Visit;
  * @author Ken Krebs
  * @author Juergen Hoeller
  * @author Sam Brannen
+ * @author Michael Isvy
  */
 public interface ClinicService {
 	
@@ -33,5 +34,9 @@ public interface ClinicService {
 	public void saveVisit(Visit visit) throws DataAccessException;
 	
 	public Collection<Vet> findVets() throws DataAccessException;
+
+	public void saveOwner(Owner owner) throws DataAccessException;
+
+	Collection<Owner> findOwnerByLastName(String lastName) throws DataAccessException;
 
 }

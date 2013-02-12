@@ -41,11 +41,25 @@ public class ClinicServiceImpl implements ClinicService {
 	public Owner findOwnerById(int id) throws DataAccessException {
 		return ownerRepository.findById(id);
 	}
+	
+	@Override
+	@Transactional(readOnly=true)
+	public Collection<Owner> findOwnerByLastName(String lastName) throws DataAccessException {
+		return ownerRepository.findByLastName(lastName);
+	}
 
+	@Override
+	@Transactional
+	public void saveOwner(Owner owner) throws DataAccessException {
+		ownerRepository.save(owner);
+	}
+	
+	
 	@Transactional
 	public void saveVisit(Visit visit) throws DataAccessException {
 		visitRepository.save(visit);
 	}
+	
 
 	@Transactional(readOnly=true)
 	public Pet findPetById(int id) throws DataAccessException {
