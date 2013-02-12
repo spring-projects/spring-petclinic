@@ -22,8 +22,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 /**
- * JavaBean form controller that is used to add a new <code>Pet</code> to the
- * system.
  *
  * @author Juergen Hoeller
  * @author Ken Krebs

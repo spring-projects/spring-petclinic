@@ -20,12 +20,11 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * JavaBean form controller that is used to add a new <code>Visit</code> to the
- * system.
  *
  * @author Juergen Hoeller
  * @author Ken Krebs
  * @author Arjen Poutsma
+ * @author Michael Isvy
  */
 @Controller
 @SessionAttributes("visit")
@@ -65,12 +64,6 @@ public class VisitController {
 		}
 	}
 
-	/**
-	 * Custom handler for displaying an list of visits.
-	 *
-	 * @param petId the ID of the pet whose visits to display
-	 * @return a ModelMap with the model attributes for the view
-	 */
 	@RequestMapping(value="/owners/*/pets/{petId}/visits", method=RequestMethod.GET)
 	public ModelAndView showVisits(@PathVariable int petId) {
 		ModelAndView mav = new ModelAndView("visitList");

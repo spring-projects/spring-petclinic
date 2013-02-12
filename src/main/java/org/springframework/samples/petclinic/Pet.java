@@ -22,7 +22,7 @@ import org.springframework.beans.support.PropertyComparator;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
- * Simple JavaBean business object representing a pet.
+ * Simple business object representing a pet.
  *
  * @author Ken Krebs
  * @author Juergen Hoeller

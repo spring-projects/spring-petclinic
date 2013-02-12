@@ -46,12 +46,11 @@
 
 	<!--
 		- This bean resolves specific types of exceptions to corresponding logical 
-		- view names for error views. The default behaviour of DispatcherServlet 
-		- is to propagate all exceptions to the servlet container: this will happen 
-		- here with all other types of exceptions.
+		- view names for error views.
 	-->
 	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-		<property name="defaultErrorView" value="exception"/>
+		<!-- view name resolved using bean of type InternalResourceViewResolver (declared in mvc-view-config.xml) -->
+		<property name="defaultErrorView" value="exception"/> <!-- results into 'WEB-INF/jsp/exception.jsp' -->		
 		<property name="warnLogCategory" value="warn"/>
 	</bean>
 

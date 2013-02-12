@@ -21,7 +21,6 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * JavaBean form controller that is used to handle <code>Owner</code>s .
  *
  * @author Juergen Hoeller
  * @author Ken Krebs
