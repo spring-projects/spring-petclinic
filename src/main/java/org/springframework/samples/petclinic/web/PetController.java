@@ -18,9 +18,9 @@ package org.springframework.samples.petclinic.web;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.Owner;
-import org.springframework.samples.petclinic.Pet;
-import org.springframework.samples.petclinic.PetType;
+import org.springframework.samples.petclinic.model.Owner;
+import org.springframework.samples.petclinic.model.Pet;
+import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

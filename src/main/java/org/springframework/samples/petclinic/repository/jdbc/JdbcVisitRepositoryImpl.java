@@ -14,7 +14,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.samples.petclinic.Visit;
+import org.springframework.samples.petclinic.model.Visit;
 import org.springframework.samples.petclinic.repository.VisitRepository;
 import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.stereotype.Repository;

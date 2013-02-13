@@ -8,7 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.springframework.samples.petclinic.Visit;
+import org.springframework.samples.petclinic.model.Visit;
 import org.springframework.samples.petclinic.repository.VisitRepository;
 import org.springframework.stereotype.Repository;
 

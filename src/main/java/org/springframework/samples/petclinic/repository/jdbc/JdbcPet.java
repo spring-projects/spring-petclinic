@@ -1,6 +1,6 @@
 package org.springframework.samples.petclinic.repository.jdbc;
 
-import org.springframework.samples.petclinic.Pet;
+import org.springframework.samples.petclinic.model.Pet;
 
 /**
  * Subclass of Pet that carries temporary id properties which

@@ -6,6 +6,7 @@ import java.util.Collection;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.repository.VetRepository;
 import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.samples.petclinic.util.EntityUtils;

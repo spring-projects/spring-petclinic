@@ -4,13 +4,13 @@
 <aspectj>
 
 	<weaver>
-		<include within="org.springframework.samples.petclinic..*"/>
+		<include within="org.springframework.samples.petclinic.model..*"/>
 	</weaver>
 
 	<aspects>
-		<aspect name="org.springframework.samples.petclinic.aspects.UsageLogAspect"/>
-		<concrete-aspect name="org.springframework.samples.petclinic.aspects.ApplicationTraceAspect"
-				extends="org.springframework.samples.petclinic.aspects.AbstractTraceAspect">
+		<aspect name="org.springframework.samples.petclinic.model.aspects.UsageLogAspect"/>
+		<concrete-aspect name="org.springframework.samples.petclinic.model.aspects.ApplicationTraceAspect"
+				extends="org.springframework.samples.petclinic.model.aspects.AbstractTraceAspect">
 			<pointcut name="traced" expression="execution(* org.springframework.samples..*.*(..))"/>
 		</concrete-aspect>
 	</aspects>

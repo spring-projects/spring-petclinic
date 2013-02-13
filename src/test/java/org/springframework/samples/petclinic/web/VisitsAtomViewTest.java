@@ -27,9 +27,9 @@ import java.util.Map;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.samples.petclinic.Pet;
-import org.springframework.samples.petclinic.PetType;
-import org.springframework.samples.petclinic.Visit;
+import org.springframework.samples.petclinic.model.Pet;
+import org.springframework.samples.petclinic.model.PetType;
+import org.springframework.samples.petclinic.model.Visit;
 
 import com.sun.syndication.feed.atom.Entry;
 import com.sun.syndication.feed.atom.Feed;

@@ -3,7 +3,7 @@ package org.springframework.samples.petclinic.repository;
 import java.util.Collection;
 
 import org.springframework.dao.DataAccessException;
-import org.springframework.samples.petclinic.Vet;
+import org.springframework.samples.petclinic.model.Vet;
 
 /**
  * The high-level PetClinic business interface.

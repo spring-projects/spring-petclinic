@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.model.Pet;
+import org.springframework.samples.petclinic.model.Visit;
 import org.springframework.samples.petclinic.repository.PetRepository;
 import org.springframework.samples.petclinic.repository.VisitRepository;
 import org.springframework.samples.petclinic.service.ClinicService;
