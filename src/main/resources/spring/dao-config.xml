@@ -44,12 +44,12 @@
 				p:dataSource-ref="dataSource">
 			<property name="jpaVendorAdapter">			
 				<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
-						p:database="${jpa.database}" p:showSql="${jpa.showSql}"/>			
+						p:database="${jpa.database}" p:showSql="${jpa.showSql}" />			
 			</property>
 			<property name="persistenceUnitName" value="petclinic" />
 			<property name="packagesToScan" value="org/springframework/samples/petclinic" />
 		</bean>
-	
+			
 		<!-- Transaction manager for a single JPA EntityManagerFactory (alternative to JTA) -->
 		<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
 				p:entityManagerFactory-ref="entityManagerFactory"/>
