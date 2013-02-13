@@ -23,7 +23,7 @@
 		(see header.jsp for more details) -->
 	<mvc:resources mapping="/resources/**" location="/resources/"/>
 	
-	<!-- uses WebJars so Javascript and CSS libs can be declared as Maven dependencies (we're using it for Bootstrap) -->
+	<!-- uses WebJars so Javascript and CSS libs can be declared as Maven dependencies (Bootstrap, jQuery...) -->
 	<mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
 	
 	<mvc:view-controller path="/" view-name="welcome"/>
@@ -51,7 +51,7 @@
 	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
 		<!-- view name resolved using bean of type InternalResourceViewResolver (declared in mvc-view-config.xml) -->
 		<property name="defaultErrorView" value="exception"/> <!-- results into 'WEB-INF/jsp/exception.jsp' -->		
-		<property name="warnLogCategory" value="warn"/>
+		<property name="warnLogCategory" value="warn"/> <!-- needed otherwise exceptions won't be logged anywhere -->
 	</bean>
 
 </beans>
