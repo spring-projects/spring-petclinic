@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNull;
 import org.junit.Test;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * JUnit test for the {@link Owner} class.
@@ -14,7 +15,7 @@ import org.springframework.samples.petclinic.model.Pet;
  */
 public class OwnerTests {
 
-	@Test
+	@Test @Transactional
 	public void testHasPet() {
 		Owner owner = new Owner();
 		Pet fido = new Pet();

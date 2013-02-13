@@ -19,7 +19,6 @@ import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.repository.VetRepository;
 import org.springframework.samples.petclinic.util.EntityUtils;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -49,7 +48,6 @@ public class JdbcVetRepositoryImpl implements VetRepository {
 	 * @see org.springframework.samples.petclinic.model.service.ClinicService#findVets()
 	 */
 	@ManagedOperation
-	@Transactional(readOnly = true)
 	public void refreshVetsCache() throws DataAccessException {
 		synchronized (this.vets) {
 			this.logger.info("Refreshing vets cache");

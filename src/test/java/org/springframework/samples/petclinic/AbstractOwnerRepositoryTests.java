@@ -80,16 +80,14 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @author Sam Brannen
+ *  * @author Michael Isvy
  */
 public abstract class AbstractOwnerRepositoryTests {
 
 	@Autowired
 	protected OwnerRepository ownerRepository;
 
-
-
-
-	@Test
+	@Test @Transactional
 	public void findOwners() {
 		Collection<Owner> owners = this.ownerRepository.findByLastName("Davis");
 		assertEquals(2, owners.size());

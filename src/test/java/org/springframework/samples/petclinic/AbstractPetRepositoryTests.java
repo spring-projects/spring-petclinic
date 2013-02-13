@@ -96,7 +96,7 @@ public abstract class AbstractPetRepositoryTests {
 	protected OwnerRepository ownerRepository;
 
 
-	@Test
+	@Test  @Transactional
 	public void getPetTypes() {
 		Collection<PetType> petTypes = this.petRepository.findPetTypes();
 		
@@ -106,7 +106,7 @@ public abstract class AbstractPetRepositoryTests {
 		assertEquals("snake", petType4.getName());
 	}
 
-	@Test
+	@Test  @Transactional
 	public void findPet() {
 		Collection<PetType> types = this.petRepository.findPetTypes();
 		Pet pet7 = this.petRepository.findById(7);
