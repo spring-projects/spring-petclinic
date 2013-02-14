@@ -6,14 +6,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
-import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.samples.petclinic.model.Specialty;
 import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.repository.VetRepository;
@@ -28,15 +26,12 @@ import org.springframework.stereotype.Repository;
  * @author Sam Brannen
  * @author Thomas Risberg
  * @author Mark Fisher
+ * @author Michael Isvy
  */
 @Repository
 public class JdbcVetRepositoryImpl implements VetRepository {
 
-	private final Logger logger = LoggerFactory.getLogger(getClass());
-
 	private JdbcTemplate jdbcTemplate;
-
-	private final List<Vet> vets = new ArrayList<Vet>();
 
 	@Autowired
 	public JdbcVetRepositoryImpl(JdbcTemplate jdbcTemplate) {
@@ -47,14 +42,11 @@ public class JdbcVetRepositoryImpl implements VetRepository {
 	 * Refresh the cache of Vets that the ClinicService is holding.
 	 * @see org.springframework.samples.petclinic.model.service.ClinicService#findVets()
 	 */
-	@ManagedOperation
-	public void refreshVetsCache() throws DataAccessException {
-		synchronized (this.vets) {
-			this.logger.info("Refreshing vets cache");
-
-			// Retrieve the list of all vets.
-			this.vets.clear();
-			this.vets.addAll(this.jdbcTemplate.query(
+	@Cacheable(value="vets")
+	public Collection<Vet> findAll() throws DataAccessException {
+			List<Vet> vets = new ArrayList<Vet>();
+				// Retrieve the list of all vets.
+			vets.addAll(this.jdbcTemplate.query(
 					"SELECT id, first_name, last_name FROM vets ORDER BY last_name,first_name",
 					ParameterizedBeanPropertyRowMapper.newInstance(Vet.class)));
 
@@ -64,7 +56,7 @@ public class JdbcVetRepositoryImpl implements VetRepository {
 					ParameterizedBeanPropertyRowMapper.newInstance(Specialty.class));
 
 			// Build each vet's list of specialties.
-			for (Vet vet : this.vets) {
+			for (Vet vet : vets) {
 				final List<Integer> vetSpecialtiesIds = this.jdbcTemplate.query(
 						"SELECT specialty_id FROM vet_specialties WHERE vet_id=?",
 						new ParameterizedRowMapper<Integer>() {
@@ -77,17 +69,6 @@ public class JdbcVetRepositoryImpl implements VetRepository {
 					vet.addSpecialty(specialty);
 				}
 			}
+			return vets;
 		}
-	}
-
-	public Collection<Vet> findAll() throws DataAccessException {
-		synchronized (this.vets) {
-			if (this.vets.isEmpty()) {
-				refreshVetsCache();
-			}
-			return this.vets;
-		}
-	}
-
-
 }

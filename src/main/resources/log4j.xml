@@ -10,7 +10,6 @@
 			<param name="ConversionPattern" value="%-5p: %c - %m%n" />
 		</layout>
 	</appender>
-
 	
 	<!-- Root Logger -->
 	<root>
