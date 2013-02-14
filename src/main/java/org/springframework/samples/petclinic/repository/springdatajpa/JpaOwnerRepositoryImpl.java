@@ -24,7 +24,6 @@ import javax.persistence.Query;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Using native JPA instead of Spring Data JPA here because of this query:
@@ -34,7 +33,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Michael Isvy
  */
 @Repository
-@Transactional
 public class JpaOwnerRepositoryImpl implements OwnerRepository {
 
 	@PersistenceContext
