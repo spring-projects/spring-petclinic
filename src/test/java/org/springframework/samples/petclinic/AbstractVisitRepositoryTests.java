@@ -1,3 +1,18 @@
+/*
+ * Copyright 2002-2013 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.springframework.samples.petclinic;
 
 import static org.junit.Assert.assertEquals;
@@ -6,80 +21,23 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Visit;
+import org.springframework.samples.petclinic.repository.OwnerRepository;
 import org.springframework.samples.petclinic.repository.PetRepository;
 import org.springframework.samples.petclinic.repository.VisitRepository;
-import org.springframework.samples.petclinic.service.ClinicService;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
- * Base class for {@link ClinicService} integration tests.
+ * Base class for {@link OwnerRepository} integration tests.
  * </p>
  * <p>
- * &quot;AbstractClinicTests-context.xml&quot; declares a common
- * {@link javax.sql.DataSource DataSource}. Subclasses should specify
- * additional context locations which declare a
- * {@link org.springframework.transaction.PlatformTransactionManager PlatformTransactionManager}
- * and a concrete implementation of {@link ClinicService}.
- * </p>
- * <p>
- * This class extends {@link AbstractTransactionalJUnit4SpringContextTests},
- * one of the valuable testing support classes provided by the
- * <em>Spring TestContext Framework</em> found in the
- * <code>org.springframework.test.context</code> package. The
- * annotation-driven configuration used here represents best practice for
- * integration tests with Spring. Note, however, that
- * AbstractTransactionalJUnit4SpringContextTests serves only as a convenience
- * for extension. For example, if you do not wish for your test classes to be
- * tied to a Spring-specific class hierarchy, you may configure your tests with
- * annotations such as {@link ContextConfiguration @ContextConfiguration},
- * {@link org.springframework.test.context.TestExecutionListeners @TestExecutionListeners},
- * {@link org.springframework.transaction.annotation.Transactional @Transactional},
- * etc.
- * </p>
- * <p>
- * AbstractClinicTests and its subclasses benefit from the following services
- * provided by the Spring TestContext Framework:
- * </p>
- * <ul>
- * <li><strong>Spring IoC container caching</strong> which spares us
- * unnecessary set up time between test execution.</li>
- * <li><strong>Dependency Injection</strong> of test fixture instances,
- * meaning that we don't need to perform application context lookups. See the
- * use of {@link Autowired @Autowired} on the <code>petRepository</code> instance
- * variable, which uses autowiring <em>by type</em>. As an alternative, we
- * could annotate <code>petRepository</code> with
- * {@link javax.annotation.Resource @Resource} to achieve dependency injection
- * <em>by name</em>.
- * <em>(see: {@link ContextConfiguration @ContextConfiguration},
- * {@link org.springframework.test.context.support.DependencyInjectionTestExecutionListener DependencyInjectionTestExecutionListener})</em></li>
- * <li><strong>Transaction management</strong>, meaning each test method is
- * executed in its own transaction, which is automatically rolled back by
- * default. Thus, even if tests insert or otherwise change database state, there
- * is no need for a teardown or cleanup script.
- * <em>(see: {@link org.springframework.test.context.transaction.TransactionConfiguration @TransactionConfiguration},
- * {@link org.springframework.transaction.annotation.Transactional @Transactional},
- * {@link org.springframework.test.context.transaction.TransactionalTestExecutionListener TransactionalTestExecutionListener})</em></li>
- * <li><strong>Useful inherited protected fields</strong>, such as a
- * {@link org.springframework.jdbc.core.simple.SimpleJdbcTemplate SimpleJdbcTemplate}
- * that can be used to verify database state after test operations or to verify
- * the results of queries performed by application code. An
- * {@link org.springframework.context.ApplicationContext ApplicationContext} is
- * also inherited and can be used for explicit bean lookup if necessary.
- * <em>(see: {@link org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests AbstractJUnit4SpringContextTests},
- * {@link AbstractTransactionalJUnit4SpringContextTests})</em></li>
- * </ul>
- * <p>
- * The Spring TestContext Framework and related unit and integration testing
- * support classes are shipped in <code>spring-test.jar</code>.
- * </p>
+ * see javadoc inside {@link AbstractVetRepositoryTests} for more details
  *
  * @author Ken Krebs
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @author Sam Brannen
+ * @author Michael Isvy
  */
 public abstract class AbstractVisitRepositoryTests {
 
