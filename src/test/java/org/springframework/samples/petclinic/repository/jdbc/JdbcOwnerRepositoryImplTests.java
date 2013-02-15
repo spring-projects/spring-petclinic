@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.jdbc;
+package org.springframework.samples.petclinic.repository.jdbc;
 
 import org.junit.runner.RunWith;
-import org.springframework.samples.petclinic.AbstractOwnerRepositoryTests;
+import org.springframework.samples.petclinic.repository.AbstractOwnerRepositoryTests;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;

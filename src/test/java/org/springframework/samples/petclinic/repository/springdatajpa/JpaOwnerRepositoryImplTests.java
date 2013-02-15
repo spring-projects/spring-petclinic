@@ -1,8 +1,8 @@
 
-package org.springframework.samples.petclinic.springdatajpa;
+package org.springframework.samples.petclinic.repository.springdatajpa;
 
 import org.junit.runner.RunWith;
-import org.springframework.samples.petclinic.AbstractOwnerRepositoryTests;
+import org.springframework.samples.petclinic.repository.AbstractOwnerRepositoryTests;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;

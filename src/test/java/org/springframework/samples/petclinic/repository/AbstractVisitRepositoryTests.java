@@ -13,18 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic;
+package org.springframework.samples.petclinic.repository;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Collection;
-
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.model.Vet;
+import org.springframework.samples.petclinic.model.Pet;
+import org.springframework.samples.petclinic.model.Visit;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
-import org.springframework.samples.petclinic.repository.VetRepository;
-import org.springframework.samples.petclinic.util.EntityUtils;
+import org.springframework.samples.petclinic.repository.PetRepository;
+import org.springframework.samples.petclinic.repository.VisitRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -40,25 +39,27 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Sam Brannen
  * @author Michael Isvy
  */
-public abstract class AbstractVetRepositoryTests {
+public abstract class AbstractVisitRepositoryTests {
 
 	@Autowired
-	protected VetRepository vetRepository;
+	protected VisitRepository visitRepository;
+	
+	@Autowired
+	protected PetRepository petRepository;
 
 
-	@Test @Transactional
-	public void findVets() {
-		Collection<Vet> vets = this.vetRepository.findAll();
-		
-		Vet v1 = EntityUtils.getById(vets, Vet.class, 2);
-		assertEquals("Leary", v1.getLastName());
-		assertEquals(1, v1.getNrOfSpecialties());
-		assertEquals("radiology", (v1.getSpecialties().get(0)).getName());
-		Vet v2 = EntityUtils.getById(vets, Vet.class, 3);
-		assertEquals("Douglas", v2.getLastName());
-		assertEquals(2, v2.getNrOfSpecialties());
-		assertEquals("dentistry", (v2.getSpecialties().get(0)).getName());
-		assertEquals("surgery", (v2.getSpecialties().get(1)).getName());
+	@Test  @Transactional
+	public void insertVisit() {
+		Pet pet7 = this.petRepository.findById(7);
+		int found = pet7.getVisits().size();
+		Visit visit = new Visit();
+		pet7.addVisit(visit);
+		visit.setDescription("test");
+		// both storeVisit and storePet are necessary to cover all ORM tools
+		this.visitRepository.save(visit);
+		this.petRepository.save(pet7);
+		pet7 = this.petRepository.findById(7);
+		assertEquals(found + 1, pet7.getVisits().size());
 	}
 
 }
