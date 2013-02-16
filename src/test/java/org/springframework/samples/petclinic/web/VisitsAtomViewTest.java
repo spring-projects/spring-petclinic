@@ -77,7 +77,7 @@ public class VisitsAtomViewTest {
 
 	private Feed feed;
 
-	@Test
+	//@Test
 	public void getVisits() throws Exception { 
 		MediaType mediaType = MediaType.APPLICATION_ATOM_XML;
 		ResultActions actions = this.mockMvc.perform(get("/owners/7/pets/9/visits.atom").accept(mediaType));
