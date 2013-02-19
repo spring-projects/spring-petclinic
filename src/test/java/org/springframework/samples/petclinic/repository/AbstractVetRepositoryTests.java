@@ -15,23 +15,19 @@
  */
 package org.springframework.samples.petclinic.repository;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.Collection;
-
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Vet;
-import org.springframework.samples.petclinic.repository.OwnerRepository;
-import org.springframework.samples.petclinic.repository.VetRepository;
 import org.springframework.samples.petclinic.util.EntityUtils;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
+
+import static org.junit.Assert.assertEquals;
+
 /**
- * <p>
- * Base class for {@link OwnerRepository} integration tests.
- * </p>
- * <p>
+ * <p> Base class for {@link OwnerRepository} integration tests. </p>
+ * <p/>
  * see javadoc inside {@link AbstractVetRepositoryTests} for more details
  *
  * @author Ken Krebs
@@ -42,23 +38,24 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public abstract class AbstractVetRepositoryTests {
 
-	@Autowired
-	protected VetRepository vetRepository;
+    @Autowired
+    protected VetRepository vetRepository;
 
 
-	@Test @Transactional
-	public void findVets() {
-		Collection<Vet> vets = this.vetRepository.findAll();
-		
-		Vet v1 = EntityUtils.getById(vets, Vet.class, 2);
-		assertEquals("Leary", v1.getLastName());
-		assertEquals(1, v1.getNrOfSpecialties());
-		assertEquals("radiology", (v1.getSpecialties().get(0)).getName());
-		Vet v2 = EntityUtils.getById(vets, Vet.class, 3);
-		assertEquals("Douglas", v2.getLastName());
-		assertEquals(2, v2.getNrOfSpecialties());
-		assertEquals("dentistry", (v2.getSpecialties().get(0)).getName());
-		assertEquals("surgery", (v2.getSpecialties().get(1)).getName());
-	}
+    @Test
+    @Transactional
+    public void findVets() {
+        Collection<Vet> vets = this.vetRepository.findAll();
+
+        Vet v1 = EntityUtils.getById(vets, Vet.class, 2);
+        assertEquals("Leary", v1.getLastName());
+        assertEquals(1, v1.getNrOfSpecialties());
+        assertEquals("radiology", (v1.getSpecialties().get(0)).getName());
+        Vet v2 = EntityUtils.getById(vets, Vet.class, 3);
+        assertEquals("Douglas", v2.getLastName());
+        assertEquals(2, v2.getNrOfSpecialties());
+        assertEquals("dentistry", (v2.getSpecialties().get(0)).getName());
+        assertEquals("surgery", (v2.getSpecialties().get(1)).getName());
+    }
 
 }

@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-	Application context definition for PetClinic on JPA.
+    Application context definition for PetClinic on JPA.
 -->
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+         http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/data/jpa
+         http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+         http://www.springframework.org/schema/tx
+         http://www.springframework.org/schema/tx/spring-tx.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context.xsd">
 
     <!-- ========================= RESOURCE DEFINITIONS ========================= -->
 
@@ -33,7 +40,7 @@
     <!--
         Instruct Spring to perform declarative transaction management
         automatically on annotated classes.
-        
+                
         for mode="aspectj"/ see SPR-6392
     -->
     <tx:annotation-driven/>
@@ -46,8 +53,9 @@
                 <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
                       p:database="${jpa.database}" p:showSql="${jpa.showSql}"/>
             </property>
+            <!-- gDickens: BOTH Persistence Unit and Packages to Scan are NOT compatible, persistenceUnit will win -->
             <property name="persistenceUnitName" value="petclinic"/>
-            <property name="packagesToScan" value="org/springframework/samples/petclinic"/>
+            <property name="packagesToScan" value="org.springframework.samples.petclinic"/>
         </bean>
 
         <!-- Transaction manager for a single JPA EntityManagerFactory (alternative to JTA) -->
@@ -78,7 +86,6 @@
         </bean>
 
         <context:component-scan base-package="org.springframework.samples.petclinic.repository.jdbc"/>
-
     </beans>
 
     <beans profile="jpa">
@@ -88,7 +95,6 @@
             PersistenceExceptions will be auto-translated due to @Repository.
         -->
         <context:component-scan base-package="org.springframework.samples.petclinic.repository.jpa"/>
-
     </beans>
 
     <beans profile="spring-data-jpa">
@@ -97,6 +103,5 @@
         <!-- Custom configuration for the custom implementation based on JPA -->
         <bean id="owerRepository"
               class="org.springframework.samples.petclinic.repository.springdatajpa.JpaOwnerRepositoryImpl"/>
-
     </beans>
 </beans>

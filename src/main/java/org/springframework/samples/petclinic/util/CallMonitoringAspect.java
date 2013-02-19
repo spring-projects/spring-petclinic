@@ -24,8 +24,8 @@ import org.springframework.jmx.export.annotation.ManagedResource;
 import org.springframework.util.StopWatch;
 
 /**
- * Simple aspect that monitors call count and call invocation time.
- * It uses JMX annotations and therefore can be monitored using any JMX console such as the jConsole
+ * Simple aspect that monitors call count and call invocation time. It uses JMX annotations and therefore can be
+ * monitored using any JMX console such as the jConsole
  *
  * @author Rob Harrop
  * @author Juergen Hoeller
@@ -36,61 +36,58 @@ import org.springframework.util.StopWatch;
 @Aspect
 public class CallMonitoringAspect {
 
-	private boolean isEnabled = true;
+    private boolean isEnabled = true;
 
-	private int callCount = 0;
+    private int callCount = 0;
 
-	private long accumulatedCallTime = 0;
-
-
-	@ManagedAttribute
-	public void setEnabled(boolean enabled) {
-		isEnabled = enabled;
-	}
-
-	@ManagedAttribute
-	public boolean isEnabled() {
-		return isEnabled;
-	}
-
-	@ManagedOperation
-	public void reset() {
-		this.callCount = 0;
-		this.accumulatedCallTime = 0;
-	}
-
-	@ManagedAttribute
-	public int getCallCount() {
-		return callCount;
-	}
-
-	@ManagedAttribute
-	public long getCallTime() {
-		return (this.callCount > 0 ? this.accumulatedCallTime / this.callCount : 0);
-	}
+    private long accumulatedCallTime = 0;
 
 
-	@Around("within(@org.springframework.stereotype.Repository *)")
-	public Object invoke(ProceedingJoinPoint joinPoint) throws Throwable {
-		if (this.isEnabled) {
-			StopWatch sw = new StopWatch(joinPoint.toShortString());
+    @ManagedAttribute
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
+    }
 
-			sw.start("invoke");
-			try {
-				return joinPoint.proceed();
-			}
-			finally {
-				sw.stop();
-				synchronized (this) {
-					this.callCount++;
-					this.accumulatedCallTime += sw.getTotalTimeMillis();
-				}
-			}
-		}
+    @ManagedAttribute
+    public boolean isEnabled() {
+        return isEnabled;
+    }
 
-		else {
-			return joinPoint.proceed();
-		}
-	}
+    @ManagedOperation
+    public void reset() {
+        this.callCount = 0;
+        this.accumulatedCallTime = 0;
+    }
+
+    @ManagedAttribute
+    public int getCallCount() {
+        return callCount;
+    }
+
+    @ManagedAttribute
+    public long getCallTime() {
+        return (this.callCount > 0 ? this.accumulatedCallTime / this.callCount : 0);
+    }
+
+
+    @Around("within(@org.springframework.stereotype.Repository *)")
+    public Object invoke(ProceedingJoinPoint joinPoint) throws Throwable {
+        if (this.isEnabled) {
+            StopWatch sw = new StopWatch(joinPoint.toShortString());
+
+            sw.start("invoke");
+            try {
+                return joinPoint.proceed();
+            } finally {
+                sw.stop();
+                synchronized (this) {
+                    this.callCount++;
+                    this.accumulatedCallTime += sw.getTotalTimeMillis();
+                }
+            }
+        } else {
+            return joinPoint.proceed();
+        }
+    }
 
 }
