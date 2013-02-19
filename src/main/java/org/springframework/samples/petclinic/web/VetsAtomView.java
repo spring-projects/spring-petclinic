@@ -16,14 +16,14 @@
 package org.springframework.samples.petclinic.web;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.samples.petclinic.model.Visit;
+import org.springframework.samples.petclinic.model.Vet;
+import org.springframework.samples.petclinic.model.Vets;
 import org.springframework.web.servlet.view.feed.AbstractAtomFeedView;
 
 import com.sun.syndication.feed.atom.Content;
@@ -36,45 +36,37 @@ import com.sun.syndication.feed.atom.Feed;
  * @author Alef Arendsen
  * @author Arjen Poutsma
  */
-public class VisitsAtomView extends AbstractAtomFeedView {
+public class VetsAtomView extends AbstractAtomFeedView {
 
 	@Override
 	protected void buildFeedMetadata(Map<String, Object> model, Feed feed, HttpServletRequest request) {
-		feed.setId("tag:springsource.com");
-		feed.setTitle("Pet ClinicService Visits");
-		@SuppressWarnings("unchecked")
-		List<Visit> visits = (List<Visit>) model.get("visits");
-		for (Visit visit : visits) {
-			Date date = visit.getDate().toDate();
-			if (feed.getUpdated() == null || date.compareTo(feed.getUpdated()) > 0) {
-				feed.setUpdated(date);
-			}
-		}
+		feed.setId("tag:springsource.org");
+		feed.setTitle("Veterinarians");
+		//feed.setUpdated(date);
 	}
 
 	@Override
 	protected List<Entry> buildFeedEntries(Map<String, Object> model,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-		@SuppressWarnings("unchecked")
-		List<Visit> visits = (List<Visit>) model.get("visits");
-		List<Entry> entries = new ArrayList<Entry>(visits.size());
+		Vets vets = (Vets) model.get("vets");
+		List<Vet> vetList = vets.getVetList();
+		List<Entry> entries = new ArrayList<Entry>(vetList.size());
 
-		for (Visit visit : visits) {
+		for (Vet vet : vetList) {
 			Entry entry = new Entry();
-			String date = String.format("%1$tY-%1$tm-%1$td", visit.getDate().toDate());
 			// see http://diveintomark.org/archives/2004/05/28/howto-atom-id#other
-			entry.setId(String.format("tag:springsource.com,%s:%d", date, visit.getId()));
-			entry.setTitle(String.format("%s visit on %s", visit.getPet().getName(), date));
-			entry.setUpdated(visit.getDate().toDate());
+			entry.setId(String.format("tag:springsource.org,%s", vet.getId()));
+			entry.setTitle(String.format("Vet: %s %s", vet.getFirstName(), vet.getLastName()));
+			//entry.setUpdated(visit.getDate().toDate());
 
 			Content summary = new Content();
-			summary.setValue(visit.getDescription());
+			summary.setValue(vet.getSpecialties().toString());
 			entry.setSummary(summary);
 
 			entries.add(entry);
 		}
-
+		response.setContentType("blabla");
 		return entries;
 
 	}

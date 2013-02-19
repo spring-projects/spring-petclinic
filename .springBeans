@@ -8,7 +8,8 @@
 	<enableImports><![CDATA[false]]></enableImports>
 	<configs>
 		<config>src/main/resources/spring/datasource-config.xml</config>
-		<config>src/main/webapp/WEB-INF/mvc-view-config.xml</config>
+		<config>src/main/resources/spring/mvc-core-config.xml</config>
+		<config>src/main/resources/spring/mvc-view-config.xml</config>
 	</configs>
 	<configSets>
 	</configSets>

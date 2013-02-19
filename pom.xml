@@ -15,6 +15,8 @@
 		<aspectj.version>1.7.1</aspectj.version>
 		<hibernate.validator.version>4.2.0.Final</hibernate.validator.version>
 		<joda.version>2.0</joda.version>
+		<spring.data.jpa>1.1.0.RELEASE</spring.data.jpa>
+		<junit.version>4.10</junit.version>
 	</properties>
 	<dependencies> 
 
@@ -152,7 +154,7 @@
 		<dependency>
  			<groupId>org.springframework.data</groupId>
  			<artifactId>spring-data-jpa</artifactId>
- 			<version>1.1.0.RELEASE</version>
+ 			<version>${spring.data.jpa}</version>
 		</dependency> 
 
 		<!-- Servlet -->
@@ -207,7 +209,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.10</version>
+			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -312,21 +314,5 @@
 				</executions>
 			</plugin>
 		</plugins>
-		<testResources>
-            <testResource>
-                <directory>src/test/resources</directory>
-                <filtering>true</filtering>
-            </testResource>
-
-            <testResource>
-                <directory>src/main/webapp/WEB-INF</directory>
-
-                <filtering>true</filtering>
-
-                <includes>
-                    <include>**/mvc-*-config.xml</include>
-                </includes>
-            </testResource>
-        </testResources>
 	</build>
 </project>

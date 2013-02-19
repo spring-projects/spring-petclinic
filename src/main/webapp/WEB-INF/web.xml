@@ -38,7 +38,7 @@ id="WebApp_ID" version="2.5">
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>/WEB-INF/mvc-core-config.xml</param-value>
+			<param-value>classpath:spring/mvc-core-config.xml</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>

@@ -11,6 +11,10 @@
 		</layout>
 	</appender>
 	
+	<logger name="org.springframework.test.web">
+		<level value="trace" />
+	</logger>
+	
 	<!-- Root Logger -->
 	<root>
 		<priority value="info" /><!--
