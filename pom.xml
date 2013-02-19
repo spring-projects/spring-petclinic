@@ -11,21 +11,10 @@
 
     <properties>
         <antlr.version>2.7.7</antlr.version>
-        <asm.version>3.3.1</asm.version>
         <aspectj.version>1.7.1</aspectj.version>
         <commons-beanutils.version>1.8.3</commons-beanutils.version>
-        <commons-cli.version>1.2</commons-cli.version>
-        <commons-codec.version>1.7</commons-codec.version>
-        <commons-collections.version>3.2.1</commons-collections.version>
         <commons-dbcp.version>1.4</commons-dbcp.version>
-        <commons-digester2.version>2.1</commons-digester2.version>
-        <commons-digester3.version>3.2</commons-digester3.version>
-        <commons-exec.version>1.1</commons-exec.version>
-        <commons-fileupload.version>1.2.2</commons-fileupload.version>
-        <commons-io.version>2.4</commons-io.version>
-        <commons-lang2.version>2.6</commons-lang2.version>
         <commons-lang3.version>3.1</commons-lang3.version>
-        <commons-net.version>3.1</commons-net.version>
         <commons-pool.version>1.6</commons-pool.version>
         <ehcache.version>2.6.3</ehcache.version>
         <hamcrest.version>1.3</hamcrest.version>
@@ -36,8 +25,8 @@
         <jadira-usertype-core.version>3.1.0.CR1</jadira-usertype-core.version>
         <javassist.version>3.17.1-GA</javassist.version>
         <java.version>1.6</java.version>
-        <jaxb-api.version>2.2.7</jaxb-api.version>
         <javax-el.version>2.2</javax-el.version>
+        <jaxb-api.version>2.2.7</jaxb-api.version>
         <jaxb-impl.version>2.2.7-b53</jaxb-impl.version>
         <jboss-logging.version>3.1.2.GA</jboss-logging.version>
         <jdom.version>2.0.2</jdom.version>
@@ -83,7 +72,6 @@
         <webjars-jquery-ui.version>1.9.2</webjars-jquery-ui.version>
         <webjars-jquery.version>1.9.0</webjars-jquery.version>
     </properties>
-
 
     <dependencies>
         <!-- Spring -->
@@ -142,15 +130,13 @@
             <artifactId>hsqldb</artifactId>
         </dependency>
         <!-- MySQL JDBC Connector -->
-        <!--
+        <!-- gDickens: standard mysql library
             <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql.version}</version>
             </dependency>
         -->
-        <!-- Hibernate -->
-        <!-- JPA -->
         <!-- Hibernate JPA Provider -->
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -159,6 +145,10 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache-core</artifactId>
         </dependency>
         <!-- ********************************************************************** 
              ** 				SPRING DATA			 							 ** 
@@ -200,6 +190,7 @@
             <artifactId>jaxb-impl</artifactId>
         </dependency>
         <!-- Test dependencies -->
+        <!-- gDickens: Using JUnit 4.11 for cleaner Hamcrest support -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -228,23 +219,27 @@
             <groupId>joda-time</groupId>
             <artifactId>joda-time-hibernate</artifactId>
         </dependency>
-        <!-- used for Spring MVC Test framework -->
-        <!-- Do not use hamcrest-all, hamcrest-library
-        (hamcrest-core in dep mgmt, is used by junit) -->
+        <!-- gDickens: used for Spring MVC Test framework 
+          * Do not use hamcrest-all, hamcrest-library
+          * (hamcrest-core in dep mgmt, is used by junit) -->
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-library</artifactId>
         </dependency>
     </dependencies>
 
-    <!-- Best Practice to ALWAYS include the Maven plugin versions -->
+    <!-- gDickens: Best Practice to ALWAYS include the Maven plugin versions -->
     <build>
+        <defaultGoal>install</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
+                    <compilerArguments>
+                        <Xlint/>
+                    </compilerArguments>
                     <verbose>true</verbose>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
@@ -269,6 +264,7 @@
                     <warName>petclinic</warName>
                 </configuration>
             </plugin>
+            <!-- gDickens: Include the Builders and Natures -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-eclipse-plugin</artifactId>
@@ -280,6 +276,19 @@
                     <sourceIncludes>
                         <sourceInclude>**/*.*</sourceInclude>
                     </sourceIncludes>
+                    <additionalBuildcommands>
+                        <buildCommand>
+                            <name>org.springframework.ide.eclipse.core.springbuilder</name>
+                        </buildCommand>
+                        <buildCommand>
+                            <name>org.eclipse.m2e.core.maven2Builder</name>
+                        </buildCommand>
+                    </additionalBuildcommands>
+                    <additionalProjectnatures>
+                        <projectnature>org.eclipse.jdt.core.javanature</projectnature>
+                        <projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+                        <projectnature>org.eclipse.m2e.core.maven2Nature</projectnature>
+                    </additionalProjectnatures>
                 </configuration>
             </plugin>
             <plugin>
@@ -352,9 +361,6 @@
                     -->
                     <stopPort>9966</stopPort>
                     <stopKey>shutterdown</stopKey>
-                    <requestLog implementation="ch.qos.logback.access.jetty.RequestLogImpl">
-                        <fileName>./src/main/resources/logback-access.xml</fileName>
-                    </requestLog>
                     <systemProperties>
                         <systemProperty>
                             <name>logback.configurationFile</name>
@@ -403,16 +409,10 @@
                         <version>${logback.version}</version>
                         <scope>runtime</scope>
                     </dependency>
-                    <dependency>
-                        <groupId>ch.qos.logback</groupId>
-                        <artifactId>logback-access</artifactId>
-                        <version>${logback.version}</version>
-                        <scope>runtime</scope>
-                    </dependency>
                 </dependencies>
             </plugin>
             <!-- *******************************************************
-                For reliable builds, ensure:
+                gDickens: For reliable builds, ensure:
                  * NO duplicate jars of differing versions
                  * NO old versions of logging and Spring are included directly or Transitively
                  * All plugins have the version included as per Maven
@@ -463,10 +463,54 @@
                 </executions>
             </plugin>
         </plugins>
+
+        <!-- gDickens: For Eclipse's M2E plugin support -->
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-enforcer-plugin</artifactId>
+                                        <versionRange>[1.0.0,)</versionRange>
+                                        <goals>
+                                            <goal>enforce</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <execute/>
+                                    </action>
+                                </pluginExecution>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-dependency-plugin</artifactId>
+                                        <versionRange>[2.4,)</versionRange>
+                                        <goals>
+                                            <goal>unpack</goal>
+                                            <goal>sources</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <execute/>
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
 
-    <!-- Best Practice: Specify the transitive dependency versions, to ensure that older versions
+    <!-- gDickens: Best Practice: Specify the transitive dependency versions, to ensure that older versions
     of projects are NOT included.
     
     This is particularly important to Spring projects where projects such as Spring-Data, may
@@ -522,12 +566,6 @@
                 <version>${hibernate.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.jadira.usertype</groupId>
-                <artifactId>usertype.core</artifactId>
-                <version>${jadira-usertype-core.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>net.sf.ehcache</groupId>
                 <artifactId>ehcache-core</artifactId>
                 <version>${ehcache.version}</version>
@@ -537,6 +575,11 @@
                         <artifactId>commons-logging</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.jadira.usertype</groupId>
+                <artifactId>usertype.core</artifactId>
+                <version>${jadira-usertype-core.version}</version>
             </dependency>
             <dependency>
                 <groupId>javax.validation</groupId>
@@ -611,11 +654,6 @@
                 <artifactId>spring-expression</artifactId>
                 <version>${spring-framework.version}</version>
             </dependency>
-            <!--<dependency>-->
-            <!--<groupId>org.springframework</groupId>-->
-            <!--<artifactId>spring-instrument</artifactId>-->
-            <!--<version>${spring.version}</version>-->
-            <!--</dependency>-->
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-tx</artifactId>
@@ -688,66 +726,9 @@
                 <version>${commons-dbcp.version}</version>
             </dependency>
             <dependency>
-                <groupId>commons-io</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>${commons-io.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-lang</groupId>
-                <artifactId>commons-lang</artifactId>
-                <version>${commons-lang2.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons-lang3.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-exec</artifactId>
-                <version>${commons-exec.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-collections</groupId>
-                <artifactId>commons-collections</artifactId>
-                <version>${commons-collections.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-codec</groupId>
-                <artifactId>commons-codec</artifactId>
-                <version>${commons-codec.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-net</groupId>
-                <artifactId>commons-net</artifactId>
-                <version>${commons-net.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-fileupload</groupId>
-                <artifactId>commons-fileupload</artifactId>
-                <version>${commons-fileupload.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-digester3</artifactId>
-                <version>${commons-digester3.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>commons-digester</groupId>
-                <artifactId>commons-digester</artifactId>
-                <version>${commons-digester2.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
             <dependency>
                 <groupId>commons-beanutils</groupId>
@@ -765,17 +746,7 @@
                 <artifactId>commons-pool</artifactId>
                 <version>${commons-pool.version}</version>
             </dependency>
-            <dependency>
-                <groupId>commons-cli</groupId>
-                <artifactId>commons-cli</artifactId>
-                <version>${commons-cli.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>junit</groupId>
-                        <artifactId>junit</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
+
             <!-- Logging with SLF4J & LogBack -->
             <dependency>
                 <groupId>org.slf4j</groupId>
@@ -812,16 +783,6 @@
                 <artifactId>rome</artifactId>
                 <version>${rome.version}</version>
             </dependency>
-            <!--<dependency>-->
-            <!--<groupId>javax.activation</groupId>-->
-            <!--<artifactId>activation</artifactId>-->
-            <!--<version>${activation.version}</version>-->
-            <!--</dependency>-->
-            <!--<dependency>-->
-            <!--<groupId>org.jasypt</groupId>-->
-            <!--<artifactId>jasypt</artifactId>-->
-            <!--<version>${jasypt.version}</version>-->
-            <!--</dependency>-->
             <dependency>
                 <groupId>joda-time</groupId>
                 <artifactId>joda-time</artifactId>
@@ -842,12 +803,6 @@
                 <artifactId>antlr</artifactId>
                 <version>${antlr.version}</version>
             </dependency>
-            <dependency>
-                <groupId>asm</groupId>
-                <artifactId>asm</artifactId>
-                <version>${asm.version}</version>
-            </dependency>
-
 
             <!-- Databases -->
             <dependency>
@@ -930,4 +885,5 @@
         </dependencies>
     </dependencyManagement>
 
+    
 </project>

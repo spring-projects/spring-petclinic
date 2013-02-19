@@ -15,6 +15,7 @@
     </appender>
 
     <logger name="org.springframework.samples.petclinic" level="debug"/>
+    <logger name="org.springframework.test.web" level="trace"/>
 
     <root level="warn">
         <appender-ref ref="console"/>
