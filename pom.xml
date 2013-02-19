@@ -12,7 +12,6 @@
     <properties>
         <antlr.version>2.7.7</antlr.version>
         <aspectj.version>1.7.1</aspectj.version>
-        <commons-beanutils.version>1.8.3</commons-beanutils.version>
         <commons-dbcp.version>1.4</commons-dbcp.version>
         <commons-lang3.version>3.1</commons-lang3.version>
         <commons-pool.version>1.6</commons-pool.version>
@@ -230,6 +229,10 @@
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-library</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+        </dependency>
     </dependencies>
 
     <!-- gDickens: Best Practice to ALWAYS include the Maven plugin versions -->
@@ -413,6 +416,24 @@
                         <version>${logback.version}</version>
                         <scope>runtime</scope>
                     </dependency>
+                    <dependency>
+                        <groupId>commons-dbcp</groupId>
+                        <artifactId>commons-dbcp</artifactId>
+                        <version>${commons-dbcp.version}</version>
+                        <scope>runtime</scope>
+                    </dependency>
+                    <dependency>
+                        <groupId>commons-pool</groupId>
+                        <artifactId>commons-pool</artifactId>
+                        <version>${commons-pool.version}</version>
+                        <scope>runtime</scope>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.jdom</groupId>
+                        <artifactId>jdom</artifactId>
+                        <version>${jdom.version}</version>
+                        <scope>runtime</scope>
+                    </dependency>
                 </dependencies>
             </plugin>
             <!-- *******************************************************
@@ -584,6 +605,7 @@
                 <groupId>org.aspectj</groupId>
                 <artifactId>aspectjweaver</artifactId>
                 <version>${aspectj.version}</version>
+                <scope>runtime</scope>
             </dependency>
             <dependency>
                 <groupId>org.aspectj</groupId>
@@ -658,11 +680,13 @@
                 <groupId>javax.xml.bind</groupId>
                 <artifactId>jaxb-api</artifactId>
                 <version>${jaxb-api.version}</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>com.sun.xml.bind</groupId>
                 <artifactId>jaxb-impl</artifactId>
                 <version>${jaxb-impl.version}</version>
+                <scope>provided</scope>
             </dependency>
             <!-- SPRING, SPRING, SPRINGITY SPRING -->
             <dependency>
@@ -781,6 +805,7 @@
                 <groupId>commons-dbcp</groupId>
                 <artifactId>commons-dbcp</artifactId>
                 <version>${commons-dbcp.version}</version>
+                <scope>runtime</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
@@ -788,20 +813,10 @@
                 <version>${commons-lang3.version}</version>
             </dependency>
             <dependency>
-                <groupId>commons-beanutils</groupId>
-                <artifactId>commons-beanutils</artifactId>
-                <version>${commons-beanutils.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
                 <groupId>commons-pool</groupId>
                 <artifactId>commons-pool</artifactId>
                 <version>${commons-pool.version}</version>
+                <scope>runtime</scope>
             </dependency>
 
             <!-- Logging with SLF4J & LogBack -->
@@ -809,31 +824,31 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>jcl-over-slf4j</artifactId>
                 <version>${slf4j.version}</version>
+                <scope>runtime</scope>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j.version}</version>
+                <scope>runtime</scope>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>jul-to-slf4j</artifactId>
                 <version>${slf4j.version}</version>
+                <scope>runtime</scope>
             </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
                 <version>${logback.version}</version>
+                <scope>runtime</scope>
             </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-core</artifactId>
                 <version>${logback.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-access</artifactId>
-                <version>${logback.version}</version>
+                <scope>runtime</scope>
             </dependency>
             <dependency>
                 <groupId>rome</groupId>
@@ -919,6 +934,7 @@
                 <groupId>org.jdom</groupId>
                 <artifactId>jdom</artifactId>
                 <version>${jdom.version}</version>
+                <scope>runtime</scope>
             </dependency>
             <!-- Test Artifacts -->
             <dependency>
