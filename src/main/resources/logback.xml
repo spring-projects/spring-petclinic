@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true" scan="true" scanPeriod="30 seconds">
+
+    <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+        <resetJUL>true</resetJUL>
+    </contextListener>
+
+    <!-- To enable JMX Management -->
+    <jmxConfigurator/>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%-5level %logger{0} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+	<logger name="accounts" level="debug" />
+	<logger name="rewards" level="debug" />
+    <logger name="org.springframework.beans" level="trace" />
+    <logger name="org.springframework.web.servlet" level="trace" />
+    <logger name="org.springframework.core.env" level="trace" />
+
+	<root level="warn">
+		<appender-ref ref="console" />
+	</root>
+</configuration>
