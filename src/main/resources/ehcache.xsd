@@ -227,13 +227,13 @@
     </xs:element>
 
     <xs:element name="searchable">
-      <xs:complexType>
-        <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="unbounded" ref="searchAttribute"/>
-        </xs:sequence>
-        <xs:attribute name="keys" use="optional" type="xs:boolean" default="true"/>
-        <xs:attribute name="values" use="optional" type="xs:boolean" default="true"/>
-      </xs:complexType>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="searchAttribute"/>
+            </xs:sequence>
+            <xs:attribute name="keys" use="optional" type="xs:boolean" default="true"/>
+            <xs:attribute name="values" use="optional" type="xs:boolean" default="true"/>
+        </xs:complexType>
     </xs:element>
 
     <xs:element name="pinning">
@@ -371,26 +371,27 @@
     <xs:element name="sizeOfPolicy">
         <xs:complexType>
             <xs:attribute name="maxDepth" use="required" type="xs:integer"/>
-            <xs:attribute name="maxDepthExceededBehavior" use="optional" default="continue" type="maxDepthExceededBehavior"/>
+            <xs:attribute name="maxDepthExceededBehavior" use="optional" default="continue"
+                          type="maxDepthExceededBehavior"/>
         </xs:complexType>
     </xs:element>
 
-	<xs:element name="persistence">
-	    <xs:complexType>
+    <xs:element name="persistence">
+        <xs:complexType>
             <xs:attribute name="strategy" use="required" type="persistenceStrategy"/>
             <xs:attribute name="synchronousWrites" use="optional" default="false" type="xs:boolean"/>
-	    </xs:complexType>
-	</xs:element>
-	
-	<xs:simpleType name="persistenceStrategy">
-	    <xs:restriction base="xs:string">
-	        <xs:enumeration value="localTempSwap"/>
-	        <xs:enumeration value="localRestartable"/>
-	        <xs:enumeration value="none"/>
-	        <xs:enumeration value="distributed"/>
-	    </xs:restriction>
-	</xs:simpleType>
-	
+        </xs:complexType>
+    </xs:element>
+
+    <xs:simpleType name="persistenceStrategy">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="localTempSwap"/>
+            <xs:enumeration value="localRestartable"/>
+            <xs:enumeration value="none"/>
+            <xs:enumeration value="distributed"/>
+        </xs:restriction>
+    </xs:simpleType>
+
     <xs:simpleType name="maxDepthExceededBehavior">
         <xs:restriction base="xs:string">
             <xs:enumeration value="continue"/>

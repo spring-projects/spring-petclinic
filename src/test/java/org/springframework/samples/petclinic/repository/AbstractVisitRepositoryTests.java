@@ -15,22 +15,17 @@
  */
 package org.springframework.samples.petclinic.repository;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Visit;
-import org.springframework.samples.petclinic.repository.OwnerRepository;
-import org.springframework.samples.petclinic.repository.PetRepository;
-import org.springframework.samples.petclinic.repository.VisitRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.junit.Assert.assertEquals;
+
 /**
- * <p>
- * Base class for {@link OwnerRepository} integration tests.
- * </p>
- * <p>
+ * <p> Base class for {@link OwnerRepository} integration tests. </p>
+ * <p/>
  * see javadoc inside {@link AbstractVetRepositoryTests} for more details
  *
  * @author Ken Krebs
@@ -41,25 +36,26 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public abstract class AbstractVisitRepositoryTests {
 
-	@Autowired
-	protected VisitRepository visitRepository;
-	
-	@Autowired
-	protected PetRepository petRepository;
+    @Autowired
+    protected VisitRepository visitRepository;
+
+    @Autowired
+    protected PetRepository petRepository;
 
 
-	@Test  @Transactional
-	public void insertVisit() {
-		Pet pet7 = this.petRepository.findById(7);
-		int found = pet7.getVisits().size();
-		Visit visit = new Visit();
-		pet7.addVisit(visit);
-		visit.setDescription("test");
-		// both storeVisit and storePet are necessary to cover all ORM tools
-		this.visitRepository.save(visit);
-		this.petRepository.save(pet7);
-		pet7 = this.petRepository.findById(7);
-		assertEquals(found + 1, pet7.getVisits().size());
-	}
+    @Test
+    @Transactional
+    public void insertVisit() {
+        Pet pet7 = this.petRepository.findById(7);
+        int found = pet7.getVisits().size();
+        Visit visit = new Visit();
+        pet7.addVisit(visit);
+        visit.setDescription("test");
+        // both storeVisit and storePet are necessary to cover all ORM tools
+        this.visitRepository.save(visit);
+        this.petRepository.save(pet7);
+        pet7 = this.petRepository.findById(7);
+        assertEquals(found + 1, pet7.getVisits().size());
+    }
 
 }
