@@ -16,12 +16,6 @@
 
 package org.springframework.samples.petclinic.web;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,8 +30,12 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 /**
- * @author Arjen Poutsma 
+ * @author Arjen Poutsma
  * @author Michael Isvy
  */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -48,23 +46,24 @@ import org.springframework.web.context.WebApplicationContext;
 @ActiveProfiles("jdbc")
 public class VisitsAtomViewWithContainerTest {
 
-	@Autowired
-	private WebApplicationContext webApplicationContext;
+    @Autowired
+    private WebApplicationContext webApplicationContext;
 
-	private MockMvc mockMvc;
-	
-	@Before
-	public void setup() {
-		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
-	}
+    private MockMvc mockMvc;
 
-	@Test
-	public void getVisits() throws Exception { 
-		MediaType mediaType = MediaType.APPLICATION_ATOM_XML;
-		ResultActions actions = this.mockMvc.perform(get("/vets.atom"));
-		actions.andExpect(status().isOk());
-		actions.andExpect(xpath("//*").string(containsString("Pet ClinicService Visits")));
-		actions.andExpect(content().contentType("application/atom+xml"));
-		
-	}
+    @Before
+    public void setup() {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
+    }
+
+    @Test
+    public void getVisits() throws Exception {
+        //gDickens: MediaType is not used
+        MediaType mediaType = MediaType.APPLICATION_ATOM_XML;
+        ResultActions actions = this.mockMvc.perform(get("/vets.atom"));
+        actions.andExpect(status().isOk());
+        actions.andExpect(xpath("//*").string(containsString("Pet ClinicService Visits")));
+        actions.andExpect(content().contentType("application/atom+xml"));
+
+    }
 }
