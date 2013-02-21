@@ -4,153 +4,68 @@
 spring-petclinic has been deployed here on cloudfoundry: http://spring-petclinic.cloudfoundry.com/
 
 ## Running petclinic locally
-```git clone https://github.com/SpringSource/spring-petclinic.git
-mvn tomcat7:run```
+```
+git clone https://github.com/SpringSource/spring-petclinic.git
+mvn tomcat7:run
+```
 You can then access petclinic here: http://localhost:9966/petclinic/
 
+## Working with Petclinic in Eclipse/STS
 
-
-
-## Petclinic in Eclipse/STS
-
-###prerequisites
+### prerequisites
 The following items should be installed in your system:
 * Maven 3 (http://www.sonatype.com/books/mvnref-book/reference/installation.html)
-* git command line tool
-Maven 3 should be installed on your system.
-If you're not sure how to install Maven, you can follow the instructions here: 
+* git command line tool (https://help.github.com/articles/set-up-git)
+* Eclipse with the m2e plugin (m2e is installed by default when using the STS (http://www.springsource.org/sts) distribution of Eclipse)
 
-You then have several options:
+Note: when m2e is available, there is an m2 icon in Help -> About dialog.
+If m2e is not there, just follow the install process here: http://eclipse.org/m2e/download/
 
-A) Using the command line and the m2e plugin for Eclipse/STS 
+
+### Steps:
 
 In the command line
-```git clone https://github.com/SpringSource/spring-petclinic.git```
-Inside Eclipse: make sure that Eclipse Maven Integration (m2e) is installed. 
-(You should have m2 icon in Help -> About dialog)
-If m2e is not there and if you wish to install it:  http://www.eclipse.org/m2e/
-
-```File -> Import -> Maven -> Existing Maven project```
-
-
-
-B) Using Maven the command line
-git clone git@github.com:michaelisvy/mvc-layout-samples.git
-cd mvc-layout-samples
-mvn eclipse:eclipse
-
-NO_M2ECLIPSE_SUPPORT: Project files created with the maven-eclipse-plugin are not supported in M2Eclipse.
-
-Your project is now ready to be imported into Eclipse.
-File -> Import -> Existing project into Eclipse
+```
+git clone https://github.com/SpringSource/spring-petclinic.git
+```
+Inside Eclipse: 
+```
+File -> Import -> Maven -> Existing Maven project
+```
 
 
+## Looking for something in particular?
 
-
-
-
-@author Ken Krebs
-@author Juergen Hoeller
-@author Rob Harrop
-@author Costin Leau
-@author Sam Brannen
-@author Scott Andrews
-
-==========================================================================
-=== Data Access Strategies
-==========================================================================
-
-PetClinic features alternative DAO implementations and application
-configurations for JDBC, Hibernate, and JPA, with HSQLDB and MySQL as
-target databases. The default PetClinic configuration is JDBC on HSQLDB.
-See "src/main/resources/jdbc.properties" as well as web.xml and
-applicationContext-*.xml in the "src/main/webapp/WEB-INF" folder for
-details. A simple comment change in web.xml switches between the data
-access strategies.
-
-The JDBC and Hibernate versions of PetClinic also demonstrate JMX support
-via the use of <context:mbean-export/> for exporting MBeans.
-SimpleJdbcClinic exposes the SimpleJdbcClinicMBean management interface
-via JMX through the use of the @ManagedResource and @ManagedOperation
-annotations; whereas, the HibernateStatistics service is exposed via JMX
-through auto-detection of the service MBean. You can start up the JDK's
-JConsole to manage the exported bean.
-
-All data access strategies can work with JTA for transaction management by
-activating the JtaTransactionManager and a JndiObjectFactoryBean that
-refers to a transactional container DataSource. The default for JDBC is
-DataSourceTransactionManager; for Hibernate, HibernateTransactionManager;
-for JPA, JpaTransactionManager. Those local strategies allow for working
-with any locally defined DataSource.
-
-Note that the sample configurations for JDBC, Hibernate, and JPA configure
-a BasicDataSource from the Apache Commons DBCP project for connection
-pooling.
-
-==========================================================================
-=== Build and Deployment
-==========================================================================
-
-The Spring PetClinic sample application is built using Maven.
-When the project is first built, Maven will automatically download all required
-dependencies (if these haven't been downloaded before). Thus the initial build
-may take a few minutes depending on the speed of your Internet connection,
-but subsequent builds will be much faster.
-
-Available build commands:
-
-- mvn clean         --> cleans the project
-- mvn clean test    --> cleans the project and runs all tests
-- mvn clean package --> cleans the project and builds the WAR
-
-After building the project with "mvn clean package", you will find the
-resulting WAR file in the "target/" directory. By default, an
-embedded HSQLDB instance in configured. No other steps are necessary to
-get the data source up and running: you can simply deploy the built WAR
-file directly to your Servlet container.
-
-For MySQL, you'll need to use the corresponding schema and SQL scripts in
-the "db/mysql" subdirectory. Follow the steps outlined in
-"db/mysql/petclinic_db_setup_mysql.txt" for explicit details.
-
-In you intend to use a local DataSource, the JDBC settings can be adapted
-in "src/main/resources/jdbc.properties". To use a JTA DataSource, you need
-to set up corresponding DataSources in your Java EE container.
-
-Notes on enabling Log4J:
- - Log4J is disabled by default due to issues with JBoss.
- - Uncomment the Log4J listener in "WEB-INF/web.xml" to enable logging.
- 
-Notes on service static resources:
- - Most web containers provide a 'default' servlet for serving static 
- resources; Petclinic relies on it for its images.
- - On containers without such a mapping (ex: GlassFish), uncomment the 
- 'default' declaration in "WEB-INF/web.xml".
-
-==========================================================================
-=== JPA on Tomcat
-==========================================================================
-
-This section provides tips on using the Java Persistence API (JPA) on
-Apache Tomcat 4.x or higher with a persistence provider that requires
-class instrumentation (such as TopLink Essentials).
-
-To use JPA class instrumentation, Tomcat has to be instructed to use a
-custom class loader which supports instrumentation. See the JPA section of
-the Spring reference manual for complete details.
-
-The basic steps are:
- - Copy "org.springframework.instrument.tomcat-3.0.0.RELEASE.jar" from the
-   Spring distribution to "TOMCAT_HOME/server/lib".
- - If you're running on Tomcat 5.x, modify "TOMCAT_HOME/conf/server.xml"
-   and add a new "<Context>" element for 'petclinic' (see below). You can 
-   alternatively deploy the WAR including "META-INF/context.xml" from this 
-   sample application's "src/main/webapp" directory, in which case you
-   will need to uncomment the Loader element in that file to enable the
-   use of the TomcatInstrumentableClassLoader.
-
-<Context path="/petclinic" docBase="/petclinic/location" ...>
-  <!-- please note that useSystemClassLoaderAsParent is available since Tomcat 5.5.20; remove it if previous versions are being used -->
-  <Loader loaderClass="org.springframework.instrument.classloading.tomcat.TomcatInstrumentableClassLoader" useSystemClassLoaderAsParent="false"/>
-  ...
-</Context>
+<table>
+  <tr>
+    <th>Web layer</th><th>Files</th>
+  </tr>
+  <tr>
+    <td>Spring MVC- Atom integration</td>
+    <td>
+      <a href="/SpringSource/spring-petclinic/blob/master/src/main/java/org/springframework/samples/petclinic/web/VisitsAtomView.java">VisitsAtomView</a>
+      <a href="/SpringSource/spring-petclinic/blob/master/src/main/webapp/WEB-INF/mvc-view-config.xml">mvc-view-config.xml</a>
+    </td>
+  </tr>
+  <tr>
+    <td>Spring MVC - XML integration</td>
+    <td><a href="/SpringSource/spring-petclinic/blob/master/src/main/webapp/WEB-INF/mvc-view-config.xml">mvc-view-config.xml</a></td>
+  </tr>
+  <tr>
+    <td>Spring MVC Test Framework</td>
+    <td><a href="/SpringSource/spring-petclinic/blob/master/src/test/java/org/springframework/samples/petclinic/web/VisitsAtomViewTest.java">VisitsAtomViewTest.java</a></td>
+  </tr>
+  <tr>
+    <td>JSP custom tags</td>
+    <td>
+      <a href="/SpringSource/spring-petclinic/tree/master/src/main/webapp/WEB-INF/tags">WEB-INF/tags</a></td>
+  </tr>
+  <tr>
+    <td>webjars</td>
+    <td>
+      <a href="/SpringSource/spring-petclinic/tree/master/pom.xml#L171">webjars declaration inside pom.xml</a> <br />
+      <a href="/SpringSource/spring-petclinic/blob/master/src/main/webapp/WEB-INF/mvc-core-config.xml#L24">Resource mapping in Spring configuration</a> <br />
+      <a href="/SpringSource/spring-petclinic/blob/master/src/main/webapp/WEB-INF/jsp/fragments/headTag.jsp#L12">sample usage in JSP</a></td>
+    </td>
+  </tr>
+</table>
