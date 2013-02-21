@@ -10,6 +10,7 @@
     <packaging>war</packaging>
 
     <properties>
+        <antlr.version>2.7.7</antlr.version>
         <aspectj.version>1.7.1</aspectj.version>
         <commons-dbcp.version>1.4</commons-dbcp.version>
         <commons-lang3.version>3.1</commons-lang3.version>
@@ -70,6 +71,7 @@
         <maven-taglist-plugin.version>2.4</maven-taglist-plugin.version>
         <maven.version.range>[2.2.1,3.1.0)</maven.version.range>
         <maven-war-plugin.version>2.3</maven-war-plugin.version>
+        <maven-tomcat-plugin.version>2.0</maven-tomcat-plugin.version>
         <mysql.version>5.1.22</mysql.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -353,88 +355,20 @@
                     </filesets>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.mortbay.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>${maven-jetty-plugin.version}</version>
-                <configuration>
-                    <webAppConfig>
-                        <contextPath>/${project.name}</contextPath>
-                    </webAppConfig>
-                    <!--
-                    "stopPort" - Port number to receive a stop command and shutdown - use "mvn jetty:stop"
-                    "stopKey" - String value that must be sent to the stopPort to validate the stop command
-                    -->
-                    <stopPort>9966</stopPort>
-                    <stopKey>shutterdown</stopKey>
-                    <systemProperties>
-                        <systemProperty>
-                            <name>logback.configurationFile</name>
-                            <value>./src/main/resources/logback.xml</value>
-                        </systemProperty>
-                        <systemProperty>
-                            <name>com.sun.management.jmxremote</name>
-                            <value>true</value>
-                        </systemProperty>
-                        <systemProperty>
-                            <name>com.sun.management.jmxremote.port</name>
-                            <value>8050</value>
-                        </systemProperty>
-                        <systemProperty>
-                            <name>com.sun.management.jmxremote.ssl</name>
-                            <value>false</value>
-                        </systemProperty>
-                        <systemProperty>
-                            <name>com.sun.management.jmxremote.authenticate</name>
-                            <value>false</value>
-                        </systemProperty>
-                    </systemProperties>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.slf4j</groupId>
-                        <artifactId>jcl-over-slf4j</artifactId>
-                        <version>${slf4j.version}</version>
-                        <scope>runtime</scope>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.slf4j</groupId>
-                        <artifactId>slf4j-api</artifactId>
-                        <version>${slf4j.version}</version>
-                        <scope>runtime</scope>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.slf4j</groupId>
-                        <artifactId>jul-to-slf4j</artifactId>
-                        <version>${slf4j.version}</version>
-                        <scope>runtime</scope>
-                    </dependency>
-                    <dependency>
-                        <groupId>ch.qos.logback</groupId>
-                        <artifactId>logback-classic</artifactId>
-                        <version>${logback.version}</version>
-                        <scope>runtime</scope>
-                    </dependency>
-                    <dependency>
-                        <groupId>commons-dbcp</groupId>
-                        <artifactId>commons-dbcp</artifactId>
-                        <version>${commons-dbcp.version}</version>
-                        <scope>runtime</scope>
-                    </dependency>
-                    <dependency>
-                        <groupId>commons-pool</groupId>
-                        <artifactId>commons-pool</artifactId>
-                        <version>${commons-pool.version}</version>
-                        <scope>runtime</scope>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.jdom</groupId>
-                        <artifactId>jdom</artifactId>
-                        <version>${jdom.version}</version>
-                        <scope>runtime</scope>
-                    </dependency>
-                </dependencies>
-            </plugin>
+            
+
+		    <plugin>
+		      <groupId>org.apache.tomcat.maven</groupId>
+		      <artifactId>tomcat7-maven-plugin</artifactId>       
+		      <version>${maven-tomcat-plugin.version}</version>     
+		      <configuration>          
+		        <server>tomcat-development-server</server>
+		        <port>9966</port>
+		        <path>/petclinic</path>
+		      </configuration>
+		    </plugin> 
+
+
             <!-- *******************************************************
                 gDickens: For reliable builds, ensure:
                  * NO duplicate jars of differing versions
@@ -870,7 +804,12 @@
                 <artifactId>joda-time-jsptags</artifactId>
                 <version>${jodatime-jsptags.version}</version>
             </dependency>
- 
+            <dependency>
+                <groupId>antlr</groupId>
+                <artifactId>antlr</artifactId>
+                <version>${antlr.version}</version>
+            </dependency>
+
             <!-- Databases - Uses HSQL by default -->
             <!-- <dependency>
                 <groupId>mysql</groupId>
