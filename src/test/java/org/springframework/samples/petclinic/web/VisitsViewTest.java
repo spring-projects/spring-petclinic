@@ -31,8 +31,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+
 
 /**
  * @author Arjen Poutsma
@@ -40,11 +43,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-// Spring configuration files that are inside WEB-INF folder can be referenced here because they've been 
-// added to the classpath inside the Maven pom.xml file (inside <build> <testResources> ... </testResources> </build>)
-@ContextConfiguration("VisitsAtomViewTestWithContainer-config.xml")
+@ContextConfiguration("VisitsViewTest-config.xml")
 @ActiveProfiles("jdbc")
-public class VisitsAtomViewWithContainerTest {
+public class VisitsViewTest {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -55,15 +56,14 @@ public class VisitsAtomViewWithContainerTest {
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
     }
-
+    
     @Test
-    public void getVisits() throws Exception {
-        //gDickens: MediaType is not used
-        MediaType mediaType = MediaType.APPLICATION_ATOM_XML;
-        ResultActions actions = this.mockMvc.perform(get("/vets.atom"));
+    public void getVisitsXml() throws Exception {
+        ResultActions actions = this.mockMvc.perform(get("/vets.xml").accept(MediaType.APPLICATION_XML));
+        actions.andDo(print()); // action is logged into the console
         actions.andExpect(status().isOk());
-        actions.andExpect(xpath("//*").string(containsString("Pet ClinicService Visits")));
-        actions.andExpect(content().contentType("application/atom+xml"));
+        actions.andExpect(content().contentType("application/xml"));
+        actions.andExpect(xpath("/vets/vetList[id=1]/firstName").string(containsString("James")));
 
     }
 }

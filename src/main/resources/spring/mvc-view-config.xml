@@ -17,23 +17,36 @@
     -->
     <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
         <property name="contentNegotiationManager" ref="cnManager"/>
+        
+        <property name="viewResolvers">
+        	<list>
+        		 <!-- Default viewClass: JSTL view (JSP with html output) -->
+			    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+			        <!-- Example: a logical view name of 'vets' is mapped to '/WEB-INF/jsp/vets.jsp' -->
+			        <property name="prefix" value="/WEB-INF/jsp/"/>
+			        <property name="suffix" value=".jsp"/>
+			    </bean>
+			
+			    <!-- Used here for 'xml' and 'atom' views  -->
+			    <bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
+        	</list>
+        </property>
     </bean>
 
     <!-- Simple strategy: only path extension is taken into account -->
     <bean id="cnManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
         <property name="favorPathExtension" value="true"/>
         <property name="ignoreAcceptHeader" value="true"/>
+        <property name="defaultContentType" value="text/html"/>
+        
+        <property name="mediaTypes">
+            <map>
+                <entry key="html" value="text/html" />
+                <entry key="xml" value="application/xml" />
+                <entry key="atom" value="application/atom+xml" />
+            </map>
+        </property>
     </bean>
-
-    <!-- Default viewClass: JSTL view (JSP with html output) -->
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <!-- Example: a logical view name of 'vets' is mapped to '/WEB-INF/jsp/vets.jsp' -->
-        <property name="prefix" value="/WEB-INF/jsp/"/>
-        <property name="suffix" value=".jsp"/>
-    </bean>
-
-    <!-- Used here for 'xml' and 'atom' views  -->
-    <bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
 
     <!-- Renders an Atom feed of the visits. Used by the BeanNameViewResolver  -->
     <bean id="vets/vetList.atom" class="org.springframework.samples.petclinic.web.VetsAtomView"/>
