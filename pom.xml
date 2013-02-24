@@ -49,6 +49,7 @@
         <webjars-jquery.version>1.9.0</webjars-jquery.version>
         <dandelion.datatables.version>0.8.5</dandelion.datatables.version>
         <dandelion.datatables.export.itext.version>0.1.5</dandelion.datatables.export.itext.version>
+        <dandelion.datatables.servlet2.version>0.1.4</dandelion.datatables.servlet2.version>
       
         <maven-assembly-plugin.version>2.4</maven-assembly-plugin.version>
         <maven-clean-plugin.version>2.5</maven-clean-plugin.version>
@@ -246,6 +247,11 @@
             <groupId>com.github.dandelion</groupId>
             <artifactId>datatables-export-itext</artifactId>
             <version>${dandelion.datatables.export.itext.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>com.github.dandelion</groupId>
+            <artifactId>datatables-servlet2</artifactId>
+            <version>${dandelion.datatables.servlet2.version}</version>
          </dependency>
        </dependencies>
 
