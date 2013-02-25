@@ -22,6 +22,8 @@
     <!-- import the dataSource definition -->
     <import resource="datasource-config.xml"/>
 
+    <context:component-scan
+            base-package="org.springframework.samples.petclinic.service"/>
 
     <!-- Configurer that replaces ${...} placeholders with values from a properties file -->
     <!-- (in this case, JDBC-related settings for the JPA EntityManager definition below) -->
@@ -40,7 +42,7 @@
     <!--
         Instruct Spring to perform declarative transaction management
         automatically on annotated classes.
-                
+
         for mode="aspectj"/ see SPR-6392
     -->
     <tx:annotation-driven/>
