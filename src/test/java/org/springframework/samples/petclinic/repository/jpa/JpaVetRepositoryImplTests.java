@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author Thomas Risberg
  * @author Michael Isvy
  */
-@ContextConfiguration(locations = {"classpath:spring/dao-config.xml"})
+@ContextConfiguration(locations = {"classpath:spring/business-config.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("jpa")
 public class JpaVetRepositoryImplTests extends AbstractVetRepositoryTests {

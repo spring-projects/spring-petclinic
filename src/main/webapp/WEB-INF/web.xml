@@ -10,7 +10,7 @@
 
     <context-param>
         <param-name>spring.profiles.active</param-name>
-        <param-value>jdbc</param-value>
+        <param-value>jpa</param-value>
         <!-- Available profiles:
             <param-value>jdbc</param-value>
             <param-value>jpa</param-value> (in the case of plain JPA)
@@ -24,7 +24,7 @@
     -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:spring/dao-config.xml, classpath:spring/tools-config.xml</param-value>
+        <param-value>classpath:spring/business-config.xml, classpath:spring/tools-config.xml</param-value>
     </context-param>
 
     <listener>
