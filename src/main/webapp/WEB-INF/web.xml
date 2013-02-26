@@ -2,7 +2,7 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://java.sun.com/xml/ns/javaee"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
-           http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          id="WebApp_ID" version="2.5">
 
     <display-name>Spring PetClinic</display-name>
@@ -10,21 +10,21 @@
 
     <context-param>
         <param-name>spring.profiles.active</param-name>
-        <param-value>jpa</param-value>
+        <param-value>jdbc</param-value>
         <!-- Available profiles:
-            <param-value>jdbc</param-value>
-            <param-value>jpa</param-value> (in the case of plain JPA)
-            <param-value>spring-data-jpa</param-value> (in the case of Spring Data JPA)
-         -->
+		<param-value>jdbc</param-value>
+		<param-value>jpa</param-value> (in the case of plain JPA)
+		<param-value>spring-data-jpa</param-value> (in the case of Spring Data JPA)
+		-->
     </context-param>
 
     <!--
-        - Location of the XML file that defines the root application context.
-        - Applied by ContextLoaderServlet.
-    -->
+- Location of the XML file that defines the root application context.
+- Applied by ContextLoaderServlet.
+-->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:spring/business-config.xml, classpath:spring/tools-config.xml</param-value>
+        <param-value>classpath:spring/dao-config.xml, classpath:spring/tools-config.xml</param-value>
     </context-param>
 
     <listener>
@@ -32,8 +32,8 @@
     </listener>
 
     <!--
-        - Servlet that dispatches request to registered handlers (Controller implementations).
-    -->
+- Servlet that dispatches request to registered handlers (Controller implementations).
+-->
     <servlet>
         <servlet-name>petclinic</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -49,9 +49,33 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
-    <!-- used so we can use forms of method type 'PUT' and 'DELETE' 
-    see here: http://static.springsource.org/spring/docs/current/spring-framework-reference/html/view.html#rest-method-conversion
-    -->
+    <!-- Dandelion-Datatables servlet definition -->
+    <servlet>
+        <servlet-name>datatablesController</servlet-name>
+        <servlet-class>com.github.dandelion.datatables.extras.servlet2.servlet.DatatablesServlet</servlet-class>
+    </servlet>
+   
+    <!-- Dandelion-Datatables servlet mapping -->
+    <servlet-mapping>
+        <servlet-name>datatablesController</servlet-name>
+        <url-pattern>/datatablesController/*</url-pattern>
+    </servlet-mapping>
+   
+    <!-- Dandelion-Datatables filter definition -->
+    <filter>
+        <filter-name>datatablesFilter</filter-name>
+        <filter-class>com.github.dandelion.datatables.extras.servlet2.filter.DatatablesFilter</filter-class>
+    </filter>
+    
+    <!-- Dandelion-Datatables filter mapping -->
+    <filter-mapping>
+        <filter-name>datatablesFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- used so we can use forms of method type 'PUT' and 'DELETE'
+see here: http://static.springsource.org/spring/docs/current/spring-framework-reference/html/view.html#rest-method-conversion
+-->
     <filter>
         <filter-name>httpMethodFilter</filter-name>
         <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
