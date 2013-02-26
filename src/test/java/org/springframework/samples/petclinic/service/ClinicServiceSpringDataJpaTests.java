@@ -1,8 +1,7 @@
 
-package org.springframework.samples.petclinic.repository.springdatajpa;
+package org.springframework.samples.petclinic.service;
 
 import org.junit.runner.RunWith;
-import org.springframework.samples.petclinic.repository.AbstractOwnerRepositoryTests;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -14,6 +13,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = {"classpath:spring/business-config.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("spring-data-jpa")
-public class SpringDataOwnerRepositoryTests extends AbstractOwnerRepositoryTests {
+public class ClinicServiceSpringDataJpaTests extends AbstractClinicServiceTests {
 
 }
