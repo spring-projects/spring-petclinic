@@ -18,6 +18,7 @@ package org.springframework.samples.petclinic.repository;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Owner;
+import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,13 +28,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * <p> Base class for {@link OwnerRepository} integration tests. </p> <p> Subclasses should specify Spring context
+ * <p> Base class for {@link clinicService} integration tests. </p> <p> Subclasses should specify Spring context
  * configuration using {@link ContextConfiguration @ContextConfiguration} annotation </p> <p>
- * AbstractOwnerRepositoryTests and its subclasses benefit from the following services provided by the Spring
+ * AbstractclinicServiceTests and its subclasses benefit from the following services provided by the Spring
  * TestContext Framework: </p> <ul> <li><strong>Spring IoC container caching</strong> which spares us unnecessary set up
  * time between test execution.</li> <li><strong>Dependency Injection</strong> of test fixture instances, meaning that
  * we don't need to perform application context lookups. See the use of {@link Autowired @Autowired} on the <code>{@link
- * AbstractOwnerRepositoryTests#ownerRepository ownerRepository}</code> instance variable, which uses autowiring <em>by
+ * AbstractclinicServiceTests#clinicService clinicService}</code> instance variable, which uses autowiring <em>by
  * type</em>. <li><strong>Transaction management</strong>, meaning each test method is executed in its own transaction,
  * which is automatically rolled back by default. Thus, even if tests insert or otherwise change database state, there
  * is no need for a teardown or cleanup script. <li> An {@link org.springframework.context.ApplicationContext
@@ -48,23 +49,22 @@ import static org.junit.Assert.assertTrue;
 public abstract class AbstractOwnerRepositoryTests {
 
     @Autowired
-    protected OwnerRepository ownerRepository;
+    protected ClinicService clinicService;
 
     @Test
     @Transactional
     public void findOwners() {
-        Collection<Owner> owners = this.ownerRepository.findByLastName("Davis");
+        Collection<Owner> owners = this.clinicService.findOwnerByLastName("Davis");
         assertEquals(2, owners.size());
-        owners = this.ownerRepository.findByLastName("Daviss");
+        owners = this.clinicService.findOwnerByLastName("Daviss");
         assertEquals(0, owners.size());
     }
 
     @Test
-    @Transactional
     public void findSingleOwner() {
-        Owner owner1 = this.ownerRepository.findById(1);
+        Owner owner1 = this.clinicService.findOwnerById(1);
         assertTrue(owner1.getLastName().startsWith("Franklin"));
-        Owner owner10 = this.ownerRepository.findById(10);
+        Owner owner10 = this.clinicService.findOwnerById(10);
         assertEquals("Carlos", owner10.getFirstName());
 
         assertEquals(owner1.getPets().size(), 1);
@@ -73,7 +73,7 @@ public abstract class AbstractOwnerRepositoryTests {
     @Test
     @Transactional
     public void insertOwner() {
-        Collection<Owner> owners = this.ownerRepository.findByLastName("Schultz");
+        Collection<Owner> owners = this.clinicService.findOwnerByLastName("Schultz");
         int found = owners.size();
         Owner owner = new Owner();
         owner.setFirstName("Sam");
@@ -81,19 +81,19 @@ public abstract class AbstractOwnerRepositoryTests {
         owner.setAddress("4, Evans Street");
         owner.setCity("Wollongong");
         owner.setTelephone("4444444444");
-        this.ownerRepository.save(owner);
-        owners = this.ownerRepository.findByLastName("Schultz");
+        this.clinicService.saveOwner(owner);
+        owners = this.clinicService.findOwnerByLastName("Schultz");
         assertEquals("Verifying number of owners after inserting a new one.", found + 1, owners.size());
     }
 
     @Test
     @Transactional
     public void updateOwner() throws Exception {
-        Owner o1 = this.ownerRepository.findById(1);
+        Owner o1 = this.clinicService.findOwnerById(1);
         String old = o1.getLastName();
         o1.setLastName(old + "X");
-        this.ownerRepository.save(o1);
-        o1 = this.ownerRepository.findById(1);
+        this.clinicService.saveOwner(o1);
+        o1 = this.clinicService.findOwnerById(1);
         assertEquals(old + "X", o1.getLastName());
     }
 

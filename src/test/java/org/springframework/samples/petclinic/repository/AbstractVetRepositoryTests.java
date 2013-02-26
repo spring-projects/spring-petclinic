@@ -15,15 +15,15 @@
  */
 package org.springframework.samples.petclinic.repository;
 
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.model.Vet;
-import org.springframework.samples.petclinic.util.EntityUtils;
-import org.springframework.transaction.annotation.Transactional;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Collection;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.model.Vet;
+import org.springframework.samples.petclinic.service.ClinicService;
+import org.springframework.samples.petclinic.util.EntityUtils;
 
 /**
  * <p> Base class for {@link OwnerRepository} integration tests. </p>
@@ -38,14 +38,13 @@ import static org.junit.Assert.assertEquals;
  */
 public abstract class AbstractVetRepositoryTests {
 
-    @Autowired
-    protected VetRepository vetRepository;
+	@Autowired
+    protected ClinicService clinicService;
 
 
     @Test
-    @Transactional
     public void findVets() {
-        Collection<Vet> vets = this.vetRepository.findAll();
+        Collection<Vet> vets = this.clinicService.findVets();
 
         Vet v1 = EntityUtils.getById(vets, Vet.class, 2);
         assertEquals("Leary", v1.getLastName());

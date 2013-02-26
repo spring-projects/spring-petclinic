@@ -19,6 +19,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Visit;
+import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.Assert.assertEquals;
@@ -36,25 +37,22 @@ import static org.junit.Assert.assertEquals;
  */
 public abstract class AbstractVisitRepositoryTests {
 
-    @Autowired
-    protected VisitRepository visitRepository;
-
-    @Autowired
-    protected PetRepository petRepository;
+	@Autowired
+    protected ClinicService clinicService;
 
 
     @Test
     @Transactional
     public void insertVisit() {
-        Pet pet7 = this.petRepository.findById(7);
+        Pet pet7 = this.clinicService.findPetById(7);
         int found = pet7.getVisits().size();
         Visit visit = new Visit();
         pet7.addVisit(visit);
         visit.setDescription("test");
         // both storeVisit and storePet are necessary to cover all ORM tools
-        this.visitRepository.save(visit);
-        this.petRepository.save(pet7);
-        pet7 = this.petRepository.findById(7);
+        this.clinicService.saveVisit(visit);
+        this.clinicService.savePet(pet7);
+        pet7 = this.clinicService.findPetById(7);
         assertEquals(found + 1, pet7.getVisits().size());
     }
 

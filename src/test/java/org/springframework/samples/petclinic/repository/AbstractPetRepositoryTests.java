@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
+import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.samples.petclinic.util.EntityUtils;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,17 +43,13 @@ import static org.junit.Assert.assertTrue;
  */
 public abstract class AbstractPetRepositoryTests {
 
-    @Autowired
-    protected PetRepository petRepository;
-
-    @Autowired
-    protected OwnerRepository ownerRepository;
+	@Autowired
+    protected ClinicService clinicService;
 
 
     @Test
-    @Transactional
     public void getPetTypes() {
-        Collection<PetType> petTypes = this.petRepository.findPetTypes();
+        Collection<PetType> petTypes = this.clinicService.findPetTypes();
 
         PetType petType1 = EntityUtils.getById(petTypes, PetType.class, 1);
         assertEquals("cat", petType1.getName());
@@ -61,14 +58,13 @@ public abstract class AbstractPetRepositoryTests {
     }
 
     @Test
-    @Transactional
     public void findPet() {
-        Collection<PetType> types = this.petRepository.findPetTypes();
-        Pet pet7 = this.petRepository.findById(7);
+        Collection<PetType> types = this.clinicService.findPetTypes();
+        Pet pet7 = this.clinicService.findPetById(7);
         assertTrue(pet7.getName().startsWith("Samantha"));
         assertEquals(EntityUtils.getById(types, PetType.class, 1).getId(), pet7.getType().getId());
         assertEquals("Jean", pet7.getOwner().getFirstName());
-        Pet pet6 = this.petRepository.findById(6);
+        Pet pet6 = this.clinicService.findPetById(6);
         assertEquals("George", pet6.getName());
         assertEquals(EntityUtils.getById(types, PetType.class, 4).getId(), pet6.getType().getId());
         assertEquals("Peter", pet6.getOwner().getFirstName());
@@ -77,30 +73,30 @@ public abstract class AbstractPetRepositoryTests {
     @Test
     @Transactional
     public void insertPet() {
-        Owner owner6 = this.ownerRepository.findById(6);
+        Owner owner6 = this.clinicService.findOwnerById(6);
         int found = owner6.getPets().size();
         Pet pet = new Pet();
         pet.setName("bowser");
-        Collection<PetType> types = this.petRepository.findPetTypes();
+        Collection<PetType> types = this.clinicService.findPetTypes();
         pet.setType(EntityUtils.getById(types, PetType.class, 2));
         pet.setBirthDate(new DateTime());
         owner6.addPet(pet);
         assertEquals(found + 1, owner6.getPets().size());
         // both storePet and storeOwner are necessary to cover all ORM tools
-        this.petRepository.save(pet);
-        this.ownerRepository.save(owner6);
-        owner6 = this.ownerRepository.findById(6);
+        this.clinicService.savePet(pet);
+        this.clinicService.saveOwner(owner6);
+        owner6 = this.clinicService.findOwnerById(6);
         assertEquals(found + 1, owner6.getPets().size());
     }
 
     @Test
     @Transactional
     public void updatePet() throws Exception {
-        Pet pet7 = this.petRepository.findById(7);
+        Pet pet7 = this.clinicService.findPetById(7);
         String old = pet7.getName();
         pet7.setName(old + "X");
-        this.petRepository.save(pet7);
-        pet7 = this.petRepository.findById(7);
+        this.clinicService.savePet(pet7);
+        pet7 = this.clinicService.findPetById(7);
         assertEquals(old + "X", pet7.getName());
     }
 
