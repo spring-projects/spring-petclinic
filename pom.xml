@@ -12,7 +12,6 @@
     <properties>
         <antlr.version>2.7.7</antlr.version>
         <aspectj.version>1.7.1</aspectj.version>
-        <commons-dbcp.version>1.4</commons-dbcp.version>
         <commons-lang3.version>3.1</commons-lang3.version>
         <commons-pool.version>1.6</commons-pool.version>
         <ehcache.version>2.6.3</ehcache.version>
@@ -126,8 +125,10 @@
 
         <!-- DataSource -->
         <dependency>
-            <groupId>commons-dbcp</groupId>
-            <artifactId>commons-dbcp</artifactId>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jdbc</artifactId>
+            <version>7.0.37</version>
+            <scope>runtime</scope>
         </dependency>
         <!--
         <dependency>
@@ -736,12 +737,6 @@
 
             <!-- Apache Commons
             -->
-            <dependency>
-                <groupId>commons-dbcp</groupId>
-                <artifactId>commons-dbcp</artifactId>
-                <version>${commons-dbcp.version}</version>
-                <scope>runtime</scope>
-            </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>

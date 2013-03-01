@@ -19,10 +19,11 @@
     <!-- (in this case, JDBC-related settings for the dataSource definition below) -->
     <context:property-placeholder location="classpath:spring/jdbc.properties"/>
 
-    <!-- DataSource configuration for Apache Commons DBCP. -->
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
+    <!-- DataSource configuration for Tomcat JDBC -->
+    <bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource"
           p:driverClassName="${jdbc.driverClassName}" p:url="${jdbc.url}"
-          p:username="${jdbc.username}" p:password="${jdbc.password}"/>
+          p:username="${jdbc.username}" p:password="${jdbc.password}"
+          p:maxActive="8" p:initialSize="8"/>
 
     <!-- JNDI DataSource for JEE environments -->
     <!--
