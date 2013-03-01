@@ -71,7 +71,7 @@
         <maven-taglist-plugin.version>2.4</maven-taglist-plugin.version>
         <maven.version.range>[2.2.1,3.1.0)</maven.version.range>
         <maven-war-plugin.version>2.3</maven-war-plugin.version>
-        <maven-tomcat-plugin.version>2.0</maven-tomcat-plugin.version>
+        <maven-tomcat-plugin.version>2.1</maven-tomcat-plugin.version>
         <mysql.version>5.1.23</mysql.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -366,6 +366,7 @@
 		        <server>tomcat-development-server</server>
 		        <port>9966</port>
 		        <path>/petclinic</path>
+                <protocol>org.apache.coyote.http11.Http11NioProtocol</protocol>
 		      </configuration>
 		    </plugin> 
 
