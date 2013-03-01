@@ -21,12 +21,12 @@
         This aspect is defined in petclinic.jar's META-INF/aop.xml file.
         Note that we can dependency inject this bean like any other bean.
     -->
-    <aop:aspectj-autoproxy>
+    <!--<aop:aspectj-autoproxy>
         <aop:include name="callMonitor"/>
-    </aop:aspectj-autoproxy>
+    </aop:aspectj-autoproxy>-->
 
     <!-- Call monitoring aspect that monitors call count and call invocation time -->
-    <bean id="callMonitor" class="org.springframework.samples.petclinic.util.CallMonitoringAspect"/>
+    <!--<bean id="callMonitor" class="org.springframework.samples.petclinic.util.CallMonitoringAspect"/>-->
 
     <!--
         Exporter that exposes the CallMonitoringAspect via JMX,
