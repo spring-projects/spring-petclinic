@@ -1,12 +1,21 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="datatables" uri="http://github.com/dandelion/datatables" %>
+
 
 <html lang="en">
 
 
 <jsp:include page="../fragments/headTag.jsp"/>
+<style type="text/css" title="currentStyle">
+    @import "/petclinic/resources/css/jquery.dataTables.css";
+</style>
+<script type="text/javascript" language="javascript" src="/petclinic/resources/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+        $('#vetsTable').dataTable();
+    } );
+</script>
 
 <body>
 <div class="container">
@@ -14,18 +23,28 @@
 
     <h2>Veterinarians</h2>
 
-    <datatables:table id="vets" data="${vets.vetList}" cdn="true" row="vet" theme="bootstrap2" cssClass="table table-striped" paginate="false" info="false">
-        <datatables:column title="Name">
-            <c:out value="${vet.firstName} ${vet.lastName}"></c:out>
-        </datatables:column>
-        <datatables:column title="Specialties">
-            <c:forEach var="specialty" items="${vet.specialties}">
-                <c:out value="${specialty.name}"/>
-            </c:forEach>
-            <c:if test="${vet.nrOfSpecialties == 0}">none</c:if>
-        </datatables:column>
-    </datatables:table>
-    
+    <table id="vetsTable" class="table table-stripped" style="width:600px;">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Specialties</th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach var="vet" items="${vets.vetList}">
+            <tr>
+                <td><c:out value="${vet.firstName} ${vet.lastName}"/></td>
+                <td>
+                    <c:forEach var="specialty" items="${vet.specialties}">
+                        <c:out value="${specialty.name}"/>
+                    </c:forEach>
+                    <c:if test="${vet.nrOfSpecialties == 0}">none</c:if>
+                </td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+    <br/>
     <table class="table-buttons">
         <tr>
             <td>
