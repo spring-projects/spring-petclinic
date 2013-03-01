@@ -16,8 +16,7 @@ PetClinic :: a Spring Framework demonstration
     <spring:url value="/resources/css/petclinic.css" var="petclinicCss"/>
     <link href="${petclinicCss}" rel="stylesheet"/>
 
-    <spring:url value="/webjars/jquery/1.9.0/jquery.js" var="jQuery"/>
-    <script src="${jQuery}"></script>
+    <script src="/petclinic/resources/js/jquery.js"></script>
 
     <spring:url value="/webjars/jquery-ui/1.9.2/js/jquery-ui-1.9.2.custom.js" var="jQueryUi"/>
     <script src="${jQueryUi}"></script>
