@@ -24,7 +24,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -36,7 +35,6 @@ import javax.validation.Valid;
  * @author Michael Isvy
  */
 @Controller
-@SessionAttributes("visit")
 public class VisitController {
 
     private final ClinicService clinicService;
@@ -62,12 +60,13 @@ public class VisitController {
     }
 
     @RequestMapping(value = "/owners/{ownerId}/pets/{petId}/visits/new", method = RequestMethod.POST)
-    public String processNewVisitForm(@Valid Visit visit, BindingResult result, SessionStatus status) {
+    public String processNewVisitForm(@PathVariable("petId") int petId, @Valid Visit visit, BindingResult result) {
+        Pet pet = this.clinicService.findPetById(petId);
+        visit.setPet(pet);
         if (result.hasErrors()) {
             return "pets/createOrUpdateVisitForm";
         } else {
-            this.clinicService.saveVisit(visit);
-            status.setComplete();
+            this.clinicService.saveVisit(visit);;
             return "redirect:/owners/{ownerId}";
         }
     }

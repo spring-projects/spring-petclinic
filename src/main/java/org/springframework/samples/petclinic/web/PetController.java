@@ -25,7 +25,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.SessionStatus;
 
 import java.util.Collection;
 
@@ -35,7 +34,6 @@ import java.util.Collection;
  * @author Arjen Poutsma
  */
 @Controller
-@SessionAttributes("pet")
 public class PetController {
 
     private final ClinicService clinicService;
@@ -66,13 +64,14 @@ public class PetController {
     }
 
     @RequestMapping(value = "/owners/{ownerId}/pets/new", method = RequestMethod.POST)
-    public String processCreationForm(@ModelAttribute("pet") Pet pet, BindingResult result, SessionStatus status) {
+    public String processCreationForm(@PathVariable("ownerId") int ownerId, @ModelAttribute("pet") Pet pet, BindingResult result) {
+        Owner owner = this.clinicService.findOwnerById(ownerId);
+        owner.addPet(pet);
         new PetValidator().validate(pet, result);
         if (result.hasErrors()) {
             return "pets/createOrUpdatePetForm";
         } else {
             this.clinicService.savePet(pet);
-            status.setComplete();
             return "redirect:/owners/{ownerId}";
         }
     }
@@ -85,14 +84,20 @@ public class PetController {
     }
 
     @RequestMapping(value = "/owners/{ownerId}/pets/{petId}/edit", method = {RequestMethod.PUT, RequestMethod.POST})
-    public String processUpdateForm(@ModelAttribute("pet") Pet pet, BindingResult result, SessionStatus status) {
+    public String processUpdateForm(@PathVariable("ownerId") int ownerId,
+                                    @PathVariable("petId") int petId,
+                                    @ModelAttribute("pet") Pet pet,
+                                    BindingResult result) {
+
+        pet.setId(petId);
+        Owner owner = this.clinicService.findOwnerById(ownerId);
+        owner.addPet(pet);
         // we're not using @Valid annotation here because it is easier to define such validation rule in Java
         new PetValidator().validate(pet, result);
         if (result.hasErrors()) {
             return "pets/createOrUpdatePetForm";
         } else {
             this.clinicService.savePet(pet);
-            status.setComplete();
             return "redirect:/owners/{ownerId}";
         }
     }
