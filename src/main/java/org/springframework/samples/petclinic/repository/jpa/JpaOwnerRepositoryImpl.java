@@ -23,6 +23,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.Collection;
+import org.springframework.cache.annotation.Cacheable;
 
 /**
  * JPA implementation of the {@link OwnerRepository} interface.
@@ -42,6 +43,7 @@ public class JpaOwnerRepositoryImpl implements OwnerRepository {
 
     @Override
     @SuppressWarnings("unchecked")
+    @Cacheable(value = "ownersByLastName")
     public Collection<Owner> findByLastName(String lastName) {
         // using 'join fetch' because a single query should load both owners and pets
         // using 'left join fetch' because it might happen that an owner does not have pets yet
@@ -52,18 +54,13 @@ public class JpaOwnerRepositoryImpl implements OwnerRepository {
 
     @Override
     public Owner findById(int id) {
-        // using 'join fetch' because a single query should load both owners and pets
-        // using 'left join fetch' because it might happen that an owner does not have pets yet
-        Query query = this.em.createQuery("SELECT owner FROM Owner owner left join fetch owner.pets WHERE owner.id =:id");
-        query.setParameter("id", id);
-        return (Owner) query.getSingleResult();
+        return em.find(Owner.class, id);
     }
 
 
     @Override
     public void save(Owner owner) {
-        this.em.merge(owner);
-
+        em.merge(owner);
     }
 
 }

@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.model;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 import org.springframework.beans.support.MutableSortDefinition;
@@ -33,6 +34,7 @@ import java.util.*;
  */
 @Entity
 @Table(name = "pets")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Pet extends NamedEntity {
 
     @Column(name = "birth_date")
@@ -48,7 +50,8 @@ public class Pet extends NamedEntity {
     @JoinColumn(name = "owner_id")
     private Owner owner;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pet")
+    @OneToMany(mappedBy = "pet")
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<Visit> visits;
 
 

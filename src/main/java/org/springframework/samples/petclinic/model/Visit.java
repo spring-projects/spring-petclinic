@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.model;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
@@ -29,6 +30,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "visits")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Visit extends BaseEntity {
 
     /**

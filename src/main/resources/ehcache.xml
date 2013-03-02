@@ -13,5 +13,37 @@
            diskPersistent="false"
            diskExpiryThreadIntervalSeconds="1"
            memoryStoreEvictionPolicy="LRU"/>
+           
+	<cache name="ownersByLastName"
+           timeToLiveSeconds="60"
+           maxElementsInMemory="10000"/>
+
+    <cache name="pettype"
+           timeToLiveSeconds="600"
+           maxElementsInMemory="10000"/>
+
+    <cache name="org.springframework.samples.petclinic.model.Pet"
+           timeToLiveSeconds="600"
+           maxElementsInMemory="10000"/>
+
+    <cache name="org.springframework.samples.petclinic.model.Pet.visits"
+           timeToLiveSeconds="600"
+           maxElementsInMemory="100000"/>
+
+    <cache name="org.springframework.samples.petclinic.model.Visit"
+           timeToLiveSeconds="600"
+           maxElementsInMemory="100000"/>
+
+    <cache name="org.springframework.samples.petclinic.model.Owner"
+           timeToLiveSeconds="600"
+           maxElementsInMemory="10000"/>
+
+    <cache name="org.springframework.samples.petclinic.model.Owner.pets"
+           timeToLiveSeconds="600"
+           maxElementsInMemory="100000"/>
+
+    <cache name="org.springframework.samples.petclinic.model.PetType"
+           timeToLiveSeconds="600"
+           maxElementsInMemory="100"/>
 
 </ehcache>

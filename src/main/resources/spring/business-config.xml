@@ -58,6 +58,13 @@
             <!-- gDickens: BOTH Persistence Unit and Packages to Scan are NOT compatible, persistenceUnit will win -->
             <property name="persistenceUnitName" value="petclinic"/>
             <property name="packagesToScan" value="org.springframework.samples.petclinic"/>
+            <property name="jpaProperties">
+                <props>
+                    <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory</prop>
+                    <prop key="hibernate.cache.use_second_level_cache">true</prop>
+                    <prop key="hibernate.cache.use_query_cache">false</prop>
+                </props>
+            </property>
         </bean>
 
         <!-- Transaction manager for a single JPA EntityManagerFactory (alternative to JTA) -->

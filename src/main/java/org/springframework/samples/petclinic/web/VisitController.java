@@ -63,6 +63,7 @@ public class VisitController {
     public String processNewVisitForm(@PathVariable("petId") int petId, @Valid Visit visit, BindingResult result) {
         Pet pet = this.clinicService.findPetById(petId);
         visit.setPet(pet);
+        pet.addVisit(visit);
         if (result.hasErrors()) {
             return "pets/createOrUpdateVisitForm";
         } else {

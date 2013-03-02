@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.repository.jpa;
 
+import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Visit;
 import org.springframework.samples.petclinic.repository.VisitRepository;
 import org.springframework.stereotype.Repository;
@@ -51,9 +52,8 @@ public class JpaVisitRepositoryImpl implements VisitRepository {
     @Override
     @SuppressWarnings("unchecked")
     public List<Visit> findByPetId(Integer petId) {
-        Query query = this.em.createQuery("SELECT visit FROM Visit v where v.pets.id= :id");
-        query.setParameter("id", petId);
-        return query.getResultList();
+        Pet pet = em.find(Pet.class, petId);
+        return pet.getVisits();
     }
 
 }

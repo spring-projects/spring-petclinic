@@ -19,6 +19,7 @@ import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.repository.PetRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.cache.annotation.Cacheable;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -41,6 +42,7 @@ public class JpaPetRepositoryImpl implements PetRepository {
 
     @Override
     @SuppressWarnings("unchecked")
+    @Cacheable(value = "pettype")
     public List<PetType> findPetTypes() {
         return this.em.createQuery("SELECT ptype FROM PetType ptype ORDER BY ptype.name").getResultList();
     }
