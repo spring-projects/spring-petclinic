@@ -10,7 +10,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 
     <context-param>
         <param-name>spring.profiles.active</param-name>
-        <param-value>jdbc</param-value>
+        <param-value>jpa</param-value>
         <!-- Available profiles:
 		<param-value>jdbc</param-value>
 		<param-value>jpa</param-value> (in the case of plain JPA)
@@ -62,4 +62,19 @@ see here: http://static.springsource.org/spring/docs/current/spring-framework-re
         <servlet-name>petclinic</servlet-name>
     </filter-mapping>
 
+    <filter>
+        <filter-name>openEntityManagerFilter</filter-name>
+        <filter-class>
+            org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter
+        </filter-class>
+        <init-param>
+            <param-name>entityManagerFactoryBeanName</param-name>
+            <param-value>entityManagerFactory</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>openEntityManagerFilter</filter-name>
+        <url-pattern>/owners/*</url-pattern>
+    </filter-mapping>
 </web-app>
