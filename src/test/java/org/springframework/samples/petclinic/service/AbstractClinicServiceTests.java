@@ -34,7 +34,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * <p> Base class for {@link clinicService} integration tests. </p> <p> Subclasses should specify Spring context
+ * <p> Base class for {@link ClinicService} integration tests. </p> <p> Subclasses should specify Spring context
  * configuration using {@link ContextConfiguration @ContextConfiguration} annotation </p> <p>
  * AbstractclinicServiceTests and its subclasses benefit from the following services provided by the Spring
  * TestContext Framework: </p> <ul> <li><strong>Spring IoC container caching</strong> which spares us unnecessary set up

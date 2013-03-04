@@ -21,7 +21,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * <p> Integration tests for the {@link JdbcClinicImpl} implementation. </p> <p> </p>
+ * <p> Integration test using the jdbc profile. 
+ * @see AbstractClinicServiceTests AbstractClinicServiceTests for more details. </p>
  *
  * @author Thomas Risberg
  * @author Michael Isvy
