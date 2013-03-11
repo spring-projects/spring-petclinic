@@ -17,7 +17,7 @@
 
     <!-- Configurer that replaces ${...} placeholders with values from a properties file -->
     <!-- (in this case, JDBC-related settings for the dataSource definition below) -->
-    <context:property-placeholder location="classpath:spring/jdbc.properties"/>
+    <context:property-placeholder location="classpath:spring/data-access.properties"/>
 
     <!-- DataSource configuration for Apache Commons DBCP. -->
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"

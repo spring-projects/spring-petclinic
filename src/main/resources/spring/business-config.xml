@@ -20,7 +20,7 @@
 
     <!-- Configurer that replaces ${...} placeholders with values from a properties file -->
     <!-- (in this case, JDBC-related settings for the JPA EntityManager definition below) -->
-    <context:property-placeholder location="classpath:spring/jdbc.properties"/>
+    <context:property-placeholder location="classpath:spring/data-access.properties"/>
 
      <!-- enables scanning for @Transactional annotations -->
     <tx:annotation-driven />
