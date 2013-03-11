@@ -15,12 +15,12 @@
  */
 package org.springframework.samples.petclinic.repository.jdbc;
 
-import org.joda.time.DateTime;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+
+import org.joda.time.DateTime;
+import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 
 /**
  * {@link ParameterizedRowMapper} implementation mapping data from a {@link ResultSet} to the corresponding properties

@@ -15,12 +15,16 @@
  */
 package org.springframework.samples.petclinic.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
-
-import javax.persistence.*;
 
 /**
  * Simple JavaBean domain object representing a visit.

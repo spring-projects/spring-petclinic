@@ -15,14 +15,23 @@
  */
 package org.springframework.samples.petclinic.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.Digits;
+
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.core.style.ToStringCreator;
-
-import javax.persistence.*;
-import javax.validation.constraints.Digits;
-import java.util.*;
 
 /**
  * Simple JavaBean domain object representing an owner.
