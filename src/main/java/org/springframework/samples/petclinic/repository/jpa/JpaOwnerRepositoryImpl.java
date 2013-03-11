@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.repository.jpa;
 
+import org.springframework.orm.hibernate3.support.OpenSessionInViewFilter;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
 import org.springframework.stereotype.Repository;
@@ -40,7 +41,13 @@ public class JpaOwnerRepositoryImpl implements OwnerRepository {
     private EntityManager em;
 
 
-    @Override
+    /**
+     * Important: in the current version of this method, we load Owners with all their Pets and Visits while 
+     * we do not need Visits at all and we only need one property from the Pet objects (the 'name' property).
+     * There are some ways to improve it such as:
+     * - creating a Ligtweight class (example here: https://community.jboss.org/wiki/LightweightClass)
+     * - Turning on lazy-loading and using {@link OpenSessionInViewFilter}
+     */
     @SuppressWarnings("unchecked")
     public Collection<Owner> findByLastName(String lastName) {
         // using 'join fetch' because a single query should load both owners and pets
