@@ -106,7 +106,7 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
                     ParameterizedBeanPropertyRowMapper.newInstance(Owner.class)
             );
         } catch (EmptyResultDataAccessException ex) {
-            throw new ObjectRetrievalFailureException(Owner.class, new Integer(id));
+            throw new ObjectRetrievalFailureException(Owner.class, id);
         }
         loadPetsAndVisits(owner);
         return owner;
