@@ -10,32 +10,33 @@
     <packaging>war</packaging>
 
     <properties>
-        <antlr.version>2.7.7</antlr.version>
-        <aspectj.version>1.7.1</aspectj.version>
-        <commons-dbcp.version>1.4</commons-dbcp.version>
-        <commons-lang3.version>3.1</commons-lang3.version>
-        <commons-pool.version>1.6</commons-pool.version>
-        <ehcache.version>2.6.3</ehcache.version>
-        <hamcrest.version>1.3</hamcrest.version>
-        <hibernate-jpa.version>1.0.1.Final</hibernate-jpa.version>
-        <hibernate-validator.version>4.3.0.Final</hibernate-validator.version>
-        <hibernate.version>4.1.9.Final</hibernate.version>
-        <hsqldb.version>2.2.9</hsqldb.version>
-        <jadira-usertype-core.version>3.1.0.CR1</jadira-usertype-core.version>
-        <javassist.version>3.17.1-GA</javassist.version>
+    
         <java.version>1.6</java.version>
+
+    	<!--  Java EE / Java SE dependencies -->
         <javax-el.version>2.2</javax-el.version>
         <jaxb-api.version>2.2.7</jaxb-api.version>
         <jaxb-impl.version>2.2.7-b53</jaxb-impl.version>
-        <jboss-logging.version>3.1.2.GA</jboss-logging.version>
-        <jdom.version>2.0.2</jdom.version>
-        <jodatime-hibernate.version>1.3</jodatime-hibernate.version>
-        <jodatime-jsptags.version>1.1.1</jodatime-jsptags.version>
-        <jodatime.version>2.1</jodatime.version>
         <jsp.version>2.2</jsp.version>
         <jstl.version>1.2</jstl.version>
-        <jta.version>1.1</jta.version>
-        <junit.version>4.11</junit.version>
+
+		<!-- Hibernate / JPA -->
+        <hibernate-jpa.version>1.0.1.Final</hibernate-jpa.version>
+        <hibernate-validator.version>4.3.0.Final</hibernate-validator.version>
+        <hibernate.version>4.1.9.Final</hibernate.version>
+		
+        <aspectj.version>1.7.2</aspectj.version>
+        <commons-dbcp.version>1.4</commons-dbcp.version>
+        <commons-lang3.version>3.1</commons-lang3.version>
+        <commons-pool.version>1.6</commons-pool.version>
+        <ehcache.version>2.6.5</ehcache.version>
+        <hsqldb.version>2.2.9</hsqldb.version>
+        <jadira-usertype-core.version>3.1.0.CR1</jadira-usertype-core.version>
+        <javassist.version>3.17.1-GA</javassist.version>
+        <jboss-logging.version>3.1.2.GA</jboss-logging.version>
+        <jdom.version>2.0.2</jdom.version>
+
+
         <logback.version>1.0.9</logback.version>
         <log4j.version>1.2.17</log4j.version>
         <rome.version>1.0</rome.version>
@@ -44,512 +45,29 @@
         <spring-data-jpa.version>1.3.0.RELEASE</spring-data-jpa.version>
         <spring-framework.version>3.2.2.RELEASE</spring-framework.version>
         <validation.version>1.0.0.GA</validation.version>
+        
+        <!-- Test -->
+        <junit.version>4.11</junit.version>
+        <hamcrest.version>1.3</hamcrest.version>
+
+		<!-- Dates -->
+        <jodatime-hibernate.version>1.3</jodatime-hibernate.version>
+        <jodatime-jsptags.version>1.1.1</jodatime-jsptags.version>
+        <jodatime.version>2.2</jodatime.version>
+
+
+		<!-- Web dependencies -->
         <webjars-bootstrap.version>2.3.0</webjars-bootstrap.version>
         <webjars-jquery-ui.version>1.9.2</webjars-jquery-ui.version>
         <webjars-jquery.version>1.9.0</webjars-jquery.version>
         <dandelion.datatables.version>0.8.6</dandelion.datatables.version>
-        <dandelion.datatables.export.itext.version>0.8.6</dandelion.datatables.export.itext.version>
-        <dandelion.datatables.servlet2.version>0.8.6</dandelion.datatables.servlet2.version>
       
-        <maven-assembly-plugin.version>2.4</maven-assembly-plugin.version>
-        <maven-clean-plugin.version>2.5</maven-clean-plugin.version>
-        <maven-compiler-plugin.version>3.0</maven-compiler-plugin.version>
-        <maven-dependency-plugin.version>2.6</maven-dependency-plugin.version>
-        <maven-deploy-plugin.version>2.7</maven-deploy-plugin.version>
-        <maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version>
-        <maven-enforcer-plugin.version>1.2</maven-enforcer-plugin.version>
-        <maven-help-plugin.version>2.1.1</maven-help-plugin.version>
-        <maven-install-plugin.version>2.4</maven-install-plugin.version>
-        <maven-jar-plugin.version>2.4</maven-jar-plugin.version>
-        <maven-javadoc-plugin.version>2.9</maven-javadoc-plugin.version>
-        <maven-jetty-plugin.version>8.1.9.v20130131</maven-jetty-plugin.version>
-        <maven-m2e-lifecycle-plugin.version>1.0.0</maven-m2e-lifecycle-plugin.version>
-        <maven-plugin-plugin.version>3.2</maven-plugin-plugin.version>
-        <maven-project-info-reports-plugin.version>2.6</maven-project-info-reports-plugin.version>
-        <maven-release-plugin.version>2.4</maven-release-plugin.version>
-        <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
-        <maven-site-plugin.version>3.2</maven-site-plugin.version>
-        <maven-source-plugin.version>2.2.1</maven-source-plugin.version>
-        <maven-surefire-plugin.version>2.13</maven-surefire-plugin.version>
-        <maven-taglist-plugin.version>2.4</maven-taglist-plugin.version>
-        <maven.version.range>[2.2.1,3.1.0)</maven.version.range>
-        <maven-war-plugin.version>2.3</maven-war-plugin.version>
-        <maven-tomcat-plugin.version>2.0</maven-tomcat-plugin.version>
         <mysql.version>5.1.22</mysql.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
-    <dependencies>
-        <!-- Spring -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context-support</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-orm</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-oxm</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-        </dependency>
-        <!-- will be a transitive dependency from Spring 3.2.2 -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-        </dependency>
-        <!-- added because this dependency is missing in Spring 3.2.1
-        (can be removed from Spring 3.2.2) -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
-        </dependency>
-        <!-- Logging -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jul-to-slf4j</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-        </dependency>
-
-        <!-- DataSource -->
-        <dependency>
-            <groupId>commons-dbcp</groupId>
-            <artifactId>commons-dbcp</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-        </dependency>
-        <!-- MySQL JDBC Connector -->
-        <!-- 
-		<dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.version}</version>
-        </dependency>
-        -->
-        <!-- Hibernate JPA Provider -->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.ehcache</groupId>
-            <artifactId>ehcache-core</artifactId>
-        </dependency>
-        <!-- ********************************************************************** 
-             ** 				SPRING DATA			 							 ** 
-             ********************************************************************** -->
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-jpa</artifactId>
-        </dependency>
-        <!-- Servlet -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-        </dependency>
-        <!-- Webjars (static dependencies distributed as JAR files) -->
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>bootstrap</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>jquery-ui</artifactId>
-        </dependency>
-        <!-- Rome RSS -->
-        <dependency>
-            <groupId>rome</groupId>
-            <artifactId>rome</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jdom</groupId>
-            <artifactId>jdom</artifactId>
-        </dependency>
-        <!-- JAXB -->
-        <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-impl</artifactId>
-        </dependency>
-        <!-- Test dependencies -->
-        <!-- gDickens: Using JUnit 4.11 for cleaner Hamcrest support -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.transaction</groupId>
-            <artifactId>jta</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jadira.usertype</groupId>
-            <artifactId>usertype.core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time-jsptags</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time-hibernate</artifactId>
-        </dependency>
-        <!-- gDickens: used for Spring MVC Test framework 
-          * Do not use hamcrest-all, hamcrest-library
-          * (hamcrest-core in dep mgmt, is used by junit) -->
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-library</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-        </dependency>
-        <!-- Dandelion -->
-        <dependency>
-            <groupId>com.github.dandelion</groupId>
-            <artifactId>datatables-jsp</artifactId>
-            <version>${dandelion.datatables.version}</version>
-         </dependency>
-         <dependency>
-            <groupId>com.github.dandelion</groupId>
-            <artifactId>datatables-export-itext</artifactId>
-            <version>${dandelion.datatables.export.itext.version}</version>
-         </dependency>
-         <dependency>
-            <groupId>com.github.dandelion</groupId>
-            <artifactId>datatables-servlet2</artifactId>
-            <version>${dandelion.datatables.servlet2.version}</version>
-         </dependency>
-       </dependencies>
-
-    <!-- all Maven plugin versions are mentioned in order to guarantee the build reproducibility in the long term -->
-    <build>
-        <defaultGoal>install</defaultGoal>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin.version}</version>
-                <configuration>
-                    <compilerArguments>
-                        <Xlint/>
-                    </compilerArguments>
-                    <verbose>true</verbose>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                    <showWarnings>true</showWarnings>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven-surefire-plugin.version}</version>
-                <configuration>
-                    <includes>
-                        <include>**/*Tests.java</include>
-                    </includes>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>${maven-war-plugin.version}</version>
-                <configuration>
-                    <warName>petclinic</warName>
-                </configuration>
-            </plugin>
-            <!-- gDickens: Include the Builders and Natures -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-eclipse-plugin</artifactId>
-                <version>${maven-eclipse-plugin.version}</version>
-                <configuration>
-                    <downloadSources>true</downloadSources>
-                    <downloadJavadocs>true</downloadJavadocs>
-                    <wtpversion>2.0</wtpversion>
-                    <sourceIncludes>
-                        <sourceInclude>**/*.*</sourceInclude>
-                    </sourceIncludes>
-                    <additionalBuildcommands>
-                        <buildCommand>
-                            <name>org.springframework.ide.eclipse.core.springbuilder</name>
-                        </buildCommand>
-                        <buildCommand>
-                            <name>org.eclipse.m2e.core.maven2Builder</name>
-                        </buildCommand>
-                    </additionalBuildcommands>
-                    <additionalProjectnatures>
-                        <projectnature>org.eclipse.jdt.core.javanature</projectnature>
-                        <projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
-                        <projectnature>org.eclipse.m2e.core.maven2Nature</projectnature>
-                    </additionalProjectnatures>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>${maven-dependency-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>install</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>sources</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>${maven-deploy-plugin.version}</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-install-plugin</artifactId>
-                <version>${maven-install-plugin.version}</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>${maven-release-plugin.version}</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>${maven-assembly-plugin.version}</version>
-                <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-clean-plugin</artifactId>
-                <version>${maven-clean-plugin.version}</version>
-                <configuration>
-                    <filesets>
-                        <fileset>
-                            <directory>${project.basedir}</directory>
-                            <includes>
-                                <include>target</include>
-                                <include>surefire*</include>
-                            </includes>
-                            <followSymlinks>false</followSymlinks>
-                        </fileset>
-                    </filesets>
-                </configuration>
-            </plugin>
-            
-
-		    <plugin>
-		      <groupId>org.apache.tomcat.maven</groupId>
-		      <artifactId>tomcat7-maven-plugin</artifactId>       
-		      <version>${maven-tomcat-plugin.version}</version>     
-		      <configuration>          
-		        <server>tomcat-development-server</server>
-		        <port>9966</port>
-		        <path>/petclinic</path>
-		      </configuration>
-		    </plugin> 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>${maven-resources-plugin.version}</version>
-                <configuration>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-site-plugin</artifactId>
-                <version>${maven-site-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>attach-descriptor</id>
-                        <goals>
-                            <goal>attach-descriptor</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <reportPlugins>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-surefire-report-plugin</artifactId>
-                            <version>${maven-surefire-plugin.version}</version>
-                            <configuration>
-                                <outputDirectory>${project.reporting.outputDirectory}/testresults</outputDirectory>
-                            </configuration>
-                        </plugin>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-javadoc-plugin</artifactId>
-                            <version>${maven-javadoc-plugin.version}</version>
-                            <configuration>
-                                <aggregate>true</aggregate>
-                            </configuration>
-                        </plugin>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-project-info-reports-plugin</artifactId>
-                            <version>${maven-project-info-reports-plugin.version}</version>
-                            <configuration>
-                                <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
-                                <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
-                            </configuration>
-                        </plugin>
-                    </reportPlugins>
-                    <locales>en</locales>
-                </configuration>
-            </plugin>
-
-
-        </plugins>
-
-        <!-- gDickens: For Eclipse's M2E plugin support -->
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.eclipse.m2e</groupId>
-                    <artifactId>lifecycle-mapping</artifactId>
-                    <version>1.0.0</version>
-                    <configuration>
-                        <lifecycleMappingMetadata>
-                            <pluginExecutions>
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>org.apache.maven.plugins</groupId>
-                                        <artifactId>maven-enforcer-plugin</artifactId>
-                                        <versionRange>[1.0.0,)</versionRange>
-                                        <goals>
-                                            <goal>enforce</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <execute/>
-                                    </action>
-                                </pluginExecution>
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>org.apache.maven.plugins</groupId>
-                                        <artifactId>maven-dependency-plugin</artifactId>
-                                        <versionRange>[2.4,)</versionRange>
-                                        <goals>
-                                            <goal>unpack</goal>
-                                            <goal>sources</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <execute/>
-                                    </action>
-                                </pluginExecution>
-                            </pluginExecutions>
-                        </lifecycleMappingMetadata>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
-
-
-    <!-- gDickens: Best Practice: Specify the transitive dependency versions, to ensure that older versions
-    of projects are NOT included.
-    
-    This is particularly important to Spring projects where projects such as Spring-Data, may
-    include previous Spring libraries.
-    -->
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.aspectj</groupId>
-                <artifactId>aspectjrt</artifactId>
-                <version>${aspectj.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.aspectj</groupId>
-                <artifactId>aspectjweaver</artifactId>
-                <version>${aspectj.version}</version>
-                <scope>runtime</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.aspectj</groupId>
-                <artifactId>aspectjtools</artifactId>
-                <version>${aspectj.version}</version>
-            </dependency>
-            <!-- HIBERNATE -->
-            <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-core</artifactId>
-                <version>${hibernate.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>asm</groupId>
-                        <artifactId>asm-attrs</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-entitymanager</artifactId>
-                <version>${hibernate.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.hibernate.javax.persistence</groupId>
-                <artifactId>hibernate-jpa-2.0-api</artifactId>
-                <version>${hibernate-jpa.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-validator</artifactId>
-                <version>${hibernate-validator.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-ehcache</artifactId>
-                <version>${hibernate.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>net.sf.ehcache</groupId>
-                <artifactId>ehcache-core</artifactId>
-                <version>${ehcache.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
+        <dependencies>         
             <dependency>
                 <groupId>org.jadira.usertype</groupId>
                 <artifactId>usertype.core</artifactId>
@@ -588,13 +106,14 @@
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-jpa</artifactId>
                 <version>${spring-data-jpa.version}</version>
+                <exclusions>
+                	<exclusion>
+			          <groupId>org.springframework</groupId>
+			          <artifactId>*</artifactId>
+			        </exclusion>
+                </exclusions>
             </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-test</artifactId>
-                <version>${spring-framework.version}</version>
-                <scope>test</scope>
-            </dependency>
+ 
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-beans</artifactId>
@@ -679,11 +198,6 @@
                 <version>${spring-framework.version}</version>
             </dependency>
             <dependency>
-                <groupId>javax.transaction</groupId>
-                <artifactId>jta</artifactId>
-                <version>${jta.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.javassist</groupId>
                 <artifactId>javassist</artifactId>
                 <version>${javassist.version}</version>
@@ -761,11 +275,6 @@
                 <artifactId>joda-time-jsptags</artifactId>
                 <version>${jodatime-jsptags.version}</version>
             </dependency>
-            <dependency>
-                <groupId>antlr</groupId>
-                <artifactId>antlr</artifactId>
-                <version>${antlr.version}</version>
-            </dependency>
 
             <!-- Databases - Uses HSQL by default -->
             <!-- <dependency>
@@ -801,22 +310,6 @@
                 <version>${jsp.version}</version>
                 <scope>provided</scope>
             </dependency>
-            <!-- Webjars (static dependencies distributed as JAR files) -->
-            <dependency>
-                <groupId>org.webjars</groupId>
-                <artifactId>bootstrap</artifactId>
-                <version>${webjars-bootstrap.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.webjars</groupId>
-                <artifactId>jquery-ui</artifactId>
-                <version>${webjars-jquery-ui.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.webjars</groupId>
-                <artifactId>jquery</artifactId>
-                <version>${webjars-jquery.version}</version>
-            </dependency>
             <dependency>
                 <groupId>org.jboss.logging</groupId>
                 <artifactId>jboss-logging</artifactId>
@@ -828,27 +321,277 @@
                 <version>${jdom.version}</version>
                 <scope>runtime</scope>
             </dependency>
-            <!-- Test Artifacts -->
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <!-- used by Spring MVC Test framework -->
-            <dependency>
-                <groupId>org.hamcrest</groupId>
-                <artifactId>hamcrest-library</artifactId>
-                <version>${hamcrest.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.hamcrest</groupId>
-                <artifactId>hamcrest-core</artifactId>
-                <version>${hamcrest.version}</version>
-                <scope>test</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+        <!-- MySQL JDBC Connector -->
+        <!-- 
+		<dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+        </dependency>
+        -->
+         <!-- HIBERNATE -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>asm</groupId>
+                    <artifactId>asm-attrs</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.0-api</artifactId>
+            <version>${hibernate-jpa.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate-validator.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-ehcache</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache-core</artifactId>
+            <version>${ehcache.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- Webjars (static dependencies distributed as JAR files) -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>bootstrap</artifactId>
+            <version>${webjars-bootstrap.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery-ui</artifactId>
+            <version>${webjars-jquery-ui.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery</artifactId>
+            <version>${webjars-jquery.version}</version>
+        </dependency>
+        <!-- Test Artifacts -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring-framework.version}</version>
+            <scope>test</scope>
+         </dependency>
+         <dependency>
+             <groupId>junit</groupId>
+             <artifactId>junit</artifactId>
+             <version>${junit.version}</version>
+             <scope>test</scope>
+         </dependency>
+         <!-- used by Spring MVC Test framework -->
+         <dependency>
+             <groupId>org.hamcrest</groupId>
+             <artifactId>hamcrest-library</artifactId>
+             <version>${hamcrest.version}</version>
+             <scope>test</scope>
+         </dependency>
+         <dependency>
+             <groupId>org.hamcrest</groupId>
+             <artifactId>hamcrest-core</artifactId>
+             <version>${hamcrest.version}</version>
+             <scope>test</scope>
+         </dependency>
+       
+        <dependency>
+             <groupId>org.aspectj</groupId>
+             <artifactId>aspectjrt</artifactId>
+             <version>${aspectj.version}</version>
+         </dependency>
+         <dependency>
+             <groupId>org.aspectj</groupId>
+             <artifactId>aspectjweaver</artifactId>
+             <version>${aspectj.version}</version>
+             <scope>runtime</scope>
+         </dependency>
+ 
+
+        <!-- Dandelion -->
+        <dependency>
+            <groupId>com.github.dandelion</groupId>
+            <artifactId>datatables-jsp</artifactId>
+            <version>${dandelion.datatables.version}</version>
+            <exclusions>
+            	<!-- exclusion not needed from upcoming version 0.8.7 -->
+            	<exclusion>
+            		<groupId>org.eclipse.jetty</groupId>
+    				<artifactId>test-jetty-servlet</artifactId>
+            	</exclusion>
+            </exclusions>
+         </dependency>
+         <dependency>
+            <groupId>com.github.dandelion</groupId>
+            <artifactId>datatables-export-itext</artifactId>
+            <version>${dandelion.datatables.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>com.github.dandelion</groupId>
+            <artifactId>datatables-servlet2</artifactId>
+            <version>${dandelion.datatables.version}</version>
+         </dependency>
+       </dependencies>
+
+    <!-- all Maven plugin versions are mentioned in order to guarantee the build reproducibility in the long term -->
+    <build>
+        <defaultGoal>install</defaultGoal>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.0</version>
+                <configuration>
+                    <compilerArguments>
+                        <Xlint/>
+                    </compilerArguments>
+                    <verbose>true</verbose>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <showWarnings>true</showWarnings>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.13</version>
+                <configuration>
+                    <includes>
+                        <include>**/*Tests.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <warName>petclinic</warName>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <version>2.9</version>
+                <configuration>
+                    <downloadSources>true</downloadSources>
+                    <downloadJavadocs>true</downloadJavadocs>
+                    <wtpversion>2.0</wtpversion>
+                    <sourceIncludes>
+                        <sourceInclude>**/*.*</sourceInclude>
+                    </sourceIncludes>
+                    <additionalBuildcommands>
+                        <buildCommand>
+                            <name>org.springframework.ide.eclipse.core.springbuilder</name>
+                        </buildCommand>
+                        <buildCommand>
+                            <name>org.eclipse.m2e.core.maven2Builder</name>
+                        </buildCommand>
+                    </additionalBuildcommands>
+                    <additionalProjectnatures>
+                        <projectnature>org.eclipse.jdt.core.javanature</projectnature>
+                        <projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+                        <projectnature>org.eclipse.m2e.core.maven2Nature</projectnature>
+                    </additionalProjectnatures>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <id>install</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>sources</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+            </plugin>
+ 		    <plugin>
+		      <groupId>org.apache.tomcat.maven</groupId>
+		      <artifactId>tomcat7-maven-plugin</artifactId>       
+		      <version>2.0</version>     
+		      <configuration>          
+		        <server>tomcat-development-server</server>
+		        <port>9966</port>
+		        <path>/petclinic</path>
+		      </configuration>
+		    </plugin> 
+        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-enforcer-plugin</artifactId>
+                                        <versionRange>[1.0.0,)</versionRange>
+                                        <goals>
+                                            <goal>enforce</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <execute/>
+                                    </action>
+                                </pluginExecution>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-dependency-plugin</artifactId>
+                                        <versionRange>[2.4,)</versionRange>
+                                        <goals>
+                                            <goal>unpack</goal>
+                                            <goal>sources</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <execute/>
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
 </project>
