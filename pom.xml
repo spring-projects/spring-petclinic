@@ -10,9 +10,7 @@
     <packaging>war</packaging>
 
     <properties>
-    	
-    	<jsp.version>2.2</jsp.version>
-    
+    	    
         <!-- Generic properties -->
         <java.version>1.6</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
