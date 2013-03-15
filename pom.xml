@@ -11,19 +11,27 @@
 
     <properties>
     
+        <!-- Generic properties -->
         <java.version>1.6</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        
 
     	<!--  Java EE / Java SE dependencies -->
+        <jsp.version>2.2</jsp.version>
+        <jstl.version>1.2</jstl.version>
+		<servlet.version>2.5</servlet.version>
         <javax-el.version>2.2</javax-el.version>
         <jaxb-api.version>2.2.7</jaxb-api.version>
         <jaxb-impl.version>2.2.7-b53</jaxb-impl.version>
-        <jsp.version>2.2</jsp.version>
-        <jstl.version>1.2</jstl.version>
-
+		
 		<!-- Hibernate / JPA -->
         <hibernate-jpa.version>1.0.1.Final</hibernate-jpa.version>
-        <hibernate-validator.version>4.3.0.Final</hibernate-validator.version>
         <hibernate.version>4.1.9.Final</hibernate.version>
+        
+        <!-- Bean validation -->
+        <validation.version>1.0.0.GA</validation.version>
+        <hibernate-validator.version>4.3.0.Final</hibernate-validator.version>
 		
         <aspectj.version>1.7.2</aspectj.version>
         <commons-dbcp.version>1.4</commons-dbcp.version>
@@ -31,20 +39,19 @@
         <commons-pool.version>1.6</commons-pool.version>
         <ehcache.version>2.6.5</ehcache.version>
         <hsqldb.version>2.2.9</hsqldb.version>
-        <jadira-usertype-core.version>3.1.0.CR1</jadira-usertype-core.version>
         <javassist.version>3.17.1-GA</javassist.version>
-        <jboss-logging.version>3.1.2.GA</jboss-logging.version>
         <jdom.version>2.0.2</jdom.version>
 
-
+		<!-- Spring -->
+       	<spring-data-jpa.version>1.3.0.RELEASE</spring-data-jpa.version>
+        <spring-framework.version>3.2.2.RELEASE</spring-framework.version>
+ 
+		<!-- Logging -->
         <logback.version>1.0.9</logback.version>
         <log4j.version>1.2.17</log4j.version>
-        <rome.version>1.0</rome.version>
-        <servlet.version>2.5</servlet.version>
         <slf4j.version>1.7.2</slf4j.version>
-        <spring-data-jpa.version>1.3.0.RELEASE</spring-data-jpa.version>
-        <spring-framework.version>3.2.2.RELEASE</spring-framework.version>
-        <validation.version>1.0.0.GA</validation.version>
+        
+        <rome.version>1.0</rome.version>
         
         <!-- Test -->
         <junit.version>4.11</junit.version>
@@ -54,6 +61,7 @@
         <jodatime-hibernate.version>1.3</jodatime-hibernate.version>
         <jodatime-jsptags.version>1.1.1</jodatime-jsptags.version>
         <jodatime.version>2.2</jodatime.version>
+        <jadira-usertype-core.version>3.1.0.CR1</jadira-usertype-core.version>
 
 
 		<!-- Web dependencies -->
@@ -63,8 +71,7 @@
         <dandelion.datatables.version>0.8.6</dandelion.datatables.version>
       
         <mysql.version>5.1.22</mysql.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        
     </properties>
 
         <dependencies>         
@@ -309,11 +316,6 @@
                 <artifactId>jsp-api</artifactId>
                 <version>${jsp.version}</version>
                 <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.jboss.logging</groupId>
-                <artifactId>jboss-logging</artifactId>
-                <version>${jboss-logging.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jdom</groupId>
