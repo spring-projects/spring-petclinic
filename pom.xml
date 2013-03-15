@@ -39,7 +39,6 @@
         <commons-pool.version>1.6</commons-pool.version>
         <ehcache.version>2.6.5</ehcache.version>
         <hsqldb.version>2.2.9</hsqldb.version>
-        <javassist.version>3.17.1-GA</javassist.version>
         <jdom.version>2.0.2</jdom.version>
 
 		<!-- Spring -->
@@ -51,6 +50,7 @@
         <log4j.version>1.2.17</log4j.version>
         <slf4j.version>1.7.2</slf4j.version>
         
+        <!-- RSS -->
         <rome.version>1.0</rome.version>
         
         <!-- Test -->
@@ -203,11 +203,6 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-jms</artifactId>
                 <version>${spring-framework.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.javassist</groupId>
-                <artifactId>javassist</artifactId>
-                <version>${javassist.version}</version>
             </dependency>
 
             <!-- Apache Commons
