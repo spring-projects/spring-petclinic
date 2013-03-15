@@ -36,7 +36,7 @@ import org.springframework.util.StopWatch;
 @Aspect
 public class CallMonitoringAspect {
 
-    private boolean isEnabled = true;
+    private boolean enabled = true;
 
     private int callCount = 0;
 
@@ -45,12 +45,12 @@ public class CallMonitoringAspect {
 
     @ManagedAttribute
     public void setEnabled(boolean enabled) {
-        isEnabled = enabled;
+    	this.enabled = enabled;
     }
 
     @ManagedAttribute
     public boolean isEnabled() {
-        return isEnabled;
+        return enabled;
     }
 
     @ManagedOperation
@@ -72,7 +72,7 @@ public class CallMonitoringAspect {
 
     @Around("within(@org.springframework.stereotype.Repository *)")
     public Object invoke(ProceedingJoinPoint joinPoint) throws Throwable {
-        if (this.isEnabled) {
+        if (this.enabled) {
             StopWatch sw = new StopWatch(joinPoint.toShortString());
 
             sw.start("invoke");
