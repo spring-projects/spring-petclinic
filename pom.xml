@@ -35,7 +35,6 @@
 		
         <aspectj.version>1.7.2</aspectj.version>
         <commons-dbcp.version>1.4</commons-dbcp.version>
-        <commons-pool.version>1.6</commons-pool.version>
         <ehcache.version>2.6.5</ehcache.version>
         <hsqldb.version>2.2.9</hsqldb.version>
         <jdom.version>2.0.2</jdom.version>
@@ -212,13 +211,7 @@
                 <version>${commons-dbcp.version}</version>
                 <scope>runtime</scope>
             </dependency>
-            <dependency>
-                <groupId>commons-pool</groupId>
-                <artifactId>commons-pool</artifactId>
-                <version>${commons-pool.version}</version>
-                <scope>runtime</scope>
-            </dependency>
-
+ 
             <!-- Logging with SLF4J & LogBack -->
             <dependency>
                 <groupId>org.slf4j</groupId>
