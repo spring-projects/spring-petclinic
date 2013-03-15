@@ -10,6 +10,8 @@
     <packaging>war</packaging>
 
     <properties>
+    	
+    	<jsp.version>2.2</jsp.version>
     
         <!-- Generic properties -->
         <java.version>1.6</java.version>
@@ -96,6 +98,12 @@
                 <version>${servlet.version}</version>
                 <scope>provided</scope>
             </dependency>
+	         <dependency>
+	             <groupId>javax.servlet.jsp</groupId>
+	             <artifactId>jsp-api</artifactId>
+	             <version>${jsp.version}</version>
+	             <scope>provided</scope>
+	         </dependency>
             <dependency>
                 <groupId>javax.xml.bind</groupId>
                 <artifactId>jaxb-api</artifactId>
@@ -174,6 +182,7 @@
                 <artifactId>spring-jms</artifactId>
                 <version>${spring-framework.version}</version>
             </dependency>
+                      
 
             <!-- Database connection pool -->
             <dependency>
@@ -395,6 +404,8 @@
             <artifactId>datatables-servlet2</artifactId>
             <version>${dandelion.datatables.version}</version>
          </dependency>
+         
+         
        </dependencies>
 
     <!-- all Maven plugin versions are mentioned in order to guarantee the build reproducibility in the long term -->
