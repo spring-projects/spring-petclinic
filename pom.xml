@@ -16,6 +16,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         
+		<!-- Spring -->
+        <spring-framework.version>3.2.2.RELEASE</spring-framework.version>
+       	<spring-data-jpa.version>1.3.0.RELEASE</spring-data-jpa.version>
+ 
 
     	<!--  Java EE / Java SE dependencies -->
         <jsp.version>2.2</jsp.version>
@@ -26,21 +30,20 @@
         <jaxb-impl.version>2.2.7-b53</jaxb-impl.version>
 		
 		<!-- Hibernate / JPA -->
-        <hibernate-jpa.version>1.0.1.Final</hibernate-jpa.version>
         <hibernate.version>4.1.9.Final</hibernate.version>
+        <hibernate-jpa.version>1.0.1.Final</hibernate-jpa.version>
         
         <!-- Bean validation -->
         <validation.version>1.0.0.GA</validation.version>
         <hibernate-validator.version>4.3.0.Final</hibernate-validator.version>
 		
-        <aspectj.version>1.7.2</aspectj.version>
+		<!-- Database access -->
         <commons-dbcp.version>1.4</commons-dbcp.version>
         <ehcache.version>2.6.5</ehcache.version>
         <hsqldb.version>2.2.9</hsqldb.version>
 
-		<!-- Spring -->
-       	<spring-data-jpa.version>1.3.0.RELEASE</spring-data-jpa.version>
-        <spring-framework.version>3.2.2.RELEASE</spring-framework.version>
+ 		<!-- AOP -->
+        <aspectj.version>1.7.2</aspectj.version>
  
 		<!-- Logging -->
         <logback.version>1.0.9</logback.version>
@@ -118,11 +121,6 @@
                 </exclusions>
             </dependency>
  
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-beans</artifactId>
-                <version>${spring-framework.version}</version>
-            </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-jdbc</artifactId>
