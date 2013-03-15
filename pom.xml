@@ -70,7 +70,7 @@
         <webjars-bootstrap.version>2.3.0</webjars-bootstrap.version>
         <webjars-jquery-ui.version>1.9.2</webjars-jquery-ui.version>
         <webjars-jquery.version>1.9.0</webjars-jquery.version>
-        <dandelion.datatables.version>0.8.6</dandelion.datatables.version>
+        <dandelion.datatables.version>0.8.7</dandelion.datatables.version>
       
         <mysql.version>5.1.22</mysql.version>
         
@@ -386,13 +386,6 @@
             <groupId>com.github.dandelion</groupId>
             <artifactId>datatables-jsp</artifactId>
             <version>${dandelion.datatables.version}</version>
-            <exclusions>
-            	<!-- exclusion not needed from upcoming version 0.8.7 -->
-            	<exclusion>
-            		<groupId>org.eclipse.jetty</groupId>
-    				<artifactId>test-jetty-servlet</artifactId>
-            	</exclusion>
-            </exclusions>
          </dependency>
          <dependency>
             <groupId>com.github.dandelion</groupId>
