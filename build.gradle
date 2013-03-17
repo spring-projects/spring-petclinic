@@ -127,6 +127,7 @@ dependencies {
 
 sourceCompatibility = "${java_version}"
 targetCompatibility = "${java_version}"
+[compileJava, compileTestJava]*.options*.encoding = "${project_build_sourceEncoding}"
 
 processTestResources {
     from(sourceSets.test.java.srcDirs) {
