@@ -1,0 +1,142 @@
+apply plugin: 'java'
+apply plugin: 'war'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    java_version = '1.6'
+    project_build_sourceEncoding = 'UTF-8'
+    project_reporting_outputEncoding = 'UTF-8'
+    spring_framework_version = '3.2.2.RELEASE'
+    spring_data_jpa_version = '1.3.0.RELEASE'
+    jsp_version = '2.2'
+    jstl_version = '1.2'
+    servlet_version = '2.5'
+    javax_el_version = '2.2'
+    jaxb_api_version = '2.2.7'
+    jaxb_impl_version = '2.2.7-b53'
+    hibernate_version = '4.1.9.Final'
+    hibernate_jpa_version = '1.0.1.Final'
+    validation_version = '1.0.0.GA'
+    hibernate_validator_version = '4.3.0.Final'
+    commons_dbcp_version = '1.4'
+    ehcache_version = '2.6.5'
+    hsqldb_version = '2.2.9'
+    aspectj_version = '1.7.2'
+    logback_version = '1.0.9'
+    log4j_version = '1.2.17'
+    slf4j_version = '1.7.2'
+    rome_version = '1.0'
+    junit_version = '4.11'
+    hamcrest_version = '1.3'
+    jodatime_hibernate_version = '1.3'
+    jodatime_jsptags_version = '1.1.1'
+    jodatime_version = '2.2'
+    jadira_usertype_core_version = '3.1.0.CR1'
+    webjars_bootstrap_version = '2.3.0'
+    webjars_jquery_ui_version = '1.9.2'
+    webjars_jquery_version = '1.9.0'
+    dandelion_datatables_version = '0.8.7'
+    mysql_version = '5.1.22'
+    tomcat_version = '7.0.11'
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'org.gradle.api.plugins:gradle-tomcat-plugin:0.9.7'
+    }
+}
+
+apply plugin: 'tomcat'
+
+dependencies {
+    compile("org.jadira.usertype:usertype.core:${jadira_usertype_core_version}")
+    compile("javax.validation:validation-api:${validation_version}")
+    compile("javax.servlet:jstl:${jstl_version}")
+    compile("org.springframework.data:spring-data-jpa:${spring_data_jpa_version}") {
+        exclude group: 'org.springframework', module: '*'
+    }
+    compile("org.springframework:spring-jdbc:${spring_framework_version}")
+    compile("org.springframework:spring-aop:${spring_framework_version}")
+    compile("org.springframework:spring-webmvc:${spring_framework_version}")
+    compile("org.springframework:spring-tx:${spring_framework_version}")
+    compile("org.springframework:spring-context-support:${spring_framework_version}") {
+        exclude group: 'quartz', module: 'quartz'
+    }
+    compile("org.springframework:spring-orm:${spring_framework_version}")
+    compile("org.springframework:spring-oxm:${spring_framework_version}") {
+        exclude group: 'commons-lang', module: 'commons-lang'
+    }
+    compile("org.springframework:spring-jms:${spring_framework_version}")
+    compile("rome:rome:${rome_version}")
+    compile("joda-time:joda-time:${jodatime_version}")
+    compile("joda-time:joda-time-hibernate:${jodatime_hibernate_version}")
+    compile("joda-time:joda-time-jsptags:${jodatime_jsptags_version}")
+    runtime("org.hsqldb:hsqldb:${hsqldb_version}")
+    compile("javax.servlet.jsp.jstl:jstl-api:${jstl_version}")
+    compile("org.glassfish.web:jstl-impl:${jstl_version}")
+    compile("org.hibernate:hibernate-core:${hibernate_version}") {
+        exclude group: 'asm', module: 'asm-attrs'
+    }
+    compile("org.hibernate:hibernate-entitymanager:${hibernate_version}")
+    compile("org.hibernate.javax.persistence:hibernate-jpa-2.0-api:${hibernate_jpa_version}")
+    compile("org.hibernate:hibernate-validator:${hibernate_validator_version}")
+    compile("org.hibernate:hibernate-ehcache:${hibernate_version}")
+    compile("net.sf.ehcache:ehcache-core:${ehcache_version}") {
+        exclude group: 'commons-logging', module: 'commons-logging'
+    }
+    compile("org.webjars:bootstrap:${webjars_bootstrap_version}")
+    compile("org.webjars:jquery-ui:${webjars_jquery_ui_version}")
+    compile("org.webjars:jquery:${webjars_jquery_version}")
+    compile("org.aspectj:aspectjrt:${aspectj_version}")
+    compile("com.github.dandelion:datatables-jsp:${dandelion_datatables_version}")
+    compile("com.github.dandelion:datatables-export-itext:${dandelion_datatables_version}")
+    compile("com.github.dandelion:datatables-servlet2:${dandelion_datatables_version}")
+
+    providedCompile("javax.el:el-api:${javax_el_version}")
+    providedCompile("javax.servlet:servlet-api:${servlet_version}")
+    providedCompile("javax.servlet.jsp:jsp-api:${jsp_version}")
+    providedCompile("javax.xml.bind:jaxb-api:${jaxb_api_version}")
+    providedCompile("com.sun.xml.bind:jaxb-impl:${jaxb_impl_version}")
+
+    runtime("commons-dbcp:commons-dbcp:${commons_dbcp_version}")
+    runtime("org.slf4j:jcl-over-slf4j:${slf4j_version}")
+    runtime("org.slf4j:slf4j-api:${slf4j_version}")
+    runtime("org.slf4j:jul-to-slf4j:${slf4j_version}")
+    runtime("ch.qos.logback:logback-classic:${logback_version}")
+    runtime("ch.qos.logback:logback-core:${logback_version}")
+    runtime("org.aspectj:aspectjweaver:${aspectj_version}")
+
+    testCompile("org.springframework:spring-test:${spring_framework_version}")
+    testCompile("junit:junit:${junit_version}")
+    testCompile("org.hamcrest:hamcrest-library:${hamcrest_version}")
+    testCompile("org.hamcrest:hamcrest-core:${hamcrest_version}")
+
+    tomcat("org.apache.tomcat.embed:tomcat-embed-core:${tomcat_version}")
+    tomcat("org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcat_version}")
+    tomcat("org.apache.tomcat.embed:tomcat-embed-jasper:${tomcat_version}") {
+        exclude group: 'org.eclipse.jdt.core.compiler', module: 'ecj'
+    }
+}
+
+sourceCompatibility = "${java_version}"
+targetCompatibility = "${java_version}"
+
+processTestResources {
+    from(sourceSets.test.java.srcDirs) {
+        include '**/*.xml'
+    }
+}
+
+war.baseName = 'petclinic'
+
+tomcatRun {
+    httpPort = 9966
+    contextPath = 'petclinic'
+}
