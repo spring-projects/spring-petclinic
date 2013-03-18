@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: petclinic
+Implementation-Version: 1.0.0-SNAPSHOT
+Implementation-Vendor-Id: org.springframework.samples
+Build-Jdk: 1.6.0_37
+Built-By: weibl
+Specification-Title: petclinic
+Created-By: Apache Maven 3.0.4
+Specification-Version: 1.0.0-SNAPSHOT
+

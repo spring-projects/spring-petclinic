@@ -289,6 +289,13 @@
                 <version>${maven-war-plugin.version}</version>
                 <configuration>
                     <warName>petclinic</warName>
+					<!-- http://stackoverflow.com/questions/2712970/how-to-get-maven-artifact-version-at-runtime -->
+					<archive>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+						</manifest>
+					</archive>
                 </configuration>
             </plugin>
             <!-- gDickens: Include the Builders and Natures -->

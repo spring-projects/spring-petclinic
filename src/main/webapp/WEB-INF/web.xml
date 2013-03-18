@@ -54,7 +54,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
         <servlet-name>datatablesController</servlet-name>
         <servlet-class>com.github.dandelion.datatables.extras.servlet2.servlet.DatatablesServlet</servlet-class>
     </servlet>
-   
+
     <!-- Dandelion-Datatables servlet mapping -->
     <servlet-mapping>
         <servlet-name>datatablesController</servlet-name>
@@ -85,5 +85,12 @@ see here: http://static.springsource.org/spring/docs/current/spring-framework-re
         <filter-name>httpMethodFilter</filter-name>
         <servlet-name>petclinic</servlet-name>
     </filter-mapping>
+
+	<!-- The first servlet to get loaded to know app version  -->
+	<servlet>
+		<servlet-name>versionServlet</servlet-name>
+		<servlet-class>org.springframework.samples.petclinic.web.VersionServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
 
 </web-app>

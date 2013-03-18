@@ -1,5 +1,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page import="org.springframework.samples.petclinic.web.VersionServlet"%>
 
 <spring:url value="/resources/images/banner-graphic.png" var="banner"/>
 <img src="${banner}"/>
@@ -16,8 +17,8 @@
             <li style="width: 90px;"><a href="<spring:url value="/oups.html" htmlEscape="true" />"
                                         title="trigger a RuntimeException to see how it is handled"><i
                     class="icon-warning-sign"></i> Error</a></li>
-            <li style="width: 80px;"><a href="#" title="not available yet. Work in progress!!"><i
-                    class=" icon-question-sign"></i> Help</a></li>
+            <li style="width: 80px;"><a href="#" title="not available yet. Work in progress!!
+Spring Pet Clinic application v<%= VersionServlet.version %> "><i class=" icon-question-sign"></i> Help</a></li>
         </ul>
     </div>
 </div>
