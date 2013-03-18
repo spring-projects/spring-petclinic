@@ -29,6 +29,8 @@ import org.springframework.stereotype.Repository;
  * Using native JPA instead of Spring Data JPA here because of this query: "SELECT owner FROM Owner owner left join
  * fetch owner.pets WHERE owner.lastName LIKE :lastName" See https://jira.springsource.org/browse/DATAJPA-292 for more
  * details.
+ * This issue has been fixed already in the latest Spring Data JPA Snapshot. So we will wait for the next version of Spring 
+ * Data JPA to be available and update the Spring Petclinic application consequently.
  *
  * @author Michael Isvy
  */
