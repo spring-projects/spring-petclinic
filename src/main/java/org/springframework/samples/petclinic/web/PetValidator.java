@@ -24,9 +24,17 @@ import org.springframework.validation.Errors;
  *
  * @author Ken Krebs
  * @author Juergen Hoeller
+ * @author Amit Shejekan
  */
 public class PetValidator {
 
+    /**
+     * Validator to validate new Pet information for correctness and completeness.
+     * Error object is set with error messages in case of any validation failures.
+     *
+     * @param Pet - Pet object containing new Pet information such as name, owner
+     * @return - The method sets the error object and does not return anything
+     */
     public void validate(Pet pet, Errors errors) {
         String name = pet.getName();
         if (!StringUtils.hasLength(name)) {
