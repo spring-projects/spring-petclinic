@@ -33,7 +33,7 @@ public class PetValidator {
      * Error object is set with error messages in case of any validation failures.
      *
      * @param Pet - Pet object containing new Pet information such as name, owner
-     * @return - The method sets the error object and does not return anything
+     * @return void - The method sets the error object and does not return anything
      */
     public void validate(Pet pet, Errors errors) {
         String name = pet.getName();
