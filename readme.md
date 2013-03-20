@@ -78,9 +78,10 @@ File -> Import -> Maven -> Existing Maven project
     </td>
   </tr>
   <tr>
-    <td>Dandelion</td>
+    <td>Dandelion-datatables</td>
     <td>
       <a href="/SpringSource/spring-petclinic/tree/master/src/main/webapp/WEB-INF/jsp/owners/ownersList.jsp">ownersList.jsp</a> 
+      <a href="/SpringSource/spring-petclinic/tree/master/src/main/webapp/WEB-INF/jsp/vets/vetList.jsp">vetList.jsp</a> 
       <a href="/SpringSource/spring-petclinic/tree/master/src/main/webapp/WEB-INF/web.xml">web.xml</a> 
    </td>
   </tr>
