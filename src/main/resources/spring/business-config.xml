@@ -82,7 +82,7 @@
         <jpa:repositories base-package="org.springframework.samples.petclinic.repository.springdatajpa"/>
 
         <!-- Custom configuration for the custom implementation based on JPA -->
-        <bean id="owerRepository"
+        <bean id="ownerRepository"
               class="org.springframework.samples.petclinic.repository.springdatajpa.JpaOwnerRepositoryImpl"/>
     </beans>
 </beans>
