@@ -9,7 +9,7 @@ spring-petclinic has been deployed here on cloudfoundry: http://spring-petclinic
 ## Running petclinic locally
 ```
 	git clone https://github.com/SpringSource/spring-petclinic.git
-	mvn tomcat7:run
+	mvn tomcat7:run or gradle tomcatRun
 ```
 
 You can then access petclinic here: http://localhost:9966/petclinic/
