@@ -56,14 +56,14 @@
 		<jodatime-hibernate.version>1.3</jodatime-hibernate.version>
 		<jodatime-jsptags.version>1.1.1</jodatime-jsptags.version>
 		<jodatime.version>2.2</jodatime.version>
-		<jadira-usertype-core.version>3.1.0.CR1</jadira-usertype-core.version>
+		<jadira-usertype-core.version>3.1.0.CR2</jadira-usertype-core.version>
 
 
 		<!-- Web dependencies -->
 		<webjars-bootstrap.version>2.3.0</webjars-bootstrap.version>
 		<webjars-jquery-ui.version>1.9.2</webjars-jquery-ui.version>
 		<webjars-jquery.version>1.9.0</webjars-jquery.version>
-		<dandelion.datatables.version>0.8.10</dandelion.datatables.version>
+		<dandelion.datatables.version>0.8.11</dandelion.datatables.version>
 
 		<mysql.version>5.1.22</mysql.version>
 
