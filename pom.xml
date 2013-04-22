@@ -28,10 +28,10 @@
 		<jaxb-impl.version>2.2.7-b63</jaxb-impl.version>
 
 		<!-- Hibernate / JPA -->
-		<hibernate.version>4.1.9.Final</hibernate.version>
+		<hibernate.version>4.1.11.Final</hibernate.version>
 
 		<!-- Bean validation -->
-		<hibernate-validator.version>4.3.0.Final</hibernate-validator.version>
+		<hibernate-validator.version>4.3.1.Final</hibernate-validator.version>
 
 		<!-- Database access -->
 		<commons-dbcp.version>1.4</commons-dbcp.version>
