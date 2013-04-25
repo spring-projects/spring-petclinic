@@ -31,7 +31,7 @@
 		<hibernate.version>4.1.11.Final</hibernate.version>
 
 		<!-- Bean validation -->
-		<hibernate-validator.version>4.3.1.Final</hibernate-validator.version>
+		<hibernate-validator.version>5.0.0.Final</hibernate-validator.version>
 
 		<!-- Database access -->
 		<commons-dbcp.version>1.4</commons-dbcp.version>
@@ -223,12 +223,6 @@
 			<artifactId>jstl-impl</artifactId>
 			<version>${jstl.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>javax.el</groupId>
-			<artifactId>el-api</artifactId>
-			<version>${javax-el.version}</version>
-			<scope>provided</scope>
-		</dependency>
 
 		<!-- MySQL JDBC Connector -->
 		<!-- <dependency> <groupId>mysql</groupId> <artifactId>mysql-connector-java</artifactId> <version>${mysql.version}</version> </dependency> -->
@@ -253,6 +247,16 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
 			<version>${hibernate-validator.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.glassfish.web</groupId>
+					<artifactId>javax.el</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>javax.el</groupId>
+					<artifactId>javax.el-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
