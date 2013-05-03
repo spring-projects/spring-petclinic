@@ -31,7 +31,7 @@
 		<hibernate.version>4.1.11.Final</hibernate.version>
 
 		<!-- Bean validation -->
-		<hibernate-validator.version>4.3.1.Final</hibernate-validator.version>
+		<hibernate-validator.version>5.0.1.Final</hibernate-validator.version>
 
 		<!-- Database access -->
 		<commons-dbcp.version>1.4</commons-dbcp.version>
@@ -424,7 +424,7 @@
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>2.0</version>
+				<version>2.1</version>
 				<configuration>
 					<server>tomcat-development-server</server>
 					<port>9966</port>
