@@ -153,3 +153,37 @@ File -> Import -> Maven -> Existing Maven project
       <a href="https://github.com/whimet/spring-petclinic">See here</a></td>
   </tr>
 </table>
+
+
+## Interaction with other open source projects
+
+One of the best parts about working on the Spring Petclinic application is that we have the opportunity to work in direct contact with many other Open Source projects. We found some bugs/suggested improvements on various topics such as Spring, Spring Data, Bean Validation and even Eclipse! In many cases, they've been fixed/implemented in just a few days.
+Here is a list of them:
+
+<table>
+  <tr>
+    <th width="300px">Spring JDBC: simplify usage of NamedParameterJdbcTemplate</th><th width="300px"> <a href="https://jira.springsource.org/browse/SPR-10256"> SPR-10256</a> and <a href="https://jira.springsource.org/browse/SPR-10257"> SPR-10257</a> </th>
+  </tr>
+  <tr>
+    <td>Bean Validation / Hibernate Validator: simplify Maven dependencies and backward compatibility</td>
+    <td>
+      <a href="https://hibernate.atlassian.net/browse/HV-790"> HV-790</a> and <a href="https://hibernate.atlassian.net/browse/HV-792"> HV-792</a>
+      </td>
+  </tr>
+  <tr>
+    <td>Spring Data: provide more flexibility when working with JPQL queries</td>
+    <td>
+      <a href="https://jira.springsource.org/browse/DATAJPA-292"> DATAJPA-292</a>
+      </td>
+  </tr>  
+  <tr>
+    <td>Eclipse: validation bug when working with .tag/.tagx files</td>
+    <td>
+      <a href="https://issuetracker.springsource.com/browse/STS-3294"> STS-3294</a>
+    </td>
+  </tr>    
+</table>
+
+
+
+
