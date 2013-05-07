@@ -16,11 +16,13 @@
 package org.springframework.samples.petclinic.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 
 import org.joda.time.DateTime;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Owner;
@@ -88,6 +90,7 @@ public abstract class AbstractClinicServiceTests {
         owner.setTelephone("4444444444");
         this.clinicService.saveOwner(owner);
         owners = this.clinicService.findOwnerByLastName("Schultz");
+        assertNotNull("Owner Id should have been generated", owner.getId());
         assertEquals("Verifying number of owners after inserting a new one.", found + 1, owners.size());
     }
 
@@ -142,6 +145,7 @@ public abstract class AbstractClinicServiceTests {
 	    this.clinicService.saveOwner(owner6);
 	    owner6 = this.clinicService.findOwnerById(6);
 	    assertEquals(found + 1, owner6.getPets().size());
+	    assertNotNull("Pet Id should have been generated", pet.getId());
 	}
 
 	@Test
@@ -183,6 +187,7 @@ public abstract class AbstractClinicServiceTests {
 	    this.clinicService.savePet(pet7);
 	    pet7 = this.clinicService.findPetById(7);
 	    assertEquals(found + 1, pet7.getVisits().size());
+	    assertNotNull("Visit Id should have been generated", visit.getId());
 	}
 
 
