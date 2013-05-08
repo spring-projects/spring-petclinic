@@ -45,7 +45,12 @@ public class JpaVisitRepositoryImpl implements VisitRepository {
 
     @Override
     public void save(Visit visit) {
-        this.em.persist(visit);
+    	if (visit.getId() == null) {
+    		this.em.persist(visit);     		
+    	}
+    	else {
+    		this.em.merge(visit);    
+    	}
     }
 
 

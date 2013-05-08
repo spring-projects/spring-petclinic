@@ -70,7 +70,12 @@ public class JpaOwnerRepositoryImpl implements OwnerRepository {
 
     @Override
     public void save(Owner owner) {
-        this.em.persist(owner);
+    	if (owner.getId() == null) {
+    		this.em.persist(owner);     		
+    	}
+    	else {
+    		this.em.merge(owner);    
+    	}
 
     }
 

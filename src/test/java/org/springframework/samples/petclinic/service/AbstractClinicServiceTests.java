@@ -89,8 +89,8 @@ public abstract class AbstractClinicServiceTests {
         owner.setCity("Wollongong");
         owner.setTelephone("4444444444");
         this.clinicService.saveOwner(owner);
+        Assert.assertNotEquals("Owner Id should have been generated", owner.getId().longValue(), 0);
         owners = this.clinicService.findOwnerByLastName("Schultz");
-        assertNotNull("Owner Id should have been generated", owner.getId());
         assertEquals("Verifying number of owners after inserting a new one.", found + 1, owners.size());
     }
 
