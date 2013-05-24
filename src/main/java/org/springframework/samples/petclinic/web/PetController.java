@@ -16,6 +16,7 @@
 package org.springframework.samples.petclinic.web;
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Owner;
@@ -62,11 +63,11 @@ public class PetController {
     }
 
     @RequestMapping(value = "/owners/{ownerId}/pets/new", method = RequestMethod.GET)
-    public String initCreationForm(@PathVariable("ownerId") int ownerId, Model model) {
+    public String initCreationForm(@PathVariable("ownerId") int ownerId, Map<String, Object> model) {
         Owner owner = this.clinicService.findOwnerById(ownerId);
         Pet pet = new Pet();
         owner.addPet(pet);
-        model.addAttribute("pet", pet);
+        model.put("pet", pet);
         return "pets/createOrUpdatePetForm";
     }
 
@@ -83,9 +84,9 @@ public class PetController {
     }
 
     @RequestMapping(value = "/owners/*/pets/{petId}/edit", method = RequestMethod.GET)
-    public String initUpdateForm(@PathVariable("petId") int petId, Model model) {
+    public String initUpdateForm(@PathVariable("petId") int petId, Map<String, Object> model) {
         Pet pet = this.clinicService.findPetById(petId);
-        model.addAttribute("pet", pet);
+        model.put("pet", pet);
         return "pets/createOrUpdatePetForm";
     }
 

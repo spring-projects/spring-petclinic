@@ -15,6 +15,8 @@
  */
 package org.springframework.samples.petclinic.web;
 
+import java.util.Map;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,11 +59,11 @@ public class VisitController {
     }
 
     @RequestMapping(value = "/owners/*/pets/{petId}/visits/new", method = RequestMethod.GET)
-    public String initNewVisitForm(@PathVariable("petId") int petId, Model model) {
+    public String initNewVisitForm(@PathVariable("petId") int petId, Map<String, Object> model) {
         Pet pet = this.clinicService.findPetById(petId);
         Visit visit = new Visit();
         pet.addVisit(visit);
-        model.addAttribute("visit", visit);
+        model.put("visit", visit);
         return "pets/createOrUpdateVisitForm";
     }
 
