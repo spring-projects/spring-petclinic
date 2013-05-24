@@ -19,9 +19,9 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
     </context-param>
 
     <!--
-- Location of the XML file that defines the root application context.
-- Applied by ContextLoaderServlet.
--->
+		- Location of the XML file that defines the root application context.
+		- Applied by ContextLoaderListener.
+	-->
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>classpath:spring/business-config.xml, classpath:spring/tools-config.xml</param-value>
