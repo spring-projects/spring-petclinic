@@ -42,8 +42,7 @@
         <petclinic:inputField label="Name" name="name"/>
         <petclinic:inputField label="Birth Date" name="birthDate"/>
         <div class="control-group">
-            <label class="control-label">Type </label>
-            <form:select path="type" items="${types}" size="5"/>
+            <petclinic:selectField name="type" label="Type " names="${types}" size="5"/>
         </div>
         <div class="form-actions">
             <c:choose>

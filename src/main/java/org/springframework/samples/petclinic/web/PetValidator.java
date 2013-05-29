@@ -33,6 +33,8 @@ public class PetValidator {
             errors.rejectValue("name", "required", "required");
         } else if (pet.isNew() && pet.getOwner().getPet(name, true) != null) {
             errors.rejectValue("name", "duplicate", "already exists");
+        } else if (pet.isNew() && pet.getType() == null) {
+            errors.rejectValue("type", "required", "required");
         }
     }
 
