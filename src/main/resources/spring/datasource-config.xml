@@ -19,8 +19,10 @@
     <!-- (in this case, JDBC-related settings for the dataSource definition below) -->
     <context:property-placeholder location="classpath:spring/data-access.properties"/>
 
-    <!-- DataSource configuration for Apache Commons DBCP. -->
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
+    <!-- DataSource configuration for the tomcat jdbc connection pool 
+    See here for more details on commons-dbcp versus tomcat-jdbc: 
+    http://blog.ippon.fr/2013/03/13/improving-the-performance-of-the-spring-petclinic-sample-application-part-3-of-5/-->
+    <bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource"
           p:driverClassName="${jdbc.driverClassName}" p:url="${jdbc.url}"
           p:username="${jdbc.username}" p:password="${jdbc.password}"/>
 
