@@ -318,9 +318,19 @@
 
 	</dependencies>
 
-	<!-- all Maven plugin versions are mentioned in order to guarantee the build reproducibility in the long term -->
+	<!-- Maven plugin versions are mentioned in order to guarantee the build reproducibility in the long term -->
 	<build>
 		<defaultGoal>install</defaultGoal>
+		<testResources>
+		  <testResource>
+		  	<!-- declared explicitly so Spring config files can be placed next to their corresponding JUnit test class 
+		  		(see example with ValidatorTests) -->
+		    <directory>${project.basedir}/src/test/java</directory>
+		  </testResource>
+		  <testResource>
+		    <directory>${project.basedir}/src/test/resources</directory>
+		  </testResource>
+		</testResources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -382,20 +392,6 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.6</version>
-				<executions>
-					<execution>
-						<id>install</id>
-						<phase>install</phase>
-						<goals>
-							<goal>sources</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>2.4</version>
 				<configuration>
@@ -415,48 +411,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.apache.maven.plugins</groupId>
-										<artifactId>maven-enforcer-plugin</artifactId>
-										<versionRange>[1.0.0,)</versionRange>
-										<goals>
-											<goal>enforce</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<execute />
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.apache.maven.plugins</groupId>
-										<artifactId>maven-dependency-plugin</artifactId>
-										<versionRange>[2.4,)</versionRange>
-										<goals>
-											<goal>unpack</goal>
-											<goal>sources</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<execute />
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
 
 </project>
