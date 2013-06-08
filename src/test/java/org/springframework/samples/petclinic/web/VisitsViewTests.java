@@ -44,9 +44,9 @@ import org.springframework.web.context.WebApplicationContext;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration("VisitsViewTest-config.xml")
+@ContextConfiguration("VisitsViewTests-config.xml")
 @ActiveProfiles("jdbc")
-public class VisitsViewTest {
+public class VisitsViewTests {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
