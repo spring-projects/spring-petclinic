@@ -20,7 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * (useful when upgrading to a new version of Hibernate Validator/ Bean Validation)
  *
  */
-@ContextConfiguration(locations = {"ValidatorTests-config.xml"})
+@ContextConfiguration("ValidatorTests-config.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ValidatorTests {
 	
