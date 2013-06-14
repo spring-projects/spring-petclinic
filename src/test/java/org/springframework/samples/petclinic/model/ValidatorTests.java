@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 /**
  * 
@@ -20,12 +21,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * (useful when upgrading to a new version of Hibernate Validator/ Bean Validation)
  *
  */
-@ContextConfiguration("ValidatorTests-config.xml")
-@RunWith(SpringJUnit4ClassRunner.class)
 public class ValidatorTests {
 	
-	@Autowired
-    private Validator validator;
+	private Validator createValidator() {
+	      LocalValidatorFactoryBean localValidatorFactoryBean = new LocalValidatorFactoryBean();
+	      localValidatorFactoryBean.afterPropertiesSet();
+	      return localValidatorFactoryBean;
+	  }
 
 	@Test
     public void emptyFirstName() {
@@ -34,6 +36,7 @@ public class ValidatorTests {
         person.setFirstName("");
         person.setLastName("smith");
 
+        Validator validator = createValidator();
         Set<ConstraintViolation<Person>> constraintViolations = validator.validate(person);
 
         Assert.assertEquals(1, constraintViolations.size());
