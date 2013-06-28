@@ -8,15 +8,21 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
     <display-name>Spring PetClinic</display-name>
     <description>Spring PetClinic sample application</description>
 
+    <!--
+    You can override the default profile ('jdbc') with
+     - jpa: in the case of plain JPA
+     - spring-data-jpa: in the case of Spring Data JPA
+
+    You can also combine the repositories implementation profile ('jdbc', 'jpa' or 'spring-data-jpa')
+    with the 'production' profile to us a JNDI datasource that would be provided by the container.
+    Sample to combine JPA repository and jndi datasource: 'jpa,production'
+
+    Sample:
     <context-param>
         <param-name>spring.profiles.active</param-name>
-        <param-value>jdbc</param-value>
-        <!-- Available profiles:
-		<param-value>jdbc</param-value>
-		<param-value>jpa</param-value> (in the case of plain JPA)
-		<param-value>spring-data-jpa</param-value> (in the case of Spring Data JPA)
-		-->
+		<param-value>jpa</param-value>
     </context-param>
+    -->
 
     <!--
 		- Location of the XML file that defines the root application context.
