@@ -1,8 +1,5 @@
 # Spring PetClinic Sample Application
 
-## What does it look like?
-spring-petclinic has been deployed here on cloudfoundry: http://spring-petclinic.cloudfoundry.com/
-
 ## Understanding the Spring Petclinic application with a few diagrams
 <a href="https://speakerdeck.com/michaelisvy/spring-petclinic-sample-application">See the presentation here</a>
 
