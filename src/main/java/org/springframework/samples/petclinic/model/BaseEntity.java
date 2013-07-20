@@ -27,7 +27,7 @@ import javax.persistence.MappedSuperclass;
  * @author Juergen Hoeller
  */
 @MappedSuperclass
-public class BaseEntity {
+public class BaseEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;
