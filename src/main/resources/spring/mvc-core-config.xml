@@ -33,6 +33,9 @@
 
     <mvc:view-controller path="/" view-name="welcome" />
 
+    <!-- serve static resources (*.html, ...) from src/main/webapp/ -->
+    <mvc:default-servlet-handler/>
+
     <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
         <property name="formatters">
             <set>
