@@ -47,7 +47,7 @@ File -> Import -> Maven -> Existing Maven project
   <tr>
     <td>Spring MVC- Atom integration</td>
     <td>
-      <a href="/SpringSource/spring-petclinic/blob/master/src/main/java/org/springframework/samples/petclinic/web/VetsAtomView.java">VetsAtomView.java</a>
+      <a href="/src/main/java/org/springframework/samples/petclinic/web/VetsAtomView.java">VetsAtomView.java</a>
       <a href="/SpringSource/spring-petclinic/blob/master/src/main/resources/spring/mvc-view-config.xml">mvc-view-config.xml</a>
     </td>
   </tr>
