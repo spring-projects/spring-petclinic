@@ -61,7 +61,7 @@ File -> Import -> Maven -> Existing Maven project
   </tr>
   <tr>
     <td>Spring MVC Test Framework</td>
-    <td><a href="/src/test/java/org/springframework/samples/petclinic/web/VisitsViewTest.java">VisitsViewTest.java</a></td>
+    <td><a href="/src/test/java/org/springframework/samples/petclinic/web/VisitsViewTests.java">VisitsViewTest.java</a></td>
   </tr>
   <tr>
     <td>JSP custom tags</td>
