@@ -187,7 +187,7 @@ Here is a list of them:
       </td>
   </tr>  
   <tr>
-    <td>Eclipse: validation bug when working with .tag/.tagx files</td>
+    <td>Eclipse: validation bug when working with .tag/.tagx files (has only been fixed for Eclipse 4.3 (Kepler). <a href="https://github.com/spring-projects/spring-petclinic/issues/14">See here for more details.</a></td>
     <td>
       <a href="https://issuetracker.springsource.com/browse/STS-3294"> STS-3294</a>
     </td>
