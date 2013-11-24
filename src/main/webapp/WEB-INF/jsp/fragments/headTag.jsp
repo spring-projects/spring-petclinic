@@ -9,7 +9,7 @@ PetClinic :: a Spring Framework demonstration
     <title>PetClinic :: a Spring Framework demonstration</title>
 
 
-    <spring:url value="/webjars/bootstrap/2.3.0/css/bootstrap.min.css" var="bootstrapCss"/>
+    <spring:url value="/webjars/bootstrap/3.0.1/css/bootstrap.min.css" var="bootstrapCss"/>
     <link href="${bootstrapCss}" rel="stylesheet"/>
 
     <spring:url value="/resources/css/petclinic.css" var="petclinicCss"/>
