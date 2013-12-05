@@ -19,6 +19,9 @@
 3) Create the PetClinic database and user by executing the "db/mysql/initDB.sql"
    script.
 
-4) Open "src/main/resources/spring/jdbc.properties"; comment out all properties in the
+4) Populate the PetClinic database with sample data by executing the 
+   "db/mysql/populateDB.sql" script.
+
+5) Open "src/main/resources/spring/jdbc.properties"; comment out all properties in the
    "HSQL Settings" section; uncomment all properties in the "MySQL Settings"
    section.
