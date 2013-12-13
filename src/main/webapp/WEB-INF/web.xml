@@ -7,6 +7,11 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 
     <display-name>Spring PetClinic</display-name>
     <description>Spring PetClinic sample application</description>
+    
+    <context-param>
+        <param-name>spring.profiles.active</param-name>
+        <param-value>default</param-value>
+    </context-param>
 
    <!-- Default profile is "jpa" (see business-config.xml for more details). 
    When using Spring JDBC, uncomment the following: -->
