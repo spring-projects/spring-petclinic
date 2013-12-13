@@ -16,14 +16,14 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<!-- Spring -->
-		<spring-framework.version>3.2.5.RELEASE</spring-framework.version>
+		<spring-framework.version>4.0.0.RELEASE</spring-framework.version>
 		<spring-data-jpa.version>1.4.2.RELEASE</spring-data-jpa.version>
 
 
 		<!-- Java EE / Java SE dependencies -->
 		<jsp.version>2.2</jsp.version>
 		<jstl.version>1.2</jstl.version>
-		<servlet.version>2.5</servlet.version>
+		<tomcat.servlet.version>7.0.30</tomcat.servlet.version>
 		<jaxb-impl.version>2.2.7</jaxb-impl.version>
 
 		<!-- Hibernate / JPA -->
@@ -75,22 +75,29 @@
 			<version>${jadira-usertype-core.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-			<version>${jstl.version}</version>
-		</dependency>
+        	<groupId>org.apache.tomcat</groupId>
+        	<artifactId>tomcat-servlet-api</artifactId>
+         	<version>${tomcat.servlet.version}</version>
+          	<scope>provided</scope>
+        </dependency>
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>${servlet.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet.jsp</groupId>
-			<artifactId>jsp-api</artifactId>
-			<version>${jsp.version}</version>
-			<scope>provided</scope>
-		</dependency>
+                        <groupId>javax.servlet.jsp</groupId>
+                        <artifactId>jsp-api</artifactId>
+                        <version>2.1</version>
+                        <scope>provided</scope>
+                </dependency>
+
+                <dependency>
+                        <groupId>org.glassfish.web</groupId>
+                        <artifactId>jstl-impl</artifactId>
+                        <version>1.2</version>
+                        <exclusions>
+                                <exclusion>
+                                        <groupId>javax.servlet</groupId>
+                                        <artifactId>servlet-api</artifactId>
+                                </exclusion>
+                        </exclusions>
+                </dependency>
 		<dependency>
 			<groupId>com.sun.xml.bind</groupId>
 			<artifactId>jaxb-impl</artifactId>
