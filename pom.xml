@@ -17,7 +17,7 @@
 
 		<!-- Spring -->
 		<spring-framework.version>4.0.0.RELEASE</spring-framework.version>
-		<spring-data-jpa.version>1.4.2.RELEASE</spring-data-jpa.version>
+		<spring-data-jpa.version>1.4.3.RELEASE</spring-data-jpa.version>
 
 
 		<!-- Java EE / Java SE dependencies -->
