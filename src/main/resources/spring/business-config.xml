@@ -27,12 +27,12 @@
  
 	
 	<!-- ==================		 3 Profiles to choose from 			=================== 
-									- default (uses JPA)
 									- jdbc (uses Spring" JdbcTemplate)
+									- jpa
 									- spring-data-jpa	
 		  =============================================================================-->
 	
-    <beans profile="default,spring-data-jpa">
+    <beans profile="jpa,spring-data-jpa">
         <!-- JPA EntityManagerFactory -->
         <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
               p:dataSource-ref="dataSource">
@@ -80,7 +80,7 @@
         <context:component-scan base-package="org.springframework.samples.petclinic.repository.jdbc"/>
     </beans>
 
-    <beans profile="default">
+    <beans profile="jpa">
         <!--
             Loads JPA beans
             Will automatically be transactional due to @Transactional.
