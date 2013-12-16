@@ -113,5 +113,10 @@ see here: http://static.springsource.org/spring/docs/current/spring-framework-re
         <filter-name>datatablesFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+    
+    <!--  	No need for welcome-file declaration here.
+    		See inside spring/mvc-core-config.xml : 
+    		<mvc:view-controller path="/" view-name="welcome" /> 
+    -->
 
 </web-app>
