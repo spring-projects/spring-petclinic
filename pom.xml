@@ -34,7 +34,7 @@
 
 		<!-- Database access -->
 		<tomcat-jdbc.version>7.0.42</tomcat-jdbc.version>
-		<ehcache.version>2.6.6</ehcache.version>
+		<ehcache.version>2.6.8</ehcache.version>
 		<hsqldb.version>2.3.1</hsqldb.version>
 
 		<!-- AOP -->
