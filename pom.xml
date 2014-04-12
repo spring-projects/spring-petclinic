@@ -16,8 +16,8 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<!-- Spring -->
-		<spring-framework.version>4.0.2.RELEASE</spring-framework.version>
-		<spring-data-jpa.version>1.4.3.RELEASE</spring-data-jpa.version>
+		<spring-framework.version>4.0.3.RELEASE</spring-framework.version>
+		<spring-data-jpa.version>1.5.1.RELEASE</spring-data-jpa.version>
 
 
 		<!-- Java EE / Java SE dependencies -->
@@ -27,7 +27,7 @@
 		<jaxb-impl.version>2.2.7</jaxb-impl.version>
 
 		<!-- Hibernate / JPA -->
-		<hibernate.version>4.3.3.Final</hibernate.version>
+		<hibernate.version>4.3.5.Final</hibernate.version>
 
 		<!-- Bean validation -->
 		<hibernate-validator.version>4.3.1.Final</hibernate-validator.version>
@@ -35,14 +35,14 @@
 		<!-- Database access -->
 		<tomcat-jdbc.version>7.0.42</tomcat-jdbc.version>
 		<ehcache.version>2.6.8</ehcache.version>
-		<hsqldb.version>2.3.1</hsqldb.version>
+		<hsqldb.version>2.3.2</hsqldb.version>
 
 		<!-- AOP -->
 		<aspectj.version>1.7.4</aspectj.version>
 
 		<!-- Logging -->
-		<logback.version>1.1.1</logback.version>
-		<slf4j.version>1.7.6</slf4j.version>
+		<logback.version>1.1.2</logback.version>
+		<slf4j.version>1.7.7</slf4j.version>
 
 		<!-- RSS -->
 		<rome.version>1.0</rome.version>
@@ -55,7 +55,7 @@
 		<jodatime-hibernate.version>1.3</jodatime-hibernate.version>
 		<jodatime-jsptags.version>1.1.1</jodatime-jsptags.version>
 		<jodatime.version>2.3</jodatime.version>
-		<jadira-usertype-core.version>3.1.0.CR10</jadira-usertype-core.version>
+		<jadira-usertype-core.version>3.1.0.GA</jadira-usertype-core.version>
 
 
 		<!-- Web dependencies -->
