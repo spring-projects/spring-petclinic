@@ -1,7 +1,7 @@
 # Spring PetClinic Sample Application
 
 ## What does it look like?
--spring-petclinic has been deployed here on cloudfoundry: http://gopetclinic.cfapps.io/
+-spring-petclinic has been deployed here on cloudfoundry: http://demo-spring-petclinic.cfapps.io/
 
 
 ## Understanding the Spring Petclinic application with a few diagrams
