@@ -69,6 +69,35 @@ public class PetController {
         model.put("pet", pet);
         return "pets/createOrUpdatePetForm";
     }
+    
+    @RequestMapping(value = "/pets/find", method = RequestMethod.GET)
+    public String initFindForm(Map<String, Object> model) {
+        model.put("pet", new Pet());
+        return "pets/findPets";
+    }
+    
+    @RequestMapping(value = "/pets", method = RequestMethod.GET)
+    public String searchPets(Pet pet, BindingResult result, Map<String, Object> model) {
+    	 if (pet.getName() == null) {
+             pet.setName(""); // empty string signifies broadest possible search
+         }
+    	 
+    	 
+    	Collection<Pet> results = this.clinicService.findPetByName(pet.getName());
+    	
+    	if (results.size() < 1) {
+            // no pets found
+            result.rejectValue("name", "notFound", "not found");
+            return "pets/findPets";
+        }
+        if (results.size() >= 1) {
+            // multiple pets found
+            model.put("selections", results);
+            return "pets/petsList";
+        } 
+    	
+        return "pets/findPets";
+    }
 
     @RequestMapping(value = "/owners/{ownerId}/pets/new", method = RequestMethod.POST)
     public String processCreationForm(@ModelAttribute("pet") Pet pet, BindingResult result, SessionStatus status) {

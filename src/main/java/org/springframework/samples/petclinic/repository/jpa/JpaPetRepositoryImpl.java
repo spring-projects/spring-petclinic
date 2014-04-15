@@ -15,11 +15,16 @@
  */
 package org.springframework.samples.petclinic.repository.jpa;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
+import org.joda.time.DateTime;
+import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.repository.PetRepository;
@@ -60,5 +65,25 @@ public class JpaPetRepositoryImpl implements PetRepository {
     		this.em.merge(pet);    
     	}
     }
+    
+    @Override
+	public Collection<Pet> findByName(String name) {
+		Query query = this.em.createQuery("SELECT pet.id, pet.name,pet.birthDate,pet.type,pet.owner FROM Pet pet inner join pet.owner as owner WHERE pet.name like :name");
+        query.setParameter("name", "%"+ name + "%");
+        Collection<Pet> pets = new ArrayList<Pet>();
+        @SuppressWarnings("unchecked")
+		List<Object[]> resultList = query.getResultList();
+        for (Object[] obj : resultList) {
+        	Pet pet = new Pet();
+			pet.setId((Integer)obj[0]);
+			pet.setName((String)obj[1]);
+			pet.setBirthDate((DateTime)obj[2]);
+			pet.setType((PetType)obj[3]);
+			pet.setOwner((Owner)obj[4]);
+			pets.add(pet);
+		}
+        return  pets;
+        
+	}
 
 }
