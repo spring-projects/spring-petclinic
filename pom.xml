@@ -62,7 +62,7 @@
 		<webjars-bootstrap.version>2.3.0</webjars-bootstrap.version>
 		<webjars-jquery-ui.version>1.10.3</webjars-jquery-ui.version>
 		<webjars-jquery.version>2.0.3-1</webjars-jquery.version>
-		<dandelion.datatables.version>0.9.3</dandelion.datatables.version>
+		<dandelion.version>0.10.0</dandelion.version>
 
 		<mysql.version>5.1.22</mysql.version>
 
@@ -303,19 +303,13 @@
 		<dependency>
 			<groupId>com.github.dandelion</groupId>
 			<artifactId>datatables-jsp</artifactId>
-			<version>${dandelion.datatables.version}</version>
+			<version>${dandelion.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.dandelion</groupId>
 			<artifactId>datatables-export-itext</artifactId>
-			<version>${dandelion.datatables.version}</version>
+			<version>${dandelion.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.github.dandelion</groupId>
-			<artifactId>datatables-servlet2</artifactId>
-			<version>${dandelion.datatables.version}</version>
-		</dependency>
-
 
 	</dependencies>
 
