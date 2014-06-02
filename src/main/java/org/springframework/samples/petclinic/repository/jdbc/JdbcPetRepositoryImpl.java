@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.repository.jdbc;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -129,5 +130,24 @@ public class JdbcPetRepositoryImpl implements PetRepository {
                 .addValue("type_id", pet.getType().getId())
                 .addValue("owner_id", pet.getOwner().getId());
     }
+    
+    @Override
+	public Collection<Pet> findByName(String name) throws DataAccessException {
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+        params.put("name", "%" + name + "%");
+        List<Pet> pets =  this.namedParameterJdbcTemplate.query(
+                "SELECT id,  birth_date, type_id, owner_id FROM pets WHERE name like :name",
+                params,
+                ParameterizedBeanPropertyRowMapper.newInstance(Pet.class)
+        );
+        for (Pet pet : pets) {
+			if(pet.getName().equals(null)){
+				new Exception();
+			}
+		}
+        return pets;
+		
+	}
 
 }

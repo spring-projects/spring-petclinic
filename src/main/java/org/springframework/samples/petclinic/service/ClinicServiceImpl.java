@@ -65,6 +65,12 @@ public class ClinicServiceImpl implements ClinicService {
     public Owner findOwnerById(int id) throws DataAccessException {
         return ownerRepository.findById(id);
     }
+    
+    @Override
+    @Transactional(readOnly = true)
+    public Collection<Pet> findPetByName(String name) throws DataAccessException {
+        return petRepository.findByName(name);
+    }
 
     @Override
     @Transactional(readOnly = true)

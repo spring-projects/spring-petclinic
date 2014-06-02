@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.repository;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.dao.DataAccessException;
@@ -50,6 +51,16 @@ public interface PetRepository {
      */
     Pet findById(int id) throws DataAccessException;
 
+    /**
+     * Retrieve a list of<code>Pet</code> from the data store by name.
+     *
+     * @param name the name to search for
+     * @return the <code>Pet</code> if found
+     * @throws org.springframework.dao.DataRetrievalFailureException
+     *          if not found
+     */
+    Collection<Pet> findByName(String name) throws DataAccessException;
+    
     /**
      * Save a <code>Pet</code> to the data store, either inserting or updating it.
      *

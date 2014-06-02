@@ -37,6 +37,8 @@ public interface ClinicService {
     Owner findOwnerById(int id) throws DataAccessException;
 
     Pet findPetById(int id) throws DataAccessException;
+    
+    Collection<Pet> findPetByName(String name) throws DataAccessException;
 
     void savePet(Pet pet) throws DataAccessException;
 
