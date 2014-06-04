@@ -16,8 +16,8 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<!-- Spring -->
-		<spring-framework.version>4.0.3.RELEASE</spring-framework.version>
-		<spring-data-jpa.version>1.5.1.RELEASE</spring-data-jpa.version>
+		<spring-framework.version>4.0.5.RELEASE</spring-framework.version>
+		<spring-data-jpa.version>1.6.0.RELEASE</spring-data-jpa.version>
 
 
 		<!-- Java EE / Java SE dependencies -->
@@ -34,7 +34,7 @@
 
 		<!-- Database access -->
 		<tomcat-jdbc.version>7.0.42</tomcat-jdbc.version>
-		<ehcache.version>2.6.8</ehcache.version>
+		<ehcache.version>2.6.9</ehcache.version>
 		<hsqldb.version>2.3.2</hsqldb.version>
 
 		<!-- AOP -->
