@@ -17,7 +17,7 @@
 
 		<!-- Spring -->
 		<spring-framework.version>4.0.5.RELEASE</spring-framework.version>
-		<spring-data-jpa.version>1.6.0.RELEASE</spring-data-jpa.version>
+		<spring-data-jpa.version>1.6.1.RELEASE</spring-data-jpa.version>
 
 
 		<!-- Java EE / Java SE dependencies -->
@@ -38,7 +38,7 @@
 		<hsqldb.version>2.3.2</hsqldb.version>
 
 		<!-- AOP -->
-		<aspectj.version>1.7.4</aspectj.version>
+		<aspectj.version>1.8.1</aspectj.version>
 
 		<!-- Logging -->
 		<logback.version>1.1.2</logback.version>
