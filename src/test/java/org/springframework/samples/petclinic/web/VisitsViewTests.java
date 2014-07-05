@@ -29,6 +29,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.samples.petclinic.config.BusinessConfig;
+import org.springframework.samples.petclinic.config.MvcCoreConfig;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
@@ -48,7 +49,7 @@ import org.springframework.web.context.WebApplicationContext;
 @WebAppConfiguration
 @ContextHierarchy({ 
     @ContextConfiguration(classes = BusinessConfig.class),
-    @ContextConfiguration(locations = "classpath:spring/mvc-core-config.xml")})
+    @ContextConfiguration(classes = MvcCoreConfig.class)})
 @ActiveProfiles("jdbc")
 public class VisitsViewTests {
 
