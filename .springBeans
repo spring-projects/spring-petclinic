@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beansProjectDescription>
 	<version>1</version>
-	<pluginVersion><![CDATA[3.2.0.201301251408-M2]]></pluginVersion>
+	<pluginVersion><![CDATA[3.5.0.201404011509-RELEASE]]></pluginVersion>
 	<configSuffixes>
 		<configSuffix><![CDATA[xml]]></configSuffix>
 	</configSuffixes>
@@ -12,6 +12,9 @@
 		<config>src/main/resources/spring/mvc-view-config.xml</config>
 		<config>src/main/resources/spring/business-config.xml</config>
 	</configs>
+	<autoconfigs>
+		<config>src/main/resources/spring/tools-config.xml</config>
+	</autoconfigs>
 	<configSets>
 	</configSets>
 </beansProjectDescription>
