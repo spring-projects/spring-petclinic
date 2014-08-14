@@ -1,0 +1,47 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure('2') do |config|
+  config.omnibus.chef_version = '11.4.2'
+  config.berkshelf.enabled = true
+
+  config.vm.provider "virtualbox" do |v, override|
+    override.vm.box = 'centos-6.5'
+    override.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_#{override.vm.box}_chef-provisionerless.box"
+    config.vm.hostname = 'cicd-infrastructure'
+
+    config.cache.scope = :box
+    config.cache.auto_detect = true
+
+    v.memory = 1024
+    v.cpus = 2
+  end
+
+  config.vm.provider "aws" do |aws, override|
+    override.vm.box = "aws-dummy"
+    override.vm.box_url = "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
+    aws.instance_type = "m3.medium"
+    aws.access_key_id = ENV["AWS_ACCESS_KEY"]
+    aws.secret_access_key = ENV["AWS_SECRET_KEY"]
+    aws.keypair_name = "-53b42275e4b0aaf59b4b1459"
+    aws.ami = "ami-52009e3b"
+    aws.security_groups = "default"
+    aws.user_data = "#!/bin/bash
+    echo 'Defaults:ec2-user !requiretty' > \
+      /etc/sudoers.d/999-vagrant-cloud-init-requiretty
+    chmod 440 /etc/sudoers.d/999-vagrant-cloud-init-requiretty
+    mkdir -p /etc/chef/ohai/hints
+    touch /etc/chef/ohai/hints/ec2.json"
+    aws.tags = {
+      'application_name' => 'asf-webapp-demo',
+    }
+    override.ssh.username = "ec2-user"
+    override.ssh.private_key_path = ENV["AWS_SSH_KEY"]
+  end
+
+  config.vm.provision :chef_solo do |chef|
+    chef.run_list = [
+      'recipe[asf-webapp-demo::default]'
+    ]
+  end
+end

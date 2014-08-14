@@ -1,0 +1,94 @@
+# Put files/directories that should be ignored in this file when uploading
+# or sharing to the community site.
+# Lines that start with '# ' are comments.
+
+# OS generated files #
+######################
+.DS_Store
+Icon?
+nohup.out
+ehthumbs.db
+Thumbs.db
+
+# SASS #
+########
+.sass-cache
+
+# EDITORS #
+###########
+\#*
+.#*
+*~
+*.sw[a-z]
+*.bak
+REVISION
+TAGS*
+tmtags
+*_flymake.*
+*_flymake
+*.tmproj
+.project
+.settings
+mkmf.log
+
+## COMPILED ##
+##############
+a.out
+*.o
+*.pyc
+*.so
+*.com
+*.class
+*.dll
+*.exe
+*/rdoc/
+
+# Testing #
+###########
+.watchr
+.rspec
+spec/*
+spec/fixtures/*
+test/*
+features/*
+Guardfile
+Procfile
+
+# SCM #
+#######
+.git
+*/.git
+.gitignore
+.gitmodules
+.gitconfig
+.gitattributes
+.svn
+*/.bzr/*
+*/.hg/*
+*/.svn/*
+
+# Berkshelf #
+#############
+cookbooks/*
+tmp
+
+# Cookbooks #
+#############
+CONTRIBUTING
+CHANGELOG*
+
+# Strainer #
+############
+Colanderfile
+Strainerfile
+.colander
+.strainer
+
+# Vagrant #
+###########
+.vagrant
+Vagrantfile
+
+# Travis #
+##########
+.travis.yml
