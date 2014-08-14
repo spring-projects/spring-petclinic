@@ -5,3 +5,27 @@ target/*
 .idea
 *.iml
 /target
+
+*/vendor-cookbooks
+*.tar.gz
+
+*~
+*#
+.#*
+\#*#
+.*.sw[a-z]
+*.un~
+pkg/
+
+# Berkshelf
+.vagrant
+Berksfile.lock
+
+# Bundler
+Gemfile.lock
+bin/*
+.bundle/*
+
+.coverage/*
+.kitchen/
+.kitchen.local.yml
