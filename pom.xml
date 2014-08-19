@@ -9,8 +9,8 @@
 	<name>ASF petclinic</name>
 	<description>ASF fork of Spring Petclinic</description>
 
-    <modules>
-        <module>spring-petclinic</module>
-    </modules>
+	<modules>
+		<module>spring-petclinic</module>
+	</modules>
 
 </project>
