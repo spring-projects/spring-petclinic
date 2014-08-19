@@ -13,6 +13,9 @@
 
 	<properties>
 
+		<!-- Tomcat configuration -->
+		<tomcat.http.port>9966</tomcat.http.port>
+
 		<!-- Generic properties -->
 		<java.version>1.6</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -445,7 +448,7 @@
 				<version>2.0</version>
 				<configuration>
 					<server>tomcat-development-server</server>
-					<port>9966</port>
+					<port>${tomcat.http.port}</port>
 					<path>/petclinic</path>
 				</configuration>
 			</plugin>
