@@ -240,6 +240,44 @@
 
         <plugins>
             <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack-resources-core</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/jbehave/view</outputDirectory>
+                            <overWriteReleases>true</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                            <excludes>**/*.class</excludes>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.jbehave</groupId>
+                                    <artifactId>jbehave-core</artifactId>
+                                    <version>${jbehave.core.version}</version>
+                                    <classifier>resources</classifier>
+                                    <type>zip</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.jbehave.site</groupId>
+                                    <artifactId>jbehave-site-resources</artifactId>
+                                    <version>${jbehave.site.version}</version>
+                                    <type>zip</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.jbehave</groupId>
+                                    <artifactId>jbehave-navigator</artifactId>
+                                    <version>${jbehave.core.version}</version>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>properties-maven-plugin</artifactId>
                 <executions>
