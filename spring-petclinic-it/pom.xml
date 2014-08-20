@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>pet_clinic_test_example</groupId>
+    <artifactId>pet_clinic_test_example</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <suite.all>**/DefaultWebSuite.java</suite.all>
+        <suite.list/>
+        <story.list/>
+        <exclude.story.list/>
+
+
+        <!-- Config File Paths -->
+        <execution.config.file.location>
+            ${project.basedir}/src/main/resources/store.properties
+        </execution.config.file.location>
+        <pages.config.file.location>
+            ${project.basedir}/src/main/resources/pages.properties
+        </pages.config.file.location>
+        <browser.config.file.location>
+            ${project.basedir}/src/main/resources/browser.properties
+        </browser.config.file.location>
+        <runner.config.file.location>
+            ${project.basedir}/src/main/resources/jbehave.properties
+        </runner.config.file.location>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+
+        <jbehave.core.version>3.8</jbehave.core.version>
+        <jbehave.web.version>3.6-beta-1</jbehave.web.version>
+        <selenium.version>2.34.0</selenium.version>
+        <jbehave.site.version>3.1.1</jbehave.site.version>
+        <junit.version>4.11</junit.version>
+        <spring.version>3.2.4.RELEASE</spring.version>
+        <log4j.version>1.2.17</log4j.version>
+        <hamcrest.version>1.3</hamcrest.version>
+        <gdframework.version>1.0-SNAPSHOT</gdframework.version>
+    </properties>
+
+    <dependencies>
+
+        <!-- Grid QA Framework -->
+        <dependency>
+            <groupId>com.griddynamics.qa</groupId>
+            <artifactId>core-framework</artifactId>
+            <version>${gdframework.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.griddynamics.qa</groupId>
+            <artifactId>common-ui-utils</artifactId>
+            <version>${gdframework.version}</version>
+        </dependency>
+
+        <!-- JBehave -->
+        <dependency>
+            <groupId>org.jbehave.web</groupId>
+            <artifactId>jbehave-web-selenium</artifactId>
+            <version>${jbehave.web.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>selenium-java</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.jbehave</groupId>
+                    <artifactId>jbehave-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-io</groupId>
+                    <artifactId>commons-io</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.jbehave</groupId>
+            <artifactId>jbehave-core</artifactId>
+            <version>${jbehave.core.version}</version>
+            <classifier>resources</classifier>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.jbehave.site</groupId>
+            <artifactId>jbehave-site-resources</artifactId>
+            <version>${jbehave.site.version}</version>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.jbehave</groupId>
+            <artifactId>jbehave-navigator</artifactId>
+            <version>${jbehave.core.version}</version>
+        </dependency>
+
+        <!-- Selenium -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-io</groupId>
+                    <artifactId>commons-io</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+
+
+
+    <profiles>
+        <profile>
+            <id>excludeTesting</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jbehave</groupId>
+                        <artifactId>jbehave-maven-plugin</artifactId>
+                        <configuration>
+                            <skip>true</skip>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Profile for tests -->
+        <profile>
+            <id>runTests</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jbehave</groupId>
+                        <artifactId>jbehave-maven-plugin</artifactId>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.codehaus.jettison</groupId>
+                                <artifactId>jettison</artifactId>
+                                <version>1.3.1</version>
+                            </dependency>
+                        </dependencies>
+                        <configuration>
+                            <includes>
+                                <include>${suite.all}</include>
+                            </includes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <filtering>true</filtering>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>browser-profile</directory>
+                <targetPath>browser-profile</targetPath>
+            </resource>
+        </resources>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.jbehave</groupId>
+                    <artifactId>jbehave-maven-plugin</artifactId>
+                    <version>${jbehave.core.version}</version>
+                    <executions>
+                        <execution>
+                            <id>unpack-view-resources</id>
+                            <phase>process-resources</phase>
+                            <goals>
+                                <goal>unpack-view-resources</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>embeddable-stories</id>
+
+                            <phase>test</phase>
+                            <goals>
+                                <goal>run-stories-as-embeddables</goal>
+                            </goals>
+                            <configuration>
+                                <ignoreFailureInStories>${jbehave.ignoreFailureInStories}</ignoreFailureInStories>
+                                <ignoreFailureInView>${jbehave.ignoreFailureInView}</ignoreFailureInView>
+                                <storyTimeoutInSecs>${jbehave.storyTimeoutInSecs}</storyTimeoutInSecs>
+                            </configuration>
+                        </execution>
+                    </executions>
+
+                    <dependencies>
+
+                        <dependency>
+                            <groupId>log4j</groupId>
+                            <artifactId>log4j</artifactId>
+                            <version>${log4j.version}</version>
+                        </dependency>
+
+                        <!-- Only needed if groovy-based MetaFilters are used -->
+                        <dependency>
+                            <groupId>org.codehaus.groovy</groupId>
+                            <artifactId>groovy-all</artifactId>
+                            <version>1.8.4</version>
+                        </dependency>
+
+                        <dependency>
+                            <groupId>javax.servlet</groupId>
+                            <artifactId>servlet-api</artifactId>
+                            <version>2.5</version>
+                        </dependency>
+
+                        <dependency>
+                            <groupId>org.hamcrest</groupId>
+                            <artifactId>hamcrest-all</artifactId>
+                            <version>${hamcrest.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>read</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <files>
+                                <file>${execution.config.file.location}</file>
+                                <file>${pages.config.file.location}</file>
+                                <file>${browser.config.file.location}</file>
+                                <file>${runner.config.file.location}</file>
+                            </files>
+                            <quiet>true</quiet>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>export</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>set-system-properties</goal>
+                        </goals>
+                        <configuration>
+                            <properties>
+                                <property>
+                                    <name>execution.config.file.location</name>
+                                    <value>${execution.config.file.location}</value>
+                                </property>
+                                <property>
+                                    <name>pages.config.file.location</name>
+                                    <value>${pages.config.file.location}</value>
+                                </property>
+                                <property>
+                                    <name>runner.config.file.location</name>
+                                    <value>${runner.config.file.location}</value>
+                                </property>
+                                <property>
+                                    <name>browser.config.file.location</name>
+                                    <value>${browser.config.file.location}</value>
+                                </property>
+                                <property>
+                                    <name>jbehave.ignoreFailureInStories</name>
+                                    <value>${jbehave.ignoreFailureInStories}</value>
+                                </property>
+                                <property>
+                                    <name>jbehave.ignoreFailureInView</name>
+                                    <value>${jbehave.ignoreFailureInView}</value>
+                                </property>
+                                <property>
+                                    <name>jbehave.storyTimeoutInSecs</name>
+                                    <value>${jbehave.storyTimeoutInSecs}</value>
+                                </property>
+                                <property>
+                                    <name>threads</name>
+                                    <value>${threads}</value>
+                                </property>
+                                <property>
+                                    <name>meta.filters</name>
+                                    <value>${meta.filters}</value>
+                                </property>
+                                <property>
+                                    <name>REMOTE_WEBDRIVER_URL</name>
+                                    <value>${REMOTE_WEBDRIVER_URL}</value>
+                                </property>
+                                <property>
+                                    <name>browser</name>
+                                    <value>${browser}</value>
+                                </property>
+                                <property>
+                                    <name>remoteWebDriver</name>
+                                    <value>${remoteWebDriver}</value>
+                                </property>
+                                <property>
+                                    <name>spring.profiles.active</name>
+                                    <value>${spring.profiles.active}</value>
+                                </property>
+                                <property>
+                                    <name>suite.all</name>
+                                    <value>${suite.all}</value>
+                                </property>
+                                <property>
+                                    <name>suite.list</name>
+                                    <value>${suite.list}</value>
+                                </property>
+                                <property>
+                                    <name>story.list</name>
+                                    <value>${story.list}</value>
+                                </property>
+                                <property>
+                                    <name>exclude.story.list</name>
+                                    <value>${exclude.story.list}</value>
+                                </property>
+                            </properties>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    
+</project>

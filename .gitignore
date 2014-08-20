@@ -1,4 +1,3 @@
-target/*
 .settings/*
 .classpath
 .project
@@ -29,3 +28,5 @@ bin/*
 .coverage/*
 .kitchen/
 .kitchen.local.yml
+target
+*~
