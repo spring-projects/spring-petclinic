@@ -268,6 +268,14 @@
                         <configuration>
                             <properties>
                                 <property>
+                                    <name>project.build.directory</name>
+                                    <value>${project.build.directory}</value>
+                                </property>
+                                <property>
+                                    <name>project.build.outputDirectory</name>
+                                    <value>${project.build.outputDirectory}</value>
+                                </property>
+                                <property>
                                     <name>execution.config.file.location</name>
                                     <value>${execution.config.file.location}</value>
                                 </property>
