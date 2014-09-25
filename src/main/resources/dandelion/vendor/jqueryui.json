@@ -1,0 +1,22 @@
+{
+    "bundle": "jqueryui",
+    "dependencies": [ "jquery" ],
+    "assets": [
+        {
+            "name": "jqueryui",
+            "version": "1.11.1",
+            "type": "js",
+            "locations": {
+                "webjar": "jquery-ui.min.js"
+            }
+        },
+        {
+            "name": "jqueryui",
+            "version": "1.11.1",
+            "type": "css",
+            "locations": {
+                "webjar": "jquery-ui.min.css"
+            }
+        }
+    ]
+}

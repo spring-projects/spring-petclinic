@@ -1,0 +1,12 @@
+{
+    "bundle" : "petclinic",
+    "dependencies" : [ "bootstrap2", "jqueryui" ],
+    "assets": [{
+        "name": "petclinic",
+        "version": "1.0.0",
+        "type": "css",
+        "locations": {
+            "webapp": "/resources/css/petclinic.css"
+        }
+    }]
+}

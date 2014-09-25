@@ -11,11 +11,6 @@
 <jsp:include page="../fragments/headTag.jsp"/>
 <body>
 
-<script>
-    $(function () {
-        $("#birthDate").datepicker({ dateFormat: 'yy/mm/dd'});
-    });
-</script>
 <div class="container">
     <jsp:include page="../fragments/bodyHeader.jsp"/>
     <c:choose>
@@ -60,5 +55,9 @@
     <jsp:include page="../fragments/footer.jsp"/>
 </div>
 </body>
-
+<script>
+    $(function () {
+        $("#birthDate").datepicker({ dateFormat: 'yy/mm/dd'});
+    });
+</script>
 </html>

@@ -12,11 +12,6 @@
 
 
 <body>
-<script>
-    $(function () {
-        $("#date").datepicker({ dateFormat: 'yy/mm/dd'});
-    });
-</script>
 <div class="container">
     <jsp:include page="../fragments/bodyHeader.jsp"/>
     <h2><c:if test="${visit['new']}">New </c:if>Visit</h2>
@@ -82,5 +77,9 @@
 </div>
 <jsp:include page="../fragments/footer.jsp"/>
 </body>
-
+<script>
+    $(function () {
+        $("#date").datepicker({ dateFormat: 'yy/mm/dd'});
+    });
+</script>
 </html>
