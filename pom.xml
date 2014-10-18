@@ -16,7 +16,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<!-- Spring -->
-		<spring-framework.version>4.0.6.RELEASE</spring-framework.version>
+		<spring-framework.version>4.1.1.RELEASE</spring-framework.version>
 		<spring-data-jpa.version>1.6.2.RELEASE</spring-data-jpa.version>
 
 
@@ -45,7 +45,7 @@
 		<slf4j.version>1.7.7</slf4j.version>
 
 		<!-- RSS -->
-		<rome.version>1.0</rome.version>
+		<rome.version>1.5.0</rome.version>
 
 		<!-- Test -->
 		<junit.version>4.11</junit.version>
@@ -187,7 +187,7 @@
 
 		<!-- used for Atom -->
 		<dependency>
-			<groupId>rome</groupId>
+			<groupId>com.rometools</groupId>
 			<artifactId>rome</artifactId>
 			<version>${rome.version}</version>
 		</dependency>
