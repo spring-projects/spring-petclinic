@@ -1,0 +1,22 @@
+{
+    "bundle" : "datatables",
+    "dependencies": [ "jquery" ],
+    "assets": [
+        {
+            "name": "datatables",
+            "version": "1.10.2",
+            "type": "js",
+            "locations": {
+                "webjar": "jquery.dataTables.min.js"
+            }
+        },
+        {
+            "name": "datatables",
+            "version": "1.10.2",
+            "type": "css",
+            "locations": {
+                "webjar": "jquery.dataTables.css"
+            }
+        }
+    ]
+}

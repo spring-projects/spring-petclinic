@@ -1,0 +1,4 @@
+{
+    "bundle" : "ddl-dt-theme-bootstrap2",
+    "dependencies": [ "bootstrap2", "datatables" ]
+}

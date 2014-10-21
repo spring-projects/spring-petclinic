@@ -60,8 +60,9 @@
 
 		<!-- Web dependencies -->
 		<webjars-bootstrap.version>2.3.0</webjars-bootstrap.version>
-		<webjars-jquery-ui.version>1.10.3</webjars-jquery-ui.version>
-		<webjars-jquery.version>2.0.3-1</webjars-jquery.version>
+		<webjars-jquery-ui.version>1.11.1</webjars-jquery-ui.version>
+		<webjars-jquery.version>2.1.1</webjars-jquery.version>
+        <webjars-datatables.version>1.9.4-2</webjars-datatables.version>
 		<dandelion.version>0.10.1</dandelion.version>
 
 		<mysql.version>5.1.22</mysql.version>
@@ -264,7 +265,12 @@
 			<artifactId>jquery</artifactId>
 			<version>${webjars-jquery.version}</version>
 		</dependency>
-		
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>datatables</artifactId>
+            <version>${webjars-datatables.version}</version>
+        </dependency>
+
 		<!-- Test Artifacts -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -310,6 +316,17 @@
 			<artifactId>datatables-export-itext</artifactId>
 			<version>${dandelion.version}</version>
 		</dependency>
+
+        <!--
+        webjars in Dandelion bundles
+        http://dandelion.github.io/dandelion/features/asset-bundles/introducing-asset-bundles.html
+        -->
+        <dependency>
+            <groupId>com.github.dandelion</groupId>
+            <artifactId>dandelion-webjars</artifactId>
+            <version>${dandelion.version}</version>
+        </dependency>
+
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
