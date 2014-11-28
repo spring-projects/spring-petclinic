@@ -33,8 +33,9 @@
 
     <mvc:view-controller path="/" view-name="welcome" />
 
-    <!-- serve static resources (*.html, ...) from src/main/webapp/ -->
-    <mvc:default-servlet-handler/>
+    <!-- serve static resources (*.html, ...) from src/main/webapp/ 
+    Required when both servlet-mapping is '/' and static resources need to be served -->
+    <mvc:default-servlet-handler />
 
     <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
         <property name="formatters">
