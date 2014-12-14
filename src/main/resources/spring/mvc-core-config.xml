@@ -6,13 +6,12 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xsi:schemaLocation="http://www.springframework.org/schema/mvc
-        http://www.springframework.org/schema/mvc/spring-mvc.xsd
-        http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <import resource="mvc-view-config.xml"/>
 
@@ -20,9 +19,30 @@
         - POJOs labeled with the @Controller and @Service annotations are auto-detected.
     -->
     <context:component-scan
-            base-package="org.springframework.samples.petclinic.web"/>
+            base-package="org.springframework.samples.petclinic.web, org.springframework.samples.petclinic.rest"/>
 
-    <mvc:annotation-driven conversion-service="conversionService"/>
+    <mvc:annotation-driven conversion-service="conversionService" >
+    	<mvc:message-converters>
+    		<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+    			<property name="objectMapper" >
+				    <bean class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean">
+						<property name="featuresToDisable">
+							<array>
+								<util:constant
+									static-field="com.fasterxml.jackson.databind.SerializationFeature.WRAP_ROOT_VALUE" />
+								<util:constant
+									static-field="com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS" />
+								<util:constant
+									static-field="com.fasterxml.jackson.databind.SerializationFeature.FAIL_ON_EMPTY_BEANS" />
+							</array>
+						</property>
+						<property name="serializationInclusion" value="NON_NULL" />
+						<property name="simpleDateFormat" value="yyyy-MM-dd'T'HH:mm:ssZ" />
+					</bean>
+    			</property>
+    		</bean>
+    	</mvc:message-converters>
+    </mvc:annotation-driven>
 
     <!--  all resources inside folder src/main/webapp/resources are mapped so they can be refered to inside JSP files
         (see header.jsp for more details) -->

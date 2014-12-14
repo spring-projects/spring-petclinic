@@ -36,6 +36,9 @@ import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * Simple business object representing a pet.
  *
@@ -58,6 +61,7 @@ public class Pet extends NamedEntity {
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
+    @JsonIgnore
     private Owner owner;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pet", fetch = FetchType.EAGER)
