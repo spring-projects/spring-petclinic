@@ -11,7 +11,7 @@
 	<properties>
 
 		<!-- Generic properties -->
-		<java.version>1.6</java.version>
+		<java.version>1.7</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
@@ -23,7 +23,7 @@
 		<!-- Java EE / Java SE dependencies -->
 		<jsp.version>2.2</jsp.version>
 		<jstl.version>1.2</jstl.version>
-		<tomcat.servlet.version>7.0.30</tomcat.servlet.version>
+		<tomcat.servlet.version>7.0.56</tomcat.servlet.version>
 		<jaxb-impl.version>2.2.7</jaxb-impl.version>
 
 		<!-- Hibernate / JPA -->
@@ -33,7 +33,7 @@
 		<hibernate-validator.version>4.3.1.Final</hibernate-validator.version>
 
 		<!-- Database access -->
-		<tomcat-jdbc.version>7.0.42</tomcat-jdbc.version>
+		<tomcat-jdbc.version>7.0.56</tomcat-jdbc.version>
 		<ehcache.version>2.6.9</ehcache.version>
 		<hsqldb.version>2.3.2</hsqldb.version>
 
