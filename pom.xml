@@ -57,15 +57,17 @@
 		<jodatime.version>2.5</jodatime.version>
 		<jadira-usertype-core.version>3.2.0.GA</jadira-usertype-core.version>
 
-
 		<!-- Web dependencies -->
 		<webjars-bootstrap.version>2.3.0</webjars-bootstrap.version>
 		<webjars-jquery-ui.version>1.10.3</webjars-jquery-ui.version>
 		<webjars-jquery.version>2.0.3-1</webjars-jquery.version>
 		<dandelion.version>0.10.1</dandelion.version>
+		<webjars-angular-ui-bootstrap>0.12.0</webjars-angular-ui-bootstrap>
 
 		<mysql.version>5.1.22</mysql.version>
-
+		
+		<!-- Jackson -->
+		<com.fasterxml.jackson-version>2.3.1</com.fasterxml.jackson-version>
 	</properties>
 
 	<dependencies>
@@ -264,6 +266,11 @@
 			<artifactId>jquery</artifactId>
 			<version>${webjars-jquery.version}</version>
 		</dependency>
+		<dependency>
+		    <groupId>org.webjars</groupId>
+		    <artifactId>angular-ui-bootstrap</artifactId>
+		    <version>${webjars-angular-ui-bootstrap}</version>
+		</dependency>
 		
 		<!-- Test Artifacts -->
 		<dependency>
@@ -310,6 +317,24 @@
 			<artifactId>datatables-export-itext</artifactId>
 			<version>${dandelion.version}</version>
 		</dependency>
+		
+		<!-- Jackson2 -->
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-core</artifactId>
+		    <version>${com.fasterxml.jackson-version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
+		    <version>${com.fasterxml.jackson-version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.fasterxml.jackson.datatype</groupId>
+		    <artifactId>jackson-datatype-joda</artifactId>
+		    <version>${com.fasterxml.jackson-version}</version>
+		</dependency>
+		
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>

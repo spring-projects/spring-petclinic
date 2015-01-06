@@ -21,25 +21,24 @@
     <context:component-scan
             base-package="org.springframework.samples.petclinic.web, org.springframework.samples.petclinic.rest"/>
 
+
+	<bean id="objectMapper" class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean" 
+			p:indentOutput="true" p:simpleDateFormat="yyyy-MM-dd'T'HH:mm:ss.SSSZ">
+	</bean>
+	
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"
+	    	p:targetObject-ref="objectMapper" p:targetMethod="registerModule">
+	    <property name="arguments">
+	        <list>
+	            <bean class="com.fasterxml.jackson.datatype.joda.JodaModule" />
+	        </list>
+	    </property>
+	</bean>
+
     <mvc:annotation-driven conversion-service="conversionService" >
     	<mvc:message-converters>
-    		<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-    			<property name="objectMapper" >
-				    <bean class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean">
-						<property name="featuresToDisable">
-							<array>
-								<util:constant
-									static-field="com.fasterxml.jackson.databind.SerializationFeature.WRAP_ROOT_VALUE" />
-								<util:constant
-									static-field="com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS" />
-								<util:constant
-									static-field="com.fasterxml.jackson.databind.SerializationFeature.FAIL_ON_EMPTY_BEANS" />
-							</array>
-						</property>
-						<property name="serializationInclusion" value="NON_NULL" />
-						<property name="simpleDateFormat" value="yyyy-MM-dd'T'HH:mm:ssZ" />
-					</bean>
-    			</property>
+    		<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" >
+    			<property name="objectMapper" ref="objectMapper" />
     		</bean>
     	</mvc:message-converters>
     </mvc:annotation-driven>
