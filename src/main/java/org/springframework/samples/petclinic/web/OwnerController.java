@@ -92,22 +92,23 @@ public class OwnerController {
 
         // find owners by last name
         Collection<Owner> results = this.clinicService.findOwnerByLastName(owner.getLastName());
-        if (results.size() < 1) {
+        if (results.isEmpty()) {
             // no owners found
             result.rejectValue("lastName", "notFound", "not found");
             return "owners/findOwners";
         }
-        if (results.size() > 1) {
+        else if (results.size() == 1) {
+    	// 1 owner found
+    	owner = results.iterator().next();
+    	return "redirect:/owners/" + owner.getId();
+        }
+        else {
             // multiple owners found
             model.put("selections", results);
             return "owners/ownersList";
-        } else {
-            // 1 owner found
-            owner = results.iterator().next();
-            return "redirect:/owners/" + owner.getId();
         }
     }
-
+        
     @RequestMapping(value = "/owners/{ownerId}/edit", method = RequestMethod.GET)
     public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
         Owner owner = this.clinicService.findOwnerById(ownerId);
