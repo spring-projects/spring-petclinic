@@ -26,7 +26,7 @@ import org.springframework.samples.petclinic.model.Visit;
 
 
 /**
- * Mostly used as a facade for all Petclinic controllers
+ * Mostly used as a facade so all controllers have a single point of entry
  *
  * @author Michael Isvy
  */

@@ -59,7 +59,7 @@ public class VisitsViewTests {
     }
     
     @Test
-    public void getVisitsXml() throws Exception {
+    public void shouldFindVisitsInXmlFormat() throws Exception {
         ResultActions actions = this.mockMvc.perform(get("/vets.xml").accept(MediaType.TEXT_XML));
         actions.andDo(print()); // action is logged into the console
         

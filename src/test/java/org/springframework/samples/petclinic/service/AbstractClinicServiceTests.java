@@ -16,6 +16,7 @@
 package org.springframework.samples.petclinic.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -59,8 +60,7 @@ public abstract class AbstractClinicServiceTests {
     protected ClinicService clinicService;
 
     @Test
-    @Transactional
-    public void findOwners() {
+    public void shouldFindOwners() {
         Collection<Owner> owners = this.clinicService.findOwnerByLastName("Davis");
         assertEquals(2, owners.size());
         owners = this.clinicService.findOwnerByLastName("Daviss");
@@ -68,18 +68,18 @@ public abstract class AbstractClinicServiceTests {
     }
 
     @Test
-    public void findSingleOwner() {
+    public void shouldFindSingleOwner() {
         Owner owner1 = this.clinicService.findOwnerById(1);
         assertTrue(owner1.getLastName().startsWith("Franklin"));
+
         Owner owner10 = this.clinicService.findOwnerById(10);
         assertEquals("Carlos", owner10.getFirstName());
-
         assertEquals(owner1.getPets().size(), 1);
     }
 
     @Test
     @Transactional
-    public void insertOwner() {
+    public void shouldInsertOwner() {
         Collection<Owner> owners = this.clinicService.findOwnerByLastName("Schultz");
         int found = owners.size();
         Owner owner = new Owner();
@@ -89,24 +89,26 @@ public abstract class AbstractClinicServiceTests {
         owner.setCity("Wollongong");
         owner.setTelephone("4444444444");
         this.clinicService.saveOwner(owner);
-        Assert.assertNotEquals("Owner Id should have been generated", owner.getId().longValue(), 0);
+        assertNotEquals("Owner Id should have been generated", owner.getId().longValue(), 0);
+
         owners = this.clinicService.findOwnerByLastName("Schultz");
         assertEquals("Verifying number of owners after inserting a new one.", found + 1, owners.size());
     }
 
     @Test
     @Transactional
-    public void updateOwner() throws Exception {
+    public void shouldUpdateOwner()  {
         Owner o1 = this.clinicService.findOwnerById(1);
         String old = o1.getLastName();
         o1.setLastName(old + "X");
         this.clinicService.saveOwner(o1);
         o1 = this.clinicService.findOwnerById(1);
+
         assertEquals(old + "X", o1.getLastName());
     }
 
 	@Test
-	public void findPet() {
+	public void shouldFindPetWithCorrectId() {
 	    Collection<PetType> types = this.clinicService.findPetTypes();
 	    Pet pet7 = this.clinicService.findPetById(7);
 	    assertTrue(pet7.getName().startsWith("Samantha"));
@@ -119,7 +121,7 @@ public abstract class AbstractClinicServiceTests {
 	}
 
 	@Test
-	public void getPetTypes() {
+	public void shouldFindAllPetTypes() {
 	    Collection<PetType> petTypes = this.clinicService.findPetTypes();
 	
 	    PetType petType1 = EntityUtils.getById(petTypes, PetType.class, 1);
@@ -130,7 +132,7 @@ public abstract class AbstractClinicServiceTests {
 
 	@Test
 	@Transactional
-	public void insertPet() {
+	public void shouldInsertPetIntoDatabaseAndGenerateId() {
 	    Owner owner6 = this.clinicService.findOwnerById(6);
 	    int found = owner6.getPets().size();
 	    Pet pet = new Pet();
@@ -150,7 +152,7 @@ public abstract class AbstractClinicServiceTests {
 
 	@Test
 	@Transactional
-	public void updatePet() throws Exception {
+	public void sholdUpdatePet() throws Exception {
 	    Pet pet7 = this.clinicService.findPetById(7);
 	    String old = pet7.getName();
 	    pet7.setName(old + "X");
@@ -160,7 +162,7 @@ public abstract class AbstractClinicServiceTests {
 	}
 
 	@Test
-	public void findVets() {
+	public void shouldFindVets() {
 	    Collection<Vet> vets = this.clinicService.findVets();
 	
 	    Vet v1 = EntityUtils.getById(vets, Vet.class, 2);
@@ -176,7 +178,7 @@ public abstract class AbstractClinicServiceTests {
 
 	@Test
 	@Transactional
-	public void insertVisit() {
+	public void shouldAddNewVisitForPet() {
 	    Pet pet7 = this.clinicService.findPetById(7);
 	    int found = pet7.getVisits().size();
 	    Visit visit = new Visit();
