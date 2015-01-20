@@ -49,7 +49,7 @@
 
 		<!-- Test -->
 		<junit.version>4.12</junit.version>
-		<hamcrest.version>1.3</hamcrest.version>
+		<assertj.version>1.7.1</assertj.version>
 
 		<!-- Dates -->
 		<jodatime-hibernate.version>1.3</jodatime-hibernate.version>
@@ -278,12 +278,10 @@
 			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
-		<!-- used by Spring MVC Test framework -->
 		<dependency>
-			<groupId>org.hamcrest</groupId>
-			<artifactId>hamcrest-library</artifactId>
-			<version>${hamcrest.version}</version>
-			<scope>test</scope>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>${assertj.version}</version>
 		</dependency>
 
 		<dependency>
