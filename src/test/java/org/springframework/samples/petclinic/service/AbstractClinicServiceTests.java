@@ -23,7 +23,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 
 import org.joda.time.DateTime;
-import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Owner;
