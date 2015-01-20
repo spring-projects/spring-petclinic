@@ -56,21 +56,19 @@ public abstract class AbstractClinicServiceTests {
     protected ClinicService clinicService;
 
     @Test
-    public void shouldFindOwners() {
+    public void shouldFindOwnersByLastName() {
         Collection<Owner> owners = this.clinicService.findOwnerByLastName("Davis");
         assertThat(owners.size()).isEqualTo(2);
+
         owners = this.clinicService.findOwnerByLastName("Daviss");
-        assertThat(owners.size()).isEqualTo(0);
+        assertThat(owners.isEmpty());
     }
 
     @Test
-    public void shouldFindSingleOwner() {
-        Owner owner1 = this.clinicService.findOwnerById(1);
-        assertThat(owner1.getLastName()).startsWith("Franklin");
-
-        Owner owner10 = this.clinicService.findOwnerById(10);
-        assertThat(owner10.getFirstName()).isEqualTo("Carlos");
-        assertThat(owner1.getPets().size()).isEqualTo(1);
+    public void shouldFindSingleOwnerWithPet() {
+        Owner owner = this.clinicService.findOwnerById(1);
+        assertThat(owner.getLastName()).startsWith("Franklin");
+        assertThat(owner.getPets().size()).isEqualTo(1);
     }
 
     @Test
@@ -78,6 +76,7 @@ public abstract class AbstractClinicServiceTests {
     public void shouldInsertOwner() {
         Collection<Owner> owners = this.clinicService.findOwnerByLastName("Schultz");
         int found = owners.size();
+        
         Owner owner = new Owner();
         owner.setFirstName("Sam");
         owner.setLastName("Schultz");
@@ -94,29 +93,24 @@ public abstract class AbstractClinicServiceTests {
     @Test
     @Transactional
     public void shouldUpdateOwner()  {
-        Owner o1 = this.clinicService.findOwnerById(1);
-        String old = o1.getLastName();
-        o1.setLastName(old + "X");
-        this.clinicService.saveOwner(o1);
-        o1 = this.clinicService.findOwnerById(1);
+        Owner owner = this.clinicService.findOwnerById(1);
+        String oldLastName = owner.getLastName();
+        String newLastName = oldLastName + "X";
+        
+        owner.setLastName(newLastName);
+        this.clinicService.saveOwner(owner);
 
-        assertThat(o1.getLastName()).isEqualTo(old + "X");
+        // retrieving new name from database
+        owner = this.clinicService.findOwnerById(1);
+        assertThat(owner.getLastName()).isEqualTo(newLastName);
     }
 
 	@Test
 	public void shouldFindPetWithCorrectId() {
-	    Collection<PetType> types = this.clinicService.findPetTypes();
-	    
 	    Pet pet7 = this.clinicService.findPetById(7);
 	    assertThat(pet7.getName()).startsWith("Samantha");
-	    assertThat(EntityUtils.getById(types, PetType.class, 1).getId()).isEqualTo(pet7.getType().getId());
 	    assertThat(pet7.getOwner().getFirstName()).isEqualTo("Jean");
 	    
-	    Pet pet6 = this.clinicService.findPetById(6);
-	    assertThat(pet6.getName()).isEqualTo("George");
-	    
-	    assertThat(EntityUtils.getById(types, PetType.class, 4).getId()).isEqualTo(pet6.getType().getId());
-	    assertThat(pet6.getOwner().getFirstName()).isEqualTo("Peter");
 	}
 
 	@Test
@@ -134,6 +128,7 @@ public abstract class AbstractClinicServiceTests {
 	public void shouldInsertPetIntoDatabaseAndGenerateId() {
 	    Owner owner6 = this.clinicService.findOwnerById(6);
 	    int found = owner6.getPets().size();
+	    
 	    Pet pet = new Pet();
 	    pet.setName("bowser");
 	    Collection<PetType> types = this.clinicService.findPetTypes();
@@ -141,38 +136,39 @@ public abstract class AbstractClinicServiceTests {
 	    pet.setBirthDate(new DateTime());
 	    owner6.addPet(pet);
 	    assertThat(owner6.getPets().size()).isEqualTo(found + 1);
-	    // both storePet and storeOwner are necessary to cover all ORM tools
+	    
 	    this.clinicService.savePet(pet);
 	    this.clinicService.saveOwner(owner6);
+	    
 	    owner6 = this.clinicService.findOwnerById(6);
 	    assertThat(owner6.getPets().size()).isEqualTo(found + 1);
+	    // checks that id has been generated
 	    assertThat(pet.getId()).isNotNull();
 	}
 
 	@Test
 	@Transactional
-	public void sholdUpdatePet() throws Exception {
+	public void sholdUpdatePetName() throws Exception {
 	    Pet pet7 = this.clinicService.findPetById(7);
-	    String old = pet7.getName();
-	    pet7.setName(old + "X");
+	    String oldName = pet7.getName();
+	    
+	    String newName = oldName + "X";
+		pet7.setName(newName);
 	    this.clinicService.savePet(pet7);
+
 	    pet7 = this.clinicService.findPetById(7);
-	    assertThat(pet7.getName()).isEqualTo(old + "X");
+	    assertThat(pet7.getName()).isEqualTo(newName);
 	}
 
 	@Test
 	public void shouldFindVets() {
 	    Collection<Vet> vets = this.clinicService.findVets();
 	
-	    Vet v1 = EntityUtils.getById(vets, Vet.class, 2);
-	    assertThat(v1.getLastName()).isEqualTo("Leary");
-	    assertThat(v1.getNrOfSpecialties()).isEqualTo(1);
-	    assertThat(v1.getSpecialties().get(0).getName()).isEqualTo("radiology");
-	    Vet v2 = EntityUtils.getById(vets, Vet.class, 3);
-	    assertThat(v2.getLastName()).isEqualTo("Douglas");
-	    assertThat(v2.getNrOfSpecialties()).isEqualTo(2);
-	    assertThat(v2.getSpecialties().get(0).getName()).isEqualTo("dentistry");
-	    assertThat(v2.getSpecialties().get(1).getName()).isEqualTo("surgery");
+	    Vet vet = EntityUtils.getById(vets, Vet.class, 3);
+	    assertThat(vet.getLastName()).isEqualTo("Douglas");
+	    assertThat(vet.getNrOfSpecialties()).isEqualTo(2);
+	    assertThat(vet.getSpecialties().get(0).getName()).isEqualTo("dentistry");
+	    assertThat(vet.getSpecialties().get(1).getName()).isEqualTo("surgery");
 	}
 
 	@Test
@@ -182,10 +178,10 @@ public abstract class AbstractClinicServiceTests {
 	    int found = pet7.getVisits().size();
 	    Visit visit = new Visit();
 	    pet7.addVisit(visit);
-	    visit.setDescription("test");
-	    // both storeVisit and storePet are necessary to cover all ORM tools
+	    visit.setDescription("test");	    
 	    this.clinicService.saveVisit(visit);
 	    this.clinicService.savePet(pet7);
+
 	    pet7 = this.clinicService.findPetById(7);
 	    assertThat(pet7.getVisits().size()).isEqualTo(found + 1);
 	    assertThat(visit.getId()).isNotNull();
