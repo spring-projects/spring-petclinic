@@ -38,9 +38,12 @@ body {
 
 /* Custom page footer */
 .footer {
-  padding-top: 19px;
   color: #777;
-  border-top: 1px solid #e5e5e5;
+  padding: 20px 0;
+
+  p {
+    margin-bottom: 0;
+  }
 }
 
 .container-narrow > hr {
@@ -49,20 +52,89 @@ body {
 
 /* Main marketing message and sign up button */
 .jumbotron {
+  height: 620px;
+  margin-bottom: 30px;
   text-align: center;
   border-bottom: 1px solid #e5e5e5;
+
+  .container {
+    height: 100%;
+  }
+
+  h1, .h1 {
+    font-weight: 600;
+    margin-bottom: 25px;
+  }
+
+  p {
+    margin-bottom: 25px;
+  }
+
   .btn {
     font-size: 21px;
     padding: 14px 24px;
   }
 }
 
-/* Supporting marketing content */
-.marketing {
-  margin: 40px 0;
-  p + h4 {
-    margin-top: 28px;
+.jumbotron-headline {
+  display: table;
+  height: 100%;
+}
+
+.jumbotron-headline-cell {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+/* Secondary marketing message and call to action */
+.jumbotron-secondary {
+  height: 500px;
+  margin-bottom: 0;
+
+  h2 {
+    font-size: 36px;
+    font-weight: 600;
   }
+
+  .form-inline {
+    font-size: 0;
+  }
+
+  .form-group {
+    margin-right: 5px;
+  }
+
+  .form-control {
+    height: 58px;
+  }
+}
+
+/* Sections */
+.sections {
+  border-bottom: 1px solid #e5e5e5;
+  padding: 100px 0;
+
+  .thumbnail {
+    margin-bottom: 25px;
+  }
+
+  .btn-primary {
+    font-size: 21px;
+    padding: 14px 24px;
+  }
+}
+
+.sections-narrow {
+  padding: 40px 0;
+}
+
+.section-heading {
+  font-size: 40px;
+}
+
+.section-desc {
+  font-size: 18px;
+  margin-bottom: 25px;
 }
 
 /* Responsive: Portrait tablets and up */
