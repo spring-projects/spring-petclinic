@@ -1,5 +1,6 @@
 node_modules
 dist
+.DS_Store
 .tmp
 .sass-cache
 bower_components
