@@ -53,7 +53,7 @@ body {
 /* Main marketing message and sign up button */
 .jumbotron {
   height: 620px;
-  margin-bottom: 30px;
+  margin-bottom: 0;
   text-align: center;
   border-bottom: 1px solid #e5e5e5;
 
@@ -70,15 +70,19 @@ body {
     margin-bottom: 25px;
   }
 
-  .btn {
-    font-size: 21px;
-    padding: 14px 24px;
+  .form-inline {
+    font-size: 0;
+  }
+
+  .form-group {
+    margin-right: 5px;
   }
 }
 
 .jumbotron-headline {
   display: table;
   height: 100%;
+  width: 100%;
 }
 
 .jumbotron-headline-cell {
@@ -89,7 +93,6 @@ body {
 /* Secondary marketing message and call to action */
 .jumbotron-secondary {
   height: 500px;
-  margin-bottom: 0;
 
   h2 {
     font-size: 36px;
@@ -99,17 +102,14 @@ body {
       fotn-weight: 600;
     }
   }
+}
 
-  .form-inline {
-    font-size: 0;
-  }
+/* Tertiary marketing message and call to action. */
+.jumbotron-tertiary {
+  height: 400px;
 
-  .form-group {
-    margin-right: 5px;
-  }
-
-  .form-control {
-    height: 58px;
+  h1, .h1 {
+    margin-top: 0;
   }
 }
 
@@ -120,11 +120,6 @@ body {
 
   .thumbnail {
     margin-bottom: 25px;
-  }
-
-  .btn-primary {
-    font-size: 21px;
-    padding: 14px 24px;
   }
 }
 
@@ -141,6 +136,13 @@ body {
   margin-bottom: 25px;
 }
 
+.nav-tabs-filter {
+  margin-bottom: 30px;
+}
+
 /* Responsive: Portrait tablets and up */
-@media screen and (min-width: 768px) {
+@media (max-width: 768px) {
+  .jumbotron {
+    height: auto;
+  }
 }
