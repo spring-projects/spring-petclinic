@@ -25,9 +25,9 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.samples.petclinic.model.Owner;
@@ -84,7 +84,7 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
         List<Owner> owners = this.namedParameterJdbcTemplate.query(
                 "SELECT id, first_name, last_name, address, city, telephone FROM owners WHERE last_name like :lastName",
                 params,
-                ParameterizedBeanPropertyRowMapper.newInstance(Owner.class)
+                BeanPropertyRowMapper.newInstance(Owner.class)
         );
         loadOwnersPetsAndVisits(owners);
         return owners;
@@ -103,7 +103,7 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
             owner = this.namedParameterJdbcTemplate.queryForObject(
                     "SELECT id, first_name, last_name, address, city, telephone FROM owners WHERE id= :id",
                     params,
-                    ParameterizedBeanPropertyRowMapper.newInstance(Owner.class)
+                    BeanPropertyRowMapper.newInstance(Owner.class)
             );
         } catch (EmptyResultDataAccessException ex) {
             throw new ObjectRetrievalFailureException(Owner.class, id);
@@ -147,7 +147,7 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
     public Collection<PetType> getPetTypes() throws DataAccessException {
         return this.namedParameterJdbcTemplate.query(
                 "SELECT id, name FROM types ORDER BY name", new HashMap<String, Object>(),
-                ParameterizedBeanPropertyRowMapper.newInstance(PetType.class));
+                BeanPropertyRowMapper.newInstance(PetType.class));
     }
 
     /**

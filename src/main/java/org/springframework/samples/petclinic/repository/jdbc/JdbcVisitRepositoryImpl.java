@@ -25,9 +25,9 @@ import javax.sql.DataSource;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.samples.petclinic.model.Visit;
 import org.springframework.samples.petclinic.repository.VisitRepository;
@@ -92,7 +92,7 @@ public class JdbcVisitRepositoryImpl implements VisitRepository {
     public List<Visit> findByPetId(Integer petId) {
         final List<Visit> visits = this.jdbcTemplate.query(
                 "SELECT id, visit_date, description FROM visits WHERE pet_id=?",
-                new ParameterizedRowMapper<Visit>() {
+                new BeanPropertyRowMapper<Visit>() {
                     @Override
                     public Visit mapRow(ResultSet rs, int row) throws SQLException {
                         Visit visit = new Visit();
