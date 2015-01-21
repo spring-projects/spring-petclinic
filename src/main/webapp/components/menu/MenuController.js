@@ -10,16 +10,16 @@ var MenuController = function($scope, $rootScope, $sce, $timeout, $location,
 		'url' : '#services',
 		'font' : 'fa fa-eyedropper'
 	}, {
-		'name' : 'Vets',
-		'url' : '#vets',
+		'name' : 'Pets',
+		'url' : '#pets',
 		'font' : 'fa fa-paw'
 	}, {
 		'name' : 'Veterinarians',
 		'url' : '#veterinarians',
 		'font' : 'fa fa-user'
 	}, {
-		'name' : 'Help',
-		'url' : '#help',
+		'name' : 'About',
+		'url' : '#about',
 		'font' : 'fa fa-question'
 	} ];
 	$scope.$route = $route;

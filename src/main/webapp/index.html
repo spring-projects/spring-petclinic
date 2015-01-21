@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="xi-km">
+<html lang="en" data-ng-app="spring-petclinic">
 	<head>
 		<meta charset="utf-8">
 		<title>Vet Clinic</title>
@@ -82,12 +82,12 @@
 </header>
 <!--End Header-->
 <!--Start Container-->
-<div id="main" class="container-fluid" ng-controller="MenuController">
+<div id="main" class="container-fluid" data-ng-controller="MenuController">
 	<div class="row">
 		<div id="sidebar-left" class="col-xs-2 col-sm-2">
 			<ul class="nav main-menu">
 
-				<li class="dropdown" ng-repeat="tab in menuTabs">
+				<li class="dropdown" data-ng-repeat="tab in menuTabs">
 					<a href="{{tab.url}}" class="ajax-link">
 						<i class="{{tab.font}}"></i>
 						<span class="hidden-xs">{{tab.name}}</span>
@@ -103,7 +103,7 @@
   <pre>$routeParams = {{$routeParams}}</pre> -->
 		<!--Start Content-->
 		<div id="content" class="col-xs-12 col-sm-10">
-			<div ng-view></div>
+			<div data-ng-view></div>
 		</div>
 		<!--End Content-->
 	</div>
@@ -130,6 +130,8 @@
 
 <script src="components/menu/MenuController.js"></script>
 <script src="components/landing/LandingController.js"></script>
+<script src="components/about/AboutController.js"></script>
+<script src="components/pets/PetController.js"></script>
 <script src="components/veterinarians/VeterinarianController.js"></script>
 <script src="js/app.js"></script>
 </div>
