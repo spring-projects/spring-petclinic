@@ -127,6 +127,11 @@ body {
   padding: 40px 0;
 }
 
+.sections-browse {
+  background-color: $jumbotron-bg;
+  padding: 20px 0;
+}
+
 .section-heading {
   font-size: 40px;
 }
@@ -138,6 +143,23 @@ body {
 
 .nav-tabs-filter {
   margin-bottom: 30px;
+}
+
+/* Show page */
+.show-hero {
+  background-color: $jumbotron-bg;
+  padding-top: 60px;
+  padding-bottom: 60px;
+  font-size: 24px;
+  text-align: left;
+
+  h1 {
+    margin-top: 0;
+  }
+}
+
+.form-control-group {
+  padding-top: $padding-large-vertical;
 }
 
 /* Responsive: Portrait tablets and up */

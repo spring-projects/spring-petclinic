@@ -1,0 +1,229 @@
+<!doctype html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <title>Pet Clinic - Discover Pet Owners on your Neigborhood</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+  </head>
+  <body>
+    <!--[if lt IE 10]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Pet Clinic</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse pull-right">
+          <ul class="nav navbar-nav">
+            <li><a href="discover.html" class="active">Discover</a></li>
+            <li><a href="#vet">Veterinarians</a></li>
+            <li><a href="#about">About</a></li>
+          </ul>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+
+    <!-- Owner Summary -->
+    <div id="content" class="show-hero">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-10">
+            <h1>John Doe</h1>
+            <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum.</p>
+          </div>
+          <div class="col-md-2">
+            <a href="discover.html" class="btn btn-link btn-md pull-right">
+              <span class="glyphicon glyphicon-chevron-left"></span> Back
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Owner Information / Update -->
+    <section id="owner_info" class="sections sections-narrow">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-7">
+            <form>
+              <fieldset>
+                <!-- Form Name -->
+                <legend>Owner Information</legend>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <!-- Text input-->
+                    <div class="form-group">
+                      <label class="form-label" for="fldFirstName">First Name</label>
+                      <input id="fldFirstName" name="fldFirstName" type="text" placeholder="Your name" class="form-control input-lg" required="">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <!-- Text input-->
+                    <div class="form-group">
+                      <label class="form-label" for="fldLastName">Last Name</label>
+                      <div class="controls">
+                        <input id="fldLastName" name="fldLastName" type="text" placeholder="Your last name" class="form-control input-lg">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Textarea -->
+                <div class="form-group">
+                  <label class="form-label" for="fldAddress">Your Address</label>
+                  <div class="controls">
+                    <textarea id="fldAddress" name="fldAddress" class="form-control" rows="3">Your address</textarea>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <!-- Text input-->
+                    <div class="form-group">
+                      <label class="form-label" for="fldCity">City</label>
+                      <div class="controls">
+                        <input id="fldCity" name="fldCity" type="text" placeholder="Your city" class="form-control input-lg">
+                      </div>
+                    </div>
+
+                    <!-- Text input-->
+                    <div class="form-group">
+                      <label class="form-label" for="fldPhone">Phone</label>
+                      <div class="controls">
+                        <input id="fldPhone" name="fldPhone" type="text" placeholder="Your phone number" class="form-control input-lg">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Textarea -->
+                <div class="form-group">
+                  <label class="form-label" for="fldDesc">Description</label>
+                  <div class="controls">
+                    <textarea id="fldDesc" name="fldDesc" class="form-control" rows="4">Write something about yourself.</textarea>
+                  </div>
+                </div>
+
+                <!-- Button (Double) -->
+                <div class="form-group form-control-group">
+                  <div class="controls">
+                    <button id="buttonDelete" name="buttonDelete" class="btn btn-link btn-lg btn-danger pull-right">Delete Owner</button>
+                    <button id="buttonUpdate" name="buttonUpdate" class="btn btn-lg btn-success">Update Owner</button>
+                  </div>
+                </div>
+              </fieldset>
+            </form>
+          </div>
+          <div class="col-md-4 offset-md-1">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Browser page -->
+    <section class="sections sections-browse">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-10">
+            <div class="btn btn-group">
+              <a href="show-prev.html" class="btn btn-link btn-md">
+                <span class="glyphicon glyphicon-chevron-left"></span> Previous
+              </a>
+              <a href="show-next.html" class="btn btn-link btn-md">
+                Next <span class="glyphicon glyphicon-chevron-right"></span>
+              </a>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <a href="discover.html" class="btn btn-link btn-md pull-right">
+              <span class="glyphicon glyphicon-chevron-left"></span> Back
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact details -->
+    <section id="add_owner" class="sections sections-narrow">
+      <div class="container">
+        <!-- Three columns of text below the carousel -->
+        <div class="row">
+          <div class="col-lg-4">
+            <h3>Business Hours</h3>
+            <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
+          </div><!-- /.col-lg-4 -->
+          <div class="col-lg-4">
+            <h3>Our Location</h3>
+            <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p>
+          </div><!-- /.col-lg-4 -->
+          <div class="col-lg-4">
+            <h3>Questions or comments</h3>
+            <p>Cras mattis consectetur purus sit amet fermentum. </p>
+            <p>
+              <a href="mailto:youremail@yourdomain.com" type="submit" class="btn btn-default">Drop us a line</a>
+            </p>
+          </div><!-- /.col-lg-4 -->
+        </div><!-- /.row -->
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <p class="pull-right">Tell your friends: <a href="#">Facebook</a>, <a href="#">Twitter</a>, <a href="#">Google+</a></p>
+        <p>© 2015 Pet Clinic, A Spring Framework Demonstration</p>
+      </div>
+    </footer>
+
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/affix.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/alert.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/button.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/carousel.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/collapse.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/dropdown.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tab.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/transition.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/scrollspy.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/modal.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tooltip.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/popover.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+    <script>
+      (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+      function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+      e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+      e.src='//www.google-analytics.com/analytics.js';
+      r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+      ga('create','UA-XXXXX-X');ga('send','pageview');
+    </script>
+
+    <!-- build:js({app,.tmp}) scripts/main.js -->
+    <script src="scripts/main.js"></script>
+    <!-- endbuild -->
+</body>
+</html>
