@@ -1,15 +1,13 @@
-var app = angular.module('spring-petclinic', [ 'ui.bootstrap', 'ngRoute', 'ngCookies',
-		'ngAnimate', 'ngTagsInput', 'angularFileUpload' ]);
+var app = angular.module('spring-petclinic', ['ngRoute', 'ngCookies', 'ngAnimate']);
 
-app.controller('MenuController', MenuControllerDeclaration);
-app.controller('LandingController', LandingControllerDeclaration);
+app.controller('MainController', MainControllerDeclaration);
 app.controller('VeterinarianController', VeterinarianControllerDeclaration);
 
 app.config([ '$routeProvider', function($routeProvider) {
-	$routeProvider.when('/landing', {
-		templateUrl : 'components/landing/landing.html',
-		controller : 'LandingController'
-	}).when('/veterinarians', {
+	$routeProvider.when('/', {
+		templateUrl : 'components/main/main.html',
+		controller : 'MainController'
+	}).when('/vets', {
 		templateUrl : 'components/veterinarians/veterinarians.html',
 		controller : 'VeterinarianController'
 	}).when('/about', {
@@ -19,7 +17,7 @@ app.config([ '$routeProvider', function($routeProvider) {
 		templateUrl : 'components/pets/pets.html',
 		controller : 'PetController'
 	}).otherwise({
-		redirectTo : '/landing'
+		redirectTo : '/'
 	});
 } ]);
 

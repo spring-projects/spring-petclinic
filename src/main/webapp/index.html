@@ -1,140 +1,68 @@
-<!DOCTYPE html>
-<html lang="en" data-ng-app="spring-petclinic">
-	<head>
-		<meta charset="utf-8">
-		<title>Vet Clinic</title>
-		<meta name="description" content="description">
-		<meta name="author" content="DevOOPS">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link href="plugins/bootstrap/bootstrap.css" rel="stylesheet">
-		<link href="plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
-		<link href="http://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css" rel="stylesheet">
-		<link href='http://fonts.googleapis.com/css?family=Righteous' rel='stylesheet' type='text/css'>
-		<link href="plugins/fancybox/jquery.fancybox.css" rel="stylesheet">
-		<link href="plugins/fullcalendar/fullcalendar.css" rel="stylesheet">
-		<link href="plugins/xcharts/xcharts.min.css" rel="stylesheet">
-		<link href="plugins/select2/select2.css" rel="stylesheet">
-		<link href="css/style.css" rel="stylesheet">
-		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-		<!--[if lt IE 9]>
-				<script src="http://getbootstrap.com/docs-assets/js/html5shiv.js"></script>
-				<script src="http://getbootstrap.com/docs-assets/js/respond.min.js"></script>
-		<![endif]-->
-	</head>
-<body>
-<!--Start Header-->
-<div id="screensaver">
-	<canvas id="canvas"></canvas>
-	<i class="fa fa-lock" id="screen_unlock"></i>
-</div>
-<div id="modalbox">
-	<div class="devoops-modal">
-		<div class="devoops-modal-header">
-			<div class="modal-header-name">
-				<span>Basic table</span>
-			</div>
-			<div class="box-icons">
-				<a class="close-link">
-					<i class="fa fa-times"></i>
-				</a>
-			</div>
-		</div>
-		<div class="devoops-modal-inner">
-		</div>
-		<div class="devoops-modal-bottom">
-		</div>
-	</div>
-</div>
-<header class="navbar">
-	<div class="container-fluid expanded-panel">
-		<div class="row">
-			<div id="logo" class="col-xs-12 col-sm-2">
-				<a href="index.html">Vet Clinic
-				</a>
-			</div>
-			<div id="top-panel" class="col-xs-12 col-sm-10">
-				<div class="row">
-					<div class="col-xs-8 col-sm-4">
-						<a href="#" class="show-sidebar">
-						  <i class="fa fa-bars"></i>
-						</a>
-					</div>
-					<div class="col-xs-4 col-sm-8 top-panel-right">
-						<ul class="nav navbar-nav pull-right panel-menu">
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle account" data-toggle="dropdown">
-									<div class="avatar">
-										<img src="img/avatar.jpg" class="img-rounded" alt="avatar" />
-									</div>
-									<i class="fa fa-angle-down pull-right"></i>
-									<div class="user-mini pull-right">
-										<span class="welcome">Welcome,</span>
-										<span>Anonymous User</span>
-									</div>
-								</a>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</header>
-<!--End Header-->
-<!--Start Container-->
-<div id="main" class="container-fluid" data-ng-controller="MenuController">
-	<div class="row">
-		<div id="sidebar-left" class="col-xs-2 col-sm-2">
-			<ul class="nav main-menu">
+<!doctype html>
+<html class="no-js" data-ng-app="spring-petclinic">
+  <head>
+    <meta charset="utf-8">
+    <title>Pet Clinic - Home</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+  </head>
+  <body data-ng-controller="MainController">
+    <!--[if lt IE 10]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
 
-				<li class="dropdown" data-ng-repeat="tab in menuTabs">
-					<a href="{{tab.url}}" class="ajax-link">
-						<i class="{{tab.font}}"></i>
-						<span class="hidden-xs">{{tab.name}}</span>
-					</a>
-				</li>
-			</ul>
-		</div>
-<!-- <pre>$location.path() = {{$location.path()}}</pre>
-  <pre>$route.current.templateUrl = {{$route.current.templateUrl}}</pre>
-  <pre>$route.current.controller = {{$route.current.controller}}</pre>
-  <pre>$route.current.params = {{$route.current.params}}</pre>
-  <pre>$route.current.scope.name = {{$route.current.scope.name}}</pre>
-  <pre>$routeParams = {{$routeParams}}</pre> -->
-		<!--Start Content-->
-		<div id="content" class="col-xs-12 col-sm-10">
-			<div data-ng-view></div>
-		</div>
-		<!--End Content-->
-	</div>
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<!--<script src="http://code.jquery.com/jquery.js"></script>-->
-<script src="plugins/jquery/jquery-2.1.0.min.js"></script>
-<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="plugins/bootstrap/bootstrap.min.js"></script>
-<script src="plugins/justified-gallery/jquery.justifiedgallery.min.js"></script>
-<script src="plugins/tinymce/tinymce.min.js"></script>
-<script src="plugins/tinymce/jquery.tinymce.min.js"></script>
-<!-- All functions for this theme + document.ready processing -->
-<script src="js/devoops.js"></script>
+    <data-ng-include src="'components/header.html'"></data-ng-include>
 
-<script src="js/lib/angular.js"></script>
-<script src="js/lib/angular-route.js"></script>
-<script src="js/lib/angular-cookies.js"></script>
-<script src="js/lib/angular-animate.js"></script>
-<script src="js/lib/angular-file-upload.js"></script>
-<script src="js/lib/angular-file-upload-shim.js"></script>
-<script src="js/lib/modules/ng-tags-input.js"></script>
-<script src="js/lib/ui-bootstrap-tpls.js"></script>
+    <data-ng-view></data-ng-view>
 
-<script src="components/menu/MenuController.js"></script>
-<script src="components/landing/LandingController.js"></script>
-<script src="components/about/AboutController.js"></script>
-<script src="components/pets/PetController.js"></script>
-<script src="components/veterinarians/VeterinarianController.js"></script>
-<script src="js/app.js"></script>
-</div>
-<!--End Container-->
+    <data-ng-include src="'components/footer.html'"></data-ng-include>
+
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+<!--     <script src="bower_components/jquery/dist/jquery.js"></script> -->
+<!--     <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/affix.js"></script> -->
+<!--     <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/alert.js"></script> -->
+<!--     <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/button.js"></script> -->
+<!--     <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/carousel.js"></script> -->
+<!--     <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/collapse.js"></script> -->
+<!--     <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/dropdown.js"></script> -->
+<!--     <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tab.js"></script> -->
+<!--     <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/transition.js"></script> -->
+<!--     <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/scrollspy.js"></script> -->
+<!--     <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/modal.js"></script> -->
+<!--     <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tooltip.js"></script> -->
+<!--     <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/popover.js"></script> -->
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+<!--     <script> -->
+<!--       (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]= -->
+<!--       function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date; -->
+<!--       e=o.createElement(i);r=o.getElementsByTagName(i)[0]; -->
+<!--       e.src='//www.google-analytics.com/analytics.js'; -->
+<!--       r.parentNode.insertBefore(e,r)}(window,document,'script','ga')); -->
+<!--       ga('create','UA-XXXXX-X');ga('send','pageview'); -->
+<!--     </script> -->
+
+    <!-- build:js({app,.tmp}) scripts/main.js -->
+    <script src="js/lib/angular.js"></script>
+    <script src="js/lib/angular-route.js"></script>
+    <script src="js/lib/angular-animate.js"></script>
+    <script src="js/lib/angular-cookies.js"></script>
+    <script src="components/main/MainController.js"></script>
+    <script src="components/veterinarians/VeterinarianController.js"></script>
+    <script src="components/pets/PetController.js"></script>
+    <script src="js/app.js"></script>
+    <!-- endbuild -->
 </body>
 </html>
