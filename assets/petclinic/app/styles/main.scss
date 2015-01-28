@@ -12,7 +12,7 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 
 /* Space out content a bit */
 body {
-  padding-top: 51px;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -141,8 +141,110 @@ body {
   margin-bottom: 25px;
 }
 
+.navbar {
+  height: 60px;
+}
+
+.navbar-static-top {
+  margin-bottom: 0;
+}
+
+.navbar-brand {
+  padding: 18px 15px;
+  height: 60px;
+  line-height: normal;
+}
+
+.navbar-nav {
+  > li {
+    > a {
+      padding-top: 20px;
+      padding-bottom: 20px;
+    }
+  }
+}
+
+.navbar-form {
+  .form-group {
+    margin-bottom: 0;
+  }
+}
+
 .nav-tabs-filter {
   margin-bottom: 30px;
+}
+
+.navbar-default {
+  .navbar-menu {
+    > li {
+      padding: 0 6px;
+      
+      > a {
+        border-bottom: 2px solid transparent;
+        padding: 20px 5px 18px 5px;
+      }
+      
+      &:hover {
+        > a {
+          background-color: transparent;
+        }
+      }
+      
+      &.active {
+        > a {
+          background-color: transparent;
+          border-bottom-color: $gray;
+
+          &:hover {
+            background-color: transparent;
+          }
+        }
+      }
+    }
+  }
+}
+
+.navbar-profile {
+  @extend .pull-right;
+  
+  > li {
+    float:left;
+    margin-left: 7px;
+    margin-top: 8px;
+    
+    > a {
+      border: 1px solid darken($gray-lighter,10%);
+      border-radius: 50%;
+      color: $gray-light;
+      line-height: 40px;
+      height: 40px;
+      padding: 0;
+      text-align: center;
+      width: 40px;
+      
+      &:hover {
+        background-color: transparent;
+        border-color: $gray-light;
+      }
+      
+      > img {
+        margin-top: -5px;
+      }
+      
+      &.img-profile {
+        border: 0;
+        
+        .img-circle {
+          border: 1px solid darken($gray-lighter,10%);
+        }
+      }
+    }
+  }
+  
+  .dropdown-menu {
+    right: 0;
+    left: auto;
+  }
 }
 
 /* Show page */
@@ -162,9 +264,76 @@ body {
   padding-top: $padding-large-vertical;
 }
 
+.btn-group-new-alt {
+  display: none;
+}
+
 /* Responsive: Portrait tablets and up */
 @media (max-width: 768px) {
-  .jumbotron {
-    height: auto;
+  
+  .nav > li.navbar-create-new {
+    display: none;
+  }
+  
+  .navbar-brand {
+    padding-right: 0;
+  }
+
+  .navbar-profile {
+    position: absolute;
+    top: 0;
+    right: 0px;
+  }
+  
+  .navbar-nav {
+    background: $body-bg;
+    margin-bottom: 0;
+    margin-top: 0;
+    
+    > li {
+      > a {
+        padding-top: 10px;
+        padding-bottom: 10px;
+      }
+    }
+  }
+  
+  .navbar-form {
+    margin-top: 0;
+    margin-bottom: 0;
+    border-top: 0;
+    border-bottom: 0;
+  }
+  
+  .navbar-toggle-left {
+    border: 0;
+    float: left;
+    margin: 15px 0 0 5px;
+    padding: 5px 8px 5px 8px;
+    
+    .caret {
+      color: $gray-light;
+      border-top-width: 6px;
+      border-right-width: 6px;
+      border-left-width: 6px;
+      margin-left: 0;
+    }
+  }
+  
+  .btn-group-new-alt {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    
+    .btn-primary {
+      border-radius: 50%;
+      height: 50px;
+      width: 50px;
+      padding: 0;
+    }
+    
+    .glyphicon-plus {
+      font-size: 20px;
+    }
   }
 }
