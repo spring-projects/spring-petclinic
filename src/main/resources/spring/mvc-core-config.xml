@@ -19,7 +19,7 @@
         - POJOs labeled with the @Controller and @Service annotations are auto-detected.
     -->
     <context:component-scan
-            base-package="org.springframework.samples.petclinic.web, org.springframework.samples.petclinic.rest"/>
+            base-package="org.springframework.samples.petclinic.rest"/>
 
 
 	<bean id="objectMapper" class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean" 
@@ -50,7 +50,7 @@
     <!-- uses WebJars so Javascript and CSS libs can be declared as Maven dependencies (Bootstrap, jQuery...) -->
     <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
 
-    <mvc:view-controller path="/" view-name="welcome" />
+    <mvc:view-controller path="/" view-name="index" />
 
     <!-- serve static resources (*.html, ...) from src/main/webapp/ 
     Required when both servlet-mapping is '/' and static resources need to be served -->

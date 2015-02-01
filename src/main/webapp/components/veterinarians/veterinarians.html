@@ -1,46 +1,78 @@
-<div id="tabContent" ng-controller="VeterinarianController">
-	<div class="row">
-		<div class="col-xs-12">
-			<div class="box">
-				<div class="box-header">
-					<div class="box-name">
-						<i class="fa fa-table"></i> <span>Veterinarians</span>
-					</div>
-					<div class="box-icons">
-						<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
-						</a> <a class="expand-link"> <i class="fa fa-expand"></i>
-						</a> <a class="close-link"> <i class="fa fa-times"></i>
-						</a>
-					</div>
-					<div class="no-move"></div>
-				</div>
-				<div class="box-content no-padding">
-					<table
-						class="table table-striped table-bordered table-hover table-heading no-border-bottom">
-						<tr>
-							<td>Name</td>
-							<th>Specialties</th>
-						</tr>
-						<tr ng-repeat="veterinarian in veterinarians">
-							<td>{{veterinarian.firstName}}&nbsp;{{veterinarian.lastName}}</td>
-							<td><span ng-repeat="specialty in veterinarian.specialties">{{specialty.name}}&nbsp;</span></td>
-						</tr>
-					</table>
-				</div>
-				<div class="box-content">
-					<form class="form-horizontal" role="form">
-						<div class="form-group has-success">
-							<div class="col-sm-3">
-								<input type="text" class="form-control" placeholder="Search" data-toggle="tooltip" data-placement="bottom" title="Search" ng-model="searchText">
-							</div>
-							<button type="submit" class="btn btn-primary btn-label-left"
-								ng-click="searchVeterinarians()">
-								<span><i class="fa fa-clock-o"></i></span> Search
-							</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
+<!-- Featured veterinarians -->
+<section id="veterinarians" class="sections">
+	<div class="container">
+	  <div class="row">
+	    <div class="col-md-8 col-md-offset-2">
+	      <div class="text-center">
+	        <h3 class="section-heading">Our Veterinarians</h3>
+	        <p class="section-desc">A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+	      </div>
+	    </div>
+	  </div>
+	  <div class="row">
+	    <div class="col-md-6">
+	      <div class="thumbnail">
+	        <img src="http://placehold.it/600x345" alt="Generic placeholder image">
+	        <div class="caption">
+	          <h3>Thumbnail label</h3>
+	          <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. </p>
+	        </div>
+	      </div>
+	    </div>
+	    <div class="col-md-3">
+	      <div class="thumbnail">
+	        <img src="http://placehold.it/600x600" alt="Generic placeholder image">
+	        <div class="caption">
+	          <h3>Thumbnail label</h3>
+	          <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum.</p>
+	        </div>
+	      </div>
+	    </div>
+	    <div class="col-md-3">
+	      <div class="thumbnail">
+	        <img src="http://placehold.it/600x600" alt="Generic placeholder image">
+	        <div class="caption">
+	          <h3>Thumbnail label</h3>
+	          <p>Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane.</p>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	  <!-- /row -->
+	  <div class="row">
+	    <div class="col-md-3">
+	      <div class="thumbnail">
+	        <img src="http://placehold.it/600x600" alt="Generic placeholder image">
+	        <div class="caption">
+	          <h3>Thumbnail label</h3>
+	          <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum.</p>
+	        </div>
+	      </div>
+	    </div>
+	    <div class="col-md-3">
+	      <div class="thumbnail">
+	        <img src="http://placehold.it/600x600" alt="Generic placeholder image">
+	        <div class="caption">
+	          <h3>Thumbnail label</h3>
+	          <p>Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane.</p>
+	        </div>
+	      </div>
+	    </div>
+	    <div class="col-md-6">
+	      <div class="thumbnail">
+	        <img src="http://placehold.it/600x345" alt="Generic placeholder image">
+	        <div class="caption">
+	          <h3>Thumbnail label</h3>
+	          <p>The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli.</p>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	  <!-- /row -->
+	  <div class="row">
+	    <div class="col-md-4 col-md-offset-4">
+	      <p><a class="btn btn-primary btn-lg btn-block" href="/veterinarians">View More »</a></p>
+	    </div>
+	  </div>
 	</div>
-</div>
+</section>

@@ -1,19 +1,12 @@
 <!doctype html>
 <html class="no-js" data-ng-app="spring-petclinic">
-  <head>
+   <head>
     <meta charset="utf-8">
     <title>Pet Clinic - Home</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <link rel="shortcut icon" href="/favicon.ico">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css(.) styles/vendor.css -->
-    <!-- bower:css -->
-    <!-- endbower -->
-    <!-- endbuild -->
-    <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
-    <!-- endbuild -->
   </head>
   <body data-ng-controller="MainController">
     <!--[if lt IE 10]>
@@ -21,28 +14,10 @@
     <![endif]-->
 
     <data-ng-include src="'components/header.html'"></data-ng-include>
-
-    <data-ng-view></data-ng-view>
+    
+    <data-ui-view></data-ui-view>
 
     <data-ng-include src="'components/footer.html'"></data-ng-include>
-
-    <!-- build:js(.) scripts/vendor.js -->
-    <!-- bower:js -->
-<!--     <script src="bower_components/jquery/dist/jquery.js"></script> -->
-<!--     <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/affix.js"></script> -->
-<!--     <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/alert.js"></script> -->
-<!--     <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/button.js"></script> -->
-<!--     <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/carousel.js"></script> -->
-<!--     <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/collapse.js"></script> -->
-<!--     <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/dropdown.js"></script> -->
-<!--     <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tab.js"></script> -->
-<!--     <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/transition.js"></script> -->
-<!--     <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/scrollspy.js"></script> -->
-<!--     <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/modal.js"></script> -->
-<!--     <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tooltip.js"></script> -->
-<!--     <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/popover.js"></script> -->
-    <!-- endbower -->
-    <!-- endbuild -->
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 <!--     <script> -->
@@ -60,13 +35,17 @@
 	
     <!-- build:js({app,.tmp}) scripts/main.js -->
     <script src="js/lib/angular.js"></script>
-    <script src="js/lib/angular-route.js"></script>
+    <script src="js/lib/angular-ui-router.js"></script>
+    <script src="js/lib/angular-ui-router-statehelper.js"></script>
     <script src="js/lib/angular-animate.js"></script>
     <script src="js/lib/angular-cookies.js"></script>
     <script src="components/main/MainController.js"></script>
+    <script src="components/about/AboutController.js"></script>
     <script src="components/veterinarians/VeterinarianController.js"></script>
     <script src="components/pets/PetController.js"></script>
+    <script src="components/owners/OwnerController.js"></script>
+    <script src="components/visits/VisitController.js"></script>
     <script src="js/app.js"></script>
     <!-- endbuild -->
-</body>
+  s</body>
 </html>

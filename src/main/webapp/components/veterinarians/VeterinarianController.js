@@ -3,6 +3,12 @@ var VeterinarianController = function ($scope, $http) {
 		$scope.veterinarians = data;
 	});
 	
+	$scope.$on('$viewContentLoaded', function(event){
+		$('html, body').animate({
+		    scrollTop: $("#veterinarians").offset().top
+		}, 1000);
+	});
+	
 }
 
-var VeterinarianControllerDeclaration = ['$scope', '$http', VeterinarianController];
+var VeterinarianControllerDeclaration = ['$scope','$http',VeterinarianController];

@@ -1,10 +1,11 @@
-var PetController = function($scope, $rootScope, $sce, $timeout, $location,
-		$route, $interval, $cookieStore, $window) {
+var PetController = function($scope) {
 
-	$scope.$route = $route;
-    $scope.$location = $location;
+	$scope.$on('$viewContentLoaded', function(event){
+		$('html, body').animate({
+		    scrollTop: $("#pets").offset().top
+		}, 1000);
+	});
+	
 };
 
-var PetControllerDeclaration = [ '$scope', '$rootScope', '$sce', '$timeout',
-		'$location', '$route', '$interval', '$cookieStore', '$window',
-		PetController ];
+var PetControllerDeclaration = ['$scope',PetController];

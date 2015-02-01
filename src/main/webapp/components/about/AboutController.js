@@ -1,10 +1,4 @@
-var AboutController = function($scope, $rootScope, $sce, $timeout, $location,
-		$route, $interval, $cookieStore, $window) {
+var AboutController = function($scope) {
+}; 
 
-	$scope.$route = $route;
-    $scope.$location = $location;
-};
-
-var AboutControllerDeclaration = [ '$scope', '$rootScope', '$sce', '$timeout',
-		'$location', '$route', '$interval', '$cookieStore', '$window',
-		AboutController ];
+var AboutControllerDeclaration = ['$scope',AboutController];
