@@ -57,7 +57,6 @@
 		<jodatime.version>2.7</jodatime.version>
 		<jadira-usertype-core.version>3.2.0.GA</jadira-usertype-core.version>
 
-
 		<!-- Web dependencies -->
 		<webjars-bootstrap.version>2.3.0</webjars-bootstrap.version>
 		<webjars-jquery-ui.version>1.10.3</webjars-jquery-ui.version>
@@ -119,7 +118,6 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
-			<version>${spring-framework.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -129,7 +127,6 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
-			<version>${spring-framework.version}</version>
 		</dependency>
 		<!-- used for EhCacheCacheManager -->
 		<dependency>
@@ -140,7 +137,6 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<version>${spring-framework.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
