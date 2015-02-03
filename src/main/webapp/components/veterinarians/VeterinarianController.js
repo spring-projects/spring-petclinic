@@ -1,7 +1,4 @@
-var VeterinarianController = function ($scope, $http) {
-	$http.get('api/vets').success(function(data) {
-		$scope.veterinarians = data;
-	});
+var VeterinarianController = ['$scope','$http','Vet', function ($scope, $http, Vet) {
 	
 	$scope.$on('$viewContentLoaded', function(event){
 		$('html, body').animate({
@@ -9,6 +6,6 @@ var VeterinarianController = function ($scope, $http) {
 		}, 1000);
 	});
 	
-}
-
-var VeterinarianControllerDeclaration = ['$scope','$http',VeterinarianController];
+	$scope.vets = Vet.query();
+	
+}];

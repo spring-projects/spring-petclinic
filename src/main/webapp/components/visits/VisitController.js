@@ -1,4 +1,3 @@
-var VisitController = function($scope) {
-};
+var VisitController = ['$scope',function($scope) {
 
-var VisitControllerDeclaration = ['$scope',VisitController];
+}];

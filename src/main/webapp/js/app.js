@@ -1,11 +1,4 @@
-var app = angular.module('spring-petclinic', ['ui.router','ui.router.stateHelper','ngAnimate','ngCookies']);
-
-app.controller('MainController', MainControllerDeclaration);
-app.controller('VeterinarianController', VeterinarianControllerDeclaration);
-app.controller('PetController', PetControllerDeclaration);
-app.controller('OwnerController', OwnerControllerDeclaration);
-app.controller('VisitController', VisitControllerDeclaration);
-app.controller('AboutController', AboutControllerDeclaration);
+var app = angular.module('spring-petclinic', ['ui.router','ui.router.stateHelper','ngAnimate','ngCookies','ngResource']);
 
 app.config(['stateHelperProvider','$urlRouterProvider','$urlMatcherFactoryProvider',function(stateHelperProvider,$urlRouterProvider,$urlMatcherFactoryProvider) {
 
@@ -36,3 +29,16 @@ app.config(['stateHelperProvider','$urlRouterProvider','$urlMatcherFactoryProvid
 	});
 	
 } ]);
+
+/** Controllers **/
+app.controller('MainController', MainController);
+app.controller('VeterinarianController', VeterinarianController);
+app.controller('PetController', PetController);
+app.controller('OwnerController', OwnerController);
+app.controller('VisitController', VisitController);
+
+/** Services **/
+app.factory('Owner', Owner);
+app.factory('Pet', Pet);
+app.factory('Vet', Vet);
+app.factory('Visit', Visit);

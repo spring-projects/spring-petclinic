@@ -1,4 +1,4 @@
-var MainController = function($scope, $rootScope, $state) {
+var MainController =  ['$scope','$rootScope','$state',function($scope, $rootScope, $state) {
 	
 	$scope.getSession = function() {
 		return $scope.session;
@@ -37,7 +37,5 @@ var MainController = function($scope, $rootScope, $state) {
 	$scope.footerText = '© ' + new Date().getFullYear() + ' Pet Clinic, A Spring Framework Demonstration';
 	
 	$rootScope.$state = $state;
-};
-
-var MainControllerDeclaration = ['$scope','$rootScope','$state',MainController];
+}];
 

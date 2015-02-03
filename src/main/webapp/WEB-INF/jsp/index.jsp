@@ -38,12 +38,13 @@
 	
     <!-- build:js({app,.tmp}) scripts/main.js -->
     <script src="js/lib/angular.js"></script>
+    <script src="js/lib/angular-resource.js"></script>
     <script src="js/lib/angular-ui-router.js"></script>
     <script src="js/lib/angular-ui-router-statehelper.js"></script>
     <script src="js/lib/angular-animate.js"></script>
     <script src="js/lib/angular-cookies.js"></script>
+    <script src="services/services.js"></script>
     <script src="components/main/MainController.js"></script>
-    <script src="components/about/AboutController.js"></script>
     <script src="components/veterinarians/VeterinarianController.js"></script>
     <script src="components/pets/PetController.js"></script>
     <script src="components/owners/OwnerController.js"></script>

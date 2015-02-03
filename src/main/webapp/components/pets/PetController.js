@@ -1,4 +1,4 @@
-var PetController = function($scope) {
+var PetController = ['$scope', function($scope) {
 
 	$scope.$on('$viewContentLoaded', function(event){
 		$('html, body').animate({
@@ -6,6 +6,4 @@ var PetController = function($scope) {
 		}, 1000);
 	});
 	
-};
-
-var PetControllerDeclaration = ['$scope',PetController];
+}];
