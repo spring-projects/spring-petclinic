@@ -10,7 +10,8 @@ DROP TABLE owners IF EXISTS;
 CREATE TABLE vets (
   id         INTEGER IDENTITY PRIMARY KEY,
   first_name VARCHAR(30),
-  last_name  VARCHAR(30)
+  last_name  VARCHAR(30),
+  profile_pic BLOB
 );
 CREATE INDEX vets_last_name ON vets (last_name);
 
@@ -39,7 +40,8 @@ CREATE TABLE owners (
   last_name  VARCHAR(30),
   address    VARCHAR(255),
   city       VARCHAR(80),
-  telephone  VARCHAR(20)
+  telephone  VARCHAR(20),
+  profile_pic BLOB     
 );
 CREATE INDEX owners_last_name ON owners (last_name);
 
@@ -48,7 +50,8 @@ CREATE TABLE pets (
   name       VARCHAR(30),
   birth_date DATE,
   type_id    INTEGER NOT NULL,
-  owner_id   INTEGER NOT NULL
+  owner_id   INTEGER NOT NULL,
+  profile_pic BLOB
 );
 ALTER TABLE pets ADD CONSTRAINT fk_pets_owners FOREIGN KEY (owner_id) REFERENCES owners (id);
 ALTER TABLE pets ADD CONSTRAINT fk_pets_types FOREIGN KEY (type_id) REFERENCES types (id);
