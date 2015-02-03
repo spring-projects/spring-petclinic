@@ -1,5 +1,17 @@
 var MainController = function($scope, $rootScope, $state) {
 	
+	$scope.getSession = function() {
+		return $scope.session;
+	};
+	
+	$scope.login = function() {
+		$scope.session = { 'username' : 'test' };
+	};
+	
+	$scope.logout = function() {
+		$scope.session = null;
+	};
+	
 	$scope.menuTabs = [ {
 		'name' : 'Main Page',
 		'url' : '#',

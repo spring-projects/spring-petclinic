@@ -9,41 +9,30 @@ app.controller('AboutController', AboutControllerDeclaration);
 
 app.config(['stateHelperProvider','$urlRouterProvider','$urlMatcherFactoryProvider',function(stateHelperProvider,$urlRouterProvider,$urlMatcherFactoryProvider) {
 
-	$urlRouterProvider.when("/","/about").otherwise("/about");
+	$urlRouterProvider.otherwise("/");
 	
 	$urlMatcherFactoryProvider.strictMode(false)
 	
 	stateHelperProvider.state({
-		name: "home",
-		url: "",
-		templateUrl: "components/main/main.html",
+		name: "landing",
+		url: "/",
+		templateUrl: "components/landing/landing.html",
 		controller: "MainController",
-		abstract: true
 	}).state({
-		name: "home.vets",
+		name: "vets",
 		url: "/vets",
 		templateUrl: "components/veterinarians/veterinarians.html",
 		controller: "VeterinarianController",
 	}).state({
-		name: "home.about",
-		url: "/about",
-		templateUrl: "components/about/about.html",
-		controller: "AboutController"
-	}).state({
-		name: "home.pets",
+		name: "pets",
 		url: "/pets",
 		templateUrl: "components/pets/pets.html",
 		controller: "PetController"
 	}).state({
-		name: "home.owners",
+		name: "owners",
 		url: "/owners",
 		templateUrl: "components/owners/owners.html",
 		controller: "OwnerController"
-	}).state({
-		name: "home.visits",
-		url: "/visits",
-		templateUrl: "components/visits/visits.html",
-		controller: "VisitController"
 	});
 	
 } ]);

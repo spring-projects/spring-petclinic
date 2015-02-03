@@ -33,6 +33,9 @@
 	<script src="plugins/jquery/jquery-2.1.0.min.js"></script>
 	<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
 	
+	<!-- bootstrap javascript -->
+	<script src="js/lib/bootstrap.js"></script>
+	
     <!-- build:js({app,.tmp}) scripts/main.js -->
     <script src="js/lib/angular.js"></script>
     <script src="js/lib/angular-ui-router.js"></script>
