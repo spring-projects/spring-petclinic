@@ -43,13 +43,6 @@
     	</mvc:message-converters>
     </mvc:annotation-driven>
 
-    <!--  all resources inside folder src/main/webapp/resources are mapped so they can be refered to inside JSP files
-        (see header.jsp for more details) -->
-    <mvc:resources mapping="/resources/**" location="/resources/"/>
-
-    <!-- uses WebJars so Javascript and CSS libs can be declared as Maven dependencies (Bootstrap, jQuery...) -->
-    <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
-
     <mvc:view-controller path="/" view-name="index" />
 
     <!-- serve static resources (*.html, ...) from src/main/webapp/ 
