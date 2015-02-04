@@ -19,13 +19,12 @@
 
     <data-ng-include src="'components/footer.html'"></data-ng-include>
 
-  	<!--<script src="http://code.jquery.com/jquery.js"></script>-->
-  	<script src="plugins/jquery/jquery-2.1.0.min.js"></script>
-  	<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!--<script src="http://code.jquery.com/jquery.js"></script>-->
+    <script src="plugins/jquery/jquery-2.1.0.min.js"></script>
+    <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
 
-  	<!-- bootstrap javascript -->
-    <script src="static/dist/scripts/vendor.js"></script>
-    <script src="static/dist/scripts/main.js"></script>
+    <!-- bootstrap javascript -->
+    <script src="js/lib/bootstrap.js"></script>
 
     <!-- build:js({app,.tmp}) scripts/main.js -->
     <script src="js/lib/angular.js"></script>
@@ -42,5 +41,5 @@
     <script src="components/visits/VisitController.js"></script>
     <script src="js/app.js"></script>
     <!-- endbuild -->
-  s</body>
+  </body>
 </html>
