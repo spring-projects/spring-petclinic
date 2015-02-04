@@ -1,26 +1,11 @@
-<!-- Main jumbotron for a primary marketing message or call to action -->
-<div class="jumbotron">
-  <div class="container">
-    <div class="jumbotron-headline">
-      <div class="jumbotron-headline-cell">
-        <h1>Pet Clinic <br> A Spring Framework Demonstration</h1>
-        <p>A place to see your neighborhood pet owners</p>
-        <p><a class="btn btn-primary btn-lg" data-ui-sref="home.owners" role="button">Get started - It's Free!</a></p>
-      </div>
-    </div>
-  </div>
-</div>
+<!-- Welcome -->
+<data-ng-include src="'components/landing/_welcome.html'"></data-ng-include>
 
-<data-ng-include src="'components/landing/_services.html'"></data-ng-include>
+<!-- Owners -->
+<data-ng-include src="'components/landing/_owners.html'"></data-ng-include>
 
-<!-- Testimonials -->
-<data-ng-include src="'components/landing/_testimonials.html'"></data-ng-include>
+<!-- Pets -->
+<data-ng-include src="'components/landing/_pets.html'"></data-ng-include>
 
-<!-- Companies -->
-<data-ng-include src="'components/landing/_companies.html'"></data-ng-include>
-
-<!-- Make an appointment call to action -->
-<data-ng-include src="'components/landing/_appointment.html'"></data-ng-include>
-
-<!-- Add Owner / Register -->
-<data-ng-include src="'components/landing/_add_owner.html'"></data-ng-include>
+<!-- Vets -->
+<data-ng-include src="'components/landing/_vets.html'"></data-ng-include>
