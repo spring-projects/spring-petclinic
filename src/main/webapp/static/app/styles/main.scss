@@ -288,7 +288,9 @@ body {
           background-color: transparent;
           font-weight: bold;
 
-          &:hover  {
+          &:hover,
+          &:active,
+          &:focus  {
             background-color: transparent;
           }
         }
@@ -302,12 +304,12 @@ body {
 
       > li {
         padding: 0;
-        
+
         > a {
           padding-top: 12px;
           padding-bottom: 12px;
         }
-        
+
         &:hover {
           > a {
             background-color: transparent;
@@ -347,7 +349,7 @@ body {
         line-height: 0;
       }
     }
-    
+
     .glyphicon-plus {
       color: $navbar-default-link-color;
       margin-left: 1px;
@@ -360,7 +362,7 @@ body {
       background-color: transparent;
     }
   }
-  
+
   @media (max-width: $grid-float-breakpoint) {
     position: absolute;
     top: 0;
@@ -394,7 +396,7 @@ body {
     vertical-align: middle;
     width: 0;
   }
-  
+
   > li {
     > a {
       color: $navbar-default-link-color;
@@ -429,7 +431,7 @@ body {
     width: 100%;
     left: 0;
     top: 58px;
-    
+
     &:after {
       right: 20px;
     }
@@ -500,7 +502,7 @@ body {
 
 .btn-default {
   border-color: $btn-default-border;
-  
+
   &:hover {
     background-color: $btn-default-bg;
     border-color: darken($btn-default-border,15%);
@@ -570,56 +572,56 @@ body {
   border: 1px solid $thumbnail-border;
   box-shadow: 0 1px 1px rgba($gray-base, 0.03);
   padding: 0;
-  
+
   > img {
     margin-top: 40px;
   }
-  
+
   .caption {
     padding: 20px;
     text-align: center;
   }
-  
+
   .caption-heading {
     color: darken($headings-color,5%);
     font-size: 18px;
     margin-bottom: 15px;
   }
-  
+
   .caption-meta {
     color: #98a4b0;
     font-size: 13px;
     margin-bottom: 5px;
   }
-  
+
   .caption-label {
     @extend .label;
     @extend .label-default;
     background-color: #98a4b0;
   }
-  
+
   .action-bar {
     border-top: 1px solid $sections-border;
     padding: 20px;
     @extend .clearfix;
-    
+
     ul {
       list-style-type: none;
       margin-bottom: 0;
       margin-left: -10px;
       padding-left: 0;
-      
+
       li {
         float: left;
         margin-left: 10px;
       }
     }
   }
-  
+
   .action-add {
     border: 1px dotted
   }
-  
+
   .btn-add-pet {
     display: inline-block;
     height: 30px;
@@ -627,14 +629,14 @@ body {
     border: 1px dashed #AAA;
     border-radius: 100%;
     position: relative;
-    
+
     .glyphicon {
       color: #C3C6CA;
       margin: 5px 0 0 8px;
     }
   }
-  
-  
+
+
 }
 
 .thumbnail-wrapper {
