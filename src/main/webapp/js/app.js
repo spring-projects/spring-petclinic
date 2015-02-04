@@ -11,27 +11,38 @@ app.config(['stateHelperProvider','$urlRouterProvider','$urlMatcherFactoryProvid
 		url: "/",
 		templateUrl: "components/landing/landing.html",
 		controller: "MainController",
+		data: { requireLogin : false }
+	}).state({
+		name: "dashboard",
+		url: "/dashboard",
+		templateUrl: "components/dashboard/dashboard.html",
+		controller: "DashboardController",
+		data: { requireLogin : true }
 	}).state({
 		name: "vets",
 		url: "/vets",
 		templateUrl: "components/veterinarians/veterinarians.html",
 		controller: "VeterinarianController",
+		data: { requireLogin : true }
 	}).state({
 		name: "pets",
 		url: "/pets",
 		templateUrl: "components/pets/pets.html",
-		controller: "PetController"
+		controller: "PetController",
+		data: { requireLogin : true }
 	}).state({
 		name: "owners",
 		url: "/owners",
 		templateUrl: "components/owners/owners.html",
-		controller: "OwnerController"
+		controller: "OwnerController",
+		data: { requireLogin : true }
 	});
 	
 } ]);
 
 /** Controllers **/
 app.controller('MainController', MainController);
+app.controller('DashboardController', DashboardController);
 app.controller('VeterinarianController', VeterinarianController);
 app.controller('PetController', PetController);
 app.controller('OwnerController', OwnerController);
@@ -50,7 +61,7 @@ app.directive('scrollToTarget', function() {
     element.bind('click', function() {
     	angular.element('html, body').stop().animate({
 			scrollTop: angular.element(angular.element(element).attr('href')).offset().top - 20
-		}, 1500);
+		}, 1500); 
 		return false;
     });
   };

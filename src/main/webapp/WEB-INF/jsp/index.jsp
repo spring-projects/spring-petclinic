@@ -39,6 +39,7 @@
     <script src="components/pets/PetController.js"></script>
     <script src="components/owners/OwnerController.js"></script>
     <script src="components/visits/VisitController.js"></script>
+    <script src="components/dashboard/DashboardController.js"></script>
     <script src="js/app.js"></script>
     <!-- endbuild -->
   </body>

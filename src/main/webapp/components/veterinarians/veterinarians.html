@@ -12,7 +12,7 @@
 	  <div class="row">
 	    <div data-ng-repeat="vet in vets | limitTo : 12" class="col-md-3">
 	      <div class="thumbnail">
-	        <img src="http://placehold.it/600x600" alt="Generic placeholder image">
+	        <img data-ng-src="images/avatars/vet{{vet.id%4 + 1}}.jpg" alt="Generic placeholder image">
 	        <div class="caption">
 	          <h3 data-ng-bind="'Dr. ' + vet.firstName + ' ' + vet.lastName">Veterinarian Name</h3>
 	          <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum.</p>

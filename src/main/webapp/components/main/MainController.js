@@ -6,10 +6,12 @@ var MainController =  ['$scope','$rootScope','$state',function($scope, $rootScop
 	
 	$scope.login = function() {
 		$scope.session = { 'username' : 'test' };
+		$state.go('dashboard');
 	};
 	
 	$scope.logout = function() {
 		$scope.session = null;
+		$state.go('landing');
 	};
 	
 	$scope.menuTabs = [ {
@@ -37,5 +39,14 @@ var MainController =  ['$scope','$rootScope','$state',function($scope, $rootScop
 	$scope.footerText = '© ' + new Date().getFullYear() + ' Pet Clinic, A Spring Framework Demonstration';
 	
 	$rootScope.$state = $state;
+	
+	$rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+		var requireLogin = toState.data.requireLogin;
+
+		if (requireLogin && $scope.session == null) {
+			event.preventDefault();
+			$state.go('landing');
+		}
+	});
 }];
 
