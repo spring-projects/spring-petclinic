@@ -598,7 +598,7 @@ input::-moz-focus-inner {
   box-shadow: 0 1px 1px rgba($gray-base, 0.03);
   padding: 0;
 
-  > img {
+  .img-circle {
     margin-top: 40px;
   }
 
@@ -664,6 +664,18 @@ input::-moz-focus-inner {
 
 .thumbnail-wrapper {
   margin-bottom: 20px;
+}
+
+
+/* Image circle classes */
+.img-circle {
+  height: 110px;
+  width: 110px;
+}
+
+.img-circle-small {
+  height: 30px;
+  width: 30px;
 }
 
 /* Modals - Search */

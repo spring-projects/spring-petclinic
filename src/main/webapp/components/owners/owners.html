@@ -32,7 +32,7 @@
   <div class="row">
     <div class="col-md-3" data-ng-repeat="owner in owners">
       <div class="thumbnail">
-        <a href="show.html"><img data-ng-src="images/avatars/owner{{owner.id}}.jpg" alt="Generic placeholder image"></img></a>
+        <a href="show.html"><img class="img-circle" data-ng-src="images/avatars/owner{{owner.id}}.jpg" alt="Generic placeholder image"></img></a>
         <div class="caption">
           <h3><a href="show.html" data-ng-bind="owner.firstName + ' ' +owner.lastName"></a></h3>
           <p data-ng-bind="owner.city"></p>
