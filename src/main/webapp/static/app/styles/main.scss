@@ -4,7 +4,7 @@ $text-color: #747c83;
 $text-color-inverse: #fff;
 $headings-color: #555f64;
 $sections-bg: #f0f2f5;
-$sections-border: #e7e9eb;
+$sections-border: #DCDFE2;
 $jumbotron-bg: #42494d;
 $navbar-default-bg: #2d4f61;
 $navbar-default-border: #2d4f61;
@@ -241,6 +241,14 @@ input::-moz-focus-inner {
   .thumbnail {
     margin-bottom: 25px;
   }
+  
+  hr {
+    border-bottom-color: darken($sections-border,4%);
+  }
+}
+
+.sections+.sections {
+  border-bottom-color: darken($sections-border,4%);
 }
 
 .sections-narrow {
@@ -610,7 +618,11 @@ input::-moz-focus-inner {
   .caption-heading {
     color: darken($headings-color,5%);
     font-size: 18px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    
+    a {
+      color: darken($headings-color,5%);
+    }
   }
 
   .caption-meta {
@@ -640,6 +652,10 @@ input::-moz-focus-inner {
         float: left;
         margin-left: 10px;
       }
+    }
+    
+    img {
+      margin-top: 0;
     }
   }
 
@@ -689,6 +705,7 @@ input::-moz-focus-inner {
   }
   
   .modal-content {
+    background-color: transparent;
     height: 100%;
     box-shadow: none;
     border-radius: 0;
@@ -737,9 +754,16 @@ input::-moz-focus-inner {
     }
     
     .btn-default {
-      border: 0;
       background: transparent;
-      padding: 20;
+      border: 0;
+      padding: 17px;
+      
+      &:hover,
+      &:focus,
+      &:active {
+        background: transparent;
+        box-shadow: none;
+      }
     }
     
     .glyphicon-search {
@@ -752,5 +776,13 @@ input::-moz-focus-inner {
     h5 {
       margin-bottom: 20px;
     }
+  }
+}
+
+.modal-backdrop {
+  background-color: $text-color-inverse;
+  
+  &.in {
+    opacity: .97;
   }
 }
