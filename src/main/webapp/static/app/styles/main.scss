@@ -35,6 +35,24 @@ body {
   @extend %font-smoothing;
 }
 
+/* Remove the dotted outline */
+a,
+a:hover,
+a:active,
+a:focus,
+button,
+button:hover,
+button:active,
+button:focus,
+object,
+embed {
+  outline: 0;
+}
+
+input::-moz-focus-inner {
+  border: 0;
+}
+
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,
@@ -62,6 +80,18 @@ body {
   font-weight: 500;
   margin-top: 10px;
   padding-bottom: 10px;
+}
+
+/* Custom page footer */
+.footer {
+  font-size: 13px;
+  padding: 30px 0;
+}
+
+.colophon {
+  border-top: 1px solid $sections-border;
+  margin-top: 30px;
+  padding-top: 30px;
 }
 
 .container-narrow > hr {
@@ -146,6 +176,13 @@ body {
 
   .form-control {
     height: 54px;
+    border: 1px solid $text-color-inverse;
+    border-radius: 3px;
+    box-shadow: none;
+  }
+  
+  .form-control-group {
+    padding-top: $padding-large-vertical;
   }
 
   .btn-primary {
@@ -459,64 +496,7 @@ body {
   }
 }
 
-/* Show page */
-.show-hero {
-  background-color: $jumbotron-bg;
-  padding-top: 60px;
-  padding-bottom: 60px;
-  font-size: 24px;
-  text-align: left;
-
-  h1 {
-    margin-top: 0;
-  }
-}
-
-.form-control {
-  border: 1px solid $text-color-inverse;
-  border-radius: 3px;
-  box-shadow: none;
-}
-
-.form-control-group {
-  padding-top: $padding-large-vertical;
-}
-
-.btn {
-  border-color: transparent;
-  border-radius: 3px;
-  font-weight: 500;
-  transition: .3s ease-in-out;
-
-  &:hover {
-    border-color: transparent;
-  }
-
-  &:active,
-  &:focus {
-    border-color: rgba($gray-darker, 0.3);
-    outline: none 0;
-    box-shadow: inset 0 0 200px rgba($gray-darker, 0.3);
-  }
-}
-
-.btn-default {
-  border-color: $btn-default-border;
-
-  &:hover {
-    background-color: $btn-default-bg;
-    border-color: darken($btn-default-border,15%);
-    color: darken($btn-default-color,15%);
-  }
-}
-
-.btn-lg {
-  font-weight: 500;
-}
-
-/* Responsive: Portrait tablets and up */
 @media (max-width: 768px) {
-
   .navbar-brand {
     padding-right: 0;
   }
@@ -557,6 +537,51 @@ body {
       }
     }
   }
+}
+
+/* Show page */
+.show-hero {
+  background-color: $jumbotron-bg;
+  padding-top: 60px;
+  padding-bottom: 60px;
+  font-size: 24px;
+  text-align: left;
+
+  h1 {
+    margin-top: 0;
+  }
+}
+
+.btn {
+  border-color: transparent;
+  border-radius: 3px;
+  font-weight: 500;
+  transition: .3s ease-in-out;
+
+  &:hover {
+    border-color: transparent;
+  }
+
+  &:active,
+  &:focus {
+    border-color: rgba($gray-darker, 0.3);
+    outline: none 0;
+    box-shadow: inset 0 0 200px rgba($gray-darker, 0.3);
+  }
+}
+
+.btn-default {
+  border-color: $btn-default-border;
+
+  &:hover {
+    background-color: $btn-default-bg;
+    border-color: darken($btn-default-border,15%);
+    color: darken($btn-default-color,15%);
+  }
+}
+
+.btn-lg {
+  font-weight: 500;
 }
 
 /* Media Object */
@@ -635,22 +660,85 @@ body {
       margin: 5px 0 0 8px;
     }
   }
-
-
 }
 
 .thumbnail-wrapper {
   margin-bottom: 20px;
 }
 
-/* Custom page footer */
-.footer {
-  font-size: 13px;
-  padding: 30px 0;
-}
-
-.colophon {
-  border-top: 1px solid $sections-border;
-  margin-top: 30px;
-  padding-top: 30px;
+/* Modals - Search */
+.modal-search {
+  .modal-dialog {
+    border: 0;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+  
+  .modal-content {
+    height: 100%;
+    box-shadow: none;
+    border-radius: 0;
+    border: 0;
+  }
+  
+  .modal-header {
+    border: 0;
+    padding: 50px 0 20px 0;
+    
+    .close {
+      font-size: 34px;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+    
+    h4 {
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: 14px;
+    }
+  }
+  
+  .modal-body {
+    padding: 0 0 40px;
+    
+    form {
+      background-color: $gray-lighter;
+      border-radius: 3px;
+      box-shadow: inset 0 -1px 2px rgba(0, 0, 0, 0.03);
+    }
+    
+    .form-control {
+      background-color: transparent;
+      border-radius: 0;
+      border: 0;
+      box-shadow: none;
+      color: $gray-dark;
+      height: 60px;
+      padding: 10px 15px;
+      font-size: 32px;
+      line-height: 60px;
+      font-weight: bold;
+    }
+    
+    .btn-default {
+      border: 0;
+      background: transparent;
+      padding: 20;
+    }
+    
+    .glyphicon-search {
+      color: $gray-light;
+      font-size: 20px;
+    }
+  }
+  
+  .modal-seach-result {
+    h5 {
+      margin-bottom: 20px;
+    }
+  }
 }
