@@ -42,3 +42,16 @@ app.factory('Owner', Owner);
 app.factory('Pet', Pet);
 app.factory('Vet', Vet);
 app.factory('Visit', Visit);
+
+/** Directives **/
+
+app.directive('scrollToTarget', function() {
+  return function(scope, element) {
+    element.bind('click', function() {
+    	angular.element('html, body').stop().animate({
+			scrollTop: angular.element(angular.element(element).attr('href')).offset().top - 20
+		}, 1500);
+		return false;
+    });
+  };
+});

@@ -42,13 +42,13 @@
   </div>
 
   <div class="row">
-    <div class="col-md-3" ng-repeat="owner in owners">
+    <div class="col-md-3" data-ng-repeat="owner in owners">
       <div class="thumbnail">
-        <a href="show.html"><a href="show.html"><img src="/petclinic/images/avatars/owner{{owner.id}}.jpg" alt="Generic placeholder image"></a></a>
+        <a href="show.html"><img src="/petclinic/images/avatars/owner{{owner.id}}.jpg" alt="Generic placeholder image"></img></a>
         <div class="caption">
-          <a href="show.html"><a href="show.html"><h3>{{owner.firstName}}&nbsp{{owner.lastName}}</h3></a></a>
-          <p>{{owner.city}}</p>
-          <p>{{owner.address}}</p>
+          <h3><a href="show.html" data-ng-bind="owner.firstName + ' ' +owner.lastName"></a></h3>
+          <p data-ng-bind="owner.city"></p>
+          <p data-ng-bin="owner.address"></p>
         </div>
       </div>
     </div>

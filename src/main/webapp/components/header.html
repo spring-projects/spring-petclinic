@@ -3,7 +3,7 @@
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <a class="navbar-brand" href="/petclinic/">
-        <img alt="Pet Clinic Brand" height="27" width="auto" src="static/dist/images/logo.png">
+        <img alt="Pet Clinic Brand" height="27" width="auto" src="images/logo.png">
       </a>
       <button class="navbar-toggle navbar-toggle-left collapsed" type="button" data-toggle="collapse" data-target="#nav-menu">
         <span class="sr-only">Toggle navigation</span>
@@ -21,13 +21,12 @@
       </ul>
     </div><!-- /.navbar-collapse -->
 
-    <ul class="nav navbar-profile">
+    <ul data-ng-if="getSession() != null" class="nav navbar-profile">
       <li data-ng-if="getSession() != null"><a href="#"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a></li>
       <li data-ng-if="getSession() != null"><a href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></li>
       <li class="dropdown">
-        <a href="#" data-ng-if="getSession() == null" data-ng-click="login()">Sign in</a>
-        <a data-ng-if="getSession() != null" href="#" class="dropdown-toggle img-profile" data-toggle="dropdown" role="button" aria-expanded="false">
-          <img class="img-circle" src="static/dist/images/avatar.jpg" width="30" height="30">
+        <a href="#" class="dropdown-toggle img-profile" data-toggle="dropdown" role="button" aria-expanded="false">
+          <img class="img-circle" src="images/avatar.jpg" width="30" height="30">
         </a>
         <ul data-ng-if="getSession() != null" class="dropdown-menu navbar-dropdown-menu">
           <li><a href="#">View Profile</a></li>
@@ -38,5 +37,13 @@
         </ul>
       </li>
     </ul>
+    <ul data-ng-if="getSession() == null" class="nav navbar-links pull-right">
+       <li>
+         <a href="#appointment" class="js-scroll-nav">Get started</a>
+       </li>
+       <li>
+         <a href="#" data-ng-click="login()">Login</a>
+       </li>
+     </ul>
   </div><!-- /.container-fluid -->
 </nav>

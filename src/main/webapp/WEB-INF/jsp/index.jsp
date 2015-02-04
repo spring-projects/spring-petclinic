@@ -5,8 +5,8 @@
     <title>Pet Clinic - Home</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
-    <link rel="shortcut icon" href="static/dist/favicon.ico">
-    <link rel="stylesheet" href="static/dist/styles/main.css">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="styles/main.css">
   </head>
   <body data-ng-controller="MainController">
     <!--[if lt IE 10]>
