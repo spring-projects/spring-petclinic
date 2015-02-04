@@ -26,25 +26,13 @@
     <ul class="nav nav-tabs">
       <li role="presentation" class="active"><a href="#">Newest</a></li>
       <li role="presentation"><a href="#">Popular</a></li>
-      <li role="presentation" class="dropdown open">
-      <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-        Dropdown <span class="caret"></span>
-      </a>
-      <ul class="dropdown-menu" role="menu">
-        <li><a href="#">McFarland</a></li>
-        <li><a href="#">Sun Prairie</a></li>
-        <li><a href="#">Madison</a></li>
-        <li><a href="#">New York</a></li>
-        <li><a href="#">Madison</a></li>
-      </ul>
-      </li>
     </ul>
   </div>
 
   <div class="row">
     <div class="col-md-3" data-ng-repeat="owner in owners">
       <div class="thumbnail">
-        <a href="show.html"><img src="/petclinic/images/avatars/owner{{owner.id}}.jpg" alt="Generic placeholder image"></img></a>
+        <a href="show.html"><img data-ng-src="images/avatars/owner{{owner.id}}.jpg" alt="Generic placeholder image"></img></a>
         <div class="caption">
           <h3><a href="show.html" data-ng-bind="owner.firstName + ' ' +owner.lastName"></a></h3>
           <p data-ng-bind="owner.city"></p>

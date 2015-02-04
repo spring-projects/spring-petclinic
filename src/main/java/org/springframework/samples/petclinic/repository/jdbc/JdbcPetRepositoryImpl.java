@@ -15,15 +15,19 @@
  */
 package org.springframework.samples.petclinic.repository.jdbc;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
@@ -129,5 +133,26 @@ public class JdbcPetRepositoryImpl implements PetRepository {
                 .addValue("type_id", pet.getType().getId())
                 .addValue("owner_id", pet.getOwner().getId());
     }
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Pet> findAll() throws DataAccessException {
+		return this.namedParameterJdbcTemplate.query("SELECT * FROM pets", new RowMapper<Pet>(){
+
+			@Override
+			public Pet mapRow(ResultSet rs, int idx) throws SQLException {
+				Pet pet = new Pet();
+				PetType type = new PetType();
+				type.setId(rs.getInt("type_id"));
+				pet.setName(rs.getString("name"));
+				pet.setId(rs.getInt("id"));
+				pet.setBirthDate(new DateTime(rs.getDate("birth_date")));
+				pet.setType(type);
+			
+				return pet;
+			}
+			
+		});
+	}
 
 }

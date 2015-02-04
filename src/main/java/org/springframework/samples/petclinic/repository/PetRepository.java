@@ -57,5 +57,12 @@ public interface PetRepository {
      * @see BaseEntity#isNew
      */
     void save(Pet pet) throws DataAccessException;
+    
+    /**
+     * Get all pets
+     * @return 
+     *
+     */
+    List<Pet> findAll() throws DataAccessException;
 
 }

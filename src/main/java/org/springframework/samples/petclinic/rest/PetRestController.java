@@ -56,16 +56,9 @@ public class PetRestController {
         return pet;
     }
 
-    @RequestMapping(value = "/owners/{ownerId}/pets", method = RequestMethod.PUT)
-    public Collection<Pet> addPets(@PathVariable("ownerId") int ownerId, @RequestBody Collection<Pet> pets) {
-    	Owner owner = this.clinicService.findOwnerById(ownerId);
-    	
-    	for(Pet pet : pets) {
-    		owner.addPet(pet);
-    		this.clinicService.savePet(pet);
-    	}
-    	
-    	return pets;
+    @RequestMapping(value = "/pets", method = RequestMethod.GET)
+    public Collection<Pet> findAllPets() {
+    	return this.clinicService.findPets();	
     }
 
 }

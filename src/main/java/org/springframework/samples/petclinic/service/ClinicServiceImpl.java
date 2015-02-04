@@ -16,6 +16,7 @@
 package org.springframework.samples.petclinic.service;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -105,5 +106,10 @@ public class ClinicServiceImpl implements ClinicService {
         return vetRepository.findAll();
     }
 
-
+    @Override
+    @Transactional(readOnly = true)
+    @Cacheable(value = "pets")
+    public List<Pet> findPets() throws DataAccessException {
+        return petRepository.findAll();
+    }
 }

@@ -2,8 +2,12 @@ var Owner = ['$resource', function($resource) {
 	return $resource('/petclinic/api/owners/:id');
 }];
 
-var Pet = ['$resource', function($resource) {
+var OwnerPet = ['$resource', function($resource) {
 	return $resource('/petclinic/api/owners/:ownerId/pets', {ownerId : '@ownerId'});
+}];
+
+var Pet = ['$resource', function($resource) {
+	return $resource('/petclinic/api/pets/:id');
 }];
 
 var Vet = ['$resource', function($resource) {

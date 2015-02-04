@@ -14,6 +14,14 @@ var MainController =  ['$scope','$rootScope','$state',function($scope, $rootScop
 		$state.go('landing');
 	};
 	
+	$scope.goHome = function() {
+		if ($scope.getSession() == null) {
+			$state.go('landing');
+		} else {
+			$state.go('dashboard');
+		}
+	}
+	
 	$scope.menuTabs = [ {
 		'name' : 'Main Page',
 		'url' : '#',

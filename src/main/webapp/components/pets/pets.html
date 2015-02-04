@@ -3,8 +3,8 @@
   <div class="container">
     <div class="jumbotron-headline">
       <div class="jumbotron-headline-cell">
-        <h1>Discover Pet Owners</h1>
-        <p>Helping you discover pet owners near you and connect.</p>
+        <h1>Finding your pet</h1>
+        <p>Finding the pets that are currently under our care.</p>
         <div class="row">
           <div class="col-md-6 col-md-offset-2">
             <input type="text" class="form-control input-lg" placeholder=".col-md-8">
@@ -26,91 +26,16 @@
     <ul class="nav nav-tabs">
       <li role="presentation" class="active"><a href="#">Newest</a></li>
       <li role="presentation"><a href="#">Popular</a></li>
-      <li role="presentation" class="dropdown open">
-      <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-        Dropdown <span class="caret"></span>
-      </a>
-      <ul class="dropdown-menu" role="menu">
-        <li><a href="#">McFarland</a></li>
-        <li><a href="#">Sun Prairie</a></li>
-        <li><a href="#">Madison</a></li>
-        <li><a href="#">New York</a></li>
-        <li><a href="#">Madison</a></li>
-      </ul>
-      </li>
     </ul>
   </div>
 
   <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-3" ng-repeat="pet in pets">
       <div class="thumbnail">
-        <a href="show.html"><a href="show.html"><img src="http://placehold.it/600x600" alt="Generic placeholder image"></a></a>
+        <a href="#"><img data-ng-src="images/pets/pet{{pet.id % 10 + 1}}.jpg" alt="Generic placeholder image"></a>
         <div class="caption">
-          <a href="show.html"><a href="show.html"><h3>Thumbnail label</h3></a></a>
-          <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum.</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="thumbnail">
-        <a href="show.html"><a href="show.html"><img src="http://placehold.it/600x600" alt="Generic placeholder image"></a></a>
-        <div class="caption">
-          <a href="show.html"><a href="show.html"><h3>Thumbnail label</h3></a></a>
-          <p>Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane.</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="thumbnail">
-        <a href="show.html"><img src="http://placehold.it/600x600" alt="Generic placeholder image"></a>
-        <div class="caption">
-          <a href="show.html"><h3>Thumbnail label</h3></a>
-          <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum.</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="thumbnail">
-        <a href="show.html"><img src="http://placehold.it/600x600" alt="Generic placeholder image"></a>
-        <div class="caption">
-          <a href="show.html"><h3>Thumbnail label</h3></a>
-          <p>Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane.</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="thumbnail">
-        <a href="show.html"><img src="http://placehold.it/600x600" alt="Generic placeholder image"></a>
-        <div class="caption">
-          <a href="show.html"><h3>Thumbnail label</h3></a>
-          <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum.</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="thumbnail">
-        <a href="show.html"><img src="http://placehold.it/600x600" alt="Generic placeholder image"></a>
-        <div class="caption">
-          <a href="show.html"><h3>Thumbnail label</h3></a>
-          <p>Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane.</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="thumbnail">
-        <a href="show.html"><img src="http://placehold.it/600x600" alt="Generic placeholder image"></a>
-        <div class="caption">
-          <a href="show.html"><h3>Thumbnail label</h3></a>
-          <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum.</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="thumbnail">
-        <a href="show.html"><img src="http://placehold.it/600x600" alt="Generic placeholder image"></a>
-        <div class="caption">
-          <a href="show.html"><h3>Thumbnail label</h3></a>
-          <p>Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane.</p>
+          <a href="#"><h3 data-ng-bind="pet.name"></h3></a>
+          <p data-ng-bind="pet.type.name"></p>
         </div>
       </div>
     </div>
@@ -151,25 +76,4 @@
 </section>
 
 <!-- Contact details -->
-<section id="add_owner" class="sections sections-narrow">
-<div class="container">
-  <!-- Three columns of text below the carousel -->
-  <div class="row">
-    <div class="col-lg-4">
-      <h3>Business Hours</h3>
-      <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
-    </div><!-- /.col-lg-4 -->
-    <div class="col-lg-4">
-      <h3>Our Location</h3>
-      <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p>
-    </div><!-- /.col-lg-4 -->
-    <div class="col-lg-4">
-      <h3>Questions or comments</h3>
-      <p>Cras mattis consectetur purus sit amet fermentum. </p>
-      <p>
-      <a href="mailto:youremail@yourdomain.com" type="submit" class="btn btn-default">Drop us a line</a>
-      </p>
-    </div><!-- /.col-lg-4 -->
-  </div><!-- /.row -->
-</div>
-</section>
+<data-ng-include src="'components/landing/_contact_us.html'"></data-ng-include>
