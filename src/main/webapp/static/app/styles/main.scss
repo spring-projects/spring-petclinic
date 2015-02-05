@@ -2,9 +2,9 @@ $icon-font-path: "fonts/";
 $brand-primary: #6cb947;
 $text-color: #747c83;
 $text-color-inverse: #fff;
-$headings-color: #555f64;
+$headings-color: #495256;
 $sections-bg: #f0f2f5;
-$sections-border: #DCDFE2;
+$sections-border: #EAEBED;
 $jumbotron-bg: #42494d;
 $navbar-default-bg: #2d4f61;
 $navbar-default-border: #2d4f61;
@@ -14,6 +14,7 @@ $navbar-default-link-active-color: #e6f2f5;
 $thumbnail-border: #e6e9ed;
 $btn-default-color: #495256;
 $btn-default-border: #D4D5D7;
+$input-bg: #D9DCDF;
 
 %font-smoothing {
   -webkit-font-smoothing: antialiased;
@@ -241,14 +242,6 @@ input::-moz-focus-inner {
   .thumbnail {
     margin-bottom: 25px;
   }
-  
-  hr {
-    border-bottom-color: darken($sections-border,4%);
-  }
-}
-
-.sections+.sections {
-  border-bottom-color: darken($sections-border,4%);
 }
 
 .sections-narrow {
@@ -275,6 +268,12 @@ input::-moz-focus-inner {
 .section-desc {
   font-size: 18px;
   margin-bottom: 25px;
+}
+
+.hr-lg {
+  border-top-color: darken($sections-border,4%);
+  margin-bottom: 50px;
+  margin-top: 50px;
 }
 
 .navbar {
@@ -588,6 +587,26 @@ input::-moz-focus-inner {
   }
 }
 
+.btn-link {
+  &:focus,
+  &:active {
+    border-color: transparent;
+    box-shadow: none;
+  }
+}
+
+.form-group {
+  .btn-link {
+    color: $text-color;
+    text-decoration: none;
+  }
+}
+
+.btn-md {
+  @extend .btn-lg;
+  font-size: 16px;
+}
+
 .btn-lg {
   font-weight: 500;
 }
@@ -616,12 +635,11 @@ input::-moz-focus-inner {
   }
 
   .caption-heading {
-    color: darken($headings-color,5%);
-    font-size: 18px;
+    font-size: 16px;
     margin-bottom: 10px;
     
     a {
-      color: darken($headings-color,5%);
+      color: $headings-color;
     }
   }
 
@@ -694,95 +712,114 @@ input::-moz-focus-inner {
   width: 30px;
 }
 
-/* Modals - Search */
-.modal-search {
-  .modal-dialog {
-    border: 0;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-  }
+/* Forms */
+label {
+  color: $headings-color;
+  font-weight: normal;
+}
+
+.form-control {
+  border-radius: 3px;
+  box-shadow: none;
+  border: 0;
+  color: $gray-dark;
+  font-weight: 600;
+  transition: background-color ease-in-out .15s;
   
-  .modal-content {
-    background-color: transparent;
-    height: 100%;
+  &:active,
+  &:focus {
+    background-color: darken($input-bg,5%);
     box-shadow: none;
-    border-radius: 0;
-    border: 0;
-  }
-  
-  .modal-header {
-    border: 0;
-    padding: 50px 0 20px 0;
-    
-    .close {
-      font-size: 34px;
-      position: absolute;
-      top: 10px;
-      right: 10px;
-    }
-    
-    h4 {
-      margin-bottom: 5px;
-      text-transform: uppercase;
-      font-weight: bold;
-      font-size: 14px;
-    }
-  }
-  
-  .modal-body {
-    padding: 0 0 40px;
-    
-    form {
-      background-color: $gray-lighter;
-      border-radius: 3px;
-      box-shadow: inset 0 -1px 2px rgba(0, 0, 0, 0.03);
-    }
-    
-    .form-control {
-      background-color: transparent;
-      border-radius: 0;
-      border: 0;
-      box-shadow: none;
-      color: $gray-dark;
-      height: 60px;
-      padding: 10px 15px;
-      font-size: 32px;
-      line-height: 60px;
-      font-weight: bold;
-    }
-    
-    .btn-default {
-      background: transparent;
-      border: 0;
-      padding: 17px;
-      
-      &:hover,
-      &:focus,
-      &:active {
-        background: transparent;
-        box-shadow: none;
-      }
-    }
-    
-    .glyphicon-search {
-      color: $gray-light;
-      font-size: 20px;
-    }
-  }
-  
-  .modal-seach-result {
-    h5 {
-      margin-bottom: 20px;
-    }
   }
 }
 
+.form-group-action {
+  padding-top: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group-heading {
+  @extend .h4;
+  margin-bottom: 20px;
+  padding-top: 20px;
+}
+
+/* Modals */
+.modal-dialog {
+  border: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.modal-content {
+  background-color: transparent;
+  height: 100%;
+  box-shadow: none;
+  border-radius: 0;
+  border: 0;
+}
+
+.modal-header {
+  border: 0;
+  padding: 50px 0 20px 0;
+  
+  .close {
+    font-size: 34px;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+  }
+  
+  .sub-header {
+    padding-bottom: 0;
+  }
+}
+
+.modal-body {
+  padding: 0;
+}
+
 .modal-backdrop {
-  background-color: $text-color-inverse;
+  background-color: $sections-bg;
   
   &.in {
-    opacity: .97;
+    opacity: .98;
+  }
+}
+
+/* Modal Search */
+.modal-search {
+  .form-control {
+    border-bottom-right-radius: 3px;
+    border-top-right-radius: 3px;
+    height: 60px;
+    padding: 10px 15px;
+    font-size: 32px;
+    line-height: 60px;
+    font-weight: bold;
+  }
+  
+  .form-group {
+    position: relative;
+  }
+  
+  .btn {
+    background: 0 0;
+    border: 0;
+    padding: 17px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 3;
+  }
+  
+  .glyphicon-search {
+    color: $gray-light;
+    font-size: 20px;
   }
 }

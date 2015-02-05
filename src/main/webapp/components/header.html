@@ -23,7 +23,7 @@
 
     <ul data-ng-if="getSession() != null" class="nav navbar-profile">
       <li data-ng-if="getSession() != null"><a href="#" data-toggle="modal" data-target="#searchModal"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a></li>
-      <li data-ng-if="getSession() != null"><a href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></li>
+      <li data-ng-if="getSession() != null"><a href="#" data-toggle="modal" data-target="#addOwnerModal"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></li>
       <li class="dropdown">
         <a href="#" class="dropdown-toggle img-profile" data-toggle="dropdown" role="button" aria-expanded="false">
           <img class="img-circle img-circle-small" src="images/avatar.jpg" width="30" height="30">
@@ -50,3 +50,6 @@
 
 <!-- Search modal -->
 <data-ng-include src="'components/_partials/_modal_search.html'"></data-ng-include>
+
+<!-- Add Owner modal -->
+<data-ng-include src="'components/_partials/_modal_add_owner.html'"></data-ng-include>

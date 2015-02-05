@@ -5,43 +5,41 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
         <div class="container">
-        <h4>Search PetClinic</h4>
+        <h1 class="sub-header">Search PetClinic</h1>
         <em class="text-muted">Start typing to search for owner, pets, or veterinarians...</em>
       </div>
     </div>
     <div class="modal-body">
       <div class="container">
         <form>
-          <div class="input-group">
-            <input type="text" class="form-control">
-            <span class="input-group-btn">
-              <button class="btn btn-default" type="button">
-                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-              </button>
-            </span>
+          <div class="form-group">
+            <input type="search" class="form-control">
+            <button class="btn btn-default" type="button">
+              <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            </button>
           </div>
         </form>
-      </div>
-    </div>
-
-    <!-- ### TODO:
-    Note by AA: I'm just showing the results for reference purpose
-    This should be hidden by default and only be shown if there's result -->
-    <div class="modal-seach-result container">
-      <h5>Result of your search query</h5>
-      <div class="row thumbnail-wrapper">
-        <div class="col-md-3" ng-repeat="x in [1,2,3,4,5,6,7]">
-          <div class="thumbnail">
-            <a href="#"><img src="images/owner-default.png" class="img-circle" alt="Generic placeholder image"></a>
-            <div class="caption">
-              <h3 class="caption-heading"><a href="#">Eduardo Rodriguez</a></h3>
-              <p class="caption-meta">2693 Commerce St., McFarland</p>
-              <p class="caption-meta"><span class="glyphicon glyphicon-phone-alt"></span> +6085558763</p>
+        
+        <!-- ### TODO:
+        Note by AA: I'm just showing the results for reference purpose
+        This should be hidden by default and only be shown if there's result -->
+        <div class="modal-seach-result">
+          <h2 class="form-group-heading">Result of your search query</h2>
+          <div class="row thumbnail-wrapper">
+            <div class="col-md-3" ng-repeat="x in [1,2,3,4,5,6,7]">
+              <div class="thumbnail">
+                <a href="#"><img src="images/owner-default.png" class="img-circle" alt="Generic placeholder image"></a>
+                <div class="caption">
+                  <h3 class="caption-heading"><a href="#">Eduardo Rodriguez</a></h3>
+                  <p class="caption-meta">2693 Commerce St., McFarland</p>
+                  <p class="caption-meta"><span class="glyphicon glyphicon-phone-alt"></span> +6085558763</p>
+                </div>
+              </div>
             </div>
           </div>
+          <!-- /row -->
         </div>
       </div>
-      <!-- /row -->
     </div>
   </div>
 </div>

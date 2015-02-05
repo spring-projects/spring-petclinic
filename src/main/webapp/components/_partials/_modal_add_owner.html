@@ -1,0 +1,76 @@
+<!-- Add Owner Modal -->
+<div class="modal modal-owner fade" id="addOwnerModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12 col-md-offset-2">
+              <h1 class="sub-header">Add An Owner</h1>
+              <em class="text-muted">Fill up pet owners basic information and contact details</em>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+              <h2 class="form-group-heading">Basic Information</h2>
+            </div>
+            <div class="col-md-5 col-md-offset-2">
+              <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" class="form-control" id="firstName">
+              </div>
+              <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="text" class="form-control" id="lastName">
+              </div>
+              <div class="form-group">
+                <label for="birthDate">Birth Date</label>
+                <input type="text" class="form-control" id="birthDate">
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="exampleInputFile">Profile Photo</label>
+                <div class="thumbnail">
+                  <img src="images/owner-default.png" class="img-circle" alt="Generic placeholder image">
+                  <div class="caption">
+                    <input type="file" id="exampleInputFile">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+              <h2 class="form-group-heading">Contact Details</h2>
+            </div>
+            <div class="col-md-5 col-md-offset-2">
+              <div class="form-group">
+                <label for="address">Address</label>
+                <textarea class="form-control" rows="3" id="address"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="city">City</label>
+                <input type="text" class="form-control" id="city">
+              </div>
+              <div class="form-group">
+                <label for="contactNumber">Contact Number</label>
+                <input type="text" class="form-control" id="contactNumber">
+              </div>
+              <div class="form-group form-group-action">
+                <button type="submit" class="btn btn-primary btn-md">Add Owner</button>
+                <button class="btn btn-link btn-md">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
