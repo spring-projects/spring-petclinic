@@ -1,44 +1,14 @@
-<section id="pets" class="sections sections-narrow">
+<section id="pets" class="sections sections-narrow" data-ng-controller="PetController">
   <div class="container">
     <h2 class="sub-header">Pets</h2>
     <div class="row thumbnail-wrapper">
-      <div class="col-md-3">
+      <div class="col-md-3" ng-repeat="pet in pets | limitTo : 4">
         <div class="thumbnail">
-          <img src="images/pets/pet1.jpg" class="img-circle" alt="Generic placeholder image">
+          <img data-ng-src="images/pets/pet{{pet.id % 10 + 1}}.jpg" class="img-circle" alt="Generic placeholder image">
           <div class="caption">
-            <h3 class="caption-heading">Basil</h3>
+            <h3 class="caption-heading" data-ng-bind="pet.name"></h3>
             <p class="caption-meta">08 August 2012</p>
-            <p class="caption-meta"><span class="caption-label">Hamster</span></p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="thumbnail">
-          <img src="images/pets/pet2.jpg" class="img-circle" alt="Generic placeholder image">
-          <div class="caption">
-            <h3 class="caption-heading">Basil</h3>
-            <p class="caption-meta">08 August 2012</p>
-            <p class="caption-meta"><span class="caption-label">Hamster</span></p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="thumbnail">
-          <img src="images/pets/pet3.jpg" class="img-circle" alt="Generic placeholder image">
-          <div class="caption">
-            <h3 class="caption-heading">Basil</h3>
-            <p class="caption-meta">08 August 2012</p>
-            <p class="caption-meta"><span class="caption-label">Hamster</span></p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="thumbnail">
-          <img src="images/pets/pet4.jpg" class="img-circle" alt="Generic placeholder image">
-          <div class="caption">
-            <h3 class="caption-heading">Basil</h3>
-            <p class="caption-meta">08 August 2012</p>
-            <p class="caption-meta"><span class="caption-label">Hamster</span></p>
+            <p class="caption-meta"><span class="caption-label" data-ng-bind="pet.type.name"></span></p>
           </div>
         </div>
       </div>
