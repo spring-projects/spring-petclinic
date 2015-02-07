@@ -1,16 +1,18 @@
-var MainController =  ['$scope','$rootScope','$state',function($scope, $rootScope, $state) {
+var MainController =  ['$scope','$rootScope','$state','$sessionStorage', function($scope, $rootScope, $state, $sessionStorage) {
+	
+	$scope.$storage = $sessionStorage;
 	
 	$scope.getSession = function() {
-		return $scope.session;
+		return $scope.$storage.session;
 	};
 	
 	$scope.login = function() {
-		$scope.session = { 'username' : 'test' };
+		$scope.$storage.session = { 'username' : 'test' };
 		$state.go('dashboard');
 	};
 	
 	$scope.logout = function() {
-		$scope.session = null;
+		$scope.$storage.session = null;
 		$state.go('landing');
 	};
 	
@@ -51,7 +53,7 @@ var MainController =  ['$scope','$rootScope','$state',function($scope, $rootScop
 	$rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
 		var requireLogin = toState.data.requireLogin;
 
-		if (requireLogin && $scope.session == null) {
+		if (requireLogin && $scope.getSession() == null) {
 			event.preventDefault();
 			$state.go('landing');
 		}

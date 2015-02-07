@@ -1,4 +1,4 @@
-var app = angular.module('spring-petclinic', ['ui.router','ui.router.stateHelper','ngAnimate','ngCookies','ngResource','ngMockE2E']);
+var app = angular.module('spring-petclinic', ['ui.router','ui.router.stateHelper','ngAnimate','ngCookies','ngResource','ngMockE2E','ngStorage']);
 
 
 /** Start of Configurable constants **/

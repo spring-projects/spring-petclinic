@@ -7,7 +7,7 @@
         <p>Finding the pets that are currently under our care.</p>
         <div class="row">
           <div class="col-md-6 col-md-offset-2">
-            <input type="text" class="form-control input-lg" placeholder=".col-md-8">
+            <input id="search" type="text" class="form-control input-lg" placeholder="Scooby Doo">
           </div>
           <div class="col-md-2">
             <button type="submit" class="btn btn-primary btn-lg btn-block">Discover</button>
@@ -30,7 +30,7 @@
   </div>
 
   <div class="row">
-    <div class="col-md-3" data-ng-repeat="pet in pets">
+    <div class="col-md-3" data-ng-repeat="pet in pets | filter:search">
       <div class="thumbnail">
         <a href="#"><img data-ng-src="images/pets/pet{{pet.id % 10 + 1}}.jpg" alt="Generic placeholder image"></a>
         <div class="caption">
