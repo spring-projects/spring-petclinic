@@ -823,3 +823,55 @@ label {
     font-size: 20px;
   }
 }
+
+/* Stas */
+.stats {
+	padding: 10px;
+
+	ul{
+		padding: 0;
+	}
+
+	li {
+		border-right: 1px solid $gray-lighter;
+		color: $headings-color;
+		display: inline;
+		float: left;
+		font-size: 16px;
+		font-weight: 600;
+		line-height: 22px;
+		padding: 0 10px;
+
+		&:first-child {
+			padding-left: 0;
+		}
+
+		&:last-child {
+			border-right: 0;
+			padding-right: 0;
+		}
+	}
+
+	span {
+		color: $text-color;
+		display: block;
+		font-size: 11px;
+		font-weight: normal;
+		text-transform: uppercase;
+	}
+}
+
+.stats-lg {
+	padding: 20px;
+
+	li {
+		font-size: 36px;
+		font-weight: 500;
+		line-height: normal;
+		padding: 0 20px;
+	}
+
+	span {
+		font-size: 13px;
+	}
+}
