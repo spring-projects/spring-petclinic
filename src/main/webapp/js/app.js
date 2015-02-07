@@ -1,4 +1,10 @@
-var app = angular.module('spring-petclinic', ['ui.router','ui.router.stateHelper','ngAnimate','ngCookies','ngResource']);
+var app = angular.module('spring-petclinic', ['ui.router','ui.router.stateHelper','ngAnimate','ngCookies','ngResource','ngMockE2E']);
+
+
+/** Start of Configurable constants **/
+app.constant('useMockData', true);
+app.constant('context', '/petclinic');
+/** End of Configurable constants **/
 
 app.config(['stateHelperProvider','$urlRouterProvider','$urlMatcherFactoryProvider',function(stateHelperProvider,$urlRouterProvider,$urlMatcherFactoryProvider) {
 
@@ -53,6 +59,7 @@ app.factory('Owner', Owner);
 app.factory('Pet', Pet);
 app.factory('Vet', Vet);
 app.factory('Visit', Visit);
+app.factory('MockService', MockService);
 
 /** Directives **/
 
@@ -65,4 +72,8 @@ app.directive('scrollToTarget', function() {
 		return false;
     });
   };
+});
+
+app.run(function(useMockData, MockService) {
+	MockService.mock(useMockData);
 });

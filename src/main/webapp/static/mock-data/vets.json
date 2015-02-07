@@ -1,0 +1,69 @@
+[ {
+  "id" : 1,
+  "firstName" : "James",
+  "lastName" : "Carter",
+  "description" : "Graduated from Oxford University in 2000 having \"gone the long way around\" picking up degrees in Agriculture & Applied Zoology and also in Animal Production along the way. He came down to work in Winchester in 2004 and set up PetClinic in 2005.",
+  "specialties" : [ ],
+  "nrOfSpecialties" : 0,
+  "new" : false
+}, {
+  "id" : 3,
+  "firstName" : "Linda",
+  "lastName" : "Douglas",
+  "description" : "MA VetMB MRCVS Another Cambridge graduate, Linda joined our team in 2004. Linda has a hamster called Ash and a dog called Spotty.",
+  "specialties" : [ {
+    "id" : 3,
+    "name" : "dentistry",
+    "new" : false
+  }, {
+    "id" : 2,
+    "name" : "surgery",
+    "new" : false
+  } ],
+  "nrOfSpecialties" : 2,
+  "new" : false
+}, {
+  "id" : 6,
+  "firstName" : "Sharon",
+  "lastName" : "Jenkins",
+  "description" : "MA VetMB MRCVS Sharon graduated from Oxford in 2006 and joined us in 2007. She joins international salsa competitions and consider herself an accomplished dancer.",
+  "specialties" : [ ],
+  "nrOfSpecialties" : 0,
+  "new" : false
+}, {
+  "id" : 2,
+  "firstName" : "Helen",
+  "lastName" : "Leary",
+  "description" : "MA VetMB MRCVS A Cambridge graduate, Helen joined our expanding team of vets at the end of 2005. Helen has a cat called Checkers and a dog called Scoot.",
+  "specialties" : [ {
+    "id" : 1,
+    "name" : "radiology",
+    "new" : false
+  } ],
+  "nrOfSpecialties" : 1,
+  "new" : false
+}, {
+  "id" : 4,
+  "firstName" : "Rafael",
+  "lastName" : "Ortega",
+  "description" : "MA VetMB MRCVS Rafael graduated from Cambridge in 2003 and joined PetClinit in October 2004. He has a particular interest in horseback archery and has competed in many international competitions.",
+  "specialties" : [ {
+    "id" : 2,
+    "name" : "surgery",
+    "new" : false
+  } ],
+  "nrOfSpecialties" : 1,
+  "new" : false
+}, {
+  "id" : 5,
+  "firstName" : "Henry",
+  "lastName" : "Stevens",
+  "description" : "MA VetMB MRCVS Henry graduated from Oxford in 2008 and joined us in 2010. He is also a competitive chess player and has participated in many international competitions.",
+  "specialties" : [ {
+    "id" : 1,
+    "name" : "radiology",
+    "new" : false
+  } ],
+  "nrOfSpecialties" : 1,
+  "new" : false
+} ]
