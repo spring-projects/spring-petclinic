@@ -11,7 +11,7 @@ CREATE TABLE vets (
   id         INTEGER IDENTITY PRIMARY KEY,
   first_name VARCHAR(30),
   last_name  VARCHAR(30),
-  profile_pic BLOB
+  profile_description VARCHAR(255)
 );
 CREATE INDEX vets_last_name ON vets (last_name);
 
@@ -41,7 +41,7 @@ CREATE TABLE owners (
   address    VARCHAR(255),
   city       VARCHAR(80),
   telephone  VARCHAR(20),
-  profile_pic BLOB     
+  profile_description VARCHAR(255)
 );
 CREATE INDEX owners_last_name ON owners (last_name);
 
@@ -51,7 +51,7 @@ CREATE TABLE pets (
   birth_date DATE,
   type_id    INTEGER NOT NULL,
   owner_id   INTEGER NOT NULL,
-  profile_pic BLOB
+  profile_description VARCHAR(255)
 );
 ALTER TABLE pets ADD CONSTRAINT fk_pets_owners FOREIGN KEY (owner_id) REFERENCES owners (id);
 ALTER TABLE pets ADD CONSTRAINT fk_pets_types FOREIGN KEY (type_id) REFERENCES types (id);

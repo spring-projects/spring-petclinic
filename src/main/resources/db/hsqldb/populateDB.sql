@@ -1,9 +1,9 @@
-INSERT INTO vets VALUES (1, 'James', 'Carter', NULL);
-INSERT INTO vets VALUES (2, 'Helen', 'Leary', NULL);
-INSERT INTO vets VALUES (3, 'Linda', 'Douglas', NULL);
-INSERT INTO vets VALUES (4, 'Rafael', 'Ortega', NULL);
-INSERT INTO vets VALUES (5, 'Henry', 'Stevens', NULL);
-INSERT INTO vets VALUES (6, 'Sharon', 'Jenkins', NULL);
+INSERT INTO vets VALUES (1, 'James', 'Carter', 'Graduated from Oxford University in 2000 having "gone the long way around" picking up degrees in Agriculture & Applied Zoology and also in Animal Production along the way. He came down to work in Winchester in 2004 and set up PetClinic in 2005.');
+INSERT INTO vets VALUES (2, 'Helen', 'Leary', 'MA VetMB MRCVS A Cambridge graduate, Helen joined our expanding team of vets at the end of 2005. Helen has a cat called Checkers and a dog called Scoot.');
+INSERT INTO vets VALUES (3, 'Linda', 'Douglas', 'MA VetMB MRCVS Another Cambridge graduate, Linda joined our team in 2004. Linda has a hamster called Ash and a dog called Spotty.');
+INSERT INTO vets VALUES (4, 'Rafael', 'Ortega','MA VetMB MRCVS Rafael graduated from Cambridge in 2003 and joined PetClinit in October 2004. He has a particular interest in horseback archery and has competed in many international competitions.');
+INSERT INTO vets VALUES (5, 'Henry', 'Stevens', 'MA VetMB MRCVS Henry graduated from Oxford in 2008 and joined us in 2010. He is also a competitive chess player and has participated in many international competitions.');
+INSERT INTO vets VALUES (6, 'Sharon', 'Jenkins','MA VetMB MRCVS Sharon graduated from Oxford in 2006 and joined us in 2007. She joins international salsa competitions and consider herself an accomplished dancer.');
 
 INSERT INTO specialties VALUES (1, 'radiology');
 INSERT INTO specialties VALUES (2, 'surgery');

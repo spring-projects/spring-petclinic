@@ -64,7 +64,7 @@ public class JdbcVetRepositoryImpl implements VetRepository {
         List<Vet> vets = new ArrayList<Vet>();
         // Retrieve the list of all vets.
         vets.addAll(this.jdbcTemplate.query(
-                "SELECT id, first_name, last_name FROM vets ORDER BY last_name,first_name",
+                "SELECT id, first_name, last_name, profile_description FROM vets ORDER BY last_name,first_name",
                 ParameterizedBeanPropertyRowMapper.newInstance(Vet.class)));
 
         // Retrieve the list of all possible specialties.
