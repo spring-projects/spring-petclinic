@@ -1,21 +1,21 @@
-var Owner = ['$resource', function($resource) {
-	return $resource('/petclinic/api/owners/:id');
+var Owner = ['$resource','context', function($resource, context) {
+	return $resource(context + '/api/owners/:id');
 }];
 
-var OwnerPet = ['$resource', function($resource) {
-	return $resource('/petclinic/api/owners/:ownerId/pets', {ownerId : '@ownerId'});
+var OwnerPet = ['$resource','context', function($resource, context) {
+	return $resource(context + '/api/owners/:ownerId/pets', {ownerId : '@ownerId'});
 }];
 
-var Pet = ['$resource', function($resource) {
-	return $resource('/petclinic/api/pets/:id');
+var Pet = ['$resource','context', function($resource, context) {
+	return $resource(context + '/api/pets/:id');
 }];
 
-var Vet = ['$resource', function($resource) {
-	return $resource('/petclinic/api/vets/:vetId');
+var Vet = ['$resource','context', function($resource, context) {
+	return $resource(context + '/api/vets/:vetId');
 }];
 
-var Visit = ['$resource', function($resource) {
-	return $resource('/petclinic/api/pets/:petId/visits', {petId : '@id'});
+var Visit = ['$resource','context', function($resource, context) {
+	return $resource(context + '/api/pets/:petId/visits', {petId : '@id'});
 }];
 
 var MockService = ['$httpBackend', '$http', 'context', function($httpBackend, $http, context) {

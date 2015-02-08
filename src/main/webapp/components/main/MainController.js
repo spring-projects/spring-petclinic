@@ -1,4 +1,4 @@
-var MainController =  ['$scope','$rootScope','$state','$sessionStorage', function($scope, $rootScope, $state, $sessionStorage) {
+var MainController =  ['$scope','$rootScope','$state','$sessionStorage', 'context', function($scope, $rootScope, $state, $sessionStorage, context) {
 	
 	$scope.$storage = $sessionStorage;
 	
@@ -45,6 +45,8 @@ var MainController =  ['$scope','$rootScope','$state','$sessionStorage', functio
 		'url' : '#about',
 		'font' : 'fa fa-question'
 	} ];
+	
+	$scope.context = context;
 	
 	$scope.footerText = '© ' + new Date().getFullYear() + ' Pet Clinic, A Spring Framework Demonstration';
 	
