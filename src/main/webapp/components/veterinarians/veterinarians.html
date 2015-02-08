@@ -1,5 +1,4 @@
-<!-- Featured veterinarians -->
-<section id="veterinarians" class="sections">
+<section id="veterinarians" class="sections sections-narrow">
 	<div class="container">
 	  <div class="row">
 	    <div class="col-md-8 col-md-offset-2">
@@ -12,17 +11,12 @@
 	  <div class="row">
 	    <div data-ng-repeat="vet in vets | limitTo : 12" class="col-md-3">
 	      <div class="thumbnail">
-	        <img data-ng-src="images/vets/vet{{vet.id}}.jpg" alt="Generic placeholder image">
+	        <img data-ng-src="images/vets/vet{{vet.id}}.jpg" alt="Generic placeholder image" class="img-circle">
 	        <div class="caption">
-	          <h3 data-ng-bind="'Dr. ' + vet.firstName + ' ' + vet.lastName">Veterinarian Name</h3>
-	          <p data-ng-bind="vet.description"></p>
+	          <h3 class="caption-heading" data-ng-bind="'Dr. ' + vet.firstName + ' ' + vet.lastName">Veterinarian Name</h3>
+	          <p data-ng-bind="vet.description | limitTo: 100"></p>
 	        </div>
 	      </div>
-	    </div>
-	  </div>
-	  <div class="row">
-	    <div class="col-md-4 col-md-offset-4">
-	      <p><a class="btn btn-primary btn-lg btn-block" href="/veterinarians">View More »</a></p>
 	    </div>
 	  </div>
 	</div>
