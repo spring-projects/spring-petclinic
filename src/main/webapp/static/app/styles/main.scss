@@ -741,6 +741,15 @@ label {
   }
 }
 
+.form-control-file {
+  height: 34px;
+}
+
+.form-control[disabled], 
+.form-control[readonly] {
+  background-color: $text-color-inverse;
+}
+
 .form-group-action {
   padding-top: 20px;
 }
