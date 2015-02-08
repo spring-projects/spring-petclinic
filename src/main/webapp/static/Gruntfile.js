@@ -198,10 +198,7 @@ module.exports = function(grunt) {
     wiredep: {
       app: {
         ignorePath: /^\/|\.\.\//,
-        src: ['<%= config.app %>/index.html'],
-        exclude: [
-          'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js'
-        ]
+        src: ['<%= config.app %>/index.html']
       },
       sass: {
         src: ['<%= config.app %>/styles/{,*/}*.{scss,sass}'],
@@ -442,7 +439,7 @@ module.exports = function(grunt) {
     // 'rev',
     'usemin',
     // For Development - Prevent minification
-    'htmlmin'
+    // 'htmlmin'
   ]);
 
   grunt.registerTask('default', [
