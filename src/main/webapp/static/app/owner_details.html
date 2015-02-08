@@ -1,0 +1,244 @@
+<!doctype html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <title>Pet Clinic - Dashboard</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+  </head>
+  <body>
+    <!--[if lt IE 10]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/">
+            <img alt="Pet Clinic Brand" height="27" width="auto" src="images/logo.png">
+          </a>
+          <button class="navbar-toggle navbar-toggle-left collapsed" type="button" data-toggle="collapse" data-target="#nav-menu">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="glyphicon glyphicon-triangle-bottom"></span>
+          </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="nav-menu" class="navbar-collapse navbar-left collapse">
+          <ul class="nav navbar-nav navbar-menu">
+            <li><a href="owners.html">Owners</a></li>
+            <li><a href="pets.html">Pets</a></li>
+            <li><a href="vets.html">Vets</a></li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+        <ul class="nav navbar-profile">
+          <li class="hidden">
+            <button class="btn btn-default btn-primary btn-new navbar-btn" data-toggle="dropdown">Create New</button>
+          </li>
+          <li><a href="#"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a></li>
+          <li><a href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle img-profile" data-toggle="dropdown" role="button" aria-expanded="false">
+              <img class="img-circle img-circle-small" src="../images/avatar.jpg" width="30" height="30">
+            </a>
+            <ul class="dropdown-menu navbar-dropdown-menu">
+              <li><a href="#">View Profile</a></li>
+              <li><a href="#">Settings</a></li>
+              <li><a href="#">Sign Out</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Help</a></li>
+            </ul>
+          </li>
+        </ul>
+        </div>
+      </div><!-- /.container-fluid -->
+    </nav>
+
+    <!-- Owner Brief Info -->
+    <header class="sections sections-narrow sections-light">
+      <div class="container">
+        <div class="media media-welcome">
+          <div class="media-left">
+            <img src="../images/owner-default.png" class="img-circle media-object" width="90" height="90">
+          </div>
+          <div class="media-body">
+            <div class="pull-right stats stats-lg">
+              <ul>
+                <li>4<span>Pets</span></li>
+                <li>10<span>Visits</span></li>
+              </ul>
+            </div>
+            <h1 class="h3">Maria Escobito</h1>
+            <p>Accountant, Ledger Associates</p>
+            <p><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Accountant, Ledger Associates</p>
+            <div class="btn-group">
+              <a href="#" class="btn btn-link"><span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span> Call</a>
+              <a href="#" class="btn btn-link"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Message</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Owners -->
+    <section id="ownersInfo" class="sections sections-narrow">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-9">
+            <a href="#" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit Owner</a>
+            <h2 class="h3 sub-header">Owner Information</h2>
+            <form class="form-inline form-inline-display">
+              <div class="form-group">
+                <p>First Name</p>
+                <p class="h5">Maria</p>
+              </div>
+              <div class="form-group">
+                <p>Last Name</p>
+                <p class="h5">Rodriguez</p>
+              </div>
+              <div class="form-group">
+                <p>Occupation</p>
+                <p class="h5">Accountant</p>
+              </div>
+              <div class="form-group">
+                <p>Company</p>
+                <p class="h5">Ledger Associates</p>
+              </div>
+              <div class="form-group">
+                <p>Birthday</p>
+                <p class="h5">04 Feb 1988</p>
+              </div>
+              <div class="form-group">
+                <p>Address</p>
+                <p class="h5">345 Maple St.</p>
+              </div>
+              <div class="form-group">
+                <p>City</p>
+                <p class="h5">Madison</p>
+              </div>
+              <div class="form-group">
+                <p>Contact Number</p>
+                <p class="h5">6085557683</p>
+              </div>
+              <div class="form-group">
+                <p>Email</p>
+                <p class="h5">maria.escobito@gmail.com</p>
+              </div>
+            </form>
+          </div>
+          <div class="col-md-3">
+            <h2 class="h3 sub-header">Owner Activities</h2>
+            <!-- List group -->
+            <ul class="list-group">
+              <li class="list-group-item">
+                <span class="glyphicon glyphicon-retweet" aria-hidden="true"></span> 
+                <strong>Next Appointment:</strong> None</li>
+              <li class="list-group-item">
+                <span class="glyphicon glyphicon-road" aria-hidden="true"></span> 
+                <strong>Last Visited:</strong> 02 Feb 2015</li>
+              <li class="list-group-item">
+                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> 
+                <strong>Due Date:</strong> 14 Mar 2015</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pets -->
+    <section id="pets" class="sections sections-narrow">
+      <div class="container">
+        <div class="action-wrappers pull-right">
+          <a class="btn btn-primary pull-right action-item">
+            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Add New Pet
+          </a>
+          <div class="pull-right action-item">
+            View as 
+            <div class="btn-group">
+              <a class="btn btn-default">
+                <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+              </a>
+              <a class="btn btn-default">
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <h2 class="sub-header">Owner's Pets</h2>
+        <div class="row thumbnail-wrapper">
+          <div class="col-md-3">
+            <div class="thumbnail">
+              <img src="../images/pet-default.png" class="img-circle" alt="Generic placeholder image">
+              <div class="caption">
+                <h3 class="caption-heading">Basil</h3>
+                <p class="caption-meta">08 August 2012</p>
+                <p class="caption-meta"><span class="caption-label">Hamster</span></p>
+              </div>
+              <div class="action-bar">
+                <a class="btn btn-default">
+                  <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit Pet
+                </a>
+                <a class="btn btn-default">
+                  <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Add Visit
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pets -->
+    <section id="pets" class="sections sections-bottom-nav sections-light">
+      <div class="container">
+        <ul class="pager pull-left">
+          <li><a href="#"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Previous</a></li>
+        </ul>
+        <ul class="pager pull-right">
+          <li><a href="#"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Carlos Estaban</a></li>
+          <li><a href="#">Jean Coleman <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <p class="pull-right">Tell your friends: <a href="#">Facebook</a>, <a href="#">Twitter</a>, <a href="#">Google+</a></p>
+        <p>© 2015 Pet Clinic, A Spring Framework Demonstration</p>
+      </div>
+    </footer>
+
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/affix.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/alert.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/button.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/carousel.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/collapse.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/dropdown.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tab.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/transition.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/scrollspy.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/modal.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tooltip.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/popover.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:js({app,.tmp}) scripts/main.js -->
+    <script src="scripts/main.js"></script>
+    <!-- endbuild -->
+</body>
+</html>

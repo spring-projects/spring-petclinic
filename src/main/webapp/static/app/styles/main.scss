@@ -261,13 +261,14 @@ input::-moz-focus-inner {
   font-size: 40px;
 }
 
-.section-heading-alt {
-  font-size:
-}
-
 .section-desc {
   font-size: 18px;
   margin-bottom: 25px;
+}
+
+.sections-bottom-nav {
+  height: auto;
+  padding: 0;
 }
 
 .hr-lg {
@@ -602,6 +603,13 @@ input::-moz-focus-inner {
   }
 }
 
+.form-inline-display {
+  .form-group {
+    width: 24%;
+    margin-bottom: 23px;
+  }
+}
+
 .btn-md {
   @extend .btn-lg;
   font-size: 16px;
@@ -874,4 +882,12 @@ label {
 	span {
 		font-size: 13px;
 	}
+}
+
+
+/* Action Items */
+.action-wrappers {
+  .action-item {
+    margin: 0 5px;
+  }
 }
