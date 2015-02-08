@@ -1,0 +1,183 @@
+<!-- This partial include Add/Edit Pet and Success Modals -->
+
+<!-- Add New Pet Modal -->
+<div class="modal modal-owner fade" id="addPetModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <div class="container">
+          <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+              <h1 class="sub-header">Add a New Pet</h1>
+              <em class="text-muted">Fill up pet basic information</em>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+              <div class="form-group">
+                <label for="firstName">Owner</label>
+                <input type="text" class="form-control" id="firstName" value="Maria Rodriguez" readonly>
+              </div>
+              <div class="form-group">
+                <label for="petName">Pet Name</label>
+                <input type="text" class="form-control" id="petName">
+              </div>
+              <div class="form-group">
+                <label for="petProfileImg">Pet Photo</label>
+                <input type="file" class="form-control-file" id="petProfileImg">
+              </div>
+              <div class="form-group">
+                <label for="birthDate">Birth Date</label>
+                <input type="text" class="form-control" id="birthDate">
+              </div>
+               <div class="form-group">
+                <label for="type">Type</label>
+                <select class="form-control" id="type">
+                  <option value="bird">bird</option>
+                  <option value="cat">cat</option>
+                  <option value="dog">dog</option>
+                  <option value="hamster">hamster</option>
+                  <option value="lizard">lizard</option>
+                  <option value="snake">snake</option>
+                </select>
+              </div>
+              <div class="form-group form-group-action">
+                <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#addPetSuccessModal" data-dismiss="modal" aria-label="Close">Add Pet</button>
+                <button class="btn btn-link" class="close" data-dismiss="modal" aria-label="Close">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add New Pet Success Modal -->
+<div class="modal modal-owner fade" id="addPetSuccessModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <div class="container">
+          <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+              <h1 class="sub-header">Pet added successfully!</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+              <div class="alert alert-success" role="alert">
+                Well done! You've successfully added a pet.
+              </div>
+              <div class="form-group form-group-action">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#addPetVisitModal" data-dismiss="modal" aria-label="Close">Add New Visit</button>
+                <button class="btn btn-link" data-dismiss="modal" aria-label="Close">Not Now</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Pet Modal -->
+<div class="modal modal-owner fade" id="editPetModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <div class="container">
+          <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+              <h1 class="sub-header">Edit Pet</h1>
+              <em class="text-muted">Fill up pet basic information</em>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+              <div class="form-group">
+                <label for="firstName">Owner</label>
+                <input type="text" class="form-control" id="firstName" value="Maria Rodriguez" readonly>
+              </div>
+              <div class="form-group">
+                <label for="petName">Pet Name</label>
+                <input type="text" class="form-control" id="petName" value="Basil">
+              </div>
+              <div class="form-group">
+                <label for="petProfileImg">Pet Photo</label>
+                <input type="file" class="form-control-file" id="petProfileImg">
+              </div>
+              <div class="form-group">
+                <label for="birthDate">Birth Date</label>
+                <input type="text" class="form-control" id="birthDate" value="08 August 2012">
+              </div>
+               <div class="form-group">
+                <label for="type">Type</label>
+                <select class="form-control" id="type">
+                  <option value="bird">bird</option>
+                  <option value="cat">cat</option>
+                  <option value="dog">dog</option>
+                  <option value="hamster" selected>hamster</option>
+                  <option value="lizard">lizard</option>
+                  <option value="snake">snake</option>
+                </select>
+              </div>
+              <div class="form-group form-group-action">
+                <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#editPetSuccessModal" data-dismiss="modal" aria-label="Close">Update Pet</button>
+                <button class="btn btn-link" class="close" data-dismiss="modal" aria-label="Close">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Pet Success Modal -->
+<div class="modal modal-owner fade" id="editPetSuccessModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <div class="container">
+          <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+              <h1 class="sub-header">Pet update successfully!</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+              <div class="alert alert-success" role="alert">
+                Well done! You've successfully update a pet.
+              </div>
+              <div class="form-group form-group-action">
+                <a href="owner_details.html" class="btn btn-primary">View owner's pets</a>
+                <button class="btn btn-link" data-dismiss="modal" aria-label="Close">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
