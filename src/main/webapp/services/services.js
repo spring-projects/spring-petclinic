@@ -18,28 +18,36 @@ var Visit = ['$resource','context', function($resource, context) {
 	return $resource(context + '/api/pets/:petId/visits', {petId : '@id'});
 }];
 
-var MockService = ['$httpBackend', '$http', 'context', function($httpBackend, $http, context) {
+var MockService = ['$httpBackend', '$http', '$q', 'context', function($httpBackend, $http, $q, context) {
 	return {
 		mock : function(useMockData) {
 			
-			if(useMockData) {
-				$http.get(context + '/static/mock-data/pets.json').success(function(data) {
-					console.log("Mocking /api/pets");
-					$httpBackend.whenGET(context + '/api/pets').respond(data);
-				});
-				$http.get(context + '/static/mock-data/vets.json').success(function(data) {
-					console.log("Mocking /api/vets");
-					$httpBackend.whenGET(context + '/api/vets').respond(data);
-				});
-				$http.get(context + '/static/mock-data/owners.json').success(function(data) {
-					console.log("Mocking /api/owners");
-					$httpBackend.whenGET(context + '/api/owners').respond(data);
-				});
-			}
+			var passThroughRegex = new RegExp('/static/mock-data/|components/');
+			$httpBackend.whenGET(passThroughRegex).passThrough();	
 			
-			console.log("Setting up passthrough for other urls");
-			var passThroughRegex = new RegExp('/');
-			$httpBackend.whenGET(passThroughRegex).passThrough();
+			if(useMockData) {
+				$q.defer();
+				$q.all([
+				        $http.get(context + '/static/mock-data/pets.json'),
+				        $http.get(context + '/static/mock-data/vets.json'),
+				        $http.get(context + '/static/mock-data/owners.json')
+				]).then(function(data) {
+					console.log("Mocking /api/pets");
+					$httpBackend.whenGET(context + '/api/pets').respond(data[0].data);
+					console.log("Mocking /api/vets");
+					$httpBackend.whenGET(context + '/api/vets').respond(data[1].data);
+					console.log("Mocking /api/owners");
+					$httpBackend.whenGET(context + '/api/owners').respond(data[2].data);
+					
+					console.log("Setting up passthrough for other urls");
+					var passThroughRegex = new RegExp('/');
+					$httpBackend.whenGET(passThroughRegex).passThrough();	
+				});
+			} else {
+				console.log("Setting up passthrough for other urls");
+				var passThroughRegex = new RegExp('/');
+				$httpBackend.whenGET(passThroughRegex).passThrough();			
+			}
 		}
 	}	
 }];

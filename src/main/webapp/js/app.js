@@ -2,7 +2,7 @@ var app = angular.module('spring-petclinic', ['ui.router','ui.router.stateHelper
 
 
 /** Start of Configurable constants **/
-app.constant('useMockData', true);
+app.constant('useMockData', false);
 app.constant('context', '/petclinic');
 /** End of Configurable constants **/
 
