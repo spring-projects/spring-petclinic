@@ -17,4 +17,18 @@ var OwnerDetailsController = ['$scope','$stateParams','Owner', function($scope,$
 	$scope.prevOwner = Owner.get({id:prevId});
 	$scope.nextOwner = Owner.get({id:nextId});
 	$scope.currentOwner = Owner.get($stateParams);
+	
+	$scope.saveOwner = function(){
+		owner = $scope.currentOwner;
+		Owner.save(owner);
+	}
+}];
+
+var AddOwnerController = ['$scope','Owner', function($scope,Owner) {
+	
+	$scope.owner={firstName:'firstName',pets:[]};
+	
+	$scope.addOwner = function(){
+		Owner.$save($scope.owner);
+	}
 }];

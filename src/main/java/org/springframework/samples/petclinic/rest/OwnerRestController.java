@@ -17,6 +17,7 @@ package org.springframework.samples.petclinic.rest;
 
 import java.util.Collection;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.service.ClinicService;
@@ -44,7 +45,15 @@ public class OwnerRestController {
 
     @RequestMapping(value = "/owners", method = RequestMethod.POST)
     public @ResponseBody Owner create(@RequestBody Owner owner) {
-    	this.clinicService.saveOwner(owner);
+    	if (owner.getId()!=null && owner.getId()>0){
+    		Owner existingOwner = clinicService.findOwnerById(owner.getId());
+    		BeanUtils.copyProperties(owner, existingOwner, "pets", "id");
+    		clinicService.saveOwner(existingOwner);
+    	}
+    	else {
+    		this.clinicService.saveOwner(owner);
+    	}
+    	
     	return owner;
     }
     
