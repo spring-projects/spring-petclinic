@@ -30,7 +30,8 @@ var MockService = ['$httpBackend', '$http', '$q', 'context', function($httpBacke
 				$q.all([
 				        $http.get(context + '/static/mock-data/pets.json'),
 				        $http.get(context + '/static/mock-data/vets.json'),
-				        $http.get(context + '/static/mock-data/owners.json')
+				        $http.get(context + '/static/mock-data/owners.json'),
+				        $http.get(context + '/static/mock-data/owner_one.json')
 				]).then(function(data) {
 					console.log("Mocking /api/pets");
 					$httpBackend.whenGET(context + '/api/pets').respond(data[0].data);
@@ -38,6 +39,8 @@ var MockService = ['$httpBackend', '$http', '$q', 'context', function($httpBacke
 					$httpBackend.whenGET(context + '/api/vets').respond(data[1].data);
 					console.log("Mocking /api/owners");
 					$httpBackend.whenGET(context + '/api/owners').respond(data[2].data);
+					console.log("Mocking /api/owners/1");
+					$httpBackend.whenGET(context + '/api/owners/1').respond(data[3].data);
 					
 					console.log("Setting up passthrough for other urls");
 					var passThroughRegex = new RegExp('/');

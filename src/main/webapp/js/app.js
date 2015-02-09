@@ -2,7 +2,7 @@ var app = angular.module('spring-petclinic', ['ui.router','ui.router.stateHelper
 
 
 /** Start of Configurable constants **/
-app.constant('useMockData', false);
+app.constant('useMockData', true);
 app.constant('context', '/petclinic');
 /** End of Configurable constants **/
 
@@ -42,6 +42,12 @@ app.config(['stateHelperProvider','$urlRouterProvider','$urlMatcherFactoryProvid
 		templateUrl: "components/owners/owners.html",
 		controller: "OwnerController",
 		data: { requireLogin : true }
+	}).state({
+		name: "ownerDetails",
+		url: "/owners/:id",
+		templateUrl: "components/owners/owner_details.html",
+		controller: "OwnerDetailsController",
+		data: {requireLogin : true}
 	});
 	
 } ]);
@@ -52,6 +58,7 @@ app.controller('DashboardController', DashboardController);
 app.controller('VeterinarianController', VeterinarianController);
 app.controller('PetController', PetController);
 app.controller('OwnerController', OwnerController);
+app.controller('OwnerDetailsController', OwnerDetailsController);
 app.controller('VisitController', VisitController);
 
 /** Services **/

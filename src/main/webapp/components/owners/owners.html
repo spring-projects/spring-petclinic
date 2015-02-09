@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-md-3" data-ng-repeat="owner in owners">
         <div class="thumbnail">
-          <a href="show.html"><img class="img-circle" data-ng-src="images/avatars/owner{{owner.id}}.jpg" alt="Generic placeholder image"></img></a>
+          <a data-ui-sref="ownerDetails({id: owner.id})"><img class="img-circle" data-ng-src="images/avatars/owner{{owner.id}}.jpg" alt="{{owner.firstName + ' ' + owner.lastName}}"></img></a>
           <div class="caption">
             <h3 class="caption-heading"><a href="show.html" data-ng-bind="owner.firstName + ' ' +owner.lastName"></a></h3>
             <p data-ng-bind="owner.city"></p>
