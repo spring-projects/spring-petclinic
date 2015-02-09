@@ -2,7 +2,7 @@
   <div class="container">
     <h2 class="sub-header">Owners</h2>
     <div class="row thumbnail-wrapper">
-      <div class="col-md-3" ng-repeat="owner in owners | limitTo : 8">
+      <div class="col-md-3" data-ng-repeat="owner in owners | limitTo : 8">
         <div class="thumbnail">
           <a data-ui-sref="ownerDetails({id: owner.id})"><img data-ng-src="images/avatars/owner{{owner.id}}.jpg" class="img-circle" alt="Generic placeholder image"></a>
           <div class="caption">

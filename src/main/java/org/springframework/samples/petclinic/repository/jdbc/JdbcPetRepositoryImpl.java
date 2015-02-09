@@ -17,6 +17,7 @@ package org.springframework.samples.petclinic.repository.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -138,6 +139,30 @@ public class JdbcPetRepositoryImpl implements PetRepository {
 	@Override
 	public List<Pet> findAll() throws DataAccessException {
 		return this.namedParameterJdbcTemplate.query("SELECT * FROM pets", new RowMapper<Pet>(){
+
+			@Override
+			public Pet mapRow(ResultSet rs, int idx) throws SQLException {
+				Pet pet = new Pet();
+				PetType type = new PetType();
+				type.setId(rs.getInt("type_id"));
+				pet.setName(rs.getString("name"));
+				pet.setId(rs.getInt("id"));
+				pet.setBirthDate(new DateTime(rs.getDate("birth_date")));
+				pet.setType(type);
+			
+				return pet;
+			}
+			
+		});
+	}
+
+	@Override
+	public Collection<Pet> findByName(String query) throws DataAccessException {
+		
+		Map<String, String> paramMap = new HashMap<String, String>();
+		paramMap.put("query","%" + query + "%");
+		
+		return this.namedParameterJdbcTemplate.query("SELECT * FROM pets WHERE name LIKE :query", paramMap, new RowMapper<Pet>(){
 
 			@Override
 			public Pet mapRow(ResultSet rs, int idx) throws SQLException {

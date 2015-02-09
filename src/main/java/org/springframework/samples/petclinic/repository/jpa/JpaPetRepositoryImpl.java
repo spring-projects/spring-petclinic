@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.repository.jpa;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -64,8 +65,14 @@ public class JpaPetRepositoryImpl implements PetRepository {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Pet> findAll() throws DataAccessException {
+	public Collection<Pet> findAll() throws DataAccessException {
 		return this.em.createQuery("SELECT pet FROM Pet pet").getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Collection<Pet> findByName(String query) throws DataAccessException {
+		return this.em.createQuery("SELECT pet FROM Pet pet WHERE pet.name like '%" + query + "%'").getResultList();
 	}
 
 }

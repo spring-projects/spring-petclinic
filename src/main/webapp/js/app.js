@@ -61,6 +61,7 @@ app.controller('OwnerController', OwnerController);
 app.controller('OwnerDetailsController', OwnerDetailsController);
 app.controller('AddOwnerController', AddOwnerController);
 app.controller('VisitController', VisitController);
+app.controller('SearchController', SearchController);
 
 /** Services **/
 app.factory('Owner', Owner);
