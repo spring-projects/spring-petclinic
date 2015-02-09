@@ -26,9 +26,9 @@ var OwnerDetailsController = ['$scope','$stateParams','Owner', function($scope,$
 
 var AddOwnerController = ['$scope','Owner', function($scope,Owner) {
 	
-	$scope.owner={firstName:'firstName',pets:[]};
+	$scope.owner={id:0,pets:[]};
 	
 	$scope.addOwner = function(){
-		Owner.$save($scope.owner);
+		Owner.save($scope.owner);
 	}
 }];

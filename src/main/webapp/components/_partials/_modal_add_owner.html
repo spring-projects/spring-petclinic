@@ -1,7 +1,7 @@
 <!-- This partial include Add/Edit Owners and Success Modals -->
 
 <!-- Add Owner Modal -->
-<div class="modal modal-owner fade" id="addOwnerModal" tabindex="-1">
+<div class="modal modal-owner fade" id="addOwnerModal" tabindex="-1" data-ng-controller="AddOwnerController">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -21,11 +21,11 @@
             <div class="col-md-4 col-md-offset-2">
               <div class="form-group">
                 <label for="firstName">First Name</label>
-                <input type="text" class="form-control" id="firstName">
+                <input type="text" class="form-control" id="firstName" ng-model="owner.firstName">
               </div>
               <div class="form-group">
                 <label for="lastName">Last Name</label>
-                <input type="text" class="form-control" id="lastName">
+                <input type="text" class="form-control" id="lastName" ng-model="owner.lastName">
               </div>
               <div class="form-group">
                 <label for="profileImg">Profile Photo</label>
@@ -47,15 +47,15 @@
               </div>
               <div class="form-group">
                 <label for="address">Address</label>
-                <input type="text" class="form-control" id="address">
+                <input type="text" class="form-control" id="address" ng-model="owner.address">
               </div>
               <div class="form-group">
                 <label for="city">City</label>
-                <input type="text" class="form-control" id="city">
+                <input type="text" class="form-control" id="city" ng-model="owner.city">
               </div>
               <div class="form-group">
                 <label for="contactNumber">Contact Number</label>
-                <input type="text" class="form-control" id="contactNumber">
+                <input type="text" class="form-control" id="contactNumber" ng-model="owner.telephone">
               </div>
               <div class="form-group">
                 <label for="email">Email</label>
@@ -64,7 +64,7 @@
             </div>
             <div class="col-md-8 col-md-offset-2">
               <div class="form-group form-group-action">
-                <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#addOwnerSuccessModal" data-dismiss="modal" aria-label="Close">Add Owner</button>
+                <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#addOwnerSuccessModal" data-dismiss="modal" aria-label="Close" ng-click="addOwner()">Add Owner</button>
                 <button class="btn btn-link" class="close" data-dismiss="modal" aria-label="Close">Cancel</button>
               </div>
             </div>
@@ -173,7 +173,7 @@
             </div>
             <div class="col-md-8 col-md-offset-2">
               <div class="form-group form-group-action">
-                <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#editOwnerSuccessModal" data-dismiss="modal" aria-label="Close">Update Owner</button>
+                <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#editOwnerSuccessModal" data-dismiss="modal" aria-label="Close" ng-click="addOwner()">Update Owner</button>
                 <button class="btn btn-link" class="close" data-dismiss="modal" aria-label="Close">Cancel</button>
               </div>
             </div>
