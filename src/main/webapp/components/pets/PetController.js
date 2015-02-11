@@ -22,6 +22,8 @@ var AddPetController = ['$scope','$rootScope','PetType','OwnerPet',function($sco
 				$scope.currentPet.type.name = $scope.petTypes[i].name;
 			}
 		}
-		OwnerPet.save({ownerId:currentOwnerId},$scope.currentPet);
+		OwnerPet.save({ownerId:currentOwnerId},$scope.currentPet, function(pet) {
+			$scope.currentOwner.pets.push(pet);
+		});
 	};
 }];
