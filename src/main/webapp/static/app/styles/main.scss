@@ -198,7 +198,7 @@ input::-moz-focus-inner {
     border-radius: 3px;
     box-shadow: none;
   }
-  
+
   .form-control-group {
     padding-top: $padding-large-vertical;
   }
@@ -231,7 +231,7 @@ input::-moz-focus-inner {
 
 .jumbotron-video {
   position: absolute;
-  opacity: .15;
+  opacity: .20;
   left: 0;
   right: 0;
   bottom: 0px;
@@ -285,17 +285,25 @@ input::-moz-focus-inner {
   background-color: $text-color-inverse;
 }
 
+.sections-alt {
+  background-color: #f9fafb;
+}
+
+
 .sections-darker {
   background-color: #f3f5f7;
 }
 
 .section-heading {
-  font-size: 40px;
+  font-size: 28px;
+  line-height: 40px;
+  margin-bottom: 35px;
 }
 
 .section-desc {
-  font-size: 18px;
-  margin-bottom: 25px;
+  font-size: 16px;
+  line-height: 30px;
+  margin-bottom: 35px;
 }
 
 .sections-bottom-nav {
@@ -602,7 +610,7 @@ input::-moz-focus-inner {
 .btn {
   border-color: transparent;
   border-radius: 3px;
-  font-size: 12px;  
+  font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
   transition: .3s ease-in-out;
@@ -729,7 +737,7 @@ input::-moz-focus-inner {
   .caption-heading {
     font-size: 16px;
     margin-bottom: 10px;
-    
+
     a {
       color: $headings-color;
     }
@@ -763,7 +771,7 @@ input::-moz-focus-inner {
         margin-left: 10px;
       }
     }
-    
+
     img {
       margin-top: 0;
     }
@@ -809,6 +817,11 @@ input::-moz-focus-inner {
   width: 30px;
 }
 
+.img-circle-auto {
+  height: auto;
+  width: auto;
+}
+
 /* Forms */
 label {
   color: $headings-color;
@@ -822,7 +835,7 @@ label {
   color: $gray-dark;
   font-weight: 600;
   transition: background-color ease-in-out .15s;
-  
+
   &:active,
   &:focus {
     background-color: darken($input-bg,5%);
@@ -834,7 +847,7 @@ label {
   height: 34px;
 }
 
-.form-control[disabled], 
+.form-control[disabled],
 .form-control[readonly] {
   background-color: $text-color-inverse;
   border: 1px solid $gray-lighter;
@@ -874,14 +887,14 @@ label {
 .modal-header {
   border: 0;
   padding: 50px 0 20px 0;
-  
+
   .close {
     font-size: 34px;
     position: absolute;
     top: 10px;
     right: 20px;
   }
-  
+
   .sub-header {
     padding-bottom: 0;
   }
@@ -893,7 +906,7 @@ label {
 
 .modal-backdrop {
   background-color: $sections-bg;
-  
+
   &.in {
     opacity: .98;
   }
@@ -910,11 +923,11 @@ label {
     line-height: 60px;
     font-weight: bold;
   }
-  
+
   .form-group {
     position: relative;
   }
-  
+
   .btn {
     background: 0 0;
     border: 0;
@@ -924,7 +937,7 @@ label {
     top: 0;
     z-index: 3;
   }
-  
+
   .glyphicon-search {
     color: $gray-light;
     font-size: 20px;
