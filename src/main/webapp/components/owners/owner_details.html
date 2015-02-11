@@ -77,7 +77,7 @@
 <section id="pets" class="sections sections-narrow">
   <div class="container">
     <div class="action-wrappers pull-right">
-      <a class="btn btn-primary pull-right action-item" data-toggle="modal" data-target="#addPetModal" data-ng-click="setCurrentOwner()">
+      <a class="btn btn-primary pull-right action-item" data-toggle="modal" data-target="#petModal" data-ng-click="addPet()">
         <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Add New Pet
       </a>
       <div class="pull-right action-item">
@@ -103,7 +103,7 @@
             <p class="caption-meta"><span class="caption-label" data-ng-bind="pet.type.name">Hamster</span></p>
           </div>
           <div class="action-bar">
-            <a class="btn btn-default" data-toggle="modal" data-target="#editPetModal">
+            <a class="btn btn-default" data-toggle="modal" data-target="#petModal" data-ng-click="editPet(pet.id)">
               <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit Pet
             </a>
             <a class="btn btn-default" data-toggle="modal" data-target="#addPetVisitModal">

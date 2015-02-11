@@ -51,13 +51,15 @@ var MockService = ['$httpBackend', '$http', '$q', 'context', function($httpBacke
 					
 					console.log("Setting up passthrough for other urls");
 					var passThroughRegex = new RegExp('/');
-					$httpBackend.whenGET(passThroughRegex).passThrough();	
+					$httpBackend.whenGET(passThroughRegex).passThrough();
 				});
 			} else {
 				console.log("Setting up passthrough for other urls");
 				var passThroughRegex = new RegExp('/');
 				$httpBackend.whenGET(passThroughRegex).passThrough();			
-				$httpBackend.whenPOST(passThroughRegex).passThrough();			
+				$httpBackend.whenPOST(passThroughRegex).passThrough();
+				$httpBackend.whenPUT(passThroughRegex).passThrough();
+				$httpBackend.whenDELETE(passThroughRegex).passThrough();
 			}
 		}
 	}	
