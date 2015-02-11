@@ -100,13 +100,42 @@ input::-moz-focus-inner {
 /* Custom page footer */
 .footer {
   font-size: 13px;
-  padding: 30px 0;
+  padding: 40px 0;
+
+  h5, .h5 {
+    color: $text-color;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+
+  .list-unstyled {
+    a {
+      color: $text-color;
+    }
+
+    li {
+      margin-bottom: 10px;
+    }
+  }
 }
 
 .colophon {
-  border-top: 1px solid $sections-border;
-  margin-top: 30px;
-  padding-top: 30px;
+  background-color: $btn-cta;
+  color: $btn-default-color;
+  font-size: 12px;
+  padding: 20px 0;
+
+  p {
+    line-height: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .logo-footer {
+      display: block;
+      margin-bottom: 20px;
+    }
+  }
 }
 
 .container-narrow > hr {
@@ -142,15 +171,15 @@ input::-moz-focus-inner {
 
   h1, .h1 {
     color: $text-color-inverse;
-    font-size: 48px;
-    font-weight: 500;
+    font-size: 52px;
+    font-weight: 600;
     margin-bottom: 15px;
   }
 
   p {
-    color: $text-color-inverse;
-    font-size: 23px;
-    font-weight: 500;
+    color: $navbar-default-link-color;
+    font-size: 24px;
+    font-weight: 400;
     margin-bottom: 30px;
   }
 }
@@ -181,6 +210,9 @@ input::-moz-focus-inner {
 }
 
 .jumbotron-appointment {
+  background: image-url("images/bg-appointment.png") $brand-primary;
+  background-size: cover;
+
   .form-inline {
     font-size: 0;
   }
@@ -285,10 +317,14 @@ input::-moz-focus-inner {
   background-color: $text-color-inverse;
 }
 
-.sections-alt {
+.sections-companies {
+  @extend .text-center;
   background-color: #f9fafb;
-}
 
+  img {
+    max-width: 100%;
+  }
+}
 
 .sections-darker {
   background-color: #f3f5f7;
@@ -311,6 +347,43 @@ input::-moz-focus-inner {
   padding: 0;
 }
 
+.sections-testimonials {
+  background: image-url("images/testimonial-tiles.png") $brand-primary;
+  color: $text-color-inverse;
+  padding: 50px 0;
+
+  .section-heading {
+    color: $text-color-inverse;
+    margin-bottom: 60px;
+  }
+
+  .section-title {
+    color: $text-color-inverse;
+  }
+
+  p {
+    line-height: 32px;
+    font-size: 15px;
+  }
+
+  .img-circle {
+    margin-bottom: 20px;
+  }
+}
+
+.sections-services {
+
+  @media (max-width: 768px) {
+    .img-circle {
+      float: none !important;
+    }
+
+    .col-md-6 {
+      text-align: center;
+    }
+  }
+}
+
 .hr-lg {
   border-top-color: darken($sections-border,4%);
   margin-bottom: 50px;
@@ -329,6 +402,10 @@ input::-moz-focus-inner {
   padding: 15px;
   height: 60px;
   line-height: normal;
+}
+
+.navbar-brand-nopadding {
+  padding: 0;
 }
 
 .navbar-nav {
@@ -749,6 +826,10 @@ input::-moz-focus-inner {
     margin-bottom: 5px;
   }
 
+  .caption-meta-uppercase {
+    text-transform: uppercase; 
+  }
+
   .caption-label {
     @extend .label;
     @extend .label-default;
@@ -800,6 +881,11 @@ input::-moz-focus-inner {
   margin-bottom: 20px;
 }
 
+.thumbnail-noborder {
+  background-color: transparent;
+  border: 0;
+  box-shadow: none;
+}
 
 /* Image circle classes */
 .img-circle {
@@ -1013,6 +1099,23 @@ label {
 }
 
 
+/* Stat numbers */
+.stats-numbers {
+  text-transform: uppercase;
+
+  .glyphicon {
+    color: $gray-lighter;
+    font-size: 30px;
+    margin-bottom: 20px;
+  }
+
+  .stats-number {
+    color: $headings-color;
+    font-size: 40px;
+    line-height: 40px;
+  }
+}
+
 /* Action Items */
 .action-wrappers,
 .action-items {
@@ -1048,7 +1151,7 @@ label {
 }
 
 .scroll-down {
-  background: image-url("images/arrow_down.png") no-repeat center center;
+  background: image-url("images/arrow-down.png") no-repeat center center;
   display: inline-block;
   height: 16px;
   text-indent: -9999px;
@@ -1059,4 +1162,30 @@ label {
   opacity: .3;
   left: 50%;
   margin-left: -16px;
+}
+
+.carousel-indicators-static {
+  left: auto;
+  margin: 30px 0;
+  position: static;
+  text-align: center;
+  width: 100%;
+
+  .active {
+    background-color: $text-color-inverse;
+    height: 10px;
+    margin: 0 8px;
+    width: 10px;
+  }
+
+  li {
+    background-color: $text-color-inverse;
+    background-color: rgba($text-color-inverse,.5);
+    border: 0;
+    border-radius: 100%;
+    cursor: pointer;
+    height: 10px;
+    margin: 0 8px;
+    width: 10px;
+  }
 }
