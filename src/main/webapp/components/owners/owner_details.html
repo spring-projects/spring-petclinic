@@ -14,7 +14,7 @@
         </div>
         <h1 class="h3" data-ng-bind="currentOwner.firstName + ' ' + currentOwner.lastName"></h1>
         <p data-ng-bind="currentOwner.description">Maria Escobito</p>
-        <p data-ng-bind="currentOwner.city"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>California, USA</p>
+        <p><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> <span data-ng-bind="currentOwner.address">345 Maple St.</span>, <span data-ng-bind="currentOwner.city">Madison</span></p>
         <div class="btn-group">
           <a href="#" class="btn btn-link"><span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span> Call</a>
           <a href="#" class="btn btn-link"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Message</a>
@@ -30,7 +30,7 @@
     <div class="row">
       <div class="col-md-9 col-border-right">
         <div class="section-inner-padding">
-          <a href="#" class="btn btn-primary pull-right" data-toggle="modal" data-target="#editOwnerModal"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit Owner</a>
+          <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#editOwnerModal"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit Owner</button>
           <h2 class="h3 sub-header">Owner Information</h2>
           <form class="form-inline form-inline-display">
             <div class="form-group">
@@ -81,9 +81,9 @@
 <section id="pets" class="sections sections-narrow">
   <div class="container">
     <div class="action-wrappers pull-right">
-      <a class="btn btn-primary pull-right action-item" data-toggle="modal" data-target="#petModal" data-ng-click="addPet()">
+      <button class="btn btn-primary pull-right action-item" data-toggle="modal" data-target="#petModal" data-ng-click="addPet()">
         <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Add New Pet
-      </a>
+      </button>
       <div class="pull-right action-item">
         View as
         <div class="btn-group">
@@ -107,12 +107,12 @@
             <p class="caption-meta"><span class="caption-label" data-ng-bind="pet.type.name">Hamster</span></p>
           </div>
           <div class="action-bar">
-            <a class="btn btn-default" data-toggle="modal" data-target="#petModal" data-ng-click="editPet(pet.id)">
+            <button class="btn btn-default" data-toggle="modal" data-target="#petModal" data-ng-click="editPet(pet.id)">
               <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit Pet
-            </a>
-            <a class="btn btn-default" data-toggle="modal" data-target="#addPetVisitModal">
+            </button>
+            <button class="btn btn-default" data-toggle="modal" data-target="#addPetVisitModal">
               <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Add Visit
-            </a>
+            </button>
           </div>
         </div>
       </div>
