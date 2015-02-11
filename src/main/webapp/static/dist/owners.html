@@ -2,7 +2,7 @@
 <html class="no-js">
   <head>
     <meta charset="utf-8">
-    <title>Pet Clinic - Dashboard</title>
+    <title>Pet Clinic - Owners</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <link rel="shortcut icon" href="/favicon.ico">
@@ -31,8 +31,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div id="nav-menu" class="navbar-collapse navbar-left collapse">
           <ul class="nav navbar-nav navbar-menu">
-            <li class="active"><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="owners.html">Owners</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li class="active"><a href="owners.html">Owners</a></li>
             <li><a href="pets.html">Pets</a></li>
             <li><a href="vets.html">Veterinarians</a></li>
           </ul>
@@ -60,37 +60,25 @@
       </div><!-- /.container-fluid -->
     </nav>
 
-    <!-- Welcome -->
-    <header class="sections sections-tight sections-light">
-      <div class="container">
-
-        <div class="media">
-          <div class="pull-right stats stats-md">
-            <ul>
-              <li>12<span>Vets Around</span></li>
-              <li>5<span>Your Tasks</span></li>
-              <li>8<span>Appointments</span></li>
-            </ul>
-          </div>
-          <div class="media-body">
-            <div class="media">
-              <div class="media-left">
-                <img src="../images/avatar.jpg" class="img-circle img-circle-medium media-object" width="80" height="80">
-              </div>
-              <div class="media-body">
-                <h4 class="h3">Welcome back, John Doe</h4>
-                <p>Todays date is <strong>12th February 2014</strong></p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
-
     <!-- Owners -->
     <section id="owners" class="sections sections-narrow">
       <div class="container">
-        <a class="btn btn-primary pull-right" href="owners.html">See All Owners <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
+        <div class="action-items pull-right">
+          <div class="action-item pull-right">
+            View as
+            <div class="btn-group">
+              <a href="#" class="btn btn-default"><span class="glyphicon glyphicon-th" aria-hidden="true"></span></a>
+              <a href="#" class="btn btn-default"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span></a>
+            </div>
+          </div>
+          <div class="action-item pull-right">
+            Sort by
+            <div class="btn-group">
+              <a href="#" class="btn btn-default"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
+              <a href="#" class="btn btn-default"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
+            </div>
+          </div>
+        </div>
         <h2 class="sub-header">Latest Pet Owners</h2>
         <div class="row thumbnail-wrapper">
           <div class="col-md-3">
@@ -170,106 +158,6 @@
                     <a href="#" class="btn-add-pet"><span class="glyphicon glyphicon-plus"></span></a>
                   </li>
                 </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Pets -->
-    <section id="pets" class="sections sections-narrow">
-      <div class="container">
-        <a class="btn btn-primary pull-right" href="pets.html">See All Pets <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
-        <h2 class="sub-header">Latest Pets</h2>
-        <div class="row thumbnail-wrapper">
-          <div class="col-md-3">
-            <div class="thumbnail">
-              <img src="../images/pet-default.png" class="img-circle" alt="Generic placeholder image">
-              <div class="caption">
-                <h3 class="caption-heading">Basil</h3>
-                <p class="caption-meta">08 August 2012</p>
-                <p class="caption-meta"><span class="caption-label">Hamster</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="thumbnail">
-              <img src="../images/pet-default.png" class="img-circle" alt="Generic placeholder image">
-              <div class="caption">
-                <h3 class="caption-heading">Basil</h3>
-                <p class="caption-meta">08 August 2012</p>
-                <p class="caption-meta"><span class="caption-label">Hamster</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="thumbnail">
-              <img src="../images/pet-default.png" class="img-circle" alt="Generic placeholder image">
-              <div class="caption">
-                <h3 class="caption-heading">Basil</h3>
-                <p class="caption-meta">08 August 2012</p>
-                <p class="caption-meta"><span class="caption-label">Hamster</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="thumbnail">
-              <img src="../images/pet-default.png" class="img-circle" alt="Generic placeholder image">
-              <div class="caption">
-                <h3 class="caption-heading">Basil</h3>
-                <p class="caption-meta">08 August 2012</p>
-                <p class="caption-meta"><span class="caption-label">Hamster</span></p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Vets -->
-    <section id="owners" class="sections">
-      <div class="container">
-        <a class="btn btn-primary pull-right" href="vets.html">See All Veterinarians <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
-        <h2 class="sub-header">Veterinarians</h2>
-        <div class="row thumbnail-wrapper">
-          <div class="col-md-3">
-            <div class="thumbnail">
-              <img src="../images/veterinarian-default.jpg" class="img-circle" alt="Generic placeholder image">
-              <div class="caption">
-                <h3 class="caption-heading">Helen Leary</h3>
-                <p class="caption-meta"><span class="glyphicon glyphicon-phone-alt"></span> +6085558763</p>
-                <p class="caption-meta"><span class="caption-label">Surgery</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="thumbnail">
-              <img src="../images/veterinarian-default.jpg" class="img-circle" alt="Generic placeholder image">
-              <div class="caption">
-                <h3 class="caption-heading">Helen Leary</h3>
-                <p class="caption-meta"><span class="glyphicon glyphicon-phone-alt"></span> +6085558763</p>
-                <p class="caption-meta"><span class="caption-label">Surgery</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="thumbnail">
-              <img src="../images/veterinarian-default.jpg" class="img-circle" alt="Generic placeholder image">
-              <div class="caption">
-                <h3 class="caption-heading">Helen Leary</h3>
-                <p class="caption-meta"><span class="glyphicon glyphicon-phone-alt"></span> +6085558763</p>
-                <p class="caption-meta"><span class="caption-label">Surgery</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="thumbnail">
-              <img src="../images/veterinarian-default.jpg" class="img-circle" alt="Generic placeholder image">
-              <div class="caption">
-                <h3 class="caption-heading">Helen Leary</h3>
-                <p class="caption-meta"><span class="glyphicon glyphicon-phone-alt"></span> +6085558763</p>
-                <p class="caption-meta"><span class="caption-label">Surgery</span></p>
               </div>
             </div>
           </div>
