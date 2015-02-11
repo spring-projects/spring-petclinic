@@ -22,6 +22,21 @@ var OwnerDetailsController = ['$scope','$rootScope','$stateParams','Owner', func
 		owner = $scope.currentOwner;
 		Owner.save(owner);
 	}
+	
+	$scope.addPet = function() {
+		$scope.petFormHeader = "Add a new Pet";
+		$scope.currentPet = {type:{}};
+	}
+	
+	$scope.editPet = function(id) {
+		$scope.petFormHeader = "Edit Pet";
+		for(i = 0;i < $scope.currentOwner.pets.length; i++) {
+			if($scope.currentOwner.pets[i].id == id) {
+				$scope.currentPet = $scope.currentOwner.pets[i];
+				break;
+			}
+		}
+	};
 
 }];
 

@@ -1,7 +1,7 @@
 <!-- This partial include Add/Edit Pet and Success Modals -->
 
-<!-- Add New Pet Modal -->
-<div class="modal modal-owner fade" id="addPetModal" tabindex="-1" data-ng-controller="AddPetController">
+<!-- Pet Details Modal -->
+<div class="modal modal-owner fade" id="petModal" tabindex="-1" data-ng-controller="PetDetailsController">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -9,7 +9,7 @@
         <div class="container">
           <div class="row">
             <div class="col-md-4 col-md-offset-4">
-              <h1 class="sub-header">Add a New Pet</h1>
+              <h1 class="sub-header" data-ng-bind="petFormHeader"></h1>
               <em class="text-muted">Fill up pet basic information</em>
             </div>
           </div>
@@ -38,11 +38,11 @@
                <div class="form-group">
                 <label for="type">Type</label>
                 <select class="form-control" id="type" data-ng-model="currentPet.type.id">
-                  <option data-ng-repeat="type in petTypes" data-ng-value="type.id" data-ng-bind="type.name"></option>
+                  <option data-ng-repeat="type in petTypes" data-ng-value="type.id" data-ng-bind="type.name" ng-selected="currentPet.type.id == type.id"></option>
                 </select>
               </div>
               <div class="form-group form-group-action">
-                <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#addPetSuccessModal" data-dismiss="modal" aria-label="Close" data-ng-click="save()">Add Pet</button>
+                <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#addPetSuccessModal" data-dismiss="modal" aria-label="Close" data-ng-click="save()">Save</button>
                 <button class="btn btn-link" class="close" data-dismiss="modal" aria-label="Close">Cancel</button>
               </div>
             </div>
@@ -77,64 +77,6 @@
               <div class="form-group form-group-action">
                 <button class="btn btn-primary" data-toggle="modal" data-target="#addPetVisitModal" data-dismiss="modal" aria-label="Close">Add New Visit</button>
                 <button class="btn btn-link" data-dismiss="modal" aria-label="Close">Not Now</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Edit Pet Modal -->
-<div class="modal modal-owner fade" id="editPetModal" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-        <div class="container">
-          <div class="row">
-            <div class="col-md-4 col-md-offset-4">
-              <h1 class="sub-header">Edit Pet</h1>
-              <em class="text-muted">Fill up pet basic information</em>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-body">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-4 col-md-offset-4">
-              <div class="form-group">
-                <label for="firstName">Owner</label>
-                <input type="text" class="form-control" id="firstName" value="Maria Rodriguez" readonly>
-              </div>
-              <div class="form-group">
-                <label for="petName">Pet Name</label>
-                <input type="text" class="form-control" id="petName" value="Basil">
-              </div>
-              <div class="form-group">
-                <label for="petProfileImg">Pet Photo</label>
-                <input type="file" class="form-control-file" id="petProfileImg">
-              </div>
-              <div class="form-group">
-                <label for="birthDate">Birth Date</label>
-                <input type="text" class="form-control" id="birthDate" value="08 August 2012">
-              </div>
-               <div class="form-group">
-                <label for="type">Type</label>
-                <select class="form-control" id="type">
-                  <option value="bird">bird</option>
-                  <option value="cat">cat</option>
-                  <option value="dog">dog</option>
-                  <option value="hamster" selected>hamster</option>
-                  <option value="lizard">lizard</option>
-                  <option value="snake">snake</option>
-                </select>
-              </div>
-              <div class="form-group form-group-action">
-                <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#editPetSuccessModal" data-dismiss="modal" aria-label="Close">Update Pet</button>
-                <button class="btn btn-link" class="close" data-dismiss="modal" aria-label="Close">Cancel</button>
               </div>
             </div>
           </div>

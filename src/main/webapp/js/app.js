@@ -57,7 +57,7 @@ app.controller('MainController', MainController);
 app.controller('DashboardController', DashboardController);
 app.controller('VeterinarianController', VeterinarianController);
 app.controller('PetController', PetController);
-app.controller('AddPetController', AddPetController);
+app.controller('PetDetailsController', PetDetailsController);
 app.controller('OwnerController', OwnerController);
 app.controller('OwnerDetailsController', OwnerDetailsController);
 app.controller('AddOwnerController', AddOwnerController);
@@ -85,6 +85,8 @@ app.directive('scrollToTarget', function() {
     });
   };
 });
+
+app.directive('datePicker', DatePickerDirective);
 
 app.run(function(useMockData, MockService) {
 	MockService.mock(useMockData);
