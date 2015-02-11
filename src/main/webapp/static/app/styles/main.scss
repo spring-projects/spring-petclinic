@@ -491,7 +491,9 @@ input::-moz-focus-inner {
     margin-left: 15px;
     margin-top: 15px;
 
-    > a {
+    > a,
+    > .nav-action {
+      background-color: transparent;
       color: $navbar-default-link-color;
       border: 1px solid $navbar-default-link-color;
       border-radius: 100%;
@@ -827,7 +829,7 @@ input::-moz-focus-inner {
   }
 
   .caption-meta-uppercase {
-    text-transform: uppercase; 
+    text-transform: uppercase;
   }
 
   .caption-label {
