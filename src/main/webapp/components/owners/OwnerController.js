@@ -8,7 +8,7 @@ var OwnerController = ['$scope','$state','Owner',function($scope,$state,Owner) {
 	$scope.owners = Owner.query();
 }];
 
-var OwnerDetailsController = ['$scope','$stateParams','Owner', function($scope,$stateParams,Owner) {
+var OwnerDetailsController = ['$scope','$rootScope','$stateParams','Owner', function($scope,$rootScope,$stateParams,Owner) {
 	
 	var currentId = $stateParams.id;
 	var nextId = parseInt($stateParams.id) + 1;
@@ -22,6 +22,11 @@ var OwnerDetailsController = ['$scope','$stateParams','Owner', function($scope,$
 		owner = $scope.currentOwner;
 		Owner.save(owner);
 	}
+	
+	$scope.setCurrentOwner = function() {
+		$rootScope.currentOwner = $scope.currentOwner;
+	}
+	
 }];
 
 var AddOwnerController = ['$scope','Owner', function($scope,Owner) {

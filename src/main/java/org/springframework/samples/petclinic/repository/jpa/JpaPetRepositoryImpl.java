@@ -72,7 +72,7 @@ public class JpaPetRepositoryImpl implements PetRepository {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<Pet> findByName(String query) throws DataAccessException {
-		return this.em.createQuery("SELECT pet FROM Pet pet WHERE pet.name like '%" + query + "%'").getResultList();
+		return this.em.createQuery("SELECT pet FROM Pet pet WHERE UPPER(pet.name) like UPPER('%" + query + "%')").getResultList();
 	}
 
 }

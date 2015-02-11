@@ -57,6 +57,7 @@ app.controller('MainController', MainController);
 app.controller('DashboardController', DashboardController);
 app.controller('VeterinarianController', VeterinarianController);
 app.controller('PetController', PetController);
+app.controller('AddPetController', AddPetController);
 app.controller('OwnerController', OwnerController);
 app.controller('OwnerDetailsController', OwnerDetailsController);
 app.controller('AddOwnerController', AddOwnerController);
@@ -68,6 +69,7 @@ app.factory('Owner', Owner);
 app.factory('Pet', Pet);
 app.factory('Vet', Vet);
 app.factory('Visit', Visit);
+app.factory('PetType', PetType);
 app.factory('MockService', MockService);
 
 /** Directives **/
