@@ -6,14 +6,14 @@
         <img data-ng-src="images/avatars/owner{{currentOwner.id}}.jpg" class="img-circle media-object" width="90" height="90">
       </div>
       <div class="media-body">
-        <div class="pull-right stats stats-lg">
+        <div class="pull-right stats stats-md">
           <ul>
             <li>{{currentOwner.pets.length || 0}}<span>Pets</span></li>
             <li>{{currentOwner.visits.length || 0}}<span>Visits</span></li>
           </ul>
         </div>
         <h1 class="h3" data-ng-bind="currentOwner.firstName + ' ' + currentOwner.lastName"></h1>
-        <p data-ng-bind="currentOwner.description">Accountant, Ledger Associates</p>
+        <p data-ng-bind="currentOwner.description">Maria Escobito</p>
         <p data-ng-bind="currentOwner.city"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>California, USA</p>
         <div class="btn-group">
           <a href="#" class="btn btn-link"><span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span> Call</a>
@@ -76,7 +76,7 @@
 <!-- Pets -->
 <section id="pets" class="sections sections-narrow">
   <div class="container">
-    <div class="action-wrappers pull-right">
+    <div class="action-items pull-right">
       <a class="btn btn-primary pull-right action-item" data-toggle="modal" data-target="#addPetModal">
         <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Add New Pet
       </a>
