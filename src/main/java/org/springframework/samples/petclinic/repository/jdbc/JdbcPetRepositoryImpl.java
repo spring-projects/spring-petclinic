@@ -162,7 +162,7 @@ public class JdbcPetRepositoryImpl implements PetRepository {
 		Map<String, String> paramMap = new HashMap<String, String>();
 		paramMap.put("query","%" + query + "%");
 		
-		return this.namedParameterJdbcTemplate.query("SELECT * FROM pets WHERE name LIKE :query", paramMap, new RowMapper<Pet>(){
+		return this.namedParameterJdbcTemplate.query("SELECT * FROM pets WHERE UPPER(name) LIKE UPPER(:query)", paramMap, new RowMapper<Pet>(){
 
 			@Override
 			public Pet mapRow(ResultSet rs, int idx) throws SQLException {

@@ -1,7 +1,7 @@
 <!-- This partial include Add/Edit Pet and Success Modals -->
 
 <!-- Add New Pet Modal -->
-<div class="modal modal-owner fade" id="addPetModal" tabindex="-1">
+<div class="modal modal-owner fade" id="addPetModal" tabindex="-1" data-ng-controller="AddPetController">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -21,33 +21,28 @@
             <div class="col-md-4 col-md-offset-4">
               <div class="form-group">
                 <label for="firstName">Owner</label>
-                <input type="text" class="form-control" id="firstName" value="Maria Rodriguez" readonly>
+                <input type="text" class="form-control" id="firstName" data-ng-value="currentOwner.firstName + ' ' + currentOwner.lastName" readonly>
               </div>
               <div class="form-group">
                 <label for="petName">Pet Name</label>
-                <input type="text" class="form-control" id="petName">
+                <input type="text" class="form-control" id="petName" data-ng-model="currentPet.name">
               </div>
               <div class="form-group">
                 <label for="petProfileImg">Pet Photo</label>
-                <input type="file" class="form-control-file" id="petProfileImg">
+                <input type="file" class="form-control-file" id="petProfileImg" data-ng-src="images/pet-default.jpg">
               </div>
               <div class="form-group">
                 <label for="birthDate">Birth Date</label>
-                <input type="text" class="form-control" id="birthDate">
+                <input type="text" class="form-control" id="birthDate" data-ng-model="currentPet.birthDate" readonly>
               </div>
                <div class="form-group">
                 <label for="type">Type</label>
-                <select class="form-control" id="type">
-                  <option value="bird">bird</option>
-                  <option value="cat">cat</option>
-                  <option value="dog">dog</option>
-                  <option value="hamster">hamster</option>
-                  <option value="lizard">lizard</option>
-                  <option value="snake">snake</option>
+                <select class="form-control" id="type" data-ng-model="currentPet.type.id">
+                  <option data-ng-repeat="type in petTypes" data-ng-value="type.id" data-ng-bind="type.name"></option>
                 </select>
               </div>
               <div class="form-group form-group-action">
-                <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#addPetSuccessModal" data-dismiss="modal" aria-label="Close">Add Pet</button>
+                <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#addPetSuccessModal" data-dismiss="modal" aria-label="Close" data-ng-click="save()">Add Pet</button>
                 <button class="btn btn-link" class="close" data-dismiss="modal" aria-label="Close">Cancel</button>
               </div>
             </div>

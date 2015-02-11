@@ -33,17 +33,17 @@
               </div>
               <div class="form-group">
                 <label for="occupation">Occupation</label>
-                <input type="text" class="form-control" id="occupation">
+                <input type="text" class="form-control" id="occupation" readonly>
               </div>
                <div class="form-group">
                 <label for="company">Company</label>
-                <input type="text" class="form-control" id="company">
+                <input type="text" class="form-control" id="company" readonly>
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-group">
                 <label for="birthDate">Birth Date</label>
-                <input type="text" class="form-control" id="birthDate">
+                <input type="text" class="form-control" id="birthDate" readonly>
               </div>
               <div class="form-group">
                 <label for="address">Address</label>
@@ -59,12 +59,12 @@
               </div>
               <div class="form-group">
                 <label for="email">Email</label>
-                <input type="text" class="form-control" id="email">
+                <input type="text" class="form-control" id="email" readonly>
               </div>
             </div>
             <div class="col-md-8 col-md-offset-2">
               <div class="form-group form-group-action">
-                <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#addOwnerSuccessModal" data-dismiss="modal" aria-label="Close" ng-click="addOwner()">Add Owner</button>
+                <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#addOwnerSuccessModal" data-dismiss="modal" aria-label="Close" data-ng-click="addOwner()">Add Owner</button>
                 <button class="btn btn-link" class="close" data-dismiss="modal" aria-label="Close">Cancel</button>
               </div>
             </div>
@@ -130,11 +130,11 @@
             <div class="col-md-4 col-md-offset-2">
               <div class="form-group">
                 <label for="firstName">First Name</label>
-                <input type="text" class="form-control" id="firstName" value="Maria">
+                <input type="text" class="form-control" id="firstName" ng-model="currentOwner.firstName">
               </div>
               <div class="form-group">
                 <label for="lastName">Last Name</label>
-                <input type="text" class="form-control" id="lastName" value="Rodriguez">
+                <input type="text" class="form-control" id="lastName" ng-model="currentOwner.lastName">
               </div>
               <div class="form-group">
                 <label for="profileImg">Profile Photo</label>
@@ -142,38 +142,38 @@
               </div>
               <div class="form-group">
                 <label for="occupation">Occupation</label>
-                <input type="text" class="form-control" id="occupation" value="Accountant">
+                <input type="text" class="form-control" id="occupation" value="Accountant" readonly>
               </div>
                <div class="form-group">
                 <label for="company">Company</label>
-                <input type="text" class="form-control" id="company" value="Ledger Associates">
+                <input type="text" class="form-control" id="company" value="Ledger Associates" readonly>
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-group">
                 <label for="birthDate">Birth Date</label>
-                <input type="text" class="form-control" id="birthDate" value="04 Feb 1988">
+                <input type="text" class="form-control" id="birthDate" value="04 Feb 1988" readonly>
               </div>
               <div class="form-group">
                 <label for="address">Address</label>
-                <input type="text" class="form-control" id="address" value="345 Maple St.">
+                <input type="text" class="form-control" id="address" ng-model="currentOwner.address">
               </div>
               <div class="form-group">
                 <label for="city">City</label>
-                <input type="text" class="form-control" id="city" value="Madison">
+                <input type="text" class="form-control" id="city" ng-model="currentOwner.city">
               </div>
               <div class="form-group">
                 <label for="contactNumber">Contact Number</label>
-                <input type="text" class="form-control" id="contactNumber" value="6085557683">
+                <input type="text" class="form-control" id="contactNumber" ng-model="currentOwner.telephone">
               </div>
               <div class="form-group">
                 <label for="email">Email</label>
-                <input type="text" class="form-control" id="email" value="maria.escobito@gmail.com">
+                <input type="text" class="form-control" id="email" value="maria.escobito@gmail.com" readonly>
               </div>
             </div>
             <div class="col-md-8 col-md-offset-2">
               <div class="form-group form-group-action">
-                <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#editOwnerSuccessModal" data-dismiss="modal" aria-label="Close" ng-click="addOwner()">Update Owner</button>
+                <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#editOwnerSuccessModal" data-dismiss="modal" aria-label="Close" ng-click="saveOwner()">Update Owner</button>
                 <button class="btn btn-link" class="close" data-dismiss="modal" aria-label="Close">Cancel</button>
               </div>
             </div>
