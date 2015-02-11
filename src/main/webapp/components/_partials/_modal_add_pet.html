@@ -37,8 +37,8 @@
               </div>
                <div class="form-group">
                 <label for="type">Type</label>
-                <select class="form-control" id="type" data-ng-model="currentPet.type">
-                  <option data-ng-repeat="type in petTypes" data-ng-value="type.id" data-ng-selected="currentPet.type.id == type.id" data-ng-bind="type.name"></option>
+                <select class="form-control" id="type" data-ng-model="currentPet.type.id">
+                  <option data-ng-repeat="type in petTypes" data-ng-value="type.id" data-ng-bind="type.name"></option>
                 </select>
               </div>
               <div class="form-group form-group-action">

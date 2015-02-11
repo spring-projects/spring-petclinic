@@ -9,9 +9,9 @@ app.constant('context', '/petclinic');
 app.config(['stateHelperProvider','$urlRouterProvider','$urlMatcherFactoryProvider',function(stateHelperProvider,$urlRouterProvider,$urlMatcherFactoryProvider) {
 
 	$urlRouterProvider.otherwise("/");
-	
+
 	$urlMatcherFactoryProvider.strictMode(false)
-	
+
 	stateHelperProvider.state({
 		name: "landing",
 		url: "/",
@@ -49,7 +49,7 @@ app.config(['stateHelperProvider','$urlRouterProvider','$urlMatcherFactoryProvid
 		controller: "OwnerDetailsController",
 		data: {requireLogin : true}
 	});
-	
+
 } ]);
 
 /** Controllers **/
@@ -67,6 +67,7 @@ app.controller('SearchController', SearchController);
 /** Services **/
 app.factory('Owner', Owner);
 app.factory('Pet', Pet);
+app.factory('OwnerPet', OwnerPet);
 app.factory('Vet', Vet);
 app.factory('Visit', Visit);
 app.factory('PetType', PetType);
@@ -79,7 +80,7 @@ app.directive('scrollToTarget', function() {
     element.bind('click', function() {
     	angular.element('html, body').stop().animate({
 			scrollTop: angular.element(angular.element(element).attr('href')).offset().top - 20
-		}, 1500); 
+		}, 1500);
 		return false;
     });
   };
