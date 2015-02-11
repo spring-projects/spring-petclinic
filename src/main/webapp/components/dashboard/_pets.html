@@ -1,5 +1,6 @@
 <section id="pets" class="sections sections-narrow" data-ng-controller="PetController">
   <div class="container">
+    <a class="btn btn-primary pull-right" href="#" data-ui-sref="pets">See All Pets <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
     <h2 class="sub-header">Pets</h2>
     <div class="row thumbnail-wrapper">
       <div class="col-md-3" ng-repeat="pet in pets | limitTo : 4">
@@ -11,12 +12,6 @@
             <p class="caption-meta"><span class="caption-label" data-ng-bind="pet.type.name"></span></p>
           </div>
         </div>
-      </div>
-    </div>
-    <!-- /row -->
-    <div class="row">
-      <div class="col-md-4 col-md-offset-4">
-        <p><a class="btn btn-primary btn-block" data-ui-sref="pets">See All Pets</a></p>
       </div>
     </div>
   </div>

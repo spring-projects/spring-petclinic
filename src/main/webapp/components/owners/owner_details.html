@@ -25,49 +25,53 @@
 </header>
 
 <!-- Owners -->
-<section id="ownersInfo" class="sections sections-narrow">
+<section id="ownersInfo" class="sections sections-no-padding sections-darker">
   <div class="container">
     <div class="row">
-      <div class="col-md-9">
-        <a href="#" class="btn btn-primary pull-right" data-toggle="modal" data-target="#editOwnerModal"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit Owner</a>
-        <h2 class="h3 sub-header">Owner Information</h2>
-        <form class="form-inline form-inline-display">
-          <div class="form-group">
-            <p>First Name</p>
-            <p class="h5" data-ng-bind="currentOwner.firstName">Maria</p>
-          </div>
-          <div class="form-group">
-            <p>Last Name</p>
-            <p class="h5" data-ng-bind="currentOwner.lastName">Rodriguez</p>
-          </div>
-          <div class="form-group">
-            <p>Address</p>
-            <p class="h5" data-ng-bind="currentOwner.address">345 Maple St.</p>
-          </div>
-          <div class="form-group">
-            <p>City</p>
-            <p class="h5" data-ng-bind="currentOwner.city">Madison</p>
-          </div>
-          <div class="form-group">
-            <p>Contact Number</p>
-            <p class="h5" data-ng-bind="currentOwner.telephone">6085557683</p>
-          </div>
-        </form>
+      <div class="col-md-9 col-border-right">
+        <div class="section-inner-padding">
+          <a href="#" class="btn btn-primary pull-right" data-toggle="modal" data-target="#editOwnerModal"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit Owner</a>
+          <h2 class="h3 sub-header">Owner Information</h2>
+          <form class="form-inline form-inline-display">
+            <div class="form-group">
+              <p>First Name</p>
+              <p class="h5" data-ng-bind="currentOwner.firstName">Maria</p>
+            </div>
+            <div class="form-group">
+              <p>Last Name</p>
+              <p class="h5" data-ng-bind="currentOwner.lastName">Rodriguez</p>
+            </div>
+            <div class="form-group">
+              <p>Address</p>
+              <p class="h5" data-ng-bind="currentOwner.address">345 Maple St.</p>
+            </div>
+            <div class="form-group">
+              <p>City</p>
+              <p class="h5" data-ng-bind="currentOwner.city">Madison</p>
+            </div>
+            <div class="form-group">
+              <p>Contact Number</p>
+              <p class="h5" data-ng-bind="currentOwner.telephone">6085557683</p>
+            </div>
+          </form>
+        </div>
       </div>
       <div class="col-md-3">
-        <h2 class="h3 sub-header">Owner Activities</h2>
-        <!-- List group -->
-        <ul class="list-group">
-          <li class="list-group-item">
-            <span class="glyphicon glyphicon-retweet" aria-hidden="true"></span>
-            <strong>Next Appointment:</strong> None</li>
-          <li class="list-group-item">
-            <span class="glyphicon glyphicon-road" aria-hidden="true"></span>
-            <strong>Last Visited:</strong> 02 Feb 2015</li>
-          <li class="list-group-item">
-            <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-            <strong>Due Date:</strong> 14 Mar 2015</li>
-        </ul>
+        <div class="section-inner-padding">
+          <h2 class="h3 sub-header">Owner Activities</h2>
+          <!-- List group -->
+          <ul class="list-group">
+            <li class="list-group-item">
+              <span class="glyphicon glyphicon-retweet" aria-hidden="true"></span>
+              <strong>Next Appointment:</strong> None</li>
+            <li class="list-group-item">
+              <span class="glyphicon glyphicon-road" aria-hidden="true"></span>
+              <strong>Last Visited:</strong> 02 Feb 2015</li>
+            <li class="list-group-item">
+              <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+              <strong>Due Date:</strong> 14 Mar 2015</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -117,12 +121,12 @@
 </section>
 
 <!-- Pets -->
-<section id="pets" class="sections sections-bottom-nav sections-light">
+<section id="pets" class="sections sections-bottom-nav sections-darker">
   <div class="container">
-    <ul class="pager pull-left">
+    <ul class="pager pager-link pull-left">
       <li><a data-ui-sref="owners"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back to Owners List</a></li>
     </ul>
-    <ul class="pager pull-right">
+    <ul class="pager pager-link pull-right">
       <li><a data-ui-sref="ownerDetails({id:prevOwner.id})"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> {{prevOwner.firstName + ' ' + prevOwner.lastName}}</a></li>
       <li><a data-ui-sref="ownerDetails({id:nextOwner.id})">{{nextOwner.firstName + ' ' + nextOwner.lastName}}<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a></li>
     </ul>

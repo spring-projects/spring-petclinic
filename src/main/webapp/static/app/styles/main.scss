@@ -210,7 +210,7 @@ input::-moz-focus-inner {
 }
 
 .jumbotron-appointment {
-  background: image-url("images/bg-appointment.png") $brand-primary;
+  background: url("../images/bg-appointment.png") $brand-primary;
   background-size: cover;
 
   .form-inline {
@@ -348,7 +348,7 @@ input::-moz-focus-inner {
 }
 
 .sections-testimonials {
-  background: image-url("images/testimonial-tiles.png") $brand-primary;
+  background: url("../images/testimonial-tiles.png") $brand-primary;
   color: $text-color-inverse;
   padding: 50px 0;
 
@@ -834,6 +834,7 @@ input::-moz-focus-inner {
     @extend .label;
     @extend .label-default;
     background-color: #98a4b0;
+    margin: 0 2px;
   }
 
   .action-bar {
@@ -1151,7 +1152,7 @@ label {
 }
 
 .scroll-down {
-  background: image-url("images/arrow-down.png") no-repeat center center;
+  background: url("../images/arrow-down.png") no-repeat center center;
   display: inline-block;
   height: 16px;
   text-indent: -9999px;

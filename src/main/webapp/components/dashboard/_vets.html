@@ -1,5 +1,6 @@
 <section id="vets" class="sections sections-narrow" data-ng-controller="VeterinarianController">
   <div class="container">
+    <a class="btn btn-primary pull-right" href="#" data-ui-sref="vets">See All Veterinarians <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
     <h2 class="sub-header">Veterinarians</h2>
     <div class="row thumbnail-wrapper">
       <div class="col-md-3" data-ng-repeat="vet in vets | limitTo : 8">
@@ -11,12 +12,6 @@
             <p class="caption-meta"><span class="caption-label" data-ng-repeat="specialty in vet.specialties"><span data-ng-bind="specialty.name">Surgery</span></span></p>
           </div>
         </div>
-      </div>
-    </div>
-    <!-- /row -->
-    <div class="row">
-      <div class="col-md-4 col-md-offset-4">
-        <p><a class="btn btn-primary btn-block" data-ui-sref="vets">See All Veterinarians</a></p>
       </div>
     </div>
   </div>

@@ -1,5 +1,6 @@
 <section id="owners" class="sections sections-narrow" data-ng-controller="OwnerController">
   <div class="container">
+    <a class="btn btn-primary pull-right" href="#" data-ui-sref="owners">See All Owners <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
     <h2 class="sub-header">Owners</h2>
     <div class="row thumbnail-wrapper">
       <div class="col-md-3" data-ng-repeat="owner in owners | limitTo : 8">
@@ -21,12 +22,6 @@
             </ul>
           </div>
         </div>
-      </div>
-    </div>
-    <!-- /row -->
-    <div class="row">
-      <div class="col-md-4 col-md-offset-4">
-        <p><a class="btn btn-primary btn-block" data-ui-sref="pets">See All Owners</a></p>
       </div>
     </div>
   </div>

@@ -1,5 +1,21 @@
 <section id="pets" class="sections sections-narrow">
   <div class="container">
+    <div class="action-items pull-right">
+      <div class="action-item pull-right">
+        View as
+        <div class="btn-group">
+          <a href="#" class="btn btn-default"><span class="glyphicon glyphicon-th" aria-hidden="true"></span></a>
+          <a href="#" class="btn btn-default"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span></a>
+        </div>
+      </div>
+      <div class="action-item pull-right">
+        Sort by
+        <div class="btn-group">
+          <a href="#" class="btn btn-default"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
+          <a href="#" class="btn btn-default"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
+        </div>
+      </div>
+    </div>
     <h2 class="sub-header">Pets</h2>
     <div class="row">
       <div class="col-md-3" data-ng-repeat="pet in pets | filter:search">
