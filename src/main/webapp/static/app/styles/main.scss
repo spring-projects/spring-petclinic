@@ -5,16 +5,17 @@ $text-color-inverse: #fff;
 $headings-color: #252a35;
 $sections-bg: #f9fafb;
 $sections-border: #dee4e8;
-$jumbotron-bg: #42494d;
+$btn-default-color: #747c83;
+$btn-default-border: #D4D5D7;
+$btn-cta: #2e3532;
+$jumbotron-bg: $brand-primary;
 $navbar-default-bg: #23a04d;
 $navbar-default-border: #23a04d;
 $navbar-default-link-color: #b3dcc3;
 $navbar-default-link-hover-color: #fff;
 $navbar-default-link-active-color: #fff;
-$navbar-dropdown-menu: #2e3532;
+$navbar-dropdown-menu: $btn-cta;
 $thumbnail-border: #e6e9ed;
-$btn-default-color: #747c83;
-$btn-default-border: #D4D5D7;
 $input-bg: #D9DCDF;
 $gray-lighter: #e3e5e6;
 
@@ -189,8 +190,11 @@ input::-moz-focus-inner {
   }
 
   .form-control {
-    height: 54px;
-    border: 1px solid $text-color-inverse;
+    background-color: $text-color-inverse;
+    font-size: 16px;
+    font-weight: 400;
+    height: 47px;
+    border: 0;
     border-radius: 3px;
     box-shadow: none;
   }
@@ -227,16 +231,16 @@ input::-moz-focus-inner {
 
 .jumbotron-video {
   position: absolute;
-  opacity: .85;
+  opacity: .15;
   left: 0;
-  top: 0px;
+  right: 0;
+  bottom: 0px;
   z-index: 1;
-  height: auto;
   width: 100%;
 }
 
 .jumbotron-welcome {
-  background-color: $text-color-inverse;
+  height: 700px;
 }
 
 @media (max-width: $screen-md-min) {
@@ -633,6 +637,49 @@ input::-moz-focus-inner {
   }
 }
 
+.btn-inverse {
+  background-color: rgba($text-color-inverse, 0.1);
+  border: 1px solid rgba($text-color-inverse, 0.5);
+  color: $text-color-inverse;
+
+  &:hover,
+  &:active,
+  &:focus {
+    background-color: rgba($text-color-inverse, 0.2);
+    border: 1px solid $text-color-inverse;
+    color: $text-color-inverse;
+  }
+}
+
+.btn-cta {
+  background-color: $btn-cta;
+  border-radius: 4px;
+  color: $text-color-inverse !important;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 600 !important;
+  text-transform: capitalize;
+
+  &.btn-inverse {
+    @extend .btn-inverse;
+  }
+
+  @media (max-width: $screen-md-min) {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+
+.btn-cta + .btn-cta {
+  margin-left: 3px;
+  margin-right: 3px;
+
+  @media (max-width: $screen-md-min) {
+    margin: 0;
+  }
+}
+
 .form-group {
   .btn-link {
     color: $text-color;
@@ -985,4 +1032,18 @@ label {
       border: 0;
     }
   }
+}
+
+.scroll-down {
+  background: image-url("images/arrow_down.png") no-repeat center center;
+  display: inline-block;
+  height: 16px;
+  text-indent: -9999px;
+  width: 33px;
+  z-index: 230;
+  position: absolute;
+  bottom: -20px;
+  opacity: .3;
+  left: 50%;
+  margin-left: -16px;
 }

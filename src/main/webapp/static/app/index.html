@@ -20,42 +20,35 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <nav class="navbar navbar-default navbar-static-top">
-      <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header pull-left">
-          <a class="navbar-brand" href="/dashboard.html">
-            <img alt="Pet Clinic Brand" height="27" width="auto" src="images/logo.png">
-          </a>
-        </div>
-
-        <ul class="nav navbar-links pull-right">
-          <li>
-            <a href="#appointment" class="js-scroll-nav">Get started</a>
-          </li>
-          <li>
-            <a href="#">Login</a>
-          </li>
-        </ul>
-        </div>
-      </div><!-- /.container-fluid -->
-    </nav>
-
     <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
+    <div class="jumbotron jumbotron-welcome">
       <div class="container">
+        <header>
+          <a class="navbar-brand pull-left" href="/">
+            <img alt="Pet Clinic Brand" height="27" width="auto" src="images/logo_brand.png">
+          </a>
+          <a class="btn btn-default btn-inverse pull-right" href="#">Sign In</a>
+        </header>
         <div class="jumbotron-headline">
           <div class="jumbotron-headline-cell">
             <h1>Pet care for the People who love them</h1>
             <p>PetClinic is here to enhance people's relationships with their pets</p>
-            <p><a class="btn btn-primary btn-lg js-scroll-nav" href="#veterianarians" role="button">Learn more</a></p>
+            <p>
+              <a class="btn btn-cta js-scroll-nav" href="#appointment" role="button">Make an Appointment</a>
+              <a class="btn btn-cta btn-inverse js-scroll-nav" href="#services" role="button">Learn More</a>
+            </p>
+            <a href="#services" class="scroll-down">Scroll Down</a>
           </div>
         </div>
       </div>
       <video loop="loop" preload="auto" class="jumbotron-video" autoplay muted>
-        <source src="videos/hero-bird.mp4" type="video/mp4">
+        <source src="videos/hero.mp4" type="video/mp4">
       </video>
     </div>
+
+    <!-- Clients -->
+    <section class="sections">
+    </section>
 
     <!-- Featured veterinarians -->
     <section class="sections">
@@ -275,7 +268,7 @@
                 <label class="sr-only" for="clientNumber">Contact Number</label>
                 <input type="text" class="form-control input-lg" id="clientNumber" placeholder="Your contact number">
               </div>
-              <button type="submit" class="btn btn-primary btn-lg">Get an Appointment</button>
+              <button type="submit" class="btn btn-cta">Get an Appointment</button>
             </form>
           </div>
         </div>
