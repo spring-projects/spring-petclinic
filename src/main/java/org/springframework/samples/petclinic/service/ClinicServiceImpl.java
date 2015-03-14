@@ -54,51 +54,43 @@ public class ClinicServiceImpl implements ClinicService {
         this.visitRepository = visitRepository;
     }
 
-    @Override
     @Transactional(readOnly = true)
     public Collection<PetType> findPetTypes() throws DataAccessException {
         return petRepository.findPetTypes();
     }
 
-    @Override
     @Transactional(readOnly = true)
     public Owner findOwnerById(int id) throws DataAccessException {
         return ownerRepository.findById(id);
     }
 
-    @Override
     @Transactional(readOnly = true)
     public Collection<Owner> findOwnerByLastName(String lastName) throws DataAccessException {
         return ownerRepository.findByLastName(lastName);
     }
 
-    @Override
     @Transactional
     public void saveOwner(Owner owner) throws DataAccessException {
         ownerRepository.save(owner);
     }
 
 
-    @Override
     @Transactional
     public void saveVisit(Visit visit) throws DataAccessException {
         visitRepository.save(visit);
     }
 
 
-    @Override
     @Transactional(readOnly = true)
     public Pet findPetById(int id) throws DataAccessException {
         return petRepository.findById(id);
     }
 
-    @Override
     @Transactional
     public void savePet(Pet pet) throws DataAccessException {
         petRepository.save(pet);
     }
 
-    @Override
     @Transactional(readOnly = true)
     @Cacheable(value = "vets")
     public Collection<Vet> findVets() throws DataAccessException {

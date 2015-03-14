@@ -61,7 +61,6 @@ public class JdbcVisitRepositoryImpl implements VisitRepository {
     }
 
 
-    @Override
     public void save(Visit visit) throws DataAccessException {
         if (visit.isNew()) {
             Number newKey = this.insertVisit.executeAndReturnKey(
@@ -88,7 +87,6 @@ public class JdbcVisitRepositoryImpl implements VisitRepository {
                 .addValue("pet_id", visit.getPet().getId());
     }
 
-    @Override
     public List<Visit> findByPetId(Integer petId) {
         final List<Visit> visits = this.jdbcTemplate.query(
                 "SELECT id, visit_date, description FROM visits WHERE pet_id=?",

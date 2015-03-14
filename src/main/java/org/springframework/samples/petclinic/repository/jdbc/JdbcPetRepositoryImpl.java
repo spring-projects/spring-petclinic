@@ -71,7 +71,6 @@ public class JdbcPetRepositoryImpl implements PetRepository {
         this.visitRepository = visitRepository;
     }
 
-    @Override
     public List<PetType> findPetTypes() throws DataAccessException {
         Map<String, Object> params = new HashMap<String, Object>();
         return this.namedParameterJdbcTemplate.query(
@@ -80,7 +79,6 @@ public class JdbcPetRepositoryImpl implements PetRepository {
                 BeanPropertyRowMapper.newInstance(PetType.class));
     }
 
-    @Override
     public Pet findById(int id) throws DataAccessException {
         JdbcPet pet;
         try {
@@ -104,7 +102,6 @@ public class JdbcPetRepositoryImpl implements PetRepository {
         return pet;
     }
 
-    @Override
     public void save(Pet pet) throws DataAccessException {
         if (pet.isNew()) {
             Number newKey = this.insertPet.executeAndReturnKey(

@@ -41,7 +41,6 @@ public class JpaVetRepositoryImpl implements VetRepository {
     private EntityManager em;
 
 
-    @Override
     @Cacheable(value = "vets")
     @SuppressWarnings("unchecked")
     public Collection<Vet> findAll() {
