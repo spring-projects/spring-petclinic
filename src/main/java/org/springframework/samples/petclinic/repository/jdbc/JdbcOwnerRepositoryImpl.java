@@ -122,6 +122,7 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
         );
         for (JdbcPet pet : pets) {
             owner.addPet(pet);
+            // Pet types have not been loaded at this stage. They are loaded separately
             pet.setType(EntityUtils.getById(getPetTypes(), PetType.class, pet.getTypeId()));
             List<Visit> visits = this.visitRepository.findByPetId(pet.getId());
             for (Visit visit : visits) {
