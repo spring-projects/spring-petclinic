@@ -66,6 +66,8 @@
 
 		<mysql.version>5.1.22</mysql.version>
 
+		<cobertura.version>2.7</cobertura.version>
+
 	</properties>
 
 	<dependencies>
@@ -442,8 +444,39 @@
 					<path>/petclinic</path>
 				</configuration>
 			</plugin>
+			 <plugin>
+		        <groupId>org.codehaus.mojo</groupId>
+		        <artifactId>cobertura-maven-plugin</artifactId>
+				<version>${cobertura.version}</version>
+		        <configuration>
+		        </configuration>
+		        <executions>
+		          <execution>
+		            <goals>
+		              <goal>clean</goal>
+		              <goal>check</goal>
+		            </goals>
+		          </execution>
+		        </executions>
+         </plugin>
 		</plugins>
 	</build>
+		<reporting>
+		<plugins>
+		 
+			<!--  integrate maven-cobertura-plugin to project site  -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+				<version>${cobertura.version}</version>
+				<configuration>
+					<formats>
+						<format>html</format>
+					</formats>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
 
 	<url>demopetclinic</url>
 </project>
