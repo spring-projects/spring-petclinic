@@ -311,46 +311,6 @@
 			<version>${dandelion.version}</version>
 		</dependency>
 	</dependencies>
-	<dependencyManagement>
-		<dependencies>
-			<!--
-				Force the version of all the spring jars (core, beans, context, ...) 
-				pulled by spring-data-jpa:1.3.4.RELEASE to 3.2.x when spring-data pulls 
-				the 3.1.x versions to prevent some misbehaviors of maven which sometimes 
-				pulls both 3.2.x and 3.1.x versions of spring-core, spring-beans and spring-context
-			-->
-			<dependency>
-					<groupId>org.springframework</groupId>
-					<artifactId>spring-core</artifactId>
-					<version>${spring-framework.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-beans</artifactId>
-				<version>${spring-framework.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-context</artifactId>
-				<version>${spring-framework.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-orm</artifactId>
-				<version>${spring-framework.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-aop</artifactId>
-				<version>${spring-framework.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-tx</artifactId>
-				<version>${spring-framework.version}</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 
 	<!-- Maven plugin versions are mentioned in order to guarantee the build reproducibility in the long term -->
 	<build>
