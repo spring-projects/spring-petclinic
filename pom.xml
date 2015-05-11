@@ -111,6 +111,12 @@
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jpa</artifactId>
 			<version>${spring-data-jpa.version}</version>
+			<exclusions>
+			    <exclusion>
+			      <groupId>org.springframework</groupId>
+			      <artifactId>*</artifactId>
+			    </exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
