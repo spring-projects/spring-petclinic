@@ -44,8 +44,7 @@
 		<logback.version>1.1.2</logback.version>
 		<slf4j.version>1.7.10</slf4j.version>
 
-		<!-- RSS and JSon-->
-		<rome.version>1.5.0</rome.version>
+		<!-- JSon-->
 		<json-path.version>0.9.1</json-path.version>
 
 		<!-- Test -->
@@ -107,6 +106,7 @@
 			<version>${jaxb-impl.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		<!--  JSon -->
 		 <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
@@ -123,6 +123,7 @@
 			      <groupId>org.springframework</groupId>
 			      <artifactId>*</artifactId>
 			    </exclusion>
+			    <!--  because Spring Data usually comes with a slightly older version of Spring -->
 			</exclusions>
 		</dependency>
 
@@ -174,7 +175,18 @@
 			<version>${spring-framework.version}</version>
 		</dependency>
 
-
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${aspectj.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>${aspectj.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		
 		<!-- Database connection pool 
 		See here for more details on commons-dbcp versus tomcat-jdbc: 
     	http://blog.ippon.fr/2013/03/13/improving-the-performance-of-the-spring-petclinic-sample-application-part-3-of-5/
@@ -198,13 +210,6 @@
 			<artifactId>logback-classic</artifactId>
 			<version>${logback.version}</version>
 			<scope>runtime</scope>
-		</dependency>
-
-		<!-- used for Atom -->
-		<dependency>
-			<groupId>com.rometools</groupId>
-			<artifactId>rome</artifactId>
-			<version>${rome.version}</version>
 		</dependency>
 		
 		<!-- Date and Time -->
@@ -298,19 +303,6 @@
 			<artifactId>assertj-core</artifactId>
 			<version>${assertj.version}</version>
 		</dependency>
-
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjrt</artifactId>
-			<version>${aspectj.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjweaver</artifactId>
-			<version>${aspectj.version}</version>
-			<scope>runtime</scope>
-		</dependency>
-
 
 		<!-- Dandelion -->
 		<dependency>
