@@ -317,8 +317,7 @@
 		<defaultGoal>install</defaultGoal>
 		<testResources>
 		  <testResource>
-		  	<!-- declared explicitly so Spring config files can be placed next to their corresponding JUnit test class 
-		  		(see example with ValidatorTests) -->
+		  	<!-- declared explicitly so Spring config files can be placed next to their corresponding JUnit test class  -->
 		    <directory>${project.basedir}/src/test/java</directory>
 		  </testResource>
 		  <testResource>

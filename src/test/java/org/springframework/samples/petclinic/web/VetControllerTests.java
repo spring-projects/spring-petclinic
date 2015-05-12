@@ -28,7 +28,7 @@ import org.springframework.web.context.WebApplicationContext;
 @ContextConfiguration({"classpath:spring/business-config.xml", "classpath:spring/tools-config.xml", "classpath:spring/mvc-core-config.xml"})
 @WebAppConfiguration
 @ActiveProfiles("spring-data-jpa")
-public class VetControllerTest {
+public class VetControllerTests {
 
     @Autowired
     private VetController vetController;
