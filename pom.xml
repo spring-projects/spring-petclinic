@@ -23,7 +23,7 @@
 		<!-- Java EE / Java SE dependencies -->
 		<jsp.version>2.2</jsp.version>
 		<jstl.version>1.2</jstl.version>
-		<tomcat.servlet.version>7.0.30</tomcat.servlet.version>
+		<tomcat.servlet.version>7.0.47</tomcat.servlet.version>
 		<jaxb-impl.version>2.2.7</jaxb-impl.version>
 
 		<!-- Hibernate / JPA -->
@@ -396,7 +396,7 @@
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>2.0</version>
+				<version>2.2</version>
 				<configuration>
 					<server>tomcat-development-server</server>
 					<port>9966</port>
