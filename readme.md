@@ -1,22 +1,19 @@
 # Spring PetClinic Sample Application
 
-## What does it look like?
--spring-petclinic has been deployed here on cloudfoundry: http://demo-spring-petclinic.cfapps.io/
-
 
 ## Understanding the Spring Petclinic application with a few diagrams
 <a href="https://speakerdeck.com/michaelisvy/spring-petclinic-sample-application">See the presentation here</a>
 
 ## Running petclinic locally
 ```
-	git clone https://github.com/SpringSource/spring-petclinic.git
+	git clone https://github.com/spring-projects/spring-petclinic.git
 	mvn tomcat7:run
 ```
 
 You can then access petclinic here: http://localhost:9966/petclinic/
 
 ## In case you find a bug/suggested improvement for Spring Petclinic
-Our issue tracker is available here: https://github.com/SpringSource/spring-petclinic/issues
+Our issue tracker is available here: https://github.com/spring-projects/spring-petclinic/issues
 
 ## Working with Petclinic in Eclipse/STS
 
@@ -34,7 +31,7 @@ If m2e is not there, just follow the install process here: http://eclipse.org/m2
 
 1) In the command line
 ```
-git clone https://github.com/SpringSource/spring-petclinic.git
+git clone https://github.com/spring-projects/spring-petclinic.git
 ```
 2) Inside Eclipse
 ```
@@ -64,10 +61,6 @@ File -> Import -> Maven -> Existing Maven project
   <tr>
     <td>Spring MVC - ContentNegotiatingViewResolver</td>
     <td><a href="/src/main/resources/spring/mvc-view-config.xml">mvc-view-config.xml</a></td>
-  </tr>
-  <tr>
-    <td>Spring MVC Test Framework</td>
-    <td><a href="/src/test/java/org/springframework/samples/petclinic/web/VisitsViewTests.java">VisitsViewTest.java</a></td>
   </tr>
   <tr>
     <td>JSP custom tags</td>
