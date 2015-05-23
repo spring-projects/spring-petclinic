@@ -46,14 +46,13 @@ File -> Import -> Maven -> Existing Maven project
 
 <table>
   <tr>
-    <th width="300px">Inside the 'Web' layer</th><th width="300px">Files</th>
+    <td>Java Config branch</td>
+    <td>
+      Petclinic uses XML configuration by default. In case you'd like to use Java Config instead, there is a Java Config branch available <a href="https://github.com/arey/spring-petclinic/tree/javaconfig">here</a>. Thanks to Antoine Rey for his contribution.     
+    </td>
   </tr>
   <tr>
-    <td>Spring MVC- Atom integration</td>
-    <td>
-      <a href="/src/main/java/org/springframework/samples/petclinic/web/VetsAtomView.java">VetsAtomView.java</a>
-      <a href="/src/main/resources/spring/mvc-view-config.xml">mvc-view-config.xml</a>
-    </td>
+    <th width="300px">Inside the 'Web' layer</th><th width="300px">Files</th>
   </tr>
   <tr>
     <td>Spring MVC - XML integration</td>
