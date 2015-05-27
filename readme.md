@@ -48,7 +48,7 @@ File -> Import -> Maven -> Existing Maven project
   <tr>
     <td>Java Config branch</td>
     <td>
-      Petclinic uses XML configuration by default. In case you'd like to use Java Config instead, there is a Java Config branch available <a href="https://github.com/arey/spring-petclinic/tree/javaconfig">here</a>. Thanks to Antoine Rey for his contribution.     
+      Petclinic uses XML configuration by default. In case you'd like to use Java Config instead, there is a Java Config branch available <a href="https://github.com/spring-projects/spring-petclinic/tree/javaconfig">here</a>. Thanks to Antoine Rey for his contribution.     
     </td>
   </tr>
   <tr>
@@ -56,11 +56,11 @@ File -> Import -> Maven -> Existing Maven project
   </tr>
   <tr>
     <td>Spring MVC - XML integration</td>
-    <td><a href="/src/main/resources/spring/mvc-view-config.xml">mvc-view-config.xml</a></td>
+    <td><a href="/src/main/java/org/springframework/samples/petclinic/config/MvcViewConfig.java">MvcViewConfig.java</a></td>
   </tr>
   <tr>
     <td>Spring MVC - ContentNegotiatingViewResolver</td>
-    <td><a href="/src/main/resources/spring/mvc-view-config.xml">mvc-view-config.xml</a></td>
+    <td><a href="/src/main/java/org/springframework/samples/petclinic/config/MvcViewConfig.java">MvcViewConfig.java</a></td>
   </tr>
   <tr>
     <td>JSP custom tags</td>
@@ -72,7 +72,7 @@ File -> Import -> Maven -> Existing Maven project
     <td>webjars</td>
     <td>
       <a href="/pom.xml">webjars declaration inside pom.xml</a> <br />
-      <a href="/src/main/resources/spring/mvc-core-config.xml#L24">Resource mapping in Spring configuration</a> <br />
+      <a href="/src/main/java/org/springframework/samples/petclinic/config/MvcCoreConfig.javal#L108">Resource mapping in Spring configuration</a> <br />
       <a href="/src/main/webapp/WEB-INF/jsp/fragments/headTag.jsp#L12">sample usage in JSP</a></td>
     </td>
   </tr>
@@ -104,21 +104,21 @@ File -> Import -> Maven -> Existing Maven project
   <tr>
     <td>Transactions</td>
     <td>
-      <a href="/src/main/resources/spring/business-config.xml">business-config.xml</a>
+      <a href="/src/main/java/org/springframework/samples/petclinic/config/BusinessConfig.java">BusinessConfig.java</a>
        <a href="/src/main/java/org/springframework/samples/petclinic/service/ClinicServiceImpl.java">ClinicServiceImpl.java</a>
     </td>
   </tr>
   <tr>
     <td>Cache</td>
       <td>
-      <a href="/src/main/resources/spring/tools-config.xml">tools-config.xml</a>
+       <a href="/src/main/java/org/springframework/samples/petclinic/config/ToolsConfig.java">ToolsConfig.java</a>
        <a href="/src/main/java/org/springframework/samples/petclinic/service/ClinicServiceImpl.java">ClinicServiceImpl.java</a>
     </td>
   </tr>
   <tr>
     <td>Bean Profiles</td>
       <td>
-      <a href="/src/main/resources/spring/business-config.xml">business-config.xml</a>
+       <a href="/src/main/java/org/springframework/samples/petclinic/config/JdbcConfig.java">JdbcConfig.java</a>
        <a href="/src/test/java/org/springframework/samples/petclinic/service/ClinicServiceJdbcTests.java">ClinicServiceJdbcTests.java</a>
        <a href="/src/main/webapp/WEB-INF/web.xml">web.xml</a>
     </td>
@@ -126,19 +126,21 @@ File -> Import -> Maven -> Existing Maven project
   <tr>
     <td>JdbcTemplate</td>
     <td>
-      <a href="/src/main/resources/spring/business-config.xml">business-config.xml</a>
+      <a href="/src/main/java/org/springframework/samples/petclinic/config/JdbcConfig.java">JdbcConfig.java</a>
       <a href="/src/main/java/org/springframework/samples/petclinic/repository/jdbc">jdbc folder</a></td>
   </tr>
   <tr>
     <td>JPA</td>
     <td>
-      <a href="/src/main/resources/spring/business-config.xml">business-config.xml</a>
+      <a href="/src/main/java/org/springframework/samples/petclinic/config/SharedJpaConfig.java">SharedJpaConfig.java</a>
+      <a href="/src/main/java/org/springframework/samples/petclinic/config/JpaConfig.java">JpaConfig.java</a>
       <a href="/src/main/java/org/springframework/samples/petclinic/repository/jpa">jpa folder</a></td>
   </tr>
   <tr>
     <td>Spring Data JPA</td>
     <td>
-      <a href="/src/main/resources/spring/business-config.xml">business-config.xml</a>
+      <a href="/src/main/java/org/springframework/samples/petclinic/config/SharedJpaConfig.java">SharedJpaConfig.java</a>
+      <a href="/src/main/java/org/springframework/samples/petclinic/config/SpringDataJpaConfig.java">SpringDataJpaConfig.java</a>
       <a href="/src/main/java/org/springframework/samples/petclinic/repository/springdatajpa">springdatajpa folder</a></td>
   </tr>
 </table>
