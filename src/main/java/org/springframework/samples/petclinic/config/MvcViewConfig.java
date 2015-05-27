@@ -74,7 +74,7 @@ public class MvcViewConfig {
 	}
 
 	@Bean
-	@Description("Used for 'xml' and 'atom' views")
+	@Description("Used for 'xml' views")
 	public ViewResolver beanNameViewResolver() {
 		return new BeanNameViewResolver();
 	}

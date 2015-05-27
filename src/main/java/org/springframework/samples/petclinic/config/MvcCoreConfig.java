@@ -80,7 +80,6 @@ public class MvcCoreConfig extends WebMvcConfigurerAdapter {
 		configurer.defaultContentType(MediaType.TEXT_HTML);
 		configurer.mediaType("html", MediaType.TEXT_HTML);
 		configurer.mediaType("xml", MediaType.APPLICATION_XML);
-		configurer.mediaType("atom", MediaType.APPLICATION_ATOM_XML);
 	}
 
 	@Override
