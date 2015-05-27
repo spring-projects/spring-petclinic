@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.samples.petclinic.config.BusinessConfig;
+import org.springframework.samples.petclinic.config.ToolsConfig;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
@@ -29,8 +30,8 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextHierarchy({
-        @ContextConfiguration(classes = BusinessConfig.class),
-        @ContextConfiguration(locations = {"classpath:spring/tools-config.xml", "classpath:spring/mvc-core-config.xml"})})
+        @ContextConfiguration(classes = { BusinessConfig.class, ToolsConfig.class }),
+        @ContextConfiguration(locations = "classpath:spring/mvc-core-config.xml")})
 @ActiveProfiles("spring-data-jpa")
 public class VetControllerTests {
 
