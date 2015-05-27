@@ -14,13 +14,16 @@
 <div class="container">
     <jsp:include page="../fragments/bodyHeader.jsp"/>
 
-    <h2>Veterinarians</h2>
+    <h2><fmt:message key="veterinarians"/></h2>
+
+	<spring:message code="name" var="Name" />
+	<spring:message code="specialties" var="Specialties" />
 
     <datatables:table id="vets" data="${vets.vetList}" row="vet" theme="bootstrap2" cssClass="table table-striped" pageable="false" info="false">
-        <datatables:column title="Name">
+        <datatables:column title="${Name}">
             <c:out value="${vet.firstName} ${vet.lastName}"></c:out>
         </datatables:column>
-        <datatables:column title="Specialties">
+        <datatables:column title="${Specialties}">
             <c:forEach var="specialty" items="${vet.specialties}">
                 <c:out value="${specialty.name}"/>
             </c:forEach>
@@ -31,10 +34,10 @@
     <table class="table-buttons">
         <tr>
             <td>
-                <a href="<spring:url value="/vets.xml" htmlEscape="true" />">View as XML</a>
+                <a href="<spring:url value="/vets.xml" htmlEscape="true" />"><fmt:message key="viewAsXml"/></a>
             </td>
             <td>
-                <a href="<spring:url value="/vets.json" htmlEscape="true" />">View as JSon</a>
+                <a href="<spring:url value="/vets.json" htmlEscape="true" />"><fmt:message key="viewAsJson"/></a>
             </td>
         </tr>
     </table>

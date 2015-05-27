@@ -21,22 +21,29 @@
     </c:choose>
 
     <h2>
-        <c:if test="${owner['new']}">New </c:if> Owner
+        <c:if test="${owner['new']}"><fmt:message key="new"/> </c:if> <fmt:message key="owner"/>
     </h2>
+    
+	<spring:message code="firstName" var="firstName" />
+	<spring:message code="lastName" var="lastName" />
+	<spring:message code="address" var="Address" />
+	<spring:message code="city" var="City" />
+	<spring:message code="telephone" var="Telephone" />
+
     <form:form modelAttribute="owner" method="${method}" class="form-horizontal" id="add-owner-form">
-        <petclinic:inputField label="First Name" name="firstName"/>
-        <petclinic:inputField label="Last Name" name="lastName"/>
-        <petclinic:inputField label="Address" name="address"/>
-        <petclinic:inputField label="City" name="city"/>
-        <petclinic:inputField label="Telephone" name="telephone"/>
+        <petclinic:inputField label="${firstName}" name="firstName"/>
+        <petclinic:inputField label="${lastName}" name="lastName"/>
+        <petclinic:inputField label="${Address}" name="address"/>
+        <petclinic:inputField label="${City}" name="city"/>
+        <petclinic:inputField label="${Telephone}" name="telephone"/>
 
         <div class="form-actions">
             <c:choose>
                 <c:when test="${owner['new']}">
-                    <button type="submit">Add Owner</button>
+                    <button type="submit"><fmt:message key="addOwner"/></button>
                 </c:when>
                 <c:otherwise>
-                    <button type="submit">Update Owner</button>
+                    <button type="submit"><fmt:message key="updateOwner"/></button>
                 </c:otherwise>
             </c:choose>
         </div>
