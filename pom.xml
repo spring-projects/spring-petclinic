@@ -190,7 +190,6 @@
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-jdbc</artifactId>
 			<version>${tomcat-jdbc.version}</version>
-			<scope>runtime</scope>
 		</dependency>
 
 		<!-- Logging with SLF4J & LogBack -->
