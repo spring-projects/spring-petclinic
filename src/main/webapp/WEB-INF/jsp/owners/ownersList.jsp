@@ -29,7 +29,7 @@
             </spring:url>
             <a href="${fn:escapeXml(ownerUrl)}"><c:out value="${owner.firstName} ${owner.lastName}"/></a>
         </datatables:column>
-        <datatables:column title="Name" display="pdf">
+        <datatables:column title="${Name}" display="pdf">
             <c:out value="${owner.firstName} ${owner.lastName}"/>
         </datatables:column>
         <datatables:column title="${Address}" property="address" cssStyle="width: 200px;"/>

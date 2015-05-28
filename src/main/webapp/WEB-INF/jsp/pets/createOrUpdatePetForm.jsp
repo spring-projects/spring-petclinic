@@ -34,7 +34,8 @@
     </h2>
     
     <spring:message code="petName" var="Name" />
-    <spring:message code="description" var="description" />
+    <spring:message code="birthDate" var="BirthDate" />
+    <spring:message code="type" var="Type" />
 
     <form:form modelAttribute="pet" method="${method}"
                class="form-horizontal">
@@ -44,9 +45,9 @@
             <c:out value="${pet.owner.firstName} ${pet.owner.lastName}"/>
         </div>
         <petclinic:inputField label="${Name}" name="name"/>
-        <petclinic:inputField label="Birth Date" name="birthDate"/>
+        <petclinic:inputField label="${BirthDate}" name="birthDate"/>
         <div class="control-group">
-            <petclinic:selectField name="type" label="Type " names="${types}" size="5"/>
+            <petclinic:selectField name="type" label="${Type} " names="${types}" size="5"/>
         </div>
         <div class="form-actions">
             <c:choose>
