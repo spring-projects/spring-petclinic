@@ -68,6 +68,25 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
         <servlet-name>dandelionServlet</servlet-name>
         <url-pattern>/dandelion-assets/*</url-pattern>
     </servlet-mapping>
+    
+    <!-- used to provide the ability to enter Chinese characters inside the Owner Form -->    
+    <filter>
+	    <filter-name>encodingFilter</filter-name>
+	    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+	    <init-param>
+	        <param-name>encoding</param-name>
+	        <param-value>UTF-8</param-value>
+	    </init-param>
+	    <init-param>
+	        <param-name>forceEncoding</param-name>
+	        <param-value>true</param-value>
+	    </init-param>
+	 </filter>
+	
+	 <filter-mapping>
+	    <filter-name>encodingFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	 </filter-mapping>
    
     <!-- Dandelion filter definition and mapping -->
     <filter>
@@ -91,25 +110,6 @@ see here: http://static.springsource.org/spring/docs/current/spring-framework-re
         <filter-name>httpMethodFilter</filter-name>
         <servlet-name>petclinic</servlet-name>
     </filter-mapping>
-    
-    <!-- used to provide the ability to enter Chinese characters inside the Owner Form -->    
-    <filter>
-	    <filter-name>encodingFilter</filter-name>
-	    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-	    <init-param>
-	        <param-name>encoding</param-name>
-	        <param-value>UTF-8</param-value>
-	    </init-param>
-	    <init-param>
-	        <param-name>forceEncoding</param-name>
-	        <param-value>true</param-value>
-	    </init-param>
-	 </filter>
-	
-	 <filter-mapping>
-	    <filter-name>encodingFilter</filter-name>
-	    <url-pattern>/*</url-pattern>
-	 </filter-mapping>
  
      <!-- Dandelion-Datatables filter, used for basic export -->
      <filter>
