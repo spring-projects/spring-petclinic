@@ -43,12 +43,12 @@ File -> Import -> Maven -> Existing Maven project
 
 <table>
   <tr>
-    <th width="300px">Java Config</th><th width="300px"></th>
+    <th width="300px">XML Configuration</th><th width="300px"></th>
   </tr>
   <tr>
-    <td>Java Config branch</td>
+    <td>XML Configuration</td>
     <td>
-      Petclinic uses XML configuration by default. In case you'd like to use Java Config instead, there is a Java Config branch available <a href="https://github.com/spring-projects/spring-petclinic/tree/javaconfig">here</a>. Thanks to Antoine Rey for his contribution.     
+      This <a href="https://github.com/spring-projects/spring-petclinic/tree/javaconfig">javaconfig branch</a> uses Java Configuration. In case you'd like to use the XML configuration instead, there the master branch is available <a href="https://github.com/spring-projects/spring-petclinic">here</a>. XML remains the default configuration for Spring Petclinic.     
     </td>
   </tr>
   <tr>
