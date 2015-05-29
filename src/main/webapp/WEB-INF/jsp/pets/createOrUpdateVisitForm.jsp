@@ -21,16 +21,16 @@
 </script>
 <div class="container">
     <jsp:include page="../fragments/bodyHeader.jsp"/>
-    <h2><c:if test="${visit['new']}">New </c:if>Visit</h2>
+    <h2><c:if test="${visit['new']}"><fmt:message key="new"/> </c:if><fmt:message key="visit"/></h2>
 
-    <b>Pet</b>
+    <b><fmt:message key="pet"/></b>
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>Name</th>
-            <th>Birth Date</th>
-            <th>Type</th>
-            <th>Owner</th>
+            <th><fmt:message key="name"/></th>
+            <th><fmt:message key="birthDate"/></th>
+            <th><fmt:message key="type"/></th>
+            <th><fmt:message key="owner"/></th>
         </tr>
         </thead>
         <tr>
@@ -40,24 +40,27 @@
             <td><c:out value="${visit.pet.owner.firstName} ${visit.pet.owner.lastName}"/></td>
         </tr>
     </table>
+    
+    <spring:message code="date" var="date" />
+    <spring:message code="description" var="description" />
 
     <form:form modelAttribute="visit">
     
-        <petclinic:inputField label="date" name="date" />
-        <petclinic:inputField label="description" name="description" />
+        <petclinic:inputField label="${date}" name="date" />
+        <petclinic:inputField label="${description}" name="description" />
         
         <div class="form-actions">
             <input type="hidden" name="petId" value="${visit.pet.id}"/>
-            <button type="submit">Add Visit</button>
+            <button type="submit"><fmt:message key="addVisit"/></button>
         </div>
     </form:form>
 
     <br/>
-    <b>Previous Visits</b>
+    <b><fmt:message key="previousVisits"/></b>
     <table style="width: 333px;">
         <tr>
-            <th>Date</th>
-            <th>Description</th>
+            <th><fmt:message key="visit"/><fmt:message key="date"/></th>
+            <th><fmt:message key="visit"/><fmt:message key="description"/></th>
         </tr>
         <c:forEach var="visit" items="${visit.pet.visits}">
             <c:if test="${!visit['new']}">

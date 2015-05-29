@@ -13,23 +13,29 @@
 <body>
 <div class="container">
     <jsp:include page="../fragments/bodyHeader.jsp"/>
-    <h2>Owners</h2>
+    <h2><fmt:message key="owners"/></h2>
+    
+    <spring:message code="name" var="Name" />
+    <spring:message code="address" var="Address" />
+    <spring:message code="city" var="City" />
+    <spring:message code="telephone" var="Telephone" />
+    <spring:message code="pets" var="Pets" />
     
     <datatables:table id="owners" data="${selections}" row="owner" theme="bootstrap2" 
                       cssClass="table table-striped" pageable="false" info="false" export="pdf">
-        <datatables:column title="Name" cssStyle="width: 150px;" display="html">
+        <datatables:column title="${Name}" cssStyle="width: 150px;" display="html">
             <spring:url value="/owners/{ownerId}.html" var="ownerUrl">
                 <spring:param name="ownerId" value="${owner.id}"/>
             </spring:url>
             <a href="${fn:escapeXml(ownerUrl)}"><c:out value="${owner.firstName} ${owner.lastName}"/></a>
         </datatables:column>
-        <datatables:column title="Name" display="pdf">
+        <datatables:column title="${Name}" display="pdf">
             <c:out value="${owner.firstName} ${owner.lastName}"/>
         </datatables:column>
-        <datatables:column title="Address" property="address" cssStyle="width: 200px;"/>
-        <datatables:column title="City" property="city"/>
-        <datatables:column title="Telephone" property="telephone"/>
-        <datatables:column title="Pets" cssStyle="width: 100px;">
+        <datatables:column title="${Address}" property="address" cssStyle="width: 200px;"/>
+        <datatables:column title="${City}" property="city"/>
+        <datatables:column title="${Telephone}" xtitlekey="telephone" property="telephone"/>
+        <datatables:column title="${Pets}" xtitlekey="pets" cssStyle="width: 100px;">
             <c:forEach var="pet" items="${owner.pets}">
                 <c:out value="${pet.name}"/>
             </c:forEach>
