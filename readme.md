@@ -73,7 +73,7 @@ File -> Import -> Maven -> Existing Maven project
     <td>
       <a href="/pom.xml">webjars declaration inside pom.xml</a> <br />
       <a href="/src/main/resources/spring/mvc-core-config.xml#L24">Resource mapping in Spring configuration</a> <br />
-      <a href="/src/main/webapp/WEB-INF/jsp/fragments/headTag.jsp#L12">sample usage in JSP</a></td>
+      <a href="/src/main/webapp/WEB-INF/jsp/fragments/staticFiles.jsp#L12">sample usage in JSP</a></td>
     </td>
   </tr>
   <tr>
