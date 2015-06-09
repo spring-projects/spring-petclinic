@@ -31,7 +31,7 @@ class JdbcPetRowMapper extends BeanPropertyRowMapper<JdbcPet> {
     @Override
     public JdbcPet mapRow(ResultSet rs, int rownum) throws SQLException {
         JdbcPet pet = new JdbcPet();
-        pet.setId(rs.getInt("id"));
+        pet.setId(rs.getInt("pets.id"));
         pet.setName(rs.getString("name"));
         Date birthDate = rs.getDate("birth_date");
         pet.setBirthDate(new DateTime(birthDate));
