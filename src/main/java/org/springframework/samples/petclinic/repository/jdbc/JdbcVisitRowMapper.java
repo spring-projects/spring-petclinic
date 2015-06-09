@@ -24,6 +24,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
+/**
+ * {@link RowMapper} implementation mapping data from a {@link ResultSet} to the corresponding properties
+ * of the {@link Visit} class.
+ */
 class JdbcVisitRowMapper implements RowMapper<Visit> {
 
     @Override
