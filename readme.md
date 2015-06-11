@@ -48,7 +48,7 @@ File -> Import -> Maven -> Existing Maven project
   <tr>
     <td>Java Config branch</td>
     <td>
-      Petclinic uses XML configuration by default. In case you'd like to use Java Config instead, there is a Java Config branch available <a href="https://github.com/spring-projects/spring-petclinic/tree/javaconfig">here</a>. Thanks to Antoine Rey for his contribution.     
+      Petclinic uses XML configuration by default. In case you'd like to use Java Config instead, there is a Java Config branch available <a href="https://github.com/arey/spring-petclinic/tree/javaconfig">here</a>. Thanks to Antoine Rey for his contribution.     
     </td>
   </tr>
   <tr>
@@ -73,7 +73,7 @@ File -> Import -> Maven -> Existing Maven project
     <td>
       <a href="/pom.xml">webjars declaration inside pom.xml</a> <br />
       <a href="/src/main/resources/spring/mvc-core-config.xml#L24">Resource mapping in Spring configuration</a> <br />
-      <a href="/src/main/webapp/WEB-INF/jsp/fragments/staticFiles.jsp#L12">sample usage in JSP</a></td>
+      <a href="/src/main/webapp/WEB-INF/jsp/fragments/headTag.jsp#L12">sample usage in JSP</a></td>
     </td>
   </tr>
   <tr>

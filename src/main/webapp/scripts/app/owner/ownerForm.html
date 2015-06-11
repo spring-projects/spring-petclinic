@@ -1,0 +1,38 @@
+<div class="container">
+ 
+
+    <h2>Owner</h2>
+    <form method="POST" class="form-horizontal" id="ownerForm">
+    	<fieldset>
+    		<div class="control-group" id="firstName">
+                <label class="control-label">First name </label>
+                <input ng-model="owner.firstName" />
+                <span ng-show="owner.firstName.$error.required" class="help-inline">First name is required.</span>
+            </div>
+            <div class="control-group" id="lastName">
+                <label class="control-label">Last name </label>
+                <input ng-model="owner.lastName" />
+                <span ng-show="myForm.lastName.$error.required" class="help-inline">Last name is required.</span>
+            </div>
+            <div class="control-group" id="address">
+                <label class="control-label">Address </label>
+                <input ng-model="owner.address" />
+                <span ng-show="myForm.address.$error.required" class="help-inline">Address is required.</span>
+            </div>
+            <div class="control-group" id="city">
+                <label class="control-label">City </label>
+                <input ng-model="owner.city" />
+                <span ng-show="myForm.city.$error.required" class="help-inline">City is required.</span>
+            </div>
+            <div class="control-group" id="telephone">
+                <label class="control-label">Telephone </label>
+                <input ng-model="owner.telephone" />
+                <span ng-show="myForm.telephone.$error.required" class="help-inline">Telephone is required.</span>
+            </div>
+	
+	        <div class="form-actions">
+	                    <button type="submit" ng-click="submitOwnerFindForm()">Submit</button>
+	        </div>
+        </fieldset>
+    </form>
+</div>

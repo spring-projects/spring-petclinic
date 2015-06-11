@@ -36,6 +36,7 @@ import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.model.Visit;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
 import org.springframework.samples.petclinic.repository.VisitRepository;
+import org.springframework.samples.petclinic.util.EntityUtils;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -51,6 +52,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class JdbcOwnerRepositoryImpl implements OwnerRepository {
 
+    private VisitRepository visitRepository;
+
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     private SimpleJdbcInsert insertOwner;
@@ -65,6 +68,7 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
 
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 
+        this.visitRepository = visitRepository;
     }
 
 
@@ -112,12 +116,18 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("id", owner.getId().intValue());
         final List<JdbcPet> pets = this.namedParameterJdbcTemplate.query(
-                "SELECT pets.id, name, birth_date, type_id, owner_id, visits.id, visit_date, description, pet_id FROM pets LEFT OUTER JOIN visits ON  pets.id = pet_id WHERE owner_id=:id",
+                "SELECT id, name, birth_date, type_id, owner_id FROM pets WHERE owner_id=:id",
                 params,
-                new JdbcPetVisitExtractor()
+                new JdbcPetRowMapper()
         );
         for (JdbcPet pet : pets) {
             owner.addPet(pet);
+            // Pet types have not been loaded at this stage. They are loaded separately
+            pet.setType(EntityUtils.getById(getPetTypes(), PetType.class, pet.getTypeId()));
+            List<Visit> visits = this.visitRepository.findByPetId(pet.getId());
+            for (Visit visit : visits) {
+                pet.addVisit(visit);
+            }
         }
     }
 

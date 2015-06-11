@@ -70,6 +70,12 @@ public abstract class AbstractClinicServiceTests {
         assertThat(owner.getLastName()).startsWith("Franklin");
         assertThat(owner.getPets().size()).isEqualTo(1);
     }
+    
+    @Test
+    public void shouldReturnAllOwnersInCaseLastNameIsEmpty() {
+        Collection<Owner> owners = this.clinicService.findOwnerByLastName("");
+        assertThat(owners).extracting("lastName").contains("Davis", "Franklin");        
+    }
 
     @Test
     @Transactional

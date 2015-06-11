@@ -1,0 +1,81 @@
+<div class="container">
+
+    <h2>Owner Information</h2>
+
+    <table class="table table-striped" style="width:600px;">
+        <tr>
+            <th>Name</th>
+            <td><b>{{owner.firstName}} {{owner.lastName}}</b></td>
+        </tr>
+        <tr>
+            <th>Address</th>
+            <td>{{owner.address}}</td>
+        </tr>
+        <tr>
+            <th>City</th>
+            <td>{{owner.city}}</td>
+        </tr>
+        <tr>
+            <th>Telephone</th>
+            <td>{{owner.telephone}}</td>
+        </tr>
+         <tr>
+            <td> 
+                <a class="btn btn-info" ng-href="#/owner/{{owner.id}}/edit">Edit Owner</a></td>
+            <td>
+            	<spring:url value="{ownerId}/pets/new.html" var="addUrl">
+                    <spring:param name="ownerId" value="${owner.id}"/>
+                </spring:url>
+                <a href="${fn:escapeXml(addUrl)}"  class="btn btn-success">Add New Pet</a></td>
+        </tr>
+    </table>
+
+    <h2>Pets and Visits</h2>
+
+        <table class="table" style="width:600px;">
+            <tr ng-repeat="pet in owner.pets">
+                <td valign="top" style="width: 120px;">
+                    <dl class="dl-horizontal">
+                        <dt>Name</dt>
+                        <dd>{{pet.name}}</dd>
+                        <dt>Birth Date</dt>
+                        <dd>{{pet.birthDate | date:'MM/dd/yyyy'}}</dd>
+                        <dt>Type</dt>
+                        <dd>{{pet.type.name}}</dd>
+                    </dl>
+                </td>
+                <td valign="top">
+                    <table class="table-condensed">
+                        <thead>
+                        <tr>
+                            <th>Visit Date</th>
+                            <th>Description</th>
+                        </tr>
+                        </thead>
+                            <tr ng-repeat="visit in pet.visits">
+                                <td>{{visit.date | date:'MM/dd/yyyy'}}</td>
+                                <td>{{visit.description}}</td>
+                            </tr>
+                        <tr>
+                            <td> 
+                            	<spring:url value="/owners/{ownerId}/pets/{petId}/edit" var="petUrl">
+			                        <spring:param name="ownerId" value="${owner.id}"/>
+			                        <spring:param name="petId" value="${pet.id}"/>
+			                    </spring:url>
+			                    <a href="${fn:escapeXml(petUrl)}">Edit Pet</a>
+			                </td>
+                            <td>
+			                    <spring:url value="/owners/{ownerId}/pets/{petId}/visits/new" var="visitUrl">
+			                        <spring:param name="ownerId" value="${owner.id}"/>
+			                        <spring:param name="petId" value="${pet.id}"/>
+			                    </spring:url>
+			                    <a href="${fn:escapeXml(visitUrl)}">Add Visit</a>
+                            </td>
+                       	</tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+
+</div>

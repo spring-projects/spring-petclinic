@@ -1,0 +1,7 @@
+{
+  "author": "Lucas Galfaso",
+  "name": "angular-dynamic-locale",
+  "main": "src/tmhDynamicLocale.js",
+  "description": "Angular Dynamic Locale",
+  "version": "0.1.24"
+}

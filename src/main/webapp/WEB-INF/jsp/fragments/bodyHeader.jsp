@@ -2,7 +2,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <spring:url value="/resources/images/banner-graphic.png" var="banner"/>
-<img src="${banner}"/>
+<img src="/resources/images/banner-graphic.png"/>
 
 <div class="navbar" style="width: 601px;">
     <div class="navbar-inner">

@@ -1,0 +1,19 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'install' ]
+2 info using npm@2.7.4
+3 info using node@v0.12.2
+4 error install Couldn't read dependencies
+5 verbose stack Error: ENOENT, open '/Users/isvym/work/workspaces/samples/petclinic-angular/src/main/webapp/resources/package.json'
+5 verbose stack     at Error (native)
+6 verbose cwd /Users/isvym/work/workspaces/samples/petclinic-angular/src/main/webapp/resources
+7 error Darwin 13.4.0
+8 error argv "node" "/usr/local/bin/npm" "install"
+9 error node v0.12.2
+10 error npm  v2.7.4
+11 error path /Users/isvym/work/workspaces/samples/petclinic-angular/src/main/webapp/resources/package.json
+12 error code ENOPACKAGEJSON
+13 error errno -2
+14 error package.json ENOENT, open '/Users/isvym/work/workspaces/samples/petclinic-angular/src/main/webapp/resources/package.json'
+14 error package.json This is most likely not a problem with npm itself.
+14 error package.json npm can't find a package.json file in your current directory.
+15 verbose exit [ -2, true ]

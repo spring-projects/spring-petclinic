@@ -31,7 +31,7 @@ import org.springframework.web.context.WebApplicationContext;
 public class VetControllerTests {
 
     @Autowired
-    private VetController vetController;
+    private VetResource vetResource;
     
     @Autowired 
     private WebApplicationContext ctx;
@@ -40,14 +40,15 @@ public class VetControllerTests {
 
     @Before
     public void setup() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(vetController).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(vetResource).build();
     }
 
     @Test
     public void testGetExistingUser() throws Exception {
     	ResultActions actions = mockMvc.perform(get("/vets.json").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-    	actions.andExpect(content().contentType("application/json;charset=UTF-8"))
-                .andExpect(jsonPath("$.vetList[0].id").value(1));
+    	actions.andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("$[0].id").value(1)); 
+    	//before when collection was nested inside parent object 'vetList', we had: $.vetList[0].id
     }
 }
