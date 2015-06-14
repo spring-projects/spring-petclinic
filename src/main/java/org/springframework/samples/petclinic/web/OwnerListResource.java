@@ -26,7 +26,6 @@ import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,45 +40,31 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Michael Isvy
  */
 @RestController
-public class OwnerResource {
+public class OwnerListResource {
 
     private final ClinicService clinicService;
 
 
     @Autowired
-    public OwnerResource(ClinicService clinicService) {
+    public OwnerListResource(ClinicService clinicService) {
         this.clinicService = clinicService;
     }
 
-    @InitBinder
-    public void setAllowedFields(WebDataBinder dataBinder) {
-        dataBinder.setDisallowedFields("id");
-    }
-    
-    @ModelAttribute
-    public Owner retrieveOwner(@PathVariable("ownerId") int ownerId) {
-        return this.clinicService.findOwnerById(ownerId);
-    }
-
-    // TODO: should be improved so we have a single method parameter
-    @RequestMapping(value = "/owner/{ownerId}", method = RequestMethod.POST)
-    public Owner updateOwner(@ModelAttribute Owner ownerModel, @RequestBody Owner ownerRequest) {
-    	ownerModel.setFirstName(ownerRequest.getFirstName());
-    	ownerModel.setLastName(ownerRequest.getLastName());
-    	ownerModel.setCity(ownerRequest.getCity());
-    	ownerModel.setAddress(ownerRequest.getAddress());
-    	ownerModel.setTelephone(ownerRequest.getTelephone());
-        this.clinicService.saveOwner(ownerModel);
-        return ownerModel;
-        // TODO: need to handle failure
-    }
-
-
-    @RequestMapping(value = "/owner/{ownerId}", method = RequestMethod.GET,
+    @RequestMapping(value = "/owner/list", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Owner findOwner(Owner owner) {
-    	// Has already been retrieved from 'retrieveOwner' method
-        return owner;
+    public Collection<Owner> findOwnerCollection(@RequestParam("lastName") String ownerLastName) {
+
+    	if (ownerLastName == null) {
+    		ownerLastName = "";
+    	}
+    	
+        Collection<Owner> results = this.clinicService.findOwnerByLastName(ownerLastName);
+        if (results.isEmpty()) {
+            return null;
+        }
+        else {
+            return results;
+        }
     }
 
 }
