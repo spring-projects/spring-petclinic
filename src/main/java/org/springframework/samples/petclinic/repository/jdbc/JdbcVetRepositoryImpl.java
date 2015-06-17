@@ -78,10 +78,10 @@ public class JdbcVetRepositoryImpl implements VetRepository {
                     new BeanPropertyRowMapper<Integer>() {
                         @Override
                         public Integer mapRow(ResultSet rs, int row) throws SQLException {
-                            return Integer.valueOf(rs.getInt(1));
+                            return rs.getInt(1);
                         }
                     },
-                    vet.getId().intValue());
+                    vet.getId());
             for (int specialtyId : vetSpecialtiesIds) {
                 Specialty specialty = EntityUtils.getById(specialties, Specialty.class, specialtyId);
                 vet.addSpecialty(specialty);
