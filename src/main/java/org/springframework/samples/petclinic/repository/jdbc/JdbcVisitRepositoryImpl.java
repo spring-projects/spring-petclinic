@@ -66,10 +66,6 @@ public class JdbcVisitRepositoryImpl implements VisitRepository {
         }
     }
 
-    public void deletePet(int id) throws DataAccessException {
-        this.jdbcTemplate.update("DELETE FROM pets WHERE id=?", id);
-    }
-
 
     /**
      * Creates a {@link MapSqlParameterSource} based on data values from the supplied {@link Visit} instance.
