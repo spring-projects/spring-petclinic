@@ -20,13 +20,13 @@ import java.sql.SQLException;
 import java.util.Date;
 
 import org.joda.time.DateTime;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 
 /**
- * {@link BeanPropertyRowMapper} implementation mapping data from a {@link ResultSet} to the corresponding properties
+ * {@link RowMapper} implementation mapping data from a {@link ResultSet} to the corresponding properties
  * of the {@link JdbcPet} class.
  */
-class JdbcPetRowMapper extends BeanPropertyRowMapper<JdbcPet> {
+class JdbcPetRowMapper implements RowMapper<JdbcPet> {
 
     @Override
     public JdbcPet mapRow(ResultSet rs, int rownum) throws SQLException {
