@@ -32,9 +32,6 @@ public class VetControllerTests {
 
     @Autowired
     private VetController vetController;
-    
-    @Autowired 
-    private WebApplicationContext ctx;
 
     private MockMvc mockMvc;
 
