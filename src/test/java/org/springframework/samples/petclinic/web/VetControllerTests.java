@@ -21,8 +21,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 /**
  * Test class for the UserResource REST controller.
- *
- * @see UserResource
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:spring/business-config.xml", "classpath:spring/tools-config.xml", "classpath:spring/mvc-core-config.xml"})
