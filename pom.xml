@@ -86,14 +86,14 @@
 		<dependency>
                 <groupId>javax.servlet.jsp</groupId>
                 <artifactId>jsp-api</artifactId>
-                <version>2.1</version>
+                <version>${jsp.version}</version>
                 <scope>provided</scope>
         </dependency>
 
         <dependency>
                 <groupId>org.glassfish.web</groupId>
                 <artifactId>jstl-impl</artifactId>
-                <version>1.2</version>
+                <version>${jstl.version}</version>
                 <exclusions>
                         <exclusion>
                                 <groupId>javax.servlet</groupId>
