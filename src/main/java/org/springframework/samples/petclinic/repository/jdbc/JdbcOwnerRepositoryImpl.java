@@ -35,7 +35,6 @@ import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.model.Visit;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
-import org.springframework.samples.petclinic.repository.VisitRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -56,8 +55,7 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
     private SimpleJdbcInsert insertOwner;
 
     @Autowired
-    public JdbcOwnerRepositoryImpl(DataSource dataSource, NamedParameterJdbcTemplate namedParameterJdbcTemplate,
-                                   VisitRepository visitRepository) {
+    public JdbcOwnerRepositoryImpl(DataSource dataSource, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
 
         this.insertOwner = new SimpleJdbcInsert(dataSource)
                 .withTableName("owners")
