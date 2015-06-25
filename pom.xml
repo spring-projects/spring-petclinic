@@ -24,17 +24,16 @@
 		<!-- Java EE / Java SE dependencies -->
 		<jsp.version>2.2</jsp.version>
 		<jstl.version>1.2</jstl.version>
-		<tomcat.servlet.version>7.0.47</tomcat.servlet.version>
+		<tomcat.version>7.0.47</tomcat.version>
 		<jaxb-impl.version>2.2.7</jaxb-impl.version>
 
 		<!-- Hibernate / JPA -->
 		<hibernate.version>4.3.8.Final</hibernate.version>
 
 		<!-- Bean validation -->
-		<hibernate-validator.version>4.3.1.Final</hibernate-validator.version>
+		<hibernate-validator.version>5.1.3.Final</hibernate-validator.version>
 
 		<!-- Database access -->
-		<tomcat-jdbc.version>7.0.42</tomcat-jdbc.version>
 		<ehcache.version>2.6.10</ehcache.version>
 		<hsqldb.version>2.3.2</hsqldb.version>
 
@@ -80,7 +79,7 @@
 		<dependency>
         	<groupId>org.apache.tomcat</groupId>
         	<artifactId>tomcat-servlet-api</artifactId>
-         	<version>${tomcat.servlet.version}</version>
+         	<version>${tomcat.version}</version>
           	<scope>provided</scope>
         </dependency>
 		<dependency>
@@ -89,6 +88,12 @@
                 <version>${jsp.version}</version>
                 <scope>provided</scope>
         </dependency>
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jasper-el</artifactId>
+			<version>${tomcat.version}</version>
+			<scope>provided</scope>
+		</dependency>
 
         <dependency>
                 <groupId>org.glassfish.web</groupId>
@@ -203,7 +208,7 @@
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-jdbc</artifactId>
-			<version>${tomcat-jdbc.version}</version>
+			<version>${tomcat.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 
