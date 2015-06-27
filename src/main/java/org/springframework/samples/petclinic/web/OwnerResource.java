@@ -56,10 +56,8 @@ public class OwnerResource {
     }
 
     // TODO: should be improved so we have a single method parameter
-    @RequestMapping(value = "/owner/{ownerId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/owner/{ownerId}", method = RequestMethod.PUT)
     public Owner updateOwner(@ModelAttribute Owner ownerModel, @RequestBody Owner ownerRequest) {
-    	// seems like a workaround. I haven't found a proper way to inject to have @ModelAttribute pupulate object
-    	// first and then have the delta come from @RequestBody
     	ownerModel.setFirstName(ownerRequest.getFirstName());
     	ownerModel.setLastName(ownerRequest.getLastName());
     	ownerModel.setCity(ownerRequest.getCity());

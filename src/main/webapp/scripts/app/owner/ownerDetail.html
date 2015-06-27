@@ -21,7 +21,7 @@
         </tr>
          <tr>
             <td> 
-                <a class="btn btn-info" ng-href="#/owner/{{owner.id}}/edit">Edit Owner</a></td>
+                <a class="btn btn-info" ui-sref="app.owneredit({id: owner.id})">Edit Owner</a></td>
             <td>
             	<spring:url value="{ownerId}/pets/new.html" var="addUrl">
                     <spring:param name="ownerId" value="${owner.id}"/>

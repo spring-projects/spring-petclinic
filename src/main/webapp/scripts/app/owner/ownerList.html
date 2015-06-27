@@ -12,7 +12,7 @@
 
         <tr ng-repeat="owner in ownerList">
             <td>
-            	<a ng-click="displayOwnerDetail(owner.id)">
+            	<a ui-sref="app.ownerdetail({id: owner.id})">
             		{{owner.firstName}} {{owner.lastName}}
             	</a>
             </td>
