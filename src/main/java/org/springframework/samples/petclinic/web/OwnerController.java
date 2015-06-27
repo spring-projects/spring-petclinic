@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
@@ -96,13 +97,11 @@ public class OwnerController {
             // no owners found
             result.rejectValue("lastName", "notFound", "not found");
             return "owners/findOwners";
-        }
-        else if (results.size() == 1) {
-    	// 1 owner found
-    	owner = results.iterator().next();
-    	return "redirect:/owners/" + owner.getId();
-        }
-        else {
+        } else if (results.size() == 1) {
+	    	// 1 owner found
+	    	owner = results.iterator().next();
+	    	return "redirect:/owners/" + owner.getId();
+        } else {
             // multiple owners found
             model.put("selections", results);
             return "owners/ownersList";
@@ -140,4 +139,9 @@ public class OwnerController {
         return mav;
     }
 
+    @RequestMapping("/owners/print")
+    @ResponseBody
+    public String printOwner() {
+    	return "json";
+    }
 }

@@ -71,7 +71,6 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
      * the given name; also loads the {@link Pet Pets} and {@link Visit Visits} for the corresponding owners, if not
      * already loaded.
      */
-    @Override
     public Collection<Owner> findByLastName(String lastName) throws DataAccessException {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("lastName", lastName + "%");
@@ -88,7 +87,6 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
      * Loads the {@link Owner} with the supplied <code>id</code>; also loads the {@link Pet Pets} and {@link Visit Visits}
      * for the corresponding owner, if not already loaded.
      */
-    @Override
     public Owner findById(int id) throws DataAccessException {
         Owner owner;
         try {
@@ -119,7 +117,6 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
         }
     }
 
-    @Override
     public void save(Owner owner) throws DataAccessException {
         BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(owner);
         if (owner.isNew()) {
