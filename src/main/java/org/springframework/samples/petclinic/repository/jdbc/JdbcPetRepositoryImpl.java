@@ -73,7 +73,7 @@ public class JdbcPetRepositoryImpl implements PetRepository {
 
     @Override
     public List<PetType> findPetTypes() throws DataAccessException {
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         return this.namedParameterJdbcTemplate.query(
                 "SELECT id, name FROM types ORDER BY name",
                 params,
@@ -84,7 +84,7 @@ public class JdbcPetRepositoryImpl implements PetRepository {
     public Pet findById(int id) throws DataAccessException {
         JdbcPet pet;
         try {
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put("id", id);
             pet = this.namedParameterJdbcTemplate.queryForObject(
                     "SELECT id, name, birth_date, type_id, owner_id FROM pets WHERE id=:id",

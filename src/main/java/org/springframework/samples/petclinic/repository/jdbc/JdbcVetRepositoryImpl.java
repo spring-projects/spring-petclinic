@@ -60,7 +60,7 @@ public class JdbcVetRepositoryImpl implements VetRepository {
      */
     @Override
     public Collection<Vet> findAll() throws DataAccessException {
-        List<Vet> vets = new ArrayList<Vet>();
+        List<Vet> vets = new ArrayList<>();
         // Retrieve the list of all vets.
         vets.addAll(this.jdbcTemplate.query(
                 "SELECT id, first_name, last_name FROM vets ORDER BY last_name,first_name",

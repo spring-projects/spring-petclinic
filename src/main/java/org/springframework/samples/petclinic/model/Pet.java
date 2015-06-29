@@ -94,13 +94,13 @@ public class Pet extends NamedEntity {
 
     protected Set<Visit> getVisitsInternal() {
         if (this.visits == null) {
-            this.visits = new HashSet<Visit>();
+            this.visits = new HashSet<>();
         }
         return this.visits;
     }
 
     public List<Visit> getVisits() {
-        List<Visit> sortedVisits = new ArrayList<Visit>(getVisitsInternal());
+        List<Visit> sortedVisits = new ArrayList<>(getVisitsInternal());
         PropertyComparator.sort(sortedVisits, new MutableSortDefinition("date", false, false));
         return Collections.unmodifiableList(sortedVisits);
     }
