@@ -32,8 +32,7 @@ import org.springframework.samples.petclinic.util.EntityUtils;
 import org.springframework.stereotype.Repository;
 
 /**
- * A simple JDBC-based implementation of the {@link VetRepository} interface. Uses @Cacheable to cache the result of the
- * {@link findAll} method
+ * A simple JDBC-based implementation of the {@link VetRepository} interface.
  *
  * @author Ken Krebs
  * @author Juergen Hoeller
@@ -55,8 +54,6 @@ public class JdbcVetRepositoryImpl implements VetRepository {
 
     /**
      * Refresh the cache of Vets that the ClinicService is holding.
-     *
-     * @see org.springframework.samples.petclinic.model.service.ClinicService#shouldFindVets()
      */
     @Override
     public Collection<Vet> findAll() throws DataAccessException {
