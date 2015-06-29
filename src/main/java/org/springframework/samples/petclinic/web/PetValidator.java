@@ -18,16 +18,22 @@ package org.springframework.samples.petclinic.web;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 
 /**
  * <code>Validator</code> for <code>Pet</code> forms.
+ * <p>
+ * We're not using Bean Validation annotations here because it is easier to define such validation rule in Java.
+ * </p>
  *
  * @author Ken Krebs
  * @author Juergen Hoeller
  */
-public class PetValidator {
+public class PetValidator implements Validator {
 
-    public void validate(Pet pet, Errors errors) {
+    @Override
+    public void validate(Object obj, Errors errors) {
+        Pet pet = (Pet) obj;
         String name = pet.getName();
         // name validation
         if (!StringUtils.hasLength(name)) {
@@ -46,5 +52,14 @@ public class PetValidator {
             errors.rejectValue("birthDate", "required", "required");
         }
     }
+
+    /**
+     * This Validator validates *just* Pet instances
+     */
+    @Override
+    public boolean supports(Class<?> clazz) {
+        return Pet.class.equals(clazz);
+    }
+
 
 }
