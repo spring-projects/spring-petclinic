@@ -36,7 +36,7 @@ petClinicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProv
    
       }).
       state('app.ownerlist', {
-          url: 'owner/list',
+          url: 'owner/list?lastName',
           views: {
               'content@': {
                   templateUrl: 'scripts/app/owner/ownerList.html',
