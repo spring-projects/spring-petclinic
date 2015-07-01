@@ -71,14 +71,12 @@ public class OwnerResource {
     }
 
 
-    @RequestMapping(value = "/owner/{ownerId}", method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/owner/{ownerId}", method = RequestMethod.GET)
     public Owner findOwner(@PathVariable("ownerId") int ownerId) {
         return retrieveOwner(ownerId);
     }
     
-    @RequestMapping(value = "/owner/list", method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/owner/list", method = RequestMethod.GET)
     public Collection<Owner> findOwnerCollection(@RequestParam("lastName") String ownerLastName) {
 
     	if (ownerLastName == null) {
