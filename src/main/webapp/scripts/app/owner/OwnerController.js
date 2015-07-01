@@ -47,7 +47,7 @@ function loadOwner($scope, $resource, $stateParams) {
 angular.module('controllers').controller('ownerFormController', ['$scope', '$resource', '$http', '$stateParams', '$state',
 function($scope, $resource, $http, $stateParams, $state) {
 	
-	scope.submitOwnerForm = {};
+	$scope.submitOwnerForm = {};
 	
 	$scope.submitOwnerForm = function() {
 		var form = $scope.owner;
