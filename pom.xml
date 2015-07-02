@@ -23,9 +23,6 @@
 		<!-- Java EE / Java SE dependencies -->
 		<tomcat.version>7.0.59</tomcat.version>
 
-		<!-- JSon-->
-		<json-path.version>2.0.0</json-path.version>
-
 		<!-- Test -->
 		<assertj.version>2.1.0</assertj.version>
   
@@ -94,7 +91,6 @@
 		 <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
-            <version>${json-path.version}</version>
             <scope>test</scope>
         </dependency>
 		<!-- SPRING, SPRING, SPRINGITY SPRING -->
