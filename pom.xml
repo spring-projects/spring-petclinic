@@ -16,45 +16,22 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<!-- Spring -->
-		<spring-framework.version>4.1.6.RELEASE</spring-framework.version>
-		<spring-data-jpa.version>1.8.0.RELEASE</spring-data-jpa.version>
+		<spring-io-platform.version>1.1.2.RELEASE</spring-io-platform.version>
 		<spring-data-jdbc.version>1.1.0.RELEASE</spring-data-jdbc.version>
 
 
 		<!-- Java EE / Java SE dependencies -->
-		<jsp.version>2.2</jsp.version>
-		<jstl.version>1.2</jstl.version>
-		<tomcat.version>7.0.47</tomcat.version>
-		<jaxb-impl.version>2.2.7</jaxb-impl.version>
-
-		<!-- Hibernate / JPA -->
-		<hibernate.version>4.3.8.Final</hibernate.version>
-
-		<!-- Bean validation -->
-		<hibernate-validator.version>5.1.3.Final</hibernate-validator.version>
-
-		<!-- Database access -->
-		<ehcache.version>2.6.10</ehcache.version>
-		<hsqldb.version>2.3.2</hsqldb.version>
-
-		<!-- AOP -->
-		<aspectj.version>1.8.5</aspectj.version>
-
-		<!-- Logging -->
-		<logback.version>1.1.3</logback.version>
-		<slf4j.version>1.7.12</slf4j.version>
+		<tomcat.version>7.0.59</tomcat.version>
 
 		<!-- JSon-->
 		<json-path.version>2.0.0</json-path.version>
 
 		<!-- Test -->
-		<junit.version>4.12</junit.version>
 		<assertj.version>3.0.0</assertj.version>
   
 		<!-- Dates -->
 		<jodatime-hibernate.version>1.3</jodatime-hibernate.version>
 		<jodatime-jsptags.version>1.1.1</jodatime-jsptags.version>
-		<jodatime.version>2.7</jodatime.version>
 		<jadira-usertype-core.version>3.2.0.GA</jadira-usertype-core.version>
 
 
@@ -64,11 +41,22 @@
 		<webjars-jquery.version>2.0.3-1</webjars-jquery.version>
 		<dandelion.version>0.10.1</dandelion.version>
 
-		<mysql.version>5.1.22</mysql.version>
-
 		<cobertura.version>2.7</cobertura.version>
 
 	</properties>
+
+	<dependencyManagement>
+		<!-- Import the maven Spring IO Platform Bill Of Materials (BOM) -->
+		<dependencies>
+			<dependency>
+				<groupId>io.spring.platform</groupId>
+				<artifactId>platform-bom</artifactId>
+				<version>${spring-io-platform.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<dependencies>
 		<dependency>
@@ -83,11 +71,10 @@
           	<scope>provided</scope>
         </dependency>
 		<dependency>
-                <groupId>javax.servlet.jsp</groupId>
-                <artifactId>jsp-api</artifactId>
-                <version>${jsp.version}</version>
-                <scope>provided</scope>
-        </dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>javax.servlet.jsp-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-jasper-el</artifactId>
@@ -96,21 +83,12 @@
 		</dependency>
 
         <dependency>
-                <groupId>org.glassfish.web</groupId>
-                <artifactId>jstl-impl</artifactId>
-                <version>${jstl.version}</version>
-                <exclusions>
-                        <exclusion>
-                                <groupId>javax.servlet</groupId>
-                                <artifactId>servlet-api</artifactId>
-                        </exclusion>
-                </exclusions>
+			<groupId>javax.servlet.jsp.jstl</groupId>
+			<artifactId>javax.servlet.jsp.jstl-api</artifactId>
         </dependency>
 		<dependency>
-			<groupId>com.sun.xml.bind</groupId>
-			<artifactId>jaxb-impl</artifactId>
-			<version>${jaxb-impl.version}</version>
-			<scope>provided</scope>
+			<groupId>org.apache.taglibs</groupId>
+			<artifactId>taglibs-standard-jstlel</artifactId>
 		</dependency>
 		<!--  JSon -->
 		 <dependency>
@@ -123,14 +101,6 @@
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jpa</artifactId>
-			<version>${spring-data-jpa.version}</version>
-			<exclusions>
-			    <exclusion>
-			      <groupId>org.springframework</groupId>
-			      <artifactId>*</artifactId>
-			    </exclusion>
-			    <!--  because Spring Data usually comes with a slightly older version of Spring -->
-			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -149,55 +119,40 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-			<version>${spring-framework.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
-			<version>${spring-framework.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>${spring-framework.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
-			<version>${spring-framework.version}</version>
 		</dependency>
 		<!-- used for EhCacheCacheManager -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
-			<version>${spring-framework.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<version>${spring-framework.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-oxm</artifactId>
-			<version>${spring-framework.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-lang</groupId>
-					<artifactId>commons-lang</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
-			<version>${aspectj.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
-			<version>${aspectj.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		
@@ -208,7 +163,6 @@
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-jdbc</artifactId>
-			<version>${tomcat.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 
@@ -216,13 +170,10 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>${logback.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		
@@ -230,7 +181,6 @@
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
-			<version>${jodatime.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>joda-time</groupId>
@@ -244,37 +194,31 @@
 		</dependency>
 
 		<!-- Databases - Uses HSQL by default -->
-		<!-- <dependency> <groupId>mysql</groupId> <artifactId>mysql-connector-java</artifactId> <version>${mysql.version}</version> </dependency> -->
 		<dependency>
 			<groupId>org.hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
-			<version>${hsqldb.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 
 		<!-- For MySql only -->
-		<!-- <dependency> <groupId>mysql</groupId> <artifactId>mysql-connector-java</artifactId> <version>${mysql.version}</version> </dependency> -->
+		<!-- <dependency> <groupId>mysql</groupId> <artifactId>mysql-connector-java</artifactId> </dependency> -->
 		<!-- HIBERNATE -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>${hibernate.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<version>${hibernate-validator.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-ehcache</artifactId>
-			<version>${hibernate.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
 			<artifactId>ehcache-core</artifactId>
-			<version>${ehcache.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>commons-logging</groupId>
@@ -303,19 +247,18 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>${spring-framework.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
 			<version>${assertj.version}</version>
+			<scope>test</scope>
 		</dependency>
 
 		<!-- Dandelion -->
@@ -452,6 +395,7 @@
 					<formats>
 						<format>html</format>
 					</formats>
+					<check/>
 				</configuration>
 			</plugin>
 		</plugins>
