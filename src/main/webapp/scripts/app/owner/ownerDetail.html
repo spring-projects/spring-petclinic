@@ -23,10 +23,8 @@
             <td> 
                 <a class="btn btn-info" ui-sref="app.owneredit({id: owner.id})">Edit Owner</a></td>
             <td>
-            	<spring:url value="{ownerId}/pets/new.html" var="addUrl">
-                    <spring:param name="ownerId" value="${owner.id}"/>
-                </spring:url>
-                <a href="${fn:escapeXml(addUrl)}"  class="btn btn-success">Add New Pet</a></td>
+                <a ui-sref="app.petcreate({ownerid: owner.id})"  class="btn btn-success">Add New Pet</a>
+                </td>
         </tr>
     </table>
 
@@ -58,11 +56,7 @@
                             </tr>
                         <tr>
                             <td> 
-                            	<spring:url value="/owners/{ownerId}/pets/{petId}/edit" var="petUrl">
-			                        <spring:param name="ownerId" value="${owner.id}"/>
-			                        <spring:param name="petId" value="${pet.id}"/>
-			                    </spring:url>
-			                    <a href="${fn:escapeXml(petUrl)}">Edit Pet</a>
+			                    <a ui-sref="app.petedit( {ownerid: owner.id, petid: pet.id})">Edit Pet</a>
 			                </td>
                             <td>
 			                    <spring:url value="/owners/{ownerId}/pets/{petId}/visits/new" var="visitUrl">

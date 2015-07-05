@@ -29,8 +29,8 @@ petClinicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProv
           url: 'owner/search',
           views: {
               'content@': {
-            	  templateUrl: 'scripts/app/owner/ownerSearchForm.html',
-                  controller: 'ownerSearchController'
+            	  controller: 'ownerSearchController',
+            	  templateUrl: 'scripts/app/owner/ownerSearchForm.html'
               }
           }
    
@@ -39,8 +39,8 @@ petClinicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProv
           url: 'owner/list?lastName',
           views: {
               'content@': {
-                  templateUrl: 'scripts/app/owner/ownerList.html',
-                  controller: 'ownerListController'
+                  controller: 'ownerListController',
+                  templateUrl: 'scripts/app/owner/ownerList.html'
               }
           }
    
@@ -49,8 +49,18 @@ petClinicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProv
           url: 'owner/:id',
           views: {
               'content@': {
-                  templateUrl: 'scripts/app/owner/ownerDetail.html',
-                  controller: 'ownerDetailController'
+            	  controller: 'ownerDetailController',
+                  templateUrl: 'scripts/app/owner/ownerDetail.html'
+              }
+          }
+   
+      }).
+      state('app.ownercreate', {
+          url: 'owner',
+          views: {
+              'content@': {
+            	  controller: 'ownerFormController',
+                  templateUrl: 'scripts/app/owner/ownerForm.html'
               }
           }
    
@@ -59,8 +69,8 @@ petClinicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProv
           url: 'owner/:id/edit',
           views: {
               'content@': {
-                  templateUrl: 'scripts/app/owner/ownerForm.html',
-                  controller: 'ownerFormController'
+                  controller: 'ownerFormController',
+                  templateUrl: 'scripts/app/owner/ownerForm.html'
               }
           }
    
@@ -69,12 +79,32 @@ petClinicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProv
           url: 'vets',
           views: {
               'content@': {
-                  templateUrl: 'scripts/app/vet/vetList.html',
-                  controller: 'vetController'
+            	  controller: 'vetController',
+                  templateUrl: 'scripts/app/vet/vetList.html'
               }
           }
    
-      });
+      }).
+    state('app.petedit', {
+        url: 'owner/:ownerid/pet/:petid',
+        views: {
+            'content@': {
+            	controller: 'petFormController',
+                templateUrl: 'scripts/app/pet/petForm.html'
+            }
+        }
+ 
+    }).
+    state('app.petcreate', {
+        url: 'owner/:ownerid/pet',
+        views: {
+            'content@': {
+            	controller: 'petFormController',
+                templateUrl: 'scripts/app/pet/petForm.html'
+            }
+        }
+ 
+    });
   }]);
 
 

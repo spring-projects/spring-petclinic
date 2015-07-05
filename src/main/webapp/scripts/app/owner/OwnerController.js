@@ -1,5 +1,12 @@
 'use strict';
 
+function loadOwner($scope, $resource, $stateParams) {
+	var ownerResource = $resource('/petclinic/owner/' + $stateParams.id);
+	$scope.owner =  ownerResource.get();
+}
+
+
+
 /*
  * Owner Search
  */
@@ -36,16 +43,13 @@ angular.module('controllers').controller('ownerDetailController', ['$scope', '$r
                loadOwner
 ]);
 
-function loadOwner($scope, $resource, $stateParams) {
-	var ownerResource = $resource('/petclinic/owner/' + $stateParams.id);
-	$scope.owner =  ownerResource.get();
-}
+
 
 /*
- * Owner Edit Form
+ * Form used to create and edit owners
  */
-angular.module('controllers').controller('ownerFormController', ['$scope', '$resource', '$http', '$stateParams', '$state',
-function($scope, $resource, $http, $stateParams, $state) {
+angular.module('controllers').controller('ownerFormController', ['$scope', '$http', '$resource', '$stateParams', '$state',
+function($scope, $http, $resource, $stateParams, $state) {
 	
 	$scope.submitOwnerForm = {};
 	
@@ -60,12 +64,22 @@ function($scope, $resource, $http, $stateParams, $state) {
 				city: 		form.city,
 				telephone:	form.telephone	
 		};
-		var restUrl = "/petclinic/owner/" + $stateParams.id;
-		$http.put(restUrl, data);
-		$state.go('app.ownerlist');
+		
+		if ($state.current.name == 'app.owneredit') {
+			var restUrl = "/petclinic/owner/" + $stateParams.id;
+			$http.put(restUrl, data);
+			$state.go('app.ownerlist');			
+		}
+		else { // in case of owner creation
+			var restUrl = "/petclinic/owner";
+			$http.post(restUrl, data);
+			$state.go('app.ownerlist');						
+		}
 	}
 	
-	loadOwner($scope, $resource, $stateParams);
+	if ($state.current.name == 'app.owneredit') {
+		loadOwner($scope, $resource, $stateParams);
+	}
 
 }]);
 

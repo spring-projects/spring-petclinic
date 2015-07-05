@@ -18,7 +18,7 @@ package org.springframework.samples.petclinic.web;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.web.bind.WebDataBinder;
@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -56,26 +57,27 @@ public class OwnerResource {
         return this.clinicService.findOwnerById(ownerId);
     }
 
-    @RequestMapping(value = "/owner/{ownerId}", method = RequestMethod.PUT)
-    public Owner updateOwner(@PathVariable("ownerId") int ownerId, @RequestBody Owner ownerRequest) {
-    	Owner ownerModel = retrieveOwner(ownerId);
-    	// This is done by hand for simplicity purpose. In a real life use-case we should consider using MapStruct.
-    	ownerModel.setFirstName(ownerRequest.getFirstName());
-    	ownerModel.setLastName(ownerRequest.getLastName());
-    	ownerModel.setCity(ownerRequest.getCity());
-    	ownerModel.setAddress(ownerRequest.getAddress());
-    	ownerModel.setTelephone(ownerRequest.getTelephone());
-        this.clinicService.saveOwner(ownerModel);
-        return ownerModel;
-        // TODO: need to handle failure
+    /**
+     * Create Owner
+     */
+    @RequestMapping(value = "/owner", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createOwner(@RequestBody Owner owner) {
+    	this.clinicService.saveOwner(owner);
+    	// TODO: need to handle failure
     }
-
-
+    
+    /**
+     * Read single Owner
+     */
     @RequestMapping(value = "/owner/{ownerId}", method = RequestMethod.GET)
     public Owner findOwner(@PathVariable("ownerId") int ownerId) {
         return retrieveOwner(ownerId);
     }
     
+    /**
+     * Read List of Owners
+     */
     @RequestMapping(value = "/owner/list", method = RequestMethod.GET)
     public Collection<Owner> findOwnerCollection(@RequestParam("lastName") String ownerLastName) {
 
@@ -91,5 +93,24 @@ public class OwnerResource {
             return results;
         }
     }
+    
+    /**
+     * Update Owner
+     */
+    @RequestMapping(value = "/owner/{ownerId}", method = RequestMethod.PUT)
+    public Owner updateOwner(@PathVariable("ownerId") int ownerId, @RequestBody Owner ownerRequest) {
+    	Owner ownerModel = retrieveOwner(ownerId);
+    	// This is done by hand for simplicity purpose. In a real life use-case we should consider using MapStruct.
+    	ownerModel.setFirstName(ownerRequest.getFirstName());
+    	ownerModel.setLastName(ownerRequest.getLastName());
+    	ownerModel.setCity(ownerRequest.getCity());
+    	ownerModel.setAddress(ownerRequest.getAddress());
+    	ownerModel.setTelephone(ownerRequest.getTelephone());
+        this.clinicService.saveOwner(ownerModel);
+        return ownerModel;
+        // TODO: need to handle failure
+    }
+
+
 
 }

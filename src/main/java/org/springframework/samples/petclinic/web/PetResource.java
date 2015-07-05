@@ -23,7 +23,6 @@ import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.service.ClinicService;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -31,7 +30,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.support.SessionStatus;
 
 /**
@@ -39,15 +38,14 @@ import org.springframework.web.bind.support.SessionStatus;
  * @author Ken Krebs
  * @author Arjen Poutsma
  */
-@Controller
-@SessionAttributes("pet")
-public class PetController {
+@RestController
+public class PetResource {
 
     private final ClinicService clinicService;
 
 
     @Autowired
-    public PetController(ClinicService clinicService) {
+    public PetResource(ClinicService clinicService) {
         this.clinicService = clinicService;
     }
 
@@ -78,15 +76,14 @@ public class PetController {
         } else {
             this.clinicService.savePet(pet);
             status.setComplete();
-            return "redirect:/owners/{ownerId}";
+            return "redirect:/owner/{ownerId}";
         }
     }
 
-    @RequestMapping(value = "/owners/*/pets/{petId}/edit", method = RequestMethod.GET)
-    public String initUpdateForm(@PathVariable("petId") int petId, Map<String, Object> model) {
+    @RequestMapping(value = "/owner/*/pet/{petId}", method = RequestMethod.GET)
+    public Pet findPet(@PathVariable("petId") int petId) {
         Pet pet = this.clinicService.findPetById(petId);
-        model.put("pet", pet);
-        return "pets/createOrUpdatePetForm";
+        return pet;
     }
 
     @RequestMapping(value = "/owners/{ownerId}/pets/{petId}/edit", method = {RequestMethod.PUT, RequestMethod.POST})

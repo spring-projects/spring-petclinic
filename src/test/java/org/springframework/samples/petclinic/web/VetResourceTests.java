@@ -7,44 +7,27 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 /**
  * Test class for the UserResource REST controller.
  *
  * @see UserResource
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath:spring/business-config.xml", "classpath:spring/tools-config.xml", "classpath:spring/mvc-core-config.xml"})
-@WebAppConfiguration
-@ActiveProfiles("spring-data-jpa")
-public class VetControllerTests {
+public class VetResourceTests extends AbstractWebResourceTests {
 
     @Autowired
     private VetResource vetResource;
     
-    @Autowired 
-    private WebApplicationContext ctx;
-
-    private MockMvc mockMvc;
-
     @Before
     public void setup() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(vetResource).build();
+    	runMockSpringMVC(vetResource);
     }
 
     @Test
-    public void testGetExistingUser() throws Exception {
+    public void shouldGetAListOfVetsInJSonFormat() throws Exception {
     	ResultActions actions = mockMvc.perform(get("/vets.json").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     	actions.andExpect(content().contentType("application/json"))

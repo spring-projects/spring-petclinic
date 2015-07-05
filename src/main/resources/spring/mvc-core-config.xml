@@ -21,7 +21,7 @@
     -->
     <context:component-scan
             base-package="org.springframework.samples.petclinic.web"/>
-
+    
     <mvc:annotation-driven conversion-service="conversionService">
     	<mvc:message-converters>
 	        <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
@@ -31,7 +31,7 @@
 	        </bean>
     	</mvc:message-converters>
     </mvc:annotation-driven>
-
+    
     <!--  all resources inside folder src/main/webapp/resources are mapped so they can be refered to inside JSP files
         (see header.jsp for more details) -->
     <mvc:resources mapping="/resources/**" location="/resources/"/>
