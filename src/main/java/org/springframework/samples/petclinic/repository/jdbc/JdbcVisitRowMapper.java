@@ -33,7 +33,7 @@ class JdbcVisitRowMapper implements RowMapper<Visit> {
     @Override
     public Visit mapRow(ResultSet rs, int row) throws SQLException {
         Visit visit = new Visit();
-        visit.setId(rs.getInt("visits.id"));
+        visit.setId(rs.getInt("id"));
         Date visitDate = rs.getDate("visit_date");
         visit.setDate(new DateTime(visitDate));
         visit.setDescription(rs.getString("description"));
