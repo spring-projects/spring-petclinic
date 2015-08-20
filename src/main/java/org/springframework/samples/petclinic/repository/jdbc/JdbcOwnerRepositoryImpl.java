@@ -110,7 +110,7 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
         Map<String, Object> params = new HashMap<>();
         params.put("id", owner.getId());
         final List<JdbcPet> pets = this.namedParameterJdbcTemplate.query(
-                "SELECT pets.id, name, birth_date, type_id, owner_id, visits.id, visit_date, description, pet_id FROM pets LEFT OUTER JOIN visits ON  pets.id = pet_id WHERE owner_id=:id",
+                "SELECT pets.id, name, birth_date, type_id, owner_id, visits.id as visit_id, visit_date, description, pet_id FROM pets LEFT OUTER JOIN visits ON  pets.id = pet_id WHERE owner_id=:id",
                 params,
                 new JdbcPetVisitExtractor()
         );
