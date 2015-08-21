@@ -91,13 +91,13 @@ public class Owner extends Person {
 
     protected Set<Pet> getPetsInternal() {
         if (this.pets == null) {
-            this.pets = new HashSet<Pet>();
+            this.pets = new HashSet<>();
         }
         return this.pets;
     }
 
     public List<Pet> getPets() {
-        List<Pet> sortedPets = new ArrayList<Pet>(getPetsInternal());
+        List<Pet> sortedPets = new ArrayList<>(getPetsInternal());
         PropertyComparator.sort(sortedPets, new MutableSortDefinition("name", true, true));
         return Collections.unmodifiableList(sortedPets);
     }

@@ -34,6 +34,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
+import javax.validation.Valid;
+
 /**
  * @author Juergen Hoeller
  * @author Ken Krebs
@@ -57,8 +59,9 @@ public class PetController {
     }
 
     @InitBinder
-    public void setAllowedFields(WebDataBinder dataBinder) {
+    public void initBinder(WebDataBinder dataBinder) {
         dataBinder.setDisallowedFields("id");
+        dataBinder.setValidator(new PetValidator());
     }
 
     @RequestMapping(value = "/owners/{ownerId}/pets/new", method = RequestMethod.GET)
@@ -71,8 +74,7 @@ public class PetController {
     }
 
     @RequestMapping(value = "/owners/{ownerId}/pets/new", method = RequestMethod.POST)
-    public String processCreationForm(@ModelAttribute("pet") Pet pet, BindingResult result, SessionStatus status) {
-        new PetValidator().validate(pet, result);
+    public String processCreationForm(@Valid Pet pet, BindingResult result, SessionStatus status) {
         if (result.hasErrors()) {
             return "pets/createOrUpdatePetForm";
         } else {
@@ -90,9 +92,7 @@ public class PetController {
     }
 
     @RequestMapping(value = "/owners/{ownerId}/pets/{petId}/edit", method = {RequestMethod.PUT, RequestMethod.POST})
-    public String processUpdateForm(@ModelAttribute("pet") Pet pet, BindingResult result, SessionStatus status) {
-        // we're not using @Valid annotation here because it is easier to define such validation rule in Java
-        new PetValidator().validate(pet, result);
+    public String processUpdateForm(@Valid Pet pet, BindingResult result, SessionStatus status) {
         if (result.hasErrors()) {
             return "pets/createOrUpdatePetForm";
         } else {

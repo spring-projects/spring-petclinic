@@ -32,8 +32,7 @@ import org.springframework.samples.petclinic.util.EntityUtils;
 import org.springframework.stereotype.Repository;
 
 /**
- * A simple JDBC-based implementation of the {@link VetRepository} interface. Uses @Cacheable to cache the result of the
- * {@link findAll} method
+ * A simple JDBC-based implementation of the {@link VetRepository} interface.
  *
  * @author Ken Krebs
  * @author Juergen Hoeller
@@ -55,12 +54,10 @@ public class JdbcVetRepositoryImpl implements VetRepository {
 
     /**
      * Refresh the cache of Vets that the ClinicService is holding.
-     *
-     * @see org.springframework.samples.petclinic.model.service.ClinicService#shouldFindVets()
      */
     @Override
     public Collection<Vet> findAll() throws DataAccessException {
-        List<Vet> vets = new ArrayList<Vet>();
+        List<Vet> vets = new ArrayList<>();
         // Retrieve the list of all vets.
         vets.addAll(this.jdbcTemplate.query(
                 "SELECT id, first_name, last_name FROM vets ORDER BY last_name,first_name",
@@ -78,10 +75,10 @@ public class JdbcVetRepositoryImpl implements VetRepository {
                     new BeanPropertyRowMapper<Integer>() {
                         @Override
                         public Integer mapRow(ResultSet rs, int row) throws SQLException {
-                            return Integer.valueOf(rs.getInt(1));
+                            return rs.getInt(1);
                         }
                     },
-                    vet.getId().intValue());
+                    vet.getId());
             for (int specialtyId : vetSpecialtiesIds) {
                 Specialty specialty = EntityUtils.getById(specialties, Specialty.class, specialtyId);
                 vet.addSpecialty(specialty);

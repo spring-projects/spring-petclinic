@@ -25,8 +25,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 /**
  * Test class for the UserResource REST controller.
- *
- * @see UserResource
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -38,9 +36,6 @@ public class VetControllerTests {
 
     @Autowired
     private VetController vetController;
-    
-    @Autowired 
-    private WebApplicationContext ctx;
 
     private MockMvc mockMvc;
 

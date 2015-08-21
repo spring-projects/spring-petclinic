@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,28 +15,28 @@
  */
 package org.springframework.samples.petclinic.repository.jdbc;
 
+
+import org.joda.time.DateTime;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.samples.petclinic.model.Visit;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
-import org.joda.time.DateTime;
-import org.springframework.jdbc.core.RowMapper;
-
 /**
  * {@link RowMapper} implementation mapping data from a {@link ResultSet} to the corresponding properties
- * of the {@link JdbcPet} class.
+ * of the {@link Visit} class.
  */
-class JdbcPetRowMapper implements RowMapper<JdbcPet> {
+class JdbcVisitRowMapper implements RowMapper<Visit> {
 
     @Override
-    public JdbcPet mapRow(ResultSet rs, int rownum) throws SQLException {
-        JdbcPet pet = new JdbcPet();
-        pet.setId(rs.getInt("pets.id"));
-        pet.setName(rs.getString("name"));
-        Date birthDate = rs.getDate("birth_date");
-        pet.setBirthDate(new DateTime(birthDate));
-        pet.setTypeId(rs.getInt("type_id"));
-        pet.setOwnerId(rs.getInt("owner_id"));
-        return pet;
+    public Visit mapRow(ResultSet rs, int row) throws SQLException {
+        Visit visit = new Visit();
+        visit.setId(rs.getInt("visit_id"));
+        Date visitDate = rs.getDate("visit_date");
+        visit.setDate(new DateTime(visitDate));
+        visit.setDescription(rs.getString("description"));
+        return visit;
     }
 }
