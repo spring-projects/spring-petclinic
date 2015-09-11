@@ -8,7 +8,7 @@
   "description" : "A two-tier PetClinic Application with Database component installed on MySQL and Application component on Tomcat Server. These components are deployed on Existing Servers.",
   "resources" : [ {
     "id" : "ad53c4fb-fcbb-6422-af6e-432d27ecddc1",
-    "name" : "Existing Server",
+    "name" : "Existing Server1",
     "component" : {
       "@self" : "/csa/api/topology-model/component-type/9fe842bb-515f-41e9-be9b-71f5f872a412",
       "groupId" : "com.hp.csa.type",
@@ -18,7 +18,7 @@
     "properties" : [ {
       "propertyKey" : "PASSWORD",
       "propertyValue" : {
-        "value" : "ENC(Izf+mSvGi2hNePGJ6ssUeg==)",
+        "value" : "ENC(6Hq6RfPPTz1SQM7+r55A+A==)",
         "type" : "string_encrypted"
       }
     }, {
@@ -90,11 +90,11 @@
     } ],
     "outgoingRelations" : [ ],
     "annotations" : {
-      "uniqueName" : "ExistingServer0001",
-      "displayName" : "Existing Server",
+      "uniqueName" : "ExistingServer10001",
+      "displayName" : "Existing Server1",
       "x" : "707",
       "description" : "Existing Server Component",
-      "y" : "375"
+      "y" : "374"
     },
     "capabilityChars" : [ ],
     "requirements" : [ ]
@@ -249,7 +249,7 @@
       } ],
       "relationDescriptorName" : "installsOn_Tomcat_Server_c2bc9714_19c3_488b_bdd0_37ee9544a21f_aade4fa90c4a4c8397d9a9bf4d141949",
       "resourceReference" : {
-        "name" : "Existing Server"
+        "name" : "Existing Server1"
       }
     } ],
     "annotations" : {
@@ -291,7 +291,7 @@
     }, {
       "propertyKey" : "mysqlpassword",
       "propertyValue" : {
-        "value" : "ENC(nF11ayPv4RO3VUuj6jmnaQ==)",
+        "value" : "ENC(ipjjccloYMk98frrGMoaEg==)",
         "type" : "string_encrypted"
       }
     }, {
@@ -545,21 +545,21 @@
       } ],
       "relationDescriptorName" : "installsOn_MySQL_Database_20509e36_558f_4502_ba03_f76f5d879afb_f21f3034d7ea4431981b737d81ce6299",
       "resourceReference" : {
-        "name" : "Existing Server"
+        "name" : "Existing Server2"
       }
     } ],
     "annotations" : {
       "uniqueName" : "MySQLDatabase0001",
       "displayName" : "MySQL Database",
       "x" : "430",
-      "description" : "MySQL Database Server",
-      "y" : "233"
+      "y" : "233",
+      "description" : "MySQL Database Server"
     },
     "capabilityChars" : [ ],
     "requirements" : [ ]
   }, {
     "id" : "dd6f1ef1-c545-74be-6145-7aed94809039",
-    "name" : "Existing Server",
+    "name" : "Existing Server2",
     "component" : {
       "@self" : "/csa/api/topology-model/component-type/9fe842bb-515f-41e9-be9b-71f5f872a412",
       "groupId" : "com.hp.csa.type",
@@ -569,7 +569,7 @@
     "properties" : [ {
       "propertyKey" : "PASSWORD",
       "propertyValue" : {
-        "value" : "ENC(dbYYSr8mcjyzNo+/ed4sIw==)",
+        "value" : "ENC(Bt59XPpjZ6wddNpSoq0I8Q==)",
         "type" : "string_encrypted"
       }
     }, {
@@ -641,11 +641,11 @@
     } ],
     "outgoingRelations" : [ ],
     "annotations" : {
-      "uniqueName" : "ExistingServer0002",
-      "displayName" : "Existing Server",
+      "uniqueName" : "ExistingServer20001",
+      "displayName" : "Existing Server2",
       "x" : "430",
       "description" : "Existing Server Component",
-      "y" : "380"
+      "y" : "378"
     },
     "capabilityChars" : [ ],
     "requirements" : [ ]
@@ -719,12 +719,6 @@
         "type" : "string_encrypted"
       }
     }, {
-      "propertyKey" : "_enable_modify_during_lifecycle_properties",
-      "propertyValue" : {
-        "value" : "",
-        "type" : "string"
-      }
-    }, {
       "propertyKey" : "dbhostname",
       "propertyValue" : {
         "value" : null,
@@ -735,6 +729,12 @@
       "propertyValue" : {
         "value" : null,
         "type" : "string_encrypted"
+      }
+    }, {
+      "propertyKey" : "_enable_modify_during_lifecycle_properties",
+      "propertyValue" : {
+        "value" : "",
+        "type" : "string"
       }
     }, {
       "propertyKey" : "port",
@@ -860,7 +860,7 @@
     "capabilityChars" : [ ],
     "requirements" : [ ]
   } ],
-  "revision" : 175,
+  "revision" : 179,
   "properties" : [ ],
   "iconUrl" : "/csa/images/library/pets.png",
   "tagIds" : [ {
