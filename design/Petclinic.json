@@ -5,7 +5,7 @@
   "artifactId" : "ff8081814e95c8f0014e95d0eab71570",
   "version" : "1.50.00",
   "displayName" : "PetClinic Application",
-  "description" : "A partial PetClinic Application design requiring an infrastructure with Database and Application Server for fulfillment.",
+  "description" : "A partial PetClinic Application design requiring an infrastructure with Database and Application Server for fulfillment",
   "resources" : [ {
     "id" : "ApplicationServer__VERSION__1__GROUPID__com.hp.csa.type0001",
     "name" : "Application Server",
