@@ -40,7 +40,6 @@ public class JpaVetRepositoryImpl implements VetRepository {
     @PersistenceContext
     private EntityManager em;
 
-
     @Override
     @Cacheable(value = "vets")
     @SuppressWarnings("unchecked")

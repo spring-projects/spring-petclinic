@@ -15,7 +15,6 @@
  */
 package org.springframework.samples.petclinic.repository.jdbc;
 
-
 import org.joda.time.DateTime;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.samples.petclinic.model.Visit;
