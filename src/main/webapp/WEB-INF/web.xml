@@ -8,6 +8,7 @@
     <display-name>Spring PetClinic</display-name>
     <description>Spring PetClinic sample application</description>
     
+   <!-- When using Spring jpa, use the following: -->
     <context-param>
         <param-name>spring.profiles.active</param-name>
         <param-value>jpa</param-value>
@@ -19,6 +20,7 @@
         <param-value>jdbc</param-value>
     </context-param>  -->
 
+   <!--  the  CallMonitoringAspect counts invocations on classes with @Repository on them. Classes in spring-data-jpa don't have that annotation  -->
    <!--  When using Spring Data JPA, uncomment the following: -->
    <!--
    	<context-param>
