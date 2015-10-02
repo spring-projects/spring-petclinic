@@ -35,7 +35,6 @@ public class VetController {
 
     private final ClinicService clinicService;
 
-
     @Autowired
     public VetController(ClinicService clinicService) {
         this.clinicService = clinicService;
@@ -50,7 +49,7 @@ public class VetController {
         model.put("vets", vets);
         return "vets/vetList";
     }
-    
+
     @RequestMapping("/vets.json")
     public @ResponseBody Vets showResourcesVetList() {
         // Here we are returning an object of type 'Vets' rather than a collection of Vet objects 
@@ -59,6 +58,5 @@ public class VetController {
         vets.getVetList().addAll(this.clinicService.findVets());
         return vets;
     }
-
 
 }

@@ -29,7 +29,6 @@ class JdbcPet extends Pet {
 
     private int ownerId;
 
-
     public void setTypeId(int typeId) {
         this.typeId = typeId;
     }
