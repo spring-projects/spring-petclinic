@@ -116,7 +116,7 @@ public class OwnerController {
         return "owners/createOrUpdateOwnerForm";
     }
 
-    @RequestMapping(value = "/owners/{ownerId}/edit", method = RequestMethod.PUT)
+    @RequestMapping(value = "/owners/{ownerId}/edit", method = RequestMethod.POST)
     public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result, SessionStatus status) {
         if (result.hasErrors()) {
             return "owners/createOrUpdateOwnerForm";
