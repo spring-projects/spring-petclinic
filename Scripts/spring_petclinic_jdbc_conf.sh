@@ -11,7 +11,7 @@ unzip /tmp/petclinic.war -d $TMPDIR/petclinic
 sed -e "/# HSQL/,/# MySQL/ s/^/#/g" \
     -e "/# MySQL/,$ s/^#\([jh]\)/\1/g" \
     -e "s/\${HOSTNAME}/$1/g" \
-    -e "s/\${SERNAME}/$2/g" \
+    -e "s/\${USERNAME}/$2/g" \
     -e "s/\${PASSWORD}/$3/g" $PROPFILE > /tmp/jdbc.tmp$$
 
 
