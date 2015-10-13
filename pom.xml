@@ -31,6 +31,8 @@
 		<jodatime-jsptags.version>1.1.1</jodatime-jsptags.version>
 		<jadira-usertype-core.version>3.2.0.GA</jadira-usertype-core.version>
 
+		<!-- MySql -->
+		<mysql-driver.version>5.1.36</mysql-driver.version>
 
 		<!-- Web dependencies -->
 		<webjars-bootstrap.version>2.3.0</webjars-bootstrap.version>
@@ -189,7 +191,12 @@
 		</dependency>
 
 		<!-- For MySql only -->
-		<!-- <dependency> <groupId>mysql</groupId> <artifactId>mysql-connector-java</artifactId> </dependency> -->
+		<!--dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql-driver.version}</version>
+		</dependency-->
+
 		<!-- HIBERNATE -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
