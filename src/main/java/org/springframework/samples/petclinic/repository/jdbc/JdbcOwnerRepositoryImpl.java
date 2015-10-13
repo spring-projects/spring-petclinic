@@ -35,6 +35,7 @@ import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.model.Visit;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
+import org.springframework.samples.petclinic.util.EntityUtils;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -114,7 +115,9 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
                 params,
                 new JdbcPetVisitExtractor()
         );
+        Collection<PetType> petTypes = getPetTypes();
         for (JdbcPet pet : pets) {
+            pet.setType(EntityUtils.getById(petTypes, PetType.class, pet.getTypeId()));
             owner.addPet(pet);
         }
     }
