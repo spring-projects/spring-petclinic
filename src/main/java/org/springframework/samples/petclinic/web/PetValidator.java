@@ -58,7 +58,7 @@ public class PetValidator implements Validator {
      */
     @Override
     public boolean supports(Class<?> clazz) {
-        return Pet.class.equals(clazz);
+        return Pet.class.isAssignableFrom(clazz);
     }
 
 
