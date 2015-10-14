@@ -18,21 +18,13 @@
 </script>
 <div class="container">
     <jsp:include page="../fragments/bodyHeader.jsp"/>
-    <c:choose>
-        <c:when test="${pet['new']}">
-            <c:set var="method" value="post"/>
-        </c:when>
-        <c:otherwise>
-            <c:set var="method" value="put"/>
-        </c:otherwise>
-    </c:choose>
 
     <h2>
         <c:if test="${pet['new']}">New </c:if>
         Pet
     </h2>
 
-    <form:form modelAttribute="pet" method="${method}"
+    <form:form modelAttribute="pet"
                class="form-horizontal">
         <div class="control-group" id="owner">
             <label class="control-label">Owner </label>

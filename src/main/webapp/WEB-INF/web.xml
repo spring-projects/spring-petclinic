@@ -100,19 +100,6 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <!-- used so we can use forms of method type 'PUT' and 'DELETE' (such as in the Pet form)
-see here: http://static.springsource.org/spring/docs/current/spring-framework-reference/html/view.html#rest-method-conversion
--->
-    <filter>
-        <filter-name>httpMethodFilter</filter-name>
-        <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
-    </filter>
-
-    <filter-mapping>
-        <filter-name>httpMethodFilter</filter-name>
-        <servlet-name>petclinic</servlet-name>
-    </filter-mapping>
- 
      <!-- Dandelion-Datatables filter, used for basic export -->
      <filter>
         <filter-name>datatables</filter-name>
