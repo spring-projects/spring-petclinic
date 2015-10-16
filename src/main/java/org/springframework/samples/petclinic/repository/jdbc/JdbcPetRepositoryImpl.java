@@ -64,8 +64,8 @@ public class JdbcPetRepositoryImpl implements PetRepository {
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 
         this.insertPet = new SimpleJdbcInsert(dataSource)
-                .withTableName("pets")
-                .usingGeneratedKeyColumns("id");
+            .withTableName("pets")
+            .usingGeneratedKeyColumns("id");
 
         this.ownerRepository = ownerRepository;
         this.visitRepository = visitRepository;
@@ -75,9 +75,9 @@ public class JdbcPetRepositoryImpl implements PetRepository {
     public List<PetType> findPetTypes() throws DataAccessException {
         Map<String, Object> params = new HashMap<>();
         return this.namedParameterJdbcTemplate.query(
-                "SELECT id, name FROM types ORDER BY name",
-                params,
-                BeanPropertyRowMapper.newInstance(PetType.class));
+            "SELECT id, name FROM types ORDER BY name",
+            params,
+            BeanPropertyRowMapper.newInstance(PetType.class));
     }
 
     @Override
@@ -87,9 +87,9 @@ public class JdbcPetRepositoryImpl implements PetRepository {
             Map<String, Object> params = new HashMap<>();
             params.put("id", id);
             pet = this.namedParameterJdbcTemplate.queryForObject(
-                    "SELECT id, name, birth_date, type_id, owner_id FROM pets WHERE id=:id",
-                    params,
-                    new JdbcPetRowMapper());
+                "SELECT id, name, birth_date, type_id, owner_id FROM pets WHERE id=:id",
+                params,
+                new JdbcPetRowMapper());
         } catch (EmptyResultDataAccessException ex) {
             throw new ObjectRetrievalFailureException(Pet.class, id);
         }
@@ -108,13 +108,13 @@ public class JdbcPetRepositoryImpl implements PetRepository {
     public void save(Pet pet) throws DataAccessException {
         if (pet.isNew()) {
             Number newKey = this.insertPet.executeAndReturnKey(
-                    createPetParameterSource(pet));
+                createPetParameterSource(pet));
             pet.setId(newKey.intValue());
         } else {
             this.namedParameterJdbcTemplate.update(
-                    "UPDATE pets SET name=:name, birth_date=:birth_date, type_id=:type_id, " +
-                            "owner_id=:owner_id WHERE id=:id",
-                    createPetParameterSource(pet));
+                "UPDATE pets SET name=:name, birth_date=:birth_date, type_id=:type_id, " +
+                    "owner_id=:owner_id WHERE id=:id",
+                createPetParameterSource(pet));
         }
     }
 
@@ -123,11 +123,11 @@ public class JdbcPetRepositoryImpl implements PetRepository {
      */
     private MapSqlParameterSource createPetParameterSource(Pet pet) {
         return new MapSqlParameterSource()
-                .addValue("id", pet.getId())
-                .addValue("name", pet.getName())
-                .addValue("birth_date", pet.getBirthDate().toDate())
-                .addValue("type_id", pet.getType().getId())
-                .addValue("owner_id", pet.getOwner().getId());
+            .addValue("id", pet.getId())
+            .addValue("name", pet.getName())
+            .addValue("birth_date", pet.getBirthDate().toDate())
+            .addValue("type_id", pet.getType().getId())
+            .addValue("owner_id", pet.getOwner().getId());
     }
 
 }

@@ -1,406 +1,407 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.springframework.samples</groupId>
-	<artifactId>spring-petclinic</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.springframework.samples</groupId>
+    <artifactId>spring-petclinic</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
 
-	<name>petclinic</name>
-	<packaging>war</packaging>
+    <name>petclinic</name>
+    <packaging>war</packaging>
 
-	<properties>
+    <properties>
 
-		<!-- Generic properties -->
-		<java.version>1.7</java.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- Generic properties -->
+        <java.version>1.7</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<!-- Spring -->
-		<spring-io-platform.version>1.1.3.RELEASE</spring-io-platform.version>
-		<spring-data-jdbc.version>1.1.0.RELEASE</spring-data-jdbc.version>
+        <!-- Spring -->
+        <spring-io-platform.version>1.1.3.RELEASE</spring-io-platform.version>
+        <spring-data-jdbc.version>1.1.0.RELEASE</spring-data-jdbc.version>
 
 
-		<!-- Java EE / Java SE dependencies -->
-		<tomcat.version>7.0.59</tomcat.version>
+        <!-- Java EE / Java SE dependencies -->
+        <tomcat.version>7.0.59</tomcat.version>
 
-		<!-- Test -->
-		<assertj.version>2.2.0</assertj.version>
-  
-		<!-- Dates -->
-		<jodatime-hibernate.version>1.3</jodatime-hibernate.version>
-		<jodatime-jsptags.version>1.1.1</jodatime-jsptags.version>
-		<jadira-usertype-core.version>3.2.0.GA</jadira-usertype-core.version>
+        <!-- Test -->
+        <assertj.version>2.2.0</assertj.version>
 
-		<!-- MySql -->
-		<mysql-driver.version>5.1.36</mysql-driver.version>
+        <!-- Dates -->
+        <jodatime-hibernate.version>1.3</jodatime-hibernate.version>
+        <jodatime-jsptags.version>1.1.1</jodatime-jsptags.version>
+        <jadira-usertype-core.version>3.2.0.GA</jadira-usertype-core.version>
 
-		<!-- Web dependencies -->
-		<webjars-bootstrap.version>2.3.0</webjars-bootstrap.version>
-		<webjars-jquery-ui.version>1.10.3</webjars-jquery-ui.version>
-		<webjars-jquery.version>2.0.3-1</webjars-jquery.version>
-		<dandelion.version>1.0.1</dandelion.version>
+        <!-- MySql -->
+        <mysql-driver.version>5.1.36</mysql-driver.version>
 
-		<cobertura.version>2.7</cobertura.version>
+        <!-- Web dependencies -->
+        <webjars-bootstrap.version>2.3.0</webjars-bootstrap.version>
+        <webjars-jquery-ui.version>1.10.3</webjars-jquery-ui.version>
+        <webjars-jquery.version>2.0.3-1</webjars-jquery.version>
+        <dandelion.version>1.0.1</dandelion.version>
 
-	</properties>
+        <cobertura.version>2.7</cobertura.version>
 
-	<dependencyManagement>
-		<!-- Import the maven Spring IO Platform Bill Of Materials (BOM) -->
-		<dependencies>
-			<dependency>
-				<groupId>io.spring.platform</groupId>
-				<artifactId>platform-bom</artifactId>
-				<version>${spring-io-platform.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+    </properties>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.jadira.usertype</groupId>
-			<artifactId>usertype.core</artifactId>
-			<version>${jadira-usertype-core.version}</version>
-		</dependency>
-		<dependency>
-        	<groupId>org.apache.tomcat</groupId>
-        	<artifactId>tomcat-servlet-api</artifactId>
-         	<version>${tomcat.version}</version>
-          	<scope>provided</scope>
+    <dependencyManagement>
+        <!-- Import the maven Spring IO Platform Bill Of Materials (BOM) -->
+        <dependencies>
+            <dependency>
+                <groupId>io.spring.platform</groupId>
+                <artifactId>platform-bom</artifactId>
+                <version>${spring-io-platform.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jadira.usertype</groupId>
+            <artifactId>usertype.core</artifactId>
+            <version>${jadira-usertype-core.version}</version>
         </dependency>
-		<dependency>
-			<groupId>javax.servlet.jsp</groupId>
-			<artifactId>javax.servlet.jsp-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>tomcat-jasper-el</artifactId>
-			<version>${tomcat.version}</version>
-			<scope>provided</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-servlet-api</artifactId>
+            <version>${tomcat.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>javax.servlet.jsp-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jasper-el</artifactId>
+            <version>${tomcat.version}</version>
+            <scope>provided</scope>
+        </dependency>
 
         <dependency>
-			<groupId>javax.servlet.jsp.jstl</groupId>
-			<artifactId>javax.servlet.jsp.jstl-api</artifactId>
+            <groupId>javax.servlet.jsp.jstl</groupId>
+            <artifactId>javax.servlet.jsp.jstl-api</artifactId>
         </dependency>
-		<dependency>
-			<groupId>org.apache.taglibs</groupId>
-			<artifactId>taglibs-standard-jstlel</artifactId>
-		</dependency>
-		<!--  JSon -->
-		 <dependency>
+        <dependency>
+            <groupId>org.apache.taglibs</groupId>
+            <artifactId>taglibs-standard-jstlel</artifactId>
+        </dependency>
+        <!--  JSon -->
+        <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
             <scope>test</scope>
         </dependency>
-		<!-- SPRING, SPRING, SPRINGITY SPRING -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
+        <!-- SPRING, SPRING, SPRINGITY SPRING -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
 
-		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-jdbc-core</artifactId>
-			<version>${spring-data-jdbc.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.springframework</groupId>
-					<artifactId>*</artifactId>
-				</exclusion>
-				<!--  because Spring Data usually comes with a slightly older version of Spring -->
-			</exclusions>
-		</dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jdbc-core</artifactId>
+            <version>${spring-data-jdbc.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+                <!--  because Spring Data usually comes with a slightly older version of Spring -->
+            </exclusions>
+        </dependency>
 
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jdbc</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-		</dependency>
-		<!-- used for EhCacheCacheManager -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-support</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-oxm</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+        <!-- used for EhCacheCacheManager -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-oxm</artifactId>
+        </dependency>
 
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjrt</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjweaver</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		
-		<!-- Database connection pool 
-		See here for more details on commons-dbcp versus tomcat-jdbc: 
-    	http://blog.ippon.fr/2013/03/13/improving-the-performance-of-the-spring-petclinic-sample-application-part-3-of-5/
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Database connection pool
+        See here for more details on commons-dbcp versus tomcat-jdbc:
+        http://blog.ippon.fr/2013/03/13/improving-the-performance-of-the-spring-petclinic-sample-application-part-3-of-5/
     -->
-		<dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>tomcat-jdbc</artifactId>
-			<scope>runtime</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jdbc</artifactId>
+            <scope>runtime</scope>
+        </dependency>
 
-		<!-- Logging with SLF4J & LogBack -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		
-		<!-- Date and Time -->
-		<dependency>
-			<groupId>joda-time</groupId>
-			<artifactId>joda-time</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>joda-time</groupId>
-			<artifactId>joda-time-hibernate</artifactId>
-			<version>${jodatime-hibernate.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>joda-time</groupId>
-			<artifactId>joda-time-jsptags</artifactId>
-			<version>${jodatime-jsptags.version}</version>
-		</dependency>
+        <!-- Logging with SLF4J & LogBack -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <scope>runtime</scope>
+        </dependency>
 
-		<!-- Databases - Uses HSQL by default -->
-		<dependency>
-			<groupId>org.hsqldb</groupId>
-			<artifactId>hsqldb</artifactId>
-			<scope>runtime</scope>
-		</dependency>
+        <!-- Date and Time -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time-hibernate</artifactId>
+            <version>${jodatime-hibernate.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time-jsptags</artifactId>
+            <version>${jodatime-jsptags.version}</version>
+        </dependency>
 
-		<!-- For MySql only -->
-		<!--dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>${mysql-driver.version}</version>
-		</dependency-->
+        <!-- Databases - Uses HSQL by default -->
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <scope>runtime</scope>
+        </dependency>
 
-		<!-- HIBERNATE -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-validator</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-ehcache</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>net.sf.ehcache</groupId>
-			<artifactId>ehcache-core</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<!-- Webjars (static dependencies distributed as JAR files) -->
-		<dependency>
-			<groupId>org.webjars</groupId>
-			<artifactId>bootstrap</artifactId>
-			<version>${webjars-bootstrap.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars</groupId>
-			<artifactId>jquery-ui</artifactId>
-			<version>${webjars-jquery-ui.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars</groupId>
-			<artifactId>jquery</artifactId>
-			<version>${webjars-jquery.version}</version>
-		</dependency>
-		
-		<!-- Test Artifacts -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.assertj</groupId>
-			<artifactId>assertj-core</artifactId>
-			<version>${assertj.version}</version>
-			<scope>test</scope>
-		</dependency>
+        <!-- For MySql only -->
+        <!--dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql-driver.version}</version>
+        </dependency-->
 
-		<!-- Dandelion -->
-		<dependency>
-			<groupId>com.github.dandelion</groupId>
-			<artifactId>datatables-jsp</artifactId>
-			<version>${dandelion.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.dandelion</groupId>
-			<artifactId>datatables-export-itext</artifactId>
-			<version>${dandelion.version}</version>
-		</dependency>
-		<!-- temporary fix: below dependency should not be necessary as it is a transitive dependency. 
-		For some reason we can't build the app unless it is a first level dependency -->
-		<dependency>
-	         <groupId>com.googlecode.json-simple</groupId>
-	         <artifactId>json-simple</artifactId>
-	     </dependency>
-	</dependencies>
+        <!-- HIBERNATE -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+        </dependency>
 
-	<!-- Maven plugin versions are mentioned in order to guarantee the build reproducibility in the long term -->
-	<build>
-		<defaultGoal>install</defaultGoal>
-		<testResources>
-		  <testResource>
-		  	<!-- declared explicitly so Spring config files can be placed next to their corresponding JUnit test class  -->
-		    <directory>${project.basedir}/src/test/java</directory>
-		  </testResource>
-		  <testResource>
-		    <directory>${project.basedir}/src/test/resources</directory>
-		  </testResource>
-		</testResources>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.0</version>
-				<configuration>
-					<compilerArguments>
-						<Xlint />
-					</compilerArguments>
-					<verbose>true</verbose>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-					<showWarnings>true</showWarnings>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.13</version>
-				<configuration>
-					<includes>
-						<include>**/*Tests.java</include>
-					</includes>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>2.3</version>
-				<configuration>
-					<warName>petclinic</warName>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-eclipse-plugin</artifactId>
-				<version>2.9</version>
-				<configuration>
-					<downloadSources>true</downloadSources>
-					<downloadJavadocs>true</downloadJavadocs>
-					<wtpversion>2.0</wtpversion>
-					<sourceIncludes>
-						<sourceInclude>**/*.*</sourceInclude>
-					</sourceIncludes>
-					<additionalBuildcommands>
-						<buildCommand>
-							<name>org.springframework.ide.eclipse.core.springbuilder</name>
-						</buildCommand>
-						<buildCommand>
-							<name>org.eclipse.m2e.core.maven2Builder</name>
-						</buildCommand>
-					</additionalBuildcommands>
-					<additionalProjectnatures>
-						<projectnature>org.eclipse.jdt.core.javanature</projectnature>
-						<projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
-						<projectnature>org.eclipse.m2e.core.maven2Nature</projectnature>
-					</additionalProjectnatures>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.4</version>
-				<configuration>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>2.2</version>
-				<configuration>
-					<server>tomcat-development-server</server>
-					<port>9966</port>
-					<path>/petclinic</path>
-				</configuration>
-			</plugin>
-			 <plugin>
-		        <groupId>org.codehaus.mojo</groupId>
-		        <artifactId>cobertura-maven-plugin</artifactId>
-				<version>${cobertura.version}</version>
-		        <configuration>
-		        	<check/>
-		        </configuration>
-		        <executions>
-		          <execution>
-		            <goals>
-		              <goal>clean</goal>
-		              <goal>check</goal>
-		            </goals>
-		          </execution>
-		        </executions>
-         </plugin>
-		</plugins>
-	</build>
-		<reporting>
-		<plugins>
-		 
-			<!--  integrate maven-cobertura-plugin to project site  -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>${cobertura.version}</version>
-				<configuration>
-					<formats>
-						<format>html</format>
-					</formats>
-					<check/>
-				</configuration>
-			</plugin>
-		</plugins>
-	</reporting>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-ehcache</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache-core</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- Webjars (static dependencies distributed as JAR files) -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>bootstrap</artifactId>
+            <version>${webjars-bootstrap.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery-ui</artifactId>
+            <version>${webjars-jquery-ui.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery</artifactId>
+            <version>${webjars-jquery.version}</version>
+        </dependency>
 
-	<url>demopetclinic</url>
+        <!-- Test Artifacts -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Dandelion -->
+        <dependency>
+            <groupId>com.github.dandelion</groupId>
+            <artifactId>datatables-jsp</artifactId>
+            <version>${dandelion.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.dandelion</groupId>
+            <artifactId>datatables-export-itext</artifactId>
+            <version>${dandelion.version}</version>
+        </dependency>
+        <!-- temporary fix: below dependency should not be necessary as it is a transitive dependency.
+        For some reason we can't build the app unless it is a first level dependency -->
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+        </dependency>
+    </dependencies>
+
+    <!-- Maven plugin versions are mentioned in order to guarantee the build reproducibility in the long term -->
+    <build>
+        <defaultGoal>install</defaultGoal>
+        <testResources>
+            <testResource>
+                <!-- declared explicitly so Spring config files can be placed next to their corresponding JUnit test class  -->
+                <directory>${project.basedir}/src/test/java</directory>
+            </testResource>
+            <testResource>
+                <directory>${project.basedir}/src/test/resources</directory>
+            </testResource>
+        </testResources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.0</version>
+                <configuration>
+                    <compilerArguments>
+                        <Xlint/>
+                    </compilerArguments>
+                    <verbose>true</verbose>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <showWarnings>true</showWarnings>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.13</version>
+                <configuration>
+                    <includes>
+                        <include>**/*Tests.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <warName>petclinic</warName>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <version>2.9</version>
+                <configuration>
+                    <downloadSources>true</downloadSources>
+                    <downloadJavadocs>true</downloadJavadocs>
+                    <wtpversion>2.0</wtpversion>
+                    <sourceIncludes>
+                        <sourceInclude>**/*.*</sourceInclude>
+                    </sourceIncludes>
+                    <additionalBuildcommands>
+                        <buildCommand>
+                            <name>org.springframework.ide.eclipse.core.springbuilder</name>
+                        </buildCommand>
+                        <buildCommand>
+                            <name>org.eclipse.m2e.core.maven2Builder</name>
+                        </buildCommand>
+                    </additionalBuildcommands>
+                    <additionalProjectnatures>
+                        <projectnature>org.eclipse.jdt.core.javanature</projectnature>
+                        <projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+                        <projectnature>org.eclipse.m2e.core.maven2Nature</projectnature>
+                    </additionalProjectnatures>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <server>tomcat-development-server</server>
+                    <port>9966</port>
+                    <path>/petclinic</path>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>${cobertura.version}</version>
+                <configuration>
+                    <check/>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>clean</goal>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    <reporting>
+        <plugins>
+
+            <!--  integrate maven-cobertura-plugin to project site  -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>${cobertura.version}</version>
+                <configuration>
+                    <formats>
+                        <format>html</format>
+                    </formats>
+                    <check/>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
+
+    <url>demopetclinic</url>
 </project>

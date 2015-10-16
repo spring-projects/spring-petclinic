@@ -41,19 +41,21 @@ public class VetController {
         this.clinicService = clinicService;
     }
 
-    @RequestMapping(value={"/vets.xml","/vets.html"})
+    @RequestMapping(value = {"/vets.xml", "/vets.html"})
     public String showVetList(Map<String, Object> model) {
-        // Here we are returning an object of type 'Vets' rather than a collection of Vet objects 
+        // Here we are returning an object of type 'Vets' rather than a collection of Vet objects
         // so it is simpler for Object-Xml mapping
         Vets vets = new Vets();
         vets.getVetList().addAll(this.clinicService.findVets());
         model.put("vets", vets);
         return "vets/vetList";
     }
-    
+
     @RequestMapping("/vets.json")
-    public @ResponseBody Vets showResourcesVetList() {
-        // Here we are returning an object of type 'Vets' rather than a collection of Vet objects 
+    public
+    @ResponseBody
+    Vets showResourcesVetList() {
+        // Here we are returning an object of type 'Vets' rather than a collection of Vet objects
         // so it is simpler for JSon/Object mapping
         Vets vets = new Vets();
         vets.getVetList().addAll(this.clinicService.findVets());

@@ -96,19 +96,17 @@ public class OwnerController {
             // no owners found
             result.rejectValue("lastName", "notFound", "not found");
             return "owners/findOwners";
-        }
-        else if (results.size() == 1) {
-    	// 1 owner found
-    	owner = results.iterator().next();
-    	return "redirect:/owners/" + owner.getId();
-        }
-        else {
+        } else if (results.size() == 1) {
+            // 1 owner found
+            owner = results.iterator().next();
+            return "redirect:/owners/" + owner.getId();
+        } else {
             // multiple owners found
             model.put("selections", results);
             return "owners/ownersList";
         }
     }
-        
+
     @RequestMapping(value = "/owners/{ownerId}/edit", method = RequestMethod.GET)
     public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
         Owner owner = this.clinicService.findOwnerById(ownerId);

@@ -2,11 +2,11 @@
 <!--
     - DispatcherServlet application context for PetClinic's web tier.
 -->
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc.xsd
         http://www.springframework.org/schema/beans
@@ -20,7 +20,7 @@
         - POJOs labeled with the @Controller and @Service annotations are auto-detected.
     -->
     <context:component-scan
-            base-package="org.springframework.samples.petclinic.web"/>
+        base-package="org.springframework.samples.petclinic.web"/>
 
     <mvc:annotation-driven conversion-service="conversionService"/>
 
@@ -31,11 +31,11 @@
     <!-- uses WebJars so Javascript and CSS libs can be declared as Maven dependencies (Bootstrap, jQuery...) -->
     <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
 
-    <mvc:view-controller path="/" view-name="welcome" />
+    <mvc:view-controller path="/" view-name="welcome"/>
 
-    <!-- serve static resources (*.html, ...) from src/main/webapp/ 
+    <!-- serve static resources (*.html, ...) from src/main/webapp/
     Required when both servlet-mapping is '/' and static resources need to be served -->
-    <mvc:default-servlet-handler />
+    <mvc:default-servlet-handler/>
 
     <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
         <property name="formatters">
@@ -53,7 +53,7 @@
           p:basename="messages/messages"/>
 
     <!--
-        - This bean resolves specific types of exceptions to corresponding logical 
+        - This bean resolves specific types of exceptions to corresponding logical
         - view names for error views.
     -->
     <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">

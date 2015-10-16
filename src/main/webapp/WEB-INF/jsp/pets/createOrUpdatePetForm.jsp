@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -13,7 +13,7 @@
 
 <script>
     $(function () {
-        $("#birthDate").datepicker({ dateFormat: 'yy/mm/dd'});
+        $("#birthDate").datepicker({dateFormat: 'yy/mm/dd'});
     });
 </script>
 <div class="container">

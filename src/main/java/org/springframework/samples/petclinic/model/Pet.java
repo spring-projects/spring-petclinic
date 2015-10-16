@@ -63,33 +63,28 @@ public class Pet extends NamedEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pet", fetch = FetchType.EAGER)
     private Set<Visit> visits;
 
-
-    public void setBirthDate(DateTime birthDate) {
-        this.birthDate = birthDate;
-    }
-
     public DateTime getBirthDate() {
         return this.birthDate;
     }
 
-    public void setType(PetType type) {
-        this.type = type;
+    public void setBirthDate(DateTime birthDate) {
+        this.birthDate = birthDate;
     }
 
     public PetType getType() {
         return this.type;
     }
 
-    protected void setOwner(Owner owner) {
-        this.owner = owner;
+    public void setType(PetType type) {
+        this.type = type;
     }
 
     public Owner getOwner() {
         return this.owner;
     }
 
-    protected void setVisitsInternal(Set<Visit> visits) {
-        this.visits = visits;
+    protected void setOwner(Owner owner) {
+        this.owner = owner;
     }
 
     protected Set<Visit> getVisitsInternal() {
@@ -97,6 +92,10 @@ public class Pet extends NamedEntity {
             this.visits = new HashSet<>();
         }
         return this.visits;
+    }
+
+    protected void setVisitsInternal(Set<Visit> visits) {
+        this.visits = visits;
     }
 
     public List<Visit> getVisits() {

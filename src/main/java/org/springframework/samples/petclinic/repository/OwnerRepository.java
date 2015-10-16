@@ -53,7 +53,7 @@ public interface OwnerRepository {
      *
      * @param lastName Value to search for
      * @return a <code>Collection</code> of matching <code>Owner</code>s (or an empty <code>Collection</code> if none
-     *         found)
+     * found)
      */
     Collection<Owner> findByLastName(String lastName) throws DataAccessException;
 
@@ -62,8 +62,7 @@ public interface OwnerRepository {
      *
      * @param id the id to search for
      * @return the <code>Owner</code> if found
-     * @throws org.springframework.dao.DataRetrievalFailureException
-     *          if not found
+     * @throws org.springframework.dao.DataRetrievalFailureException if not found
      */
     Owner findById(int id) throws DataAccessException;
 
