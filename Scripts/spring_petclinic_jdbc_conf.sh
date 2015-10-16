@@ -2,7 +2,7 @@
 
 
 # PetClinic appliaction deployment script
-TMPDIR=$TMPDIR
+TMPDIR=/tmp/arm-workdir
 PROPFILE=$TMPDIR/petclinic/WEB-INF/classes/spring/data-access.properties
 
 mkdir -p $TMPDIR/petclinic
