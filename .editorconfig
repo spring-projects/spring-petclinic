@@ -1,9 +1,12 @@
 # top-most EditorConfig file
 root = true
 
-[*.{java,xml}]
+[*]
 charset = utf-8
-indent_style = space
-indent_size = 4
+end_of_line = lf
 insert_final_newline = true
+indent_style = space
+
+[*.{java,xml}]
+indent_size = 4
 trim_trailing_whitespace = true
