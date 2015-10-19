@@ -39,7 +39,8 @@
         <webjars-bootstrap.version>2.3.0</webjars-bootstrap.version>
         <webjars-jquery-ui.version>1.10.3</webjars-jquery-ui.version>
         <webjars-jquery.version>2.0.3-1</webjars-jquery.version>
-        <dandelion.version>1.0.1</dandelion.version>
+        <dandelion.version>1.1.1</dandelion.version>
+        <dandelion.datatables.version>1.1.0</dandelion.datatables.version>
 
         <cobertura.version>2.7</cobertura.version>
 
@@ -260,13 +261,18 @@
         <!-- Dandelion -->
         <dependency>
             <groupId>com.github.dandelion</groupId>
-            <artifactId>datatables-jsp</artifactId>
+            <artifactId>dandelion-jsp</artifactId>
             <version>${dandelion.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.dandelion</groupId>
+            <artifactId>datatables-jsp</artifactId>
+            <version>${dandelion.datatables.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.dandelion</groupId>
             <artifactId>datatables-export-itext</artifactId>
-            <version>${dandelion.version}</version>
+            <version>${dandelion.datatables.version}</version>
         </dependency>
         <!-- temporary fix: below dependency should not be necessary as it is a transitive dependency.
         For some reason we can't build the app unless it is a first level dependency -->
