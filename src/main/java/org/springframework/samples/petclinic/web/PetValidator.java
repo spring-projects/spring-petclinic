@@ -38,8 +38,6 @@ public class PetValidator implements Validator {
         // name validation
         if (!StringUtils.hasLength(name)) {
             errors.rejectValue("name", "required", "required");
-        } else if (pet.isNew() && pet.getOwner().getPet(name, true) != null) {
-            errors.rejectValue("name", "duplicate", "already exists");
         }
 
         // type validation

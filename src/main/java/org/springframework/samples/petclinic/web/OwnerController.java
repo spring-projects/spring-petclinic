@@ -31,8 +31,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -42,7 +40,6 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Michael Isvy
  */
 @Controller
-@SessionAttributes(types = Owner.class)
 public class OwnerController {
 
     private final ClinicService clinicService;
@@ -66,12 +63,11 @@ public class OwnerController {
     }
 
     @RequestMapping(value = "/owners/new", method = RequestMethod.POST)
-    public String processCreationForm(@Valid Owner owner, BindingResult result, SessionStatus status) {
+    public String processCreationForm(@Valid Owner owner, BindingResult result) {
         if (result.hasErrors()) {
             return "owners/createOrUpdateOwnerForm";
         } else {
             this.clinicService.saveOwner(owner);
-            status.setComplete();
             return "redirect:/owners/" + owner.getId();
         }
     }
@@ -115,12 +111,11 @@ public class OwnerController {
     }
 
     @RequestMapping(value = "/owners/{ownerId}/edit", method = RequestMethod.POST)
-    public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result, SessionStatus status) {
+    public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result) {
         if (result.hasErrors()) {
             return "owners/createOrUpdateOwnerForm";
         } else {
             this.clinicService.saveOwner(owner);
-            status.setComplete();
             return "redirect:/owners/{ownerId}";
         }
     }

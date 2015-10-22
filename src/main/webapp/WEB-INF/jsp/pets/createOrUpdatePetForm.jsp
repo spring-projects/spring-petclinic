@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 
+<%@ page session="false" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -26,6 +27,7 @@
 
     <form:form modelAttribute="pet"
                class="form-horizontal">
+        <input type="hidden" name="id" value="${pet.id}"/>
         <div class="control-group" id="owner">
             <label class="control-label">Owner </label>
 
