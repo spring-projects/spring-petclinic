@@ -111,10 +111,11 @@ public class OwnerController {
     }
 
     @RequestMapping(value = "/owners/{ownerId}/edit", method = RequestMethod.POST)
-    public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result) {
+    public String processUpdateOwnerForm(@Valid Owner owner, @PathVariable("ownerId") int ownerId, BindingResult result) {
         if (result.hasErrors()) {
             return "owners/createOrUpdateOwnerForm";
         } else {
+            owner.setId(ownerId);
             this.clinicService.saveOwner(owner);
             return "redirect:/owners/{ownerId}";
         }
