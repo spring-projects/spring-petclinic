@@ -48,8 +48,7 @@
 		<rome.version>1.5.0</rome.version>
 
 		<!-- Test -->
-		<junit.version>4.12</junit.version>
-		<assertj.version>2.0.0</assertj.version>
+		
   
 		<!-- Dates -->
 		<jodatime-hibernate.version>1.3</jodatime-hibernate.version>
@@ -266,35 +265,7 @@
 		</dependency>
 		
 		<!-- Test Artifacts -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<version>${spring-framework.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.assertj</groupId>
-			<artifactId>assertj-core</artifactId>
-			<version>${assertj.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjrt</artifactId>
-			<version>${aspectj.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjweaver</artifactId>
-			<version>${aspectj.version}</version>
-			<scope>runtime</scope>
-		</dependency>
+		
 
 
 		<!-- Dandelion -->
@@ -353,16 +324,7 @@
 	<!-- Maven plugin versions are mentioned in order to guarantee the build reproducibility in the long term -->
 	<build>
 		<defaultGoal>install</defaultGoal>
-		<testResources>
-		  <testResource>
-		  	<!-- declared explicitly so Spring config files can be placed next to their corresponding JUnit test class 
-		  		(see example with ValidatorTests) -->
-		    <directory>${project.basedir}/src/test/java</directory>
-		  </testResource>
-		  <testResource>
-		    <directory>${project.basedir}/src/test/resources</directory>
-		  </testResource>
-		</testResources>
+		
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -378,16 +340,7 @@
 					<showWarnings>true</showWarnings>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.13</version>
-				<configuration>
-					<includes>
-						<include>**/*Tests.java</include>
-					</includes>
-				</configuration>
-			</plugin>
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
@@ -442,24 +395,7 @@
 					<path>/petclinic</path>
 				</configuration>
 			</plugin>
-			<plugin>
-                		<groupId>org.codehaus.mojo</groupId>
-                		<artifactId>cobertura-maven-plugin</artifactId>
-                		<version>2.5.1</version>
-                		<configuration>
-                    			<formats>
-                        			<format>xml</format>
-                    			</formats>
-        	 		</configuration>
-                		<executions>
-                    			<execution>
-                        			<phase>package</phase>
-                        				<goals>
-                            					<goal>cobertura</goal>
-                        				</goals>
-                    			</execution>
-                		</executions>
-            		</plugin>
+			
             		
 		</plugins>
 	</build>
