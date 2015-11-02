@@ -16,7 +16,7 @@
 package org.springframework.samples.petclinic.repository.jdbc;
 
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.samples.petclinic.model.Visit;
 
@@ -35,7 +35,7 @@ class JdbcVisitRowMapper implements RowMapper<Visit> {
         Visit visit = new Visit();
         visit.setId(rs.getInt("visit_id"));
         Date visitDate = rs.getDate("visit_date");
-        visit.setDate(new DateTime(visitDate));
+        visit.setDate(new LocalDate(visitDate));
         visit.setDescription(rs.getString("description"));
         return visit;
     }
