@@ -102,7 +102,7 @@
     }, {
       "propertyKey" : "_modifiable_properties",
       "propertyValue" : {
-        "value" : "",
+        "value" : "configurationurl",
         "type" : "string"
       }
     }, {
@@ -313,7 +313,7 @@
     }, {
       "propertyKey" : "_modifiable_properties",
       "propertyValue" : {
-        "value" : "",
+        "value" : "artifacturl, configurationurl",
         "type" : "string"
       }
     }, {
@@ -367,7 +367,7 @@
     }, {
       "propertyKey" : "_enable_modify_during_lifecycle_properties",
       "propertyValue" : {
-        "value" : "",
+        "value" : "artifacturl, configurationurl",
         "type" : "string"
       }
     }, {
@@ -489,12 +489,12 @@
       "displayName" : "PetClinicApplication",
       "x" : "519",
       "description" : "PetClinic Application",
-      "y" : "74"
+      "y" : "75"
     },
     "capabilityChars" : [ ],
     "requirements" : [ ]
   } ],
-  "revision" : 41,
+  "revision" : 44,
   "properties" : [ {
     "propertyKey" : "metamodelId",
     "propertyValue" : {
