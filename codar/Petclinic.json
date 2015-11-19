@@ -80,7 +80,7 @@
     } ]
   }, {
     "id" : "New_PetDB_855ff95b_fde7_432e_b4dd_b7f7e8c2ba67_e6b6ca0914a34eec93438670d70e55e4__VERSION__1__GROUPID__com.hp.csa.type0001",
-    "name" : "PetClinicDBConf",
+    "name" : "PetClinic DB Conf",
     "component" : {
       "@self" : "/csa/api/topology-model/component-type/b183f792-136a-4d14-ad0f-4545033008a0",
       "groupId" : "com.hp.csa.type",
@@ -102,7 +102,7 @@
     }, {
       "propertyKey" : "_modifiable_properties",
       "propertyValue" : {
-        "value" : "configurationurl",
+        "value" : "",
         "type" : "string"
       }
     }, {
@@ -210,7 +210,7 @@
     } ],
     "annotations" : {
       "uniqueName" : "PetClinicDBConf0001",
-      "displayName" : "PetClinicDBConf",
+      "displayName" : "PetClinic DB Conf",
       "x" : "224",
       "description" : "\n      ",
       "y" : "75"
@@ -285,7 +285,7 @@
     } ]
   }, {
     "id" : "6f7664fc-6af2-3bc4-63a4-b8e94587fce1",
-    "name" : "PetClinicApplication",
+    "name" : "PetClinic Application",
     "component" : {
       "@self" : "/csa/api/topology-model/component-type/71b645da-5c0f-4ef5-a52a-80246fa4f023",
       "groupId" : "com.hp.csa.type",
@@ -313,7 +313,7 @@
     }, {
       "propertyKey" : "_modifiable_properties",
       "propertyValue" : {
-        "value" : "artifacturl, configurationurl",
+        "value" : "",
         "type" : "string"
       }
     }, {
@@ -367,7 +367,7 @@
     }, {
       "propertyKey" : "_enable_modify_during_lifecycle_properties",
       "propertyValue" : {
-        "value" : "artifacturl, configurationurl",
+        "value" : "",
         "type" : "string"
       }
     }, {
@@ -481,12 +481,12 @@
       } ],
       "relationDescriptorName" : "dbDetails_PetClinicApplicationType__VERSION__1^50^0000__GROUPID__com^hp^csa^type",
       "resourceReference" : {
-        "name" : "PetClinicDBConf"
+        "name" : "PetClinic DB Conf"
       }
     } ],
     "annotations" : {
       "uniqueName" : "PetClinicApplica0001",
-      "displayName" : "PetClinicApplication",
+      "displayName" : "PetClinic Application",
       "x" : "519",
       "description" : "PetClinic Application",
       "y" : "75"
@@ -494,7 +494,7 @@
     "capabilityChars" : [ ],
     "requirements" : [ ]
   } ],
-  "revision" : 44,
+  "revision" : 57,
   "properties" : [ {
     "propertyKey" : "metamodelId",
     "propertyValue" : {
