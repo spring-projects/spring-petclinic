@@ -1,7 +1,5 @@
 #!/bin/sh
 
-### PetClinic Db creation script
-
 MyUSER="$1"
 MyPASS="$2"
 

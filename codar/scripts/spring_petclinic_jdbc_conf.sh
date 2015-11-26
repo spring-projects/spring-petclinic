@@ -1,7 +1,6 @@
 #!/bin/sh
 
 
-# PetClinic appliaction deployment script
 TMPDIR=/tmp/arm-workdir
 PROPFILE=$TMPDIR/petclinic/WEB-INF/classes/spring/data-access.properties
 
