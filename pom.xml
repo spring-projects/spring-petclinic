@@ -17,7 +17,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- Spring -->
-        <spring-io-platform.version>1.1.3.RELEASE</spring-io-platform.version>
+        <spring-io-platform.version>2.0.1.RELEASE</spring-io-platform.version>
         <spring-data-jdbc.version>1.1.0.RELEASE</spring-data-jdbc.version>
 
 
@@ -32,8 +32,9 @@
         <jodatime-jsptags.version>1.1.1</jodatime-jsptags.version>
         <jadira-usertype-core.version>3.2.0.GA</jadira-usertype-core.version>
 
-        <!-- MySql -->
+        <!-- Others -->
         <mysql-driver.version>5.1.36</mysql-driver.version>
+        <ehcache-core.version>2.6.11</ehcache-core.version>
 
         <!-- Web dependencies -->
         <webjars-bootstrap.version>2.3.0</webjars-bootstrap.version>
@@ -216,6 +217,7 @@
         <dependency>
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache-core</artifactId>
+            <version>${ehcache-core.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-logging</groupId>
