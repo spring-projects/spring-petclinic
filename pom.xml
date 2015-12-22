@@ -34,7 +34,6 @@
 
         <!-- Others -->
         <mysql-driver.version>5.1.36</mysql-driver.version>
-        <ehcache-core.version>2.6.11</ehcache-core.version>
 
         <!-- Web dependencies -->
         <webjars-bootstrap.version>2.3.0</webjars-bootstrap.version>
@@ -216,8 +215,7 @@
         </dependency>
         <dependency>
             <groupId>net.sf.ehcache</groupId>
-            <artifactId>ehcache-core</artifactId>
-            <version>${ehcache-core.version}</version>
+            <artifactId>ehcache</artifactId>
             <exclusions>
                 <exclusion>
                     <groupId>commons-logging</groupId>
