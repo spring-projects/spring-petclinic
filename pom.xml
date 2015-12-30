@@ -412,7 +412,7 @@
     <distributionManagement>
       <snapshotRepository>
         <id>snapshots</id>
-        <url>http://localhost:8085/nexus/content/repositories/snapshots</url>
+        <url>http://192.168.56.20:8081/nexus/content/repositories/snapshots</url>
       </snapshotRepository>
     </distributionManagement>
 
