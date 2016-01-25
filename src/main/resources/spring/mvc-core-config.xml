@@ -28,9 +28,6 @@
         (see header.jsp for more details) -->
     <mvc:resources mapping="/resources/**" location="/resources/"/>
 
-    <!-- uses WebJars so Javascript and CSS libs can be declared as Maven dependencies (Bootstrap, jQuery...) -->
-    <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
-
     <mvc:view-controller path="/" view-name="welcome"/>
 
     <!-- serve static resources (*.html, ...) from src/main/webapp/

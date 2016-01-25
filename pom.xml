@@ -36,9 +36,6 @@
         <mysql-driver.version>5.1.36</mysql-driver.version>
 
         <!-- Web dependencies -->
-        <webjars-bootstrap.version>2.3.0</webjars-bootstrap.version>
-        <webjars-jquery-ui.version>1.10.3</webjars-jquery-ui.version>
-        <webjars-jquery.version>2.0.3-1</webjars-jquery.version>
         <dandelion.version>1.1.1</dandelion.version>
         <dandelion.datatables.version>1.1.0</dandelion.datatables.version>
 
@@ -223,23 +220,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- Webjars (static dependencies distributed as JAR files) -->
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>bootstrap</artifactId>
-            <version>${webjars-bootstrap.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>jquery-ui</artifactId>
-            <version>${webjars-jquery-ui.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>jquery</artifactId>
-            <version>${webjars-jquery.version}</version>
-        </dependency>
-
+       
         <!-- Test Artifacts -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -408,6 +389,34 @@
             </plugin>
         </plugins>
     </reporting>
+    <profiles>
+		<profile>
+			<id>bower-install</id>
+			<build>
+			<plugins>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>exec-maven-plugin</artifactId>
+					<executions>
+						<execution>
+							<phase>generate-sources</phase>
+							<goals>
+								<goal>exec</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<executable>bower</executable>
+						<arguments>
+							<argument>install</argument>
+						</arguments>
+						<workingDirectory>${basedir}</workingDirectory>
+					</configuration>
+				</plugin>
+			</plugins>
+		  </build>
+		</profile>
+   </profiles>
 
     <url>demopetclinic</url>
 </project>
