@@ -107,13 +107,13 @@
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jdbc-core</artifactId>
 			<version>${spring-data-jdbc.version}</version>
-			<exclusions>
-				<exclusion>
+			<!--  <exclusions>
+				 <exclusion>
 					<groupId>org.springframework</groupId>
-					<artifactId></artifactId>
+					<artifactId>*</artifactId>
 				</exclusion>
-				<!--  because Spring Data usually comes with a slightly older version of Spring -->
-			</exclusions>
+				__  because Spring Data usually comes with a slightly older version of Spring __
+			</exclusions> -->
 		</dependency>
 
 		<dependency>
