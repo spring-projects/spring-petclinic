@@ -1,10 +1,10 @@
 {
-  "@self" : "/csa/api/topology-model/topology/b30252f4-6642-4ff5-b881-63ecec71c687",
+  "@self" : "/csa/api/topology-model/topology/ca87ca4c-3ce8-40b0-a9d3-d9a52287c22c",
   "@type" : "urn:x-hp:2013:software:cloud:topology_model:topology",
   "groupId" : "com.hp.csa",
-  "artifactId" : "4028838f52639b72015278624c750baa",
+  "artifactId" : "4028838f528c061501528c18fed502f5",
   "version" : "1.50.02",
-  "displayName" : "PetClinic Application with App and DB Servers",
+  "displayName" : "PetClinic Application",
   "description" : "A PetClinic Application with scalable stack and Apache Load Balancer. This is a partial design which requires the Database and Application server microservices for fulfillment.",
   "resources" : [ {
     "id" : "01a77e8e-3578-ec61-2663-d192034b25e2",
@@ -18,7 +18,7 @@
     "properties" : [ {
       "propertyKey" : "configurationurl",
       "propertyValue" : {
-        "value" : "http://jenkins.devops.hpesw.com/petclinicTools/scripts/mysqldb_conf.sh",
+        "value" : "http://jenkins.devops.hpesw.com:8080/job/PetClinic/lastSuccessfulBuild/artifact/codar/scripts/mysqldb_conf.sh",
         "type" : "string"
       }
     }, {
@@ -36,7 +36,7 @@
     }, {
       "propertyKey" : "mysqlpassword",
       "propertyValue" : {
-        "value" : "ENC(bdkO/OGqUGJSW7ZS1vEtXfMf5Mx4U5PE)",
+        "value" : "ENC(bgDW03ZXb3LxiLuGZA9Rf9xVdEXvks0y)",
         "type" : "string_encrypted"
       }
     }, {
@@ -271,7 +271,7 @@
     "properties" : [ {
       "propertyKey" : "configurationurl",
       "propertyValue" : {
-        "value" : "http://jenkins.devops.hpesw.com/petclinicTools/scripts/spring_petclinic_jdbc_conf.sh",
+        "value" : "http://jenkins.devops.hpesw.com:8080/job/PetClinic/lastSuccessfulBuild/artifact/codar/scripts/spring_petclinic_jdbc_conf.sh",
         "type" : "string"
       }
     }, {
@@ -391,7 +391,7 @@
     }, {
       "propertyKey" : "servicecommand",
       "propertyValue" : {
-        "value" : "sh /tmp/spring_petclinic_jdbc.sh",
+        "value" : "sh /tmp/spring_petclinic_jdbc_conf.sh",
         "type" : "string"
       }
     }, {
@@ -470,12 +470,12 @@
     "capabilityChars" : [ ],
     "requirements" : [ ]
   }, {
-    "id" : "5838c6bb-19fe-484f-9901-1cadb53a67e8",
+    "id" : "20f98b87-2e83-44dc-8cc8-e5f056f2c98f",
     "name" : "Application Tier",
     "component" : {
-      "@self" : "/csa/api/topology-model/component-type/304cc3a7-cf9d-400e-8ce0-0e80ffde3fec",
+      "@self" : "/csa/api/topology-model/component-type/1f74e32c-3295-48ce-811f-6317e2622343",
       "groupId" : "com.hp.csa.type.scalingGroup",
-      "artifactId" : "ScalingGroupType_5838c6bb-19fe-484f-9901-1cadb53a67e8",
+      "artifactId" : "ScalingGroupType_20f98b87-2e83-44dc-8cc8-e5f056f2c98f",
       "version" : "1"
     },
     "properties" : [ {
@@ -499,14 +499,14 @@
     } ],
     "outgoingRelations" : [ {
       "relationType" : "aggregation",
-      "id" : "e288817c-c569-4e53-9fd6-e8ae9b26d67a",
+      "id" : "7d5fea32-27aa-42d9-b5ba-7a1e31df421b",
       "properties" : [ ],
       "resourceReference" : {
         "name" : "Application Server"
       }
     }, {
       "relationType" : "aggregation",
-      "id" : "26857538-6ac3-4cde-822e-d1d45ecc3d38",
+      "id" : "5f1a96eb-c7fa-401c-99a4-0d9ddb7dc786",
       "properties" : [ ],
       "resourceReference" : {
         "name" : "PetClinic Application"
@@ -531,7 +531,7 @@
   "hidden" : false,
   "profiles" : [ ],
   "annotations" : {
-    "serviceBlueprintId" : "4028838f52639b72015278624d420bb1",
+    "serviceBlueprintId" : "4028838f528c061501528c18ffe302fd",
     "providerType" : "independent"
   }
 }
