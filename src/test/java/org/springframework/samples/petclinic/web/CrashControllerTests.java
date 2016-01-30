@@ -7,58 +7,47 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
 /**
- * Test class for the {@link VetController}
+ * Test class for {@link CrashController}
+ *
+ * @author Colin But
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:spring/business-config.xml", "classpath:spring/tools-config.xml", "classpath:spring/mvc-core-config.xml"})
 @WebAppConfiguration
 @ActiveProfiles("spring-data-jpa")
-public class VetControllerTests {
+public class CrashControllerTests {
 
     @Autowired
-    private VetController vetController;
+    private CrashController crashController;
+
+    @Autowired
+    private SimpleMappingExceptionResolver simpleMappingExceptionResolver;
 
     private MockMvc mockMvc;
 
     @Before
     public void setup() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(vetController).build();
+        this.mockMvc = MockMvcBuilders
+            .standaloneSetup(crashController)
+            .setHandlerExceptionResolvers(simpleMappingExceptionResolver)
+            .build();
     }
 
     @Test
-    public void testShowVetListXml() throws Exception {
-        testShowVetList("/vets.xml");
-    }
-
-    @Test
-    public void testShowVetListHtml() throws Exception {
-        testShowVetList("/vets.html");
-    }
-
-    @Test
-    public void testShowResourcesVetList() throws Exception {
-        ResultActions actions = mockMvc.perform(get("/vets.json").accept(MediaType.APPLICATION_JSON))
+    public void testTriggerException() throws Exception {
+        mockMvc.perform(get("/oups"))
+            .andExpect(view().name("exception"))
+            .andExpect(model().attributeExists("exception"))
+            .andExpect(forwardedUrl("exception"))
             .andExpect(status().isOk());
-        actions.andExpect(content().contentType("application/json;charset=UTF-8"))
-            .andExpect(jsonPath("$.vetList[0].id").value(1));
     }
-
-    private void testShowVetList(String url) throws Exception {
-        mockMvc.perform(get(url))
-            .andExpect(status().isOk())
-            .andExpect(model().attributeExists("vets"))
-            .andExpect(view().name("vets/vetList"));
-    }
-
-
 }
