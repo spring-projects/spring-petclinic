@@ -25,8 +25,9 @@
     <mvc:annotation-driven conversion-service="conversionService"/>
 
     <!--  all resources inside folder src/main/webapp/resources are mapped so they can be refered to inside JSP files
-        (see header.jsp for more details) -->
+        (see staticFiles.jsp for more details) -->
     <mvc:resources mapping="/resources/**" location="/resources/"/>
+    <mvc:resources mapping="/vendors/**" location="/vendors/"/>
 
     <mvc:view-controller path="/" view-name="welcome"/>
 
