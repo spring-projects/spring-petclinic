@@ -19,13 +19,13 @@ PetClinic :: a Spring Framework demonstration
     <script src="${jQuery}"></script>
 
     <!-- jquery-ui.js file is really big so we only load what we need instead of loading everything -->
-    <spring:url value="/vendors/query-ui/ui/jquery.ui.core.js" var="jQueryUiCore"/>
+    <spring:url value="/vendors/jquery-ui/ui/jquery.ui.core.js" var="jQueryUiCore"/>
     <script src="${jQueryUiCore}"></script>
 
-    <spring:url value="/vendors/query-ui/ui/jquery.ui.datepicker.js" var="jQueryUiDatePicker"/>
+    <spring:url value="/vendors/jquery-ui/ui/jquery.ui.datepicker.js" var="jQueryUiDatePicker"/>
     <script src="${jQueryUiDatePicker}"></script>
 
     <!-- jquery-ui.css file is not that big so we can afford to load it -->
-    <spring:url value="/vendors/query-ui/themes/base/jquery.ui.base.css" var="jQueryUiCss"/>
-    <link href="${jQueryUiCss}" rel="stylesheet"></link>
+    <spring:url value="/vendors/jquery-ui/themes/base/jquery.ui.base.css" var="jQueryUiCss"/>
+    <link href="${jQueryUiCss}" rel="stylesheet"/>
 </head>
