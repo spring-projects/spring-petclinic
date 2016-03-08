@@ -26,6 +26,6 @@ PetClinic :: a Spring Framework demonstration
     <script src="${jQueryUiDatePicker}"></script>
 
     <!-- jquery-ui.css file is not that big so we can afford to load it -->
-    <spring:url value="/vendors/query-ui/themes/base/jquery.ui.base.css" var="jQueryUiCss"/>
+    <spring:url value="/vendors/jquery-ui/themes/base/jquery.ui.base.css" var="jQueryUiCss"/>
     <link href="${jQueryUiCss}" rel="stylesheet"></link>
 </head>
