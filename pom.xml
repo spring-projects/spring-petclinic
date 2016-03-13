@@ -153,14 +153,6 @@
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-jdbc</artifactId>
             <scope>runtime</scope>
-            <exclusions>
-                <!-- Fix Jetty 9.3 issue -->
-                <!-- http://stackoverflow.com/questions/32643530/classpath-issue-between-jetty-maven-plugin-and-tomcat-jdbc-8-0-9-leading-to-ser -->
-                <exclusion>
-                    <groupId>org.apache.tomcat</groupId>
-                    <artifactId>tomcat-juli</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- Logging with SLF4J & LogBack -->
