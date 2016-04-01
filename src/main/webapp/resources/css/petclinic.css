@@ -18,3 +18,7 @@ input[type="text"] {
 .form-horizontal .control-label {
     text-align: left;
 }
+
+.ui-datepicker {
+	background-color: #d0e0c0;
+}
