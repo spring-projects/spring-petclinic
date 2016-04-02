@@ -17,7 +17,7 @@
 
     <h2>Veterinarians</h2>
 
-    <datatables:table id="vets" data="${vets.vetList}" row="vet" theme="bootstrap2" cssClass="table table-striped"
+    <datatables:table id="vets" data="${vets.vetList}" row="vet" cssClass="table table-striped"
                       pageable="false" info="false">
         <datatables:column title="Name">
             <c:out value="${vet.firstName} ${vet.lastName}"></c:out>

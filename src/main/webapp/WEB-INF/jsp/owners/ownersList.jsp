@@ -16,7 +16,7 @@
     <jsp:include page="../fragments/bodyHeader.jsp"/>
     <h2>Owners</h2>
 
-    <datatables:table id="owners" data="${selections}" row="owner" theme="bootstrap2"
+    <datatables:table id="owners" data="${selections}" row="owner"
                       cssClass="table table-striped" pageable="false" info="false" export="pdf">
         <datatables:column title="Name" cssStyle="width: 150px;" display="html">
             <spring:url value="/owners/{ownerId}.html" var="ownerUrl">
