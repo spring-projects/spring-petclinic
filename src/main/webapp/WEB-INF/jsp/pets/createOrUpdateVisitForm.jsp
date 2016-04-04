@@ -11,17 +11,12 @@
 
 <html lang="en">
 
-<jsp:include page="../fragments/staticFiles.jsp"/>
-
+<jsp:include page="../fragments/htmlHeader.jsp"/>
 
 <body>
-<script>
-    $(function () {
-        $("#date").datepicker({dateFormat: 'yy/mm/dd'});
-    });
-</script>
+
+<petclinic:bodyHeader menuName="owners"/>
 <div class="container">
-    <jsp:include page="../fragments/bodyHeader.jsp"/>
     <h2><c:if test="${visit['new']}">New </c:if>Visit</h2>
 
     <b>Pet</b>
@@ -42,20 +37,23 @@
         </tr>
     </table>
 
-    <form:form modelAttribute="visit">
+    <form:form modelAttribute="visit" class="form-horizontal">
+        <div class="form-group has-feedback">
+            <petclinic:inputField label="Date" name="date"/>
+            <petclinic:inputField label="Description" name="description"/>
+        </div>
 
-        <petclinic:inputField label="date" name="date"/>
-        <petclinic:inputField label="description" name="description"/>
-
-        <div class="form-actions">
-            <input type="hidden" name="petId" value="${visit.pet.id}"/>
-            <button type="submit">Add Visit</button>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <input type="hidden" name="petId" value="${visit.pet.id}"/>
+                <button class="btn btn-primary" type="submit">Add Visit</button>
+            </div>
         </div>
     </form:form>
 
     <br/>
     <b>Previous Visits</b>
-    <table style="width: 333px;">
+    <table class="table table-striped">
         <tr>
             <th>Date</th>
             <th>Description</th>
@@ -72,6 +70,11 @@
 
 </div>
 <jsp:include page="../fragments/footer.jsp"/>
+<script>
+    $(function () {
+        $("#date").datepicker({dateFormat: 'yy/mm/dd'});
+    });
+</script>
 </body>
 
 </html>

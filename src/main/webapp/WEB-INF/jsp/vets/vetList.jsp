@@ -5,22 +5,22 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="datatables" uri="http://github.com/dandelion/datatables" %>
+<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <html lang="en">
 
-
-<jsp:include page="../fragments/staticFiles.jsp"/>
+<jsp:include page="../fragments/htmlHeader.jsp"/>
 
 <body>
 <div class="container">
-    <jsp:include page="../fragments/bodyHeader.jsp"/>
+    <petclinic:bodyHeader menuName="vets"/>
 
     <h2>Veterinarians</h2>
 
-    <datatables:table id="vets" data="${vets.vetList}" row="vet" theme="bootstrap2" cssClass="table table-striped"
+    <datatables:table id="vets" data="${vets.vetList}" row="vet" cssClass="table table-striped"
                       pageable="false" info="false">
         <datatables:column title="Name">
-            <c:out value="${vet.firstName} ${vet.lastName}"></c:out>
+            <c:out value="${vet.firstName} ${vet.lastName}"/>
         </datatables:column>
         <datatables:column title="Specialties">
             <c:forEach var="specialty" items="${vet.specialties}">

@@ -402,11 +402,12 @@
     <profiles>
 		<profile>
 			<id>bower-install</id>
-			<build>
+  			<build>
 			<plugins>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>exec-maven-plugin</artifactId>
+                    <version>1.4.0</version>
 					<executions>
 						<execution>
 							<phase>generate-sources</phase>

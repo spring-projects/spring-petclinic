@@ -3,13 +3,15 @@
 <%@ page session="false" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <html lang="en">
-<jsp:include page="fragments/staticFiles.jsp"/>
+<jsp:include page="fragments/htmlHeader.jsp"/>
 
 <body>
+<<petclinic:bodyHeader menuName="error"/>
 <div class="container">
-    <jsp:include page="fragments/bodyHeader.jsp"/>
+
     <spring:url value="/resources/images/pets.png" var="petsImage"/>
     <img src="${petsImage}"/>
 
@@ -22,11 +24,8 @@
 				${stackTrace} 
 			</c:forEach>
 	  	-->
-
-
-    <jsp:include page="fragments/footer.jsp"/>
-
 </div>
+<jsp:include page="fragments/footer.jsp"/>
 </body>
 
 </html>
