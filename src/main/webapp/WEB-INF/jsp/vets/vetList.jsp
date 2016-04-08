@@ -12,37 +12,39 @@
 <jsp:include page="../fragments/htmlHeader.jsp"/>
 
 <body>
-<div class="container">
-    <petclinic:bodyHeader menuName="vets"/>
+<petclinic:bodyHeader menuName="vets"/>
+<div class="container-fluid">
+    <div class="container xd-container">
+        <h2>Veterinarians</h2>
 
-    <h2>Veterinarians</h2>
+        <datatables:table id="vets" data="${vets.vetList}" row="vet" cssClass="table table-striped"
+                          pageable="false" info="false">
+            <datatables:column title="Name">
+                <c:out value="${vet.firstName} ${vet.lastName}"/>
+            </datatables:column>
+            <datatables:column title="Specialties">
+                <c:forEach var="specialty" items="${vet.specialties}">
+                    <c:out value="${specialty.name}"/>
+                </c:forEach>
+                <c:if test="${vet.nrOfSpecialties == 0}">none</c:if>
+            </datatables:column>
+        </datatables:table>
 
-    <datatables:table id="vets" data="${vets.vetList}" row="vet" cssClass="table table-striped"
-                      pageable="false" info="false">
-        <datatables:column title="Name">
-            <c:out value="${vet.firstName} ${vet.lastName}"/>
-        </datatables:column>
-        <datatables:column title="Specialties">
-            <c:forEach var="specialty" items="${vet.specialties}">
-                <c:out value="${specialty.name}"/>
-            </c:forEach>
-            <c:if test="${vet.nrOfSpecialties == 0}">none</c:if>
-        </datatables:column>
-    </datatables:table>
+        <table class="table-buttons">
+            <tr>
+                <td>
+                    <a href="<spring:url value="/vets.xml" htmlEscape="true" />">View as XML</a>
+                </td>
+                <td>
+                    <a href="<spring:url value="/vets.json" htmlEscape="true" />">View as JSON</a>
+                </td>
+            </tr>
+        </table>
 
-    <table class="table-buttons">
-        <tr>
-            <td>
-                <a href="<spring:url value="/vets.xml" htmlEscape="true" />">View as XML</a>
-            </td>
-            <td>
-                <a href="<spring:url value="/vets.json" htmlEscape="true" />">View as JSON</a>
-            </td>
-        </tr>
-    </table>
-
-    <jsp:include page="../fragments/footer.jsp"/>
+        <petclinic:pivotal/>
+    </div>
 </div>
+<jsp:include page="../fragments/footer.jsp"/>
 </body>
 
 </html>

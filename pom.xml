@@ -427,6 +427,33 @@
 			</plugins>
 		  </build>
 		</profile>
+        <profile>
+            <id>less-install</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.lesscss</groupId>
+                        <artifactId>lesscss-maven-plugin</artifactId>
+                        <version>1.7.0.1.1</version>
+                        <configuration>
+                            <sourceDirectory>${project.basedir}/src/main/webapp/resources/less</sourceDirectory>
+                            <outputDirectory>${project.basedir}/src/main/webapp/resources/css</outputDirectory>
+                            <compress>true</compress>
+                            <includes>
+                                <include>petclinic.less</include>
+                            </includes>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>compile</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
    </profiles>
 
     <url>demopetclinic</url>

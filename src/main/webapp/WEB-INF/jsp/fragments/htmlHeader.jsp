@@ -16,14 +16,7 @@ PetClinic :: a Spring Framework demonstration
 
     <title>PetClinic :: a Spring Framework demonstration</title>
 
-    <%-- Bootstrap CSS --%>
-    <spring:url value="/vendors/bootstrap/dist/css/bootstrap.min.css" var="bootstrapCss"/>
-    <link href="${bootstrapCss}" rel="stylesheet">
-    <spring:url value="/vendors/bootstrap/dist/css/bootstrap-theme.min.css" var="bootstrapThemeCss"/>
-    <link href="${bootstrapThemeCss}" rel="stylesheet">
-
-
-    <%-- Custom styles for Petclinic --%>
+    <%-- CSS generated from LESS --%>
     <spring:url value="/resources/css/petclinic.css" var="petclinicCss"/>
     <link href="${petclinicCss}" rel="stylesheet"/>
 
