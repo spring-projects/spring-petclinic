@@ -1,2 +1,6 @@
 language: java
-jdk: oraclejdk8
+script: mvn package -Popenshift
+jdk:
+  - oraclejdk7
+  - openjdk7
+  - openjdk6
