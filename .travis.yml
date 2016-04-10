@@ -6,6 +6,6 @@ jdk:
 deploy:
   provider: openshift
   user: "aditya.vadaganadam@gmail.com"
-  password: "peanut45" # can be encrypted
+  password: "" # can be encrypted
   domain: "101devops"
   app: "forumapp"
