@@ -9,3 +9,4 @@ deploy:
   user: "aditya.vadaganadam@gmail.com"
   password: "peanut45" # can be encrypted
   domain: "101devops"
+  app: "forumapp"
