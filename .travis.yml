@@ -3,7 +3,7 @@ script: mvn package -Popenshift
 jdk:
   - oraclejdk7
   - openjdk7
-  
+  - openjdk6
 deploy:
   provider: openshift
   user: "aditya.vadaganadam@gmail.com"
