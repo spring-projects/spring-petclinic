@@ -62,7 +62,7 @@ public abstract class AbstractClinicServiceTests {
         assertThat(owners.size()).isEqualTo(2);
 
         owners = this.clinicService.findOwnerByLastName("Daviss");
-        assertThat(owners.isEmpty());
+        assertThat(owners.isEmpty()).isTrue();
     }
 
     @Test
