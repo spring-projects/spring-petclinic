@@ -98,7 +98,7 @@ public class PetController {
     }
 
     @RequestMapping(value = "/pets/{petId}/edit", method = RequestMethod.POST)
-    public String processUpdateForm(@Valid Pet pet, Owner owner, BindingResult result, ModelMap model) {
+    public String processUpdateForm(@Valid Pet pet, BindingResult result, Owner owner, ModelMap model) {
         if (result.hasErrors()) {
             model.put("pet", pet);
             return "pets/createOrUpdatePetForm";

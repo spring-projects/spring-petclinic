@@ -1,0 +1,8 @@
+{
+  "name": "spring-petclinic",
+  "dependencies": {
+    "bootstrap": "3.3.6",
+    "jquery": "~2.0.3",
+   "jquery-ui": "~1.10.3"
+  }
+}

@@ -1,5 +1,4 @@
-# Spring PetClinic Sample Application
-
+# Spring PetClinic Sample Application [![Build Status](https://travis-ci.org/spring-projects/spring-petclinic.png?branch=master)](https://travis-ci.org/spring-projects/spring-petclinic/)
 
 ## Understanding the Spring Petclinic application with a few diagrams
 <a href="https://speakerdeck.com/michaelisvy/spring-petclinic-sample-application">See the presentation here</a>
@@ -7,7 +6,8 @@
 ## Running petclinic locally
 ```
 	git clone https://github.com/spring-projects/spring-petclinic.git
-	mvn tomcat7:run
+	cd spring-petclinic
+	./mvnw tomcat7:run
 ```
 
 You can then access petclinic here: http://localhost:9966/petclinic/
@@ -82,10 +82,12 @@ File -> Import -> Maven -> Existing Maven project
       <a href="/src/main/webapp/WEB-INF/jsp/owners/createOrUpdateOwnerForm.jsp">createOrUpdateOwnerForm.jsp</a></td>
   </tr>
   <tr>
-    <td>webjars</td>
+    <td>Bower</td>
     <td>
-      <a href="/pom.xml">webjars declaration inside pom.xml</a> <br />
-      <a href="/src/main/resources/spring/mvc-core-config.xml#L24">Resource mapping in Spring configuration</a> <br />
+      <a href="/pom.xml">bower-install maven profile declaration inside pom.xml</a> <br />
+      <a href="/bower.json">JavaScript libraries are defined by the manifest file bower.json</a> <br />
+      <a href="/.bowerrc">Bower configuration using JSON</a> <br />
+      <a href="/src/main/resources/spring/mvc-core-config.xml#L30">Resource mapping in Spring configuration</a> <br />
       <a href="/src/main/webapp/WEB-INF/jsp/fragments/staticFiles.jsp#L12">sample usage in JSP</a></td>
     </td>
   </tr>
@@ -202,6 +204,13 @@ Here is a list of them:
     </td>
   </tr>    
 </table>
+
+
+# Contributing
+
+The [issue tracker](https://github.com/spring-projects/spring-petclinic/issues) is the preferred channel for bug reports, features requests and submitting pull requests.
+
+For pull requests, editor preferences are available in the [editor config](https://github.com/spring-projects/spring-petclinic/blob/master/.editorconfig) for easy use in common text editors. Read more and download plugins at <http://editorconfig.org>.
 
 
 
