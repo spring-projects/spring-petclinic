@@ -1,20 +1,23 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 
+<%@ page session="false" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="joda" uri="http://www.joda.org/joda/time/tags" %>
+<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+
 
 <html lang="en">
 
-<jsp:include page="../fragments/headTag.jsp"/>
+<jsp:include page="../fragments/staticFiles.jsp"/>
 
 
 <body>
 <script>
     $(function () {
-        $("#date").datepicker({ dateFormat: 'yy/mm/dd'});
+        $("#date").datepicker({dateFormat: 'yy/mm/dd'});
     });
 </script>
 <div class="container">
@@ -40,22 +43,10 @@
     </table>
 
     <form:form modelAttribute="visit">
-        <div class="control-group">
-            <label class="control-label">Date </label>
 
-            <div class="controls">
-                <form:input path="date"/>
-                <span class="help-inline"><form:errors path="date"/></span>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label">Description </label>
+        <petclinic:inputField label="date" name="date"/>
+        <petclinic:inputField label="description" name="description"/>
 
-            <div class="controls">
-                <form:input path="description"/>
-                <span class="help-inline"><form:errors path="description"/></span>
-            </div>
-        </div>
         <div class="form-actions">
             <input type="hidden" name="petId" value="${visit.pet.id}"/>
             <button type="submit">Add Visit</button>

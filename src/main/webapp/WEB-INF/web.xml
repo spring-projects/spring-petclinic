@@ -2,30 +2,32 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://java.sun.com/xml/ns/javaee"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
-http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-         id="WebApp_ID" version="2.5">
+	      http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0" metadata-complete="true">
 
     <display-name>Spring PetClinic</display-name>
     <description>Spring PetClinic sample application</description>
-    
+
+    <!-- When using Spring jpa, use the following: -->
     <context-param>
         <param-name>spring.profiles.active</param-name>
         <param-value>jpa</param-value>
     </context-param>
 
-   <!-- When using Spring JDBC, use the following: -->
-   <!--  <context-param>
-        <param-name>spring.profiles.active</param-name>
-        <param-value>jdbc</param-value>
-    </context-param>  -->
+    <!-- When using Spring JDBC, use the following: -->
+    <!--  <context-param>
+         <param-name>spring.profiles.active</param-name>
+         <param-value>jdbc</param-value>
+     </context-param>  -->
 
-   <!--  When using Spring Data JPA, uncomment the following: -->
-   <!--
-   	<context-param>
-        <param-name>spring.profiles.active</param-name>
-		<param-value>spring-data-jpa</param-value>
-    </context-param>
-	-->
+    <!--  the  CallMonitoringAspect counts invocations on classes with @Repository on them. Classes in spring-data-jpa don't have that annotation  -->
+    <!--  When using Spring Data JPA, uncomment the following: -->
+    <!--
+        <context-param>
+         <param-name>spring.profiles.active</param-name>
+         <param-value>spring-data-jpa</param-value>
+     </context-param>
+     -->
 
     <!--
 		- Location of the XML file that defines the root application context.
@@ -58,62 +60,56 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
-    <!-- Dandelion-Datatables servlet definition -->
+    <!-- Dandelion servlet definition and mapping -->
     <servlet>
-        <servlet-name>datatablesController</servlet-name>
-        <servlet-class>com.github.dandelion.datatables.extras.servlet2.servlet.DatatablesServlet</servlet-class>
+        <servlet-name>dandelionServlet</servlet-name>
+        <servlet-class>com.github.dandelion.core.web.DandelionServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
     </servlet>
-   
-    <!-- Dandelion-Datatables servlet mapping -->
     <servlet-mapping>
-        <servlet-name>datatablesController</servlet-name>
-        <url-pattern>/datatablesController/*</url-pattern>
+        <servlet-name>dandelionServlet</servlet-name>
+        <url-pattern>/dandelion-assets/*</url-pattern>
     </servlet-mapping>
 
-    <!-- used so we can use forms of method type 'PUT' and 'DELETE' (such as in the Pet form)
-see here: http://static.springsource.org/spring/docs/current/spring-framework-reference/html/view.html#rest-method-conversion
--->
+    <!-- used to provide the ability to enter Chinese characters inside the Owner Form -->
     <filter>
-        <filter-name>httpMethodFilter</filter-name>
-        <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
     </filter>
 
     <filter-mapping>
-        <filter-name>httpMethodFilter</filter-name>
-        <servlet-name>petclinic</servlet-name>
-    </filter-mapping>
-    
-    <!-- used to provide the ability to enter Chinese characters inside the Owner Form -->    
-    <filter>
-	    <filter-name>encodingFilter</filter-name>
-	    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-	    <init-param>
-	        <param-name>encoding</param-name>
-	        <param-value>UTF-8</param-value>
-	    </init-param>
-	    <init-param>
-	        <param-name>forceEncoding</param-name>
-	        <param-value>true</param-value>
-	    </init-param>
-	 </filter>
-	
-	 <filter-mapping>
-	    <filter-name>encodingFilter</filter-name>
-	    <url-pattern>/*</url-pattern>
-	 </filter-mapping>
- 
-     <!-- Dandelion-Datatables filter definition -->
-    <filter>
-        <filter-name>datatablesFilter</filter-name>
-        <filter-class>com.github.dandelion.datatables.extras.servlet2.filter.DatatablesFilter</filter-class>
-    </filter>
-    
-    <!-- Dandelion-Datatables filter mapping -->
-    <filter-mapping>
-        <filter-name>datatablesFilter</filter-name>
+        <filter-name>encodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-    
+
+    <!-- Dandelion filter definition and mapping -->
+    <filter>
+        <filter-name>dandelionFilter</filter-name>
+        <filter-class>com.github.dandelion.core.web.DandelionFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>dandelionFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Dandelion-Datatables filter, used for basic export -->
+    <filter>
+        <filter-name>datatables</filter-name>
+        <filter-class>com.github.dandelion.datatables.core.web.filter.DatatablesFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>datatables</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <!--  	No need for welcome-file declaration here.
     		See inside spring/mvc-core-config.xml : 
     		<mvc:view-controller path="/" view-name="welcome" /> 

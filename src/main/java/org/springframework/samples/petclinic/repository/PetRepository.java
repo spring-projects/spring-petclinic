@@ -45,8 +45,7 @@ public interface PetRepository {
      *
      * @param id the id to search for
      * @return the <code>Pet</code> if found
-     * @throws org.springframework.dao.DataRetrievalFailureException
-     *          if not found
+     * @throws org.springframework.dao.DataRetrievalFailureException if not found
      */
     Pet findById(int id) throws DataAccessException;
 

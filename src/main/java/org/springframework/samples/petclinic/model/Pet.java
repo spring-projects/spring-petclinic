@@ -32,6 +32,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -48,9 +49,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class Pet extends NamedEntity {
 
     @Column(name = "birth_date")
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
     @DateTimeFormat(pattern = "yyyy/MM/dd")
-    private DateTime birthDate;
+    private LocalDate birthDate;
 
     @ManyToOne
     @JoinColumn(name = "type_id")
@@ -63,44 +64,43 @@ public class Pet extends NamedEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pet", fetch = FetchType.EAGER)
     private Set<Visit> visits;
 
-
-    public void setBirthDate(DateTime birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public DateTime getBirthDate() {
+    public LocalDate getBirthDate() {
         return this.birthDate;
     }
 
-    public void setType(PetType type) {
-        this.type = type;
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
     }
 
     public PetType getType() {
         return this.type;
     }
 
-    protected void setOwner(Owner owner) {
-        this.owner = owner;
+    public void setType(PetType type) {
+        this.type = type;
     }
 
     public Owner getOwner() {
         return this.owner;
     }
 
-    protected void setVisitsInternal(Set<Visit> visits) {
-        this.visits = visits;
+    protected void setOwner(Owner owner) {
+        this.owner = owner;
     }
 
     protected Set<Visit> getVisitsInternal() {
         if (this.visits == null) {
-            this.visits = new HashSet<Visit>();
+            this.visits = new HashSet<>();
         }
         return this.visits;
     }
 
+    protected void setVisitsInternal(Set<Visit> visits) {
+        this.visits = visits;
+    }
+
     public List<Visit> getVisits() {
-        List<Visit> sortedVisits = new ArrayList<Visit>(getVisitsInternal());
+        List<Visit> sortedVisits = new ArrayList<>(getVisitsInternal());
         PropertyComparator.sort(sortedVisits, new MutableSortDefinition("date", false, false));
         return Collections.unmodifiableList(sortedVisits);
     }

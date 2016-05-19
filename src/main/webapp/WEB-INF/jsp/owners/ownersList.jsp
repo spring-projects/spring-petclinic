@@ -1,5 +1,6 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 
+<%@ page session="false" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -8,15 +9,15 @@
 
 <html lang="en">
 
-<jsp:include page="../fragments/headTag.jsp"/>
+<jsp:include page="../fragments/staticFiles.jsp"/>
 
 <body>
 <div class="container">
     <jsp:include page="../fragments/bodyHeader.jsp"/>
     <h2>Owners</h2>
-    
-    <datatables:table id="owners" data="${selections}" cdn="true" row="owner" theme="bootstrap2" 
-                      cssClass="table table-striped" paginate="false" info="false" export="pdf">
+
+    <datatables:table id="owners" data="${selections}" row="owner" theme="bootstrap2"
+                      cssClass="table table-striped" pageable="false" info="false" export="pdf">
         <datatables:column title="Name" cssStyle="width: 150px;" display="html">
             <spring:url value="/owners/{ownerId}.html" var="ownerUrl">
                 <spring:param name="ownerId" value="${owner.id}"/>
@@ -34,9 +35,9 @@
                 <c:out value="${pet.name}"/>
             </c:forEach>
         </datatables:column>
-        <datatables:export type="pdf" cssClass="btn btn-small" />
+        <datatables:export type="pdf" cssClass="btn" cssStyle="height: 25px;"/>
     </datatables:table>
-    
+
     <jsp:include page="../fragments/footer.jsp"/>
 
 </div>

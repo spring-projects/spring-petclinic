@@ -2,11 +2,11 @@
 <!--
     Application context definition for PetClinic Datasource.
 -->
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:p="http://www.springframework.org/schema/p"
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:jdbc="http://www.springframework.org/schema/jdbc"
        xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
          http://www.springframework.org/schema/beans/spring-beans.xsd
          http://www.springframework.org/schema/context
@@ -36,7 +36,7 @@
         <jdbc:script location="${jdbc.dataLocation}"/>
     </jdbc:initialize-database>
 
-    <beans profile="javaee" >
+    <beans profile="javaee">
         <!-- JNDI DataSource for JEE environments -->
         <jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/petclinic"/>
     </beans>

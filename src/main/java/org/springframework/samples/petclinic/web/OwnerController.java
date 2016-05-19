@@ -31,8 +31,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -42,7 +40,6 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Michael Isvy
  */
 @Controller
-@SessionAttributes(types = Owner.class)
 public class OwnerController {
 
     private final ClinicService clinicService;
@@ -66,12 +63,11 @@ public class OwnerController {
     }
 
     @RequestMapping(value = "/owners/new", method = RequestMethod.POST)
-    public String processCreationForm(@Valid Owner owner, BindingResult result, SessionStatus status) {
+    public String processCreationForm(@Valid Owner owner, BindingResult result) {
         if (result.hasErrors()) {
             return "owners/createOrUpdateOwnerForm";
         } else {
             this.clinicService.saveOwner(owner);
-            status.setComplete();
             return "redirect:/owners/" + owner.getId();
         }
     }
@@ -92,19 +88,18 @@ public class OwnerController {
 
         // find owners by last name
         Collection<Owner> results = this.clinicService.findOwnerByLastName(owner.getLastName());
-        if (results.size() < 1) {
+        if (results.isEmpty()) {
             // no owners found
             result.rejectValue("lastName", "notFound", "not found");
             return "owners/findOwners";
-        }
-        if (results.size() > 1) {
-            // multiple owners found
-            model.put("selections", results);
-            return "owners/ownersList";
-        } else {
+        } else if (results.size() == 1) {
             // 1 owner found
             owner = results.iterator().next();
             return "redirect:/owners/" + owner.getId();
+        } else {
+            // multiple owners found
+            model.put("selections", results);
+            return "owners/ownersList";
         }
     }
 
@@ -115,13 +110,13 @@ public class OwnerController {
         return "owners/createOrUpdateOwnerForm";
     }
 
-    @RequestMapping(value = "/owners/{ownerId}/edit", method = RequestMethod.PUT)
-    public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result, SessionStatus status) {
+    @RequestMapping(value = "/owners/{ownerId}/edit", method = RequestMethod.POST)
+    public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result, @PathVariable("ownerId") int ownerId) {
         if (result.hasErrors()) {
             return "owners/createOrUpdateOwnerForm";
         } else {
+            owner.setId(ownerId);
             this.clinicService.saveOwner(owner);
-            status.setComplete();
             return "redirect:/owners/{ownerId}";
         }
     }

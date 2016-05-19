@@ -85,19 +85,19 @@ public class Owner extends Person {
         this.telephone = telephone;
     }
 
-    protected void setPetsInternal(Set<Pet> pets) {
-        this.pets = pets;
-    }
-
     protected Set<Pet> getPetsInternal() {
         if (this.pets == null) {
-            this.pets = new HashSet<Pet>();
+            this.pets = new HashSet<>();
         }
         return this.pets;
     }
 
+    protected void setPetsInternal(Set<Pet> pets) {
+        this.pets = pets;
+    }
+
     public List<Pet> getPets() {
-        List<Pet> sortedPets = new ArrayList<Pet>(getPetsInternal());
+        List<Pet> sortedPets = new ArrayList<>(getPetsInternal());
         PropertyComparator.sort(sortedPets, new MutableSortDefinition("name", true, true));
         return Collections.unmodifiableList(sortedPets);
     }
@@ -141,13 +141,13 @@ public class Owner extends Person {
     public String toString() {
         return new ToStringCreator(this)
 
-                .append("id", this.getId())
-                .append("new", this.isNew())
-                .append("lastName", this.getLastName())
-                .append("firstName", this.getFirstName())
-                .append("address", this.address)
-                .append("city", this.city)
-                .append("telephone", this.telephone)
-                .toString();
+            .append("id", this.getId())
+            .append("new", this.isNew())
+            .append("lastName", this.getLastName())
+            .append("firstName", this.getFirstName())
+            .append("address", this.address)
+            .append("city", this.city)
+            .append("telephone", this.telephone)
+            .toString();
     }
 }

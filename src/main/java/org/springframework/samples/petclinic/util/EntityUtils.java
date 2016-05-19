@@ -39,13 +39,12 @@ public abstract class EntityUtils {
      * @param entityClass the entity class to look up
      * @param entityId    the entity id to look up
      * @return the found entity
-     * @throws ObjectRetrievalFailureException
-     *          if the entity was not found
+     * @throws ObjectRetrievalFailureException if the entity was not found
      */
     public static <T extends BaseEntity> T getById(Collection<T> entities, Class<T> entityClass, int entityId)
-            throws ObjectRetrievalFailureException {
+        throws ObjectRetrievalFailureException {
         for (T entity : entities) {
-            if (entity.getId().intValue() == entityId && entityClass.isInstance(entity)) {
+            if (entity.getId() == entityId && entityClass.isInstance(entity)) {
                 return entity;
             }
         }
