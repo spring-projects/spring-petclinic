@@ -42,6 +42,9 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 
+    <listener>
+        <listener-class>org.springframework.samples.petclinic.util.CleanUp</listener-class>
+    </listener>
     <!--
 - Servlet that dispatches request to registered handlers (Controller implementations).
 -->
