@@ -8,7 +8,10 @@
     </contextListener>
 
     <!-- To enable JMX Management -->
+
     <jmxConfigurator/>
+    <!-- Avoid conflicts with other web applications using logback and JMX -->
+    <contextName>PetClinic</contextName>
 
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
