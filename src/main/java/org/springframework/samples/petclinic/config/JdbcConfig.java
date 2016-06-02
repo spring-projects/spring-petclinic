@@ -49,22 +49,19 @@ public class JdbcConfig {
 	@Autowired
 	private DataSource dataSource;
 
-	
-    @Bean
+    @Bean(name="transactionManager")
     public DataSourceTransactionManager dataSourceTransactionManager() {
     	return new DataSourceTransactionManager(dataSource);
     }
     
-    @Bean(name="transactionManager")
+    @Bean
     public JdbcTemplate jdbcTemplate() {
     	return new JdbcTemplate(dataSource);
     }
     
     @Bean
-
     public NamedParameterJdbcTemplate namedParameterJdbcTemplate() {
     	return new NamedParameterJdbcTemplate(dataSource);
     }
-
 
 }
