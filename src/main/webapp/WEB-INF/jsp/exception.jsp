@@ -6,7 +6,7 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <html lang="en">
-<jsp:include page="fragments/htmlHeader.jsp"/>
+<petclinic:htmlHeader />
 
 <body>
 <petclinic:bodyHeader menuName="error"/>
@@ -28,7 +28,7 @@
         <petclinic:pivotal/>
     </div>
 </div>
-<jsp:include page="fragments/footer.jsp"/>
+<petclinic:footer/>
 </body>
 
 </html>

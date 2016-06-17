@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,17 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.repository.springdatajpa;
 
-import org.springframework.data.repository.Repository;
-import org.springframework.samples.petclinic.model.Visit;
-import org.springframework.samples.petclinic.repository.VisitRepository;
+package org.springframework.samples.petclinic.web;
 
-/**
- * Spring Data JPA specialization of the {@link VisitRepository} interface
- *
- * @author Michael Isvy
- * @since 15.1.2013
- */
-public interface SpringDataVisitRepository extends VisitRepository, Repository<Visit, Integer> {
+import org.springframework.boot.autoconfigure.web.ErrorController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+public class CustomErrorController implements ErrorController {
+
+	@RequestMapping(value = "/error")
+	public String error() {
+		return "exception";
+	}
+
+	@Override
+	public String getErrorPath() {
+		return "/error";
+	}
 }

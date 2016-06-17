@@ -103,7 +103,9 @@ public class Owner extends Person {
     }
 
     public void addPet(Pet pet) {
-        getPetsInternal().add(pet);
+        if (pet.isNew()) {
+            getPetsInternal().add(pet);
+        }
         pet.setOwner(this);
     }
 

@@ -10,7 +10,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionServiceFactoryBean;
+import org.springframework.samples.petclinic.PetClinicApplication;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -24,9 +27,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
  * @author Colin But
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath:spring/business-config.xml", "classpath:spring/tools-config.xml", "classpath:spring/mvc-core-config.xml"})
+@SpringApplicationConfiguration(classes = PetClinicApplication.class)
 @WebAppConfiguration
-@ActiveProfiles("spring-data-jpa")
 public class PetControllerTests {
 
     private static final int TEST_OWNER_ID = 1;
@@ -36,15 +38,17 @@ public class PetControllerTests {
     private PetController petController;
 
     @Autowired
-    private FormattingConversionServiceFactoryBean formattingConversionServiceFactoryBean;
+    private PetTypeFormatter petTypeFormatter;
 
     private MockMvc mockMvc;
 
     @Before
     public void setup() {
+        DefaultFormattingConversionService formattingConversionService = new DefaultFormattingConversionService();
+        formattingConversionService.addFormatter(petTypeFormatter);
         this.mockMvc = MockMvcBuilders
             .standaloneSetup(petController)
-            .setConversionService(formattingConversionServiceFactoryBean.getObject())
+            .setConversionService(formattingConversionService)
             .build();
     }
 

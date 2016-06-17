@@ -8,7 +8,7 @@
 
 <html lang="en">
 
-<jsp:include page="fragments/htmlHeader.jsp"/>
+<petclinic:htmlHeader/>
 
 <body>
 <petclinic:bodyHeader menuName="home"/>
@@ -26,7 +26,7 @@
         <petclinic:pivotal/>
     </div>
 </div>
-<jsp:include page="fragments/footer.jsp"/>
+<petclinic:footer/>
 </body>
 
 </html>
