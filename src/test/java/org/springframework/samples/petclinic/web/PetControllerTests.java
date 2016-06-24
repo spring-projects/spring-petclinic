@@ -29,6 +29,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = PetClinicApplication.class)
 @WebAppConfiguration
+@ActiveProfiles("test")
 public class PetControllerTests {
 
     private static final int TEST_OWNER_ID = 1;

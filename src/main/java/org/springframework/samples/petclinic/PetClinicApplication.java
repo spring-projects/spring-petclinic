@@ -45,7 +45,6 @@ import org.springframework.web.servlet.view.xml.MarshallingView;
  */
 @Configuration
 @EnableAutoConfiguration
-@EnableCaching
 @ComponentScan
 public class PetClinicApplication extends SpringBootServletInitializer {
 
