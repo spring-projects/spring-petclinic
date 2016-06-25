@@ -19,11 +19,16 @@ package org.springframework.samples.petclinic.config;
 import com.github.dandelion.core.web.DandelionFilter;
 import com.github.dandelion.core.web.DandelionServlet;
 import com.github.dandelion.datatables.core.web.filter.DatatablesFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
+import org.springframework.context.annotation.Profile;
+import org.springframework.core.env.Environment;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Java configuration for the Dandelion datatables component.
@@ -32,6 +37,16 @@ import org.springframework.context.annotation.Description;
  */
 @Configuration
 public class DandelionConfig {
+
+    @Autowired
+    private Environment environment;
+
+    @PostConstruct
+    public void init() {
+        if (environment.acceptsProfiles("production")) {
+            System.setProperty("dandelion.profile.active", "prod");
+        }
+    }
 
     @Bean
     @Description("Dandelion filter definition and mapping")
