@@ -1,4 +1,4 @@
-# Spring PetClinic Sample Application [![Build Status](https://travis-ci.org/spring-projects/spring-petclinic.png?branch=master)](https://travis-ci.org/spring-projects/spring-petclinic/)
+# Sprinb Boot version of the Spring PetClinic Sample Application [![Build Status](https://travis-ci.org/spring-projects/spring-petclinic.png?branch=master)](https://travis-ci.org/spring-projects/spring-petclinic/)
 
 ## Understanding the Spring Petclinic application with a few diagrams
 <a href="https://speakerdeck.com/michaelisvy/spring-petclinic-sample-application">See the presentation here</a>
@@ -7,10 +7,10 @@
 ```
 	git clone https://github.com/spring-projects/spring-petclinic.git
 	cd spring-petclinic
-	./mvnw tomcat7:run
+	./mvnw spring-boot:run
 ```
 
-You can then access petclinic here: http://localhost:9966/petclinic/
+You can then access petclinic here: http://localhost:8080/
 
 ## In case you find a bug/suggested improvement for Spring Petclinic
 Our issue tracker is available here: https://github.com/spring-projects/spring-petclinic/issues
@@ -56,26 +56,38 @@ File -> Import -> Maven -> Existing Maven project
 
 <table>
   <tr>
-    <th width="300px">Java Config</th><th width="300px"></th>
+    <th width="300px">Spring Boot Configuration</th><th width="300px"></th>
   </tr>
   <tr>
-    <td>Java Config branch</td>
+    <td>The Main Class</td>
+    <td><a href="/src/main/java/org/springframework/samples/petclinic/application/PetClinicApplication.java">PetClinicApplication.java</a></td>
+  </tr>
+  <tr>
+    <td>Properties Files</td>
     <td>
-      Petclinic uses XML configuration by default. In case you'd like to use Java Config instead, there is a Java Config branch available <a href="https://github.com/spring-projects/spring-petclinic/tree/javaconfig">here</a>. Thanks to Antoine Rey for his contribution.     
+      <a href="/src/main/resources/application.properties">application.properties</a>
     </td>
   </tr>
   <tr>
-    <th width="300px">Inside the 'Web' layer</th><th width="300px">Files</th>
+    <td>Caching</td>
+    <td>Use of EhCache <a href="/src/main/java/org/springframework/samples/petclinic/config/CacheConfig.java">CacheConfig.java</a> <a href="/src/main/resources/ehcache.xml">ehcache.xml</a></td>
+  </tr>
+  <tr>
+    <td>Dandelion</td>
+    <td>DatatablesFilter, DandelionFilter and DandelionServlet registration <a href="/src/main/java/org/springframework/samples/petclinic/config/DandelionConfig.java">DandelionConfig.java</a></td>
   </tr>
   <tr>
     <td>Spring MVC - XML integration</td>
-    <td><a href="/src/main/resources/spring/mvc-view-config.xml">mvc-view-config.xml</a></td>
+    <td><a href="/src/main/java/org/springframework/samples/petclinic/config/CustomViewsConfiguration.java">CustomViewsConfiguration.java</a></td>
   </tr>
+</table>
+
+
+<table>
   <tr>
-    <td>Spring MVC - ContentNegotiatingViewResolver</td>
-    <td><a href="/src/main/resources/spring/mvc-view-config.xml">mvc-view-config.xml</a></td>
+    <th width="300px">Others</th><th width="300px">Files</th>
   </tr>
-  <tr>
+ <tr>
     <td>JSP custom tags</td>
     <td>
       <a href="/src/main/webapp/WEB-INF/tags">WEB-INF/tags</a>
@@ -94,78 +106,11 @@ File -> Import -> Maven -> Existing Maven project
   <tr>
     <td>Dandelion-datatables</td>
     <td>
-      <a href="/src/main/webapp/WEB-INF/jsp/owners/ownersList.jsp">ownersList.jsp</a> 
-      <a href="/src/main/webapp/WEB-INF/jsp/vets/vetList.jsp">vetList.jsp</a> 
-      <a href="/src/main/webapp/WEB-INF/web.xml">web.xml</a> 
-      <a href="/src/main/resources/dandelion/datatables/datatables.properties">datatables.properties</a> 
+      <a href="/src/main/webapp/WEB-INF/jsp/owners/ownersList.jsp">ownersList.jsp</a>
+      <a href="/src/main/webapp/WEB-INF/jsp/vets/vetList.jsp">vetList.jsp</a>
+      <a href="/src/main/webapp/WEB-INF/web.xml">web.xml</a>
+      <a href="/src/main/resources/dandelion/datatables/datatables.properties">datatables.properties</a>
    </td>
-  </tr>
-  <tr>
-    <td>Thymeleaf branch</td>
-    <td>
-      <a href="http://www.thymeleaf.org/petclinic.html">See here</a></td>
-  </tr>
-  <tr>
-    <td>Branch using GemFire and Spring Data GemFire instead of ehcache (thanks Bijoy Choudhury)</td>
-    <td>
-      <a href="https://github.com/bijoych/spring-petclinic-gemfire">See here</a></td>
-  </tr>
-</table>
-
-<table>
-  <tr>
-    <th width="300px">'Service' and 'Repository' layers</th><th width="300px">Files</th>
-  </tr>
-  <tr>
-    <td>Transactions</td>
-    <td>
-      <a href="/src/main/resources/spring/business-config.xml">business-config.xml</a>
-       <a href="/src/main/java/org/springframework/samples/petclinic/service/ClinicServiceImpl.java">ClinicServiceImpl.java</a>
-    </td>
-  </tr>
-  <tr>
-    <td>Cache</td>
-      <td>
-      <a href="/src/main/resources/spring/tools-config.xml">tools-config.xml</a>
-       <a href="/src/main/java/org/springframework/samples/petclinic/service/ClinicServiceImpl.java">ClinicServiceImpl.java</a>
-    </td>
-  </tr>
-  <tr>
-    <td>Bean Profiles</td>
-      <td>
-      <a href="/src/main/resources/spring/business-config.xml">business-config.xml</a>
-       <a href="/src/test/java/org/springframework/samples/petclinic/service/ClinicServiceJdbcTests.java">ClinicServiceJdbcTests.java</a>
-       <a href="/src/main/webapp/WEB-INF/web.xml">web.xml</a>
-    </td>
-  </tr>
-  <tr>
-    <td>JdbcTemplate</td>
-    <td>
-      <a href="/src/main/resources/spring/business-config.xml">business-config.xml</a>
-      <a href="/src/main/java/org/springframework/samples/petclinic/repository/jdbc">jdbc folder</a></td>
-  </tr>
-  <tr>
-    <td>JPA</td>
-    <td>
-      <a href="/src/main/resources/spring/business-config.xml">business-config.xml</a>
-      <a href="/src/main/java/org/springframework/samples/petclinic/repository/jpa">jpa folder</a></td>
-  </tr>
-  <tr>
-    <td>Spring Data JPA</td>
-    <td>
-      <a href="/src/main/resources/spring/business-config.xml">business-config.xml</a>
-      <a href="/src/main/java/org/springframework/samples/petclinic/repository/springdatajpa">springdatajpa folder</a></td>
-  </tr>
-</table>
-
-<table>
-  <tr>
-    <th width="300px">Others</th><th width="300px">Files</th>
-  </tr>
-  <tr>
-    <td>Gradle branch</td>
-    <td>
-      <a href="https://github.com/whimet/spring-petclinic">See here</a></td>
   </tr>
 </table>
 
