@@ -1,20 +1,18 @@
-<!DOCTYPE html>
-
 <%@ page session="false" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
-
-<html lang="en">
-
-<petclinic:htmlHeader />
-<body>
-<petclinic:bodyHeader menuName="owners"/>
-
-<div class="container-fluid">
-    <div class="container xd-container">
+<petclinic:layout pageName="owners">
+    <jsp:attribute name="customScript">
+        <script>
+            $(function () {
+                $("#birthDate").datepicker({dateFormat: 'yy/mm/dd'});
+            });
+        </script>
+    </jsp:attribute>
+    <jsp:body>
         <h2>
             <c:if test="${pet['new']}">New </c:if> Pet
         </h2>
@@ -49,17 +47,5 @@
         </form:form>
         <c:if test="${!pet['new']}">
         </c:if>
-
-        <petclinic:pivotal/>
-    </div>
-</div>
-<petclinic:footer />
-
-<script>
-    $(function () {
-        $("#birthDate").datepicker({dateFormat: 'yy/mm/dd'});
-    });
-</script>
-</body>
-
-</html>
+    </jsp:body>
+</petclinic:layout>
