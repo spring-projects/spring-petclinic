@@ -1,10 +1,9 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core_1_1" %>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <%@ attribute name="name" required="true" rtexprvalue="true"
               description="Name of the active menu: home, owners, vets or error" %>
 
-<%-- Static navbar --%>
 <nav class="navbar navbar-default" role="navigation">
     <div class="container">
         <div class="navbar-header">
@@ -18,44 +17,29 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <c:choose>
-                    <c:when test="${name eq 'home'}">
-                        <c:set var="cssMenu" value="active"/>
-                    </c:when>
-                    <c:otherwise>
-                        <c:set var="cssMenu" value=""/>
-                    </c:otherwise>
-                </c:choose>
-                <li class="${cssMenu}"><a href="<spring:url value="/" htmlEscape="true" />"><span class="glyphicon glyphicon-home" aria-hidden="true"></span><span> Home</span></a></li>
-                <c:choose>
-                    <c:when test="${name eq 'owners'}">
-                        <c:set var="cssMenu" value="active"/>
-                    </c:when>
-                    <c:otherwise>
-                        <c:set var="cssMenu" value=""/>
-                    </c:otherwise>
-                </c:choose>
-                <li class="${cssMenu}"><a href="<spring:url value="/owners/find.html" htmlEscape="true" />"><span class="glyphicon glyphicon-search" aria-hidden="true"></span><span> Find owners</span></a></li>
-                <c:choose>
-                    <c:when test="${name eq 'vets'}">
-                        <c:set var="cssMenu" value="active"/>
-                    </c:when>
-                    <c:otherwise>
-                        <c:set var="cssMenu" value=""/>
-                    </c:otherwise>
-                </c:choose>
-                <li class="${cssMenu}"><a href="<spring:url value="/vets.html" htmlEscape="true" />"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span><span> Veterinarians</span></a></li>
-                <c:choose>
-                    <c:when test="${name eq 'error'}">
-                        <c:set var="cssMenu" value="active"/>
-                    </c:when>
-                    <c:otherwise>
-                        <c:set var="cssMenu" value=""/>
-                    </c:otherwise>
-                </c:choose>
-                <li class="${cssMenu}"><a href="<spring:url value="/oups.html" htmlEscape="true" />"
-                       title="trigger a RuntimeException to see how it is handled"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span><span> Error</span></a></li>
+
+                <petclinic:menuItem active="${name eq 'home'}" url="/" title="home page">
+                    <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                    <span>Home</span>
+                </petclinic:menuItem>
+
+                <petclinic:menuItem active="${name eq 'owners'}" url="/owners/find.html" title="find owners">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    <span>Find owners</span>
+                </petclinic:menuItem>
+
+                <petclinic:menuItem active="${name eq 'vets'}" url="/vets.html" title="veterinarians">
+                    <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                    <span>Veterinarians</span>
+                </petclinic:menuItem>
+
+                <petclinic:menuItem active="${name eq 'error'}" url="/oups.html"
+                            title="trigger a RuntimeException to see how it is handled">
+                    <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                    <span>Error</span>
+                </petclinic:menuItem>
+
             </ul>
-        </div> <%--/.nav-collapse --%>
-    </div> <%--/.container-fluid --%>
+        </div>
+    </div>
 </nav>
