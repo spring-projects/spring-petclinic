@@ -16,36 +16,16 @@
 
 package org.springframework.samples.petclinic;
 
-import com.github.dandelion.core.web.DandelionFilter;
-import com.github.dandelion.core.web.DandelionServlet;
-import net.sf.ehcache.config.CacheConfiguration;
-import net.sf.ehcache.config.PersistenceConfiguration;
-import net.sf.ehcache.config.PersistenceConfiguration.Strategy;
-import net.sf.ehcache.store.MemoryStoreEvictionPolicy;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.context.embedded.FilterRegistrationBean;
-import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
-import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.CachingConfigurerSupport;
-import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cache.ehcache.EhCacheCacheManager;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
-import org.springframework.samples.petclinic.model.Vets;
-import org.springframework.web.servlet.view.xml.MarshallingView;
 
 /**
  * PetClinic Spring Boot Application.
  *
  */
-@Configuration
-@EnableAutoConfiguration
-@ComponentScan
+@SpringBootApplication
 public class PetClinicApplication extends SpringBootServletInitializer {
 
     @Override

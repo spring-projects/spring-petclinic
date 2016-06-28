@@ -70,12 +70,6 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-oxm</artifactId>
-        </dependency>
-
-
 
         <!-- Tomcat -->
         <dependency>
@@ -203,12 +197,6 @@
             <groupId>com.github.dandelion</groupId>
             <artifactId>datatables-export-itext</artifactId>
             <version>${dandelion.datatables.version}</version>
-        </dependency>
-        <!-- temporary fix: below dependency should not be necessary as it is a transitive dependency.
-        For some reason we can't build the app unless it is a first level dependency -->
-        <dependency>
-            <groupId>com.googlecode.json-simple</groupId>
-            <artifactId>json-simple</artifactId>
         </dependency>
     </dependencies>
 
