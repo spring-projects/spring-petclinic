@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.web;
 
+import org.hamcrest.xml.HasXPath;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static org.hamcrest.xml.HasXPath.hasXPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -37,13 +39,11 @@ public class VetControllerTests {
     }
 
     @Test
-    public void testShowVetListXml() throws Exception {
-        testShowVetList("/vets.xml");
-    }
-
-    @Test
     public void testShowVetListHtml() throws Exception {
-        testShowVetList("/vets.html");
+        mockMvc.perform(get("/vets.html"))
+            .andExpect(status().isOk())
+            .andExpect(model().attributeExists("vets"))
+            .andExpect(view().name("vets/vetList"));
     }
 
     @Test
@@ -54,12 +54,12 @@ public class VetControllerTests {
             .andExpect(jsonPath("$.vetList[0].id").value(1));
     }
 
-    private void testShowVetList(String url) throws Exception {
-        mockMvc.perform(get(url))
+    @Test
+    public void testShowVetListXml() throws Exception {
+        mockMvc.perform(get("/vets.xml").accept(MediaType.APPLICATION_XML))
             .andExpect(status().isOk())
-            .andExpect(model().attributeExists("vets"))
-            .andExpect(view().name("vets/vetList"));
+            .andExpect(content().contentType(MediaType.APPLICATION_XML_VALUE))
+            .andExpect(content().node(hasXPath("/vets/vetList[id=1]/id")));
     }
-
 
 }
