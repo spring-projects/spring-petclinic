@@ -31,6 +31,10 @@
 
 
         <!-- Web dependencies -->
+        <webjars-bootstrap.version>3.3.6</webjars-bootstrap.version>
+        <webjars-jquery-ui.version>1.11.4</webjars-jquery-ui.version>
+        <webjars-jquery.version>2.0.3-1</webjars-jquery.version>
+        <dandelion.version>1.1.1</dandelion.version>
         <dandelion.datatables.version>1.1.0</dandelion.datatables.version>
 
         <cobertura.version>2.7</cobertura.version>
@@ -153,7 +157,7 @@
         <dependency>
             <groupId>com.github.dandelion</groupId>
             <artifactId>dandelion-jsp</artifactId>
-            <version>1.1.1</version>
+            <version>${dandelion.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.dandelion</groupId>
@@ -170,17 +174,17 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>jquery</artifactId>
-            <version>2.2.4</version>
+            <version>${webjars-jquery.version}</version>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>jquery-ui</artifactId>
-            <version>1.11.4</version>
+            <version>${webjars-jquery-ui.version}</version>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
-            <version>3.3.6</version>
+            <version>${webjars-bootstrap.version}</version>
         </dependency>
         <!-- end of webjars -->
 
