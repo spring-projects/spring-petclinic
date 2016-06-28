@@ -26,7 +26,12 @@ import org.springframework.boot.context.web.SpringBootServletInitializer;
  *
  */
 @SpringBootApplication
-public class PetClinicApplication {
+public class PetClinicApplication extends SpringBootServletInitializer {
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(PetClinicApplication.class);
+    }
 
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(PetClinicApplication.class, args);
