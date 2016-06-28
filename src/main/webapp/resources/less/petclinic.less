@@ -11,7 +11,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-@import "../../vendors/bootstrap/less/bootstrap.less";
+@import "../generated/META-INF/resources/webjars/bootstrap/3.3.6/less/bootstrap.less";
+
+@icon-font-path:    "../../webjars/bootstrap/3.3.6/fonts/";
 
 @spring-green:      #6db33f;
 @spring-dark-green: #5fa134;
@@ -40,8 +42,6 @@
 @btn-default-bg:                 @spring-brown;
 @btn-default-border:             @spring-green;
 
-@icon-font-path: "../../vendors/bootstrap/dist/fonts/";
-
 @nav-tabs-active-link-hover-color:        @spring-light-grey;
 @nav-tabs-active-link-hover-bg:           @spring-brown;
 @nav-tabs-active-link-hover-border-color: @spring-brown;
@@ -50,9 +50,6 @@
 @pagination-active-bg:                    @spring-brown;
 @pagination-active-border:                @spring-green;
 @table-border-color:                      @spring-brown;
-
-@import "typography.less";
-@import "header.less";
 
 .table > thead > tr > th {
   background-color: lighten(@spring-brown, 3%);
@@ -235,18 +232,10 @@ table td.action-column {
   -webkit-animation-timing-function: linear;
 }
 
-@keyframes "spinner" {
-  from { transform: rotate( 0deg );   }
-  to   { transform: rotate( 360deg ); }
-}
-
-@-webkit-keyframes "spinner" {
-  from { -webkit-transform: rotate( 0deg ); }
-  to   { -webkit-transform: rotate( 360deg ); }
-}
-
 hr {
   border-top: 1px dotted @spring-brown;
 }
 
+@import "typography.less";
+@import "header.less";
 @import "responsive.less";
