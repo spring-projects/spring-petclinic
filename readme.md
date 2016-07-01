@@ -1,5 +1,4 @@
-# Spring PetClinic Sample Application
-
+# Spring PetClinic Sample Application [![Build Status](https://travis-ci.org/spring-projects/spring-petclinic.png?branch=master)](https://travis-ci.org/spring-projects/spring-petclinic/)
 
 ## Understanding the Spring Petclinic application with a few diagrams
 <a href="https://speakerdeck.com/michaelisvy/spring-petclinic-sample-application">See the presentation here</a>
@@ -7,13 +6,27 @@
 ## Running petclinic locally
 ```
 	git clone https://github.com/spring-projects/spring-petclinic.git
-	mvn tomcat7:run
+	cd spring-petclinic
+	./mvnw tomcat7:run
 ```
 
 You can then access petclinic here: http://localhost:9966/petclinic/
 
 ## In case you find a bug/suggested improvement for Spring Petclinic
 Our issue tracker is available here: https://github.com/spring-projects/spring-petclinic/issues
+
+
+## Database configuration
+
+In its default configuration, Petclinic uses an in-memory database (HSQLDB) which
+gets populated at startup with data. A similar setup is provided for MySql in case a persistent database configuration is needed.
+Note that whenever the database type is changed, the data-access.properties file needs to be updated and the mysql-connector-java artifact from the pom.xml needs to be uncommented.
+
+You may start a MySql database with docker:
+
+```
+docker run -e MYSQL_ROOT_PASSWORD=petclinic -e MYSQL_DATABASE=petclinic -p 3306:3306 mysql:5.7.8
+```
 
 ## Working with Petclinic in Eclipse/STS
 
@@ -43,12 +56,12 @@ File -> Import -> Maven -> Existing Maven project
 
 <table>
   <tr>
-    <th width="300px">XML Configuration</th><th width="300px"></th>
+    <th width="300px">Java Config</th><th width="300px"></th>
   </tr>
   <tr>
-    <td>XML Configuration</td>
+    <td>Java Config branch</td>
     <td>
-      This <a href="https://github.com/spring-projects/spring-petclinic/tree/javaconfig">javaconfig branch</a> uses Java Configuration. In case you'd like to use the XML configuration instead, there the master branch is available <a href="https://github.com/spring-projects/spring-petclinic">here</a>. XML remains the default configuration for Spring Petclinic.     
+      Petclinic uses XML configuration by default. In case you'd like to use Java Config instead, there is a Java Config branch available <a href="https://github.com/spring-projects/spring-petclinic/tree/javaconfig">here</a>. Thanks to Antoine Rey for his contribution.     
     </td>
   </tr>
   <tr>
@@ -56,11 +69,11 @@ File -> Import -> Maven -> Existing Maven project
   </tr>
   <tr>
     <td>Spring MVC - XML integration</td>
-    <td><a href="/src/main/java/org/springframework/samples/petclinic/config/MvcViewConfig.java">MvcViewConfig.java</a></td>
+    <td><a href="/src/main/resources/spring/mvc-view-config.xml">mvc-view-config.xml</a></td>
   </tr>
   <tr>
     <td>Spring MVC - ContentNegotiatingViewResolver</td>
-    <td><a href="/src/main/java/org/springframework/samples/petclinic/config/MvcViewConfig.java">MvcViewConfig.java</a></td>
+    <td><a href="/src/main/resources/spring/mvc-view-config.xml">mvc-view-config.xml</a></td>
   </tr>
   <tr>
     <td>JSP custom tags</td>
@@ -69,11 +82,13 @@ File -> Import -> Maven -> Existing Maven project
       <a href="/src/main/webapp/WEB-INF/jsp/owners/createOrUpdateOwnerForm.jsp">createOrUpdateOwnerForm.jsp</a></td>
   </tr>
   <tr>
-    <td>webjars</td>
+    <td>Bower</td>
     <td>
-      <a href="/pom.xml">webjars declaration inside pom.xml</a> <br />
-      <a href="/src/main/java/org/springframework/samples/petclinic/config/MvcCoreConfig.javal#L108">Resource mapping in Spring configuration</a> <br />
-      <a href="/src/main/webapp/WEB-INF/jsp/fragments/headTag.jsp#L12">sample usage in JSP</a></td>
+      <a href="/pom.xml">bower-install maven profile declaration inside pom.xml</a> <br />
+      <a href="/bower.json">JavaScript libraries are defined by the manifest file bower.json</a> <br />
+      <a href="/.bowerrc">Bower configuration using JSON</a> <br />
+      <a href="/src/main/resources/spring/mvc-core-config.xml#L30">Resource mapping in Spring configuration</a> <br />
+      <a href="/src/main/webapp/WEB-INF/jsp/fragments/staticFiles.jsp#L12">sample usage in JSP</a></td>
     </td>
   </tr>
   <tr>
@@ -104,21 +119,21 @@ File -> Import -> Maven -> Existing Maven project
   <tr>
     <td>Transactions</td>
     <td>
-      <a href="/src/main/java/org/springframework/samples/petclinic/config/BusinessConfig.java">BusinessConfig.java</a>
+      <a href="/src/main/resources/spring/business-config.xml">business-config.xml</a>
        <a href="/src/main/java/org/springframework/samples/petclinic/service/ClinicServiceImpl.java">ClinicServiceImpl.java</a>
     </td>
   </tr>
   <tr>
     <td>Cache</td>
       <td>
-       <a href="/src/main/java/org/springframework/samples/petclinic/config/ToolsConfig.java">ToolsConfig.java</a>
+      <a href="/src/main/resources/spring/tools-config.xml">tools-config.xml</a>
        <a href="/src/main/java/org/springframework/samples/petclinic/service/ClinicServiceImpl.java">ClinicServiceImpl.java</a>
     </td>
   </tr>
   <tr>
     <td>Bean Profiles</td>
       <td>
-       <a href="/src/main/java/org/springframework/samples/petclinic/config/JdbcConfig.java">JdbcConfig.java</a>
+      <a href="/src/main/resources/spring/business-config.xml">business-config.xml</a>
        <a href="/src/test/java/org/springframework/samples/petclinic/service/ClinicServiceJdbcTests.java">ClinicServiceJdbcTests.java</a>
        <a href="/src/main/webapp/WEB-INF/web.xml">web.xml</a>
     </td>
@@ -126,21 +141,19 @@ File -> Import -> Maven -> Existing Maven project
   <tr>
     <td>JdbcTemplate</td>
     <td>
-      <a href="/src/main/java/org/springframework/samples/petclinic/config/JdbcConfig.java">JdbcConfig.java</a>
+      <a href="/src/main/resources/spring/business-config.xml">business-config.xml</a>
       <a href="/src/main/java/org/springframework/samples/petclinic/repository/jdbc">jdbc folder</a></td>
   </tr>
   <tr>
     <td>JPA</td>
     <td>
-      <a href="/src/main/java/org/springframework/samples/petclinic/config/SharedJpaConfig.java">SharedJpaConfig.java</a>
-      <a href="/src/main/java/org/springframework/samples/petclinic/config/JpaConfig.java">JpaConfig.java</a>
+      <a href="/src/main/resources/spring/business-config.xml">business-config.xml</a>
       <a href="/src/main/java/org/springframework/samples/petclinic/repository/jpa">jpa folder</a></td>
   </tr>
   <tr>
     <td>Spring Data JPA</td>
     <td>
-      <a href="/src/main/java/org/springframework/samples/petclinic/config/SharedJpaConfig.java">SharedJpaConfig.java</a>
-      <a href="/src/main/java/org/springframework/samples/petclinic/config/SpringDataJpaConfig.java">SpringDataJpaConfig.java</a>
+      <a href="/src/main/resources/spring/business-config.xml">business-config.xml</a>
       <a href="/src/main/java/org/springframework/samples/petclinic/repository/springdatajpa">springdatajpa folder</a></td>
   </tr>
 </table>
@@ -149,6 +162,11 @@ File -> Import -> Maven -> Existing Maven project
   <tr>
     <th width="300px">Others</th><th width="300px">Files</th>
   </tr>
+    <tr>
+      <td>Spring Boot branch</td>
+      <td>
+        <a href="https://github.com/spring-projects/spring-petclinic/tree/springboot">See here</a></td>
+    </tr>
   <tr>
     <td>Gradle branch</td>
     <td>
@@ -191,6 +209,13 @@ Here is a list of them:
     </td>
   </tr>    
 </table>
+
+
+# Contributing
+
+The [issue tracker](https://github.com/spring-projects/spring-petclinic/issues) is the preferred channel for bug reports, features requests and submitting pull requests.
+
+For pull requests, editor preferences are available in the [editor config](https://github.com/spring-projects/spring-petclinic/blob/master/.editorconfig) for easy use in common text editors. Read more and download plugins at <http://editorconfig.org>.
 
 
 

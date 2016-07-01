@@ -11,13 +11,20 @@
               description="Size of Select" %>
 
 <spring:bind path="${name}">
-    <c:set var="cssGroup" value="control-group ${status.error ? 'error' : '' }"/>
+    <c:set var="cssGroup" value="form-group ${status.error ? 'error' : '' }"/>
+    <c:set var="valid" value="${not status.error and not empty status.actualValue}"/>
     <div class="${cssGroup}">
-        <label class="control-label">${label}</label>
+        <label class="col-sm-2 control-label">${label}</label>
 
-        <div class="controls">
-            <form:select path="${name}" items="${names}" size="${size}"/>
-            <span class="help-inline">${status.errorMessage}</span>
+        <div class="col-sm-10">
+            <form:select class="form-control" path="${name}" items="${names}" size="${size}"/>
+            <c:if test="${valid}">
+                <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+            </c:if>
+            <c:if test="${status.error}">
+                <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+                <span class="help-inline">${status.errorMessage}</span>
+            </c:if>
         </div>
     </div>
 </spring:bind>

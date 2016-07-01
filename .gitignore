@@ -5,5 +5,5 @@ target/*
 .idea
 *.iml
 /target
-generated/
 
+generated/

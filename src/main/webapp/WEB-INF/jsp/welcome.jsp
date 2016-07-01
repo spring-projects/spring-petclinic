@@ -1,23 +1,14 @@
-<!DOCTYPE html> 
-
+<%@ page session="false" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
-
-<html lang="en">
-
-<jsp:include page="fragments/staticFiles.jsp"/>
-
-<body>
-<div class="container">
-    <jsp:include page="fragments/bodyHeader.jsp"/>
+<petclinic:layout pageName="home">
     <h2><fmt:message key="welcome"/></h2>
-    <spring:url value="/resources/images/pets.png" htmlEscape="true" var="petsImage"/>
-    <img src="${petsImage}"/>
-
-    <jsp:include page="fragments/footer.jsp"/>
-
-</div>
-</body>
-
-</html>
+    <div class="row">
+        <div class="col-md-12">
+            <spring:url value="/resources/images/pets.png" htmlEscape="true" var="petsImage"/>
+            <img class="img-responsive" src="${petsImage}"/>
+        </div>
+    </div>
+</petclinic:layout>

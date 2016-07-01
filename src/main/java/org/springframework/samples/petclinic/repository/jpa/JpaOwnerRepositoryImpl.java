@@ -43,7 +43,7 @@ public class JpaOwnerRepositoryImpl implements OwnerRepository {
 
 
     /**
-     * Important: in the current version of this method, we load Owners with all their Pets and Visits while 
+     * Important: in the current version of this method, we load Owners with all their Pets and Visits while
      * we do not need Visits at all and we only need one property from the Pet objects (the 'name' property).
      * There are some ways to improve it such as:
      * - creating a Ligtweight class (example here: https://community.jboss.org/wiki/LightweightClass)
@@ -70,12 +70,11 @@ public class JpaOwnerRepositoryImpl implements OwnerRepository {
 
     @Override
     public void save(Owner owner) {
-    	if (owner.getId() == null) {
-    		this.em.persist(owner);     		
-    	}
-    	else {
-    		this.em.merge(owner);    
-    	}
+        if (owner.getId() == null) {
+            this.em.persist(owner);
+        } else {
+            this.em.merge(owner);
+        }
 
     }
 

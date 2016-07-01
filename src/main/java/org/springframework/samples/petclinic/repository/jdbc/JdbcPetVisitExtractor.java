@@ -27,7 +27,7 @@ import java.sql.SQLException;
  * {@link OneToManyResultSetExtractor} of Spring Data Core JDBC Extensions.
  */
 public class JdbcPetVisitExtractor extends
-        OneToManyResultSetExtractor<JdbcPet, Visit, Integer> {
+    OneToManyResultSetExtractor<JdbcPet, Visit, Integer> {
 
     public JdbcPetVisitExtractor() {
         super(new JdbcPetRowMapper(), new JdbcVisitRowMapper());
