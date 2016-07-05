@@ -96,7 +96,7 @@ File -> Import -> Maven -> Existing Maven project
     <td>
       <a href="/src/main/webapp/WEB-INF/jsp/owners/ownersList.jsp">ownersList.jsp</a> 
       <a href="/src/main/webapp/WEB-INF/jsp/vets/vetList.jsp">vetList.jsp</a> 
-      <a href="/src/main/webapp/WEB-INF/web.xml">web.xml</a> 
+      <a href="/src/main/java/org/springframework/samples/petclinic/PetclinicInitializer.java">PetclinicInitializer.java</a>
       <a href="/src/main/resources/dandelion/datatables/datatables.properties">datatables.properties</a> 
    </td>
   </tr>
@@ -135,7 +135,7 @@ File -> Import -> Maven -> Existing Maven project
       <td>
       <a href="/src/main/resources/spring/business-config.xml">business-config.xml</a>
        <a href="/src/test/java/org/springframework/samples/petclinic/service/ClinicServiceJdbcTests.java">ClinicServiceJdbcTests.java</a>
-       <a href="/src/main/webapp/WEB-INF/web.xml">web.xml</a>
+       <a href="/src/main/java/org/springframework/samples/petclinic/PetclinicInitializer.java">PetclinicInitializer.java</a>
     </td>
   </tr>
   <tr>
