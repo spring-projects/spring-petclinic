@@ -312,6 +312,7 @@
                 <version>2.3</version>
                 <configuration>
                     <warName>petclinic</warName>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
             <plugin>
