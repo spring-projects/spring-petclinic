@@ -48,7 +48,8 @@
 
     <scm>
       <developerConnection>scm:git:https://github.com/liatrio/spring-petclinic/</developerConnection>
-    </scm>
+      <tag>HEAD</tag>
+  </scm>
 
     <dependencyManagement>
         <!-- Import the maven Spring IO Platform Bill Of Materials (BOM) -->
@@ -305,7 +306,7 @@
                 <version>3.0</version>
                 <configuration>
                     <compilerArguments>
-                        <Xlint/>
+                        <Xlint />
                     </compilerArguments>
                     <verbose>true</verbose>
                     <source>${java.version}</source>
@@ -382,7 +383,7 @@
                 <artifactId>cobertura-maven-plugin</artifactId>
                 <version>${cobertura.version}</version>
                 <configuration>
-                    <check/>
+                    <check />
                 </configuration>
                 <executions>
                     <execution>
@@ -412,7 +413,7 @@
                     <formats>
                         <format>html</format>
                     </formats>
-                    <check/>
+                    <check />
                 </configuration>
             </plugin>
         </plugins>
