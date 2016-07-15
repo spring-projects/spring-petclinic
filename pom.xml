@@ -28,7 +28,7 @@
         <assertj.version>2.2.0</assertj.version>
 
         <!-- Dates -->
-        <jodatime-hibernate.version>1.5-SNAPSHOT</jodatime-hibernate.version>
+        <jodatime-hibernate.version>1.4</jodatime-hibernate.version>
         <jodatime-jsptags.version>1.1.1</jodatime-jsptags.version>
         <jadira-usertype-core.version>3.2.0.GA</jadira-usertype-core.version>
 
