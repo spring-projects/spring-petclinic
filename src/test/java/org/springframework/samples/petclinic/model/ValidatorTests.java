@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Locale;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
@@ -11,6 +12,7 @@ import javax.validation.Validator;
 import org.junit.Test;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+
 
 /**
  * @author Michael Isvy
@@ -40,6 +42,12 @@ public class ValidatorTests {
         ConstraintViolation<Person> violation = constraintViolations.iterator().next();
         assertThat(violation.getPropertyPath().toString()).isEqualTo("firstName");
         assertThat(violation.getMessage()).isEqualTo("may not be empty");
+    }
+
+    @Test
+    public void iAmFlaky() {
+        Boolean randomResult = ThreadLocalRandom.current().nextBoolean();
+        assertThat(randomResult).isTrue();
     }
 
 }
