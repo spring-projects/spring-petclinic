@@ -1,3 +1,5 @@
+# これは修正です。
+
 # Spring PetClinic Sample Application
 
 
