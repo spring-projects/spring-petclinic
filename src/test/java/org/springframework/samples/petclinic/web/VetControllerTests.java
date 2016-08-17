@@ -1,11 +1,10 @@
 package org.springframework.samples.petclinic.web;
 
-import org.hamcrest.xml.HasXPath;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.samples.petclinic.PetClinicApplication;
 import org.springframework.test.context.ActiveProfiles;
@@ -23,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Test class for the {@link VetController}
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = PetClinicApplication.class)
+@SpringBootTest(classes = PetClinicApplication.class)
 @WebAppConfiguration
 @ActiveProfiles("test")
 public class VetControllerTests {
