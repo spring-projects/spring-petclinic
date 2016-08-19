@@ -1,10 +1,12 @@
 package org.springframework.samples.petclinic.web;
 
+import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.samples.petclinic.model.Owner;
+import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -13,12 +15,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
-
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Test class for {@link OwnerController}
@@ -26,9 +26,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Colin But
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath:spring/business-config.xml", "classpath:spring/tools-config.xml", "classpath:spring/mvc-core-config.xml"})
+@ContextConfiguration({"classpath:spring/mvc-test-config.xml", "classpath:spring/mvc-core-config.xml"})
 @WebAppConfiguration
-@ActiveProfiles("spring-data-jpa")
 public class OwnerControllerTests {
 
     private static final int TEST_OWNER_ID = 1;
@@ -36,11 +35,26 @@ public class OwnerControllerTests {
     @Autowired
     private OwnerController ownerController;
 
+    @Autowired
+    private ClinicService clinicService;
+
     private MockMvc mockMvc;
+
+    private Owner george;
 
     @Before
     public void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(ownerController).build();
+
+        george = new Owner();
+        george.setId(TEST_OWNER_ID);
+        george.setFirstName("George");
+        george.setLastName("Franklin");
+        george.setAddress("110 W. Liberty St.");
+        george.setCity("Madison");
+        george.setTelephone("6085551023");
+        given(this.clinicService.findOwnerById(TEST_OWNER_ID)).willReturn(george);
+
     }
 
     @Test
@@ -87,6 +101,8 @@ public class OwnerControllerTests {
 
     @Test
     public void testProcessFindFormSuccess() throws Exception {
+        given(this.clinicService.findOwnerByLastName("")).willReturn(Lists.newArrayList(george, new Owner()));
+
         mockMvc.perform(get("/owners"))
             .andExpect(status().isOk())
             .andExpect(view().name("owners/ownersList"));
@@ -94,6 +110,8 @@ public class OwnerControllerTests {
 
     @Test
     public void testProcessFindFormByLastName() throws Exception {
+        given(this.clinicService.findOwnerByLastName(george.getLastName())).willReturn(Lists.newArrayList(george));
+
         mockMvc.perform(get("/owners")
             .param("lastName", "Franklin")
         )

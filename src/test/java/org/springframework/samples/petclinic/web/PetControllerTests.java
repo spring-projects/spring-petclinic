@@ -1,22 +1,25 @@
 package org.springframework.samples.petclinic.web;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
+import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.support.FormattingConversionServiceFactoryBean;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.samples.petclinic.model.Owner;
+import org.springframework.samples.petclinic.model.Pet;
+import org.springframework.samples.petclinic.model.PetType;
+import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Test class for the {@link PetController}
@@ -24,9 +27,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
  * @author Colin But
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath:spring/business-config.xml", "classpath:spring/tools-config.xml", "classpath:spring/mvc-core-config.xml"})
+@ContextConfiguration({"classpath:spring/mvc-core-config.xml", "classpath:spring/mvc-test-config.xml"})
 @WebAppConfiguration
-@ActiveProfiles("spring-data-jpa")
 public class PetControllerTests {
 
     private static final int TEST_OWNER_ID = 1;
@@ -38,6 +40,9 @@ public class PetControllerTests {
     @Autowired
     private FormattingConversionServiceFactoryBean formattingConversionServiceFactoryBean;
 
+    @Autowired
+    private ClinicService clinicService;
+
     private MockMvc mockMvc;
 
     @Before
@@ -46,6 +51,13 @@ public class PetControllerTests {
             .standaloneSetup(petController)
             .setConversionService(formattingConversionServiceFactoryBean.getObject())
             .build();
+
+        PetType cat = new PetType();
+        cat.setId(3);
+        cat.setName("hamster");
+        given(this.clinicService.findPetTypes()).willReturn(Lists.newArrayList(cat));
+        given(this.clinicService.findOwnerById(TEST_OWNER_ID)).willReturn(new Owner());
+        given(this.clinicService.findPetById(TEST_PET_ID)).willReturn(new Pet());
     }
 
     @Test
