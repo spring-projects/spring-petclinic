@@ -1,20 +1,22 @@
 package org.springframework.samples.petclinic.web;
 
+import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.samples.petclinic.PetClinicApplication;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.samples.petclinic.model.Specialty;
+import org.springframework.samples.petclinic.model.Vet;
+import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.hamcrest.xml.HasXPath.hasXPath;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -22,19 +24,33 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Test class for the {@link VetController}
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = PetClinicApplication.class)
-@WebAppConfiguration
-@ActiveProfiles("test")
+@WebMvcTest(VetController.class)
 public class VetControllerTests {
 
     @Autowired
     private VetController vetController;
 
+    @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private ClinicService clinicService;
 
     @Before
     public void setup() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(vetController).build();
+        Vet james = new Vet();
+        james.setFirstName("James");
+        james.setLastName("Carter");
+        james.setId(1);
+        Vet helen = new Vet();
+        helen.setFirstName("Helen");
+        helen.setLastName("Leary");
+        helen.setId(2);
+        Specialty radiology = new Specialty();
+        radiology.setId(1);
+        radiology.setName("radiology");
+        helen.addSpecialty(radiology);
+        given(this.clinicService.findVets()).willReturn(Lists.newArrayList(james, helen));
     }
 
     @Test

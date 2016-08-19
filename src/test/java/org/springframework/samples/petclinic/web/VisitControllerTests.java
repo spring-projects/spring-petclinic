@@ -4,14 +4,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.samples.petclinic.PetClinicApplication;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.samples.petclinic.model.Pet;
+import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -22,9 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Colin But
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = PetClinicApplication.class)
-@WebAppConfiguration
-@ActiveProfiles("test")
+@WebMvcTest(VisitController.class)
 public class VisitControllerTests {
 
     private static final int TEST_PET_ID = 1;
@@ -32,12 +30,17 @@ public class VisitControllerTests {
     @Autowired
     private VisitController visitController;
 
+    @Autowired
     private MockMvc mockMvc;
 
+    @MockBean
+    private ClinicService clinicService;
+
     @Before
-    public void setup() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(visitController).build();
+    public void init() {
+        given(this.clinicService.findPetById(TEST_PET_ID)).willReturn(new Pet());
     }
+
 
     @Test
     public void testInitNewVisitForm() throws Exception {
