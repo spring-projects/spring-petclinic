@@ -1,16 +1,17 @@
 package org.springframework.samples.petclinic.web;
 
+import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.samples.petclinic.config.BusinessConfig;
 import org.springframework.samples.petclinic.config.MvcCoreConfig;
-import org.springframework.samples.petclinic.config.ToolsConfig;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.samples.petclinic.config.MvcTestConfig;
+import org.springframework.samples.petclinic.model.Specialty;
+import org.springframework.samples.petclinic.model.Vet;
+import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -18,28 +19,44 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.hamcrest.xml.HasXPath.hasXPath;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 
 /**
  * Test class for the {@link VetController}
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextHierarchy({
-        @ContextConfiguration(classes = { BusinessConfig.class, ToolsConfig.class }),
-        @ContextConfiguration(classes = MvcCoreConfig.class)})
-@ActiveProfiles("spring-data-jpa")
+@ContextConfiguration(classes = { MvcCoreConfig.class, MvcTestConfig.class })
 public class VetControllerTests {
 
     @Autowired
     private VetController vetController;
+
+    @Autowired
+    private ClinicService clinicService;
 
     private MockMvc mockMvc;
 
     @Before
     public void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(vetController).build();
+
+        Vet james = new Vet();
+        james.setFirstName("James");
+        james.setLastName("Carter");
+        james.setId(1);
+        Vet helen = new Vet();
+        helen.setFirstName("Helen");
+        helen.setLastName("Leary");
+        helen.setId(2);
+        Specialty radiology = new Specialty();
+        radiology.setId(1);
+        radiology.setName("radiology");
+        helen.addSpecialty(radiology);
+        given(this.clinicService.findVets()).willReturn(Lists.newArrayList(james, helen));
     }
 
     @Test

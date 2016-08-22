@@ -1,24 +1,20 @@
 package org.springframework.samples.petclinic.web;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.config.BusinessConfig;
 import org.springframework.samples.petclinic.config.MvcCoreConfig;
-import org.springframework.samples.petclinic.config.ToolsConfig;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.samples.petclinic.config.MvcTestConfig;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.HandlerExceptionResolver;
-import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Test class for {@link CrashController}
@@ -27,10 +23,7 @@ import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextHierarchy({
-    @ContextConfiguration(classes = { BusinessConfig.class, ToolsConfig.class }),
-    @ContextConfiguration(classes = MvcCoreConfig.class)})
-@ActiveProfiles("spring-data-jpa")
+@ContextConfiguration(classes = { MvcCoreConfig.class, MvcTestConfig.class })
 public class CrashControllerTests {
 
     @Autowired
