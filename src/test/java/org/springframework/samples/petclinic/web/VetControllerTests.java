@@ -28,9 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class VetControllerTests {
 
     @Autowired
-    private VetController vetController;
-
-    @Autowired
     private MockMvc mockMvc;
 
     @MockBean

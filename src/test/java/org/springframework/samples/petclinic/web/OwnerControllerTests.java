@@ -31,9 +31,6 @@ public class OwnerControllerTests {
     private static final int TEST_OWNER_ID = 1;
 
     @Autowired
-    private OwnerController ownerController;
-
-    @Autowired
     private MockMvc mockMvc;
 
     @MockBean

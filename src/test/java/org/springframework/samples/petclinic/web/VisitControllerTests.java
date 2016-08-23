@@ -28,9 +28,6 @@ public class VisitControllerTests {
     private static final int TEST_PET_ID = 1;
 
     @Autowired
-    private VisitController visitController;
-
-    @Autowired
     private MockMvc mockMvc;
 
     @MockBean
@@ -40,7 +37,6 @@ public class VisitControllerTests {
     public void init() {
         given(this.clinicService.findPetById(TEST_PET_ID)).willReturn(new Pet());
     }
-
 
     @Test
     public void testInitNewVisitForm() throws Exception {
