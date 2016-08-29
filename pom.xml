@@ -60,10 +60,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context-support</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
@@ -73,18 +69,6 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
-        </dependency>
-
-
-        <!-- used for EhCacheCacheManager -->
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-            <scope>runtime</scope>
         </dependency>
 
         <!-- Date and Time -->
@@ -124,14 +108,12 @@
 
         <!-- EhCache -->
         <dependency>
-            <groupId>net.sf.ehcache</groupId>
+            <groupId>javax.cache</groupId>
+            <artifactId>cache-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.ehcache</groupId>
             <artifactId>ehcache</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- Dandelion -->
