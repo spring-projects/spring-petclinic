@@ -16,7 +16,7 @@
    the db/mysql directory. Alternatively, uncomment the mysql-connector from the
    Petclinic pom.
 
-3) Create the PetClinic database and user by executing the "db/mysql/createDB.txt"
+3) Create the PetClinic database and user by executing the "db/mysql/initDB.sql"
    script.
 
 4) Open "src/main/resources/spring/data-access.properties"; comment out all properties in the
