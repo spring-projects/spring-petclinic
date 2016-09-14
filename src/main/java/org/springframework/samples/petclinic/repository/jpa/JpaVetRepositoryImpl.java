@@ -15,15 +15,13 @@
  */
 package org.springframework.samples.petclinic.repository.jpa;
 
-import java.util.Collection;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.repository.VetRepository;
 import org.springframework.stereotype.Repository;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.Collection;
 
 /**
  * JPA implementation of the {@link VetRepository} interface.
@@ -42,7 +40,6 @@ public class JpaVetRepositoryImpl implements VetRepository {
 
 
     @Override
-    @Cacheable(value = "vets")
     @SuppressWarnings("unchecked")
     public Collection<Vet> findAll() {
         return this.em.createQuery("SELECT distinct vet FROM Vet vet left join fetch vet.specialties ORDER BY vet.lastName, vet.firstName").getResultList();
