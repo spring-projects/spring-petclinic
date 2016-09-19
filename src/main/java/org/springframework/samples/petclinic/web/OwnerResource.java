@@ -64,9 +64,8 @@ public class OwnerResource {
      */
     @RequestMapping(value = "/owner", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public void createOwner(@RequestBody Owner owner) {
+    public void createOwner(@Valid @RequestBody Owner owner) {
     	this.clinicService.saveOwner(owner);
-    	// TODO: need to handle failure
     }
     
     /**

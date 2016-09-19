@@ -1,15 +1,9 @@
-    <h2>Find Owners</h2>
-    <form class="form-horizontal" ng-controller="ownerSearchController">
-        <fieldset>
-            <div class="control-group" id="lastName">
-                <label class="control-label">Last name </label>
-                <input ng-model="ownerSearchForm.lastName" size="30" maxlength="80"/>
-            </div>
-            <div class="form-actions">
-                <button type="submit" ng-click="submitOwnerSearchForm()">Find Owners</button>
-            </div>
-        </fieldset>
-    </form>
-
-    <br/>
-    <a ui-sref="app.ownercreate">Add Owners</a>
+<h2>Owners</h2>
+<form class="form-inline" ng-controller="ownerSearchController">
+    <div class="control-group">
+        <label class="control-label">Last name</label>
+        <input class="form-control" type="text" ng-model="ownerSearchForm.lastName" size="30" maxlength="80"/>
+        <button class="btn btn-info" type="submit" ng-click="submitOwnerSearchForm()">Find Owners</button> |
+        <a class="btn btn-info" ui-sref="app.ownercreate">Add New Owner</a>
+    </div>
+</form>

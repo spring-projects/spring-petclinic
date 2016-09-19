@@ -1,37 +1,45 @@
 <div class="container">
- 
     <h2>Owner</h2>
     <form class="form-horizontal" name="ownerForm" data-ng-controller="ownerFormController">
-    	<fieldset>
-    		<div class="control-group" id="firstName">
-                <label class="control-label">First name </label>
-                <input ng-model="owner.firstName" name="firstName" required/>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">First name</label>
+            <div class="col-sm-4">
+                <input class="form-control" ng-model="owner.firstName" name="firstName" required/>
                 <span ng-show="ownerForm.firstName.$error.required" class="help-inline">First name is required.</span>
             </div>
-            <div class="control-group" id="lastName">
-                <label class="control-label">Last name </label>
-                <input ng-model="owner.lastName" name="lastName" required/>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Last name</label>
+            <div class="col-sm-4">
+                <input class="form-control" ng-model="owner.lastName" name="lastName" required/>
                 <span ng-show="ownerForm.lastName.$error.required" class="help-inline">Last name is required.</span>
             </div>
-            <div class="control-group" id="address">
-                <label class="control-label">Address </label>
-                <input ng-model="owner.address" name="address" required/>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Address</label>
+            <div class="col-sm-4">
+                <input class="form-control" ng-model="owner.address" name="address" required/>
                 <span ng-show="ownerForm.address.$error.required" class="help-inline">Address is required.</span>
             </div>
-            <div class="control-group" id="city">
-                <label class="control-label">City </label>
-                <input ng-model="owner.city" name="city" required/>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">City</label>
+            <div class="col-sm-4">
+                <input class="form-control" ng-model="owner.city" name="city" required/>
                 <span ng-show="ownerForm.city.$error.required" class="help-inline">City is required.</span>
             </div>
-            <div class="control-group" id="telephone">
-                <label class="control-label">Telephone </label>
-                <input ng-model="owner.telephone" name="telephone" required/>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Telephone</label>
+            <div class="col-sm-4">
+                <input class="form-control" ng-model="owner.telephone" name="telephone" required/>
                 <span ng-show="ownerForm.telephone.$error.required" class="help-inline">Telephone is required.</span>
             </div>
-	
-	        <div class="form-actions">
-	                    <button type="submit" ng-click="submitOwnerForm()">Submit</button>
-	        </div>
-        </fieldset>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-4">
+                <button class="btn btn-primary" type="submit" ng-click="submitOwnerForm()">Submit</button>
+            </div>
+        </div>
     </form>
 </div>
