@@ -1,44 +1,38 @@
-<!DOCTYPE html> 
-
-<script>
-    $(function () {
-        $("#birthDate").datepicker({ dateFormat: 'yy/mm/dd'});
-    });
-</script>
 <div class="container">
 
-    <h2>Pet (work in progress) </h2>
+    <h2>Pet</h2>
+
     <form class="form-horizontal" name="petForm" data-ng-controller="petFormController">
-    	<fieldset>
-	        <div class="control-group" id="owner">
-	            <label class="control-label"> Owner </label>
-	            {{pet.owner.firstName}} {{pet.owner.lastName}}
-	        </div>
-    		<div class="control-group" id="name">
-                <label class="control-label">Name </label>
-                <input ng-model="pet.name" name="name" required/>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Owner</label>
+            <div class="col-sm-6">
+                <p class="form-control-static">{{pet.owner}}</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Name </label>
+            <div class="col-sm-6">
+                <input class="form-control col-sm-4" ng-model="pet.name" name="name" required type="text"/>
                 <span ng-show="petForm.name.$error.required" class="help-inline"> Name is required.</span>
             </div>
-    		<div class="control-group" id="birthDate">
-                <label class="control-label">Birth date </label>
-                <input ng-model="pet.birthDate" value="{{pet.birthDate | date:'MM/dd/yyyy'}} name="birthDate" required/>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Birth date </label>
+            <div class="col-sm-6">
+                <input class="form-control" ng-model="pet.birthDate" value="{{pet.birthDate}}" required type="text"/>
                 <span ng-show="petForm.name.$error.required" class="help-inline"> birth date is required.</span>
             </div>
-
-
-        <div class="control-group">
-            <petclinic:selectField name="type" label="Type " names="${types}" size="5"/>
         </div>
-        <div class="form-actions">
-            <c:choose>
-                <c:when test="${pet['new']}">
-                    <button type="submit">Add Pet</button>
-                </c:when>
-                <c:otherwise>
-                    <button type="submit">Update Pet</button>
-                </c:otherwise>
-            </c:choose>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Type </label>
+            <div class="col-sm-6">
+                <select class="form-control" ng-model="pet.type.id">
+                    <option ng-repeat="x in types" value="{{x.id}}">{{x.name}}</option>
+                </select>
+            </div>
         </div>
-        </fieldset>
     </form>
 </div>

@@ -31,6 +31,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 /**
  * @author Juergen Hoeller
  * @author Ken Krebs
@@ -98,7 +100,7 @@ public class OwnerResource {
      * Update Owner
      */
     @RequestMapping(value = "/owner/{ownerId}", method = RequestMethod.PUT)
-    public Owner updateOwner(@PathVariable("ownerId") int ownerId, @RequestBody Owner ownerRequest) {
+    public Owner updateOwner(@PathVariable("ownerId") int ownerId, @Valid @RequestBody Owner ownerRequest) {
     	Owner ownerModel = retrieveOwner(ownerId);
     	// This is done by hand for simplicity purpose. In a real life use-case we should consider using MapStruct.
     	ownerModel.setFirstName(ownerRequest.getFirstName());

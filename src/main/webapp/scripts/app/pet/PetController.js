@@ -1,12 +1,10 @@
 'use strict';
 
 function loadPet($scope, $resource, $stateParams) {
-	var petResource = $resource('/petclinic/owner/' + $stateParams.ownerid +"/pet/" +$stateParams.petid);
+	var petResource = $resource('/petclinic/owner/' + $stateParams.ownerid +"/pet/" + $stateParams.petid);
 	$scope.pet =  petResource.get();
+	$scope.types = $resource("/petclinic/petTypes").query();
 }
-
-
-
 
 /*
  * Form used to create and edit pets

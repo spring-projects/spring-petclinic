@@ -1,23 +1,24 @@
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" ui-sref="app">Pet Clinic</a>
 
-<img src="resources/images/banner-graphic.png" var="banner"/>
+        </div>
 
-<div class="navbar" style="width: 601px;">
-    <div class="navbar-inner">
-        <ul class="nav"> 
-            <li style="width: 120px;">
-            	<a ui-sref="app"><i class="icon-home"></i> Home</a>
-            </li>
-            <li style="width: 150px;">
-            	<a ui-sref="app.ownersearch"><i class="icon-search"></i> Find owners</a>
-            </li>
-            <li style="width: 160px;">
-            	<a ui-sref="app.vets"><i class="icon-th-list"></i> Veterinarians</a>
-            </li>
-            <li style="width: 110px;">
-            	<a href="oups.html" title="trigger a RuntimeException to see how it is handled">
-            	<i class="icon-warning-sign"></i> Error</a>
-            </li>
-        </ul>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a ui-sref="app">Home</a></li>
+                <li><a ui-sref="app.ownersearch">Owner</a></li>
+                <li><a ui-sref="app.vets">Vets</a></li>
+            </ul>
+        </div>
     </div>
-</div>
-	
+</nav>
