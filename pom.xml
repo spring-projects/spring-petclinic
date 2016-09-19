@@ -41,6 +41,12 @@
 
         <cobertura.version>2.7</cobertura.version>
 
+        <jpa.database>HSQL</jpa.database>
+        <jdbc.driverClassName>org.hsqldb.jdbcDriver</jdbc.driverClassName>
+        <jdbc.url>jdbc:hsqldb:mem:petclinic</jdbc.url>
+        <jdbc.username>sa</jdbc.username>
+        <jdbc.password></jdbc.password>
+
     </properties>
 
     <dependencyManagement>
@@ -185,13 +191,6 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- For MySql only -->
-        <!--dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql-driver.version}</version>
-        </dependency-->
-
         <!-- HIBERNATE -->
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -273,6 +272,12 @@
     <build>
         <defaultGoal>install</defaultGoal>
         <finalName>petclinic</finalName>
+        <resources>
+            <resource>
+                <directory>${basedir}/src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <testResources>
             <testResource>
                 <!-- declared explicitly so Spring config files can be placed next to their corresponding JUnit test class  -->
@@ -377,6 +382,14 @@
                     </execution>
                 </executions>
             </plugin>
+            <!--Specify the encoding for copying resources-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
     <reporting>
@@ -450,6 +463,23 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+        <profile>
+            <id>MYSQL</id>
+            <properties>
+                <jpa.database>MYSQL</jpa.database>
+                <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
+                <jdbc.url>jdbc:mysql://localhost:3306/petclinic?useUnicode=true</jdbc.url>
+                <jdbc.username>root</jdbc.username>
+                <jdbc.password>petclinic</jdbc.password>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>mysql</groupId>
+                    <artifactId>mysql-connector-java</artifactId>
+                    <version>${mysql-driver.version}</version>
+                </dependency>
+            </dependencies>
         </profile>
    </profiles>
 
