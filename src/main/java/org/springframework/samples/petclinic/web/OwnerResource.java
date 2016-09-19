@@ -109,7 +109,6 @@ public class OwnerResource {
     	ownerModel.setTelephone(ownerRequest.getTelephone());
         this.clinicService.saveOwner(ownerModel);
         return ownerModel;
-        // TODO: need to handle failure
     }
 
 
