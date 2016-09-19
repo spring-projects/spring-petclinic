@@ -12,8 +12,8 @@ function loadOwner($scope, $resource, $stateParams) {
  */
 angular.module('controllers').controller('ownerSearchController', ['$scope', '$state',
                                                             function($scope, $state) {
-	
-	$scope.ownerSearchForm = {}; 
+
+	$scope.ownerSearchForm = {};
 	// form always needs to be initialised
 	// otherwise we can't read $scope.ownerSearchForm.lastName
 
@@ -27,13 +27,13 @@ angular.module('controllers').controller('ownerSearchController', ['$scope', '$s
  */
 angular.module('controllers').controller('ownerListController', ['$scope', '$resource', '$stateParams',
              function($scope, $resource, $stateParams) {
-	
+
 	var destUrl = '/petclinic/owner/list?lastName=';
 	if(angular.isDefined($stateParams.lastName)) {
 		destUrl += $stateParams.lastName;
 	}
     var ownerResource = $resource(destUrl);
-    $scope.ownerList = ownerResource.query();	
+    $scope.ownerList = ownerResource.query();
 }]);
 
 /*
@@ -50,33 +50,43 @@ angular.module('controllers').controller('ownerDetailController', ['$scope', '$r
  */
 angular.module('controllers').controller('ownerFormController', ['$scope', '$http', '$resource', '$stateParams', '$state',
 function($scope, $http, $resource, $stateParams, $state) {
-	
+
 	$scope.submitOwnerForm = {};
-	
+
 	$scope.submitOwnerForm = function() {
 		var form = $scope.owner;
-		
+
 		// Creating a Javascript object
 		var data = {
 				firstName:	form.firstName,
 				lastName: 	form.lastName,
 				address: 	form.address,
 				city: 		form.city,
-				telephone:	form.telephone	
+				telephone:	form.telephone
 		};
-		
-		if ($state.current.name == 'app.owneredit') {
-			var restUrl = "/petclinic/owner/" + $stateParams.id;
-			$http.put(restUrl, data);
-			$state.go('app.ownerlist');			
-		}
-		else { // in case of owner creation
-			var restUrl = "/petclinic/owner";
-			$http.post(restUrl, data);
-			$state.go('app.ownerlist');						
-		}
+
+        var request;
+
+        if ($state.current.name == 'app.owneredit') {
+            var restUrl = "/petclinic/owner/" + $stateParams.id;
+            request = $http.put(restUrl, data);
+        }
+        else { // in case of owner creation
+            var restUrl = "/petclinic/owner";
+            request = $http.post(restUrl, data);
+        }
+
+        request.then(function () {
+            $state.go('app.ownerlist');
+        }, function (response) {
+            var error = response.data;
+            alert(error.error + "\r\n" + error.errors.map(function (e) {
+                    return e.field + ": " + e.defaultMessage;
+                }).join("\r\n"));
+        });
+
 	}
-	
+
 	if ($state.current.name == 'app.owneredit') {
 		loadOwner($scope, $resource, $stateParams);
 	}
