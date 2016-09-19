@@ -15,16 +15,17 @@
  */
 package org.springframework.samples.petclinic.model;
 
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Type;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.joda.time.LocalDate;
-import org.springframework.format.annotation.DateTimeFormat;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import java.util.Date;
 
 /**
  * Simple JavaBean domain object representing a visit.
@@ -39,9 +40,9 @@ public class Visit extends BaseEntity {
      * Holds value of property date.
      */
     @Column(name = "visit_date")
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
+    @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy/MM/dd")
-    private LocalDate date;
+    private Date date;
 
     /**
      * Holds value of property description.
@@ -62,7 +63,7 @@ public class Visit extends BaseEntity {
      * Creates a new instance of Visit for the current date
      */
     public Visit() {
-        this.date = new LocalDate();
+        this.date = new Date();
     }
 
 
@@ -71,7 +72,7 @@ public class Visit extends BaseEntity {
      *
      * @return Value of property date.
      */
-    public LocalDate getDate() {
+    public Date getDate() {
         return this.date;
     }
 
@@ -80,7 +81,7 @@ public class Visit extends BaseEntity {
      *
      * @param date New value of property date.
      */
-    public void setDate(LocalDate date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
