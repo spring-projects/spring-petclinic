@@ -27,11 +27,6 @@
         <!-- Test -->
         <assertj.version>2.2.0</assertj.version>
 
-        <!-- Dates -->
-        <jodatime-hibernate.version>1.3</jodatime-hibernate.version>
-        <jodatime-jsptags.version>1.1.1</jodatime-jsptags.version>
-        <jadira-usertype-core.version>3.2.0.GA</jadira-usertype-core.version>
-
         <!-- Others -->
         <mysql-driver.version>5.1.36</mysql-driver.version>
 
@@ -63,11 +58,6 @@
     </dependencyManagement>
 
     <dependencies>
-        <dependency>
-            <groupId>org.jadira.usertype</groupId>
-            <artifactId>usertype.core</artifactId>
-            <version>${jadira-usertype-core.version}</version>
-        </dependency>
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-servlet-api</artifactId>
@@ -166,22 +156,6 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <scope>runtime</scope>
-        </dependency>
-
-        <!-- Date and Time -->
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time-hibernate</artifactId>
-            <version>${jodatime-hibernate.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time-jsptags</artifactId>
-            <version>${jodatime-jsptags.version}</version>
         </dependency>
 
         <!-- Databases - Uses HSQL by default -->
