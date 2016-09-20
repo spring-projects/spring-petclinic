@@ -5,7 +5,7 @@ angular.module('visits', [
 ]);
 
 angular.module("visits").component("visits", {
-    templateUrl: "/petclinic/scripts/app/visits/visits.template.html",
+    templateUrl: "scripts/app/visits/visits.template.html",
     controller: ["$http", '$routeParams', '$location', '$filter', function ($http, $routeParams, $location, $filter) {
         var self = this;
         var petId = $routeParams.petId || 0;

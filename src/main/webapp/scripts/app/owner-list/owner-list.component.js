@@ -5,10 +5,10 @@ angular.module('ownerList', [
 ]);
 
 angular.module("ownerList").component("ownerList", {
-    templateUrl: "/petclinic/scripts/app/owner-list/owner-list.template.html",
+    templateUrl: "scripts/app/owner-list/owner-list.template.html",
     controller: ["$http", function ($http) {
         var self = this;
-        $http.get('/petclinic/owner/list').then(function(resp) {
+        $http.get('owner/list').then(function(resp) {
             self.owners = resp.data;
         });
     }]
