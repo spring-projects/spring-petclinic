@@ -15,6 +15,10 @@
 	<name>petclinic</name>
 	<packaging>war</packaging>
 
+	<properties>
+		<java.version>1.8</java.version>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -91,6 +95,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>petclinic</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
