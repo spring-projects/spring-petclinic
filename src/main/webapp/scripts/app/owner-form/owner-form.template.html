@@ -1,0 +1,44 @@
+<h2>Owner</h2>
+<form class="form-horizontal" name="ownerForm">
+    <div class="form-group">
+        <label class="col-sm-2 control-label">First name</label>
+        <div class="col-sm-4">
+            <input class="form-control" ng-model="$ctrl.owner.firstName" name="firstName" required/>
+            <span ng-show="ownerForm.firstName.$error.required" class="help-inline">First name is required.</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Last name</label>
+        <div class="col-sm-4">
+            <input class="form-control" ng-model="$ctrl.owner.lastName" name="lastName" required/>
+            <span ng-show="ownerForm.lastName.$error.required" class="help-inline">Last name is required.</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Address</label>
+        <div class="col-sm-4">
+            <input class="form-control" ng-model="$ctrl.owner.address" name="address" required/>
+            <span ng-show="ownerForm.address.$error.required" class="help-inline">Address is required.</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">City</label>
+        <div class="col-sm-4">
+            <input class="form-control" ng-model="$ctrl.owner.city" name="city" required/>
+            <span ng-show="ownerForm.city.$error.required" class="help-inline">City is required.</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Telephone</label>
+        <div class="col-sm-4">
+            <input class="form-control" ng-model="$ctrl.owner.telephone" name="telephone" required/>
+            <span ng-show="ownerForm.telephone.$error.required" class="help-inline">Telephone is required.</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-4">
+            <button class="btn btn-primary" type="submit" ng-click="$ctrl.submitOwnerForm()">Submit</button>
+        </div>
+    </div>
+</form>
+

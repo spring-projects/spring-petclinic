@@ -36,8 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * AbstractclinicServiceTests and its subclasses benefit from the following services provided by the Spring
  * TestContext Framework: </p> <ul> <li><strong>Spring IoC container caching</strong> which spares us unnecessary set up
  * time between test execution.</li> <li><strong>Dependency Injection</strong> of test fixture instances, meaning that
- * we don't need to perform application context lookups. See the use of {@link Autowired @Autowired} on the <code>{@link
- * AbstractclinicServiceTests#clinicService clinicService}</code> instance variable, which uses autowiring <em>by
+ * we don't need to perform application context lookups. See the use of {@link Autowired @Autowired} on the <code></code> instance variable, which uses autowiring <em>by
  * type</em>. <li><strong>Transaction management</strong>, meaning each test method is executed in its own transaction,
  * which is automatically rolled back by default. Thus, even if tests insert or otherwise change database state, there
  * is no need for a teardown or cleanup script. <li> An {@link org.springframework.context.ApplicationContext
@@ -55,15 +54,6 @@ public abstract class AbstractClinicServiceTests {
     protected ClinicService clinicService;
 
     @Test
-    public void shouldFindOwnersByLastName() {
-        Collection<Owner> owners = this.clinicService.findOwnerByLastName("Davis");
-        assertThat(owners.size()).isEqualTo(2);
-
-        owners = this.clinicService.findOwnerByLastName("Daviss");
-        assertThat(owners.isEmpty());
-    }
-
-    @Test
     public void shouldFindSingleOwnerWithPet() {
         Owner owner = this.clinicService.findOwnerById(1);
         assertThat(owner.getLastName()).startsWith("Franklin");
@@ -72,14 +62,14 @@ public abstract class AbstractClinicServiceTests {
     
     @Test
     public void shouldReturnAllOwnersInCaseLastNameIsEmpty() {
-        Collection<Owner> owners = this.clinicService.findOwnerByLastName("");
+        Collection<Owner> owners = this.clinicService.findAll();
         assertThat(owners).extracting("lastName").contains("Davis", "Franklin");        
     }
 
     @Test
     @Transactional
     public void shouldInsertOwner() {
-        Collection<Owner> owners = this.clinicService.findOwnerByLastName("Schultz");
+        Collection<Owner> owners = this.clinicService.findAll();
         int found = owners.size();
         
         Owner owner = new Owner();
@@ -91,7 +81,7 @@ public abstract class AbstractClinicServiceTests {
         this.clinicService.saveOwner(owner);
         assertThat(owner.getId().longValue()).isNotEqualTo(0);
 
-        owners = this.clinicService.findOwnerByLastName("Schultz");
+        owners = this.clinicService.findAll();
         assertThat(owners.size()).isEqualTo(found + 1);
     }
 
