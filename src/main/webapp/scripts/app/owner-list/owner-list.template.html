@@ -1,4 +1,12 @@
 <h2>Owners</h2>
+
+<form onsubmit="javascript:void(0)">
+    <div class="form-group ">
+        <label>Seach</label>
+        <input type="text" class="form-control" placeholder="Filter" ng-model="$ctrl.query" />
+    </div>
+</form>
+
 <table class="table table-striped">
     <thead>
     <tr>
@@ -10,7 +18,7 @@
     </tr>
     </thead>
 
-    <tr ng-repeat="owner in $ctrl.owners">
+    <tr ng-repeat="owner in $ctrl.owners | filter:$ctrl.query">
         <td>
             <a href="#!/owners/{{owner.id}}">
                 {{owner.firstName}} {{owner.lastName}}
