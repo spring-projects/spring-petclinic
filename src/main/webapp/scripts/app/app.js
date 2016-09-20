@@ -2,7 +2,7 @@
 /* App Module */
 var petClinicApp = angular.module('petClinicApp', [
     'ngRoute', 'layoutNav', 'layoutFooter', 'layoutWelcome',
-    'ownerList', 'ownerDetails', 'ownerForm','petForm', 'vetList']);
+    'ownerList', 'ownerDetails', 'ownerForm', 'petForm', 'visits', 'vetList']);
 
 petClinicApp.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
 
@@ -22,26 +22,18 @@ petClinicApp.config(['$locationProvider', '$routeProvider', function ($locationP
         template: '<pet-form></pet-form>'
     }).when('/owners/:ownerId/pets/:petId', {
         template: '<pet-form></pet-form>'
+    }).when('/owners/:ownerId/pets/:petId/visits', {
+        template: '<visits></visits>'
     }).when('/vets', {
         template: '<vet-list></vet-list>'
     }).otherwise('/welcome');
 
 }]);
 
-angular.module('layoutWelcome', []);
-
-angular.module("layoutWelcome").component("layoutWelcome", {
-    templateUrl: "scripts/app/fragments/welcome.html"
-});
-
-angular.module('layoutNav', []);
-
-angular.module("layoutNav").component("layoutNav", {
-    templateUrl: "scripts/app/fragments/nav.html"
-});
-
-angular.module('layoutFooter', []);
-
-angular.module("layoutFooter").component("layoutFooter", {
-    templateUrl: "scripts/app/fragments/footer.html"
+['welcome', 'nav', 'footer'].forEach(function(c) {
+    var mod = 'layout' + c.toUpperCase().substring(0, 1) + c.substring(1);
+    angular.module(mod, []);
+    angular.module(mod).component(mod, {
+        templateUrl: "scripts/app/fragments/" + c + ".html"
+    });
 });

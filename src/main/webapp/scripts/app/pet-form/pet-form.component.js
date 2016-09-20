@@ -16,9 +16,10 @@ angular.module("petForm").component("petForm", {
 
             var petId = $routeParams.petId || 0;
 
-            if (petId) {
+            if (petId) { // edit
                 $http.get("owner/" + ownerId + "/pet/" + petId).then(function(resp) {
                     self.pet = resp.data;
+                    self.pet.birthDate = new Date(self.pet.birthDate);
                     self.petTypeId = "" + self.pet.type.id;
                 });
             } else {
@@ -26,6 +27,7 @@ angular.module("petForm").component("petForm", {
                     self.pet = {
                         owner: resp.data.firstName + " " + resp.data.lastName
                     };
+                    self.petTypeId = "1";
                 })
 
             }
@@ -54,6 +56,7 @@ angular.module("petForm").component("petForm", {
                 $location.url("owners/" + ownerId);
             }, function (response) {
                 var error = response.data;
+                error.errors = error.errors || [];
                 alert(error.error + "\r\n" + error.errors.map(function (e) {
                         return e.field + ": " + e.defaultMessage;
                     }).join("\r\n"));

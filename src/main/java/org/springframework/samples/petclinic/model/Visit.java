@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -42,7 +43,7 @@ public class Visit extends BaseEntity {
      */
     @Column(name = "visit_date")
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date date;
 
     /**
