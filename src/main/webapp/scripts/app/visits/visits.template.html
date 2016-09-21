@@ -19,9 +19,9 @@
 </form>
 
 <h3>Previous Visits</h3>
-<table class="table table-striped">
+<table class="table">
     <tr ng-repeat="v in $ctrl.visits">
         <td class="col-sm-2">{{v.date}}</td>
-        <td>{{v.description}}</td>
+        <td style="white-space: pre-line">{{v.description}}</td>
     </tr>
 </table>
