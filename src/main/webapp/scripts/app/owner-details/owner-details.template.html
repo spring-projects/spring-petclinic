@@ -30,7 +30,9 @@
 <h2>Pets and Visits</h2>
 
 <div ng-repeat="pet in $ctrl.owner.pets">
-    <h3>{{pet.name}}</h3>
+    <h3>
+        <a href="#!/owners/{{$ctrl.owner.id}}/pets/{{pet.id}}">{{pet.name}}</a>
+    </h3>
     <p>
         {{pet.birthDate | date:'yyyy MMM dd'}} - {{pet.type.name}} -
         <a href="#!/owners/{{$ctrl.owner.id}}/pets/{{pet.id}}/visits">Add Visit</a>
