@@ -15,11 +15,6 @@
  */
 package org.springframework.samples.petclinic.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.Collection;
-
-import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Owner;
@@ -27,9 +22,13 @@ import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.model.Visit;
-import org.springframework.samples.petclinic.util.EntityUtils;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
+import java.util.Date;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * <p> Base class for {@link ClinicService} integration tests. </p> <p> Subclasses should specify Spring context
@@ -37,8 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
  * AbstractclinicServiceTests and its subclasses benefit from the following services provided by the Spring
  * TestContext Framework: </p> <ul> <li><strong>Spring IoC container caching</strong> which spares us unnecessary set up
  * time between test execution.</li> <li><strong>Dependency Injection</strong> of test fixture instances, meaning that
- * we don't need to perform application context lookups. See the use of {@link Autowired @Autowired} on the <code>{@link
- * AbstractclinicServiceTests#clinicService clinicService}</code> instance variable, which uses autowiring <em>by
+ * we don't need to perform application context lookups. See the use of {@link Autowired @Autowired} on the <code></code> instance variable, which uses autowiring <em>by
  * type</em>. <li><strong>Transaction management</strong>, meaning each test method is executed in its own transaction,
  * which is automatically rolled back by default. Thus, even if tests insert or otherwise change database state, there
  * is no need for a teardown or cleanup script. <li> An {@link org.springframework.context.ApplicationContext
@@ -56,15 +54,6 @@ public abstract class AbstractClinicServiceTests {
     protected ClinicService clinicService;
 
     @Test
-    public void shouldFindOwnersByLastName() {
-        Collection<Owner> owners = this.clinicService.findOwnerByLastName("Davis");
-        assertThat(owners.size()).isEqualTo(2);
-
-        owners = this.clinicService.findOwnerByLastName("Daviss");
-        assertThat(owners.isEmpty());
-    }
-
-    @Test
     public void shouldFindSingleOwnerWithPet() {
         Owner owner = this.clinicService.findOwnerById(1);
         assertThat(owner.getLastName()).startsWith("Franklin");
@@ -73,14 +62,14 @@ public abstract class AbstractClinicServiceTests {
     
     @Test
     public void shouldReturnAllOwnersInCaseLastNameIsEmpty() {
-        Collection<Owner> owners = this.clinicService.findOwnerByLastName("");
+        Collection<Owner> owners = this.clinicService.findAll();
         assertThat(owners).extracting("lastName").contains("Davis", "Franklin");        
     }
 
     @Test
     @Transactional
     public void shouldInsertOwner() {
-        Collection<Owner> owners = this.clinicService.findOwnerByLastName("Schultz");
+        Collection<Owner> owners = this.clinicService.findAll();
         int found = owners.size();
         
         Owner owner = new Owner();
@@ -92,7 +81,7 @@ public abstract class AbstractClinicServiceTests {
         this.clinicService.saveOwner(owner);
         assertThat(owner.getId().longValue()).isNotEqualTo(0);
 
-        owners = this.clinicService.findOwnerByLastName("Schultz");
+        owners = this.clinicService.findAll();
         assertThat(owners.size()).isEqualTo(found + 1);
     }
 
@@ -139,7 +128,7 @@ public abstract class AbstractClinicServiceTests {
 	    pet.setName("bowser");
 	    Collection<PetType> types = this.clinicService.findPetTypes();
 	    pet.setType(EntityUtils.getById(types, PetType.class, 2));
-	    pet.setBirthDate(new DateTime());
+	    pet.setBirthDate(new Date());
 	    owner6.addPet(pet);
 	    assertThat(owner6.getPets().size()).isEqualTo(found + 1);
 	    

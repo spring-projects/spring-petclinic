@@ -15,18 +15,18 @@
  */
 package org.springframework.samples.petclinic.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Type;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.joda.time.DateTime;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
+import java.util.Date;
 
 /**
  * Simple JavaBean domain object representing a visit.
@@ -41,14 +41,14 @@ public class Visit extends BaseEntity {
      * Holds value of property date.
      */
     @Column(name = "visit_date")
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
-    private DateTime date;
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date date;
 
     /**
      * Holds value of property description.
      */
-    @NotEmpty
+    @Size(max = 8192)
     @Column(name = "description")
     private String description;
 
@@ -65,7 +65,7 @@ public class Visit extends BaseEntity {
      * Creates a new instance of Visit for the current date
      */
     public Visit() {
-        this.date = new DateTime();
+        this.date = new Date();
     }
 
 
@@ -74,7 +74,7 @@ public class Visit extends BaseEntity {
      *
      * @return Value of property date.
      */
-    public DateTime getDate() {
+    public Date getDate() {
         return this.date;
     }
 
@@ -83,7 +83,7 @@ public class Visit extends BaseEntity {
      *
      * @param date New value of property date.
      */
-    public void setDate(DateTime date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

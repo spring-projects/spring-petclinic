@@ -1,0 +1,54 @@
+<h2>Owner Information</h2>
+
+<table class="table table-striped">
+    <tr>
+        <th class="col-sm-3">Name</th>
+        <td><b>{{$ctrl.owner.firstName}} {{$ctrl.owner.lastName}}</b></td>
+    </tr>
+    <tr>
+        <th>Address</th>
+        <td>{{$ctrl.owner.address}}</td>
+    </tr>
+    <tr>
+        <th>City</th>
+        <td>{{$ctrl.owner.city}}</td>
+    </tr>
+    <tr>
+        <th>Telephone</th>
+        <td>{{$ctrl.owner.telephone}}</td>
+    </tr>
+    <tr>
+        <td>
+            <a class="btn btn-info" href="#!/owners/{{$ctrl.owner.id}}/edit">Edit Owner</a>
+        </td>
+        <td>
+            <a href="#!/owners/{{$ctrl.owner.id}}/new-pet" class="btn btn-success">Add New Pet</a>
+        </td>
+    </tr>
+</table>
+
+<h2>Pets and Visits</h2>
+
+<div ng-repeat="pet in $ctrl.owner.pets">
+    <h3>
+        <a href="#!/owners/{{$ctrl.owner.id}}/pets/{{pet.id}}">{{pet.name}}</a>
+    </h3>
+    <p>
+        {{pet.birthDate | date:'yyyy MMM dd'}} - {{pet.type.name}} -
+        <a href="#!/owners/{{$ctrl.owner.id}}/pets/{{pet.id}}/visits">Add Visit</a>
+    </p>
+    <h4>Visits</h4>
+
+    <div ng-repeat="visit in pet.visits" style="margin-top: 1em;">
+        <h5>{{visit.date | date:'yyyy MMM dd'}}</h5>
+        <p style="white-space: pre-line">{{visit.description}}</p>
+    </div>
+
+    <p ng-if="pet.visits.length == 0">
+        No visit yet
+    </p>
+
+    <hr/>
+</div>
+
+

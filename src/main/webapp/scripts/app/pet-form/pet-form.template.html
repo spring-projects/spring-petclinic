@@ -1,0 +1,43 @@
+<h2>Pet</h2>
+
+<form class="form-horizontal" ng-submit="$ctrl.submit()">
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Owner</label>
+        <div class="col-sm-6">
+            <p class="form-control-static">{{$ctrl.pet.owner}}</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Name </label>
+        <div class="col-sm-6">
+            <input class="form-control col-sm-4" ng-model="$ctrl.pet.name" name="name" required type="text"/>
+            <span ng-show="petForm.name.$error.required" class="help-inline">Name is required.</span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Birth date</label>
+        <div class="col-sm-6">
+            <input class="form-control" ng-model="$ctrl.pet.birthDate" required type="date"/>
+            <span ng-show="petForm.name.$error.required" class="help-inline"> birth date is required.</span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Type</label>
+        <div class="col-sm-6">
+            <select class="form-control" ng-model="$ctrl.petTypeId">
+                <option ng-repeat="t in $ctrl.types" value="{{t.id}}">{{t.name}}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-6 col-sm-offset-2">
+            <button class="btn btn-primary" type="submit">
+                Submit
+            </button>
+        </div>
+    </div>
+</form>

@@ -15,11 +15,9 @@
  */
 package org.springframework.samples.petclinic.model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.beans.support.MutableSortDefinition;
+import org.springframework.beans.support.PropertyComparator;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -29,13 +27,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
-import org.springframework.beans.support.MutableSortDefinition;
-import org.springframework.beans.support.PropertyComparator;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Simple business object representing a pet.
@@ -49,8 +48,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Pet extends NamedEntity {
 
     @Column(name = "birth_date")
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-    private DateTime birthDate;
+    @Temporal(TemporalType.DATE)
+    private Date birthDate;
 
     @ManyToOne
     @JoinColumn(name = "type_id")
@@ -65,11 +64,11 @@ public class Pet extends NamedEntity {
     private Set<Visit> visits;
 
 
-    public void setBirthDate(DateTime birthDate) {
+    public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }
 
-    public DateTime getBirthDate() {
+    public Date getBirthDate() {
         return this.birthDate;
     }
 

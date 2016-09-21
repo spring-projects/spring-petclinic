@@ -1,0 +1,15 @@
+<h2>Veterinarians</h2>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Specialties</th>
+    </tr>
+    </thead>
+
+    <tr ng-repeat="vet in $ctrl.vetList">
+        <td>{{vet.firstName}} {{vet.lastName}}</td>
+        <td><span ng-repeat="specialty in vet.specialties">{{specialty.name + ' '}}</span></td>
+
+    </tr>
+</table>

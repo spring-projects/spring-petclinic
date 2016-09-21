@@ -15,35 +15,47 @@
  */
 package org.springframework.samples.petclinic.web;
 
-import java.util.Collection;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.samples.petclinic.model.Vet;
+import org.springframework.http.HttpStatus;
+import org.springframework.samples.petclinic.model.Visit;
 import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 /**
  * @author Juergen Hoeller
- * @author Mark Fisher
  * @author Ken Krebs
  * @author Arjen Poutsma
+ * @author Michael Isvy
  */
 @RestController
-public class VetResource {
+public class VisitResource {
 
     private final ClinicService clinicService;
 
     @Autowired
-    public VetResource(ClinicService clinicService) {
+    public VisitResource(ClinicService clinicService) {
         this.clinicService = clinicService;
     }
-    
-    @GetMapping("/vets")
-    public Collection<Vet> showResourcesVetList() {
-        return this.clinicService.findVets();
+
+    @PostMapping("/owners/{ownerId}/pets/{petId}/visits")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void create(
+            @Valid @RequestBody Visit visit,
+            @PathVariable("petId") int petId) {
+
+        clinicService.findPetById(petId).addVisit(visit);
+        clinicService.saveVisit(visit);
+    }
+
+    @GetMapping("/owners/{ownerId}/pets/{petId}/visits")
+    public Object visits(@PathVariable("petId") int petId) {
+        return clinicService.findPetById(petId).getVisits();
     }
 }
