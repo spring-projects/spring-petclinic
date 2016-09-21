@@ -26,8 +26,11 @@ angular.module("visits").component("visits", {
             console.log(data);
             $http.post(url, data).then(function() {
                 $location.url("owners/" + $routeParams.ownerId);
-            }, function() {
-
+            }, function (response) {
+                var error = response.data;
+                alert(error.error + "\r\n" + error.errors.map(function (e) {
+                        return e.field + ": " + e.defaultMessage;
+                    }).join("\r\n"));
             });
         };
     }]
