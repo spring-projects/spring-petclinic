@@ -17,8 +17,6 @@ package org.springframework.samples.petclinic.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,6 +25,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
@@ -49,7 +48,7 @@ public class Visit extends BaseEntity {
     /**
      * Holds value of property description.
      */
-    @NotEmpty
+    @Size(max = 8192)
     @Column(name = "description")
     private String description;
 
