@@ -4,7 +4,11 @@ var petClinicApp = angular.module('petClinicApp', [
     'ngRoute', 'layoutNav', 'layoutFooter', 'layoutWelcome',
     'ownerList', 'ownerDetails', 'ownerForm', 'petForm', 'visits', 'vetList']);
 
-petClinicApp.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
+petClinicApp.config(['$locationProvider', '$routeProvider', '$httpProvider', function(
+    $locationProvider, $routeProvider, $httpProvider) {
+
+    // safari turns to be lazy sending the Cache-Control header
+    $httpProvider.defaults.headers.common["Cache-Control"] = 'no-cache';
 
     $locationProvider.hashPrefix('!');
 
