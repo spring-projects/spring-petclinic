@@ -38,12 +38,13 @@
         <a href="#!/owners/{{$ctrl.owner.id}}/pets/{{pet.id}}/visits">Add Visit</a>
     </p>
     <h4>Visits</h4>
-    <p style="margin-left: 2em;" ng-repeat="visit in pet.visits">
-        <span style="font-style: italic; margin-right: 1em;">{{visit.date | date:'yyyy MMM dd'}}</span>
-        {{visit.description}}
-    </p>
 
-    <p style="margin-left: 2em;" ng-if="pet.visits.length == 0">
+    <div ng-repeat="visit in pet.visits" style="margin-top: 1em;">
+        <h5>{{visit.date | date:'yyyy MMM dd'}}</h5>
+        <p style="white-space: pre-line">{{visit.description}}</p>
+    </div>
+
+    <p ng-if="pet.visits.length == 0">
         No visit yet
     </p>
 
