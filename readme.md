@@ -108,15 +108,6 @@ File -> Import -> Maven -> Existing Maven project
     </td>
   </tr>
   <tr>
-    <td>Dandelion-datatables</td>
-    <td>
-      <a href="/src/main/webapp/WEB-INF/jsp/owners/ownersList.jsp">ownersList.jsp</a> 
-      <a href="/src/main/webapp/WEB-INF/jsp/vets/vetList.jsp">vetList.jsp</a> 
-      <a href="/src/main/java/org/springframework/samples/petclinic/PetclinicInitializer.java">PetclinicInitializer.java</a>
-      <a href="/src/main/resources/dandelion/datatables/datatables.properties">datatables.properties</a> 
-   </td>
-  </tr>
-  <tr>
     <td>Thymeleaf branch</td>
     <td>
       <a href="http://www.thymeleaf.org/petclinic.html">See here</a></td>
