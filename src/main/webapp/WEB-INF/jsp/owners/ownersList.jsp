@@ -3,31 +3,46 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="datatables" uri="http://github.com/dandelion/datatables" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="owners">
     <h2>Owners</h2>
 
-    <datatables:table id="owners" data="${selections}" row="owner"
-                      cssClass="table table-striped" pageable="false" info="false" export="pdf">
-        <datatables:column title="Name" cssStyle="width: 150px;" display="html">
-            <spring:url value="/owners/{ownerId}.html" var="ownerUrl">
-                <spring:param name="ownerId" value="${owner.id}"/>
-            </spring:url>
-            <a href="${fn:escapeXml(ownerUrl)}"><c:out value="${owner.firstName} ${owner.lastName}"/></a>
-        </datatables:column>
-        <datatables:column title="Name" display="pdf">
-            <c:out value="${owner.firstName} ${owner.lastName}"/>
-        </datatables:column>
-        <datatables:column title="Address" property="address" cssStyle="width: 200px;"/>
-        <datatables:column title="City" property="city"/>
-        <datatables:column title="Telephone" property="telephone"/>
-        <datatables:column title="Pets" cssStyle="width: 100px;">
-            <c:forEach var="pet" items="${owner.pets}">
-                <c:out value="${pet.name}"/>
-            </c:forEach>
-        </datatables:column>
-        <datatables:export type="pdf" cssClass="btn" cssStyle="height: 25px;"/>
-    </datatables:table>
+    <table id="vets" class="table table-striped">
+        <thead>
+        <tr>
+            <th style="width: 150px;">Name</th>
+            <th style="width: 200px;">Address</th>
+            <th>City</th>
+            <th style="width: 120px">Telephone</th>
+            <th>Pets</th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach items="${selections}" var="owner">
+            <tr>
+                <td>
+                    <spring:url value="/owners/{ownerId}.html" var="ownerUrl">
+                        <spring:param name="ownerId" value="${owner.id}"/>
+                    </spring:url>
+                    <a href="${fn:escapeXml(ownerUrl)}"><c:out value="${owner.firstName} ${owner.lastName}"/></a>
+                </td>
+                <td>
+                    <c:out value="${owner.address}"/>
+                </td>
+                <td>
+                    <c:out value="${owner.city}"/>
+                </td>
+                <td>
+                    <c:out value="${owner.telephone}"/>
+                </td>
+                <td>
+                    <c:forEach var="pet" items="${owner.pets}">
+                        <c:out value="${pet.name} "/>
+                    </c:forEach>
+                </td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
 </petclinic:layout>

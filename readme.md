@@ -74,10 +74,6 @@ File -> Import -> Maven -> Existing Maven project
     <td>Use of EhCache <a href="/src/main/java/org/springframework/samples/petclinic/config/CacheConfig.java">CacheConfig.java</a> <a href="/src/main/resources/ehcache.xml">ehcache.xml</a></td>
   </tr>
   <tr>
-    <td>Dandelion</td>
-    <td>DatatablesFilter, DandelionFilter and DandelionServlet registration <a href="/src/main/java/org/springframework/samples/petclinic/config/DandelionConfig.java">DandelionConfig.java</a></td>
-  </tr>
-  <tr>
     <td>Spring MVC - XML integration</td>
     <td><a href="/src/main/java/org/springframework/samples/petclinic/config/CustomViewsConfiguration.java">CustomViewsConfiguration.java</a></td>
   </tr>
@@ -103,15 +99,6 @@ File -> Import -> Maven -> Existing Maven project
       <a href="/src/main/resources/spring/mvc-core-config.xml#L30">Resource mapping in Spring configuration</a> <br />
       <a href="/src/main/webapp/WEB-INF/jsp/fragments/staticFiles.jsp#L12">sample usage in JSP</a></td>
     </td>
-  </tr>
-  <tr>
-    <td>Dandelion-datatables</td>
-    <td>
-      <a href="/src/main/webapp/WEB-INF/jsp/owners/ownersList.jsp">ownersList.jsp</a>
-      <a href="/src/main/webapp/WEB-INF/jsp/vets/vetList.jsp">vetList.jsp</a>
-      <a href="/src/main/webapp/WEB-INF/web.xml">web.xml</a>
-      <a href="/src/main/resources/dandelion/datatables/datatables.properties">datatables.properties</a>
-   </td>
   </tr>
 </table>
 

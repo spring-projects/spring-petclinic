@@ -2,24 +2,34 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="datatables" uri="http://github.com/dandelion/datatables" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="vets">
     <h2>Veterinarians</h2>
 
-    <datatables:table id="vets" data="${vets.vetList}" row="vet" cssClass="table table-striped"
-                      pageable="false" info="false">
-        <datatables:column title="Name">
-            <c:out value="${vet.firstName} ${vet.lastName}"/>
-        </datatables:column>
-        <datatables:column title="Specialties">
-            <c:forEach var="specialty" items="${vet.specialties}">
-                <c:out value="${specialty.name}"/>
-            </c:forEach>
-            <c:if test="${vet.nrOfSpecialties == 0}">none</c:if>
-        </datatables:column>
-    </datatables:table>
+    <table id="vets" class="table table-striped">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Specialties</th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach items="${vets.vetList}" var="vet">
+            <tr>
+                <td>
+                    <c:out value="${vet.firstName} ${vet.lastName}"/>
+                </td>
+                <td>
+                    <c:forEach var="specialty" items="${vet.specialties}">
+                        <c:out value="${specialty.name} "/>
+                    </c:forEach>
+                    <c:if test="${vet.nrOfSpecialties == 0}">none</c:if>
+                </td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
 
     <table class="table-buttons">
         <tr>
