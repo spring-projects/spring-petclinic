@@ -17,7 +17,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- Spring -->
-        <spring-io-platform.version>2.0.7.RELEASE</spring-io-platform.version>
+        <spring-io-platform.version>2.0.8.RELEASE</spring-io-platform.version>
         <spring-data-jdbc.version>1.1.0.RELEASE</spring-data-jdbc.version>
 
 
@@ -27,19 +27,16 @@
         <!-- Test -->
         <assertj.version>2.2.0</assertj.version>
 
-        <!-- Dates -->
-        <jodatime-hibernate.version>1.3</jodatime-hibernate.version>
-        <jodatime-jsptags.version>1.1.1</jodatime-jsptags.version>
-        <jadira-usertype-core.version>3.2.0.GA</jadira-usertype-core.version>
-
         <!-- Others -->
         <mysql-driver.version>5.1.36</mysql-driver.version>
 
-        <!-- Web dependencies -->
-        <dandelion.version>1.1.1</dandelion.version>
-        <dandelion.datatables.version>1.1.0</dandelion.datatables.version>
-
         <cobertura.version>2.7</cobertura.version>
+
+        <jpa.database>HSQL</jpa.database>
+        <jdbc.driverClassName>org.hsqldb.jdbcDriver</jdbc.driverClassName>
+        <jdbc.url>jdbc:hsqldb:mem:petclinic</jdbc.url>
+        <jdbc.username>sa</jdbc.username>
+        <jdbc.password></jdbc.password>
 
     </properties>
 
@@ -57,11 +54,6 @@
     </dependencyManagement>
 
     <dependencies>
-        <dependency>
-            <groupId>org.jadira.usertype</groupId>
-            <artifactId>usertype.core</artifactId>
-            <version>${jadira-usertype-core.version}</version>
-        </dependency>
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-servlet-api</artifactId>
@@ -89,6 +81,14 @@
             <artifactId>taglibs-standard-jstlel</artifactId>
         </dependency>
         <!--  JSon -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
@@ -161,35 +161,12 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Date and Time -->
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time-hibernate</artifactId>
-            <version>${jodatime-hibernate.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time-jsptags</artifactId>
-            <version>${jodatime-jsptags.version}</version>
-        </dependency>
-
         <!-- Databases - Uses HSQL by default -->
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
             <scope>runtime</scope>
         </dependency>
-
-        <!-- For MySql only -->
-        <!--dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql-driver.version}</version>
-        </dependency-->
 
         <!-- HIBERNATE -->
         <dependency>
@@ -244,22 +221,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Dandelion -->
-        <dependency>
-            <groupId>com.github.dandelion</groupId>
-            <artifactId>dandelion-jsp</artifactId>
-            <version>${dandelion.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.dandelion</groupId>
-            <artifactId>datatables-jsp</artifactId>
-            <version>${dandelion.datatables.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.dandelion</groupId>
-            <artifactId>datatables-export-itext</artifactId>
-            <version>${dandelion.datatables.version}</version>
-        </dependency>
         <!-- temporary fix: below dependency should not be necessary as it is a transitive dependency.
         For some reason we can't build the app unless it is a first level dependency -->
         <dependency>
@@ -272,6 +233,12 @@
     <build>
         <defaultGoal>install</defaultGoal>
         <finalName>petclinic</finalName>
+        <resources>
+            <resource>
+                <directory>${basedir}/src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <testResources>
             <testResource>
                 <!-- declared explicitly so Spring config files can be placed next to their corresponding JUnit test class  -->
@@ -376,6 +343,14 @@
                     </execution>
                 </executions>
             </plugin>
+            <!--Specify the encoding for copying resources-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
     <reporting>
@@ -449,6 +424,23 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+        <profile>
+            <id>MYSQL</id>
+            <properties>
+                <jpa.database>MYSQL</jpa.database>
+                <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
+                <jdbc.url>jdbc:mysql://localhost:3306/petclinic?useUnicode=true</jdbc.url>
+                <jdbc.username>root</jdbc.username>
+                <jdbc.password>petclinic</jdbc.password>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>mysql</groupId>
+                    <artifactId>mysql-connector-java</artifactId>
+                    <version>${mysql-driver.version}</version>
+                </dependency>
+            </dependencies>
         </profile>
    </profiles>
 

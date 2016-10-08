@@ -15,9 +15,6 @@
  */
 package org.springframework.samples.petclinic;
 
-import com.github.dandelion.core.web.DandelionFilter;
-import com.github.dandelion.core.web.DandelionServlet;
-import com.github.dandelion.datatables.core.web.filter.DatatablesFilter;
 import org.springframework.samples.petclinic.config.MvcCoreConfig;
 import org.springframework.samples.petclinic.config.RootApplicationContextConfig;
 import org.springframework.web.context.WebApplicationContext;
@@ -26,8 +23,8 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractDispatcherServletInitializer;
 
-import javax.servlet.*;
-import java.util.EnumSet;
+import javax.servlet.Filter;
+import javax.servlet.ServletContext;
 
 
 /**
@@ -35,8 +32,8 @@ import java.util.EnumSet;
  * {@link ServletContext} programmatically.
  * <p/>
  * Create the Spring "<strong>root</strong>" application context.<br/>
- * Register a {@link DispatcherServlet} and a {@link DandelionServlet} in the servlet context.<br/>
- * For both servlets, register a {@link CharacterEncodingFilter}, a {@link DandelionFilter} an a {@link DatatablesFilter}.
+ * Register a {@link DispatcherServlet}  in the servlet context.<br/>
+ * For both servlets, register a {@link CharacterEncodingFilter}.
  * <p/>
  *
  * @author Antoine Rey
@@ -52,14 +49,6 @@ public class PetclinicInitializer extends AbstractDispatcherServletInitializer {
      */
     private static final String SPRING_PROFILE = "jpa";
 
-    private static final String DANDELION_SERVLET = "dandelionServlet";
-
-    @Override
-    public void onStartup(ServletContext servletContext) throws ServletException {
-        super.onStartup(servletContext);
-        registerDandelionServlet(servletContext);
-    }
-
     @Override
     protected WebApplicationContext createRootApplicationContext() {
         AnnotationConfigWebApplicationContext rootAppContext = new AnnotationConfigWebApplicationContext();
@@ -67,7 +56,6 @@ public class PetclinicInitializer extends AbstractDispatcherServletInitializer {
         rootAppContext.getEnvironment().setActiveProfiles(SPRING_PROFILE);
         return rootAppContext;
     }
-
 
     @Override
     protected WebApplicationContext createServletApplicationContext() {
@@ -85,27 +73,7 @@ public class PetclinicInitializer extends AbstractDispatcherServletInitializer {
     protected Filter[] getServletFilters() {
         // Used to provide the ability to enter Chinese characters inside the Owner Form
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter("UTF-8", true);
-
-        // Dandelion filter definition and mapping -->
-        DandelionFilter dandelionFilter = new DandelionFilter();
-
-        // Dandelion-Datatables filter, used for basic export -->
-        DatatablesFilter datatablesFilter = new DatatablesFilter();
-
-        return new Filter[]{characterEncodingFilter, dandelionFilter, datatablesFilter};
+        return new Filter[]{characterEncodingFilter};
     }
 
-    @Override
-    protected FilterRegistration.Dynamic registerServletFilter(ServletContext servletContext, Filter filter) {
-        FilterRegistration.Dynamic registration = super.registerServletFilter(servletContext, filter);
-        registration.addMappingForServletNames(EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.INCLUDE), false, DANDELION_SERVLET);
-        return registration;
-    }
-
-    private void registerDandelionServlet(ServletContext servletContext) {
-        DandelionServlet dandelionServlet = new DandelionServlet();
-        ServletRegistration.Dynamic registration = servletContext.addServlet(DANDELION_SERVLET, dandelionServlet);
-        registration.setLoadOnStartup(2);
-        registration.addMapping("/dandelion-assets/*");
-    }
 }

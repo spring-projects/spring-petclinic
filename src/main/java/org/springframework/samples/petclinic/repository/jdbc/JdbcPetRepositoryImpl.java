@@ -32,7 +32,6 @@ import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
-import org.springframework.samples.petclinic.model.Visit;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
 import org.springframework.samples.petclinic.repository.PetRepository;
 import org.springframework.samples.petclinic.repository.VisitRepository;
@@ -115,7 +114,7 @@ public class JdbcPetRepositoryImpl implements PetRepository {
         return new MapSqlParameterSource()
             .addValue("id", pet.getId())
             .addValue("name", pet.getName())
-            .addValue("birth_date", pet.getBirthDate().toDate())
+            .addValue("birth_date", pet.getBirthDate())
             .addValue("type_id", pet.getType().getId())
             .addValue("owner_id", pet.getOwner().getId());
     }

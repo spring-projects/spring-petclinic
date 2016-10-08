@@ -20,7 +20,23 @@ Our issue tracker is available here: https://github.com/spring-projects/spring-p
 
 In its default configuration, Petclinic uses an in-memory database (HSQLDB) which
 gets populated at startup with data. A similar setup is provided for MySql in case a persistent database configuration is needed.
-Note that whenever the database type is changed, the data-access.properties file needs to be updated and the mysql-connector-java artifact from the pom.xml needs to be uncommented.
+To run petclinic locally using MySQL database, it is needed to run with 'MYSQL' profile defined in main pom.xml file.
+
+```
+    ./mvnw tomcat7:run -P MYSQL
+```
+
+Before do this, would be good to check properties defined in MYSQL profile inside pom.xml file.
+
+```
+    <properties>
+        <jpa.database>MYSQL</jpa.database>
+        <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
+        <jdbc.url>jdbc:mysql://localhost:3306/petclinic?useUnicode=true</jdbc.url>
+        <jdbc.username>root</jdbc.username>
+        <jdbc.password>petclinic</jdbc.password>
+    </properties>
+```      
 
 You may start a MySql database with docker:
 
@@ -90,15 +106,6 @@ File -> Import -> Maven -> Existing Maven project
       <a href="/src/main/resources/spring/mvc-core-config.xml#L30">Resource mapping in Spring configuration</a> <br />
       <a href="/src/main/webapp/WEB-INF/jsp/fragments/staticFiles.jsp#L12">sample usage in JSP</a></td>
     </td>
-  </tr>
-  <tr>
-    <td>Dandelion-datatables</td>
-    <td>
-      <a href="/src/main/webapp/WEB-INF/jsp/owners/ownersList.jsp">ownersList.jsp</a> 
-      <a href="/src/main/webapp/WEB-INF/jsp/vets/vetList.jsp">vetList.jsp</a> 
-      <a href="/src/main/java/org/springframework/samples/petclinic/PetclinicInitializer.java">PetclinicInitializer.java</a>
-      <a href="/src/main/resources/dandelion/datatables/datatables.properties">datatables.properties</a> 
-   </td>
   </tr>
   <tr>
     <td>Thymeleaf branch</td>
