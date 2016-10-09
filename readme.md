@@ -175,6 +175,11 @@ File -> Import -> Maven -> Existing Maven project
         <a href="https://github.com/spring-projects/spring-petclinic/tree/springboot">See here</a></td>
     </tr>
   <tr>
+    <td>ReactJS branch</td>
+    <td>
+      <a href="https://github.com/nilshartmann/spring-petclinic/tree/reactjs">See here</a></td>
+  </tr>
+  <tr>
     <td>Gradle branch</td>
     <td>
       <a href="https://github.com/whimet/spring-petclinic">See here</a></td>
