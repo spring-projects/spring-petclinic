@@ -16,8 +16,6 @@
 package org.springframework.samples.petclinic.web;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -25,13 +23,7 @@ import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.service.ClinicService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Size;
 import java.util.Date;
@@ -105,7 +97,6 @@ public class PetResource {
         return new PetDetails(pet);
     }
 
-    @Data
     static class PetRequest {
         int id;
         @JsonFormat(pattern = "yyyy-MM-dd")
@@ -113,9 +104,40 @@ public class PetResource {
         @Size(min = 1)
         String name;
         int typeId;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public Date getBirthDate() {
+            return birthDate;
+        }
+
+        public void setBirthDate(Date birthDate) {
+            this.birthDate = birthDate;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public int getTypeId() {
+            return typeId;
+        }
+
+        public void setTypeId(int typeId) {
+            this.typeId = typeId;
+        }
     }
 
-    @Getter
     static class PetDetails {
 
         long id;
@@ -133,6 +155,25 @@ public class PetResource {
             this.type = pet.getType();
         }
 
+        public long getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getOwner() {
+            return owner;
+        }
+
+        public Date getBirthDate() {
+            return birthDate;
+        }
+
+        public PetType getType() {
+            return type;
+        }
     }
 
 }
