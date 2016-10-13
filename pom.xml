@@ -13,7 +13,7 @@
 	<version>1.0.0-SNAPSHOT</version>
 
 	<name>petclinic</name>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<properties>
 		<java.version>1.7</java.version>
