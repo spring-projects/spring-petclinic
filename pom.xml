@@ -16,7 +16,7 @@
 	<packaging>war</packaging>
 
 	<properties>
-		<java.version>1.8</java.version>
+		<java.version>1.7</java.version>
 
 		<!-- Web dependencies -->
 		<webjars-bootstrap.version>3.3.7</webjars-bootstrap.version>
