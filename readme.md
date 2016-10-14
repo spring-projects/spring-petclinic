@@ -169,13 +169,18 @@ File -> Import -> Maven -> Existing Maven project
   <tr>
     <th width="300px">Others</th><th width="300px">Files</th>
   </tr>
-    <tr>
-      <td>Spring Boot branch</td>
-      <td>
-        <a href="https://github.com/spring-projects/spring-petclinic/tree/springboot">See here</a></td>
-    </tr>
   <tr>
-    <td>ReactJS branch</td>
+    <td>Spring Boot branch (with JSP)</td>
+    <td>
+      <a href="https://github.com/spring-projects/spring-petclinic/tree/springboot">See here</a></td>
+  </tr>
+  <tr>
+    <td>Angular JS and Spring Boot branch</td>
+    <td>
+      <a href="https://github.com/spring-projects/spring-petclinic/tree/angularjs">See here</a></td>
+  </tr>    
+  <tr>
+    <td>ReactJS and Spring Boot branch</td>
     <td>
       <a href="https://github.com/nilshartmann/spring-petclinic/tree/reactjs">See here</a></td>
   </tr>
