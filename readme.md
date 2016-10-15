@@ -23,13 +23,13 @@ gets populated at startup with data.
 A similar setups is provided for MySql and PostgreSQL in case a persistent database configuration is needed.
 To run petclinic locally using persistent database, it is needed to run with profile defined in main pom.xml file.
 
-For MySQL database, it is needed to run with 'MYSQL' profile defined in main pom.xml file.
+For MySQL database, it is needed to run with 'MySQL' profile defined in main pom.xml file.
 
 ```
-    ./mvnw tomcat7:run -P MYSQL
+    ./mvnw tomcat7:run -P MySQL
 ```
 
-Before do this, would be good to check properties defined in MYSQL profile inside pom.xml file.
+Before do this, would be good to check properties defined in MySQL profile inside pom.xml file.
 
 ```
     <properties>
@@ -47,13 +47,13 @@ You may start a MySql database with docker:
 docker run -e MYSQL_ROOT_PASSWORD=petclinic -e MYSQL_DATABASE=petclinic -p 3306:3306 mysql:5.7.8
 ```
 
-For PostgreSQL database, it is needed to run with 'POSTGRESQL' profile defined in main pom.xml file.
+For PostgreSQL database, it is needed to run with 'PostgreSQL' profile defined in main pom.xml file.
 
 ```
-    ./mvnw tomcat7:run -P POSTGRESQL
+    ./mvnw tomcat7:run -P PostgreSQL
 ```
 
-Before do this, would be good to check properties defined in POSTGRESQL profile inside pom.xml file.
+Before do this, would be good to check properties defined in PostgreSQL profile inside pom.xml file.
 
 ```
 			<properties>

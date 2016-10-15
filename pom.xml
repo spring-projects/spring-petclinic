@@ -29,17 +29,10 @@
 
         <!-- Others -->
         <mysql-driver.version>5.1.36</mysql-driver.version>
-        
+
         <postgresql-driver.version>9.4.1211.jre7</postgresql-driver.version>
 
         <cobertura.version>2.7</cobertura.version>
-
-        <jpa.database>HSQL</jpa.database>
-        <jdbc.driverClassName>org.hsqldb.jdbcDriver</jdbc.driverClassName>
-        <jdbc.url>jdbc:hsqldb:mem:petclinic</jdbc.url>
-        <jdbc.username>sa</jdbc.username>
-        <jdbc.password></jdbc.password>
-
     </properties>
 
     <dependencyManagement>
@@ -161,13 +154,6 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
-        <!-- Databases - Uses HSQL by default -->
-        <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
             <scope>runtime</scope>
         </dependency>
 
@@ -429,8 +415,30 @@
             </build>
         </profile>
         <profile>
-            <id>MYSQL</id>
+            <id>HSQLDB</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <properties>
+                <db.script>hsqldb</db.script>
+                <jpa.database>HSQL</jpa.database>
+                <jdbc.driverClassName>org.hsqldb.jdbcDriver</jdbc.driverClassName>
+                <jdbc.url>jdbc:hsqldb:mem:petclinic</jdbc.url>
+                <jdbc.username>sa</jdbc.username>
+                <jdbc.password/>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>org.hsqldb</groupId>
+                    <artifactId>hsqldb</artifactId>
+                    <scope>runtime</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>MySQL</id>
+            <properties>
+                <db.script>mysql</db.script>
                 <jpa.database>MYSQL</jpa.database>
                 <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
                 <jdbc.url>jdbc:mysql://localhost:3306/petclinic?useUnicode=true</jdbc.url>
@@ -442,14 +450,15 @@
                     <groupId>mysql</groupId>
                     <artifactId>mysql-connector-java</artifactId>
                     <version>${mysql-driver.version}</version>
+                    <scope>runtime</scope>
                 </dependency>
             </dependencies>
         </profile>
         <profile>
-            <id>POSTGRESQL</id>
+            <id>PostgreSQL</id>
             <properties>
+                <db.script>postgresql</db.script>
                 <jpa.database>POSTGRESQL</jpa.database>
-                <jpa.databasePlatform>org.hibernate.dialect.PostgreSQLDialect</jpa.databasePlatform>
                 <jdbc.driverClassName>org.postgresql.Driver</jdbc.driverClassName>
                 <jdbc.url>jdbc:postgresql://localhost:5432/petclinic</jdbc.url>
                 <jdbc.username>postgres</jdbc.username>
@@ -460,6 +469,7 @@
                     <groupId>org.postgresql</groupId>
                     <artifactId>postgresql</artifactId>
                     <version>${postgresql-driver.version}</version>
+                    <scope>runtime</scope>
                 </dependency>
             </dependencies>
         </profile>

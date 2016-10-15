@@ -7,18 +7,17 @@
 
 --------------------------------------------------------------------------------
 
-1) Download and install the MySQL database (e.g., MySQL Community Server 5.1.x),
-   which can be found here: http://dev.mysql.com/downloads/
+1) Download and install the MySQL database (e.g., MySQL Community Server 5.7.x),
+   which can be found here: http://dev.mysql.com/downloads/mysql/
+   Alternatively, you may use the official MySQL docker image. Refer to the
+   README.md for the Docker command line.
 
-2) Download Connector/J, the MySQL JDBC driver (e.g., Connector/J 5.1.x), which
-   can be found here: http://dev.mysql.com/downloads/connector/j/
-   Copy the Connector/J JAR file (e.g., mysql-connector-java-5.1.5-bin.jar) into
-   the db/mysql directory. Alternatively, uncomment the mysql-connector from the
-   Petclinic pom.
+2) Dependency for Connector/J, the MySQL JDBC driver (e.g., Connector/J 5.1.x) is
+   included in Petclinic pom.xml file. See the MySQL maven profile.
+   Alternatively, download Connector/J JDBC driver from here:
+   http://dev.mysql.com/downloads/connector/j/
+   and copy the PostgreSQL JDBC driver JAR file (e.g., postgresql-9.4.1211.jre7.jar).
 
-3) Create the PetClinic database and user by executing the "db/mysql/initDB.sql"
-   script.
-
-4) Open "src/main/resources/spring/data-access.properties"; comment out all properties in the
-   "HSQL Settings" section; uncomment all properties in the "MySQL Settings"
-   section.
+3) Change connection parameters into the MySQL profile of the pom.xml.
+   Build and starth the web app with the MySQL profile:
+   ./mvnw tomcat7:run -P MySQL
