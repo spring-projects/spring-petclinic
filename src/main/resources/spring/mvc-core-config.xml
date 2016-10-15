@@ -19,9 +19,10 @@
     <!--
         - POJOs labeled with the @Controller and @Service annotations are auto-detected.
     -->
-    <context:component-scan
-        base-package="org.springframework.samples.petclinic.web"/>
 
+	<context:component-scan
+        base-package="org.springframework.samples.petclinic.web,org.springframework.samples.petclinic.rest"/>
+	 
     <mvc:annotation-driven conversion-service="conversionService"/>
 
     <!--  all resources inside folder src/main/webapp/resources are mapped so they can be refered to inside JSP files
