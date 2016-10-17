@@ -41,10 +41,10 @@ Before do this, would be good to check properties defined in MySQL profile insid
     </properties>
 ```      
 
-You may start a MySql database with docker:
+You may also start a MySql database with docker:
 
 ```
-docker run -e MYSQL_ROOT_PASSWORD=petclinic -e MYSQL_DATABASE=petclinic -p 3306:3306 mysql:5.7.8
+docker run --name mysql-petclinic -e MYSQL_ROOT_PASSWORD=petclinic -e MYSQL_DATABASE=petclinic -p 3306:3306 mysql:5.7.8
 ```
 
 For PostgreSQL database, it is needed to run with 'PostgreSQL' profile defined in main pom.xml file.
@@ -58,14 +58,17 @@ Before do this, would be good to check properties defined in PostgreSQL profile 
 ```
 			<properties>
                 <jpa.database>POSTGRESQL</jpa.database>
-                <jpa.databasePlatform>org.hibernate.dialect.PostgreSQLDialect</jpa.databasePlatform>
                 <jdbc.driverClassName>org.postgresql.Driver</jdbc.driverClassName>
                 <jdbc.url>jdbc:postgresql://localhost:5432/petclinic</jdbc.url>
                 <jdbc.username>postgres</jdbc.username>
                 <jdbc.password>petclinic</jdbc.password>
             </properties>
-```      
+```
+You may also start a Postgres database with docker:
 
+```
+docker run --name postgres-petclinic -e POSTGRES_PASSWORD=petclinic -e POSTGRES_DB=petclinic -p 5432:5432 -d postgres:9.6.0
+```
 
 ## Working with Petclinic in Eclipse/STS
 
