@@ -133,7 +133,7 @@ File -> Import -> Maven -> Existing Maven project
   <tr>
     <td>Thymeleaf branch</td>
     <td>
-      <a href="http://www.thymeleaf.org/petclinic.html">See here</a></td>
+      <a href="http://www.thymeleaf.org/doc/articles/petclinic.html">See here</a></td>
   </tr>
   <tr>
     <td>Branch using GemFire and Spring Data GemFire instead of ehcache (thanks Bijoy Choudhury)</td>
