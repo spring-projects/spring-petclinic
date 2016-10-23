@@ -5,7 +5,7 @@ angular.module('ownerList', [
 ]);
 
 angular.module("ownerList").component("ownerList", {
-    templateUrl: "scripts/app/owner-list/owner-list.template.html",
+    templateUrl: "scripts/owner-list/owner-list.template.html",
     controller: ["$http", function ($http) {
         var self = this;
         $http.get('owner/list').then(function(resp) {

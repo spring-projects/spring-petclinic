@@ -38,6 +38,6 @@ petClinicApp.config(['$locationProvider', '$routeProvider', '$httpProvider', fun
     var mod = 'layout' + c.toUpperCase().substring(0, 1) + c.substring(1);
     angular.module(mod, []);
     angular.module(mod).component(mod, {
-        templateUrl: "scripts/app/fragments/" + c + ".html"
+        templateUrl: "scripts/fragments/" + c + ".html"
     });
 });
