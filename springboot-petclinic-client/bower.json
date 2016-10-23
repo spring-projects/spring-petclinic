@@ -1,0 +1,25 @@
+{
+  "name": "spring-petclinic-client",
+  "description": "Spring Petclinic AngularJS client application",
+  "main": "",
+  "authors": [
+    "Antoine Rey <antoine.rey@free.fr>"
+  ],
+  "license": "Apache 2.0",
+  "homepage": "https://github.com/spring-projects/spring-petclinic",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.5.8",
+    "angular-route": "~1.5.8",
+    "bootstrap": "components/bootstrap#~3.3.7",
+    "jquery": "components/jquery#~3.1.0"
+  }
+}

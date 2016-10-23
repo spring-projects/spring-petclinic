@@ -1,7 +1,18 @@
+# Maven
 target/
+
+# Eclipse
 .settings/
 .classpath
 .project
+
+# IntelliJ IDEA
 .idea
 *.iml
+
+# Branch switching
 generated/
+
+# Front-end client
+node_modules/
+bower_components/

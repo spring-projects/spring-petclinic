@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.springframework.samples</groupId>
+		<artifactId>springboot-petclinic</artifactId>
+		<version>1.4.1</version>
+	</parent>
+	<artifactId>springboot-petclinic-client</artifactId>
+	<name>Spring Petclinic :: AngularJS Client</name>
+
+	<properties>
+		<node.version>v4.4.3</node.version>
+		<npm.version>2.15.1</npm.version>
+	</properties>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>${basedir}/src</directory>
+			</resource>
+			<resource>
+				<directory>${basedir}/bower_components</directory>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<configuration>
+					<installDirectory>target</installDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<id>install node and npm</id>
+						<goals>
+							<goal>install-node-and-npm</goal>
+						</goals>
+						<configuration>
+							<nodeVersion>${node.version}</nodeVersion>
+							<npmVersion>${npm.version}</npmVersion>
+						</configuration>
+					</execution>
+					<execution>
+						<id>npm install</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>bower install</id>
+						<goals>
+							<goal>bower</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<outputDirectory>${project.build.directory}/classes/public/</outputDirectory>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
