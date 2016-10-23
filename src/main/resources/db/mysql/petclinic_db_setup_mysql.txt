@@ -16,7 +16,7 @@
    included in Petclinic pom.xml file. See the MySQL maven profile.
    Alternatively, download Connector/J JDBC driver from here:
    http://dev.mysql.com/downloads/connector/j/
-   and copy the PostgreSQL JDBC driver JAR file (e.g., postgresql-9.4.1211.jre7.jar).
+   and copy the MySQL JDBC driver JAR file (e.g., mysql-connector-java-5.1.5-bin.jar).
 
 3) Change connection parameters into the MySQL profile of the pom.xml.
    Build and starth the web app with the MySQL profile:
