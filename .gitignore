@@ -7,3 +7,7 @@ target/*
 /target
 
 generated/
+
+# Easier branch switching
+springboot-petclinic-client/
+springboot-petclinic-server/
