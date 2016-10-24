@@ -13,6 +13,8 @@
 
     <properties>
         <java.version>1.7</java.version>
+
+        <docker.image.prefix>arey</docker.image.prefix>
     </properties>
 
     <dependencies>
@@ -119,6 +121,29 @@
                     <generateGitPropertiesFile>true</generateGitPropertiesFile>
                     <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties
                     </generateGitPropertiesFilename>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.4.13</version>
+                <configuration>
+                    <imageName>${docker.image.prefix}/springboot-petclinic</imageName>
+                    <dockerDirectory>src/main/docker</dockerDirectory>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                    <forceTags>true</forceTags>
+                    <imageTags>
+                        <imageTag>${project.version}</imageTag>
+                        <imageTag>latest</imageTag>
+                    </imageTags>
+                    <useConfigFile>true</useConfigFile>
                 </configuration>
             </plugin>
         </plugins>
