@@ -250,7 +250,13 @@ Here is a list of them:
     <td>
       <a href="https://issuetracker.springsource.com/browse/STS-3294"> STS-3294</a>
     </td>
-  </tr>    
+  </tr>  
+  <tr>
+    <td>Dandelion: improves the DandelionFilter for Jetty support</td>
+    <td>
+      <a href="https://github.com/dandelion/dandelion/issues/113"> GitHub issue 113</a>
+      </td>
+  </tr>   
 </table>
 
 
