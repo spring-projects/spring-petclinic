@@ -40,7 +40,7 @@ import javax.validation.Valid;
  * @author Michael Isvy
  */
 @RestController
-public class OwnerResource {
+public class OwnerResource extends AbstractResourceController {
 
     private final ClinicService clinicService;
 

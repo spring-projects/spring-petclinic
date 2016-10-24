@@ -35,7 +35,7 @@ import java.util.Map;
  * @author Arjen Poutsma
  */
 @RestController
-public class PetResource {
+public class PetResource extends AbstractResourceController {
 
     private final ClinicService clinicService;
 

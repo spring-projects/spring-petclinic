@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Arjen Poutsma
  */
 @RestController
-public class VetResource {
+public class VetResource extends AbstractResourceController {
 
     private final ClinicService clinicService;
 

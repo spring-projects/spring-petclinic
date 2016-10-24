@@ -35,7 +35,7 @@ import javax.validation.Valid;
  * @author Michael Isvy
  */
 @RestController
-public class VisitResource {
+public class VisitResource extends AbstractResourceController {
 
     private final ClinicService clinicService;
 
