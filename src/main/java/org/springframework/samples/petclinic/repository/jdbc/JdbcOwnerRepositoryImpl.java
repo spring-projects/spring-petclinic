@@ -47,6 +47,7 @@ import org.springframework.stereotype.Repository;
  * @author Sam Brannen
  * @author Thomas Risberg
  * @author Mark Fisher
+ * @author Antoine Rey
  */
 @Repository
 public class JdbcOwnerRepositoryImpl implements OwnerRepository {
@@ -56,7 +57,7 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
     private SimpleJdbcInsert insertOwner;
 
     @Autowired
-    public JdbcOwnerRepositoryImpl(DataSource dataSource, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    public JdbcOwnerRepositoryImpl(DataSource dataSource) {
 
         this.insertOwner = new SimpleJdbcInsert(dataSource)
             .withTableName("owners")
