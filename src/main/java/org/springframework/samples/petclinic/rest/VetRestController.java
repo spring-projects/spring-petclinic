@@ -40,7 +40,7 @@ public class VetRestController {
 	@Autowired
 	private ClinicService clinicService;
 	
-	@RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Collection<Vet>> getAllVets(){
 		Collection<Vet> vets = new ArrayList<Vet>();
 		vets.addAll(this.clinicService.findVets());
