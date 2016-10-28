@@ -17,6 +17,7 @@ package org.springframework.samples.petclinic.repository.springdatajpa;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
@@ -30,6 +31,8 @@ import org.springframework.samples.petclinic.repository.PetRepository;
  * @author Michael Isvy
  * @since 15.1.2013
  */
+
+@Qualifier("PetRepository")
 public interface SpringDataPetRepository extends PetRepository, Repository<Pet, Integer> {
 
     @Override

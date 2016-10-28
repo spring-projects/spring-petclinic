@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.repository.jpa;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.repository.VetRepository;
 import org.springframework.stereotype.Repository;
@@ -33,6 +34,7 @@ import java.util.Collection;
  * @since 22.4.2006
  */
 @Repository
+@Qualifier("VetRepository")
 public class JpaVetRepositoryImpl implements VetRepository {
 
     @PersistenceContext

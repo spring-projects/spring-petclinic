@@ -22,6 +22,7 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -47,6 +48,7 @@ import org.springframework.stereotype.Repository;
  * @author Mark Fisher
  */
 @Repository
+@Qualifier("PetRepository")
 public class JdbcPetRepositoryImpl implements PetRepository {
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -59,7 +61,9 @@ public class JdbcPetRepositoryImpl implements PetRepository {
 
 
     @Autowired
-    public JdbcPetRepositoryImpl(DataSource dataSource, OwnerRepository ownerRepository, VisitRepository visitRepository) {
+    public JdbcPetRepositoryImpl(DataSource dataSource,
+    		@Qualifier("OwnerRepository") OwnerRepository ownerRepository,
+    		@Qualifier("VisitRepository") VisitRepository visitRepository) {
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 
         this.insertPet = new SimpleJdbcInsert(dataSource)

@@ -16,6 +16,7 @@
 package org.springframework.samples.petclinic.repository.jdbc;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -42,6 +43,7 @@ import java.util.Map;
  * @author Michael Isvy
  */
 @Repository
+@Qualifier("VisitRepository")
 public class JdbcVisitRepositoryImpl implements VisitRepository {
 
     private NamedParameterJdbcTemplate jdbcTemplate;
