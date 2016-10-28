@@ -18,6 +18,7 @@ package org.springframework.samples.petclinic.service;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.model.Owner;
@@ -47,7 +48,15 @@ public class ClinicServiceImpl implements ClinicService {
     private VisitRepository visitRepository;
 
     @Autowired
-    public ClinicServiceImpl(PetRepository petRepository, VetRepository vetRepository, OwnerRepository ownerRepository, VisitRepository visitRepository) {
+     public ClinicServiceImpl(
+//    		 @Qualifier("PetRepository") PetRepository petRepository,
+//    		 @Qualifier("VetRepository") VetRepository vetRepository,
+//    		 @Qualifier("OwnerRepository") OwnerRepository ownerRepository,
+//    		 @Qualifier("VisitRepository") VisitRepository visitRepository) {
+       		 @Qualifier("PetRepositoryExt") PetRepository petRepository,
+    		 @Qualifier("VetRepositoryExt") VetRepository vetRepository,
+    		 @Qualifier("OwnerRepositoryExt") OwnerRepository ownerRepository,
+    		 @Qualifier("VisitRepositoryExt") VisitRepository visitRepository) {
         this.petRepository = petRepository;
         this.vetRepository = vetRepository;
         this.ownerRepository = ownerRepository;
