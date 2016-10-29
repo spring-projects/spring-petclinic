@@ -19,12 +19,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @Qualifier("VisitRepositoryExt")
-public class JdbcVisitRepositoryImplExt extends JdbcVisitRepositoryImpl implements VisitRepositoryExt {
+public class JdbcVisitRepositoryExtImpl extends JdbcVisitRepositoryImpl implements VisitRepositoryExt {
 	
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
 	@Autowired
-	public JdbcVisitRepositoryImplExt(DataSource dataSource) {
+	public JdbcVisitRepositoryExtImpl(DataSource dataSource) {
 		super(dataSource);
 		// TODO Auto-generated constructor stub
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);

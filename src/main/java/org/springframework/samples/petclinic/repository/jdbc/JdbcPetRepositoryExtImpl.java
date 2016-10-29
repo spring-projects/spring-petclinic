@@ -19,12 +19,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @Qualifier("PetRepositoryExt")
-public class JdbcPetRepositoryImplExt extends JdbcPetRepositoryImpl implements PetRepositoryExt {
+public class JdbcPetRepositoryExtImpl extends JdbcPetRepositoryImpl implements PetRepositoryExt {
 	
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
 	@Autowired
-    public JdbcPetRepositoryImplExt(DataSource dataSource,
+    public JdbcPetRepositoryExtImpl(DataSource dataSource,
     		@Qualifier("OwnerRepositoryExt") OwnerRepositoryExt ownerRepository,
     		@Qualifier("VisitRepositoryExt") VisitRepositoryExt visitRepository) {
 		super(dataSource, ownerRepository, visitRepository);

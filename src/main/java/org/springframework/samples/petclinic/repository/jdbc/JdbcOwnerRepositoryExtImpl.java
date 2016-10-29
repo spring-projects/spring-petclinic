@@ -18,12 +18,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @Qualifier("OwnerRepositoryExt")
-public class JdbcOwnerRepositoryImplExt extends JdbcOwnerRepositoryImpl implements OwnerRepositoryExt {
+public class JdbcOwnerRepositoryExtImpl extends JdbcOwnerRepositoryImpl implements OwnerRepositoryExt {
 	
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
   	@Autowired
-	public JdbcOwnerRepositoryImplExt(DataSource dataSource) {
+	public JdbcOwnerRepositoryExtImpl(DataSource dataSource) {
 		super(dataSource);
 		// TODO  super() ?
 	    this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);

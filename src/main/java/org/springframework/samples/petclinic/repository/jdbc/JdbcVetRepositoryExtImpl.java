@@ -22,7 +22,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @Qualifier("VetRepositoryExt")
-public class JdbcVetRepositoryImplExt extends JdbcVetRepositoryImpl implements VetRepositoryExt {
+public class JdbcVetRepositoryExtImpl extends JdbcVetRepositoryImpl implements VetRepositoryExt {
 	
 	//private JdbcTemplate jdbcTemplate;
 	
@@ -31,7 +31,7 @@ public class JdbcVetRepositoryImplExt extends JdbcVetRepositoryImpl implements V
     private SimpleJdbcInsert insertVet;
 
 	@Autowired
-	public JdbcVetRepositoryImplExt(DataSource dataSource, JdbcTemplate jdbcTemplate) {
+	public JdbcVetRepositoryExtImpl(DataSource dataSource, JdbcTemplate jdbcTemplate) {
 		super(jdbcTemplate);
 		// TODO Auto-generated constructor stub
 		//this.jdbcTemplate = jdbcTemplate;
