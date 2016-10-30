@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
@@ -21,7 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class ClinicServiceExtImpl extends ClinicServiceImpl implements ClinicServiceExt {
+public class ClinicServiceExtImpl implements ClinicServiceExt {
 		
 	private SpecialtyRepositoryExt specialtyRepositoryExt;
 	private PetTypeRepositoryExt petTypeRepositoryExt;
@@ -38,7 +39,6 @@ public class ClinicServiceExtImpl extends ClinicServiceImpl implements ClinicSer
 				@Qualifier("VisitRepositoryExt") VisitRepositoryExt visitRepositoryExt,
 				@Qualifier("SpecialtyRepositoryExt") SpecialtyRepositoryExt specialtyRepositoryExt,
 				@Qualifier("PetTypeRepositoryExt") PetTypeRepositoryExt petTypeRepositoryExt) {
-		super(petRepositoryExt, vetRepositoryExt, ownerRepositoryExt, visitRepositoryExt);
 		this.specialtyRepositoryExt = specialtyRepositoryExt; 
 		this.petTypeRepositoryExt = petTypeRepositoryExt;
 		this.petRepositoryExt = petRepositoryExt;
@@ -159,6 +159,64 @@ public class ClinicServiceExtImpl extends ClinicServiceImpl implements ClinicSer
 	@Transactional
 	public void deleteSpecialty(Specialty specialty) throws DataAccessException {
 		specialtyRepositoryExt.delete(specialty);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Collection<PetType> findPetTypes() throws DataAccessException {
+		return petRepositoryExt.findPetTypes();
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Owner findOwnerById(int id) throws DataAccessException {
+		return ownerRepositoryExt.findById(id);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Pet findPetById(int id) throws DataAccessException {
+		return petRepositoryExt.findById(id);
+	}
+
+	@Override
+	@Transactional
+	public void savePet(Pet pet) throws DataAccessException {
+		petRepositoryExt.save(pet);
+		
+	}
+
+	@Override
+	@Transactional
+	public void saveVisit(Visit visit) throws DataAccessException {
+		visitRepositoryExt.save(visit);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+    @Cacheable(value = "vets")
+	public Collection<Vet> findVets() throws DataAccessException {
+		return vetRepositoryExt.findAll();
+	}
+
+	@Override
+	@Transactional
+	public void saveOwner(Owner owner) throws DataAccessException {
+		ownerRepositoryExt.save(owner);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Collection<Owner> findOwnerByLastName(String lastName) throws DataAccessException {
+		return ownerRepositoryExt.findByLastName(lastName);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Collection<Visit> findVisitsByPetId(int petId) {
+		return visitRepositoryExt.findByPetId(petId);
 	}
 
 }

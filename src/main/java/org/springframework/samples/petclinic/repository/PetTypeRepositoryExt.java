@@ -7,7 +7,7 @@ import org.springframework.samples.petclinic.model.PetType;
 
 public interface PetTypeRepositoryExt {
 	
-	PetType findById(int id);
+	PetType findById(int id) throws DataAccessException;
 	
 	Collection<PetType> findAll() throws DataAccessException;
 

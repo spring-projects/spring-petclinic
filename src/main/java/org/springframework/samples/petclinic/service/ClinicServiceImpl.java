@@ -49,14 +49,10 @@ public class ClinicServiceImpl implements ClinicService {
 
     @Autowired
      public ClinicServiceImpl(
-//    		 @Qualifier("PetRepository") PetRepository petRepository,
-//    		 @Qualifier("VetRepository") VetRepository vetRepository,
-//    		 @Qualifier("OwnerRepository") OwnerRepository ownerRepository,
-//    		 @Qualifier("VisitRepository") VisitRepository visitRepository) {
-       		 @Qualifier("PetRepositoryExt") PetRepository petRepository,
-    		 @Qualifier("VetRepositoryExt") VetRepository vetRepository,
-    		 @Qualifier("OwnerRepositoryExt") OwnerRepository ownerRepository,
-    		 @Qualifier("VisitRepositoryExt") VisitRepository visitRepository) {
+       		 @Qualifier("PetRepository") PetRepository petRepository,
+    		 @Qualifier("VetRepository") VetRepository vetRepository,
+    		 @Qualifier("OwnerRepository") OwnerRepository ownerRepository,
+    		 @Qualifier("VisitRepository") VisitRepository visitRepository) {
         this.petRepository = petRepository;
         this.vetRepository = vetRepository;
         this.ownerRepository = ownerRepository;

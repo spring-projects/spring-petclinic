@@ -1,9 +1,6 @@
-package org.springframework.samples.petclinic.repository.jpa;
+package org.springframework.samples.petclinic.repository.jdbc;
 
 import java.util.Collection;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
@@ -13,34 +10,30 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @Qualifier("SpecialtyRepositoryExt")
-public class JpaSpecialtyRepositoryExtImpl implements SpecialtyRepositoryExt {
-	
-    @PersistenceContext
-    private EntityManager em;
+public class JdbcSpecialtyRepositoryExtImpl implements SpecialtyRepositoryExt {
 
 	@Override
 	public Specialty findById(int id) {
-		return this.em.find(Specialty.class, id);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<Specialty> findAll() throws DataAccessException {
-		return this.em.createQuery("SELECT s FROM Specialty s").getResultList();
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public void save(Specialty specialty) throws DataAccessException {
-		if (specialty.getId() == null) {
-            this.em.persist(specialty);
-        } else {
-            this.em.merge(specialty);
-        }
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public void delete(Specialty specialty) throws DataAccessException {
-		this.em.remove(specialty);
+		// TODO Auto-generated method stub
+
 	}
 
 }
