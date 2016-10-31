@@ -27,7 +27,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
-import org.springframework.samples.petclinic.service.ClinicService;
+import org.springframework.samples.petclinic.service.ClinicServiceExt;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,7 +46,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class PetRestController {
 	
 	@Autowired
-	private ClinicService clinicService;
+	private ClinicServiceExt clinicService;
 	
 	@RequestMapping(value = "/{petId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Pet> getPet(@PathVariable("petId") int petId){
@@ -87,6 +87,17 @@ public class PetRestController {
 		currentPet.setType(pet.getType());
 		this.clinicService.savePet(currentPet);
 		return new ResponseEntity<Pet>(currentPet, HttpStatus.NO_CONTENT);
+	}
+	
+	@RequestMapping(value = "/{petId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Void> deletePet(@PathVariable("petId") int petId){
+		Pet pet = this.clinicService.findPetById(petId);
+		if(pet == null){
+			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+		}
+		this.clinicService.deletePet(pet);
+		// TODO  delete error - FK etc.
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 	
 

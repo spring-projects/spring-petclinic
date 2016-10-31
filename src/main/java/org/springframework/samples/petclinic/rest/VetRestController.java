@@ -18,15 +18,22 @@ package org.springframework.samples.petclinic.rest;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.samples.petclinic.model.Vet;
-import org.springframework.samples.petclinic.service.ClinicService;
+import org.springframework.samples.petclinic.service.ClinicServiceExt;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * @author Vitaliy Fedoriv
@@ -38,7 +45,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class VetRestController {
 	
 	@Autowired
-	private ClinicService clinicService;
+	private ClinicServiceExt clinicService;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Collection<Vet>> getAllVets(){
@@ -49,6 +56,54 @@ public class VetRestController {
 		}
 		return new ResponseEntity<Collection<Vet>>(vets, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/{vetId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Vet> getVet(@PathVariable("vetId") int vetId){
+		Vet vet = this.clinicService.findVetById(vetId);
+		if(vet == null){
+			return new ResponseEntity<Vet>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Vet>(vet, HttpStatus.OK);
+	}
+	
+	
+	@RequestMapping(value = "/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Void> addVet(@RequestBody @Valid Vet vet, BindingResult bindingResult, UriComponentsBuilder ucBuilder){
+		if(bindingResult.hasErrors() || (vet == null)){
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		}
+		this.clinicService.saveVet(vet);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setLocation(ucBuilder.path("/api/vets/{id}").buildAndExpand(vet.getId()).toUri());
+		return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(value = "/{vetId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Vet> updateVet(@PathVariable("vetId") int vetId, @RequestBody @Valid Vet vet, BindingResult bindingResult){
+		if(bindingResult.hasErrors() || (vet == null)){
+			return new ResponseEntity<Vet>(HttpStatus.BAD_REQUEST);
+		}
+		Vet currentVet = this.clinicService.findVetById(vetId);
+		if(currentVet == null){
+			return new ResponseEntity<Vet>(HttpStatus.NOT_FOUND);
+		}
+		currentVet.setFirstName(vet.getFirstName());
+		currentVet.setLastName(vet.getLastName());
+		this.clinicService.saveVet(currentVet);
+		return new ResponseEntity<Vet>(currentVet, HttpStatus.NO_CONTENT);
+	}
+	
+	@RequestMapping(value = "/{vetId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Void> deleteVet(@PathVariable("vetId") int vetId){
+		Vet vet = this.clinicService.findVetById(vetId);
+		if(vet == null){
+			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+		}
+		this.clinicService.deleteVet(vet);
+		// TODO  delete error - FK etc.
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+	}
+	
 	
 
 }

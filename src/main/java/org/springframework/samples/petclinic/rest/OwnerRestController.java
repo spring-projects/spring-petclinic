@@ -26,7 +26,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.samples.petclinic.model.Owner;
-import org.springframework.samples.petclinic.service.ClinicService;
+import org.springframework.samples.petclinic.model.Pet;
+import org.springframework.samples.petclinic.service.ClinicServiceExt;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,7 +47,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class OwnerRestController {
 	
 	@Autowired
-	private ClinicService clinicService;
+	private ClinicServiceExt clinicService;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Collection<Owner>> getOwnersList(@RequestParam("lastName") String ownerLastName){
@@ -96,6 +97,17 @@ public class OwnerRestController {
 		currentOwner.setTelephone(owner.getTelephone());
 		this.clinicService.saveOwner(currentOwner);
 		return new ResponseEntity<Owner>(currentOwner, HttpStatus.NO_CONTENT);
+	}
+	
+	@RequestMapping(value = "/{ownerId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Void> deleteOwner(@PathVariable("ownerId") int ownerId){
+		Owner owner = this.clinicService.findOwnerById(ownerId);
+		if(owner == null){
+			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+		}
+		this.clinicService.deleteOwner(owner);
+		// TODO  delete error - FK etc.
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 
 
