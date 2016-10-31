@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Qualifier("ClinicServiceExt")
 public class ClinicServiceExtImpl implements ClinicServiceExt {
 		
 	private SpecialtyRepositoryExt specialtyRepositoryExt;

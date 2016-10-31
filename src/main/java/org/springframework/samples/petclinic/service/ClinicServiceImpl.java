@@ -40,6 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Michael Isvy
  */
 @Service
+@Qualifier("ClinicService")
 public class ClinicServiceImpl implements ClinicService {
 
     private PetRepository petRepository;

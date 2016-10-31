@@ -22,6 +22,7 @@ import java.util.Date;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
@@ -53,6 +54,7 @@ import org.springframework.transaction.annotation.Transactional;
 public abstract class AbstractClinicServiceTests {
 
     @Autowired
+    @Qualifier("ClinicService")
     protected ClinicService clinicService;
 
     @Test
