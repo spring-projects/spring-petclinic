@@ -64,7 +64,6 @@ public class JdbcSpecialtyRepositoryExtImpl implements SpecialtyRepositoryExt {
 
 	@Override
 	public void save(Specialty specialty) throws DataAccessException {
-		// TODO  not sure - need verify correct insert
 		BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(specialty);
 		if (specialty.isNew()) {
             Number newKey = this.insertSpecialty.executeAndReturnKey(parameterSource);
