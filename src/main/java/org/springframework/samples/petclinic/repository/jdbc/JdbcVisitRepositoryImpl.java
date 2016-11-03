@@ -48,7 +48,7 @@ public class JdbcVisitRepositoryImpl implements VisitRepository {
 
     private NamedParameterJdbcTemplate jdbcTemplate;
 
-    private SimpleJdbcInsert insertVisit;
+    protected SimpleJdbcInsert insertVisit;
 
     @Autowired
     public JdbcVisitRepositoryImpl(DataSource dataSource) {
@@ -75,7 +75,7 @@ public class JdbcVisitRepositoryImpl implements VisitRepository {
     /**
      * Creates a {@link MapSqlParameterSource} based on data values from the supplied {@link Visit} instance.
      */
-    private MapSqlParameterSource createVisitParameterSource(Visit visit) {
+    protected MapSqlParameterSource createVisitParameterSource(Visit visit) {
         return new MapSqlParameterSource()
             .addValue("id", visit.getId())
             .addValue("visit_date", visit.getDate())
