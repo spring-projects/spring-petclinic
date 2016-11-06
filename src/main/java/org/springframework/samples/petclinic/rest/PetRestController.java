@@ -60,7 +60,11 @@ public class PetRestController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Collection<Pet>> getPets(){
-		return new ResponseEntity<Collection<Pet>>(this.clinicService.findAllPets(), HttpStatus.OK);
+		Collection<Pet> pets = this.clinicService.findAllPets();
+		if(pets.isEmpty()){
+			return new ResponseEntity<Collection<Pet>>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Collection<Pet>>(pets, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/pettypes}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
