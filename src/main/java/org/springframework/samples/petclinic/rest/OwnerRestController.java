@@ -18,6 +18,7 @@ package org.springframework.samples.petclinic.rest;
 
 import java.util.Collection;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +27,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.samples.petclinic.model.Owner;
-import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.service.ClinicServiceExt;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -49,12 +48,21 @@ public class OwnerRestController {
 	@Autowired
 	private ClinicServiceExt clinicService;
 	
-	@RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<Collection<Owner>> getOwnersList(@RequestParam("lastName") String ownerLastName){
+	@RequestMapping(value = "/*/lastname/{lastName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Collection<Owner>> getOwnersList(@PathVariable("lastName") String ownerLastName){
 		if (ownerLastName == null){
 			ownerLastName = "";
 		}
 		Collection<Owner> owners = this.clinicService.findOwnerByLastName(ownerLastName);
+		if(owners.isEmpty()){
+			return new ResponseEntity<Collection<Owner>>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Collection<Owner>>(owners, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Collection<Owner>> getOwners(){
+		Collection<Owner> owners = this.clinicService.findAllOwners();
 		if(owners.isEmpty()){
 			return new ResponseEntity<Collection<Owner>>(HttpStatus.NOT_FOUND);
 		}
@@ -100,6 +108,7 @@ public class OwnerRestController {
 	}
 	
 	@RequestMapping(value = "/{ownerId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@Transactional
 	public ResponseEntity<Void> deleteOwner(@PathVariable("ownerId") int ownerId){
 		Owner owner = this.clinicService.findOwnerById(ownerId);
 		if(owner == null){

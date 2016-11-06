@@ -40,7 +40,7 @@ public class JpaSpecialtyRepositoryExtImpl implements SpecialtyRepositoryExt {
 
 	@Override
 	public void delete(Specialty specialty) throws DataAccessException {
-		this.em.remove(specialty);
+		this.em.remove(this.em.contains(specialty) ? specialty : this.em.merge(specialty));
 	}
 
 }

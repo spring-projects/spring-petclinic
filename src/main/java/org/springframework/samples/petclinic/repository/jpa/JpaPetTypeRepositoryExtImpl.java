@@ -41,8 +41,7 @@ public class JpaPetTypeRepositoryExtImpl implements PetTypeRepositoryExt {
 
 	@Override
 	public void delete(PetType petType) throws DataAccessException {
-		this.em.remove(petType);
-
+		this.em.remove(this.em.contains(petType) ? petType : this.em.merge(petType));
 	}
 
 }

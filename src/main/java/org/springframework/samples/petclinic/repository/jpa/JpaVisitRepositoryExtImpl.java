@@ -32,8 +32,7 @@ public class JpaVisitRepositoryExtImpl extends JpaVisitRepositoryImpl implements
 
 	@Override
 	public void delete(Visit visit) throws DataAccessException {
-		// TODO Auto-generated method stub
-		this.em.remove(visit);
+		this.em.remove(this.em.contains(visit) ? visit : this.em.merge(visit));
 	}
 
 }

@@ -40,7 +40,7 @@ public class JpaVetRepositoryExtImpl extends JpaVetRepositoryImpl implements Vet
 
 	@Override
 	public void delete(Vet vet) throws DataAccessException {
-		this.em.remove(vet);
+		this.em.remove(this.em.contains(vet) ? vet : this.em.merge(vet));
 	}
 
 }

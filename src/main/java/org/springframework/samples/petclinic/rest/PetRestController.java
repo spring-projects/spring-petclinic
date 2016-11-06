@@ -18,6 +18,7 @@ package org.springframework.samples.petclinic.rest;
 
 import java.util.Collection;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,13 +96,13 @@ public class PetRestController {
 	}
 	
 	@RequestMapping(value = "/{petId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@Transactional
 	public ResponseEntity<Void> deletePet(@PathVariable("petId") int petId){
 		Pet pet = this.clinicService.findPetById(petId);
 		if(pet == null){
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
 		this.clinicService.deletePet(pet);
-		// TODO  delete error - FK etc.
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 	

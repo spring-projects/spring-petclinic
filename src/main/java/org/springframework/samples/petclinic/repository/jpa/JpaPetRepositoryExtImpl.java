@@ -33,7 +33,7 @@ public class JpaPetRepositoryExtImpl extends JpaPetRepositoryImpl implements Pet
 
 	@Override
 	public void delete(Pet pet) throws DataAccessException {
-		this.em.remove(pet);
+		this.em.remove(this.em.contains(pet) ? pet : this.em.merge(pet));
 	}
 
 }

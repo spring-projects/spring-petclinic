@@ -22,18 +22,13 @@ public class JpaOwnerRepositoryExtImpl extends JpaOwnerRepositoryImpl implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<Owner> findAll() throws DataAccessException {
-		// TODO Select only owner or still join with pets ?
-		Query query = this.em.createQuery("SELECT DISTINCT owner FROM Owner owner left join fetch owner.pets");
+		Query query = this.em.createQuery("SELECT owner FROM Owner owner");
         return query.getResultList();
 	}
 
 	@Override
 	public void delete(Owner owner) throws DataAccessException {
-		// TODO need null check, throw Exception etc ?
-		if(!(owner.getId() == null)){
-			this.em.remove(owner);
-		}
-
+		this.em.remove(this.em.contains(owner) ? owner : this.em.merge(owner));
 	}
 
 }
