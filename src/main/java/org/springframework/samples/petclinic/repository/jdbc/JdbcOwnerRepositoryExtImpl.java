@@ -25,7 +25,6 @@ public class JdbcOwnerRepositoryExtImpl extends JdbcOwnerRepositoryImpl implemen
   	@Autowired
 	public JdbcOwnerRepositoryExtImpl(DataSource dataSource) {
 		super(dataSource);
-		// TODO  super() ?
 	    this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}
 

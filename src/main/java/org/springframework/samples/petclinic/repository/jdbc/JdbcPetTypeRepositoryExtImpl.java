@@ -70,7 +70,6 @@ public class JdbcPetTypeRepositoryExtImpl implements PetTypeRepositoryExt {
             this.namedParameterJdbcTemplate.update("UPDATE types SET name=:name WHERE id=:id",
                 parameterSource);
         }
-
 	}
 
 	@Override
@@ -78,7 +77,6 @@ public class JdbcPetTypeRepositoryExtImpl implements PetTypeRepositoryExt {
 		Map<String, Object> params = new HashMap<>();
         params.put("id", petType.getId());
         this.namedParameterJdbcTemplate.update("DELETE FROM types WHERE id=:id", params);
-
 	}
 
 }

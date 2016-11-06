@@ -15,7 +15,6 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.orm.ObjectRetrievalFailureException;
-import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.repository.VetRepositoryExt;
 import org.springframework.stereotype.Repository;
@@ -24,8 +23,6 @@ import org.springframework.stereotype.Repository;
 @Qualifier("VetRepositoryExt")
 public class JdbcVetRepositoryExtImpl extends JdbcVetRepositoryImpl implements VetRepositoryExt {
 	
-	//private JdbcTemplate jdbcTemplate;
-	
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     private SimpleJdbcInsert insertVet;
@@ -33,13 +30,9 @@ public class JdbcVetRepositoryExtImpl extends JdbcVetRepositoryImpl implements V
 	@Autowired
 	public JdbcVetRepositoryExtImpl(DataSource dataSource, JdbcTemplate jdbcTemplate) {
 		super(jdbcTemplate);
-		// TODO Auto-generated constructor stub
-		//this.jdbcTemplate = jdbcTemplate;
-		
         this.insertVet = new SimpleJdbcInsert(dataSource)
                 .withTableName("vets")
                 .usingGeneratedKeyColumns("id");
-        
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}
 

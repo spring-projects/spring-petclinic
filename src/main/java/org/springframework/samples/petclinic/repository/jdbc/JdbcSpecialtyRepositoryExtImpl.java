@@ -29,9 +29,7 @@ public class JdbcSpecialtyRepositoryExtImpl implements SpecialtyRepositoryExt {
 
 	@Autowired
 	public JdbcSpecialtyRepositoryExtImpl(DataSource dataSource) {
-		// TODO Auto-generated constructor stub
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-		
 		this.insertSpecialty = new SimpleJdbcInsert(dataSource)
 	            .withTableName("specialties")
 	            .usingGeneratedKeyColumns("id");
