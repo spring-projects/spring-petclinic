@@ -51,7 +51,7 @@ public class VetRestController {
 	@RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Collection<Vet>> getAllVets(){
 		Collection<Vet> vets = new ArrayList<Vet>();
-		vets.addAll(this.clinicService.findVets());
+		vets.addAll(this.clinicService.findAllVets());
 		if (vets.isEmpty()){
 			return new ResponseEntity<Collection<Vet>>(HttpStatus.NOT_FOUND);
 		}
