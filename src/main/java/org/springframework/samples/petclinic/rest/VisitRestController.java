@@ -50,7 +50,7 @@ public class VisitRestController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Void> addVisit(@RequestBody @Valid Visit visit, BindingResult bindingResult, UriComponentsBuilder ucBuilder){
-		if(bindingResult.hasErrors() || (visit == null)){
+		if(bindingResult.hasErrors() || (visit == null) || (visit.getPet() == null)){
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		}
 		this.clinicService.saveVisit(visit);
@@ -61,7 +61,7 @@ public class VisitRestController {
 	
 	@RequestMapping(value = "/{visitId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Visit> updateVisit(@PathVariable("visitId") int visitId, @RequestBody @Valid Visit visit, BindingResult bindingResult){
-		if(bindingResult.hasErrors() || (visit == null)){
+		if(bindingResult.hasErrors() || (visit == null) || (visit.getPet() == null)){
 			return new ResponseEntity<Visit>(HttpStatus.BAD_REQUEST);
 		}
 		Visit currentVisit = this.clinicService.findVisitById(visitId);
