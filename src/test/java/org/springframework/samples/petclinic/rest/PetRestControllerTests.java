@@ -106,8 +106,6 @@ public class PetRestControllerTests {
     
     @Test
     public void testGetAllPetsSuccess() throws Exception {
-    	//pets.remove(0); 
-    	//pets.remove(1);
     	given(this.clinicService.findAllPets()).willReturn(pets);
         this.mockMvc.perform(get("/api/pets/")
         	.accept(MediaType.APPLICATION_JSON))
@@ -153,6 +151,7 @@ public class PetRestControllerTests {
     
     @Test
     public void testUpdatePetSuccess() throws Exception {
+    	given(this.clinicService.findPetById(3)).willReturn(pets.get(0));
     	Pet newPet = pets.get(0);
     	newPet.setName("Rosy I");
     	ObjectMapper mapper = new ObjectMapper();
