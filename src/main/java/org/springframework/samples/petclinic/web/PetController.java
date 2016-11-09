@@ -16,6 +16,7 @@
 package org.springframework.samples.petclinic.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
@@ -44,7 +45,7 @@ public class PetController {
     private final ClinicService clinicService;
 
     @Autowired
-    public PetController(ClinicService clinicService) {
+    public PetController(@Qualifier("ClinicService") ClinicService clinicService) {
         this.clinicService = clinicService;
     }
 

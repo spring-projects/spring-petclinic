@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.format.Formatter;
 import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.service.ClinicService;
@@ -43,7 +44,7 @@ public class PetTypeFormatter implements Formatter<PetType> {
 
 
     @Autowired
-    public PetTypeFormatter(ClinicService clinicService) {
+    public PetTypeFormatter(@Qualifier("ClinicService") ClinicService clinicService) {
         this.clinicService = clinicService;
     }
 

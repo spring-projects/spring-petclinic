@@ -21,6 +21,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.stereotype.Controller;
@@ -47,7 +48,7 @@ public class OwnerController {
 
 
     @Autowired
-    public OwnerController(ClinicService clinicService) {
+    public OwnerController(@Qualifier("ClinicService") ClinicService clinicService) {
         this.clinicService = clinicService;
     }
 

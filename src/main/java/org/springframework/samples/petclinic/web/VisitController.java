@@ -20,6 +20,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Visit;
 import org.springframework.samples.petclinic.service.ClinicService;
@@ -45,7 +46,7 @@ public class VisitController {
 
 
     @Autowired
-    public VisitController(ClinicService clinicService) {
+    public VisitController(@Qualifier("ClinicService") ClinicService clinicService) {
         this.clinicService = clinicService;
     }
 
