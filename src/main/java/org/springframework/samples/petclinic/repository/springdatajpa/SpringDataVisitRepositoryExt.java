@@ -6,6 +6,6 @@ import org.springframework.samples.petclinic.model.Visit;
 import org.springframework.samples.petclinic.repository.VisitRepositoryExt;
 
 @Qualifier("VisitRepositoryExt")
-public interface SpringDataVisitRepositoryExt extends VisitRepositoryExt, Repository<Visit, Integer> {
+public interface SpringDataVisitRepositoryExt extends VisitRepositoryExt, Repository<Visit, Integer>, VisitRepositoryExtOverride {
 
 }

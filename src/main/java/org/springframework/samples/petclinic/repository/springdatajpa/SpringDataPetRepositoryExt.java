@@ -11,7 +11,7 @@ import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.repository.PetRepositoryExt;
 
 @Qualifier("PetRepositoryExt")
-public interface SpringDataPetRepositoryExt extends PetRepositoryExt, Repository<Pet, Integer> {
+public interface SpringDataPetRepositoryExt extends PetRepositoryExt, Repository<Pet, Integer>, PetRepositoryExtOverride {
 	
     @Override
     @Query("SELECT ptype FROM PetType ptype ORDER BY ptype.name")
