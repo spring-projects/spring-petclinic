@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.service.ClinicService;
 
@@ -23,6 +24,7 @@ import static org.junit.Assert.assertEquals;
 public class PetTypeFormatterTests {
 
     @Mock
+    @Qualifier("ClinicService")
     private ClinicService clinicService;
 
     private PetTypeFormatter petTypeFormatter;

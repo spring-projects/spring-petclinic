@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.test.context.ContextConfiguration;
@@ -36,6 +37,7 @@ public class OwnerControllerTests {
     private OwnerController ownerController;
 
     @Autowired
+    @Qualifier("ClinicService")
     private ClinicService clinicService;
 
     private MockMvc mockMvc;

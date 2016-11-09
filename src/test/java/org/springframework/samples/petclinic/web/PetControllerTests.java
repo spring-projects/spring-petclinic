@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.format.support.FormattingConversionServiceFactoryBean;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
@@ -41,6 +42,7 @@ public class PetControllerTests {
     private FormattingConversionServiceFactoryBean formattingConversionServiceFactoryBean;
 
     @Autowired
+    @Qualifier("ClinicService")
     private ClinicService clinicService;
 
     private MockMvc mockMvc;

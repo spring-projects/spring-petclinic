@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.samples.petclinic.model.Specialty;
 import org.springframework.samples.petclinic.model.Vet;
@@ -33,6 +34,7 @@ public class VetControllerTests {
     private VetController vetController;
 
     @Autowired
+    @Qualifier("ClinicService")
     private ClinicService clinicService;
 
     private MockMvc mockMvc;
