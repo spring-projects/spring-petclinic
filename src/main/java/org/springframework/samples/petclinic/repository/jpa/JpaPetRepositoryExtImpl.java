@@ -4,13 +4,16 @@
 package org.springframework.samples.petclinic.repository.jpa;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
+import org.springframework.samples.petclinic.model.Visit;
 import org.springframework.samples.petclinic.repository.PetRepositoryExt;
 import org.springframework.stereotype.Repository;
 
@@ -33,7 +36,9 @@ public class JpaPetRepositoryExtImpl extends JpaPetRepositoryImpl implements Pet
 
 	@Override
 	public void delete(Pet pet) throws DataAccessException {
-		this.em.remove(this.em.contains(pet) ? pet : this.em.merge(pet));
+		String petId = pet.getId().toString();
+		this.em.createQuery("DELETE FROM Visit visit WHERE pet_id=" + petId).executeUpdate();
+		this.em.createQuery("DELETE FROM Pet pet WHERE id=" + petId).executeUpdate();
 	}
 
 }
