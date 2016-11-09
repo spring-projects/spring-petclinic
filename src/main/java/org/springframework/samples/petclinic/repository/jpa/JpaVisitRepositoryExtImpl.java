@@ -32,7 +32,8 @@ public class JpaVisitRepositoryExtImpl extends JpaVisitRepositoryImpl implements
 
 	@Override
 	public void delete(Visit visit) throws DataAccessException {
-		this.em.remove(this.em.contains(visit) ? visit : this.em.merge(visit));
+		String visitId = visit.getId().toString();
+		this.em.createQuery("DELETE FROM Visit visit WHERE id=" + visitId).executeUpdate();
 	}
 
 }
