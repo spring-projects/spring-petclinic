@@ -89,10 +89,4 @@ public class VisitController {
         }
     }
 
-    @RequestMapping(value = "/owners/*/pets/{petId}/visits", method = RequestMethod.GET)
-    public String showVisits(@PathVariable int petId, Map<String, Object> model) {
-        model.put("visits", this.clinicService.findPetById(petId).getVisits());
-        return "visitList";
-    }
-
 }

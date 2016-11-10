@@ -17,11 +17,9 @@ package org.springframework.samples.petclinic.repository;
 
 import java.util.Collection;
 
-import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.model.Owner;
 
 /**
@@ -51,7 +49,7 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
      * @return the {@link Owner} if found
      */
     @Query("SELECT owner FROM Owner owner left join fetch owner.pets WHERE owner.id =:id")
-    Owner findById(@Param("id") int id);
+    Owner findById(@Param("id") Integer id);
 
     /**
      * Save an {@link Owner} to the data store, either inserting or updating it.
