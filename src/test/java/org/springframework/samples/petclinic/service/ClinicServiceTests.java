@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * TestContext Framework: </p> <ul> <li><strong>Spring IoC container caching</strong> which spares us unnecessary set up
  * time between test execution.</li> <li><strong>Dependency Injection</strong> of test fixture instances, meaning that
  * we don't need to perform application context lookups. See the use of {@link Autowired @Autowired} on the <code>{@link
- * ClinicServiceSpringDataJpaTests#clinicService clinicService}</code> instance variable, which uses autowiring <em>by
+ * ClinicServiceTests#clinicService clinicService}</code> instance variable, which uses autowiring <em>by
  * type</em>. <li><strong>Transaction management</strong>, meaning each test method is executed in its own transaction,
  * which is automatically rolled back by default. Thus, even if tests insert or otherwise change database state, there
  * is no need for a teardown or cleanup script. <li> An {@link org.springframework.context.ApplicationContext
@@ -38,7 +38,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-public class ClinicServiceSpringDataJpaTests {
+public class ClinicServiceTests {
 
     @Autowired
     protected ClinicService clinicService;
