@@ -1,37 +1,29 @@
 'use strict';
 /* App Module */
 var petClinicApp = angular.module('petClinicApp', [
-    'ngRoute', 'layoutNav', 'layoutFooter', 'layoutWelcome',
+    'ui.router', 'layoutNav', 'layoutFooter', 'layoutWelcome',
     'ownerList', 'ownerDetails', 'ownerForm', 'petForm', 'visits', 'vetList']);
 
-petClinicApp.config(['$locationProvider', '$routeProvider', '$httpProvider', function(
-    $locationProvider, $routeProvider, $httpProvider) {
+petClinicApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', function(
+    $stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
 
     // safari turns to be lazy sending the Cache-Control header
     $httpProvider.defaults.headers.common["Cache-Control"] = 'no-cache';
 
     $locationProvider.hashPrefix('!');
 
-    $routeProvider.when('/welcome', {
-        template: '<layout-welcome></layout-welcome>'
-    }).when('/owners/:ownerId', {
-        template: '<owner-details></owner-details>'
-    }).when('/owners', {
-        template: '<owner-list></owner-list>'
-    }).when('/owners/:ownerId/edit', {
-        template: '<owner-form></owner-form>'
-    }).when('/new-owner', {
-        template: '<owner-form></owner-form>'
-    }).when('/owners/:ownerId/new-pet', {
-        template: '<pet-form></pet-form>'
-    }).when('/owners/:ownerId/pets/:petId', {
-        template: '<pet-form></pet-form>'
-    }).when('/owners/:ownerId/pets/:petId/visits', {
-        template: '<visits></visits>'
-    }).when('/vets', {
-        template: '<vet-list></vet-list>'
-    }).otherwise('/welcome');
-
+    $urlRouterProvider.otherwise('/welcome');
+    $stateProvider
+        .state('app', {
+            abstract: true,
+            url: '',
+            template: '<ui-view></ui-view>'
+        })
+        .state('welcome', {
+            parent: 'app',
+            url: '/welcome',
+            template: '<layout-welcome></layout-welcome>'
+        });
 }]);
 
 ['welcome', 'nav', 'footer'].forEach(function(c) {

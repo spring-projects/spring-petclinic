@@ -18,24 +18,41 @@
     <script th:src="@{/jquery/jquery.min.js}"></script>
     <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
 
-    <script th:src="@{/angular/angular.min.js}"></script>
-    <script th:src="@{/angular-route/angular-route.min.js}"></script>
+    <script th:src="@{/angular/angular.js}"></script>
+    <script th:src="@{/angular-ui-router/release/angular-ui-router.min.js}"></script>
 
     <script th:src="@{/scripts/app.js}"></script>
-    <script th:src="@{/scripts/owner-list/owner-list.component.js}"></script>
-    <script th:src="@{/scripts/owner-details/owner-details.component.js}"></script>
-    <script th:src="@{/scripts/owner-form/owner-form.component.js}"></script>
-    <script th:src="@{/scripts/pet-form/pet-form.component.js}"></script>
-    <script th:src="@{/scripts/visits/visits.component.js}"></script>
-    <script th:src="@{/scripts/vet-list/vet-list.component.js}"></script>
 
+    <script th:src="@{/scripts/owner-list/owner-list.js}"></script>
+    <script th:src="@{/scripts/owner-list/owner-list.controller.js}"></script>
+    <script th:src="@{/scripts/owner-list/owner-list.component.js}"></script>
+
+    <script th:src="@{/scripts/owner-details/owner-details.js}"></script>
+    <script th:src="@{/scripts/owner-details/owner-details.controller.js}"></script>
+    <script th:src="@{/scripts/owner-details/owner-details.component.js}"></script>
+
+    <script th:src="@{/scripts/owner-form/owner-form.js}"></script>
+    <script th:src="@{/scripts/owner-form/owner-form.controller.js}"></script>
+    <script th:src="@{/scripts/owner-form/owner-form.component.js}"></script>
+
+    <script th:src="@{/scripts/pet-form/pet-form.js}"></script>
+    <script th:src="@{/scripts/pet-form/pet-form.controller.js}"></script>
+    <script th:src="@{/scripts/pet-form/pet-form.component.js}"></script>
+
+    <script th:src="@{/scripts/visits/visits.js}"></script>
+    <script th:src="@{/scripts/visits/visits.controller.js}"></script>
+    <script th:src="@{/scripts/visits/visits.component.js}"></script>
+
+    <script th:src="@{/scripts/vet-list/vet-list.js}"></script>
+    <script th:src="@{/scripts/vet-list/vet-list.controller.js}"></script>
+    <script th:src="@{/scripts/vet-list/vet-list.component.js}"></script>
 </head>
 
 <body class="container">
 <layout-nav></layout-nav>
 <div class="container-fluid">
     <div class="container xd-container">
-        <div ng-view=""></div>
+        <div ui-view=""></div>
     </div>
 </div>
 <layout-footer></layout-footer>

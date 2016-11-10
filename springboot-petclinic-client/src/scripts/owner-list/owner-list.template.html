@@ -17,15 +17,15 @@
     </tr>
     </thead>
 
-    <tr ng-repeat="owner in $ctrl.owners | filter:$ctrl.query">
+    <tr ng-repeat="owner in $ctrl.owners | filter:$ctrl.query track by owner.id">
         <td>
-            <a href="#!/owners/{{owner.id}}">
+            <a ui-sref="ownerDetails({ ownerId: owner.id })">
                 {{owner.firstName}} {{owner.lastName}}
             </a>
         </td>
         <td class="hidden-sm hidden-xs">{{owner.address}}</td>
         <td>{{owner.city}}</td>
         <td>{{owner.telephone}}</td>
-        <td class="hidden-xs"><span ng-repeat="pet in owner.pets">{{pet.name + ' '}}</span></td>
+        <td class="hidden-xs"><span ng-repeat="pet in owner.pets track by pet.id">{{pet.name + ' '}}</span></td>
     </tr>
 </table>

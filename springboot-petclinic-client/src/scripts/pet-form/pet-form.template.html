@@ -28,7 +28,7 @@
         <label class="col-sm-2 control-label">Type</label>
         <div class="col-sm-6">
             <select class="form-control" ng-model="$ctrl.petTypeId">
-                <option ng-repeat="t in $ctrl.types" value="{{t.id}}">{{t.name}}</option>
+                <option ng-repeat="t in $ctrl.types track by t.id" value="{{t.id}}">{{t.name}}</option>
             </select>
         </div>
     </div>

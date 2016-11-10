@@ -19,10 +19,10 @@
     </tr>
     <tr>
         <td>
-            <a class="btn btn-default" href="#!/owners/{{$ctrl.owner.id}}/edit">Edit Owner</a>
+            <a class="btn btn-default" ui-sref="ownerEdit({ownerId: $ctrl.owner.id})">Edit Owner</a>
         </td>
         <td>
-            <a href="#!/owners/{{$ctrl.owner.id}}/new-pet" class="btn btn-default">Add New Pet</a>
+            <a ui-sref="petNew({ownerId: $ctrl.owner.id})" class="btn btn-default">Add New Pet</a>
         </td>
     </tr>
 </table>
@@ -30,11 +30,11 @@
 <h2>Pets and Visits</h2>
 
 <table class="table table-striped">
-    <tr ng-repeat="pet in $ctrl.owner.pets">
+    <tr ng-repeat="pet in $ctrl.owner.pets track by pet.id">
         <td valign="top">
             <dl class="dl-horizontal">
                 <dt>Name</dt>
-                <dd><a href="#!/owners/{{$ctrl.owner.id}}/pets/{{pet.id}}">{{pet.name}}</a></dd>
+                <dd><a ui-sref="petEdit({ownerId: $ctrl.owner.id, petId: pet.id})">{{pet.name}}</a></dd>
                 <dt>Birth Date</dt>
                 <dd>{{pet.birthDate | date:'yyyy MMM dd'}}</dd>
                 <dt>Type</dt>
@@ -49,21 +49,20 @@
                     <th>Description</th>
                 </tr>
                 </thead>
-                <tr ng-repeat="visit in pet.visits">
+                <tr ng-repeat="visit in pet.visits track by visit.id">
                     <td>{{visit.date | date:'yyyy MMM dd'}}</td>
                     <td>{{visit.description}}</td>
                 </tr>
                 <tr>
                     <td>
-                        <a href="#!/owners/{{$ctrl.owner.id}}/pets/{{pet.id}}">Edit Pet</a>
+                        <a ui-sref="petEdit({ownerId: $ctrl.owner.id, petId: pet.id})">Edit Pet</a>
                     </td>
                     <td>
-                        <a href="#!/owners/{{$ctrl.owner.id}}/pets/{{pet.id}}/visits">Add Visit</a>
+                        <a ui-sref="visits({ownerId: $ctrl.owner.id, petId: pet.id})">Add Visit</a>
                     </td>
                 </tr>
             </table>
         </td>
-
     </tr>
 </table>
 

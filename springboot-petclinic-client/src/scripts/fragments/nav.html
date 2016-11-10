@@ -11,11 +11,9 @@
         <div class="navbar-collapse collapse" id="main-navbar">
             <ul class="nav navbar-nav navbar-right">
                 <li class="active">
-                    <a href="#!/welcome"
-                       title="home page">
+                    <a ui-sref="welcome" title="home page">
                         <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
                         <span>Home</span>
-
                     </a>
                 </li>
 
@@ -24,18 +22,15 @@
                        aria-haspopup="true" aria-expanded="false">Owners<span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="#!/owners"><span class="glyphicon glyphicon-search" aria-hidden="true"></span><span> All</span></a></li>
-                        <li><a href="#!/new-owner"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span><span> Register</span></a></li>
+                        <li><a ui-sref="owners"><span class="glyphicon glyphicon-search" aria-hidden="true"></span><span> All</span></a></li>
+                        <li><a ui-sref="ownerNew"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span><span> Register</span></a></li>
                     </ul>
                 </li>
 
                 <li class="">
-                    <a href="#!/vets"
-                       title="veterinarians">
-
+                    <a ui-sref="vets" title="veterinarians">
                         <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
                         <span>Veterinarians</span>
-
                     </a>
                 </li>
             </ul>
