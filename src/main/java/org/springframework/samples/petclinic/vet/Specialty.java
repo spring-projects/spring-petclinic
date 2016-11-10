@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2014 the original author or authors.
+ * Copyright 2002-2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,23 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.springframework.samples.petclinic.vet;
 
-package org.springframework.samples.petclinic;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.samples.petclinic.model.NamedEntity;
 
 /**
- * PetClinic Spring Boot Application.
- * 
- * @author Dave Syer
+ * Models a {@link Vet Vet's} specialty (for example, dentistry).
  *
+ * @author Juergen Hoeller
  */
-@SpringBootApplication
-public class PetClinicApplication {
-
-    public static void main(String[] args) throws Exception {
-        SpringApplication.run(PetClinicApplication.class, args);
-    }
+@Entity
+@Table(name = "specialties")
+public class Specialty extends NamedEntity {
 
 }
