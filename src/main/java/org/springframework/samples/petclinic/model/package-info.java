@@ -1,5 +1,5 @@
 /**
- * The classes in this package represent PetClinic's business layer.
+ * The classes in this package represent utilities used by the domain.
  */
 package org.springframework.samples.petclinic.model;
 
