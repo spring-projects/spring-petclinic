@@ -325,6 +325,8 @@
                     <server>tomcat-development-server</server>
                     <port>9966</port>
                     <path>/petclinic</path>
+					<username>admin</username>
+					<password>password</password>
                 </configuration>
             </plugin>
             <plugin>
@@ -442,6 +444,58 @@
                 </dependency>
             </dependencies>
         </profile>
+		<profile>
+		  <!-- if ./exclusions.txt is present, use that as the exclusion list. Useful when skipping tests. -->
+		  <id>exclusions</id>
+		  <activation>
+			<file>
+			  <exists>exclusions.txt</exists>
+			</file>
+		  </activation>
+		  <build>
+			<plugins>
+			  <plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+				  <excludesFile>exclusions.txt</excludesFile>
+				</configuration>
+			  </plugin>
+			</plugins>
+		  </build>
+		  <dependencies>
+                <dependency>
+                    <groupId>org.hsqldb</groupId>
+                    <artifactId>hsqldb</artifactId>
+                    <scope>runtime</scope>
+                </dependency>
+            </dependencies>
+		</profile>
+		<profile>
+		  <!-- if ./inclusions.txt is present, use that as the inclusion list. Useful when skipping tests. -->
+		  <id>inclusions</id>
+		  <activation>
+			<file>
+			  <exists>inclusions.txt</exists>
+			</file>
+		  </activation>
+		  <build>
+			<plugins>
+			  <plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+				  <includesFile>inclusions.txt</includesFile>
+				</configuration>
+			  </plugin>
+			</plugins>
+		  </build>
+		  <dependencies>
+                <dependency>
+                    <groupId>org.hsqldb</groupId>
+                    <artifactId>hsqldb</artifactId>
+                    <scope>runtime</scope>
+                </dependency>
+            </dependencies>
+		</profile>
    </profiles>
 
     <url>demopetclinic</url>
