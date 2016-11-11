@@ -49,6 +49,7 @@ node {
 	    //archiveArtifacts artifacts: '**/target/classes/**', fingerprint: true
 	
 	stage 'Deploy'
+		def workspacePwd = pwd()
 		sh "${mvnHome}/bin/mvn tomcat7:deploy-only -DskipTests=true -Dmaven.tomcat.charset='UTF-8' -Dmaven.tomcat.path='/petclinic' -Dmaven.tomcat.update=true -Dmaven.tomcat.url='http://localhost:9966/manager/text' -DwarFile='${workspacePwd}/target/petclinic.war'"
 
 		input 'Is it ok ?'
