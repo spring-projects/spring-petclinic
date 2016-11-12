@@ -4,9 +4,11 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-
-    <bean class="org.mockito.Mockito" factory-method="mock">
+    <bean id="ClinicService" class="org.mockito.Mockito" factory-method="mock">
         <constructor-arg value="org.springframework.samples.petclinic.service.ClinicService"/>
+    </bean>
+    <bean id="ClinicServiceExt" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.springframework.samples.petclinic.service.ClinicServiceExt"/>
     </bean>
 
 </beans>
