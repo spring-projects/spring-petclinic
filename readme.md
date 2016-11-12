@@ -69,8 +69,8 @@ Otherwise the GitHub [spring-petclinic](https://github.com/spring-petclinic) is 
 
 | Branch or fork | Main technologies |
 |------|-------|
-| [legacy](./spring-petclinic/tree/legacy) | Spring Framework, JSP pages, 3 persistences layer: JDBC, JPA and Spring Data JPA |
-| [javaconfig](./spring-petclinic/tree/javaconfig) | Same framewoks as the [legacy](./spring-petclinic/tree/legacy) branch but with Java Configuration instead of XML |
+| [legacy](https://github.com/spring-projects/spring-petclinic/tree/legacy) | Spring Framework, JSP pages, 3 persistences layer: JDBC, JPA and Spring Data JPA |
+| [javaconfig](https://github.com/spring-projects/spring-petclinic/tree/javaconfig) | Same framewoks as the [legacy](https://github.com/spring-projects/spring-petclinic/tree/legacy) branch but with Java Configuration instead of XML |
 | [spring-petclinic-angular1](https://github.com/spring-petclinic/spring-petclinic-angular1) | AngularJS 1, Spring Boot and Spring Data JPA |
 
 
