@@ -81,7 +81,6 @@ public class PetTypeRestController {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
 		this.clinicService.deletePetType(petType);
-		// TODO  delete error - FK etc.
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 

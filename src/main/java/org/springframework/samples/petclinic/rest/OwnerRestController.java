@@ -71,7 +71,8 @@ public class OwnerRestController {
 	
 	@RequestMapping(value = "/{ownerId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Owner> getOwner(@PathVariable("ownerId") int ownerId){
-		Owner owner = this.clinicService.findOwnerById(ownerId);
+		Owner owner = null;
+		owner = this.clinicService.findOwnerById(ownerId);
 		if(owner == null){
 			return new ResponseEntity<Owner>(HttpStatus.NOT_FOUND);
 		}
@@ -115,7 +116,6 @@ public class OwnerRestController {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
 		this.clinicService.deleteOwner(owner);
-		// TODO  delete error - FK etc.
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 

@@ -102,7 +102,6 @@ public class VetRestController {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
 		this.clinicService.deleteVet(vet);
-		// TODO  delete error - FK etc.
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 	
