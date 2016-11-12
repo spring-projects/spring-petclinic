@@ -16,10 +16,10 @@
 
 package org.springframework.samples.petclinic.repository.springdatajpa;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.repository.Repository;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.springframework.samples.petclinic.model.Specialty;
-import org.springframework.samples.petclinic.repository.SpecialtyRepositoryExt;
 import org.springframework.samples.petclinic.repository.springdatajpa.SpecialtyRepositoryExtOverride;
 
 /**
@@ -27,7 +27,20 @@ import org.springframework.samples.petclinic.repository.springdatajpa.SpecialtyR
  *
  */
 
-@Qualifier("SpecialtyRepositoryExt")
-public interface SpringDataSpecialtyRepositoryExt extends SpecialtyRepositoryExt, Repository<Specialty, Integer>, SpecialtyRepositoryExtOverride {
+public class SpringDataSpecialtyRepositoryExtImpl implements SpecialtyRepositoryExtOverride {
+	
+	@PersistenceContext
+    private EntityManager em;
+
+	@Override
+	public void delete(Specialty specialty) {
+		String specId = specialty.getId().toString();
+		this.em.createNativeQuery("DELETE FROM vet_specialties WHERE specialty_id=" + specId).executeUpdate();
+		this.em.createQuery("DELETE FROM Specialty specialty WHERE id=" + specId).executeUpdate();
+		if (em.contains(specialty)) {
+			em.remove(specialty);
+		}
+
+	}
 
 }

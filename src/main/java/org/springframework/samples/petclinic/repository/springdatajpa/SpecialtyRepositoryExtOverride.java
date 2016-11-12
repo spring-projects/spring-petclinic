@@ -16,17 +16,15 @@
 
 package org.springframework.samples.petclinic.repository.springdatajpa;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.repository.Repository;
-import org.springframework.samples.petclinic.model.PetType;
-import org.springframework.samples.petclinic.repository.PetTypeRepositoryExt;
+import org.springframework.samples.petclinic.model.Specialty;
 
 /**
  * @author Vitaliy Fedoriv
  *
  */
 
-@Qualifier("PetTypeRepositoryExt")
-public interface SpringDataPetTypeRepositoryExt extends PetTypeRepositoryExt, Repository<PetType, Integer>, PetTypeRepositoryExtOverride {
+public interface SpecialtyRepositoryExtOverride {
+	
+	public void delete(Specialty specialty);
 
 }
