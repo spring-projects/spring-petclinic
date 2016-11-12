@@ -62,6 +62,18 @@ File -> Import -> Maven -> Existing Maven project
 |Properties Files | [application.properties](https://github.com/spring-projects/spring-petclinic/blob/master/src/main/resources) |
 |Caching | EhCache [CacheConfig](https://github.com/spring-projects/spring-petclinic/blob/master/src/main/java/org/springframework/samples/petclinic/config/CacheConfig.java) |
 
+## Interesting Spring Petclinic branches and forks
+
+The Spring Petclinic master branch is based on Spring Boot and Thymeleaf. But other branches may interest you. 
+Otherwise the GitHub [spring-petclinic](https://github.com/spring-petclinic) is hosting Spring Petclinic forks.
+
+| Branch or fork | Main technologies |
+|------|-------|
+| [legacy](./spring-petclinic/tree/legacy) | Spring Framework, JSP pages, 3 persistences layer: JDBC, JPA and Spring Data JPA |
+| [javaconfig](./spring-petclinic/tree/javaconfig) | Same framewoks as the [legacy](./spring-petclinic/tree/legacy) branch but with Java Configuration instead of XML |
+| [spring-petclinic-angular1](https://github.com/spring-petclinic/spring-petclinic-angular1) | AngularJS 1, Spring Boot and Spring Data JPA |
+
+
 ## Interaction with other open source projects
 
 One of the best parts about working on the Spring Petclinic application is that we have the opportunity to work in direct contact with many Open Source projects. We found some bugs/suggested improvements on various topics such as Spring, Spring Data, Bean Validation and even Eclipse! In many cases, they've been fixed/implemented in just a few days.
