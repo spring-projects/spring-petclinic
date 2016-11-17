@@ -64,10 +64,16 @@ File -> Import -> Maven -> Existing Maven project
 
 ## Interesting Spring Petclinic branches and forks
 
-The Spring Petclinic master branch is based on Spring Boot and Thymeleaf. But other branches may interest you. 
-Otherwise the GitHub [spring-petclinic](https://github.com/spring-petclinic) project is hosting Spring Petclinic forks.
+The Spring Petclinic master branch in the main
+[spring-projects](https://github.com/spring-projects/spring-petclinic)
+GitHub org is the "canonical" implementation, currently based on
+Spring Boot and Thymeleaf. There are quite a few forks in a special
+GitHub org [spring-petclinic](https://github.com/spring-petclinic). If
+you have a special interest in a different technology stack that could
+be used to implement the Pet Clinic then please join the community
+there.
 
-| Branch or fork | Main technologies |
+| Link | Main technologies |
 |----------------|-------------------|
 | [spring-framework-petclinic](https://github.com/spring-petclinic/spring-framework-petclinic) | Spring Framework XML configuration, JSP pages, 3 persistence layers: JDBC, JPA and Spring Data JPA |
 | [javaconfig branch](https://github.com/spring-petclinic/spring-framework-petclinic/tree/javaconfig) | Same frameworks as the [spring-framework-petclinic](https://github.com/spring-petclinic/spring-framework-petclinic) but with Java Configuration instead of XML |
