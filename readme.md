@@ -65,14 +65,15 @@ File -> Import -> Maven -> Existing Maven project
 ## Interesting Spring Petclinic branches and forks
 
 The Spring Petclinic master branch is based on Spring Boot and Thymeleaf. But other branches may interest you. 
-Otherwise the GitHub [spring-petclinic](https://github.com/spring-petclinic) is hosting Spring Petclinic forks.
+Otherwise the GitHub [spring-petclinic](https://github.com/spring-petclinic) project is hosting Spring Petclinic forks.
 
 | Branch or fork | Main technologies |
-|------|-------|
-| [legacy](https://github.com/spring-projects/spring-petclinic/tree/legacy) | Spring Framework, JSP pages, 3 persistences layer: JDBC, JPA and Spring Data JPA |
-| [javaconfig](https://github.com/spring-projects/spring-petclinic/tree/javaconfig) | Same framewoks as the [legacy](https://github.com/spring-projects/spring-petclinic/tree/legacy) branch but with Java Configuration instead of XML |
-| [spring-petclinic-angular1](https://github.com/spring-petclinic/spring-petclinic-angular1) | AngularJS 1, Spring Boot and Spring Data JPA |
+|----------------|-------------------|
+| [spring-framework-petclinic](https://github.com/spring-petclinic/spring-framework-petclinic) | Spring Framework XML configuration, JSP pages, 3 persistence layers: JDBC, JPA and Spring Data JPA |
+| [javaconfig branch](https://github.com/spring-petclinic/spring-framework-petclinic/tree/javaconfig) | Same frameworks as the [spring-framework-petclinic](https://github.com/spring-petclinic/spring-framework-petclinic) but with Java Configuration instead of XML |
+| [spring-petclinic-angular1](https://github.com/spring-petclinic/spring-petclinic-angular1) | AngularJS 1.x, Spring Boot and Spring Data JPA |
 | [spring-petclinic-microservices](https://github.com/spring-petclinic/spring-petclinic-microservices) | Distributed version of Spring Petclinic built with Spring Cloud |
+| [spring-petclinic-reactjs](https://github.com/spring-petclinic/spring-petclinic-reactjs) | ReactJS (with TypeScript) and Spring Boot |
 
 
 ## Interaction with other open source projects
@@ -91,7 +92,7 @@ Here is a list of them:
 
 The [issue tracker](https://github.com/spring-projects/spring-petclinic/issues) is the preferred channel for bug reports, features requests and submitting pull requests.
 
-For pull requests, editor preferences are available in the [editor config](https://github.com/spring-projects/spring-petclinic/blob/master/.editorconfig) for easy use in common text editors. Read more and download plugins at <http://editorconfig.org>.
+For pull requests, editor preferences are available in the [editor config](.editorconfig) for easy use in common text editors. Read more and download plugins at <http://editorconfig.org>.
 
 
 
