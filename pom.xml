@@ -5,12 +5,12 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.springframework.samples</groupId>
   <artifactId>springboot-petclinic</artifactId>
-  <version>1.4.1</version>
+  <version>1.4.2</version>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>1.4.1.RELEASE</version>
+    <version>1.4.2.RELEASE</version>
   </parent>
   <name>petclinic</name>
 
@@ -25,6 +25,7 @@
     <webjars-bootstrap.version>3.3.6</webjars-bootstrap.version>
     <webjars-jquery-ui.version>1.11.4</webjars-jquery-ui.version>
     <webjars-jquery.version>2.2.4</webjars-jquery.version>
+    <wro4j.version>1.8.0</wro4j.version>
 
     <thymeleaf.version>3.0.2.RELEASE</thymeleaf.version>
     <thymeleaf-layout-dialect.version>2.0.4</thymeleaf-layout-dialect.version>
@@ -169,78 +170,31 @@
       </plugin>
 
       <plugin>
-        <!-- right now lesscss maven plugin does NOT support @Import from 
-          classpath https://github.com/marceloverdijk/lesscss-maven-plugin/issues/72 
-          workaround here will be unpacking the bootstrap on-the-fly remove this plugin 
-          config when the issue is resolved OR a better resolution is found -->
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
+        <groupId>ro.isdc.wro4j</groupId>
+        <artifactId>wro4j-maven-plugin</artifactId>
+        <version>${wro4j.version}</version>
         <executions>
           <execution>
-            <id>unpack</id>
-            <phase>process-resources</phase>
+            <phase>generate-resources</phase>
             <goals>
-              <goal>unpack</goal>
+              <goal>run</goal>
             </goals>
-            <configuration>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>org.webjars</groupId>
-                  <artifactId>bootstrap</artifactId>
-                  <version>${webjars-bootstrap.version}</version>
-                  <overWrite>false</overWrite>
-                  <outputDirectory>${project.basedir}/target/less
-                  </outputDirectory>
-                  <includes>**/*.less</includes>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
           </execution>
         </executions>
-      </plugin>
-
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>copy-resources</id>
-            <phase>validate</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.directory}/less</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>src/main/less</directory>
-                  <filtering>true</filtering>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
-        <groupId>org.lesscss</groupId>
-        <artifactId>lesscss-maven-plugin</artifactId>
-        <version>1.7.0.1.1</version>
         <configuration>
-          <sourceDirectory>${project.build.directory}/less</sourceDirectory>
-          <outputDirectory>${project.build.directory}/classes/static/resources/css</outputDirectory>
-          <compress>true</compress>
-          <includes>
-            <include>petclinic.less</include>
-          </includes>
+          <wroManagerFactory>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory</wroManagerFactory>
+          <cssDestinationFolder>${project.build.directory}/classes/static/resources/css</cssDestinationFolder>
+          <wroFile>${basedir}/src/main/wro/wro.xml</wroFile>
+          <extraConfigFile>${basedir}/src/main/wro/wro.properties</extraConfigFile>
+          <contextFolder>${basedir}/src/main/less</contextFolder>
         </configuration>
-        <executions>
-          <execution>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>compile</goal>
-            </goals>
-          </execution>
-        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>bootstrap</artifactId>
+            <version>${webjars-bootstrap.version}</version>
+          </dependency>
+        </dependencies>
       </plugin>
     </plugins>
   </build>
