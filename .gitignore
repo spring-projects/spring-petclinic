@@ -1,3 +1,9 @@
+.classpath
+.project
+.settings/
+target/
+.gradle
+build/
 #*
 .#*
 *~
