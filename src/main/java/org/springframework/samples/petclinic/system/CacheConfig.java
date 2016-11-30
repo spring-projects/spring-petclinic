@@ -27,17 +27,14 @@ class CacheConfig {
 
     @Bean
     public JCacheManagerCustomizer cacheManagerCustomizer() {
-        return new JCacheManagerCustomizer() {
-            @Override
-            public void customize(CacheManager cacheManager) {
-                CacheConfiguration<Object, Object> config = CacheConfigurationBuilder
-                    .newCacheConfigurationBuilder(Object.class, Object.class,
-                        ResourcePoolsBuilder.newResourcePoolsBuilder()
-                            .heap(100, EntryUnit.ENTRIES))
-                    .withExpiry(Expirations.timeToLiveExpiration(Duration.of(60, TimeUnit.SECONDS)))
-                    .build();
-                cacheManager.createCache("vets", Eh107Configuration.fromEhcacheCacheConfiguration(config));
-            }
+        return cacheManager -> {
+            CacheConfiguration<Object, Object> config = CacheConfigurationBuilder
+                .newCacheConfigurationBuilder(Object.class, Object.class,
+                    ResourcePoolsBuilder.newResourcePoolsBuilder()
+                        .heap(100, EntryUnit.ENTRIES))
+                .withExpiry(Expirations.timeToLiveExpiration(Duration.of(60, TimeUnit.SECONDS)))
+                .build();
+            cacheManager.createCache("vets", Eh107Configuration.fromEhcacheCacheConfiguration(config));
         };
     }
 
