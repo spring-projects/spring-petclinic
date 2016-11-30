@@ -115,7 +115,7 @@ public class Visit extends BaseEntity {
     /**
      * Setter for property pet id.
      *
-     * @param pet New value of property pet id.
+     * @param petId New value of property pet id.
      */
     public void setPetId(Integer petId) {
         this.petId = petId;
