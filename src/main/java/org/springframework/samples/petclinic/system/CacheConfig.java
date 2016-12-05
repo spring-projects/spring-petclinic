@@ -1,7 +1,6 @@
 package org.springframework.samples.petclinic.system;
 
 import java.util.concurrent.TimeUnit;
-import javax.cache.CacheManager;
 
 import org.ehcache.config.CacheConfiguration;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
