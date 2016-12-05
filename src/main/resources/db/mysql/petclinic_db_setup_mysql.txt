@@ -9,11 +9,9 @@
 --------------------------------------------------------------------------------
 
 1) Download and install the MySQL database (e.g., MySQL Community Server 5.1.x),
-   which can be found here: http://dev.mysql.com/downloads/
+   which can be found here: http://dev.mysql.com/downloads/. Or run the 
+   "docker-compose.yml" from the root of the project (if you have docker installed
+   locally).
 
-2) Add the MySQL JDBC driver  to your classpath.
-
-3) Set "database=mysql" in "application.properties"
-
-4) Create the PetClinic database and user by executing the "db/mysql/{schema,data}.sql"
-   scripts (or set "spring.datasource.initialize=true" the first time you run the app.
+2) Create the PetClinic database and user by executing the "db/mysql/{schema,data}.sql"
+   scripts (or set "spring.datasource.initialize=true" the first time you run the app).
