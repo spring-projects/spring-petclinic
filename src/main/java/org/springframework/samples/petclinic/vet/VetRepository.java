@@ -43,5 +43,4 @@ public interface VetRepository extends Repository<Vet, Integer> {
     @CacheResult(cacheName = "vets")
     Collection<Vet> findAll() throws DataAccessException;
 
-
 }
