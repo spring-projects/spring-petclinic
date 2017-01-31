@@ -5,12 +5,12 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
-  <version>1.4.2</version>
+  <version>1.5.1</version>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>1.4.2.RELEASE</version>
+    <version>1.5.1.RELEASE</version>
   </parent>
   <name>petclinic</name>
 
@@ -28,7 +28,6 @@
     <wro4j.version>1.8.0</wro4j.version>
 
     <thymeleaf.version>3.0.2.RELEASE</thymeleaf.version>
-    <thymeleaf-layout-dialect.version>2.0.4</thymeleaf-layout-dialect.version>
 
     <cobertura.version>2.7</cobertura.version>
 
@@ -57,8 +56,8 @@
       <artifactId>spring-boot-starter-thymeleaf</artifactId>
       <exclusions>
       	<exclusion>
-      		<groupId>org.codehaus.groovy</groupId>
-      		<artifactId>groovy</artifactId>
+      		<groupId>nz.net.ultraq.thymeleaf</groupId>
+      		<artifactId>thymeleaf-layout-dialect</artifactId>
       	</exclusion>
       </exclusions>
     </dependency>
