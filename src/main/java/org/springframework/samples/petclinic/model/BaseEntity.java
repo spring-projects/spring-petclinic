@@ -33,7 +33,7 @@ import javax.persistence.MappedSuperclass;
 public class BaseEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Integer id;
+    private Integer id;
 
     public Integer getId() {
         return id;
