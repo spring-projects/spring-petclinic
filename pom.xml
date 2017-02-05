@@ -135,6 +135,20 @@
       <artifactId>spring-boot-devtools</artifactId>
       <scope>runtime</scope>
     </dependency>
+
+	<dependency>
+      <groupId>org.spockframework</groupId>
+      <artifactId>spock-core</artifactId>
+      <version>1.1-groovy-2.4-rc-3</version>
+      <scope>test</scope>
+    </dependency>	
+	
+	<dependency>
+		<groupId>org.codehaus.groovy</groupId>
+		<artifactId>groovy-all</artifactId>
+		<version>2.4.7</version>
+		<scope>test</scope>
+	</dependency>
   </dependencies>
 
   <build>
@@ -235,6 +249,19 @@
         </configuration>
       </plugin>
 
+	  <plugin>
+		  <groupId>org.codehaus.gmavenplus</groupId>
+		  <artifactId>gmavenplus-plugin</artifactId>
+		  <version>1.5</version>
+		  <executions>
+			<execution>
+			  <goals>
+                <goal>compile</goal>
+                <goal>testCompile</goal>
+			  </goals>
+			</execution>
+		  </executions>
+	  </plugin>
     </plugins>
   </build>
   <reporting>
