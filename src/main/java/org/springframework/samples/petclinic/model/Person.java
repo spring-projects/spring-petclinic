@@ -30,18 +30,18 @@ public class Person extends BaseEntity {
 
     @Column(name = "first_name")
     @NotEmpty
-    protected String firstName;
+    protected String firstNom;
 
     @Column(name = "last_name")
     @NotEmpty
     protected String lastName;
 
     public String getFirstName() {
-        return this.firstName;
+        return this.firstNom;
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.firstNom = firstName;
     }
 
     public String getLastName() {
