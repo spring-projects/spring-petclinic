@@ -105,6 +105,7 @@ class PetController {
         if (result.hasErrors()) {
             pet.setOwner(owner);
             model.put("pet", pet);
+            model.put("owner", owner);
             return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
         } else {
             owner.addPet(pet);
