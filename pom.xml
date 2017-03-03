@@ -15,7 +15,6 @@
   <name>petclinic</name>
 
   <properties>
-
     <!-- Generic properties -->
     <java.version>1.8</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -30,8 +29,15 @@
     <thymeleaf.version>3.0.2.RELEASE</thymeleaf.version>
     <thymeleaf-layout-dialect.version>2.0.4</thymeleaf-layout-dialect.version>
 
+	<!--
     <cobertura.version>2.7</cobertura.version>
-
+	-->
+	
+	<!-- Sonar properties -->
+    <sonar.host.url>http://sonarqube.kcura.corp/</sonar.host.url>
+	<sonar.exclusions>pom.xml</sonar.exclusions>
+	<sonar.sources>src/main</sonar.sources>
+	<sonar.jacoco.reportPaths>target/coverage-reports/jacoco-unit.exec</sonar.jacoco.reportPaths>
   </properties>
   
   <!--
@@ -60,18 +66,22 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
+	
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-cache</artifactId>
     </dependency>
+	
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-jpa</artifactId>
     </dependency>
+	
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
+	
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -82,6 +92,7 @@
       	</exclusion>
       </exclusions>
     </dependency>
+	
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
@@ -94,6 +105,7 @@
       <artifactId>hsqldb</artifactId>
       <scope>runtime</scope>
     </dependency>
+	
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
@@ -105,6 +117,7 @@
       <groupId>javax.cache</groupId>
       <artifactId>cache-api</artifactId>
     </dependency>
+	
     <dependency>
       <groupId>org.ehcache</groupId>
       <artifactId>ehcache</artifactId>
@@ -115,16 +128,19 @@
       <groupId>org.webjars</groupId>
       <artifactId>webjars-locator</artifactId>
     </dependency>
+	
     <dependency>
       <groupId>org.webjars</groupId>
       <artifactId>jquery</artifactId>
       <version>${webjars-jquery.version}</version>
     </dependency>
+	
     <dependency>
       <groupId>org.webjars</groupId>
       <artifactId>jquery-ui</artifactId>
       <version>${webjars-jquery-ui.version}</version>
     </dependency>
+	
     <dependency>
       <groupId>org.webjars</groupId>
       <artifactId>bootstrap</artifactId>
@@ -151,6 +167,13 @@
 		<version>2.4.7</version>
 		<scope>test</scope>
 	</dependency>
+
+    <dependency>
+      <groupId>org.sonarsource.java</groupId>
+      <artifactId>sonar-jacoco-listeners</artifactId>
+      <version>3.8</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -176,26 +199,30 @@
           </execution>
         </executions>
       </plugin>
+	  
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>cobertura-maven-plugin</artifactId>
-        <version>${cobertura.version}</version>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.7.9</version>
         <configuration>
-          <check />
+          <destFile>${basedir}/target/coverage-reports/jacoco-unit.exec</destFile>
+          <dataFile>${basedir}/target/coverage-reports/jacoco-unit.exec</dataFile>
         </configuration>
         <executions>
           <execution>
+            <id>jacoco-initialize</id>
             <goals>
-              <goal>clean</goal>
-              <goal>check</goal>
+              <goal>prepare-agent</goal>
             </goals>
           </execution>
         </executions>
       </plugin>
-
-      <!-- Spring Boot Actuator displays build-related information if a git.properties 
-        file is present at the classpath -->
-		<!--
+ 
+      <!-- 
+      Spring Boot Actuator displays build-related information if a git.properties 
+      file is present at the classpath
+      -->
+      <!--
       <plugin>
         <groupId>pl.project13.maven</groupId>
         <artifactId>git-commit-id-plugin</artifactId>
@@ -214,7 +241,7 @@
 		  <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
         </configuration>
       </plugin>
-	  -->
+      -->
 
       <plugin>
         <groupId>ro.isdc.wro4j</groupId>
@@ -279,23 +306,6 @@
           </execution>
         </executions>
       </plugin>
-	</plugins>
-  </build>
-  <reporting>
-    <plugins>
-      <!-- integrate maven-cobertura-plugin to project site -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>cobertura-maven-plugin</artifactId>
-        <version>${cobertura.version}</version>
-        <configuration>
-          <formats>
-            <format>html</format>
-          </formats>
-          <check />
-        </configuration>
-      </plugin>
     </plugins>
-  </reporting>
-
+  </build>
 </project>
