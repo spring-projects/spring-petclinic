@@ -15,7 +15,7 @@ pipeline {
         }
         
         stage("build") {
-            agent { label: "build" }
+            agent { label "build" }
             steps {
                 sh "mvn clean package"
             }
