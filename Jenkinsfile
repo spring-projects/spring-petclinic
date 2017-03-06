@@ -40,7 +40,7 @@ pipeline {
                         }
                     },
                     "performance-tests": {
-                        node("build") {
+                        node("test") {
                             echo "performance tests"
                             sleep 20
                         }
