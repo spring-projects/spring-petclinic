@@ -1,11 +1,7 @@
 pipeline {
     
     agent any
-    
-    tools {
-        maven "M3"
-    }
-    
+
     stages {
         
         stage("prepare") {
@@ -15,10 +11,17 @@ pipeline {
         }
         
         stage("build") {
+
             agent { label "build" }
+
+            tools {
+                maven "M3"
+            }
+
             steps {
                 sh "mvn clean package"
             }
+
             post {
                 always {
                     archive "target/*.jar"
@@ -35,8 +38,10 @@ pipeline {
                     "static-analysis" : {
                         node("build") {
                             unstash "sources"
-                            withSonarQubeEnv('sonarqube') {
-                                sh 'mvn sonar:sonar'
+                            withMaven("M3") {
+                                withSonarQubeEnv('sonarqube') {
+                                    sh 'mvn sonar:sonar'
+                                }
                             }
                         }
                     },
