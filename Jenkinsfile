@@ -28,6 +28,7 @@ pipeline {
         
         stage("tests") {
             steps {
+
                 parallel (
                     "static-analysis" : {
                         node("build") {
@@ -42,19 +43,26 @@ pipeline {
                     "performance-tests": {
                         node("test") {
                             echo "performance tests"
+                            sh "ls -rtl"
                             sleep 20
                         }
                     }
-                )            
+                )
             }
         }
-        
+
+        stage("user-interaction") {
+            agent none
+            steps {
+                input "Deploy ?"
+            }
+        }
+
         stage("deploy") {
             agent { label "ssh" }
             steps {
                 unstash name:"binary"
                 sh "ls -rtl target/"
-                input "Deploy ?"                
             }
         }
     }
