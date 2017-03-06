@@ -38,7 +38,7 @@ pipeline {
                     "static-analysis" : {
                         node("build") {
                             unstash "sources"
-                            withMaven("M3") {
+                            withMaven(maven:"M3") {
                                 withSonarQubeEnv('sonarqube') {
                                     sh 'mvn sonar:sonar'
                                 }
