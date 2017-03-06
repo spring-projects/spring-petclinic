@@ -4,12 +4,6 @@ pipeline {
 
     stages {
         
-        stage("prepare") {
-            steps {
-                checkout scm
-            }
-        }
-        
         stage("build") {
 
             agent { label "build" }
