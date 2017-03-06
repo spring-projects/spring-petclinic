@@ -1,6 +1,6 @@
 pipeline {
-    
-    agent any
+
+    agent none
 
     stages {
         
@@ -28,26 +28,25 @@ pipeline {
         
         stage("tests") {
             steps {
-
-                parallel (
-                    "static-analysis" : {
-                        node("build") {
-                            unstash "sources"
-                            withMaven(maven:"M3") {
-                                withSonarQubeEnv('sonarqube') {
-                                    sh 'mvn sonar:sonar'
+                    parallel (
+                            "static-analysis": {
+                                node("build") {
+                                    unstash "sources"
+                                    withMaven(maven:"M3") {
+                                        withSonarQubeEnv('sonarqube') {
+                                            sh 'mvn sonar:sonar'
+                                        }
+                                    }
+                                }
+                            },
+                            "performance-tests": {
+                                node("test") {
+                                    echo "performance tests"
+                                    sh "ls -rtl"
+                                    sleep 20
                                 }
                             }
-                        }
-                    },
-                    "performance-tests": {
-                        node("test") {
-                            echo "performance tests"
-                            sh "ls -rtl"
-                            sleep 20
-                        }
-                    }
-                )
+                    )
             }
         }
 
