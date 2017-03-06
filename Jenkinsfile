@@ -1,6 +1,6 @@
 pipeline {
     
-    agent { label "build" }
+    agent any
     
     tools {
         maven "M3"
@@ -15,6 +15,7 @@ pipeline {
         }
         
         stage("build") {
+            agent { label: "build" }
             steps {
                 sh "mvn clean package"
             }
@@ -22,7 +23,8 @@ pipeline {
                 always {
                     archive "target/*.jar"
                     junit 'target/surefire-reports/*.xml'
-                    stash includes:"target/*.jar", name: "binary"
+                    stash includes: "**", name: "sources"
+                    stash includes: "target/*.jar", name: "binary"
                 }
             } 
         }
@@ -31,20 +33,28 @@ pipeline {
             steps {
                 parallel (
                     "static-analysis" : {
-                        withSonarQubeEnv('sonarqube') {
-                            sh 'mvn sonar:sonar'
+                        node("build") {
+                            unstash "sources"
+                            withSonarQubeEnv('sonarqube') {
+                                sh 'mvn sonar:sonar'
+                            }
                         }
                     },
                     "performance-tests": {
-                        echo "performance tests"
+                        node("build") {
+                            echo "performance tests"
+                            sleep 20
+                        }
                     }
                 )            
             }
         }
         
         stage("deploy") {
+            agent { label "ssh" }
             steps {
                 unstash name:"binary"
+                sh "ls -rtl target/"
                 input "Deploy ?"                
             }
         }
