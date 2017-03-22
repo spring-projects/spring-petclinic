@@ -43,14 +43,14 @@ public class ClinicServiceImpl implements ClinicService {
 
     private PetRepository petRepository;
     private VetRepository vetRepository;
-    private OwnerRepository ownerRepository;
+    private OwnerRepository ownerRepo;
     private VisitRepository visitRepository;
 
     @Autowired
     public ClinicServiceImpl(PetRepository petRepository, VetRepository vetRepository, OwnerRepository ownerRepository, VisitRepository visitRepository) {
         this.petRepository = petRepository;
         this.vetRepository = vetRepository;
-        this.ownerRepository = ownerRepository;
+        this.ownerRepo = ownerRepository;
         this.visitRepository = visitRepository;
     }
 
@@ -63,19 +63,19 @@ public class ClinicServiceImpl implements ClinicService {
     @Override
     @Transactional(readOnly = true)
     public Owner findOwnerById(int id) throws DataAccessException {
-        return ownerRepository.findById(id);
+        return ownerRepo.findById(id);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Collection<Owner> findOwnerByLastName(String lastName) throws DataAccessException {
-        return ownerRepository.findByLastName(lastName);
+        return ownerRepo.findByLastName(lastName);
     }
 
     @Override
     @Transactional
     public void saveOwner(Owner owner) throws DataAccessException {
-        ownerRepository.save(owner);
+        ownerRepo.save(owner);
     }
 
 
