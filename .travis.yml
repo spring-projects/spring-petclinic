@@ -18,6 +18,7 @@ install:
   - pip install ansible
   - pip install docker-py
   - pip install boto
+  - pip install troposphere
   - printf '[defaults]\nroles_path=../' >ansible.cfg
   - ansible-galaxy install -p ../ fiunchinho.wimpy,feature/build_app_with_compose
 
