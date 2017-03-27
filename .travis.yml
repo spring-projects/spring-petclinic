@@ -17,7 +17,7 @@ addons:
 install:
   - pip install ansible
   - printf '[defaults]\nroles_path=../' >ansible.cfg
-  - ansible-galaxy install -p ../ fiunchinho.wimpy
+  - ansible-galaxy install -p ../ fiunchinho.wimpy,feature/build_app_with_compose
 
 script:
   - ./mvnw package
