@@ -1,0 +1,13 @@
+---
+
+- hosts: localhost
+  vars_files:
+    - "{{ playbook_dir }}/{{ wimpy_deployment_environment }}.yml"
+  vars:
+    wimpy_project: "spring-petclinic"
+    wimpy_docker_image_name: "fiunchinho/spring-petclinic"
+    wimpy_app_port: 8080
+    wimpy_needs_elb: True
+    wimpy_aws_elb_scheme: "internet-facing"
+  roles:
+    - role: fiunchinho.wimpy
