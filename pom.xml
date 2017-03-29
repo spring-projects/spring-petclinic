@@ -6,13 +6,13 @@
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
   <version>1.4.2</version>
+  <name>Spring Pet Clinic</name>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>1.4.2.RELEASE</version>
   </parent>
-  <name>petclinic</name>
 
   <properties>
     <!-- Generic properties -->
@@ -29,15 +29,11 @@
     <thymeleaf.version>3.0.2.RELEASE</thymeleaf.version>
     <thymeleaf-layout-dialect.version>2.0.4</thymeleaf-layout-dialect.version>
 
-	<!--
-    <cobertura.version>2.7</cobertura.version>
-	-->
-	
-	<!-- Sonar properties -->
     <sonar.host.url>http://sonarqube.kcura.corp/</sonar.host.url>
-	<sonar.exclusions>pom.xml</sonar.exclusions>
-	<sonar.sources>src/main</sonar.sources>
-	<sonar.jacoco.reportPaths>target/coverage-reports/jacoco-unit.exec</sonar.jacoco.reportPaths>
+    <sonar.junit.reportsPath>target/surefire-reports</sonar.junit.reportsPath>
+    <sonar.branch>master</sonar.branch>
+	<sonar.sources>src/main/java,src/main/less,src/main/resources,src/main/wro</sonar.sources>
+	<sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
   </properties>
   
   <!--
@@ -60,39 +56,40 @@
   </distributionManagement>  
   -->
   
+  <scm>
+    <connection>scm:git:https://github.com/Blackhound/spring-petclinic</connection>
+    <developerConnection>scm:git:https://github.com/Blackhound/spring-petclinic</developerConnection>
+    <url>https://localhost:8080</url>
+  </scm>  
+  
   <dependencies>
     <!-- Spring and Spring Boot dependencies -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
-	
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-cache</artifactId>
     </dependency>
-	
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-jpa</artifactId>
     </dependency>
-	
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
-	
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-thymeleaf</artifactId>
       <exclusions>
       	<exclusion>
-      		<groupId>org.codehaus.groovy</groupId>
-      		<artifactId>groovy</artifactId>
+      	  <groupId>org.codehaus.groovy</groupId>
+      	  <artifactId>groovy</artifactId>
       	</exclusion>
       </exclusions>
     </dependency>
-	
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
@@ -105,7 +102,6 @@
       <artifactId>hsqldb</artifactId>
       <scope>runtime</scope>
     </dependency>
-	
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
@@ -117,7 +113,6 @@
       <groupId>javax.cache</groupId>
       <artifactId>cache-api</artifactId>
     </dependency>
-	
     <dependency>
       <groupId>org.ehcache</groupId>
       <artifactId>ehcache</artifactId>
@@ -128,19 +123,16 @@
       <groupId>org.webjars</groupId>
       <artifactId>webjars-locator</artifactId>
     </dependency>
-	
     <dependency>
       <groupId>org.webjars</groupId>
       <artifactId>jquery</artifactId>
       <version>${webjars-jquery.version}</version>
     </dependency>
-	
     <dependency>
       <groupId>org.webjars</groupId>
       <artifactId>jquery-ui</artifactId>
       <version>${webjars-jquery-ui.version}</version>
     </dependency>
-	
     <dependency>
       <groupId>org.webjars</groupId>
       <artifactId>bootstrap</artifactId>
@@ -162,22 +154,21 @@
     </dependency>	
 	
 	<dependency>
-		<groupId>org.codehaus.groovy</groupId>
-		<artifactId>groovy-all</artifactId>
-		<version>2.4.7</version>
-		<scope>test</scope>
-	</dependency>
-
-    <dependency>
-      <groupId>org.sonarsource.java</groupId>
-      <artifactId>sonar-jacoco-listeners</artifactId>
-      <version>3.8</version>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <version>2.4.7</version>
       <scope>test</scope>
-    </dependency>
+	</dependency>
   </dependencies>
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-scm-plugin</artifactId>
+        <version>1.9.5</version>
+      </plugin>
+	  
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
@@ -201,28 +192,15 @@
       </plugin>
 	  
       <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.7.9</version>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
-          <destFile>${basedir}/target/coverage-reports/jacoco-unit.exec</destFile>
-          <dataFile>${basedir}/target/coverage-reports/jacoco-unit.exec</dataFile>
+          <runOrder>random</runOrder>
         </configuration>
-        <executions>
-          <execution>
-            <id>jacoco-initialize</id>
-            <goals>
-              <goal>prepare-agent</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
- 
-      <!-- 
-      Spring Boot Actuator displays build-related information if a git.properties 
-      file is present at the classpath
-      -->
-      <!--
+      </plugin>	  
+
+      <!-- Spring Boot Actuator displays build-related information if a git.properties 
+        file is present at the classpath -->
       <plugin>
         <groupId>pl.project13.maven</groupId>
         <artifactId>git-commit-id-plugin</artifactId>
@@ -241,7 +219,6 @@
 		  <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
         </configuration>
       </plugin>
-      -->
 
       <plugin>
         <groupId>ro.isdc.wro4j</groupId>
@@ -306,6 +283,27 @@
           </execution>
         </executions>
       </plugin>
-    </plugins>
+
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.7.9</version>
+        <executions>
+          <execution>
+            <id>jacoco-initialize</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>jacoco-site</id>
+            <phase>package</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+	</plugins>
   </build>
 </project>
