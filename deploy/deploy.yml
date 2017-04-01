@@ -7,6 +7,7 @@
     wimpy_project_name: "spring-petclinic"
     wimpy_docker_image_name: "fiunchinho/spring-petclinic"
     wimpy_app_port: 8080
+    wimpy_deploy_strategy: "new_asg"
     wimpy_aws_elb_scheme: "internet-facing"
     wimpy_aws_elb_healthcheck:
       ping_protocol: "http"

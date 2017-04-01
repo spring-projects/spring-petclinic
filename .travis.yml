@@ -15,17 +15,13 @@ addons:
     - oracle-java8-set-default
 
 install:
-  - pip install ansible
-  - pip install docker-py
-  - pip install boto
-  - pip install boto3
-  - pip install troposphere
+  - pip install ansible docker-py boto boto3 troposphere
   - printf '[defaults]\nroles_path=../' >ansible.cfg
   - ansible-galaxy install -p ../ -r deploy/requirements.yml
+  - echo $VAULT_PASSWORD > /tmp/vault
 
 script:
   - ./mvnw package
-  - echo $VAULT_PASSWORD > /tmp/vault
   - ansible-playbook deploy/deploy.yml -vvvv --vault-password-file=/tmp/vault --extra-vars "wimpy_release_version=${TRAVIS_COMMIT} wimpy_deployment_environment=develop"
 env:
   global:
