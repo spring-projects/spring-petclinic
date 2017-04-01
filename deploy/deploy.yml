@@ -18,4 +18,4 @@
       healthy_threshold: 3
   roles:
     - role: wimpy.build
-    - role: fiunchinho.wimpy
+    - role: wimpy.deploy

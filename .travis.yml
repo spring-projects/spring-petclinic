@@ -21,8 +21,7 @@ install:
   - pip install boto3
   - pip install troposphere
   - printf '[defaults]\nroles_path=../' >ansible.cfg
-  - ansible-galaxy install -p ../ fiunchinho.wimpy,feature/decouple_role
-  - ansible-galaxy install -p ../ fiunchinho.wimpy.build
+  - ansible-galaxy install -p ../ -r deploy/requirements.yml
 
 script:
   - ./mvnw package
