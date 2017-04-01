@@ -14,7 +14,7 @@
       ping_port: 8080
       ping_path: "/"
       response_timeout: 5
-      interval: 6
+      interval: 7
       unhealthy_threshold: 2
       healthy_threshold: 3
   roles:
