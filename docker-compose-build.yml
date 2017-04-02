@@ -6,5 +6,5 @@ services:
     restart: "no"
     working_dir: "/usr/src/app"
     volumes:
-      - ".:/usr/src/app"
+      - "$PWD:/usr/src/app"
       - "$HOME/.m2:/root/.m2"
