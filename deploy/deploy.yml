@@ -9,14 +9,9 @@
     wimpy_app_port: 8080
     wimpy_deploy_strategy: "new_asg"
     wimpy_aws_elb_scheme: "internet-facing"
-    wimpy_aws_elb_healthcheck:
-      ping_protocol: "http"
-      ping_port: 8080
-      ping_path: "/"
-      response_timeout: 5
-      interval: 7
-      unhealthy_threshold: 2
-      healthy_threshold: 3
+    wimpy_aws_dns_weight: 0
+    wimpy_aws_elb_healthcheck_ping_protocol: "http"
+    wimpy_aws_elb_healthcheck_ping_path: "/"
   roles:
-    - role: wimpy.build
-    - role: wimpy.deploy
+#    - role: wimpy.build
+    - role: fiunchinho.wimpy
