@@ -1,6 +1,7 @@
 ---
 
 - hosts: localhost
+  connection: local
   vars_files:
     - "{{ playbook_dir }}/{{ wimpy_deployment_environment }}.yml"
   vars:
@@ -13,5 +14,5 @@
     wimpy_aws_elb_healthcheck_ping_protocol: "http"
     wimpy_aws_elb_healthcheck_ping_path: "/"
   roles:
-#    - role: wimpy.build
-    - role: fiunchinho.wimpy
+    - role: wimpy.build
+    - role: wimpy.deploy

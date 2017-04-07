@@ -1,0 +1,5 @@
+ansible==2.2.1
+docker-py==1.8.1
+boto==2.39.0
+boto3==1.4.0
+troposphere==1.9.2

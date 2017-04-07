@@ -1,6 +1,6 @@
-language: python
-python: "2.7"
-sudo: required
+language: java
+jdk:
+  - oraclejdk8
 
 services:
   - docker
@@ -15,13 +15,10 @@ addons:
     - oracle-java8-set-default
 
 install:
-  - pip install ansible docker-py boto boto3 troposphere
-  - printf '[defaults]\nroles_path=../' >ansible.cfg
-  - ansible-galaxy install -p ../ -r deploy/requirements.yml
+  - ./deploy/install_wimpy.sh
   - echo $VAULT_PASSWORD > /tmp/vault
 
 script:
-  - ./mvnw package
   - ansible-playbook deploy/deploy.yml -vvvv --vault-password-file=/tmp/vault --extra-vars "wimpy_release_version=${TRAVIS_COMMIT} wimpy_deployment_environment=develop"
 env:
   global:
