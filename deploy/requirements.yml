@@ -2,5 +2,5 @@
   name: wimpy.build
 
 - src: https://github.com/fiunchinho/wimpy
-  version: feature/decouple_role
+  version: master
   name: wimpy.deploy
