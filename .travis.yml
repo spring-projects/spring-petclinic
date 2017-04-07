@@ -15,11 +15,10 @@ addons:
     - oracle-java8-set-default
 
 install:
-  - ./deploy/install_wimpy.sh
   - echo $VAULT_PASSWORD > /tmp/vault
 
 script:
-  - ansible-playbook deploy/deploy.yml -vvvv --vault-password-file=/tmp/vault --extra-vars "wimpy_release_version=${TRAVIS_COMMIT} wimpy_deployment_environment=develop"
+  - ./deploy/deploy.sh
 env:
   global:
     - secure: "Oszmm0i+3HexfkeRkDMcfVilrXzFAYSdReJ+LoMo8qEXhAHL2UxMLGSU1JMVMKQzShm4rvu2/BB0RyQtc/YgzEOatvpuatTy7ucOlECcZA3/4DEnM0LDSZuadfc0RWVshF0H0w/1spTlN4Z4199BHoeI9/1EbMCjNdz+8UkCONb0RoHaokb/Ev5pgjw6kf/kWuu9yhdbij4tJ14S1A7ptgnHAQ4oMiME2hp/8JRFmZZ37n71mo26O0ChvYNwMmYdlU6kMw5wZMFfTNXVqKjKb9P7Xjw3iW+f4adftAGUNfnPqb4VipMltJptx/pbVujkKDqI0Ir3HYwhefj5mlogmh8u1I3N6/FDH2B35L9TSeihFz0gh5lNcxH0ETnnrCQFbYGDUnS6vLPLBo4/cVD+ijEfrTY6MKGbYerILbYUgykGYyWMikVw6Po0qtMe8trZLv+sdRlCFyjDD0+gmE54kZHG7W8ERs1RoDC0slNI3R+7yooSctfvRxyBwpzcUCTruWv52gmpgpBQhd2kTNsHfM34ntQqrpmWnPHBHp8pwc5j4Bv3rr4n3TU0hD5BnYJF2vPjbjFl0lifmifY1APx6ogQyj0pgBpbQ0GQ8Aov1szC5qgLn2cJmtuUYoc/cHIb2bZtIvxyM7l/mWPQ0/BpiHJCRjK8YdoQsvYZE3h/0Co=" # VAULT_PASSWORD
