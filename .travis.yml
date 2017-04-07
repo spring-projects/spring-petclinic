@@ -13,8 +13,8 @@ addons:
     - oracle-java8-installer
     - oracle-java8-set-default
 
-after_script:
-  - echo $VAULT_PASSWORD > /tmp/vault
+script:
+  - ./mvnw package
   - ./deploy/deploy.sh
 env:
   global:
