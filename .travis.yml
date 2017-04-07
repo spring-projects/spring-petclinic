@@ -10,14 +10,11 @@ cache:
 addons:
   apt:
     packages:
-    - python-pip
     - oracle-java8-installer
     - oracle-java8-set-default
 
-install:
+after_script:
   - echo $VAULT_PASSWORD > /tmp/vault
-
-script:
   - ./deploy/deploy.sh
 env:
   global:
