@@ -31,7 +31,9 @@
 
     <sonar.host.url>http://sonarqube.kcura.corp/</sonar.host.url>
     <sonar.junit.reportsPath>target/surefire-reports</sonar.junit.reportsPath>
+	<!--
     <sonar.branch>master</sonar.branch>
+	-->
 	<sonar.sources>src/main/java,src/main/less,src/main/resources,src/main/wro</sonar.sources>
 	<sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
   </properties>
