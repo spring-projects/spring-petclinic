@@ -1,0 +1,10 @@
+version: '2'
+services:
+  app:
+    image: "maven:3.3.9-jdk-8-alpine"
+    command: "mvn clean package"
+    restart: "no"
+    working_dir: "/usr/src/app"
+    volumes:
+      - "$PWD:/usr/src/app"
+      - "$HOME/.m2:/root/.m2"

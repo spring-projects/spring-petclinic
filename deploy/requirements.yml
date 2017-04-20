@@ -1,0 +1,6 @@
+- src: https://github.com/fiunchinho/wimpy.build
+  name: wimpy.build
+
+- src: https://github.com/fiunchinho/wimpy
+  version: master
+  name: wimpy.deploy

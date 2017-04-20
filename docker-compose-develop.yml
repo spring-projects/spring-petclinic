@@ -1,0 +1,6 @@
+version: '2'
+services:
+  spring-petclinic:
+    image: fiunchinho/spring-petclinic
+    ports:
+      - "8080:8080"
