@@ -29,7 +29,7 @@
     <thymeleaf.version>3.0.2.RELEASE</thymeleaf.version>
     <thymeleaf-layout-dialect.version>2.0.4</thymeleaf-layout-dialect.version>
 
-    <sonar.host.url>http://sonarqube.kcura.corp/</sonar.host.url>
+    <sonar.host.url>https://sonarqube.kcura.corp/</sonar.host.url>
     <sonar.junit.reportsPath>target/surefire-reports</sonar.junit.reportsPath>
 	<!--
     <sonar.branch>master</sonar.branch>
