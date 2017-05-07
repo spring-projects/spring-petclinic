@@ -420,11 +420,11 @@
 
     <distributionManagement>
       <snapshotRepository>
-        <id>snapshots</id>
+        <id>nexus</id>
         <url>http://localhost:8081/nexus/content/repositories/snapshots</url>
       </snapshotRepository>
       <repository>
-        <id>deployment</id>
+        <id>nexus</id>
         <url>http://localhost:8081/nexus/content/repositories/releases</url>
       </repository>
     </distributionManagement>
