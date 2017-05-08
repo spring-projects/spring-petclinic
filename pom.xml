@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.springframework.samples</groupId>
     <artifactId>spring-petclinic</artifactId>
@@ -46,9 +47,9 @@
     </properties>
 
     <scm>
-      <developerConnection>scm:git:https://github.com/liatrio/spring-petclinic/</developerConnection>
-      <tag>spring-petclinic-1.0.0</tag>
-  </scm>
+        <developerConnection>scm:git:https://github.com/liatrio/spring-petclinic/</developerConnection>
+        <tag>spring-petclinic-1.0.0</tag>
+    </scm>
 
     <dependencyManagement>
         <!-- Import the maven Spring IO Platform Bill Of Materials (BOM) -->
@@ -305,7 +306,7 @@
                 <version>3.0</version>
                 <configuration>
                     <compilerArguments>
-                        <Xlint />
+                        <Xlint/>
                     </compilerArguments>
                     <verbose>true</verbose>
                     <source>${java.version}</source>
@@ -382,7 +383,7 @@
                 <artifactId>cobertura-maven-plugin</artifactId>
                 <version>${cobertura.version}</version>
                 <configuration>
-                    <check />
+                    <check/>
                 </configuration>
                 <executions>
                     <execution>
@@ -394,9 +395,9 @@
                 </executions>
             </plugin>
             <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-release-plugin</artifactId>
-              <version>2.5.3</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
             </plugin>
         </plugins>
     </build>
@@ -412,21 +413,21 @@
                     <formats>
                         <format>html</format>
                     </formats>
-                    <check />
+                    <check/>
                 </configuration>
             </plugin>
         </plugins>
     </reporting>
 
     <distributionManagement>
-      <snapshotRepository>
-        <id>nexus</id>
-        <url>http://nexus:8081/nexus/content/repositories/snapshots</url>
-      </snapshotRepository>
-      <repository>
-        <id>releases</id>
-        <url>http://nexus:8081/nexus/content/repositories/releases</url>
-      </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <url>http://nexus:8081/nexus/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>releases</id>
+            <url>http://nexus:8081/nexus/content/repositories/releases</url>
+        </repository>
     </distributionManagement>
 
     <url>demopetclinic</url>
