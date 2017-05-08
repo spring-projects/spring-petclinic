@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage ('Build') {
             steps {
-                git branch: 'plumber_dmitry', url: 'https://github.com/liatrio/spring-petclinic.git'
+                git branch: 'master', url: 'https://github.com/liatrio/spring-petclinic.git'
                 sh 'mvn deploy'
             }
         }
