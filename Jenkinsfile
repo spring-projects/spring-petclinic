@@ -5,9 +5,6 @@ pipeline {
             label 'my-defined-label'
             args  '-v /tmp:/tmp'
         }
-    tools {
-        maven 'Maven'
-    }
     stages {
         stage ('Build') {
             steps {
