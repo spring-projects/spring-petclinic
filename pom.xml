@@ -420,7 +420,7 @@
 
     <distributionManagement>
       <snapshotRepository>
-        <id>snapshots</id>
+        <id>nexus</id>
         <url>http://nexus:8081/nexus/content/repositories/snapshots</url>
       </snapshotRepository>
       <repository>
