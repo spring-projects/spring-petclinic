@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             image 'maven:3.5.0'
-            args '-v /usr/share/jenkins/ref/.m2/:/root/.m2/ --network=plumbing_default'
+            args '--network=plumbing_default'
         }
     }
     stages {
