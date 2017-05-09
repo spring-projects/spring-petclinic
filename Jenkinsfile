@@ -14,5 +14,13 @@ pipeline {
                     }
             }
         }
+        stage ('Sonar') {
+           steps {
+               script {
+                    scannerHome = tool 'Sonar'
+               }
+               sh "${scannerHome}/bin/sonar-scanner"
+            }
+        }
     }
 }
