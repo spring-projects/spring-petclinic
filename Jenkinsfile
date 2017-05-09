@@ -1,25 +1,17 @@
 pipeline {
     agent {
         docker {
-            image 'maven:3-alpine'
+            image 'maven:3.5.0'
+            args '-v /usr/share/jenkins/ref/.m2/:/root/.m2/ --network=plumbing_default'
         }
     }
     stages {
         stage ('Build') {
             steps {
-                git branch: 'master', url: 'https://github.com/liatrio/spring-petclinic.git'
-                sh 'mvn deploy'
-            }
-        }
-        stage ('Sonar Analysis') {
-            steps {
-                script {
-                    scannerHome = tool 'Sonar'
-                }
-
-                withSonarQubeEnv('Sonar') {
-                    sh "${scannerHome}/bin/sonar-scanner"
-                }
+                configFileProvider(
+                    [configFile(fileId: 'nexus', variable: 'MAVEN_SETTINGS')]) {
+                        sh 'mvn -s $MAVEN_SETTINGS clean deploy -DskipTests=true'
+                    }
             }
         }
     }
