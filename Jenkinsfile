@@ -11,14 +11,12 @@ pipeline {
                 configFileProvider(
                     [configFile(fileId: 'nexus', variable: 'MAVEN_SETTINGS')]) {
                         sh 'mvn -s $MAVEN_SETTINGS clean deploy -DskipTests=true'
-                        sh 'ls'
                     }
             }
         }
         stage ('Deploy to Tomcat') {
             steps {
-                sh 'ls target'
-                sh 'cp /target/petclinic.war /usr/share/jenkins/ref/petclinic/petclinic.war'
+                sh 'cp target/petclinic.war /usr/share/jenkins/ref/petclinic/petclinic.war'
             }
         }
         stage ('Sonar') {
