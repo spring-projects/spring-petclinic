@@ -6,14 +6,14 @@ pipeline {
         }
     }
     stages {
-        //stage ('Build') {
-        //    steps {
-        //        configFileProvider(
-        //            [configFile(fileId: 'nexus', variable: 'MAVEN_SETTINGS')]) {
-        //                sh 'mvn -s $MAVEN_SETTINGS clean deploy -DskipTests=true'
-        //            }
-        //    }
-        //}
+        stage ('Build') {
+            steps {
+                configFileProvider(
+                    [configFile(fileId: 'nexus', variable: 'MAVEN_SETTINGS')]) {
+                        sh 'mvn -s $MAVEN_SETTINGS clean deploy -DskipTests=true'
+                    }
+            }
+        }
         stage ('Sonar') {
            steps {
                sh '/var/jenkins_home/sonar/bin/sonar-runner'
