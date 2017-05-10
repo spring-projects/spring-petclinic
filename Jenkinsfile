@@ -14,6 +14,11 @@ pipeline {
                     }
             }
         }
+        stage ('Deploy to Tomcat') {
+            steps {
+                sh 'cp target/petclinic.war /usr/share/jenkins/ref/petclinic/petclinic.war'
+            }
+        }
         stage ('Sonar') {
            steps {
                sh '/var/jenkins_home/sonar/bin/sonar-runner'
