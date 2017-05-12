@@ -9,7 +9,7 @@ describe 'Petlinic' do
     @headless.start
 
     @driver = Selenium::WebDriver.for :firefox
-    @driver.navigate.to 'http://dashboard:8080/petclinic'
+    @driver.navigate.to 'http://tomcat:8080/petclinic'
     @wait = Selenium::WebDriver::Wait.new(:timeout => 3)
   end
 
