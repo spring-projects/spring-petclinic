@@ -18,7 +18,7 @@ describe 'Petlinic' do
   end
 
   describe 'when homepage is available' do
-    it 'I should see Page title' do
+    it 'I should see page title containing PetClinic' do
       puts "Title is: #{@driver.title}"
       assert @driver.title == "PetClinic :: a Spring Framework demonstration"
     end
