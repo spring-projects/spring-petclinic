@@ -18,7 +18,6 @@ describe 'Petlinic' do
 
   describe 'when homepage is available' do
     it 'should show correct page title' do
-      sleep 3
       assert @driver.title == 'PetClinic :: a Spring Framework demonstration'
     end
   end
@@ -26,7 +25,7 @@ describe 'Petlinic' do
   describe 'when homepage is available' do
     it 'should have Find Owners page' do
       @driver.find_element(:class, 'icon-search').click
-      sleep 3
+      @driver.find_element(:link_text, 'Add Owner')
       h2 = @driver.find_element(:tag_name, 'h2')
       assert h2.text == 'Find Owners'
     end
@@ -35,7 +34,7 @@ describe 'Petlinic' do
   describe 'when homepage is available' do
     it 'should have veterinarians page' do
       @driver.find_element(:class, 'icon-th-list').click
-      sleep 3
+      @driver.find_element(:link_text, 'View as XML')
       h2 = @driver.find_element(:tag_name, 'h2')
       assert h2.text == 'Veterinarians'
     end
