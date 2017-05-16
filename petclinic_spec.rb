@@ -32,7 +32,7 @@ describe 'Petlinic' do
   end
 
   describe 'when homepage is available' do
-    it 'should have veterinarians page' do
+    it 'should have Veterinarians page' do
       @driver.find_element(:class, 'icon-th-list').click
       @driver.find_element(:link_text, 'View as XML')
       h2 = @driver.find_element(:tag_name, 'h2')
@@ -41,7 +41,7 @@ describe 'Petlinic' do
   end
 
   describe 'when homepage is available' do
-    it 'should have search for veterinarian feature' do
+    it 'should have Search for Veterinarian feature' do
       @driver.find_element(:class, 'icon-th-list').click
       @driver.find_element(:tag_name, 'input').send_keys('Helen Leary')
       result = @driver.find_element(:css, 'td.sorting_1').text
