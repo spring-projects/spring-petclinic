@@ -44,12 +44,9 @@ describe 'Petlinic' do
   describe 'when homepage is available' do
       it 'should have search for veterinarian feature' do
           @driver.find_element(:class, 'icon-th-list').click
-          search_box = @driver.find_element(:id, 'vets_filter')
-          textBox = search_box.find_element(:tag_name, 'input')
-          textBox.send_keys('Helen Leary')
-          vets = @driver.find_element(:id, 'vets').text
-          assert vets.split("\n")[1] == 'Helen Leary radiology'
+          @driver.find_element(:tag_name, 'input').send_keys('Helen Leary')
+          result = @driver.find_element(:css, 'td.sorting_1').text
+          assert result == 'Helen Leary'
       end
   end
-
 end
