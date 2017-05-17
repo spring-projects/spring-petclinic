@@ -39,7 +39,7 @@ pipeline {
         stage('Selenium') {
             agent {
                 docker {
-                    image 'stein321/selenium-firefox'
+                    image 'liatrio/selenium-firefox'
                     args '--network=plumbing_default'
                 }
             }
