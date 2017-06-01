@@ -1,1 +1,1 @@
-./kill.sh && git pull && ./run.sh
+./kill.sh && git pull && ./run.sh &
