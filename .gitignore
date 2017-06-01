@@ -6,3 +6,4 @@ target/*
 *.iml
 /target
 _site/
+.DS_Store
