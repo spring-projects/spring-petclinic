@@ -26,7 +26,7 @@
   <nav class="navbar navbar-default" role="navigation">
       <div class="container">
           <div class="navbar-header">
-              <a class="navbar-brand" th:href="@{/}"><span></span></a>
+              <!-- <a class="navbar-brand" th:href="@{/}"><span></span></a> -->
               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
                   <span class="sr-only"><os-p>Toggle navigation</os-p></span>
                   <span class="icon-bar"></span>
@@ -36,7 +36,7 @@
           </div>
           <div class="navbar-collapse collapse" id="main-navbar">
               <ul class="nav navbar-nav navbar-right">
-  
+
                   <li th:fragment="menuItem (path,active,title,glyph,text)" class="active" th:class="${active==menu ? 'active' : ''}">
                       <a th:href="@{__${path}__}" th:title="${title}">
                         <span th:class="'glyphicon  glyphicon-'+${glyph}" class="glyphicon glyphicon-home" aria-hidden="true"></span>
