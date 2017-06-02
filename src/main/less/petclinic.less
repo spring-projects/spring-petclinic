@@ -19,7 +19,7 @@
 @spring-grey:       #838789;
 @spring-light-grey: #f1f1f1;
 
-@body-bg:                           @spring-light-grey;
+@body-bg:                           transparent;
 @text-color:                        @spring-brown;
 @link-color:                        @spring-dark-green;
 @link-hover-color:                  @spring-dark-green;
@@ -52,6 +52,19 @@
 .table > thead > tr > th {
   background-color: lighten(@spring-brown, 3%);
   color: @spring-light-grey;
+}
+
+.carousel {
+    height: 100vh;
+    width: 100%;
+    overflow:hidden;
+}
+.carousel .carousel-inner {
+    height:100%;    
+}
+.carousel .carousel-inner img {
+    display:block;
+    object-fit: cover;
 }
 
 .table-filter {
