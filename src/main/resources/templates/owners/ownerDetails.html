@@ -6,7 +6,7 @@
   <body>
   
   
-    <h2>Owner Information</h2>
+    <h2>Parent Information</h2>
   
   
     <table class="table table-striped" th:object="${owner}">
@@ -29,14 +29,14 @@
     </table>
   
     <a th:href="@{{id}/edit(id=${owner.id})}" class="btn btn-default">Edit
-      Owner</a>
+      Parent</a>
     <a th:href="@{{id}/pets/new(id=${owner.id})}" class="btn btn-default">Add
-      New Pet</a>
+      New Child</a>
   
     <br />
     <br />
     <br />
-    <h2>Pets and Visits</h2>
+    <h2>Children and Visits</h2>
   
     <table class="table table-striped">
   
@@ -67,7 +67,7 @@
             <tr>
               <td><a
                 th:href="@{{ownerId}/pets/{petId}/edit(ownerId=${owner.id},petId=${pet.id})}">Edit
-                  Pet</a></td>
+                  Child</a></td>
               <td><a
                 th:href="@{{ownerId}/pets/{petId}/visits/new(ownerId=${owner.id},petId=${pet.id})}">Add
                   Visit</a></td>

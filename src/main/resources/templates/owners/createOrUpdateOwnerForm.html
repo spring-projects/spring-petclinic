@@ -3,7 +3,7 @@
 
 <body>
 
-  <h2>Owner</h2>
+  <h2>Parent</h2>
   <form th:object="${owner}" class="form-horizontal" id="add-owner-form" method="post">
     <div class="form-group has-feedback">
       <input
@@ -22,7 +22,7 @@
         <button
           th:with="text=${owner['new']} ? 'Add Owner' : 'Update Owner'"
           class="btn btn-default" type="submit" th:text="${text}">Add
-          Owner</button>
+          Parent</button>
       </div>
     </div>
   </form>
