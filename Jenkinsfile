@@ -22,14 +22,14 @@ pipeline {
                }
            }
            steps {
-               sh 'cp target/petclinic.war /usr/share/jenkins/ref/petclinic/petclinic.war'
+               sh 'cp target/petclinic.war /usr/share/jenkins/ref/tomcat/petclinic.war'
            }
        }
        stage('Sonar') {
            agent  {
                docker {
                    image 'sebp/sonar-runner'
-                   args '--network=plumbing_default'
+                   args '--network=demodeploymentpipeline_default'
                }
            }
            steps {
@@ -40,7 +40,7 @@ pipeline {
             agent {
                 docker {
                     image 'liatrio/selenium-firefox'
-                    args '--network=plumbing_default'
+                    args '--network=demodeploymentpipeline_default'
                 }
             }
             steps {
