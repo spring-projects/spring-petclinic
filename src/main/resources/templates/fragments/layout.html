@@ -23,24 +23,42 @@
 
 <body>
 <h5>
-  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-      <div class="container">
+  <nav class="navbar navbar-inverse navbar-fixed-top navbar-right" role="navigation" th:fragment="header">
+    
           <div class="navbar-header">
               <!-- <a class="navbar-brand" th:href="@{/}"><span></span></a> -->
               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
-                  <span class="sr-only"><os-p>Toggle navigation</os-p></span>
                   <span class="icon-bar"></span>
                   <span class="icon-bar"></span>
                   <span class="icon-bar"></span>
               </button>
+              
           </div>
           <div class="navbar-collapse collapse" id="main-navbar">
-              <ul class="nav navbar-nav navbar-right">
+            
+              <ul class="nav navbar-nav nav-collapse navbar-right">
+                <a class="navbar-brand" href="#" size="5">KidClinic</a>
+                <li th:class="${module == 'home' ? 'active' : ''}"><a href="#" th:href="@{/}" ><span class="glyphicon glyphicon-home"> Home</a></li>
 
-                  <li th:fragment="menuItem (path,active,title,glyph,text)" class="active" th:class="${active==menu ? 'active' : ''}">
+                <li th:classappend="${module == 'owners' ? 'active' : ''}"><a href="/owners/find" th:href="@{/owners/find}" ><span class="glyphicon glyphicon-search"> Owners</a></li>
+                
+                <li th:classappend="${module == 'vets' ? 'active' : ''}"><a href="/vets.html" th:href="@{/vets.html}"><span class="glyphicon glyphicon-th-list"> Doctors</a></li>
+                
+                <li th:classappend="${module == 'error' ? 'active' : ''}"><a href="/oups" th:href="@{/oups}"  ><span class="glyphicon glyphicon-star"> Reviews</a></li>
+
+
+
+
+
+
+                
+
+
+
+                  <!-- <li th:fragment="menuItem (path,active,title,glyph,text)" th:class="${active==menu ? 'active' : ''}">
                       <a th:href="@{__${path}__}" th:title="${title}">
                         <span th:class="'glyphicon  glyphicon-'+${glyph}" class="glyphicon glyphicon-home" aria-hidden="false"></span>
-                        <!-- <span th:text="${text}">Template</span> -->
+                        <span th:text="${text}">Template</span>
                       </a>
                   </li>
   
@@ -62,10 +80,10 @@
                   <li th:replace="::menuItem ('/oups','error','trigger a RuntimeException to see how it is handled','warning-sign','Reviews')">
                       <span class=" glyphicon glyphicon-star-empty" aria-hidden="true"></span>
                       <span>Reviews</span>
-                  </li>
+                  </li> -->
   
               </ul>
-          </div>
+          
       </div>
   </nav>
 </h5>
