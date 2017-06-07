@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.system;
+package org.springframework.samples.kidclinic.system;
 
 
 import org.springframework.stereotype.Controller;

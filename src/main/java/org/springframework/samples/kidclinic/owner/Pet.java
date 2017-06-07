@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.owner;
+package org.springframework.samples.kidclinic.owner;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,8 +37,8 @@ import javax.persistence.TemporalType;
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.samples.petclinic.model.NamedEntity;
-import org.springframework.samples.petclinic.visit.Visit;
+import org.springframework.samples.kidclinic.model.NamedEntity;
+import org.springframework.samples.kidclinic.visit.Visit;
 
 /**
  * Simple business object representing a pet.

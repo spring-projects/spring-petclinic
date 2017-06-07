@@ -13,22 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.vet;
+package org.springframework.samples.kidclinic.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
-import org.springframework.samples.petclinic.model.NamedEntity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
 /**
- * Models a {@link Vet Vet's} specialty (for example, dentistry).
+ * Simple JavaBean domain object with an id property. Used as a base class for objects
+ * needing this property.
  *
+ * @author Ken Krebs
  * @author Juergen Hoeller
  */
-@Entity
-@Table(name = "specialties")
-public class Specialty extends NamedEntity implements Serializable {
+@MappedSuperclass
+public class BaseEntity implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public boolean isNew() {
+        return this.id == null;
+    }
 
 }

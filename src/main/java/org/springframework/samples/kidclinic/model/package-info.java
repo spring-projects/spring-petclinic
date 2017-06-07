@@ -1,5 +1,5 @@
 /**
  * The classes in this package represent utilities used by the domain.
  */
-package org.springframework.samples.petclinic.model;
+package org.springframework.samples.kidclinic.model;
 
