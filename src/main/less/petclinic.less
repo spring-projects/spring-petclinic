@@ -55,19 +55,19 @@
 }
 
 .carousel {
-    height: 66%;
+    height: 100%;
     width: 100%;
     overflow:hidden;
 }
 .carousel .carousel-inner {
-    height:66%;    
+    height:100%;    
 }
 .carousel .carousel-inner img {
     display:block;
     object-fit: cover;
 }
 .mycarousel {
-	height: 66%;
+	height: 100%;
     width: 100%;
     overflow:hidden;
 }
@@ -142,14 +142,20 @@ code {
 ///////
 .portion {
   
-  background-image:  url('http://p1.pichost.me/640/60/1842352.jpg');
+  
   background-position: center center;
   background-attachment: fixed;
   background-size: cover;
   text-align: center;
 }
 .portion.two {
-  background-image: url('http://cdn.desktopwallpapers4.me/media/thumbs_400x250/4/31677.jpg');
+  background-image: url("../images/healthcare.jpg")
+}
+.portion.four {
+  background-image: url("../images/healthcare3.jpg")
+}
+.portion.five{
+	background-image: url("../images/healthcare4.jpg")
 }
 .portion h2 {
   color: white;
@@ -193,6 +199,73 @@ footer.info {
   padding: 0 auto;
   text-align: center;
 }
+.cd-top.cd-is-visible {
+  /* the button becomes visible */
+  visibility: visible;
+  opacity: 1;
+}
+.cd-top.cd-fade-out {
+  /* if the user keeps scrolling down, the button is out of focus and becomes less visible */
+  opacity: .5;
+}
+
+.return-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.7);
+    width: 50px;
+    height: 50px;
+    display: block;
+    text-decoration: none;
+    -webkit-border-radius: 35px;
+    -moz-border-radius: 35px;
+    border-radius: 35px;
+    display: none;
+    -webkit-transition: all 0.3s linear;
+    -moz-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+.return-to-top i {
+    color: #fff;
+    margin: 0;
+    position: relative;
+    left: 16px;
+    top: 13px;
+    font-size: 19px;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+.return-to-top:hover {
+    background: rgba(0, 0, 0, 0.9);
+}
+.return-to-top:hover i {
+    color: #fff;
+    top: 5px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.footcustom{
+	
+	}
 
 #toTop img {
   width: 50px;
