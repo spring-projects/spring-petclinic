@@ -55,8 +55,8 @@ public class Visit extends BaseEntity {
     /**
      * Holds value of property pet.
      */
-    @Column(name = "pet_id")
-    private Integer petId;
+    @Column(name = "kid_id")
+    private Integer kidId;
 
 
     /**
@@ -104,21 +104,21 @@ public class Visit extends BaseEntity {
     }
 
     /**
-     * Getter for property pet id.
+     * Getter for property kid id.
      *
-     * @return Value of property pet id.
+     * @return Value of property kid id.
      */
-    public Integer getPetId() {
-        return this.petId;
+    public Integer getKidId() {
+        return this.kidId;
     }
 
     /**
-     * Setter for property pet id.
+     * Setter for property kid id.
      *
-     * @param petId New value of property pet id.
+     * @param petId New value of property kid id.
      */
-    public void setPetId(Integer petId) {
-        this.petId = petId;
+    public void setKidId(Integer kidId) {
+        this.kidId = kidId;
     }
 
 }

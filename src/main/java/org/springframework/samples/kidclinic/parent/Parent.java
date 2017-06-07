@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.kidclinic.owner;
+package org.springframework.samples.kidclinic.parent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,7 +35,7 @@ import org.springframework.core.style.ToStringCreator;
 import org.springframework.samples.kidclinic.model.Person;
 
 /**
- * Simple JavaBean domain object representing an owner.
+ * Simple JavaBean domain object representing an parent.
  *
  * @author Ken Krebs
  * @author Juergen Hoeller
@@ -43,8 +43,8 @@ import org.springframework.samples.kidclinic.model.Person;
  * @author Michael Isvy
  */
 @Entity
-@Table(name = "owners")
-public class Owner extends Person {
+@Table(name = "parents")
+public class Parent extends Person {
     @Column(name = "address")
     @NotEmpty
     private String address;
@@ -58,8 +58,8 @@ public class Owner extends Person {
     @Digits(fraction = 0, integer = 10)
     private String telephone;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
-    private Set<Pet> pets;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent")
+    private Set<Kid> kids;
 
 
     public String getAddress() {
@@ -86,54 +86,54 @@ public class Owner extends Person {
         this.telephone = telephone;
     }
 
-    protected Set<Pet> getPetsInternal() {
-        if (this.pets == null) {
-            this.pets = new HashSet<>();
+    protected Set<Kid> getKidsInternal() {
+        if (this.kids == null) {
+            this.kids = new HashSet<>();
         }
-        return this.pets;
+        return this.kids;
     }
 
-    protected void setPetsInternal(Set<Pet> pets) {
-        this.pets = pets;
+    protected void setKidsInternal(Set<Kid> kids) {
+        this.kids = kids;
     }
 
-    public List<Pet> getPets() {
-        List<Pet> sortedPets = new ArrayList<>(getPetsInternal());
-        PropertyComparator.sort(sortedPets, new MutableSortDefinition("name", true, true));
-        return Collections.unmodifiableList(sortedPets);
+    public List<Kid> getKids() {
+        List<Kid> sortedKids = new ArrayList<>(getKidsInternal());
+        PropertyComparator.sort(sortedKids, new MutableSortDefinition("name", true, true));
+        return Collections.unmodifiableList(sortedKids);
     }
 
-    public void addPet(Pet pet) {
-        if (pet.isNew()) {
-            getPetsInternal().add(pet);
+    public void addKid(Kid kid) {
+        if (kid.isNew()) {
+            getKidsInternal().add(kid);
         }
-        pet.setOwner(this);
+        kid.setParent(this);
     }
 
     /**
-     * Return the Pet with the given name, or null if none found for this Owner.
+     * Return the Kid with the given name, or null if none found for this Parent.
      *
      * @param name to test
-     * @return true if pet name is already in use
+     * @return true if kid name is already in use
      */
-    public Pet getPet(String name) {
-        return getPet(name, false);
+    public Kid getKid(String name) {
+        return getKid(name, false);
     }
 
     /**
-     * Return the Pet with the given name, or null if none found for this Owner.
+     * Return the Kid with the given name, or null if none found for this Kid.
      *
      * @param name to test
-     * @return true if pet name is already in use
+     * @return true if kid name is already in use
      */
-    public Pet getPet(String name, boolean ignoreNew) {
+    public Kid getKid(String name, boolean ignoreNew) {
         name = name.toLowerCase();
-        for (Pet pet : getPetsInternal()) {
-            if (!ignoreNew || !pet.isNew()) {
-                String compName = pet.getName();
+        for (Kid kid : getKidsInternal()) {
+            if (!ignoreNew || !kid.isNew()) {
+                String compName = kid.getName();
                 compName = compName.toLowerCase();
                 if (compName.equals(name)) {
-                    return pet;
+                    return kid;
                 }
             }
         }

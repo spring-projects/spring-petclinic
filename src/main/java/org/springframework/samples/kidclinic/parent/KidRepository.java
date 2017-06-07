@@ -13,17 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.kidclinic.vet;
+package org.springframework.samples.kidclinic.parent;
 
-import java.util.Collection;
+import java.util.List;
 
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.dao.DataAccessException;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Repository class for <code>Vet</code> domain objects All method names are compliant with Spring Data naming
+ * Repository class for <code>Kid</code> domain objects All method names are compliant with Spring Data naming
  * conventions so this interface can easily be extended for Spring Data See here: http://static.springsource.org/spring-data/jpa/docs/current/reference/html/jpa.repositories.html#jpa.query-methods.query-creation
  *
  * @author Ken Krebs
@@ -31,16 +30,29 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Sam Brannen
  * @author Michael Isvy
  */
-public interface VetRepository extends Repository<Vet, Integer> {
+public interface KidRepository extends Repository<Kid, Integer> {
 
     /**
-     * Retrieve all <code>Vet</code>s from the data store.
-     *
-     * @return a <code>Collection</code> of <code>Vet</code>s
+     * Retrieve all {@link KidGender}s from the data store.
+     * @return a Collection of {@link KidGender}s.
+     */
+    @Query("SELECT ptype FROM KidGender ptype ORDER BY ptype.name")
+    @Transactional(readOnly = true)
+    List<KidGender> findKidGenders();
+
+    /**
+     * Retrieve a {@link Kid} from the data store by id.
+     * @param id the id to search for
+     * @return the {@link Kid} if found
      */
     @Transactional(readOnly = true)
-    @Cacheable("vets")
-    Collection<Vet> findAll() throws DataAccessException;
+    Kid findById(Integer id);
 
+    /**
+     * Save a {@link Kid} to the data store, either inserting or updating it.
+     * @param kid the {@link Kid} to save
+     */
+    void save(Kid kid);
 
 }
+

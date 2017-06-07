@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.kidclinic.vet;
+package org.springframework.samples.kidclinic.doctor;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,11 +42,11 @@ import org.springframework.samples.kidclinic.model.Person;
  * @author Arjen Poutsma
  */
 @Entity
-@Table(name = "vets")
-public class Vet extends Person {
+@Table(name = "doctors")
+public class Doctor extends Person {
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "vet_specialties", joinColumns = @JoinColumn(name = "vet_id"), inverseJoinColumns = @JoinColumn(name = "specialty_id"))
+    @JoinTable(name = "doctor_specialties", joinColumns = @JoinColumn(name = "doctor_id"), inverseJoinColumns = @JoinColumn(name = "specialty_id"))
     private Set<Specialty> specialties;
 
     protected Set<Specialty> getSpecialtiesInternal() {

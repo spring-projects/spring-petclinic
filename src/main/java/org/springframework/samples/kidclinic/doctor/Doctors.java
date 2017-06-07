@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.kidclinic.vet;
+package org.springframework.samples.kidclinic.doctor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,22 +22,22 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Simple domain object representing a list of veterinarians. Mostly here to be used for the 'vets' {@link
+ * Simple domain object representing a list of doctors. Mostly here to be used for the 'doctors' {@link
  * org.springframework.web.servlet.view.xml.MarshallingView}.
  *
  * @author Arjen Poutsma
  */
 @XmlRootElement
-public class Vets {
+public class Doctors {
 
-    private List<Vet> vets;
+    private List<Doctor> doctors;
 
     @XmlElement
-    public List<Vet> getVetList() {
-        if (vets == null) {
-            vets = new ArrayList<>();
+    public List<Doctor> getDoctorList() {
+        if (doctors == null) {
+            doctors = new ArrayList<>();
         }
-        return vets;
+        return doctors;
     }
 
 }

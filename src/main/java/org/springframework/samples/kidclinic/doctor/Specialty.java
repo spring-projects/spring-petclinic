@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.kidclinic.owner;
+package org.springframework.samples.kidclinic.doctor;
+
+import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -21,11 +23,12 @@ import javax.persistence.Table;
 import org.springframework.samples.kidclinic.model.NamedEntity;
 
 /**
+ * Models a {@link Doctor Doctor's} specialty (for example, dentistry).
+ *
  * @author Juergen Hoeller
- *         Can be Cat, Dog, Hamster...
  */
 @Entity
-@Table(name = "types")
-public class PetType extends NamedEntity {
+@Table(name = "specialties")
+public class Specialty extends NamedEntity implements Serializable {
 
 }

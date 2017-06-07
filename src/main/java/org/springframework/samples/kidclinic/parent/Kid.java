@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.kidclinic.owner;
+package org.springframework.samples.kidclinic.parent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,8 +48,8 @@ import org.springframework.samples.kidclinic.visit.Visit;
  * @author Sam Brannen
  */
 @Entity
-@Table(name = "pets")
-public class Pet extends NamedEntity {
+@Table(name = "kids")
+public class Kid extends NamedEntity {
 
     @Column(name = "birth_date")
     @Temporal(TemporalType.DATE)
@@ -57,14 +57,14 @@ public class Pet extends NamedEntity {
     private Date birthDate;
 
     @ManyToOne
-    @JoinColumn(name = "type_id")
-    private PetType type;
+    @JoinColumn(name = "gender_id")
+    private KidGender gender;
 
     @ManyToOne
-    @JoinColumn(name = "owner_id")
-    private Owner owner;
+    @JoinColumn(name = "parent_id")
+    private Parent parent;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "petId", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "kidId", fetch = FetchType.EAGER)
     private Set<Visit> visits = new LinkedHashSet<>();
 
     public void setBirthDate(Date birthDate) {
@@ -75,20 +75,20 @@ public class Pet extends NamedEntity {
         return this.birthDate;
     }
 
-    public PetType getType() {
-        return this.type;
+    public KidGender getGender() {
+        return this.gender;
     }
 
-    public void setType(PetType type) {
-        this.type = type;
+    public void setGender(KidGender gender) {
+        this.gender = gender;
     }
 
-    public Owner getOwner() {
-        return this.owner;
+    public Parent getParent() {
+        return this.parent;
     }
 
-    protected void setOwner(Owner owner) {
-        this.owner = owner;
+    protected void setParent(Parent parent) {
+        this.parent = parent;
     }
 
     protected Set<Visit> getVisitsInternal() {
@@ -111,7 +111,7 @@ public class Pet extends NamedEntity {
 
     public void addVisit(Visit visit) {
         getVisitsInternal().add(visit);
-        visit.setPetId(this.getId());
+        visit.setKidId(this.getId());
     }
 
 }

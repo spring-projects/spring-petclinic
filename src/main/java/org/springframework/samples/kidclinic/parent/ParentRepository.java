@@ -13,16 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.kidclinic.owner;
+package org.springframework.samples.kidclinic.parent;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Repository class for <code>Pet</code> domain objects All method names are compliant with Spring Data naming
+ * Repository class for <code>Parent</code> domain objects All method names are compliant with Spring Data naming
  * conventions so this interface can easily be extended for Spring Data See here: http://static.springsource.org/spring-data/jpa/docs/current/reference/html/jpa.repositories.html#jpa.query-methods.query-creation
  *
  * @author Ken Krebs
@@ -30,29 +31,33 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Sam Brannen
  * @author Michael Isvy
  */
-public interface PetRepository extends Repository<Pet, Integer> {
+public interface ParentRepository extends Repository<Parent, Integer> {
 
     /**
-     * Retrieve all {@link PetType}s from the data store.
-     * @return a Collection of {@link PetType}s.
+     * Retrieve {@link Parent}s from the data store by last name, returning all parents
+     * whose last name <i>starts</i> with the given name.
+     * @param lastName Value to search for
+     * @return a Collection of matching {@link Parent}s (or an empty Collection if none
+     * found)
      */
-    @Query("SELECT ptype FROM PetType ptype ORDER BY ptype.name")
+    @Query("SELECT DISTINCT parent FROM Parent parent left join fetch parent.kids WHERE parent.lastName LIKE :lastName%")
     @Transactional(readOnly = true)
-    List<PetType> findPetTypes();
+    Collection<Parent> findByLastName(@Param("lastName") String lastName);
 
     /**
-     * Retrieve a {@link Pet} from the data store by id.
+     * Retrieve an {@link Parent} from the data store by id.
      * @param id the id to search for
-     * @return the {@link Pet} if found
+     * @return the {@link Parent} if found
      */
+    @Query("SELECT parent FROM Parent parent left join fetch parent.kids WHERE parent.id =:id")
     @Transactional(readOnly = true)
-    Pet findById(Integer id);
+    Parent findById(@Param("id") Integer id);
 
     /**
-     * Save a {@link Pet} to the data store, either inserting or updating it.
-     * @param pet the {@link Pet} to save
+     * Save an {@link Parent} to the data store, either inserting or updating it.
+     * @param owner the {@link Parent} to save
      */
-    void save(Pet pet);
+    void save(Parent parent);
+
 
 }
-

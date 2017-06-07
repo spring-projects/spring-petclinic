@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.kidclinic.vet;
+package org.springframework.samples.kidclinic.doctor;
 
 import java.util.Map;
 
@@ -29,32 +29,32 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author Arjen Poutsma
  */
 @Controller
-class VetController {
+class DoctorController {
 
-    private final VetRepository vets;
+    private final DoctorRepository doctors;
 
     @Autowired
-    public VetController(VetRepository clinicService) {
-        this.vets = clinicService;
+    public DoctorController(DoctorRepository clinicService) {
+        this.doctors = clinicService;
     }
 
-    @RequestMapping(value = { "/vets.html" })
-    public String showVetList(Map<String, Object> model) {
-        // Here we are returning an object of type 'Vets' rather than a collection of Vet
+    @RequestMapping(value = { "/doctors.html" })
+    public String showDoctorList(Map<String, Object> model) {
+        // Here we are returning an object of type 'Doctors' rather than a collection of Doctor
         // objects so it is simpler for Object-Xml mapping
-        Vets vets = new Vets();
-        vets.getVetList().addAll(this.vets.findAll());
-        model.put("vets", vets);
-        return "vets/vetList";
+        Doctors doctors = new Doctors();
+        doctors.getDoctorList().addAll(this.doctors.findAll());
+        model.put("doctors", doctors);
+        return "doctors/doctorList";
     }
 
-    @RequestMapping(value = { "/vets.json", "/vets.xml" })
-    public @ResponseBody Vets showResourcesVetList() {
-        // Here we are returning an object of type 'Vets' rather than a collection of Vet
+    @RequestMapping(value = { "/doctors.json", "/doctors.xml" })
+    public @ResponseBody Doctors showResourcesVetList() {
+        // Here we are returning an object of type 'Doctors' rather than a collection of Doctor
         // objects so it is simpler for JSon/Object mapping
-        Vets vets = new Vets();
-        vets.getVetList().addAll(this.vets.findAll());
-        return vets;
+        Doctors doctors = new Doctors();
+        doctors.getDoctorList().addAll(this.doctors.findAll());
+        return doctors;
     }
 
 }

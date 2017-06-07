@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.kidclinic.owner;
+package org.springframework.samples.kidclinic.parent;
 
 
 import java.text.ParseException;
@@ -25,7 +25,7 @@ import org.springframework.format.Formatter;
 import org.springframework.stereotype.Component;
 
 /**
- * Instructs Spring MVC on how to parse and print elements of type 'PetType'. Starting from Spring 3.0, Formatters have
+ * Instructs Spring MVC on how to parse and print elements of type 'KidGender'. Starting from Spring 3.0, Formatters have
  * come as an improvement in comparison to legacy PropertyEditors. See the following links for more details: - The
  * Spring ref doc: http://static.springsource.org/spring/docs/current/spring-framework-reference/html/validation.html#format-Formatter-SPI
  * - A nice blog entry from Gordon Dickens: http://gordondickens.com/wordpress/2010/09/30/using-spring-3-0-custom-type-converter/
@@ -36,30 +36,30 @@ import org.springframework.stereotype.Component;
  * @author Michael Isvy
  */
 @Component
-public class PetTypeFormatter implements Formatter<PetType> {
+public class KidGenderFormatter implements Formatter<KidGender> {
 
-    private final PetRepository pets;
+    private final KidRepository kids;
 
 
     @Autowired
-    public PetTypeFormatter(PetRepository pets) {
-        this.pets = pets;
+    public KidGenderFormatter(KidRepository kids) {
+        this.kids = kids;
     }
 
     @Override
-    public String print(PetType petType, Locale locale) {
-        return petType.getName();
+    public String print(KidGender kidGender, Locale locale) {
+        return kidGender.getName();
     }
 
     @Override
-    public PetType parse(String text, Locale locale) throws ParseException {
-        Collection<PetType> findPetTypes = this.pets.findPetTypes();
-        for (PetType type : findPetTypes) {
-            if (type.getName().equals(text)) {
-                return type;
+    public KidGender parse(String text, Locale locale) throws ParseException {
+        Collection<KidGender> findKidGenders = this.kids.findKidGenders();
+        for (KidGender gender : findKidGenders) {
+            if (gender.getName().equals(text)) {
+                return gender;
             }
         }
-        throw new ParseException("type not found: " + text, 0);
+        throw new ParseException("gender not found: " + text, 0);
     }
 
 }

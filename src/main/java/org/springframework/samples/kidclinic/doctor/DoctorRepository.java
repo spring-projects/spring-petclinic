@@ -13,16 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.kidclinic.visit;
+package org.springframework.samples.kidclinic.doctor;
 
-import java.util.List;
+import java.util.Collection;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.repository.Repository;
-import org.springframework.samples.kidclinic.model.BaseEntity;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Repository class for <code>Visit</code> domain objects All method names are compliant with Spring Data naming
+ * Repository class for <code>Doctor</code> domain objects All method names are compliant with Spring Data naming
  * conventions so this interface can easily be extended for Spring Data See here: http://static.springsource.org/spring-data/jpa/docs/current/reference/html/jpa.repositories.html#jpa.query-methods.query-creation
  *
  * @author Ken Krebs
@@ -30,16 +31,16 @@ import org.springframework.samples.kidclinic.model.BaseEntity;
  * @author Sam Brannen
  * @author Michael Isvy
  */
-public interface VisitRepository extends Repository<Visit, Integer> {
+public interface DoctorRepository extends Repository<Doctor, Integer> {
 
     /**
-     * Save a <code>Visit</code> to the data store, either inserting or updating it.
+     * Retrieve all <code>Doctor</code>s from the data store.
      *
-     * @param visit the <code>Visit</code> to save
-     * @see BaseEntity#isNew
+     * @return a <code>Collection</code> of <code>Doctor</code>s
      */
-    void save(Visit visit) throws DataAccessException;
+    @Transactional(readOnly = true)
+    @Cacheable("doctors")
+    Collection<Doctor> findAll() throws DataAccessException;
 
-    List<Visit> findByKidId(Integer kidId);
 
 }

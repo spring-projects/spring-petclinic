@@ -3,8 +3,8 @@
 <html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'error')}">
 
   <body>
-    <h2>Reviews</h2>
-    <p>We are currently curating our review.</p>
+    <h2>Errors</h2>
+    <p th:text="${message}">Exception message</p>
   </body>
 
 </html>

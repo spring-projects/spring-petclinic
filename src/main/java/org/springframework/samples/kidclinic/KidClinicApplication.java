@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2014 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,22 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.kidclinic.vet;
 
-import java.io.Serializable;
+package org.springframework.samples.kidclinic;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
-import org.springframework.samples.kidclinic.model.NamedEntity;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * Models a {@link Vet Vet's} specialty (for example, dentistry).
+ * KidClinic Spring Boot Application.
+ * 
+ * @author Dave Syer
  *
- * @author Juergen Hoeller
  */
-@Entity
-@Table(name = "specialties")
-public class Specialty extends NamedEntity implements Serializable {
+@SpringBootApplication
+public class KidClinicApplication {
+
+    public static void main(String[] args) throws Exception {
+        SpringApplication.run(KidClinicApplication.class, args);
+    }
 
 }
