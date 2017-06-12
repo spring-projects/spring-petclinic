@@ -47,11 +47,11 @@ CREATE TABLE kids (
   id         INTEGER IDENTITY PRIMARY KEY,
   name       VARCHAR(30),
   birth_date DATE,
-  type_id    INTEGER NOT NULL,
+  gender_id    INTEGER NOT NULL,
   parent_id   INTEGER NOT NULL
 );
 ALTER TABLE kids ADD CONSTRAINT fk_kids_parents FOREIGN KEY (parent_id) REFERENCES parents (id);
-ALTER TABLE kids ADD CONSTRAINT fk_kids_gender FOREIGN KEY (type_id) REFERENCES gender (id);
+ALTER TABLE kids ADD CONSTRAINT fk_kids_gender FOREIGN KEY (gender_id) REFERENCES gender (id);
 CREATE INDEX kids_name ON kids (name);
 
 CREATE TABLE visits (
