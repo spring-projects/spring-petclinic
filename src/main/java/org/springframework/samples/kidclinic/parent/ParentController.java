@@ -67,7 +67,7 @@ class ParentController {
             return VIEWS_PARENT_CREATE_OR_UPDATE_FORM;
         } else {
             this.parents.save(parent);
-            return "redirect:/parent/" + parent.getId();
+            return "redirect:/parents/" + parent.getId();
         }
     }
 
