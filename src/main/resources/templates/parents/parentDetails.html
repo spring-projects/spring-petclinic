@@ -9,7 +9,7 @@
     <h2>Parent Information</h2>
   
   
-    <table class="table table-striped" th:object="${parents}">
+    <table class="table table-striped" th:object="${parent}">
       <tr>
         <th>Name</th>
         <td><b th:text="*{firstName + ' ' + lastName}"></b></td>
@@ -48,7 +48,7 @@
             <dt>Birth Date</dt>
             <dd
               th:text="${#calendars.format(kid.birthDate, 'yyyy-MM-dd')}" /></dd>
-            <dt>Type</dt>
+            <dt>Gender</dt>
             <dd th:text="${kid.gender}" /></dd>
           </dl>
         </td>
