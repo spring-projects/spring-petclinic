@@ -23,7 +23,7 @@ The purpose of KidClinic is to simulate the building of an enterprise applicatio
 | Login System | Research | Short Term |
 | Google Map API Integration | Research | Long Term |
 | Updated child's information | Research | Immediate |
-| Calendar Scheduliing | Research | Long Term |
+| Calendar Scheduling | Research | Long Term |
 
 ## Contact
 If you are interested in the development of this app, you can contact any of the developers. You can reach us at
