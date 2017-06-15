@@ -18,13 +18,13 @@ The purpose of KidClinic is to simulate the building of an enterprise applicatio
 - [x] Search through database of parents
 
 ## Upcoming Additions
-| Addition | Stage of Development | Expected Development Time |
-| :-------- | :-------------------- | :------------------------- |
-| Login system | Research | Short Term |
-| Updated child's information | Implementation | Immediate |
-| Google Map API integration | Research | Long Term |
-| Add reviews section for doctors | Development | Short Term |
-| Calendar Scheduling | Research | Long Term |
+| Addition | Stage of Development | Expected Development Time | Lead |
+| :-------- | :-------------------- | :------------------------- | :--- |
+| Login system | Research | Short Term | Emily |
+| Updated child's information | Implementation | Immediate | Daniel |
+| Google Map API integration | Research | Long Term | Austin |
+| Add reviews section for doctors | Development | Short Term | Sasank |
+| Calendar Scheduling | Research | Long Term | Sasank |
 
 ## Contact
 If you are interested in the development of this app, you can contact any of the developers. You can reach us at
