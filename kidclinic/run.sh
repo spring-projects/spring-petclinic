@@ -1,1 +1,0 @@
-./mvnw spring-boot:run &
