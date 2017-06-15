@@ -26,6 +26,12 @@ The purpose of KidClinic is to simulate the building of an enterprise applicatio
 | Add reviews section for doctors | Development | Short Term | Sasank |
 | Calendar Scheduling | Research | Long Term | Sasank |
 
+# Login System
+In order to create a login system, we need to create a subfolder for the login controller. This follows [DotorController.java](/src/main/java/org/springframework/samples/kidclinic/doctor/DoctorController.java) for the methods.
+
+# Reviews section for Doctors
+Nicely enough, this also follows the login system.
+
 ## Contact
 If you are interested in the development of this app, you can contact any of the developers. You can reach us at
 
