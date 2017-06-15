@@ -19,7 +19,7 @@ The purpose of KidClinic is to simulate the building of an enterprise applicatio
 
 ## Upcoming Additions
 | Addition | Stage of Development | Expected Development Time |
-| -------- | -------------------- | ------------------------- |
+| :-------- | :-------------------- | :------------------------- |
 | Login System | Research | Short Term |
 | Google Map API Integration | Research | Long Term |
 | Updated child's information | Research | Immediate |
