@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beansProjectDescription>
+	<version>1</version>
+	<pluginVersion><![CDATA[3.5.0.201404011509-RELEASE]]></pluginVersion>
+	<configSuffixes>
+		<configSuffix><![CDATA[xml]]></configSuffix>
+	</configSuffixes>
+	<enableImports><![CDATA[false]]></enableImports>
+	<configs>
+		<config>src/main/resources/spring/datasource-config.xml</config>
+		<config>src/main/resources/spring/mvc-core-config.xml</config>
+		<config>src/main/resources/spring/mvc-view-config.xml</config>
+		<config>src/main/resources/spring/business-config.xml</config>
+	</configs>
+	<autoconfigs>
+		<config>src/main/resources/spring/tools-config.xml</config>
+	</autoconfigs>
+	<configSets>
+	</configSets>
+</beansProjectDescription>
