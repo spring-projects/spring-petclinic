@@ -12,7 +12,7 @@
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>1.5.1.RELEASE</version>
   </parent>
-  <name>petclinic</name>
+  <name>kidclinic</name>
 
   <properties>
 
