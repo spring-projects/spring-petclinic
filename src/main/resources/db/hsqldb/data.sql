@@ -15,8 +15,8 @@ INSERT INTO doctor_specialties VALUES (3, 3);
 INSERT INTO doctor_specialties VALUES (4, 2);
 INSERT INTO doctor_specialties VALUES (5, 1);
 
-INSERT INTO gender VALUES (1, 'male');
-INSERT INTO gender VALUES (2, 'female');
+INSERT INTO gender VALUES (1, 'Male');
+INSERT INTO gender VALUES (2, 'Female');
 
 
 INSERT INTO parents VALUES (1, 'George', 'Franklin', '110 W. Liberty St.', 'Madison', '6085551023');

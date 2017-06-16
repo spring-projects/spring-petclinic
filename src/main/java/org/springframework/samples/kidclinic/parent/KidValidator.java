@@ -44,15 +44,16 @@ public class KidValidator implements Validator {
             errors.rejectValue("name", REQUIRED, REQUIRED);
         }
         
+        // allergies validation
         if (!StringUtils.hasLength(allergies)) {
             errors.rejectValue("allergies", REQUIRED, REQUIRED);
         }
         
+        // medications validation
         if (!StringUtils.hasLength(medications)) {
             errors.rejectValue("medications", REQUIRED, REQUIRED);
         }
 
-        // gender validation
         if (kid.isNew() && kid.getGender() == null) {
             errors.rejectValue("gender", REQUIRED, REQUIRED);
         }
