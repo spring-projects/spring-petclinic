@@ -8,3 +8,5 @@ target/*
 _site/
 .DS_Store
 .log
+.editorconfig
+.springBeans
