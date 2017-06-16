@@ -36,12 +36,24 @@ public class KidValidator implements Validator {
     public void validate(Object obj, Errors errors) {
         Kid kid = (Kid) obj;
         String name = kid.getName();
+        String medications = kid.getMedications();
+        String allergies = kid.getAllergies();
+        
         // name validation
         if (!StringUtils.hasLength(name)) {
             errors.rejectValue("name", REQUIRED, REQUIRED);
         }
+        
+        // allergies validation
+        if (!StringUtils.hasLength(allergies)) {
+            errors.rejectValue("allergies", REQUIRED, REQUIRED);
+        }
+        
+        // medications validation
+        if (!StringUtils.hasLength(medications)) {
+            errors.rejectValue("medications", REQUIRED, REQUIRED);
+        }
 
-        // gender validation
         if (kid.isNew() && kid.getGender() == null) {
             errors.rejectValue("gender", REQUIRED, REQUIRED);
         }
