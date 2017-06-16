@@ -63,6 +63,12 @@ public class Kid extends NamedEntity {
     @ManyToOne
     @JoinColumn(name = "parent_id")
     private Parent parent;
+    
+    @Column(name = "allergies")
+    private String allergies;
+    
+    @Column(name = "medications")
+    private String medications;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "kidId", fetch = FetchType.EAGER)
     private Set<Visit> visits = new LinkedHashSet<>();
@@ -89,6 +95,22 @@ public class Kid extends NamedEntity {
 
     protected void setParent(Parent parent) {
         this.parent = parent;
+    }
+    
+    public String getAllergies(){
+    	return this.allergies;
+    }
+    
+    public void setAllergies(String allergies){
+    	this.allergies = allergies;
+    }
+    
+    public String getMedications(){
+    	return this.medications;
+    }
+    
+    public void setMedications(String medications){
+    	this.medications = medications;
     }
 
     protected Set<Visit> getVisitsInternal() {
