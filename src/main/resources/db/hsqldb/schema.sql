@@ -48,7 +48,9 @@ CREATE TABLE kids (
   name       VARCHAR(30),
   birth_date DATE,
   gender_id    INTEGER NOT NULL,
-  parent_id   INTEGER NOT NULL
+  parent_id   INTEGER NOT NULL,
+  allergies  VARCHAR(255),
+  medications VARCHAR(255)
 );
 ALTER TABLE kids ADD CONSTRAINT fk_kids_parents FOREIGN KEY (parent_id) REFERENCES parents (id);
 ALTER TABLE kids ADD CONSTRAINT fk_kids_gender FOREIGN KEY (gender_id) REFERENCES gender (id);
