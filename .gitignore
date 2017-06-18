@@ -10,3 +10,6 @@ _site/
 .log
 .editorconfig
 .springBeans
+Servers
+.metadata
+bin
