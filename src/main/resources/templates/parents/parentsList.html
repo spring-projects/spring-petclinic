@@ -11,9 +11,10 @@
         <tr>
             <th style="width: 150px;">Name</th>
             <th style="width: 200px;">Address</th>
-            <th>City</th>
-            <th style="width: 120px">Telephone</th>
-            <th>Children</th>
+            <th style="width: 150px;">City</th>
+            <th style="width: 150px;">State</th>
+            <th style="width: 120px;">Telephone</th>
+            <th style="width: 150px;">Children</th>
         </tr>
         </thead>
         <tbody>
@@ -23,6 +24,7 @@
               </td>
               <td th:text="${parent.address}"/>
               <td th:text="${parent.city}"/>
+              <td th:text="${parent.state}"/>
               <td th:text="${parent.telephone}"/>
               <td><span th:each="kid : ${parent.kids}" th:text="${kid.name} + ' '"/></td>
           </tr>

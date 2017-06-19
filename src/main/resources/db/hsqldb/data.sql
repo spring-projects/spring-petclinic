@@ -19,16 +19,16 @@ INSERT INTO gender VALUES (1, 'Male');
 INSERT INTO gender VALUES (2, 'Female');
 
 
-INSERT INTO parents VALUES (1, 'George', 'Franklin', '110 W. Liberty St.', 'Madison', '6085551023');
-INSERT INTO parents VALUES (2, 'Betty', 'Davis', '638 Cardinal Ave.', 'Sun Prairie', '6085551749');
-INSERT INTO parents VALUES (3, 'Eduardo', 'Rodriquez', '2693 Commerce St.', 'McFarland', '6085558763');
-INSERT INTO parents VALUES (4, 'Harold', 'Davis', '563 Friendly St.', 'Windsor', '6085553198');
-INSERT INTO parents VALUES (5, 'Peter', 'McTavish', '2387 S. Fair Way', 'Madison', '6085552765');
-INSERT INTO parents VALUES (6, 'Jean', 'Coleman', '105 N. Lake St.', 'Monona', '6085552654');
-INSERT INTO parents VALUES (7, 'Jeff', 'Black', '1450 Oak Blvd.', 'Monona', '6085555387');
-INSERT INTO parents VALUES (8, 'Maria', 'Escobito', '345 Maple St.', 'Madison', '6085557683');
-INSERT INTO parents VALUES (9, 'David', 'Schroeder', '2749 Blackhawk Trail', 'Madison', '6085559435');
-INSERT INTO parents VALUES (10, 'Carlos', 'Estaban', '2335 Independence La.', 'Waunakee', '6085555487');
+INSERT INTO parents VALUES (1, 'George', 'Franklin', '110 W. Liberty St.', 'Madison', 'WI', '6085551023');
+INSERT INTO parents VALUES (2, 'Betty', 'Davis', '638 Cardinal Ave.', 'Sun Prairie', 'WI', '6085551749');
+INSERT INTO parents VALUES (3, 'Eduardo', 'Rodriquez', '2693 Commerce St.', 'McFarland', 'AZ', '6085558763');
+INSERT INTO parents VALUES (4, 'Harold', 'Davis', '563 Friendly St.', 'Windsor', 'CO', '6085553198');
+INSERT INTO parents VALUES (5, 'Peter', 'McTavish', '2387 S. Fair Way', 'Madison', 'WI', '6085552765');
+INSERT INTO parents VALUES (6, 'Jean', 'Coleman', '105 N. Lake St.', 'Monona', 'WI', '6085552654');
+INSERT INTO parents VALUES (7, 'Jeff', 'Black', '1450 Oak Blvd.', 'Monona', 'WI', '6085555387');
+INSERT INTO parents VALUES (8, 'Maria', 'Escobito', '345 Maple St.', 'Madison', 'WI', '6085557683');
+INSERT INTO parents VALUES (9, 'David', 'Schroeder', '2749 Blackhawk Trail', 'Madison', 'WI', '6085559435');
+INSERT INTO parents VALUES (10, 'Carlos', 'Estaban', '2335 Independence La.', 'Waunakee', 'WI', '6085555487');
 
 INSERT INTO kids VALUES (1, 'Alyssa', '2000-09-07', 2, 1, 'Claritin', 'None');
 INSERT INTO kids VALUES (2, 'Joe', '2002-08-06', 1, 2, 'None', 'Lipitor');
