@@ -3,7 +3,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
   th:replace="~{fragments/layout :: layout (~{::body},'parents')}">
 
-  <body>
+  <body onload="codeAddress()">
   
   
     <h2>Parent Information</h2>
@@ -82,7 +82,159 @@
       </tr>
   
     </table>
+    
+
+
+
+
+
+
+
+    
+    
+    
+     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHmKh1g1i4_M15YR95GlCZK7cQWe87lIQ&callback=initialize">
+
+    
+
+    </script>
+
+    <script th:inline="javascript">
+      // Note: This example requires that you consent to location sharing when
+      // prompted by your browser. If you see the error "The Geolocation service
+      // failed.", it means you probably did not give permission for the browser to
+      // locate you.
+      //var map, infoWindow;
+
   
+      var map;
+      var geocoder;
+
+      function initialize() {
+
+        geocoder= new google.maps.Geocoder();
+        var latlng = new google.maps.LatLng(-34.397, 150.644);
+        var mapOptions = {
+        zoom: 8,
+        center: latlng
+    }
+    map = new google.maps.Map(document.getElementById('map'), mapOptions);
+    //map.codeAddress();
+      }
+
+     
+      // function getCoordinates(address, callback){
+      //     var coordinates;
+      //     geocoder.geocode({ address: address}, function (results, status) {
+      //     coords_obj = results[0].geometry.location;
+      //     coordinates = [coords_obj.nb,coords_obj.ob];
+      //     callback(coordinates);
+      //    })
+      //  }
+
+  function codeAddress() {
+    var address1 = /*[[${parent.address}]]*/;
+    var city = (/*[[${parent.city}]]*/);
+    var space = " ";
+    var addressHelp = address1.concat(space);
+    var address = addressHelp.concat(city);
+    console.log(/*[[${parent.address}]]*/);
+    geocoder.geocode( { 'address': address}, function(results, status) {
+      if (status == 'OK') {
+        map.setCenter(results[0].geometry.location);
+        var marker = new google.maps.Marker({
+            map: map,
+            position: results[0].geometry.location
+        });
+      } else {
+        alert('Geocode was not successful for the following reason: ' + status);
+      }
+    });
+  }
+
+
+
+
+
+
+
+
+
+     // console.log(/*[[${parent.address}]]*/);
+     //  function initialize() {
+     //    getCoordinates(/*[[${parent.address}]]*/, function(coords) {
+     //    var mapOptions = {
+     //      zoom: 12,
+     //      center: new google.maps.LatLng(coords[0],coords[1]),
+     //      mapTypeId: google.maps.mapTypeId.ROADMAP
+     //    };
+     //    map = new google.maps.Map(document.getElementById('map'), mapOptions);
+     //  })
+     // }
+     // google.maps.event.addDomListener(window, 'load', initialize);
+
+
+
+      /*function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: -34.397, lng: 150.644},
+          zoom: 6
+        });
+        infoWindow = new google.maps.InfoWindow;*/
+
+        // Try HTML5 geolocation.
+        /*if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('Location found.');
+            infoWindow.open(map);
+            map.setCenter(pos);
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+      }*/
+
+      // function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+      //   infoWindow.setPosition(pos);
+      //   infoWindow.setContent(browserHasGeolocation ?
+      //                         'Error: The Geolocation service failed.' :
+      //                         'Error: Your browser doesn\'t support geolocation.');
+      //   infoWindow.open(map);
+      // }
+
+      
+
+
+
+          
+    </script>
+   
+    <div id="map" ></div>
+  
+  
+  <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+
   </body>
 
 </html>
