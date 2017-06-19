@@ -52,7 +52,11 @@ public class Parent extends Person {
     @Column(name = "city")
     @NotEmpty
     private String city;
-
+    
+    @Column(name = "state")
+    @NotEmpty
+    private String state;
+    
     @Column(name = "telephone")
     @NotEmpty
     @Digits(fraction = 0, integer = 10)
@@ -76,6 +80,14 @@ public class Parent extends Person {
 
     public void setCity(String city) {
         this.city = city;
+    }
+    
+    public String getState(){
+    	return this.state;
+    }
+    
+    public void setState(String state){
+    	this.state = state;
     }
 
     public String getTelephone() {

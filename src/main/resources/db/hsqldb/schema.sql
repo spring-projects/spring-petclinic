@@ -39,6 +39,7 @@ CREATE TABLE parents (
   last_name  VARCHAR_IGNORECASE(30),
   address    VARCHAR(255),
   city       VARCHAR(80),
+  state      VARCHAR(30),
   telephone  VARCHAR(20)
 );
 CREATE INDEX parents_last_name ON parents (last_name);
