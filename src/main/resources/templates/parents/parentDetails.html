@@ -141,7 +141,11 @@
     var city = (/*[[${parent.city}]]*/);
     var space = " ";
     var addressHelp = address1.concat(space);
-    var address = addressHelp.concat(city);
+    var state = /*[[${parent.state}]]*/;
+    var comma = " , ";
+    var addressHelpHelp = addressHelp.concat(city);
+    var address = addressHelpHelp.concat(state);
+    console.log(/*[[${parent.state}]]*/)
     console.log(/*[[${parent.address}]]*/);
     geocoder.geocode( { 'address': address}, function(results, status) {
       if (status == 'OK') {
