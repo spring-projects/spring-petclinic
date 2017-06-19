@@ -12,6 +12,7 @@ Presenting...
 
 
 :: Built with Spring Boot :: ${spring-boot.version}
+:: Made with ♥ by the 2017 GlowTouch Technologies Interns ::
 
 Enjoy...
 
