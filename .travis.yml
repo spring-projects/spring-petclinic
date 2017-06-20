@@ -6,7 +6,7 @@ addons:
   sonarqube:
     organization: "ihristovut-github"
     token:
-      secure: SONAR_TOKEN
+      secure: $SONAR_TOKEN
 
 jdk: oraclejdk8
 
