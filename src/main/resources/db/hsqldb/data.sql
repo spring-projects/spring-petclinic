@@ -1,9 +1,9 @@
-INSERT INTO doctors VALUES (1, 'James', 'Carter');
-INSERT INTO doctors VALUES (2, 'Helen', 'Leary');
-INSERT INTO doctors VALUES (3, 'Linda', 'Douglas');
-INSERT INTO doctors VALUES (4, 'Rafael', 'Ortega');
-INSERT INTO doctors VALUES (5, 'Henry', 'Stevens');
-INSERT INTO doctors VALUES (6, 'Sharon', 'Jenkins');
+INSERT INTO doctors VALUES (1, 'James', 'Carter', '3424 University Ave.', 'Madison', 'WI');
+INSERT INTO doctors VALUES (2, 'Helen', 'Leary', '750 Hilldale Way', 'Madison', 'WI');
+INSERT INTO doctors VALUES (3, 'Linda', 'Douglas', '6136 University Ave.', 'Middleton', 'WI');
+INSERT INTO doctors VALUES (4, 'Rafael', 'Ortega', '8300 Airport Rd.', 'Middleton', 'WI');
+INSERT INTO doctors VALUES (5, 'Henry', 'Stevens', '876 Jupiter Dr.', 'Madison', 'WI');
+INSERT INTO doctors VALUES (6, 'Sharon', 'Jenkins', '4905 Monona Dr.', 'Monona', 'WI');
 
 INSERT INTO specialties VALUES (1, 'radiology');
 INSERT INTO specialties VALUES (2, 'surgery');

@@ -11,12 +11,18 @@
     <thead>
       <tr>
         <th>Name</th>
+        <th>Address</th>
+        <th>City</th>
+        <th>State</th>
         <th>Specialties</th>
       </tr>
     </thead>
     <tbody>
       <tr th:each="doctor : ${doctors.doctorList}">
         <td th:text="${doctor.firstName + ' ' + doctor.lastName}"></td>
+        <td th:text="${doctor.address}"></td>
+        <td th:text="${doctor.city}"></td>
+        <td th:text="${doctor.state}"></td>
         <td><span th:each="specialty : ${doctor.specialties}"
           th:text="${specialty.name + ' '}" /> <span
           th:if="${doctor.nrOfSpecialties == 0}">none</span></td>
