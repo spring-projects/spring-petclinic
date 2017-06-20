@@ -1,9 +1,18 @@
-mysql:
-  image: mysql
-  ports:
-    - "3306:3306"
-  environment:
-    - MYSQL_ROOT_PASSWORD=root
-    - MYSQL_DATABASE=test
-  volumes:
-    - "./conf.d:/etc/mysql/conf.d:ro"
+version: '2'
+services:
+  pet-clinic:
+    build: .
+    ports:
+      - "8080:8080"
+    links:
+      - mysql:mysql
+    command: java -jar ./target/*.jar
+  mysql:
+    image: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=test
+    volumes:
+      - "./conf.d:/etc/mysql/conf.d:ro"
