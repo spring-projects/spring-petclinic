@@ -1,2 +1,11 @@
 language: java
 jdk: oraclejdk8
+
+addons:
+  sonarqube:
+    organization: "ihristovut-github" # the key of the org you chose at step #3
+    token:
+      secure: fbc9e4a5677933a0f017872ab5d09baf6e3d48fd # encrypted value of your token
+script:
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarQube analysis
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
