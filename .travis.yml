@@ -5,7 +5,6 @@ addons:
   sonarqube:
     organization: "ihristovut-github" # the key of the org you chose at step #3
     token:
-      secure: fbc9e4a5677933a0f017872ab5d09baf6e3d48fd # encrypted value of your token
+      secure: IxpxC2EWCn1I6Ru6rV8yo47peEJ9Jj4HCsLYjsGNpcdOWhJ/VCAPxMKdf0TYw8Im6Xd/3IV+8B7DbY3UhDFhUOhdQLLaOdM1lVQWq4kooZluUQFTpcAvs/1tNoyAYHJkdqj9A+eJCNUz4pJPko+RmpuSAdt9FumJRbOk0V7nVpwQkq110JLmPfwPg207lkAqwvsTu32Ur3y9Tga8sBKq7FOOAk7wiuXoAlITZj72ZXxNXnrcGqx3GEduD4a+rlb/Gh0dGvprLi74AWORy/avvd6XWItLgesSc2Bw98JCpQQjUZC0IEgDT4usK9pdWXbvfMH/jRLa/K4i/qrSWpUNHVVVC/znW1tCfPD0Vmwo6IX3u49FBe7UqrstbZHFsyUPhOHtp9p4T9SQ9JMEAEY581SDwis4PE4xVSWaXxHJcWUbZhplVj+xwyC83hZeOr6mKPxZZOw6TaJyg+OahzZQ8qv+Gkl+zPs8yRz72iBAnIyIe+X8rkO9cC6aSVbsRDAikh/i+/DkXYJ2Q/DSMbx1wK7LBKwwCLgMH9UpX80bIRstDKyE0+v8VfvpMMNClmokFOmlLsHb5uJmJ/VXDPuLuTYk2UzR4fHWjdi7dL9gBNVviiUOd7wGC8JepIc/+xZS9lzNUu8bY3XNZaaSiFTwy/moUZhrgpOoTj/IL8BfamU= # encrypted value of your token
 script:
-  # the following command line builds the project, runs the tests with coverage and then execute the SonarQube analysis
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+  - sonar-scanner
