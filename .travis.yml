@@ -1,10 +1,9 @@
 language: java
 jdk: oraclejdk8
-
 addons:
   sonarqube:
-    organization: "ihristovut-github" # the key of the org you chose at step #3
+    organization: ihristovut-github
     token:
-      secure: "CqXf1kvNas7kaHHD3TKCcVrAL//0kdYsg/EjVphwABi7JsKILKGHSPiu4JZNG0fQf9DQZpAMBolTnVEyBC89sCR2NalML0m+MZZzBeihvnhqo8wETWoyGvnkPrLe9WILiZBK591qOVRoyipWMqYacyiV42mDpJjTcMJf1HkDPDxcD7kCQTw6qo3TLXbpphR8Y8LeZMDsty0HxPc02QtKS5kOTCiW7NljKWXdnsNDc2ZrGQDj7zVNRsYZ5ULgH8Psi06I7vC2HS9/o7QJcc42nRcoFzkGjVxWEBYPS9r11GQoUM+FwRCL/CKGv2Xzw2H7h/5zrJ89A0ZxHyHR4fKQTv4MRkCHj5WIMSL9a9K1E6nnP9Rk6OTzbKAr+iPt1IMRvU5lxsEzy5yZwOaGw9t6ebtdo8PB6IxVeNVwsg2rFTjeB+G/ct6eOnCU8Kd9yB5WAeA2ySZf9qBIjHKReq1fS9pI9/ps+85a+irW8Ei6TSD3JFWI6wkWPAG00NErWmeWN1AWWgmR16u8uXMQxQcCHRUs1To5aNV4HsNtCqbZOMe8VtH6MF0Yir2vVLG7Ljes5Il1hp2Qhsqxqv2aWmgbtiM6yobJTUMYpZLVuXml5RDoq72b+wgJduH7gwy0H0FzvRQKn+NTEDcKeEt06nI0U42F8mb6TDYeSQsF038rDs8="
+      secure: $SONAR_TOKEN
 script:
-  - sonar-scanner
+- sonar-scanner
