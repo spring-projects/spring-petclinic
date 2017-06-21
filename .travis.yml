@@ -2,16 +2,30 @@ language: java
 sudo: false
 install: true
 
+services:
+  - docker
+
 addons:
   sonarcloud:
     organization: "bpsdproject"
     token:
-      secure: "GBSEwXoZaohdFQyW5yJ3h6t8+HIztd+sEMS8jt10zo5tnenrGNv59YTl7B5VwxR2X/mJcdLsouR4z81TZfP4FX93NZAKwAdkj1d3yAyvEDYSlLywI7Xp3BGcO7Zc4mnHAU+yMhVI98Ww6C45OjirUgBT8STmjLTXk2yuA9T6IttwAmGdLzzzPjon710/6mIY3MzoqRpyhGhuJJjbJLA9BM5h1X79ikbOMk4e2ig3KaTIANS3oeCiQlNHgdikBZcsxow7qMXA5d8mgrBJnKH52EerLbMgVuKPBxdV+RMZQxOLZR6xzg5EQVUpoXCG8EqMbZw6lEdqfIYasm8EPQPaRM4fT6zIbJoQEFFXCIL1Wht7h0pO5RTavPE9jcpjni/QG+MAcr+v80/8RGOQ5MhQ/vF6T5DDf6J/03zAGX4LpPOb7s/8YuWWz+wB+uFYXsdZLOhFb8uuAyEiBzyXIn3ZgkLHxo57sGVgfSDiLgKGea7fIw+xN72JzTKts19jR1x+Sy6SvIgOJdjdmV+qzpbkn1nFtXo0t73RxwQkLLBx5hin02fEr1jWVXszVGCqKrxwglE0oTucMP6qtujMoqNo+eUUE064IAhRl9EPPcDMezctIKLp4vTUP3X5RCL1KRfE8uzeaY+Nnd+/DCh71Nhr4AHm570ISw6q7mKeStaB1dQ="
+      secure: "FKHLAA1VC6XvrJTDFXwh7IvHAgX+hHkzuGmiOJ9RvguTkP8yQTQqczQA0QFUaCKoOXLQf7n1Xadx60vKDxk1FQS4GxhvB1n9muvhjkLOXstpRjKEBL/t3CgVeIYPdf676lT/vED2yeFmTC0BcC82k2h8dNpBpr2c/iRsHriiyf8NOOM9XO6sbDfPPGYhTzkuBRhplVZ6723z5KaHDvSgjQmT/dlIZkY00fqyVPI20JZqvScbR0/8QjED8jWtnlZpzU02lIrpkcIJF2gS4OGkucE1GBvJtkAejm5V2g++mdj3B+ja4x2rZmLmAhOVV2PzRatMSrEyoSCRpjXMf39WaTlehaii2foWPvj+CTl4iO4ApdVluFufS5EuPknJ3/pOQVAilR0qad3NBokUGCnfGhAqo06AA0aeLb05A3nfhT/CeOPEklwpkWNHNG6B4XWkNUH54WemqvmDvUjPspSbFlU3RBwjVcacj4Dyuh4eo48E/+bYnoIhaAZiyh/SXqrIx9Wh0COxYv1tgcqJ/xbDtJf3CZdjGZfKCpC3OUCliRTHtKQrzxQxai4oTlTtGTWhxm81BIOStRY0IgkTGvMiymv91wcWN6Q937D4CsRGJ7O4ZKWeqPXCmntVVqEiWd5av2Lpnv7W2QnajkcNZ4UyGtH3mzo4OykKGc9EV9fcu64="
 
 jdk: oraclejdk8
 
+install:
+  - docker-compose build
+
+before_script:
+  - docker-compose up -d
+
 script:
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install -Dskip.failsafe.tests sonar:sonar
+  - docker exec springpetclinic_pet-clinic_1 mvn verify -Dskip.surefire.tests -q --batch-mode
+
+after_script:
+  - docker-compose stop
+  - docker-compose rm -f
 
 cache:
   directories:
