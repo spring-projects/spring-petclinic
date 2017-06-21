@@ -17,8 +17,8 @@ services:
       - MYSQL_DATABASE=test
     volumes:
       - "./conf.d:/etc/mysql/conf.d:ro"
-    selenium:
-        image: selenium/standalone-firefox
-        shm_size: 2g
-        ports:
-          - "4444:4444"
+  selenium:
+    image: selenium/standalone-firefox
+    shm_size: 2g
+    ports:
+      - "4444:4444"
