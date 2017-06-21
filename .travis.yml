@@ -20,7 +20,7 @@ before_script:
   - docker-compose up -d
 
 script:
-  - mvn verify -Dskip.surefire.tests
+  - mvn verify -Dskip.surefire.tests -q --batch-mode
 #  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
 
 after_script:

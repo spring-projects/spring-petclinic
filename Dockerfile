@@ -7,7 +7,7 @@ WORKDIR /app
 COPY . .
 
 # Build the project
-RUN mvn package -Dskip.failsafe.tests
+RUN mvn package -Dskip.failsafe.tests -q --batch-mode
 
 # Make the jar executable
 RUN sh -c 'touch target/spring-petclinic-*.jar'
