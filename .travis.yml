@@ -2,6 +2,9 @@ language: java
 sudo: false
 install: true
 
+services:
+  - docker
+
 addons:
   sonarcloud:
     organization: "nqkavkey"
