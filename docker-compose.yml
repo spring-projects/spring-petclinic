@@ -6,6 +6,7 @@ services:
       - "8080:8080"
     links:
       - mysql:mysql
+      - selenium
     command: java -jar ./target/*.jar
   mysql:
     image: mysql
@@ -16,3 +17,8 @@ services:
       - MYSQL_DATABASE=test
     volumes:
       - "./conf.d:/etc/mysql/conf.d:ro"
+    selenium:
+        image: selenium/standalone-firefox
+        shm_size: 2g
+        ports:
+          - "4444:4444"
