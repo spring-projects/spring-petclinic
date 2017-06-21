@@ -20,12 +20,12 @@ before_script:
   - docker-compose up -d
 
 script:
-  - mvn verify -Dskip.surefire.tests -q --batch-mode
+  - docker exec springpetclinic_pet-clinic_1 mvn verify -Dskip.surefire.tests -q --batch-mode
 #  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
 
 after_script:
   - docker-compose stop
-  - docker-compose rm
+  - docker-compose rm -f
 
 cache:
   directories:
