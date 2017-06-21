@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'map')}"> 
+
+  <body>
+    
+	<h2 style="background-color: white; position: centered;">Map</h2>
+
+	<div class="form-group">
+  	<label for="usr">Your Address</label>
+  	<input type="text" class="form-control" id="usr">
+	</div>
+
+	<div class="btn-group btn-group-justified">
+ 	<a onclick ="displayAddresses()" class="btn btn-primary">See Doctors</a>
+  	<a onclick="displayPatient()" class="btn btn-primary">See Your Address</a>
+</div>
+
+	 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAfrxRUJL-3gcMNhoiOeu85oB69PkbvgMc&callback=initial">
+
+	 </script>
+
+	<script type="text/javascript" th:inline="javascript" >
+
+	  var map;
+      var geocoder;
+
+      function initial() {
+
+        geocoder= new google.maps.Geocoder();
+        var latlng = new google.maps.LatLng(43.0731, -89.4012);
+        var mapOptions = {
+        zoom: 8,
+        center: latlng
+    	}
+    	map = new google.maps.Map(document.getElementById('map'), mapOptions);
+    }
+
+    	
+
+
+
+		function displayAddresses()
+			{
+			var dlist = /*[[${doctors.doctorList}]]*/;
+			var d = "";
+				for (i = 0; i < dlist.length; i++) 
+					{
+        			d = dlist[i].address.concat(", ").concat(dlist[i].city).concat(", ").concat(dlist[i].state);
+        			console.log(d);
+        			geocoder.geocode( { 'address': d}, function(results, status) {
+      					
+        					var marker = new google.maps.Marker({
+            				map: map, position: results[0].geometry.location});
+      
+      						
+      					
+   						 });
+
+
+
+
+
+
+
+
+   			 		}
+   			 }
+   		function displayPatient()
+   		{
+   			 var alpha = document.getElementById('usr').value;
+   			 geocoder.geocode( { 'address': alpha}, function(results, status) {
+      						map.setCenter(results[0].geometry.location);
+        					var marker = new google.maps.Marker({
+            				map: map,  position: results[0].geometry.location});
+      
+      						
+      					
+   						 });
+   		}
+
+
+
+	</script>
+
+	<div id="map" ></div>
+	<style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+	
+
+
+
+  </body>
+
+</html>

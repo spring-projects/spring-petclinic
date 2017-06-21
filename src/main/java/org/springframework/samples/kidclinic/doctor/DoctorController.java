@@ -48,6 +48,18 @@ class DoctorController {
         return "doctors/doctorList";
     }
 
+     @RequestMapping(value = { "/map.html" })
+    public String showDoctorLists(Map<String, Object> model) {
+        // Here we are returning an object of type 'Doctors' rather than a collection of Doctor
+        // objects so it is simpler for Object-Xml mapping
+        Doctors doctors = new Doctors();
+        doctors.getDoctorList().addAll(this.doctors.findAll());
+        model.put("doctors", doctors);
+        return "mapList";
+    }
+
+
+
     @RequestMapping(value = { "/doctors.json", "/doctors.xml" })
     public @ResponseBody Doctors showResourcesVetList() {
         // Here we are returning an object of type 'Doctors' rather than a collection of Doctor

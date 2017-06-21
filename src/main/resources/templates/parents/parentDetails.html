@@ -1,7 +1,8 @@
+
 <!DOCTYPE html>
 
 <html xmlns:th="http://www.thymeleaf.org"
-  th:replace="~{fragments/layout :: layout (~{::body},'parents')}">
+  th:replace="~{fragments/layout :: layout (~{::body},'parents')}" >
 
   <body onload="codeAddress()">
   
@@ -136,6 +137,8 @@
       //    })
       //  }
 
+
+
   function codeAddress() {
     var address1 = /*[[${parent.address}]]*/;
     var city = (/*[[${parent.city}]]*/);
@@ -147,6 +150,7 @@
     var address = addressHelpHelp.concat(state);
     console.log(/*[[${parent.state}]]*/)
     console.log(/*[[${parent.address}]]*/);
+    
     geocoder.geocode( { 'address': address}, function(results, status) {
       if (status == 'OK') {
         map.setCenter(results[0].geometry.location);
@@ -221,12 +225,13 @@
 
       
 
-
-
+////////////////////////////////////////////////////////////////////////////////////
+      
           
     </script>
    
     <div id="map" ></div>
+    <!-- <p th:text="${doctors.doctorList}" /> -->
   
   
   <style>
@@ -243,6 +248,13 @@
       }
     </style>
 
+
+    
+
+  
+
   </body>
+
+
 
 </html>
