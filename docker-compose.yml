@@ -5,9 +5,8 @@ services:
     ports:
       - "8080:8080"
     links:
-#      - mysql:mysql
       - selenium
-    command: java -jar ./target/*.jar
+#      - mysql:mysql
 #  mysql:
 #    image: mysql
 #    ports:
