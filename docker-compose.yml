@@ -5,18 +5,18 @@ services:
     ports:
       - "8080:8080"
     links:
-      - mysql:mysql
+#      - mysql:mysql
       - selenium
     command: java -jar ./target/*.jar
-  mysql:
-    image: mysql
-    ports:
-      - "3306:3306"
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=test
-    volumes:
-      - "./conf.d:/etc/mysql/conf.d:ro"
+#  mysql:
+#    image: mysql
+#    ports:
+#      - "3306:3306"
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=root
+#      - MYSQL_DATABASE=test
+#    volumes:
+#      - "./conf.d:/etc/mysql/conf.d:ro"
   selenium:
     image: selenium/standalone-firefox
     shm_size: 2g
