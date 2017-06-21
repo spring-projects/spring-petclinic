@@ -4,8 +4,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.MalformedURLException;
 
@@ -14,14 +12,14 @@ import java.net.MalformedURLException;
  * @author Martijn
  * @since 21-6-2017.
  */
-public class FindOwnerTest extends SeleniumBaseTest {
-    public FindOwnerTest() throws MalformedURLException {
+public class FindOwnerIT extends SeleniumBaseIT {
+    public FindOwnerIT() throws MalformedURLException {
         super();
     }
 
     @Test
-    @Category(SeleniumBaseTest.class)
-    public void findOwnerTest() {
+    @Category(SeleniumBaseIT.class)
+    public void findOwnerIT() {
         driver.get(BASE_URL+"/owners/find");
         fillTextField(By.name("lastName"),"Coleman");
         driver.findElement(By.name("lastName")).submit();

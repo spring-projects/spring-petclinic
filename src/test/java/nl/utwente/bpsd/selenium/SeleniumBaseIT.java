@@ -14,12 +14,12 @@ import java.net.URL;
  * @author Martijn
  * @since 21-6-2017.
  */
-public class SeleniumBaseTest {
+public class SeleniumBaseIT {
     protected final RemoteWebDriver driver;
     public static final String BASE_URL = "http://pet-clinic:8080/";
 //    public static final String BASE_URL = "http://localhost:8080/";
 
-    public SeleniumBaseTest() throws MalformedURLException {
+    public SeleniumBaseIT() throws MalformedURLException {
 //		System.setProperty("webdriver.chrome.driver","C:\\Users\\marti\\Downloads\\chromedriver_win32\\chromedriver.exe");
 //        this.driver = new ChromeDriver();
         this.driver = new RemoteWebDriver(new URL("http://selenium:4444/wd/hub"), DesiredCapabilities.firefox());

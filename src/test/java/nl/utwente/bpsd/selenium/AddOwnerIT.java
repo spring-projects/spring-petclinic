@@ -14,14 +14,14 @@ import java.net.MalformedURLException;
  * @author Martijn
  * @since 21-6-2017.
  */
-public class AddOwnerTest extends SeleniumBaseTest {
-    public AddOwnerTest() throws MalformedURLException {
+public class AddOwnerIT extends SeleniumBaseIT {
+    public AddOwnerIT() throws MalformedURLException {
         super();
     }
 
     @Test
-    @Category(SeleniumBaseTest.class)
-    public void addOwnerTest() {
+    @Category(SeleniumBaseIT.class)
+    public void addOwnerIT() {
         driver.get(BASE_URL+"/owners/new");
 
         //Add an owner
