@@ -17,7 +17,6 @@ package org.springframework.samples.petclinic.visit;
 
 import java.util.List;
 
-import org.springframework.dao.DataAccessException;
 import org.springframework.data.repository.Repository;
 import org.springframework.samples.petclinic.model.BaseEntity;
 
@@ -38,7 +37,7 @@ public interface VisitRepository extends Repository<Visit, Integer> {
      * @param visit the <code>Visit</code> to save
      * @see BaseEntity#isNew
      */
-    void save(Visit visit) throws DataAccessException;
+    void save(Visit visit);
 
     List<Visit> findByPetId(Integer petId);
 
