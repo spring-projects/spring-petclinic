@@ -9,9 +9,9 @@ COPY . .
 # Build the project
 RUN mvn package -Dskip.failsafe.tests -q --batch-mode
 
-# Make the jar executable
-RUN sh -c 'touch target/spring-petclinic-*.jar'
+# Copy and make the jar executable
+RUN sh -c 'cp target/spring-petclinic-*.jar app.jar && touch app.jar'
 
 #Start the project
 ENV JAVA_OPTS=""
-ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar target/spring-petclinic-*.jar" ]
+ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar app.jar" ]
