@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{fragments/layout :: layout (~{::body},'doctors')}">
+
+<body>
+
+  <h2>Pediatricians</h2>
+
+  <table id="doctors" class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Address</th>
+        <th>City</th>
+        <th>State</th>
+        <th>Specialties</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="doctor : ${doctors.doctorList}">
+        <td th:text="${doctor.firstName + ' ' + doctor.lastName}"></td>
+        <td th:text="${doctor.address}"></td>
+        <td th:text="${doctor.city}"></td>
+        <td th:text="${doctor.state}"></td>
+        <td><span th:each="specialty : ${doctor.specialties}"
+          th:text="${specialty.name + ' '}" /> <span
+          th:if="${doctor.nrOfSpecialties == 0}">none</span></td>
+      </tr>
+    </tbody>
+  </table>
+<p>This is a test let me know if this works.</p>
+</body>
+
+<footer> </footer>
+</html>

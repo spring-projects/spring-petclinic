@@ -6,3 +6,10 @@ target/*
 *.iml
 /target
 _site/
+.DS_Store
+.log
+.editorconfig
+.springBeans
+Servers
+.metadata
+bin
