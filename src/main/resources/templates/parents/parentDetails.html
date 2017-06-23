@@ -112,57 +112,7 @@
       //var map, infoWindow;
 
   
-      var map;
-      var geocoder;
-
-      function initialize() {
-
-        geocoder= new google.maps.Geocoder();
-        var latlng = new google.maps.LatLng(-34.397, 150.644);
-        var mapOptions = {
-        zoom: 8,
-        center: latlng
-    }
-    map = new google.maps.Map(document.getElementById('map'), mapOptions);
-    //map.codeAddress();
-      }
-
-     
-      // function getCoordinates(address, callback){
-      //     var coordinates;
-      //     geocoder.geocode({ address: address}, function (results, status) {
-      //     coords_obj = results[0].geometry.location;
-      //     coordinates = [coords_obj.nb,coords_obj.ob];
-      //     callback(coordinates);
-      //    })
-      //  }
-
-
-
-  function codeAddress() {
-    var address1 = /*[[${parent.address}]]*/;
-    var city = (/*[[${parent.city}]]*/);
-    var space = " ";
-    var addressHelp = address1.concat(space);
-    var state = /*[[${parent.state}]]*/;
-    var comma = " , ";
-    var addressHelpHelp = addressHelp.concat(city);
-    var address = addressHelpHelp.concat(state);
-    console.log(/*[[${parent.state}]]*/)
-    console.log(/*[[${parent.address}]]*/);
-    
-    geocoder.geocode( { 'address': address}, function(results, status) {
-      if (status == 'OK') {
-        map.setCenter(results[0].geometry.location);
-        var marker = new google.maps.Marker({
-            map: map,
-            position: results[0].geometry.location
-        });
-      } else {
-        alert('Geocode was not successful for the following reason: ' + status);
-      }
-    });
-  }
+      
 
 
 
@@ -230,7 +180,7 @@
           
     </script>
    
-    <div id="map" ></div>
+    
     <!-- <p th:text="${doctors.doctorList}" /> -->
   
   

@@ -72,7 +72,7 @@
    			 geocoder.geocode( { 'address': alpha}, function(results, status) {
       						map.setCenter(results[0].geometry.location);
         					var marker = new google.maps.Marker({
-            				map: map,  position: results[0].geometry.location});
+            				map: map, icon: "/resources/images/blue_MarkerA.png",  position: results[0].geometry.location});
       
       						
       					
