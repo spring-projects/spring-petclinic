@@ -22,7 +22,7 @@ public class AddVisitIT extends SeleniumBaseIT {
     @Category(SeleniumBaseIT.class)
     public void addOwnerTest() {
 	driver.findElement(By.name("lastName")).submit();
-	
+
 	//Go to first owner
 	WebElement table = driver.findElement(By.tagName("table"));
 	List<WebElement> cells = table.findElements(By.xpath("tr/td"));
@@ -35,7 +35,9 @@ public class AddVisitIT extends SeleniumBaseIT {
 	fillTextField(By.name("name"), "foobar");
 	driver.findElement(By.name("name")).submit();
 
+	waitForPageToLoad();
 	Assert.assertNotNull(driver.findElement(By.xpath("//table//tr/td/dl/dd/[contains(text(), 'foobar')]")));
+	setTestFinished();
     }
 
 }

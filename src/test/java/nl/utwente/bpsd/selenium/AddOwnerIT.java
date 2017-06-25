@@ -41,7 +41,9 @@ public class AddOwnerIT extends SeleniumBaseIT {
         new Select(driver.findElement(By.name("type"))).selectByValue("hamster");
         driver.findElement(By.name("name")).submit();
 
+        waitForPageToLoad();
         Assert.assertTrue(pageContainsText("Thumper"));
+        setTestFinished();
     }
 
 }
