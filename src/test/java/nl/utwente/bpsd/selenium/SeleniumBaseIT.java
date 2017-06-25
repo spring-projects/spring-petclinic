@@ -62,10 +62,11 @@ public class SeleniumBaseIT {
     }
 
     protected void waitForPageToLoad() {
+        waitFor(new FixedPeriod(333));
         waitFor(new PageLoadedExpectedCondition());
     }
 
-    protected void waitFor(ExpectedCondition<Boolean> condition) {
+    protected void waitFor(ExpectedCondition<?> condition) {
         new WebDriverWait(driver, 3).until(condition);
     }
 

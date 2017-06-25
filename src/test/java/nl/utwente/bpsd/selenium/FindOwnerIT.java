@@ -23,7 +23,6 @@ public class FindOwnerIT extends SeleniumBaseIT {
         driver.get(BASE_URL+"/owners/find");
         fillTextField(By.name("lastName"),"Coleman");
         driver.findElement(By.name("lastName")).submit();
-        waitFor(new FixedPeriod(1000));
         waitForPageToLoad();
         Assert.assertTrue("Could not find \"Jean Coleman\" on the current page. This is the html of the current page: "+getHTML(),driver.findElements(By.xpath("//*[text()='Jean Coleman']")).size() == 1);
         setTestFinished();
