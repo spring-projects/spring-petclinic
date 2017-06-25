@@ -64,7 +64,7 @@ public class SeleniumBaseIT {
         waitFor(new PageLoadedExpectedCondition());
     }
 
-    private void waitFor(ExpectedCondition<Boolean> condition) {
+    protected void waitFor(ExpectedCondition<Boolean> condition) {
         new WebDriverWait(driver, 3).until(condition);
     }
 
@@ -76,6 +76,25 @@ public class SeleniumBaseIT {
                 return ((JavascriptExecutor)webDriver).executeScript("return document.readyState").equals("complete");
             }
             throw new ClassCastException("This webdriver is not able to execute javascript.");
+        }
+    }
+
+    protected class FixedPeriod implements ExpectedCondition<Boolean> {
+        private final int time;
+
+        public FixedPeriod(int timeInMilliseconds) {
+            this.time = timeInMilliseconds;
+        }
+
+        @Override
+        public Boolean apply(WebDriver webDriver) {
+            try {
+                Thread.sleep(time);
+                return true;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                return false;
+            }
         }
     }
 }
