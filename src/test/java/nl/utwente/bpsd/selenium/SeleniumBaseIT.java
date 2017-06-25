@@ -2,6 +2,7 @@ package nl.utwente.bpsd.selenium;
 
 import org.junit.After;
 import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -20,8 +21,8 @@ import java.util.logging.Logger;
  */
 public class SeleniumBaseIT {
     protected final WebDriver driver;
-    public static final String BASE_URL = "http://pet-clinic:8080/";
     private boolean testFinished = false;
+    public static final String BASE_URL = "http://pet-clinic:8080/";
 //    public static final String BASE_URL = "http://localhost:8080/";
 
     public SeleniumBaseIT() throws MalformedURLException {
