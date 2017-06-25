@@ -43,7 +43,7 @@ public class AddOwnerIT extends SeleniumBaseIT {
 
         waitFor(new FixedPeriod(1000));
         waitForPageToLoad();
-        Assert.assertTrue(pageContainsText("Thumper"));
+        Assert.assertTrue("Could not locate \"Thumper\" on the page. This is the html of the current page: "+getHTML(),pageContainsText("Thumper"));
         setTestFinished();
     }
 

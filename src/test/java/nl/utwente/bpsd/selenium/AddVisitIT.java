@@ -24,6 +24,8 @@ public class AddVisitIT extends SeleniumBaseIT {
         driver.get(BASE_URL+"/owners/find");
 
         driver.findElement(By.name("lastName")).submit();
+        waitFor(new FixedPeriod(1000));
+        waitForPageToLoad();
 
         //Go to first owner
         WebElement table = driver.findElement(By.tagName("table"));
