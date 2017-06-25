@@ -31,7 +31,7 @@ public class AddOwnerIT extends SeleniumBaseIT {
         fillTextField(By.name("telephone"), "0534890000");
         driver.findElement(By.name("telephone")).submit();
         waitForPageToLoad();
-        Assert.assertTrue(pageContainsText("Sophie Lathouwers"));
+        Assert.assertTrue("Could not locate \"Sophie Lathouwers\" on the page. This is the html of the current page: "+getHTML(), pageContainsText("Sophie Lathouwers"));
 
         //Add a pet
         waitFor(ExpectedConditions.presenceOfAllElementsLocatedBy(By.linkText("Add New Pet")));
