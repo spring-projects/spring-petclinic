@@ -5,7 +5,7 @@ pipeline {
            agent {
                docker {
                    image 'maven:3.5.0'
-                   args '--network=demodeploymentpipeline_default'
+                   args '-e INITIAL_ADMIN_USER -e INITIAL_ADMIN_PASSWORD --network=${LDOP_NETWORK_NAME}'
                }
            }
            steps {
@@ -22,14 +22,15 @@ pipeline {
                }
            }
            steps {
-               sh 'cp target/petclinic.war /usr/share/jenkins/ref/tomcat/petclinic.war'
+               sh 'echo deploying to tomcat'
+               //sh 'cp target/petclinic.war /usr/share/jenkins/ref/tomcat/petclinic.war'
            }
        }
        stage('Sonar') {
            agent  {
                docker {
                    image 'sebp/sonar-runner'
-                   args '--network=demodeploymentpipeline_default'
+                   args '-e SONAR_ACCOUNT_LOGIN -e SONAR_ACCOUNT_PASSWORD -e SONAR_DB_URL -e SONAR_DB_LOGIN -e SONAR_DB_PASSWORD --network=${LDOP_NETWORK_NAME}'
                }
            }
            steps {
@@ -40,11 +41,12 @@ pipeline {
             agent {
                 docker {
                     image 'liatrio/selenium-firefox'
-                    args '--network=demodeploymentpipeline_default'
+                    args '--network=${LDOP_NETWORK_NAME}'
                 }
             }
             steps {
-                sh 'ruby petclinic_spec.rb'
+                sh 'echo running Selenium'
+                //sh 'ruby petclinic_spec.rb'
             }
         }
     }
