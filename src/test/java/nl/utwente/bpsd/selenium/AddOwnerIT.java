@@ -6,7 +6,6 @@ import org.junit.experimental.categories.Category;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.MalformedURLException;
 
@@ -31,20 +30,23 @@ public class AddOwnerIT extends SeleniumBaseIT {
         fillTextField(By.name("city"), "Enschede");
         fillTextField(By.name("telephone"), "0534890000");
         driver.findElement(By.name("telephone")).submit();
-        new WebDriverWait(driver, 5).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[text()='Owner Information']")));
-        Assert.assertTrue(pageContainsText("Sophie Lathouwers"));
+        waitForPageToLoad();
+        waitFor(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[text()='Sophie Lathouwers']")));
+        Assert.assertTrue("Could not locate \"Sophie Lathouwers\" on the page. This is the html of the current page: "+getHTML(), pageContainsText("Sophie Lathouwers"));
 
         //Add a pet
-        new WebDriverWait(driver, 5).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[text()='Pets and Visits']")));
-        driver.findElements(By.className("btn")).get(1).click();
-        new WebDriverWait(driver, 5).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[text()='New']")));
+        //The link text has \n thats why it cannot find it
+        waitFor(ExpectedConditions.presenceOfAllElementsLocatedBy(By.partialLinkText("Add")));
+        driver.findElement(By.partialLinkText("Add")).click();
+        waitForPageToLoad();
         fillTextField(By.name("name"), "Thumper");
         fillTextField(By.name("birthDate"), "1942/08/09");
         new Select(driver.findElement(By.name("type"))).selectByValue("hamster");
         driver.findElement(By.name("name")).submit();
 
-        new WebDriverWait(driver, 5).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[text()='Pets and Visits']")));
-        Assert.assertTrue(pageContainsText("Thumper"));
+        waitForPageToLoad();
+        Assert.assertTrue("Could not locate \"Thumper\" on the page. This is the html of the current page: "+getHTML(),pageContainsText("Thumper"));
+        setTestFinished();
     }
 
 }
