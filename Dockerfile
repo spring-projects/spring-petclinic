@@ -7,7 +7,8 @@ WORKDIR /app
 COPY . .
 
 # Build the project
-RUN mvn package -Dskip.failsafe.tests -q --batch-mode
+RUN mvn package -Dskip.failsafe.tests -q --batch-mode && \
+mvn org.pitest:pitest-maven:mutationCoverage -q --batch-mode
 
 # Copy and make the jar executable
 RUN sh -c 'mkdir dist/ && cp -a target/. dist/ && touch dist/spring-petclinic-*.jar'
