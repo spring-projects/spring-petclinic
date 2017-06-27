@@ -20,7 +20,8 @@ before_script:
   - docker-compose up -d
 
 script:
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install -Dskip.failsafe.tests sonar:sonar
+  - mvn org.pitest:pitest-maven:mutationCoverage
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent test -Dskip.failsafe.tests sonar:sonar  -Dsonar.pitest.mode=reuseReport
   - docker exec springpetclinic_pet-clinic_1 mvn verify -Dskip.surefire.tests -q --batch-mode
 
 after_script:
