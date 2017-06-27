@@ -31,16 +31,19 @@ public class AddOwnerIT extends SeleniumBaseIT {
         fillTextField(By.name("city"), "Enschede");
         fillTextField(By.name("telephone"), "0534890000");
         driver.findElement(By.name("telephone")).submit();
+        new WebDriverWait(driver, 5).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[text()='Owner Information']")));
         Assert.assertTrue(pageContainsText("Sophie Lathouwers"));
 
         //Add a pet
-        new WebDriverWait(driver, 3).until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.linkText("Add New Pet")));
-        driver.findElement(By.linkText("Add New Pet")).click();
+        new WebDriverWait(driver, 5).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[text()='Pets and Visits']")));
+        driver.findElements(By.className("btn")).get(1).click();
+        new WebDriverWait(driver, 5).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[text()='New']")));
         fillTextField(By.name("name"), "Thumper");
         fillTextField(By.name("birthDate"), "1942/08/09");
         new Select(driver.findElement(By.name("type"))).selectByValue("hamster");
         driver.findElement(By.name("name")).submit();
 
+        new WebDriverWait(driver, 5).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[text()='Pets and Visits']")));
         Assert.assertTrue(pageContainsText("Thumper"));
     }
 

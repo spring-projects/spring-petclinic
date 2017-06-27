@@ -22,7 +22,7 @@ public class SeleniumBaseIT {
     public SeleniumBaseIT() throws MalformedURLException {
 //		System.setProperty("webdriver.chrome.driver","C:\\Users\\marti\\Downloads\\chromedriver_win32\\chromedriver.exe");
 //        this.driver = new ChromeDriver();
-        this.driver = new RemoteWebDriver(new URL("http://selenium:4444/wd/hub"), DesiredCapabilities.firefox());
+        this.driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), DesiredCapabilities.firefox());
         driver.get(BASE_URL);
     }
 
