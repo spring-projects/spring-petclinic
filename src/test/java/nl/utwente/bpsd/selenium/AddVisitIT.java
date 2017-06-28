@@ -40,10 +40,20 @@ public class AddVisitIT extends SeleniumBaseIT {
         fillTextField(By.name("name"), "foobar");
         driver.findElement(By.name("name")).submit();
 
+
         waitForPageToLoad();
         Assert.assertNotNull(driver.findElement(By.xpath("//table//tr/td/dl/dd[contains(text(), 'foobar')]")));
 
-        //TODO add a visit
+        driver.findElement(By.xpath("//table//tr/td/table/tbody//a[contains(text(),'Add')]")).click();
+        waitForPageToLoad();
+
+
+        fillTextField(By.name("date"), "2017/12/12");
+        fillTextField(By.name("description"), "Foobar check for disease");
+        driver.findElement(By.name("date")).submit();
+        waitForPageToLoad();
+        Assert.assertNotNull(driver.findElement(By.xpath("//table//tr/td/table/tbody//td[contains(text(), '2017-12-12')]")));
+
         setTestFinished();
     }
 
