@@ -1,9 +1,23 @@
-mysql:
-  image: mysql
-  ports:
-    - "3306:3306"
-  environment:
-    - MYSQL_ROOT_PASSWORD=root
-    - MYSQL_DATABASE=test
-  volumes:
-    - "./conf.d:/etc/mysql/conf.d:ro"
+version: '2'
+services:
+  pet-clinic:
+    build: .
+    ports:
+      - "8080:8080"
+    links:
+      - selenium
+#      - mysql:mysql
+#  mysql:
+#    image: mysql
+#    ports:
+#      - "3306:3306"
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=root
+#      - MYSQL_DATABASE=test
+#    volumes:
+#      - "./conf.d:/etc/mysql/conf.d:ro"
+  selenium:
+    image: selenium/standalone-firefox
+    shm_size: 2g
+    ports:
+      - "4444:4444"

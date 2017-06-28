@@ -1,2 +1,33 @@
 language: java
+sudo: false
+install: true
+
+services:
+  - docker
+
+addons:
+  sonarcloud:
+    organization: "bpsdproject"
+    token:
+      secure: "FKHLAA1VC6XvrJTDFXwh7IvHAgX+hHkzuGmiOJ9RvguTkP8yQTQqczQA0QFUaCKoOXLQf7n1Xadx60vKDxk1FQS4GxhvB1n9muvhjkLOXstpRjKEBL/t3CgVeIYPdf676lT/vED2yeFmTC0BcC82k2h8dNpBpr2c/iRsHriiyf8NOOM9XO6sbDfPPGYhTzkuBRhplVZ6723z5KaHDvSgjQmT/dlIZkY00fqyVPI20JZqvScbR0/8QjED8jWtnlZpzU02lIrpkcIJF2gS4OGkucE1GBvJtkAejm5V2g++mdj3B+ja4x2rZmLmAhOVV2PzRatMSrEyoSCRpjXMf39WaTlehaii2foWPvj+CTl4iO4ApdVluFufS5EuPknJ3/pOQVAilR0qad3NBokUGCnfGhAqo06AA0aeLb05A3nfhT/CeOPEklwpkWNHNG6B4XWkNUH54WemqvmDvUjPspSbFlU3RBwjVcacj4Dyuh4eo48E/+bYnoIhaAZiyh/SXqrIx9Wh0COxYv1tgcqJ/xbDtJf3CZdjGZfKCpC3OUCliRTHtKQrzxQxai4oTlTtGTWhxm81BIOStRY0IgkTGvMiymv91wcWN6Q937D4CsRGJ7O4ZKWeqPXCmntVVqEiWd5av2Lpnv7W2QnajkcNZ4UyGtH3mzo4OykKGc9EV9fcu64="
+
 jdk: oraclejdk8
+
+install:
+  - docker-compose build
+
+before_script:
+  - docker-compose up -d
+
+script:
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent test -Dskip.failsafe.tests sonar:sonar  -Dsonar.pitest.mode=reuseReport
+  - docker exec springpetclinic_pet-clinic_1 mvn verify -Dskip.surefire.tests -q --batch-mode
+
+after_script:
+  - docker-compose stop
+  - docker-compose rm -f
+
+cache:
+  directories:
+    - '$HOME/.m2/repository'
+    - '$HOME/.sonar/cache'

@@ -78,7 +78,7 @@ class OwnerController {
     }
 
     @RequestMapping(value = "/owners", method = RequestMethod.GET)
-    public String processFindForm(Owner owner, BindingResult result, Map<String, Object> model) {
+    public String processFindForm(final Owner owner, final BindingResult result, final Map<String, Object> model) {
 
         // allow parameterless GET request for /owners to return all records
         if (owner.getLastName() == null) {
@@ -93,8 +93,8 @@ class OwnerController {
             return "owners/findOwners";
         } else if (results.size() == 1) {
             // 1 owner found
-            owner = results.iterator().next();
-            return "redirect:/owners/" + owner.getId();
+            Owner foundOwner = results.iterator().next();
+            return "redirect:/owners/" + foundOwner.getId();
         } else {
             // multiple owners found
             model.put("selections", results);
