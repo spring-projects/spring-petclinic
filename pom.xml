@@ -83,7 +83,7 @@
         <dependency>
             <groupId>com.splicemachine</groupId>
             <artifactId>db-client</artifactId>
-            <version>2.6.0.1725-SNAPSHOT</version>
+            <version>2.6.0.1726-SNAPSHOT</version>
         </dependency>
 
 
