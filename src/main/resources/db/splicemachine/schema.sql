@@ -1,5 +1,5 @@
 CREATE TABLE vets (
-  id         INTEGER GENERATED ALWAYS AS IDENTITY,
+  id         INTEGER GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
   first_name VARCHAR(30),
   last_name  VARCHAR(30),
   primary key (id)
@@ -7,7 +7,7 @@ CREATE TABLE vets (
 CREATE INDEX vets_last_name ON vets (last_name);
 
 CREATE TABLE specialties (
-  id   INTEGER GENERATED ALWAYS AS IDENTITY,
+  id   INTEGER GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
   name VARCHAR(80),
   primary key(id)
 );
@@ -21,14 +21,14 @@ ALTER TABLE vet_specialties ADD CONSTRAINT fk_vet_specialties_vets FOREIGN KEY (
 ALTER TABLE vet_specialties ADD CONSTRAINT fk_vet_specialties_specialties FOREIGN KEY (specialty_id) REFERENCES specialties (id);
 
 CREATE TABLE types (
-  id   INTEGER GENERATED ALWAYS AS IDENTITY,
+  id   INTEGER GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
   name VARCHAR(80),
     primary key (id)
 );
 CREATE INDEX types_name ON types (name);
 
 CREATE TABLE owners (
-  id         INTEGER GENERATED ALWAYS AS IDENTITY,
+  id         INTEGER GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
   first_name VARCHAR(30),
   last_name  VARCHAR(30),
   address    VARCHAR(255),
@@ -39,7 +39,7 @@ CREATE TABLE owners (
 CREATE INDEX owners_last_name ON owners (last_name);
 
 CREATE TABLE pets (
-  id         INTEGER GENERATED ALWAYS AS IDENTITY,
+  id         INTEGER GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
   name       VARCHAR(30),
   birth_date DATE,
   type_id    INTEGER NOT NULL,
@@ -51,7 +51,7 @@ ALTER TABLE pets ADD CONSTRAINT fk_pets_types FOREIGN KEY (type_id) REFERENCES t
 CREATE INDEX pets_name ON pets (name);
 
 CREATE TABLE visits (
-  id          INTEGER GENERATED ALWAYS AS IDENTITY,
+  id          INTEGER GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
   pet_id      INTEGER NOT NULL,
   visit_date  DATE,
   description VARCHAR(255),
