@@ -51,6 +51,11 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
+      <dependency>
+          <groupId>com.splicemachine</groupId>
+          <artifactId>splice-hibernate-dialect</artifactId>
+          <version>2.6.0.1726-SNAPSHOT</version>
+      </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -78,6 +83,14 @@
       <artifactId>mysql-connector-java</artifactId>
       <scope>runtime</scope>
     </dependency>
+
+
+        <dependency>
+            <groupId>com.splicemachine</groupId>
+            <artifactId>db-client</artifactId>
+            <version>2.6.0.1726-SNAPSHOT</version>
+        </dependency>
+
 
     <!-- caching -->
     <dependency>
@@ -125,7 +138,7 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
         <executions>
           <execution>
-            <!-- Spring Boot Actuator displays build-related information 
+            <!-- Spring Boot Actuator displays build-related information
               if a META-INF/build-info.properties file is present -->
             <goals>
               <goal>build-info</goal>
@@ -158,7 +171,7 @@
         </executions>
       </plugin>
 
-      <!-- Spring Boot Actuator displays build-related information if a git.properties 
+      <!-- Spring Boot Actuator displays build-related information if a git.properties
         file is present at the classpath -->
       <plugin>
         <groupId>pl.project13.maven</groupId>
