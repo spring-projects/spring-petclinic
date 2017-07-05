@@ -5,6 +5,8 @@
 ## Understanding the Spring Petclinic application with a few diagrams
 <a href="https://speakerdeck.com/michaelisvy/spring-petclinic-sample-application">See the presentation here</a>
 
+## Splice configuration
+For instructions on how to set up and start your Splice Cluster, see our [readme](https://github.com/splicemachine/spliceengine)
 ## Running petclinic locally
 ```
 	git clone https://github.com/splicemachine/spring-petclinic.git
