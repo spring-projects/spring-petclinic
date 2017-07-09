@@ -26,7 +26,7 @@
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
         <button
-          th:with="text=${owner['new']} ? 'Add Pet' : 'Update Pet'"
+          th:with="text=${pet['new']} ? 'Add Pet' : 'Update Pet'"
           class="btn btn-default" type="submit" th:text="${text}">Add
           Pet</button>
       </div>
