@@ -4,6 +4,12 @@ pipeline {
     stage('test') {
       steps {
         echo 'hello world'
+        sh 'mvn compile'
+      }
+    }
+    stage('done') {
+      steps {
+        echo 'Done!!!'
       }
     }
   }
