@@ -3,8 +3,16 @@ pipeline {
   stages {
     stage('test') {
       steps {
-        echo 'hello world'
-        sh 'mvn compile'
+        parallel(
+          "test": {
+            echo 'hello world'
+            
+          },
+          "": {
+            build 'pet clinic'
+            
+          }
+        )
       }
     }
     stage('done') {
