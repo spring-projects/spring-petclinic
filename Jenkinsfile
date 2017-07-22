@@ -1,24 +1,11 @@
+Jenkinsfile (Declarative Pipeline)
 pipeline {
-  agent any
-  stages {
-    stage('test') {
-      steps {
-        parallel(
-          "test": {
-            echo 'hello world'
-            
-          },
-          "": {
-            build 'pet clinic'
-            
-          }
-        )
-      }
+    agent { docker 'maven:3.3.3' }
+    stages {
+        stage('build') {
+            steps {
+                sh 'mvn --version'
+            }
+        }
     }
-    stage('done') {
-      steps {
-        echo 'Done!!!'
-      }
-    }
-  }
 }
