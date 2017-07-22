@@ -1,14 +1,14 @@
 pipeline {
     agent { docker 'maven:3.3.3' }
     stages {
-        stage('prebuild') {
+        stage('pre-build') {
             steps {
-                sh 'whoami'
+                sh 'mvn --version'
             }
         }
         stage('build') {
             steps {
-                sh 'mvn --version'
+                sh 'mvn compile'
             }
         }
     }
