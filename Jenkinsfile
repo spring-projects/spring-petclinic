@@ -15,16 +15,26 @@ pipeline {
                }
            }
        }
-       stage('Deploy to Tomcat') {
-           agent {
-               docker {
-                   image 'alpine'
-               }
-           }
-           steps {
-               sh 'echo deploying to tomcat'
-               //sh 'cp target/petclinic.war /usr/share/jenkins/ref/tomcat/petclinic.war'
-           }
-       }
+       stage('Build container') {
+             agent any
+             steps {
+                 sh 'docker build -t petclinic-tomcat .'
+             }
+         }
+         stage('Deploy container locally') {
+             agent any
+             steps {
+                 sh 'docker rm -f petclinic-tomcat-temp || true'
+                 sh 'docker run -p 18887:8080 -d --name petclinic-tomcat-temp petclinic-tomcat'
+                 echo 'Should be available at http://localhost:18887/petclinic/'
+             }
+         }
+         stage('Stop Container') {
+             agent any
+             steps {
+                 input 'Stop container?'
+                 sh 'docker rm -f petclinic-tomcat-temp || true'
+             }
+         }
     }
 }
