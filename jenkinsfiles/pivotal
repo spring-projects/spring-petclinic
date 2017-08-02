@@ -1,3 +1,4 @@
+#!groovy
 pipeline {
     agent none
     stages {
@@ -11,22 +12,40 @@ pipeline {
            steps {
                configFileProvider(
                        [configFile(fileId: 'nexus', variable: 'MAVEN_SETTINGS')]) {
-                   sh 'mvn -s $MAVEN_SETTINGS clean deploy -DskipTests=true -B'
+                   sh 'mvn -s $MAVEN_SETTINGS clean install -DskipTests=true -B'
                }
            }
        }
-       stage('Deploy to Pivotal') {
+       stage('Deploy to Pivotal Development') {
            agent {
                docker {
                    image 'liatrio/cf-cli'
+                   args  '-u 0:0'
                }
            }
            steps {
-               withCredentials([usernamePassword(credentialsId: 'pivotal', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]){
-                 sh "cf api https://api.run.pivotal.io && cf login -u ${env.USERNAME} -p ${env.PASSWORD}"
-                 sh 'cf push'
+               withCredentials([usernamePassword(credentialsId: 'pivotal', passwordVariable: 'pivotalPASSWORD', usernameVariable: 'pivotalUSERNAME')]){
+                 sh "cf api https://api.run.pivotal.io && cf login -u ${env.pivotalUSERNAME} -p ${env.pivotalPASSWORD}"
+                 sh 'cf push -f ./base-manifest.yml'
+                 echo "Should be accessible at http://pivotal-dev.liatr.io"
+                 input 'Deploy to Pivotal Prod?'
            }
+         }
        }
+       stage('Deploy to Pivotal Prod') {
+           agent {
+               docker {
+                   image 'liatrio/cf-cli'
+                   args  '-u 0:0'
+               }
+           }
+           steps {
+               withCredentials([usernamePassword(credentialsId: 'pivotal', passwordVariable: 'pivotalPASSWORD', usernameVariable: 'pivotalUSERNAME')]){
+                 sh "cf api https://api.run.pivotal.io && cf login -u ${env.pivotalUSERNAME} -p ${env.pivotalPASSWORD}"
+                 sh 'cf push -f ./prod-manifest.yml'
+                 echo "Should be accessible at http://pivotal-prod.liatr.io"
+        }
+      }
     }
   }
 }

@@ -4,7 +4,7 @@ pipeline {
        stage('Build') {
            agent {
                docker {
-                   image 'maven:3.5.0'
+                   image 'maven:3.3.0'
                    args '--network=pipelinedeveloper_default'
                }
            }
@@ -15,26 +15,18 @@ pipeline {
                }
            }
        }
-       stage('Build container') {
-             agent any
-             steps {
-                 sh 'docker build -t petclinic-tomcat .'
-             }
-         }
-         stage('Deploy container locally') {
-             agent any
-             steps {
-                 sh 'docker rm -f petclinic-tomcat-temp || true'
-                 sh 'docker run -p 18887:8080 -d --name petclinic-tomcat-temp petclinic-tomcat'
-                 echo 'Should be available at http://localhost:18887/petclinic/'
-             }
-         }
-         stage('Stop Container') {
-             agent any
-             steps {
-                 input 'Stop container?'
-                 sh 'docker rm -f petclinic-tomcat-temp || true'
-             }
-         }
+       stage('Deploy') {
+           agent {
+                   docker {
+                       image 'liatrio/cf-cli'
+                   }
+           }
+           steps {
+                  withCredentials([usernamePassword(credentialsId: 'pivotal', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                      sh "cf api https://api.run.pivotal.io && cf login -u ${env.USERNAME} -p ${env.PASSWORD}"
+                      sh 'cf push'
+                  }
+              }
+          }
     }
 }
