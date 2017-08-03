@@ -1,0 +1,10 @@
+---
+memory: 512M
+random-route: false
+path: ./target/petclinic.war
+instances: 1
+domain: liatr.io
+health-check-type: http
+
+applications:
+ - name: pivotal-dev

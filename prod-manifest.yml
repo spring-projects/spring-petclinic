@@ -1,0 +1,7 @@
+---
+inherit: base-manifest.yml
+
+applications:
+ - name: pivotal-prod
+   # Load balance between 2 instances instead of 1
+   instances: 2
