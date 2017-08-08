@@ -1,0 +1,7 @@
+# Does not support build derivative
+spring-petclinic:
+  image: liatrio/ecs-spring-petclinic:latest
+  cpu_shares: 100
+  mem_limit: 262144000
+  ports:
+    - "80:8080"
