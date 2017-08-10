@@ -1,12 +1,12 @@
 echo 'Hello from Pipeline Demo' 
         stage 'Compile' 
         node { 
-          git url: 'https://github.com/mitesh51/spring-petclinic.git' 
+          git url: 'https://github.com/nachofree/spring-petclinic.git'
           sh "/usr/bin/mvn -B compile" 
         } 
         stage 'Test' 
-        node('TestServer') { 
-            git url: 'https://github.com/mitesh51/spring-petclinic.git' 
+        node{ 
+	    git url: 'https://github.com/nachofree/spring-petclinic.git'
             sh "/usr/bin/mvn -B verify" 
 
           step([$class: 'ArtifactArchiver', artifacts: '**/target/*.war', fingerprint: true])   
