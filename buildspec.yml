@@ -1,0 +1,29 @@
+version: 0.2
+
+#env:
+#  variables:
+#    key: "value"
+#    key: "value"
+            
+phases:
+#  install:
+#    commands:
+#      - command
+#      - command
+#  pre_build:
+#    commands:
+#      - command
+#      - command
+  build:
+    commands:
+      - mvn clean package
+#  post_build:
+#    commands:
+#      - command
+#      - command
+artifacts:
+  files:
+    - location
+    - location
+  discard-paths: yes
+  base-directory: location
