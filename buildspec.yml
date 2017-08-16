@@ -23,6 +23,6 @@ phases:
 #      - command
 artifacts:
   files:
-    - target/spring-petclinic-1.4.2
+    - target/spring-petclinic-1.4.2.jar
   discard-paths: yes
 #  base-directory: location
