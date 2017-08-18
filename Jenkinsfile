@@ -4,7 +4,7 @@ pipeline {
        stage('Build') {
            agent {
                docker {
-                   image 'maven:3.3.0'
+                   image 'maven:3.5.0'
                    args '--network=pipelinedeveloper_default'
                }
            }
