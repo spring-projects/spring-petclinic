@@ -143,7 +143,7 @@
 
 	<plugin> 
         <groupId>org.apache.tomcat.maven</groupId> 
-        <artifactId>tomcat8-maven-plugin</artifactId> 
+        <artifactId>tomcat7-maven-plugin</artifactId> 
         <version>2.2</version> 
         <configuration> 
         <server>tomcat-development-server</server> 
