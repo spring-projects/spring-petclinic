@@ -5,7 +5,7 @@ pipeline {
            agent {
                docker {
                    image 'maven:3.5.0'
-                   args '--network=pipelinedeveloper_default'
+                   args '-e INITIAL_ADMIN_USER -e INITIAL_ADMIN_PASSWORD --network=${LDOP_NETWORK_NAME}'
                }
            }
            steps {
