@@ -148,7 +148,7 @@
         <configuration> 
         <server>tomcat-development-server</server> 
         <url>http://144.38.196.10:8080/manager/text</url> 
-        <warFile>target\petclinic.war</warFile> 
+        <warFile>target\spring-petclinic-1.5.1.war</warFile> 
         <path>/petclinic</path> 
         </configuration> 
         </plugin> 
