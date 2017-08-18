@@ -36,7 +36,7 @@ pipeline {
              agent any
              steps {
                  sh 'docker rm -f petclinic-tomcat-temp || true'
-                 sh 'docker run -p 18887:8080 -d --network=${LDOP_NETWORK_NAME} --name petclinic-tomcat-temp petclinic-tomcat'
+                 sh 'docker run -d --network=${LDOP_NETWORK_NAME} --name petclinic-tomcat-temp petclinic-tomcat'
              }
          }
          stage('Smoke-Test & OWASP Security Scan') {
@@ -61,7 +61,7 @@ pipeline {
              agent any
              steps {
                  sh 'docker rm -f dev-petclinic || true'
-                 sh 'docker run -p 18888:8080 -d --network=${LDOP_NETWORK_NAME} --name dev-petclinic petclinic-tomcat'
+                 sh 'docker run --label "traefik.backend=dev-petclinic" --label "traefik.frontend.rule=Host:dev.petclinic.docker.localhost" -d --network=${LDOP_NETWORK_NAME} --name dev-petclinic petclinic-tomcat'
              }
          }
          stage('Smoke test dev') {
@@ -81,7 +81,7 @@ pipeline {
              agent any
              steps {
                  sh 'docker rm -f qa-petclinic || true'
-                 sh 'docker run -p 18889:8080 -d --network=${LDOP_NETWORK_NAME} --name qa-petclinic petclinic-tomcat'
+                 sh 'docker run --label "traefik.backend=qa-petclinic" --label "traefik.frontend.rule=Host:qa.petclinic.docker.localhost" -d --network=${LDOP_NETWORK_NAME} --name qa-petclinic petclinic-tomcat'
              }
          }
          stage('Smoke test qa') {
@@ -102,7 +102,7 @@ pipeline {
              agent any
              steps {
                  sh 'docker rm -f prod-petclinic || true'
-                 sh 'docker run -p 18890:8080 -d --network=${LDOP_NETWORK_NAME} --name prod-petclinic petclinic-tomcat'
+                 sh 'docker run --label "traefik.backend=prod-petclinic" --label "traefik.frontend.rule=Host:prod.petclinic.docker.localhost" -d --network=${LDOP_NETWORK_NAME} --name prod-petclinic petclinic-tomcat'
              }
          }
          stage('Smoke Test prod') {
