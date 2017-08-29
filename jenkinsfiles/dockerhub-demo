@@ -16,7 +16,7 @@ pipeline {
              steps {
                  script {
                      sh "docker build -t liatrio/petclinic-tomcat:${env.BRANCH_NAME} ."
-                     if ( ${env.BRANCH_NAME} == 'master' ) {
+                     if ( env.BRANCH_NAME == 'master' ) {
                          def containerVersion = getVersionFromContainer("liatrio/petclinic-tomcat:${env.BRANCH_NAME}")
                          failIfVersionExists("liatrio","petclinic-tomcat",containerVersion)
                          sh "docker build -t liatrio/petclinic-tomcat:${containerVersion} ."
@@ -28,7 +28,7 @@ pipeline {
            agent any
            steps {
                 script {
-                    if ( ${env.BRANCH_NAME} == 'master' ) 
+                    if ( ${env.BRANCH_NAME} == 'master' )
                         sh "docker push liatrio/petclinic-tomcat:${containerVersion}"
                     else sh "docker push  liatrio/petclinic-tomcat:${env.BRANCH_NAME}"
                 }
