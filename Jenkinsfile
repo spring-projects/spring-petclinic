@@ -13,8 +13,8 @@ pipeline {
             agent any
             steps {
                 sh "mvn clean package"
+                input 'Sally forth?'
             }
-			input 'Sally forth?'
         }
     }
 }
