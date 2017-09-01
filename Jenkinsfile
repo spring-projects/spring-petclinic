@@ -13,8 +13,14 @@ pipeline {
             agent any
             steps {
                 sh "mvn clean package"
-                input 'Sally forth?'
             }
         }
+		
+		stage('Approve for QA') {
+            agent any
+            steps {
+                input 'Sally forth?'
+            }
+		}
     }
 }
