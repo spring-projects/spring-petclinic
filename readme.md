@@ -73,13 +73,17 @@ you have a special interest in a different technology stack that could
 be used to implement the Pet Clinic then please join the community
 there.
 
-| Link | Main technologies |
-|----------------|-------------------|
-| [spring-framework-petclinic](https://github.com/spring-petclinic/spring-framework-petclinic) | Spring Framework XML configuration, JSP pages, 3 persistence layers: JDBC, JPA and Spring Data JPA |
-| [javaconfig branch](https://github.com/spring-petclinic/spring-framework-petclinic/tree/javaconfig) | Same frameworks as the [spring-framework-petclinic](https://github.com/spring-petclinic/spring-framework-petclinic) but with Java Configuration instead of XML |
-| [spring-petclinic-angular](https://github.com/spring-petclinic/spring-petclinic-angularjs) | AngularJS 1.x, Spring Boot and Spring Data JPA |
-| [spring-petclinic-microservices](https://github.com/spring-petclinic/spring-petclinic-microservices) | Distributed version of Spring Petclinic built with Spring Cloud |
-| [spring-petclinic-reactjs](https://github.com/spring-petclinic/spring-petclinic-reactjs) | ReactJS (with TypeScript) and Spring Boot |
+| Link                               | Main technologies |
+|------------------------------------|-------------------|
+| [spring-framework-petclinic][]     | Spring Framework XML configuration, JSP pages, 3 persistence layers: JDBC, JPA and Spring Data JPA |
+| [javaconfig branch][]              | Same frameworks as the [spring-framework-petclinic][] but with Java Configuration instead of XML |
+| [spring-petclinic-angularjs][]     | AngularJS 1.x, Spring Boot and Spring Data JPA |
+| [spring-petclinic-angular][]       | Angular 4 front-end of the Petclinic REST API [spring-petclinic-rest][] |
+| [spring-petclinic-microservices][] | Distributed version of Spring Petclinic built with Spring Cloud |
+| [spring-petclinic-reactjs][]       | ReactJS (with TypeScript) and Spring Boot |
+| [spring-petclinic-graphql][]       | GraphQL version based on React Appolo, TypeScript and GraphQL Spring boot starter |
+| [spring-petclinic-kotlin][]        | Kotlin version of [spring-petclinic][] |
+| [spring-petclinic-rest][]          | Backend REST API |
 
 
 ## Interaction with other open source projects
@@ -103,3 +107,13 @@ For pull requests, editor preferences are available in the [editor config](.edit
 # License
 
 The Spring PetClinic sample application is released under version 2.0 of the [Apache License](http://www.apache.org/licenses/LICENSE-2.0).
+
+[spring-petclinic]: https://github.com/spring-projects/spring-petclinic
+[spring-framework-petclinic]: https://github.com/spring-petclinic/spring-framework-petclinic
+[spring-petclinic-angularjs]: https://github.com/spring-petclinic/spring-petclinic-angularjs 
+[javaconfig branch]: https://github.com/spring-petclinic/spring-framework-petclinic/tree/javaconfig
+[spring-petclinic-angular]: https://github.com/spring-petclinic/spring-petclinic-angular
+[spring-petclinic-microservices]: https://github.com/spring-petclinic/spring-petclinic-microservices
+[spring-petclinic-reactjs]: https://github.com/spring-petclinic/spring-petclinic-reactjs
+[spring-petclinic-graphql]: https://github.com/spring-petclinic/spring-petclinic-graphql
+[spring-petclinic-kotlin]: https://github.com/spring-petclinic/spring-petclinic-kotlin
