@@ -114,4 +114,5 @@ For pull requests, editor preferences are available in the [editor config](.edit
 [spring-petclinic-reactjs]: https://github.com/spring-petclinic/spring-petclinic-reactjs
 [spring-petclinic-graphql]: https://github.com/spring-petclinic/spring-petclinic-graphql
 [spring-petclinic-kotlin]: https://github.com/spring-petclinic/spring-petclinic-kotlin
+[spring-petclinic-rest]: https://github.com/spring-petclinic/spring-petclinic-rest
 
