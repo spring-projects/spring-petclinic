@@ -1,7 +1,4 @@
 pipeline {
-    //environment {
-    //}
-	
 	tools {
 	    maven 'Maven 3.5.0'
 	}
@@ -15,8 +12,9 @@ pipeline {
             }
         }
 		
-        stage('SonarQube analysis') {
+        stage('SonarQube Analysis') {
 			steps {
+			    /*
 				script {
 	                scannerHome = tool 'SonarQube_Scanner_3.0.3.778';
 				}
@@ -25,6 +23,11 @@ pipeline {
 				    echo "${scannerHome}"
                     sh "${scannerHome}/bin/sonar-scanner"
                 }
+				*/
+				sonarqubeAnalysis {
+				    scanner = 'SonarQube_Scanner_3.0.3.778',
+					server  = 'Staging'
+				}
             }
         }
 		
@@ -33,15 +36,15 @@ pipeline {
                 timeout(time: 1, unit: 'HOURS') { 
 				    script {
 					    // these are the statuses that we'll allow
-					    def allowableQualityGateStatuses = ['OK','WARN']
+					    def allowableQualityGateStatuses = ['OK', 'WARN']
 						
 						// we need to wait for the quality check to complete
                         def qualityGate = waitForQualityGate() 
 						
 						// if the status we got back, isn't one of the logal ones, then
-						// we need o fail the build
+						// we need to fail the build
                         if (!allowableQualityGateStatuses.contains(qualityGate.status)) {
-                            error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                            error "Pipeline aborted due to quality gate failure: ${qualityGate.status}"
                         }
                     }
                 }
