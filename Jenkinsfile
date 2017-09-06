@@ -2,9 +2,9 @@ pipeline {
     //environment {
     //}
 	
-	//tools {
-	//    maven 'Maven 3.5.0'
-	//}
+	tools {
+	    maven 'Maven 3.5.0'
+	}
 
     agent none
 
