@@ -16,28 +16,33 @@ pipeline {
             }
         }
 		
-        stage('SonarQube analysis') { 
-            withSonarQubeEnv('SonarQube Scanner 3.0.3.778') { 
-                sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.3.0.603:sonar ' + 
-                   '-f pom.xml ' +
-                   '-Dsonar.projectKey=com.huettermann:all:master ' +
-                   '-Dsonar.login=$SONAR_UN ' +
-                   '-Dsonar.password=$SONAR_PW ' +
-                   '-Dsonar.language=java ' +
-                   '-Dsonar.sources=. ' +
-                   '-Dsonar.tests=. ' +
-                   '-Dsonar.test.inclusions=**/*Test*/** ' +
-                   '-Dsonar.exclusions=**/*Test*/**'
-            }
+        stage('SonarQube analysis') {
+		    agent any
+			steps {
+                withSonarQubeEnv('SonarQube Scanner 3.0.3.778') { 
+                    sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.3.0.603:sonar ' + 
+                       '-f pom.xml ' +
+                       '-Dsonar.projectKey=com.huettermann:all:master ' +
+                       '-Dsonar.login=$SONAR_UN ' +
+                       '-Dsonar.password=$SONAR_PW ' +
+                       '-Dsonar.language=java ' +
+                       '-Dsonar.sources=. ' +
+                       '-Dsonar.tests=. ' +
+                       '-Dsonar.test.inclusions=**/*Test*/** ' +
+                       '-Dsonar.exclusions=**/*Test*/**'
+                }
+			}
         }
 		
-        stage("SonarQube Quality Gate") { 
-            timeout(time: 1, unit: 'HOURS') { 
-                def qg = waitForQualityGate() 
-                if (qg.status != 'OK') {
-                    error "Pipeline aborted due to quality gate failure: ${qg.status}"
+        stage("SonarQube Quality Gate") {
+		    steps {
+                timeout(time: 1, unit: 'HOURS') { 
+                    def qg = waitForQualityGate() 
+                    if (qg.status != 'OK') {
+                        error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                    }
                 }
-            }
+			}
         }
 	
 		stage('Approve for QA') {
