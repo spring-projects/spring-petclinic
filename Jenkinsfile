@@ -24,10 +24,7 @@ pipeline {
                     sh "${scannerHome}/bin/sonar-scanner"
                 }
 				*/
-				sonarqubeAnalysis {
-				    scanner = 'SonarQube_Scanner_3.0.3.778'
-					server  = 'Staging'
-				}
+				sonarqubeAnalysis "SonarQube_Scanner_3.0.3.778", "Staging"
             }
         }
 		
