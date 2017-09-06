@@ -1,6 +1,6 @@
 pipeline {
     environment {
-	    SQ_SCANNER = tool 'SonarQube Scanner 3.0.3.778';
+	    SQ_SCANNER = tool 'SonarQube_Scanner_3.0.3.778';
     }
 	
 	tools {
@@ -35,6 +35,7 @@ pipeline {
                 //}
 
                 withSonarQubeEnv('Staging') {
+				    echo "${SQ_SCANNER}"
                     sh "${SQ_SCANNER}/bin/sonar-scanner"
                 }
             }
