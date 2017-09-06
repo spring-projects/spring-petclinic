@@ -1,7 +1,6 @@
 pipeline {
-    environment {
-	    SQ_SCANNER = tool 'SonarQube_Scanner_3.0.3.778';
-    }
+    //environment {
+    //}
 	
 	tools {
 	    maven 'Maven 3.5.0'
@@ -33,10 +32,14 @@ pipeline {
                 //       '-Dsonar.test.inclusions=**/*Test*/** ' +
                 //       '-Dsonar.exclusions=**/*Test*/**'
                 //}
+				
+				script {
+	                scannerHome = tool 'SonarQube_Scanner_3.0.3.778';
+				}
 
                 withSonarQubeEnv('Staging') {
-				    echo "${SQ_SCANNER}"
-                    sh "${SQ_SCANNER}/bin/sonar-scanner"
+				    echo "${scannerHome}"
+                    sh "${scannerHome}/bin/sonar-scanner"
                 }
             }
         }
