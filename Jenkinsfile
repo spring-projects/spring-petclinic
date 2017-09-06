@@ -34,6 +34,7 @@ pipeline {
 			}
         }
 		
+		/*
         stage("SonarQube Quality Gate") {
 		    steps {
                 timeout(time: 1, unit: 'HOURS') { 
@@ -44,6 +45,7 @@ pipeline {
                 }
 			}
         }
+		*/
 	
 		stage('Approve for QA') {
             agent any
