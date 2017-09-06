@@ -25,7 +25,7 @@ pipeline {
                 }
 				*/
 				sonarqubeAnalysis {
-				    scanner = 'SonarQube_Scanner_3.0.3.778',
+				    scanner = 'SonarQube_Scanner_3.0.3.778'
 					server  = 'Staging'
 				}
             }
