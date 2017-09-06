@@ -2,9 +2,9 @@ pipeline {
     //environment {
     //}
 	
-	tools {
-	    maven 'Maven 3.5.0'
-	}
+	//tools {
+	//    maven 'Maven 3.5.0'
+	//}
 
     agent none
 
@@ -33,8 +33,10 @@ pipeline {
                 //       '-Dsonar.exclusions=**/*Test*/**'
                 //}
 
-                withSonarQubeEnv('Staging') {
+				script {
 				    def scannerHome = tool 'SonarQube Scanner 3.0.3.778';
+				}
+                withSonarQubeEnv('Staging') {
                     sh "${scannerHome}/bin/sonar-scanner"
                 }
             }
