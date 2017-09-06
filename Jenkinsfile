@@ -32,8 +32,15 @@ pipeline {
 		    steps {
                 timeout(time: 1, unit: 'HOURS') { 
 				    script {
+					    // these are the statuses that we'll allow
+					    def alowableStatuses = ['OK','WARN']
+						
+						// we need to wait for the quality check to complete
                         def qg = waitForQualityGate() 
-                        if (qg.status != 'OK') {
+						
+						// if the status we got back, isn't one of the logal ones, then
+						// we need o fail the build
+                        if (!allowableStatuses.contains(qg.status)) {
                             error "Pipeline aborted due to quality gate failure: ${qg.status}"
                         }
                     }
