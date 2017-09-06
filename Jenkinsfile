@@ -28,8 +28,7 @@ pipeline {
             }
         }
 		
-		/*
-        stage("SonarQube Quality Gate") {
+        stage('SonarQube Quality Gate') {
 		    steps {
                 timeout(time: 1, unit: 'HOURS') { 
                     def qg = waitForQualityGate() 
@@ -39,7 +38,6 @@ pipeline {
                 }
 			}
         }
-		*/
 	
 		stage('Approve for QA') {
             steps {
