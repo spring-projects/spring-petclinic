@@ -14,7 +14,7 @@ pipeline {
 		
         stage('SonarQube Analysis') {
 			steps {
-			    ///*
+			    /*
 				script {
 	                scannerHome = tool 'SonarQube_Scanner_3.0.3.778';
 				}
@@ -23,8 +23,8 @@ pipeline {
 				    echo "${scannerHome}"
                     sh "${scannerHome}/bin/sonar-scanner"
                 }
-				//*/
-				//sonarqubeAnalysis "SonarQube_Scanner_3.0.3.778", "Staging", "${workspace}/sonar-project.properties"
+				*/
+				sonarqubeAnalysis "SonarQube_Scanner_3.0.3.778", "Staging", "${env.WORKSPACE}/sonar-project.properties"
             }
         }
 		
