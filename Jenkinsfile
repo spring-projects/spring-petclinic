@@ -1,7 +1,9 @@
 pipeline {
+    /*
 	tools {
 	    maven 'Maven 3.5.0'
 	}
+	*/
 
     agent any
 
