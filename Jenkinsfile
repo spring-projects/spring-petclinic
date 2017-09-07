@@ -24,7 +24,7 @@ pipeline {
                     sh "${scannerHome}/bin/sonar-scanner"
                 }
 				*/
-				sonarqubeAnalysis "SonarQube_Scanner_3.0.3.778", "Staging"
+				sonarqubeAnalysis "SonarQube_Scanner_3.0.3.778", "Staging", "${workspace}/sonar-project.properties"
             }
         }
 		
