@@ -29,9 +29,11 @@ pipeline {
         }
 		
         stage('SonarQube Quality Gate') {
+		    // we don't want to tie up an agent for this
 		    agent none
 			
 		    steps {
+			    /*
                 timeout(time: 1, unit: 'HOURS') { 
 				    script {
 					    // these are the statuses that we'll allow
@@ -47,6 +49,8 @@ pipeline {
                         }
                     }
                 }
+				*/
+				waitForSonarQubeAnalysis 60, ['OK','WARN']
 			}
         }
 	
