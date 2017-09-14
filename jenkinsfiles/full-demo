@@ -29,14 +29,23 @@ pipeline {
         stage('Build container') {
             agent any
             steps {
-                sh 'docker build -t petclinic-tomcat .'
+                script {
+                    sh "docker build -t liatrio/petclinic-tomcat:${env.BRANCH_NAME} ."
+                        if ( env.BRANCH_NAME == 'master' ) {
+                            pom = readMavenPom file: 'pom.xml'
+                            containerVersion = pom.version
+                            /*Need to check if version exists in the future*/
+                            /*failIfVersionExists("liatrio","petclinic-tomcat",containerVersion)*/
+                            sh "docker build -t liatrio/petclinic-tomcat:${containerVersion} ."
+                        }
+                }
             }
         }
         stage('Run local container') {
             agent any
             steps {
                 sh 'docker rm -f petclinic-tomcat-temp || true'
-                sh 'docker run -d --network=${LDOP_NETWORK_NAME} --name petclinic-tomcat-temp petclinic-tomcat'
+                sh "docker run -d --network=${LDOP_NETWORK_NAME} --name petclinic-tomcat-temp liatrio/petclinic-tomcat:${env.BRANCH_NAME}"
             }
         }
         stage('Smoke-Test & OWASP Security Scan') {
@@ -55,6 +64,22 @@ pipeline {
             agent any
             steps {
                 sh 'docker rm -f petclinic-tomcat-temp || true'
+            }
+        }
+        stage('Push to dockerhub') {
+            agent any
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'dockerPassword', usernameVariable: 'dockerUsername')]){
+                    script {
+                        sh "docker login -u ${env.dockerUsername} -p ${env.dockerPassword}"
+                        if ( env.BRANCH_NAME == 'master' ) {
+                            sh "docker push liatrio/petclinic-tomcat:${containerVersion}"
+                        }
+                        else {
+                            sh "docker push liatrio/petclinic-tomcat:${env.BRANCH_NAME}"
+                        }
+                    }
+                }
             }
         }
         stage('Deploy to dev') {
