@@ -45,7 +45,6 @@ pipeline {
             agent any
             steps {
                 sh 'docker rm -f petclinic-tomcat-temp || true'
-                sh 'env | grep LDOP'
                 sh "docker run -d --network=${LDOP_NETWORK_NAME} --name petclinic-tomcat-temp liatrio/petclinic-tomcat:${env.BRANCH_NAME}"
             }
         }
