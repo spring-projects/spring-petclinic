@@ -41,29 +41,26 @@ pipeline {
           sh 'mvn clean'
           script {
             pom = readMavenPom file: 'pom.xml'
-            getArtifact(pom.groupId, pom.artifactId, pom.version)
+            if (params.version == 'UNSPECIFIED') {
+              getArtifact(pom.groupId, pom.artifactId, pom.version)
+              } else {
+                getArtifact(pom.groupId, pom.artifactId, params.VERSION)
+              }
+            }
           }
         }
-      }
         stage('Build container') {
-            agent any
-            steps {
-                script {
-                    sh "docker build -t liatrio/petclinic-tomcat:${env.BRANCH_NAME} ."
-                        if ( env.BRANCH_NAME == 'master' ) {
-                            pom = readMavenPom file: 'pom.xml'
-                            containerVersion = pom.version
-                            sh "docker build -t liatrio/petclinic-tomcat:${containerVersion} ."
-                        }
-                }
-            }
+          agent any
+          steps {
+            sh 'docker build -t petclinic-tomcat .'
+          }
         }
         stage('Run local container') {
-            agent any
-            steps {
-                sh 'docker rm -f petclinic-tomcat-temp || true'
-                sh "docker run -d --network=${LDOP_NETWORK_NAME} --name petclinic-tomcat-temp liatrio/petclinic-tomcat:${env.BRANCH_NAME}"
-            }
+          agent any
+          steps {
+            sh 'docker rm -f petclinic-tomcat-temp || true'
+            sh 'docker run -d --network=${LDOP_NETWORK_NAME} --name petclinic-tomcat-temp petclinic-tomcat'
+          }
         }
         stage('Smoke-Test & OWASP Security Scan') {
           agent {
@@ -83,33 +80,10 @@ pipeline {
             sh 'docker rm -f petclinic-tomcat-temp || true'
           }
         }
-        stage('Push to dockerhub') {
-            agent any
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'dockerPassword', usernameVariable: 'dockerUsername')]){
-                    script {
-                        sh "docker login -u ${env.dockerUsername} -p ${env.dockerPassword}"
-                        if ( env.BRANCH_NAME == 'master' ) {
-                            sh "docker push liatrio/petclinic-tomcat:${containerVersion}"
-                        }
-                        else {
-                            sh "docker push liatrio/petclinic-tomcat:${env.BRANCH_NAME}"
-                        }
-                    }
-                }
-            }
-        }
         stage('Deploy to dev') {
           agent any
           steps {
-            script {
-              if ( env.BRANCH_NAME == 'master' ) {
-                deployToEnvironment("ec2-user", "dev-petclinic.liatr.io", "petclinic-deploy-key", "${env.IMAGE}", "${containerVersion}", "spring-petclinic", "dev-petclinic.liatr.io")
-              }
-              else{
-                deployToEnvironment("ec2-user", "dev-petclinic.liatr.io", "petclinic-deploy-key", "${env.IMAGE}", "${env.BRANCH_NAME}", "spring-petclinic", "dev-petclinic.liatr.io")
-              }
-            }
+            deployToEnvironment("ec2-user", "dev-petclinic.liatr.io", "petclinic-deploy-key", "${env.IMAGE}", "${env.TAG}", "spring-petclinic", "dev-petclinic.liatr.io/petclinic")
           }
         }
         stage('Smoke test dev') {
@@ -121,23 +95,17 @@ pipeline {
           }
           steps {
             sh "cd regression-suite"
-            sh "mvn clean -B test -DPETCLINIC_URL=https://dev-petclinic.liatr.io/petclinic"
-            echo "Should be accessible at https://dev-petclinic.liatr.io/petclinic"
+            sh "mvn clean -B test -DPETCLINIC_URL=http://dev-petclinic:8080/petclinic/"
+            echo "Should be accessible at http://localhost:18888/petclinic"
           }
         }
         stage('Deploy to qa') {
-          when {
-            branch 'master'
-          }
           agent any
           steps {
-              deployToEnvironment("ec2-user", "qa-petclinic.liatr.io", "petclinic-deploy-key", "${env.IMAGE}", "${containerVersion}", "spring-petclinic", "qa-petclinic.liatr.io")
+            deployToEnvironment("ec2-user", "qa-petclinic.liatr.io", "petclinic-deploy-key", "${env.IMAGE}", "${env.TAG}", "spring-petclinic", "qa-petclinic.liatr.io/petclinic")
           }
         }
         stage('Smoke test qa') {
-          when {
-            branch 'master'
-          }
           agent {
             docker {
               image 'maven:3.5.0'
@@ -146,24 +114,18 @@ pipeline {
           }
           steps {
             sh "cd regression-suite"
-            sh "mvn clean -B test -DPETCLINIC_URL=https://qa-petclinic.liatr.io/petclinic"
-            echo "Should be accessible at https://qa-petclinic.liatr.io/petclinic"
+            sh "mvn clean -B test -DPETCLINIC_URL=http://qa-petclinic:8080/petclinic/"
+            echo "Should be accessible at http://localhost:18889/petclinic"
             input 'Deploy to Prod?'
           }
         }
-        stage('Deploy to Prod') {
-          when {
-            branch 'master'
-          }
+        stage('Deploy to ProdA-Green') {
           agent any
           steps {
-            deployToEnvironment("ec2-user", "petclinic.liatr.io", "petclinic-deploy-key", "${env.IMAGE}", "${containerVersion}", "prod-petclinic", "petclinic.liatr.io")
+            deployToEnvironment("ec2-user", "prod-petclinic.liatr.io", "petclinic-deploy-key", "${env.IMAGE}", "${env.TAG}", "spring-petclinic", "prod-petclinic.liatr.io/petclinic", "petclinic-prod")
           }
         }
-        stage('Smoke test Prod') {
-          when {
-            branch 'master'
-          }
+        stage('Smoke test ProdA-Green') {
           agent {
             docker {
               image 'maven:3.5.0'
@@ -172,7 +134,39 @@ pipeline {
           }
           steps {
             sh "cd regression-suite"
-            sh "mvn clean -B test -DPETCLINIC_URL=https://petclinic.liatr.io/petclinic"
+            sh "mvn clean -B test -DPETCLINIC_URL=http://proda-petclinic-green:8080/petclinic/"
+          }
+        }
+        stage('Deploy to ProdA') {
+          agent any
+          steps {
+            sh 'docker rm -f proda-petclinic || true'
+            sh 'docker container rename proda-petclinic-green proda-petclinic'
+          }
+        }
+        stage('Deploy to ProdB-Green') {
+          agent any
+          steps {
+            deployToEnvironment("ec2-user", "prod-petclinic.liatr.io", "petclinic-deploy-key", "${env.IMAGE}", "${env.TAG}", "spring-petclinic", "prod-petclinic.liatr.io/petclinic", "petclinic-prod")
+          }
+        }
+        stage('Smoke test ProdB-Green') {
+          agent {
+            docker {
+              image 'maven:3.5.0'
+              args '--network=${LDOP_NETWORK_NAME}'
+            }
+          }
+          steps {
+            sh "cd regression-suite"
+            sh "mvn clean -B test -DPETCLINIC_URL=http://prodb-petclinic-green:8080/petclinic/"
+          }
+        }
+        stage('Deploy to ProdB') {
+          agent any
+          steps {
+            sh 'docker rm -f prodb-petclinic || true'
+            sh 'docker container rename prodb-petclinic-green prodb-petclinic'
           }
         }
       }
