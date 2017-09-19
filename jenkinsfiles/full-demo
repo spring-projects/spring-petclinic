@@ -73,7 +73,7 @@ pipeline {
             }
           }
           steps {
-            sh "cd regression-suite && mvn clean -B test -DPETCLINIC_URL=http://petclinic-tomcat:8080/petclinic/"
+            sh "cd regression-suite && mvn clean -B test -DPETCLINIC_URL=http://petclinic-tomcat-temp:8080/petclinic/"
           }
         }
         stage('Stop local container') {
