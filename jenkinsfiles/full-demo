@@ -73,8 +73,7 @@ pipeline {
             }
           }
           steps {
-            sh "cd regression-suite"
-            sh "mvn clean -B test -DPETCLINIC_URL=http://petclinic-tomcat:8080/petclinic/"
+            sh "cd regression-suite && mvn clean -B test -DPETCLINIC_URL=http://petclinic-tomcat:8080/petclinic/"
           }
         }
         stage('Stop local container') {
@@ -120,8 +119,7 @@ pipeline {
             }
           }
           steps {
-            sh "cd regression-suite"
-            sh "mvn clean -B test -DPETCLINIC_URL=https://dev-petclinic.liatr.io/petclinic"
+            sh "cd regression-suite && mvn clean -B test -DPETCLINIC_URL=https://dev-petclinic.liatr.io/petclinic"
             echo "Should be accessible at https://dev-petclinic.liatr.io/petclinic"
           }
         }
@@ -145,8 +143,7 @@ pipeline {
             }
           }
           steps {
-            sh "cd regression-suite"
-            sh "mvn clean -B test -DPETCLINIC_URL=https://qa-petclinic.liatr.io/petclinic"
+            sh "cd regression-suite && mvn clean -B test -DPETCLINIC_URL=https://qa-petclinic.liatr.io/petclinic"
             echo "Should be accessible at https://qa-petclinic.liatr.io/petclinic"
             input 'Deploy to Prod?'
           }
@@ -171,8 +168,7 @@ pipeline {
             }
           }
           steps {
-            sh "cd regression-suite"
-            sh "mvn clean -B test -DPETCLINIC_URL=https://petclinic.liatr.io/petclinic"
+            sh "cd regression-suite && mvn clean -B test -DPETCLINIC_URL=https://petclinic.liatr.io/petclinic"
           }
         }
       }
