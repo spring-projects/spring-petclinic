@@ -100,6 +100,6 @@ The [issue tracker](https://github.com/spring-projects/spring-petclinic/issues) 
 
 For pull requests, editor preferences are available in the [editor config](.editorconfig) for easy use in common text editors. Read more and download plugins at <http://editorconfig.org>.
 
-
+# foo
 
 
