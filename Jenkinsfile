@@ -19,13 +19,11 @@ pipeline {
         }
       }
       steps {
-        configFileProvider(
-          [configFile(fileId: 'nexus', variable: 'MAVEN_SETTINGS')]) {
-            sh 'mvn -s $MAVEN_SETTINGS clean deploy -DskipTests=true -B'
-          }
+        configFileProvider([configFile(fileId: 'nexus', variable: 'MAVEN_SETTINGS')]) {
+          sh 'mvn -s $MAVEN_SETTINGS clean deploy -DskipTests=true -B'
+        }
       }
     }
-
     stage('Sonar') {
       agent  {
         docker {
@@ -106,7 +104,7 @@ pipeline {
         }
       }
     }
-
+    
     stage('Deploy to dev') {
       agent any
       steps {
@@ -135,7 +133,7 @@ pipeline {
       }
       agent any
       steps {
-          deployToEnvironment("ec2-user", "qa.petclinic.liatr.io", "petclinic-deploy-key", env.IMAGE, TAG, "spring-petclinic", "qa.petclinic.liatr.io")
+        deployToEnvironment("ec2-user", "qa.petclinic.liatr.io", "petclinic-deploy-key", env.IMAGE, TAG, "spring-petclinic", "qa.petclinic.liatr.io")
       }
     }
     
