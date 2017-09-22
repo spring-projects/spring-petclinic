@@ -155,11 +155,9 @@ pipeline {
     }
 
     stage('Blue/Green deploy to prod') {
-      /*
       when {
         branch 'master'
       }
-      */
       agent {
         dockerfile {
           filename "blue-green/Dockerfile"
