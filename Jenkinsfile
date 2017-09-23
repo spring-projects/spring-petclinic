@@ -1,5 +1,10 @@
 pipeline {
-  agent { docker 'maven:alpine' }
+  agent {
+    docker{
+      image 'maven:alpine'
+      args '--network=ci_attachable'
+    }
+  }
   options {
     gitLabConnection('gitlab')
     buildDiscarder(logRotator(numToKeepStr: '5'))
