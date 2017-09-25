@@ -155,9 +155,9 @@ pipeline {
     }
     
     stage('Blue/Green Prod Deploy') {
-      when {
+      /*when {
         branch 'master'
-      }
+      }*/
       agent {
         dockerfile {
           filename "blue-green/Dockerfile"
@@ -176,9 +176,9 @@ pipeline {
     }
 
     stage('Blue/Green Prod Regression Test') {
-      when {
+      /*when {
         branch 'master'
-      }
+      }*/
       agent {
         dockerfile {
           filename "blue-green/Dockerfile"
@@ -197,15 +197,16 @@ pipeline {
     }
 
     stage('Blue/Green Prod Toggle Load Balancer') {
-      when {
+      /*when {
         branch 'master'
-      }
+      }*/
       agent {
         dockerfile {
           filename "blue-green/Dockerfile"
         }
       }
       steps {
+        input "Toggle Prod Load Balancer?"
         withCredentials([
           usernamePassword(credentialsId: 'aws', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY'),
           file(credentialsId: 'petclinic-deploy-key', variable: 'DEPLOY_KEY_PATH')

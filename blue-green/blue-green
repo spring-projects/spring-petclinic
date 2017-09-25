@@ -1,4 +1,4 @@
-#!/bin/bash -xe
+#!/bin/bash -e
 
 # This script executes a blue/green deployment on the petclinic 
 # production infrastructure.
