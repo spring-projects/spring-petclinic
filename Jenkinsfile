@@ -1,6 +1,6 @@
 #!/bin/env groovy
 
-@Library('ldop-shared-library@ad8185bec5a1999d144ec6c8fdadf9a62ab0506e') _
+@Library('ldop-shared-library@fd16602cad0f97ca1b04090f93a0540ddc871b45') _
 
 pipeline {
   agent none
@@ -155,9 +155,9 @@ pipeline {
     }
     
     stage('Blue/Green Prod Deploy') {
-      /*when {
+      when {
         branch 'master'
-      }*/
+      }
       agent {
         dockerfile {
           filename "blue-green/Dockerfile"
@@ -176,9 +176,9 @@ pipeline {
     }
 
     stage('Blue/Green Prod Regression Test') {
-      /*when {
+      when {
         branch 'master'
-      }*/
+      }
       agent {
         dockerfile {
           filename "blue-green/Dockerfile"
@@ -197,9 +197,9 @@ pipeline {
     }
 
     stage('Blue/Green Prod Toggle Load Balancer') {
-      /*when {
+      when {
         branch 'master'
-      }*/
+      }
       agent {
         dockerfile {
           filename "blue-green/Dockerfile"
