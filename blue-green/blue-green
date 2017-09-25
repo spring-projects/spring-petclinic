@@ -1,0 +1,93 @@
+#!/bin/bash -e
+
+# This script executes a blue/green deployment on the petclinic 
+# production infrastructure.
+# 
+# Production infrastructure consists of:
+#   - An application load balancer (prod-petclinic)
+#   - Two target groups (proda-petclinic, prodb-petclinic)
+#   - A single t2.micro ec2 instance in each target group 
+#
+# One of the two target groups should be attached to the ALB at any given timel 
+# via a Listener
+#
+# To perform a blue/green deployment, we:
+#   - Figure out which target group is detached
+#   - Deploy the application to each instance in the detached target group 
+#   - Run smoke tests on the newly deployed applications
+#   - Delete the current attached listener
+#   - Attach a new listener that forwards to the target group we deployed to.
+#
+# Expected environment variables:
+#   - DEPLOY_KEY_PATH        Private key to access prod instances
+#   - AWS_ACCESS_ID_ID      
+#   - AWS_SECRET_ACCESS_KEY  For modifying load balancer resources
+#   - IMAGE                  Dockerhub repo to deploy from
+#   - TAG                    Version of image to deploy 
+#
+
+export AWS_DEFAULT_REGION='us-west-2'
+
+LOAD_BALANCER_ARN=$(aws elbv2 describe-load-balancers --names prod-petclinic | jq -r '.LoadBalancers|.[0]|.LoadBalancerArn')
+ATTACHED_LISTENER_ARN=$(aws elbv2 describe-listeners --load-balancer-arn "${LOAD_BALANCER_ARN}" | jq -r '.Listeners|.[0]|.ListenerArn')
+ATTACHED_LISTENER_TARGET_GROUP_ARN=$(aws elbv2 describe-listeners --load-balancer-arn "${LOAD_BALANCER_ARN}" | jq -r '.Listeners|.[0]|.DefaultActions|.[0]|.TargetGroupArn')
+PRODA_TARGET_GROUP_ARN=$(aws elbv2 describe-target-groups --names proda-petclinic | jq -r '.TargetGroups|.[0]|.TargetGroupArn')
+PRODB_TARGET_GROUP_ARN=$(aws elbv2 describe-target-groups --names prodb-petclinic | jq -r '.TargetGroups|.[0]|.TargetGroupArn')
+
+if [[ "${ATTACHED_LISTENER_TARGET_GROUP_ARN}" == "${PRODA_TARGET_GROUP_ARN}" ]]; then
+  NEW_TARGET_GROUP_ARN=${PRODB_TARGET_GROUP_ARN}
+  FQDN="prodb.petclinic.liatr.io"
+else
+  NEW_TARGET_GROUP_ARN=${PRODA_TARGET_GROUP_ARN}
+  FQDN="proda.petclinic.liatr.io"
+fi
+
+remote_exec() {
+  ssh -i ${DEPLOY_KEY_PATH} -o StrictHostKeyChecking=no ec2-user@${FQDN} "$1"
+}
+
+deploy() {
+  echo "Deploying ${IMAGE}:${TAG} to ${FQDN}"
+  remote_exec "docker rm -f petclinic || true"
+  remote_exec "docker pull ${IMAGE}:${TAG}"
+  remote_exec "docker run -d -p 80:8080 --name petclinic ${IMAGE}:${TAG}"
+}
+
+regr_test() {
+  echo "Running regression test suite on ${FQDN}/petclinic"
+  cd ./regression-suite && mvn clean -B test -DPETCLINIC_URL="http://${FQDN}/petclinic" && cd -
+}
+
+toggle_lb() {
+  echo "Toggling load balancer"
+  if [[ "${ATTACHED_LISTENER_ARN}" != "null" ]]; then
+    echo "Deleting previous listener: ${ATTACHED_LISTENER_ARN}"
+    aws elbv2 delete-listener --listener-arn "${ATTACHED_LISTENER_ARN}"
+  fi
+
+  echo "Attaching listener with target group: ${NEW_TARGET_GROUP_ARN}"
+  aws elbv2 create-listener  \
+    --load-balancer-arn "${LOAD_BALANCER_ARN}" \
+    --protocol "HTTP" \
+    --port "80" \
+    --default-actions "Type=forward,TargetGroupArn=${NEW_TARGET_GROUP_ARN}"
+}
+
+ACTION=$1
+case "$ACTION" in
+  deploy)
+    deploy
+    ;;
+  test)
+    regr_test
+    ;;
+  toggle)
+    toggle_lb
+    ;;
+  "")
+    deploy; regr_test; toggle_lb;
+    ;;
+  *)
+    echo "Unknown action $1. Exiting."
+    exit 1
+esac

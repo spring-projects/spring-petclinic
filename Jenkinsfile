@@ -1,6 +1,6 @@
 #!/bin/env groovy
 
-@Library('ldop-shared-library@ad8185bec5a1999d144ec6c8fdadf9a62ab0506e') _
+@Library('ldop-shared-library@fd16602cad0f97ca1b04090f93a0540ddc871b45') _
 
 pipeline {
   agent none
@@ -153,8 +153,8 @@ pipeline {
         input 'Deploy to Prod?'
       }
     }
-
-    stage('Blue/Green deploy to prod') {
+    
+    stage('Blue/Green Prod Deploy') {
       when {
         branch 'master'
       }
@@ -169,7 +169,50 @@ pipeline {
           file(credentialsId: 'petclinic-deploy-key', variable: 'DEPLOY_KEY_PATH')
         ]) {
           script {
-            sh "TAG=${TAG} blue-green/blue-green-deploy"
+            sh "TAG=${TAG} blue-green/blue-green deploy"
+          }
+        }
+      }
+    }
+
+    stage('Blue/Green Prod Regression Test') {
+      when {
+        branch 'master'
+      }
+      agent {
+        dockerfile {
+          filename "blue-green/Dockerfile"
+        }
+      }
+      steps {
+        withCredentials([
+          usernamePassword(credentialsId: 'aws', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY'),
+          file(credentialsId: 'petclinic-deploy-key', variable: 'DEPLOY_KEY_PATH')
+        ]) {
+          script {
+            sh "TAG=${TAG} blue-green/blue-green test"
+          }
+        }
+      }
+    }
+
+    stage('Blue/Green Prod Toggle Load Balancer') {
+      when {
+        branch 'master'
+      }
+      agent {
+        dockerfile {
+          filename "blue-green/Dockerfile"
+        }
+      }
+      steps {
+        input "Toggle Prod Load Balancer?"
+        withCredentials([
+          usernamePassword(credentialsId: 'aws', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY'),
+          file(credentialsId: 'petclinic-deploy-key', variable: 'DEPLOY_KEY_PATH')
+        ]) {
+          script {
+            sh "TAG=${TAG} blue-green/blue-green toggle"
           }
         }
       }
