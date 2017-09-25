@@ -28,17 +28,6 @@
 
 export AWS_DEFAULT_REGION='us-west-2'
 
-deploy() {
-  FQDN="$1"
-  ssh -i ${DEPLOY_KEY_PATH} -o StrictHostKeyChecking=no ec2-user@${FQDN} "docker rm -f petclinic || true"
-  ssh -i ${DEPLOY_KEY_PATH} -o StrictHostKeyChecking=no ec2-user@${FQDN} "docker run -d -p 80:8080 --name petclinic ${IMAGE}:${TAG}"
-}
-
-smoke_test() {
-  FQDN="$1"
-  cd ./regression-suite && mvn clean -B test -DPETCLINIC_URL="${FQDN}" && cd -
-}
-
 LOAD_BALANCER_ARN=$(aws elbv2 describe-load-balancers --names prod-petclinic | jq -r '.LoadBalancers|.[0]|.LoadBalancerArn')
 ATTACHED_LISTENER_ARN=$(aws elbv2 describe-listeners --load-balancer-arn "${LOAD_BALANCER_ARN}" | jq -r '.Listeners|.[0]|.ListenerArn')
 ATTACHED_LISTENER_TARGET_GROUP_ARN=$(aws elbv2 describe-listeners --load-balancer-arn "${LOAD_BALANCER_ARN}" | jq -r '.Listeners|.[0]|.DefaultActions|.[0]|.TargetGroupArn')
@@ -47,22 +36,57 @@ PRODB_TARGET_GROUP_ARN=$(aws elbv2 describe-target-groups --names prodb-petclini
 
 if [[ "${ATTACHED_LISTENER_TARGET_GROUP_ARN}" == "${PRODA_TARGET_GROUP_ARN}" ]]; then
   NEW_TARGET_GROUP_ARN=${PRODB_TARGET_GROUP_ARN}
-  deploy "prodb.petclinic.liatr.io"
-  smoke_test "http://prodb.petclinic.liatr.io/petclinic"
+  FQDN="prodb.petclinic.liatr.io"
 else
   NEW_TARGET_GROUP_ARN=${PRODA_TARGET_GROUP_ARN}
-  deploy "proda.petclinic.liatr.io"
-  smoke_test "http://proda.petclinic.liatr.io/petclinic"
+  FQDN="proda.petclinic.liatr.io"
 fi
 
-if [[ "${ATTACHED_LISTENER_ARN}" != "null" ]]; then
-  echo "Deleting previous listener: ${ATTACHED_LISTENER_ARN}"
-  aws elbv2 delete-listener --listener-arn "${ATTACHED_LISTENER_ARN}"
-fi
+remote_exec() {
+  ssh -i ${DEPLOY_KEY_PATH} -o StrictHostKeyChecking=no ec2-user@${FQDN} "$1"
+}
 
-echo "Attaching listener with target group: ${NEW_TARGET_GROUP_ARN}"
-aws elbv2 create-listener  \
-  --load-balancer-arn "${LOAD_BALANCER_ARN}" \
-  --protocol "HTTP" \
-  --port "80" \
-  --default-actions "Type=forward,TargetGroupArn=${NEW_TARGET_GROUP_ARN}"
+deploy() {
+  echo "Deploying ${IMAGE}:${TAG} to ${FQDN}"
+  remote_exec "docker rm -f petclinic || true"
+  remote_exec "docker run -d -p 80:8080 --name petclinic ${IMAGE}:${TAG}"
+}
+
+regr_test() {
+  echo "Running regression test suite on ${FQDN}/petclinic"
+  cd ./regression-suite && mvn clean -B test -DPETCLINIC_URL="http://${FQDN}/petclinic" && cd -
+}
+
+toggle_lb() {
+  echo "Toggling load balancer"
+  if [[ "${ATTACHED_LISTENER_ARN}" != "null" ]]; then
+    echo "Deleting previous listener: ${ATTACHED_LISTENER_ARN}"
+    aws elbv2 delete-listener --listener-arn "${ATTACHED_LISTENER_ARN}"
+  fi
+
+  echo "Attaching listener with target group: ${NEW_TARGET_GROUP_ARN}"
+  aws elbv2 create-listener  \
+    --load-balancer-arn "${LOAD_BALANCER_ARN}" \
+    --protocol "HTTP" \
+    --port "80" \
+    --default-actions "Type=forward,TargetGroupArn=${NEW_TARGET_GROUP_ARN}"
+}
+
+ACTION=$1
+case "$ACTION" in
+  deploy)
+    deploy
+    ;;
+  test)
+    regr_test
+    ;;
+  toggle)
+    toggle_lb
+    ;;
+  "")
+    deploy; regr_test; toggle_lb;
+    ;;
+  *)
+    echo "Unknown action $1. Exiting."
+    exit 1
+esac

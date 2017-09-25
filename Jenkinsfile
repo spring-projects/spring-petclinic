@@ -153,8 +153,8 @@ pipeline {
         input 'Deploy to Prod?'
       }
     }
-
-    stage('Blue/Green deploy to prod') {
+    
+    stage('Blue/Green Prod Deploy') {
       when {
         branch 'master'
       }
@@ -169,7 +169,49 @@ pipeline {
           file(credentialsId: 'petclinic-deploy-key', variable: 'DEPLOY_KEY_PATH')
         ]) {
           script {
-            sh "TAG=${TAG} blue-green/blue-green-deploy"
+            sh "TAG=${TAG} blue-green/blue-green deploy"
+          }
+        }
+      }
+    }
+
+    stage('Blue/Green Prod Regression Test') {
+      when {
+        branch 'master'
+      }
+      agent {
+        dockerfile {
+          filename "blue-green/Dockerfile"
+        }
+      }
+      steps {
+        withCredentials([
+          usernamePassword(credentialsId: 'aws', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY'),
+          file(credentialsId: 'petclinic-deploy-key', variable: 'DEPLOY_KEY_PATH')
+        ]) {
+          script {
+            sh "TAG=${TAG} blue-green/blue-green test"
+          }
+        }
+      }
+    }
+
+    stage('Blue/Green Prod Toggle Load Balancer') {
+      when {
+        branch 'master'
+      }
+      agent {
+        dockerfile {
+          filename "blue-green/Dockerfile"
+        }
+      }
+      steps {
+        withCredentials([
+          usernamePassword(credentialsId: 'aws', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY'),
+          file(credentialsId: 'petclinic-deploy-key', variable: 'DEPLOY_KEY_PATH')
+        ]) {
+          script {
+            sh "TAG=${TAG} blue-green/blue-green toggle"
           }
         }
       }
