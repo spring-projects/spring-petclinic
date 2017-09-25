@@ -49,6 +49,7 @@ remote_exec() {
 deploy() {
   echo "Deploying ${IMAGE}:${TAG} to ${FQDN}"
   remote_exec "docker rm -f petclinic || true"
+  remote_exec "docker pull ${IMAGE}:${TAG}"
   remote_exec "docker run -d -p 80:8080 --name petclinic ${IMAGE}:${TAG}"
 }
 
