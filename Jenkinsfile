@@ -3,7 +3,7 @@ node {
 
     cesFqdn = "ecosystem.cloudogu.net";
     cesUrl = "https://${cesFqdn}";
-    credentials = usernamePassword(credentialsId: 'system', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME');
+    credentials = usernamePassword(credentialsId: 'scmCredentials', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME');
 
     stage('Checkout') {
       checkout scm
@@ -49,9 +49,7 @@ def credentials;
 
 void mvn(String args) {
   writeSettingsXml()
-  withEnv(["JAVA_HOME=${tool 'jdk8u112'}"]) {
-      sh "./mvnw -s settings.xml --batch-mode -V -U -e -Dsurefire.useFile=false ${args}"
-  }
+  sh "./mvnw -s settings.xml --batch-mode -V -U -e -Dsurefire.useFile=false ${args}"
   sh 'rm -f settings.xml'
 }
 
@@ -71,7 +69,7 @@ void writeSettingsXml() {
                     <mirror>
                       <id>${cesFqdn}</id>
                       <name>${cesFqdn} Central Mirror</name>
-                      <url>${cesFqdn}/nexus/content/groups/public/</url>
+                      <url>${cesUrl}/nexus/content/groups/public</url>
                       <mirrorOf>central</mirrorOf>
                     </mirror>
                 </mirrors>
