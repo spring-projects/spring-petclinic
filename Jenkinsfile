@@ -106,6 +106,9 @@ pipeline {
     }
     
     stage('Deploy to dev') {
+      when {
+        branch 'master'
+      }
       agent any
       steps {
         script {
@@ -115,6 +118,9 @@ pipeline {
     }
     
     stage('Smoke test dev') {
+      when {
+        branch 'master'
+      }
       agent {
         docker {
           image 'maven:3.5.0'
