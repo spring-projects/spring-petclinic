@@ -17,12 +17,12 @@ pipeline {
   stages {
     stage("build") {
       steps {
-        sh 'mvn -Dmaven.test.failure.ignore=true --settings /var/jenkins_home/settings-docker.xml clean package'
+        sh 'mvn -Dmaven.test.failure.ignore=true --settings /maven/settings-docker.xml clean package'
       }
     }
     stage('Quality Gates') {
       steps {
-        sh 'mvn --settings /var/jenkins_home/settings-docker.xml sonar:sonar'
+        sh 'mvn --settings /maven/settings-docker.xml sonar:sonar'
       }
     }
     stage('Deploy - Dev') {
