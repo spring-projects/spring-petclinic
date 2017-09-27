@@ -39,7 +39,7 @@ node {
     }
 
     stage('Deploy Application') {
-      // ansible
+      sh "ansible-playbook playbook.yaml"
     }
 }
 
