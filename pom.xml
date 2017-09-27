@@ -118,6 +118,7 @@
   </dependencies>
 
   <build>
+    <finalName>spring-petclinic</finalName>
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>

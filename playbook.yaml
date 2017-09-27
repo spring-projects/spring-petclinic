@@ -14,12 +14,17 @@
 
   - name: Copy spring-petclinic
     copy:
-      src: target/spring-petclinic-1.5.1.jar
+      src: target/spring-petclinic.jar
       dest: /opt/spring-petclinic.jar
       owner: deploy
       mode: u+rwx
     notify:
     - restart service
+
+  - name: Enable service
+    service:
+      name: spring-petclinic
+      enabled: yes
 
   handlers:
   - name: reload systemd
