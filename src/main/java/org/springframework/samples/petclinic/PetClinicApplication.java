@@ -18,8 +18,6 @@ package org.springframework.samples.petclinic;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.web.SpringBootServletInitializer;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 
 /**
  * PetClinic Spring Boot Application.
@@ -28,23 +26,10 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
  *
  */
 @SpringBootApplication
-public class PetClinicApplication extends SpringBootServletInitializer {
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(Application.class);
-    }
+public class PetClinicApplication {
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(PetClinicApplication.class, args);
     }
 
 }
-/**@SpringBootApplication
-*public class PetClinicApplication {
-*
-*    public static void main(String[] args) throws Exception {
-*        SpringApplication.run(PetClinicApplication.class, args);
-*    }
-*
-*}
-*/
