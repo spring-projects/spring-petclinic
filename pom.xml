@@ -6,7 +6,7 @@
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
   <version>1.5.1</version>
-
+  <packaging>war</packaging>
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
@@ -51,6 +51,11 @@
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
     <dependency>
+    <groupId>org.apache.tomcat.embed</groupId>
+    <artifactId>tomcat-embed-el</artifactId>
+    <scope>provided</scope>
+</dependency>
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-thymeleaf</artifactId>
       <exclusions>
@@ -65,6 +70,11 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-tomcat</artifactId>
+		<scope>provided</scope>
+	</dependency>
 
     <!-- Databases - Uses HSQL by default -->
     <dependency>
@@ -140,6 +150,21 @@
           </execution>
         </executions>
       </plugin>
+
+	<plugin> 
+        <groupId>org.apache.tomcat.maven</groupId> 
+        <artifactId>tomcat7-maven-plugin</artifactId> 
+        <version>2.2</version> 
+        <configuration> 
+        <server>tomcat-development-server</server> 
+        <url>http://144.38.196.18:8080/manager/text</url> 
+        <warFile>target\spring-petclinic-1.5.1.war</warFile> 
+        <path>/petclinic</path> 
+	<username>joe</username>
+        <password>1francom$</password>
+        </configuration> 
+        </plugin> 
+
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>cobertura-maven-plugin</artifactId>
