@@ -21,7 +21,7 @@ node {
       mvn "${jacoco}:prepare-agent test ${jacoco}:report"
 
       // Archive JUnit results, if any
-      junit allowEmptyResults: true, testResults: '**/target/failsafe-reports/TEST-*.xml'
+      junit allowEmptyResults: true, testResults: '**/target/surefire-reports/TEST-*.xml'
     }
 
     stage('Integration Test') {
@@ -29,7 +29,7 @@ node {
         mvn "${jacoco}:prepare-agent-integration failsafe:integration-test ${jacoco}:report-integration"
 
         // Archive JUnit results, if any
-        junit allowEmptyResults: true, testResults: '**/target/surefire-reports/TEST-*.xml'
+        junit allowEmptyResults: true, testResults: '**/target/failsafe-reports/TEST-*.xml'
     }
 
     stage('SonarQube Analysis') {
