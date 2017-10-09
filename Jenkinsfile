@@ -16,21 +16,26 @@ node {
       archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
     }
 
-    stage('Test') {
-      String jacoco = "org.jacoco:jacoco-maven-plugin:0.7.7.201606060606";
-      mvn "${jacoco}:prepare-agent test ${jacoco}:report"
+    parallel(
+            test: {
+                stage('Test') {
+                    String jacoco = "org.jacoco:jacoco-maven-plugin:0.7.7.201606060606";
+                    mvn "${jacoco}:prepare-agent test ${jacoco}:report"
 
-      // Archive JUnit results, if any
-      junit allowEmptyResults: true, testResults: '**/target/surefire-reports/TEST-*.xml'
-    }
+                    // Archive JUnit results, if any
+                    junit allowEmptyResults: true, testResults: '**/target/surefire-reports/TEST-*.xml'
+                }
+            },
+            integrationTest: {
+                stage('Integration Test') {
+                    String jacoco = "org.jacoco:jacoco-maven-plugin:0.7.7.201606060606";
+                    mvn "${jacoco}:prepare-agent-integration failsafe:integration-test ${jacoco}:report-integration"
 
-    stage('Integration Test') {
-        String jacoco = "org.jacoco:jacoco-maven-plugin:0.7.7.201606060606";
-        mvn "${jacoco}:prepare-agent-integration failsafe:integration-test ${jacoco}:report-integration"
-
-        // Archive JUnit results, if any
-        junit allowEmptyResults: true, testResults: '**/target/failsafe-reports/TEST-*.xml'
-    }
+                    // Archive JUnit results, if any
+                    junit allowEmptyResults: true, testResults: '**/target/failsafe-reports/TEST-*.xml'
+                }
+            }
+    )
 
     stage('SonarQube Analysis') {
         withCredentials([credentials]) {
@@ -40,15 +45,21 @@ node {
         }
     }
 
-    stage('Deploy Artifacts') {
-        String releaseProp = "-DaltReleaseDeploymentRepository=${cesFqdn}::default::${cesUrl}/nexus/content/repositories/releases/";
-        String snapshotProp = "-DaltSnapshotDeploymentRepository=${cesFqdn}::default::${cesUrl}/nexus/content/repositories/snapshots/";
-        mvn "-DskipTests deploy ${releaseProp} ${snapshotProp}"
-    }
+    parallel(
+            deployArtifacts: {
+                stage('Deploy Artifacts') {
+                    String releaseProp = "-DaltReleaseDeploymentRepository=${cesFqdn}::default::${cesUrl}/nexus/content/repositories/releases/";
+                    String snapshotProp = "-DaltSnapshotDeploymentRepository=${cesFqdn}::default::${cesUrl}/nexus/content/repositories/snapshots/";
+                    mvn "-DskipTests deploy ${releaseProp} ${snapshotProp}"
+                }
+            },
+            deployApplication: {
 
-    stage('Deploy Application') {
-      sh "ansible-playbook playbook.yaml"
-    }
+                stage('Deploy Application') {
+                    sh "ansible-playbook playbook.yaml"
+                }
+            }
+    )
 }
 
 String cesFqdn;
