@@ -1,2 +1,5 @@
 language: java
 jdk: oraclejdk8
+script:
+  - mvn cobertura:cobertura test
+  - bash <(curl -s https://codecov.io/bash)
