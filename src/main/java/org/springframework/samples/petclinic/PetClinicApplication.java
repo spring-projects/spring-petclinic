@@ -16,20 +16,31 @@
 
 package org.springframework.samples.petclinic;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.samples.petclinic.system.SampleData;
 
 /**
  * PetClinic Spring Boot Application.
- * 
- * @author Dave Syer
  *
+ * @author Dave Syer
  */
 @SpringBootApplication
-public class PetClinicApplication {
+public class PetClinicApplication implements ApplicationListener<ContextRefreshedEvent> {
+
+    @Autowired
+    private SampleData sampleData;
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(PetClinicApplication.class, args);
+    }
+
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent event) {
+        sampleData.create();
     }
 
 }
