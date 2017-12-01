@@ -13,7 +13,7 @@ node('Slave_AWS'){
     }
     stage('Sonarqube')
     {
-        docker run --rm --name maven -v $(pwd):/app docker.io/maven:alpine bash -c "cd app; mvn clean install cobertura:cobertura -Dcobertura.report.format=xml sonar:sonar -Dsonar.host.url=http://34.205.24.188:9000"
+        sh 'docker run --rm --name maven -v $(pwd):/app docker.io/maven:alpine bash -c "cd app; mvn clean install cobertura:cobertura -Dcobertura.report.format=xml sonar:sonar -Dsonar.host.url=http://34.205.24.188:9000"'
     }
     stage('Archive artifact')
     {
