@@ -41,21 +41,11 @@ node {
             }
         }
 
-        parallel(
-                deployArtifacts: {
-                    stage('Deploy Artifacts') {
-                        String releaseProp = "-DaltReleaseDeploymentRepository=${cesFqdn}::default::${cesUrl}/nexus/content/repositories/releases/";
-                        String snapshotProp = "-DaltSnapshotDeploymentRepository=${cesFqdn}::default::${cesUrl}/nexus/content/repositories/snapshots/";
-                        mvn "-DskipTests deploy ${releaseProp} ${snapshotProp}"
-                    }
-                },
-                deployApplication: {
-
-                    stage('Deploy Application') {
-                        sh "ansible-playbook playbook.yaml"
-                    }
-                }
-        )
+        stage('Deploy Artifacts') {
+            String releaseProp = "-DaltReleaseDeploymentRepository=${cesFqdn}::default::${cesUrl}/nexus/content/repositories/releases/";
+            String snapshotProp = "-DaltSnapshotDeploymentRepository=${cesFqdn}::default::${cesUrl}/nexus/content/repositories/snapshots/";
+            mvn "-DskipTests deploy ${releaseProp} ${snapshotProp}"
+        }
     }
 
     // Archive Unit and integration test results, if any
