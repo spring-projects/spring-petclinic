@@ -1,7 +1,7 @@
 #!groovy
 node {
 
-    cesFqdn = "ecosystem.cloudogu.net"
+    cesFqdn = findHostName()
     cesUrl = "https://${cesFqdn}"
     credentials = usernamePassword(credentialsId: 'scmCredentials', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')
 
@@ -21,7 +21,7 @@ node {
         parallel(
                 test: {
                     stage('Test') {
-                        String jacoco = "org.jacoco:jacoco-maven-plugin:0.7.7.201606060606";
+                        String jacoco = "org.jacoco:jacoco-maven-plugin:0.7.7.201606060606"
                         mvn "${jacoco}:prepare-agent test ${jacoco}:report"
                     }
                 },
@@ -70,6 +70,16 @@ void mvn(String args) {
     writeSettingsXml()
     sh "./mvnw -s settings.xml --batch-mode -V -U -e -Dsurefire.useFile=false ${args}"
     sh 'rm -f settings.xml'
+}
+
+String findHostName() {
+    String regexMatchesHostName = 'https?://([^:/]*)'
+
+    // Storing matcher in a variable might lead to java.io.NotSerializableException: java.util.regex.Matcher
+    if (!(env.JENKINS_URL =~ regexMatchesHostName)) {
+        script.error 'Unable to determine hostname from env.JENKINS_URL. Expecting http(s)://server:port/jenkins'
+    }
+    return (env.JENKINS_URL =~ regexMatchesHostName)[0][1]
 }
 
 void writeSettingsXml() {
