@@ -52,9 +52,10 @@ node {
     junit allowEmptyResults: true, testResults: '**/target/failsafe-reports/TEST-*.xml,**/target/surefire-reports/TEST-*.xml'
 }
 
-String cesFqdn
-String cesUrl
-def credentials
+// Init global vars in order to avoid NPE
+String cesFqdn = ''
+String cesUrl = ''
+def credentials= {}
 
 void mvn(String args) {
     writeSettingsXml()
