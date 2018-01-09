@@ -1,6 +1,11 @@
 #!groovy
 node {
 
+    properties([
+        // Don't run concurrent builds, because the ITs use the same port causing random failures on concurrent builds.
+        disableConcurrentBuilds()
+    ])
+
     cesFqdn = findHostName()
     cesUrl = "https://${cesFqdn}"
     credentials = usernamePassword(credentialsId: 'scmCredentials', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')
