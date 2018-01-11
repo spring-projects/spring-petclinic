@@ -64,6 +64,13 @@
     <url>https://localhost:8080</url>
   </scm>  
   
+  <repositories>
+	<repository>
+	<id>nexus</id>
+	<url>http://localhost:8081/repository/maven-public/</url>
+	</repository>
+</repositories>
+  
   <dependencies>
     <!-- Spring and Spring Boot dependencies -->
     <dependency>
@@ -156,6 +163,20 @@
     </dependency>	
 	
 	<dependency>
+		<groupId>org.spockframework</groupId>
+		<artifactId>spock-core</artifactId>
+		<version>1.1-groovy-2.4-rc-3</version>
+		<scope>test</scope>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.codehaus.groovy</groupId>
+		<artifactId>groovy-all</artifactId>
+		<version>2.4.7</version>
+		<scope>test</scope>
+	</dependency>
+	
+	<dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
       <version>2.4.7</version>
@@ -170,6 +191,20 @@
         <artifactId>maven-scm-plugin</artifactId>
         <version>1.9.5</version>
       </plugin>
+	  
+	  <plugin>
+			<groupId>org.codehaus.gmavenplus</groupId>
+			<artifactId>gmavenplus-plugin</artifactId>
+			<version>1.5</version>
+			<executions>
+			<execution>
+			<goals>
+			<goal>compile</goal>
+			<goal>testCompile</goal>
+			</goals>
+			</execution>
+			</executions>
+		</plugin>
 	  
       <plugin>
         <groupId>org.springframework.boot</groupId>
