@@ -1,7 +1,5 @@
 package org.springframework.samples.petclinic.owner;
 
-import static org.junit.Assert.assertEquals;
-
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,10 +11,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.samples.petclinic.owner.PetRepository;
-import org.springframework.samples.petclinic.owner.PetType;
-import org.springframework.samples.petclinic.owner.PetTypeFormatter;
+import org.mockito.junit.MockitoJUnitRunner;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test class for {@link PetTypeFormatter}
@@ -64,12 +61,12 @@ public class PetTypeFormatterTests {
      */
     private List<PetType> makePetTypes() {
         List<PetType> petTypes = new ArrayList<>();
-        petTypes.add(new PetType(){
+        petTypes.add(new PetType() {
             {
                 setName("Dog");
             }
         });
-        petTypes.add(new PetType(){
+        petTypes.add(new PetType() {
             {
                 setName("Bird");
             }
