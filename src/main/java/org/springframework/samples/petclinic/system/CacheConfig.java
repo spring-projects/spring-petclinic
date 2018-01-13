@@ -6,6 +6,7 @@ import javax.cache.configuration.MutableConfiguration;
 import org.springframework.boot.autoconfigure.cache.JCacheManagerCustomizer;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+
 import org.springframework.context.annotation.Profile;
 
 /**
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.Profile;
 @EnableCaching
 @Profile("production")
 class CacheConfig {
+
 
     @Bean
     public JCacheManagerCustomizer cacheManagerCustomizer() {
