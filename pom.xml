@@ -5,13 +5,12 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
-  <version>1.4.2</version>
-  <name>Spring Pet Clinic</name>
+  <version>2.0.0</version>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>1.4.2.RELEASE</version>
+    <version>2.0.0.BUILD-SNAPSHOT</version>
   </parent>
 
   <properties>
@@ -26,16 +25,8 @@
     <webjars-jquery.version>2.2.4</webjars-jquery.version>
     <wro4j.version>1.8.0</wro4j.version>
 
-    <thymeleaf.version>3.0.2.RELEASE</thymeleaf.version>
-    <thymeleaf-layout-dialect.version>2.0.4</thymeleaf-layout-dialect.version>
+    <cobertura.version>2.7</cobertura.version>
 
-    <sonar.host.url>http://mssonarstg81.morningstar.com:9000</sonar.host.url>
-    <sonar.junit.reportsPath>target/surefire-reports</sonar.junit.reportsPath>
-	<!--
-    <sonar.branch>master</sonar.branch>
-	<sonar.sources>src/main/java,src/main/less,src/main/resources,src/main/wro</sonar.sources>
-	-->
-	<sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
   </properties>
   
   <!--
@@ -85,12 +76,6 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-thymeleaf</artifactId>
-      <exclusions>
-      	<exclusion>
-      	  <groupId>org.codehaus.groovy</groupId>
-      	  <artifactId>groovy</artifactId>
-      	</exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -110,7 +95,7 @@
       <scope>runtime</scope>
     </dependency>
 
-    <!-- EhCache -->
+    <!-- caching -->
     <dependency>
       <groupId>javax.cache</groupId>
       <artifactId>cache-api</artifactId>
@@ -176,7 +161,7 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
         <executions>
           <execution>
-            <!-- Spring Boot Actuator displays build-related information 
+            <!-- Spring Boot Actuator displays build-related information
               if a META-INF/build-info.properties file is present -->
             <goals>
               <goal>build-info</goal>
@@ -201,7 +186,7 @@
         </configuration>
       </plugin>	  
 
-      <!-- Spring Boot Actuator displays build-related information if a git.properties 
+      <!-- Spring Boot Actuator displays build-related information if a git.properties
         file is present at the classpath -->
       <!--
       <plugin>
@@ -218,8 +203,9 @@
           <verbose>true</verbose>
           <dateFormat>yyyy-MM-dd'T'HH:mm:ssZ</dateFormat>
           <generateGitPropertiesFile>true</generateGitPropertiesFile>
-          <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
-		  <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+          <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties
+          </generateGitPropertiesFilename>
+          <failOnNoGitDirectory>false</failOnNoGitDirectory>
         </configuration>
       </plugin>
       -->
@@ -261,53 +247,11 @@
         </configuration>
       </plugin>
 
-	  <plugin>
-		  <groupId>org.codehaus.gmavenplus</groupId>
-		  <artifactId>gmavenplus-plugin</artifactId>
-		  <version>1.5</version>
-		  <executions>
-			<execution>
-			  <goals>
-                <goal>compile</goal>
-                <goal>testCompile</goal>
-			  </goals>
-			</execution>
-		  </executions>
-	  </plugin>
-	  
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <version>2.4</version>
-        <executions>
-          <execution>
-            <id>copy-dependencies</id>
-            <phase>package</phase>
-            <goals><goal>copy-dependencies</goal></goals>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.7.9</version>
-        <executions>
-          <execution>
-            <id>jacoco-initialize</id>
-            <goals>
-              <goal>prepare-agent</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>jacoco-site</id>
-            <phase>package</phase>
-            <goals>
-              <goal>report</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-	</plugins>
-  </build>
+  <!-- Apache 2 license -->
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+    </license>
+  </licenses>
 </project>
