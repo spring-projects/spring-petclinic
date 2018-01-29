@@ -17,12 +17,10 @@ pipeline {
 		  				./mvnw clean package -DskipTests -T 2
 		  			'''
 		  		}
+
+		  		docker.build("loxon/petclinic:2.0.0").push()
 		  	}
-			sh './mvnw clean package -DskipTests'
-			sh 'pwd'
-			sh 'ls -la'
-			sh 'docker build --pull -t loxon/petclinic:2.0.0 .'
-			sh 'docker push loxon/petclinic:2.0.0'
+			
 		}
 	}
 
