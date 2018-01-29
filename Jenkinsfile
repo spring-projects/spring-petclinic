@@ -10,13 +10,16 @@ pipeline {
   stages {
 
   	stage('Build the code') {
-  		agent {
-            docker { 
-            	image 'openjdk:8-jdk-alpine'
-            	args '-v /var/jenkins_home/.m2:/root/.m2'
-            }
-        }
 		steps {
+			script {
+		  		def buildContainer = docker.image('docker.loxon.eu/infra/angularcli:alpine').withRun('-v /var/jenkins_home/.m2:/root/.m2')
+		  		buildContainer.pull()
+		  		buildContainer.inside {
+		  			sh '''
+		  				./mvnw clean package -DskipTests
+		  			'''
+		  		}
+		  	}
 			sh './mvnw clean package -DskipTests'
 			sh 'pwd'
 			sh 'ls -la'
