@@ -13,11 +13,11 @@ pipeline {
   		agent {
             docker { 
             	image 'openjdk:8-jdk-alpine'
-            	args '-v $HOME/.m2:/root/.m2'
+            	args '-v /var/jenkins_home/.m2:/root/.m2'
             }
         }
 		steps {
-			sh './mvnw clean package'
+			sh './mvnw clean package -DskipTests'
 		}
 	}
 
