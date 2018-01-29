@@ -17,10 +17,16 @@ pipeline {
 		  				./mvnw clean package -DskipTests -T 2
 		  			'''
 		  		}
-
-		  		docker.build("loxon/petclinic:2.0.0").push()
 		  	}
 			
+		}
+	}
+
+	stage('Build the image') {
+		steps {
+			script {
+		  		docker.build("loxon/petclinic:2.0.0").push()
+		  	}
 		}
 	}
 
