@@ -18,11 +18,6 @@ pipeline {
         }
 		steps {
 			sh './mvnw clean package -DskipTests'
-		}
-	}
-
-	stage('Create image') {
-		steps {
 			sh 'pwd'
 			sh 'ls -la'
 			sh 'docker build --pull -t loxon/petclinic:2.0.0 .'
