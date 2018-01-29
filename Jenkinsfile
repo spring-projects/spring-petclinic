@@ -24,6 +24,7 @@ pipeline {
 	stage('Create image') {
 		steps {
 			sh 'pwd'
+			sh 'ls -la'
 			sh 'docker build --pull -t loxon/petclinic:2.0.0 .'
 			sh 'docker push loxon/petclinic:2.0.0'
 		}
