@@ -12,9 +12,7 @@ pipeline {
   	stage('Build the code') {
 		steps {
 			script {
-		  		def buildContainer = docker.image('docker.loxon.eu/infra/angularcli:alpine').withRun('-v /var/jenkins_home/.m2:/root/.m2')
-		  		buildContainer.pull()
-		  		buildContainer.inside {
+		  		docker.image('openjdk:8-jdk-alpine').inside('-v /var/jenkins_home/.m2:/root/.m2') {
 		  			sh '''
 		  				./mvnw clean package -DskipTests
 		  			'''
