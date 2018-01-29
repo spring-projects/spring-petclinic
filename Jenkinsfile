@@ -14,7 +14,7 @@ pipeline {
 			script {
 		  		docker.image('openjdk:8-jdk-alpine').inside('-v /var/jenkins_home/.m2:/root/.m2') {
 		  			sh '''
-		  				./mvnw clean package -DskipTests -T 2C
+		  				./mvnw clean package -DskipTests -T 2
 		  			'''
 		  		}
 		  	}
