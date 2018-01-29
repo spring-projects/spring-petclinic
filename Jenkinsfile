@@ -12,7 +12,7 @@ pipeline {
   	stage('Build the code') {
 		steps {
 			script {
-		  		docker.image('openjdk:8-jdk-alpine').inside('-v /var/jenkins_home/.m2:/root/.m2') {
+		  		docker.image('openjdk:8-jdk-alpine').inside('-v /tmp/.m2:/root/.m2') {
 		  			sh '''
 		  				./mvnw clean package -DskipTests -T 2
 		  			'''
