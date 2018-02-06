@@ -1,3 +1,2 @@
 language: java
 jdk: oraclejdk8
-script: bundle exec ./mvnw -Dsurefire.rerunFailingTestsCount=2 test -B
