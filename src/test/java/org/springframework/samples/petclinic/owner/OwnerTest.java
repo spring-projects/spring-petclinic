@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.owner;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
@@ -63,4 +64,36 @@ public class OwnerTest {
 		assertEquals(pet, onlyPet);
 	}
 
+	@Test
+	public void getPetTest() {	
+		Pet pet = new Pet();
+		pet.setName("Pochi");
+		instance.addPet(pet);
+		
+		assertEquals(pet, instance.getPet("Pochi"));	
+		assertEquals(pet, instance.getPet("Pochi", false)); //tests pet object exists
+		assertEquals(null, instance.getPet("Pochi", true));	//tests pet object doesn't exist
+	}
+	
+	@Test
+	public void getPetsTest() {
+		Pet pet = new Pet();
+		List<Pet> list = new ArrayList<>();
+		list.add(pet);
+		instance.addPet(pet);
+		
+		assertEquals(list, instance.getPets());
+		
+		Pet pet2 = new Pet();
+		list.add(pet2);
+		instance.addPet(pet2);
+		
+		assertEquals(list, instance.getPets());
+	}
+	
+	@Test
+	public void setGetAddress() {
+		instance.setAddress("123 FakeStreet");
+		assertEquals("123 FakeStreet", instance.getAddress());
+	}
 }
