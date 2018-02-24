@@ -54,7 +54,7 @@ public class OwnerTest {
 	}
 	
 	@Test
-	public void setPetsInternalgetPetsInternalTest() {
+	public void setPetgetPetsTest() {
 		Pet pet = new Pet();
 		instance.addPet(pet);
 		List<Pet> result = instance.getPets();
