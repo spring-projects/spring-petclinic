@@ -12,22 +12,22 @@ import java.time.*;
 import java.util.Date;
 
 public class PetTests {
-	
+
 	private Pet pet;
 	private Date birthDate;
-	
+
 	private void establishCurrentDateForTesting() {
 		LocalDateTime timePoint = LocalDateTime.now();
 		LocalDate localDate = timePoint.toLocalDate();
 		birthDate = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 	}
-	
+
 	@Before
 	public void testSetUp() {
 		this.pet = new Pet();
 		PetType dog = new PetType();
-        dog.setId(9);
-        dog.setName("Duncan Jones");
+		dog.setId(9);
+		dog.setName("Duncan Jones");
 	}
 
 	@Test
@@ -38,7 +38,7 @@ public class PetTests {
 		Date resultOfGetDate = pet.getBirthDate();
 		assertEquals(this.birthDate, resultOfGetDate);
 	}
-	
+
 	@Test
 	public void testSetAndGetType() {
 		//Creating a new pet type to test the setters and getters for pet's type
@@ -49,7 +49,7 @@ public class PetTests {
 		PetType resultOfGetType = pet.getType();
 		assertEquals(walrus, resultOfGetType);
 	}
-	
+
 	@Test
 	public void testSetAndGetOwner() {
 		//Creating a new owner type to test the setters and getters for the pet's owner
@@ -58,7 +58,7 @@ public class PetTests {
 		Owner resultOfGetOwner = pet.getOwner();
 		assertEquals(amandeepBhandal, resultOfGetOwner);
 	}
-	
+
 	@Test
 	public void testSetAndGetVisitsInternal() {
 		//Creating a new set of visits, albeit an empty set, to test the setters and getters for the pet's visits
@@ -67,7 +67,7 @@ public class PetTests {
 		Set<Visit> resultOfGetVisitsInternal = pet.getVisitsInternal();
 		assertEquals(visitsForTesting, resultOfGetVisitsInternal);
 	}
-	
+
 	@Test
 	public void testAddVisitAndGetVisits() {
 		//Creating a new set of visits, albeit an empty set, to test the setters and getters for the pet's visits
@@ -76,6 +76,6 @@ public class PetTests {
 		List<Visit> resultOfGetVisits = pet.getVisits();
 		Visit onlyVisitInCollection = resultOfGetVisits.iterator().next();
 		assertEquals(1, resultOfGetVisits.size());
-		assertEquals(visitForTesting, onlyVisitInCollection);
+		assertEquals(visitForTesting.getId(), onlyVisitInCollection.getId());
 	}
 }
