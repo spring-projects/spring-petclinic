@@ -47,7 +47,7 @@ public class PetTests {
 		walrus.setName("Alex Garland");
 		pet.setType(walrus);
 		PetType resultOfGetType = pet.getType();
-		assertEquals(walrus, resultOfGetType);
+		assertEquals(walrus.getName(), resultOfGetType.getName());
 	}
 
 	@Test
@@ -56,7 +56,7 @@ public class PetTests {
 		Owner amandeepBhandal = new Owner();
 		pet.setOwner(amandeepBhandal);
 		Owner resultOfGetOwner = pet.getOwner();
-		assertEquals(amandeepBhandal, resultOfGetOwner);
+		assertEquals(amandeepBhandal.getAddress(), resultOfGetOwner.getAddress());
 	}
 
 	@Test
@@ -65,7 +65,7 @@ public class PetTests {
 		Set<Visit> visitsForTesting = new LinkedHashSet<>();
 		pet.setVisitsInternal(visitsForTesting);
 		Set<Visit> resultOfGetVisitsInternal = pet.getVisitsInternal();
-		assertEquals(visitsForTesting, resultOfGetVisitsInternal);
+		assertEquals(visitsForTesting.size(), resultOfGetVisitsInternal.size());
 	}
 
 	@Test
