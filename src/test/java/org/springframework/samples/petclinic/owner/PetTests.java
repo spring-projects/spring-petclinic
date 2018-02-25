@@ -16,24 +16,22 @@ public class PetTests {
 	private Pet pet;
 	private Date birthDate;
 
-	private void establishCurrentDateForTesting() {
+	@Before
+	public void testSetUp() {
+		//Initialization of pet
+		this.pet = new Pet();
+		PetType dog = new PetType();
+		dog.setId(9);
+		dog.setName("Duncan Jones");
+		//Initialization of birthDate
+		//Converting the current time to a local date and ultimately a date to be input into setBirthDate;
 		LocalDateTime timePoint = LocalDateTime.now();
 		LocalDate localDate = timePoint.toLocalDate();
 		birthDate = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 	}
 
-	@Before
-	public void testSetUp() {
-		this.pet = new Pet();
-		PetType dog = new PetType();
-		dog.setId(9);
-		dog.setName("Duncan Jones");
-	}
-
 	@Test
 	public void testSetAndGetBirthDate() {
-		//Converting the current time to a local date and ultimately a date to be input into setBirthDate
-		this.establishCurrentDateForTesting();
 		pet.setBirthDate(this.birthDate);
 		Date resultOfGetDate = pet.getBirthDate();
 		assertEquals(this.birthDate, resultOfGetDate);
@@ -54,9 +52,16 @@ public class PetTests {
 	public void testSetAndGetOwner() {
 		//Creating a new owner type to test the setters and getters for the pet's owner
 		Owner amandeepBhandal = new Owner();
+		amandeepBhandal.setAddress("Off-world Colony");
+		amandeepBhandal.setCity("Beirut");
+		amandeepBhandal.setTelephone("514-333-3333");
+		//Attach the newly created owner to the pet
 		pet.setOwner(amandeepBhandal);
 		Owner resultOfGetOwner = pet.getOwner();
-		assertEquals(amandeepBhandal.getAddress(), resultOfGetOwner.getAddress());
+		assertEquals(resultOfGetOwner.getAddress(), "Off-world Colony");
+		assertEquals(resultOfGetOwner.getCity(), "Beirut");
+		assertEquals(resultOfGetOwner.getTelephone(), "514-333-3333");
+		assertEquals(resultOfGetOwner.getPetsInternal().size(), 0);
 	}
 
 	@Test
