@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.owner;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
@@ -55,6 +56,7 @@ public class OwnerTest {
 	@Test
 	public void setPetgetPetsTest() {
 		Pet pet = new Pet();
+
 		pet.setName("Pogo");
 		ownerInstance.addPet(pet);
 		List<Pet> result = ownerInstance.getPets();
@@ -65,4 +67,47 @@ public class OwnerTest {
 		assertEquals(pet.getName(), onlyPet.getName());
 	}
 
+	@Test
+	public void getPetExistsTest() {	
+		Pet pet = new Pet();
+		pet.setName("Pochi");
+		ownerInstance.addPet(pet);
+		
+		//tests pet object exists
+		assertEquals(pet, ownerInstance.getPet("Pochi"));	
+		assertEquals(pet, ownerInstance.getPet("Pochi", false));
+	}
+	
+	@Test
+	public void getPetDoesntExistsTest() {	
+		Pet pet = new Pet();
+		pet.setName("Pochi");
+		ownerInstance.addPet(pet);
+		//tests pet object doesn't exist
+		assertEquals(null, ownerInstance.getPet("Pochi", true));	
+	}
+	
+	@Test
+	public void getPetsTest() {
+		Pet pet = new Pet();
+		List<Pet> list = new ArrayList<>();
+		list.add(pet);
+		ownerInstance.addPet(pet);
+		
+		assertEquals(list, ownerInstance.getPets());
+		assertEquals(1, list.size());
+		
+		Pet pet2 = new Pet();
+		list.add(pet2);
+		ownerInstance.addPet(pet2);
+		
+		assertEquals(list, ownerInstance.getPets());
+		assertEquals(2, list.size());
+	}
+	
+	@Test
+	public void setGetAddress() {
+		ownerInstance.setAddress("123 FakeStreet");
+		assertEquals("123 FakeStreet", ownerInstance.getAddress());
+	}
 }
