@@ -16,9 +16,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.samples.petclinic.owner.Pet;
 import org.springframework.samples.petclinic.owner.PetRepository;
 import org.springframework.samples.petclinic.owner.VisitController;
+import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+
+import static org.mockito.Mockito.verify;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
 
 /**
  * Test class for {@link VisitController}
@@ -50,6 +55,7 @@ public class VisitControllerTests {
         mockMvc.perform(get("/owners/*/pets/{petId}/visits/new", TEST_PET_ID))
             .andExpect(status().isOk())
             .andExpect(view().name("pets/createOrUpdateVisitForm"));
+        verify(pets).findById(anyInt()); //Ensure that a pet gets loaded per visit
     }
 
     @Test
@@ -60,6 +66,8 @@ public class VisitControllerTests {
         )
             .andExpect(status().is3xxRedirection())
             .andExpect(view().name("redirect:/owners/{ownerId}"));
+        verify(pets).findById(anyInt()); //Ensure that a pet gets loaded per visit
+        verify(visits).save(any(Visit.class)); //Ensure that upon success, the visit gets saved
     }
 
     @Test
@@ -70,6 +78,6 @@ public class VisitControllerTests {
             .andExpect(model().attributeHasErrors("visit"))
             .andExpect(status().isOk())
             .andExpect(view().name("pets/createOrUpdateVisitForm"));
+        verify(pets).findById(anyInt()); //Ensure that a pet gets loaded per visit
     }
-
 }
