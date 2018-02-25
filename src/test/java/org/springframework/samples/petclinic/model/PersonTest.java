@@ -18,6 +18,7 @@ public class PersonTest {
     @Test
     public void testSetAndGetFirstName() {
         personObj.setFirstName("Johnny");
+        assertEquals("Johnny", personObj.getFirstName());
     }
 
     // Testing the DAO of Person class by verifying the setter and getter of FirstName
