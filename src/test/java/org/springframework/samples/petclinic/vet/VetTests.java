@@ -17,9 +17,14 @@ package org.springframework.samples.petclinic.vet;
 
 import org.junit.Test;
 
+import org.springframework.beans.support.MutableSortDefinition;
+import org.springframework.beans.support.PropertyComparator;
 import org.springframework.util.SerializationUtils;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Dave Syer
@@ -38,6 +43,39 @@ public class VetTests {
         assertThat(other.getFirstName()).isEqualTo(vet.getFirstName());
         assertThat(other.getLastName()).isEqualTo(vet.getLastName());
         assertThat(other.getId()).isEqualTo(vet.getId());
+    }
+
+    @Test
+    public void testGetSpecialties(){
+        Vet vet = new Vet();
+        vet.setFirstName("Zaphod");
+        vet.setLastName("Beeblebrox");
+        vet.setId(123);
+        Specialty radiology = new Specialty();
+        Specialty urinalysis = new Specialty();
+        Specialty kinesiology = new Specialty();
+        vet.addSpecialty(radiology);
+        vet.addSpecialty(urinalysis);
+        //vet.addSpecialty(kinesiology);
+
+        List<Specialty> testList = vet.getSpecialties();
+        assertThat(testList).isEqualTo(vet.getSpecialties());
+        testList.getClass().getSimpleName().equals("UnmodifiableCollection");
+    }
+
+    @Test
+    public void testAddGetNrSpecialty(){
+        Vet vet = new Vet();
+        vet.setFirstName("Zaphod");
+        vet.setLastName("Beeblebrox");
+        vet.setId(123);
+
+        int preAddedNumber = vet.getNrOfSpecialties();
+        Specialty radiology = new Specialty();
+        //radiology.setName("radiology");
+        vet.addSpecialty(radiology);
+        assertThat(vet.getNrOfSpecialties()).isEqualTo(++preAddedNumber);
+        assertThat((vet.getSpecialtiesInternal()).contains(radiology));
     }
 
 }
