@@ -1,5 +1,5 @@
 FROM java:8
 WORKDIR /
-ADD target/spring-petclinic-2.0.0.BUILD-SNAPSHOT.jar .
+ADD target/spring-petclinic-1.5.1.jar .
 EXPOSE 8080
-CMD java - jar spring-petclinic-2.0.0.BUILD-SNAPSHOT.jar
+CMD java - jar spring-petclinic-1.5.1.jar
