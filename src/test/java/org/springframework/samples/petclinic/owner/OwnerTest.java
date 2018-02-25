@@ -56,12 +56,15 @@ public class OwnerTest {
 	@Test
 	public void setPetgetPetsTest() {
 		Pet pet = new Pet();
+
+		pet.setName("Pogo");
 		ownerInstance.addPet(pet);
 		List<Pet> result = ownerInstance.getPets();
 		Pet onlyPet = result.iterator().next();
 
 		assertEquals(1, result.size()); // Make sure there's only one element in the Collection returned	
 		assertEquals(pet, onlyPet);
+		assertEquals(pet.getName(), onlyPet.getName());
 	}
 
 	@Test
