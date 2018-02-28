@@ -1,6 +1,12 @@
 apiVersion: v1
 kind: Template
 metadata:
+  annotations:
+    openshift.io/display-name: PetClinic Web App
+    description: |-
+      Continuous Integration | Build | Package | Deploy
+    iconClass: icon-spring
+    tags: petclinic-web-app,java  
   name: petclinic-web-app
 parameters:
 - name: APP_NAME
