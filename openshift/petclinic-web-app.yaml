@@ -1,5 +1,9 @@
 apiVersion: v1
 kind: Template
+labels:
+  template: petclinic-web-app
+message: |-
+  Template de exemplo para a Talk DevOps
 metadata:
   annotations:
     openshift.io/display-name: PetClinic Web App
@@ -14,6 +18,9 @@ parameters:
   displayName: Application Name
   required: true
   value: petclinic-web-app
+- name: APPLICATION_DOMAIN
+  description: Application URL
+  displayName: Application URL
 - name: GIT_SOURCE_URL
   description: The source URL for the application
   displayName: Source URL
@@ -38,19 +45,10 @@ parameters:
   required: true
 objects:
 - apiVersion: v1
-  kind: ImageStream
-  metadata:
-    labels:
-      app: ${APP_NAME}
-    name: ${APP_NAME}
-  spec: {}
-  status:
-    dockerImageRepository: ""
-- apiVersion: v1
   kind: BuildConfig
   metadata:
     annotations:
-      pipeline.alpha.openshift.io/uses: '[{"name": "${NAME}", "namespace": "", "kind": "DeploymentConfig"}]'
+      pipeline.alpha.openshift.io/uses: '[{"name": "${APP_NAME}", "namespace": "", "kind": "DeploymentConfig"}]'
     creationTimestamp: null
     labels:
       name: ${APP_NAME}-pipeline
@@ -105,6 +103,40 @@ objects:
     - generic:
         secret: "${GENERIC_WEBHOOK_SECRET}"
       type: Generic
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: ${APP_NAME}
+  spec:
+    ports:
+    - name: web
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+    selector:
+      name: ${APP_NAME}
+      deploymentconfig: ${APP_NAME}
+- apiVersion: v1
+  kind: Route
+  metadata:
+    name: ${APP_NAME}
+    labels:
+      app: ${APP_NAME}
+  spec:
+    host: ${APPLICATION_DOMAIN}
+    to:
+      kind: Service
+      name: ${APP_NAME}
+    port:
+      targetPort: web
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    annotations:
+      description: Docker images hub
+    labels:
+      app: ${APP_NAME}
+    name: ${APP_NAME}
 - apiVersion: v1
   kind: BuildConfig
   metadata:
@@ -205,39 +237,4 @@ objects:
           kind: ImageStreamTag
           name: ${APP_NAME}:latest
       type: ImageChange
-  status: {}
-- apiVersion: v1
-  kind: Service
-  metadata:
-    annotations:
-      openshift.io/generated-by: OpenShiftNewApp
-    labels:
-      app: ${APP_NAME}
-    name: ${APP_NAME}
-  spec:
-    ports:
-    - name: 8080-tcp
-      port: 8080
-      protocol: TCP
-      targetPort: 8080
-    selector:
-      app: ${APP_NAME}
-      deploymentconfig: ${APP_NAME}
-    sessionAffinity: None
-    type: ClusterIP
-  status:
-    loadBalancer: {}
-- apiVersion: v1
-  kind: Route
-  metadata:
-    name: ${APP_NAME}
-    labels:
-      app: ${APP_NAME}
-  spec:
-    to:
-      kind: Service
-      name: ${APP_NAME}
-      weight: 100
-    port:
-      targetPort: 8080-tcp
-    wildcardPolicy: None
+    - type: ConfigChange
