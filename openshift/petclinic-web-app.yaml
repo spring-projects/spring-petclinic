@@ -13,43 +13,44 @@ metadata:
     tags: petclinic-web-app,java  
   name: petclinic-web-app
 parameters:
-- name: APP_NAME
-  description: The name assigned to all of the application objects defined in this template.
+- description: The name assigned to all of the application objects defined in this template.
   displayName: Application Name
+  name: APP_NAME
   required: true
   value: petclinic-web-app
-- name: APPLICATION_DOMAIN
-  description: Application URL
-  displayName: Application URL
-- name: GIT_SOURCE_URL
-  description: The source URL for the application
+- description: The source URL for the application
   displayName: Source URL
+  name: GIT_SOURCE_URL
   required: true
   value: https://github.com/alexbaptista/spring-petclinic.git
-- name: GIT_SOURCE_REF
-  description: The source Ref for the application
+- description: The source Ref for the application
   displayName: Source Ref
+  name: GIT_SOURCE_REF
   required: true
   value: master
 - description: Github trigger secret.  A difficult to guess string encoded as part of the webhook URL.  Not encrypted.
   displayName: GitHub Webhook Secret
+  name: GITHUB_WEBHOOK_SECRET
   from: '[a-zA-Z0-9]{40}'
   generate: expression
-  name: GITHUB_WEBHOOK_SECRET
   required: true
 - description: A secret string used to configure the Generic webhook.
   displayName: Generic Webhook Secret
+  name: GENERIC_WEBHOOK_SECRET
   from: '[a-zA-Z0-9]{40}'
   generate: expression
-  name: GENERIC_WEBHOOK_SECRET
   required: true
+- description: OpenShift Namespace
+  displayName: Namespace
+  name: NAMESPACE
+  required: true
+  value: talkdevops-step2
 objects:
 - apiVersion: v1
   kind: BuildConfig
   metadata:
     annotations:
       pipeline.alpha.openshift.io/uses: '[{"name": "${APP_NAME}", "namespace": "", "kind": "DeploymentConfig"}]'
-    creationTimestamp: null
     labels:
       name: ${APP_NAME}-pipeline
     name: ${APP_NAME}-pipeline
@@ -61,13 +62,11 @@ objects:
              timeout(time: 20, unit: 'MINUTES') {
                 def appName="${APP_NAME}"
                 def project=""
-
                 node {
                   stage("Initialize") {
                     project = env.PROJECT_NAME
                   }
                 }
-
                 node("maven") {
                   stage("Checkout") {
                     git url: "${GIT_SOURCE_URL}", branch: "${GIT_SOURCE_REF}"
@@ -77,7 +76,6 @@ objects:
                     stash name:"jar", includes:"target/spring-petclinic-1.5.1.jar"
                   }
                 }
-
                 node {
                   stage("Build Image") {
                     unstash name:"jar"
@@ -115,42 +113,33 @@ objects:
       targetPort: 8080
     selector:
       name: ${APP_NAME}
-      deploymentconfig: ${APP_NAME}
 - apiVersion: v1
   kind: Route
   metadata:
     name: ${APP_NAME}
-    labels:
-      app: ${APP_NAME}
   spec:
-    host: ${APPLICATION_DOMAIN}
+    port:
+      targetPort: web
     to:
       kind: Service
       name: ${APP_NAME}
-    port:
-      targetPort: web
 - apiVersion: v1
   kind: ImageStream
   metadata:
     annotations:
       description: Docker images hub
-    labels:
-      app: ${APP_NAME}
     name: ${APP_NAME}
 - apiVersion: v1
   kind: BuildConfig
   metadata:
-    labels:
-      app: ${APP_NAME}-docker
+    annotations:
+      description: Define como criar o aplicativo
     name: ${APP_NAME}-docker
   spec:
     output:
       to:
         kind: ImageStreamTag
         name: ${APP_NAME}:latest
-    postCommit: {}
-    resources: {}
-    runPolicy: Serial
     source:
       dockerfile: |-
         FROM docker.io/maven:alpine
@@ -171,14 +160,13 @@ objects:
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
-    labels:
-      app: ${APP_NAME}
+    annotations:
+      description: Define como é realizada a implantação do APP
     name: ${APP_NAME}
   spec:
     replicas: 1
     selector:
-      app: ${APP_NAME}
-      deploymentconfig: ${APP_NAME}
+      name: ${APP_NAME}
     strategy:
       rollingParams:
         intervalSeconds: 1
@@ -190,8 +178,8 @@ objects:
     template:
       metadata:
         labels:
-          app: ${APP_NAME}
-          deploymentconfig: ${APP_NAME}
+          name: ${APP_NAME}
+        name: ${APP_NAME}
       spec:
         containers:
         - image: ${APP_NAME}:latest
@@ -200,8 +188,6 @@ objects:
           ports:
           - containerPort: 8080
             protocol: TCP
-          resources: {}
-          terminationMessagePath: /dev/termination-log
           livenessProbe:
             httpGet:
               path: /
@@ -210,8 +196,6 @@ objects:
             initialDelaySeconds: 10
             timeoutSeconds: 2
             periodSeconds: 10
-            successThreshold: 1
-            failureThreshold: 3
           readinessProbe:
             httpGet:
               path: /
@@ -220,21 +204,15 @@ objects:
             initialDelaySeconds: 30
             timeoutSeconds: 2
             periodSeconds: 10
-            successThreshold: 1
-            failureThreshold: 3
-        dnsPolicy: ClusterFirst
-        restartPolicy: Always
-        securityContext: {}
-        terminationGracePeriodSeconds: 30
-    test: false
-    triggers:
-    - type: ConfigChange
-    - imageChangeParams:
-        automatic: true
-        containerNames:
-        - ${APP_NAME}
-        from:
-          kind: ImageStreamTag
-          name: ${APP_NAME}:latest
-      type: ImageChange
-    - type: ConfigChange
+        triggers:
+        - type: ConfigChange
+        - imageChangeParams:
+            automatic: true
+            containerNames:
+            - ${APP_NAME}
+            from:
+              kind: ImageStreamTag
+              name: '${APP_NAME}:latest'
+              namespace: ${NAMESPACE}
+          type: ImageChange
+        - type: ConfigChange
