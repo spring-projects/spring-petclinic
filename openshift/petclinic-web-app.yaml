@@ -177,6 +177,8 @@ objects:
       type: Rolling
     template:
       metadata:
+        annotations:
+          alpha.image.policy.openshift.io/resolve-names: '*'
         labels:
           name: ${APP_NAME}
         name: ${APP_NAME}
