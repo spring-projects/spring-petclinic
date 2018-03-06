@@ -16,7 +16,7 @@ pipeline {
         }
       }
       steps {
-          sh 'mvn -s $MAVEN_SETTINGS clean deploy -DskipTests=true -B'
+          sh 'mvn clean install -DskipTests=true -B'
       }
     }
     stage('Build container') {
