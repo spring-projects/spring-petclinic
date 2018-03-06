@@ -40,14 +40,10 @@ pipeline {
         sh "docker run -d -p 9966:8080 --name petclinic-tomcat-temp ${env.IMAGE}:${TAG}"
       }
     }
-    stage('Smoke-Test & OWASP Security Scan') {
-      agent {
-        docker {
-          image 'maven:3.5.0'
-        }
-      }
+    stage('Smoke-Test') {
+      agent any
       steps {
-        sh "cd regression-suite && mvn clean -B test -DPETCLINIC_URL=http://petclinic-tomcat-temp:8080/petclinic/"
+        sh 'curl http://localhost:9966'
       }
     }
     stage('Stop local container') {
