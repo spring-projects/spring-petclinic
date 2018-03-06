@@ -90,3 +90,5 @@ pipeline {
         sh 'docker rm -f petclinic-tomcat-temp || true'
       }
     }
+  }
+} 
