@@ -15,7 +15,7 @@ pipeline {
         sh 'mvn clean install'
       }
     }
-    stage('Build container') {
+    stage('Build') {
       agent any
       steps {
         script {
@@ -29,7 +29,7 @@ pipeline {
         }
       }
     }
-    stage('Deploy container') {
+    stage('Deploy to Dev') {
       agent any
       steps {
         sh 'docker rm -f petclinic-tomcat-temp || true'
@@ -37,6 +37,13 @@ pipeline {
       }
     }
     stage('Smoke-Test') {
+      agent any
+      steps {
+        //sample dummy step
+        sh 'sleep 4'
+      }
+    }
+    stage('Another stage') {
       agent any
       steps {
         //sample dummy step
