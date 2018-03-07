@@ -12,10 +12,7 @@ pipeline {
     stage('Build') {
       agent any
       steps {
-            tool 'maven'
-            configFileProvider([configFile(fileId: 'nexus', variable: 'MAVEN_SETTINGS')]) {
-                 sh 'mvn -s $MAVEN_SETTINGS clean deploy -DskipTests=true -B'
-            }
+        sh 'mvn clean install'
       }
     }
     stage('Build container') {
