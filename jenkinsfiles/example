@@ -16,7 +16,7 @@ pipeline {
         }
       }
       steps {
-          sh 'mvn clean install'
+          sh 'mvn clean deploy'
       }
     }
     stage('Build container') {
@@ -43,7 +43,7 @@ pipeline {
     stage('Smoke-Test') {
       agent any
       steps {
-        sh 'curl http://localhost:9966/'
+        sh 'docker ps -a'
       }
     }
     stage('Stop local container') {
