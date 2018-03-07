@@ -16,7 +16,7 @@ pipeline {
         }
       }
       steps {
-          sh 'mvn clean install -DskipTests=true -B'
+          sh 'mvn clean install'
       }
     }
     stage('Build container') {
@@ -33,7 +33,7 @@ pipeline {
         }
       }
     }
-    stage('Run local container') {
+    stage('Deploy container') {
       agent any
       steps {
         sh 'docker rm -f petclinic-tomcat-temp || true'
@@ -43,7 +43,7 @@ pipeline {
     stage('Smoke-Test') {
       agent any
       steps {
-        sh 'curl http://localhost:9966'
+        sh 'curl http://127.0.0.1:9966'
       }
     }
     stage('Stop local container') {
