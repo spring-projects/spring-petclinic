@@ -43,7 +43,7 @@ pipeline {
     stage('Smoke-Test') {
       agent any
       steps {
-        sh 'curl http://127.0.0.1:9966'
+        sh 'curl http://localhost:9966/petclinic/'
       }
     }
     stage('Stop local container') {
