@@ -16,8 +16,10 @@ pipeline {
         }
       }
       steps {
-          sh 'mvn clean install'
-      }
+            configFileProvider([configFile(fileId: 'nexus', variable: 'MAVEN_SETTINGS')]) {
+                 sh 'mvn -s $MAVEN_SETTINGS clean deploy -DskipTests=true -B'
+            }
+      }      
     }
     stage('Build container') {
       agent any
@@ -45,12 +47,6 @@ pipeline {
       steps {
         //sample dummy step
         sh 'sleep 4'
-      }
-    }
-    stage('Stop local container') {
-      agent any
-      steps {
-        sh 'docker rm -f petclinic-tomcat-temp || true'
       }
     }
   }
