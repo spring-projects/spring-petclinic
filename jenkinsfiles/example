@@ -8,14 +8,13 @@ pipeline {
   }
 
   stages {
-
     stage('Build') {
       agent any
       steps {
         sh 'mvn clean install'
       }
     }
-    stage('Build') {
+    stage('Package') {
       agent any
       steps {
         script {
@@ -36,7 +35,7 @@ pipeline {
         sh "docker run -d -p 9966:8080 --name petclinic-tomcat-temp ${env.IMAGE}:${TAG}"
       }
     }
-    stage('Smoke-Test') {
+    stage('Smoke-Test Dev') {
       agent any
       steps {
         //sample dummy step
