@@ -16,7 +16,7 @@ pipeline {
         }
       }
       steps {
-          sh 'mvn clean deploy'
+          sh 'mvn clean install'
       }
     }
     stage('Build container') {
@@ -43,7 +43,8 @@ pipeline {
     stage('Smoke-Test') {
       agent any
       steps {
-        sh 'docker ps -a'
+        //sample dummy step
+        sh 'sleep 4'
       }
     }
     stage('Stop local container') {
