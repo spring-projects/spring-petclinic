@@ -217,4 +217,3 @@ objects:
               name: '${APP_NAME}:latest'
               namespace: ${NAMESPACE}
           type: ImageChange
-        - type: ConfigChange
