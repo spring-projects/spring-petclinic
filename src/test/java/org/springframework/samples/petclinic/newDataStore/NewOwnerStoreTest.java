@@ -13,6 +13,7 @@ import org.junit.Before;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.samples.petclinic.owner.Owner;
@@ -36,6 +37,9 @@ public class NewOwnerStoreTest {
 
     HashMap<Integer, StaticOwner> ownerStore;
 
+
+    @Mock
+    Owner mockOwner;
 
     @Before
     public void setup() {
@@ -109,5 +113,19 @@ public class NewOwnerStoreTest {
     @Test
     public void consistencyCheck () {
         System.out.println(testOwnerStore.checkConsistency());
+    }
+
+    @Test
+    public void checkShadowWrite() {
+        testOwnerStore = NewOwnerStore.getInstance(owners);
+
+       //make sure that inconsisties are recorded and fixed
+       testOwnerStore.testPutInOldDatastoreOnly(mockOwner);
+       assertEquals(1, testOwnerStore.checkConsistency());
+       assertEquals(0, testOwnerStore.checkConsistency());
+
+       //make sure that any changes written to old database are also written to new database
+       testOwnerStore.save(mockOwner);
+       assertEquals(0, testOwnerStore.checkConsistency());
     }
 }
