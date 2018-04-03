@@ -17,4 +17,17 @@ public class StaticOwner {
         this.city = city;
         this.telephone = telephone;
     }
+
+    public String getAddress () {
+        return address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getTelephone () {
+        return telephone;
+    }
+
 }

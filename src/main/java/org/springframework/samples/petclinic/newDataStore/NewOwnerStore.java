@@ -33,4 +33,8 @@ public class NewOwnerStore {
     public StaticOwner convertToStaticOwner(Owner ownerEntity) {
         return new StaticOwner(ownerEntity.getAddress(), ownerEntity.getCity(), ownerEntity.getTelephone());
     }
+
+    public Map<Integer, StaticOwner> getNewOwnerStore() {
+        return this.ownerStore;
+    }
 }
