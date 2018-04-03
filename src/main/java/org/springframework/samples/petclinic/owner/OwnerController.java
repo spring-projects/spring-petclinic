@@ -90,13 +90,6 @@ class OwnerController {
         // find owners by last name
         Collection<Owner> results = this.owners.findByLastName(owner.getLastName());
 
-        for (Owner o : results)
-            System.out.println(o.toString());
-
-        // Shadow Read
-        compareResults(results, owner.getLastName());
-
-
         if (results.isEmpty()) {
             // no owners found
             result.rejectValue("lastName", "notFound", "not found");
@@ -109,32 +102,6 @@ class OwnerController {
             // multiple owners found
             model.put("selections", results);
             return "owners/ownersList";
-        }
-    }
-
-    private void compareResults(Collection<Owner> results, String lastName) {
-
-        String pattern = lastName + "*";
-
-        NewOwnerStore newStore = NewOwnerStore.getInstance(owners);
-        newStore.populateStore();
-
-        HashMap<Integer, StaticOwner> storeMap = newStore.getStore();
-
-        ArrayList<StaticOwner> newOwners = new ArrayList<>();
-
-        for (StaticOwner owner : storeMap.values()) {
-            if (!Pattern.compile(pattern).matcher(owner.getLastName()).find())
-                newOwners.add(owner);
-        }
-
-        for (Owner owner : results) {
-            if (newOwners.contains(owner))
-                System.out.println("Found. Good");
-            else {
-                System.out.println("Not Found. Bad");
-                newStore.findAndReplace(owner);
-            }
         }
     }
 

@@ -68,17 +68,25 @@ public class NewOwnerStoreTest {
         int inconsistencies = compareResults(results, "");
 
         assertEquals(inconsistencies, 0);
+
+        // Introduce inconsistency
+        testOwnerStore.getStore().put(1, new StaticOwner(1, "First", "Last"));
+        inconsistencies = compareResults(results, "");
+        assertEquals(inconsistencies, 1);
+
+
+        // Inconsistency should be gone
+        inconsistencies = compareResults(results, "");
+        assertEquals(inconsistencies, 0);
     }
 
     private int compareResults(Collection<Owner> results, String lastName) {
 
         String pattern = "/^" + lastName + "/";
 
-        HashMap<Integer, StaticOwner> storeMap = testOwnerStore.getStore();
-
         ArrayList<StaticOwner> staticOwners = new ArrayList<>();
 
-        for (StaticOwner owner : storeMap.values()) {
+        for (StaticOwner owner : ownerStore.values()) {
             if (!Pattern.compile(pattern, Pattern.CASE_INSENSITIVE).matcher(owner.getLastName()).find())
                 staticOwners.add(owner);
         }

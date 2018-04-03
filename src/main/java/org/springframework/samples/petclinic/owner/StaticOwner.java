@@ -27,6 +27,13 @@ public class StaticOwner {
         this.setTelephone(telephone);
     }
 
+    public StaticOwner(Integer id, String firstName, String lastName)
+    {
+        this.setId(id);
+        this.setLastName(lastName);
+        this.setFirstName(firstName);
+    }
+
     public void setAddress(String address) {
         this.address = address;
     }
@@ -98,5 +105,4 @@ public class StaticOwner {
         return new StaticOwner(owner.getId(), owner.getLastName(), owner.getFirstName(),
             owner.getAddress(), owner.getCity(), owner.getTelephone());
     }
-
 }
