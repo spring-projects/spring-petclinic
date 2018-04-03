@@ -5,6 +5,7 @@ package org.springframework.samples.petclinic.newDataStore;
 
 import java.util.Iterator;
 import java.util.Map;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +26,17 @@ public class NewOwnerStoreTest {
 
     NewOwnerStore testOwnerStore;
 
-    @Test
-    public void testPopulation() {
+    Map<Integer, StaticOwner> ownerStore;
+
+    @Before
+    public void setup() {
         testOwnerStore = new NewOwnerStore(owner);
-        testOwnerStore.populateStore();
-        Map<Integer, StaticOwner> ownerStore = testOwnerStore.getNewOwnerStore();
+        testOwnerStore.forklift();
+        ownerStore = testOwnerStore.getNewOwnerStore();
+    }
+
+    @Test
+    public void testForklift() {
 
         for (Integer id: ownerStore.keySet()){
 
@@ -37,8 +44,10 @@ public class NewOwnerStoreTest {
             String value = ownerStore.get(id).getAddress();
             System.out.println(key + " " + value);
         }
-
-
     }
 
+    @Test
+    public void consistencyCheck () {
+        System.out.println(testOwnerStore.checkConsistency());
+    }
 }

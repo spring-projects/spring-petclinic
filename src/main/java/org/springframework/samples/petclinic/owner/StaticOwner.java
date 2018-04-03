@@ -30,4 +30,13 @@ public class StaticOwner {
         return telephone;
     }
 
+    public boolean equals (Owner ownerToCompareTo) {
+        if((this.address != ownerToCompareTo.getAddress())|| (this.city != ownerToCompareTo.getCity()) ||
+        (this.telephone != ownerToCompareTo.getTelephone())) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
 }
