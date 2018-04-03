@@ -15,26 +15,48 @@ import org.springframework.samples.petclinic.owner.StaticOwner;
  */
 public class NewOwnerStore {
 
-    public Map<Integer, StaticOwner> ownerStore;
+    private HashMap<Integer, StaticOwner> ownerStore;
     private final OwnerRepository owners;
+    private static NewOwnerStore storeSingleton;
 
-    public NewOwnerStore(OwnerRepository owners) {
+    private NewOwnerStore(OwnerRepository owners) {
         this.owners = owners;
         this.ownerStore = new HashMap<>();
+    }
+
+    public static NewOwnerStore getInstance(OwnerRepository owners)
+    {
+        if (storeSingleton == null)
+            storeSingleton = new NewOwnerStore(owners);
+
+        return storeSingleton;
     }
 
     public void populateStore() {
         Collection<Owner> ownerRepositoryData = this.owners.findAll();
         for(Owner owner : ownerRepositoryData) {
-            ownerStore.put(owner.getId(), convertToStaticOwner(owner));
+            ownerStore.put(owner.getId(), StaticOwner.convertToStaticOwner(owner));
         }
     }
 
-    public StaticOwner convertToStaticOwner(Owner ownerEntity) {
-        return new StaticOwner(ownerEntity.getAddress(), ownerEntity.getCity(), ownerEntity.getTelephone());
+    public HashMap<Integer, StaticOwner> getStore()
+    {
+        return ownerStore;
     }
 
-    public Map<Integer, StaticOwner> getNewOwnerStore() {
-        return this.ownerStore;
+    public void findAndReplace(Owner owner) {
+        boolean exists = false;
+
+        for (StaticOwner o : getStore().values()) {
+            if (o.getId() == owner.getId()) {
+                exists = true;
+            }
+        }
+
+        // Replace
+        getStore().put(owner.getId(), StaticOwner.convertToStaticOwner(owner));
+
+        // Report whether inexistent or inconsistent based on exists
+
     }
 }
