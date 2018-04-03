@@ -65,4 +65,16 @@ public class NewOwnerStore {
         System.out.println("Consistency Violation! \n” + “i = ” + i + “\n\t expected = " +
         expected.toString() + "\n\t actual = " + actual.toString());
     }
+
+    public void save(Owner owner){
+        //actual write to datastore
+        owners.save(owner);
+        //shadow write to new datastore
+        ownerStore.put(owner.getId(), convertToStaticOwner(owner));
+    }
+
+    //this is for testing to introduce inconsistencies
+    public void testPutInOldDatastoreOnly(Owner owner){
+        owners.save(owner);
+    }
 }
