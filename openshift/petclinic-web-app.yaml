@@ -1,0 +1,219 @@
+apiVersion: v1
+kind: Template
+labels:
+  template: petclinic-web-app
+message: |-
+  Template de exemplo para a Talk DevOps
+metadata:
+  annotations:
+    openshift.io/display-name: PetClinic Web App
+    description: |-
+      Continuous Integration | Build | Package | Deploy
+    iconClass: icon-spring
+    tags: petclinic-web-app,java  
+  name: petclinic-web-app
+parameters:
+- description: The name assigned to all of the application objects defined in this template.
+  displayName: Application Name
+  name: APP_NAME
+  required: true
+  value: petclinic-web-app
+- description: The source URL for the application
+  displayName: Source URL
+  name: GIT_SOURCE_URL
+  required: true
+  value: https://github.com/alexbaptista/spring-petclinic.git
+- description: The source Ref for the application
+  displayName: Source Ref
+  name: GIT_SOURCE_REF
+  required: true
+  value: master
+- description: Github trigger secret.  A difficult to guess string encoded as part of the webhook URL.  Not encrypted.
+  displayName: GitHub Webhook Secret
+  name: GITHUB_WEBHOOK_SECRET
+  from: '[a-zA-Z0-9]{40}'
+  generate: expression
+  required: true
+- description: A secret string used to configure the Generic webhook.
+  displayName: Generic Webhook Secret
+  name: GENERIC_WEBHOOK_SECRET
+  from: '[a-zA-Z0-9]{40}'
+  generate: expression
+  required: true
+- description: OpenShift Namespace
+  displayName: Namespace
+  name: NAMESPACE
+  required: true
+  value: talkdevops-step2
+objects:
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+      pipeline.alpha.openshift.io/uses: '[{"name": "${APP_NAME}", "namespace": "", "kind": "DeploymentConfig"}]'
+    labels:
+      name: ${APP_NAME}-pipeline
+    name: ${APP_NAME}-pipeline
+  spec:
+    strategy:
+      jenkinsPipelineStrategy:
+        jenkinsfile: |-
+          try {
+             timeout(time: 20, unit: 'MINUTES') {
+                def appName="${APP_NAME}"
+                def project=""
+                node {
+                  stage("Initialize") {
+                    project = env.PROJECT_NAME
+                  }
+                }
+                node("maven") {
+                  stage("Checkout") {
+                    git url: "${GIT_SOURCE_URL}", branch: "${GIT_SOURCE_REF}"
+                  }
+                  stage("Build JAR") {
+                    sh "mvn clean install"
+                    stash name:"jar", includes:"target/spring-petclinic-1.5.1.jar"
+                  }
+                }
+                node {
+                  stage("Build Image") {
+                    unstash name:"jar"
+                    sh "oc start-build ${appName}-docker --from-file=target/spring-petclinic-1.5.1.jar -n ${project}"
+                    openshiftVerifyBuild bldCfg: "${appName}-docker", namespace: project, waitTime: '20', waitUnit: 'min'
+                  }
+                  stage("Deploy") {
+                    openshiftDeploy deploymentConfig: appName, namespace: project
+                  }
+                }
+             }
+          } catch (err) {
+             echo "in catch block"
+             echo "Caught: ${err}"
+             currentBuild.result = 'FAILURE'
+             throw err
+          }
+      type: JenkinsPipeline
+    triggers:
+    - github:
+        secret: "${GITHUB_WEBHOOK_SECRET}"
+      type: GitHub
+    - generic:
+        secret: "${GENERIC_WEBHOOK_SECRET}"
+      type: Generic
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: ${APP_NAME}
+  spec:
+    ports:
+    - name: web
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+    selector:
+      name: ${APP_NAME}
+- apiVersion: v1
+  kind: Route
+  metadata:
+    name: ${APP_NAME}
+  spec:
+    port:
+      targetPort: web
+    to:
+      kind: Service
+      name: ${APP_NAME}
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    annotations:
+      description: Docker images hub
+    name: ${APP_NAME}
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+      description: Define como criar o aplicativo
+    name: ${APP_NAME}-docker
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: ${APP_NAME}:latest
+    source:
+      dockerfile: |-
+        FROM docker.io/maven:alpine
+        WORKDIR /
+        ADD spring-petclinic-1.5.1.jar .
+        EXPOSE 8080
+        CMD java -jar spring-petclinic-1.5.1.jar
+      binary:
+        asFile: spring-petclinic-1.5.1.jar
+      type: Docker
+    strategy:
+      dockerStrategy:
+        from:
+          kind: DockerImage
+          name: docker.io/maven:alpine
+      type: Docker
+    triggers: []
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      description: Define como é realizada a implantação do APP
+    name: ${APP_NAME}
+  spec:
+    replicas: 1
+    selector:
+      name: ${APP_NAME}
+    strategy:
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        annotations:
+          alpha.image.policy.openshift.io/resolve-names: '*'
+        labels:
+          name: ${APP_NAME}
+        name: ${APP_NAME}
+      spec:
+        containers:
+        - image: ${APP_NAME}:latest
+          imagePullPolicy: Always
+          name: ${APP_NAME}
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30
+            timeoutSeconds: 2
+            periodSeconds: 10
+        triggers:
+        - type: ConfigChange
+        - imageChangeParams:
+            automatic: true
+            containerNames:
+            - ${APP_NAME}
+            from:
+              kind: ImageStreamTag
+              name: '${APP_NAME}:latest'
+              namespace: ${NAMESPACE}
+          type: ImageChange
