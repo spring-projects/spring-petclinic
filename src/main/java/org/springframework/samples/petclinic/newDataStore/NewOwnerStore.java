@@ -37,4 +37,16 @@ public class NewOwnerStore {
     public Map<Integer, StaticOwner> getNewOwnerStore() {
         return this.ownerStore;
     }
+
+    public void save(Owner owner){
+        //actual write to datastore
+        owners.save(owner);
+        //shadow write to new datastore
+        ownerStore.put(owner.getId(), convertToStaticOwner(owner));
+    }
+
+    //this is for testing to introduce inconsistencies
+    public void testPutInOldDatastoreOnly(Owner owner){
+        owners.save(owner);
+    }
 }
