@@ -1,26 +1,25 @@
 package org.springframework.samples.petclinic.owner;
 
+import org.assertj.core.util.Lists;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
-import org.assertj.core.util.Lists;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.samples.petclinic.owner.Owner;
-import org.springframework.samples.petclinic.owner.OwnerController;
-import org.springframework.samples.petclinic.owner.OwnerRepository;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 
 /**
  * Test class for {@link OwnerController}
@@ -39,17 +38,18 @@ public class OwnerControllerTests {
     @MockBean
     private OwnerRepository owners;
 
+    @Mock
     private Owner george;
 
     @Before
     public void setup() {
-        george = new Owner();
-        george.setId(TEST_OWNER_ID);
-        george.setFirstName("George");
-        george.setLastName("Franklin");
-        george.setAddress("110 W. Liberty St.");
-        george.setCity("Madison");
-        george.setTelephone("6085551023");
+        MockitoAnnotations.initMocks(this);
+        doReturn(TEST_OWNER_ID).when(george).getId();
+        doReturn("George").when(george).getFirstName();
+        doReturn("Franklin").when(george).getLastName();
+        doReturn("110 W. Liberty St.").when(george).getAddress();
+        doReturn("Madison").when(george).getCity();
+        doReturn("6085551023").when(george).getTelephone();
         given(this.owners.findById(TEST_OWNER_ID)).willReturn(george);
     }
 

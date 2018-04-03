@@ -16,6 +16,7 @@
 package org.springframework.samples.petclinic.owner;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.newDataStore.NewOwnerStore;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,8 +28,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * @author Juergen Hoeller
@@ -38,7 +42,6 @@ import java.util.Map;
  */
 @Controller
 class OwnerController {
-
     private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
     private final OwnerRepository owners;
 
@@ -86,6 +89,7 @@ class OwnerController {
 
         // find owners by last name
         Collection<Owner> results = this.owners.findByLastName(owner.getLastName());
+
         if (results.isEmpty()) {
             // no owners found
             result.rejectValue("lastName", "notFound", "not found");
@@ -100,6 +104,7 @@ class OwnerController {
             return "owners/ownersList";
         }
     }
+
 
     @GetMapping("/owners/{ownerId}/edit")
     public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
@@ -131,5 +136,4 @@ class OwnerController {
         mav.addObject(this.owners.findById(ownerId));
         return mav;
     }
-
 }

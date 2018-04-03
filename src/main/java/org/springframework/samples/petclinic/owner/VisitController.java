@@ -34,8 +34,8 @@ import java.util.Map;
  * @author Dave Syer
  */
 @Controller
-class VisitController {
-
+public class VisitController	// Set to public for testing -- can otherwise be accessed with annotations not covered in class
+{
     private final VisitRepository visits;
     private final PetRepository pets;
 
