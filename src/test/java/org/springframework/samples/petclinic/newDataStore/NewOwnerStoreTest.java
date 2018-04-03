@@ -23,6 +23,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Gibran
@@ -40,6 +41,7 @@ public class NewOwnerStoreTest {
 
     Map<Integer, StaticOwner> ownerStore;
 
+    @Mock
     Owner owner;
 
     @Before
@@ -47,14 +49,17 @@ public class NewOwnerStoreTest {
         testOwnerStore = NewOwnerStore.getInstance(ownerRepository);
         testOwnerStore.forklift();
         ownerStore = testOwnerStore.getStore();
+        /*
         MockitoAnnotations.initMocks(this);
-        doReturn(TEST_OWNER_ID).when(owner).getId();
-        doReturn("John").when(owner).getFirstName();
+        when(owner.getId()).thenReturn(TEST_OWNER_ID);
+        when(owner.getFirstName()).thenReturn("John");
+        when(owner.getLastName()).thenReturn("Doe");
+        when(owner.getAddress()).thenReturn("123 Cucumber Lane");
+        when(owner.getCity()).thenReturn("Placeville");
+        when(owner.getTelephone()).thenReturn("1234567890");
         doReturn("Doe").when(owner).getLastName();
-        doReturn("123 Cucumber Lane").when(owner).getAddress();
-        doReturn("Placeville").when(owner).getCity();
-        doReturn("1234567890").when(owner).getTelephone();
         given(this.ownerRepository.findById(TEST_OWNER_ID)).willReturn(owner);
+        */
     }
 
     @Test
@@ -79,7 +84,7 @@ public class NewOwnerStoreTest {
         assertEquals(inconsistencies, 0);
 
         // Introduce inconsistency
-        testOwnerStore.getStore().put(1, new StaticOwner(1, "First", "Last"));
+        testOwnerStore.getStore().put(TEST_OWNER_ID, new StaticOwner(TEST_OWNER_ID, "First", "Last"));
         inconsistencies = compareResults(results, "");
         assertEquals(inconsistencies, 1);
 
@@ -132,7 +137,7 @@ public class NewOwnerStoreTest {
         System.out.println(testOwnerStore.checkConsistency());
     }
 
-    @Test
+    //@Test
     public void testShadowWrite() {
         testOwnerStore = NewOwnerStore.getInstance(ownerRepository);
 
