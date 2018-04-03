@@ -94,7 +94,6 @@ public class StaticOwner {
         return telephone;
     }
 
-
     public static StaticOwner convertToStaticOwner(Owner owner) {
         return new StaticOwner(owner.getId(), owner.getLastName(), owner.getFirstName(),
             owner.getAddress(), owner.getCity(), owner.getTelephone());

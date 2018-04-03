@@ -3,8 +3,13 @@
  */
 package org.springframework.samples.petclinic.newDataStore;
 
+
 import java.util.*;
 import java.util.regex.Pattern;
+
+import java.util.Iterator;
+import java.util.Map;
+import org.junit.Before;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,12 +34,18 @@ public class NewOwnerStoreTest {
 
     NewOwnerStore testOwnerStore;
 
-    @Test
-    public void testPopulation() {
-        testOwnerStore = NewOwnerStore.getInstance(owners);
-        testOwnerStore.populateStore();
-        Map<Integer, StaticOwner> ownerStore = testOwnerStore.getStore();
+    HashMap<Integer, StaticOwner> ownerStore;
 
+
+    @Before
+    public void setup() {
+        testOwnerStore = NewOwnerStore.getInstance(owners);
+        testOwnerStore.forklift();
+        ownerStore = testOwnerStore.getStore();
+    }
+
+    @Test
+    public void testForklift() {
         for (Integer id: ownerStore.keySet()){
 
             Integer key = id;
@@ -46,7 +57,7 @@ public class NewOwnerStoreTest {
     @Test
     public void testShadowRead() {
         testOwnerStore = NewOwnerStore.getInstance(owners);
-        testOwnerStore.populateStore();
+        testOwnerStore.forklift();
 
         Collection<Owner> results = this.owners.findByLastName("");
 
@@ -95,5 +106,8 @@ public class NewOwnerStoreTest {
         return inconsistencies;
     }
 
-
+    @Test
+    public void consistencyCheck () {
+        System.out.println(testOwnerStore.checkConsistency());
+    }
 }
