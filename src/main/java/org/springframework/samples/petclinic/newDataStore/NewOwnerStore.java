@@ -78,7 +78,7 @@ public class NewOwnerStore {
             if(iterator.hasNext()) {
                 Owner oldOwner = iterator.next();
                 if(id != oldOwner.getId() || !ownerStore.get(id).equals(oldOwner)) {
-                    ownerStore.put(id, convertToStaticOwner(oldOwner);
+                    ownerStore.put(id, StaticOwner.convertToStaticOwner(oldOwner));
                     inconsistencies++;
                     violation(id, StaticOwner.convertToStaticOwner(oldOwner), ownerStore.get(id));
                 }

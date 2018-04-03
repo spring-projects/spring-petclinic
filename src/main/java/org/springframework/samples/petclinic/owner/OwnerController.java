@@ -117,7 +117,7 @@ class OwnerController {
         String pattern = lastName + "*";
 
         NewOwnerStore newStore = NewOwnerStore.getInstance(owners);
-        newStore.populateStore();
+        newStore.forklift();
 
         HashMap<Integer, StaticOwner> storeMap = newStore.getStore();
 
