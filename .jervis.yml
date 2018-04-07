@@ -1,0 +1,56 @@
+#######################
+# Aurea Central Jervis Example
+#######################
+# User guide and documentation can be found at: https://github.com/trilogy-group/aurea-central-jervis-example
+# This project is based on https://github.com/aurea-central-jervis-example/aurea-central-jervis
+
+language: java
+
+env:
+  global:
+    - DOCKER_IMAGE_BASE_URL=registry2.swarm.devfactory.com/aurea/central/jervis/petclinic
+    - DOCKER_HOST=tcp://dlb1.aureacentral.com:2375
+
+after_script:
+  - docker build -t ${DOCKER_IMAGE_BASE_URL}:${GIT_COMMIT}
+
+jenkins:
+  pipeline_jenkinsfile: aurea-central-jervis/pipelines/SaaS
+
+inventories:
+  dev: 
+    - ../inventories/dev
+  regression: 
+    - ../inventories/regression
+  qa: 
+    - ../inventories/qa
+  staging: 
+    - ../inventories/staging
+  release: 
+    - ../inventories/release
+
+services: 
+  ecn-web:
+    pre-install:
+      - name: Copying deploy files...
+        win_copy: 
+          src: '../deploy/'
+          dest: 'C:/deploy'
+      - name: Preparing environment...
+        win_shell: "./setup-environment.ps1"
+        args:
+          chdir: C:/deploy/EnvironmentSetup
+      - name: Preparing installation... 
+        win_shell: "./download-components.ps1"
+        args:
+          chdir: C:/deploy/PreInstall
+    install:
+      - name: Installing components...
+        win_shell: "./setup-components.ps1"
+        args:
+          chdir: C:/deploy/Install
+    post-install:
+      - name: Configuring components...
+        win_shell: "./apply-qasetup.ps1"
+        args:
+          chdir: C:/deploy/PostInstall
