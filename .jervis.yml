@@ -16,6 +16,7 @@ after_script:
 
 jenkins:
   pipeline_jenkinsfile: aurea-central-jervis/pipelines/SaaS
+  collect: []
 
 inventories:
   dev: 
