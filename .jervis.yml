@@ -14,12 +14,16 @@ env:
 after_script:
   - docker build -t ${DOCKER_IMAGE_BASE_URL}:${GIT_COMMIT}
 
+after_failure:
+  - 'ls -lrt'
+
 jenkins:
   pipeline_jenkinsfile: aurea-central-jervis/pipelines/SaaS
   collect:
     artifacts: build/libs/*.jar
-    junit: build/test-results/*.xml
-
+    junit:
+      - target/*.jar
+      - target/*.war
 inventories:
   dev: 
     - ../inventories/dev
