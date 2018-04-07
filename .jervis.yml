@@ -17,7 +17,7 @@ after_script:
 jenkins:
   pipeline_jenkinsfile: aurea-central-jervis/pipelines/SaaS
   collect:
-    artifacts: []
+    artifacts: build/libs/*.jar
     junit: build/test-results/*.xml
 
 inventories:
