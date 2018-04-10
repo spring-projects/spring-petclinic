@@ -26,38 +26,12 @@ jenkins:
       - target/*.war
 inventories:
   dev: 
-    - ../inventories/dev
+    - ../../inventories/dev
   regression: 
-    - ../inventories/regression
+    - ../../inventories/regression
   qa: 
-    - ../inventories/qa
+    - ../../inventories/qa
   staging: 
-    - ../inventories/staging
+    - ../../inventories/staging
   release: 
-    - ../inventories/release
-
-services: 
-  ecn-web:
-    pre-install:
-      - name: Copying deploy files...
-        win_copy: 
-          src: '../deploy/'
-          dest: 'C:/deploy'
-      - name: Preparing environment...
-        win_shell: "./setup-environment.ps1"
-        args:
-          chdir: C:/deploy/EnvironmentSetup
-      - name: Preparing installation... 
-        win_shell: "./download-components.ps1"
-        args:
-          chdir: C:/deploy/PreInstall
-    install:
-      - name: Installing components...
-        win_shell: "./setup-components.ps1"
-        args:
-          chdir: C:/deploy/Install
-    post-install:
-      - name: Configuring components...
-        win_shell: "./apply-qasetup.ps1"
-        args:
-          chdir: C:/deploy/PostInstall
+    - ../../inventories/release
