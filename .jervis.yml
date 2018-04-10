@@ -19,6 +19,7 @@ after_failure:
 
 jenkins:
   pipeline_jenkinsfile: aurea-central-jervis/pipelines/SaaS
+  additional_labels: "test123"
   collect:
     artifacts: build/libs/*.jar
     junit:
