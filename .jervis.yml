@@ -17,7 +17,7 @@ env:
 
 # after_script:
   # - docker build -t ${DOCKER_IMAGE_BASE_URL}:${GIT_COMMIT}
-before_install: tree
+before_install: 'ls -l'
 install: yes
 before_script: yes
 script: yes
