@@ -28,7 +28,8 @@ cache:
 
 jenkins:
   pipeline_jenkinsfile: aurea-central-jervis/pipelines/SaaS
-  collect: {}
+  collect:
+    collect:
 
 inventories:
   dev: 
