@@ -19,12 +19,12 @@ after_failure:
 
 cache:
   directories:
-  - ${HOME}/.m2
+    - ${HOME}/.m2
 
 jenkins:
   pipeline_jenkinsfile: aurea-central-jervis/pipelines/SaaS
   stash:
-  
+
 inventories:
   dev: 
     - ../../inventories/dev
