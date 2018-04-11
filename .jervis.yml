@@ -14,8 +14,9 @@ env:
 after_script:
   - docker build -t ${DOCKER_IMAGE_BASE_URL}:${GIT_COMMIT}
 
-after_failure:
-  - 'ls -lrt'
+cache:
+  directories:
+  - $HOME/.m2
 
 jenkins:
   pipeline_jenkinsfile: aurea-central-jervis/pipelines/SaaS
