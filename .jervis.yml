@@ -7,7 +7,7 @@
 language: java
 
 git:
-  submodules:
+  submodules: true
     
 
 env:
@@ -15,23 +15,13 @@ env:
     - DOCKER_IMAGE_BASE_URL=registry2.swarm.devfactory.com/aurea/central/jervis/petclinic
     - DOCKER_HOST=tcp://dlb1.aureacentral.com:2375
 
-# after_script:
-  # - docker build -t ${DOCKER_IMAGE_BASE_URL}:${GIT_COMMIT}
-before_install: yes
-install: yes
-before_script: yes
-script: yes
-after_script: git submodule update --init --recursive
-
-after_failure:
-  - 'ls -l'
-
 cache:
   directories:
     - ${HOME}/.m2
 
+before_install: 'ls -l aurea-central-jervis'
+
 jenkins:
-  # pipeline_jenkinsfile: aurea-central-jervis/pipelines/SaaS
   collect:
     collect:
 
