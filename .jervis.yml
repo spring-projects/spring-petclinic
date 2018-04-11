@@ -6,6 +6,10 @@
 
 language: java
 
+git:
+  submodules:
+    
+
 env:
   global:
     - DOCKER_IMAGE_BASE_URL=registry2.swarm.devfactory.com/aurea/central/jervis/petclinic
@@ -13,7 +17,7 @@ env:
 
 # after_script:
   # - docker build -t ${DOCKER_IMAGE_BASE_URL}:${GIT_COMMIT}
-before_install: yes
+before_install: tree
 install: yes
 before_script: yes
 script: yes
