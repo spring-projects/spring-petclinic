@@ -17,7 +17,9 @@ env:
 
 # after_script:
   # - docker build -t ${DOCKER_IMAGE_BASE_URL}:${GIT_COMMIT}
-before_install: 'ls -l aurea-central-jervis'
+before_install: 
+  - 'ls -l aurea-central-jervis'
+  - 'git submodule update --init --recursive'
 install: yes
 before_script: yes
 script: yes
