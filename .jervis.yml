@@ -11,8 +11,8 @@ env:
     - DOCKER_IMAGE_BASE_URL=registry2.swarm.devfactory.com/aurea/central/jervis/petclinic
     - DOCKER_HOST=tcp://dlb1.aureacentral.com:2375
 
-after_script:
-  - docker build -t ${DOCKER_IMAGE_BASE_URL}:${GIT_COMMIT}
+# after_script:
+  # - docker build -t ${DOCKER_IMAGE_BASE_URL}:${GIT_COMMIT}
 
 after_failure:
   - 'ls -l'
@@ -23,7 +23,8 @@ cache:
 
 jenkins:
   pipeline_jenkinsfile: aurea-central-jervis/pipelines/SaaS
-  stash: []
+  stash:
+  
 inventories:
   dev: 
     - ../../inventories/dev
