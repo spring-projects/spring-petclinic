@@ -19,15 +19,15 @@ after_failure:
 
 cache:
   directories:
-  - $HOME/.m2
+  - ${HOME}/.m2
 
 jenkins:
   pipeline_jenkinsfile: aurea-central-jervis/pipelines/SaaS
-  collect:
-    artifacts: build/libs/*.jar
-    junit:
-      - target/*.jar
-      - target/*.war
+  stash:
+    - name: artifacts 
+      allow_empty: true
+      includes: 
+        - target/*.jar
 inventories:
   dev: 
     - ../../inventories/dev
