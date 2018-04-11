@@ -13,7 +13,12 @@ env:
 
 # after_script:
   # - docker build -t ${DOCKER_IMAGE_BASE_URL}:${GIT_COMMIT}
+before_install: yes
+install: yes
+before_script: yes
 script: yes
+after_script: yes
+
 after_failure:
   - 'ls -l'
 
