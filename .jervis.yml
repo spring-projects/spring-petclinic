@@ -21,7 +21,7 @@ before_install: 'ls -l aurea-central-jervis'
 install: yes
 before_script: yes
 script: yes
-after_script: yes
+after_script: git submodule update --init --recursive
 
 after_failure:
   - 'ls -l'
