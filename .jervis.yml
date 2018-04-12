@@ -20,6 +20,9 @@ cache:
     - ${HOME}/.m2
 
 jenkins:
+  stash:
+    - artifacts
+    - junit
   collect:
     artifacts: target/*.jar
     junit: 
