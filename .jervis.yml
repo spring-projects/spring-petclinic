@@ -8,35 +8,28 @@ language: java
 
 git:
   submodules: true
-    
-
-env:
-  global:
-    - DOCKER_IMAGE_BASE_URL=registry2.swarm.devfactory.com/aurea/central/jervis/petclinic
-    - DOCKER_HOST=tcp://dlb1.aureacentral.com:2375
 
 cache:
   directories:
     - ${HOME}/.m2
 
-after_script: 
-  - ls -lrt target/
-  - sleep 1000
-
 jenkins:
   stash:
-    artifacts:
+    artifacts: target/*
   collect:
-    artifacts: target/*.jar
+    artifacts: target/*
 
-inventories:
-  dev: 
-    - ../../inventories/dev
-  regression: 
-    - ../../inventories/regression
-  qa: 
-    - ../../inventories/qa
-  staging: 
-    - ../../inventories/staging
-  release: 
-    - ../../inventories/release
+services:
+  petclinc: 
+    docker_login:
+      username: electricflow
+      password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          34373161303764653863383637376231393862643634646535666232636635386437353163363934
+          3866303939316462313939303230323534313238323832340a666637366338333033643733303038
+          66633263616462323766323364663835376438666663616566643739373936633964346565613363
+          3264653436303761350a613565663463386139303131393035663332653336393362366266316139
+          3034
+    docker_image:
+     path: .
+     name: registry2.swarm.devfactory.com/aurea/central/jervis/petclinic
