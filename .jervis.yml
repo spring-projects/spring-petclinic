@@ -11,11 +11,11 @@ git:
 
 branches:
   only:
-  - master
-  - develop
-  - release*
-  - hotfix*
-  - feature*
+    - master
+    - develop
+    - release/*
+    - hotfix/*
+    - feature/*
 
 cache:
   directories:
