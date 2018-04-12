@@ -22,11 +22,8 @@ cache:
 jenkins:
   stash:
     artifacts:
-    junit:
   collect:
     artifacts: target/*.jar
-    junit: 
-      - target
 
 inventories:
   dev: 
