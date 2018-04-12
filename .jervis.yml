@@ -19,6 +19,10 @@ cache:
   directories:
     - ${HOME}/.m2
 
+after_success: 
+  - ls -lrt target/
+  - sleep 1000
+
 jenkins:
   stash:
     artifacts:
