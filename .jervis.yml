@@ -9,6 +9,14 @@ language: java
 git:
   submodules: true
 
+branches:
+  only:
+  - master
+  - develop
+  - release
+  - hotfix
+  - /^feature\/.*$/
+
 cache:
   directories:
     - ${HOME}/.m2
