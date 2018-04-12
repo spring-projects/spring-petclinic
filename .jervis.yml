@@ -1,0 +1,43 @@
+#######################
+# Aurea Central Jervis Example
+#######################
+# User guide and documentation can be found at: https://github.com/trilogy-group/aurea-central-jervis-example
+# This project is based on https://github.com/aurea-central-jervis-example/aurea-central-jervis
+
+language: java
+
+git:
+  submodules: true
+
+branches:
+  only:
+    - master
+    - develop
+    - release/*
+    - hotfix/*
+    - feature/*
+
+cache:
+  directories:
+    - ${HOME}/.m2
+
+jenkins:
+  stash:
+    artifacts: target/*
+  collect:
+    artifacts: target/*
+
+services:
+  petclinc: 
+    docker_login:
+      username: electricflow
+      password: "!vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          34373161303764653863383637376231393862643634646535666232636635386437353163363934
+          3866303939316462313939303230323534313238323832340a666637366338333033643733303038
+          66633263616462323766323364663835376438666663616566643739373936633964346565613363
+          3264653436303761350a613565663463386139303131393035663332653336393362366266316139
+          3034"
+    docker_image:
+     path: .
+     name: registry2.swarm.devfactory.com/aurea/central/jervis/petclinic
