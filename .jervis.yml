@@ -15,7 +15,7 @@ branches:
   - develop
   - release
   - hotfix
-  - /^feature\/.*$/
+  - feature/.*$
 
 cache:
   directories:
