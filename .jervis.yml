@@ -19,11 +19,12 @@ cache:
   directories:
     - ${HOME}/.m2
 
-before_install: 'ls -l aurea-central-jervis'
-
 jenkins:
   collect:
-    collect:
+    artifacts: target/*.jar
+    junit: 
+      - target/surfire-results/*.xml
+      - target/surfire-results/*.txt
 
 inventories:
   dev: 
