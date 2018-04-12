@@ -1,3 +1,4 @@
 [submodule "aurea-central-jervis"]
 	path = aurea-central-jervis
 	url = git@github.com:trilogy-group/aurea-central-jervis.git
+	branch = master

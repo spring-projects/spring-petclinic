@@ -26,8 +26,7 @@ jenkins:
   collect:
     artifacts: target/*.jar
     junit: 
-      - target/surfire-results/*.xml
-      - target/surfire-results/*.txt
+      - target
 
 inventories:
   dev: 
