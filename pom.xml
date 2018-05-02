@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.springframework.samples</groupId>
     <artifactId>spring-petclinic</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1</version>
 
     <name>petclinic</name>
     <packaging>war</packaging>
@@ -182,8 +182,9 @@
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time-hibernate</artifactId>
-            <version>${jodatime-hibernate.version}</version>
-        </dependency>
+            <version>9.2.1-SNAPSHOT</version>
+        <!-- <version>${jodatime-hibernate.version}</version> -->
+	</dependency>
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time-jsptags</artifactId>
