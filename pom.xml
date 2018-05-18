@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.springframework.samples</groupId>
     <artifactId>spring-petclinic</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.0-SNAPSHOT</version>
 
     <name>petclinic</name>
     <packaging>war</packaging>
@@ -182,9 +182,8 @@
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time-hibernate</artifactId>
-            <version>9.2.1-SNAPSHOT</version>
-        <!-- <version>${jodatime-hibernate.version}</version> -->
-	</dependency>
+            <version>${jodatime-hibernate.version}</version>
+        </dependency>
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time-jsptags</artifactId>
@@ -422,12 +421,12 @@
 
     <distributionManagement>
         <snapshotRepository>
-            <id>nexus-snapshots</id>
-            <url>http://localhost:8081/repository/maven-snapshots/</url>
+            <id>snapshots</id>
+            <url>http://nexus:8081/nexus/content/repositories/snapshots</url>
         </snapshotRepository>
         <repository>
-            <id>nexus-releases</id>
-            <url>http://localhost:8081/repository/maven-releases/</url>
+            <id>releases</id>
+            <url>http://nexus:8081/nexus/content/repositories/releases</url>
         </repository>
     </distributionManagement>
 
