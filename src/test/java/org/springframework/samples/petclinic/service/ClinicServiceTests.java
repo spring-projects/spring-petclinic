@@ -2,8 +2,8 @@ package org.springframework.samples.petclinic.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Date;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -140,7 +140,7 @@ public class ClinicServiceTests {
         pet.setName("bowser");
         Collection<PetType> types = this.pets.findPetTypes();
         pet.setType(EntityUtils.getById(types, PetType.class, 2));
-        pet.setBirthDate(new Date());
+        pet.setBirthDate(LocalDate.now());
         owner6.addPet(pet);
         assertThat(owner6.getPets().size()).isEqualTo(found + 1);
 
