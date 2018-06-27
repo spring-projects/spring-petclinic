@@ -10,14 +10,6 @@
     <packaging>war</packaging>
 
     <properties>
-
-        <servers>
-         <server>
-            <id>nexus</id>
-            <username>admin</username>
-            <password>admin123</password>
-         </server>
-        </servers>
         
         <!-- Generic properties -->
         <java.version>1.7</java.version>
