@@ -9,8 +9,8 @@ properties([
 
 node {
 
-    cesFqdn = findHostName()
-    cesUrl = "https://${cesFqdn}"
+    String cesFqdn = findHostName()
+    String cesUrl = "https://${cesFqdn}"
     String credentialsId = 'scmCredentials'
 
     Maven mvn = new MavenWrapper(this)
@@ -28,16 +28,15 @@ node {
             archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
         }
 
+        String jacoco = "org.jacoco:jacoco-maven-plugin:0.8.1"
         parallel(
                 test: {
                     stage('Test') {
-                        String jacoco = "org.jacoco:jacoco-maven-plugin:0.7.7.201606060606"
                         mvn "${jacoco}:prepare-agent test ${jacoco}:report"
                     }
                 },
                 integrationTest: {
                     stage('Integration Test') {
-                        String jacoco = "org.jacoco:jacoco-maven-plugin:0.7.7.201606060606";
                         mvn "${jacoco}:prepare-agent-integration failsafe:integration-test ${jacoco}:report-integration"
                     }
                 }
@@ -62,7 +61,3 @@ node {
     // Archive Unit and integration test results, if any
     junit allowEmptyResults: true, testResults: '**/target/failsafe-reports/TEST-*.xml,**/target/surefire-reports/TEST-*.xml'
 }
-
-// Init global vars in order to avoid NPE
-String cesFqdn = ''
-String cesUrl = ''
