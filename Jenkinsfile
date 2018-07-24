@@ -1,5 +1,5 @@
 #!groovy
-@Library('github.com/cloudogu/ces-build-lib@9bcafcb')
+@Library('github.com/cloudogu/ces-build-lib@68e7f52')
 import com.cloudogu.ces.cesbuildlib.*
 
 properties([
@@ -43,12 +43,10 @@ node {
         )
 
         stage('SonarQube Analysis') {
-            withCredentials([usernamePassword(credentialsId: credentialsId,
-                    passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
-                //noinspection GroovyAssignabilityCheck
-                mvn "org.codehaus.mojo:sonar-maven-plugin:3.2:sonar -Dsonar.host.url=${cesUrl}/sonar " +
-                        "-Dsonar.login=${USERNAME} -Dsonar.password=${PASSWORD} -Dsonar.exclusions=target/**"
-            }
+
+            def sonarQube = new SonarQube(this, [usernamePassword: credentialsId, sonarHostUrl: "${cesUrl}/sonar"])
+
+            sonarQube.analyzeWith(mvn)
         }
 
         stage('Deploy Artifacts') {
