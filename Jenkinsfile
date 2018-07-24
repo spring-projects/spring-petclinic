@@ -1,5 +1,5 @@
 #!groovy
-@Library('github.com/cloudogu/ces-build-lib@68e7f52')
+@Library('github.com/cloudogu/ces-build-lib@24c4f03')
 import com.cloudogu.ces.cesbuildlib.*
 
 properties([
@@ -49,7 +49,7 @@ node {
         }
 
         stage('Deploy Artifacts') {
-            mvn.setDeploymentRepository(cesFqdn, "${cesUrl}/nexus", credentialsId)
+            mvn.useDeploymentRepository([id: cesFqdn, url:  "${cesUrl}/nexus", credentialsId: credentialsId, type: 'Nexus3'])
 
             mvn.deployToNexusRepository('-Dmaven.javadoc.failOnError=false')
         }
