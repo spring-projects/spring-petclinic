@@ -22,10 +22,9 @@ node {
         }
 
         stage('Build') {
-            mvn "-DskipTests clean package"
+            mvn 'clean package -DskipTests'
 
-            // archive artifact
-            archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+            archiveArtifacts artifacts: '**/target/*.jar'
         }
 
         String jacoco = "org.jacoco:jacoco-maven-plugin:0.8.1"
@@ -37,7 +36,7 @@ node {
                 },
                 integrationTest: {
                     stage('Integration Test') {
-                        mvn "${jacoco}:prepare-agent-integration failsafe:integration-test ${jacoco}:report-integration"
+                        mvn "${jacoco}:prepare-agent-integration failsafe:integration-test failsafe:verify ${jacoco}:report-integration"
                     }
                 }
         )
