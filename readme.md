@@ -18,6 +18,20 @@ You can then access petclinic here: http://localhost:8080/
 Our issue tracker is available here: https://github.com/spring-projects/spring-petclinic/issues
 
 
+## Running petclinic with Docker
+
+Included is a multistage `Dockerfile` that will create a relatively small docker image containing Petclinic.
+
+```bash
+	git clone https://github.com/spring-projects/spring-petclinic.git
+	cd spring-petclinic
+	docker build -t spring/petclinic .
+	docker run -p 8080:8080 spring/petclinic
+```
+
+Once started you can browse to http://localhost:8080 to see the Petclinic.
+
+
 ## Database configuration
 
 In its default configuration, Petclinic uses an in-memory database (HSQLDB) which
