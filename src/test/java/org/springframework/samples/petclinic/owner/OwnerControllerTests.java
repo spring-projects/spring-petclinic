@@ -61,14 +61,14 @@ public class OwnerControllerTests {
             .andExpect(view().name("owners/createOrUpdateOwnerForm"));
     }
 
-    @Test
+    @Test//日本語入力
     public void testProcessCreationFormSuccess() throws Exception {
         mockMvc.perform(post("/owners/new")
-            .param("firstName", "Joe")
-            .param("lastName", "Bloggs")
+            .param("firstName", "佐藤")
+            .param("lastName", "山田")
             .param("address", "123 Caramel Street")
-            .param("city", "London")
-            .param("telephone", "01316761638")
+            .param("city", "アプリケーション")
+            .param("telephone", "0")
         )
             .andExpect(status().is3xxRedirection());
     }
@@ -76,9 +76,9 @@ public class OwnerControllerTests {
     @Test
     public void testProcessCreationFormHasErrors() throws Exception {
         mockMvc.perform(post("/owners/new")
-            .param("firstName", "Joe")
-            .param("lastName", "Bloggs")
-            .param("city", "London")
+            .param("firstName", "山田")
+            .param("lastName", "鈴木")
+            .param("city", "佐藤")
         )
             .andExpect(status().isOk())
             .andExpect(model().attributeHasErrors("owner"))
@@ -103,7 +103,7 @@ public class OwnerControllerTests {
             .andExpect(view().name("owners/ownersList"));
     }
 
-    @Test
+    @Test///オーナー参照
     public void testProcessFindFormByLastName() throws Exception {
         given(this.owners.findByLastName(george.getLastName())).willReturn(Lists.newArrayList(george));
         mockMvc.perform(get("/owners")
@@ -124,15 +124,15 @@ public class OwnerControllerTests {
             .andExpect(view().name("owners/findOwners"));
     }
 
-    @Test
+    @Test//日本語での更新テスト
     public void testInitUpdateOwnerForm() throws Exception {
         mockMvc.perform(get("/owners/{ownerId}/edit", TEST_OWNER_ID))
             .andExpect(status().isOk())
             .andExpect(model().attributeExists("owner"))
-            .andExpect(model().attribute("owner", hasProperty("lastName", is("Franklin"))))
-            .andExpect(model().attribute("owner", hasProperty("firstName", is("George"))))
-            .andExpect(model().attribute("owner", hasProperty("address", is("110 W. Liberty St."))))
-            .andExpect(model().attribute("owner", hasProperty("city", is("Madison"))))
+            .andExpect(model().attribute("owner", hasProperty("lastName", is("ららら"))))
+            .andExpect(model().attribute("owner", hasProperty("firstName", is("ららららららラストネーム"))))
+            .andExpect(model().attribute("owner", hasProperty("address", is("いんと"))))
+            .andExpect(model().attribute("owner", hasProperty("city", is("大都会岡山"))))
             .andExpect(model().attribute("owner", hasProperty("telephone", is("6085551023"))))
             .andExpect(view().name("owners/createOrUpdateOwnerForm"));
     }
@@ -174,6 +174,15 @@ public class OwnerControllerTests {
             .andExpect(model().attribute("owner", hasProperty("city", is("Madison"))))
             .andExpect(model().attribute("owner", hasProperty("telephone", is("6085551023"))))
             .andExpect(view().name("owners/ownerDetails"));
+    }
+    
+    @Test
+    public void testlogin() throws Exception {
+        mockMvc.perform(get("/loginh"))
+            .andExpect(status().isOk())
+            .andExpect(model().attribute("owner", hasProperty("email", is("b@q.co.jp"))))
+            .andExpect(model().attribute("owner", hasProperty("password", is("4cb4e68337be40453bb04acf2fd2533c6c3d4d2a9ef3274bfc6fb2c56f06046fae449803654d362118633176f261f1c1d903f387ece406ccf7ec53262e0d04f0"))))
+            .andExpect(view().name("welcome"));
     }
 
 }

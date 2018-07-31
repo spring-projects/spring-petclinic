@@ -53,6 +53,18 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
     @Transactional(readOnly = true)
     Owner findById(@Param("id") Integer id);
 
+    @Query("SELECT owner FROM Owner owner  WHERE owner.email =:email AND owner.password = :password")
+    @Transactional(readOnly = true)
+    Owner findByEmailAndPass(@Param("email") String email,@Param("password") String password);
+   
+    @Query("SELECT owner FROM Owner owner  WHERE owner.email =:email")
+    @Transactional(readOnly = true)
+    Owner findByOrEmail(@Param("email") String email);
+   
+    @Query("SELECT owner FROM Owner owner  WHERE owner.password =:password")
+    @Transactional(readOnly = true)
+    Collection<Owner> findByOrPass(@Param("password") String password);
+    
     /**
      * Save an {@link Owner} to the data store, either inserting or updating it.
      * @param owner the {@link Owner} to save

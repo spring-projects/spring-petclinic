@@ -1,0 +1,20 @@
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'login')}">
+
+  <body>
+    <h2>Login</h2>
+  <form th:object="${owner}" th:action="@{/loginh}" class="form-horizontal" id="add-owner-form" method="post">
+    <div class="form-group has-feedback">
+          <input
+        th:replace="~{fragments/inputField :: input ('E-mail', 'email', 'text')}" />
+          <input
+       th:replace="~{fragments/inputField :: input ('Password', 'password','password')}"/>
+    </div>
+      <div>
+        <button
+          class="btn btn-default" type="submit">Login</button>
+      </div>
+    
+  </form>
+  </body>
+
+</html>

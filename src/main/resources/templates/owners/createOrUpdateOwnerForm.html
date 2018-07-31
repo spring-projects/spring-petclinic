@@ -16,12 +16,17 @@
         th:replace="~{fragments/inputField :: input ('City', 'city', 'text')}" />
       <input
         th:replace="~{fragments/inputField :: input ('Telephone', 'telephone', 'text')}" />
+
+         <input
+        th:replace="~{fragments/inputField :: input ('E-mail', 'email', 'text')}" />
+         <input
+        th:replace="~{fragments/inputField :: input ('Password', 'password', 'password')}" />
     </div>
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
         <button
           th:with="text=${owner['new']} ? 'Add Owner' : 'Update Owner'"
-          class="btn btn-default" type="submit" th:text="${text}">Add
+          class="btn btn-default" type="submit" th:text="${text}">Find
           Owner</button>
       </div>
     </div>

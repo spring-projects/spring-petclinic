@@ -15,6 +15,10 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.samples.petclinic.PetClinicApplication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,7 +29,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 import java.util.Map;
 
@@ -36,16 +45,22 @@ import java.util.Map;
  * @author Michael Isvy
  */
 @Controller
-class OwnerController {
+class OwnerController{
+	@Autowired
+	HttpSession session;
 
-    private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
+	@Autowired
+	HttpServletRequest request;
+	
+	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
     private final OwnerRepository owners;
-
-
+    
+    
     public OwnerController(OwnerRepository clinicService) {
         this.owners = clinicService;
     }
 
+   
     @InitBinder
     public void setAllowedFields(WebDataBinder dataBinder) {
         dataBinder.setDisallowedFields("id");
@@ -60,17 +75,25 @@ class OwnerController {
 
     @PostMapping("/owners/new")
     public String processCreationForm(@Valid Owner owner, BindingResult result) {
-        if (result.hasErrors()) {
+  
+    	if (result.hasErrors()) {
             return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
         } else {
-            this.owners.save(owner);
+        	String s=toEncryptedHashValue("SHA-512",owner.getPassword());
+            owner.setPassword(s);
+        	this.owners.save(owner);
             return "redirect:/owners/" + owner.getId();
         }
     }
 
-    @GetMapping("/owners/find")
-    public String initFindForm(Map<String, Object> model) {
+
+	@GetMapping("/owners/find")
+    public String initFindForm(Map<String, Object> model,Model model2) {
         model.put("owner", new Owner());
+        boolean s=(boolean)session.getAttribute("flag");
+        if (s) {
+        	model2.addAttribute("flag",true);
+        }
         return "owners/findOwners";
     }
 
@@ -108,7 +131,7 @@ class OwnerController {
 
     @PostMapping("/owners/{ownerId}/edit")
     public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result, @PathVariable("ownerId") int ownerId) {
-        if (result.hasErrors()) {
+    	if (result.hasErrors()) {
             return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
         } else {
             owner.setId(ownerId);
@@ -128,6 +151,61 @@ class OwnerController {
         ModelAndView mav = new ModelAndView("owners/ownerDetails");
         mav.addObject(this.owners.findById(ownerId));
         return mav;
+    }
+    
+    @GetMapping("/login")
+    public String login(Owner owner,Map<String, Object> model) {
+        return "login";
+    }
+
+    @PostMapping("/loginh")
+    public String loginh(@Valid Owner owner, BindingResult result, Map<String, Object> model,Model model2) {
+    	 if (owner.getPassword()!=null) {
+    		 String s=toEncryptedHashValue("SHA-512",owner.getPassword());
+             owner.setPassword(s);
+        	 Owner results1 = this.owners.findByEmailAndPass(owner.getEmail(),owner.getPassword());
+        	 if (results1!=null) {
+        		 model2.addAttribute("flag",true);
+        		 model2.addAttribute("loginName",results1.getLastName()+" Welcome");
+        		 session.setAttribute("flag", true);
+         		return "welcome";
+        	 }
+    	 }
+    	 
+    	 
+    	 Owner results2 = this.owners.findByOrEmail(owner.getEmail());
+    	 Collection<Owner> results3 = this.owners.findByOrPass(owner.getPassword());
+    		if (results2==null && results3.isEmpty()) {
+    			result.rejectValue("email", "notFound", "not found");
+    			result.rejectValue("password", "notFound", "not found");
+    			return "login";
+        	}else if (results2==null){
+        		result.rejectValue("email", "notFound", "not found");
+        		return "login";
+        	}else if (results3.isEmpty()){
+        		result.rejectValue("password", "notFound", "not found");
+        		return "login";
+        	}
+    		
+    		return "login";
+ 
+    }
+
+    private String toEncryptedHashValue(String algorithmName, String value) {
+        MessageDigest md = null;
+        StringBuilder sb = null;
+        try {
+            md = MessageDigest.getInstance(algorithmName);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        md.update(value.getBytes());
+        sb = new StringBuilder();
+        for (byte b : md.digest()) {
+            String hex = String.format("%02x", b);
+            sb.append(hex);
+        }
+        return sb.toString();
     }
 
 }
