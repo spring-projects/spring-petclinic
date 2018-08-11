@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
-  <version>2.0.0.BUILD-SNAPSHOT</version>
+  <version>2.0.0-SNAPSHOT</version>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -29,7 +29,44 @@
 
     <jacoco.version>0.8.1</jacoco.version>
 
+    <!-- Version for our private javax.cache/cache-api artifact -->
+    <cache-api.version>LATEST</cache-api.version>
   </properties>
+
+<!--
+  <scm>
+    <url>git@github.com:gmessner/spring-petclinic.git</url>
+    <connection>scm:git:git@github.com:gmessner/spring-petclinic.git</connection>
+    <developerConnection>scm:git:git@github.com:gmessner/spring-petclinic.git</developerConnection>
+    <tag>HEAD</tag>
+  </scm>
+-->
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>nexus-snapshots</id>
+      <url>http://localhost:8081/nexus/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>nexus-releases</id>
+      <url>http://localhost:8081/nexus/content/repositories/releases</url>
+    </repository>
+  </distributionManagement>
+
+  <repositories>
+    <repository>
+      <id>nexus-releases</id>
+      <url>http://localhost:8081/nexus/content/repositories/releases</url>
+    </repository>
+    <repository>
+      <id>nexus-snapshots</id>
+      <url>http://localhost:8081/nexus/content/repositories/snapshots</url>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+    </repository>
+  </repositories>
 
   <dependencies>
     <!-- Spring and Spring Boot dependencies -->
@@ -75,6 +112,7 @@
     <dependency>
       <groupId>javax.cache</groupId>
       <artifactId>cache-api</artifactId>
+	  <version>${cache-api.version}</version>
     </dependency>
     <dependency>
       <groupId>org.ehcache</groupId>
