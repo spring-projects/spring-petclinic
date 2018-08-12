@@ -18,11 +18,16 @@ package org.springframework.samples.petclinic;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.samples.petclinic.vet.VetRepository;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.Collection;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -33,7 +38,10 @@ public class PetclinicIntegrationTests {
 
     @Test
     public void testFindAll() throws Exception {
-        vets.findAll();
-        vets.findAll(); // served from cache
+        final Collection<Vet> firstRequest = vets.findAll();
+        final Collection<Vet> secondRequest = vets.findAll(); // served from cache
+
+        assertThat(firstRequest.size()).isEqualTo(secondRequest.size());
+        assertThat(firstRequest).isEqualTo(secondRequest);
     }
 }

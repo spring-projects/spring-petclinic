@@ -15,11 +15,7 @@
  */
 package org.springframework.samples.petclinic.vet;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -28,6 +24,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
+
 
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
@@ -76,4 +73,17 @@ public class Vet extends Person {
         getSpecialtiesInternal().add(specialty);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Vet)) return false;
+        Vet vet = (Vet) o;
+        return Objects.equals(specialties, vet.specialties);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(specialties);
+    }
 }
