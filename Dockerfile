@@ -1,6 +1,7 @@
 FROM alpine/git as clone
-LABEL maintainer="mrcool435@gmail.com"
+
 WORKDIR /app
+RUN echo "Switch started"
 RUN git clone https://github.com/Sanjeev435/spring-petclinic.git
 
 FROM maven:3.5.4-jdk-8 as build
