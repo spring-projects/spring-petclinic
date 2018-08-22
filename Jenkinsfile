@@ -3,11 +3,15 @@
 pipeline {
   agent none
   stages {
-    stage('Docker Build') {
-      agent any
-      steps {
-        sh 'docker build -t mrcool/spring-petclinic:latest .'
+    stage('Maven Install') {
+      agent {
+        docker {
+          image 'maven:3.5.4-jdk-8-alpine'
+        }
       }
-    }
+      steps {
+        sh 'mvn clean install'
+      }
+    } 
   }
 }
