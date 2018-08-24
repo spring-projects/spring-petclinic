@@ -1,3 +1,12 @@
+jenkins:
+  image: jenkinsci/blueocean
+  ports:
+    - "8081:8080"
+    - "50000:50000"
+  environment:
+    - jenkins-data=/var/jenkins_home
+
+
 mysql:
   image: mysql:5.7
   ports:
@@ -7,3 +16,21 @@ mysql:
     - MYSQL_DATABASE=petclinic
   volumes:
     - "./conf.d:/etc/mysql/conf.d:ro"
+
+petclinic1:
+  build: .
+  ports:
+      - "8082:8080"
+
+petclinic2:
+  build: .
+  ports:
+      - "8083:8080"
+
+nginx:
+  build: ./nginx
+  links:
+      - petclinic1:petclinic1
+      - petclinic2:petclinic2
+  ports:
+      - "8080:8080"

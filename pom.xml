@@ -7,6 +7,9 @@
   <artifactId>spring-petclinic</artifactId>
   <version>2.0.0.BUILD-SNAPSHOT</version>
 
+  <!-- Output to jar format -->
+  <packaging>jar</packaging>
+
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
@@ -17,6 +20,11 @@
   <properties>
 
     <!-- Generic properties -->
+    <jdk.version>1.8</jdk.version>
+    <jodatime.version>2.5</jodatime.version>
+    <junit.version>4.12</junit.version>
+    <log4j.version>1.2.17</log4j.version>
+
     <java.version>1.8</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -108,6 +116,31 @@
       <artifactId>spring-boot-devtools</artifactId>
       <optional>true</optional>
     </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+      <version>${jodatime.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>${log4j.version}</version>
+    </dependency>
+
+    
+    <dependency>
+        <groupId>javax.xml.bind</groupId>
+        <artifactId>jaxb-api</artifactId>
+        <version>2.3.0</version>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -202,7 +235,58 @@
           </dependency>
         </dependencies>
       </plugin>
+
+    <!-- Set a JDK compiler level -->
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-compiler-plugin</artifactId>
+      <version>2.3.2</version>
+      <configuration>
+        <source>${jdk.version}</source>
+        <target>${jdk.version}</target>
+      </configuration>
+    </plugin>
+
+    <!-- Make this jar executable -->
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-jar-plugin</artifactId>
+      <configuration>
+        <excludes>
+          <exclude>**/log4j.properties</exclude>
+        </excludes>
+        <archive>
+          <manifest>
+            <addClasspath>true</addClasspath>
+            <mainClass>org.springframework.samples.petclinic.PetClinicApplication</mainClass>
+            <classpathPrefix>dependency-jars/</classpathPrefix>
+          </manifest>
+        </archive>
+      </configuration>
+    </plugin>
+
+      <!-- Copy project dependency -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.5.1</version>
+        <executions>
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <!-- exclude junit, we need runtime dependency only -->
+              <includeScope>runtime</includeScope>
+              <outputDirectory>${project.build.directory}/dependency-jars/</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>    
     </plugins>
+
   </build>
 
   <!-- Apache 2 license -->
