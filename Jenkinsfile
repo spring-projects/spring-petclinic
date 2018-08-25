@@ -25,6 +25,7 @@ pipeline {
         withCredentials([usernamePassword(credentialsId: 'DOCKER_HUB_GLOBAL', passwordVariable: 'dockerHubPassword',
                                           usernameVariable: 'dockerHubUser')]) {
           sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+          sh 'docker tag spring-petclinic:latest mrcool435/spring-petclinic:latest'
           sh 'docker push mrcool435/spring-petclinic:latest'
         }
       }
