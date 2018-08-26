@@ -112,6 +112,16 @@
 
   <build>
     <plugins>
+        <plugin>
+        <groupId>com.google.cloud.tools</groupId>
+        <artifactId>jib-maven-plugin</artifactId>
+        <version>0.9.9</version>
+        <configuration>
+          <to>
+            <image>gcr.io/coral-atom-205708/petclinic-app</image>
+          </to>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
