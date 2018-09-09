@@ -13,10 +13,16 @@ pipeline {
         sh 'mvn clean install -Dmaven.test.skip=true'
       }
     }
+    stage('Run tests') {
+      agent any
+      steps {
+        sh 'mvn clean install -Dmaven.test.skip=true'
+      }
+    }
     stage('Docker Build') {
       agent any
       steps {
-        sh 'docker build -t spring-petclinic:latest .'
+        sh 'docker build -t sanjeev435/spring-petclinic:latest .'
       }
     }
     stage('Docker Push') {
@@ -25,7 +31,6 @@ pipeline {
         withCredentials([usernamePassword(credentialsId: 'DOCKER_HUB_GLOBAL', passwordVariable: 'dockerHubPassword',
                                           usernameVariable: 'dockerHubUser')]) {
           sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
-          sh 'docker tag spring-petclinic sanjeev435/spring-petclinic'
           sh 'docker push sanjeev435/spring-petclinic'
         }
       }
