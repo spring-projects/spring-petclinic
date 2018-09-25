@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>udc-containers</artifactId>
-    <name>UDC :: Containers :: Parent</name>
+    <name>UDC :: Containers</name>
     <packaging>pom</packaging>
 
     <modules>

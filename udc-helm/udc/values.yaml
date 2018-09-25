@@ -1,0 +1,6 @@
+container:
+  name: udc-backend
+  image: gcr.io/TODO
+scale:
+  maxReplicas: 3
+  minReplicas: 1

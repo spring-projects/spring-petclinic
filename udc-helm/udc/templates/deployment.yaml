@@ -1,0 +1,39 @@
+---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  labels:
+    component: {{ template "name" . }}
+    chart: {{ .Chart.Name }}
+    environment: {{ .Values.global.environment }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+    version: {{ .Values.global.version }}
+  name: {{ template "fullname" . }}
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: {{ template "name" . }}
+        chart: {{ .Chart.Name }}
+        environment: {{ .Values.global.environment }}
+        heritage: {{ .Release.Service }}
+        release: {{ .Release.Name }}
+        version: {{ .Values.global.version }}
+      name: {{ template "fullname" . }}
+    spec:
+      containers:
+        - name: {{ .Values.container.name }}
+          image: '{{ .Values.container.image }}:{{ .Values.global.version }}'
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /udc/apps/petclinic/properties
+              name: config-volume
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ template "fullname" . }}

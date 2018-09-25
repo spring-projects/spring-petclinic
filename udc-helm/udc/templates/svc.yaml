@@ -1,0 +1,23 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    component: {{ template "name" . }}
+    chart: {{ .Chart.Name }}
+    environment: {{ .Values.global.environment }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+    version: {{ .Values.global.version }}
+  name: {{ template "fullname" . }}
+spec:
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    component: {{ template "name" . }}
+    chart: {{ .Chart.Name }}
+    environment: {{ .Values.global.environment }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
