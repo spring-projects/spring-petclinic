@@ -1,14 +1,36 @@
-target/*
-.settings/*
-.classpath
+#.gitignore
 .project
+.sts4-cache/
+_site/
+
+test-output/
+
+# MacOS
+.DS_Store
+
+# Maven
+target/*
+.classpath
+.settings/*
+
+# IDEA
 .idea
 *.iml
-/target
-.sts4-cache/
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-_site/
+*.log
+
+# vim
+*~
+*.swp
+*.swo
+*.swn
+*.swl
+*.swm
+*.swj
+*.swk
+
+
+
+
+
+
+
