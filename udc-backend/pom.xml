@@ -188,8 +188,8 @@
                     <wroManagerFactory>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory
                     </wroManagerFactory>
                     <cssDestinationFolder>${project.build.directory}/classes/static/resources/css</cssDestinationFolder>
-                    <wroFile>udc-backend/src/main/wro/wro.xml</wroFile>
-                    <extraConfigFile>udc-backend/src/main/wro/wro.properties</extraConfigFile>
+                    <wroFile>src/main/wro/wro.xml</wroFile>
+                    <extraConfigFile>src/main/wro/wro.properties</extraConfigFile>
                     <contextFolder>${basedir}/src/main/less</contextFolder>
                 </configuration>
                 <dependencies>
