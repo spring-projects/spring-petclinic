@@ -41,8 +41,8 @@
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>TODO</groupId>
-                                    <artifactId>TODO</artifactId>
+                                    <groupId>org.springframework.samples</groupId>
+                                    <artifactId>udc-backend</artifactId>
                                     <version>${project.version}</version>
                                     <type>jar</type>
                                     <overWrite>true</overWrite>

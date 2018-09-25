@@ -24,7 +24,7 @@
 
         <docker.skip.build>true</docker.skip.build>
         <docker.skip.push>true</docker.skip.push>
-        <docker.baseImage>TODO</docker.baseImage>
+        <docker.baseImage>openjdk:8-jre</docker.baseImage>
         <docker.repository>university-course</docker.repository>
         <docker.registry.host>localhost</docker.registry.host>
     </properties>

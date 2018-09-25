@@ -1,10 +1,17 @@
 FROM ${docker.baseImage}
 
-EXPOSE 8080
-ENTRYPOINT ["/docker-entrypoint.sh"]
-WORKDIR "/udc/apps/petclinic"
+ENV LANG=en_US.UTF-8 \
+    LANGUAGE=en_US.UTF-8 \
+    LC_ALL=en_US.UTF-8
 
-COPY docker-entrypoint.sh /docker-entrypoint.sh
+ENV BASE_DIR='/udc/apps/petclinic'
+
+EXPOSE 8080
+ENTRYPOINT ["/entrypoint.sh"]
+
+RUN mkdir -p ${BASE_DIR}
+
+COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
 COPY todo.jar /udc/apps/petclinic/todo.jar
