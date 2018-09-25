@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package main.java.org.springframework.samples.petclinic.owner;
+package org.springframework.samples.petclinic.owner;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.model.NamedEntity;
-import main.java.org.springframework.samples.petclinic.visit.Visit;
+import org.springframework.samples.petclinic.visit.Visit;
 
 /**
  * Simple business object representing a pet.
