@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package test.java.org.springframework.samples.petclinic;
+package org.springframework.samples.petclinic;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

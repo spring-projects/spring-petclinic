@@ -1,4 +1,4 @@
-package test.java.org.springframework.samples.petclinic.system;
+package org.springframework.samples.petclinic.system;
 
 import org.junit.Ignore;
 import org.junit.Test;

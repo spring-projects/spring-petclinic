@@ -1,4 +1,4 @@
-package test.java.org.springframework.samples.petclinic.owner;
+package org.springframework.samples.petclinic.owner;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
