@@ -1,0 +1,11 @@
+name: jenkins
+description: Jenkins CI for UDC
+version: 1.0.0
+keywords:
+  - cicd
+sources:
+  - https://github.com/kvendingoldo/udc-petclinic
+maintainers:
+  - name: Alex Sharov
+    email: kvendingoldo@gmail.com
+engine: gotpl
