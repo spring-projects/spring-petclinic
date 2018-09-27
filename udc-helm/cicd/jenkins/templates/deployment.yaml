@@ -32,7 +32,7 @@ spec:
             - name: JENKINS_SLAVEPORT
               value: '50000'
             - name: JAVA_VM_PARAMETERS
-              value: '-Xmx3072m -Xms256m'
+              value: '-Xmx3072m -Xms1024m'
             - name: JAVA_OPTS
               value: '-Djava.util.logging.config.file=/var/jenkins_home/log.properties'
           volumeMounts:

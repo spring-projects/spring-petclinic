@@ -1,4 +1,4 @@
-FROM ${docker.baseImage}
+FROM openjdk:8-jre
 
 ENV LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8 \
