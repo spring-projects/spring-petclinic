@@ -13,6 +13,21 @@
     <artifactId>udc-backend-service</artifactId>
     <name>UDC :: Containers :: Backend</name>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.samples</groupId>
+            <artifactId>udc-backend</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -20,11 +35,8 @@
                 <artifactId>maven-resources-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>copy-docker-resources</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>resources</goal>
-                        </goals>
+                        <id>docker-resources</id>
+                        <phase>process-resources</phase>
                     </execution>
                 </executions>
             </plugin>
@@ -33,26 +45,8 @@
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>copy</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>org.springframework.samples</groupId>
-                                    <artifactId>udc-backend</artifactId>
-                                    <version>${project.version}</version>
-                                    <type>jar</type>
-                                    <overWrite>true</overWrite>
-                                    <outputDirectory>${project.basedir}/target/context</outputDirectory>
-                                    <destFileName>${project.artifactId}.jar</destFileName>
-                                </artifactItem>
-                            </artifactItems>
-                            <overWriteReleases>false</overWriteReleases>
-                            <overWriteSnapshots>true</overWriteSnapshots>
-                        </configuration>
+                        <id>docker-dependencies</id>
+                        <phase>process-sources</phase>
                     </execution>
                 </executions>
             </plugin>

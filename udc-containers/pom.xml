@@ -27,9 +27,19 @@
         <docker.baseImage>openjdk:8-jre</docker.baseImage>
         <docker.repository>university-course</docker.repository>
         <docker.registry.host>localhost</docker.registry.host>
+
+        <!-- Docker CLI executable -->
+        <dockerCli>docker</dockerCli>
     </properties>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -37,20 +47,31 @@
                     <artifactId>maven-resources-plugin</artifactId>
                     <executions>
                         <execution>
-                            <id>copy-docker-resources</id>
+                            <id>docker-resources</id>
                             <phase>none</phase>
                             <goals>
                                 <goal>resources</goal>
                             </goals>
                             <configuration>
                                 <outputDirectory>${project.build.directory}/context</outputDirectory>
-                                <includeEmptyDirs>true</includeEmptyDirs>
-                                <resources>
-                                    <resource>
-                                        <directory>src/main/resources</directory>
-                                        <filtering>true</filtering>
-                                    </resource>
-                                </resources>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>docker-dependencies</id>
+                            <phase>none</phase>
+                            <goals>
+                                <goal>copy-dependencies</goal>
+                            </goals>
+                            <configuration>
+                                <excludeTransitive>true</excludeTransitive>
+                                <stripVersion>true</stripVersion>
+                                <outputDirectory>${project.build.directory}/context</outputDirectory>
                             </configuration>
                         </execution>
                     </executions>
@@ -67,12 +88,14 @@
                             </goals>
                             <configuration>
                                 <skip>${docker.skip.build}</skip>
-                                <executable>docker</executable>
+                                <executable>${dockerCli}</executable>
                                 <arguments>
                                     <argument>build</argument>
-                                    <argument>-t</argument>
-                                    <argument>
-                                        ${docker.registry.host}/${docker.repository}/${project.artifactId}:${project.version}
+                                    <argument>--force-rm</argument>
+                                    <argument>--label=project.groupid=${project.groupId}</argument>
+                                    <argument>--label=project.artifactid=${project.artifactId}</argument>
+                                    <argument>--label=project.version=${project.version}</argument>
+                                    <argument>--tag=${docker.registry.host}/${docker.repository}/${project.artifactId}:${project.version}
                                     </argument>
                                     <argument>${project.build.directory}/context</argument>
                                 </arguments>
@@ -86,7 +109,7 @@
                             </goals>
                             <configuration>
                                 <skip>${docker.skip.push}</skip>
-                                <executable>docker</executable>
+                                <executable>${dockerCli}</executable>
                                 <arguments>
                                     <argument>push</argument>
                                     <argument>
