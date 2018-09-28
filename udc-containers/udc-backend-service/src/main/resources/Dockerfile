@@ -12,9 +12,9 @@ ENTRYPOINT ["/entrypoint.sh"]
 RUN mkdir -p ${BASE_DIR}
 
 COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-COPY todo.jar /udc/apps/petclinic/todo.jar
+COPY udc-backend-*.jar /udc/apps/petclinic/todo.jar
 
 LABEL project.groupid="${project.groupId}" \
       project.artifactid="${project.artifactId}" \
