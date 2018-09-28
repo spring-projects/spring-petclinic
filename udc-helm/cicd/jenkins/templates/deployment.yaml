@@ -1,0 +1,45 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ .Values.component.name }}
+  labels:
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    component: {{ .Values.component.name }}
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: {{ .Values.component.name }}
+      labels:
+        heritage: {{ .Release.Service }}
+        release: {{ .Release.Name }}
+        chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+        component: {{ .Values.component.name }}
+    spec:
+      containers:
+        - name: {{ .Values.component.container.name }}
+          image: {{ .Values.component.container.image }}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+            - containerPort: 50000
+              protocol: TCP
+          env:
+            - name: JENKINS_SLAVEPORT
+              value: '50000'
+            - name: JAVA_VM_PARAMETERS
+              value: '-Xmx3072m -Xms1024m'
+            - name: JAVA_OPTS
+              value: '-Djava.util.logging.config.file=/var/jenkins_home/log.properties'
+          volumeMounts:
+            - name: jenkins-persistent-storage
+              mountPath: /var/jenkins_home
+              subPath: jenkins_home
+      volumes:
+        - name: jenkins-persistent-storage
+          persistentVolumeClaim:
+            claimName: {{ .Values.component.name }}-pvc

@@ -1,0 +1,8 @@
+name: udc
+version: 1.0.0
+sources:
+  - https://github.com/kvendingoldo/udc-petclinic
+maintainers:
+  - name: Alex Sharov
+    email: kvendingoldo@gmail.com
+engine: gotpl
