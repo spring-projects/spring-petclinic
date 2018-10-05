@@ -22,9 +22,9 @@ Our issue tracker is available here: https://github.com/spring-projects/spring-p
 
 In its default configuration, Petclinic uses an in-memory database (HSQLDB) which
 gets populated at startup with data. A similar setup is provided for MySql in case a persistent database configuration is needed.
-Note that whenever the database type is changed, the data-access.properties file needs to be updated and the mysql-connector-java artifact from the pom.xml needs to be uncommented.
+Note that whenever the database type is changed, the app needs to be run with a different profile: `spring.profiles.active=mysql` for MySql.
 
-You could start a MySql database with docker:
+You could start MySql locally with whatever installer works for your OS, or with docker:
 
 ```
 docker run -e MYSQL_ROOT_PASSWORD=petclinic -e MYSQL_DATABASE=petclinic -p 3306:3306 mysql:5.7.8
@@ -34,7 +34,7 @@ docker run -e MYSQL_ROOT_PASSWORD=petclinic -e MYSQL_DATABASE=petclinic -p 3306:
 
 ### prerequisites
 The following items should be installed in your system:
-* Apache Maven (https://maven.apache.org/install.html)
+* Java 8 or newer.
 * git command line tool (https://help.github.com/articles/set-up-git)
 * Eclipse with the m2e plugin (m2e is installed by default when using the STS (http://www.springsource.org/sts) distribution of Eclipse)
 
@@ -52,6 +52,8 @@ git clone https://github.com/spring-projects/spring-petclinic.git
 ```
 File -> Import -> Maven -> Existing Maven project
 ```
+
+Then either build on the command line `./mvnw install` or using the Eclipse launcher (right click on project and `Run As -> Maven install`) to generate the css. Run the application main method by right clicking on it and choosing `Run As -> Java Application`. Visit [http://localhost:8080](http://localhost:8080) in your browser.
 
 
 ## Looking for something in particular?
