@@ -1,6 +1,5 @@
 package org.springframework.samples.petclinic.vet;
 
-import static org.hamcrest.xml.HasXPath.hasXPath;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -65,14 +64,6 @@ public class VetControllerTests {
             .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
         actions.andExpect(content().contentType("application/json;charset=UTF-8"))
             .andExpect(jsonPath("$.vetList[0].id").value(1));
-    }
-
-    @Test
-    public void testShowVetListXml() throws Exception {
-        mockMvc.perform(get("/vets").accept(MediaType.APPLICATION_XML))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_XML_VALUE))
-            .andExpect(content().node(hasXPath("/vets/vetList[id=1]/id")));
     }
 
 }
