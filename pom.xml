@@ -203,6 +203,17 @@
           </dependency>
         </dependencies>
       </plugin>
+
+		<!-- Atlassian Clover plugin for coverage -->
+		<plugin>
+			<groupId>com.atlassian.maven.plugins</groupId>
+			<artifactId>maven-clover2-plugin</artifactId>
+			<version>3.0.4</version>
+			<configuration>
+				<includesTestSourceRoots>false</includesTestSourceRoots>
+				<generateXml>true</generateXml>
+			</configuration>
+		</plugin>
     </plugins>
   </build>
   
