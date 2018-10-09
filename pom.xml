@@ -203,6 +203,56 @@
           </dependency>
         </dependencies>
       </plugin>
+      
+      <!-- FindBug plugin for Static code analysis -->
+	<plugin>
+		<groupId>org.codehaus.mojo</groupId>
+		<artifactId>findbugs-maven-plugin</artifactId>
+		<version>3.0.3</version>
+		<executions>
+			<execution>
+				<id>failing-on-high</id>
+				<phase>install</phase>
+				<goals>
+					<goal>findbugs</goal>
+					<goal>check</goal>
+				</goals>
+			</execution>
+		</executions>
+		<configuration>
+			<failOnError>false</failOnError>
+			<xmlOutput>true</xmlOutput>
+		</configuration>
+	</plugin>
+
+	<!-- PMD plugin for Static code analysis -->
+	<plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-pmd-plugin</artifactId>
+		<version>3.10.0</version>
+		<configuration>
+			<linkXref>true</linkXref>
+			<sourceEncoding>utf-8</sourceEncoding>
+			<minimumTokens>100</minimumTokens>
+			<targetJdk>1.8</targetJdk>
+			<excludes>
+				<exclude>**/generated/*.java</exclude>
+			</excludes>
+			<excludeRoots>
+				<excludeRoot>target/generated-sources/stubs</excludeRoot>
+			</excludeRoots>
+			<failOnViolation>false</failOnViolation> <!-- this is actually true by default, but can be disabled -->
+            <printFailingErrors>true</printFailingErrors>
+		</configuration>
+		<executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+              <goal>pmd</goal>
+            </goals>
+          </execution>
+		</executions>
+	</plugin>
 
 		
     </plugins>
@@ -247,53 +297,7 @@
 		</reportSets>
 	</plugin>
 
-	<!-- FindBug plugin for Static code analysis -->
-	<plugin>
-		<groupId>org.codehaus.mojo</groupId>
-		<artifactId>findbugs-maven-plugin</artifactId>
-		<version>3.0.3</version>
-		<executions>
-			<execution>
-				<id>failing-on-high</id>
-				<phase>install</phase>
-				<goals>
-					<goal>findbugs</goal>
-				</goals>
-				<configuration>
-					<failOnError>false</failOnError>
-					<xmlOutput>true</xmlOutput>
-				</configuration>
-			</execution>
-		</executions>
-	</plugin>
-
-	<!-- PMD plugin for Static code analysis -->
-	<plugin>
-		<groupId>org.apache.maven.plugins</groupId>
-		<artifactId>maven-pmd-plugin</artifactId>
-		<version>3.10.0</version>
-		<configuration>
-			<linkXref>true</linkXref>
-			<sourceEncoding>utf-8</sourceEncoding>
-			<minimumTokens>100</minimumTokens>
-			<targetJdk>1.8</targetJdk>
-			<excludes>
-				<exclude>**/generated/*.java</exclude>
-			</excludes>
-			<excludeRoots>
-				<excludeRoot>target/generated-sources/stubs</excludeRoot>
-			</excludeRoots>
-			<failOnViolation>false</failOnViolation> <!-- this is actually true by default, but can be disabled -->
-            <printFailingErrors>true</printFailingErrors>
-		</configuration>
-		<executions>
-          <execution>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-		</executions>
-	</plugin>
+	
 	
 	<!-- Atlassian Clover plugin for coverage -->
 	<!-- <plugin>
