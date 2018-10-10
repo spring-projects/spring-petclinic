@@ -216,7 +216,8 @@ public class ClinicServiceTests {
         assertThat(visits.size()).isEqualTo(2);
         Visit[] visitArr = visits.toArray(new Visit[visits.size()]);
         assertThat(visitArr[0].getDate()).isNotNull();
-        assertThat(visitArr[0].getPetId()).isEqualTo(7);
+        //assertThat(visitArr[0].getPetId()).isEqualTo(7);
+        assertThat(visitArr[0].getPetId()).isEqualTo(999);
     }
 
 }
