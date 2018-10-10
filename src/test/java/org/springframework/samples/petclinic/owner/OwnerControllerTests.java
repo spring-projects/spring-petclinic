@@ -23,16 +23,13 @@ import java.util.List;
 import org.assertj.core.util.Lists;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.samples.petclinic.visit.VisitRepository;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.empty;
@@ -51,7 +48,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author Colin But
  */
-@RunWith(SpringRunner.class)
 @WebMvcTest(OwnerController.class)
 public class OwnerControllerTests {
 
@@ -68,7 +64,7 @@ public class OwnerControllerTests {
 
     private Owner george;
 
-    @Before
+    @BeforeEach
     public void setup() {
         george = new Owner();
         george.setId(TEST_OWNER_ID);

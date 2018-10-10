@@ -22,11 +22,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -36,7 +37,7 @@ import static org.mockito.BDDMockito.given;
  *
  * @author Colin But
  */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class PetTypeFormatterTests {
 
     @Mock
@@ -44,7 +45,7 @@ public class PetTypeFormatterTests {
 
     private PetTypeFormatter petTypeFormatter;
 
-    @Before
+    @BeforeEach
     public void setup() {
         this.petTypeFormatter = new PetTypeFormatter(pets);
     }
@@ -64,10 +65,12 @@ public class PetTypeFormatterTests {
         assertThat(petType.getName()).isEqualTo("Bird");
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void shouldThrowParseException() throws ParseException {
         given(this.pets.findPetTypes()).willReturn(makePetTypes());
-        petTypeFormatter.parse("Fish", Locale.ENGLISH);
+        Assertions.assertThrows(ParseException.class, () -> {
+            petTypeFormatter.parse("Fish", Locale.ENGLISH);
+        });
     }
 
     /**
