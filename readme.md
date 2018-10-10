@@ -110,6 +110,7 @@ there.
 | [spring-petclinic-graphql][]       | GraphQL version based on React Appolo, TypeScript and GraphQL Spring boot starter |
 | [spring-petclinic-kotlin][]        | Kotlin version of [spring-petclinic][] |
 | [spring-petclinic-rest][]          | Backend REST API |
+| [spring-petclinic-data-jdbc][]     | The Spring Data JPA persistence layer of [spring-petclinic][] has been replaced by Spring Data JDBC |
 
 
 ## Interaction with other open source projects
@@ -144,3 +145,4 @@ The Spring PetClinic sample application is released under version 2.0 of the [Ap
 [spring-petclinic-graphql]: https://github.com/spring-petclinic/spring-petclinic-graphql
 [spring-petclinic-kotlin]: https://github.com/spring-petclinic/spring-petclinic-kotlin
 [spring-petclinic-rest]: https://github.com/spring-petclinic/spring-petclinic-rest
+[spring-petclinic-data-jdbc]: https://github.com/spring-petclinic/spring-petclinic-data-jdbc
