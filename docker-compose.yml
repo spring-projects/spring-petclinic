@@ -5,5 +5,5 @@ mysql:
   environment:
     - MYSQL_ROOT_PASSWORD=root
     - MYSQL_DATABASE=test 
-  volumes:
+  volumes:     
     - "./conf.d:/etc/mysql/conf.d:ro"
