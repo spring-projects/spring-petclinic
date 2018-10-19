@@ -4,25 +4,19 @@
 <a href="https://speakerdeck.com/michaelisvy/spring-petclinic-sample-application">See the presentation here</a>
 
 ## Running petclinic locally
-Petclinic is a https://spring.io/guides/gs/spring-boot[Spring Boot] application built using https://spring.io/guides/gs/maven/[Maven]. You can build a jar file and run it from the command line:
+Petclinic is a https://spring.io/guides/gs/spring-boot[Spring Boot] application built using https://spring.io/guides/gs/gradle[Gradle].
 
+Starting your app:
 
 ```
 git clone https://github.com/spring-projects/spring-petclinic.git
 cd spring-petclinic
-./mvnw package
-java -jar target/*.jar
+./gradlew bootRun
 ```
 
-You can then access petclinic here: http://localhost:8080/
+You can then see your petclinic here: http://localhost:8080/
 
 <img width="1042" alt="petclinic-screenshot" src="https://cloud.githubusercontent.com/assets/838318/19727082/2aee6d6c-9b8e-11e6-81fe-e889a5ddfded.png">
-
-Or you can run it from Maven directly using the Spring Boot Maven plugin. If you do this it will pick up changes that you make in the project immediately (changes to Java source files require a compile as well - most people use an IDE for this):
-
-```
-./mvnw spring-boot:run
-```
 
 ## In case you find a bug/suggested improvement for Spring Petclinic
 Our issue tracker is available here: https://github.com/spring-projects/spring-petclinic/issues
@@ -59,17 +53,17 @@ git clone https://github.com/spring-projects/spring-petclinic.git
 ```
 2) Inside Eclipse or STS
 ```
-File -> Import -> Maven -> Existing Maven project
+File -> Import -> build.gradle
 ```
 
-Then either build on the command line `./mvnw generate-resources` or using the Eclipse launcher (right click on project and `Run As -> Maven install`) to generate the css. Run the application main method by right clicking on it and choosing `Run As -> Java Application`.
+Then either build on the command line `./gradlew build` or using the Eclipse launcher (right click on project and `Run As -> Gradle`) to generate the css. Run the application main method by right clicking on it and choosing `Run As -> Java Application`.
 
 3) Inside IntelliJ IDEA
 
-In the main menu, choose `File -> Open` and select the Petclinic [pom.xml](pom.xml). Click on the `Open` button.
+In the main menu, choose `File -> Open` and select the Petclinic [build.gradle](build.gradle). Click on the `Open` button.
 
-CSS files are generated from the Maven build. You can either build them on the command line `./mvnw generate-resources`
-or right click on the `spring-petclinic` project then `Maven -> Generates sources and Update Folders`.
+CSS files are generated from the Gradle build. You can either build them on the command line `./gradlew build`
+or right click on the `spring-petclinic` project then `Gradle -> Build`.
 
 A run configuration named `PetClinicApplication` should have been created for you if you're using a recent Ultimate
 version. Otherwise, run the application by right clicking on the `PetClinicApplication` main class and choosing

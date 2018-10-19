@@ -1,0 +1,77 @@
+buildscript {
+    ext {
+        springBootVersion = '2.1.0.BUILD-SNAPSHOT'
+    }
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath('ro.isdc.wro4j.gradle:wro4j-gradle-plugin:1.8.0.Beta4')
+    }
+}
+
+plugins {
+    id 'com.github.ksoichiro.build.info' version '0.2.0'
+}
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'jacoco'
+apply plugin: 'wro4j'
+
+group = 'org.springframework.samples'
+version = '2.1.0.BUILD-SNAPSHOT'
+sourceCompatibility = 1.8
+
+ext {
+    bootstrapVersion = '3.3.6'
+    jqueryVersion = '2.2.4'
+    jqueryUiVersion = '1.11.4'
+    wro4jVersion = '1.8.0'
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+}
+
+dependencies {
+    implementation('org.springframework.boot:spring-boot-starter-actuator')
+    implementation('org.springframework.boot:spring-boot-starter-cache')
+    implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+    implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
+    implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation('org.springframework.boot:spring-boot-devtools')
+
+    runtimeOnly('org.hsqldb:hsqldb')
+    runtimeOnly('mysql:mysql-connector-java')
+
+    compile('javax.cache:cache-api')
+    compile('org.ehcache:ehcache')
+    compile('org.webjars:webjars-locator-core')
+
+    webjarsRuntime("org.webjars:jquery:${jqueryVersion}")
+    webjarsRuntime("org.webjars:jquery-ui:${jqueryUiVersion}")
+    webjarsRuntime("org.webjars:bootstrap:${bootstrapVersion}")
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+}
+
+webResources {
+    bundle('petclinic') {
+        css "webjars/bootstrap/${bootstrapVersion}/less/bootstrap.less"
+        css "less/petclinic.less"
+        preProcessor 'less4j', 'cssUrlRewriting'
+    }
+}
+
+jacoco {
+    toolVersion = "0.8.2"
+}
