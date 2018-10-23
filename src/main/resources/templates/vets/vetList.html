@@ -12,6 +12,7 @@
       <tr>
         <th>Name</th>
         <th>Specialties</th>
+        <th>Hours</th>
       </tr>
     </thead>
     <tbody>
@@ -20,6 +21,8 @@
         <td><span th:each="specialty : ${vet.specialties}"
           th:text="${specialty.name + ' '}" /> <span
           th:if="${vet.nrOfSpecialties == 0}">none</span></td>
+          <td><span th:each="hour : ${vet.availableHours}"
+                    th:text="${#temporals.format(hour.getTimeDate(), 'yyyy-MM-dd HH-mm') + ' | '}" /></td>
       </tr>
     </tbody>
   </table>

@@ -5,6 +5,13 @@ INSERT INTO vets VALUES (4, 'Rafael', 'Ortega');
 INSERT INTO vets VALUES (5, 'Henry', 'Stevens');
 INSERT INTO vets VALUES (6, 'Sharon', 'Jenkins');
 
+INSERT INTO available_hour VALUES (1, 1, '2018-10-23 14:00:00');
+INSERT INTO available_hour VALUES (2, 1, '2018-10-23 15:00:00');
+INSERT INTO available_hour VALUES (3, 1, '2018-10-23 16:00:00');
+INSERT INTO available_hour VALUES (4, 2, '2018-10-23 14:00:00');
+INSERT INTO available_hour VALUES (5, 2, '2018-10-23 15:00:00');
+INSERT INTO available_hour VALUES (6, 2, '2018-10-23 16:00:00');
+
 INSERT INTO specialties VALUES (1, 'radiology');
 INSERT INTO specialties VALUES (2, 'surgery');
 INSERT INTO specialties VALUES (3, 'dentistry');
@@ -47,7 +54,7 @@ INSERT INTO pets VALUES (11, 'Freddy', '2010-03-09', 5, 9);
 INSERT INTO pets VALUES (12, 'Lucky', '2010-06-24', 2, 10);
 INSERT INTO pets VALUES (13, 'Sly', '2012-06-08', 1, 10);
 
-INSERT INTO visits VALUES (1, 7, '2013-01-01', 'rabies shot');
-INSERT INTO visits VALUES (2, 8, '2013-01-02', 'rabies shot');
-INSERT INTO visits VALUES (3, 8, '2013-01-03', 'neutered');
-INSERT INTO visits VALUES (4, 7, '2013-01-04', 'spayed');
+INSERT INTO visits VALUES (1, 1, 1, '2018-10-23 14:00:00', 'rabies shot');
+INSERT INTO visits VALUES (2, 1, 1, '2018-10-23 15:00:00', 'rabies shot');
+INSERT INTO visits VALUES (3, 2, 2, '2018-10-23 14:00:00', 'neutered');
+INSERT INTO visits VALUES (4, 4, 2, '2018-10-23 16:00:00', 'spayed');

@@ -9,6 +9,7 @@
     <table id="owners" class="table table-striped">
         <thead>
         <tr>
+            <th>id</th>
             <th style="width: 150px;">Name</th>
             <th style="width: 200px;">Address</th>
             <th>City</th>
@@ -18,6 +19,7 @@
         </thead>
         <tbody>
           <tr th:each="owner : ${selections}">
+              <td th:text="${owner.id}"/>
               <td>
                   <a th:href="@{/owners/__${owner.id}__}" th:text="${owner.firstName + ' ' + owner.lastName}"/></a>
               </td>

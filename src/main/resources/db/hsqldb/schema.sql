@@ -57,8 +57,18 @@ CREATE INDEX pets_name ON pets (name);
 CREATE TABLE visits (
   id          INTEGER IDENTITY PRIMARY KEY,
   pet_id      INTEGER NOT NULL,
-  visit_date  DATE,
+  vet_id      INTEGER NOT NULL,
+  visit_date  TIMESTAMP,
   description VARCHAR(255)
 );
 ALTER TABLE visits ADD CONSTRAINT fk_visits_pets FOREIGN KEY (pet_id) REFERENCES pets (id);
+ALTER TABLE visits ADD CONSTRAINT fk_vet_visits FOREIGN KEY (vet_id) REFERENCES vets (id);
 CREATE INDEX visits_pet_id ON visits (pet_id);
+
+CREATE TABLE available_hour (
+  id          INTEGER IDENTITY PRIMARY KEY,
+  vet_id      INTEGER NOT NULL,
+  time_date  TIMESTAMP
+);
+ALTER TABLE available_hour ADD CONSTRAINT fk_vet_available_hour FOREIGN KEY (vet_id) REFERENCES vets (id);
+CREATE INDEX available_hour_vet_id ON available_hour (vet_id);
