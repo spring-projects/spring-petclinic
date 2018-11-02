@@ -40,4 +40,9 @@ public class VetTests {
         assertThat(other.getId()).isEqualTo(vet.getId());
     }
 
+
+    @Test
+    public void testFailure() {
+        assertThat(1).isEqualTo(2);
+    }
 }
