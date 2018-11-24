@@ -4,7 +4,7 @@
 <a href="https://speakerdeck.com/michaelisvy/spring-petclinic-sample-application">See the presentation here</a>
 
 ## Running petclinic locally
-Petclinic is a https://spring.io/guides/gs/spring-boot[Spring Boot] application built using https://spring.io/guides/gs/maven/[Maven]. You can build a jar file and run it from the command line:
+Petclinic is a [Spring Boot](https://spring.io/guides/gs/spring-boot) application built using [Maven](https://spring.io/guides/gs/maven/). You can build a jar file and run it from the command line:
 
 
 ```
@@ -42,7 +42,7 @@ docker run -e MYSQL_ROOT_PASSWORD=petclinic -e MYSQL_DATABASE=petclinic -p 3306:
 
 ## Working with Petclinic in your IDE
 
-### prerequisites
+### Prerequisites
 The following items should be installed in your system:
 * Java 8 or newer.
 * git command line tool (https://help.github.com/articles/set-up-git)
@@ -90,26 +90,11 @@ Visit [http://localhost:8080](http://localhost:8080) in your browser.
 
 ## Interesting Spring Petclinic branches and forks
 
-The Spring Petclinic master branch in the main
-[spring-projects](https://github.com/spring-projects/spring-petclinic)
-GitHub org is the "canonical" implementation, currently based on
-Spring Boot and Thymeleaf. There are quite a few forks in a special
-GitHub org [spring-petclinic](https://github.com/spring-petclinic). If
-you have a special interest in a different technology stack that could
-be used to implement the Pet Clinic then please join the community
-there.
-
-| Link                               | Main technologies |
-|------------------------------------|-------------------|
-| [spring-framework-petclinic][]     | Spring Framework XML configuration, JSP pages, 3 persistence layers: JDBC, JPA and Spring Data JPA |
-| [javaconfig branch][]              | Same frameworks as the [spring-framework-petclinic][] but with Java Configuration instead of XML |
-| [spring-petclinic-angularjs][]     | AngularJS 1.x, Spring Boot and Spring Data JPA |
-| [spring-petclinic-angular][]       | Angular 4 front-end of the Petclinic REST API [spring-petclinic-rest][] |
-| [spring-petclinic-microservices][] | Distributed version of Spring Petclinic built with Spring Cloud |
-| [spring-petclinic-reactjs][]       | ReactJS (with TypeScript) and Spring Boot |
-| [spring-petclinic-graphql][]       | GraphQL version based on React Appolo, TypeScript and GraphQL Spring boot starter |
-| [spring-petclinic-kotlin][]        | Kotlin version of [spring-petclinic][] |
-| [spring-petclinic-rest][]          | Backend REST API |
+The Spring Petclinic master branch in the main [spring-projects](https://github.com/spring-projects/spring-petclinic)
+GitHub org is the "canonical" implementation, currently based on Spring Boot and Thymeleaf. There are
+[quite a few forks](https://spring-petclinic.github.io/docs/forks.html) in a special GitHub org
+[spring-petclinic](https://github.com/spring-petclinic). If you have a special interest in a different technology stack
+that could be used to implement the Pet Clinic then please join the community there.
 
 
 ## Interaction with other open source projects
@@ -128,7 +113,7 @@ Here is a list of them:
 
 The [issue tracker](https://github.com/spring-projects/spring-petclinic/issues) is the preferred channel for bug reports, features requests and submitting pull requests.
 
-For pull requests, editor preferences are available in the [editor config](.editorconfig) for easy use in common text editors. Read more and download plugins at <http://editorconfig.org>. If you have not previously done so, please fill out and submit the https://cla.pivotal.io/sign/spring[Contributor License Agreement].
+For pull requests, editor preferences are available in the [editor config](.editorconfig) for easy use in common text editors. Read more and download plugins at <http://editorconfig.org>. If you have not previously done so, please fill out and submit the [Contributor License Agreement](https://cla.pivotal.io/sign/spring).
 
 # License
 
