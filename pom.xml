@@ -7,11 +7,11 @@
   <artifactId>spring-petclinic</artifactId>
   <version>2.1.0.BUILD-SNAPSHOT</version>
 
-  <parent>
+ <!-- <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>2.1.0.BUILD-SNAPSHOT</version>
-  </parent>
+  </parent>-->
   <name>petclinic</name>
 
   <properties>
