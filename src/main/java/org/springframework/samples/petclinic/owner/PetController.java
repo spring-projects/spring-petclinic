@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * @author Juergen Hoeller
@@ -37,10 +39,12 @@ class PetController {
     private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = "pets/createOrUpdatePetForm";
     private final PetRepository pets;
     private final OwnerRepository owners;
+    private final VisitRepository visits;
 
-    public PetController(PetRepository pets, OwnerRepository owners) {
+    public PetController(PetRepository pets, OwnerRepository owners, VisitRepository visits) {
         this.pets = pets;
         this.owners = owners;
+        this.visits = visits;
     }
 
     @ModelAttribute("types")
@@ -105,5 +109,9 @@ class PetController {
             return "redirect:/owners/{ownerId}";
         }
     }
-
+   
+    @PostMapping("/pets/loginh")
+    public String loginh(@Valid Pet pet, Map<String, Object> model,Owner owner) {
+        return "welcome";
+    }
 }

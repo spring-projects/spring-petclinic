@@ -18,7 +18,38 @@
     <![endif]-->
 
     <link rel="stylesheet" th:href="@{/resources/css/petclinic.css}"/>
+     <link rel="stylesheet" th:href="@{/resources/css/modal.css}"/>
+     
+     <!-- aws sdk //-->
+    <script th:src="@{https://sdk.amazonaws.com/js/aws-sdk-2.3.8.min.js}"></script>
+    
+     <!-- aws cognito sdk (public beta!!) //-->
+    <script th:src="@{/resources/js/jsbn.js}"></script> 
+	<script th:src="@{/resources/js/jsbn2.js}"></script> 
+	<script th:src="@{/resources/js/sjcl.js}"></script> 
+	<script th:src="@{/resources/js/aws-cognito-sdk.min.js}"></script>
+	<script th:src="@{/resources/js/amazon-cognito-identity.min.js}"></script>
+	
+	
+	<!-- jquery //-->
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js"
+            integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
+    <!-- bootstrap3 //-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+          integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/pepper-grinder/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    
+    <!-- jquery 時間入力//-->
+	<script src="https://cdn.jsdelivr.net/npm/jquery-datetimepicker@2.5.20/build/jquery.datetimepicker.full.min.js"></script>
 
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-datetimepicker@2.5.20/jquery.datetimepicker.css">
   </head>
 
 <body>
@@ -59,7 +90,7 @@
                       <span>Veterinarians</span>
                   </li>
   
-                  <li th:replace="::menuItem ('/login','login','trigger a RuntimeException to see how it is handled','warning-sign','login')">
+                  <li th:replace="::menuItem ('/login','login','trigger a RuntimeException to see how it is handled','warning-sign','login/Logout')">
                       <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
                       <span>Login</span>
                   </li>
@@ -88,7 +119,8 @@
   <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
   <script th:src="@{/webjars/jquery-ui/jquery-ui.min.js}"></script>
   <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-
+  
+	
 </body>
 
 </html>

@@ -30,8 +30,9 @@ INSERT INTO owners VALUES (5, 'Peter', 'McTavish', '2387 S. Fair Way', 'Madison'
 INSERT INTO owners VALUES (6, 'Jean', 'Coleman', '105 N. Lake St.', 'Monona', '6085552654','f@f','1');
 INSERT INTO owners VALUES (7, 'Jeff', 'Black', '1450 Oak Blvd.', 'Monona', '6085555387','g@g','1');
 INSERT INTO owners VALUES (8, 'Maria', 'Escobito', '345 Maple St.', 'Madison', '6085557683','h@h','1');
-INSERT INTO owners VALUES (9, 'David', 'Schroeder', '2749 Blackhawk Trail', 'Madison', '6085559435','i@i','1');
-INSERT INTO owners VALUES (10, 'Carlos', 'Estaban', '2335 Independence La.', 'Waunakee', '6085555487','b@q.co.jp','4cb4e68337be40453bb04acf2fd2533c6c3d4d2a9ef3274bfc6fb2c56f06046fae449803654d362118633176f261f1c1d903f387ece406ccf7ec53262e0d04f0');
+INSERT INTO owners VALUES (9, 'David', 'Schroeder', '2749 Blackhawk Trail', 'Madison', '6085559435','i@a.co.jp','1');
+INSERT INTO owners VALUES (10, 'Carlos', 'Estaban', '2335 Independence La.', 'Waunakee', '6085555487','b@q.co.jp','1');
+/* Estabanのパスはkatankatan */
 
 INSERT INTO pets VALUES (1, 'Leo', '2010-09-07', 1, 1);
 INSERT INTO pets VALUES (2, 'Basil', '2012-08-06', 6, 2);
@@ -47,7 +48,8 @@ INSERT INTO pets VALUES (11, 'Freddy', '2010-03-09', 5, 9);
 INSERT INTO pets VALUES (12, 'Lucky', '2010-06-24', 2, 10);
 INSERT INTO pets VALUES (13, 'Sly', '2012-06-08', 1, 10);
 
-INSERT INTO visits VALUES (1, 7, '2013-01-01', 'rabies shot');
-INSERT INTO visits VALUES (2, 8, '2013-01-02', 'rabies shot');
-INSERT INTO visits VALUES (3, 8, '2013-01-03', 'neutered');
-INSERT INTO visits VALUES (4, 7, '2013-01-04', 'spayed');
+INSERT INTO visits VALUES (1, 1, 7, '2013-01-01', 'rabies shot', 'e', 'abcd','abcd','abcd','abcd');
+INSERT INTO visits VALUES (2, 2, 8, '2013-01-02', 'rabies shot', 'd', 'abcd','abcd','abcd','abcd');
+INSERT INTO visits VALUES (3, 3, 8, '2013-01-03', 'neutered', 'c', 'abcd','abcd','abcd','abcd');
+INSERT INTO visits VALUES (4, 4, 7, '2013-01-04', 'spayed', 'b', 'abcd','abcd','abcd','abcd');
+INSERT INTO visits VALUES (10, 10, 7, '2013-01-04', 'spayed', 'a', 'abcd','abcd','abcd','abcd');

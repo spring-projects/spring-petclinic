@@ -3,15 +3,100 @@
 <html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'home')}">
 
   <body>
-	<h2 th:if="${flag}" th:text="${loginName}"></h2>
-    <h2 th:if="${!flag}">Welcome</h2>
+  <script  type="text/javascript">
+  $(function() {
+	  // 入力ダイアログを表示
+	$("#inputBtn").click(function() {
+		$("#input").dialog("open");
+		return false;
+	});
+
+	  // 入力ダイアログを定義
+	$("#input").dialog({
+		autoOpen: false,
+		modal: true,
+		buttons: {
+			"Reservation": function() {
+				var hidden      = $('input:hidden[name="tableHidden"]').val();
+				var data        = $("#inputDate").val();
+				var petname     = $("#inputPetname").val();
+				var visitstatus = $("#inputVisitstatus").val();
+				$('#inputTable').append('<tr><td id="date' + hidden + '">' + data + '</td><td id="petname' + hidden + '">' + petname + '</td><td id="visitstatus' + hidden + '">' + visitstatus + '</td></tr>');	    	  
+				$('input:hidden[name="tableHidden"]').val(hidden + 1);
+				//ajaxのfunctionを入れるスペース input(data petname visitstatus)を渡す
+				$("#inputDate").val('');
+				$("#inputPetname").val('');
+				$("#inputVisitstatus").val('');
+				$(this).dialog("close");},
+			"cancel": function() {
+				displayMessage("canceled");
+				$(this).dialog("close");}
+	    }
+	  });
+	});
+	function displayMessage(str) {
+		$("#info").html(str);
+	}
+	
+	$(function() {
+		$("#inputDate").datepicker({
+			dateFormat : 'yy-mm-dd-DD',	  
+			showMonthAfterYear: true
+		});
+	});
+  </script>
+  	<!-- ログイン時表示 -->
+	<h2 th:if="${session[loginName]!=null}" th:text="${session[loginName]}">
+	</h2>
+	
+    <h2 th:if="${session[loginName]==null}">Welcome</h2>
     
     <div class="row">
         <div class="col-md-12">
           <img class="img-responsive" src="../static/resources/images/pets.png" th:src="@{/resources/images/pets.png}"/>
         </div>
     </div>
+	<!-- ログイン時表示終了 -->
 
+
+	<!-- 入力ダイアログ  -->
+	<div id="input" title="Visit Reservation">
+		<span class="ui-helper-hidden-accessible"><input type="text"/></span><!--inputDateにフォーカスを当てないようにする -->
+		<table>
+	    	<tr>
+	    		<th>Date</th>
+				<td><input type="text" id="inputDate"></td>
+			</tr>   
+	    <tr>
+	      <th>PetName</th>
+	      <td><input type="text" id="inputPetname" size="20" maxlength="30" /></td>
+	    </tr>
+	        <tr>
+	      <th>VisitStatus</th>
+	      <td><input type="text" id="inputVisitstatus" size="20" maxlength="30" /></td>
+	    </tr>
+	  </table>
+	</div>
+	<!-- 入力ダイアログ終了  -->
+	<!-- テーブル  -->
+    <table class="table table-striped" id="inputTable">
+        <thead>
+        <tr>
+            <th style="width: 200px;">Date</th>
+            <th style="width: 200px;">PetName</th>
+            <th style="width: 200px">VisitStatus</th>
+        </tr>
+        </thead>
+    </table>
+	<input type="hidden" name="tableHidden" value=0 >
+	<!-- テーブル終了  -->
+	<!-- ポップアップボタン -->
+	<div style="padding: 20px;">
+		<div>
+			<input type="button" id="inputBtn" value="input">
+		</div>
+		<div id="info"></div>
+	</div>
+	<!-- ポップアップボタン終了-->
   </body>
-
 </html>
