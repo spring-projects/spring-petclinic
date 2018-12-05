@@ -4,6 +4,6 @@ stage('Build') {
         env.PATH = "${tool 'Maven3'}/bin:${env.PATH}"
         env.JAVA_HOME = "${tool 'Java8'}"
         bat 'mvn clean package'
-        archiveArtifacts artifacts: '**/target/*.war', fingerprint: true
+        archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
     }
 }
