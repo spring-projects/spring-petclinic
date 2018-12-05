@@ -7,3 +7,10 @@ stage('Build') {
         archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
     }
 }
+stage('SonarQube analysis') {
+    node {
+        withSonarQubeEnv('sonar')
+        env.PATH = "${tool 'Maven3'}/bin:${env.PATH}"
+        bat 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.5.0.1254:sonar'
+    }
+}
