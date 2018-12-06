@@ -115,6 +115,17 @@ public class PetControllerTests {
     }
 
     @Test
+    public void testProcessUpdateFormHasErrorsLength2() throws Exception {
+        mockMvc.perform(post("/owners/{ownerId}/pets/{petId}/edit", TEST_OWNER_ID, TEST_PET_ID)
+            .param("name", "")
+        )
+            .andExpect(model().attributeHasErrors("pet"))
+            .andExpect(status().isOk())
+            .andExpect(view().name("pets/createOrUpdatePetForm"));
+    }
+
+
+    @Test
     public void testProcessUpdateFormHasErrors() throws Exception {
         mockMvc.perform(post("/owners/{ownerId}/pets/{petId}/edit", TEST_OWNER_ID, TEST_PET_ID)
             .param("name", "Betty")
@@ -125,6 +136,8 @@ public class PetControllerTests {
             .andExpect(status().isOk())
             .andExpect(view().name("pets/createOrUpdatePetForm"));
     }
+
+
 
     @Test
     public void testProcessUpdateFormHasErrorsLength() throws Exception {
