@@ -35,7 +35,7 @@ public class VetTests {
         vet.setId(123);
         Vet other = (Vet) SerializationUtils
                 .deserialize(SerializationUtils.serialize(vet));
-        assertThat(other.getFirstName()).isEqualTo(vet.getFirstName() + "d");
+        assertThat(other.getFirstName()).isEqualTo(vet.getFirstName());
         assertThat(other.getLastName()).isEqualTo(vet.getLastName());
         assertThat(other.getId()).isEqualTo(vet.getId());
     }

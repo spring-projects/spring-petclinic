@@ -24,6 +24,9 @@ pipeline {
         }
     }
     post {
+        always {
+            emailext from: 'jenkins.test@inbox.ru', body: 'Build', subject: 'Build Failed', to: 'jenkinstest@rambler.ru'
+        }
         failure {
             emailext from: 'jenkins.test@inbox.ru', body: 'Build failed', subject: 'Build Failed', to: 'jenkinstest@rambler.ru'
 //        mail bcc: '', body: 'Build failed', cc: '', from: '', replyTo: '', subject: 'BuildFailed', to: 'jenkinstest@rambler.ru'
