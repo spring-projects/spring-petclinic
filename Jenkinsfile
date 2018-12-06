@@ -14,4 +14,14 @@ stage('SonarQube analysis') {
             bat 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.5.0.1254:sonar'
         }
     }
+    emailext body: 'Build failed', recipientProviders: [requestor()], subject: 'Build Failed', to: 'jenkinstest@rambler.ru'
+    mail bcc: '', body: 'Build failed', cc: '', from: '', replyTo: '', subject: 'BuildFailed', to: 'jenkinstest@rambler.ru'
+}
+post {
+    failure {
+        emailext body: 'Build failed', recipientProviders: [requestor()], subject: 'Build Failed', to: 'jenkinstest@rambler.ru'
+//        mail bcc: '', body: 'Build failed', cc: '', from: '', replyTo: '', subject: 'BuildFailed', to: 'jenkinstest@rambler.ru'
+//        mail bcc: '', body: "<b>Example</b><br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "ERROR CI: Project name -> ${env.JOB_NAME}", to: 'jenkinstest@rambler.ru'
+//        sh 'echo "This will run only if failed"'
+    }
 }
