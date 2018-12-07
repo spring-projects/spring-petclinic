@@ -1,6 +1,6 @@
 # Spring PetClinic Sample Application (Cloudogu Ecosystem)
 
-This is the well-known spring sample application petclinic that has been extended to be a showcase for the Clodugou 
+This is the well-known spring sample application petclinic that has been extended to be a showcase for the Cloudogu
 EcoSystem. See [demo.cloudogu.net](https://cloudogu.com/en/#demo).
 
 We extended it by  
