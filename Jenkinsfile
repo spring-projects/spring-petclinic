@@ -28,6 +28,5 @@ pipeline {
             emailext from: 'jenkins.test@inbox.ru', recipientProviders: [culprits()], body: 'Build failed', subject: 'Build Failed'
         }
     }
-
 }
 
