@@ -7,7 +7,6 @@ pipeline {
         maven 'Maven3'
         jdk 'Java8'
     }
-
     environment {
         VERSION = VersionNumber([
                 versionNumberString    : '1.0.${BUILDS_THIS_YEAR}',
