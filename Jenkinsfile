@@ -7,6 +7,7 @@ pipeline {
         maven 'Maven3'
         jdk 'Java8'
     }
+    currentBuild.displayName = '1.0.${BUILDS_THIS_YEAR}'
     stages {
         stage('Build') {
             steps {
