@@ -22,6 +22,7 @@ pipeline {
                 }
             }
         }
+
     }
     post {
         failure {
