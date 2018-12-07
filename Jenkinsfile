@@ -25,7 +25,7 @@ pipeline {
     }
     post {
         failure {
-            emailext from: "$DEFAULT_FROM",
+            emailext from: "jenkins.test@inbox.ru",
                     recipientProviders: [developers()],
                     body: "Build failed",
                     replyTo: "$DEFAULT_REPLYTO",
