@@ -29,7 +29,7 @@ pipeline {
 //                    recipientProviders: [developers()],
 //                    body: "Build failed",
 //                    subject: '$DEFAULT_SUBJECT'
-            emailextrecipients([developers()])
+            emailextrecipients([developers(), requestor()])
         }
     }
 }
