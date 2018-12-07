@@ -7,13 +7,18 @@ pipeline {
         maven 'Maven3'
         jdk 'Java8'
     }
+    VersionNumber([
+            versionNumberString : '1.0.${BUILDS_THIS_YEAR}',
+            projectStartDate : '2018-11-29',
+            PrefixVariable : '',
+            worstResultForIncrement: 'FAILURE'
+    ])
     stages {
         stage('Build') {
             steps {
                 git url: 'https://github.com/Takayuki-sempai/spring-petclinic'
                 bat 'mvn clean package'
                 archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
-                VersionNumber projectStartDate: '', versionNumberString: '1.0.${BUILDS_THIS_YEAR}', versionPrefix: '', worstResultForIncrement: 'FAILURE'
             }
         }
         stage('SonarQube analysis') {
