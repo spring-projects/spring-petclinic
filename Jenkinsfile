@@ -7,12 +7,14 @@ pipeline {
         maven 'Maven3'
         jdk 'Java8'
     }
-    VersionNumber([
-            versionNumberString : '1.0.${BUILDS_THIS_YEAR}',
-            projectStartDate : '2018-11-29',
-            PrefixVariable : '',
-            worstResultForIncrement: 'FAILURE'
-    ])
+    environment {
+        VERSION = VersionNumber([
+                versionNumberString    : '1.0.${BUILDS_THIS_YEAR}',
+                projectStartDate       : '2018-11-29',
+                PrefixVariable         : '',
+                worstResultForIncrement: 'FAILURE'
+        ])
+    }
     stages {
         stage('Build') {
             steps {
