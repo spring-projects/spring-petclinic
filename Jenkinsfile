@@ -30,7 +30,6 @@ pipeline {
                     body: "Build failed",
                     subject: '$DEFAULT_SUBJECT'
         }
-
     }
 }
 
