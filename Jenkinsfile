@@ -30,6 +30,7 @@ pipeline {
                     body: '$DEFAULT_CONTENT',
                     subject: '$DEFAULT_SUBJECT'
         }
+
     }
 }
 
