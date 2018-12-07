@@ -27,7 +27,7 @@ pipeline {
         failure {
             emailext from: 'jenkins.test@inbox.ru',
                     recipientProviders: [developers(), requestor()],
-                    body: "Build failed",
+                    body: '$DEFAULT_CONTENT',
                     subject: '$DEFAULT_SUBJECT'
         }
     }
