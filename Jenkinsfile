@@ -1,39 +1,7 @@
-#!groovy
+library 'my-shared-library'
 
-pipeline {
-  agent none
-  stages {
-    stage('Maven Install') {
-      agent {
-        docker {
-          image 'maven:3.5.4-jdk-8-alpine'
-        }
-      }
-      steps {
-        sh 'mvn clean install -Dmaven.test.skip=true'
-      }
-    }
-    stage('Run tests') {
-      agent any
-      steps {
-        sh 'mvn clean install -Dmaven.test.skip=true'
-      }
-    }
-    stage('Docker Build') {
-      agent any
-      steps {
-        sh 'docker build -t sanjeev435/spring-petclinic:latest .'
-      }
-    }
-    stage('Docker Push') {
-      agent any
-      steps {
-        withCredentials([usernamePassword(credentialsId: 'DOCKER_HUB_GLOBAL', passwordVariable: 'dockerHubPassword',
-                                          usernameVariable: 'dockerHubUser')]) {
-          sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
-          sh 'docker push sanjeev435/spring-petclinic'
-        }
-      }
-    }
-  }
-}
+myDeliveryPipeline(branch: 'master', scmUrl: 'ssh://git@myScmServer.com/repos/myRepo.git',
+                   email: 'mrcool435@gmail.com', serverPort: '8080',
+                   developmentServer: 'dev-myproject.mycompany.com',
+                   stagingServer: 'staging-myproject.mycompany.com',
+                   productionServer: 'production-myproject.mycompany.com')
