@@ -3,9 +3,6 @@ pipeline {
     triggers {
         pollSCM('H/5 * * * *')
     }
-    script {
-        step([$class: 'TestExamplePublisher'])
-    }
     tools {
         maven 'Maven3'
         jdk 'Java8'
@@ -24,6 +21,9 @@ pipeline {
                 git url: 'https://github.com/Takayuki-sempai/spring-petclinic'
                 bat 'mvn clean package'
                 archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+                script {
+                    step([$class: 'TestExamplePublisher'])
+                }
             }
         }
         stage('SonarQube analysis') {
