@@ -21,9 +21,6 @@ pipeline {
                 git url: 'https://github.com/Takayuki-sempai/spring-petclinic'
                 bat 'mvn clean package'
                 archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
-                script {
-                    step([$class: 'TestExamplePublisher'])
-                }
             }
         }
         stage('SonarQube analysis') {
@@ -35,6 +32,11 @@ pipeline {
         }
     }
     post {
+        always {
+            script {
+                step([$class: 'TestExamplePublisher'])
+            }
+        }
         failure {
             emailext from: 'jenkins.test@inbox.ru',
                     recipientProviders: [developers(), requestor()],
