@@ -3,6 +3,9 @@ pipeline {
     triggers {
         pollSCM('H/5 * * * *')
     }
+    script {
+        step([$class: 'TestExamplePublisher'])
+    }
     tools {
         maven 'Maven3'
         jdk 'Java8'
