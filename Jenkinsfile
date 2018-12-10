@@ -1,4 +1,4 @@
-library 'my-pieline-library'
+@Library('my-pipeline-library')_
 
 myDeliveryPipeline(branch: 'master', scmUrl: 'ssh://git@myScmServer.com/repos/myRepo.git',
                    email: 'mrcool435@gmail.com', serverPort: '8080',
