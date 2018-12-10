@@ -12,7 +12,7 @@ pipeline {
                 versionNumberString    : '1.0.${BUILDS_THIS_YEAR}',
                 projectStartDate       : '2018-11-29',
                 PrefixVariable         : '',
-                worstResultForIncrement: 'FAILURE'
+                worstResultForIncrement: 'SUCCESS'
         ])
     }
     stages {
