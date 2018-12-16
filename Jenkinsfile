@@ -22,6 +22,23 @@ pipeline {
             }
         }
        
+
+        stage('Run local container') {
+          agent any
+          steps {
+            sh 'docker rm -f natyramone/pet-clinic:latest || true'
+            sh 'docker run -d -p 8081:8080 natyramone/pet-clinic:latest'
+          }
+        }
+        
+        stage('Push to dockerhub') {
+          agent any
+          steps {
+                sh 'docker push $DOCKER_USER/pet-clinic:latest'
+              }
+        }
+      
+    
     }
 }
 
