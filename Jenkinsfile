@@ -14,7 +14,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
-                sh 'docker login -u="natyramone" -p="polaco2312"'
+                sh 'docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"'
                 sh 'mvn -q package'
                 sh 'docker build -t pet-clinic .'
                 sh 'docker tag pet-clinic $DOCKER_USER/pet-clinic:latest'
