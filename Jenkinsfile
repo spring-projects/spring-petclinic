@@ -1,7 +1,8 @@
 @Library('my-pipeline-library')_
 
-myDeliveryPipeline(branch: 'master', scmUrl: 'ssh://git@myScmServer.com/repos/myRepo.git',
-                   email: 'mrcool435@gmail.com', serverPort: '8080',
-                   developmentServer: 'dev-myproject.mycompany.com',
-                   stagingServer: 'staging-myproject.mycompany.com',
-                   productionServer: 'production-myproject.mycompany.com')
+myDeliveryPipeline(properties([
+  parameters([
+    string(name: 'BRANCH', defaultValue: 'master', description: 'Branch to build')
+	choice(name: 'RUN_TEST', choices: ['yes', 'no'], description: 'Run test while build')
+   ])
+]))
