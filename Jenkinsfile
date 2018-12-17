@@ -21,6 +21,12 @@ pipeline {
                 sh 'docker push $DOCKER_USER/pet-clinic:latest'
             }
         }
+        
+      stage('Sonar') {
+        steps {
+        sh 'mvn sonar:sonar -Dsonar.projectKey=villegasnaty_spring-petclinic -Dsonar.organization=villegasnaty-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=5f3fd10f7702318ee919ea4d55890502510b2448'
+      }
+    }
        
 
         stage('Run local container') {
