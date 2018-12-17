@@ -16,16 +16,14 @@
 
 package org.springframework.samples.petclinic.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.time.LocalDate;
 import java.util.Collection;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.owner.OwnerRepository;
 import org.springframework.samples.petclinic.owner.Pet;
@@ -35,22 +33,32 @@ import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.samples.petclinic.vet.VetRepository;
 import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.samples.petclinic.visit.VisitRepository;
-import org.springframework.stereotype.Service;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Integration test of the Service and the Repository layer.
  * <p>
- * ClinicServiceSpringDataJpaTests subclasses benefit from the following services provided by the Spring
- * TestContext Framework: </p> <ul> <li><strong>Spring IoC container caching</strong> which spares us unnecessary set up
- * time between test execution.</li> <li><strong>Dependency Injection</strong> of test fixture instances, meaning that
- * we don't need to perform application context lookups. See the use of {@link Autowired @Autowired} on the <code>{@link
- * ClinicServiceTests#clinicService clinicService}</code> instance variable, which uses autowiring <em>by
- * type</em>. <li><strong>Transaction management</strong>, meaning each test method is executed in its own transaction,
- * which is automatically rolled back by default. Thus, even if tests insert or otherwise change database state, there
- * is no need for a teardown or cleanup script. <li> An {@link org.springframework.context.ApplicationContext
- * ApplicationContext} is also inherited and can be used for explicit bean lookup if necessary. </li> </ul>
+ * ClinicServiceSpringDataJpaTests subclasses benefit from the following services provided
+ * by the Spring TestContext Framework:
+ * </p>
+ * <ul>
+ * <li><strong>Spring IoC container caching</strong> which spares us unnecessary set up
+ * time between test execution.</li>
+ * <li><strong>Dependency Injection</strong> of test fixture instances, meaning that we
+ * don't need to perform application context lookups. See the use of
+ * {@link Autowired @Autowired} on the <code>{@link
+ * ClinicServiceTests#clinicService clinicService}</code> instance variable, which uses
+ * autowiring <em>by type</em>.
+ * <li><strong>Transaction management</strong>, meaning each test method is executed in
+ * its own transaction, which is automatically rolled back by default. Thus, even if tests
+ * insert or otherwise change database state, there is no need for a teardown or cleanup
+ * script.
+ * <li>An {@link org.springframework.context.ApplicationContext ApplicationContext} is
+ * also inherited and can be used for explicit bean lookup if necessary.</li>
+ * </ul>
  *
  * @author Ken Krebs
  * @author Rod Johnson
@@ -61,7 +69,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @RunWith(SpringRunner.class)
-@DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
+@DataJpaTest
 public class ClinicServiceTests {
 
     @Autowired
