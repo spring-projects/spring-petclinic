@@ -46,6 +46,13 @@ pipeline {
           }
         }
         
+        stage('Run Integration Test') {
+          agent any
+          steps {
+            sh 'mvn clean verify -Dbrowser=chrome'
+          }
+        }
+        
         stage('Push to dockerhub') {
           agent any
           steps {
