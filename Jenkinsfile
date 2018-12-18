@@ -16,9 +16,6 @@ pipeline {
                 echo 'Building..'
                 sh 'docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"'
                 sh 'mvn -q package'
-                sh 'docker build -t pet-clinic .'
-                sh 'docker tag pet-clinic $DOCKER_USER/pet-clinic:latest'
-                sh 'docker push $DOCKER_USER/pet-clinic:latest'
             }
         }
         
@@ -46,12 +43,6 @@ pipeline {
           }
         }
         
-        stage('Run Integration Test') {
-          agent any
-          steps {
-            sh 'mvn clean verify -Dbrowser=chrome'
-          }
-        }
         
         stage('Push to dockerhub') {
           agent any
