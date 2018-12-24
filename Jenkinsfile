@@ -11,4 +11,4 @@
 
 @Library('my-pipeline-library') _
 
-myDeliveryPipeline('BRANCH':${params.BRANCH}, 'RUN_TEST':{params.RUN_TEST}, 'MAIL_TRIGGER':{params.MAIL_TRIGGER}, 'EMAIL':{params.EMAIL})
+myDeliveryPipeline('BRANCH':{params.BRANCH}, 'RUN_TEST':{params.RUN_TEST}, 'MAIL_TRIGGER':{params.MAIL_TRIGGER}, 'EMAIL':{params.EMAIL})
