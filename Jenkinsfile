@@ -1,7 +1,4 @@
-@Library('my-pipeline-library') _
-
-myDeliveryPipeline(
-  properties ([
+ properties ([
         parameters([
                 string(name: 'BRANCH', defaultValue: 'master', description: 'Branch to build'),
 	        choice(name: 'RUN_TEST', choices: ['yes', 'no'], description: 'Run test while build'),
@@ -10,4 +7,8 @@ myDeliveryPipeline(
    
         ])
    ])
-)
+
+
+@Library('my-pipeline-library') _
+
+myDeliveryPipeline('BRANCH':${params.BRANCH}, 'RUN_TEST':{params.RUN_TEST}, 'MAIL_TRIGGER':{params.MAIL_TRIGGER}, 'EMAIL':{params.EMAIL})
