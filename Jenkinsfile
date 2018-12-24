@@ -1,4 +1,4 @@
-@Library('my-pipeline-library')_
+@Library('my-pipeline-library') _
 
 myDeliveryPipeline(
   properties ([
