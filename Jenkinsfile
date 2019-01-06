@@ -1,4 +1,4 @@
-print( properties ([ properties ([) properties ([
+print( properties ([
         parameters([
                 string(name: 'BRANCH', defaultValue: 'master', description: 'Branch to build'),
 	        choice(name: 'RUN_TEST', choices: ['yes', 'no'], description: 'Run test while build'),
