@@ -12,9 +12,19 @@ properties ([
            
 
 
+//myDeliveryPipeline {
+//    branch = params.BRANCH
+//    runTest = params.RUN_TEST
+//    triggerMail = params.MAIL_TRIGGER
+//    email = params.EMAIL
+//}
+
 myDeliveryPipeline {
-    branch = params.BRANCH
-    runTest = params.RUN_TEST
-    triggerMail = params.MAIL_TRIGGER
-    email = params.EMAIL
+    branch = 'master'
+    scmUrl = 'ssh://git@myScmServer.com/repos/myRepo.git'
+    email = 'team@example.com'
+    serverPort = '8080'
+    developmentServer = 'dev-myproject.mycompany.com'
+    stagingServer = 'staging-myproject.mycompany.com'
+    productionServer = 'production-myproject.mycompany.com'
 }
