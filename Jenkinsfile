@@ -11,8 +11,8 @@ properties ([
            
 
 
-myDeliveryPipeline(
-        BRANCH='uiui'
-        RUN_TEST='jk'
-        MAIL_TRIGGER='kkjkjk'
-        EMAIL='yuiuk')
+//myDeliveryPipeline(
+//        BRANCH='uiui'
+ //       RUN_TEST='jk'
+ //       MAIL_TRIGGER='kkjkjk'
+  //      EMAIL='yuiuk')
