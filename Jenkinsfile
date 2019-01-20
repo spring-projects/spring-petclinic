@@ -1,4 +1,4 @@
-@Library('my-pipeline-library') _
+library 'my-pipeline-library' _
 
 properties ([
         parameters([
