@@ -12,7 +12,7 @@ properties ([
 
 
 myDeliveryPipeline(
-        BRANCH=params.BRANCH
-        RUN_TEST=params.RUN_TEST
-        MAIL_TRIGGER=params.MAIL_TRIGGER
-        EMAIL=params.EMAIL)
+        BRANCH='uiui'
+        RUN_TEST='jk'
+        MAIL_TRIGGER='kkjkjk'
+        EMAIL='yuiuk')
