@@ -20,7 +20,7 @@ properties ([
 //}
 
 myDeliveryPipeline {
-    branch = arams.BRANCH
+    branch = params.BRANCH
     scmUrl = 'ssh://git@myScmServer.com/repos/myRepo.git'
     email = 'team@example.com'
     serverPort = '8080'
