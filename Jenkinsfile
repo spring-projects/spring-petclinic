@@ -28,18 +28,16 @@ node {
         }
 
         String jacoco = "org.jacoco:jacoco-maven-plugin:0.8.1"
-        parallel(
-                test: {
-                    stage('Test') {
-                        mvn "${jacoco}:prepare-agent test ${jacoco}:report"
-                    }
-                },
-                integrationTest: {
-                    stage('Integration Test') {
-                        mvn "${jacoco}:prepare-agent-integration failsafe:integration-test failsafe:verify ${jacoco}:report-integration"
-                    }
-                }
-        )
+
+        stage('Test') {
+            mvn "${jacoco}:prepare-agent test ${jacoco}:report"
+        }
+
+
+        stage('Integration Test') {
+            mvn "${jacoco}:prepare-agent-integration failsafe:integration-test failsafe:verify ${jacoco}:report-integration"
+        }
+
 
         stage('Static Code Analysis') {
 
@@ -49,7 +47,7 @@ node {
         }
 
         stage('Deploy') {
-            mvn.useDeploymentRepository([id: cesFqdn, url:  "${cesUrl}/nexus", credentialsId: credentialsId, type: 'Nexus3'])
+            mvn.useDeploymentRepository([id: cesFqdn, url: "${cesUrl}/nexus", credentialsId: credentialsId, type: 'Nexus3'])
 
             mvn.deployToNexusRepository('-Dmaven.javadoc.failOnError=false')
         }
