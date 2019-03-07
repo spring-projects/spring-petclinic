@@ -227,6 +227,16 @@
         <enabled>true</enabled>
       </snapshots>
     </repository>
+      
+      <repository>
+      <id>Nexus-publish</id>
+      <name>petclinic</name>
+      <url>http://34.243.169.157/nexus/snapshot</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+      
     <repository>
       <id>spring-milestones</id>
       <name>Spring Milestones</name>
