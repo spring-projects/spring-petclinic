@@ -47,7 +47,8 @@ The following items should be installed in your system:
 * Java 8 or newer.
 * git command line tool (https://help.github.com/articles/set-up-git)
 * Your prefered IDE 
-  * Eclipse with the m2e plugin. Note: when m2e is available, there is an m2 icon in Help -> About dialog. If m2e is not there, just follow the install process here: http://www.eclipse.org/m2e/
+  * Eclipse with the m2e plugin. Note: when m2e is available, there is an m2 icon in `Help -> About` dialog. If m2e is
+  not there, just follow the install process here: https://www.eclipse.org/m2e/
   * [Spring Tools Suite](https://spring.io/tools) (STS)
   * IntelliJ IDEA
 
@@ -113,7 +114,7 @@ Here is a list of them:
 
 The [issue tracker](https://github.com/spring-projects/spring-petclinic/issues) is the preferred channel for bug reports, features requests and submitting pull requests.
 
-For pull requests, editor preferences are available in the [editor config](.editorconfig) for easy use in common text editors. Read more and download plugins at <http://editorconfig.org>. If you have not previously done so, please fill out and submit the [Contributor License Agreement](https://cla.pivotal.io/sign/spring).
+For pull requests, editor preferences are available in the [editor config](.editorconfig) for easy use in common text editors. Read more and download plugins at <https://editorconfig.org>. If you have not previously done so, please fill out and submit the [Contributor License Agreement](https://cla.pivotal.io/sign/spring).
 
 # License
 
