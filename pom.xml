@@ -152,7 +152,33 @@
           </execution>
         </executions>
       </plugin>
-
+	<plugin>
+	   <groupId>org.apache.maven.plugins</groupId>
+	   <artifactId>maven-deploy-plugin</artifactId>
+	   <version>${maven-deploy-plugin.version}</version>
+	   <configuration>
+	      <skip>true</skip>
+	   </configuration>
+	</plugin>
+	<plugin>
+   <groupId>org.sonatype.plugins</groupId>
+   <artifactId>nexus-staging-maven-plugin</artifactId>
+   <version>1.5.1</version>
+   <executions>
+      <execution>
+         <id>default-deploy</id>
+         <phase>deploy</phase>
+         <goals>
+            <goal>deploy</goal>
+         </goals>
+      </execution>
+   </executions>
+   <configuration>
+      <serverId>nexus-snapshots</serverId>
+      <nexusUrl>http://localhost:8081/nexus/</nexusUrl>
+      <skipStaging>true</skipStaging>
+   </configuration>
+</plugin>
       <!-- Spring Boot Actuator displays build-related information if a git.properties
         file is present at the classpath -->
       <plugin>
@@ -235,6 +261,11 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
+    <repository>
+      <id>custom-nexus</id>
+      <name>Nexus Repo</name>
+      <url>http://127.0.0.1:8081/nexus/content/repositories/snapshots</url>
+    </repository>
   </repositories>
 
   <pluginRepositories>
@@ -255,5 +286,10 @@
       </snapshots>
     </pluginRepository>
   </pluginRepositories>
-
+<distributionManagement>
+   <snapshotRepository>
+      <id>nexus-snapshots</id>
+      <url>http://localhost:8081/nexus/content/repositories/snapshots</url>
+   </snapshotRepository>
+</distributionManagement>
 </project>
