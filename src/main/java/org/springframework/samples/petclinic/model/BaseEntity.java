@@ -36,6 +36,7 @@ public class BaseEntity implements Serializable {
     private Integer id;
 
     public Integer getId() {
+        // comment
         return id;
     }
 

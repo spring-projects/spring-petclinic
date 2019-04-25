@@ -14,3 +14,11 @@ steps:
     echo Starting the build
     mvn package
   displayName: 'Build with Maven'
+
+- task: RichCodeNavIndexer@0
+  inputs:
+    serviceConnection: 'rich-code-nav-dev'
+    nugetServiceConnection: 'rich-code-nav-nuget'
+    languages: csharp
+    githubServiceConnection: 'arjun27 (1)'
+    serviceEndpoint: 'https://vscloudkernel-dev.azurewebsites.net'
