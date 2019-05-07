@@ -20,7 +20,6 @@
         ["modifyvm", "{{.Name}}", "--memory", "2048"],
         ["modifyvm", "{{.Name}}", "--cpus", "2"],
         ["modifyvm", "{{.Name}}", "--audio", "none"],
-        ["modifyvm", "{{.Name}}", "--nic1", "bridged"],
         ["modifyvm", "{{.Name}}", "--usb", "off"]
       ],
       "http_directory": "src",
