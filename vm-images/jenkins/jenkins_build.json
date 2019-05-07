@@ -13,13 +13,14 @@
       "iso_checksum_type": "md5",
       "headless": "{{ user `non_gui` }}",
       "output_directory": "builds",
-      "vm_name": "CentOS7",
+      "vm_name": "jenkins_centos",
       "guest_os_type": "RedHat_64",
       "disk_size": "10240",
       "vboxmanage": [
         ["modifyvm", "{{.Name}}", "--memory", "2048"],
         ["modifyvm", "{{.Name}}", "--cpus", "2"],
         ["modifyvm", "{{.Name}}", "--audio", "none"],
+        ["modifyvm", "{{.Name}}", "--nic1", "bridged"],
         ["modifyvm", "{{.Name}}", "--usb", "off"]
       ],
       "http_directory": "src",
