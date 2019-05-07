@@ -6,5 +6,4 @@ target/*
 *.iml
 /target
 packer_cache/
-*.vmdk
-*.ovf
+builds/
