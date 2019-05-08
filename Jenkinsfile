@@ -11,7 +11,7 @@ pipeline {
         }
       }
       steps {
-        sh ''
+        sh 'mvn test'
       }
     }
     stage('Deploy to Artifactory') {

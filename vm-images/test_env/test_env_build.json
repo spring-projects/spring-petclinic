@@ -13,7 +13,7 @@
       "iso_checksum_type": "md5",
       "headless": "{{ user `non_gui` }}",
       "output_directory": "builds",
-      "vm_name": "Tomcat-CentOS7",
+      "vm_name": "Test-env-CentOS7",
       "guest_os_type": "RedHat_64",
       "disk_size": "10240",
       "vboxmanage": [
