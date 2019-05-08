@@ -5,11 +5,13 @@ pipeline {
   stages {
 
     stage('Test') {
+      /*
       agent {
         node {
           label 'tester'
         }
       }
+      */
       steps {
         sh 'mvn test'
       }
