@@ -7,3 +7,6 @@ sudo systemctl enable tomcat
 
 # Provision jenkins
 sudo yum install maven -y
+
+# Install git
+sudo yum install git -y
