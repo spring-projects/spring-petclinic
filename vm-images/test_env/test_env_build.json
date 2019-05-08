@@ -1,0 +1,56 @@
+{
+  "variables": {
+    "file": "http://mirrors.ocf.berkeley.edu/centos/7.6.1810/isos/x86_64/CentOS-7-x86_64-Minimal-1810.iso",
+    "checksum": "bd43d41e01c2a46b3cb23eb9139dce4b",
+    "type": "md5",
+    "non_gui": "false"
+  },
+  "builders": [
+    {
+      "type": "virtualbox-iso",
+      "iso_url": "{{ user `file` }}",
+      "iso_checksum": "{{ user `checksum` }}",
+      "iso_checksum_type": "md5",
+      "headless": "{{ user `non_gui` }}",
+      "output_directory": "builds",
+      "vm_name": "Tomcat-CentOS7",
+      "guest_os_type": "RedHat_64",
+      "disk_size": "10240",
+      "vboxmanage": [
+        ["modifyvm", "{{.Name}}", "--memory", "2048"],
+        ["modifyvm", "{{.Name}}", "--cpus", "2"],
+        ["modifyvm", "{{.Name}}", "--audio", "none"],
+        ["modifyvm", "{{.Name}}", "--usb", "off"]
+      ],
+      "http_directory": "src",
+      "boot_wait": "5s",
+      "boot_command": [
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
+      ],
+      "ssh_username": "admin",
+      "ssh_password": "admin",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "10000s",
+      "guest_additions_path": "disable",
+      "shutdown_command": "echo 'admin' | sudo -S /sbin/halt -h -p"
+    }
+  ],
+  "provisioners": [
+        {
+        "type": "file",
+        "source": "config/tomcat-users.xml",
+        "destination": "~/tomcat-users.xml"
+        },
+        {
+        "type": "file",
+        "source": "config/tomcat.conf",
+        "destination": "~/tomcat.conf"
+        },
+        {
+         "type": "shell",
+         "scripts": [
+         "test_env.sh"
+         ]
+       }
+  ]
+}
