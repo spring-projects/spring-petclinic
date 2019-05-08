@@ -1,6 +1,6 @@
 #!/bin/env groovy
 pipeline {
-  agent none
+  agent any 
 
   stages {
 
@@ -17,24 +17,30 @@ pipeline {
       }
     }
     stage('Deploy to Artifactory') {
+      /*
       agent  {
         node {
           label 'tester'
         }
       }
+      */
       steps {
-        sh ''
+       // sh ''
+	echo 'NOT YET IMPLEMENTED'
       }
     }
 
     stage('Deploy to QA') {
+      /*
       agent {
         node {
           label 'tester'
         }
       }
+      */
       steps {
-        sh ''
+        //sh ''
+	echo 'NOT YET IMPLEMENTED'
       }
     }
   }
