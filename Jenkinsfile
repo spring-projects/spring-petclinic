@@ -4,18 +4,6 @@ pipeline {
 
   stages {
 
-    stage('Test') {
-      /*
-      agent {
-        node {
-          label 'tester'
-        }
-      }
-      */
-      steps {
-        sh 'mvn deploy'
-      }
-    }
     stage('Deploy to Artifactory') {
       /*
       agent  {
@@ -26,7 +14,7 @@ pipeline {
       */
       steps {
        // sh ''
-	echo 'NOT YET IMPLEMENTED'
+        sh 'mvn deploy'
       }
     }
 
