@@ -1,6 +1,6 @@
 #!/bin/env groovy
 pipeline {
-  agent any 
+  agent none 
 
   stages {
 
