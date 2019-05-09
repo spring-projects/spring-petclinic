@@ -5,13 +5,11 @@ pipeline {
   stages {
 
     stage('Deploy to Artifactory') {
-      /*
       agent  {
         node {
           label 'tester'
         }
       }
-      */
       steps {
        // sh ''
         sh 'mvn deploy'
