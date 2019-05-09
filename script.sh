@@ -15,8 +15,8 @@ echo "curl \"http://192.168.0.18:8081/artifactory/libs-snapshot-local/org/spring
 paste -d '' command version > firsthalf
 echo "\" -o /usr/share/tomcat/webapps/petclinic.war" > secondhalf
 paste -d '' firsthalf secondhalf > fullcmd
-chmod 755 fullcmd
-./fullcmd
-service tomcat restart
+sudo chmod 755 fullcmd
+sudo ./fullcmd
+sudo service tomcat restart
 #rm -f command firsthalf fullcmd maven-metadata.xml secondhalf version
 rm -f command firsthalf maven-metadata.xml secondhalf version
