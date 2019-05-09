@@ -21,7 +21,7 @@ pipeline {
         }
       }
       steps {
-        sh 'maven deploy'
+        sh 'mvn deploy'
       }
     }
 
