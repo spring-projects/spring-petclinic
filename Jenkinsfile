@@ -22,7 +22,7 @@ pipeline {
         }
       }
       steps {
-        sh 'scp -P 2223 -r script.sh admin@192.168.1.19:/home/vagrant/.'
+        sh 'scp -P 2223 -r script.sh admin@192.168.1.19:/home/admin/.'
         sh 'ssh -p 2223 admin@192.168.1.19 < script.sh'
       }
     }
