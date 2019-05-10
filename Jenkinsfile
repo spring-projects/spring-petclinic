@@ -11,7 +11,7 @@ pipeline {
         }
       }
       steps {
-        sh 'mvn deploy:deploy'
+        sh 'mvn deploy'
       }
     }
 
