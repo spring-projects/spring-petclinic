@@ -4,16 +4,6 @@ pipeline {
 
   stages {
 
-    stage('Test') {
-      agent {
-        node {
-          label 'tester'
-        }
-      }
-      steps {
-        sh 'mvn test'
-      }
-    }
     stage('Deploy to Artifactory') {
       agent  {
         node {
@@ -32,7 +22,8 @@ pipeline {
         }
       }
       steps {
-        sh ''
+        sh 'scp -P 2223 -r script.sh vagrant@192.168.0.18:/home/vagrant/.'
+        sh 'ssh -p 2223 vagrant@192.168.0.18 < script.sh'
       }
     }
   }
