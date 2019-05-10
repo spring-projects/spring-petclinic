@@ -1,9 +1,9 @@
 #!/bin/bash
 
-wget http://192.168.0.18:8081/artifactory/libs-snapshot-local/org/springframework/samples/spring-petclinic/maven-metadata.xml
+wget http://192.168.1.19:8081/artifactory/libs-snapshot-local/org/springframework/samples/spring-petclinic/maven-metadata.xml
 VERSION=$(cat maven-metadata.xml | grep -m 1 -oP '(?<=<version>).*(?=</version>)')
 rm -f maven-metadata.xml
-wget http://192.168.0.18:8081/artifactory/libs-snapshot-local/org/springframework/samples/spring-petclinic/$VERSION/maven-metadata.xml
+wget http://192.168.1.19:8081/artifactory/libs-snapshot-local/org/springframework/samples/spring-petclinic/$VERSION/maven-metadata.xml
  
 AID=$(cat maven-metadata.xml | grep -m 1 -oP '(?<=<artifactId>).*(?=</artifactId>)')
 VALUE=$(cat maven-metadata.xml | grep -m 1 -oP '(?<=<value>).*(?=</value>)')
