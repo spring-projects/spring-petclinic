@@ -10,7 +10,7 @@ VALUE=$(cat maven-metadata.xml | grep -m 1 -oP '(?<=<value>).*(?=</value>)')
 echo $AID-$VALUE.war > version
 #echo "curl \"http://192.168.0.56:8081/repository/maven-snapshots/org/springframework/samples/spring-petclinic/$VERSION/" > command
 
-echo "curl \"http://192.168.0.19:8081/artifactory/libs-snapshot-local/org/springframework/samples/spring-petclinic/$VERSION/" > command
+echo "curl \"http://192.168.1.19:8081/artifactory/libs-snapshot-local/org/springframework/samples/spring-petclinic/$VERSION/" > command
 
 paste -d '' command version > firsthalf
 echo "\" -o /usr/share/tomcat/webapps/petclinic.war" > secondhalf
