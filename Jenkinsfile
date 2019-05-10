@@ -15,7 +15,7 @@ pipeline {
       }
     }
 
-    stage('Deploy to QA') {
+    stage('Deploy to Dev') {
       agent {
         node {
           label 'tester'
@@ -23,7 +23,7 @@ pipeline {
       }
       steps {
         sh 'scp -P 2225 -r script.sh admin@192.168.0.20:/home/admin/.'
-        sh 'ssh -p 2225 admin@192.168.1.19 < script.sh'
+        sh 'ssh -p 2225 admin@192.168.0.20 < script.sh'
       }
     }
   }
