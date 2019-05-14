@@ -5,5 +5,3 @@ target/*
 .idea
 *.iml
 /target
-packer_cache/
-builds/
