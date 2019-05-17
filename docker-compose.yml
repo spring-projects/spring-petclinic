@@ -1,9 +1,24 @@
-mysql:
-  image: mysql:5.7
-  ports:
-    - "3306:3306"
-  environment:
-    - MYSQL_ROOT_PASSWORD=petclinic
-    - MYSQL_DATABASE=petclinic
-  volumes:
-    - "./conf.d:/etc/mysql/conf.d:ro"
+version: "2.2"
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: db
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=petclinic
+      - MYSQL_DATABASE=petclinic
+    volumes:
+      - "./conf.d:/etc/mysql/conf.d:ro"
+    healthcheck:
+        test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+        interval: 30s
+        timeout: 10s
+        retries: 5
+  petclinic:
+    image: petclinic:mysql
+    depends_on: 
+      mysql:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
