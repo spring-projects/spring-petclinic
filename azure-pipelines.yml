@@ -18,4 +18,4 @@ steps:
     echo See https://aka.ms/yaml
   displayName: 'Run a multi-line script'
 
-task: 'PublishBuildArtifacts@1'
+- task: 'PublishBuildArtifacts@1'
