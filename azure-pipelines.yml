@@ -5,7 +5,7 @@ trigger:
 
 # All tasks on Linux
 
-- job: build all linux
+- job: build_all_linux
   displayName: Build all tasks (Linux)
   condition: and(succeeded(), not(variables.task), eq(variables.os, 'Linux'))
   pool:
