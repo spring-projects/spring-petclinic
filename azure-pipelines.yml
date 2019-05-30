@@ -1,21 +1,16 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - master
+- releases/*
 
-pool:
-  vmImage: 'ubuntu-latest'
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+# All tasks on Linux
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
-
-- task: 'PublishBuildArtifacts@1'
+- job: build all linux
+  displayName: Build all tasks (Linux)
+  condition: and(succeeded(), not(variables.task), eq(variables.os, 'Linux'))
+  pool:
+    vmImage: ubuntu-16.04
+  steps:
+  - template: ci/build-all-steps.yml
+    parameters:
+      os: Linux
