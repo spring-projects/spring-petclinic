@@ -18,7 +18,7 @@ variables:
   tag: '$(Build.BuildId)'
   
   # Kubernetes Namespace
-  k8sNamespace: '{{ k8sResource.Namespace }}'
+  mbankpoc: '{{ mbankpoc.Namespace }}'
   imagePullSecret: '{{#toAlphaNumericString containerRegistryConnection.Name 50}}{{/toAlphaNumericString}}{{#shortGuid}}{{/shortGuid}}-auth'
 
   # Agent VM image name
@@ -56,7 +56,7 @@ stages:
     displayName: Deploy
     pool:
       vmImage: $(vmImageName)
-    environment: '{{ k8sResource.EnvironmentReference.Name }}.{{ k8sResource.Name }}'
+    environment: '{{ mbankpoc.EnvironmentReference.Name }}.{{ mbankpoc.Name }}'
     strategy:
       runOnce:
         deploy:
@@ -66,14 +66,14 @@ stages:
             inputs:
               action: createSecret
               secretName: $(imagePullSecret)
-              namespace: $(k8sNamespace)
+              namespace: $(mbankpoc)
               dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
               
           - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes cluster
             inputs:
               action: deploy
-              namespace: $(k8sNamespace)
+              namespace: $(mbankpoc)
               manifests: |
                 $(System.ArtifactsDirectory)/manifests/deployment.yml
                 $(System.ArtifactsDirectory)/manifests/service.yml
