@@ -1,147 +1,19 @@
-# Docker image, Azure Container Registry, and Azure Kubernetes Service
-# Build a Docker image, push it to an Azure Container Registry, and deploy it to Azure Kubernetes Service.
-# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
 
 trigger:
 - master
 
-resources:
-- repo: self
+pool:
+  vmImage: 'ubuntu-latest'
 
-variables:
-  # ========================================================================
-  #                          Mandatory variables 
-  # ========================================================================
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
 
-  # Update Azure.ResourceGroupName value with Azure resource group name.
-  Azure.ResourceGroupName: '{{#toAlphaNumericString repositoryName 50}}{{/toAlphaNumericString}}'
-
-  # Update Azure.ServiceConnectionId value with AzureRm service endpoint.
-  Azure.ServiceConnectionId: '{{ azureServiceConnectionId }}'
-
-  # Update Azure.Location value with Azure Location.
-  Azure.Location: 'eastus'
-
-  # Update ACR.Name value with ACR name. Please note ACR names should be all lower-case and alphanumeric only.
-  ACR.Name: '{{#toAlphaNumericString repositoryName 46}}{{/toAlphaNumericString}}{{#shortGuid}}{{/shortGuid}}'
-
-  # Update AKS.ClusterName value Azure kubernetes cluster name.
-  AKS.ClusterName: '{{#toAlphaNumericString repositoryName 32}}{{/toAlphaNumericString}}'
-
-  # Docker Container port
-  Container.Port: 5000
-
-  # ========================================================================
-  #                           Optional variables 
-  # ========================================================================
-
-  ACR.RepositoryName: '$(ACR.Name)'
-  ACR.ImageName: '$(ACR.Name):$(Build.BuildId)'
-  ACR.FullName: '$(ACR.Name).azurecr.io'
-  ACR.Sku: 'Standard'
-  AKS.KubeDeploymentYaml: '$(System.DefaultWorkingDirectory)/KubeDeployment.yml' # Update AKS.KubeDeploymentYaml if you want to use deployment file from repo instead of generated file.
-  AKS.DeploymentPort: '$(Container.Port)'
-  Azure.CreateResources: 'true' # Update Azure.CreateResources to false if you have already created resources like resource group, azure container registry and azure kubernetes cluster.
-  System.Debug: 'false'
-
-jobs:
-
-- job: CreateResources
-  displayName: Create resources
-  condition: and(succeeded(), eq(variables['Azure.CreateResources'], 'true'))
-
-  pool:
-    vmImage: 'ubuntu-latest'
-
-  steps:
-  - task: AzureResourceGroupDeployment@2
-    displayName: 'Azure Deployment:Create ACR and AKS'
-    inputs:
-      azureSubscription: '$(Azure.ServiceConnectionId)'
-      resourceGroupName: '$(Azure.ResourceGroupName)'
-      location: '$(Azure.Location)'
-      templateLocation: 'URL of the file'
-      addSpnToEnvironment: true
-      csmFileLink: 'https://raw.githubusercontent.com/Microsoft/azure-pipelines-yaml/master/templates/resources/arm/aks.json'
-      overrideParameters: '-registryName "$(ACR.Name)" -registryLocation "$(Azure.Location)" -servicePrincipalId $servicePrincipalId -servicePrincipalKey $servicePrincipalKey -clusterName "$(AKS.ClusterName)" -clusterLocation "$(Azure.Location)"'
-
-- job: BuildImage
-  displayName: Build
-  dependsOn: CreateResources
-  condition: or(succeeded(), ne(variables['Azure.CreateResources'], 'true'))
-
-  pool:
-    vmImage: 'ubuntu-latest'
-
-  steps:
-  - task: Docker@1
-    displayName: 'Build an image'
-    inputs:
-      azureSubscriptionEndpoint: '$(Azure.ServiceConnectionId)'
-      azureContainerRegistry: '$(ACR.FullName)'
-      imageName: '$(ACR.ImageName)'
-      command: build
-      dockerFile: '**/Dockerfile'
-
-  - task: Docker@1
-    displayName: 'Push an image'
-    inputs:
-      azureSubscriptionEndpoint: '$(Azure.ServiceConnectionId)'
-      azureContainerRegistry: '$(ACR.FullName)'
-      imageName: '$(ACR.ImageName)'
-      command: push
-
-- job: DeployApp
-  displayName: Deploy
-  dependsOn: BuildImage
-  condition: succeeded()
-
-  pool:
-    vmImage: 'ubuntu-latest'
-
-  steps:
-  - bash: |
-      if [ -f $(AKS.KubeDeploymentYaml) ]; then
-        echo "##vso[task.setvariable variable=AKS.KubeDeploymentYamlExists;]true"
-      else
-        echo "##vso[task.setvariable variable=AKS.KubeDeploymentYamlExists;]false"
-      fi
-    displayName: 'Check kubernetes deployment yaml exists'
-  - bash: |  
-       echo "apiVersion : apps/v1beta1
-       kind: Deployment
-       metadata:
-         name: $(ACR.RepositoryName)
-       spec:
-         replicas: 1
-         template:
-           metadata:
-             labels:
-               app: $(ACR.RepositoryName)
-           spec:
-             containers:
-             - name: $(ACR.RepositoryName)
-               image: $(ACR.FullName)/$(ACR.ImageName)
-               ports:
-               - containerPort: $(AKS.DeploymentPort)
-       ---
-       apiVersion: v1
-       kind: Service
-       metadata:
-         name: $(ACR.RepositoryName)
-       spec:
-         type: LoadBalancer
-         ports:
-         - port: $(AKS.DeploymentPort)
-         selector:
-           app: $(ACR.RepositoryName)" > $(AKS.KubeDeploymentYaml)
-    displayName: 'Generate kubernetes deployment yaml'
-    condition: and(succeeded(), eq(variables['AKS.KubeDeploymentYamlExists'], 'False'))
-  - task: Kubernetes@1
-    displayName: 'kubectl apply'
-    inputs:
-      azureSubscriptionEndpoint: '$(Azure.ServiceConnectionId)'
-      azureResourceGroup: '$(Azure.ResourceGroupName)'
-      kubernetesCluster: '$(AKS.ClusterName)'
-      arguments: '-f $(AKS.KubeDeploymentYaml)'
-      command: 'apply'
+- script: |
+    echo Add other tasks to build, test, and deploy your project.
+    echo See https://aka.ms/yaml
+  displayName: 'Run a multi-line script'
