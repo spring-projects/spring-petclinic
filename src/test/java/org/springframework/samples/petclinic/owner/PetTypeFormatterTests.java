@@ -26,10 +26,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 
 /**
  * Test class for {@link PetTypeFormatter}
@@ -54,19 +54,19 @@ public class PetTypeFormatterTests {
         PetType petType = new PetType();
         petType.setName("Hamster");
         String petTypeName = this.petTypeFormatter.print(petType, Locale.ENGLISH);
-        assertEquals("Hamster", petTypeName);
+        assertThat(petTypeName).isEqualTo("Hamster");
     }
 
     @Test
     public void shouldParse() throws ParseException {
-        Mockito.when(this.pets.findPetTypes()).thenReturn(makePetTypes());
+        given(this.pets.findPetTypes()).willReturn(makePetTypes());
         PetType petType = petTypeFormatter.parse("Bird", Locale.ENGLISH);
-        assertEquals("Bird", petType.getName());
+        assertThat(petType.getName()).isEqualTo("Bird");
     }
 
     @Test(expected = ParseException.class)
     public void shouldThrowParseException() throws ParseException {
-        Mockito.when(this.pets.findPetTypes()).thenReturn(makePetTypes());
+        given(this.pets.findPetTypes()).willReturn(makePetTypes());
         petTypeFormatter.parse("Fish", Locale.ENGLISH);
     }
 
