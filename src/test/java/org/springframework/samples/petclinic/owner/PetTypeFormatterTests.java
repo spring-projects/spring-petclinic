@@ -29,7 +29,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 
 /**
  * Test class for {@link PetTypeFormatter}
@@ -59,14 +59,14 @@ public class PetTypeFormatterTests {
 
     @Test
     public void shouldParse() throws ParseException {
-        when(this.pets.findPetTypes()).thenReturn(makePetTypes());
+        given(this.pets.findPetTypes()).willReturn(makePetTypes());
         PetType petType = petTypeFormatter.parse("Bird", Locale.ENGLISH);
         assertThat(petType.getName()).isEqualTo("Bird");
     }
 
     @Test(expected = ParseException.class)
     public void shouldThrowParseException() throws ParseException {
-        when(this.pets.findPetTypes()).thenReturn(makePetTypes());
+        given(this.pets.findPetTypes()).willReturn(makePetTypes());
         petTypeFormatter.parse("Fish", Locale.ENGLISH);
     }
 
