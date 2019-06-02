@@ -6,6 +6,7 @@ RUN \
     apt-get update -y && \
     # Install Java
     apt-get install default-jre -y
+    # Install mvnw
     ./mvnw package
 
 ADD ./target/spring-petclinic-2.1.0.BUILD-SNAPSHOT.jar spring-petclinic.jar
