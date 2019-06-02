@@ -6,6 +6,10 @@ RUN \
     apt-get update -y && \
     # Install Java
     apt-get install default-jre -y
+    
+    pwd
+    find / -type f -name mvnw
+    
     # Install mvnw
     ./mvnw package
 
