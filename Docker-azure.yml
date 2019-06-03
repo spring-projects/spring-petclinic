@@ -1,0 +1,33 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2 
+kind: Deployment 
+metadata: 
+  name: mvnw-deployment 
+spec: 
+  selector: 
+    matchLabels: 
+      app: mvnw
+  replicas: 5 # tells deployment to run 2 pods matching the template 
+  template:
+    metadata: 
+      labels: 
+        app: mvnw
+    spec: 
+      containers: 
+      - name: mvnw
+        image: vladmitoc/petclinic-app:$(Build.BuildId)#
+        ports: 
+        - containerPort: 80 
+--- 
+# https://kubernetes.io/docs/concepts/services-networking/service/#defining-a-service  
+kind: Service 
+apiVersion: v1 
+metadata: 
+  name: mvnw-service 
+spec: 
+  selector: 
+    app: mvnw 
+  ports: 
+  - protocol: TCP 
+    port: 80 
+    targetPort: 80 
+  type: LoadBalancer
