@@ -1,20 +1,23 @@
 node {
 
-
+	tools{
+        maven "Maven-3.3.9"
+        jdk "JAVA_HOME"
+		
+    }
     stage('Checkout') {
         git 'https://github.com/ThilakrajKM/spring-petclinic'
+		
     }
 	
 	stage('Build'){
-	
-		def mvn_version = 'M3'
-		withEnv( ["PATH+MAVEN=${tool mvn_version}/bin"] ) {
-			sh "mvn clean package"
-		}
+		sh "mvn clean package"
+		
 	}
 
     stage('Archive') {
         junit allowEmptyResults: true, testResults: '**/target/**/TEST*.xml'
+		
     }
 
 }
