@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>VisitController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">petclinic-application</a> &gt; <a href="index.source.html" class="el_package">org.springframework.samples.petclinic.owner</a> &gt; <span class="el_source">VisitController.java</span></div><h1>VisitController.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2012-2019 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.springframework.samples.petclinic.owner;
+
+import org.springframework.samples.petclinic.visit.Visit;
+import org.springframework.samples.petclinic.visit.VisitRepository;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.Map;
+
+/**
+ * @author Juergen Hoeller
+ * @author Ken Krebs
+ * @author Arjen Poutsma
+ * @author Michael Isvy
+ * @author Dave Syer
+ */
+@Controller
+class VisitController {
+
+    private final VisitRepository visits;
+    private final PetRepository pets;
+
+
+<span class="fc" id="L42">    public VisitController(VisitRepository visits, PetRepository pets) {</span>
+<span class="fc" id="L43">        this.visits = visits;</span>
+<span class="fc" id="L44">        this.pets = pets;</span>
+<span class="fc" id="L45">    }</span>
+
+    @InitBinder
+    public void setAllowedFields(WebDataBinder dataBinder) {
+<span class="fc" id="L49">        dataBinder.setDisallowedFields(&quot;id&quot;);</span>
+<span class="fc" id="L50">    }</span>
+
+    /**
+     * Called before each and every @RequestMapping annotated method.
+     * 2 goals:
+     * - Make sure we always have fresh data
+     * - Since we do not use the session scope, make sure that Pet object always has an id
+     * (Even though id is not part of the form fields)
+     *
+     * @param petId
+     * @return Pet
+     */
+    @ModelAttribute(&quot;visit&quot;)
+    public Visit loadPetWithVisit(@PathVariable(&quot;petId&quot;) int petId, Map&lt;String, Object&gt; model) {
+<span class="fc" id="L64">        Pet pet = this.pets.findById(petId);</span>
+<span class="fc" id="L65">        model.put(&quot;pet&quot;, pet);</span>
+<span class="fc" id="L66">        Visit visit = new Visit();</span>
+<span class="fc" id="L67">        pet.addVisit(visit);</span>
+<span class="fc" id="L68">        return visit;</span>
+    }
+
+    // Spring MVC calls method loadPetWithVisit(...) before initNewVisitForm is called
+    @GetMapping(&quot;/owners/*/pets/{petId}/visits/new&quot;)
+    public String initNewVisitForm(@PathVariable(&quot;petId&quot;) int petId, Map&lt;String, Object&gt; model) {
+<span class="fc" id="L74">        return &quot;pets/createOrUpdateVisitForm&quot;;</span>
+    }
+
+    // Spring MVC calls method loadPetWithVisit(...) before processNewVisitForm is called
+    @PostMapping(&quot;/owners/{ownerId}/pets/{petId}/visits/new&quot;)
+    public String processNewVisitForm(@Valid Visit visit, BindingResult result) {
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        if (result.hasErrors()) {</span>
+<span class="fc" id="L81">            return &quot;pets/createOrUpdateVisitForm&quot;;</span>
+        } else {
+<span class="fc" id="L83">            this.visits.save(visit);</span>
+<span class="fc" id="L84">            return &quot;redirect:/owners/{ownerId}&quot;;</span>
+        }
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

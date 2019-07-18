@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Visit.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">petclinic-application</a> &gt; <a href="index.source.html" class="el_package">org.springframework.samples.petclinic.visit</a> &gt; <span class="el_source">Visit.java</span></div><h1>Visit.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2012-2019 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.springframework.samples.petclinic.visit;
+
+import java.time.LocalDate;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.samples.petclinic.model.BaseEntity;
+
+/**
+ * Simple JavaBean domain object representing a visit.
+ *
+ * @author Ken Krebs
+ * @author Dave Syer
+ */
+@Entity
+@Table(name = &quot;visits&quot;)
+public class Visit extends BaseEntity {
+
+    @Column(name = &quot;visit_date&quot;)
+    @DateTimeFormat(pattern = &quot;yyyy-MM-dd&quot;)
+    private LocalDate date;
+
+    @NotEmpty
+    @Column(name = &quot;description&quot;)
+    private String description;
+
+    @Column(name = &quot;pet_id&quot;)
+    private Integer petId;
+
+    /**
+     * Creates a new instance of Visit for the current date
+     */
+<span class="fc" id="L52">    public Visit() {</span>
+<span class="fc" id="L53">        this.date = LocalDate.now();</span>
+<span class="fc" id="L54">    }</span>
+
+    public LocalDate getDate() {
+<span class="fc" id="L57">        return this.date;</span>
+    }
+
+    public void setDate(LocalDate date) {
+<span class="nc" id="L61">        this.date = date;</span>
+<span class="nc" id="L62">    }</span>
+
+    public String getDescription() {
+<span class="fc" id="L65">        return this.description;</span>
+    }
+
+    public void setDescription(String description) {
+<span class="fc" id="L69">        this.description = description;</span>
+<span class="fc" id="L70">    }</span>
+
+    public Integer getPetId() {
+<span class="fc" id="L73">        return this.petId;</span>
+    }
+
+    public void setPetId(Integer petId) {
+<span class="fc" id="L77">        this.petId = petId;</span>
+<span class="fc" id="L78">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
