@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: org.springframework.samples.petclinic.owner.PetControllerTests
--------------------------------------------------------------------------------
-Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.706 s - in org.springframework.samples.petclinic.owner.PetControllerTests
