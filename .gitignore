@@ -1,6 +1,8 @@
 target/*
+petclinic-application/target/*
 .settings/*
 .classpath
+.editorconfig
 .project
 .factorypath
 .attach_pid*
