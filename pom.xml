@@ -30,7 +30,6 @@
     </modules>
 
     <properties>
-
         <!-- Generic properties -->
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -41,12 +40,10 @@
         <webjars-jquery-ui.version>1.11.4</webjars-jquery-ui.version>
         <webjars-jquery.version>2.2.4</webjars-jquery.version>
         <wro4j.version>1.8.0</wro4j.version>
-
         <jacoco.version>0.8.2</jacoco.version>
 
         <!-- Other properties -->
         <deploy-plugin.version>2.8.1</deploy-plugin.version>
-
     </properties>
 
     <repositories>
