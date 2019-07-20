@@ -26,7 +26,7 @@
 
     <modules>
         <module>petclinic-application</module>
-        <module>petclinic-containers</module>
+        <module>petclinic-container</module>
     </modules>
 
     <properties>
@@ -44,6 +44,7 @@
 
         <!-- Other properties -->
         <deploy-plugin.version>2.8.1</deploy-plugin.version>
+        <mojo-exec.version>1.6.0</mojo-exec.version>
     </properties>
 
     <repositories>
@@ -83,5 +84,4 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-
 </project>
