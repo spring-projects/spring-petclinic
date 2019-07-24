@@ -1,6 +1,6 @@
 target/*
 petclinic-application/target/*
-/petclinic-containers/src/main/resources/petclinic.jar
+petclinic-container/target/context/petclinic.jar
 .settings/*
 .classpath
 .editorconfig

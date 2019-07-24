@@ -26,6 +26,29 @@
                 </resources>
                 <plugins>
                     <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>${resources-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>copy-resources</id>
+                                <!-- here the phase you need -->
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${basedir}/target/context/</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${basedir}/src/main/resources</directory>
+                                            <filtering>true</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-dependency-plugin</artifactId>
                         <executions>
@@ -43,7 +66,7 @@
                                             <version>${project.version}</version>
                                             <type>jar</type>
                                             <overWrite>true</overWrite>
-                                            <outputDirectory>${basedir}/src/main/resources</outputDirectory>
+                                            <outputDirectory>${basedir}/target/context/</outputDirectory>
                                             <destFileName>petclinic.jar</destFileName>
                                         </artifactItem>
                                     </artifactItems>
@@ -64,7 +87,7 @@
                                 </goals>
                                 <configuration>
                                     <executable>docker</executable>
-                                    <workingDirectory>${project.basedir}/src/main/resources</workingDirectory>
+                                    <workingDirectory>${project.basedir}/target/context/</workingDirectory>
                                     <arguments>
                                         <argument>build</argument>
                                         <argument>.</argument>
@@ -80,3 +103,7 @@
         </profile>
     </profiles>
 </project>
+
+    <!--
+    /target/context/{Dockerfile, jars, resurces}
+    -->
