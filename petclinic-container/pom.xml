@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.springframework.samples</groupId>
+        <groupId>ru.cicd.samples</groupId>
         <artifactId>spring-petclinic</artifactId>
         <version>2.0</version>
     </parent>
@@ -16,7 +16,7 @@
     <name>petclinic-containers</name>
     <profiles>
         <profile>
-            <id>docker-build</id>
+            <id>docker</id>
             <build>
                 <resources>
                     <resource>
@@ -61,7 +61,7 @@
                                 <configuration>
                                     <artifactItems>
                                         <artifactItem>
-                                            <groupId>org.springframework.samples</groupId>
+                                            <groupId>ru.cicd.samples</groupId>
                                             <artifactId>petclinic-application</artifactId>
                                             <version>${project.version}</version>
                                             <type>jar</type>
@@ -80,7 +80,7 @@
                         <version>${mojo-exec.version}</version>
                         <executions>
                             <execution>
-                                <id>docker-package</id>
+                                <id>build</id>
                                 <phase>package</phase>
                                 <goals>
                                     <goal>exec</goal>
@@ -92,7 +92,21 @@
                                         <argument>build</argument>
                                         <argument>.</argument>
                                         <argument>-t</argument>
-                                        <argument>${project.groupId}/${project.artifactId}:${project.version}</argument>
+                                        <argument>${docker-registry}/${project.groupId}/${project.artifactId}:${project.version}</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>push</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>docker</executable>
+                                    <arguments>
+                                        <argument>push</argument>
+                                        <argument>${docker-registry}/${project.groupId}/${project.artifactId}:${project.version}</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -104,6 +118,3 @@
     </profiles>
 </project>
 
-    <!--
-    /target/context/{Dockerfile, jars, resurces}
-    -->
