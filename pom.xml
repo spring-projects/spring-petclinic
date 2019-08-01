@@ -19,7 +19,7 @@
 
     <groupId>ru.cicd.samples</groupId>
     <artifactId>spring-petclinic</artifactId>
-    <version>2.0</version>
+    <version>1.0</version>
     <name>petclinic-modular-parent</name>
 
     <packaging>pom</packaging>
