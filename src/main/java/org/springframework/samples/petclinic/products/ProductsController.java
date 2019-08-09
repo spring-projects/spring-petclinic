@@ -14,7 +14,9 @@ public class ProductsController {
     @GetMapping("/products")
     public String showProductList(Model model){
         List<Product> prods = new ArrayList<Product>();
-        model.addAttribute("Products", prods);
+        model.addAttribute("products", prods);
+        prods.add(new Product("Produto 1", "p1"));
+        prods.add(new Product("Produto 2", "p2"));
 
         return "products/productsList";
     }
