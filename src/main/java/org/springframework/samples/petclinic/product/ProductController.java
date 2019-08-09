@@ -1,18 +1,26 @@
 package org.springframework.samples.petclinic.product;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
 
-@RestController
+import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
+import java.util.ArrayList;
+
+
+@Controller
 public class ProductController {
 
     @GetMapping("/products")
-    public String showProductList(){
+    public String showProductList(Model model){
+        List<Product> prods = new ArrayList<Product>();
+        model.addAttribute( "products", prods);
+        prods.add(new Product("p1"));
+        prods.add(new Product( "p2"));
 
-        return "C:\\Users\\gfick\\Downloads\\Download.png";
+        return "products/productsList";
     }
-
 
 }
 
