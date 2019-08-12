@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'employers')}">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <title>Employers List</title>
+    <h1>Employers List</h1>
+    <table id="employers" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Names</th>
+                <th>Salaries</th>
+            </tr>
+        <thead/>
+        <tbody>
+        <tr th:each="employer: ${employers}">
+            <td th:text="${employer.name}" ></td>
+            <td th:text="${employer.salarie}"></td>
+        </tr>
+        </tbody>
+
+</body>
+</html>

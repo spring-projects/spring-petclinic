@@ -64,6 +64,11 @@
                       <span>Products</span>
                   </li>
 
+                  <li th:replace="::menuItem ('/employers','employers','employers','th-list','Employers')">
+                      <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                      <span>Employers</span>
+                  </li>
+
                   <li th:replace="::menuItem ('/oups','error','trigger a RuntimeException to see how it is handled','warning-sign','Error')">
                       <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
                       <span>Error</span>

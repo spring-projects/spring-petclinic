@@ -18,6 +18,8 @@
 @spring-brown:      #34302D;
 @spring-grey:       #838789;
 @spring-light-grey: #f1f1f1;
+@spring-purple: #322d34;
+@spring-red: #ff1235;
 
 @body-bg:                           @spring-light-grey;
 @text-color:                        @spring-brown;
@@ -51,16 +53,16 @@
 
 .table > thead > tr > th {
   background-color: lighten(@spring-brown, 3%);
-  color: @spring-light-grey;
+  color: @spring-red;
 }
 
 .table-filter {
-  background-color: @spring-brown;
+  background-color: @spring-purple;
   padding: 9px 12px;
 }
 
 .nav > li > a {
-  color: @spring-grey;
+  color: @spring-red;
 }
 
 .btn-default {
@@ -76,7 +78,7 @@
   &:active,
   &.active,
   .open .dropdown-toggle& {
-    background-color: @spring-brown;
+    background-color: @spring-purple;
     border-color: @spring-brown;
   }
 }
@@ -125,7 +127,7 @@ h1 {
 }
 
 .splash {
-  background: @spring-green;
+  background: @spring-brown;
   color: @spring-brown;
   display: none;
 }

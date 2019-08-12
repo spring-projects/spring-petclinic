@@ -51,3 +51,11 @@ INSERT INTO visits VALUES (1, 7, '2013-01-01', 'rabies shot');
 INSERT INTO visits VALUES (2, 8, '2013-01-02', 'rabies shot');
 INSERT INTO visits VALUES (3, 8, '2013-01-03', 'neutered');
 INSERT INTO visits VALUES (4, 7, '2013-01-04', 'spayed');
+
+INSERT INTO products VALUES (1,'produto P1');
+INSERT INTO products VALUES (2,'produto P2');
+INSERT INTO products VALUES (3,'produto P3');
+INSERT INTO products VALUES (4,'produto P4');
+INSERT INTO products VALUES (5,'produto P5');
+
+
