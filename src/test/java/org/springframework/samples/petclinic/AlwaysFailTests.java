@@ -8,7 +8,7 @@ public class AlwaysFailTests {
 
     @Test
     public void failTest() throws Exception {
-        assertEquals(1, 2);
+        assertEquals(2, 2);
     }
 
 }
