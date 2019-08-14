@@ -133,6 +133,7 @@ public class Owner extends Person {
                 String compName = pet.getName();
                 compName = compName.toLowerCase();
                 if (compName.equals(name)) {
+                    System.out.println("HOORRAY!");
                     return pet;
                 }
             }
