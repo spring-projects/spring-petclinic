@@ -1,0 +1,8 @@
+image:
+  file: Dockerfile
+ports:
+- port: 8080
+  onOpen: open-preview
+tasks:
+- init: ./mvnw package
+  command: ./mvnw spring-boot:run
