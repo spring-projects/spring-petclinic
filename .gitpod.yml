@@ -1,0 +1,10 @@
+image:
+  file: Dockerfile
+# exposed ports
+ports:
+- port: 8080
+  onOpen: open-preview
+# start up tasks
+tasks:
+- init: ./mvnw package -DskipTests >/dev/null
+  command: ./mvnw package -DskipTests # FIXME : LS removes *.css on initialize
