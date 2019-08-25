@@ -8,6 +8,31 @@ node {
       // **       in the global configuration.           
       mvnHome = tool 'M3'
    }
+   stage('Sonar Scan Execution'){
+	//Run the sonar scan
+	steps {
+		script{
+			mvnHome = tool 'M3'
+			withSonarQubeDev{
+				sh "'${mvnHome}/bin/mvn'  verify sonar:sonar -Dintegration-tests.skip=true -Dmaven.test.failure.ignore=true"
+			}
+		}
+	}
+   }
+   stage('Sonar scan result check') {
+   steps {
+	timeout(time: 2, unit: 'MINUTES') {
+		retry(3) {
+			script {
+				def qg = waitForQualityGate()
+				if (qg.status != 'OK') {
+					error "Pipeline aborted due to quality gate failure: ${qg.status}"
+				}
+			}
+		}
+	}
+	}
+   }
    stage('Build') {
       // Run the maven build
       withEnv(["MVN_HOME=$mvnHome"]) {
@@ -17,16 +42,5 @@ node {
             bat(/"%MVN_HOME%\bin\mvn" -Dmaven.test.failure.ignore clean package/)
          }
       }
-   }
-   stage('Sonar Scan Execution'){
-		//Run the sonar scan
-		steps {
-			script{
-				def mvnHome = tool 'M3'
-				withSonarQubeDev{
-					sh "'${mvnHome}/bin/mvn'  verify sonar:sonar -Dintegration-tests.skip=true -Dmaven.test.failure.ignore=true"
-				}
-			}
-		}
    }
 }
