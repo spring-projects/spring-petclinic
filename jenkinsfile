@@ -18,4 +18,15 @@ node {
          }
       }
    }
+   stage('Sonar Scan Execution'){
+		//Run the sonar scan
+		steps {
+			script{
+				def mvnHome = tool 'M3'
+				withSonarQubeDev{
+					sh "'${mvnHome}/bin/mvn'  verify sonar:sonar -Dintegration-tests.skip=true -Dmaven.test.failure.ignore=true"
+				}
+			}
+		}
+   }
 }
