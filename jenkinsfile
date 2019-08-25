@@ -8,29 +8,19 @@ node {
       // **       in the global configuration.           
       mvnHome = tool 'M3'
    }
-   stage('Sonar Scan Execution'){
+   stage('Sonar Quality Analysis'){
 	//Run the sonar scan
-	steps {
-		script{
-			mvnHome = tool 'M3'
-			withSonarQubeDev{
-			sh "'${mvnHome}/bin/mvn'  verify sonar:sonar -Dsonar.projectKey=Petclinic -Dsonar.host.url=http://xyart81442dns1.eastus2.cloudapp.azure.com -Dsonar.login=bff9e0e153a1384234a2c18652327736550c1ecd-Dintegration-tests.skip=true -Dmaven.test.failure.ignore=true"
-			}
-		}
+	withSonarQubeDev{
+	sh "'${mvnHome}/bin/mvn'  verify sonar:sonar -Dsonar.projectKey=Petclinic -Dsonar.host.url=http://xyart81442dns1.eastus2.cloudapp.azure.com -Dsonar.login=bff9e0e153a1384234a2c18652327736550c1ecd-Dintegration-tests.skip=true -Dmaven.test.failure.ignore=true"
 	}
    }
-   stage('Sonar scan result check') {
-   steps {
-	timeout(time: 2, unit: 'MINUTES') {
-		retry(3) {
-			script {
-				def qg = waitForQualityGate()
-				if (qg.status != 'OK') {
-					error "Pipeline aborted due to quality gate failure: ${qg.status}"
-				}
-			}
+   stage('Sonar Quality Gate') {
+	timeout(time: 1, unit: 'HOURS') {
+	def qg = waitForQualityGate()
+	if (qg.status != 'OK') {
+		currentBuild.status='FAILURE'
+		error "Pipeline aborted due to quality gate failure: ${qg.status}"
 		}
-	}
 	}
    }
    stage('Build') {
