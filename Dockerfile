@@ -1,4 +1,4 @@
 FROM openjdk:8
-COPY ${JAR_FILE_PATH} /var/lib/jenkins/workspace/sample/target/petclinic.jar
-ENTRYPOINT java -jar /opt/spring-petclinic/petclinic.jar
+COPY /var/lib/jenkins/workspace/sample/target/petclinic.jar /opt/petclinic.ja
+ENTRYPOINT java -jar /opt/petclinic.jar
 EXPOSE 8080
