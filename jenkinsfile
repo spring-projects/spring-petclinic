@@ -11,7 +11,7 @@ node {
    stage('Sonar Quality Analysis'){
 	//Run the sonar scan
 	withSonarQubeDev('sonarqube'){
-	sh "'mvn clean package sonar:sonar'
+	sh 'mvn clean package sonar:sonar'
 	}
    }
    stage('Sonar Quality Gate') {
