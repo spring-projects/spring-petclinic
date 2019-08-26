@@ -41,5 +41,12 @@ node {
     }"""  
    server.upload(uploadSpec) 
    }
-   
+   stage('Petclinic Docker Image') {
+    steps{
+	sh "sudo docker build --build-arg JAR_FILE_PATH=/var/lib/jenkins/workspace/sample/target/*.war -t sandeepds2002/petclinic ."
+	sh "sudo docker push sandeepds2002/petclinic"
+	sh "sudo rm -r /var/lib/jenkins/workspace/sample/target/spring-petclinic.jar"
+	sh "sudo docker rmi -f sandeepds2002/petclinic"
+    }
+}
 }
