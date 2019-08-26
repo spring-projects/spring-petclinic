@@ -10,7 +10,7 @@ node {
    }
    stage('Sonar Quality Analysis'){
 	//Run the sonar scan
-	withSonarQubeDev('sonarqube'){
+	withSonarQubeEnv('sonarqube'){
 	sh 'mvn clean package sonar:sonar'
 	}
    }
