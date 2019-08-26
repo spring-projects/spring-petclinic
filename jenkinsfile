@@ -10,8 +10,8 @@ node {
    }
    stage('Sonar Quality Analysis'){
 	//Run the sonar scan
-	withSonarQubeDev{
-	sh "'${mvnHome}/bin/mvn'  verify sonar:sonar -Dsonar.projectKey=Petclinic -Dsonar.host.url=http://xyart81442dns1.eastus2.cloudapp.azure.com -Dsonar.login=bff9e0e153a1384234a2c18652327736550c1ecd-Dintegration-tests.skip=true -Dmaven.test.failure.ignore=true"
+	withSonarQubeDev('sonarqube'){
+	sh "'${mvnHome}/bin/mvn'  verify sonar:sonar
 	}
    }
    stage('Sonar Quality Gate') {
