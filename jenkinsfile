@@ -42,7 +42,7 @@ node {
    server.upload(uploadSpec) 
    }
    stage('Petclinic Docker Image') {
-   docker.withRegistry('https://registry.hub.docker.com/', 'dockerhub') {
+   docker.withRegistry('https://registry-1.docker.io/v2/', 'dockerhub') {
 
         def customImage = docker.build("petclinic")
 
