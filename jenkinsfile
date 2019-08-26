@@ -1,5 +1,6 @@
 node {
    def mvnHome
+   def server = Artifactory.server 'jforgartifactory'
    stage('Preparation') { // for display purposes
       // Get some code from a GitHub repository
       git 'https://github.com/sandeepds/spring-petclinic.git'
@@ -34,7 +35,11 @@ node {
       }
    }
    stage('Jfrog Artifactory Upload'){
-   
+   def uploadSpec = """ 
+   {  
+	"files": [ { "pattern": "/var/lib/jenkins/workspace/sample/target/*.war", "target": "pet-clinic" } ]  
+    }"""  
+   server.upload(uploadSpec) 
    }
    
 }
