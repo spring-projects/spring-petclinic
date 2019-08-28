@@ -36,11 +36,14 @@ import org.springframework.stereotype.Component;
 public class PetTypeFormatter implements Formatter<PetType> {
 
     private final PetRepository pets;
+    private final PetTypeRepository petTypes;
 
 
     @Autowired
-    public PetTypeFormatter(PetRepository pets) {
+    public PetTypeFormatter(PetRepository pets,PetTypeRepository petTypes) {
+
         this.pets = pets;
+        this.petTypes = petTypes;
     }
 
     @Override
@@ -50,7 +53,7 @@ public class PetTypeFormatter implements Formatter<PetType> {
 
     @Override
     public PetType parse(String text, Locale locale) throws ParseException {
-        Collection<PetType> findPetTypes = this.pets.findPetTypes();
+        Collection<PetType> findPetTypes = this.petTypes.findAll();
         for (PetType type : findPetTypes) {
             if (type.getName().equals(text)) {
                 return type;

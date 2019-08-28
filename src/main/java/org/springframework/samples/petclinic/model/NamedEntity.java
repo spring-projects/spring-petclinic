@@ -26,7 +26,6 @@ import javax.persistence.MappedSuperclass;
  * @author Ken Krebs
  * @author Juergen Hoeller
  */
-@MappedSuperclass
 public class NamedEntity extends BaseEntity {
 
     @Column(name = "name")

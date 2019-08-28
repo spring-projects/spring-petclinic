@@ -30,10 +30,11 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.redis.core.RedisHash;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.model.NamedEntity;
 import org.springframework.samples.petclinic.visit.Visit;
@@ -45,23 +46,22 @@ import org.springframework.samples.petclinic.visit.Visit;
  * @author Juergen Hoeller
  * @author Sam Brannen
  */
-@Entity
-@Table(name = "pets")
+@RedisHash("pets")
 public class Pet extends NamedEntity {
 
-    @Column(name = "birth_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
 
-    @ManyToOne
     @JoinColumn(name = "type_id")
     private PetType type;
-
-    @ManyToOne
-    @JoinColumn(name = "owner_id")
+    /**
+     * Pet need not save Owner to avoid cyclic dependency while persisting.
+     */
+    @Transient
     private Owner owner;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "petId", fetch = FetchType.EAGER)
+    private Integer ownerId;
+
     private Set<Visit> visits = new LinkedHashSet<>();
 
     public void setBirthDate(LocalDate birthDate) {
@@ -86,6 +86,7 @@ public class Pet extends NamedEntity {
 
     protected void setOwner(Owner owner) {
         this.owner = owner;
+        this.ownerId = owner.getId();
     }
 
     protected Set<Visit> getVisitsInternal() {

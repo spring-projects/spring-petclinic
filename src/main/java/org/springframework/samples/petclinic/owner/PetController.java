@@ -15,6 +15,8 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -22,8 +24,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Juergen Hoeller
@@ -33,24 +39,40 @@ import java.util.Collection;
 @Controller
 @RequestMapping("/owners/{ownerId}")
 class PetController {
-
+    private final Logger logger = LoggerFactory.getLogger(PetController.class);
     private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = "pets/createOrUpdatePetForm";
     private final PetRepository pets;
     private final OwnerRepository owners;
+    private final PetTypeRepository petTypes;
 
-    public PetController(PetRepository pets, OwnerRepository owners) {
+    @PostConstruct
+    public void initialize(){
+        if(this.petTypes.findAll().isEmpty()){
+            PetType cat = new PetType();
+            cat.setName("Cat");
+            PetType dog = new PetType();
+            dog.setName("Dog");
+            petTypes.save(cat);
+            petTypes.save(dog);
+            logger.info("All pet types saved");
+        }
+    }
+
+    public PetController(PetRepository pets, OwnerRepository owners,PetTypeRepository petTypes) {
         this.pets = pets;
         this.owners = owners;
+        this.petTypes = petTypes;
     }
 
     @ModelAttribute("types")
     public Collection<PetType> populatePetTypes() {
-        return this.pets.findPetTypes();
+        return this.petTypes.findAll();
     }
 
     @ModelAttribute("owner")
     public Owner findOwner(@PathVariable("ownerId") int ownerId) {
-        return this.owners.findById(ownerId);
+        Optional<Owner> ownerSearch = this.owners.findById(ownerId);
+        return ownerSearch.isPresent() ? ownerSearch.get() : null;
     }
 
     @InitBinder("owner")
@@ -81,15 +103,21 @@ class PetController {
             model.put("pet", pet);
             return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
         } else {
-            this.pets.save(pet);
+            addPet(owner, pet);
             return "redirect:/owners/{ownerId}";
         }
     }
 
+    private void addPet(Owner owner, @Valid Pet pet) {
+        this.pets.save(pet);
+        owner.addPet(pet);
+        owners.save(owner);
+    }
+
     @GetMapping("/pets/{petId}/edit")
     public String initUpdateForm(@PathVariable("petId") int petId, ModelMap model) {
-        Pet pet = this.pets.findById(petId);
-        model.put("pet", pet);
+        Optional<Pet> petSearch = this.pets.findById(petId);
+        model.put("pet", petSearch.isPresent() ? petSearch.get(): null);
         return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
     }
 
@@ -100,7 +128,6 @@ class PetController {
             model.put("pet", pet);
             return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
         } else {
-            owner.addPet(pet);
             this.pets.save(pet);
             return "redirect:/owners/{ownerId}";
         }

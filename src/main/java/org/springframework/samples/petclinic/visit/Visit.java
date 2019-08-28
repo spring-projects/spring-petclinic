@@ -22,6 +22,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
+import org.springframework.data.redis.core.RedisHash;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.model.BaseEntity;
 
@@ -31,11 +32,9 @@ import org.springframework.samples.petclinic.model.BaseEntity;
  * @author Ken Krebs
  * @author Dave Syer
  */
-@Entity
-@Table(name = "visits")
+@RedisHash
 public class Visit extends BaseEntity {
 
-    @Column(name = "visit_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
 
@@ -43,7 +42,6 @@ public class Visit extends BaseEntity {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "pet_id")
     private Integer petId;
 
     /**

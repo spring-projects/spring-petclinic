@@ -15,6 +15,8 @@
  */
 package org.springframework.samples.petclinic.model;
 
+import org.springframework.data.redis.core.index.Indexed;
+
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotEmpty;
@@ -24,15 +26,13 @@ import javax.validation.constraints.NotEmpty;
  *
  * @author Ken Krebs
  */
-@MappedSuperclass
 public class Person extends BaseEntity {
 
-    @Column(name = "first_name")
     @NotEmpty
     private String firstName;
 
-    @Column(name = "last_name")
     @NotEmpty
+    @Indexed
     private String lastName;
 
     public String getFirstName() {

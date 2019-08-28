@@ -8,12 +8,15 @@ Deploy this sample application to Pivotal Web Services:
 ## Understanding the Spring Petclinic application with a few diagrams
 <a href="https://speakerdeck.com/michaelisvy/spring-petclinic-sample-application">See the presentation here</a>
 
+## Runtime Dependency
+This forked version of pet-clinic usages redis as data store. The redis server must be running locally or remotely and configured in application.properties file.
+
 ## Running petclinic locally
 Petclinic is a [Spring Boot](https://spring.io/guides/gs/spring-boot) application built using [Maven](https://spring.io/guides/gs/maven/). You can build a jar file and run it from the command line:
 
 
 ```
-git clone https://github.com/spring-projects/spring-petclinic.git
+git clone https://github.com/er-satish/spring-petclinic.git
 cd spring-petclinic
 ./mvnw package
 java -jar target/*.jar
@@ -35,17 +38,25 @@ Our issue tracker is available here: https://github.com/spring-projects/spring-p
 
 ## Database configuration
 
-In its default configuration, Petclinic uses an in-memory database (HSQLDB) which
-gets populated at startup with data. A similar setup is provided for MySql in case a persistent database configuration is needed.
-Note that whenever the database type is changed, the app needs to be run with a different profile: `spring.profiles.active=mysql` for MySql.
+In this forked version of pet-clinic, it usages redis as data store. So, the same should be accessible to the application and configured in application properties file.
 
-You could start MySql locally with whatever installer works for your OS, or with docker:
+You could start Redis locally with whatever installer works for your OS, or with d  ocker:
 
 ```
-docker run -e MYSQL_ROOT_PASSWORD=petclinic -e MYSQL_DATABASE=petclinic -p 3306:3306 mysql:5.7.8
+docker run -d -p 6379:6379 redis
 ```
-
-Further documentation is provided [here](https://github.com/spring-projects/spring-petclinic/blob/master/src/main/resources/db/mysql/petclinic_db_setup_mysql.txt).
+check the running container id:
+```
+docker ps
+```
+connect to the running container:
+```
+docker exec -it <container_id> /bin/bash
+```
+open redis command line interface:
+```
+redis-cli
+```
 
 ## Working with Petclinic in your IDE
 
@@ -120,9 +131,7 @@ Here is a list of them:
 
 # Contributing
 
-The [issue tracker](https://github.com/spring-projects/spring-petclinic/issues) is the preferred channel for bug reports, features requests and submitting pull requests.
-
-For pull requests, editor preferences are available in the [editor config](.editorconfig) for easy use in common text editors. Read more and download plugins at <https://editorconfig.org>. If you have not previously done so, please fill out and submit the [Contributor License Agreement](https://cla.pivotal.io/sign/spring).
+Feel free to raise the pull request for any fixes or enhancements to demonstrate spring-redis capability.
 
 # License
 
@@ -138,3 +147,12 @@ The Spring PetClinic sample application is released under version 2.0 of the [Ap
 [spring-petclinic-graphql]: https://github.com/spring-petclinic/spring-petclinic-graphql
 [spring-petclinic-kotlin]: https://github.com/spring-petclinic/spring-petclinic-kotlin
 [spring-petclinic-rest]: https://github.com/spring-petclinic/spring-petclinic-rest
+
+# TODOs
+    1. Junits fixes
+    2. Implement the flow for:
+        a) Edit Pet details
+        b) Add visit
+        c) Veterinarians listing
+    3. Setup CI/CD pipeline    
+    

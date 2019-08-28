@@ -16,7 +16,10 @@
 package org.springframework.samples.petclinic.owner;
 
 import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
@@ -32,7 +35,10 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Sam Brannen
  * @author Michael Isvy
  */
-public interface OwnerRepository extends Repository<Owner, Integer> {
+public interface OwnerRepository extends JpaRepository<Owner, Integer> {
+
+    @Override
+    void deleteById(Integer integer);
 
     /**
      * Retrieve {@link Owner}s from the data store by last name, returning all owners
@@ -41,8 +47,6 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
      * @return a Collection of matching {@link Owner}s (or an empty Collection if none
      * found)
      */
-    @Query("SELECT DISTINCT owner FROM Owner owner left join fetch owner.pets WHERE owner.lastName LIKE :lastName%")
-    @Transactional(readOnly = true)
     Collection<Owner> findByLastName(@Param("lastName") String lastName);
 
     /**
@@ -50,15 +54,12 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
      * @param id the id to search for
      * @return the {@link Owner} if found
      */
-    @Query("SELECT owner FROM Owner owner left join fetch owner.pets WHERE owner.id =:id")
-    @Transactional(readOnly = true)
-    Owner findById(@Param("id") Integer id);
+    Optional<Owner> findById(@Param("id") Integer id);
 
     /**
      * Save an {@link Owner} to the data store, either inserting or updating it.
      * @param owner the {@link Owner} to save
      */
-    void save(Owner owner);
-
+    Owner save(Owner owner);
 
 }

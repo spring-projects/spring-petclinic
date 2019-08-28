@@ -32,6 +32,7 @@ import javax.validation.constraints.NotEmpty;
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.core.style.ToStringCreator;
+import org.springframework.data.redis.core.RedisHash;
 import org.springframework.samples.petclinic.model.Person;
 
 /**
@@ -42,23 +43,18 @@ import org.springframework.samples.petclinic.model.Person;
  * @author Sam Brannen
  * @author Michael Isvy
  */
-@Entity
-@Table(name = "owners")
+@RedisHash("owners")
 public class Owner extends Person {
-    @Column(name = "address")
     @NotEmpty
     private String address;
 
-    @Column(name = "city")
     @NotEmpty
     private String city;
 
-    @Column(name = "telephone")
     @NotEmpty
     @Digits(fraction = 0, integer = 10)
     private String telephone;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
     private Set<Pet> pets;
 
     public String getAddress() {
@@ -106,8 +102,14 @@ public class Owner extends Person {
     public void addPet(Pet pet) {
         if (pet.isNew()) {
             getPetsInternal().add(pet);
+        }else{
+            this.pets.add(pet);
         }
         pet.setOwner(this);
+    }
+
+    public void addPets(List<Pet> pets) {
+        this.getPetsInternal().addAll(pets);
     }
 
     /**

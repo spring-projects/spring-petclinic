@@ -15,6 +15,8 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,6 +30,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author Juergen Hoeller
@@ -38,7 +41,10 @@ import java.util.Map;
 @Controller
 class OwnerController {
 
+    private final Logger logger = LoggerFactory.getLogger(OwnerController.class);
+
     private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
+
     private final OwnerRepository owners;
 
 
@@ -76,7 +82,7 @@ class OwnerController {
 
     @GetMapping("/owners")
     public String processFindForm(Owner owner, BindingResult result, Map<String, Object> model) {
-
+        logger.info("Received request to find owners");
         // allow parameterless GET request for /owners to return all records
         if (owner.getLastName() == null) {
             owner.setLastName(""); // empty string signifies broadest possible search
@@ -84,6 +90,7 @@ class OwnerController {
 
         // find owners by last name
         Collection<Owner> results = this.owners.findByLastName(owner.getLastName());
+        //Collection<Owner> results = this.owners.findAll();
         if (results.isEmpty()) {
             // no owners found
             result.rejectValue("lastName", "notFound", "not found");
@@ -101,7 +108,8 @@ class OwnerController {
 
     @GetMapping("/owners/{ownerId}/edit")
     public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
-        Owner owner = this.owners.findById(ownerId);
+        Optional<Owner> isOwnerFound = this.owners.findById(ownerId);
+        Owner owner = isOwnerFound.isPresent() ? isOwnerFound.get() : null;
         model.addAttribute(owner);
         return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
     }
@@ -111,7 +119,10 @@ class OwnerController {
         if (result.hasErrors()) {
             return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
         } else {
+            Optional<Owner> isOwnerFound = this.owners.findById(ownerId);
+            Owner ownerFromDb = isOwnerFound.isPresent() ? isOwnerFound.get() : null;
             owner.setId(ownerId);
+            owner.addPets(ownerFromDb.getPets());
             this.owners.save(owner);
             return "redirect:/owners/{ownerId}";
         }
@@ -126,7 +137,8 @@ class OwnerController {
     @GetMapping("/owners/{ownerId}")
     public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
         ModelAndView mav = new ModelAndView("owners/ownerDetails");
-        mav.addObject(this.owners.findById(ownerId));
+        Optional<Owner> isOwnerFound = this.owners.findById(ownerId);
+        mav.addObject(isOwnerFound.isPresent()? isOwnerFound.get() : null);
         return mav;
     }
 
