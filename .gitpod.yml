@@ -6,5 +6,5 @@ ports:
   onOpen: open-preview
 # start up tasks
 tasks:
-- init: ./mvnw package -DskipTests >/dev/null
+- init: ./mvnw package -DskipTests
   command: ./mvnw package -DskipTests # FIXME : LS removes *.css on initialize
