@@ -16,27 +16,35 @@
 
 package org.springframework.samples.petclinic.owner;
 
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+
+import org.assertj.core.util.Lists;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.samples.petclinic.visit.Visit;
+import org.springframework.samples.petclinic.visit.VisitRepository;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+
+import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
-import org.assertj.core.util.Lists;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.samples.petclinic.owner.Owner;
-import org.springframework.samples.petclinic.owner.OwnerController;
-import org.springframework.samples.petclinic.owner.OwnerRepository;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 
 /**
  * Test class for {@link OwnerController}
@@ -55,6 +63,9 @@ public class OwnerControllerTests {
     @MockBean
     private OwnerRepository owners;
 
+    @MockBean
+    private VisitRepository visits;
+
     private Owner george;
 
     @Before
@@ -66,7 +77,18 @@ public class OwnerControllerTests {
         george.setAddress("110 W. Liberty St.");
         george.setCity("Madison");
         george.setTelephone("6085551023");
+        Pet max = new Pet();
+        PetType dog = new PetType();
+        dog.setName("dog");
+        max.setId(1);
+        max.setType(dog);
+        max.setName("Max");
+        max.setBirthDate(LocalDate.now());
+        george.setPetsInternal(Collections.singleton(max));
         given(this.owners.findById(TEST_OWNER_ID)).willReturn(george);
+        Visit visit = new Visit();
+        visit.setDate(LocalDate.now());
+        given(this.visits.findByPetId(max.getId())).willReturn(Collections.singletonList(visit));
     }
 
     @Test
@@ -189,6 +211,24 @@ public class OwnerControllerTests {
             .andExpect(model().attribute("owner", hasProperty("address", is("110 W. Liberty St."))))
             .andExpect(model().attribute("owner", hasProperty("city", is("Madison"))))
             .andExpect(model().attribute("owner", hasProperty("telephone", is("6085551023"))))
+            .andExpect(model().attribute("owner", hasProperty("pets", not(empty()))))
+            .andExpect(model().attribute("owner", hasProperty("pets", new BaseMatcher<List<Pet>>() {
+
+                @Override
+                public boolean matches(Object item) {
+                    @SuppressWarnings("unchecked")
+                    List<Pet> pets = (List<Pet>) item;
+                    Pet pet = pets.get(0);
+                    if (pet.getVisits().isEmpty()) {
+                        return false;
+                    }
+                    return true;
+                }
+
+                @Override
+                public void describeTo(Description description) {
+                    description.appendText("Max did not have any visits");
+                }})))
             .andExpect(view().name("owners/ownerDetails"));
     }
 
