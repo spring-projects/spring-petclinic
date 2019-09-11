@@ -4,4 +4,4 @@ steps:
     args: ['clean', 'install', '-DskipTests']
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'gcr.io/qinfra-dev/petclinic', '.']
-images: ['gcr.io/qinfra-dev/petclinic']
+images: ['gcr.io/qinfra-dev/petclinic_dev']
