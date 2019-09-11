@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Vet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">petclinic</a> &gt; <a href="index.source.html" class="el_package">org.springframework.samples.petclinic.vet</a> &gt; <span class="el_source">Vet.java</span></div><h1>Vet.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2012-2019 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.springframework.samples.petclinic.vet;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlElement;
+
+import org.springframework.beans.support.MutableSortDefinition;
+import org.springframework.beans.support.PropertyComparator;
+import org.springframework.samples.petclinic.model.Person;
+
+/**
+ * Simple JavaBean domain object representing a veterinarian.
+ *
+ * @author Ken Krebs
+ * @author Juergen Hoeller
+ * @author Sam Brannen
+ * @author Arjen Poutsma
+ */
+@Entity
+@Table(name = &quot;vets&quot;)
+<span class="fc" id="L46">public class Vet extends Person {</span>
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = &quot;vet_specialties&quot;, joinColumns = @JoinColumn(name = &quot;vet_id&quot;), inverseJoinColumns = @JoinColumn(name = &quot;specialty_id&quot;))
+    private Set&lt;Specialty&gt; specialties;
+
+    protected Set&lt;Specialty&gt; getSpecialtiesInternal() {
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (this.specialties == null) {</span>
+<span class="fc" id="L54">            this.specialties = new HashSet&lt;&gt;();</span>
+        }
+<span class="fc" id="L56">        return this.specialties;</span>
+    }
+
+    protected void setSpecialtiesInternal(Set&lt;Specialty&gt; specialties) {
+<span class="nc" id="L60">        this.specialties = specialties;</span>
+<span class="nc" id="L61">    }</span>
+
+    @XmlElement
+    public List&lt;Specialty&gt; getSpecialties() {
+<span class="fc" id="L65">        List&lt;Specialty&gt; sortedSpecs = new ArrayList&lt;&gt;(getSpecialtiesInternal());</span>
+<span class="fc" id="L66">        PropertyComparator.sort(sortedSpecs,</span>
+                new MutableSortDefinition(&quot;name&quot;, true, true));
+<span class="fc" id="L68">        return Collections.unmodifiableList(sortedSpecs);</span>
+    }
+
+    public int getNrOfSpecialties() {
+<span class="fc" id="L72">        return getSpecialtiesInternal().size();</span>
+    }
+
+    public void addSpecialty(Specialty specialty) {
+<span class="fc" id="L76">        getSpecialtiesInternal().add(specialty);</span>
+<span class="fc" id="L77">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

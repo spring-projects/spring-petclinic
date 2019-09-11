@@ -1,0 +1,11 @@
+/home/mnieuwstraten/git_mnieuwstraten/spring-petclinic/src/test/java/org/springframework/samples/petclinic/vet/VetControllerTests.java
+/home/mnieuwstraten/git_mnieuwstraten/spring-petclinic/src/test/java/org/springframework/samples/petclinic/owner/OwnerControllerTests.java
+/home/mnieuwstraten/git_mnieuwstraten/spring-petclinic/src/test/java/org/springframework/samples/petclinic/PetclinicIntegrationTests.java
+/home/mnieuwstraten/git_mnieuwstraten/spring-petclinic/src/test/java/org/springframework/samples/petclinic/service/EntityUtils.java
+/home/mnieuwstraten/git_mnieuwstraten/spring-petclinic/src/test/java/org/springframework/samples/petclinic/system/CrashControllerTests.java
+/home/mnieuwstraten/git_mnieuwstraten/spring-petclinic/src/test/java/org/springframework/samples/petclinic/model/ValidatorTests.java
+/home/mnieuwstraten/git_mnieuwstraten/spring-petclinic/src/test/java/org/springframework/samples/petclinic/service/ClinicServiceTests.java
+/home/mnieuwstraten/git_mnieuwstraten/spring-petclinic/src/test/java/org/springframework/samples/petclinic/vet/VetTests.java
+/home/mnieuwstraten/git_mnieuwstraten/spring-petclinic/src/test/java/org/springframework/samples/petclinic/owner/PetTypeFormatterTests.java
+/home/mnieuwstraten/git_mnieuwstraten/spring-petclinic/src/test/java/org/springframework/samples/petclinic/owner/VisitControllerTests.java
+/home/mnieuwstraten/git_mnieuwstraten/spring-petclinic/src/test/java/org/springframework/samples/petclinic/owner/PetControllerTests.java

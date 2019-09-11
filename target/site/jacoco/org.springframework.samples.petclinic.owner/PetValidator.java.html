@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PetValidator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">petclinic</a> &gt; <a href="index.source.html" class="el_package">org.springframework.samples.petclinic.owner</a> &gt; <span class="el_source">PetValidator.java</span></div><h1>PetValidator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2012-2019 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.springframework.samples.petclinic.owner;
+
+import org.springframework.util.StringUtils;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
+
+/**
+ * &lt;code&gt;Validator&lt;/code&gt; for &lt;code&gt;Pet&lt;/code&gt; forms.
+ * &lt;p&gt;
+ * We're not using Bean Validation annotations here because it is easier to define such validation rule in Java.
+ * &lt;/p&gt;
+ *
+ * @author Ken Krebs
+ * @author Juergen Hoeller
+ */
+<span class="fc" id="L31">public class PetValidator implements Validator {</span>
+
+    private static final String REQUIRED = &quot;required&quot;;
+
+    @Override
+    public void validate(Object obj, Errors errors) {
+<span class="fc" id="L37">        Pet pet = (Pet) obj;</span>
+<span class="fc" id="L38">        String name = pet.getName();</span>
+        // name validation
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">        if (!StringUtils.hasLength(name)) {</span>
+<span class="nc" id="L41">            errors.rejectValue(&quot;name&quot;, REQUIRED, REQUIRED);</span>
+        }
+
+        // type validation
+<span class="pc bpc" id="L45" title="1 of 4 branches missed.">        if (pet.isNew() &amp;&amp; pet.getType() == null) {</span>
+<span class="fc" id="L46">            errors.rejectValue(&quot;type&quot;, REQUIRED, REQUIRED);</span>
+        }
+
+        // birth date validation
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        if (pet.getBirthDate() == null) {</span>
+<span class="fc" id="L51">            errors.rejectValue(&quot;birthDate&quot;, REQUIRED, REQUIRED);</span>
+        }
+<span class="fc" id="L53">    }</span>
+
+    /**
+     * This Validator validates *just* Pet instances
+     */
+    @Override
+    public boolean supports(Class&lt;?&gt; clazz) {
+<span class="fc" id="L60">        return Pet.class.isAssignableFrom(clazz);</span>
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

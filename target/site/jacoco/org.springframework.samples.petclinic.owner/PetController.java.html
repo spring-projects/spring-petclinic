@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PetController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">petclinic</a> &gt; <a href="index.source.html" class="el_package">org.springframework.samples.petclinic.owner</a> &gt; <span class="el_source">PetController.java</span></div><h1>PetController.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2012-2019 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.springframework.samples.petclinic.owner;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.Collection;
+
+/**
+ * @author Juergen Hoeller
+ * @author Ken Krebs
+ * @author Arjen Poutsma
+ */
+@Controller
+@RequestMapping(&quot;/owners/{ownerId}&quot;)
+class PetController {
+
+    private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = &quot;pets/createOrUpdatePetForm&quot;;
+    private final PetRepository pets;
+    private final OwnerRepository owners;
+
+<span class="fc" id="L41">    public PetController(PetRepository pets, OwnerRepository owners) {</span>
+<span class="fc" id="L42">        this.pets = pets;</span>
+<span class="fc" id="L43">        this.owners = owners;</span>
+<span class="fc" id="L44">    }</span>
+
+    @ModelAttribute(&quot;types&quot;)
+    public Collection&lt;PetType&gt; populatePetTypes() {
+<span class="fc" id="L48">        return this.pets.findPetTypes();</span>
+    }
+
+    @ModelAttribute(&quot;owner&quot;)
+    public Owner findOwner(@PathVariable(&quot;ownerId&quot;) int ownerId) {
+<span class="fc" id="L53">        return this.owners.findById(ownerId);</span>
+    }
+
+    @InitBinder(&quot;owner&quot;)
+    public void initOwnerBinder(WebDataBinder dataBinder) {
+<span class="fc" id="L58">        dataBinder.setDisallowedFields(&quot;id&quot;);</span>
+<span class="fc" id="L59">    }</span>
+
+    @InitBinder(&quot;pet&quot;)
+    public void initPetBinder(WebDataBinder dataBinder) {
+<span class="fc" id="L63">        dataBinder.setValidator(new PetValidator());</span>
+<span class="fc" id="L64">    }</span>
+
+    @GetMapping(&quot;/pets/new&quot;)
+    public String initCreationForm(Owner owner, ModelMap model) {
+<span class="fc" id="L68">        Pet pet = new Pet();</span>
+<span class="fc" id="L69">        owner.addPet(pet);</span>
+<span class="fc" id="L70">        model.put(&quot;pet&quot;, pet);</span>
+<span class="fc" id="L71">        return VIEWS_PETS_CREATE_OR_UPDATE_FORM;</span>
+    }
+
+    @PostMapping(&quot;/pets/new&quot;)
+    public String processCreationForm(Owner owner, @Valid Pet pet, BindingResult result, ModelMap model) {
+<span class="pc bpc" id="L76" title="3 of 6 branches missed.">        if (StringUtils.hasLength(pet.getName()) &amp;&amp; pet.isNew() &amp;&amp; owner.getPet(pet.getName(), true) != null){</span>
+<span class="nc" id="L77">            result.rejectValue(&quot;name&quot;, &quot;duplicate&quot;, &quot;already exists&quot;);</span>
+        }
+<span class="fc" id="L79">        owner.addPet(pet);</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        if (result.hasErrors()) {</span>
+<span class="fc" id="L81">            model.put(&quot;pet&quot;, pet);</span>
+<span class="fc" id="L82">            return VIEWS_PETS_CREATE_OR_UPDATE_FORM;</span>
+        } else {
+<span class="fc" id="L84">            this.pets.save(pet);</span>
+<span class="fc" id="L85">            return &quot;redirect:/owners/{ownerId}&quot;;</span>
+        }
+    }
+
+    @GetMapping(&quot;/pets/{petId}/edit&quot;)
+    public String initUpdateForm(@PathVariable(&quot;petId&quot;) int petId, ModelMap model) {
+<span class="fc" id="L91">        Pet pet = this.pets.findById(petId);</span>
+<span class="fc" id="L92">        model.put(&quot;pet&quot;, pet);</span>
+<span class="fc" id="L93">        return VIEWS_PETS_CREATE_OR_UPDATE_FORM;</span>
+    }
+
+    @PostMapping(&quot;/pets/{petId}/edit&quot;)
+    public String processUpdateForm(@Valid Pet pet, BindingResult result, Owner owner, ModelMap model) {
+<span class="fc bfc" id="L98" title="All 2 branches covered.">        if (result.hasErrors()) {</span>
+<span class="fc" id="L99">            pet.setOwner(owner);</span>
+<span class="fc" id="L100">            model.put(&quot;pet&quot;, pet);</span>
+<span class="fc" id="L101">            return VIEWS_PETS_CREATE_OR_UPDATE_FORM;</span>
+        } else {
+<span class="fc" id="L103">            owner.addPet(pet);</span>
+<span class="fc" id="L104">            this.pets.save(pet);</span>
+<span class="fc" id="L105">            return &quot;redirect:/owners/{ownerId}&quot;;</span>
+        }
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
