@@ -3,5 +3,5 @@ steps:
     entrypoint: 'mvn'
     args: ['clean', 'install', '-DskipTests']
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/qinfra-dev/petclinic', '.']
+    args: ['build', '-t', 'gcr.io/qinfra-dev/petclinic_dev', '.']
 images: ['gcr.io/qinfra-dev/petclinic_dev']
