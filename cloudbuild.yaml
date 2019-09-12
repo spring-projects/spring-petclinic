@@ -10,6 +10,6 @@ images: ['gcr.io/qinfra-acc/petclinic_dev']
     env:
     - 'CLOUDSDK_COMPUTE_ZONE=us-east4-b'
     - 'CLOUDSDK_CONTAINER_CLUSTER=my-cluster'
-    options:
+options:
     machineType: 'N1_HIGHCPU_2'
     
