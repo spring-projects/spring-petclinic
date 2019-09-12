@@ -10,5 +10,5 @@ steps:
     - 'CLOUDSDK_COMPUTE_ZONE=us-east4-b'
     - 'CLOUDSDK_CONTAINER_CLUSTER=my-cluster'
 options:
-    machineType: 'n1-standard-1'
+    machineType: 'N1_HIGHCPU_2'
 images: ['gcr.io/qinfra-acc/petclinic_dev']
