@@ -1,15 +1,15 @@
 steps:
-  - name: maven:3.6.0-jdk-11-slim
-    entrypoint: 'mvn'
-    args: ['clean', 'install', '-DskipTests']
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/qinfra-acc/petclinic_dev', '.']
+- name: maven:3.6.0-jdk-11-slim
+  entrypoint: 'mvn'
+  args: ['clean', 'install', '-DskipTests']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/qinfra-acc/petclinic_dev', '.']
 images: ['gcr.io/qinfra-acc/petclinic_dev']
-  - name: 'gcr.io/cloud-builders/kubectl'
-    args: ['set', 'image', 'deployment/petclinic-dev', 'my-container=gcr.io/qinfra-acc/petclinic_dev']
-    env:
-    - 'CLOUDSDK_COMPUTE_ZONE=us-east4-b'
-    - 'CLOUDSDK_CONTAINER_CLUSTER=my-cluster'
+- name: 'gcr.io/cloud-builders/kubectl'
+  args: ['set', 'image', 'deployment/petclinic-dev', 'my-container=gcr.io/qinfra-acc/petclinic_dev']
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=us-east4-b'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=my-cluster'
 options:
-    machineType: 'N1_HIGHCPU_2'
+  machineType: 'N1_HIGHCPU_2'
     
