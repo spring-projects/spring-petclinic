@@ -1,0 +1,29 @@
+version: '3.7'
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    build:
+      context: .
+    ports:
+      - 8080:8080
+      - 50000:50000
+    volumes:
+      - ./data/jenkins:/var/jenkins_home
+    restart: unless-stopped
+    networks:
+      - default
+
+
+  nexus:
+      image: sonatype/nexus3
+      build:
+        context: .
+      ports:
+        - 8081:8081
+      volumes:
+        - ./nexus/data:/nexus-data
+      networks:
+        - default
+
+networks:
+  default:
