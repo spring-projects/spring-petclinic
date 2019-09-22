@@ -18,6 +18,7 @@
     <![endif]-->
 
     <link rel="stylesheet" th:href="@{/resources/css/petclinic.css}"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
 
   </head>
 
@@ -88,6 +89,12 @@
   <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
   <script th:src="@{/webjars/jquery-ui/jquery-ui.min.js}"></script>
   <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+  <script type="text/javascript">
+  $(document).ready( function () {
+	    $('.data_table').DataTable();
+  });
+  </script>
 
 </body>
 
