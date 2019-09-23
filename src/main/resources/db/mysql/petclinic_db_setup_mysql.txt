@@ -19,7 +19,7 @@
         ...
 
 2) Create the PetClinic database and user by executing the "db/mysql/{schema,data}.sql"
-   scripts (or set "spring.datasource.initialize=always" the first time you run the app).
+   scripts (or set "spring.datasource.initialization-mode=always" the first time you run the app).
 
 3) Run the app with `spring.profiles.active=mysql` (e.g. as a System property via the command
    line, but any way that sets that property in a Spring Boot app should work).
