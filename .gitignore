@@ -5,10 +5,10 @@ target/*
 .factorypath
 .attach_pid*
 .idea
-#.editorconfig
-#.vscode
-#.travis.yml
-#.mvn
+.editorconfig
+.vscode
+.travis.yml
+.mvn
 *.iml
 /target
 .sts4-cache/
