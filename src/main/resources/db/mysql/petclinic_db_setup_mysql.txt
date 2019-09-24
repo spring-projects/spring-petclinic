@@ -24,7 +24,11 @@
    because the petclinic user is already set up if you use the provided `docker-compose.yaml`.
 
 3) Run the app with `spring.profiles.active=mysql` (e.g. as a System property via the command
-   line, but any way that sets that property in a Spring Boot app should work).
+   line, but any way that sets that property in a Spring Boot app should work). For example use
+   
+   mvn spring-boot:run -Dspring-boot.run.profiles=mysql
+
+   To activate the profile on the command line.
 
 N.B. the "petclinic" database has to exist for the app to work with the JDBC URL value
 as it is configured by default. This condition is taken care of automatically by the 
