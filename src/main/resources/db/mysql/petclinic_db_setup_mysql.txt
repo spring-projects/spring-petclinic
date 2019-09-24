@@ -22,15 +22,14 @@
    scripts (or set "spring.datasource.initialization-mode=always" the first time you run the app).
 
 3) Run the app with `spring.profiles.active=mysql` (e.g. as a System property via the command
-   line, but any way that sets that property in a Spring Boot app should work).
+   line, but any way that sets that property in a Spring Boot app should work). For newer versions
+   of Spring Boot, those will fork the JVM that executes the webserver, which means properties on
+   the command line are lost. Use
    
-4) For newer versions of Spring Boot, those will fork the JVM that executes the webserver,
-   which means properties on the command line are lost. You can use:
-    
    mvn spring-boot:run\
-   -Dspring-boot.run.jvmArguments="-Dspring.profiles.active=mysql -Dspring.datasource.initialization-mode=always"
-    
-   To set profiles & properties.
+   -Dspring-boot.run.jvmArguments="-Dspring.profiles.active=mysql"
+
+   To make mysql work with forking.
 
 N.B. the "petclinic" database has to exist for the app to work with the JDBC URL value
 as it is configured by default. This condition is taken care of by the docker-compose
