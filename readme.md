@@ -8,10 +8,12 @@ Or you can run it from Maven directly using the Spring Boot Maven plugin. If you
 ./mvnw spring-boot:run
 ```
 
+This is an edit by Rebecca
+
 ## In case you find a bug/suggested improvement for Spring Petclinic
 Our issue tracker is available here: https://github.com/spring-projects/spring-petclinic/issues
 
-
+This is and edit by Andrew
 ## Database configuration
 
 In its default configuration, Petclinic uses an in-memory database (HSQLDB) which
@@ -32,7 +34,7 @@ Further documentation is provided [here](https://github.com/spring-projects/spri
 The following items should be installed in your system:
 * Java 8 or newer.
 * git command line tool (https://help.github.com/articles/set-up-git)
-* Your preferred IDE 
+* Your preferred IDE
   * Eclipse with the m2e plugin. Note: when m2e is available, there is an m2 icon in `Help -> About` dialog. If m2e is
   not there, just follow the install process here: https://www.eclipse.org/m2e/
   * [Spring Tools Suite](https://spring.io/tools) (STS)
@@ -109,7 +111,7 @@ The Spring PetClinic sample application is released under version 2.0 of the [Ap
 
 [spring-petclinic]: https://github.com/spring-projects/spring-petclinic
 [spring-framework-petclinic]: https://github.com/spring-petclinic/spring-framework-petclinic
-[spring-petclinic-angularjs]: https://github.com/spring-petclinic/spring-petclinic-angularjs 
+[spring-petclinic-angularjs]: https://github.com/spring-petclinic/spring-petclinic-angularjs
 [javaconfig branch]: https://github.com/spring-petclinic/spring-framework-petclinic/tree/javaconfig
 [spring-petclinic-angular]: https://github.com/spring-petclinic/spring-petclinic-angular
 [spring-petclinic-microservices]: https://github.com/spring-petclinic/spring-petclinic-microservices
