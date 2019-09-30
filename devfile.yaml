@@ -10,7 +10,10 @@ components:
   - id: redhat/java/latest
     type: chePlugin
   - mountSources: true
-    memoryLimit: 512Mi
+    endpoints:
+      - name: 8080/tcp
+        port: 8080
+    memoryLimit: 1Gi
     type: dockerimage
     volumes:
       - name: m2
