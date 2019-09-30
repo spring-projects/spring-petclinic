@@ -3,7 +3,7 @@ metadata:
 projects:
   - name: spring-boot-java
     source:
-      location: 'https://github.com/pittar/spring-petclinic'
+      location: 'git@github.com:pittar/spring-petclinic.git'
       type: git
       branch: master
 components:
