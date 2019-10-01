@@ -6,6 +6,8 @@ projects:
       location: 'git@github.com:pittar/spring-petclinic.git'
       type: git
       branch: master
+attributes:
+  persistVolumes: 'false'
 components:
   - id: redhat/java/latest
     type: chePlugin
