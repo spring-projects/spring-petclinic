@@ -1,22 +1,56 @@
-node('master') {
-    stage('init') {
-        checkout scm
-    }
+pipeline {
+    agent any
 
-    stage('image build') {
-        sh '''
-            ./mvnw clean package
-            cd target
-            mv *.jar petclinic.jar
-            cp ../web.config web.config
-            zip petclinic.zip web.config petclinic.jar
-        '''
-    }
+    stages {
+        stage('init') {
+            steps {
+                git url: "git@github.com:azure-devops/spring-petclinic.git",
+                credentialsId: "github_ssh_key",
+                branch: "ignite"
+            }
+        }
 
-    stage('deploy') {
-        azureWebAppPublish appName: env.APP_NAME,
-            azureCredentialsId: env.CRED_ID,
-            resourceGroup: env.RESOURCE_GROUP,
-            filePath: 'target/*.zip'
+        stage('build') {
+            steps {
+                sh '''
+                    ./mvnw clean package
+                    mv target/*.jar target/pet-clinic.jar
+                '''
+            }
+        }
+
+
+//        stage('image build') {
+//            environment {
+//               sha = sh(script: 'git rev-parse --short HEAD', returnStdout: true)
+//            }
+//
+//            steps {
+//                acrQuickTask azureCredentialsId: "jenkins-sp",
+//                                registryName: "jenkinsdemosacr",
+//                                resourceGroupName: "demo-aks",
+//                                local: "",
+//                                dockerfile: "Dockerfile",
+//                                imageNames: [[image: "jenkinsdemosacr.azurecr.io/pet-clinic:master-${sha}"]]
+//            }
+//        }
+
+        stage('update staging config') {
+            environment {
+               sha = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+            }
+
+            steps {
+                dir('infra/kube/workloads/staging') {
+                    sh '''
+                        sed -i -e "s/master-......./master-\${sha}/" deployment.yaml
+                        sed -i -e "s/master-......./master-\${sha}/" service.yaml
+                        git add *
+                        git commit -m "Update staging file with \${sha} commit"
+                        git push origin ignite
+                    '''
+                }
+            }
+        }
     }
 }

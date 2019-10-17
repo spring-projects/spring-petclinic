@@ -1,0 +1,14 @@
+- name: manage aks
+  hosts: localhost
+  connection: local
+  vars:
+    resource_group: azure-k8stest
+  tasks:
+    - name: Create staging namespaces
+      k8s:
+        state: present
+        src: ../kube/namespaces/staging.yaml
+    - name: Create production namespaces
+      k8s:
+        state: present
+        src: ../kube/namespaces/production.yaml

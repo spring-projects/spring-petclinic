@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: pet-clinic
+  namespace: staging
+spec:
+  selector:
+    matchLabels:
+      app: pet-clinic
+
+  template:
+    metadata:
+      labels:
+        app: pet-clinic
+        version: master-xxxxxxx
+
+    spec:
+      containers:
+        - name: pet-clinic
+          image: "jenkinsdemosacr.azurecr.io/pet-clinic:master-xxxxxxx"
+          ports:
+            - containerPort: 8080
+      imagePullSecrets:
+        - name: "acr-secret"

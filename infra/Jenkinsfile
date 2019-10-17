@@ -1,0 +1,53 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('init') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('init_and_plan') {
+            steps {
+                dir('infra/terraform') {
+                    sh "terraform init"
+                    withCredentials([azureServicePrincipal(credentialsId: 'jenkins-sp',
+                                        subscriptionIdVariable: 'ARM_SUBSCRIPTION_ID',
+                                        clientIdVariable: 'ARM_CLIENT_ID',
+                                        clientSecretVariable: 'ARM_CLIENT_SECRET',
+                                        tenantIdVariable: 'ARM_TENANT_ID')]) {
+                        sh "terraform plan -out=plan"
+                    }
+                }
+            }
+        }
+
+        stage('apply_changes') {
+            steps {
+                dir('infra/terraform') {
+                    withCredentials([azureServicePrincipal(credentialsId: 'jenkins-sp',
+                                        subscriptionIdVariable: 'ARM_SUBSCRIPTION_ID',
+                                        clientIdVariable: 'ARM_CLIENT_ID',
+                                        clientSecretVariable: 'ARM_CLIENT_SECRET',
+                                        tenantIdVariable: 'ARM_TENANT_ID')]) {
+                        sh 'terraform apply plan'
+                    }
+                }
+            }
+        }
+
+        stage('setup_aks') {
+            steps {
+                   withCredentials([azureServicePrincipal(credentialsId: 'jenkins-sp',
+                                                   subscriptionIdVariable: 'AZURE_SUBSCRIPTION_ID',
+                                                   clientIdVariable: 'AZURE_CLIENT_ID',
+                                                   clientSecretVariable: 'AZURE_SECRET',
+                                                   tenantIdVariable: 'AZURE_TENANT')]) {
+                     ansiblePlaybook installation: 'ansible',
+                     playbook: 'infra/ansible/setenv.yaml'
+                   }
+            }
+        }
+    }
+}
