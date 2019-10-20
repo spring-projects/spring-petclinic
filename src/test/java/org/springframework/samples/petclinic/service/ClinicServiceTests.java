@@ -21,8 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.time.LocalDate;
 import java.util.Collection;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
@@ -36,7 +35,6 @@ import org.springframework.samples.petclinic.vet.VetRepository;
 import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -59,10 +57,8 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Michael Isvy
  * @author Dave Syer
  */
-
-@RunWith(SpringRunner.class)
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-public class ClinicServiceTests {
+class ClinicServiceTests {
 
     @Autowired
     protected OwnerRepository owners;
@@ -77,7 +73,7 @@ public class ClinicServiceTests {
     protected VetRepository vets;
 
     @Test
-    public void shouldFindOwnersByLastName() {
+    void shouldFindOwnersByLastName() {
         Collection<Owner> owners = this.owners.findByLastName("Davis");
         assertThat(owners).hasSize(2);
 
@@ -86,7 +82,7 @@ public class ClinicServiceTests {
     }
 
     @Test
-    public void shouldFindSingleOwnerWithPet() {
+    void shouldFindSingleOwnerWithPet() {
         Owner owner = this.owners.findById(1);
         assertThat(owner.getLastName()).startsWith("Franklin");
         assertThat(owner.getPets()).hasSize(1);
@@ -96,7 +92,7 @@ public class ClinicServiceTests {
 
     @Test
     @Transactional
-    public void shouldInsertOwner() {
+    void shouldInsertOwner() {
         Collection<Owner> owners = this.owners.findByLastName("Schultz");
         int found = owners.size();
 
@@ -115,7 +111,7 @@ public class ClinicServiceTests {
 
     @Test
     @Transactional
-    public void shouldUpdateOwner() {
+    void shouldUpdateOwner() {
         Owner owner = this.owners.findById(1);
         String oldLastName = owner.getLastName();
         String newLastName = oldLastName + "X";
@@ -129,7 +125,7 @@ public class ClinicServiceTests {
     }
 
     @Test
-    public void shouldFindPetWithCorrectId() {
+    void shouldFindPetWithCorrectId() {
         Pet pet7 = this.pets.findById(7);
         assertThat(pet7.getName()).startsWith("Samantha");
         assertThat(pet7.getOwner().getFirstName()).isEqualTo("Jean");
@@ -137,7 +133,7 @@ public class ClinicServiceTests {
     }
 
     @Test
-    public void shouldFindAllPetTypes() {
+    void shouldFindAllPetTypes() {
         Collection<PetType> petTypes = this.pets.findPetTypes();
 
         PetType petType1 = EntityUtils.getById(petTypes, PetType.class, 1);
@@ -148,7 +144,7 @@ public class ClinicServiceTests {
 
     @Test
     @Transactional
-    public void shouldInsertPetIntoDatabaseAndGenerateId() {
+    void shouldInsertPetIntoDatabaseAndGenerateId() {
         Owner owner6 = this.owners.findById(6);
         int found = owner6.getPets().size();
 
@@ -171,7 +167,7 @@ public class ClinicServiceTests {
 
     @Test
     @Transactional
-    public void shouldUpdatePetName() throws Exception {
+    void shouldUpdatePetName() throws Exception {
         Pet pet7 = this.pets.findById(7);
         String oldName = pet7.getName();
 
@@ -184,7 +180,7 @@ public class ClinicServiceTests {
     }
 
     @Test
-    public void shouldFindVets() {
+    void shouldFindVets() {
         Collection<Vet> vets = this.vets.findAll();
 
         Vet vet = EntityUtils.getById(vets, Vet.class, 3);
@@ -196,7 +192,7 @@ public class ClinicServiceTests {
 
     @Test
     @Transactional
-    public void shouldAddNewVisitForPet() {
+    void shouldAddNewVisitForPet() {
         Pet pet7 = this.pets.findById(7);
         int found = pet7.getVisits().size();
         Visit visit = new Visit();
@@ -211,7 +207,7 @@ public class ClinicServiceTests {
     }
 
     @Test
-    public void shouldFindVisitsByPetId() throws Exception {
+    void shouldFindVisitsByPetId() throws Exception {
         Collection<Visit> visits = this.visits.findByPetId(7);
         assertThat(visits).hasSize(2);
         Visit[] visitArr = visits.toArray(new Visit[visits.size()]);
