@@ -38,7 +38,7 @@ import static org.mockito.BDDMockito.given;
  * @author Colin But
  */
 @ExtendWith(MockitoExtension.class)
-public class PetTypeFormatterTests {
+class PetTypeFormatterTests {
 
     @Mock
     private PetRepository pets;
@@ -46,12 +46,12 @@ public class PetTypeFormatterTests {
     private PetTypeFormatter petTypeFormatter;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         this.petTypeFormatter = new PetTypeFormatter(pets);
     }
 
     @Test
-    public void testPrint() {
+    void testPrint() {
         PetType petType = new PetType();
         petType.setName("Hamster");
         String petTypeName = this.petTypeFormatter.print(petType, Locale.ENGLISH);
@@ -59,14 +59,14 @@ public class PetTypeFormatterTests {
     }
 
     @Test
-    public void shouldParse() throws ParseException {
+    void shouldParse() throws ParseException {
         given(this.pets.findPetTypes()).willReturn(makePetTypes());
         PetType petType = petTypeFormatter.parse("Bird", Locale.ENGLISH);
         assertThat(petType.getName()).isEqualTo("Bird");
     }
 
     @Test
-    public void shouldThrowParseException() throws ParseException {
+    void shouldThrowParseException() throws ParseException {
         given(this.pets.findPetTypes()).willReturn(makePetTypes());
         Assertions.assertThrows(ParseException.class, () -> {
             petTypeFormatter.parse("Fish", Locale.ENGLISH);

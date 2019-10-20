@@ -22,12 +22,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Dave Syer
- *
  */
-public class VetTests {
+class VetTests {
 
     @Test
-    public void testSerialization() {
+    void testSerialization() {
         Vet vet = new Vet();
         vet.setFirstName("Zaphod");
         vet.setLastName("Beeblebrox");

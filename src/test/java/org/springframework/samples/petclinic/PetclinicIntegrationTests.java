@@ -22,13 +22,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.samples.petclinic.vet.VetRepository;
 
 @SpringBootTest
-public class PetclinicIntegrationTests {
+class PetclinicIntegrationTests {
 
     @Autowired
     private VetRepository vets;
 
     @Test
-    public void testFindAll() throws Exception {
+    void testFindAll() throws Exception {
         vets.findAll();
         vets.findAll(); // served from cache
     }

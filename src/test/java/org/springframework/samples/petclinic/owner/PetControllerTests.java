@@ -42,7 +42,7 @@ import org.springframework.test.web.servlet.MockMvc;
     includeFilters = @ComponentScan.Filter(
                             value = PetTypeFormatter.class,
                             type = FilterType.ASSIGNABLE_TYPE))
-public class PetControllerTests {
+class PetControllerTests {
 
     private static final int TEST_OWNER_ID = 1;
     private static final int TEST_PET_ID = 1;
@@ -58,7 +58,7 @@ public class PetControllerTests {
     private OwnerRepository owners;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         PetType cat = new PetType();
         cat.setId(3);
         cat.setName("hamster");
@@ -69,7 +69,7 @@ public class PetControllerTests {
     }
 
     @Test
-    public void testInitCreationForm() throws Exception {
+    void testInitCreationForm() throws Exception {
         mockMvc.perform(get("/owners/{ownerId}/pets/new", TEST_OWNER_ID))
             .andExpect(status().isOk())
             .andExpect(view().name("pets/createOrUpdatePetForm"))
@@ -77,7 +77,7 @@ public class PetControllerTests {
     }
 
     @Test
-    public void testProcessCreationFormSuccess() throws Exception {
+    void testProcessCreationFormSuccess() throws Exception {
         mockMvc.perform(post("/owners/{ownerId}/pets/new", TEST_OWNER_ID)
             .param("name", "Betty")
             .param("type", "hamster")
@@ -88,7 +88,7 @@ public class PetControllerTests {
     }
 
     @Test
-    public void testProcessCreationFormHasErrors() throws Exception {
+    void testProcessCreationFormHasErrors() throws Exception {
         mockMvc.perform(post("/owners/{ownerId}/pets/new", TEST_OWNER_ID)
             .param("name", "Betty")
             .param("birthDate", "2015-02-12")
@@ -102,7 +102,7 @@ public class PetControllerTests {
     }
 
     @Test
-    public void testInitUpdateForm() throws Exception {
+    void testInitUpdateForm() throws Exception {
         mockMvc.perform(get("/owners/{ownerId}/pets/{petId}/edit", TEST_OWNER_ID, TEST_PET_ID))
             .andExpect(status().isOk())
             .andExpect(model().attributeExists("pet"))
@@ -110,7 +110,7 @@ public class PetControllerTests {
     }
 
     @Test
-    public void testProcessUpdateFormSuccess() throws Exception {
+    void testProcessUpdateFormSuccess() throws Exception {
         mockMvc.perform(post("/owners/{ownerId}/pets/{petId}/edit", TEST_OWNER_ID, TEST_PET_ID)
             .param("name", "Betty")
             .param("type", "hamster")
@@ -121,7 +121,7 @@ public class PetControllerTests {
     }
 
     @Test
-    public void testProcessUpdateFormHasErrors() throws Exception {
+    void testProcessUpdateFormHasErrors() throws Exception {
         mockMvc.perform(post("/owners/{ownerId}/pets/{petId}/edit", TEST_OWNER_ID, TEST_PET_ID)
             .param("name", "Betty")
             .param("birthDate", "2015/02/12")

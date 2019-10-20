@@ -38,7 +38,7 @@ import org.springframework.test.web.servlet.ResultActions;
  * Test class for the {@link VetController}
  */
 @WebMvcTest(VetController.class)
-public class VetControllerTests {
+class VetControllerTests {
 
     @Autowired
     private MockMvc mockMvc;
@@ -47,7 +47,7 @@ public class VetControllerTests {
     private VetRepository vets;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         Vet james = new Vet();
         james.setFirstName("James");
         james.setLastName("Carter");
@@ -64,7 +64,7 @@ public class VetControllerTests {
     }
 
     @Test
-    public void testShowVetListHtml() throws Exception {
+    void testShowVetListHtml() throws Exception {
         mockMvc.perform(get("/vets.html"))
             .andExpect(status().isOk())
             .andExpect(model().attributeExists("vets"))
@@ -72,7 +72,7 @@ public class VetControllerTests {
     }
 
     @Test
-    public void testShowResourcesVetList() throws Exception {
+    void testShowResourcesVetList() throws Exception {
         ResultActions actions = mockMvc.perform(get("/vets")
             .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
         actions.andExpect(content().contentType(MediaType.APPLICATION_JSON))
