@@ -4,11 +4,11 @@ metadata:
   name: pet-clinic
   namespace: production
   labels:
-    version: master-507549c
+    version: v0.0.0
 spec:
   selector:
     app: auth-service
-    version: master-507549c
+    version: v0.0.0
   ports:
     - port: 80
       targetPort: 8080

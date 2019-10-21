@@ -4,11 +4,11 @@ metadata:
   name: pet-clinic
   namespace: staging
   labels:
-    version: master-507549c
+    version: pet-829376a
 spec:
   selector:
     app: auth-service
-    version: master-507549c
+    version: pet-829376a
   ports:
     - port: 80
       targetPort: 8080
