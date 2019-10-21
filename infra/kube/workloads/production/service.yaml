@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: pet-clinic
+  namespace: production
+  labels:
+    version: master-507549c
+spec:
+  selector:
+    app: auth-service
+    version: master-507549c
+  ports:
+    - port: 80
+      targetPort: 8080

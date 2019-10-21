@@ -1,0 +1,14 @@
+- name: deploy staging environment
+  hosts: localhost
+  connection: local
+  vars:
+    resource_group: azure-k8stest
+  tasks:
+    - name: apply deployment
+      k8s:
+        state: present
+        src: ../../kube/workloads/staging/deployment.yaml
+    - name: apply service
+      k8s:
+        state: present
+        src: ../../kube/workloads/staging/service.yaml

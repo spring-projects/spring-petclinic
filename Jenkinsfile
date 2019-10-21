@@ -20,20 +20,20 @@ pipeline {
         }
 
 
-//        stage('image build') {
-//            environment {
-//               sha = sh(script: 'git rev-parse --short HEAD', returnStdout: true)
-//            }
-//
-//            steps {
-//                acrQuickTask azureCredentialsId: "jenkins-sp",
-//                                registryName: "jenkinsdemosacr",
-//                                resourceGroupName: "demo-aks",
-//                                local: "",
-//                                dockerfile: "Dockerfile",
-//                                imageNames: [[image: "jenkinsdemosacr.azurecr.io/pet-clinic:master-${sha}"]]
-//            }
-//        }
+        stage('image build') {
+            environment {
+               sha = sh(script: 'git rev-parse --short HEAD', returnStdout: true)
+            }
+
+            steps {
+                acrQuickTask azureCredentialsId: "jenkins-sp",
+                                registryName: "jenkinsdemosacr",
+                                resourceGroupName: "demo-aks",
+                                local: "",
+                                dockerfile: "Dockerfile",
+                                imageNames: [[image: "jenkinsdemosacr.azurecr.io/pet-clinic:master-${sha}"]]
+            }
+        }
 
         stage('update staging config') {
             environment {
