@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        ACR_SECRET = credentials('acr-auth')
+    }
+
     stages {
         stage('init') {
             steps {
@@ -11,13 +15,15 @@ pipeline {
         stage('init_and_plan') {
             steps {
                 dir('infra/terraform') {
-                    sh "terraform init"
                     withCredentials([azureServicePrincipal(credentialsId: 'jenkins-sp',
                                         subscriptionIdVariable: 'ARM_SUBSCRIPTION_ID',
                                         clientIdVariable: 'ARM_CLIENT_ID',
                                         clientSecretVariable: 'ARM_CLIENT_SECRET',
-                                        tenantIdVariable: 'ARM_TENANT_ID')]) {
-                        sh "terraform plan -out=plan"
+                                        tenantIdVariable: 'ARM_TENANT_ID'),
+                                     azureStorage(credentialsId: 'jenkins-storage',
+                                     storageAccountKeyVariable: 'ARM_ACCESS_KEY')]) {
+                        sh "terraform init"
+                        sh "terraform plan -out=plan -var 'client_id=$ARM_CLIENT_ID' -var 'client_secret=$ARM_CLIENT_SECRET'"
                     }
                 }
             }
@@ -30,8 +36,11 @@ pipeline {
                                         subscriptionIdVariable: 'ARM_SUBSCRIPTION_ID',
                                         clientIdVariable: 'ARM_CLIENT_ID',
                                         clientSecretVariable: 'ARM_CLIENT_SECRET',
-                                        tenantIdVariable: 'ARM_TENANT_ID')]) {
-                        sh 'terraform apply plan'
+                                        tenantIdVariable: 'ARM_TENANT_ID'),
+                                     azureStorage(credentialsId: 'jenkins-storage',
+                                     storageAccountKeyVariable: 'ARM_ACCESS_KEY')]) {
+                        sh "terraform apply plan"
+                        sh "terraform output kube_config > ~/.kube/config"
                     }
                 }
             }
@@ -39,14 +48,15 @@ pipeline {
 
         stage('setup_aks') {
             steps {
-                   withCredentials([azureServicePrincipal(credentialsId: 'jenkins-sp',
-                                                   subscriptionIdVariable: 'AZURE_SUBSCRIPTION_ID',
-                                                   clientIdVariable: 'AZURE_CLIENT_ID',
-                                                   clientSecretVariable: 'AZURE_SECRET',
-                                                   tenantIdVariable: 'AZURE_TENANT')]) {
-                     ansiblePlaybook installation: 'ansible',
-                     playbook: 'infra/ansible/setenv.yaml'
-                   }
+                echo "$ACR_SECRET"
+                withCredentials([azureServicePrincipal(credentialsId: 'jenkins-sp',
+                                                subscriptionIdVariable: 'AZURE_SUBSCRIPTION_ID',
+                                                clientIdVariable: 'AZURE_CLIENT_ID',
+                                                clientSecretVariable: 'AZURE_SECRET',
+                                                tenantIdVariable: 'AZURE_TENANT')]) {
+                  ansiblePlaybook installation: 'ansible',
+                  playbook: 'infra/ansible/setenv.yaml'
+                }
             }
         }
     }

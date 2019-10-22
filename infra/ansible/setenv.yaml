@@ -12,3 +12,11 @@
       k8s:
         state: present
         src: ../kube/namespaces/production.yaml
+    - name: Create staging ACR secret
+      k8s:
+        state: present
+        src: ../kube/secrets/production-registry.yaml
+    - name: Create production ACR secret
+      k8s:
+        state: present
+        src: ../kube/secrets/staging-registry.yaml

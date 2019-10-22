@@ -2,10 +2,21 @@ pipeline {
     agent any
 
     stages {
+        stage('init') {
+            steps {
+                git url: "git@github.com:azure-devops/spring-petclinic.git",
+                credentialsId: "github_ssh_key",
+                branch: "ignite"
 
-        stage('deploy') {
-            environment {
-               sha = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+                script {
+                    env.SHA = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+                }
+            }
+        }
+
+        stage('deploy to staging') {
+            when {
+                changeset "infra/kube/workloads/staging/*"
             }
 
             steps {
@@ -16,6 +27,23 @@ pipeline {
                                                tenantIdVariable: 'AZURE_TENANT')]) {
                  ansiblePlaybook installation: 'ansible',
                  playbook: 'infra/ansible/staging/main.yaml'
+               }
+            }
+        }
+
+        stage('deploy to production') {
+            when {
+                changeset "infra/kube/workloads/production/*"
+            }
+
+            steps {
+               withCredentials([azureServicePrincipal(credentialsId: 'jenkins-sp',
+                                               subscriptionIdVariable: 'AZURE_SUBSCRIPTION_ID',
+                                               clientIdVariable: 'AZURE_CLIENT_ID',
+                                               clientSecretVariable: 'AZURE_SECRET',
+                                               tenantIdVariable: 'AZURE_TENANT')]) {
+                 ansiblePlaybook installation: 'ansible',
+                 playbook: 'infra/ansible/production/main.yaml'
                }
             }
         }
