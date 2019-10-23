@@ -39,7 +39,7 @@ pipeline {
                                 resourceGroupName: "demo-aks",
                                 local: "",
                                 dockerfile: "Dockerfile",
-                                imageNames: [[image: "jenkinsdemosacr.azurecr.io/pet-clinic:pet-${IMAGE_TAG}"]]
+                                imageNames: [[image: "jenkinsdemosacr.azurecr.io/pet-clinic:pc-${IMAGE_TAG}"]]
             }
         }
 
