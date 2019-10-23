@@ -15,8 +15,24 @@
     - name: Create staging ACR secret
       k8s:
         state: present
-        src: ../kube/secrets/production-registry.yaml
+        definition:
+          apiVersion: v1
+          kind: Secret
+          metadata:
+            name: acr-secret
+            namespace: staging
+          data:
+            .dockerconfigjson: "{{ lookup('env', 'ACR_SECRET') }}"
+          type: kubernetes.io/dockerconfigjson
     - name: Create production ACR secret
       k8s:
         state: present
-        src: ../kube/secrets/staging-registry.yaml
+        definition:
+          apiVersion: v1
+          kind: Secret
+          metadata:
+            name: acr-secret
+            namespace: production
+          data:
+            .dockerconfigjson: "{{ lookup('env', 'ACR_SECRET') }}"
+          type: kubernetes.io/dockerconfigjson
