@@ -50,8 +50,8 @@ pipeline {
             steps {
                 dir('infra/kube/workloads/staging') {
                     sh '''
-                        sed -i -e "s/pet-......./pet-\${IMAGE_TAG}/" deployment.yaml
-                        sed -i -e "s/pet-......./pet-\${IMAGE_TAG}/" service.yaml
+                        sed -i -e "s/pc-......./pc-\${IMAGE_TAG}/" deployment.yaml
+                        sed -i -e "s/pc-......./pc-\${IMAGE_TAG}/" service.yaml
                         git add *
                         git commit -m "Update staging file with \${IMAGE_TAG} commit"
                         git push origin ignite
