@@ -23,6 +23,10 @@ pipeline {
         }
 
         stage('build') {
+            when {
+                changeset "src/*"
+            }
+
             steps {
                 sh '''
                     ./mvnw clean package
@@ -33,6 +37,10 @@ pipeline {
 
 
         stage('image build') {
+            when {
+                changeset "src/*"
+            }
+
             steps {
                 acrQuickTask azureCredentialsId: "jenkins-sp",
                                 registryName: "jenkinsdemosacr",
@@ -45,6 +53,7 @@ pipeline {
 
         stage('update staging config') {
             when {
+                changeset "src/*"
                 environment name: "DEPLOY_TO", value: 'staging'
             }
             steps {
@@ -62,6 +71,7 @@ pipeline {
 
         stage('update production config') {
             when {
+                changeset "src/*"
                 environment name: "DEPLOY_TO", value: 'production'
             }
             steps {

@@ -4,11 +4,13 @@ metadata:
   name: pet-clinic
   namespace: staging
   labels:
-    version: pc-e4876bb
+    version: pc-baa4676
 spec:
+  type: LoadBalancer
   selector:
-    app: auth-service
-    version: pc-e4876bb
+    app: pet-clinic
+    version: pc-baa4676
   ports:
     - port: 80
+      protocol: TCP
       targetPort: 8080
