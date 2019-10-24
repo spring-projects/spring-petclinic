@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label 'master'
+    }
 
     environment {
         ACR_SECRET = credentials('acr-auth')
