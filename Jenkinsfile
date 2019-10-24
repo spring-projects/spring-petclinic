@@ -38,7 +38,7 @@ pipeline {
 
         stage('image build') {
             when {
-                changeset "src/*"
+                changeset "src/**"
             }
 
             steps {
@@ -53,7 +53,7 @@ pipeline {
 
         stage('update staging config') {
             when {
-                changeset "src/*"
+                changeset "src/**"
                 environment name: "DEPLOY_TO", value: 'staging'
             }
             steps {
