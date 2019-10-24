@@ -25,6 +25,6 @@ class WelcomeController {
 
     @GetMapping("/")
     public String welcome() {
-        return "hello ignite!";
+        return "hello ignite";
     }
 }
