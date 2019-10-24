@@ -12,12 +12,12 @@ spec:
     metadata:
       labels:
         app: pet-clinic
-        version: pc-1b2914a
+        version: pc-a307c46
 
     spec:
       containers:
         - name: pet-clinic
-          image: "jenkinsdemosacr.azurecr.io/pet-clinic:pc-1b2914a"
+          image: "jenkinsdemosacr.azurecr.io/pet-clinic:pc-a307c46"
           ports:
             - containerPort: 8080
       imagePullSecrets:
