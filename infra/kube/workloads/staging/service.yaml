@@ -4,12 +4,12 @@ metadata:
   name: pet-clinic
   namespace: staging
   labels:
-    version: pc-55d6000
+    version: pc-1b2914a
 spec:
   type: LoadBalancer
   selector:
     app: pet-clinic
-    version: pc-55d6000
+    version: pc-1b2914a
   ports:
     - port: 80
       protocol: TCP

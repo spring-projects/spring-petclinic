@@ -64,7 +64,7 @@ pipeline {
                         sed -i -e "s/pc-......./pc-\${IMAGE_TAG}/" deployment.yaml
                         sed -i -e "s/pc-......./pc-\${IMAGE_TAG}/" service.yaml
                         git add *
-                        git commit -m "Update staging file with \${IMAGE_TAG} commit"
+                        git commit -m "Update staging config with \${IMAGE_TAG} commit"
                         git push origin ignite
                     '''
                 }
@@ -82,7 +82,7 @@ pipeline {
                         sed -i -e "s/v[0-9]\\.[0-9]\\.[0-9]/\${IMAGE_TAG}/" deployment.yaml
                         sed -i -e "s/v[0-9]\\.[0-9]\\.[0-9]/\${IMAGE_TAG}/" service.yaml
                         git add *
-                        git commit -m "Update production file with \${IMAGE_TAG} commit"
+                        git commit -m "Update production config with \${IMAGE_TAG} commit"
                         git push origin ignite
                     '''
                 }
