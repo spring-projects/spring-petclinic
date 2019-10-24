@@ -26,7 +26,7 @@ pipeline {
 
         stage('build') {
             when {
-                changeset "src/*"
+                changeset "src/**"
             }
 
             steps {
