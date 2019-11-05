@@ -19,7 +19,7 @@ components:
       - name: m2
         containerPath: /home/user/.m2
     alias: maven
-    image: 'quay.io/eclipse/che-java11-maven:nightly'
+    image: 'quay.io/eclipse/che-java8-maven:7.3.1'
     env:
       - value: /home/user/.m2
         name: MAVEN_CONFIG
