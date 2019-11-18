@@ -73,6 +73,7 @@ class OwnerControllerTests {
         george.setAddress("110 W. Liberty St.");
         george.setCity("Madison");
         george.setTelephone("6085551023");
+        george.setEmail("george@email.com");
         Pet max = new Pet();
         PetType dog = new PetType();
         dog.setName("dog");
@@ -103,6 +104,7 @@ class OwnerControllerTests {
             .param("address", "123 Caramel Street")
             .param("city", "London")
             .param("telephone", "01316761638")
+            .param("email", "joe@email.com")
         )
             .andExpect(status().is3xxRedirection());
     }
@@ -179,6 +181,7 @@ class OwnerControllerTests {
             .param("address", "123 Caramel Street")
             .param("city", "London")
             .param("telephone", "01616291589")
+            .param("email", "joe@email.com")
         )
             .andExpect(status().is3xxRedirection())
             .andExpect(view().name("redirect:/owners/{ownerId}"));
