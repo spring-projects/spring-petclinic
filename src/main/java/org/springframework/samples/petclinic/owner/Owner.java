@@ -63,6 +63,8 @@ public class Owner extends Person {
     
     private int age;
     
+    public String email;
+    
     public int getAge() {
     	return age;
     }
