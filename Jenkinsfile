@@ -64,6 +64,17 @@ try {
                 }
             }
         }
+        stage("Deploy UAT") {
+            echo "Deploy to UAT."
+            openshift.withCluster() {
+                openshift.withProject("${appName}-uat") {
+                    echo "Rolling out to UAT."
+                    def dc = openshift.selector('dc', "${appName}")
+                    dc.rollout().latest()
+                    dc.rollout().status()
+                }
+            }
+        }
     }
 } catch (err) {
     echo "in catch block"
