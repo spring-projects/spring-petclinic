@@ -64,17 +64,6 @@ try {
                 }
             }
         }
-        stage("Deploy QA") {
-            echo "Deploy to QA"
-            openshift.withCluster() {
-                openshift.withProject("${appName}-uat") {
-                    echo "Rollout to QA."
-                    def dc = openshift.selector('dc', "${appName}")
-                    dc.rollout().latest()
-                    dc.rollout().status()
-                }
-            }
-        }
     }
 } catch (err) {
     echo "in catch block"
