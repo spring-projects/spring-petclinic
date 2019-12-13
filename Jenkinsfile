@@ -33,7 +33,7 @@ try {
             // unstash name:"jar"
             openshift.withCluster() {
                 openshift.withProject('cicd') {
-                    sh "oc start-build ${appName}-build --from-file=target/app.jar -n cicd --follow"
+                    sh "oc start-build ${appName}-s2i-build --from-file=target/app.jar -n cicd --follow"
                 }
             }
         }
