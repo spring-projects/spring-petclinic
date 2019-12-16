@@ -60,7 +60,7 @@ try {
             echo "Tag to UAT"
             openshift.withCluster() {
                 openshift.withProject('cicd') {
-                    openshift.tag("${appName}:dev", "${appName}:qa")
+                    openshift.tag("${appName}:dev", "${appName}:uat")
                 }
             }
         }
