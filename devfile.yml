@@ -1,0 +1,79 @@
+apiVersion: 1.0.0
+metadata:
+  name: petclinic-gh
+projects:
+  - name: spring-petclinic
+    source:
+      location: 'https://github.com/pittar/spring-petclinic.git'
+      type: git
+      branch: master
+components:
+  - id: redhat/java8/latest
+    type: chePlugin
+  - id: redhat/dependency-analytics/latest
+    type: chePlugin
+  - mountSources: true
+    endpoints:
+      - name: 8080/tcp
+        port: 8080
+    memoryLimit: 768Mi
+    type: dockerimage
+    volumes:
+      - name: m2
+        containerPath: /home/jboss/.m2
+    alias: maven
+    image: 'registry.redhat.io/codeready-workspaces/stacks-java-rhel8:2.0'
+    env:
+      - value: >-
+          -XX:MaxRAMPercentage=50.0 -XX:+UseParallelGC -XX:MinHeapFreeRatio=10
+          -XX:MaxHeapFreeRatio=20 -XX:GCTimeRatio=4
+          -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true
+          -Xms20m -Djava.security.egd=file:/dev/./urandom
+          -Duser.home=/home/jboss
+        name: JAVA_OPTS
+      - value: $(JAVA_OPTS)
+        name: MAVEN_OPTS
+commands:
+  - name: build
+    actions:
+      - workdir: '${CHE_PROJECTS_ROOT}/spring-petclinic'
+        type: exec
+        command: >-
+          MAVEN_OPTS="-Xmx200m" && mvn -Duser.home=${HOME} -DskipTests clean
+          install
+        component: maven
+  - name: Debug remote java application
+    actions:
+      - referenceContent: |
+          {
+           "version": "0.2.0",
+           "configurations": [
+             {
+               "type": "java",
+               "name": "Debug (Attach) - Remote",
+               "request": "attach",
+               "hostName": "localhost",
+               "port": 8000
+             }]
+           }
+        type: vscode-launch
+  - name: run
+    actions:
+      - workdir: '${CHE_PROJECTS_ROOT}/spring-petclinic'
+        type: exec
+        command: 'MAVEN_OPTS="-Xmx200m" && mvn -Duser.home=${HOME} spring-boot:run'
+        component: maven
+  - name: debug
+    actions:
+      - workdir: '${CHE_PROJECTS_ROOT}/spring-petclinic'
+        type: exec
+        command: >-
+          mvn  -Duser.home=${HOME} spring-boot:run -Drun.jvmArguments="-Xdebug
+          -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000"
+        component: maven
+  - name: test
+    actions:
+      - workdir: '${CHE_PROJECTS_ROOT}/spring-petclinic'
+        type: exec
+        command: 'MAVEN_OPTS="-Xmx200m" && mvn -Duser.home=${HOME} verify'
+        component: maven
