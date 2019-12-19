@@ -4,6 +4,8 @@ try {
     def gitSourceRef=env.GIT_SOURCE_REF
     def project=""
     def projectVersion=""
+    def quayUser=env.QUAY_USER
+    def quayPassword=env.QUAY_PASSWORD
     node("maven") {
         stage("Initialize") {
             project = env.PROJECT_NAME
@@ -40,13 +42,13 @@ try {
     }
     node('jenkins-slave-skopeo') {
         
-        stage('Inspect Image') {
-            sh """
-            set +x
-
-            skopeo inspect docker://docker.io/fedora
-            """
+    stage('Clair Container Vulnerability Scan') {
+      steps {
+            sh "#oc login -u $ocuser -p $ocpass --insecure-skip-tls-verify https://$ocp 2>&1"
+          
+            sh 'skopeo --debug copy --src-creds="$(oc whoami)":"$(oc whoami -t)" --src-tls-verify=false --dest-tls-verify=false' + " --dest-creds=$quayUser:$quayPassword docker://docker-registry.default.svc:5000/cicd/spring-petclinic:latest docker://quay.io/$quayUser/spring-petclinic:latest"
         }
+    }
         
         stage("Tag DEV") {
             echo "Tag image to DEV"
