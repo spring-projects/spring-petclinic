@@ -42,13 +42,9 @@ try {
     }
     node('jenkins-slave-skopeo') {
         
-    stage('Clair Container Vulnerability Scan') {
-      steps {
-            sh "#oc login -u $ocuser -p $ocpass --insecure-skip-tls-verify https://$ocp 2>&1"
-          
+        stage('Clair Container Vulnerability Scan') {
             sh 'skopeo --debug copy --src-creds="$(oc whoami)":"$(oc whoami -t)" --src-tls-verify=false --dest-tls-verify=false' + " --dest-creds=$quayUser:$quayPassword docker://docker-registry.default.svc:5000/cicd/spring-petclinic:latest docker://quay.io/$quayUser/spring-petclinic:latest"
         }
-    }
         
         stage("Tag DEV") {
             echo "Tag image to DEV"
