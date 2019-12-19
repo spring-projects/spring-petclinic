@@ -6,6 +6,8 @@ try {
     def projectVersion=""
     def quayUser=env.QUAY_USER
     def quayPassword=env.QUAY_PASSWORD
+    def ocpUser=env.OCP_USER
+    def ocpPassword=env.OCP_PASSWORD
     node("maven") {
         stage("Initialize") {
             project = env.PROJECT_NAME
@@ -43,6 +45,7 @@ try {
     node('jenkins-slave-skopeo') {
         
         stage('Clair Container Vulnerability Scan') {
+            sh "oc login -u $ocpUser -p $ocpPassword --insecure-skip-tls-verify https://api.cluster-ottawa-57ac.ottawa-57ac.example.opentlc.com:6443 2>&1"
             sh 'skopeo --debug copy --src-creds="$(oc whoami)":"$(oc whoami -t)" --src-tls-verify=false --dest-tls-verify=false' + " --dest-creds=$quayUser:$quayPassword docker://docker-registry.default.svc:5000/cicd/spring-petclinic:latest docker://quay.io/$quayUser/spring-petclinic:latest"
         }
         
