@@ -37,6 +37,17 @@ try {
                 }
             }
         }
+    }
+    node('jenkins-slave-image-mgmt') {
+        
+        stage('Inspect Image') {
+            sh """
+            set +x
+
+            skopeo inspect docker://docker.io/fedora
+            """
+        }
+        
         stage("Tag DEV") {
             echo "Tag image to DEV"
             openshift.withCluster() {
