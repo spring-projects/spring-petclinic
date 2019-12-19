@@ -38,7 +38,7 @@ try {
             }
         }
     }
-    node('jenkins-slave-image-mgmt') {
+    node('jenkins-slave-skopeo') {
         
         stage('Inspect Image') {
             sh """
