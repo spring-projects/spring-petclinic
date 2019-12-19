@@ -1,3 +1,4 @@
+apiVersion: 1.0.0
 metadata:
   name: petclinic-gh
 projects:
@@ -32,7 +33,6 @@ components:
         name: JAVA_OPTS
       - value: $(JAVA_OPTS)
         name: MAVEN_OPTS
-apiVersion: 1.0.0
 commands:
   - name: build
     actions:
@@ -76,19 +76,4 @@ commands:
       - workdir: '${CHE_PROJECTS_ROOT}/spring-petclinic'
         type: exec
         command: 'MAVEN_OPTS="-Xmx200m" && mvn -Duser.home=${HOME} verify'
-        component: maven
-  - name: dependency-analysis
-    actions:
-      - workdir: '${CHE_PROJECTS_ROOT}/spring-petclinic'
-        type: exec
-        command: >-
-          ${HOME}/stack-analysis.sh -f
-          ${CHE_PROJECTS_ROOT}/spring-petclinic/pom.xml -p
-          ${CHE_PROJECTS_ROOT}/spring-petclinic
-        component: maven
-  - name: deploy to OpenShift
-    actions:
-      - workdir: '${CHE_PROJECTS_ROOT}/spring-petclinic'
-        type: exec
-        command: 'mvn fabric8:deploy -Popenshift -DskipTests'
         component: maven
