@@ -15,6 +15,7 @@ try {
         stage('Clair Container Vulnerability Scan') {
             echo "Printing ocp and quay users:"
             echo "OCP: ${ocpUser}"
+            echo "OCP from env: ${env.OCP_USER}"
             echo "Quay: ${quayUser}"
             echo "Git repo: ${gitSourceUrl}"
             
