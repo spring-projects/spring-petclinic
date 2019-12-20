@@ -41,22 +41,6 @@ try {
                 }
             }
         }
-    }
-    node('jenkins-slave-skopeo') {
-        
-        stage('Clair Container Vulnerability Scan') {
-            sh "oc login -u $ocpUser -p $ocpPassword --insecure-skip-tls-verify https://api.cluster-ottawa-57ac.ottawa-57ac.example.opentlc.com:6443 2>&1"
-            sh 'skopeo --debug copy --src-creds="$(oc whoami)":"$(oc whoami -t)" --src-tls-verify=false --dest-tls-verify=false' + " --dest-creds=$quayUser:$quayPassword docker://docker-registry.default.svc:5000/cicd/spring-petclinic:latest docker://quay.io/$quayUser/spring-petclinic:latest"
-        }
-        
-        stage("Tag DEV") {
-            echo "Tag image to DEV"
-            openshift.withCluster() {
-                openshift.withProject('cicd') {
-                    openshift.tag("${appName}:latest", "${appName}:dev")
-                }
-            }
-        }
         stage("Deploy DEV") {
             echo "Deploy to DEV."
             openshift.withCluster() {
@@ -65,14 +49,6 @@ try {
                     def dc = openshift.selector('dc', "${appName}")
                     dc.rollout().latest()
                     dc.rollout().status()
-                }
-            }
-        }
-        stage("Tag for QA") {
-            echo "Tag to UAT"
-            openshift.withCluster() {
-                openshift.withProject('cicd') {
-                    openshift.tag("${appName}:dev", "${appName}:uat")
                 }
             }
         }
