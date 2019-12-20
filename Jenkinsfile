@@ -4,17 +4,19 @@ try {
     def gitSourceRef=env.GIT_SOURCE_REF
     def project=""
     def projectVersion=""
-    def quayUser=env.QUAY_USER
-    def quayPassword=env.QUAY_PASS
-    def ocpUser=env.OCP_USER
-    def ocpPassword=env.OCP_PASS
 
     node('jenkins-slave-skopeo') {
+        
+        def quayUser=env.QUAY_USER
+        def quayPassword=env.QUAY_PASS
+        def ocpUser=env.OCP_USER
+        def ocpPassword=env.OCP_PASS
         
         stage('Clair Container Vulnerability Scan') {
             echo "Printing ocp and quay users:"
             echo "OCP: ${ocpUser}"
             echo "Quay: ${quayUser}"
+            echo "Git repo: ${gitSourceUrl}"
             
             sh "oc login -u $ocpUser -p $ocpPassword --insecure-skip-tls-verify https://api.cluster-ottawa-7b89.ottawa-7b89.example.opentlc.com:6443 2>&1"
             sh 'skopeo --debug copy --src-creds="$(oc whoami)":"$(oc whoami -t)" --src-tls-verify=false --dest-tls-verify=false' + " --dest-creds=$quayUser:$quayPassword docker://docker-registry.default.svc:5000/cicd/petclinic:latest docker://quay.io/$quayUser/petclinic:latest"
