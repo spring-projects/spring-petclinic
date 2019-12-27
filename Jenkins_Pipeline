@@ -1,0 +1,14 @@
+node{
+     	stage('SCM') {
+           //git clone
+         git 'https://github.com/spring-projects/spring-petclinic.git'
+      }
+      stage('Build package') {
+         //Build maven package
+        sh 'mvn package'
+      }
+     stage('Archive') {
+       // Archiving artifacts.
+       archiveArtifacts 'target/*.jar'  
+     }
+}
