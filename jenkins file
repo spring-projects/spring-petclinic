@@ -1,0 +1,19 @@
+node('MAVEN')
+{
+stage('SCM')
+ {
+//some block
+  git 'https://github.com/spring-projects/spring-petclinic.git'
+}
+
+stage('BUILD')
+{
+sh label: '',scrript: 'mvn package'
+}
+
+stage('Test Results and Package')
+{
+archive 'target/*.jar'
+junit 'target/surefire-reports/*.xml'
+}
+}
