@@ -13,7 +13,7 @@
             "stopOnEntry": false,
             "mainClass": "org.springframework.samples.petclinic.PetClinicApplication",
             "projectName": "spring-petclinic",
-            "args": ""
+            "args": "--spring.profiles.active=mysql"
         },
         {
             "type": "java",

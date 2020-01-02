@@ -1,0 +1,10 @@
+image: gitpod/workspace-mysql
+tasks:
+  - init: ./mvnw install -DskipTests && mysql < src/main/resources/db/mysql/user.sql
+vscode:
+  extensions:
+    - vscjava.vscode-java-pack@0.8.1:LRImBn//d5JhH4PUEI1BaQ==
+    - vscjava.vscode-java-debug@0.23.0:3ARqL3kPh1J1SwpVjYUjqw==
+    - vscjava.vscode-java-test@0.22.0:BlvjRRJyZszeJzIS+xEHIA==
+    - redhat.java@0.54.2:Q60n5quUtfd1EcwzkRq96A==
+    - vscjava.vscode-maven@0.20.1:gdyOPlzH3PU5IkrigIg85g==
