@@ -38,13 +38,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(controllers = CrashController.class)
 class CrashControllerTests {
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @Test
-    void testTriggerException() throws Exception {
-        mockMvc.perform(get("/oups")).andExpect(view().name("exception"))
-                .andExpect(model().attributeExists("exception"))
-                .andExpect(forwardedUrl("exception")).andExpect(status().isOk());
-    }
+	@Test
+	void testTriggerException() throws Exception {
+		mockMvc.perform(get("/oups")).andExpect(view().name("exception"))
+				.andExpect(model().attributeExists("exception")).andExpect(forwardedUrl("exception"))
+				.andExpect(status().isOk());
+	}
+
 }

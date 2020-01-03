@@ -40,43 +40,41 @@ import org.springframework.test.web.servlet.ResultActions;
 @WebMvcTest(VetController.class)
 class VetControllerTests {
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @MockBean
-    private VetRepository vets;
+	@MockBean
+	private VetRepository vets;
 
-    @BeforeEach
-    void setup() {
-        Vet james = new Vet();
-        james.setFirstName("James");
-        james.setLastName("Carter");
-        james.setId(1);
-        Vet helen = new Vet();
-        helen.setFirstName("Helen");
-        helen.setLastName("Leary");
-        helen.setId(2);
-        Specialty radiology = new Specialty();
-        radiology.setId(1);
-        radiology.setName("radiology");
-        helen.addSpecialty(radiology);
-        given(this.vets.findAll()).willReturn(Lists.newArrayList(james, helen));
-    }
+	@BeforeEach
+	void setup() {
+		Vet james = new Vet();
+		james.setFirstName("James");
+		james.setLastName("Carter");
+		james.setId(1);
+		Vet helen = new Vet();
+		helen.setFirstName("Helen");
+		helen.setLastName("Leary");
+		helen.setId(2);
+		Specialty radiology = new Specialty();
+		radiology.setId(1);
+		radiology.setName("radiology");
+		helen.addSpecialty(radiology);
+		given(this.vets.findAll()).willReturn(Lists.newArrayList(james, helen));
+	}
 
-    @Test
-    void testShowVetListHtml() throws Exception {
-        mockMvc.perform(get("/vets.html"))
-            .andExpect(status().isOk())
-            .andExpect(model().attributeExists("vets"))
-            .andExpect(view().name("vets/vetList"));
-    }
+	@Test
+	void testShowVetListHtml() throws Exception {
+		mockMvc.perform(get("/vets.html")).andExpect(status().isOk()).andExpect(model().attributeExists("vets"))
+				.andExpect(view().name("vets/vetList"));
+	}
 
-    @Test
-    void testShowResourcesVetList() throws Exception {
-        ResultActions actions = mockMvc.perform(get("/vets")
-            .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
-        actions.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.vetList[0].id").value(1));
-    }
+	@Test
+	void testShowResourcesVetList() throws Exception {
+		ResultActions actions = mockMvc.perform(get("/vets").accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
+		actions.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$.vetList[0].id").value(1));
+	}
 
 }
