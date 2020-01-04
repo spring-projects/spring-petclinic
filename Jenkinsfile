@@ -42,8 +42,8 @@ try {
         stage("Tag DEV") {
             echo "Tag image to DEV"
             openshift.withCluster() {
-                withCredentials([usernamePassword(credentialsId: "cicd-quay-creds-secret", usernameVariable: "QUAY_USER", passwordVariable: "QUAY_PASSWORD")]) {
-                  sh "skopeo copy docker://quay.io/${QUAY_USERNAME}/${appName}:latest docker://quay.io/${QUAY_USERNAME}/${appName}:dev --src-creds \"$QUAY_USER:$QUAY_PASSWORD\" --dest-creds \"$QUAY_USER:$QUAY_PASSWORD\" --src-tls-verify=false --dest-tls-verify=false"
+                withCredentials([usernamePassword(credentialsId: "cicd-quay-creds-secret", usernameVariable: "QUAY_USERNAME", passwordVariable: "QUAY_PASSWORD")]) {
+                  sh "skopeo copy docker://quay.io/${QUAY_USERNAME}/${appName}:latest docker://quay.io/${QUAY_USERNAME}/${appName}:dev --src-creds \"$QUAY_USERNAME:$QUAY_PASSWORD\" --dest-creds \"$QUAY_USERNAME:$QUAY_PASSWORD\" --src-tls-verify=false --dest-tls-verify=false"
                 }
             }
         }
@@ -61,8 +61,8 @@ try {
         stage("Tag for QA") {
             echo "Tag to UAT"
             openshift.withCluster() {
-                withCredentials([usernamePassword(credentialsId: "cicd-quay-creds-secret", usernameVariable: "QUAY_USER", passwordVariable: "QUAY_PASSWORD")]) {
-                  sh "skopeo copy docker://quay.io/${QUAY_USERNAME}/${appName}:dev docker://quay.io/${QUAY_USERNAME}/${appName}:uat --src-creds \"$QUAY_USER:$QUAY_PASSWORD\" --dest-creds \"$QUAY_USER:$QUAY_PASSWORD\" --src-tls-verify=false --dest-tls-verify=false"
+                withCredentials([usernamePassword(credentialsId: "cicd-quay-creds-secret", usernameVariable: "QUAY_USERNAME", passwordVariable: "QUAY_PASSWORD")]) {
+                  sh "skopeo copy docker://quay.io/${QUAY_USERNAME}/${appName}:dev docker://quay.io/${QUAY_USERNAME}/${appName}:uat --src-creds \"$QUAY_USERNAME:$QUAY_PASSWORD\" --dest-creds \"$QUAY_USERNAME:$QUAY_PASSWORD\" --src-tls-verify=false --dest-tls-verify=false"
                 }
             }
         }
