@@ -38,7 +38,7 @@ try {
             }
         }
     }
-    node("skopeo") {
+    node("jenkins-slave-skopeo") {
         stage("Tag DEV") {
             echo "Tag image to DEV"
             openshift.withCluster() {
