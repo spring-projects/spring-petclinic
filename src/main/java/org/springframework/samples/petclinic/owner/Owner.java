@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -127,10 +128,8 @@ public class Owner extends Person {
 	public Pet getPet(String name, boolean ignoreNew) {
 		Set<Pet> pets = getPetsInternal();
 		if (ignoreNew) {
-            // filter only pets that have id
 			pets = getPetsInternal().stream().filter(pet -> pet.getId() != null).collect(Collectors.toSet());
 		}
-        // Find pet with queried name
 		return pets.stream().filter(pet -> pet.getName().equalsIgnoreCase(name)).findAny().orElse(null);
 	}
 
