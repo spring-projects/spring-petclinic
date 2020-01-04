@@ -37,11 +37,13 @@ try {
                 }
             }
         }
+    }
+    node("skopeo") {
         stage("Tag DEV") {
             echo "Tag image to DEV"
             openshift.withCluster() {
-                openshift.withProject('cicd') {
-                    openshift.tag("${appName}:latest", "${appName}:dev")
+                withCredentials([usernamePassword(credentialsId: "quay-creds-secret", usernameVariable: "QUAY_USER", passwordVariable: "QUAY_PASSWORD")]) {
+                  sh "skopeo copy docker://quay.io/${QUAY_USERNAME}/${appName}:latest docker://quay.io/${QUAY_USERNAME}/${appName}:dev --src-creds \"$QUAY_USER:$QUAY_PASSWORD\" --dest-creds \"$QUAY_USER:$QUAY_PASSWORD\" --src-tls-verify=false --dest-tls-verify=false"
                 }
             }
         }
@@ -59,8 +61,8 @@ try {
         stage("Tag for QA") {
             echo "Tag to UAT"
             openshift.withCluster() {
-                openshift.withProject('cicd') {
-                    openshift.tag("${appName}:dev", "${appName}:uat")
+                withCredentials([usernamePassword(credentialsId: "quay-creds-secret", usernameVariable: "QUAY_USER", passwordVariable: "QUAY_PASSWORD")]) {
+                  sh "skopeo copy docker://quay.io/${QUAY_USERNAME}/${appName}:dev docker://quay.io/${QUAY_USERNAME}/${appName}:uat --src-creds \"$QUAY_USER:$QUAY_PASSWORD\" --dest-creds \"$QUAY_USER:$QUAY_PASSWORD\" --src-tls-verify=false --dest-tls-verify=false"
                 }
             }
         }
