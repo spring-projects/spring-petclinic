@@ -28,16 +28,11 @@ public class MainPageIT {
 	}
 
 	@Test
-	public void googleTitleIT() {
+	public void petclinicTitleIT() {
 		WebDriver driver = config.getDriver();
 		driver.get(url);
 		assertEquals("Title not as expected: ", "PetClinic :: a Spring Framework demonstration", getTitle());
-		// Save the random value from the page.
 		String welcomeText = driver.findElement(By.id("welcome")).getText();
-		// Reload the page and get a new random value.
-		driver.get(url);
-		String value2 = driver.findElement(By.id("random-value")).getText();
-		// Values should not be the same.
 		assertEquals("Wrong welcome text.", "Welcome to the Pet Clinic!", welcomeText);
 		System.out.println("Text extracted: " + welcomeText);
 	}
