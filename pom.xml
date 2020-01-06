@@ -10,7 +10,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.1.6.RELEASE</version>
+    <version>2.2.2.RELEASE</version>
   </parent>
   <name>petclinic</name>
 
@@ -108,6 +108,11 @@
       <artifactId>spring-boot-devtools</artifactId>
       <optional>true</optional>
     </dependency>
+    
+	<dependency>
+		<groupId>org.seleniumhq.selenium</groupId>
+		<artifactId>selenium-java</artifactId>
+	</dependency>
   </dependencies>
 
   <build>
@@ -208,8 +213,47 @@
           </dependency>
         </dependencies>
       </plugin>
+      
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+		<configuration>
+		  <excludes>
+		    <exclude>**/integration/*</exclude>
+		  </excludes>
+		</configuration>
+      </plugin>
     </plugins>
   </build>
+
+	<profiles>
+		<profile>
+		    <id>failsafe</id>
+		    <build>
+		        <plugins>
+		            <plugin>
+		                <artifactId>maven-failsafe-plugin</artifactId>
+		                <version>2.22.0</version>
+					    <configuration>
+					        <includes>
+					            <include>**/integration/*</include>
+					        </includes>
+					        <excludes>
+					          	<exclude>**/test/*</exclude>
+					        </excludes>
+					    </configuration>
+		                <executions>
+		                    <execution>
+		                        <goals>
+		                            <goal>integration-test</goal>
+		                            <goal>verify</goal>
+		                        </goals>
+		                    </execution>
+		                </executions>
+		            </plugin>
+		        </plugins>
+		    </build>
+		</profile>
+	</profiles>
 
   <!-- Apache 2 license -->
   <licenses>

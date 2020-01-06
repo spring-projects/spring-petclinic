@@ -1,0 +1,116 @@
+kind: Template
+apiVersion: v1
+metadata:
+  name: app-template 
+  annotations:
+    openshift.io/display-name: "Demo App Example: Front End App" 
+    description: >-
+      Front End App
+    openshift.io/long-description: >-
+      This template defines resources needed to deploy a simple demo app.
+    tags: "quickstart,java,demo" 
+    iconClass: icon-openjdk 
+    openshift.io/provider-display-name: "Nobody, Inc." 
+    openshift.io/documentation-url: "https://github.com/pittar/ocp-devops-setup" 
+    openshift.io/support-url: "https://google.ca" 
+message: "Your app is being instantiated."
+labels:
+  template: "demo-app-frontend-template" 
+  app: "demo-app-frontend"
+objects:
+- apiVersion: apps.openshift.io/v1
+  kind: DeploymentConfig
+  metadata:
+    name: frontend
+  spec:
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      deploymentConfig: frontend
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          deploymentConfig: frontend
+        name: frontend
+      spec:
+        containers:
+        - name: frontend
+          envFrom:
+            - configMapRef:
+                name: frontend-cm
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8778
+            name: jolokia
+            protocol: TCP
+          - containerPort: 8080
+            name: http
+            protocol: TCP
+          - containerPort: 8443
+            name: https
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 75
+    test: false
+    triggers:
+    - imageChangeParams:
+        automatic: false
+        containerNames:
+        - frontend
+        from:
+          kind: ImageStreamTag
+          name: ${IMAGE_NAME}:${IMAGE_TAG}
+          namespace: cicd
+      type: ImageChange
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: frontend
+  spec:
+    ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      deploymentConfig: frontend
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    name: frontend
+  spec:
+    to:
+      kind: Service
+      name: frontend
+      weight: 100
+    wildcardPolicy: None
+parameters:
+  - name: IMAGE_NAME
+    displayName: Frontend image
+    description: The frontend image to use. 
+    value: frontend
+    required: true 
+  - name: IMAGE_TAG 
+    displayName: Frontend image tag
+    description: The tag (version) of the frontend image to use. 
+    value: latest
+    required: true 

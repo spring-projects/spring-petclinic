@@ -1,0 +1,95 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: jenkins-java-pipeline
+parameters:
+- name: APP_NAME
+  description: Name of the container to build.
+  displayName: Application container name.
+  required: true
+- name: GIT_SOURCE_URL
+  description: The source URL for the application
+  displayName: Source URL
+  required: true
+- name: GIT_SOURCE_REF
+  description: The source Ref for the application
+  displayName: Source Ref
+  required: true
+  value: master
+- description: Github trigger secret.  A difficult to guess string encoded as part of the webhook URL.  Not encrypted.
+  displayName: GitHub Webhook Secret
+  from: '[a-zA-Z0-9]{40}'
+  generate: expression
+  name: GITHUB_WEBHOOK_SECRET
+  required: true
+- description: A secret string used to configure the Generic webhook.
+  displayName: Generic Webhook Secret
+  from: '[a-zA-Z0-9]{40}'
+  generate: expression
+  name: GENERIC_WEBHOOK_SECRET
+  required: true
+labels:
+  template: "demo-app-build-template" 
+  app: "demo-app-build"
+objects:
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: ${APP_NAME}
+  spec: {}
+  status:
+    dockerImageRepository: ""
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    creationTimestamp: null
+    labels:
+      name: ${APP_NAME}
+    name: ${APP_NAME}
+  spec:
+    strategy:
+      jenkinsPipelineStrategy:
+        jenkinsfilePath: Jenkinsfile
+        env:
+          - name: APP_NAME
+            value: ${APP_NAME}
+          - name: GIT_SOURCE_URL
+            value: ${GIT_SOURCE_URL}
+          - name: GIT_SOURCE_REF
+            value: ${GIT_SOURCE_REF}
+      type: JenkinsPipeline
+    source:
+      git:
+        uri: "${GIT_SOURCE_URL}"
+        ref: "${GIT_SOURCE_REF}"
+      type: "Git"
+    triggers: 
+    - github:
+        secret: "${GITHUB_WEBHOOK_SECRET}"
+      type: GitHub
+    - generic:
+        secret: "${GENERIC_WEBHOOK_SECRET}"
+      type: Generic
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    name: "${APP_NAME}-build"
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: ${APP_NAME}:latest
+    postCommit: {}
+    resources: {}
+    runPolicy: Serial
+    source:
+      binary: {}
+      type: Binary
+    strategy:
+      sourceStrategy:
+        from:
+          kind: ImageStreamTag
+          name: redhat-openjdk18-openshift:1.4
+          namespace: openshift
+      type: Source
+    triggers: []
