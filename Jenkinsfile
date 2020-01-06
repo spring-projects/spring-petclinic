@@ -4,6 +4,10 @@ try {
     def gitSourceRef=env.GIT_SOURCE_REF
     def project=""
     def projectVersion=""
+    def quayUser=env.QUAY_USER
+    def quayPassword=env.QUAY_PASSWORD
+    def ocpUser=env.OCP_USER
+    def ocpPassword=env.OCP_PASSWORD
     node("maven") {
         stage("Initialize") {
             project = env.PROJECT_NAME
@@ -37,14 +41,6 @@ try {
                 }
             }
         }
-        stage("Tag DEV") {
-            echo "Tag image to DEV"
-            openshift.withCluster() {
-                openshift.withProject('cicd') {
-                    openshift.tag("${appName}:latest", "${appName}:dev")
-                }
-            }
-        }
         stage("Deploy DEV") {
             echo "Deploy to DEV."
             openshift.withCluster() {
@@ -53,14 +49,6 @@ try {
                     def dc = openshift.selector('dc', "${appName}")
                     dc.rollout().latest()
                     dc.rollout().status()
-                }
-            }
-        }
-        stage("Tag for QA") {
-            echo "Tag to UAT"
-            openshift.withCluster() {
-                openshift.withProject('cicd') {
-                    openshift.tag("${appName}:dev", "${appName}:uat")
                 }
             }
         }
