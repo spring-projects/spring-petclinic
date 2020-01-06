@@ -62,7 +62,7 @@ pipeline {
 	    script {
 	      openshift.withCluster() {
 	        withCredentials([usernamePassword(credentialsId: "${openshift.project()}-quay-creds-secret", usernameVariable: "QUAY_USERNAME", passwordVariable: "QUAY_PASSWORD")]) {
-	          sh "skopeo copy docker://quay.io/${QUAY_USERNAME}/${QUAY_REPOSITORY}:latest docker://quay.io/${QUAY_USERNAME}/${QUAY_REPOSITORY}:dev --src-creds \"$QUAY_USERNAME:$QUAY_PASSWORD\" --dest-creds \"$QUAY_USERNAME:$QUAY_PASSWORD\" --src-tls-verify=false --dest-tls-verify=false"
+	          sh "skopeo copy docker://quay.io/${QUAY_USERNAME}/${appName}:latest docker://quay.io/${QUAY_USERNAME}/${appName}:dev --src-creds \"$QUAY_USERNAME:$QUAY_PASSWORD\" --dest-creds \"$QUAY_USERNAME:$QUAY_PASSWORD\" --src-tls-verify=false --dest-tls-verify=false"
 	        }        
 	      }
 	    }
@@ -97,7 +97,7 @@ pipeline {
         script {
           openshift.withCluster() {
             withCredentials([usernamePassword(credentialsId: "${openshift.project()}-quay-creds-secret", usernameVariable: "QUAY_USERNAME", passwordVariable: "QUAY_PASSWORD")]) {
-              sh "skopeo copy docker://quay.io/${QUAY_USERNAME}/${QUAY_REPOSITORY}:dev docker://quay.io/${QUAY_USERNAME}/${QUAY_REPOSITORY}:uat --src-creds \"$QUAY_USERNAME:$QUAY_PASSWORD\" --dest-creds \"$QUAY_USERNAME:$QUAY_PASSWORD\" --src-tls-verify=false --dest-tls-verify=false"
+              sh "skopeo copy docker://quay.io/${QUAY_USERNAME}/${appName}:dev docker://quay.io/${QUAY_USERNAME}/${appName}:uat --src-creds \"$QUAY_USERNAME:$QUAY_PASSWORD\" --dest-creds \"$QUAY_USERNAME:$QUAY_PASSWORD\" --src-tls-verify=false --dest-tls-verify=false"
             }
           }
         }
