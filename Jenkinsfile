@@ -52,6 +52,10 @@ try {
                 }
             }
         }
+        stage("Integration Tests") {
+        	echo "Running Integration tests..."
+            sh "mvn verify -Pfailsafe"
+        }
         stage("Deploy UAT") {
             echo "Deploy to UAT."
             openshift.withCluster() {
