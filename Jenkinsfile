@@ -8,7 +8,13 @@ try {
     def quayPassword=env.QUAY_PASSWORD
     def ocpUser=env.OCP_USER
     def ocpPassword=env.OCP_PASSWORD
-    node("maven") {
+    
+    pipeline {
+      agent {
+        label 'maven'
+      }
+      stages {
+
         stage("Initialize") {
             project = env.PROJECT_NAME
             echo "appName: ${appName}"
@@ -41,6 +47,19 @@ try {
                 }
             }
         }
+        stage("Tag DEV") {
+          agent {
+              label 'jenkins-slave-skopeo'
+          }
+
+          script {
+            openshift.withCluster() {
+              withCredentials([usernamePassword(credentialsId: "${openshift.project()}-quay-creds-secret", usernameVariable: "QUAY_USERNAME", passwordVariable: "QUAY_PASSWORD")]) {
+                sh "skopeo copy docker://quay.io/${QUAY_USERNAME}/${QUAY_REPOSITORY}:latest docker://quay.io/${QUAY_USERNAME}/${QUAY_REPOSITORY}:dev --src-creds \"$QUAY_USERNAME:$QUAY_PASSWORD\" --dest-creds \"$QUAY_USERNAME:$QUAY_PASSWORD\" --src-tls-verify=false --dest-tls-verify=false"
+              }
+            }
+          }                       
+        }
         stage("Deploy DEV") {
             echo "Deploy to DEV."
             openshift.withCluster() {
@@ -56,6 +75,18 @@ try {
         	echo "Running Integration tests..."
             sh "mvn verify -Pfailsafe"
         }
+        stage("Tag UAT") {
+          agent {
+              label 'jenkins-slave-skopeo'
+          }
+          script {
+            openshift.withCluster() {
+              withCredentials([usernamePassword(credentialsId: "${openshift.project()}-quay-creds-secret", usernameVariable: "QUAY_USERNAME", passwordVariable: "QUAY_PASSWORD")]) {
+                sh "skopeo copy docker://quay.io/${QUAY_USERNAME}/${QUAY_REPOSITORY}:dev docker://quay.io/${QUAY_USERNAME}/${QUAY_REPOSITORY}:uat --src-creds \"$QUAY_USERNAME:$QUAY_PASSWORD\" --dest-creds \"$QUAY_USERNAME:$QUAY_PASSWORD\" --src-tls-verify=false --dest-tls-verify=false"
+              }
+            }
+          }                       
+        }
         stage("Deploy UAT") {
             echo "Deploy to UAT."
             openshift.withCluster() {
@@ -67,6 +98,7 @@ try {
                 }
             }
         }
+      }
     }
 } catch (err) {
     echo "in catch block"
