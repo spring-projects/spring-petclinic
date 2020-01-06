@@ -33,7 +33,7 @@ public class MainPageIT {
 		driver.get(url);
 		assertEquals("Title not as expected: ", "PetClinic :: a Spring Framework demonstration", getTitle());
 		String welcomeText = driver.findElement(By.id("welcome")).getText();
-		assertEquals("Wrong welcome text.", "Welcome to the Red Hat Pet Clinic!", welcomeText);
+		assertEquals("Wrong welcome text.", "Welcome to the Red Hat Pet Clinic", welcomeText);
 		System.err.println("Text extracted: " + welcomeText);
 	}
 
