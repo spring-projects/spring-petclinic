@@ -6,7 +6,6 @@ import java.net.MalformedURLException;
 
 import org.junit.After;
 import org.junit.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class MainPageIT {
@@ -32,9 +31,9 @@ public class MainPageIT {
 		WebDriver driver = config.getDriver();
 		driver.get(url);
 		assertEquals("Title not as expected: ", "PetClinic :: a Spring Framework demonstration", getTitle());
-		String welcomeText = driver.findElement(By.id("welcome")).getText();
-		assertEquals("Wrong welcome text.", "Welcome to the Pet Clinic!", welcomeText);
-		System.out.println("Text extracted: " + welcomeText);
+//		String welcomeText = driver.findElement(By.id("welcome")).getText();
+//		assertEquals("Wrong welcome text.", "Welcome to the Pet Clinic!", welcomeText);
+//		System.out.println("Text extracted: " + welcomeText);
 	}
 
 }
