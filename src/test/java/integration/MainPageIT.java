@@ -19,17 +19,27 @@ public class MainPageIT {
 	}
 
 	public String getTitle() {
-		return this.config.getDriver().getTitle();
+		return this.config.getFirefoxDriver().getTitle();
 	}
 
 	@After
 	public void closeConnection() {
-		config.getDriver().quit();
+		config.getFirefoxDriver().quit();
 	}
 
 	@Test
-	public void petclinicTitleIT() {
-		WebDriver driver = config.getDriver();
+	public void petclinicTitleFireFoxIT() {
+		WebDriver driver = config.getFirefoxDriver();
+		driver.get(url);
+		assertEquals("Title not as expected: ", "PetClinic :: a Spring Framework demonstration", getTitle());
+		String welcomeText = driver.findElement(By.id("welcome")).getText();
+		assertEquals("Wrong welcome text.", "Welcome to the Red Hat Pet Clinic", welcomeText);
+		System.err.println("Text extracted: " + welcomeText);
+	}
+
+	@Test
+	public void petclinicTitleChromeIT() {
+		WebDriver driver = config.getChromeDriver();
 		driver.get(url);
 		assertEquals("Title not as expected: ", "PetClinic :: a Spring Framework demonstration", getTitle());
 		String welcomeText = driver.findElement(By.id("welcome")).getText();
