@@ -37,14 +37,4 @@ public class MainPageIT {
 		System.err.println("Text extracted: " + welcomeText);
 	}
 
-	@Test
-	public void petclinicTitleChromeIT() {
-		WebDriver driver = config.getChromeDriver();
-		driver.get(url);
-		assertEquals("Title not as expected: ", "PetClinic :: a Spring Framework demonstration", getTitle());
-		String welcomeText = driver.findElement(By.id("welcome")).getText();
-		assertEquals("Wrong welcome text.", "Welcome to the Red Hat Pet Clinic", welcomeText);
-		System.err.println("Text extracted: " + welcomeText);
-	}
-
 }
