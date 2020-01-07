@@ -1,288 +1,292 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns="http://maven.apache.org/POM/4.0.0"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.springframework.samples</groupId>
-  <artifactId>spring-petclinic</artifactId>
-  <version>2.1.0.BUILD-SNAPSHOT</version>
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.springframework.samples</groupId>
+	<artifactId>spring-petclinic</artifactId>
+	<version>2.1.0.BUILD-SNAPSHOT</version>
 
-  <parent>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.2.2.RELEASE</version>
-  </parent>
-  <name>petclinic</name>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.2.2.RELEASE</version>
+	</parent>
+	<name>petclinic</name>
 
-  <properties>
+	<properties>
 
-    <!-- Generic properties -->
-    <java.version>1.8</java.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<!-- Generic properties -->
+		<java.version>1.8</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-    <!-- Web dependencies -->
-    <webjars-bootstrap.version>3.3.6</webjars-bootstrap.version>
-    <webjars-jquery-ui.version>1.11.4</webjars-jquery-ui.version>
-    <webjars-jquery.version>2.2.4</webjars-jquery.version>
-    <wro4j.version>1.8.0</wro4j.version>
+		<!-- Web dependencies -->
+		<webjars-bootstrap.version>3.3.6</webjars-bootstrap.version>
+		<webjars-jquery-ui.version>1.11.4</webjars-jquery-ui.version>
+		<webjars-jquery.version>2.2.4</webjars-jquery.version>
+		<wro4j.version>1.8.0</wro4j.version>
 
-    <jacoco.version>0.8.2</jacoco.version>
+		<jacoco.version>0.8.2</jacoco.version>
 
-  </properties>
+	</properties>
 
-  <dependencies>
-    <!-- Spring and Spring Boot dependencies -->
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-actuator</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-cache</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-jpa</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-thymeleaf</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <scope>test</scope>
-    </dependency>
+	<dependencies>
+		<!-- Spring and Spring Boot dependencies -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
 
-    <!-- Databases - Uses HSQL by default -->
-    <dependency>
-      <groupId>org.hsqldb</groupId>
-      <artifactId>hsqldb</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <scope>runtime</scope>
-    </dependency>
+		<!-- Databases - Uses HSQL by default -->
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 
-    <!-- caching -->
-    <dependency>
-      <groupId>javax.cache</groupId>
-      <artifactId>cache-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.ehcache</groupId>
-      <artifactId>ehcache</artifactId>
-    </dependency>
+		<!-- caching -->
+		<dependency>
+			<groupId>javax.cache</groupId>
+			<artifactId>cache-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+		</dependency>
 
-    <!-- webjars -->
-    <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>webjars-locator-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>jquery</artifactId>
-      <version>${webjars-jquery.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>jquery-ui</artifactId>
-      <version>${webjars-jquery-ui.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>bootstrap</artifactId>
-      <version>${webjars-bootstrap.version}</version>
-    </dependency>
-    <!-- end of webjars -->
+		<!-- webjars -->
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>webjars-locator-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>jquery</artifactId>
+			<version>${webjars-jquery.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>jquery-ui</artifactId>
+			<version>${webjars-jquery-ui.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>bootstrap</artifactId>
+			<version>${webjars-bootstrap.version}</version>
+		</dependency>
+		<!-- end of webjars -->
 
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-devtools</artifactId>
-      <optional>true</optional>
-    </dependency>
-    
-	<dependency>
-		<groupId>org.seleniumhq.selenium</groupId>
-		<artifactId>selenium-java</artifactId>
-	</dependency>
-  </dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>
 
-  <build>
-    <finalName>app</finalName>
-    <plugins>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <!-- Spring Boot Actuator displays build-related information
-              if a META-INF/build-info.properties file is present -->
-            <goals>
-              <goal>build-info</goal>
-            </goals>
-            <configuration>
-              <additionalProperties>
-                <encoding.source>${project.build.sourceEncoding}</encoding.source>
-                <encoding.reporting>${project.reporting.outputEncoding}</encoding.reporting>
-                <java.source>${maven.compiler.source}</java.source>
-                <java.target>${maven.compiler.target}</java.target>
-              </additionalProperties>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>${jacoco.version}</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>prepare-agent</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>report</id>
-            <phase>prepare-package</phase>
-            <goals>
-              <goal>report</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+		</dependency>
+	</dependencies>
 
-      <!-- Spring Boot Actuator displays build-related information if a git.properties
-        file is present at the classpath -->
-      <plugin>
-        <groupId>pl.project13.maven</groupId>
-        <artifactId>git-commit-id-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>revision</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <verbose>true</verbose>
-          <dateFormat>yyyy-MM-dd'T'HH:mm:ssZ</dateFormat>
-          <generateGitPropertiesFile>true</generateGitPropertiesFile>
-          <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties
-          </generateGitPropertiesFilename>
-          <failOnNoGitDirectory>false</failOnNoGitDirectory>
-        </configuration>
-      </plugin>
+	<build>
+		<finalName>app</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<!-- Spring Boot Actuator displays build-related information if a META-INF/build-info.properties 
+							file is present -->
+						<goals>
+							<goal>build-info</goal>
+						</goals>
+						<configuration>
+							<additionalProperties>
+								<encoding.source>${project.build.sourceEncoding}</encoding.source>
+								<encoding.reporting>${project.reporting.outputEncoding}</encoding.reporting>
+								<java.source>${maven.compiler.source}</java.source>
+								<java.target>${maven.compiler.target}</java.target>
+							</additionalProperties>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 
-      <plugin>
-        <groupId>ro.isdc.wro4j</groupId>
-        <artifactId>wro4j-maven-plugin</artifactId>
-        <version>${wro4j.version}</version>
-        <executions>
-          <execution>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <wroManagerFactory>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory</wroManagerFactory>
-          <cssDestinationFolder>${project.build.directory}/classes/static/resources/css</cssDestinationFolder>
-          <wroFile>${basedir}/src/main/wro/wro.xml</wroFile>
-          <extraConfigFile>${basedir}/src/main/wro/wro.properties</extraConfigFile>
-          <contextFolder>${basedir}/src/main/less</contextFolder>
-        </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>bootstrap</artifactId>
-            <version>${webjars-bootstrap.version}</version>
-          </dependency>
-          <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>${mockito.version}</version>
-          </dependency>
-        </dependencies>
-      </plugin>
-      
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-		<configuration>
-		  <excludes>
-		    <exclude>**/integration/*</exclude>
-		  </excludes>
-		</configuration>
-      </plugin>
-    </plugins>
-  </build>
+			<!-- Spring Boot Actuator displays build-related information if a git.properties 
+				file is present at the classpath -->
+			<plugin>
+				<groupId>pl.project13.maven</groupId>
+				<artifactId>git-commit-id-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>revision</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<verbose>true</verbose>
+					<dateFormat>yyyy-MM-dd'T'HH:mm:ssZ</dateFormat>
+					<generateGitPropertiesFile>true</generateGitPropertiesFile>
+					<generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties
+					</generateGitPropertiesFilename>
+					<failOnNoGitDirectory>false</failOnNoGitDirectory>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>ro.isdc.wro4j</groupId>
+				<artifactId>wro4j-maven-plugin</artifactId>
+				<version>${wro4j.version}</version>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<wroManagerFactory>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory</wroManagerFactory>
+					<cssDestinationFolder>${project.build.directory}/classes/static/resources/css</cssDestinationFolder>
+					<wroFile>${basedir}/src/main/wro/wro.xml</wroFile>
+					<extraConfigFile>${basedir}/src/main/wro/wro.properties</extraConfigFile>
+					<contextFolder>${basedir}/src/main/less</contextFolder>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.webjars</groupId>
+						<artifactId>bootstrap</artifactId>
+						<version>${webjars-bootstrap.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.mockito</groupId>
+						<artifactId>mockito-core</artifactId>
+						<version>${mockito.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>**/integration/*</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 	<profiles>
 		<profile>
-		    <id>failsafe</id>
-		    <build>
-		        <plugins>
-		            <plugin>
-		                <artifactId>maven-failsafe-plugin</artifactId>
-		                <version>2.22.0</version>
-					    <configuration>
-					        <includes>
-					            <include>**/integration/*</include>
-					        </includes>
-					        <excludes>
-					          	<exclude>**/test/*</exclude>
-					        </excludes>
-					    </configuration>
-		                <executions>
-		                    <execution>
-		                        <goals>
-		                            <goal>integration-test</goal>
-		                            <goal>verify</goal>
-		                        </goals>
-		                    </execution>
-		                </executions>
-		            </plugin>
-		        </plugins>
-		    </build>
+			<id>failsafe</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<version>2.22.0</version>
+						<configuration>
+							<includes>
+								<include>**/integration/*</include>
+							</includes>
+							<excludes>
+								<exclude>**/test/*</exclude>
+							</excludes>
+						</configuration>
+						<executions>
+							<execution>
+								<goals>
+									<goal>integration-test</goal>
+									<goal>verify</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
 		</profile>
 	</profiles>
 
-  <!-- Apache 2 license -->
-  <licenses>
-    <license>
-      <name>Apache License, Version 2.0</name>
-      <url>https://www.apache.org/licenses/LICENSE-2.0</url>
-    </license>
-  </licenses>
+	<!-- Apache 2 license -->
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>https://www.apache.org/licenses/LICENSE-2.0</url>
+		</license>
+	</licenses>
 
-  <repositories>
-    <repository>
-      <id>nexus</id>
-      <name>Nexus</name>
-      <url>http://nexus.cicd.svc.cluster.local:8081/content/groups/public</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
+	<repositories>
+		<repository>
+			<id>nexus</id>
+			<name>Nexus</name>
+			<url>http://nexus.cicd.svc.cluster.local:8081/content/groups/public</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 
-  <pluginRepositories>
-    <pluginRepository>
-      <id>nexus</id>
-      <name>Nexus</name>
-      <url>http://nexus.cicd.svc.cluster.local:8081/content/groups/public</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </pluginRepository>
-  </pluginRepositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>nexus</id>
+			<name>Nexus</name>
+			<url>http://nexus.cicd.svc.cluster.local:8081/content/groups/public</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
 
 </project>
