@@ -12,7 +12,7 @@ import org.openqa.selenium.WebDriver;
 public class MainPageIT {
 
 	private SeleniumConfig config;
-	private String url = "http://app-petclinic-dev.apps.cluster-ottawa-630b.ottawa-630b.example.opentlc.com/";
+	private String url = "http://app-petclinic-dev.apps.ocp.pitt.ca/";
 
 	public MainPageIT() throws MalformedURLException {
 		config = new SeleniumConfig();

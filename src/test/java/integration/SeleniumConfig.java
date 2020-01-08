@@ -11,7 +11,7 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class SeleniumConfig {
-	public static final String SELENIUM_HUB_URL = "http://selenium-hub-cicd.apps.cluster-ottawa-630b.ottawa-630b.example.opentlc.com/wd/hub";
+	public static final String SELENIUM_HUB_URL = "http://selenium-hub-cicd.apps.ocp.pitt.ca/wd/hub";
 
 	private WebDriver firefoxDriver;
 	private WebDriver chromeDriver;
