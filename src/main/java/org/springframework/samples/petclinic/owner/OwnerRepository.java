@@ -61,4 +61,14 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
 	 */
 	void save(Owner owner);
 
+
+
+    @Query("SELECT DISTINCT owner FROM Owner owner left join fetch owner.pets WHERE owner.lastName LIKE %:firstName%")
+    Collection<Owner> findByFirstName(String firstName);
+
+
+
+
+
+
 }
