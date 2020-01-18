@@ -10,6 +10,7 @@
         <thead>
         <tr>
             <th style="width: 150px;">Name</th>
+            <th style="width: 150px;">Age</th>
             <th style="width: 200px;">Address</th>
             <th>City</th>
             <th style="width: 120px">Telephone</th>
@@ -21,6 +22,7 @@
               <td>
                   <a th:href="@{/owners/__${owner.id}__}" th:text="${owner.firstName + ' ' + owner.lastName}"/></a>
               </td>
+              <td th:text="${owner.age}"/>
               <td th:text="${owner.address}"/>
               <td th:text="${owner.city}"/>
               <td th:text="${owner.telephone}"/>

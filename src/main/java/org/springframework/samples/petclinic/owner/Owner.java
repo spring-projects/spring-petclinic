@@ -62,6 +62,20 @@ public class Owner extends Person {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
 	private Set<Pet> pets;
 
+
+
+    @Column(name = "age")
+	Integer age;
+
+    public Integer getAge() {
+        return this.age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+
 	public String getAddress() {
 		return this.address;
 	}
@@ -143,7 +157,7 @@ public class Owner extends Person {
 		return new ToStringCreator(this)
 
 				.append("id", this.getId()).append("new", this.isNew()).append("lastName", this.getLastName())
-				.append("firstName", this.getFirstName()).append("address", this.address).append("city", this.city)
+				.append("firstName", this.getFirstName()).append("age", this.age).append("address", this.address).append("city", this.city)
 				.append("telephone", this.telephone).toString();
 	}
 
