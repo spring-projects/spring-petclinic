@@ -15,11 +15,7 @@ pipeline {
             steps {
                 sh './mvnw package' 
             }
-        }stage('Deploy') {
-            steps {
-                sh './mvnw package' 
-            }
-        }
+        } 
     }
     post {
         success {
