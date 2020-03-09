@@ -1,9 +1,14 @@
 pipeline {
     agent any
     stages {
-        stage('No-op') {
+        stage('Build') {
             steps {
-                sh 'ls'
+                sh './mvnw package' 
+            }
+        }
+        stage('test') {
+            steps {
+                sh './mvnw package' 
             }
         }
     }
