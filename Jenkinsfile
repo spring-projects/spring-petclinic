@@ -21,5 +21,12 @@ pipeline {
                 sh './mvnw package'
             }
         }
+    } post {
+        success {
+            mail to:"firassawan@icloud.com", subject:"SUCCESS: ${currentBuild.fullDisplayName}", body: "Yay, we passed."
+        }
+        failure {
+            mail to:"firassawan@icloud.com", subject:"FAILURE: ${currentBuild.fullDisplayName}", body: "Boo, we failed."
+        }
     }
 }
