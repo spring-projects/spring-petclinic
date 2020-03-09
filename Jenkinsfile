@@ -8,12 +8,12 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh './mvnw package' 
+                sh 'mvn test' 
             }
         }
         stage('Package') {
             steps {
-                sh './mvnw package' 
+                sh 'mvn package' 
             }
         } 
         stage('Deploy') {
