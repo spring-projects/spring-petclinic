@@ -18,10 +18,11 @@ pipeline {
             }
         }
         stage('Deploy') {
-            if (env.BRANCH_NAME == 'master') {
-                steps {
-                    echo 'Deploy.'
-                }
+            when {
+                branch 'master'
+            }
+            steps {
+                echo 'Deploying'
             }
         }
     }
