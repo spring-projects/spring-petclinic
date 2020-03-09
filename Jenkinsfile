@@ -7,5 +7,22 @@ pipeline {
                 sh './mvnw package' 
             }
         }
+        stage('Test') {
+            steps {
+                sh 'mvn clean test'
+            }
+        }
+        stage('Package') {
+            steps {
+                echo 'Package'
+            }
+        }
+        stage('Deploy') {
+            if (env.BRANCH_NAME == 'master') {
+                steps {
+                    echo 'Deploy'
+                }
+            }
+        }
     }
 }
