@@ -28,7 +28,7 @@ pipeline {
              subject: "Succeeded Pipeline: ${currentBuild.fullDisplayName}",
              body: "Email Notification: The build has successfully completed ${env.BUILD_URL}"
     }
-        failure {
+       failure {
         mail to: 'firassawan@icloud.com',
              subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
              body: "Email Notification: The build has not completed successfully ${env.BUILD_URL}"
