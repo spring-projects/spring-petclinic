@@ -20,7 +20,7 @@ pipeline {
         stage('Deploy') {
             if (env.BRANCH_NAME == 'master') {
                 steps {
-                    echo 'Deploy'
+                    echo 'Deploy.'
                 }
             }
         }
