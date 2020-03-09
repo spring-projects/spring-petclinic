@@ -42,7 +42,7 @@ import org.springframework.samples.petclinic.model.Person;
  * @author Arjen Poutsma
  */
 @Entity
-@Table(name = "CHANGED THIS")
+@Table(name = "Vet")
 public class Vet extends Person {
 
 	@ManyToMany(fetch = FetchType.EAGER)
