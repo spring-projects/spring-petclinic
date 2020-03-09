@@ -1,30 +1,28 @@
 pipeline {
     agent any
     stages {
-        stage('Build') {
+        stage('No-op') {
             steps {
-                sh './mvnw package' 
-            }
-        }
-        stage('Test') {
-            steps {
-                sh './mvnw package'
-            }
-        }
-        stage('Package') {
-            steps {
-                sh './mvnw package'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                sh './mvnw package'
+                sh 'ls'
             }
         }
     }
     post {
-    always {
-      echo ‘I will always execute this!’
+        always {
+            echo 'One way or another, I have finished'
+            deleteDir() /* clean up our workspace */
+        }
+        success {
+            echo 'I succeeeded!'
+        }
+        unstable {
+            echo 'I am unstable :/'
+        }
+        failure {
+            echo 'I failed :('
+        }
+        changed {
+            echo 'Things were different before...'
+        }
     }
-  }
 }
