@@ -8,7 +8,17 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh './gradlew check'
+                sh './mvnw package'
+            }
+        }
+        stage('Package') {
+            steps {
+                sh './mvnw package'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh './mvnw package'
             }
         }
     }
