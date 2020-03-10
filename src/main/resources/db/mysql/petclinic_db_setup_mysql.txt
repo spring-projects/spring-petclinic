@@ -27,5 +27,6 @@
    line, but any way that sets that property in a Spring Boot app should work).
 
 N.B. the "petclinic" database has to exist for the app to work with the JDBC URL value
-as it is configured by default. This condition is taken care of by the docker-compose
-configuration provided, or by the `schema.sql` if you can run that as root.
+as it is configured by default. This condition is taken care of automatically by the 
+docker-compose configuration provided, or by the `user.sql` script if you run that as
+root.
