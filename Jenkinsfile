@@ -20,5 +20,13 @@ pipeline {
                 sh 'mvn package' 
             }
         }
+		stage('Deploy') {
+            when {
+                branch 'master'
+            }
+            steps {
+                sh 'mvn deploy' 
+            }
+        }
     }
 }
