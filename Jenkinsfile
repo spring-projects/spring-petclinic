@@ -1,7 +1,6 @@
-String buildUrl = "${BUILD_URL}"
-String gitStatusPostUrl = "https://<Github Personal Access Token>:x-oauth-basic@api.github.com/repos/<owner>/<repo>/statuses/${gitHash}"
-
 pipeline {
+    String buildUrl = "${BUILD_URL}"
+    String gitStatusPostUrl = "https://<Github Personal Access Token>:x-oauth-basic@api.github.com/repos/<owner>/<repo>/statuses/${gitHash}"
     agent any
     stages {
         stage('Build') {
@@ -41,8 +40,7 @@ pipeline {
     }
 
     }
+    sh """
+    curl -X POST -H "application/json" -d '{"state":"success", "target_url":"${buildUrl}", "description":"Build Success", "context":"build/job"}' "${gitStatusPostUrl}"
+    """
 }
-
-sh """
-curl -X POST -H "application/json" -d '{"state":"success", "target_url":"${buildUrl}", "description":"Build Success", "context":"build/job"}' "${gitStatusPostUrl}"
-"""
