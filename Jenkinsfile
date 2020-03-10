@@ -29,4 +29,16 @@ pipeline {
             }
         }
     }
+	post {
+		failure {
+			mail to: 'larat248@gmail.com',
+				subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
+				body: "Something is wrong with ${env.BUILD_URL}"
+		}
+		success{
+				mail to: 'larat248@gmail.com',
+				subject: "Success Pipeline: ${currentBuild.fullDisplayName}",
+				body: "Everything is good ${env.BUILD_URL}"
+		}
+	}
 }
