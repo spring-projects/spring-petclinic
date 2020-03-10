@@ -1,12 +1,5 @@
-void setBuildStatus(String message, String state) {
-  step([
-      $class: "GitHubCommitStatusSetter",
-      reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/Firassawan/spring-petclinic"],
-      contextSource: [$class: "ManuallyEnteredCommitContextSource", context: "ci/jenkins/build-status"],
-      errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
-      statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
-  ]);
-}
+String buildUrl = "${BUILD_URL}"
+String gitStatusPostUrl = "https://<Github Personal Access Token>:x-oauth-basic@api.github.com/repos/<owner>/<repo>/statuses/${gitHash}"
 
 pipeline {
     agent any
@@ -49,3 +42,7 @@ pipeline {
 
     }
 }
+
+sh """
+curl -X POST -H "application/json" -d '{"state":"success", "target_url":"${buildUrl}", "description":"Build Success", "context":"build/job"}' "${gitStatusPostUrl}"
+"""
