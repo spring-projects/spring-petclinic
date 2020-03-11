@@ -43,7 +43,7 @@ def sendSlackNotification(String buildStatus = 'FAILURE'){
       buildStatus =  buildStatus ?: 'FAILURE'
       def colorName = 'RED'
       def colorCode = '#FF0000'
-      def subject = "${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
+      def subject = "${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}] - ${env.GIT_URL}'"
       def summary = "${subject}"
       def time_info = ""
 	if (buildStatus == 'SUCCESS') {
