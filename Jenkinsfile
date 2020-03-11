@@ -6,5 +6,13 @@ pipeline {
                 sh './mvnw package' 
             }
         }
+
+        stage('Test')
+        {
+            steps{
+                sh'./mvn test'
+            }
+        }
+ 
     }
 }
