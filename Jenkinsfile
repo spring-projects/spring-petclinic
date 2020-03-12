@@ -21,7 +21,7 @@ pipeline {
                 branch 'master'
             }
             steps {
-                bat "echo 'Pulling...' + env.BRANCH_NAME"
+                bat "echo 'Deploy..."
             }
         }
     }
