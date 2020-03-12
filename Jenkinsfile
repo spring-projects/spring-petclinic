@@ -11,17 +11,18 @@ pipeline {
             steps{
                 bat './mvnw test'
             }
+        }
             
         stage('Package'){
             steps{
                 bat './mvnw package'
             }  
+        }   
         stage('Deploy'){
             steps{
                 bat './mvnw deploy'
             }   
-            
-            }
+          }
         }
     }
-}
+
