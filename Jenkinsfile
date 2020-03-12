@@ -23,10 +23,14 @@ pipeline {
 
         stage('Deploy')
         {
-            steps{
+        when
+        {
+            branch 'master'
+        }
+        steps 
+            {
                 sh'./mvnw deploy'
             }
         }
- 
     }
 }
