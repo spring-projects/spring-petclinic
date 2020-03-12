@@ -19,5 +19,11 @@ pipeline {
       }
     }
 
+    stage('Deploy') {
+      steps {
+        sh './mvnw package'
+      }
+    }
+
   }
 }
