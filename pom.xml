@@ -267,26 +267,6 @@
 		</license>
 	</licenses>
 
-	<repositories>
-		<repository>
-			<id>nexus</id>
-			<name>Nexus</name>
-			<url>http://nexus.cicd.svc.cluster.local:8081/content/groups/public</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
 
-	<pluginRepositories>
-		<pluginRepository>
-			<id>nexus</id>
-			<name>Nexus</name>
-			<url>http://nexus.cicd.svc.cluster.local:8081/content/groups/public</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
 
 </project>
