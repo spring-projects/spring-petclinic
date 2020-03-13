@@ -259,6 +259,31 @@
 		</profile>
 	</profiles>
 
+	<repositories>
+		<repository>
+			<id>nexus</id>
+			<url>http://nexus.cicd.svc.cluster.local:8081/content/groups/public</url>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>nexus</id>
+			<url>http://nexus.cicd.svc.cluster.local:8081/content/groups/public</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>nexus-snapshots</id>
+      <url>nexus.cicd.svc.cluster.local:8081/content/repositories/snapshots/</url>
+    </snapshotRepository>
+    <repository>
+      <id>nexus-releases</id>
+      <url>nexus.cicd.svc.cluster.local:8081/content/repositories/releases/</url>
+    </repository>
+  </distributionManagement>
+	
 	<!-- Apache 2 license -->
 	<licenses>
 		<license>
