@@ -6,5 +6,10 @@ pipeline {
                 sh './mvnw package' 
             }
         }
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+            }
+        }
     }
 }
