@@ -165,7 +165,7 @@
 	            <plugin>
 	                <groupId>org.sonarsource.scanner.maven</groupId>
 	                <artifactId>sonar-maven-plugin</artifactId>
-	                <version>3.7.0.1746</version>
+	                <version>3.5.0.1254</version>
 	            </plugin>
 			<!-- Spring Boot Actuator displays build-related information if a git.properties 
 				file is present at the classpath -->
