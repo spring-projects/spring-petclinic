@@ -121,6 +121,7 @@
 
 	<build>
 		<finalName>app</finalName>
+		<outputDirectory>${outputDirectory}</outputDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
