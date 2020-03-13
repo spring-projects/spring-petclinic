@@ -24,7 +24,8 @@ pipeline {
                 sh './mvnw deploy' 
             }
         }
-        post {
+    }
+    post {
         success {
             mail to: 'bit172@gmail.com',
                 subject: "Successful Pipeline: ${currentBuild.fullDisplayName}",
@@ -35,7 +36,6 @@ pipeline {
                 subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
                 body: "Build Failure, location to build ${env.BUILD_URL}"
         }
-    }
 
     }
 }
