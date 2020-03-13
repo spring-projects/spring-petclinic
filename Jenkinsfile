@@ -20,8 +20,10 @@ pipeline {
     }
 
     stage('Deploy') {
+      when {
+      branch 'master'}
       steps {
-        sh 'when { branch \'master\'}'
+        sh 'do-non-master.sh'
       }
     }
 
