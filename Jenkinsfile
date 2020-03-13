@@ -21,7 +21,7 @@ pipeline {
 
     stage('Deploy') {
       steps {
-        sh 'when { branch \'master\'}'
+        sh 'when { branch master}'
       }
     }
 
