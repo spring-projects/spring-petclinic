@@ -272,11 +272,11 @@
   <distributionManagement>
     <snapshotRepository>
       <id>nexus-snapshots</id>
-      <url>nexus.cicd.svc.cluster.local:8081/nexus/content/repositories/snapshots</url>
+      <url>http://nexus.cicd.svc.cluster.local:8081/content/repositories/snapshots</url>
     </snapshotRepository>
     <repository>
       <id>nexus-releases</id>
-      <url>nexus.cicd.svc.cluster.local:8081/nexus/content/repositories/releases</url>
+      <url>http://nexus.cicd.svc.cluster.local:8081/content/repositories/releases</url>
     </repository>
   </distributionManagement>
 	
