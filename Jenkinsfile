@@ -6,16 +6,26 @@ pipeline {
                 sh './mvnw package' 
             }
         }
-            stage('test') {
-            steps {
-                sh './mvnw package' 
-            }
-            }
-            stage('package') {
-            steps {
-                sh './mvnw package' 
-            }
-            }
-             }
+            stage('Test') {
+      steps {
+        sh 'mvn test'
+      }
+    }
+
+    stage('Package') {
+      steps {
+        sh 'mvn package'
+      }
+    }
+
+    stage('Deploy') {
+        when {
+        branch 'master'
+      }
+      steps {
+        sh 'mvn deploy'
+      }
+  }
+}
             
 }
