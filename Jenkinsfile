@@ -21,9 +21,10 @@ pipeline {
 
     stage('Deploy') {
       when {
-      branch 'master'}
+        branch 'master'
+      }
       steps {
-        sh 'do-non-master.sh'
+        sh 'mvn deploy'
       }
     }
 
