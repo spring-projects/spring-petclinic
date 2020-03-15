@@ -11,7 +11,7 @@ pipeline {
         sh './mvnw test'
       }
     }
-    stage('Test'){
+    stage('Package') {
       steps {
         sh './mvnw package'
       }
