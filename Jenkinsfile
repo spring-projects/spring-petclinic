@@ -23,18 +23,11 @@ pipeline {
          branch 'master'
        }
        steps {
-         sh 'mvn deploy'}
+         sh 'mvn deploy'
+       }
    }
  }
-   stage('Slack Notification') {
-             steps {
-                 slackSend baseUrl: 'https://hooks.slack.com/services/', 
-                 channel: '#jenkins', 
-                 message: 'Build Status', 
-                 tokenCredentialId: 'slack',
-                 teamDomain: 'soen345'
-             }
+   
          }
-}
-}          
+         
 
