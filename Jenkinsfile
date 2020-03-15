@@ -21,12 +21,12 @@ pipeline {
               
         }
         stage('Deploy') {
-              steps {
                   when {
                        branch 'master'
                   }
-                  echo 'Deploying stage has been executed'
-              }
+                  steps {
+                        echo 'Deploying stage has been executed'
+                  }
         }
     }
 }
