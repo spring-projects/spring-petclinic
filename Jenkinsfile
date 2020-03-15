@@ -4,6 +4,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
+                slackSend channel: 'notif', message: "Successful build!"
                 sh './mvnw package' 
             }
         }
