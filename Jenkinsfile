@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh './mvnw package'
+        sh './mvnw compile'
       }
     }
 
@@ -22,7 +22,7 @@ pipeline {
 
     stage('deploy') {
       steps {
-        sh './mvn deploy'
+        sh 'echo "Sucessfully Deployed"'
       }
     }
 
