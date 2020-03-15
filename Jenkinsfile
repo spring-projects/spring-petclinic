@@ -21,7 +21,7 @@ pipeline {
         }
         stage('Deploy') {
               when {
-                  branch "master" && currentBuild.result == 'SUCCESS'
+                  branch "master"
               }
               steps {
                   echo 'Deploying stage has been executed'
