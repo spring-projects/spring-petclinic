@@ -26,7 +26,6 @@ pipeline {
                        branch 'master'
                   }
                   echo 'Deploying stage has been executed'
-                  bat 'git push --set-upstream origin master'
               }
         }
     }
