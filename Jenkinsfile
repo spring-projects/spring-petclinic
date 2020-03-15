@@ -22,7 +22,7 @@ pipeline {
         stage('Deploy') {
               steps {
                   echo 'Deploying stage has been executed'
-                   bat './deploy production'
+                   bat 'deploy production'
               }
         }
     }
