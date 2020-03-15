@@ -37,7 +37,7 @@ pipeline {
 		}
 		stage('deploy'){
 			steps { 
-				echo 'deploying'
+				sh './mvnw deploy -DaltDeploymentRepository=internal.repo::default::file:///mnt/c/Users/Fgrcl/My Cloud/Semester 6/SOEN  345/ASSIGNMENTS/a6/Jenkins/Deploy'
 				emailext (
 					subject: "Deploying: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
 					body: """<p>Deploy: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
