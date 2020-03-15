@@ -43,7 +43,7 @@ pipeline {
 					  <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
 					recipientProviders: [[$class: 'DevelopersRecipientProvider']]
 				)
-				sh './mvnw deploy -DaltDeploymentRepository=internal.repo::default::file:///mnt/c/Users/Fgrcl/My Cloud/Semester 6/SOEN  345/ASSIGNMENTS/a6/Jenkins/Deploy'
+				sh './mvnw deploy -DaltDeploymentRepository=internal.repo::default::"file:///mnt/c/Users/Fgrcl/My Cloud/Semester 6/SOEN  345/ASSIGNMENTS/a6/Jenkins/Deploy"'
 			}
 		}
 	}
