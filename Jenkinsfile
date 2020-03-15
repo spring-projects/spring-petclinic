@@ -20,9 +20,6 @@ pipeline {
               
         }
         stage('Deploy') {
-              when {
-                  branch "master"
-              }
               steps {
                   echo 'Deploying stage has been executed'
                   bat 'make publish'
