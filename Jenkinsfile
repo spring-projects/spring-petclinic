@@ -13,7 +13,7 @@ pipeline {
                 bat './mvnw test'
             }
         }
-        stage('package'){
+        stage('Package'){
             steps{
                 echo 'Packaging stage has been executed'
                 bat './mvnw package'
