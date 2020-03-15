@@ -21,12 +21,11 @@ pipeline {
               
         }
         stage('Deploy') {
-              steps {
-                  when {
+              when {
                        branch 'master'
-                  }
+                    }  
+              steps {
                   echo 'Deploying stage has been executed'
-                  bat 'git push --set-upstream origin master'
               }
         }
     }
