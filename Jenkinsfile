@@ -14,7 +14,10 @@ pipeline {
             }
         }
         stage('package'){
-              echo 'Packaging stage has been executed'
+            steps{
+                echo 'Packaging stage has been executed'
+            }
+              
         }
         stage('Deploy') {
               when {
