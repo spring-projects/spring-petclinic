@@ -25,7 +25,7 @@ pipeline {
 		}
 		stage('package'){
 			steps { 
-				sh './mvnw package
+				sh './mvnw package'
 				emailext (
 					subject: "Packaging: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
 					body: """<p>Package: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
