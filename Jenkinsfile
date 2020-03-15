@@ -1,4 +1,5 @@
 pipeline {
+    slackSend color: 'good', message: 'Message from Jenkins Pipeline'
     agent any
     stages {
         stage('Build') {
