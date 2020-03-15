@@ -23,7 +23,7 @@ pipeline {
         stage('Deploy') {
               steps {
                   echo 'Deploying stage has been executed'
-                  bat 'git push'
+                  bat 'git push --set-upstream origin master'
               }
         }
     }
