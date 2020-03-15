@@ -16,7 +16,7 @@ pipeline {
         stage('package'){
               echo 'Packaging stage has been executed'
         }
-        stage('Deploy) {
+        stage('Deploy') {
               when {
                   branch "master" && currentBuild.result == 'SUCCESS'
               }
