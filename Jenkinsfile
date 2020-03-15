@@ -4,25 +4,26 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building The project' 
-                bat './mvnw package' 
+                bat './mvnw clean' 
             }
         }
         stage('Test'){
             steps {
                 echo 'Running the test in the project'
-                bat 'mvn clean test'
+                bat './mvnw test'
             }
         }
         stage('package'){
             steps{
                 echo 'Packaging stage has been executed'
+                bat './mvnw package'
             }
               
         }
         stage('Deploy') {
               steps {
                   echo 'Deploying stage has been executed'
-                   bat 'deploy production'
+                  bat './mvnw deploy'
               }
         }
     }
