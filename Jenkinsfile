@@ -21,6 +21,9 @@ pipeline {
     }
 
     stage('Deploy') {
+      when {
+        branch 'master'  
+      }
       steps {
         sh './mvnw deploy'
       }
