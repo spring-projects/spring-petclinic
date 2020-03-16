@@ -54,19 +54,13 @@ pipeline {
         }
       }
     }
-    stage('Tag DEV') {
-      agent {
-          label 'jenkins-slave-skopeo'
+    stage("Tag DEV") {
+      echo "Tag image to DEV"
+      openshift.withCluster() {
+	openshift.withProject('cicd') {
+	  openshift.tag("${appName}:latest", "${appName}:dev")
+        }
       }
-      steps {
-	    script {
-	      openshift.withCluster() {
-	        withCredentials([usernamePassword(credentialsId: "${openshift.project()}-quay-creds-secret", usernameVariable: "QUAY_USERNAME", passwordVariable: "QUAY_PASSWORD")]) {
-	          sh "skopeo copy docker://quay.io/${QUAY_USERNAME}/${appName}:latest docker://quay.io/${QUAY_USERNAME}/${appName}:dev --src-creds \"$QUAY_USERNAME:$QUAY_PASSWORD\" --dest-creds \"$QUAY_USERNAME:$QUAY_PASSWORD\" --src-tls-verify=false --dest-tls-verify=false"
-	        }        
-	      }
-	    }
-	  }                       
     }
     stage('Deploy DEV') {
       steps {
@@ -89,19 +83,13 @@ pipeline {
         sh "mvn verify -Pfailsafe"
       }
     }
-    stage('Tag UAT') {
-      agent {
-          label 'jenkins-slave-skopeo'
-      }
-      steps {
-        script {
-          openshift.withCluster() {
-            withCredentials([usernamePassword(credentialsId: "${openshift.project()}-quay-creds-secret", usernameVariable: "QUAY_USERNAME", passwordVariable: "QUAY_PASSWORD")]) {
-              sh "skopeo copy docker://quay.io/${QUAY_USERNAME}/${appName}:dev docker://quay.io/${QUAY_USERNAME}/${appName}:uat --src-creds \"$QUAY_USERNAME:$QUAY_PASSWORD\" --dest-creds \"$QUAY_USERNAME:$QUAY_PASSWORD\" --src-tls-verify=false --dest-tls-verify=false"
-            }
-          }
+    stage("Tag UAT") {
+      echo "Tag image to UAT"
+      openshift.withCluster() {
+	openshift.withProject('cicd') {
+	  openshift.tag("${appName}:dev", "${appName}:uat")
         }
-      }                      
+      }
     }
     stage('Deploy UAT') {
       steps {
