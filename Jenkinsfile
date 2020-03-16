@@ -1,28 +1,30 @@
 pipeline {
     agent any
     stages {
-        slackSend "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)" 
         stage('Build') {
             steps {
-                sh './mvnw package'
+                bat 'mvn clean'
             }
         }
 
         stage('Testing') {
             steps {
-                echo 'Testing'
+                bat 'mvn test'
             }
         }
 
         stage('Package') {
             steps {
-                echo 'Packaging'
+                bat 'mvn package'
             }
         }
 
         stage('Deploy') {
+            when{
+                branch 'master'
+            }
             steps {
-                echo 'Deploying'
+                bat 'mvn deploy'
             }
         }
     }
