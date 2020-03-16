@@ -3,13 +3,13 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh './mvnw package'
+                echo 'build'
             }
         }
 
     }
     post{
-        succes{
+        success{
             slackSend (message: "${buildStatus} ${env.JOB_NAME} [${env.BUILD_NUMBER}] (${env.BUILD_URL})")
         }
     }
