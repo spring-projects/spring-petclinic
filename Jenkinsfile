@@ -17,6 +17,7 @@ pipeline {
     stage('Package') {
       steps {
         sh 'mvn package'
+        slackSend channel: 'soen345', color: 'green', message: 'Success', tokenCredentialId: '178d0505-1fe0-4dee-aaa9-097c8a75a121'
       }
     }
 
@@ -30,8 +31,8 @@ pipeline {
     }
   }
   post{
-    success{
-      slackSend(color: '#00FF00' ,message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+    Success{
+      slackSend channel: 'soen345', color: 'green', message: 'Success', tokenCredentialId: '178d0505-1fe0-4dee-aaa9-097c8a75a121'
     }
     
     failure{
