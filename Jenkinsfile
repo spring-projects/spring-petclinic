@@ -27,10 +27,10 @@ pipeline {
     }
     post {
         success {
-           slackSend channel: 'jenkins', color: '00FF00', message: 'Success', teamDomain: 'uni-vaz6979', tokenCredentialId: 'dp2tuBLCh5PBUszexU45zIxt'
+           slackSend channel: 'general', color: '00FF00', message: 'Success', teamDomain: 'uni-vaz6979', tokenCredentialId: 'dp2tuBLCh5PBUszexU45zIxt'
         }
         failure {
-           slackSend channel: 'jenkins', color: '00FF00', message: 'Failed', teamDomain: 'uni-vaz6979', tokenCredentialId: 'dp2tuBLCh5PBUszexU45zIxt'
+           slackSend channel: 'general', color: '00FF00', message: 'Failed', teamDomain: 'uni-vaz6979', tokenCredentialId: 'dp2tuBLCh5PBUszexU45zIxt'
         }
     }
 }
