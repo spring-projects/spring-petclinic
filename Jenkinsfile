@@ -29,5 +29,6 @@ pipeline {
             subject: "Success",
             body: "Build successful"
             )
+    }
 }
 }
