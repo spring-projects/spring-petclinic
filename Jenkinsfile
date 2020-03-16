@@ -1,19 +1,33 @@
 pipeline {
     agent any
     stages {
-        notifySlack('STARTED')
-        stage('Build') {
-            steps {
-                echo 'build'
-            }
-        }
+        try {
+            notifySlack('STARTED')
 
-    }
-    post{
-        failure{
+            stage('Prepare code') {
+                echo 'do checkout stuff'
+            }
+
+            stage('Testing') {
+                echo 'Testing'
+                echo 'Testing - publish coverage results'
+            }
+
+            stage('Staging') {
+                echo 'Deploy Stage'
+            }
+
+            stage('Deploy') {
+                echo 'Deploy - Backend'
+                echo 'Deploy - Frontend'
+            }
+
+        } catch (e) {
+            // If there was an exception thrown, the build failed
             currentBuild.result = "FAILED"
-        }
-        always{
+            throw e
+        } finally {
+            // Success or failure, always send notifications
             notifySlack(currentBuild.result)
         }
     }
