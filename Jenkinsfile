@@ -19,7 +19,7 @@ pipeline {
             }
         }
         stage('Deploy') {
-            when (doNotSkip) {
+            when { equals expected: true, actual: doNotSkip } {
                 steps {
                 sh './mvnw deploy' 
                 }
