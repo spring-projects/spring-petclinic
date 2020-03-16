@@ -27,10 +27,10 @@ pipeline {
     }
     post {
         success {
-           slackSend message: 'success'
+           slackSend message: 'success - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)'
         }
         failure {
-           slackSend message: 'fail'
+           slackSend message: 'fail - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)'
         }
     }
 }
