@@ -5,10 +5,10 @@ pipeline {
             steps {
                 sh './mvnw package' 
             }
-            stage('Test') {
+        }
+           stage('Test') {
             steps {
                 sh './mvnw package' 
             }
-        }
     }
 }
