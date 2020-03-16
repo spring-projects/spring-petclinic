@@ -18,7 +18,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                bat './mvnw deploy'
+                bat './mvnw release'
             }
         }
     }
