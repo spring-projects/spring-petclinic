@@ -6,17 +6,17 @@ pipeline {
                bat  './mvnw compile'
             }
         }
-        stage('Test')
+        stage('Test') {
             steps {
                 bat './mvnw test'
             }
         }
-        stage('Package')
+        stage('Package') {
             steps {
                 bat './mvnw package'
             }
         }
-        stage('Deploy')
+        stage('Deploy') {
             steps {
                 bat './mvnw deploy'
             }
