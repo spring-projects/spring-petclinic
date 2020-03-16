@@ -18,20 +18,20 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                bat './mvnw deploy:deploy-file'
+                echo 'Deploy'
             }
         }
     }
     post {
         success {
         mail to: 'mnezam.31@gmail.com',
-                subject: "Successful Pipeline: ${currentBuild.fullDisplayName}",
+                subject: "Successful Pipeline",
                 body: "Your tests worked accordingly!"
         }   
         failure {
             mail to: 'mnezam.31@gmail.com',
-                subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
-                body: "Something is wrong with ${env.BUILD_URL}"
+                subject: "Failed Pipeline}",
+                body: "Something is wrong"
     }
 }
 }
