@@ -3,12 +3,12 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh './mvnw package' 
+                sh './mvnw build' 
             }
         }
         stage('Test') {
             steps {
-                sh './mvnw package' 
+                sh './mvnw test' 
             }
         }
     }
