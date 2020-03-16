@@ -1,23 +1,16 @@
 node {
     try {
-        notifyBuild('STARTED')
+        notifySlack('STARTED')
 
-        stage('Prepare code') {
-            echo 'do checkout stuff'
-        }
-
-        stage('Testing') {
-            echo 'Testing'
-            echo 'Testing - publish coverage results'
-        }
-
-        stage('Staging') {
-            echo 'Deploy Stage'
-        }
-
-        stage('Deploy') {
-            echo 'Deploy - Backend'
-            echo 'Deploy - Frontend'
+        pipeline {
+            agent any
+            stages {
+                stage('Build') {
+                    steps {
+                        echo 'Build'
+                    }
+                }
+            }
         }
 
   } catch (e) {
@@ -26,11 +19,11 @@ node {
     throw e
   } finally {
     // Success or failure, always send notifications
-    notifyBuild(currentBuild.result)
+    notifySlack(currentBuild.result)
   }
 }
 
-def notifyBuild(String buildStatus = 'STARTED') {
+def notifySlack(String buildStatus = 'STARTED') {
   // build status of null means successful
   buildStatus =  buildStatus ?: 'SUCCESSFUL'
 
