@@ -20,6 +20,9 @@ pipeline {
         }
 
       stage('Deploy') {
+		when {
+			branch 'master'
+		}
             steps {
                 sh './mvnw deploy -DaltDeploymentRepository=internal.repo::default::file:///C:/Users/felix/Desktop/PetClinicDeploy'
             }
