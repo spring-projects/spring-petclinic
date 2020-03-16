@@ -1,44 +1,46 @@
 pipeline {
     agent any
-    try {
-        notifyBuild('STARTED')
+    node {
+        try {
+            notifySlack('STARTED')
 
-        stages {
-            stage('Build') {
-                steps {
-                    sh './mvnw package'
+            stages {
+                stage('Build') {
+                    steps {
+                        sh './mvnw package'
+                    }
+                }
+
+                stage('Testing') {
+                    steps {
+                        echo 'Testing'
+                    }
+                }
+
+                stage('Package') {
+                    steps {
+                        echo 'Packaging'
+                    }
+                }
+
+                stage('Deploy') {
+                    steps {
+                        echo 'Deploying'
+                    }
                 }
             }
-
-            stage('Testing') {
-                steps {
-                    echo 'Testing'
-                }
-            }
-
-            stage('Package') {
-                steps {
-                    echo 'Packaging'
-                }
-            }
-
-            stage('Deploy') {
-                steps {
-                    echo 'Deploying'
-                }
-            }
+        } catch (e) {
+            // If there was an exception thrown, the build failed
+            currentBuild.result = "FAILED"
+            throw e
+        } finally {
+            // Success or failure, always send notifications
+            notifySlack(currentBuild.result)
         }
-  } catch (e) {
-    // If there was an exception thrown, the build failed
-    currentBuild.result = "FAILED"
-    throw e
-  } finally {
-    // Success or failure, always send notifications
-    notifyBuild(currentBuild.result)
-  }
+    }  
 }
 
-def notifyBuild(String buildStatus = 'STARTED') {
+def notifySlack(String buildStatus = 'STARTED') {
   // build status of null means successful
   buildStatus =  buildStatus ?: 'SUCCESSFUL'
 
