@@ -9,7 +9,7 @@ pipeline {
 
     }
     post{
-        success{
+        always {
             slackSend (message: "${buildStatus} ${env.JOB_NAME} [${env.BUILD_NUMBER}] (${env.BUILD_URL})")
         }
     }
