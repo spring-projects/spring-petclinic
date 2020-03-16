@@ -23,7 +23,6 @@ import org.springframework.samples.petclinic.vet.VetRepository;
 
 @SpringBootTest
 class PetclinicIntegrationTests {
-
 	@Autowired
 	private VetRepository vets;
 
