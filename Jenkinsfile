@@ -3,22 +3,22 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh './mvnw build' 
+                bat './mvnw build' 
             }
         }
         stage('Test') {
             steps {
-                sh './mvnw test' 
+                bat './mvnw test' 
             }
         }
         stage('Package') {
             steps {
-                sh './mvnw package' 
+                bat './mvnw package' 
             }
         }
         stage('Deploy') {
             steps {
-                sh './mvnw deploy' 
+                bat './mvnw deploy' 
             }
         }
     }
