@@ -21,7 +21,7 @@ pipeline {
 
       stage('Deploy') {
             steps {
-                sh './mvnw deploy'
+                sh './mvnw deploy' -DaltDeploymentRepository=internal.repo::default::file:///C:/Users/felix/Desktop/PetClinicDeploy
             }
         }
   }
