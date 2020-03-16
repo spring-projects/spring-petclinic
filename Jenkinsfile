@@ -31,7 +31,7 @@ pipeline {
     }
   }
   post{
-    Success{
+    success{
       slackSend channel: 'soen345', color: 'green', message: 'Success', tokenCredentialId: '178d0505-1fe0-4dee-aaa9-097c8a75a121'
     }
     
