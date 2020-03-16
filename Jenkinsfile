@@ -1,29 +1,29 @@
-node {
-    try {
-        notifySlack('STARTED')
+pipeline {
+    agent any
+    node {
+        try {
+            notifyBuild('STARTED')
 
-        pipeline {
-            agent any
             stages {
                 stage('Build') {
                     steps {
-                        echo 'Build'
+                        echo 'build'
                     }
                 }
             }
+            
+        } catch (e) {
+            // If there was an exception thrown, the build failed
+            currentBuild.result = "FAILED"
+            throw e
+        } finally {
+            // Success or failure, always send notifications
+            notifyBuild(currentBuild.result)
         }
-
-  } catch (e) {
-    // If there was an exception thrown, the build failed
-    currentBuild.result = "FAILED"
-    throw e
-  } finally {
-    // Success or failure, always send notifications
-    notifySlack(currentBuild.result)
-  }
+    }
 }
 
-def notifySlack(String buildStatus = 'STARTED') {
+def notifyBuild(String buildStatus = 'STARTED') {
   // build status of null means successful
   buildStatus =  buildStatus ?: 'SUCCESSFUL'
 
