@@ -19,10 +19,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploy'
-            }
-        }
-    }
-    post {
+                post {
         success {
         mail to: 'mnezam.31@gmail.com',
                 subject: "Successful Pipeline",
@@ -34,4 +31,7 @@ pipeline {
                 body: "Something is wrong"
     }
 }
+            }
+        }
+    }
 }
