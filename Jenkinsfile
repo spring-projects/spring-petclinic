@@ -1,12 +1,13 @@
 pipeline {
-    agent any
-    stages {
-        stage('Build') {
-            steps {
-                sh './mvnw package' 
-            }
-        }
-            stage('Test') {
+  agent any
+  stages {
+    stage('Build') {
+      steps {
+        sh './mvnw package'
+      }
+    }
+
+    stage('Test') {
       steps {
         sh 'mvn test'
       }
@@ -19,15 +20,13 @@ pipeline {
     }
 
     stage('Deploy') {
-         when {
-         branch 'master'
-       }
-       steps {
-         sh './mvnw deploy'
-       }
-   }
- }
-   
-         }
-         
+      when {
+        branch 'master'
+      }
+      steps {
+        sh './mvnw deploy'
+      }
+    }
 
+  }
+}
