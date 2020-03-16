@@ -32,18 +32,7 @@ pipeline {
 
   }
 
-  post{
-    success{
-      slackSend channel: 'soen345', message: 'Success', tokenCredentialId: '178d0505-1fe0-4dee-aaa9-097c8a75a121'
-    }
-    
-    failure{
-      slackSend channel: 'soen345', message: 'Failed', tokenCredentialId: '178d0505-1fe0-4dee-aaa9-097c8a75a121'
-
-
-  }
-      
-}
+  
   }
 
 }
