@@ -1,0 +1,29 @@
+pipeline {
+  agent any
+  stages {
+    stage('Build') {
+      steps {
+        sh './mvnw clean install'
+      }
+    }
+    
+    stage('Test') {
+            steps {
+                sh './mvnw test' 
+            }
+     }
+      
+      stage('Package') {
+            steps {
+                sh './mvnw package' 
+            }
+        }
+
+      stage('Deploy') {
+            steps {
+                sh './mvnw deploy -DaltDeploymentRepository=internal.repo::default::file:///C:/Users/wmike/Desktop/Jenkins' 
+                slackSend(color: 'good', message: "Build Succeeded")
+            }
+        }
+  }
+}
