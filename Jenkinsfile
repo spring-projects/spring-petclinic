@@ -20,6 +20,9 @@ pipeline {
              when {
                  branch 'master'
              }
+            steps {
+                echo 'we want to deploy if on master TODO' 
+            }
         }
     }
 }
