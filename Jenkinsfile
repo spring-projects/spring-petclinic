@@ -24,7 +24,7 @@ pipeline {
     }
     post {
     success {
-        emailext mail to: 'mnezam.31@gmail.com',
+        emailext 'mnezam.31@gmail.com',
         body: 'A Test EMail', 
                 recipientProviders: [[$class: 'DevelopersRecipientProvider'], 
                                      [$class: 'RequesterRecipientProvider']], 
