@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.springframework.samples.petclinic.owner;
 
 import org.springframework.stereotype.Controller;
@@ -98,6 +99,7 @@ class PetController {
 
 	@PostMapping("/pets/{petId}/edit")
 	public String processUpdateForm(@Valid Pet pet, BindingResult result, Owner owner, ModelMap model) {
+		System.out.println("");
 		if (result.hasErrors()) {
 			pet.setOwner(owner);
 			model.put("pet", pet);
