@@ -30,16 +30,8 @@ pipeline {
     }
     stage('Build JAR') {
       steps {
-        echo "Build the app."
+	echo "Build app.  Version: ${projectVersion}"
         sh "mvn clean package"
-      }
-    }
-    stage('Quality Check') {
-      steps {
-		sh "mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install -Dmaven.test.failure.ignore=false"
-        sh "mvn sonar:sonar -Dsonar.jacoco.reportPaths=target/coverage-reports/jacoco-unit.exec -Dsonar.host.url=http://sonarqube.cicd.svc:9000"
-        // sh "mvn org.cyclonedx:cyclonedx-maven-plugin:makeBom"
-        //dependencyTrackPublisher(artifact: 'target/bom.xml', artifactType: 'bom', projectName: "${appName}", projectVersion: "${projectVersion}", synchronous: false)
       }
     }
     stage('Build Image') {
@@ -48,7 +40,7 @@ pipeline {
           echo "Build container image."
           openshift.withCluster() {
             openshift.withProject('cicd') {
-              sh "oc start-build ${appName}-s2i-build --from-file=target/app.jar -n cicd --follow"
+              sh "oc start-build ${appName}-build --from-file=target/app.jar -n cicd --follow"
             }
           }
         }
@@ -75,12 +67,6 @@ pipeline {
             }
           }
         }
-      }
-    }
-    stage('Integration Tests') {
-      steps {
-        echo "Running Integration tests..."
-        sh "mvn verify -Pfailsafe"
       }
     }
     stage("Tag UAT") {
