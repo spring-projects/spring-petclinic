@@ -1,3 +1,5 @@
+final boolean doNotSkip = false;
+
 pipeline {
     agent any
     stages {
@@ -17,8 +19,10 @@ pipeline {
             }
         }
         stage('Deploy') {
-            steps {
+            when (doNotSkip) {
+                steps {
                 sh './mvnw deploy' 
+                }
             }
         }
     }
