@@ -11,11 +11,6 @@ pipeline {
                 sh './mvnw test' 
             }
         }
-        stage('Test') {
-            steps {
-                sh './mvnw test' 
-            }
-        }
         stage('Package') {
             steps {
                 sh './mvnw package' 
