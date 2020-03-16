@@ -16,7 +16,7 @@ pipeline {
                 sh './mvnw package' 
             }
         }
-	stage('deploy') {
+	stage('Deploy') {
             when {
 	        branch 'master'
             }
@@ -25,5 +25,13 @@ pipeline {
             }
         }
     }
+    post {
+        success {
+           slackSend "Build Succeeded - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+        }
+        failure {
+           slackSend "Build Succeeded - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+        }
+}
 }
 
