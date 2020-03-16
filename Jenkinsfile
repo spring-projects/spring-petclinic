@@ -1,6 +1,7 @@
 pipeline {
     agent any
     stages {
+        slackSend "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)" 
         stage('Build') {
             steps {
                 sh './mvnw package'
@@ -25,5 +26,4 @@ pipeline {
             }
         }
     }
-    slackSend (message: "${buildStatus} ${env.JOB_NAME} ${env.BUILD_NUMBER} ${env.BUILD_URL}")
 }
