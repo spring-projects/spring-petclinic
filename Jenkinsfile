@@ -3,22 +3,31 @@ pipeline {
     try {
         notifyBuild('STARTED')
 
-        stage('Build') {
-            sh './mvnw package'
-        }
+        stages {
+            stage('Build') {
+                steps {
+                    sh './mvnw package'
+                }
+            }
 
-        stage('Testing') {
-            echo 'Testing'
-        }
+            stage('Testing') {
+                steps {
+                    echo 'Testing'
+                }
+            }
 
-        stage('Package') {
-            echo 'Staging'
-        }
+            stage('Package') {
+                steps {
+                    echo 'Packaging'
+                }
+            }
 
-        stage('Deploy') {
-            echo 'Deploy'
+            stage('Deploy') {
+                steps {
+                    echo 'Deploying'
+                }
+            }
         }
-
   } catch (e) {
     // If there was an exception thrown, the build failed
     currentBuild.result = "FAILED"
