@@ -1,48 +1,39 @@
 pipeline {
     agent any
     stages {
-        script {
-            try {
-            notifySlack('STARTED')
-
-            stage('Build') {
-                echo 'build'
+        stage('Build') {
+            steps {
+                bat 'mvn clean'
             }
+        }
 
-            } catch (e) {
-                // If there was an exception thrown, the build failed
-                currentBuild.result = "FAILED"
-                throw e
-            } finally {
-                // Success or failure, always send notifications
-                notifySlack(currentBuild.result)
+        stage('Testing') {
+            steps {
+                bat 'mvn test'
             }
-        } 
+        }
+
+        stage('Package') {
+            steps {
+                bat 'mvn package'
+            }
+        }
+
+        stage('Deploy') {
+            when{
+                branch 'master'
+            }
+            steps {
+                bat 'mvn deploy'
+            }
+        }
     }
-}
-
-def notifySlack(String buildStatus = 'STARTED') {
-  // build status of null means successful
-  buildStatus =  buildStatus ?: 'SUCCESSFUL'
-
-  // Default values
-  def colorName = 'RED'
-  def colorCode = '#FF0000'
-  def subject = "${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
-  def summary = "${subject} (${env.BUILD_URL})"
-
-  // Override default values based on build status
-  if (buildStatus == 'STARTED') {
-    color = 'YELLOW'
-    colorCode = '#FFFF00'
-  } else if (buildStatus == 'SUCCESSFUL') {
-    color = 'GREEN'
-    colorCode = '#00FF00'
-  } else {
-    color = 'RED'
-    colorCode = '#FF0000'
-  }
-
-  // Send notifications
-  slackSend (color: colorCode, message: summary)
+    post{
+      success{
+        slackSend color: "good", message: "Success: ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+       }
+      failure{
+        slackSend color: "danger", message: "Failure: ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+       }
+    }
 }
