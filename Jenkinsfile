@@ -23,11 +23,18 @@ pipeline {
         }  
     }
     post {
-    always {
+    success {
         mail (
             to: "mnezam.31@gmail.com",
-            subject: "Success",
-            body: "Build successful"
+            subject: "Successful Build",
+            body: "Build successful with the following ${env.BUILD_URL}"
+            )
+    }
+    failure {
+        mail (
+            to: "mnezam.31@gmail.com",
+            subject: "Build Failure",
+            body: "Build Failure has occured with the following ${env.BUILD_URL}"
             )
     }
 }
