@@ -25,5 +25,5 @@ pipeline {
             }
         }
     }
-    slackSend (message: "${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+    slackSend (message: "${buildStatus} ${env.JOB_NAME} ${env.BUILD_NUMBER} (${env.BUILD_URL})")
 }
