@@ -47,11 +47,15 @@ pipeline {
       }
     }
     stage("Tag DEV") {
-      echo "Tag image to DEV"
-      openshift.withCluster() {
-	openshift.withProject('cicd') {
-	  openshift.tag("${appName}:latest", "${appName}:dev")
-        }
+      steps {
+        script {
+	  echo "Tag image to DEV"
+	  openshift.withCluster() {
+	    openshift.withProject('cicd') {
+	      openshift.tag("${appName}:latest", "${appName}:dev")
+	    }
+	  }
+	}
       }
     }
     stage('Deploy DEV') {
@@ -69,12 +73,16 @@ pipeline {
         }
       }
     }
-    stage("Tag UAT") {
-      echo "Tag image to UAT"
-      openshift.withCluster() {
-	openshift.withProject('cicd') {
-	  openshift.tag("${appName}:dev", "${appName}:uat")
-        }
+    stage("Tag TEST") {
+      steps {
+        script {
+	  echo "Tag image to TEST"
+	  openshift.withCluster() {
+	    openshift.withProject('cicd') {
+	      openshift.tag("${appName}:dev", "${appName}:test")
+	    }
+	  }
+	}
       }
     }
     stage('Deploy UAT') {
