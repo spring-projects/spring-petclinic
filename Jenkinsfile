@@ -63,7 +63,7 @@ pipeline {
         script {
           echo "Deploy to DEV."
           openshift.withCluster() {
-            openshift.withProject("${appName}-dev") {
+            openshift.withProject("demo-dev") {
               echo "Rolling out to DEV."
               def dc = openshift.selector('dc', "${appName}")
               dc.rollout().latest()
@@ -85,13 +85,13 @@ pipeline {
 	}
       }
     }
-    stage('Deploy UAT') {
+    stage('Deploy TEST') {
       steps {
         script {
-          echo "Deploy to UAT."
+          echo "Deploy to TEST."
           openshift.withCluster() {
-            openshift.withProject("${appName}-uat") {
-              echo "Rolling out to UAT."
+            openshift.withProject("demo-test") {
+              echo "Rolling out to TEST."
               def dc = openshift.selector('dc', "${appName}")
               dc.rollout().latest()
               dc.rollout().status()
