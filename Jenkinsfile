@@ -1,10 +1,11 @@
-pipeline { 
-agent any
-stages { 
-stage('Build') {
-steps {
-sh './mvnw package'
-} 
-}
-} 
+pipeline {
+  agent any
+  stages {
+    stage('Build') {
+      steps {
+        sh './mvnw package'
+      }
+    }
+
+  }
 }
