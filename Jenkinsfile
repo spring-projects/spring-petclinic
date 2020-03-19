@@ -8,19 +8,19 @@ pipeline {
       }
     }
 
-        stage('Build') {
+        stage('Test') {
       steps {
         sh 'mvn test'
       }
     }
     
-        stage('Build') {
+        stage('Package') {
       steps {
         sh 'mvn package'
       }
     }
     
-        stage('Build') {
+        stage('Deploy') {
       steps {
         sh 'mvn deploy'
       }
