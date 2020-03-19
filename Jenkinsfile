@@ -21,9 +21,12 @@ pipeline {
     }
     
         stage('Deploy') {
+          when{expression{(end.BRANCH_NAME == 'master')}}
+          {
       steps {
         sh 'mvn deploy'
       }
+          }
     }
     
   }
