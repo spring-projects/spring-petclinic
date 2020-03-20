@@ -35,8 +35,11 @@ Our issue tracker is available here: https://github.com/spring-projects/spring-p
 
 ## Database configuration
 
-In its default configuration, Petclinic uses an in-memory database (HSQLDB) which
-gets populated at startup with data. A similar setup is provided for MySql in case a persistent database configuration is needed.
+In its default configuration, Petclinic uses an in-memory database (H2) which
+gets populated at startup with data. The h2 console is automatically exposed at `http://localhost:8080/h2-console`
+and it is possibl to inspect the content of the database using the `jdbc:h2:mem:testdb` url.
+ 
+A similar setup is provided for MySql in case a persistent database configuration is needed.
 Note that whenever the database type is changed, the app needs to be run with a different profile: `spring.profiles.active=mysql` for MySql.
 
 You could start MySql locally with whatever installer works for your OS, or with docker:
