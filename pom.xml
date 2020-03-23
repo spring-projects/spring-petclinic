@@ -29,6 +29,24 @@
 
 	</properties>
 
+	<repositories>
+		<repository>
+		  <id>nexus</id>
+		  <url>http://nexus.cicd.svc.cluster.local:8081/content/groups/public</url>
+		</repository>
+	  </repositories>
+
+	<distributionManagement>
+		<snapshotRepository>
+		 <id>nexus</id>
+		 <url>http://nexus.cicd.svc.cluster.local:8081/repository/maven-snapshots/</url>
+		</snapshotRepository>
+		<repository>
+		 <id>nexus</id>
+		 <url>http://nexus.cicd.svc.cluster.local:8081/repository/maven-releases/</url>
+		</repository>
+	</distributionManagement>
+
 	<dependencies>
 		<!-- Spring and Spring Boot dependencies -->
 		<dependency>
