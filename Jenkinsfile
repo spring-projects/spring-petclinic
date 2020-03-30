@@ -15,7 +15,7 @@ pipeline {
 
     stage('Package') {
       steps {
-        echo 'Package'
+        slackSend "The pipeline ${currentBuild.fullDisplayName} completed successfully."
       }
     }
 
