@@ -30,6 +30,11 @@ pipeline {
         echo 'Deploy'
       }
     }
-
   }
+  post {
+    success {
+        slackSend channel: '#noti',
+                  color: 'good',
+                  message: "The pipeline ${currentBuild.fullDisplayName} completed successfully."
+    }
 }
