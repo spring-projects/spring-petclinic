@@ -31,7 +31,7 @@ pipeline {
    }
 post {
   always {
-      slackSend "The pipeline ${currentBuild.fullDisplayName} completed successfully."
+      slackSend message: "The pipeline ${currentBuild.fullDisplayName} completed successfully."
   }
 }
 }
