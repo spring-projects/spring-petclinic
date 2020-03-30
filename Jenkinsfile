@@ -4,7 +4,6 @@ pipeline {
     stage('Build') {
       steps {
         bat './mvnw package'
-        mail(subject: 'Build Test', body: 'Attempt 1', to: 'jessica.allaire.96@hotmail.com')
       }
     }
 
