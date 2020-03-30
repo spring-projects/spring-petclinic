@@ -18,7 +18,12 @@ pipeline {
         sh './mvnw package'
       }
     }
-    
+
+    stage('') {
+      steps {
+        sh 'echo \'Deployment\''
+      }
+    }
 
   }
 }
