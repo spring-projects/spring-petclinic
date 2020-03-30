@@ -32,8 +32,7 @@ pipeline {
     }
   }
   post {
-    success {
-        slackSend color: 'good',
-                  message: "The pipeline ${currentBuild.fullDisplayName} completed successfully."
+    always {
+        slackSend "The pipeline ${currentBuild.fullDisplayName} completed successfully."
     }
 }
