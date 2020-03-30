@@ -1,13 +1,9 @@
 pipeline{
   agent any
   stages {
-    stage("Clean"){
+    stage("Build"){
       steps{
         sh './mvnw clean'
-      }
-    }
-    stage("Compile"){
-      steps{
         sh './mvnw compile'
       }
     }
@@ -16,8 +12,9 @@ pipeline{
         sh './mvnw test'
       }
     }
-    stage("Install"){
+    stage("Package"){
       steps{
+        sh './mvnw package'
         sh './mvnw install'
       }
     }
