@@ -1,12 +1,13 @@
 pipeline {
   agent any
-   stages {
-      stage('Build') {
-        steps {
-          bat './mvnw package'
-        }
+  stages {
+    stage('Build') {
+      steps {
+        bat './mvnw package'
       }
-     stage('Test') {
+    }
+
+    stage('Test') {
       steps {
         echo 'Testing'
       }
@@ -14,7 +15,7 @@ pipeline {
 
     stage('Package') {
       steps {
-        echo "blob"
+        echo 'blob'
       }
     }
 
@@ -23,15 +24,18 @@ pipeline {
         expression {
           GIT_BRANCH == 'master'
         }
+
       }
       steps {
         echo 'Deploy'
       }
     }
-   }
-post {
-  always {
-      slackSend message: "The pipeline ${currentBuild.fullDisplayName} completed successfully."
+
   }
-}
+  post {
+    always {
+      slackSend(message: "The pipeline ${currentBuild.fullDisplayName} completed successfully.")
+    }
+
+  }
 }
