@@ -14,7 +14,7 @@ pipeline {
 
     stage('Package') {
       steps {
-        slackSend "The pipeline ${currentBuild.fullDisplayName} completed successfully."
+        echo "blob"
       }
     }
 
@@ -28,9 +28,9 @@ pipeline {
         echo 'Deploy'
       }
     }
-  post {
-    always {
-        slackSend "The pipeline ${currentBuild.fullDisplayName} completed successfully."
-    }
+   }
+post {
+  always {
+      slackSend "The pipeline ${currentBuild.fullDisplayName} completed successfully."
   }
 }
