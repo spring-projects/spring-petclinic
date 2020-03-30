@@ -33,8 +33,7 @@ pipeline {
   }
   post {
     success {
-        slackSend channel: '#noti',
-                  color: 'good',
+        slackSend color: 'good',
                   message: "The pipeline ${currentBuild.fullDisplayName} completed successfully."
     }
 }
