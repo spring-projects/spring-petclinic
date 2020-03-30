@@ -34,3 +34,4 @@ post {
       slackSend "The pipeline ${currentBuild.fullDisplayName} completed successfully."
   }
 }
+}
