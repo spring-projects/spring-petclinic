@@ -19,11 +19,5 @@ pipeline {
       }
     }
 
-    stage('') {
-      steps {
-        sh 'echo \'Deployment\''
-      }
-    }
-
   }
 }
