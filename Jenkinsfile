@@ -18,5 +18,14 @@ pipeline{
         sh './mvnw install'
       }
     }
+    stage('master-branch-stuff'){
+    agent any
+    when{
+      branch 'master'
+    }
+    steps {
+      sh './mvnw deploy'
+    }
+}
   }
 }
