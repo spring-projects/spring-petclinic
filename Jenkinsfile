@@ -17,6 +17,11 @@ pipeline {
             }
         }
     stage('Deploy') { 
+         when {
+                expression {
+                    GIT_BRANCH == 'master'
+                }
+            }
         steps {
            echo 'Deploy'
         }
