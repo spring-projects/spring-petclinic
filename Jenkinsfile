@@ -6,6 +6,7 @@ pipeline {
                 sh 'mvn compile' 
             }
         }
+        // This is to make sure we have jenkins checking for merge
         stage('Test') {
             steps {
                 sh 'mvn clean test' 
