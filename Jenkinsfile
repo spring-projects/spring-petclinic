@@ -7,17 +7,17 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh './mvnw clean compile' 
+                sh 'mvn clean compile' 
             }
         }
         stage('Test') {
             steps {
-                 sh './mvnw test'  
+                 sh 'mvn test'  
             }
         }
         stage('Package') {
             steps {
-                 sh './mvnw package'  
+                 sh 'mvn package'  
             }
         }
 
@@ -27,7 +27,7 @@ pipeline {
                 branch 'master'
             }
             steps {
-                sh './mvnw deploy' 
+                sh 'mvn deploy' 
             }
         }
 
