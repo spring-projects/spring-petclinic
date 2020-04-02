@@ -1,35 +1,14 @@
 pipeline {
-
-environment {
-     
-        SLACK_CHANNEL = "#gayfuckassignment"
-        SLACK_TEAM_DOMAIN = "yeetus345"
-        SLACK_TOKEN = credentials("ilhAultZiny2Kbijeb1h6XCC")
-        DEPLOY_URL = "http://localhost:9090/job/spring-petclinic"
-    }
-
     agent any
     stages {
         stage('Build') {
             steps {
-                slackSend channel: 'notif', message: "Successful build!"
-                sh './mvnw package' 
+                sh 'mvn compile' 
             }
-            post {
-                success {
-                    slackSend(
-                            teamDomain: "${env.SLACK_TEAM_DOMAIN}",
-                            token: "${env.SLACK_TOKEN}",
-                            channel: "${env.SLACK_CHANNEL}",
-                            color: "good",
-                            message: "I absolutetly hate this, but hey the build succeeded"
-                    )
-                }
-            }
-            }
+        }
         stage('Test') {
             steps {
-                sh './mvnw package' 
+                sh 'mvn clean test' 
             }
         }
         stage('Package') {
@@ -39,8 +18,13 @@ environment {
         }
         stage('Deploy') {
             steps {
-                sh './mvnw package' 
+                echo 'Deploying'
             }
+        }
+    }
+    post {
+        always {
+            emailext body: 'Jenkins Build Passed Hurray!', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Jenkins Build [Spring-Petclinic]'
         }
     }
 }
