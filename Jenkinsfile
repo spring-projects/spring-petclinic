@@ -35,13 +35,17 @@ pipeline {
 
 // Post-build actions
     post {
-      slackSend channel: '#slack-test-channel',
+        success{
+                slackSend channel: '#slack-test-channel',
                 color: COLOR_MAP[currentBuild.currentResult],
                 message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} by ${BUILD_USER}\n More info at: ${env.BUILD_URL}"
-        
+        }
+        failure{
+                slackSend channel: '#slack-test-channel',
+                color: COLOR_MAP[currentBuild.currentResult],
+                message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} by ${BUILD_USER}\n More info at: ${env.BUILD_URL}"
+        }
     }
-
-
 
 
 }
