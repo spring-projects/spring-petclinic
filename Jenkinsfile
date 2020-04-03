@@ -40,15 +40,16 @@ pipeline {
 
 // Post-build actions
     post {
+        
         success{
-                slackSend 
-                color: '#00ba09',
-                message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
+            slackSend color: '#00ba09', message: 'test'
+                //slackSend color: '#00ba09',
+                //message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
         }
         failure{
-                slackSend 
-                color: '#ff0000',
-                message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
+            slackSend color: '#FF0000', message: 'test'
+                //slackSend color: '#ff0000',
+               // message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
         }
     }
 
