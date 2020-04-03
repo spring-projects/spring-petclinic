@@ -42,12 +42,12 @@ pipeline {
     post {
         success{
                 slackSend 
-                color: 'good',
+                color: '#00ba09',
                 message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
         }
         failure{
                 slackSend 
-                color: 'danger',
+                color: '#ff0000',
                 message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
         }
     }
