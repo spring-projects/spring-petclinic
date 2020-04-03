@@ -1,10 +1,8 @@
 def COLOR_MAP = [
-    'SUCCESS': 'good', 
-    'FAILURE': 'danger',
+    'SUCCESS': 'green', 
+    'FAILURE': 'red',
 ]
-def getBuildUser() {
-    return currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserId()
-}
+
 pipeline {
     agent any
      tools {
@@ -43,13 +41,13 @@ pipeline {
 // Post-build actions
     post {
         success{
-                slackSend channel: '#slack-test-channel',
-                color: COLOR_MAP[currentBuild.currentResult],
+                slackSend 
+                color: 'red',
                 message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
         }
         failure{
-                slackSend channel: '#slack-test-channel',
-                color: COLOR_MAP[currentBuild.currentResult],
+                slackSend 
+                color: 'green',
                 message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
         }
     }
