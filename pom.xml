@@ -291,6 +291,15 @@
       <name>central maven repo https</name>
       <url>https://repo.maven.apache.org/maven2</url>
     </repository>
+	<repository>
+		<id>central</id>
+        <name>Maven Plugin Repository</name>
+        <url>https://repo1.maven.org/maven2</url>
+        <layout>default</layout>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+    </repository>
     <repository>
       <id>spring-snapshots</id>
       <name>Spring Snapshots</name>
