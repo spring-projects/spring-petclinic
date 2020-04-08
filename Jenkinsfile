@@ -10,11 +10,13 @@ stages {
     }
   }
   stage("deploy") {
+    steps {
     sh "cd spring-petclinic"
     sh """
     docker build -t pet-clinic:1.0 .
     docker run -d -p 8080:8080 pet-clinic:1.0
     """
+    }
   }
 }
 }
