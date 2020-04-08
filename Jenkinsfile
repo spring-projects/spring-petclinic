@@ -10,7 +10,7 @@ stages {
       sh "pwd"
       sh "ls -lrtha"
       dir("spring-petclinic") {
-      sh "./mvnw clean package"
+      sh "./mvnw clean package -Dcheckstyle.skip"
       }
     }
   }
