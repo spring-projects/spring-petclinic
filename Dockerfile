@@ -1,3 +1,4 @@
+#pull latest java image
 from openjdk
 COPY /target/spring*.jar pet-animal/
 EXPOSE 8080
