@@ -1,3 +1,7 @@
+def targetMail = "bnagaraju96756@gmail.com,jenkinsautomationuser@gmail.com"
+def emailDevOps(targetMail, msg) {
+    emailext body: "${msg}\nplease look into the build: ${BUILD_URL}", subject: "${currentBuild.result}: ${BUILD_TAG}", to: "${targetMail}"
+}
 pipeline {
   agent {label "slave"}
 stages {
@@ -6,7 +10,7 @@ stages {
       sh "pwd"
       sh "ls -lrtha"
       dir("spring-petclinic") {
-      sh "./mvnw package"
+      sh "./mvnw clean package"
       }
     }
   }
@@ -21,5 +25,12 @@ stages {
       }
     }
   }
+}
+post {
+    always{
+         deleteDir()
+         emailDevOps(targetMail, "This is the mail notification.")
+         
+    }
 }
 }
