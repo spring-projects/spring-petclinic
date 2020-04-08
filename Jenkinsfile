@@ -4,6 +4,9 @@ def emailDevOps(targetMail, msg) {
 }
 pipeline {
   agent {label "slave"}
+    options {
+		timestamps()
+	}
 stages {
   stage("build") {
     steps {
