@@ -1,4 +1,4 @@
-# Spring PetClinic Sample Application [![Build Status](http://52.151.20.88:8085/job/pet-animal/badge/icon)](http://52.151.20.88:8085/job/pet-animal/)
+# Spring PetClinic Sample Application [![Build Status](http://52.151.20.88:8085/buildStatus/icon?job=pet-animal)](http://52.151.20.88:8085/job/pet-animal/)
 Deploy this sample application to Pivotal Web Services:
 
 <a href="https://push-to.cfapps.io?repo=https%3A%2F%2Fgithub.com%2Fspring-projects%2Fspring-petclinic.git">
