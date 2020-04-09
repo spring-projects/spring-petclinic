@@ -21,6 +21,13 @@ stages {
       }
     }
   }
+  stage ("sonar cloud code analysis") {
+          steps {
+                  dir("spring-petclinic") {
+                sh "./mvnw verify sonar:sonar"
+                  }
+          }
+  }
   stage("deploy") {
     steps {
       dir("spring-petclinic") {
