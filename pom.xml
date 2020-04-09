@@ -30,6 +30,13 @@
     <jacoco.version>0.8.5</jacoco.version>
     <nohttp-checkstyle.version>0.0.4.RELEASE</nohttp-checkstyle.version>
     <spring-format.version>0.0.20</spring-format.version>
+      
+    <!-- sonar cloud properties -->
+    <sonar.projectKey>BrahmanapallyNagaraju_spring-petclinic</sonar.projectKey>
+    <sonar.organization>brahmanapallynagaraju</sonar.organization>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    <sonar.login>f1c0979d1967c559c4ef46b503182b92c48fa4db</sonar.login>
+          
   </properties>
 
   <dependencies>
