@@ -1,4 +1,4 @@
-def targetMail = "bnagaraju96756@gmail.com,jenkinsautomationuser@gmail.com"
+def targetMail = "jenkinsautomationuser@gmail.com"
 def emailDevOps(targetMail, msg) {
     emailext body: "${msg}\nplease look into the build: ${BUILD_URL}", subject: "${currentBuild.result}: ${BUILD_TAG}", to: "${targetMail}"
 }
@@ -7,6 +7,10 @@ pipeline {
     options {
 		timestamps()
 	}
+        parameters {
+                string(name: 'Docker_image_base_version',defaultValue: '1',description:"docker base image version for pet-clinic application.\nex: 1,2,3 as in 1.0,2.1,3.5")       
+        }
+     
 stages {
   stage("build") {
     steps {
@@ -27,6 +31,18 @@ stages {
     """
       }
     }
+  }
+  stage('publish') {
+      steps {
+          withCredentials([usernamePassword(credentialsId: 'hub.docker',passwordVariable: 'docker_PSW', usernameVariable: 'docker_USR')]) {
+          sh """
+          docker login -u ${docker_USR} -p ${docker_PSW}
+          docker images
+          docker tag pet-clinic:1.0 nagarajub123/pet-clinic:${params.Docker_image_base_version}.${BUILD_NUMBER}
+          docker push nagarajub123/pet-clinic:1.0
+          """
+      }
+      }
   }
 }
 post {
