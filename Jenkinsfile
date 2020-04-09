@@ -25,21 +25,20 @@ stages {
     steps {
       dir("spring-petclinic") {
     sh """
-    docker build -t pet-clinic:1.0 .
+    docker build -t nagarajub123/pet-clinic:${params.Docker_image_base_version}.${BUILD_NUMBER} .
     docker ps -q --filter name=pet-clinic_container|grep -q . && (docker stop pet-clinic_container && docker rm pet-clinic_container) ||echo pet-clinic_container doesn\\'t exists
     docker run --name pet-clinic_container -d -p 8080:8080 pet-clinic:1.0
     """
       }
     }
   }
-  stage('publish') {
+  stage('publish to docker registry') {
       steps {
           withCredentials([usernamePassword(credentialsId: 'hub.docker',passwordVariable: 'docker_PSW', usernameVariable: 'docker_USR')]) {
           sh """
           docker login -u ${docker_USR} -p ${docker_PSW}
           docker images
-          docker tag pet-clinic:1.0 nagarajub123/pet-clinic:${params.Docker_image_base_version}.${BUILD_NUMBER}
-          docker push nagarajub123/pet-clinic:1.0
+          docker push nagarajub123/pet-clinic:${params.Docker_image_base_version}.${BUILD_NUMBER}
           """
       }
       }
