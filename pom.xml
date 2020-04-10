@@ -137,12 +137,7 @@
         <version>${spring-format.version}</version>
         <!-- run ./mvnw spring-javaformat:apply to apply -->
         <executions>
-          <execution>
-            <phase>validate</phase>
-            <goals>
-              <goal>validate</goal>
-            </goals>
-          </execution>
+         
         </executions>
       </plugin>
       <plugin>
@@ -275,6 +270,41 @@
         </dependencies>
       </plugin>
     </plugins>
+    <pluginManagement>
+    	<plugins>
+    		<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+    		<plugin>
+    			<groupId>org.eclipse.m2e</groupId>
+    			<artifactId>lifecycle-mapping</artifactId>
+    			<version>1.0.0</version>
+    			<configuration>
+    				<lifecycleMappingMetadata>
+    					<pluginExecutions>
+    						<pluginExecution>
+    							<pluginExecutionFilter>
+    								<groupId>
+    									io.spring.javaformat
+    								</groupId>
+    								<artifactId>
+    									spring-javaformat-maven-plugin
+    								</artifactId>
+    								<versionRange>
+    									[0.0.20,)
+    								</versionRange>
+    								<goals>
+    									<goal>validate</goal>
+    								</goals>
+    							</pluginExecutionFilter>
+    							<action>
+    								<ignore></ignore>
+    							</action>
+    						</pluginExecution>
+    					</pluginExecutions>
+    				</lifecycleMappingMetadata>
+    			</configuration>
+    		</plugin>
+    	</plugins>
+    </pluginManagement>
   </build>
 
   <!-- Apache 2 license -->
