@@ -20,11 +20,11 @@ pipeline {
         }
         stage('Deploy') {
               when {
-                  branch 'production'
+                  branch 'master'
             }
             steps {
                 echo "DEPLOY!"
-/*                sh './mvnw deploy' */
+             //   sh './mvnw deploy'
             }
         }
     }
@@ -35,6 +35,7 @@ pipeline {
         }
         success {
             echo 'I succeeeded!'
+             mail to: m.augier@me.com, subject: 'Build succeeded: $(JOB_NAME)'
         }
         unstable {
             echo 'I am unstable :/'
