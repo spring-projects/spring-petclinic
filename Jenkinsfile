@@ -1,28 +1,31 @@
+#!/usr/bin/env groovy
 pipeline {
-      agent any
-      stages {
-         stage('Build') {
+    agent any
+    stages {
+        stage('Build') {
             steps {
                 sh './mvnw clean'
             }  
-         }
-         stage('Test') {
+        }
+        stage('Test') {
             steps {
                 sh './mvnw test'
             }
         }
-         stage('Package') {
+        
+        stage('Package') {
             steps {
                 sh './mvnw package'
             }
         }
-            /*
-         stage('Deploy') {
-            steps {
-                sh './mvnw deploy'
+        
+        if( env.BRANCH_NAME == 'master' ) {
+            stage('Deploy') {
+                steps {
+                    sh './mvnw deploy'
+                }
             }
         }
-        */
     }
     post {
         always {
