@@ -15,9 +15,9 @@
   <name>petclinic</name>
 <distributionManagement>
   <repository>
-    <id>internal.repo</id>
-    <name>Internal repo</name>
-    <url>file:///Users/Shared/Daphne/spring-petclinic</url>
+    <id>github</id>
+    <name>github repo</name>
+    <url>https://github.com/daphneaugier/spring-petclinic</url>
   </repository>
 </distributionManagement>
   <properties>
