@@ -13,9 +13,6 @@
     <version>2.2.4.RELEASE</version>
   </parent>
   <name>petclinic</name>
-
-  <properties>
-
 <distributionManagement>
   <repository>
     <id>internal.repo</id>
@@ -23,6 +20,7 @@
     <url>file:///Users/Shared/Daphne/spring-petclinic</url>
   </repository>
 </distributionManagement>
+  <properties>
     <!-- Generic properties -->
     <java.version>1.8</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
