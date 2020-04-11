@@ -16,11 +16,13 @@ pipeline {
                 sh './mvnw package'
             }
         }
+            /*
          stage('Deploy') {
             steps {
                 sh './mvnw deploy'
             }
         }
+        */
     }
     post {
         always {
