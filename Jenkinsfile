@@ -18,12 +18,15 @@ pipeline {
                 sh './mvnw package'
             }
         }
-        
-        if( env.BRANCH_NAME == 'master' ) {
-            stage('Deploy') {
-                steps {
-                    sh './mvnw deploy'
-                }
+        stage('Deploy') {
+              when {
+              expression {
+                currentBuild.result == null || currentBuild.result == 'SUCCESS' 
+              }
+            }
+            steps {
+                echo "DEPLOY!"
+/*                sh './mvnw deploy' */
             }
         }
     }
