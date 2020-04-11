@@ -20,15 +20,12 @@ pipeline {
             }
         }
         stage('Deploy') {
-            steps{
-                echo "Branch name: ${env.BRANCH_NAME}"
-            }
             when {
                   branch 'master'
             }
             steps {
-                echo "Merge to master"
-                sh 'git pull'
+                echo "Branch name: ${env.BRANCH_NAME}"
+                sh './mvnw deploy'
             }
         }
     }
