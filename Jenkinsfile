@@ -1,51 +1,10 @@
-#!/usr/bin/env groovy
 pipeline {
     agent any
     stages {
         stage('Build') {
             steps {
-                sh './mvnw clean'
-            }  
-        }
-        stage('Test') {
-            steps {
-                sh './mvnw test'
+                sh 'echo "This is the development branch"'
             }
-        }
-        
-        stage('Package') {
-            steps {
-                sh './mvnw package'
-            }
-        }
-        stage('Deploy') {
-              when {
-              expression {
-                currentBuild.result == null || currentBuild.result == 'SUCCESS' 
-              }
-            }
-            steps {
-                echo "DEPLOY!"
-/*                sh './mvnw deploy' */
-            }
-        }
-    }
-    post {
-        always {
-            echo 'One way or another, I have finished'
-     /*       deleteDir() /* clean up our workspace */
-        }
-        success {
-            echo 'I succeeeded!'
-        }
-        unstable {
-            echo 'I am unstable :/'
-        }
-        failure {
-            echo 'I failed :('
-        }
-        changed {
-            echo 'Things were different before...'
         }
     }
 }
