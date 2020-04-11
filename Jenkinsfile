@@ -36,7 +36,7 @@ pipeline {
         success {
             echo 'I succeeeded!'
             // For GitHub
-sh 'curl "https://api.GitHub.com/repos/daphneaugier/spring-petclinic/statuses/$GIT_COMMIT?access_token=<YOUR_GITHUB_TOKEN>" \
+sh 'curl "https://api.GitHub.com/repos/daphneaugier/spring-petclinic/statuses/$GIT_COMMIT?access_token=4d88d2b679c35732e8b50e62cd60f18907d03a55" \
   -H "Content-Type: application/json" \
   -X POST \
   -d "{\"state\": \"success\",\"context\": \"continuous-integration/jenkins\", \"description\": \"Jenkins\", \"target_url\": \"http://localhost:9090/job/spring-petclinic/$BUILD_NUMBER/console\"}"'
@@ -50,7 +50,12 @@ sh 'curl "https://api.GitHub.com/repos/daphneaugier/spring-petclinic/statuses/$G
         }
         failure {
             echo 'I failed :('
-        }
+             // For GitHub
+sh 'curl "https://api.GitHub.com/repos/daphneaugier/spring-petclinic/statuses/$GIT_COMMIT?access_token=4d88d2b679c35732e8b50e62cd60f18907d03a55" \
+  -H "Content-Type: application/json" \
+  -X POST \
+  -d "{\"state\": \"failure\",\"context\": \"continuous-integration/jenkins\", \"description\": \"Jenkins\", \"target_url\": \"http://localhost:9090/job/spring-petclinic/$BUILD_NUMBER/console\"}"'
+       }
         changed {
             echo 'Things were different before...'
         }
