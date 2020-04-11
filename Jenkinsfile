@@ -1,4 +1,5 @@
 #!/usr/bin/env groovy
+
 pipeline {
     agent any
     stages {
@@ -24,18 +25,16 @@ pipeline {
             }
             steps {
                 echo "DEPLOY!"
-             //   sh './mvnw deploy'
             }
         }
     }
     post {
         always {
             echo 'One way or another, I have finished'
-     /*       deleteDir() /* clean up our workspace */
         }
         success {
             echo 'I succeeeded!'
-             mail to: 'm.augier@me.com',
+             mail to: 'daphne.augier@gmail.com',
              subject: "Successful Pipeline: ${currentBuild.fullDisplayName}",
              body: "Eveythink OK with ${env.BUILD_URL}\n"
         }
