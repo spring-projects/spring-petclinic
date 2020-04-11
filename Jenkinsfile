@@ -36,7 +36,7 @@ pipeline {
         success {
             echo 'I succeeeded!'
              mail to: 'm.augier@me.com',
-             subject: 'Build succeeded: $(JOB_NAME)'
+             subject: 'Build succeeded: $(JOB_NAME)',
              body: "Eveythink OK with ${env.BUILD_URL}\nSuccessful Pipeline: ${currentBuild.fullDisplayName}"
         }
         unstable {
