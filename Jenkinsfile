@@ -20,7 +20,9 @@ pipeline {
             }
         }
         stage('Deploy') {
-            echo "Branch name: ${env.BRANCH_NAME}"
+            steps{
+                echo "Branch name: ${env.BRANCH_NAME}"
+            }
             when {
                   branch 'master'
             }
@@ -36,7 +38,11 @@ pipeline {
         }
         success {
             echo 'I succeeeded!'
-
+            // For GitHub
+curl "https://api.GitHub.com/repos/daphneaugier/spring-petclinic/statuses/$GIT_COMMIT?access_token=<YOUR_GITHUB_TOKEN>" \
+  -H "Content-Type: application/json" \
+  -X POST \
+  -d "{\"state\": \"success\",\"context\": \"continuous-integration/jenkins\", \"description\": \"Jenkins\", \"target_url\": \"http://localhost:9090/job/spring-petclinic/$BUILD_NUMBER/console\"}"
             // Email
              mail to: 'daphne.augier@gmail.com',
              subject: "Successful Pipeline: ${currentBuild.fullDisplayName}",
