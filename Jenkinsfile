@@ -20,7 +20,7 @@ pipeline {
             }
         }
         stage('Deploy') {
-            echo "Branch name: $(env.BRANCH_NAME)"
+            echo "Branch name: ${env.BRANCH_NAME}"
             when {
                   branch 'master'
             }
