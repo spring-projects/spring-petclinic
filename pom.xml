@@ -150,13 +150,13 @@
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>3.1.0</version>
         <!-- START added by heroku recommendations -->
-        <executions>
+        <!-- <executions>
                     <execution>
                         <id>copy-dependencies</id>
                         <phase>package</phase>
                         <goals><goal>copy-dependencies</goal></goals>
                     </execution>
-        </executions>
+        </executions> -->
         <!-- END of the new dependency added -->
         <dependencies>
           <dependency>
