@@ -24,7 +24,7 @@ stages {
   stage ("sonar cloud code analysis") {
           steps {
                   dir("spring-petclinic") {
-                sh "./mvnw verify sonar:sonar"
+                sh "./mvnw verify sonar:sonar -Dcheckstyle.skip"
                   }
           }
   }
