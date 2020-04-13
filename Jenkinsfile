@@ -1,3 +1,4 @@
+
 def targetMail = "jenkinsautomationuser@gmail.com"
 def emailDevOps(targetMail, msg) {
     emailext body: "${msg}\nplease look into the build: ${BUILD_URL}", subject: "${currentBuild.result}: ${BUILD_TAG}", to: "${targetMail}"
