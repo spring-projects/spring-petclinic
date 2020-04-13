@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<l:dependencies xmlns:l='licenses' groupId='org.jenkins-ci.plugins' artifactId='scm-api' version='2.6.3'><l:dependency name='SCM API Plugin' groupId='org.jenkins-ci.plugins' artifactId='scm-api' version='2.6.3' url='https://wiki.jenkins.io/display/JENKINS/SCM+API+Plugin'><l:description>This plugin provides a new enhanced API for interacting with SCM systems.</l:description><l:license name='The MIT license' url='https://opensource.org/licenses/MIT'/></l:dependency></l:dependencies>

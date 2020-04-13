@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: stephenc
+Build-Jdk: 1.8.0_92
+Extension-Name: authentication-tokens
+Specification-Title: This plugin provides an API for converting creden
+ tials into authentication tokens in Jenkins.
+Implementation-Title: authentication-tokens
+Implementation-Version: 1.3
+Group-Id: org.jenkins-ci.plugins
+Short-Name: authentication-tokens
+Long-Name: Authentication Tokens API Plugin
+Url: http://wiki.jenkins-ci.org/display/JENKINS/Authentication+Tokens+
+ API+Plugin
+Plugin-Version: 1.3
+Hudson-Version: 1.580.1
+Jenkins-Version: 1.580.1
+Plugin-Dependencies: credentials:1.22
+Plugin-Developers: Stephen Connolly:stephenconnolly:
+Support-Dynamic-Loading: true
+

@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<l:dependencies xmlns:l='licenses' groupId='org.jenkins-ci.plugins' artifactId='junit' version='1.28'><l:dependency name='JUnit Plugin' groupId='org.jenkins-ci.plugins' artifactId='junit' version='1.28' url='http://wiki.jenkins-ci.org/display/JENKINS/JUnit+Plugin'><l:description>Allows JUnit-format test results to be published.</l:description><l:license name='MIT' url='http://opensource.org/licenses/MIT'/></l:dependency></l:dependencies>

@@ -1,0 +1,27 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: bitwiseman
+Build-Jdk: 1.8.0_231
+Extension-Name: github-branch-source
+Specification-Title: Multibranch projects and organization folders fro
+ m GitHub. Maintained by CloudBees, Inc.
+Implementation-Title: github-branch-source
+Implementation-Version: 2.6.0
+Group-Id: org.jenkins-ci.plugins
+Short-Name: github-branch-source
+Long-Name: GitHub Branch Source Plugin
+Url: https://github.com/jenkinsci/github-branch-source-plugin
+Compatible-Since-Version: 2.2.0
+Minimum-Java-Version: 1.8
+Plugin-Version: 2.6.0
+Hudson-Version: 2.150.3
+Jenkins-Version: 2.150.3
+Plugin-Dependencies: github:1.29.3,workflow-step-api:2.19;resolution:=
+ optional,credentials:2.1.18,display-url-api:2.0,git:3.9.3,github-api:
+ 1.106,jackson2-api:2.10.2,scm-api:2.6.3,structs:1.19
+Plugin-Developers: 
+Plugin-License-Name: MIT
+Plugin-License-Url: http://opensource.org/licenses/MIT
+Plugin-ScmUrl: https://github.com/jenkinsci/github-branch-source-plugin
+

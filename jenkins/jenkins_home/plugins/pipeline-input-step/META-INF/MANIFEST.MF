@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: dnusbaum
+Build-Jdk: 1.8.0_161
+Extension-Name: pipeline-input-step
+Specification-Title: The Jenkins Plugins Parent POM Project
+Implementation-Title: pipeline-input-step
+Implementation-Version: 2.11
+Group-Id: org.jenkins-ci.plugins
+Short-Name: pipeline-input-step
+Long-Name: Pipeline: Input Step
+Url: https://wiki.jenkins-ci.org/display/JENKINS/Pipeline+Input+Step+P
+ lugin
+Minimum-Java-Version: 1.8
+Plugin-Version: 2.11
+Hudson-Version: 2.138.4
+Jenkins-Version: 2.138.4
+Plugin-Dependencies: workflow-api:2.35,workflow-step-api:2.20,workflow
+ -support:3.3,credentials:2.3.0
+Plugin-Developers: 
+

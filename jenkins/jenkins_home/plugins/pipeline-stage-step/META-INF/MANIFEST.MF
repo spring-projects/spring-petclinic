@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: abayer
+Build-Jdk: 1.8.0_144
+Extension-Name: pipeline-stage-step
+Specification-Title: The Jenkins Plugins Parent POM Project
+Implementation-Title: pipeline-stage-step
+Implementation-Version: 2.3
+Group-Id: org.jenkins-ci.plugins
+Short-Name: pipeline-stage-step
+Long-Name: Pipeline: Stage Step
+Url: https://wiki.jenkins-ci.org/display/JENKINS/Pipeline+Stage+Step+P
+ lugin
+Plugin-Version: 2.3
+Hudson-Version: 1.642.3
+Jenkins-Version: 1.642.3
+Plugin-Dependencies: workflow-api:2.15,workflow-step-api:2.11,scm-api:
+ 2.0.7,structs:1.6
+Plugin-Developers: 
+

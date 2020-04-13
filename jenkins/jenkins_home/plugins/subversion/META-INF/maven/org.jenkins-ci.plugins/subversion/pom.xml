@@ -1,0 +1,298 @@
+<!--
+The MIT License
+
+Copyright (c) 2004-2010, Sun Microsystems, Inc., Kohsuke Kawaguchi, Daniel Dyer,
+                    Erik Ramfelt, Stephen Connolly, Tom Huybrechts, Alan Harder
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.jenkins-ci.plugins</groupId>
+    <artifactId>plugin</artifactId>
+    <version>3.54</version>
+    <relativePath />
+  </parent>
+
+  <artifactId>subversion</artifactId>
+  <version>2.13.1</version>
+  <packaging>hpi</packaging>
+
+  <name>Jenkins Subversion Plug-in</name>
+  <url>https://github.com/jenkinsci/${project.artifactId}-plugin</url>
+
+  <licenses>
+    <license>
+      <name>MIT license</name>
+      <url>https://opensource.org/licenses/MIT</url>
+      <comments>All source code is under the MIT license.</comments>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>kohsuke</id>
+      <name>Kohsuke Kawaguchi</name>
+      <roles>
+        <role>Maintainer (retired)</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>stephenconnolly</id>
+      <name>Stephen Connolly</name>
+      <roles>
+        <role>Maintainer (retired)</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>oleg_nenashev</id>
+      <name>Oleg Nenashev</name>
+      <roles>
+        <role>Maintainer (retired)</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>abayer</id>
+      <name>Andrew Bayer</name>
+      <roles>
+        <role>Maintainer (retired)</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>dodok1</id>
+      <name>dodok1</name>
+      <roles>
+        <role>Maintainer (retired)</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>dty</id>
+      <name>dty</name>
+      <roles>
+        <role>Maintainer (retired)</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>huybrechts</id>
+      <name>Tom Huybrechts</name>
+      <roles>
+        <role>Maintainer (retired)</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>pgweiss</id>
+      <name>pgweiss</name>
+      <roles>
+        <role>Maintainer (retired)</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>rseguy</id>
+      <name>rseguy</name>
+      <roles>
+        <role>Maintainer (retired)</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>kutzi</id>
+      <name>kutzi</name>
+      <roles>
+        <role>Maintainer (retired)</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>ifernandezcalvo</id>
+      <name>Ivan Fernandez Calvo</name>
+      <roles>
+        <role>Maintainer (retired)</role>
+      </roles>
+    </developer>
+  </developers>
+  
+  <scm>
+    <connection>scm:git:git://github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
+    <developerConnection>scm:git:git@github.com:jenkinsci/${project.artifactId}-plugin.git</developerConnection>
+    <url>https://github.com/jenkinsci/${project.artifactId}-plugin</url>
+    <tag>subversion-2.13.1</tag>
+  </scm>
+
+  <properties>
+    <jenkins.version>2.107.3</jenkins.version>
+    <java.level>8</java.level>
+    <no-test-jar>false</no-test-jar>
+    <workflow-scm-step.version>2.6</workflow-scm-step.version>
+    <workflow-aggregator.version>2.5</workflow-aggregator.version>
+    <findbugs.failOnError>false</findbugs.failOnError> <!-- TODO still have 27 left -->
+    <scm-api-plugin.version>2.6.3</scm-api-plugin.version>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>repo.jenkins-ci.org</id>
+      <url>https://repo.jenkins-ci.org/public/</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>repo.jenkins-ci.org</id>
+      <url>https://repo.jenkins-ci.org/public/</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.tmatesoft.svnkit</groupId>
+      <artifactId>svnkit</artifactId>
+      <version>1.10.1</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.trilead</groupId>
+          <artifactId>trilead-ssh2</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.tmatesoft.svnkit</groupId>
+      <artifactId>svnkit-cli</artifactId>
+      <version>1.10.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.plugins</groupId>
+      <artifactId>mapdb-api</artifactId>
+      <version>1.0.9.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.plugins</groupId>
+      <artifactId>credentials</artifactId>
+      <version>2.1.16</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.plugins</groupId>
+      <artifactId>structs</artifactId>
+      <version>1.9</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.plugins</groupId>
+      <artifactId>ssh-credentials</artifactId>
+      <version>1.12</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.plugins</groupId>
+      <artifactId>scm-api</artifactId>
+      <version>${scm-api-plugin.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.plugins.workflow</groupId>
+      <artifactId>workflow-scm-step</artifactId>
+      <version>${workflow-scm-step.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.httpcomponents</groupId>
+          <artifactId>httpclient</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>1.9.5</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.objenesis</groupId>
+          <artifactId>objenesis</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.hamcrest</groupId>
+          <artifactId>hamcrest-core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.powermock</groupId>
+      <artifactId>powermock-module-junit4</artifactId>
+      <version>1.5</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.powermock</groupId>
+      <artifactId>powermock-api-mockito</artifactId>
+      <version>1.5</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.mockito</groupId>
+          <artifactId>mockito-all</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.plugins</groupId>
+      <artifactId>envinject</artifactId>
+      <version>1.92</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency> <!-- implicit dependency from envinject -->
+      <groupId>org.jenkins-ci.plugins</groupId>
+      <artifactId>matrix-project</artifactId>
+      <version>1.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.plugins</groupId>
+      <artifactId>scm-api</artifactId>
+      <version>${scm-api-plugin.version}</version>
+      <classifier>tests</classifier>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.plugins.workflow</groupId>
+      <artifactId>workflow-aggregator</artifactId>
+      <version>${workflow-aggregator.version}</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.jenkins-ci.plugins.workflow</groupId>
+          <artifactId>workflow-step-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.jenkins-ci.plugins.workflow</groupId>
+          <artifactId>workflow-scm-step</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.plugins</groupId>
+      <artifactId>matrix-auth</artifactId>
+      <version>1.7</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency> <!-- TODO pending matrix-auth 2.x, thus Jenkins 2.60.x -->
+      <groupId>org.jenkins-ci.plugins.icon-shim</groupId>
+      <artifactId>icon-shim</artifactId>
+      <version>2.0.3</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+</project>

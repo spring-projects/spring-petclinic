@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<l:dependencies xmlns:l='licenses' groupId='org.jenkins-ci.plugins' artifactId='ant' version='1.11'><l:dependency name='Ant Plugin' groupId='org.jenkins-ci.plugins' artifactId='ant' version='1.11' url='https://github.com/jenkinsci/ant-plugin'><l:description>The Jenkins Plugins Parent POM Project</l:description><l:license name='The MIT license' url='https://opensource.org/licenses/MIT'/></l:dependency></l:dependencies>

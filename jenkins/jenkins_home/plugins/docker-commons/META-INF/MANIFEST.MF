@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: Oleg
+Build-Jdk: 1.8.0_201
+Extension-Name: docker-commons
+Specification-Title: APIs useful to Docker-based plugins.
+Implementation-Title: docker-commons
+Implementation-Version: 1.16
+Plugin-Class: org.jenkinsci.plugins.docker.commons.DockerCommonsPlugin
+Group-Id: org.jenkins-ci.plugins
+Short-Name: docker-commons
+Long-Name: Docker Commons Plugin
+Url: https://github.com/jenkinsci/docker-commons-plugin
+Minimum-Java-Version: 1.8
+Plugin-Version: 1.16
+Hudson-Version: 2.150.1
+Jenkins-Version: 2.150.1
+Plugin-Dependencies: authentication-tokens:1.3,credentials-binding:1.1
+ 8,credentials:2.1.18,pipeline-model-extensions:1.3.8;resolution:=opti
+ onal
+Plugin-Developers: 
+

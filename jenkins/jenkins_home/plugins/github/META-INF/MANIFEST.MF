@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: integer
+Build-Jdk: 1.8.0_181
+Extension-Name: github
+Specification-Title: The Jenkins Plugins Parent POM Project
+Implementation-Title: github
+Implementation-Version: 1.29.5
+Plugin-Class: org.jenkinsci.plugins.github.GitHubPlugin
+Group-Id: com.coravy.hudson.plugins.github
+Short-Name: github
+Long-Name: GitHub plugin
+Url: http://wiki.jenkins-ci.org/display/JENKINS/Github+Plugin
+Minimum-Java-Version: 1.8
+Plugin-Version: 1.29.5
+Hudson-Version: 2.60.3
+Jenkins-Version: 2.60.3
+Plugin-Dependencies: credentials:2.1.13,display-url-api:2.0,git:3.4.0,
+ github-api:1.90,plain-credentials:1.1,scm-api:2.2.0,structs:1.17,toke
+ n-macro:1.12.1
+Plugin-Developers: Merkushev Kirill:lanwen:,Kanstantsin Shautsou:Kosty
+ aSha:
+

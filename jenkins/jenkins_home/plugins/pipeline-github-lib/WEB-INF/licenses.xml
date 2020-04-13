@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<l:dependencies xmlns:l='licenses' groupId='org.jenkins-ci.plugins' artifactId='pipeline-github-lib' version='1.0'><l:dependency name='Pipeline: GitHub Groovy Libraries' groupId='org.jenkins-ci.plugins' artifactId='pipeline-github-lib' version='1.0' url='https://wiki.jenkins-ci.org/display/JENKINS/Pipeline+GitHub+Library+Plugin'><l:description>Allows Pipeline Groovy libraries to be loaded on the fly from GitHub.</l:description><l:license name='MIT License' url='https://opensource.org/licenses/MIT'/></l:dependency></l:dependencies>

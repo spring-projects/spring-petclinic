@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: tfennelly
+Build-Jdk: 1.7.0_51
+Extension-Name: ace-editor
+Implementation-Title: ace-editor
+Implementation-Version: 1.1
+Group-Id: org.jenkins-ci.ui
+Short-Name: ace-editor
+Long-Name: JavaScript GUI Lib: ACE Editor bundle plugin
+Url: https://wiki.jenkins-ci.org/display/JENKINS/ACE+Editor+Plugin
+Plugin-Version: 1.1
+Hudson-Version: 1.580.1
+Jenkins-Version: 1.580.1
+Plugin-Developers: 
+Support-Dynamic-Loading: true
+

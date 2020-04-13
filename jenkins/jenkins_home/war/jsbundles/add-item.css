@@ -1,0 +1,677 @@
+/*
+ * Mixins
+ * http://lesscss.org/features/#mixins-feature
+ */
+/*
+ * General/layout mixins
+ */
+.no-select {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Chrome/Safari/Opera */
+  -khtml-user-select: none;
+  /* Konqueror */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* IE/Edge */
+  user-select: none;
+}
+.text-select {
+  -webkit-touch-callout: text;
+  /* iOS Safari */
+  -webkit-user-select: text;
+  /* Chrome/Safari/Opera */
+  -khtml-user-select: text;
+  /* Konqueror */
+  -moz-user-select: text;
+  /* Firefox */
+  -ms-user-select: text;
+  /* IE/Edge */
+  user-select: text;
+}
+/*
+ * Border radius
+ */
+.hidden {
+  display: none;
+}
+/*
+ * Widget styles
+ */
+/*
+ * Tab bar specific rules.
+ */
+.jenkins-config-widgets {
+  position: relative;
+  border: 1px solid #ccc;
+  border-bottom: none;
+  background: #eee;
+  min-height: 2.5em;
+  -webkit-border-top-left-radius: 3px;
+  -moz-border-top-left-radius: 3px;
+  border-top-left-radius: 3px;
+  -webkit-border-top-right-radius: 3px;
+  -moz-border-top-right-radius: 3px;
+  border-top-right-radius: 3px;
+  z-index: 5;
+}
+.jenkins-config-widgets nav:before,
+.jenkins-config-widgets nav:after {
+  display: none;
+}
+.jenkins-config-widgets :hover .noTabs {
+  color: #bbb;
+}
+.jenkins-config-widgets .noTabs:hover,
+.jenkins-config-widgets .showTabs:hover {
+  opacity: 0.8;
+  background: #bbb;
+  color: #eee;
+  text-shadow: none;
+}
+.jenkins-config-widgets .find-container {
+  margin: 0;
+  display: none;
+}
+.jenkins-config-widgets .showTabs,
+.jenkins-config-widgets .noTabs {
+  position: absolute;
+  border-radius: 3px;
+  right: 5px;
+  top: 5px;
+  cursor: pointer;
+  color: #ccc;
+  text-shadow: #fff 0 1px 2px;
+  font-size: 0.85em;
+  padding: 3px 7px;
+  display: none;
+}
+.jenkins-config-widgets .form-config.tabBarFrame {
+  position: relative;
+  border-bottom: solid 1px #ccc;
+}
+.jenkins-config-widgets .form-config.tabBarFrame .config-section-activators {
+  margin: 0;
+  padding: 5px 0 0;
+  display: block;
+  list-style: none;
+}
+.jenkins-config-widgets .form-config.tabBarFrame .tabBar .tab {
+  border: solid 1px transparent;
+  color: #999;
+  padding: 7px 10px;
+  -webkit-border-top-left-radius: 5px;
+  -moz-border-top-left-radius: 5px;
+  border-top-left-radius: 5px;
+  -webkit-border-top-right-radius: 5px;
+  -moz-border-top-right-radius: 5px;
+  border-top-right-radius: 5px;
+  cursor: pointer;
+  margin: 1px 0 0 10px;
+  text-decoration: none;
+}
+.jenkins-config-widgets .form-config.tabBarFrame .tabBar .tab:hover {
+  background: #bbb;
+  color: #fff;
+}
+.jenkins-config-widgets .form-config.tabBarFrame .tabBar .tab.active {
+  background: #f9f9f9;
+  color: #000;
+  font-weight: bold;
+  z-index: 2;
+  border: 1px solid #ccc;
+  border-bottom: 1px solid #f9f9f9;
+}
+.jenkins-config-widgets .form-config.tabBarFrame.mouse-over .noTabs {
+  display: inline;
+}
+.jenkins-config-widgets .form-config.tabBarFrame.mouse-over .noTabs:hover {
+  opacity: 0.8;
+}
+#jenkins .jenkins-config {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-top: none;
+  background: #f9f9f9;
+  -webkit-border-bottom-left-radius: 3px;
+  -moz-border-bottom-left-radius: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+  -moz-border-bottom-right-radius: 3px;
+  border-top-bottom-radius: 3px;
+}
+#jenkins .jenkins-config .showTabs {
+  display: block;
+  text-align: right;
+}
+#jenkins .jenkins-config table.config-table .section-header-row {
+  background: none;
+  border-color: transparent;
+}
+#jenkins .jenkins-config table.config-table .section-header {
+  margin-top: 10px;
+}
+#jenkins .jenkins-config table {
+  border-collapse: collapse;
+}
+#jenkins .jenkins-config table .bottom-sticker-edge {
+  display: none;
+}
+#jenkins .jenkins-config table .bottom-sticker-inner {
+  padding: 20px 10px 25px 20px;
+  border-top-right-radius: 10px;
+  border: 1px solid #acb;
+  background: rgba(245, 249, 239, 0.75);
+}
+#jenkins .jenkins-config table .bottom-sticker,
+#jenkins .jenkins-config table #bottom-sticker {
+  width: auto;
+  margin-left: -10px;
+  overflow: hidden;
+  padding-bottom: 10px;
+  margin: 30px 30px -25px -15px;
+  z-index: 9;
+}
+#jenkins .jenkins-config table .bottom-sticker .cover,
+#jenkins .jenkins-config table #bottom-sticker .cover {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+}
+#jenkins .jenkins-config table .bottom-sticker .yui-button.primary button,
+#jenkins .jenkins-config table #bottom-sticker .yui-button.primary button {
+  background: #478;
+  border-color: #356;
+}
+#jenkins .jenkins-config table .bottom-sticker .yui-button.yui-button-disabled button,
+#jenkins .jenkins-config table #bottom-sticker .yui-button.yui-button-disabled button {
+  background: #eee;
+  border-color: #ccc;
+  color: #ccc;
+}
+#jenkins .jenkins-config table .bottom-sticker .yui-button,
+#jenkins .jenkins-config table #bottom-sticker .yui-button {
+  margin-right: 10px;
+}
+#jenkins .jenkins-config table .bottom-sticker .yui-button button,
+#jenkins .jenkins-config table #bottom-sticker .yui-button button {
+  padding: 5px 20px;
+  background: #cde;
+  border-color: #69c;
+}
+#jenkins .jenkins-config table .section-header {
+  margin: 30px 0px 5px -10px;
+  font-size: 1.5em;
+  padding: 10px 15px;
+  border: none;
+  border-top: 1px solid #ddd;
+}
+#jenkins .jenkins-config table .attach-previous {
+  margin-left: 3px;
+}
+#jenkins .jenkins-config table .validation-error-area td {
+  padding: 0 5px;
+}
+#jenkins .jenkins-config table .stapler-class-bag td {
+  padding: 0px;
+}
+#jenkins .jenkins-config table td.setting-name {
+  line-height: 29px;
+}
+#jenkins .jenkins-config table td.setting-main input[type='radio'],
+#jenkins .jenkins-config table td.setting-main input[type='checkbox'] {
+  position: relative;
+  top: 0.33em;
+}
+#jenkins .jenkins-config table td {
+  padding: 5px;
+}
+#jenkins .jenkins-config table td textarea.setting-input {
+  display: block;
+}
+#jenkins .jenkins-config table td .yui-button button,
+#jenkins .jenkins-config table td input[type='email'].setting-input,
+#jenkins .jenkins-config table td input[type='password'].setting-input,
+#jenkins .jenkins-config table td input[type='text'].setting-input {
+  height: 2.25em;
+  line-height: 2.25em;
+  padding: 0 5px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+#jenkins .jenkins-config table td .yui-button button {
+  padding: 0 10px;
+  box-sizing: content-box;
+}
+#jenkins .jenkins-config table td .yui-button button.hetero-list-add {
+  padding-right: 25px;
+}
+#jenkins .jenkins-config table td select:not([multiple]) {
+  height: 2.25em;
+  line-height: 2.25em;
+}
+#jenkins .jenkins-config table td select:not(.select-ajax-pending) {
+  border-radius: 0;
+  background: #fff;
+}
+#jenkins .jenkins-config table td .help {
+  background: rgba(255, 255, 255, 0.75);
+}
+#jenkins .jenkins-config table td p,
+#jenkins .jenkins-config table td .help,
+#jenkins .jenkins-config table td .setting-description {
+  font-size: 1em;
+  line-height: 1.4;
+}
+#jenkins .jenkins-config table td[colspan="4"]:empty {
+  display: none;
+}
+#jenkins .jenkins-config table td.setting-help {
+  vertical-align: top;
+  padding: 5px 10px 5px 5px;
+}
+#jenkins .jenkins-config table td.setting-leftspace:after {
+  content: ' ';
+  display: block;
+  width: 13px;
+  height: 1px;
+}
+#jenkins .jenkins-config table .repeated-chunk,
+#jenkins .jenkins-config table tr[nameref^="rowSetStart"],
+#jenkins .jenkins-config table tr[nameref^="cb"],
+#jenkins .jenkins-config table tr[nameref^="radio-block"] {
+  background: rgba(0, 0, 0, 0.025);
+  border-left: 5px solid rgba(0, 0, 0, 0.1);
+}
+#jenkins .jenkins-config table .hetero-list-container,
+#jenkins .jenkins-config table .repeated-container,
+#jenkins .jenkins-config table tr.optional-block-start,
+#jenkins .jenkins-config table tr.radio-block-start {
+  border-left: 5px solid rgba(0, 0, 0, 0.1);
+  background: none;
+}
+#jenkins .jenkins-config table tr.help-area {
+  background: none !important;
+}
+#jenkins .jenkins-config table tr.help-area td {
+  padding: 0 5px;
+}
+#jenkins .jenkins-config table .CodeMirror {
+  background: #fff;
+}
+#jenkins .jenkins-config table .CodeMirror-scroll {
+  border: 1px solid #ccc !important;
+}
+#jenkins .jenkins-config table .repeated-container > .repeated-chunk {
+  padding-top: 15px;
+}
+#jenkins .jenkins-config table .repeated-chunk.hover {
+  border-color: #69c;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1), inset 0 200px 200px -200px #fff;
+  position: relative;
+  z-index: 2;
+}
+#jenkins .jenkins-config table .repeated-chunk.dragging {
+  position: static;
+}
+#jenkins .jenkins-config table .repeated-chunk {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin: 2px;
+  position: relative;
+}
+#jenkins .jenkins-config table .repeatable-delete {
+  position: absolute;
+  top: -4px;
+  right: 40px;
+  height: 20px;
+  width: 30px;
+}
+#jenkins .jenkins-config table .repeatable-delete button {
+  text-align: center;
+  text-indent: -9999px;
+  width: 30px !important;
+  height: 18px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  -webkit-border-top-left-radius: 0 !important;
+  -moz-border-top-left-radius: 0 !important;
+  border-top-left-radius: 0 !important;
+  -webkit-border-top-right-radius: 0 !important;
+  -moz-border-top-right-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  background-color: #d24939;
+  color: #eee;
+  border: 1px solid #be3a2b;
+  line-height: 12px !important;
+  display: inline-block;
+  font-size: 8px;
+}
+#jenkins .jenkins-config table .repeatable-delete button:focus,
+#jenkins .jenkins-config table .repeatable-delete button:hover {
+  background-color: #a23225;
+  border-color: #942e22;
+  color: #fff;
+}
+#jenkins .jenkins-config table .repeatable-delete button:before {
+  content: 'X';
+  font-weight: bold;
+  position: absolute;
+  display: block;
+  left: 0;
+  top: 2;
+  width: 30px;
+  height: 16px;
+  text-align: center;
+  font-size: 12px;
+  text-indent: 0;
+}
+#jenkins .jenkins-config span.highlight {
+  background-color: #ffff00;
+}
+#ygddfdiv {
+  background: #eee;
+  border: 1px solid #69c !important;
+  opacity: 0.5;
+}
+.yui-skin-sam .yuimenu {
+  z-index: 9999 !important;
+}
+.yui-skin-sam .yui-button-disabled {
+  opacity: 0.75;
+}
+#add-item-panel form > .header {
+  position: relative;
+  border: 1px solid #cccccc;
+  border-bottom: none;
+  background: #eeeeee;
+  -webkit-border-top-left-radius: 3px;
+  -moz-border-top-left-radius: 3px;
+  border-top-left-radius: 3px;
+  -webkit-border-top-right-radius: 3px;
+  -moz-border-top-right-radius: 3px;
+  border-top-right-radius: 3px;
+  z-index: 5;
+}
+#add-item-panel form > .footer {
+  position: relative;
+  border: 1px solid #cccccc;
+  border-top: none;
+  background: #eeeeee;
+  height: 110px;
+}
+#add-item-panel form > .footer .btn-decorator {
+  position: absolute;
+  bottom: 0px;
+  padding: 20px 30px;
+  width: auto;
+  border-top-right-radius: 10px;
+  border: 1px solid #aaccbb;
+  background: rgba(245, 249, 239, 0.75);
+  text-align: center;
+  z-index: 10;
+}
+#add-item-panel form > .footer .btn-decorator input[type=checkbox] {
+  width: auto;
+  min-width: auto;
+  margin-right: 0px;
+}
+#add-item-panel form > .footer .btn-decorator button[type=submit] {
+  padding: 5px 20px;
+  background-color: #ccddee;
+  border-color: #6699cc;
+  border-radius: 3px;
+  border-width: 1px;
+  border-style: solid;
+  color: #505050;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 27px;
+}
+#add-item-panel form > .footer .btn-decorator button[type=submit]:hover:not(.disabled),
+#add-item-panel form > .footer .btn-decorator button[type=submit]:focus:not(.disabled) {
+  background-color: #447788;
+  border-color: #335566;
+  color: #eeeeee;
+  cursor: pointer;
+}
+#add-item-panel form > .footer .btn-decorator button[type=submit]:active:not(.disabled) {
+  box-shadow: inset 0px 1px 6px 2px #1b2b33;
+}
+#add-item-panel form > .footer .btn-decorator button[type=submit].disabled {
+  background-color: #ccc;
+  border-color: #aaa;
+  color: #8c8c8c;
+  cursor: auto;
+  opacity: 0.75;
+}
+#add-item-panel .add-item-name {
+  padding: 20px;
+}
+#add-item-panel .add-item-name label {
+  position: relative;
+  display: block;
+  font-size: 22px;
+  font-weight: bold;
+  padding-bottom: 10px;
+}
+#add-item-panel .item-copy {
+  position: relative;
+  border: 1px solid #cccccc;
+  border-top: none;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+#add-item-panel .item-copy p.description {
+  font-size: 16px;
+  margin-top: 0;
+}
+#add-item-panel .item-copy .add-item-copy {
+  position: relative;
+  padding-left: 58px;
+  /* This is needed because <s:textbox /> included YUI styles and we need to override this one */
+  font-family: Helvetica, Arial, sans-serif !important;
+}
+#add-item-panel .item-copy .add-item-copy input[type=radio] {
+  display: none;
+}
+#add-item-panel .item-copy .add-item-copy label {
+  line-height: 48px;
+  padding: 0 10px 0 0;
+}
+#add-item-panel .item-copy .add-item-copy input {
+  font-size: inherit;
+}
+#add-item-panel .item-copy .add-item-copy .icon {
+  left: 0;
+  top: 0;
+}
+#add-item-panel .add-item-name .input-help,
+#add-item-panel .add-item-copy .input-help {
+  color: #666;
+  font-style: italic;
+  font-size: 13px;
+  padding-top: 2px;
+}
+#add-item-panel .add-item-name .input-validation-message,
+#add-item-panel .add-item-copy .input-validation-message {
+  color: red;
+  padding-top: 2px;
+  font-weight: bold;
+}
+#add-item-panel .add-item-name .input-message-disabled,
+#add-item-panel .add-item-copy .input-message-disabled {
+  display: none;
+}
+#add-item-panel .icon {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  height: 48px;
+  width: 48px;
+  background: #ffffff;
+  border: 1px solid #6699cc;
+  border-radius: 50%;
+  opacity: 0.9;
+}
+#add-item-panel .icon img {
+  position: relative;
+}
+#add-item-panel .icon:before {
+  content: ' ';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 24px;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  background: #C0D8E2;
+}
+#add-item-panel .default-icon {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  height: 48px;
+  width: 48px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 48px;
+  font-weight: bold;
+  font-size: 175%;
+  color: #ffffff;
+  text-shadow: rgba(0, 0, 0, 0.25) 0 -1px 1px;
+  opacity: 0.75;
+}
+#add-item-panel .default-icon .b {
+  text-transform: lowercase;
+}
+#add-item-panel .c-D33833 {
+  border: 1px solid #900;
+  box-shadow: inset #900 0 0 1px, inset #fff 0 0 0 1px, 0 5px 3px -2px rgba(0, 0, 0, 0.25), inset -5px -5px 10px 2px #903, inset -5px -10px 15px 14px #D33833;
+}
+#add-item-panel .c-6D6B6D {
+  border: 1px solid #000;
+  box-shadow: inset #333 0 0 1px, inset #fff 0 0 0 1px, 0 5px 3px -2px rgba(0, 0, 0, 0.25), inset -5px -5px 10px 2px #222, inset -5px -10px 15px 14px #555;
+}
+#add-item-panel .c-335061 {
+  border: 1px solid #356;
+  box-shadow: inset #024 0 0 1px, inset #fff 0 0 0 1px, 0 5px 3px -2px rgba(0, 0, 0, 0.25), inset -5px -5px 10px 2px #012, inset -5px -10px 15px 14px #335061;
+}
+#add-item-panel .c-49728B {
+  border: 1px solid #036;
+  box-shadow: inset #036 0 0 1px, inset #fff 0 0 0 1px, 0 5px 3px -2px rgba(0, 0, 0, 0.25), inset -5px -5px 10px 2px #036, inset -5px -10px 15px 14px #49728B;
+}
+#add-item-panel .c-6699CC {
+  border: 1px solid #6699cc;
+  box-shadow: inset #003399 0 0 1px, inset #ffffff 0 0 0 1px, 0 5px 3px -2px rgba(0, 0, 0, 0.25), inset -5px -5px 10px 2px #336699, inset -5px -10px 15px 14px #6699cc;
+}
+#add-item-panel input {
+  font-size: 1.5em;
+  background-color: #fff;
+  padding: 5px 10px;
+  border: 1px solid #999;
+  width: 50%;
+  min-width: 300px;
+}
+#add-item-panel .categories {
+  border: 1px solid #cccccc;
+  background-color: #f9f9f9;
+}
+#add-item-panel .categories .category {
+  border-bottom: 1px solid #cccccc;
+  padding: 10px;
+}
+#add-item-panel .categories .category .header {
+  padding: 0 20px;
+}
+#add-item-panel .categories .category .header h2 {
+  margin: 0;
+  padding: 15px 0 0;
+}
+#add-item-panel .categories .category .header p {
+  margin-top: 5px;
+}
+#add-item-panel .categories .category:last-child {
+  border-bottom: none;
+}
+#add-item-panel .categories.flat .category {
+  padding: 0 10px;
+  border-bottom: none;
+}
+#add-item-panel .categories.flat .category .header {
+  display: none;
+}
+#add-item-panel .categories.flat .category:first-child {
+  padding: 10px 10px 0 10px;
+}
+#add-item-panel .categories.flat .category:last-child {
+  padding: 0 10px 10px 10px;
+}
+.j-item-options li,
+.j-item-options {
+  display: block;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  position: relative;
+}
+.j-item-options li:hover,
+.j-item-options li:focus {
+  border-color: #cccccc;
+  background: rgba(255, 255, 255, 0.65);
+  outline: 0;
+}
+.j-item-options li.active {
+  cursor: text;
+  background-color: #ffffff;
+  border-color: #6699cc;
+  box-shadow: inset 999rem 0 #ffffff;
+  -webkit-touch-callout: text;
+  -webkit-user-select: text;
+  -khtml-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+  -moz-transition: 0.5s;
+  -webkit-transition: 0.5s;
+  -o-transition: 0.5s;
+  transition: 0.5s;
+}
+.j-item-options li.active .icon {
+  opacity: 1;
+}
+.j-item-options li {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  padding: 10px 10px 10px 68px;
+  min-height: 68px;
+  margin: 2px 0;
+}
+.j-item-options li label {
+  display: block;
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #000;
+  padding-bottom: 5px;
+  cursor: pointer;
+}
+.j-item-options li label input {
+  position: absolute;
+  top: 24px;
+  left: 25px;
+  display: none;
+}
+

@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: dnusbaum
+Build-Jdk: 1.8.0_161
+Extension-Name: matrix-project
+Specification-Title: Multi-configuration (matrix) project type.
+Implementation-Title: matrix-project
+Implementation-Version: 1.14
+Group-Id: org.jenkins-ci.plugins
+Short-Name: matrix-project
+Long-Name: Matrix Project Plugin
+Url: https://wiki.jenkins-ci.org/display/JENKINS/Matrix+Project+Plugin
+Plugin-Version: 1.14
+Hudson-Version: 2.7.3
+Jenkins-Version: 2.7.3
+Plugin-Dependencies: junit:1.20,script-security:1.54
+Plugin-Developers: Oliver Gondza:olivergondza:
+

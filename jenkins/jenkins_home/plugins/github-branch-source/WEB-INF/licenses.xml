@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<l:dependencies xmlns:l='licenses' groupId='org.jenkins-ci.plugins' artifactId='github-branch-source' version='2.6.0'><l:dependency name='GitHub Branch Source Plugin' groupId='org.jenkins-ci.plugins' artifactId='github-branch-source' version='2.6.0' url='https://github.com/jenkinsci/github-branch-source-plugin'><l:description>Multibranch projects and organization folders from GitHub. Maintained by CloudBees, Inc.</l:description><l:license name='MIT' url='http://opensource.org/licenses/MIT'/></l:dependency></l:dependencies>

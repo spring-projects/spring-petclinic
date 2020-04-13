@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<l:dependencies xmlns:l='licenses' groupId='org.jenkins-ci.plugins' artifactId='credentials-binding' version='1.21'><l:dependency name='Credentials Binding Plugin' groupId='org.jenkins-ci.plugins' artifactId='credentials-binding' version='1.21' url='https://github.com/jenkinsci/credentials-binding-plugin'><l:description>Allows credentials to be bound to environment variables for use from miscellaneous build steps.</l:description><l:license name='MIT' url='https://opensource.org/licenses/MIT'/></l:dependency></l:dependencies>

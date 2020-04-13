@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<l:dependencies xmlns:l='licenses' groupId='org.jenkins-ci.plugins' artifactId='mailer' version='1.32'><l:dependency name='Jenkins Mailer Plugin' groupId='org.jenkins-ci.plugins' artifactId='mailer' version='1.32' url='https://github.com/jenkinsci/mailer-plugin'><l:description>This plugin allows you to configure email notifications for build results</l:description><l:license name='The MIT license' url='http://opensource.org/licenses/MIT'/></l:dependency></l:dependencies>

@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<l:dependencies xmlns:l='licenses' groupId='org.jenkins-ci.plugins' artifactId='matrix-project' version='1.14'><l:dependency name='Matrix Project Plugin' groupId='org.jenkins-ci.plugins' artifactId='matrix-project' version='1.14' url='https://wiki.jenkins-ci.org/display/JENKINS/Matrix+Project+Plugin'><l:description>Multi-configuration (matrix) project type.</l:description><l:license name='MIT License' url='http://opensource.org/licenses/MIT'/></l:dependency></l:dependencies>

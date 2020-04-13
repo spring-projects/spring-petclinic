@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<l:dependencies xmlns:l='licenses' groupId='org.jenkins-ci.plugins' artifactId='pipeline-build-step' version='2.12'><l:dependency name='Pipeline: Build Step' groupId='org.jenkins-ci.plugins' artifactId='pipeline-build-step' version='2.12' url='https://github.com/jenkinsci/pipeline-build-step-plugin'><l:description>The Jenkins Plugins Parent POM Project</l:description><l:license name='MIT License' url='https://opensource.org/licenses/MIT'/></l:dependency></l:dependencies>

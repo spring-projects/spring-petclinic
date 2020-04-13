@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: dnusbaum
+Build-Jdk: 1.8.0_161
+Extension-Name: workflow-support
+Specification-Title: The Jenkins Plugins Parent POM Project
+Implementation-Title: workflow-support
+Implementation-Version: 3.4
+Group-Id: org.jenkins-ci.plugins.workflow
+Short-Name: workflow-support
+Long-Name: Pipeline: Supporting APIs
+Url: https://github.com/jenkinsci/workflow-support-plugin
+Compatible-Since-Version: 3.0
+Minimum-Java-Version: 1.8
+Plugin-Version: 3.4
+Hudson-Version: 2.138.4
+Jenkins-Version: 2.138.4
+Plugin-Dependencies: workflow-api:2.36,workflow-step-api:2.20,scm-api:
+ 2.2.6,script-security:1.39
+Plugin-Developers: 
+Plugin-License-Name: MIT License
+Plugin-License-Url: https://opensource.org/licenses/MIT
+Plugin-ScmUrl: https://github.com/jenkinsci/workflow-support-plugin
+

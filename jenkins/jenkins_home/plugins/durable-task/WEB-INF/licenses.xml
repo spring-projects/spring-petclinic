@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<l:dependencies xmlns:l='licenses' groupId='org.jenkins-ci.plugins' artifactId='durable-task' version='1.34'><l:dependency name='Durable Task Plugin' groupId='org.jenkins-ci.plugins' artifactId='durable-task' version='1.34' url='https://github.com/jenkinsci/durable-task-plugin'><l:description>Library offering an extension point for processes which can run outside of Jenkins yet be monitored.</l:description><l:license name='MIT License' url='https://opensource.org/licenses/MIT'/></l:dependency></l:dependencies>

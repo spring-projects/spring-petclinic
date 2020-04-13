@@ -1,0 +1,20 @@
+version: '3'
+
+networks:
+  petclinic:
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts-alpine
+    networks:
+      - petclinic
+    restart: always
+    ports:
+      - "8080:8080"
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 32000
+        hard: 40000
+    volumes:
+      - ./jenkins_home:/var/jenkins_home

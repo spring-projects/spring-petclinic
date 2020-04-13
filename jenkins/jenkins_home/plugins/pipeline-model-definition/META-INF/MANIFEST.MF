@@ -1,0 +1,28 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: dnusbaum
+Build-Jdk: 1.8.0_161
+Extension-Name: pipeline-model-definition
+Specification-Title: An opinionated, declarative Pipeline
+Implementation-Title: pipeline-model-definition
+Implementation-Version: 1.6.0
+Group-Id: org.jenkinsci.plugins
+Short-Name: pipeline-model-definition
+Long-Name: Pipeline: Declarative
+Url: https://github.com/jenkinsci/pipeline-model-definition-plugin
+Compatible-Since-Version: 1.2-beta-4
+Minimum-Java-Version: 1.8
+Plugin-Version: 1.6.0
+Hudson-Version: 2.150.3
+Jenkins-Version: 2.150.3
+Plugin-Dependencies: workflow-api:2.36,workflow-basic-steps:2.18,workf
+ low-cps-global-lib:2.9,workflow-cps:2.76,workflow-durable-task-step:2
+ .31,workflow-multibranch:2.16,workflow-scm-step:2.9,workflow-support:
+ 3.3,credentials-binding:1.13,credentials:2.1.16,docker-workflow:1.22,
+ git-client:2.7.0,mailer:1.20,pipeline-input-step:2.8,pipeline-stage-s
+ tep:2.3,scm-api:2.4.1,pipeline-model-api:1.6.0,pipeline-model-declara
+ tive-agent:1.1.1,pipeline-model-extensions:1.6.0,pipeline-stage-tags-
+ metadata:1.6.0
+Plugin-Developers: Andrew Bayer:abayer:
+

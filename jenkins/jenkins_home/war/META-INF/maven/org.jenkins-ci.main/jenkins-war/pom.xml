@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+The MIT License
+
+Copyright (c) 2004-2009, Sun Microsystems, Inc., Kohsuke Kawaguchi, Stephen Connolly, Tom Huybrechts, Yahoo! Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+-->
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.jenkins-ci.main</groupId>
+  <artifactId>jenkins-war</artifactId>
+  <version>2.222.1</version>
+  <packaging>war</packaging>
+  <name>Jenkins war</name>
+  <description>Creates a war file. Also includes additional static web resources, such as images, CSS, JavaScript, and some HTML files.</description>
+  <url>https://jenkins.io/jenkins-parent/jenkins-war/</url>
+  <inceptionYear>2004</inceptionYear>
+  <licenses>
+    <license>
+      <name>The MIT license</name>
+      <url>https://opensource.org/licenses/MIT</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <mailingLists>
+    <mailingList>
+      <name>Jenkins advisories list</name>
+      <subscribe>jenkinsci-advisories+subscribe@googlegroups.com</subscribe>
+      <unsubscribe>jenkinsci-advisories+unsubscribe@googlegroups.com</unsubscribe>
+    </mailingList>
+    <mailingList>
+      <name>Jenkins developer discussion list</name>
+      <subscribe>jenkinsci-dev+subscribe@googlegroups.com</subscribe>
+      <unsubscribe>jenkinsci-dev+unsubscribe@googlegroups.com</unsubscribe>
+      <post>jenkinsci-dev@googlegroups.com</post>
+      <archive>http://jenkins.361315.n4.nabble.com/Jenkins-dev-f387835.html</archive>
+      <otherArchives>
+        <otherArchive>http://hudson.361315.n4.nabble.com/Hudson-dev-f387835.html</otherArchive>
+      </otherArchives>
+    </mailingList>
+    <mailingList>
+      <name>Jenkins issues list</name>
+      <subscribe>jenkinsci-issues+subscribe@googlegroups.com</subscribe>
+      <unsubscribe>jenkinsci-issues+unsubscribe@googlegroups.com</unsubscribe>
+    </mailingList>
+    <mailingList>
+      <name>Jenkins user discussion list</name>
+      <subscribe>jenkinsci-users+subscribe@googlegroups.com</subscribe>
+      <unsubscribe>jenkinsci-users+unsubscribe@googlegroups.com</unsubscribe>
+      <post>jenkinsci-users@googlegroups.com</post>
+      <archive>http://jenkins.361315.n4.nabble.com/Jenkins-users-f361316.html</archive>
+      <otherArchives>
+        <otherArchive>http://hudson.361315.n4.nabble.com/Hudson-users-f361316.html</otherArchive>
+      </otherArchives>
+    </mailingList>
+    <mailingList>
+      <name>Hudson Japanese user discussion list</name>
+      <subscribe>hudson-ja+subscribe@googlegroups.com</subscribe>
+      <unsubscribe>hudson-ja+unsubscribe@googlegroups.com</unsubscribe>
+      <post>hudson-ja@googlegroups.com</post>
+      <archive>http://hudson.361315.n4.nabble.com/Hudson-ja-f361157.html</archive>
+    </mailingList>
+  </mailingLists>
+  <scm>
+    <connection>scm:git:git://github.com/jenkinsci/jenkins.git/jenkins-war</connection>
+    <developerConnection>scm:git:ssh://git@github.com/jenkinsci/jenkins.git/jenkins-war</developerConnection>
+    <tag>jenkins-2.222.1</tag>
+    <url>https://github.com/jenkinsci/jenkins/jenkins-war</url>
+  </scm>
+  <issueManagement>
+    <system>jira</system>
+    <url>https://issues.jenkins-ci.org/browse/JENKINS/component/15593</url>
+  </issueManagement>
+  <ciManagement>
+    <system>Jenkins</system>
+    <url>https://ci.jenkins.io</url>
+  </ciManagement>
+  <distributionManagement>
+    <repository>
+      <id>maven.jenkins-ci.org</id>
+      <url>https://repo.jenkins-ci.org/releases/</url>
+    </repository>
+    <snapshotRepository>
+      <id>maven.jenkins-ci.org</id>
+      <url>https://repo.jenkins-ci.org/snapshots/</url>
+    </snapshotRepository>
+    <site>
+      <id>github-pages</id>
+      <url>gitsite:git@github.com/jenkinsci/maven-site.git:core/jenkins-war</url>
+    </site>
+  </distributionManagement>
+  <dependencies>
+    <dependency>
+      <groupId>org.jenkins-ci</groupId>
+      <artifactId>executable-war</artifactId>
+      <version>1.45</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.main</groupId>
+      <artifactId>jenkins-core</artifactId>
+      <version>2.222.1</version>
+      <scope>compile</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>javax.servlet.jsp-api</artifactId>
+          <groupId>javax.servlet.jsp</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>metainf-services</artifactId>
+          <groupId>org.kohsuke.metainf-services</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.main</groupId>
+      <artifactId>remoting</artifactId>
+      <version>4.2</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.main</groupId>
+      <artifactId>cli</artifactId>
+      <version>2.222.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.modules</groupId>
+      <artifactId>instance-identity</artifactId>
+      <version>2.2</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.modules</groupId>
+      <artifactId>ssh-cli-auth</artifactId>
+      <version>1.7</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.modules</groupId>
+      <artifactId>slave-installer</artifactId>
+      <version>1.7</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.modules</groupId>
+      <artifactId>windows-slave-installer</artifactId>
+      <version>1.12</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.modules</groupId>
+      <artifactId>launchd-slave-installer</artifactId>
+      <version>1.2</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.modules</groupId>
+      <artifactId>upstart-slave-installer</artifactId>
+      <version>1.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.modules</groupId>
+      <artifactId>systemd-slave-installer</artifactId>
+      <version>1.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.modules</groupId>
+      <artifactId>sshd</artifactId>
+      <version>2.6</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.ui</groupId>
+      <artifactId>jquery-detached</artifactId>
+      <version>1.2.1</version>
+      <classifier>core-assets</classifier>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.ui</groupId>
+      <artifactId>bootstrap</artifactId>
+      <version>1.3.2</version>
+      <classifier>core-assets</classifier>
+      <scope>compile</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>jquery-detached</artifactId>
+          <groupId>org.jenkins-ci.ui</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.ui</groupId>
+      <artifactId>handlebars</artifactId>
+      <version>1.1.1</version>
+      <classifier>core-assets</classifier>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-jdk14</artifactId>
+      <version>1.7.26</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.mojo</groupId>
+      <artifactId>animal-sniffer-annotations</artifactId>
+      <version>1.17</version>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>[0]</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+  <repositories>
+    <repository>
+      <id>repo.jenkins-ci.org</id>
+      <url>https://repo.jenkins-ci.org/public/</url>
+    </repository>
+  </repositories>
+</project>

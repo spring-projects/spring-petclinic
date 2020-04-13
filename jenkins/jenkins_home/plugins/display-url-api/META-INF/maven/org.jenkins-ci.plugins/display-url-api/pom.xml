@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.jenkins-ci.plugins</groupId>
+    <artifactId>plugin</artifactId>
+    <version>3.40</version>
+    <relativePath />
+  </parent>
+  <artifactId>display-url-api</artifactId>
+  <version>2.3.2</version>
+  <packaging>hpi</packaging>
+
+  <properties>
+    <jenkins.version>2.89.4</jenkins.version>
+    <java.level>8</java.level>
+  </properties>
+
+  <name>Display URL API</name>
+  <description>Provides the DisplayURLProvider extension point to provide alternate URLs for use in notifications</description>
+  <url>https://wiki.jenkins-ci.org/display/JENKINS/Display+URL+API+Plugin</url>
+
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>http://opensource.org/licenses/MIT</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>jdumay</id>
+      <name>James Dumay</name>
+      <email>jdumay@cloudbees.com</email>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:git://github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
+    <developerConnection>scm:git:git@github.com:jenkinsci/${project.artifactId}-plugin.git</developerConnection>
+    <url>http://github.com/jenkinsci/${project.artifactId}-plugin</url>
+    <tag>display-url-api-2.3.2</tag>
+  </scm>
+
+  <repositories>
+    <repository>
+      <id>repo.jenkins-ci.org</id>
+      <url>https://repo.jenkins-ci.org/public/</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>repo.jenkins-ci.org</id>
+      <url>https://repo.jenkins-ci.org/public/</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>2.7.6</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <version>3.3.0</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>com.sun.xml.bind</groupId>
+          <artifactId>jaxb-osgi</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.commons</groupId> <!-- forced bc RequireUpperBoundDeps, pulled by JTH -->
+          <artifactId>commons-lang3</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <!-- forcing 2.3.0 in dep for rest-assured to avoid systemPath issue on JDK11,
+      see https://github.com/jenkinsci/jaxb-plugin/pull/6 for more information -->
+      <groupId>javax.xml.bind</groupId>
+      <artifactId>jaxb-api</artifactId>
+      <version>2.3.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-core</artifactId>
+      <version>1.3</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-library</artifactId>
+      <version>1.3</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <!-- TODO remove once core baseline is sufficiently new -->
+  <build>
+    <plugins>
+      <plugin>
+        <!-- do not copy this, we are in a special case where the target Jenkins is sufficiently old and
+             none of the dependencies we reference are bundled in the .hpi -->
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>display-info</id>
+            <configuration>
+              <rules>
+                <requireUpperBoundDeps>
+                  <excludes combine.children="append">
+                    <exclude>commons-codec:commons-codec</exclude>
+                    <exclude>org.apache.ant:ant</exclude>
+                    <exclude>org.eclipse.jetty:jetty-util</exclude>
+                    <exclude>org.eclipse.jetty:jetty-io</exclude>
+                    <exclude>org.codehaus.plexus:plexus-utils</exclude>
+                    <exclude>org.codehaus.plexus:plexus-classworlds</exclude>
+                  </excludes>
+                </requireUpperBoundDeps>
+                <enforceBytecodeVersion>
+                  <excludes combine.children="append">
+                    <exclude>org.kohsuke:access-modifier-annotation</exclude>
+                    <exclude>org.codehaus.mojo:animal-sniffer-annotations</exclude>
+                    <exclude>javax.servlet:javax.servlet-api</exclude>
+                  </excludes>
+                </enforceBytecodeVersion>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  <!--END remove once core baseline is sufficiently new-->
+
+</project>

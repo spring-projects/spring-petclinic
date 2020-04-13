@@ -1,0 +1,27 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: danielbeck
+Build-Jdk: 1.8.0_222
+Extension-Name: subversion
+Specification-Title: The Jenkins Plugins Parent POM Project
+Implementation-Title: subversion
+Implementation-Version: 2.13.1
+Group-Id: org.jenkins-ci.plugins
+Short-Name: subversion
+Long-Name: Jenkins Subversion Plug-in
+Url: https://github.com/jenkinsci/subversion-plugin
+Minimum-Java-Version: 1.8
+Plugin-Version: 2.13.1
+Hudson-Version: 2.107.3
+Jenkins-Version: 2.107.3
+Plugin-Dependencies: workflow-scm-step:2.6,credentials:2.1.16,mapdb-ap
+ i:1.0.9.0,scm-api:2.6.3,ssh-credentials:1.12,structs:1.9
+Plugin-Developers: Kohsuke Kawaguchi:kohsuke:,Stephen Connolly:stephen
+ connolly:,Oleg Nenashev:oleg_nenashev:,Andrew Bayer:abayer:,dodok1:do
+ dok1:,dty:dty:,Tom Huybrechts:huybrechts:,pgweiss:pgweiss:,rseguy:rse
+ guy:,kutzi:kutzi:,Ivan Fernandez Calvo:ifernandezcalvo:
+Plugin-License-Name: MIT license
+Plugin-License-Url: https://opensource.org/licenses/MIT
+Plugin-ScmUrl: https://github.com/jenkinsci/subversion-plugin
+

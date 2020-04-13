@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<l:dependencies xmlns:l='licenses' groupId='org.jenkins-ci.plugins' artifactId='git-server' version='1.9'><l:dependency name='Jenkins GIT server Plugin' groupId='org.jenkins-ci.plugins' artifactId='git-server' version='1.9' url='https://github.com/jenkinsci/git-server-plugin'><l:description>This library plugin provides embedded Git server capability inside Jenkins</l:description><l:license name='The MIT license' url='https://www.opensource.org/licenses/mit-license.php'/></l:dependency></l:dependencies>

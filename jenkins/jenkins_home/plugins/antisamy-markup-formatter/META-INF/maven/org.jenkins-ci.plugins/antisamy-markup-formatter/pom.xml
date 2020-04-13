@@ -1,0 +1,66 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.jenkins-ci.plugins</groupId>
+        <artifactId>plugin</artifactId>
+        <version>3.57</version>
+    </parent>
+    <artifactId>antisamy-markup-formatter</artifactId>
+    <version>2.0</version>
+    <packaging>hpi</packaging>
+    <name>OWASP Markup Formatter Plugin</name>
+    <description>Sanitize HTML markup in user-submitted text to be displayed on the Jenkins UI.</description>
+    <url>https://github.com/jenkinsci/antisamy-markup-formatter-plugin</url>
+    <licenses>
+        <license>
+            <name>MIT</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
+    <scm>
+        <connection>scm:git:git://github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
+        <developerConnection>scm:git:git@github.com:jenkinsci/${project.artifactId}-plugin.git</developerConnection>
+        <url>https://github.com/jenkinsci/${project.artifactId}-plugin</url>
+      <tag>antisamy-markup-formatter-2.0</tag>
+  </scm>
+
+    <properties>
+        <jenkins.version>2.121.3</jenkins.version>
+        <java.level>8</java.level>
+        <jcasc.version>1.35</jcasc.version>
+        <hpi.compatibleSinceVersion>2.0</hpi.compatibleSinceVersion>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>repo.jenkins-ci.org</id>
+            <url>https://repo.jenkins-ci.org/public/</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>repo.jenkins-ci.org</id>
+            <url>https://repo.jenkins-ci.org/public/</url>
+        </pluginRepository>
+    </pluginRepositories>
+    <dependencies>
+        <dependency>
+            <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
+            <artifactId>owasp-java-html-sanitizer</artifactId>
+            <version>20191001.1</version>
+        </dependency>
+        <!-- JCasC compatibility -->
+        <dependency>
+            <groupId>io.jenkins</groupId>
+            <artifactId>configuration-as-code</artifactId>
+            <version>${jcasc.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jenkins.configuration-as-code</groupId>
+            <artifactId>test-harness</artifactId>
+            <version>${jcasc.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

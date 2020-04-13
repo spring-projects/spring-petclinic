@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<l:dependencies xmlns:l='licenses' groupId='org.jenkins-ci.plugins' artifactId='pipeline-graph-analysis' version='1.10'><l:dependency name='Pipeline Graph Analysis Plugin' groupId='org.jenkins-ci.plugins' artifactId='pipeline-graph-analysis' version='1.10' url='https://wiki.jenkins-ci.org/display/JENKINS/Pipeline+Graph+Analysis+Plugin'><l:description>The Jenkins Plugins Parent POM Project</l:description><l:license name='MIT license' url='https://opensource.org/licenses/MIT'/></l:dependency></l:dependencies>

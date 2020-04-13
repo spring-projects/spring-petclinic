@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: Oleg
+Build-Jdk: 1.8.0_201
+Extension-Name: jdk-tool
+Specification-Title: Allows the Oracle Java SE Development Kit (JDK) t
+ o be installed via download from Oracle's website.
+Implementation-Title: jdk-tool
+Implementation-Version: 1.4
+Group-Id: org.jenkins-ci.plugins
+Short-Name: jdk-tool
+Long-Name: Oracle Java SE Development Kit Installer Plugin
+Url: https://github.com/jenkinsci/jdk-tool-plugin
+Plugin-Version: 1.4
+Hudson-Version: 2.112
+Jenkins-Version: 2.112
+Plugin-Developers: 
+

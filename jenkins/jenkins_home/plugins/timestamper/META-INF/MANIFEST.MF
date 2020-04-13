@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: danielbeck
+Build-Jdk: 1.8.0_222
+Extension-Name: timestamper
+Specification-Title: Adds timestamps to the Console Output
+Implementation-Title: timestamper
+Implementation-Version: 1.11.2
+Group-Id: org.jenkins-ci.plugins
+Short-Name: timestamper
+Long-Name: Timestamper
+Url: https://github.com/jenkinsci/timestamper-plugin
+Minimum-Java-Version: 1.8
+Plugin-Version: 1.11.2
+Hudson-Version: 2.150.3
+Jenkins-Version: 2.150.3
+Plugin-Dependencies: workflow-api:2.39,workflow-step-api:2.19
+Plugin-Developers: Basil Crow:basil:,Steven Brown:stevengbrown:StevenG
+ Brown@gmail.com,Jesse Glick:jglick:
+Plugin-License-Name: The MIT License (MIT)
+Plugin-License-Url: https://opensource.org/licenses/MIT
+Plugin-ScmUrl: https://github.com/jenkinsci/timestamper-plugin
+

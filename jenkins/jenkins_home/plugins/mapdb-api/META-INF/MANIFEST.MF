@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: stephenc
+Build-Jdk: 1.7.0_80
+Extension-Name: mapdb-api
+Specification-Title: This plugin provides a shared dependency on the M
+ apDB library so that other plugins can co-operate when using this lib
+ rary.
+Implementation-Title: mapdb-api
+Implementation-Version: 1.0.9.0
+Group-Id: org.jenkins-ci.plugins
+Short-Name: mapdb-api
+Long-Name: MapDB API Plugin
+Url: http://wiki.jenkins-ci.org/display/JENKINS/MapDB+API+Plugin
+Plugin-Version: 1.0.9.0
+Hudson-Version: 1.565
+Jenkins-Version: 1.565
+Plugin-Developers: Stephen Connolly:stephenc:
+Support-Dynamic-Loading: true
+

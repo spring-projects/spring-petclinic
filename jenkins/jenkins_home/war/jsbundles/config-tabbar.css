@@ -1,0 +1,401 @@
+/*
+ * Mixins
+ * http://lesscss.org/features/#mixins-feature
+ */
+/*
+ * General/layout mixins
+ */
+.no-select {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Chrome/Safari/Opera */
+  -khtml-user-select: none;
+  /* Konqueror */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* IE/Edge */
+  user-select: none;
+}
+.text-select {
+  -webkit-touch-callout: text;
+  /* iOS Safari */
+  -webkit-user-select: text;
+  /* Chrome/Safari/Opera */
+  -khtml-user-select: text;
+  /* Konqueror */
+  -moz-user-select: text;
+  /* Firefox */
+  -ms-user-select: text;
+  /* IE/Edge */
+  user-select: text;
+}
+/*
+ * Border radius
+ */
+.hidden {
+  display: none;
+}
+/*
+ * Mixins for form elements
+ */
+/*
+ * Widget styles
+ */
+/*
+ * Tab bar specific rules.
+ */
+.jenkins-config-widgets {
+  position: relative;
+  border: 1px solid #ccc;
+  border-bottom: none;
+  background: #eee;
+  min-height: 2.5em;
+  -webkit-border-top-left-radius: 3px;
+  -moz-border-top-left-radius: 3px;
+  border-top-left-radius: 3px;
+  -webkit-border-top-right-radius: 3px;
+  -moz-border-top-right-radius: 3px;
+  border-top-right-radius: 3px;
+  z-index: 5;
+}
+.jenkins-config-widgets nav:before,
+.jenkins-config-widgets nav:after {
+  display: none;
+}
+.jenkins-config-widgets :hover .noTabs {
+  color: #bbb;
+}
+.jenkins-config-widgets .noTabs:hover,
+.jenkins-config-widgets .showTabs:hover {
+  opacity: 0.8;
+  background: #bbb;
+  color: #eee;
+  text-shadow: none;
+}
+.jenkins-config-widgets .find-container {
+  margin: 0;
+  display: none;
+}
+.jenkins-config-widgets .showTabs,
+.jenkins-config-widgets .noTabs {
+  position: absolute;
+  border-radius: 3px;
+  right: 5px;
+  top: 5px;
+  cursor: pointer;
+  color: #ccc;
+  text-shadow: #fff 0 1px 2px;
+  font-size: 0.85em;
+  padding: 3px 7px;
+  display: none;
+}
+.jenkins-config-widgets .form-config.tabBarFrame {
+  position: relative;
+  border-bottom: solid 1px #ccc;
+}
+.jenkins-config-widgets .form-config.tabBarFrame .config-section-activators {
+  margin: 0;
+  padding: 5px 0 0;
+  display: block;
+  list-style: none;
+}
+.jenkins-config-widgets .form-config.tabBarFrame .tabBar .tab {
+  border: solid 1px transparent;
+  color: #999;
+  padding: 7px 10px;
+  -webkit-border-top-left-radius: 5px;
+  -moz-border-top-left-radius: 5px;
+  border-top-left-radius: 5px;
+  -webkit-border-top-right-radius: 5px;
+  -moz-border-top-right-radius: 5px;
+  border-top-right-radius: 5px;
+  cursor: pointer;
+  margin: 1px 0 0 10px;
+  text-decoration: none;
+}
+.jenkins-config-widgets .form-config.tabBarFrame .tabBar .tab:hover {
+  background: #bbb;
+  color: #fff;
+}
+.jenkins-config-widgets .form-config.tabBarFrame .tabBar .tab.active {
+  background: #f9f9f9;
+  color: #000;
+  font-weight: bold;
+  z-index: 2;
+  border: 1px solid #ccc;
+  border-bottom: 1px solid #f9f9f9;
+}
+.jenkins-config-widgets .form-config.tabBarFrame.mouse-over .noTabs {
+  display: inline;
+}
+.jenkins-config-widgets .form-config.tabBarFrame.mouse-over .noTabs:hover {
+  opacity: 0.8;
+}
+#jenkins .jenkins-config {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-top: none;
+  background: #f9f9f9;
+  -webkit-border-bottom-left-radius: 3px;
+  -moz-border-bottom-left-radius: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+  -moz-border-bottom-right-radius: 3px;
+  border-top-bottom-radius: 3px;
+}
+#jenkins .jenkins-config .showTabs {
+  display: block;
+  text-align: right;
+}
+#jenkins .jenkins-config table.config-table .section-header-row {
+  background: none;
+  border-color: transparent;
+}
+#jenkins .jenkins-config table.config-table .section-header {
+  margin-top: 10px;
+}
+#jenkins .jenkins-config table {
+  border-collapse: collapse;
+}
+#jenkins .jenkins-config table .bottom-sticker-edge {
+  display: none;
+}
+#jenkins .jenkins-config table .bottom-sticker-inner {
+  padding: 20px 10px 25px 20px;
+  border-top-right-radius: 10px;
+  border: 1px solid #acb;
+  background: rgba(245, 249, 239, 0.75);
+}
+#jenkins .jenkins-config table .bottom-sticker,
+#jenkins .jenkins-config table #bottom-sticker {
+  width: auto;
+  margin-left: -10px;
+  overflow: hidden;
+  padding-bottom: 10px;
+  margin: 30px 30px -25px -15px;
+  z-index: 9;
+}
+#jenkins .jenkins-config table .bottom-sticker .cover,
+#jenkins .jenkins-config table #bottom-sticker .cover {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+}
+#jenkins .jenkins-config table .bottom-sticker .yui-button.primary button,
+#jenkins .jenkins-config table #bottom-sticker .yui-button.primary button {
+  background: #478;
+  border-color: #356;
+}
+#jenkins .jenkins-config table .bottom-sticker .yui-button.yui-button-disabled button,
+#jenkins .jenkins-config table #bottom-sticker .yui-button.yui-button-disabled button {
+  background: #eee;
+  border-color: #ccc;
+  color: #ccc;
+}
+#jenkins .jenkins-config table .bottom-sticker .yui-button,
+#jenkins .jenkins-config table #bottom-sticker .yui-button {
+  margin-right: 10px;
+}
+#jenkins .jenkins-config table .bottom-sticker .yui-button button,
+#jenkins .jenkins-config table #bottom-sticker .yui-button button {
+  padding: 5px 20px;
+  background: #cde;
+  border-color: #69c;
+}
+#jenkins .jenkins-config table .section-header {
+  margin: 30px 0px 5px -10px;
+  font-size: 1.5em;
+  padding: 10px 15px;
+  border: none;
+  border-top: 1px solid #ddd;
+}
+#jenkins .jenkins-config table .attach-previous {
+  margin-left: 3px;
+}
+#jenkins .jenkins-config table .validation-error-area td {
+  padding: 0 5px;
+}
+#jenkins .jenkins-config table .stapler-class-bag td {
+  padding: 0px;
+}
+#jenkins .jenkins-config table td.setting-name {
+  line-height: 29px;
+}
+#jenkins .jenkins-config table td.setting-main input[type='radio'],
+#jenkins .jenkins-config table td.setting-main input[type='checkbox'] {
+  position: relative;
+  top: 0.33em;
+}
+#jenkins .jenkins-config table td {
+  padding: 5px;
+}
+#jenkins .jenkins-config table td textarea.setting-input {
+  display: block;
+}
+#jenkins .jenkins-config table td .yui-button button,
+#jenkins .jenkins-config table td input[type='email'].setting-input,
+#jenkins .jenkins-config table td input[type='password'].setting-input,
+#jenkins .jenkins-config table td input[type='text'].setting-input {
+  height: 2.25em;
+  line-height: 2.25em;
+  padding: 0 5px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+#jenkins .jenkins-config table td .yui-button button {
+  padding: 0 10px;
+  box-sizing: content-box;
+}
+#jenkins .jenkins-config table td .yui-button button.hetero-list-add {
+  padding-right: 25px;
+}
+#jenkins .jenkins-config table td select:not([multiple]) {
+  height: 2.25em;
+  line-height: 2.25em;
+}
+#jenkins .jenkins-config table td select:not(.select-ajax-pending) {
+  border-radius: 0;
+  background: #fff;
+}
+#jenkins .jenkins-config table td .help {
+  background: rgba(255, 255, 255, 0.75);
+}
+#jenkins .jenkins-config table td p,
+#jenkins .jenkins-config table td .help,
+#jenkins .jenkins-config table td .setting-description {
+  font-size: 1em;
+  line-height: 1.4;
+}
+#jenkins .jenkins-config table td[colspan="4"]:empty {
+  display: none;
+}
+#jenkins .jenkins-config table td.setting-help {
+  vertical-align: top;
+  padding: 5px 10px 5px 5px;
+}
+#jenkins .jenkins-config table td.setting-leftspace:after {
+  content: ' ';
+  display: block;
+  width: 13px;
+  height: 1px;
+}
+#jenkins .jenkins-config table .repeated-chunk,
+#jenkins .jenkins-config table tr[nameref^="rowSetStart"],
+#jenkins .jenkins-config table tr[nameref^="cb"],
+#jenkins .jenkins-config table tr[nameref^="radio-block"] {
+  background: rgba(0, 0, 0, 0.025);
+  border-left: 5px solid rgba(0, 0, 0, 0.1);
+}
+#jenkins .jenkins-config table .hetero-list-container,
+#jenkins .jenkins-config table .repeated-container,
+#jenkins .jenkins-config table tr.optional-block-start,
+#jenkins .jenkins-config table tr.radio-block-start {
+  border-left: 5px solid rgba(0, 0, 0, 0.1);
+  background: none;
+}
+#jenkins .jenkins-config table tr.help-area {
+  background: none !important;
+}
+#jenkins .jenkins-config table tr.help-area td {
+  padding: 0 5px;
+}
+#jenkins .jenkins-config table .CodeMirror {
+  background: #fff;
+}
+#jenkins .jenkins-config table .CodeMirror-scroll {
+  border: 1px solid #ccc !important;
+}
+#jenkins .jenkins-config table .repeated-container > .repeated-chunk {
+  padding-top: 15px;
+}
+#jenkins .jenkins-config table .repeated-chunk.hover {
+  border-color: #69c;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1), inset 0 200px 200px -200px #fff;
+  position: relative;
+  z-index: 2;
+}
+#jenkins .jenkins-config table .repeated-chunk.dragging {
+  position: static;
+}
+#jenkins .jenkins-config table .repeated-chunk {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin: 2px;
+  position: relative;
+}
+#jenkins .jenkins-config table .repeatable-delete {
+  position: absolute;
+  top: -4px;
+  right: 40px;
+  height: 20px;
+  width: 30px;
+}
+#jenkins .jenkins-config table .repeatable-delete button {
+  text-align: center;
+  text-indent: -9999px;
+  width: 30px !important;
+  height: 18px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  -webkit-border-top-left-radius: 0 !important;
+  -moz-border-top-left-radius: 0 !important;
+  border-top-left-radius: 0 !important;
+  -webkit-border-top-right-radius: 0 !important;
+  -moz-border-top-right-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  background-color: #d24939;
+  color: #eee;
+  border: 1px solid #be3a2b;
+  line-height: 12px !important;
+  display: inline-block;
+  font-size: 8px;
+}
+#jenkins .jenkins-config table .repeatable-delete button:focus,
+#jenkins .jenkins-config table .repeatable-delete button:hover {
+  background-color: #a23225;
+  border-color: #942e22;
+  color: #fff;
+}
+#jenkins .jenkins-config table .repeatable-delete button:before {
+  content: 'X';
+  font-weight: bold;
+  position: absolute;
+  display: block;
+  left: 0;
+  top: 2;
+  width: 30px;
+  height: 16px;
+  text-align: center;
+  font-size: 12px;
+  text-indent: 0;
+}
+#jenkins .jenkins-config span.highlight {
+  background-color: #ffff00;
+}
+#ygddfdiv {
+  background: #eee;
+  border: 1px solid #69c !important;
+  opacity: 0.5;
+}
+.yui-skin-sam .yuimenu {
+  z-index: 9999 !important;
+}
+.yui-skin-sam .yui-button-disabled {
+  opacity: 0.75;
+}
+/*
+ * ----------------------------------------------------------------------------------------
+ * Tab bar specific styles.
+ * ----------------------------------------------------------------------------------------
+ */
+.jenkins-config tr.config-table-top-row {
+  display: none;
+}
+.jenkins-config tr.config-table-top-row.active {
+  display: table-row;
+}
+

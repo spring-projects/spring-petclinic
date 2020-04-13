@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: ogondza
+Build-Jdk: 1.8.0_232
+Extension-Name: ws-cleanup
+Specification-Title: The Jenkins Plugins Parent POM Project
+Implementation-Title: ws-cleanup
+Implementation-Version: 0.38
+Group-Id: org.jenkins-ci.plugins
+Short-Name: ws-cleanup
+Long-Name: Jenkins Workspace Cleanup Plugin
+Url: https://github.com/jenkinsci/ws-cleanup-plugin/blob/master/README
+ .md
+Minimum-Java-Version: 1.8
+Plugin-Version: 0.38
+Hudson-Version: 2.121
+Jenkins-Version: 2.121
+Plugin-Dependencies: workflow-durable-task-step:2.4,matrix-project:1.7
+ .1,resource-disposer:0.3,script-security:1.54,structs:1.19
+Plugin-Developers: Oliver Gondža:olivergondza:
+Plugin-License-Name: The MIT License
+Plugin-License-Url: https://opensource.org/licenses/MIT
+Plugin-ScmUrl: https://github.com/jenkinsci/ws-cleanup-plugin
+

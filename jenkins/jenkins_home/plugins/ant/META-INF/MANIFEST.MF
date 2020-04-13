@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: jglick
+Build-Jdk: 1.8.0_232
+Extension-Name: ant
+Specification-Title: The Jenkins Plugins Parent POM Project
+Implementation-Title: ant
+Implementation-Version: 1.11
+Group-Id: org.jenkins-ci.plugins
+Short-Name: ant
+Long-Name: Ant Plugin
+Url: https://github.com/jenkinsci/ant-plugin
+Minimum-Java-Version: 1.8
+Plugin-Version: 1.11
+Hudson-Version: 2.150.1
+Jenkins-Version: 2.150.1
+Plugin-Dependencies: structs:1.17
+Plugin-Developers: Armando Fernandez:armfergom:
+Plugin-License-Name: The MIT license
+Plugin-License-Url: https://opensource.org/licenses/MIT
+Plugin-ScmUrl: https://github.com/jenkinsci/ant-plugin
+

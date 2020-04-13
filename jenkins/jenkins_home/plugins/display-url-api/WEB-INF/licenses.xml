@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<l:dependencies xmlns:l='licenses' groupId='org.jenkins-ci.plugins' artifactId='display-url-api' version='2.3.2'><l:dependency name='Display URL API' groupId='org.jenkins-ci.plugins' artifactId='display-url-api' version='2.3.2' url='https://wiki.jenkins-ci.org/display/JENKINS/Display+URL+API+Plugin'><l:description>Provides the DisplayURLProvider extension point to provide alternate URLs for use in notifications</l:description><l:license name='MIT License' url='http://opensource.org/licenses/MIT'/></l:dependency></l:dependencies>

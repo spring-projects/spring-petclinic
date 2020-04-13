@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<l:dependencies xmlns:l='licenses' groupId='org.jenkins-ci.ui' artifactId='momentjs' version='1.1.1'><l:dependency name='JavaScript GUI Lib: Moment.js bundle plugin' groupId='org.jenkins-ci.ui' artifactId='momentjs' version='1.1.1' url='https://wiki.jenkins-ci.org/display/JENKINS/Moment.js'><l:description/><l:license name='MIT License' url='http://opensource.org/licenses/MIT'/></l:dependency></l:dependencies>

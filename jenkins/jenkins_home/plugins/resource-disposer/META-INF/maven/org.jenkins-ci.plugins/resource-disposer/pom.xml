@@ -1,0 +1,81 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.jenkins-ci.plugins</groupId>
+    <artifactId>plugin</artifactId>
+    <version>3.29</version>
+  </parent>
+
+  <artifactId>resource-disposer</artifactId>
+  <version>0.14</version>
+  <packaging>hpi</packaging>
+  <name>Resource Disposer Plugin</name>
+  <description>Dispose resources asynchronously. Utility plugin for resources that require more retries or take a long time to delete.</description>
+  <url>https://wiki.jenkins.io/display/JENKINS/Resource+Disposer+Plugin</url>
+
+  <developers>
+    <developer>
+      <id>olivergondza</id>
+      <name>Oliver Gondža</name>
+      <email>ogondza@gmail.com</email>
+    </developer>
+  </developers>
+
+  <licenses>
+    <license>
+      <name>The MIT license</name>
+      <url>http://www.opensource.org/licenses/mit-license.php</url>
+    </license>
+  </licenses>
+
+  <scm>
+    <connection>scm:git:git://github.com/jenkinsci/resource-disposer-plugin.git</connection>
+    <developerConnection>scm:git:git@github.com:jenkinsci/resource-disposer-plugin.git</developerConnection>
+    <url>https://github.com/jenkinsci/resource-disposer-plugin</url>
+    <tag>resource-disposer-0.14</tag>
+  </scm>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-core</artifactId>
+      <version>1.3</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>1.10.19</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- https://issues.jenkins-ci.org/browse/JENKINS-41037
+    <dependency>
+      <groupId>org.jvnet.hudson</groupId>
+      <artifactId>xstream</artifactId>
+      <version>1.4.7-jenkins-2</version>
+    </dependency>
+    -->
+  </dependencies>
+
+  <repositories>
+    <repository>
+      <id>repo.jenkins-ci.org</id>
+      <url>https://repo.jenkins-ci.org/public/</url>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>repo.jenkins-ci.org</id>
+      <url>https://repo.jenkins-ci.org/public/</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <properties>
+    <jenkins.version>2.54</jenkins.version>
+    <java.level>8</java.level>
+
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <surefire.useFile>false</surefire.useFile>
+  </properties>
+</project>

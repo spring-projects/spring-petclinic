@@ -1,0 +1,19 @@
+.gh-page td, .gh-page th {
+  padding-left: 25px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.repo-table__header {
+  text-transform: uppercase;
+}
+
+.repo-line__title {
+  font-weight: bold;
+}
+.repo-line__msg {
+  font-family: monospace;
+  word-break: break-all;
+}
+
+/*# sourceMappingURL=monitor.css.map */

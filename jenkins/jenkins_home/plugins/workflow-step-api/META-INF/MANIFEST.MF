@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: dnusbaum
+Build-Jdk: 1.8.0_161
+Extension-Name: workflow-step-api
+Specification-Title: The Jenkins Plugins Parent POM Project
+Implementation-Title: workflow-step-api
+Implementation-Version: 2.22
+Group-Id: org.jenkins-ci.plugins.workflow
+Short-Name: workflow-step-api
+Long-Name: Pipeline: Step API
+Url: https://github.com/jenkinsci/workflow-step-api-plugin
+Minimum-Java-Version: 1.8
+Plugin-Version: 2.22
+Hudson-Version: 2.138.4
+Jenkins-Version: 2.138.4
+Plugin-Dependencies: structs:1.20
+Plugin-Developers: 
+Support-Dynamic-Loading: true
+Plugin-License-Name: MIT License
+Plugin-License-Url: https://opensource.org/licenses/MIT
+Plugin-ScmUrl: https://github.com/jenkinsci/workflow-step-api-plugin
+

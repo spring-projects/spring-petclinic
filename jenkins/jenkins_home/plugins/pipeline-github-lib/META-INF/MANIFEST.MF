@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: stephenc
+Build-Jdk: 1.8.0_111
+Extension-Name: pipeline-github-lib
+Specification-Title: Allows Pipeline Groovy libraries to be loaded on 
+ the fly from GitHub.
+Implementation-Title: pipeline-github-lib
+Implementation-Version: 1.0
+Group-Id: org.jenkins-ci.plugins
+Short-Name: pipeline-github-lib
+Long-Name: Pipeline: GitHub Groovy Libraries
+Url: https://wiki.jenkins-ci.org/display/JENKINS/Pipeline+GitHub+Libra
+ ry+Plugin
+Plugin-Version: 1.0
+Hudson-Version: 1.642.3
+Jenkins-Version: 1.642.3
+Plugin-Dependencies: workflow-cps-global-lib:2.5,git:3.0.2
+Plugin-Developers: 
+

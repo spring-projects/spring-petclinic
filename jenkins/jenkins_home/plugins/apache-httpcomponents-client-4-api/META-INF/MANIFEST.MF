@@ -1,0 +1,26 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: Oleg
+Build-Jdk: 1.8.0_201
+Extension-Name: apache-httpcomponents-client-4-api
+Specification-Title: Bundles Apache HttpComponents Client 4.x and allo
+ ws it to be used by Jenkins plugins
+Implementation-Title: apache-httpcomponents-client-4-api
+Implementation-Version: 4.5.10-2.0
+Group-Id: org.jenkins-ci.plugins
+Short-Name: apache-httpcomponents-client-4-api
+Long-Name: Jenkins Apache HttpComponents Client 4.x API Plugin
+Url: https://github.com/jenkinsci/apache-httpcomponents-client-4-api-p
+ lugin
+Minimum-Java-Version: 1.8
+Plugin-Version: 4.5.10-2.0
+Hudson-Version: 2.60.3
+Jenkins-Version: 2.60.3
+Plugin-Developers: Oleg Nenashev:oleg_nenashev:
+Support-Dynamic-Loading: true
+Plugin-License-Name: MIT License
+Plugin-License-Url: http://opensource.org/licenses/MIT
+Plugin-ScmUrl: https://github.com/jenkinsci/apache-httpcomponents-clie
+ nt-4-api-plugin
+

@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<l:dependencies xmlns:l='licenses' groupId='org.jenkins-ci.plugins' artifactId='jdk-tool' version='1.4'><l:dependency name='Oracle Java SE Development Kit Installer Plugin' groupId='org.jenkins-ci.plugins' artifactId='jdk-tool' version='1.4' url='https://github.com/jenkinsci/jdk-tool-plugin'><l:description>Allows the Oracle Java SE Development Kit (JDK) to be installed via download from Oracle's website.</l:description><l:license name='MIT License' url='https://opensource.org/licenses/MIT'/></l:dependency></l:dependencies>

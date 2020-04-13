@@ -1,0 +1,28 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: fcojfernandez
+Build-Jdk: 1.8.0_242
+Extension-Name: git-client
+Specification-Title: Utility plugin for Git support in Jenkins
+Implementation-Title: git-client
+Implementation-Version: 3.2.1
+Group-Id: org.jenkins-ci.plugins
+Short-Name: git-client
+Long-Name: Jenkins Git client plugin
+Url: https://github.com/jenkinsci/git-client-plugin/blob/master/README
+ .adoc
+Minimum-Java-Version: 1.8
+Plugin-Version: 3.2.1
+Hudson-Version: 2.138.4
+Jenkins-Version: 2.138.4
+Plugin-Dependencies: configuration-as-code:1.35;resolution:=optional,a
+ pache-httpcomponents-client-4-api:4.5.10-2.0,credentials:2.3.0,jsch:0
+ .1.55.1,script-security:1.66,ssh-credentials:1.17.3,structs:1.20
+Plugin-Developers: Mark Waite:markewaite:mark.earl.waite@gmail.com,Rob
+ ert Sandell:rsandell:rsandell@cloudbees.com,Francisco J. Fernández:f
+ cojfernandez:fjfernandez@cloudbees.com
+Plugin-License-Name: The MIT License (MIT)
+Plugin-License-Url: https://opensource.org/licenses/MIT
+Plugin-ScmUrl: https://github.com/jenkinsci/git-client-plugin
+

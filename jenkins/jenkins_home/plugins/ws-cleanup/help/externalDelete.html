@@ -1,0 +1,40 @@
+<div>
+    <p>If set, an external deletion program will be run against files and directories. </p>
+
+    <p>Syntax:
+        <code>
+            program_name [program options] %s
+        </code>
+    </p>
+    <p>
+        Where program_name is the program to use, path, or environment variable.  
+        <code>program options</code> are any switches to send to the program.
+        <code>%s</code> will be replaced with the path to be deleted dynamically.
+    </p>
+    <p>
+        An empty string, after environment variable expansion uses the default 
+        deletion utility.
+    </p>
+    <p>
+        Environment variables can be used with the following syntax: <code>${env_var}</code>
+    </p>        
+    <p>
+        Examples:
+        <pre>
+            Unlocker: 
+                "C:\Program Files\Unlocker\unlocker.exe" %s /D /S
+            
+            Unlocker on Windows Nodes:
+                ${delete_command}
+               
+                with the following environment variable defined on windows nodes:
+                delete_command = "C:\Program Files\Unlocker\unlocker.exe" %s /D /S
+
+                And on other nodes:
+                delete_command = "" (An empty string uses the default functionality)            
+
+            Shred:
+                shred -u %s
+        </pre>
+    </p>
+</div>

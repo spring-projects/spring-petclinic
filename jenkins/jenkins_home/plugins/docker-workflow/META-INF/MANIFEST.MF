@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: dnusbaum
+Build-Jdk: 1.8.0_161
+Extension-Name: docker-workflow
+Specification-Title: Build and use Docker containers from pipelines
+Implementation-Title: docker-workflow
+Implementation-Version: 1.23
+Group-Id: org.jenkins-ci.plugins
+Short-Name: docker-workflow
+Long-Name: Docker Pipeline
+Url: https://github.com/jenkinsci/docker-workflow-plugin
+Minimum-Java-Version: 1.8
+Plugin-Version: 1.23
+Hudson-Version: 2.150.3
+Jenkins-Version: 2.150.3
+Plugin-Dependencies: workflow-basic-steps:2.18,workflow-cps:2.76,workf
+ low-durable-task-step:2.31,workflow-step-api:2.22,cloudbees-folder:6.
+ 9,docker-commons:1.14,pipeline-model-extensions:1.5.1
+Plugin-Developers: 
+

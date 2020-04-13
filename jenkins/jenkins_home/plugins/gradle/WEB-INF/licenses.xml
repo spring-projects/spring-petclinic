@@ -1,0 +1,6 @@
+<l:dependencies xmlns:l='licenses' version='1.36' artifactId='gradle-plugin' groupId='org.jenkins-ci.plugins'>
+  <l:dependency version='1.36' artifactId='gradle-plugin' groupId='org.jenkins-ci.plugins' name='Gradle Plugin' url='https://github.com/jenkinsci/gradle-plugin'>
+    <l:description>This plugin adds Gradle support to Jenkins</l:description>
+    <l:license url='https://opensource.org/licenses/MIT' name='MIT License' />
+  </l:dependency>
+</l:dependencies>

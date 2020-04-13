@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: dnusbaum
+Build-Jdk: 1.8.0_161
+Extension-Name: pipeline-model-api
+Specification-Title: Model API for Declarative Pipeline
+Implementation-Title: pipeline-model-api
+Implementation-Version: 1.6.0
+Group-Id: org.jenkinsci.plugins
+Short-Name: pipeline-model-api
+Long-Name: Pipeline: Model API
+Url: https://github.com/jenkinsci/pipeline-model-definition-plugin
+Minimum-Java-Version: 1.8
+Plugin-Version: 1.6.0
+Hudson-Version: 2.150.3
+Jenkins-Version: 2.150.3
+Plugin-Dependencies: workflow-step-api:2.22,jackson2-api:2.9.8,structs
+ :1.20
+Plugin-Developers: Andrew Bayer:abayer:
+

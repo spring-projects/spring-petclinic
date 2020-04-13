@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<l:dependencies xmlns:l='licenses' groupId='org.jenkins-ci.plugins' artifactId='branch-api' version='2.5.5'><l:dependency name='Branch API Plugin' groupId='org.jenkins-ci.plugins' artifactId='branch-api' version='2.5.5' url='https://wiki.jenkins.io/display/JENKINS/Branch+API+Plugin'><l:description>This plugin provides an API for multiple branch based projects.</l:description><l:license name='The MIT license' url='https://opensource.org/licenses/MIT'/></l:dependency></l:dependencies>

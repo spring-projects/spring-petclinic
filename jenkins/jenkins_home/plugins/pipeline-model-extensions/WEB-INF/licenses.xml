@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<l:dependencies xmlns:l='licenses' groupId='org.jenkinsci.plugins' artifactId='pipeline-model-extensions' version='1.6.0'><l:dependency name='Pipeline: Declarative Extension Points API' groupId='org.jenkinsci.plugins' artifactId='pipeline-model-extensions' version='1.6.0' url='https://github.com/jenkinsci/pipeline-model-definition-plugin'><l:description>APIs for extension points used in Declarative Pipelines</l:description><l:license name='MIT' url='http://opensource.org/licenses/MIT'/></l:dependency></l:dependencies>

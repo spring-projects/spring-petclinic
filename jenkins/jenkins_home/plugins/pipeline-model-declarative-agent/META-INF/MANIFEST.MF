@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: abayer
+Build-Jdk: 1.7.0_79
+Extension-Name: pipeline-model-declarative-agent
+Specification-Title: Replaced by Pipeline: Declarative Extension Point
+ s API plugin
+Implementation-Title: pipeline-model-declarative-agent
+Implementation-Version: 1.1.1
+Group-Id: org.jenkinsci.plugins
+Short-Name: pipeline-model-declarative-agent
+Long-Name: Pipeline: Declarative Agent API
+Url: https://wiki.jenkins-ci.org/display/JENKINS/Pipeline+Model+Defini
+ tion+Plugin
+Plugin-Version: 1.1.1
+Hudson-Version: 2.7.1
+Jenkins-Version: 2.7.1
+Plugin-Dependencies: pipeline-model-extensions:1.1.1
+Plugin-Developers: Andrew Bayer:abayer:
+Support-Dynamic-Loading: true
+

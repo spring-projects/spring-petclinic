@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: jeffret
+Build-Jdk: 1.8.0_161
+Extension-Name: plain-credentials
+Specification-Title: Allows use of plain strings and files as credenti
+ als.
+Implementation-Title: plain-credentials
+Implementation-Version: 1.7
+Group-Id: org.jenkins-ci.plugins
+Short-Name: plain-credentials
+Long-Name: Plain Credentials Plugin
+Url: https://github.com/jenkinsci/plain-credentials-plugin
+Minimum-Java-Version: 1.8
+Plugin-Version: 1.7
+Hudson-Version: 2.138.4
+Jenkins-Version: 2.138.4
+Plugin-Dependencies: credentials:2.2.0
+Plugin-Developers: 
+Plugin-License-Name: MIT
+Plugin-License-Url: https://opensource.org/licenses/MIT
+Plugin-ScmUrl: https://github.com/jenkinsci/plain-credentials-plugin
+

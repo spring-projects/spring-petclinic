@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: carroll
+Build-Jdk: 1.8.0_202
+Extension-Name: durable-task
+Specification-Title: Library offering an extension point for processes
+  which can run outside of Jenkins yet be monitored.
+Implementation-Title: durable-task
+Implementation-Version: 1.34
+Group-Id: org.jenkins-ci.plugins
+Short-Name: durable-task
+Long-Name: Durable Task Plugin
+Url: https://github.com/jenkinsci/durable-task-plugin
+Minimum-Java-Version: 1.8
+Plugin-Version: 1.34
+Hudson-Version: 2.150.1
+Jenkins-Version: 2.150.1
+Plugin-Developers: 
+Plugin-License-Name: MIT License
+Plugin-License-Url: https://opensource.org/licenses/MIT
+Plugin-ScmUrl: https://github.com/jenkinsci/durable-task-plugin
+

@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: dnusbaum
+Build-Jdk: 1.8.0_161
+Extension-Name: script-security
+Specification-Title: Allows Jenkins administrators to control what in-
+ process scripts can be run by less-privileged users.
+Implementation-Title: script-security
+Implementation-Version: 1.71
+Group-Id: org.jenkins-ci.plugins
+Short-Name: script-security
+Long-Name: Script Security Plugin
+Url: https://github.com/jenkinsci/script-security-plugin
+Minimum-Java-Version: 1.8
+Plugin-Version: 1.71
+Hudson-Version: 2.60.3
+Jenkins-Version: 2.60.3
+Plugin-Developers: 
+Plugin-License-Name: MIT License
+Plugin-License-Url: https://opensource.org/licenses/MIT
+Plugin-ScmUrl: https://github.com/jenkinsci/script-security-plugin
+

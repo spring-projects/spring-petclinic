@@ -1,0 +1,41 @@
+<div>
+    <p>設定すると、外部の削除プログラムがファイルやディレクトリに対して起動します。</p>
+
+    <p>文法:
+        <code>
+            プログラム名 [プログラム　オプション] %s
+        </code>
+    </p>
+    <p>
+        プログラム名は、パスや環境変数を使用するプログラムです。
+        <code>プログラム　オプション</code>は、プラグラムに渡すスイッチです。
+        <code>%s</code>は、削除するパスです。
+    </p>
+    <p>
+        空文字の場合、環境変数を展開した後にデフォルトの削除ユーティリティを使用します。
+    </p>
+    <p>
+        環境変数は次の書式で使用することができる。書式: <code>${env_var}</code>
+    </p>        
+
+        <p>
+        例:
+        </p>
+        <pre>
+            Unlocker: 
+                "C:\Program Files\Unlocker\unlocker.exe" %s /D /S
+            
+            Windowsノード上の設定:
+                ${delete_command}
+               
+                Windowsノード上では次の環境変数を設定: 
+                delete_command = "C:\Program Files\Unlocker\unlocker.exe" %s /D /S
+
+                他のノード:
+                delete_command = "" (空文字はデフォルトの機能を示す)            
+
+            Shred:
+                shred -u %s
+        </pre>
+
+</div>

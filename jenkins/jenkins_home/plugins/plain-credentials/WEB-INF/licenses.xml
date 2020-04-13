@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<l:dependencies xmlns:l='licenses' groupId='org.jenkins-ci.plugins' artifactId='plain-credentials' version='1.7'><l:dependency name='Plain Credentials Plugin' groupId='org.jenkins-ci.plugins' artifactId='plain-credentials' version='1.7' url='https://github.com/jenkinsci/plain-credentials-plugin'><l:description>Allows use of plain strings and files as credentials.</l:description><l:license name='MIT' url='https://opensource.org/licenses/MIT'/></l:dependency></l:dependencies>

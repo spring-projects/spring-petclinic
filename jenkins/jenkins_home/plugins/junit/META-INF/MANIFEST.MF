@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: dnusbaum
+Build-Jdk: 1.8.0_161
+Extension-Name: junit
+Specification-Title: Allows JUnit-format test results to be published.
+Implementation-Title: junit
+Implementation-Version: 1.28
+Group-Id: org.jenkins-ci.plugins
+Short-Name: junit
+Long-Name: JUnit Plugin
+Url: http://wiki.jenkins-ci.org/display/JENKINS/JUnit+Plugin
+Minimum-Java-Version: 1.8
+Plugin-Version: 1.28
+Hudson-Version: 2.138.4
+Jenkins-Version: 2.138.4
+Plugin-Dependencies: workflow-api:2.34,workflow-step-api:2.19,script-s
+ ecurity:1.56,structs:1.17
+Plugin-Developers: 
+

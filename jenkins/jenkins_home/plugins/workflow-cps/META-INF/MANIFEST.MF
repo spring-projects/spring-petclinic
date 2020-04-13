@@ -1,0 +1,27 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: carroll
+Build-Jdk: 1.8.0_202
+Extension-Name: workflow-cps
+Specification-Title: The Jenkins Plugins Parent POM Project
+Implementation-Title: workflow-cps
+Implementation-Version: 2.80
+Group-Id: org.jenkins-ci.plugins.workflow
+Short-Name: workflow-cps
+Long-Name: Pipeline: Groovy
+Url: https://github.com/jenkinsci/workflow-cps-plugin
+Compatible-Since-Version: 2.18
+Minimum-Java-Version: 1.8
+Plugin-Version: 2.80
+Hudson-Version: 2.138.4
+Jenkins-Version: 2.138.4
+Plugin-Dependencies: workflow-api:2.36,workflow-scm-step:2.4,workflow-
+ step-api:2.21,workflow-support:3.3,scm-api:2.2.6,script-security:1.63
+ ,structs:1.20,support-core:2.43;resolution:=optional,ace-editor:1.0.1
+ ,jquery-detached:1.2.1
+Plugin-Developers: 
+Plugin-License-Name: MIT License
+Plugin-License-Url: https://opensource.org/licenses/MIT
+Plugin-ScmUrl: https://github.com/jenkinsci/workflow-cps-plugin
+

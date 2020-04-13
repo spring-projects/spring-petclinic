@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.jenkins-ci.plugins</groupId>
+    <artifactId>plugin</artifactId>
+    <version>2.9</version>
+  </parent>
+
+  <artifactId>mapdb-api</artifactId>
+  <version>1.0.9.0</version>
+  <packaging>hpi</packaging>
+
+  <name>MapDB API Plugin</name>
+  <description>This plugin provides a shared dependency on the MapDB library so that other plugins can co-operate when using this library.</description>
+  <url>http://wiki.jenkins-ci.org/display/JENKINS/MapDB+API+Plugin</url>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>stephenc</id>
+      <name>Stephen Connolly</name>
+      <roles>
+        <role>developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:git://github.com/jenkinsci/mapdb-api-plugin.git</connection>
+    <developerConnection>scm:git:git@github.com:jenkinsci/mapdb-api-plugin.git</developerConnection>
+    <url>http://github.com/jenkinsci/mapdb-api-plugin</url>
+    <tag>mapdb-api-1.0.9.0</tag>
+  </scm>
+
+  <properties>
+    <jenkins.version>1.565</jenkins.version>
+    <java.level>6</java.level>
+  </properties>
+
+  <repositories>
+       <repository>
+           <id>repo.jenkins-ci.org</id>
+           <url>https://repo.jenkins-ci.org/public/</url>
+       </repository>
+   </repositories>
+
+   <pluginRepositories>
+       <pluginRepository>
+           <id>repo.jenkins-ci.org</id>
+           <url>https://repo.jenkins-ci.org/public/</url>
+       </pluginRepository>
+   </pluginRepositories>
+
+  <dependencies>
+    <!-- regular dependencies -->
+    <dependency>
+      <groupId>org.mapdb</groupId>
+      <artifactId>mapdb</artifactId>
+      <version>1.0.9</version>
+    </dependency>
+    <!-- plugin dependencies -->
+    <!-- jenkins dependencies -->
+    <!-- test dependencies -->
+  </dependencies>
+
+</project>
