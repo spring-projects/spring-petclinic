@@ -30,6 +30,9 @@ stages {
   }
   stage("deploy") {
     steps {
+            when {
+  branch 'master'
+}
       dir("spring-petclinic") {
     sh """
     docker build -t nagarajub123/pet-clinic:${params.Docker_image_base_version}.${BUILD_NUMBER} .
@@ -40,7 +43,10 @@ stages {
     }
   }
   stage('publish to docker registry') {
-      steps {
+      when {
+  branch 'master'
+}
+          steps {
           withCredentials([usernamePassword(credentialsId: 'hub.docker',passwordVariable: 'docker_PSW', usernameVariable: 'docker_USR')]) {
           sh """
           docker login -u ${docker_USR} -p ${docker_PSW}
