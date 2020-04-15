@@ -1,3 +1,0 @@
-pipeline {
-    agent any
-}
