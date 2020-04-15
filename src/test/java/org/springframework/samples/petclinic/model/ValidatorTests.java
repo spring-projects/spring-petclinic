@@ -56,7 +56,8 @@ class ValidatorTests {
 		assertThat(violation.getPropertyPath().toString()).isEqualTo("firstName");
 		assertThat(violation.getMessage()).isEqualTo("must not be empty");
 	}
-	/*My test*/
+
+	/* My test */
 	@Test
 	void validateWhenFirstNameNotEmpty() {
 
@@ -70,7 +71,8 @@ class ValidatorTests {
 
 		assertThat(constraintViolations).hasSize(0);
 	}
-	/*My test*/
+
+	/* My test */
 	@Test
 	void shouldNotValidateWhenLastNameEmpty() {
 

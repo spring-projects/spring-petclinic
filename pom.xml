@@ -11,7 +11,9 @@
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>2.2.5.RELEASE</version>
+    
   </parent>
+  
   <name>petclinic</name>
 
   <properties>
@@ -20,7 +22,6 @@
     <java.version>1.8</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
     <!-- Web dependencies -->
     <webjars-bootstrap.version>3.3.6</webjars-bootstrap.version>
     <webjars-jquery-ui.version>1.11.4</webjars-jquery-ui.version>
@@ -65,12 +66,19 @@
             </exclusion>
         </exclusions>
     </dependency>
+      <!-- Jasypt implementation -->
+    <dependency>
+    	<groupId>com.github.ulisesbocchio</groupId>
+   		<artifactId>jasypt-spring-boot-starter</artifactId>
+   		<version>2.0.0</version>
+	</dependency>
 
     <!-- Databases - postgresql implementation -->
   <dependency>
 		<groupId>org.postgresql</groupId>
 		<artifactId>postgresql</artifactId>
 	</dependency>
+
 
     <!-- caching -->
     <dependency>
@@ -372,5 +380,4 @@
       </build>
     </profile>
   </profiles>
-
 </project>
