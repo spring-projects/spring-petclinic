@@ -6,5 +6,20 @@ pipeline {
                 sh './mvnw package' 
             }
         }
+        stage('Test') {
+            steps {
+                echo 'Test'
+            }
+        }
+        stage('Package') {
+            steps {
+                echo 'package' 
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'deploy' 
+            }
+        }
     }
 }
