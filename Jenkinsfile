@@ -28,7 +28,6 @@ pipeline {
             steps {
                 echo 'Deploying'
             }
-        }
 	post {
 	    success {
 	        mail to: 'sean.how0@gmail.com',
@@ -41,5 +40,6 @@ pipeline {
 	             body: "Something is wrong with ${env.BUILD_URL}"
 	    }
 	}
+        }
 	}
 }
