@@ -7,7 +7,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building'
-                sh './mvnw compile' 
+                sh './mvnw package' 
             }
         }
         stage('Test') {
