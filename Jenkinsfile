@@ -26,10 +26,9 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'mvn deploy'
+                echo 'Deploying'
             }
         }
-	}
 	post {
 	    success {
 	        mail to: 'sean.how0@gmail.com',
@@ -41,5 +40,6 @@ pipeline {
 	             subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
 	             body: "Something is wrong with ${env.BUILD_URL}"
 	    }
+	}
 	}
 }
