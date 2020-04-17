@@ -40,7 +40,7 @@ public interface VetRepository extends Repository<Vet, Integer> {
 	 * @return a <code>Collection</code> of <code>Vet</code>s
 	 */
 	@Transactional(readOnly = true)
-	@Cacheable("vets")
+	// @Cacheable("vets") // not cacheable for benchmark pruposes
 	Collection<Vet> findAll() throws DataAccessException;
 
 }
