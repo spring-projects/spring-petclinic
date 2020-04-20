@@ -30,8 +30,13 @@ Resources:
           Type: OAUTH
       Environment:
         ComputeType: BUILD_GENERAL1_SMALL
-        Image: aws/codebuild/standard:latest
+        Image: aws/codebuild/standard:3.0
         Type: LINUX_CONTAINER
+        PrivilegedMode: True
+        EnvironmentVariables:
+          - Name: REPO
+            Type: PLAINTEXT
+            Value: !Ref ECRRepository
       LogsConfig:
         CloudWatchLogs: 
           GroupName: !Ref LogGroup
@@ -67,5 +72,12 @@ Resources:
                   - logs:CreateLogGroup
                   - logs:CreateLogStream
                   - logs:PutLogEvents
-
-
+                  - ecr:GetAuthorizationToken
+        - PolicyName: ecr
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Resource: !GetAtt ECRRepository.Arn
+                Effect: Allow
+                Action:
+                  - ecr:*
