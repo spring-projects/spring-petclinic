@@ -20,7 +20,7 @@ if [ "$2" == "jdk8dev" ];
 then
   export JAVA_HOME=../../jdk/jdk8dev
 fi
-if [ "$2" == "" ];
+if [ "$2" == "jdk11" ];
 then
   export JAVA_HOME=../../jdk/jdk-11.0.7+10
 fi

@@ -12,7 +12,8 @@ def get_percentile(percentile, values):
 latencies = []
 percentiles = []
 with open(output_filename, "w") as output_file:
-    output_file.write(','.join(input_files) + '\n')
+    headers = [input_file.replace('results_', '').replace('.csv', '') for input_file in input_files]
+    output_file.write(','.join(headers) + '\n')
     for input_filename in input_files:
         with open(input_filename) as input_file:
             for line in input_file:

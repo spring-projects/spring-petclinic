@@ -60,7 +60,7 @@ function bench () {
     pkill -P $PID
     sleep 1
   done
-  python percentiles.py ${TAG}-${JDK}.csv results_${TAG}-${JDK}-*.csv
+  python percentiles.py ${TAG}-${JDK}.csv results_${TAG}-${JDK}-?.csv
 }
 
 function checks () {
