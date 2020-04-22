@@ -1,6 +1,7 @@
 #!/bin/bash
 INJECT_COUNT=5
 OUTPUT_FILE=out_petclinic.txt
+THREADS=2
 
 function bench () {
   if [ "$1" == "" ];
@@ -40,7 +41,21 @@ function bench () {
       exit 1
     fi
     echo "$(date +%H:%M:%S) Sending requests..."
-    ./inject.sh results_${TAG}-${JDK}-${I}.csv
+    pids=()
+    for FORK in $(seq $THREADS);
+    do
+      ./inject.sh results_${TAG}-${JDK}-${I}_${FORK}.csv &
+      pids[$FORK]=$!
+    done
+    for FORK in $(seq $THREADS);
+    do
+      pid=${pids[$FORK]}
+      wait $pid
+    done
+    for FORK in $(seq $THREADS);
+    do
+      cat results_${TAG}-${JDK}-${I}_${FORK}.csv >> results_${TAG}-${JDK}-${I}.csv
+    done
     echo "Killing $PID"
     pkill -P $PID
     sleep 1

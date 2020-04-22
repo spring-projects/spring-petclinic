@@ -2,7 +2,7 @@
 OPTIONS=""
 if [ "$1" == "ap" ];
 then
-  OPTIONS="-agentpath:../../ap/build/libasyncProfiler.so=start,collapsed,file=petclinic_collapsed.txt"
+  OPTIONS="-agentpath:../../ap/build/libasyncProfiler.so=start,event=wall,collapsed,file=petclinic_collapsed.txt"
 fi
 if [ "$1" == "jfr" ];
 then
