@@ -80,11 +80,21 @@ class PetTypeFormatterTests {
 	private List<PetType> makePetTypes() {
 		List<PetType> petTypes = new ArrayList<>();
 		petTypes.add(new PetType() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 4182992965923515553L;
+
 			{
 				setName("Dog");
 			}
 		});
 		petTypes.add(new PetType() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1823182409934678856L;
+
 			{
 				setName("Bird");
 			}
