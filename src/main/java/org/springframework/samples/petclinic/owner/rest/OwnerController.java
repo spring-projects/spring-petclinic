@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.rest;
+package org.springframework.samples.petclinic.owner.rest;
 
 import javax.validation.Valid;
 
