@@ -4,7 +4,11 @@ import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.samples.petclinic.owner.Owner;
-
+/**
+ * 
+ * @author Awadhesh Kumar
+ *
+ */
 public class NewOwnerForm {
 	@NotEmpty
 	private String firstName;
