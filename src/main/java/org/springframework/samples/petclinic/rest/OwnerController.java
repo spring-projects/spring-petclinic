@@ -26,7 +26,7 @@ public class OwnerController {
 	}
 	
 	@PostMapping("/new")
-	public ResponseEntity<Object> processCreationForm(@Valid @RequestBody NewOwnerForm owner, BindingResult result) {
+	public ResponseEntity<Object> createOwner(@Valid @RequestBody NewOwnerForm owner, BindingResult result) {
 		if (result.hasErrors()) {
 			return new ResponseEntity<Object>(result.getAllErrors(),HttpStatus.BAD_REQUEST);
 		} else {
