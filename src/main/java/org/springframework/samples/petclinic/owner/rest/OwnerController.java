@@ -66,6 +66,25 @@ public class OwnerController {
 			return new ResponseEntity<>(results, HttpStatus.OK);
 		}
 	}
+	
+	@GetMapping("/{ownerid}")
+	public ResponseEntity<Object> getOwner(@PathVariable("ownerid") int ownerId) {
+
+		// find owners by last name
+		ExistingOwnerForm result = getOwnerDetail(ownerId);
+		if (result==null) {
+			// no owners found
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} else {
+			// owners found
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		}
+	}
+
+	private ExistingOwnerForm getOwnerDetail(int ownerId) {
+		Owner existingOwner=this.owners.findById(ownerId);
+		return getOwnerDetail(existingOwner);
+	}
 
 	@PutMapping("")
 	public ResponseEntity<Object> updateOwner(@Valid @RequestBody ExistingOwnerForm existingOwnerForm,BindingResult result) {
@@ -87,16 +106,23 @@ public class OwnerController {
 		Collection<Owner>existingOwners=owners.findByLastName(ownerForm.getLastName());
 		Collection<ExistingOwnerForm>owners=new ArrayList<>();
 		for(Owner existingOwner:existingOwners) {
-			ExistingOwnerForm owner=new ExistingOwnerForm();
+			owners.add(getOwnerDetail(existingOwner));
+		}
+		return owners;
+	}
+
+	private ExistingOwnerForm getOwnerDetail(Owner existingOwner) {
+		ExistingOwnerForm owner=null;
+		if(existingOwner!=null) {
+			owner=new ExistingOwnerForm();
 			owner.setId(existingOwner.getId());
 			owner.setAddress(existingOwner.getAddress());
 			owner.setCity(existingOwner.getCity());
 			owner.setFirstName(existingOwner.getFirstName());
 			owner.setLastName(existingOwner.getLastName());
 			owner.setTelephone(existingOwner.getTelephone());
-			owners.add(owner);
 		}
-		return owners;
+		return owner;
 	}
 
 	private void createNewOwner(final NewOwnerForm owner) {
