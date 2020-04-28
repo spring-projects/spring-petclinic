@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.system;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.bind.annotation.RestController;
 
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -14,7 +15,7 @@ public class SwaggerConfiguration {
 	@Bean
 	public Docket productApi() {
 		return new Docket(DocumentationType.SWAGGER_2).select()
-				.apis(RequestHandlerSelectors.basePackage("org.springframework.samples.petclinic.rest"))
+				.apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
 				.build();
 	}
 }
