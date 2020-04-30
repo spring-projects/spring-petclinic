@@ -27,17 +27,15 @@ node {
             archiveArtifacts artifacts: '**/target/*.jar'
         }
 
-        String jacoco = "org.jacoco:jacoco-maven-plugin:0.8.1"
+        String jacoco = "org.jacoco:jacoco-maven-plugin:0.8.5"
 
         stage('Test') {
             mvn "${jacoco}:prepare-agent test ${jacoco}:report"
         }
 
-
         stage('Integration Test') {
             mvn "${jacoco}:prepare-agent-integration failsafe:integration-test failsafe:verify ${jacoco}:report-integration"
         }
-
 
         stage('Static Code Analysis') {
 
