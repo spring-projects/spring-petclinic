@@ -109,7 +109,7 @@ GitHub org is the "canonical" implementation, currently based on Spring Boot and
 that could be used to implement the Pet Clinic then please join the community there.
 
 
-## Interaction with other open source projects
+## Interaction with other open source projects.
 
 One of the best parts about working on the Spring Petclinic application is that we have the opportunity to work in direct contact with many Open Source projects. We found some bugs/suggested improvements on various topics such as Spring, Spring Data, Bean Validation and even Eclipse! In many cases, they've been fixed/implemented in just a few days.
 Here is a list of them:
@@ -121,7 +121,7 @@ Here is a list of them:
 | Spring Data: provide more flexibility when working with JPQL queries | [DATAJPA-292](https://jira.springsource.org/browse/DATAJPA-292) |
 
 
-# Contributing
+# Contributing:
 
 The [issue tracker](https://github.com/spring-projects/spring-petclinic/issues) is the preferred channel for bug reports, features requests and submitting pull requests.
 
