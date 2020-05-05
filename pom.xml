@@ -125,6 +125,10 @@
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-sleuth</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.zipkin.brave</groupId>
+      <artifactId>brave-instrumentation-mysql8</artifactId>
+    </dependency>
 
     <!-- Testing -->
     <dependency>
