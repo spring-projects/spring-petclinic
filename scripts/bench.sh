@@ -40,6 +40,8 @@ function bench () {
       echo "Application not started correctly!"
       exit 1
     fi
+
+    pidstat -r -C java 1 > mem-${TAG}-${JDK}-${I}.txt &
     echo "$(date +%H:%M:%S) Sending requests..."
     pids=()
     for FORK in $(seq $THREADS);
@@ -52,12 +54,16 @@ function bench () {
       pid=${pids[$FORK]}
       wait $pid
     done
+    # grab user & sys cpu ticks
+    cat /proc/$java_pid/stat | cut -d " " -f 14 > cpu_ticks_${TAG}-${JDK}-${I}_${FORK}.txt
+    # merge all request sender threads
     for FORK in $(seq $THREADS);
     do
       cat results_${TAG}-${JDK}-${I}_${FORK}.csv >> results_${TAG}-${JDK}-${I}.csv
     done
     echo "Killing $PID"
     pkill -P $PID
+    pkill pidstat
     sleep 1
   done
   python percentiles.py ${TAG}-${JDK}.csv results_${TAG}-${JDK}-?.csv
