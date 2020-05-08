@@ -15,3 +15,4 @@ target/*
 !.vscode/extensions.json
 _site/
 .scannerwork
+.some
