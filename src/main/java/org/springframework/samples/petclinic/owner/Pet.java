@@ -88,9 +88,9 @@ public class Pet extends NamedEntity {
 	}
 
 	protected Set<Visit> getVisitsInternal() {
-		if (this.visits == null) {
-			this.visits = new HashSet<>();
-		}
+//		if (this.visits == null) {
+//			this.visits = new HashSet<>();
+//		}
 		return this.visits;
 	}
 
