@@ -78,11 +78,11 @@ stages:
   jobs:
   - deployment: DeployLinuxWebApp
     displayName: Deploy Linux Web App
-    environment: test
-     variables:
-      - group: 'Release'
     pool: 
       vmImage: $(vmImageName)
+    environment: test
+    variables:
+      - group: Release
     strategy:
       runOnce:
         deploy:
@@ -105,11 +105,11 @@ stages:
               jobs:
               - deployment: DeployLinuxWebApp
                 displayName: Deploy Linux Web App
-                environment: staging
-                 variables:
-                  - group: 'Release'
                 pool: 
                   vmImage: $(vmImageName)
+                environment: staging
+                variables:
+                  - group: Release
                 strategy:
                   runOnce:
                     deploy:
