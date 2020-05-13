@@ -52,11 +52,11 @@ stages:
   jobs:
   - deployment: DeployLinuxWebApp
     displayName: Deploy Linux Web App
-    environment: dev
-     variables: 
-      - group: 'Release'
     pool: 
       vmImage: $(vmImageName)
+    environment: dev
+    variables:
+      - group: Release
     strategy:
       runOnce:
         deploy:
