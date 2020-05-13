@@ -53,7 +53,7 @@ stages:
   - deployment: DeployLinuxWebApp
     displayName: Deploy Linux Web App
     environment: dev
-     variables:
+     variables: 
       - group: 'Release'
     pool: 
       vmImage: $(vmImageName)
