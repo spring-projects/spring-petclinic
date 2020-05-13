@@ -97,30 +97,30 @@ stages:
               appName: '$(JavaWebAppTest)'
               package: '$(Pipeline.Workspace)/drop/**/target/*.?(war|jar)'
 
-
+              
 - stage: staging
-              displayName: Deploy to staging environment
-              dependsOn: Build
-              condition: succeeded()
-              jobs:
-              - deployment: DeployLinuxWebApp
-                displayName: Deploy Linux Web App
-                pool: 
-                  vmImage: $(vmImageName)
-                environment: staging
-                variables:
-                  - group: Release
-                strategy:
-                  runOnce:
-                    deploy:
-                      steps:
-                      - download: current
-                        artifact: drop
-                      - task: AzureWebApp@1
-                        displayName: 'Azure Web App Deploy: springpet-clinic-javase8'
-                        inputs:
-                          azureSubscription: $(azureSubscription)
-                          appType: webAppLinux
-                          appName: '$(JavaWebAppStaging)'
-                          package: '$(Pipeline.Workspace)/drop/**/target/*.?(war|jar)'
+  displayName: Deploy to staging environment
+  dependsOn: Build
+  condition: succeeded()
+  jobs:
+  - deployment: DeployLinuxWebApp
+    displayName: Deploy Linux Web App
+    pool: 
+      vmImage: $(vmImageName)
+    environment: staging
+    variables:
+      - group: Release
+    strategy:
+    runOnce:
+    deploy:
+    steps:
+      - download: current
+    artifact: drop
+      - task: AzureWebApp@1
+    displayName: 'Azure Web App Deploy: springpet-clinic-javase8'
+    inputs:
+    azureSubscription: $(azureSubscription)
+    appType: webAppLinux
+    appName: '$(JavaWebAppStaging)'
+    package: '$(Pipeline.Workspace)/drop/**/target/*.?(war|jar)'
             
