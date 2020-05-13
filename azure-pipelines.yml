@@ -110,17 +110,17 @@ stages:
     environment: staging
     variables:
       - group: Release
-    strategy:
-    runOnce:
-    deploy:
-    steps:
-      - download: current
-    artifact: drop
-    - task: AzureWebApp@1
-    displayName: 'Azure Web App Deploy: springpet-clinic-javase8'
-    inputs:
-      azureSubscription: $(azureSubscription)
-      appType: webAppLinux
-      appName: '$(JavaWebAppStaging)'
-      package: '$(Pipeline.Workspace)/drop/**/target/*.?(war|jar)'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - download: current
+              artifact: drop
+            - task: AzureWebApp@1
+              displayName: 'Azure Web App Deploy: springpet-clinic-javase8'
+              inputs:
+                azureSubscription: $(azureSubscription)
+                appType: webAppLinux
+                appName: '$(JavaWebAppStaging)'
+                package: '$(Pipeline.Workspace)/drop/**/target/*.?(war|jar)'
             
