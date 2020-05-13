@@ -54,7 +54,7 @@ stages:
     displayName: Deploy Linux Web App
     environment: dev
      variables:
-      - group: Release
+      - group: 'Release'
     pool: 
       vmImage: $(vmImageName)
     strategy:
@@ -80,7 +80,7 @@ stages:
     displayName: Deploy Linux Web App
     environment: test
      variables:
-      - group: Release
+      - group: 'Release'
     pool: 
       vmImage: $(vmImageName)
     strategy:
@@ -107,7 +107,7 @@ stages:
                 displayName: Deploy Linux Web App
                 environment: staging
                  variables:
-                  - group: Release
+                  - group: 'Release'
                 pool: 
                   vmImage: $(vmImageName)
                 strategy:
