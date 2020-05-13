@@ -109,7 +109,7 @@ stages:
       vmImage: $(vmImageName)
     environment: staging
     variables:
-      - group: Release
+      - group: 'Release'
       strategy:
         runOnce:
           deploy:
