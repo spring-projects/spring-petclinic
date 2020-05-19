@@ -1,7 +1,7 @@
 pipeline {
     agent {label 'MASTER'}
     stages {
-        stage('Source'){
+        stage('scm'){
             steps {
                 git 'https://github.com/seshi7/spring-petclinic.git' 
             }
