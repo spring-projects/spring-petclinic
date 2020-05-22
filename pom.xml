@@ -110,6 +110,22 @@
     </dependency>
   </dependencies>
 
+  <distributionManagement>
+    <repository>
+        <id>central</id>
+        <name>DESKTOP-7VPBFRU-releases</name>
+        <url>http://192.168.0.110:8081/artifactory/libs-release</url>
+    </repository>
+  </distributionManagement>
+
+  <distributionManagement>
+    <snapshotRepository>
+        <id>snapshots</id>
+        <name>DESKTOP-7VPBFRU-snapshots</name>
+        <url>http://192.168.0.110:8081/artifactory/libs-snapshot</url>
+    </snapshotRepository>
+  </distributionManagement>
+
   <build>
     <plugins>
       <plugin>
