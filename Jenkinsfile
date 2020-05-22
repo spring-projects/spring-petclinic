@@ -1,20 +1,17 @@
-node {
 
-   stage('SCM') {
-      // git clone
-	  git 'https://github.com/GitPracticeRepo/spring-petclinic.git'
-   }
-   
-   stage ('build the packages') {
-      // mvn package
-	  sh 'mvn clean package'
-   }
 
-   
-   
-   stage ('archival') {
-     // archiving artifacts
-	 archive 'target/*.jar'
-   }
+node('jfrognew'){
+    stage('scm'){
+	git 'https://github.com/ametgud4u/Devops.git'
+    }
+
+    stage('build'){
+	sh label: '', script: 'mvn clean package'
+    }
+
+    stage('postbuild'){
+	junit '**/target/surefire-reports/*.xml'
+	archiveArtifacts 'target/*.jar'
+    }
 
 }
