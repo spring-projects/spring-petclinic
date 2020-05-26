@@ -14,4 +14,10 @@ node('jfrognew'){
 	archiveArtifacts 'target/*.jar'
     }
 
+    stage('Sonar') {
+        withSonarQubeEnv('SONAR-7.1') {
+        sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.6.0.1398:sonar'
+        }
+    }
 }
+
