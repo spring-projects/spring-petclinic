@@ -15,7 +15,7 @@ node('jfrognew'){
     }
 
     stage('Sonar') {
-        withSonarQubeEnv('SONAR-7.1') {
+        withSonarQubeEnv('SONAR') {
         sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.6.0.1398:sonar'
         }
     }
