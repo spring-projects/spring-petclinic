@@ -12,7 +12,7 @@ pipeline {
 	stage('Package') {
 	    steps {
               sh 'mvn package' 
-              input 'Ready to go?'
+              input 'continue to next step ?'
               archiveArtifacts 'target/*.jar'
 	    }
 	}
