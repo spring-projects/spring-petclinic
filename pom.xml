@@ -17,7 +17,7 @@
   <properties>
 
     <!-- Generic properties -->
-    <java.version>1.8</java.version>
+    <java.version>11</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
@@ -134,151 +134,183 @@
   </dependencies>
 
   <build>
-    <plugins>
-      <plugin>
-        <groupId>io.spring.javaformat</groupId>
-        <artifactId>spring-javaformat-maven-plugin</artifactId>
-        <version>${spring-format.version}</version>
-        <!-- run ./mvnw spring-javaformat:apply to apply -->
-        <executions>
-          <execution>
-            <phase>validate</phase>
-            <goals>
-              <goal>validate</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.1.1</version>
-        <dependencies>
-          <dependency>
-            <groupId>com.puppycrawl.tools</groupId>
-            <artifactId>checkstyle</artifactId>
-            <version>8.29</version>
-          </dependency>
-          <dependency>
-            <groupId>io.spring.nohttp</groupId>
-            <artifactId>nohttp-checkstyle</artifactId>
-            <version>${nohttp-checkstyle.version}</version>
-          </dependency>
-        </dependencies>
-        <executions>
-          <execution>
-            <id>nohttp-checkstyle-validation</id>
-            <phase>validate</phase>
-            <configuration>
-              <configLocation>src/checkstyle/nohttp-checkstyle.xml</configLocation>
-              <suppressionsLocation>src/checkstyle/nohttp-checkstyle-suppressions.xml</suppressionsLocation>
-              <encoding>UTF-8</encoding>
-              <sourceDirectories>${basedir}</sourceDirectories>
-              <includes>**/*</includes>
-              <excludes>**/.git/**/*,**/.idea/**/*,**/target/**/,**/.flattened-pom.xml,**/*.class</excludes>
-            </configuration>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <!-- Spring Boot Actuator displays build-related information
-              if a META-INF/build-info.properties file is present -->
-            <goals>
-              <goal>build-info</goal>
-            </goals>
-            <configuration>
-              <additionalProperties>
-                <encoding.source>${project.build.sourceEncoding}</encoding.source>
-                <encoding.reporting>${project.reporting.outputEncoding}</encoding.reporting>
-                <java.source>${maven.compiler.source}</java.source>
-                <java.target>${maven.compiler.target}</java.target>
-              </additionalProperties>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>${jacoco.version}</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>prepare-agent</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>report</id>
-            <phase>prepare-package</phase>
-            <goals>
-              <goal>report</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-
-      <!-- Spring Boot Actuator displays build-related information if a git.properties
-        file is present at the classpath -->
-      <plugin>
-        <groupId>pl.project13.maven</groupId>
-        <artifactId>git-commit-id-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>revision</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <verbose>true</verbose>
-          <dateFormat>yyyy-MM-dd'T'HH:mm:ssZ</dateFormat>
-          <generateGitPropertiesFile>true</generateGitPropertiesFile>
-          <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties
-          </generateGitPropertiesFilename>
-          <failOnNoGitDirectory>false</failOnNoGitDirectory>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>ro.isdc.wro4j</groupId>
-        <artifactId>wro4j-maven-plugin</artifactId>
-        <version>${wro4j.version}</version>
-        <executions>
-          <execution>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <wroManagerFactory>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory</wroManagerFactory>
-          <cssDestinationFolder>${project.build.directory}/classes/static/resources/css</cssDestinationFolder>
-          <wroFile>${basedir}/src/main/wro/wro.xml</wroFile>
-          <extraConfigFile>${basedir}/src/main/wro/wro.properties</extraConfigFile>
-          <contextFolder>${basedir}/src/main/less</contextFolder>
-        </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>bootstrap</artifactId>
-            <version>${webjars-bootstrap.version}</version>
-          </dependency>
-          <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>${mockito.version}</version>
-          </dependency>
-        </dependencies>
-      </plugin>
-    </plugins>
+  	 <pluginManagement>
+  	 
+  	  
+	    <plugins>
+	      <plugin>
+	        <groupId>io.spring.javaformat</groupId>
+	        <artifactId>spring-javaformat-maven-plugin</artifactId>
+	        <version>${spring-format.version}</version>
+	        <!-- run ./mvnw spring-javaformat:apply to apply -->
+	        <executions>
+	          <execution>
+	            <phase>validate</phase>
+	            <goals>
+	              <goal>validate</goal>
+	            </goals>
+	          </execution>
+	        </executions>
+	      </plugin>
+	      <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-checkstyle-plugin</artifactId>
+	        <version>3.1.1</version>
+	        <dependencies>
+	          <dependency>
+	            <groupId>com.puppycrawl.tools</groupId>
+	            <artifactId>checkstyle</artifactId>
+	            <version>8.29</version>
+	          </dependency>
+	          <dependency>
+	            <groupId>io.spring.nohttp</groupId>
+	            <artifactId>nohttp-checkstyle</artifactId>
+	            <version>${nohttp-checkstyle.version}</version>
+	          </dependency>
+	        </dependencies>
+	        <executions>
+	          <execution>
+	            <id>nohttp-checkstyle-validation</id>
+	            <phase>validate</phase>
+	            <configuration>
+	              <configLocation>src/checkstyle/nohttp-checkstyle.xml</configLocation>
+	              <suppressionsLocation>src/checkstyle/nohttp-checkstyle-suppressions.xml</suppressionsLocation>
+	              <encoding>UTF-8</encoding>
+	              <sourceDirectories>${basedir}</sourceDirectories>
+	              <includes>**/*</includes>
+	              <excludes>**/.git/**/*,**/.idea/**/*,**/target/**/,**/.flattened-pom.xml,**/*.class</excludes>
+	            </configuration>
+	            <goals>
+	              <goal>check</goal>
+	            </goals>
+	          </execution>
+	        </executions>
+	      </plugin>
+	      <plugin>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-maven-plugin</artifactId>
+	        <executions>
+	          <execution>
+	            <!-- Spring Boot Actuator displays build-related information
+	              if a META-INF/build-info.properties file is present -->
+	            <goals>
+	              <goal>build-info</goal>
+	            </goals>
+	            <configuration>
+	              <additionalProperties>
+	                <encoding.source>${project.build.sourceEncoding}</encoding.source>
+	                <encoding.reporting>${project.reporting.outputEncoding}</encoding.reporting>
+	                <java.source>${maven.compiler.source}</java.source>
+	                <java.target>${maven.compiler.target}</java.target>
+	              </additionalProperties>
+	            </configuration>
+	          </execution>
+	        </executions>
+	      </plugin>
+	      <plugin>
+	        <groupId>org.jacoco</groupId>
+	        <artifactId>jacoco-maven-plugin</artifactId>
+	        <version>${jacoco.version}</version>
+	        <executions>
+	          <execution>
+	            <goals>
+	              <goal>prepare-agent</goal>
+	            </goals>
+	          </execution>
+	          <execution>
+	            <id>report</id>
+	            <phase>prepare-package</phase>
+	            <goals>
+	              <goal>report</goal>
+	            </goals>
+	          </execution>
+	        </executions>
+	      </plugin>
+	
+	      <!-- Spring Boot Actuator displays build-related information if a git.properties
+	        file is present at the classpath -->
+	      <plugin>
+	        <groupId>pl.project13.maven</groupId>
+	        <artifactId>git-commit-id-plugin</artifactId>
+	        <executions>
+	          <execution>
+	            <goals>
+	              <goal>revision</goal>
+	            </goals>
+	          </execution>
+	        </executions>
+	        <configuration>
+	          <verbose>true</verbose>
+	          <dateFormat>yyyy-MM-dd'T'HH:mm:ssZ</dateFormat>
+	          <generateGitPropertiesFile>true</generateGitPropertiesFile>
+	          <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties
+	          </generateGitPropertiesFilename>
+	          <failOnNoGitDirectory>false</failOnNoGitDirectory>
+	        </configuration>
+	      </plugin>
+	
+	      <plugin>
+	        <groupId>ro.isdc.wro4j</groupId>
+	        <artifactId>wro4j-maven-plugin</artifactId>
+	        <version>${wro4j.version}</version>
+	        <executions>
+	          <execution>
+	            <phase>generate-resources</phase>
+	            <goals>
+	              <goal>run</goal>
+	            </goals>
+	          </execution>
+	        </executions>
+	        <configuration>
+	          <wroManagerFactory>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory</wroManagerFactory>
+	          <cssDestinationFolder>${project.build.directory}/classes/static/resources/css</cssDestinationFolder>
+	          <wroFile>${basedir}/src/main/wro/wro.xml</wroFile>
+	          <extraConfigFile>${basedir}/src/main/wro/wro.properties</extraConfigFile>
+	          <contextFolder>${basedir}/src/main/less</contextFolder>
+	        </configuration>
+	        <dependencies>
+	          <dependency>
+	            <groupId>org.webjars</groupId>
+	            <artifactId>bootstrap</artifactId>
+	            <version>${webjars-bootstrap.version}</version>
+	          </dependency>
+	          <dependency>
+	            <groupId>org.mockito</groupId>
+	            <artifactId>mockito-core</artifactId>
+	            <version>${mockito.version}</version>
+	          </dependency>
+	        </dependencies>
+	      </plugin>
+	              <!--This plugin's configuration is used to store Eclipse 
+                m2e settings only. It has no influence on the Maven build itself. -->
+            <plugin>
+                <groupId>org.eclipse.m2e</groupId>
+                <artifactId>lifecycle-mapping</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <lifecycleMappingMetadata>
+                        <pluginExecutions>
+                            <pluginExecution>
+                                <pluginExecutionFilter>
+                                    <groupId>org.codehaus.mojo</groupId>
+                                    <artifactId>aspectj-maven-plugin</artifactId>
+                                    <versionRange>[1.0,)</versionRange>
+                                    <goals>
+                                        <goal>test-compile</goal>
+                                        <goal>compile</goal>
+                                    </goals>
+                                </pluginExecutionFilter>
+                                <action>
+                                    <execute />
+                                </action>
+                            </pluginExecution>
+                        </pluginExecutions>
+                    </lifecycleMappingMetadata>
+                </configuration>
+            </plugin>
+	    </plugins>
+	    
+    </pluginManagement>
   </build>
 
   <!-- Apache 2 license -->
