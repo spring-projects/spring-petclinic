@@ -1,0 +1,26 @@
+name: CI
+on:
+  #push:
+   # branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run a multi-line script
+      run: |
+        echo Add other actions to build,
+        echo test, and deploy your project.
+        set -x
+        compose=etc/docker/swarm/docker-compose.yaml
+        date=$( date +%s )
+        script=.github/bin/check-service.sh
+        sed -i s/worker/manager/ ${compose}
+        sed -i s/secobau/${date}/ ${compose}
+        docker swarm init
+        docker build -t ${date}/spring-petclinic --no-cache .
+        docker stack deploy -c ${compose} petclinic
+        chmod +x ${script}
+        ./${script}
