@@ -1,0 +1,18 @@
+#########################################################################
+#      Copyright (C) 2020        Sebastian Francisco Colomar Bauza      #
+#      SPDX-License-Identifier:  GPL-2.0-only                           #
+#########################################################################
+services:
+  web:
+    deploy:
+      placement:
+        constraints:
+        - node.role == worker
+      replicas: 1
+      restart_policy:
+        condition: any
+    image: secobau/spring-petclinic
+    ports:
+      - 80:8080
+version: '3.8'
+#########################################################################
