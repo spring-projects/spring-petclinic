@@ -1,0 +1,54 @@
+################################################################################
+#      Copyright (C) 2020        Sebastian Francisco Colomar Bauza             #
+#      SPDX-License-Identifier:  GPL-2.0-only                                  #
+################################################################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: petclinic
+  namespace: demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: petclinic
+  template:
+    metadata:
+      labels:
+        service: petclinic
+    spec:
+      containers:
+      -
+        image: secobau/petclinic
+        name: petclinic
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: petclinic
+  namespace: demo
+spec:
+  ports:
+  -
+    port: 8080
+  selector:
+    service: petclinic
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: petclinic
+  namespace: demo
+spec:
+  host: petclinic.apps.openshift.sebastian-colomar.com
+  to:
+    kind: Service
+    name: petclinic
+    weight: 100
+  port:
+    targetPort: 8080
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None
+################################################################################
