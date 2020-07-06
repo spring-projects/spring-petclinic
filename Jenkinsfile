@@ -13,8 +13,8 @@ node('master'){
     }
 
     stage('Sonar') {
-        withSonarQubeEnv('sonarscan') {
-        sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.6.0.1398:sonarscan'
+        withSonarQubeEnv('sonar') {
+        sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.6.0.1398:sonar'
     }
 
     stage("Quality Gate") {
