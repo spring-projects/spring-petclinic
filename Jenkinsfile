@@ -7,11 +7,6 @@ node('master'){
 	sh label: '', script: 'mvn clean package'
     }
 
-    stage('postbuild'){
-	junit '**/target/surefire-reports/*.xml'
-	archiveArtifacts 'target/*.jar'
-    }
-
     stage('Sonar') {
         withSonarQubeEnv('sonar') {
         sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.6.0.1398:sonar'
@@ -23,6 +18,10 @@ node('master'){
               if (qg.status != 'OK') {
                   error "Pipeline aborted due to quality gate failure: ${qg.status}"
                }
+       stage('postbuild'){
+	junit '**/target/surefire-reports/*.xml'
+	archiveArtifacts 'target/*.jar'
+    }
             }
         }
     }
