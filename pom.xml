@@ -139,7 +139,6 @@
         <groupId>io.spring.javaformat</groupId>
         <artifactId>spring-javaformat-maven-plugin</artifactId>
         <version>${spring-format.version}</version>
-        <!-- run ./mvnw spring-javaformat:apply to apply -->
         <executions>
           <execution>
             <phase>validate</phase>
@@ -281,7 +280,6 @@
     </plugins>
   </build>
 
-  <!-- Apache 2 license -->
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>
