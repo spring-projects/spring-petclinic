@@ -29,7 +29,7 @@
 
     <jacoco.version>0.8.5</jacoco.version>
     <nohttp-checkstyle.version>0.0.4.RELEASE</nohttp-checkstyle.version>
-    <spring-format.version>0.0.21</spring-format.version>
+    <spring-format.version>0.0.22</spring-format.version>
   </properties>
 
   <dependencies>
