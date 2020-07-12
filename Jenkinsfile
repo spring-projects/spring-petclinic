@@ -12,17 +12,10 @@ node('master'){
         sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.6.0.1398:sonar'
     }
 
-      stage("Quality Gate"){
-          timeout(time: 35, unit: 'MINUTES') {
-              def qg = waitForQualityGate()
-              if (qg.status != 'OK') {
-                  error "Pipeline aborted due to quality gate failure: ${qg.status}"
-               }
-       stage('postbuild'){
+    stage('postbuild'){
 	junit '**/target/surefire-reports/*.xml'
 	archiveArtifacts 'target/*.jar'
-    }
-            }
+           }
         }
     }
     }
