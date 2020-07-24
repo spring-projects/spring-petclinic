@@ -1,4 +1,4 @@
-node('master'){
+node('centos_hosts'){
     stage('scm'){
 	git 'https://github.com/ametgud4u/spring-petclinic.git'
     }
@@ -16,5 +16,8 @@ node('master'){
 	junit '**/target/surefire-reports/*.xml'
 	archiveArtifacts 'target/*.jar'
            }
+            
+    stage('Create Docker Image ') {
+        sh label: '', script: 'BuildImage'
         }
     }
