@@ -21,3 +21,4 @@ node('centos_hosts'){
         sh label: '', script: 'BuildImage'
         }
     }
+}
