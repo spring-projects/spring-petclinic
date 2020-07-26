@@ -7,4 +7,4 @@ echo " *************************************** "
 echo " ********** Build Docker Image********** "
 echo " *************************************** "
 
-cd /home/jenkins/centos_data/Build && docker-compose -f docker-compose-buildimage.yml  build --no-cache
+cd /home/jenkins/centos_data/Build/ && docker-compose -f docker-compose-buildimage.yml  build --no-cache
