@@ -18,7 +18,7 @@ node('centos_host'){
            }
             
     stage('Create Docker Image ') {
-        sh label: '', script: 'BuildImage'
+        sh '${WORKSPACE}/SpringPetClinic-Piple/BuildImage.sh'
         }
     }
-}
+} 
