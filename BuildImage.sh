@@ -1,7 +1,10 @@
-#!/bin/bash
-sudo rm -rf /home/jenkins/centos_data/java-app/
-git clone https://github.com/ametgud4u/spring-petclinic.git /home/jenkins/centos_data/java-app/
+#!/bin/sh
 
-echo "*****************************************"
-echo "*****************Build*******************"
-docker run --rm -ti -v $PWD/java-app:/apps -v /root/.m2/:/root/.m2/ -w /apps/ maven3:alphine "$@"
+# copying  runtime to docker build path
+sudo cp -f /home/jenkins/centos_data/apps/workspace/SpringPetClinic-Piple/target/spring-petclinic-2.1.0.BUILD-SNAPSHOT.jar /home/jenkins/centos_data/Build/
+
+echo " *************************************** "
+echo " ********** Build Docker Image********** "
+echo " *************************************** "
+
+cd $HOME/centos_data/Build && docker-compose -f docker-compose-buildimage.yml  build --no-cache
