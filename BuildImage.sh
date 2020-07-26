@@ -7,4 +7,4 @@ echo " *************************************** "
 echo " ********** Build Docker Image********** "
 echo " *************************************** "
 
-cd $HOME/centos_data/Build && docker-compose -f docker-compose-buildimage.yml  build --no-cache
+sudo cd $HOME/centos_data/Build && docker-compose -f docker-compose-buildimage.yml  build --no-cache
