@@ -15,15 +15,13 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -42,11 +40,13 @@ class OwnerController {
 	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
 
 	private final OwnerRepository owners;
+	private final ApplicationContext applicationContext;
 
 	private VisitRepository visits;
 
-	public OwnerController(OwnerRepository clinicService, VisitRepository visits) {
+	public OwnerController(OwnerRepository clinicService, ApplicationContext applicationContext, VisitRepository visits) {
 		this.owners = clinicService;
+		this.applicationContext = applicationContext;
 		this.visits = visits;
 	}
 
@@ -54,6 +54,21 @@ class OwnerController {
 	public void setAllowedFields(WebDataBinder dataBinder) {
 		dataBinder.setDisallowedFields("id");
 	}
+
+	/*@GetMapping("/bean")
+	@ResponseBody
+	public String bean() {
+		return "bean: " + applicationContext.getBean(OwnerController.class);
+	}*/
+
+	@GetMapping("/bean")
+	@ResponseBody
+	public String bean() {
+		return "bean: " + applicationContext.getBean(OwnerRepository.class) + "\n"
+			+ "owners: " + this.owners;
+	}
+
+
 
 	@GetMapping("/owners/new")
 	public String initCreationForm(Map<String, Object> model) {

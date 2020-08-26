@@ -27,11 +27,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.assertj.ApplicationContextAssert;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
@@ -63,6 +66,23 @@ class OwnerControllerTests {
 	private VisitRepository visits;
 
 	private Owner george;
+
+	@Autowired
+	ApplicationContext applicationContext;
+
+	@Test
+	public void getBean() {
+		applicationContext.getBeanDefinitionNames();
+		System.out.println(applicationContext.getBeanDefinitionNames().length);
+
+	}
+
+	/*@Test
+	public void getBean() {
+		OwnerController bean = applicationContext.getBean(OwnerController.class);
+		assertThat(bean).isNotNull();
+	}*/
+
 
 	@BeforeEach
 	void setup() {
