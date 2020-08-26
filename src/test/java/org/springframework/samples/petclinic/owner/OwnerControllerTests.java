@@ -70,12 +70,12 @@ class OwnerControllerTests {
 	@Autowired
 	ApplicationContext applicationContext;
 
-	@Test
+	/*@Test
 	public void getBean() {
 		applicationContext.getBeanDefinitionNames();
 		System.out.println(applicationContext.getBeanDefinitionNames().length);
 
-	}
+	}*/
 
 	/*@Test
 	public void getBean() {

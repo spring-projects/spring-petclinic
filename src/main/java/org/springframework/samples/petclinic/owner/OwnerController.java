@@ -15,8 +15,7 @@
  */
 package org.springframework.samples.petclinic.owner;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.samples.petclinic.visit.VisitRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,36 +38,13 @@ class OwnerController {
 
 	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
 
-	private final OwnerRepository owners;
-	private final ApplicationContext applicationContext;
-
-	private VisitRepository visits;
-
-	public OwnerController(OwnerRepository clinicService, ApplicationContext applicationContext, VisitRepository visits) {
-		this.owners = clinicService;
-		this.applicationContext = applicationContext;
-		this.visits = visits;
-	}
+	@Autowired
+	private OwnerRepository owners;
 
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
 		dataBinder.setDisallowedFields("id");
 	}
-
-	/*@GetMapping("/bean")
-	@ResponseBody
-	public String bean() {
-		return "bean: " + applicationContext.getBean(OwnerController.class);
-	}*/
-
-	@GetMapping("/bean")
-	@ResponseBody
-	public String bean() {
-		return "bean: " + applicationContext.getBean(OwnerRepository.class) + "\n"
-			+ "owners: " + this.owners;
-	}
-
-
 
 	@GetMapping("/owners/new")
 	public String initCreationForm(Map<String, Object> model) {
@@ -146,7 +122,7 @@ class OwnerController {
 	 * @param ownerId the ID of the owner to display
 	 * @return a ModelMap with the model attributes for the view
 	 */
-	@GetMapping("/owners/{ownerId}")
+	/*@GetMapping("/owners/{ownerId}")
 	public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
 		ModelAndView mav = new ModelAndView("owners/ownerDetails");
 		Owner owner = this.owners.findById(ownerId);
@@ -155,6 +131,6 @@ class OwnerController {
 		}
 		mav.addObject(owner);
 		return mav;
-	}
+	}*/
 
 }
