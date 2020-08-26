@@ -9,9 +9,9 @@
     class="form-horizontal" id="search-owner-form">
     <div class="form-group">
       <div class="control-group" id="lastNameGroup">
-        <label class="col-sm-2 control-label">Last name </label>
+        <label class="col-sm-2 control-label">First name </label>
         <div class="col-sm-10">
-          <input class="form-control" th:field="*{lastName}" size="30"
+          <input class="form-control" th:field="*{firstName}" size="30"
             maxlength="80" /> <span class="help-inline"><div
               th:if="${#fields.hasAnyErrors()}">
               <p th:each="err : ${#fields.allErrors()}" th:text="${err}">Error</p>
