@@ -15,6 +15,9 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.dto.OwnerDto;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,6 +48,9 @@ class OwnerController {
 
 	private VisitRepository visits;
 
+	@Autowired
+	private ModelMapper modelMapper;
+
 	public OwnerController(OwnerRepository clinicService, VisitRepository visits) {
 		this.owners = clinicService;
 		this.visits = visits;
@@ -63,7 +69,8 @@ class OwnerController {
 	}
 
 	@PostMapping("/owners/new")
-	public String processCreationForm(@Valid Owner owner, BindingResult result) {
+	public String processCreationForm(@Valid OwnerDto ownerDto, BindingResult result) {
+		Owner owner = modelMapper.map(ownerDto, Owner.class);
 		if (result.hasErrors()) {
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 		}
@@ -80,7 +87,8 @@ class OwnerController {
 	}
 
 	@GetMapping("/owners")
-	public String processFindForm(Owner owner, BindingResult result, Map<String, Object> model) {
+	public String processFindForm(OwnerDto ownerDto, BindingResult result, Map<String, Object> model) {
+		Owner owner = modelMapper.map(ownerDto, Owner.class);
 
 		// allow parameterless GET request for /owners to return all records
 		if (owner.getLastName() == null) {
@@ -114,8 +122,10 @@ class OwnerController {
 	}
 
 	@PostMapping("/owners/{ownerId}/edit")
-	public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result,
+	public String processUpdateOwnerForm(@Valid OwnerDto ownerDto, BindingResult result,
 			@PathVariable("ownerId") int ownerId) {
+		Owner owner = modelMapper.map(ownerDto, Owner.class);
+
 		if (result.hasErrors()) {
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 		}
