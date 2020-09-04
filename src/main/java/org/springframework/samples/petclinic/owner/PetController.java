@@ -15,10 +15,7 @@
  */
 package org.springframework.samples.petclinic.owner;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.dto.OwnerDto;
-import org.springframework.samples.petclinic.dto.PetDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -45,8 +42,6 @@ class PetController {
 	private final OwnerRepository owners;
 
 	@Autowired
-	private ModelMapper modelMapper;
-
 	public PetController(PetRepository pets, OwnerRepository owners) {
 		this.pets = pets;
 		this.owners = owners;
@@ -73,8 +68,7 @@ class PetController {
 	}
 
 	@GetMapping("/pets/new")
-	public String initCreationForm(OwnerDto ownerDto, ModelMap model) {
-		Owner owner = modelMapper.map(ownerDto, Owner.class);
+	public String initCreationForm(Owner owner, ModelMap model) {
 		Pet pet = new Pet();
 		owner.addPet(pet);
 		model.put("pet", pet);
@@ -82,9 +76,7 @@ class PetController {
 	}
 
 	@PostMapping("/pets/new")
-	public String processCreationForm(OwnerDto ownerDto, @Valid PetDto petDto, BindingResult result, ModelMap model) {
-		Owner owner = modelMapper.map(ownerDto, Owner.class);
-		Pet pet = modelMapper.map(petDto, Pet.class);
+	public String processCreationForm(Owner owner, @Valid Pet pet, BindingResult result, ModelMap model) {
 
 		if (StringUtils.hasLength(pet.getName()) && pet.isNew() && owner.getPet(pet.getName(), true) != null) {
 			result.rejectValue("name", "duplicate", "already exists");
@@ -108,9 +100,7 @@ class PetController {
 	}
 
 	@PostMapping("/pets/{petId}/edit")
-	public String processUpdateForm(@Valid PetDto petDto, BindingResult result, OwnerDto ownerDto, ModelMap model) {
-		Pet pet = modelMapper.map(petDto, Pet.class);
-		Owner owner = modelMapper.map(ownerDto, Owner.class);
+	public String processUpdateForm(@Valid Pet pet, BindingResult result, Owner owner, ModelMap model) {
 		if (result.hasErrors()) {
 			pet.setOwner(owner);
 			model.put("pet", pet);

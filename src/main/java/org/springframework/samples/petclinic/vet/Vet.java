@@ -29,6 +29,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.samples.petclinic.model.Person;
@@ -43,6 +47,10 @@ import org.springframework.samples.petclinic.model.Person;
  */
 @Entity
 @Table(name = "vets")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class Vet extends Person {
 
 	@ManyToMany(fetch = FetchType.EAGER)
@@ -55,10 +63,6 @@ public class Vet extends Person {
 			this.specialties = new HashSet<>();
 		}
 		return this.specialties;
-	}
-
-	protected void setSpecialtiesInternal(Set<Specialty> specialties) {
-		this.specialties = specialties;
 	}
 
 	@XmlElement
