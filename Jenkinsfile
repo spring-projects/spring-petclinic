@@ -15,6 +15,7 @@
          }
          stage('Build petclinic') {
           agent { dockerfile true }
+          steps {}
          }
     }
  }
