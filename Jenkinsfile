@@ -13,10 +13,6 @@
                 sh 'mvn clean package'
                 }
          }
-         stage('Build petclinic') {
-          agent { dockerfile true }
-          steps {}
-         }
     }
  }
 
