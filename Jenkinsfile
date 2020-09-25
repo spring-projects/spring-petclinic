@@ -1,4 +1,4 @@
-node('centos_host'){
+node('jenkins'){
     stage('scm'){
 	git 'https://github.com/ametgud4u/spring-petclinic.git'
     }
