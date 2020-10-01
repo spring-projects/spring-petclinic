@@ -30,7 +30,7 @@ Our issue tracker is available here: https://github.com/spring-projects/spring-p
 
 ## Database configuration
 
-In its default configuration, Petclinic uses an in-memory database (H2) which
+In its default configuration, Petclinic uses an in-memory database heading2(H2) which
 gets populated at startup with data. The h2 console is automatically exposed at `http://localhost:8080/h2-console`
 and it is possible to inspect the content of the database using the `jdbc:h2:mem:testdb` url.
  
