@@ -52,7 +52,7 @@ public class PetTypeFormatter implements Formatter<PetType> {
 	public PetType parse(String text, Locale locale) throws ParseException {
 		Collection<PetType> findPetTypes = this.pets.findPetTypes();
 		for (PetType type : findPetTypes) {
-			if (type.getName().equals(text)) {
+			if (type.getName().equalsIgnoreCase(text)) {
 				return type;
 			}
 		}
