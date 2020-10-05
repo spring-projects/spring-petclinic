@@ -392,7 +392,7 @@
                 <version>${cobertura.version}</version>
                 <configuration>
                     <formats>
-                        <format>html</format>
+                        <format>xml</format>
                     </formats>
                     <check/>
                 </configuration>
