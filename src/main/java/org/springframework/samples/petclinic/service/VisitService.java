@@ -10,9 +10,10 @@ import java.util.Collection;
 import java.util.HashSet;
 
 @Service("VisitService")
-public class VisitService implements BaseService<Visit, VisitDTO>{
+public class VisitService implements BaseService<Visit, VisitDTO> {
 
 	private final VisitRepository visitRepository;
+
 	private final ModelMapper modelMapper = new ModelMapper();
 
 	public VisitService(VisitRepository visitRepository) {
@@ -33,7 +34,7 @@ public class VisitService implements BaseService<Visit, VisitDTO>{
 	public Collection<VisitDTO> entitiesToDTOS(Collection<Visit> entities) {
 		Collection<VisitDTO> dtos = new HashSet<>();
 
-		for(Visit entity: entities) {
+		for (Visit entity : entities) {
 			dtos.add(entityToDTO(entity));
 		}
 		return dtos;
@@ -43,7 +44,7 @@ public class VisitService implements BaseService<Visit, VisitDTO>{
 	public Collection<Visit> dtosToEntities(Collection<VisitDTO> dtos) {
 		Collection<Visit> entities = new HashSet<>();
 
-		for(VisitDTO dto: dtos) {
+		for (VisitDTO dto : dtos) {
 			entities.add(dtoToEntity(dto));
 		}
 
@@ -59,10 +60,11 @@ public class VisitService implements BaseService<Visit, VisitDTO>{
 		Collection<Visit> visits = visitRepository.findByPetId(petId);
 		Collection<VisitDTO> visitDTOS = new HashSet<>();
 
-		for (Visit visit: visits) {
+		for (Visit visit : visits) {
 			visitDTOS.add(entityToDTO(visit));
 		}
 
 		return visitDTOS;
 	}
+
 }

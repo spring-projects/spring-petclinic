@@ -26,6 +26,7 @@ public class PersonDTO extends BaseDTO {
 
 	@NotEmpty
 	private String firstName;
+
 	@NotEmpty
 	private String lastName;
 
@@ -44,4 +45,5 @@ public class PersonDTO extends BaseDTO {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+
 }

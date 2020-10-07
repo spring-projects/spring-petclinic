@@ -10,8 +10,10 @@ import java.util.Collection;
 import java.util.HashSet;
 
 @Service("PerTypeService")
-public class PetTypeService implements BaseService<PetType, PetTypeDTO>{
+public class PetTypeService implements BaseService<PetType, PetTypeDTO> {
+
 	private final PetRepository petRepository;
+
 	private final ModelMapper modelMapper = new ModelMapper();
 
 	public PetTypeService(PetRepository petRepository) {
@@ -32,7 +34,7 @@ public class PetTypeService implements BaseService<PetType, PetTypeDTO>{
 	public Collection<PetTypeDTO> entitiesToDTOS(Collection<PetType> entities) {
 		Collection<PetTypeDTO> dtos = new HashSet<>();
 
-		for(PetType entity : entities) {
+		for (PetType entity : entities) {
 			dtos.add(entityToDTO(entity));
 		}
 
@@ -43,16 +45,15 @@ public class PetTypeService implements BaseService<PetType, PetTypeDTO>{
 	public Collection<PetType> dtosToEntities(Collection<PetTypeDTO> dtos) {
 		Collection<PetType> entities = new HashSet<>();
 
-		for(PetTypeDTO dto: dtos) {
+		for (PetTypeDTO dto : dtos) {
 			entities.add(dtoToEntity(dto));
 		}
 
 		return entities;
 	}
 
-
 	public Collection<PetTypeDTO> findPetTypes() {
-		Collection<PetType> petTypes =  petRepository.findPetTypes();
+		Collection<PetType> petTypes = petRepository.findPetTypes();
 		return entitiesToDTOS(petTypes);
 	}
 

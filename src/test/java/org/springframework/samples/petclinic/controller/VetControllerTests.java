@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.samples.petclinic.vet;
+package org.springframework.samples.petclinic.controller;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -31,8 +31,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.samples.petclinic.controller.VetController;
-import org.springframework.samples.petclinic.repository.VetRepository;
+import org.springframework.samples.petclinic.dto.VetDTO;
+import org.springframework.samples.petclinic.service.VetService;
+import org.springframework.samples.petclinic.vet.Specialty;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -46,15 +47,15 @@ class VetControllerTests {
 	private MockMvc mockMvc;
 
 	@MockBean
-	private VetRepository vets;
+	private VetService vetService;
 
 	@BeforeEach
 	void setup() {
-		Vet james = new Vet();
+		VetDTO james = new VetDTO();
 		james.setFirstName("James");
 		james.setLastName("Carter");
 		james.setId(1);
-		Vet helen = new Vet();
+		VetDTO helen = new VetDTO();
 		helen.setFirstName("Helen");
 		helen.setLastName("Leary");
 		helen.setId(2);
@@ -62,7 +63,7 @@ class VetControllerTests {
 		radiology.setId(1);
 		radiology.setName("radiology");
 		helen.addSpecialty(radiology);
-		given(this.vets.findAll()).willReturn(Lists.newArrayList(james, helen));
+		given(this.vetService.findAll()).willReturn(Lists.newArrayList(james, helen));
 	}
 
 	@Test

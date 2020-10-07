@@ -40,7 +40,6 @@ class VetController {
 		this.vetService = vetService;
 	}
 
-
 	@GetMapping("/vets.html")
 	public String showVetList(Map<String, Object> model) {
 		// Here we are returning an object of type 'Vets' rather than a collection of Vet

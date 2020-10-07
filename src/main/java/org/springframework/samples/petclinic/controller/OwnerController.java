@@ -45,6 +45,7 @@ class OwnerController {
 	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
 
 	private final OwnerService ownerService;
+
 	private final VisitService visitService;
 
 	OwnerController(OwnerService ownerService, VisitService visitService) {

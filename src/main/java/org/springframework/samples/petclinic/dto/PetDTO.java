@@ -18,7 +18,6 @@ package org.springframework.samples.petclinic.dto;
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.samples.petclinic.owner.PetType;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -33,7 +32,7 @@ public class PetDTO extends NamedDTO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate birthDate;
 
-	private PetType type;
+	private PetTypeDTO type;
 
 	private OwnerDTO owner;
 
@@ -47,11 +46,11 @@ public class PetDTO extends NamedDTO {
 		return this.birthDate;
 	}
 
-	public PetType getType() {
+	public PetTypeDTO getType() {
 		return this.type;
 	}
 
-	public void setType(PetType type) {
+	public void setType(PetTypeDTO type) {
 		this.type = type;
 	}
 

@@ -18,8 +18,8 @@ package org.springframework.samples.petclinic.dto;
 import java.io.Serializable;
 
 /**
- * Simple Data Transfert Object with an id property. Used as a base class for DTO
- * needing this property.
+ * Simple Data Transfert Object with an id property. Used as a base class for DTO needing
+ * this property.
  *
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
@@ -38,4 +38,5 @@ public class BaseDTO implements Serializable {
 	public boolean isNew() {
 		return this.id == null;
 	}
+
 }

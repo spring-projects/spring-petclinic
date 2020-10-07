@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.samples.petclinic.owner;
+package org.springframework.samples.petclinic.controller;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -32,8 +32,18 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.samples.petclinic.controller.PetController;
+import org.springframework.samples.petclinic.dto.OwnerDTO;
+import org.springframework.samples.petclinic.dto.PetDTO;
+import org.springframework.samples.petclinic.dto.PetTypeDTO;
+import org.springframework.samples.petclinic.owner.Owner;
+import org.springframework.samples.petclinic.owner.Pet;
+import org.springframework.samples.petclinic.owner.PetType;
+import org.springframework.samples.petclinic.owner.PetTypeFormatter;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
 import org.springframework.samples.petclinic.repository.PetRepository;
+import org.springframework.samples.petclinic.service.OwnerService;
+import org.springframework.samples.petclinic.service.PetService;
+import org.springframework.samples.petclinic.service.PetTypeService;
 import org.springframework.test.web.servlet.MockMvc;
 
 /**
@@ -53,19 +63,22 @@ class PetControllerTests {
 	private MockMvc mockMvc;
 
 	@MockBean
-	private PetRepository pets;
+	private PetService petService;
 
 	@MockBean
-	private OwnerRepository owners;
+	private PetTypeService petTypeService;
+
+	@MockBean
+	private OwnerService ownerService;
 
 	@BeforeEach
 	void setup() {
-		PetType cat = new PetType();
+		PetTypeDTO cat = new PetTypeDTO();
 		cat.setId(3);
 		cat.setName("hamster");
-		given(this.pets.findPetTypes()).willReturn(Lists.newArrayList(cat));
-		given(this.owners.findById(TEST_OWNER_ID)).willReturn(new Owner());
-		given(this.pets.findById(TEST_PET_ID)).willReturn(new Pet());
+		given(this.petTypeService.findPetTypes()).willReturn(Lists.newArrayList(cat));
+		given(this.ownerService.findById(TEST_OWNER_ID)).willReturn(new OwnerDTO());
+		given(this.petService.findById(TEST_PET_ID)).willReturn(new PetDTO());
 
 	}
 

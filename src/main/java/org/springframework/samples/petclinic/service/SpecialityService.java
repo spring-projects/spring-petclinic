@@ -10,6 +10,7 @@ import java.util.HashSet;
 
 @Service("SpecialityService")
 public class SpecialityService implements BaseService<Specialty, SpecialtyDTO> {
+
 	private final ModelMapper modelMapper = new ModelMapper();
 
 	@Override
@@ -26,7 +27,7 @@ public class SpecialityService implements BaseService<Specialty, SpecialtyDTO> {
 	public Collection<SpecialtyDTO> entitiesToDTOS(Collection<Specialty> entities) {
 		Collection<SpecialtyDTO> dtos = new HashSet<>();
 
-		for(Specialty entity:entities) {
+		for (Specialty entity : entities) {
 			dtos.add(entityToDTO(entity));
 		}
 
@@ -37,10 +38,11 @@ public class SpecialityService implements BaseService<Specialty, SpecialtyDTO> {
 	public Collection<Specialty> dtosToEntities(Collection<SpecialtyDTO> dtos) {
 		Collection<Specialty> entities = new HashSet<>();
 
-		for(SpecialtyDTO dto: dtos) {
+		for (SpecialtyDTO dto : dtos) {
 			entities.add(dtoToEntity(dto));
 		}
 
 		return entities;
 	}
+
 }

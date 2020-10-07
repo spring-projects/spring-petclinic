@@ -112,10 +112,10 @@ class ClinicServiceTests {
 		owner.setCity("Wollongong");
 		owner.setTelephone("4444444444");
 		this.owners.save(owner);
-		assertThat(owner.getId().longValue()).isNotEqualTo(0);
+		assertThat(owner.getId().longValue()).isNotZero();
 
 		owners = this.owners.findByLastName("Schultz");
-		assertThat(owners.size()).isEqualTo(found + 1);
+		assertThat(owners).hasSize(found + 1);
 	}
 
 	@Test
@@ -176,7 +176,7 @@ class ClinicServiceTests {
 
 	@Test
 	@Transactional
-	void shouldUpdatePetName() throws Exception {
+	void shouldUpdatePetName() {
 		Pet pet7 = this.pets.findById(7);
 		String oldName = pet7.getName();
 
@@ -216,7 +216,7 @@ class ClinicServiceTests {
 	}
 
 	@Test
-	void shouldFindVisitsByPetId() throws Exception {
+	void shouldFindVisitsByPetId() {
 		Collection<Visit> visits = this.visits.findByPetId(7);
 		assertThat(visits).hasSize(2);
 		Visit[] visitArr = visits.toArray(new Visit[visits.size()]);

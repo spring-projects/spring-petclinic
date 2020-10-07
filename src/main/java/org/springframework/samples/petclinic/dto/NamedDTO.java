@@ -15,10 +15,9 @@
  */
 package org.springframework.samples.petclinic.dto;
 
-
 /**
- * Simple Data Transfert Object with a name property to <code>BaseDTO</code>. Used as
- * a base class for DTOs needing these properties.
+ * Simple Data Transfert Object with a name property to <code>BaseDTO</code>. Used as a
+ * base class for DTOs needing these properties.
  *
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */

@@ -10,9 +10,10 @@ import java.util.Collection;
 import java.util.HashSet;
 
 @Service("OwnerService")
-public class OwnerService implements BaseService<Owner,OwnerDTO>{
+public class OwnerService implements BaseService<Owner, OwnerDTO> {
 
 	private final OwnerRepository ownerRepository;
+
 	private final ModelMapper modelMapper = new ModelMapper();
 
 	public OwnerService(OwnerRepository ownerRepository) {
@@ -33,7 +34,7 @@ public class OwnerService implements BaseService<Owner,OwnerDTO>{
 	public Collection<OwnerDTO> entitiesToDTOS(Collection<Owner> entities) {
 		Collection<OwnerDTO> dtos = new HashSet<>();
 
-		for(Owner entity: entities) {
+		for (Owner entity : entities) {
 			dtos.add(entityToDTO(entity));
 		}
 
@@ -44,7 +45,7 @@ public class OwnerService implements BaseService<Owner,OwnerDTO>{
 	public Collection<Owner> dtosToEntities(Collection<OwnerDTO> dtos) {
 		Collection<Owner> entities = new HashSet<>();
 
-		for(OwnerDTO dto: dtos) {
+		for (OwnerDTO dto : dtos) {
 			entities.add(dtoToEntity(dto));
 		}
 
@@ -65,4 +66,5 @@ public class OwnerService implements BaseService<Owner,OwnerDTO>{
 		Owner owner = ownerRepository.findById(ownerId);
 		return entityToDTO(owner);
 	}
+
 }

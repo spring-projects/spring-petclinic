@@ -73,7 +73,7 @@ public class OwnerDTO extends PersonDTO {
 		return this.pets;
 	}
 
-	protected void setPetsInternal(Set<PetDTO> pets) {
+	public void setPetsInternal(Set<PetDTO> pets) {
 		this.pets = pets;
 	}
 

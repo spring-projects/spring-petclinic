@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.samples.petclinic.owner;
+package org.springframework.samples.petclinic.controller;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -28,10 +28,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.samples.petclinic.controller.OwnerController;
-import org.springframework.samples.petclinic.repository.OwnerRepository;
-import org.springframework.samples.petclinic.visit.Visit;
-import org.springframework.samples.petclinic.repository.VisitRepository;
+import org.springframework.samples.petclinic.dto.OwnerDTO;
+import org.springframework.samples.petclinic.dto.PetDTO;
+import org.springframework.samples.petclinic.dto.PetTypeDTO;
+import org.springframework.samples.petclinic.dto.VisitDTO;
+import org.springframework.samples.petclinic.service.OwnerService;
+import org.springframework.samples.petclinic.service.VisitService;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.empty;
@@ -59,24 +61,24 @@ class OwnerControllerTests {
 	private MockMvc mockMvc;
 
 	@MockBean
-	private OwnerRepository owners;
+	private OwnerService owners;
 
 	@MockBean
-	private VisitRepository visits;
+	private VisitService visits;
 
-	private Owner george;
+	private OwnerDTO george;
 
 	@BeforeEach
 	void setup() {
-		george = new Owner();
+		george = new OwnerDTO();
 		george.setId(TEST_OWNER_ID);
 		george.setFirstName("George");
 		george.setLastName("Franklin");
 		george.setAddress("110 W. Liberty St.");
 		george.setCity("Madison");
 		george.setTelephone("6085551023");
-		Pet max = new Pet();
-		PetType dog = new PetType();
+		PetDTO max = new PetDTO();
+		PetTypeDTO dog = new PetTypeDTO();
 		dog.setName("dog");
 		max.setId(1);
 		max.setType(dog);
@@ -84,7 +86,7 @@ class OwnerControllerTests {
 		max.setBirthDate(LocalDate.now());
 		george.setPetsInternal(Collections.singleton(max));
 		given(this.owners.findById(TEST_OWNER_ID)).willReturn(george);
-		Visit visit = new Visit();
+		VisitDTO visit = new VisitDTO();
 		visit.setDate(LocalDate.now());
 		given(this.visits.findByPetId(max.getId())).willReturn(Collections.singletonList(visit));
 	}
@@ -120,7 +122,7 @@ class OwnerControllerTests {
 
 	@Test
 	void testProcessFindFormSuccess() throws Exception {
-		given(this.owners.findByLastName("")).willReturn(Lists.newArrayList(george, new Owner()));
+		given(this.owners.findByLastName("")).willReturn(Lists.newArrayList(george, new OwnerDTO()));
 		mockMvc.perform(get("/owners")).andExpect(status().isOk()).andExpect(view().name("owners/ownersList"));
 	}
 
@@ -178,13 +180,13 @@ class OwnerControllerTests {
 				.andExpect(model().attribute("owner", hasProperty("city", is("Madison"))))
 				.andExpect(model().attribute("owner", hasProperty("telephone", is("6085551023"))))
 				.andExpect(model().attribute("owner", hasProperty("pets", not(empty()))))
-				.andExpect(model().attribute("owner", hasProperty("pets", new BaseMatcher<List<Pet>>() {
+				.andExpect(model().attribute("owner", hasProperty("pets", new BaseMatcher<List<PetDTO>>() {
 
 					@Override
 					public boolean matches(Object item) {
 						@SuppressWarnings("unchecked")
-						List<Pet> pets = (List<Pet>) item;
-						Pet pet = pets.get(0);
+						List<PetDTO> pets = (List<PetDTO>) item;
+						PetDTO pet = pets.get(0);
 						if (pet.getVisits().isEmpty()) {
 							return false;
 						}

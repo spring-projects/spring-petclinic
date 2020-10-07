@@ -45,7 +45,9 @@ class PetController {
 	private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = "pets/createOrUpdatePetForm";
 
 	private final OwnerService ownerService;
+
 	private final PetService petService;
+
 	private final PetTypeService petTypeService;
 
 	PetController(OwnerService ownerService, PetService petService, PetTypeService petTypeService) {
@@ -53,7 +55,6 @@ class PetController {
 		this.petService = petService;
 		this.petTypeService = petTypeService;
 	}
-
 
 	@ModelAttribute("types")
 	public Collection<PetTypeDTO> populatePetTypes() {
