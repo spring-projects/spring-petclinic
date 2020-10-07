@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.owner;
+package org.springframework.samples.petclinic.controller;
 
-import org.springframework.samples.petclinic.visit.VisitRepository;
+import org.springframework.samples.petclinic.dto.*;
+import org.springframework.samples.petclinic.service.OwnerService;
+import org.springframework.samples.petclinic.service.VisitService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,19 +37,19 @@ import java.util.Map;
  * @author Ken Krebs
  * @author Arjen Poutsma
  * @author Michael Isvy
+ * @author Paul-Emmanuel DOS SANTOS FACAO
  */
 @Controller
 class OwnerController {
 
 	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
 
-	private final OwnerRepository owners;
+	private final OwnerService ownerService;
+	private final VisitService visitService;
 
-	private VisitRepository visits;
-
-	public OwnerController(OwnerRepository clinicService, VisitRepository visits) {
-		this.owners = clinicService;
-		this.visits = visits;
+	OwnerController(OwnerService ownerService, VisitService visitService) {
+		this.ownerService = ownerService;
+		this.visitService = visitService;
 	}
 
 	@InitBinder
@@ -57,30 +59,30 @@ class OwnerController {
 
 	@GetMapping("/owners/new")
 	public String initCreationForm(Map<String, Object> model) {
-		Owner owner = new Owner();
+		OwnerDTO owner = new OwnerDTO();
 		model.put("owner", owner);
 		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping("/owners/new")
-	public String processCreationForm(@Valid Owner owner, BindingResult result) {
+	public String processCreationForm(@Valid OwnerDTO owner, BindingResult result) {
 		if (result.hasErrors()) {
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 		}
 		else {
-			this.owners.save(owner);
+			this.ownerService.save(owner);
 			return "redirect:/owners/" + owner.getId();
 		}
 	}
 
 	@GetMapping("/owners/find")
 	public String initFindForm(Map<String, Object> model) {
-		model.put("owner", new Owner());
+		model.put("owner", new OwnerDTO());
 		return "owners/findOwners";
 	}
 
 	@GetMapping("/owners")
-	public String processFindForm(Owner owner, BindingResult result, Map<String, Object> model) {
+	public String processFindForm(OwnerDTO owner, BindingResult result, Map<String, Object> model) {
 
 		// allow parameterless GET request for /owners to return all records
 		if (owner.getLastName() == null) {
@@ -88,7 +90,7 @@ class OwnerController {
 		}
 
 		// find owners by last name
-		Collection<Owner> results = this.owners.findByLastName(owner.getLastName());
+		Collection<OwnerDTO> results = this.ownerService.findByLastName(owner.getLastName());
 		if (results.isEmpty()) {
 			// no owners found
 			result.rejectValue("lastName", "notFound", "not found");
@@ -108,20 +110,20 @@ class OwnerController {
 
 	@GetMapping("/owners/{ownerId}/edit")
 	public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
-		Owner owner = this.owners.findById(ownerId);
-		model.addAttribute(owner);
+		OwnerDTO ownerDTO = this.ownerService.findById(ownerId);
+		model.addAttribute(ownerDTO);
 		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping("/owners/{ownerId}/edit")
-	public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result,
+	public String processUpdateOwnerForm(@Valid OwnerDTO owner, BindingResult result,
 			@PathVariable("ownerId") int ownerId) {
 		if (result.hasErrors()) {
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 		}
 		else {
 			owner.setId(ownerId);
-			this.owners.save(owner);
+			this.ownerService.save(owner);
 			return "redirect:/owners/{ownerId}";
 		}
 	}
@@ -134,10 +136,12 @@ class OwnerController {
 	@GetMapping("/owners/{ownerId}")
 	public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
 		ModelAndView mav = new ModelAndView("owners/ownerDetails");
-		Owner owner = this.owners.findById(ownerId);
-		for (Pet pet : owner.getPets()) {
-			pet.setVisitsInternal(visits.findByPetId(pet.getId()));
+		OwnerDTO owner = this.ownerService.findById(ownerId);
+
+		for (PetDTO petDTO : owner.getPets()) {
+			petDTO.setVisitsInternal(visitService.findByPetId(petDTO.getId()));
 		}
+
 		mav.addObject(owner);
 		return mav;
 	}

@@ -13,24 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.springframework.samples.petclinic.dto;
 
-package org.springframework.samples.petclinic;
+import javax.validation.constraints.NotEmpty;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.samples.petclinic.repository.VetRepository;
+/**
+ * Simple Data Transfert Object representing a person.
+ *
+ * @author Paul-Emmanuel DOS SANTOS FACAO
+ */
+public class PersonDTO extends BaseDTO {
 
-@SpringBootTest
-class PetclinicIntegrationTests {
+	@NotEmpty
+	private String firstName;
+	@NotEmpty
+	private String lastName;
 
-	@Autowired
-	private VetRepository vets;
-
-	@Test
-	void testFindAll() throws Exception {
-		vets.findAll();
-		vets.findAll(); // served from cache
+	public String getFirstName() {
+		return this.firstName;
 	}
 
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return this.lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 }

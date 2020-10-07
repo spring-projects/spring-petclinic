@@ -13,8 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.vet;
+package org.springframework.samples.petclinic.controller;
 
+import org.springframework.samples.petclinic.dto.VetsDTO;
+import org.springframework.samples.petclinic.service.VetService;
+import org.springframework.samples.petclinic.vet.Vets;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,32 +29,34 @@ import java.util.Map;
  * @author Mark Fisher
  * @author Ken Krebs
  * @author Arjen Poutsma
+ * @author Paul-Emmanuel DOS SANTOS FACAO
  */
 @Controller
 class VetController {
 
-	private final VetRepository vets;
+	private final VetService vetService;
 
-	public VetController(VetRepository clinicService) {
-		this.vets = clinicService;
+	VetController(VetService vetService) {
+		this.vetService = vetService;
 	}
+
 
 	@GetMapping("/vets.html")
 	public String showVetList(Map<String, Object> model) {
 		// Here we are returning an object of type 'Vets' rather than a collection of Vet
 		// objects so it is simpler for Object-Xml mapping
-		Vets vets = new Vets();
-		vets.getVetList().addAll(this.vets.findAll());
+		VetsDTO vets = new VetsDTO();
+		vets.getVetList().addAll(this.vetService.findAll());
 		model.put("vets", vets);
 		return "vets/vetList";
 	}
 
 	@GetMapping({ "/vets" })
-	public @ResponseBody Vets showResourcesVetList() {
+	public @ResponseBody VetsDTO showResourcesVetList() {
 		// Here we are returning an object of type 'Vets' rather than a collection of Vet
 		// objects so it is simpler for JSon/Object mapping
-		Vets vets = new Vets();
-		vets.getVetList().addAll(this.vets.findAll());
+		VetsDTO vets = new VetsDTO();
+		vets.getVetList().addAll(this.vetService.findAll());
 		return vets;
 	}
 

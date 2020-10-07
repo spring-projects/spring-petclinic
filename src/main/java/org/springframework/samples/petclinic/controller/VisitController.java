@@ -13,14 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.owner;
+package org.springframework.samples.petclinic.controller;
 
 import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.springframework.samples.petclinic.dto.PetDTO;
+import org.springframework.samples.petclinic.dto.VisitDTO;
+import org.springframework.samples.petclinic.service.PetService;
+import org.springframework.samples.petclinic.service.VisitService;
 import org.springframework.samples.petclinic.visit.Visit;
-import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -36,18 +39,19 @@ import org.springframework.web.bind.annotation.PostMapping;
  * @author Arjen Poutsma
  * @author Michael Isvy
  * @author Dave Syer
+ * @author Paul-Emmanuel DOS SANTOS FACAO
  */
 @Controller
 class VisitController {
 
-	private final VisitRepository visits;
+	private final VisitService visitService;
+	private final PetService petService;
 
-	private final PetRepository pets;
-
-	public VisitController(VisitRepository visits, PetRepository pets) {
-		this.visits = visits;
-		this.pets = pets;
+	VisitController(VisitService visitService, PetService petService) {
+		this.visitService = visitService;
+		this.petService = petService;
 	}
+
 
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
@@ -62,11 +66,11 @@ class VisitController {
 	 * @return Pet
 	 */
 	@ModelAttribute("visit")
-	public Visit loadPetWithVisit(@PathVariable("petId") int petId, Map<String, Object> model) {
-		Pet pet = this.pets.findById(petId);
-		pet.setVisitsInternal(this.visits.findByPetId(petId));
+	public VisitDTO loadPetWithVisit(@PathVariable("petId") int petId, Map<String, Object> model) {
+		PetDTO pet = this.petService.findById(petId);
+		pet.setVisitsInternal(this.visitService.findByPetId(petId));
 		model.put("pet", pet);
-		Visit visit = new Visit();
+		VisitDTO visit = new VisitDTO();
 		pet.addVisit(visit);
 		return visit;
 	}
@@ -79,12 +83,12 @@ class VisitController {
 
 	// Spring MVC calls method loadPetWithVisit(...) before processNewVisitForm is called
 	@PostMapping("/owners/{ownerId}/pets/{petId}/visits/new")
-	public String processNewVisitForm(@Valid Visit visit, BindingResult result) {
+	public String processNewVisitForm(@Valid VisitDTO visit, BindingResult result) {
 		if (result.hasErrors()) {
 			return "pets/createOrUpdateVisitForm";
 		}
 		else {
-			this.visits.save(visit);
+			this.visitService.save(visit);
 			return "redirect:/owners/{ownerId}";
 		}
 	}

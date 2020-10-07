@@ -13,24 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.springframework.samples.petclinic.dto;
 
-package org.springframework.samples.petclinic;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.samples.petclinic.repository.VetRepository;
+/**
+ * Simple Data Transfert Object representing a list of veterinarians.
+ *
+ * @author Paul-Emmanuel DOS SANTOS FACAO
+ */
+public class VetsDTO {
 
-@SpringBootTest
-class PetclinicIntegrationTests {
+	private List<VetDTO> vets;
 
-	@Autowired
-	private VetRepository vets;
-
-	@Test
-	void testFindAll() throws Exception {
-		vets.findAll();
-		vets.findAll(); // served from cache
+	public List<VetDTO> getVetList() {
+		if (vets == null) {
+			vets = new ArrayList<>();
+		}
+		return vets;
 	}
 
 }

@@ -13,24 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.springframework.samples.petclinic.dto;
 
-package org.springframework.samples.petclinic;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.samples.petclinic.repository.VetRepository;
+/**
+ * Simple Data Transfert Object with a name property to <code>BaseDTO</code>. Used as
+ * a base class for DTOs needing these properties.
+ *
+ * @author Paul-Emmanuel DOS SANTOS FACAO
+ */
+public class NamedDTO extends BaseDTO {
 
-@SpringBootTest
-class PetclinicIntegrationTests {
+	private String name;
 
-	@Autowired
-	private VetRepository vets;
+	public String getName() {
+		return this.name;
+	}
 
-	@Test
-	void testFindAll() throws Exception {
-		vets.findAll();
-		vets.findAll(); // served from cache
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return this.getName();
 	}
 
 }

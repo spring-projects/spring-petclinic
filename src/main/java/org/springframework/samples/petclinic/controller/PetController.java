@@ -13,8 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.owner;
+package org.springframework.samples.petclinic.controller;
 
+import org.springframework.samples.petclinic.dto.OwnerDTO;
+import org.springframework.samples.petclinic.dto.PetDTO;
+import org.springframework.samples.petclinic.dto.PetTypeDTO;
+import org.springframework.samples.petclinic.owner.PetValidator;
+import org.springframework.samples.petclinic.service.OwnerService;
+import org.springframework.samples.petclinic.service.PetService;
+import org.springframework.samples.petclinic.service.PetTypeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -29,6 +36,7 @@ import java.util.Collection;
  * @author Juergen Hoeller
  * @author Ken Krebs
  * @author Arjen Poutsma
+ * @author Paul-Emmanuel DOS SANTOS FACAO
  */
 @Controller
 @RequestMapping("/owners/{ownerId}")
@@ -36,23 +44,25 @@ class PetController {
 
 	private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = "pets/createOrUpdatePetForm";
 
-	private final PetRepository pets;
+	private final OwnerService ownerService;
+	private final PetService petService;
+	private final PetTypeService petTypeService;
 
-	private final OwnerRepository owners;
-
-	public PetController(PetRepository pets, OwnerRepository owners) {
-		this.pets = pets;
-		this.owners = owners;
+	PetController(OwnerService ownerService, PetService petService, PetTypeService petTypeService) {
+		this.ownerService = ownerService;
+		this.petService = petService;
+		this.petTypeService = petTypeService;
 	}
 
+
 	@ModelAttribute("types")
-	public Collection<PetType> populatePetTypes() {
-		return this.pets.findPetTypes();
+	public Collection<PetTypeDTO> populatePetTypes() {
+		return this.petTypeService.findPetTypes();
 	}
 
 	@ModelAttribute("owner")
-	public Owner findOwner(@PathVariable("ownerId") int ownerId) {
-		return this.owners.findById(ownerId);
+	public OwnerDTO findOwner(@PathVariable("ownerId") int ownerId) {
+		return this.ownerService.findById(ownerId);
 	}
 
 	@InitBinder("owner")
@@ -66,38 +76,38 @@ class PetController {
 	}
 
 	@GetMapping("/pets/new")
-	public String initCreationForm(Owner owner, ModelMap model) {
-		Pet pet = new Pet();
+	public String initCreationForm(OwnerDTO owner, ModelMap model) {
+		PetDTO pet = new PetDTO();
 		owner.addPet(pet);
 		model.put("pet", pet);
 		return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping("/pets/new")
-	public String processCreationForm(Owner owner, @Valid Pet pet, BindingResult result, ModelMap model) {
-		if (StringUtils.hasLength(pet.getName()) && pet.isNew() && owner.getPet(pet.getName(), true) != null) {
+	public String processCreationForm(OwnerDTO ownerDTO, @Valid PetDTO pet, BindingResult result, ModelMap model) {
+		if (StringUtils.hasLength(pet.getName()) && pet.isNew() && ownerDTO.getPet(pet.getName(), true) != null) {
 			result.rejectValue("name", "duplicate", "already exists");
 		}
-		owner.addPet(pet);
+		ownerDTO.addPet(pet);
 		if (result.hasErrors()) {
 			model.put("pet", pet);
 			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 		}
 		else {
-			this.pets.save(pet);
+			this.petService.save(pet);
 			return "redirect:/owners/{ownerId}";
 		}
 	}
 
 	@GetMapping("/pets/{petId}/edit")
 	public String initUpdateForm(@PathVariable("petId") int petId, ModelMap model) {
-		Pet pet = this.pets.findById(petId);
+		PetDTO pet = this.petService.findById(petId);
 		model.put("pet", pet);
 		return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping("/pets/{petId}/edit")
-	public String processUpdateForm(@Valid Pet pet, BindingResult result, Owner owner, ModelMap model) {
+	public String processUpdateForm(@Valid PetDTO pet, BindingResult result, OwnerDTO owner, ModelMap model) {
 		if (result.hasErrors()) {
 			pet.setOwner(owner);
 			model.put("pet", pet);
@@ -105,7 +115,7 @@ class PetController {
 		}
 		else {
 			owner.addPet(pet);
-			this.pets.save(pet);
+			this.petService.save(pet);
 			return "redirect:/owners/{ownerId}";
 		}
 	}
