@@ -54,7 +54,7 @@ public class PetDTO extends NamedDTO {
 		this.type = type;
 	}
 
-	public OwnerDTO getOwnerDTO() {
+	public OwnerDTO getOwner() {
 		return owner;
 	}
 

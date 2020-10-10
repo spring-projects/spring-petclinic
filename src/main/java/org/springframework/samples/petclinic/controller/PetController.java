@@ -49,6 +49,7 @@ class PetController {
 
 	private final PetTypeService petTypeService;
 
+	@Autowired
 	PetController(OwnerService ownerService, PetService petService, PetTypeService petTypeService) {
 		this.ownerService = ownerService;
 		this.petService = petService;
