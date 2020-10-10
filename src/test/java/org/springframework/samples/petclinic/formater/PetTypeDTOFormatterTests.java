@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.samples.petclinic.owner;
+package org.springframework.samples.petclinic.formater;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +23,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.samples.petclinic.dto.PetTypeDTO;
+import org.springframework.samples.petclinic.formatter.PetTypeFormatter;
+import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.service.PetTypeService;
 
 import java.text.ParseException;

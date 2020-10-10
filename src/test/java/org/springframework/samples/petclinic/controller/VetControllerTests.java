@@ -26,19 +26,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.samples.petclinic.common.CommonAttribute;
+import org.springframework.samples.petclinic.common.CommonEndPoint;
+import org.springframework.samples.petclinic.common.CommonView;
 import org.springframework.samples.petclinic.dto.VetDTO;
 import org.springframework.samples.petclinic.service.VetService;
-import org.springframework.samples.petclinic.vet.Specialty;
+import org.springframework.samples.petclinic.model.Specialty;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 /**
  * Test class for the {@link VetController}
+ *
+ * @author Paul-Emmanuel DOS SANTOS FACAO
  */
 @WebMvcTest(VetController.class)
 class VetControllerTests {
@@ -67,15 +73,19 @@ class VetControllerTests {
 	}
 
 	@Test
+	@Tag("showVetList")
 	void testShowVetListHtml() throws Exception {
-		mockMvc.perform(get("/vets.html")).andExpect(status().isOk()).andExpect(model().attributeExists("vets"))
-				.andExpect(view().name("vets/vetList"));
+		mockMvc.perform(get(CommonEndPoint.VETS_HTML)).andExpect(status().isOk())
+				.andExpect(model().attributeExists(CommonAttribute.VETS))
+				.andExpect(view().name(CommonView.VET_VETS_LIST));
 	}
 
 	@Test
+	@Tag("showResourcesVetList")
 	void testShowResourcesVetList() throws Exception {
-		ResultActions actions = mockMvc.perform(get("/vets").accept(MediaType.APPLICATION_JSON))
+		ResultActions actions = mockMvc.perform(get(CommonEndPoint.VETS).accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
+
 		actions.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.vetList[0].id").value(1));
 	}

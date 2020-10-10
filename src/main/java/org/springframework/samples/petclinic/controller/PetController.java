@@ -17,7 +17,9 @@ package org.springframework.samples.petclinic.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.common.CommonAttribute;
+import org.springframework.samples.petclinic.common.CommonEndPoint;
 import org.springframework.samples.petclinic.common.CommonError;
+import org.springframework.samples.petclinic.common.CommonView;
 import org.springframework.samples.petclinic.dto.*;
 import org.springframework.samples.petclinic.validator.PetDTOValidator;
 import org.springframework.samples.petclinic.service.*;
@@ -38,10 +40,8 @@ import java.util.Collection;
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
 @Controller
-@RequestMapping("/owners/{ownerId}")
+@RequestMapping(CommonEndPoint.OWNERS_ID)
 class PetController {
-
-	private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = "pets/createOrUpdatePetForm";
 
 	private final OwnerService ownerService;
 
@@ -76,48 +76,50 @@ class PetController {
 		dataBinder.setValidator(new PetDTOValidator());
 	}
 
-	@GetMapping("/pets/new")
+	@GetMapping(CommonEndPoint.PETS_NEW)
 	public String initCreationForm(@ModelAttribute(CommonAttribute.OWNER) OwnerDTO owner, ModelMap model) {
 		PetDTO pet = new PetDTO();
 		owner.addPet(pet);
 		model.put(CommonAttribute.PET, pet);
-		return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
+		return CommonView.PET_CREATE_OR_UPDATE;
 	}
 
-	@PostMapping("/pets/new")
+	@PostMapping(CommonEndPoint.PETS_NEW)
 	public String processCreationForm(@ModelAttribute(CommonAttribute.OWNER) OwnerDTO owner,
-									  @ModelAttribute(CommonAttribute.PET) @Valid PetDTO pet, BindingResult result, ModelMap model) {
+			@ModelAttribute(CommonAttribute.PET) @Valid PetDTO pet, BindingResult result, ModelMap model) {
 		if (StringUtils.hasLength(pet.getName()) && pet.isNew() && owner.getPet(pet.getName(), true) != null) {
 			result.rejectValue(CommonAttribute.NAME, CommonError.DUPLICATE_ARGS, CommonError.DUPLICATE_MESSAGE);
 		}
 		owner.addPet(pet);
 		if (result.hasErrors()) {
 			model.put(CommonAttribute.PET, pet);
-			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
-		} else {
+			return CommonView.PET_CREATE_OR_UPDATE;
+		}
+		else {
 			this.petService.save(pet);
-			return "redirect:/owners/{ownerId}";
+			return CommonView.OWNER_OWNERS_ID_R;
 		}
 	}
 
-	@GetMapping("/pets/{petId}/edit")
+	@GetMapping(CommonEndPoint.PETS_ID_EDIT)
 	public String initUpdateForm(@PathVariable("petId") int petId, ModelMap model) {
 		PetDTO pet = this.petService.findById(petId);
 		model.put(CommonAttribute.PET, pet);
-		return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
+		return CommonView.PET_CREATE_OR_UPDATE;
 	}
 
-	@PostMapping("/pets/{petId}/edit")
-	public String processUpdateForm(@ModelAttribute(CommonAttribute.PET) @Valid PetDTO pet, BindingResult result, OwnerDTO owner, ModelMap model) {
+	@PostMapping(CommonEndPoint.PETS_ID_EDIT)
+	public String processUpdateForm(@ModelAttribute(CommonAttribute.PET) @Valid PetDTO pet, BindingResult result,
+			OwnerDTO owner, ModelMap model) {
 		if (result.hasErrors()) {
 			pet.setOwner(owner);
 			model.put(CommonAttribute.PET, pet);
-			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
+			return CommonView.PET_CREATE_OR_UPDATE;
 		}
 		else {
 			owner.addPet(pet);
 			this.petService.save(pet);
-			return "redirect:/owners/{ownerId}";
+			return CommonView.OWNER_OWNERS_ID_R;
 		}
 	}
 

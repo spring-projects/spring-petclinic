@@ -15,8 +15,9 @@
  */
 package org.springframework.samples.petclinic.validator;
 
-import org.springframework.samples.petclinic.dto.PetDTO;
-import org.springframework.samples.petclinic.owner.Pet;
+import org.springframework.samples.petclinic.common.CommonAttribute;
+import org.springframework.samples.petclinic.common.CommonError;
+import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -30,10 +31,9 @@ import org.springframework.validation.Validator;
  *
  * @author Ken Krebs
  * @author Juergen Hoeller
+ * @author Paul-Emmanuel DOS SANTOS FACAO
  */
 public class PetValidator implements Validator {
-
-	private static final String REQUIRED = "required";
 
 	@Override
 	public void validate(Object obj, Errors errors) {
@@ -41,17 +41,17 @@ public class PetValidator implements Validator {
 		String name = pet.getName();
 		// name validation
 		if (!StringUtils.hasLength(name)) {
-			errors.rejectValue("name", REQUIRED, REQUIRED);
+			errors.rejectValue(CommonAttribute.PET_NAME, CommonError.REQUIRED_ARGS, CommonError.REQUIRED_MESSAGE);
 		}
 
 		// type validation
 		if (pet.isNew() && pet.getType() == null) {
-			errors.rejectValue("type", REQUIRED, REQUIRED);
+			errors.rejectValue(CommonAttribute.PET_TYPE, CommonError.REQUIRED_ARGS, CommonError.REQUIRED_MESSAGE);
 		}
 
 		// birth date validation
 		if (pet.getBirthDate() == null) {
-			errors.rejectValue("birthDate", REQUIRED, REQUIRED);
+			errors.rejectValue(CommonAttribute.PET_BIRTH_DATE, CommonError.REQUIRED_ARGS, CommonError.REQUIRED_MESSAGE);
 		}
 	}
 

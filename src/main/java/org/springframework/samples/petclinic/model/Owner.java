@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.owner;
+package org.springframework.samples.petclinic.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,7 +32,7 @@ import javax.validation.constraints.NotEmpty;
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.core.style.ToStringCreator;
-import org.springframework.samples.petclinic.model.Person;
+import org.springframework.samples.petclinic.common.CommonAttribute;
 
 /**
  * Simple JavaBean domain object representing an owner.
@@ -140,11 +140,11 @@ public class Owner extends Person {
 
 	@Override
 	public String toString() {
-		return new ToStringCreator(this)
-
-				.append("id", this.getId()).append("new", this.isNew()).append("lastName", this.getLastName())
-				.append("firstName", this.getFirstName()).append("address", this.address).append("city", this.city)
-				.append("telephone", this.telephone).toString();
+		return new ToStringCreator(this).append(CommonAttribute.OWNER_ID, this.getId())
+				.append(CommonAttribute.NEW, this.isNew()).append(CommonAttribute.OWNER_LAST_NAME, this.getLastName())
+				.append(CommonAttribute.OWNER_FIRST_NAME, this.getFirstName())
+				.append(CommonAttribute.OWNER_ADDRESS, this.address).append(CommonAttribute.OWNER_CITY, this.city)
+				.append(CommonAttribute.OWNER_PHONE, this.telephone).toString();
 	}
 
 }

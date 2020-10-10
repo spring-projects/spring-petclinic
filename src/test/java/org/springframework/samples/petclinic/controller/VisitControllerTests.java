@@ -24,10 +24,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.samples.petclinic.common.CommonAttribute;
+import org.springframework.samples.petclinic.common.CommonEndPoint;
+import org.springframework.samples.petclinic.common.CommonView;
 import org.springframework.samples.petclinic.dto.PetDTO;
 import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.VisitService;
@@ -58,24 +62,26 @@ class VisitControllerTests {
 	}
 
 	@Test
+	@Tag("initNewVisitForm")
 	void testInitNewVisitForm() throws Exception {
-		mockMvc.perform(get("/owners/*/pets/{petId}/visits/new", TEST_PET_ID))
-			.andExpect(status().isOk())
-			.andExpect(view().name("pets/createOrUpdateVisitForm"));
+		mockMvc.perform(get(CommonEndPoint.VISITS_NEW, TEST_PET_ID)).andExpect(status().isOk())
+				.andExpect(view().name(CommonView.PET_CREATE_OR_UPDATE));
 	}
 
 	@Test
+	@Tag("processNewVisitForm")
 	void testProcessNewVisitFormSuccess() throws Exception {
-		mockMvc.perform(post("/owners/*/pets/{petId}/visits/new", TEST_PET_ID).param("name", "George")
-				.param("description", "Visit Description")).andExpect(status().is3xxRedirection())
-				.andExpect(view().name("redirect:/owners/{ownerId}"));
+		mockMvc.perform(post(CommonEndPoint.VISITS_NEW, TEST_PET_ID).param(CommonAttribute.NAME, "George")
+				.param(CommonAttribute.DESCRIPTION, "Visit Description")).andExpect(status().is3xxRedirection())
+				.andExpect(view().name(CommonView.OWNER_OWNERS_ID_R));
 	}
 
 	@Test
+	@Tag("processNewVisitForm")
 	void testProcessNewVisitFormHasErrors() throws Exception {
-		mockMvc.perform(post("/owners/*/pets/{petId}/visits/new", TEST_PET_ID).param("name", "George"))
-				.andExpect(model().attributeHasErrors("visit")).andExpect(status().isOk())
-				.andExpect(view().name("pets/createOrUpdateVisitForm"));
+		mockMvc.perform(post(CommonEndPoint.VISITS_NEW, TEST_PET_ID).param(CommonAttribute.NAME, "George"))
+				.andExpect(model().attributeHasErrors(CommonAttribute.VISIT)).andExpect(status().isOk())
+				.andExpect(view().name(CommonView.VISIT_CREATE_OR_UPDATE));
 	}
 
 }

@@ -19,6 +19,9 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.springframework.samples.petclinic.common.CommonAttribute;
+import org.springframework.samples.petclinic.common.CommonEndPoint;
+import org.springframework.samples.petclinic.common.CommonView;
 import org.springframework.samples.petclinic.dto.PetDTO;
 import org.springframework.samples.petclinic.dto.VisitDTO;
 import org.springframework.samples.petclinic.service.PetService;
@@ -68,27 +71,28 @@ class VisitController {
 	public VisitDTO loadPetWithVisit(@PathVariable("petId") int petId, Map<String, Object> model) {
 		PetDTO pet = this.petService.findById(petId);
 		pet.setVisitsInternal(this.visitService.findByPetId(petId));
-		model.put("pet", pet);
+		model.put(CommonAttribute.PET, pet);
 		VisitDTO visit = new VisitDTO();
 		pet.addVisit(visit);
 		return visit;
 	}
 
 	// Spring MVC calls method loadPetWithVisit(...) before initNewVisitForm is called
-	@GetMapping("/owners/*/pets/{petId}/visits/new")
+	@GetMapping(CommonEndPoint.VISITS_NEW)
 	public String initNewVisitForm(@PathVariable("petId") int petId, Map<String, Object> model) {
-		return "pets/createOrUpdateVisitForm";
+		return CommonView.PET_CREATE_OR_UPDATE;
 	}
 
 	// Spring MVC calls method loadPetWithVisit(...) before processNewVisitForm is called
-	@PostMapping("/owners/{ownerId}/pets/{petId}/visits/new")
-	public String processNewVisitForm(@ModelAttribute("visit") @Valid VisitDTO visit, BindingResult result) {
+	@PostMapping(CommonEndPoint.VISITS_EDIT)
+	public String processNewVisitForm(@ModelAttribute(CommonAttribute.VISIT) @Valid VisitDTO visit,
+			BindingResult result) {
 		if (result.hasErrors()) {
-			return "pets/createOrUpdateVisitForm";
+			return CommonView.VISIT_CREATE_OR_UPDATE;
 		}
 		else {
 			this.visitService.save(visit);
-			return "redirect:/owners/{ownerId}";
+			return CommonView.OWNER_OWNERS_ID_R;
 		}
 	}
 

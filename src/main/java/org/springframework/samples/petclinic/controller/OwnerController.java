@@ -15,7 +15,6 @@
  */
 package org.springframework.samples.petclinic.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.common.CommonAttribute;
 import org.springframework.samples.petclinic.common.CommonEndPoint;
 import org.springframework.samples.petclinic.common.CommonError;
@@ -43,7 +42,9 @@ import java.util.Map;
  */
 @Controller
 class OwnerController {
+
 	private final OwnerService ownerService;
+
 	private final VisitService visitService;
 
 	OwnerController(OwnerService ownerService, VisitService visitService) {
@@ -64,7 +65,8 @@ class OwnerController {
 	}
 
 	@PostMapping(CommonEndPoint.OWNERS_NEW)
-	public String processCreationForm(@ModelAttribute(CommonAttribute.OWNER) @Valid OwnerDTO owner, BindingResult result) {
+	public String processCreationForm(@ModelAttribute(CommonAttribute.OWNER) @Valid OwnerDTO owner,
+			BindingResult result) {
 		if (result.hasErrors()) {
 			return CommonView.OWNER_CREATE_OR_UPDATE;
 		}
@@ -81,7 +83,8 @@ class OwnerController {
 	}
 
 	@GetMapping(CommonEndPoint.OWNERS)
-	public String processFindForm(@ModelAttribute(CommonAttribute.OWNER) OwnerDTO owner, BindingResult result, Map<String, Object> model) {
+	public String processFindForm(@ModelAttribute(CommonAttribute.OWNER) OwnerDTO owner, BindingResult result,
+			Map<String, Object> model) {
 
 		// allow parameterless GET request for /owners to return all records
 		if (owner.getLastName() == null) {
@@ -92,7 +95,8 @@ class OwnerController {
 		Collection<OwnerDTO> results = this.ownerService.findByLastName(owner.getLastName());
 		if (results.isEmpty()) {
 			// no owners found
-			result.rejectValue(CommonAttribute.OWNER_LAST_NAME, CommonError.NOT_FOUND_ARGS, CommonError.NOT_FOUND_MESSAGE);
+			result.rejectValue(CommonAttribute.OWNER_LAST_NAME, CommonError.NOT_FOUND_ARGS,
+					CommonError.NOT_FOUND_MESSAGE);
 			return CommonView.OWNER_FIND_OWNERS;
 		}
 		else if (results.size() == 1) {
@@ -115,8 +119,8 @@ class OwnerController {
 	}
 
 	@PostMapping(CommonEndPoint.OWNERS_ID_EDIT)
-	public String processUpdateOwnerForm(@ModelAttribute(CommonAttribute.OWNER) @Valid OwnerDTO owner, BindingResult result,
-			@PathVariable("ownerId") int ownerId) {
+	public String processUpdateOwnerForm(@ModelAttribute(CommonAttribute.OWNER) @Valid OwnerDTO owner,
+			BindingResult result, @PathVariable("ownerId") int ownerId) {
 		if (result.hasErrors()) {
 			return CommonView.OWNER_CREATE_OR_UPDATE;
 		}

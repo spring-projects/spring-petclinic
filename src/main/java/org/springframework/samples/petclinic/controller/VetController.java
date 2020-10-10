@@ -15,9 +15,11 @@
  */
 package org.springframework.samples.petclinic.controller;
 
+import org.springframework.samples.petclinic.common.CommonAttribute;
+import org.springframework.samples.petclinic.common.CommonEndPoint;
+import org.springframework.samples.petclinic.common.CommonView;
 import org.springframework.samples.petclinic.dto.VetsDTO;
 import org.springframework.samples.petclinic.service.VetService;
-import org.springframework.samples.petclinic.vet.Vets;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -40,17 +42,17 @@ class VetController {
 		this.vetService = vetService;
 	}
 
-	@GetMapping("/vets.html")
+	@GetMapping(CommonEndPoint.VETS_HTML)
 	public String showVetList(Map<String, Object> model) {
 		// Here we are returning an object of type 'Vets' rather than a collection of Vet
 		// objects so it is simpler for Object-Xml mapping
 		VetsDTO vets = new VetsDTO();
 		vets.getVetList().addAll(this.vetService.findAll());
-		model.put("vets", vets);
-		return "vets/vetList";
+		model.put(CommonAttribute.VETS, vets);
+		return CommonView.VET_VETS_LIST;
 	}
 
-	@GetMapping({ "/vets" })
+	@GetMapping({ CommonEndPoint.VETS })
 	public @ResponseBody VetsDTO showResourcesVetList() {
 		// Here we are returning an object of type 'Vets' rather than a collection of Vet
 		// objects so it is simpler for JSon/Object mapping

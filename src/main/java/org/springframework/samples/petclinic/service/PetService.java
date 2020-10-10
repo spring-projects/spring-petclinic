@@ -2,7 +2,7 @@ package org.springframework.samples.petclinic.service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.samples.petclinic.dto.PetDTO;
-import org.springframework.samples.petclinic.owner.Pet;
+import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.repository.PetRepository;
 import org.springframework.stereotype.Service;
 
