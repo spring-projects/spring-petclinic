@@ -15,7 +15,11 @@
  */
 package org.springframework.samples.petclinic.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.common.CommonAttribute;
+import org.springframework.samples.petclinic.common.CommonEndPoint;
+import org.springframework.samples.petclinic.common.CommonError;
+import org.springframework.samples.petclinic.common.CommonView;
 import org.springframework.samples.petclinic.dto.*;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.VisitService;
@@ -39,13 +43,10 @@ import java.util.Map;
  */
 @Controller
 class OwnerController {
-
-	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
-
 	private final OwnerService ownerService;
-
 	private final VisitService visitService;
 
+	@Autowired
 	OwnerController(OwnerService ownerService, VisitService visitService) {
 		this.ownerService = ownerService;
 		this.visitService = visitService;
@@ -53,35 +54,35 @@ class OwnerController {
 
 	@InitBinder("owner")
 	public void setAllowedFields(WebDataBinder dataBinder) {
-		dataBinder.setDisallowedFields("id");
+		dataBinder.setDisallowedFields(CommonAttribute.OWNER_ID);
 	}
 
-	@GetMapping("/owners/new")
+	@GetMapping(CommonEndPoint.OWNERS_NEW)
 	public String initCreationForm(Map<String, Object> model) {
 		OwnerDTO owner = new OwnerDTO();
 		model.put(CommonAttribute.OWNER, owner);
-		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
+		return CommonView.OWNER_CREATE_OR_UPDATE;
 	}
 
-	@PostMapping("/owners/new")
-	public String processCreationForm(@ModelAttribute("owner") @Valid OwnerDTO owner, BindingResult result) {
+	@PostMapping(CommonEndPoint.OWNERS_NEW)
+	public String processCreationForm(@ModelAttribute(CommonAttribute.OWNER) @Valid OwnerDTO owner, BindingResult result) {
 		if (result.hasErrors()) {
-			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
+			return CommonView.OWNER_CREATE_OR_UPDATE;
 		}
 		else {
 			this.ownerService.save(owner);
-			return "redirect:/owners/" + owner.getId();
+			return CommonView.OWNER_OWNERS_R + owner.getId();
 		}
 	}
 
-	@GetMapping("/owners/find")
+	@GetMapping(CommonEndPoint.OWNERS_FIND)
 	public String initFindForm(Map<String, Object> model) {
 		model.put(CommonAttribute.OWNER, new OwnerDTO());
-		return "owners/findOwners";
+		return CommonView.OWNER_FIND_OWNERS;
 	}
 
-	@GetMapping("/owners")
-	public String processFindForm(@ModelAttribute("owner") OwnerDTO owner, BindingResult result, Map<String, Object> model) {
+	@GetMapping(CommonEndPoint.OWNERS)
+	public String processFindForm(@ModelAttribute(CommonAttribute.OWNER) OwnerDTO owner, BindingResult result, Map<String, Object> model) {
 
 		// allow parameterless GET request for /owners to return all records
 		if (owner.getLastName() == null) {
@@ -92,38 +93,38 @@ class OwnerController {
 		Collection<OwnerDTO> results = this.ownerService.findByLastName(owner.getLastName());
 		if (results.isEmpty()) {
 			// no owners found
-			result.rejectValue(CommonAttribute.OWNER_LAST_NAME, "notFound", "not found");
-			return "owners/findOwners";
+			result.rejectValue(CommonAttribute.OWNER_LAST_NAME, CommonError.NOT_FOUND_ARGS, CommonError.NOT_FOUND_MESSAGE);
+			return CommonView.OWNER_FIND_OWNERS;
 		}
 		else if (results.size() == 1) {
 			// 1 owner found
 			owner = results.iterator().next();
-			return "redirect:/owners/" + owner.getId();
+			return CommonView.OWNER_OWNERS_R + owner.getId();
 		}
 		else {
 			// multiple owners found
-			model.put("selections", results);
-			return "owners/ownersList";
+			model.put(CommonAttribute.SELECTIONS, results);
+			return CommonView.OWNER_OWNERS_LIST;
 		}
 	}
 
-	@GetMapping("/owners/{ownerId}/edit")
+	@GetMapping(CommonEndPoint.OWNERS_ID_EDIT)
 	public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
 		OwnerDTO ownerDTO = this.ownerService.findById(ownerId);
 		model.addAttribute(CommonAttribute.OWNER, ownerDTO);
-		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
+		return CommonView.OWNER_CREATE_OR_UPDATE;
 	}
 
-	@PostMapping("/owners/{ownerId}/edit")
-	public String processUpdateOwnerForm(@ModelAttribute("owner") @Valid OwnerDTO owner, BindingResult result,
+	@PostMapping(CommonEndPoint.OWNERS_ID_EDIT)
+	public String processUpdateOwnerForm(@ModelAttribute(CommonAttribute.OWNER) @Valid OwnerDTO owner, BindingResult result,
 			@PathVariable("ownerId") int ownerId) {
 		if (result.hasErrors()) {
-			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
+			return CommonView.OWNER_CREATE_OR_UPDATE;
 		}
 		else {
 			owner.setId(ownerId);
 			this.ownerService.save(owner);
-			return "redirect:/owners/{ownerId}";
+			return CommonView.OWNER_OWNERS_ID_R;
 		}
 	}
 
@@ -132,9 +133,9 @@ class OwnerController {
 	 * @param ownerId the ID of the owner to display
 	 * @return a ModelMap with the model attributes for the view
 	 */
-	@GetMapping("/owners/{ownerId}")
+	@GetMapping(CommonEndPoint.OWNERS_ID)
 	public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
-		ModelAndView modelAndView = new ModelAndView("owners/ownerDetails");
+		ModelAndView modelAndView = new ModelAndView(CommonView.OWNER_DETAILS);
 		OwnerDTO owner = this.ownerService.findById(ownerId);
 
 		for (PetDTO petDTO : owner.getPets()) {

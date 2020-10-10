@@ -15,6 +15,9 @@
  */
 package org.springframework.samples.petclinic.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.common.CommonAttribute;
+import org.springframework.samples.petclinic.common.CommonError;
 import org.springframework.samples.petclinic.dto.*;
 import org.springframework.samples.petclinic.validator.PetDTOValidator;
 import org.springframework.samples.petclinic.service.*;
@@ -64,7 +67,7 @@ class PetController {
 
 	@InitBinder("owner")
 	public void initOwnerBinder(WebDataBinder dataBinder) {
-		dataBinder.setDisallowedFields("id");
+		dataBinder.setDisallowedFields(CommonAttribute.OWNER_ID);
 	}
 
 	@InitBinder("pet")
@@ -73,22 +76,22 @@ class PetController {
 	}
 
 	@GetMapping("/pets/new")
-	public String initCreationForm(OwnerDTO owner, ModelMap model) {
+	public String initCreationForm(@ModelAttribute(CommonAttribute.OWNER) OwnerDTO owner, ModelMap model) {
 		PetDTO pet = new PetDTO();
 		owner.addPet(pet);
-		model.put("pet", pet);
+		model.put(CommonAttribute.PET, pet);
 		return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping("/pets/new")
-	public String processCreationForm(@ModelAttribute("owner") OwnerDTO owner,
-									  @ModelAttribute("pet") @Valid PetDTO pet, BindingResult result, ModelMap model) {
+	public String processCreationForm(@ModelAttribute(CommonAttribute.OWNER) OwnerDTO owner,
+									  @ModelAttribute(CommonAttribute.PET) @Valid PetDTO pet, BindingResult result, ModelMap model) {
 		if (StringUtils.hasLength(pet.getName()) && pet.isNew() && owner.getPet(pet.getName(), true) != null) {
-			result.rejectValue("name", "duplicate", "already exists");
+			result.rejectValue(CommonAttribute.NAME, CommonError.DUPLICATE_ARGS, CommonError.DUPLICATE_MESSAGE);
 		}
 		owner.addPet(pet);
 		if (result.hasErrors()) {
-			model.put("pet", pet);
+			model.put(CommonAttribute.PET, pet);
 			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 		} else {
 			this.petService.save(pet);
@@ -99,15 +102,15 @@ class PetController {
 	@GetMapping("/pets/{petId}/edit")
 	public String initUpdateForm(@PathVariable("petId") int petId, ModelMap model) {
 		PetDTO pet = this.petService.findById(petId);
-		model.put("pet", pet);
+		model.put(CommonAttribute.PET, pet);
 		return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping("/pets/{petId}/edit")
-	public String processUpdateForm(@Valid PetDTO pet, BindingResult result, OwnerDTO owner, ModelMap model) {
+	public String processUpdateForm(@ModelAttribute(CommonAttribute.PET) @Valid PetDTO pet, BindingResult result, OwnerDTO owner, ModelMap model) {
 		if (result.hasErrors()) {
 			pet.setOwner(owner);
-			model.put("pet", pet);
+			model.put(CommonAttribute.PET, pet);
 			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 		}
 		else {
