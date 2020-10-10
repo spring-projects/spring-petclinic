@@ -1,6 +1,7 @@
-<groups xmlns="http://www.isdc.ro/wro">
+<groups xmlns="http://www.isdc.ro/wro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.isdc.ro/wro ">
   <group name="petclinic">
     <css>classpath:META-INF/resources/webjars/bootstrap/3.3.6/less/bootstrap.less</css>
     <css>/petclinic.less</css>
-   </group>
+  </group>
 </groups>

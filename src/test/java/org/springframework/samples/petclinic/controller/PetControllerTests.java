@@ -31,16 +31,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.samples.petclinic.controller.PetController;
 import org.springframework.samples.petclinic.dto.OwnerDTO;
 import org.springframework.samples.petclinic.dto.PetDTO;
 import org.springframework.samples.petclinic.dto.PetTypeDTO;
-import org.springframework.samples.petclinic.owner.Owner;
-import org.springframework.samples.petclinic.owner.Pet;
-import org.springframework.samples.petclinic.owner.PetType;
 import org.springframework.samples.petclinic.owner.PetTypeFormatter;
-import org.springframework.samples.petclinic.repository.OwnerRepository;
-import org.springframework.samples.petclinic.repository.PetRepository;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.PetTypeService;
@@ -97,11 +91,13 @@ class PetControllerTests {
 
 	@Test
 	void testProcessCreationFormHasErrors() throws Exception {
-		mockMvc.perform(post("/owners/{ownerId}/pets/new", TEST_OWNER_ID).param("name", "Betty").param("birthDate",
-				"2015-02-12")).andExpect(model().attributeHasNoErrors("owner"))
-				.andExpect(model().attributeHasErrors("pet")).andExpect(model().attributeHasFieldErrors("pet", "type"))
-				.andExpect(model().attributeHasFieldErrorCode("pet", "type", "required")).andExpect(status().isOk())
-				.andExpect(view().name("pets/createOrUpdatePetForm"));
+		mockMvc.perform(post("/owners/{ownerId}/pets/new", TEST_OWNER_ID)
+			.param("name", "Betty")
+			.param("birthDate","2015-02-12"))
+			.andExpect(model().attributeHasNoErrors("owner"))
+			.andExpect(model().attributeHasErrors("pet")).andExpect(model().attributeHasFieldErrors("pet", "type"))
+			.andExpect(model().attributeHasFieldErrorCode("pet", "type", "required")).andExpect(status().isOk())
+			.andExpect(view().name("pets/createOrUpdatePetForm"));
 	}
 
 	@Test

@@ -15,13 +15,9 @@
  */
 package org.springframework.samples.petclinic.controller;
 
-import org.springframework.samples.petclinic.dto.OwnerDTO;
-import org.springframework.samples.petclinic.dto.PetDTO;
-import org.springframework.samples.petclinic.dto.PetTypeDTO;
-import org.springframework.samples.petclinic.owner.PetValidator;
-import org.springframework.samples.petclinic.service.OwnerService;
-import org.springframework.samples.petclinic.service.PetService;
-import org.springframework.samples.petclinic.service.PetTypeService;
+import org.springframework.samples.petclinic.dto.*;
+import org.springframework.samples.petclinic.validator.PetValidator;
+import org.springframework.samples.petclinic.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -93,8 +89,7 @@ class PetController {
 		if (result.hasErrors()) {
 			model.put("pet", pet);
 			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
-		}
-		else {
+		} else {
 			this.petService.save(pet);
 			return "redirect:/owners/{ownerId}";
 		}

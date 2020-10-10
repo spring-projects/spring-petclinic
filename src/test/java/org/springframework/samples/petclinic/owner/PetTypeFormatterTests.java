@@ -28,7 +28,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.samples.petclinic.dto.PetTypeDTO;
 import org.springframework.samples.petclinic.repository.PetRepository;
+import org.springframework.samples.petclinic.service.PetService;
+import org.springframework.samples.petclinic.service.PetTypeService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -42,18 +45,18 @@ import static org.mockito.BDDMockito.given;
 class PetTypeFormatterTests {
 
 	@Mock
-	private PetRepository pets;
+	private PetTypeService petTypeService;
 
 	private PetTypeFormatter petTypeFormatter;
 
 	@BeforeEach
 	void setup() {
-		this.petTypeFormatter = new PetTypeFormatter(pets);
+		this.petTypeFormatter = new PetTypeFormatter(petTypeService);
 	}
 
 	@Test
 	void testPrint() {
-		PetType petType = new PetType();
+		PetTypeDTO petType = new PetTypeDTO();
 		petType.setName("Hamster");
 		String petTypeName = this.petTypeFormatter.print(petType, Locale.ENGLISH);
 		assertThat(petTypeName).isEqualTo("Hamster");
@@ -61,14 +64,14 @@ class PetTypeFormatterTests {
 
 	@Test
 	void shouldParse() throws ParseException {
-		given(this.pets.findPetTypes()).willReturn(makePetTypes());
-		PetType petType = petTypeFormatter.parse("Bird", Locale.ENGLISH);
+		given(this.petTypeService.findPetTypes()).willReturn(makePetTypes());
+		PetTypeDTO petType = petTypeFormatter.parse("Bird", Locale.ENGLISH);
 		assertThat(petType.getName()).isEqualTo("Bird");
 	}
 
 	@Test
 	void shouldThrowParseException() throws ParseException {
-		given(this.pets.findPetTypes()).willReturn(makePetTypes());
+		given(this.petTypeService.findPetTypes()).willReturn(makePetTypes());
 		Assertions.assertThrows(ParseException.class, () -> {
 			petTypeFormatter.parse("Fish", Locale.ENGLISH);
 		});
@@ -78,14 +81,14 @@ class PetTypeFormatterTests {
 	 * Helper method to produce some sample pet types just for test purpose
 	 * @return {@link Collection} of {@link PetType}
 	 */
-	private List<PetType> makePetTypes() {
-		List<PetType> petTypes = new ArrayList<>();
-		petTypes.add(new PetType() {
+	private List<PetTypeDTO> makePetTypes() {
+		List<PetTypeDTO> petTypes = new ArrayList<>();
+		petTypes.add(new PetTypeDTO() {
 			{
 				setName("Dog");
 			}
 		});
-		petTypes.add(new PetType() {
+		petTypes.add(new PetTypeDTO() {
 			{
 				setName("Bird");
 			}

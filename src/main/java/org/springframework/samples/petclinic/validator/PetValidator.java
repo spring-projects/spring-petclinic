@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.owner;
+package org.springframework.samples.petclinic.validator;
 
+import org.springframework.samples.petclinic.dto.PetDTO;
+import org.springframework.samples.petclinic.owner.Pet;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -35,7 +37,7 @@ public class PetValidator implements Validator {
 
 	@Override
 	public void validate(Object obj, Errors errors) {
-		Pet pet = (Pet) obj;
+		PetDTO pet = (PetDTO) obj;
 		String name = pet.getName();
 		// name validation
 		if (!StringUtils.hasLength(name)) {

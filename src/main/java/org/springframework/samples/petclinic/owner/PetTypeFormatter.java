@@ -21,7 +21,8 @@ import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.Formatter;
-import org.springframework.samples.petclinic.repository.PetRepository;
+import org.springframework.samples.petclinic.dto.PetTypeDTO;
+import org.springframework.samples.petclinic.service.PetTypeService;
 import org.springframework.stereotype.Component;
 
 /**
@@ -35,24 +36,24 @@ import org.springframework.stereotype.Component;
  * @author Michael Isvy
  */
 @Component
-public class PetTypeFormatter implements Formatter<PetType> {
+public class PetTypeFormatter implements Formatter<PetTypeDTO> {
 
-	private final PetRepository pets;
+	// private final PetRepository pets;
+	private final PetTypeService petTypeService;
 
-	@Autowired
-	public PetTypeFormatter(PetRepository pets) {
-		this.pets = pets;
+	public PetTypeFormatter(PetTypeService petTypeService) {
+		this.petTypeService = petTypeService;
 	}
 
 	@Override
-	public String print(PetType petType, Locale locale) {
+	public String print(PetTypeDTO petType, Locale locale) {
 		return petType.getName();
 	}
 
 	@Override
-	public PetType parse(String text, Locale locale) throws ParseException {
-		Collection<PetType> findPetTypes = this.pets.findPetTypes();
-		for (PetType type : findPetTypes) {
+	public PetTypeDTO parse(String text, Locale locale) throws ParseException {
+		Collection<PetTypeDTO> findPetTypes = this.petTypeService.findPetTypes();
+		for (PetTypeDTO type : findPetTypes) {
 			if (type.getName().equals(text)) {
 				return type;
 			}
