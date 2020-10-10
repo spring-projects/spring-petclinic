@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.controller;
 
+import org.springframework.samples.petclinic.common.CommonAttribute;
 import org.springframework.samples.petclinic.dto.*;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.VisitService;
@@ -58,7 +59,7 @@ class OwnerController {
 	@GetMapping("/owners/new")
 	public String initCreationForm(Map<String, Object> model) {
 		OwnerDTO owner = new OwnerDTO();
-		model.put("owner", owner);
+		model.put(CommonAttribute.OWNER, owner);
 		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 	}
 
@@ -75,12 +76,12 @@ class OwnerController {
 
 	@GetMapping("/owners/find")
 	public String initFindForm(Map<String, Object> model) {
-		model.put("owner", new OwnerDTO());
+		model.put(CommonAttribute.OWNER, new OwnerDTO());
 		return "owners/findOwners";
 	}
 
 	@GetMapping("/owners")
-	public String processFindForm(OwnerDTO owner, BindingResult result, Map<String, Object> model) {
+	public String processFindForm(@ModelAttribute("owner") OwnerDTO owner, BindingResult result, Map<String, Object> model) {
 
 		// allow parameterless GET request for /owners to return all records
 		if (owner.getLastName() == null) {
@@ -91,7 +92,7 @@ class OwnerController {
 		Collection<OwnerDTO> results = this.ownerService.findByLastName(owner.getLastName());
 		if (results.isEmpty()) {
 			// no owners found
-			result.rejectValue("lastName", "notFound", "not found");
+			result.rejectValue(CommonAttribute.OWNER_LAST_NAME, "notFound", "not found");
 			return "owners/findOwners";
 		}
 		else if (results.size() == 1) {
@@ -109,12 +110,12 @@ class OwnerController {
 	@GetMapping("/owners/{ownerId}/edit")
 	public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
 		OwnerDTO ownerDTO = this.ownerService.findById(ownerId);
-		model.addAttribute(ownerDTO);
+		model.addAttribute(CommonAttribute.OWNER, ownerDTO);
 		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping("/owners/{ownerId}/edit")
-	public String processUpdateOwnerForm(@Valid OwnerDTO owner, BindingResult result,
+	public String processUpdateOwnerForm(@ModelAttribute("owner") @Valid OwnerDTO owner, BindingResult result,
 			@PathVariable("ownerId") int ownerId) {
 		if (result.hasErrors()) {
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
@@ -133,15 +134,15 @@ class OwnerController {
 	 */
 	@GetMapping("/owners/{ownerId}")
 	public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
-		ModelAndView mav = new ModelAndView("owners/ownerDetails");
+		ModelAndView modelAndView = new ModelAndView("owners/ownerDetails");
 		OwnerDTO owner = this.ownerService.findById(ownerId);
 
 		for (PetDTO petDTO : owner.getPets()) {
 			petDTO.setVisitsInternal(visitService.findByPetId(petDTO.getId()));
 		}
 
-		mav.addObject(owner);
-		return mav;
+		modelAndView.addObject(CommonAttribute.OWNER, owner);
+		return modelAndView;
 	}
 
 }

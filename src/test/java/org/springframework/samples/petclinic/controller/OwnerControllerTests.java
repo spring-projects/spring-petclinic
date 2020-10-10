@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.samples.petclinic.common.CommonAttribute;
 import org.springframework.samples.petclinic.dto.OwnerDTO;
 import org.springframework.samples.petclinic.dto.PetDTO;
 import org.springframework.samples.petclinic.dto.PetTypeDTO;
@@ -95,7 +96,7 @@ class OwnerControllerTests {
 	void testInitCreationForm() throws Exception {
 		mockMvc.perform(get("/owners/new"))
 			.andExpect(status().isOk())
-			.andExpect(model().attributeExists("owner"))
+			.andExpect(model().attributeExists(CommonAttribute.OWNER))
 			.andExpect(view().name("owners/createOrUpdateOwnerForm"));
 	}
 
@@ -103,10 +104,10 @@ class OwnerControllerTests {
 	void testProcessCreationFormSuccess() throws Exception {
 		mockMvc.perform(post("/owners/new")
 			.param("firstName", "Joe")
-			.param("lastName", "Bloggs")
-			.param("address", "123 Caramel Street")
-			.param("city", "London")
-			.param("telephone", "01316761638"))
+			.param(CommonAttribute.OWNER_LAST_NAME, "Bloggs")
+			.param(CommonAttribute.OWNER_ADDRESS, "123 Caramel Street")
+			.param(CommonAttribute.OWNER_CITY, "London")
+			.param(CommonAttribute.OWNER_PHONE, "01316761638"))
 			.andExpect(status().is3xxRedirection());
 	}
 
@@ -114,12 +115,12 @@ class OwnerControllerTests {
 	void testProcessCreationFormHasErrors() throws Exception {
 		mockMvc.perform(post("/owners/new")
 			.param("firstName", "Joe")
-			.param("lastName", "Bloggs")
-			.param("city", "London"))
+			.param(CommonAttribute.OWNER_LAST_NAME, "Bloggs")
+			.param(CommonAttribute.OWNER_CITY, "London"))
 			.andExpect(status().isOk())
-			.andExpect(model().attributeHasErrors("owner"))
-			.andExpect(model().attributeHasFieldErrors("owner", "address"))
-			.andExpect(model().attributeHasFieldErrors("owner", "telephone"))
+			.andExpect(model().attributeHasErrors(CommonAttribute.OWNER))
+			.andExpect(model().attributeHasFieldErrors(CommonAttribute.OWNER, CommonAttribute.OWNER_ADDRESS))
+			.andExpect(model().attributeHasFieldErrors(CommonAttribute.OWNER, CommonAttribute.OWNER_PHONE))
 			.andExpect(view().name("owners/createOrUpdateOwnerForm"));
 	}
 
@@ -127,7 +128,7 @@ class OwnerControllerTests {
 	void testInitFindForm() throws Exception {
 		mockMvc.perform(get("/owners/find"))
 			.andExpect(status().isOk())
-			.andExpect(model().attributeExists("owner"))
+			.andExpect(model().attributeExists(CommonAttribute.OWNER))
 			.andExpect(view().name("owners/findOwners"));
 	}
 
@@ -145,7 +146,7 @@ class OwnerControllerTests {
 		given(this.owners.findByLastName(george.getLastName())).willReturn(Lists.newArrayList(george));
 
 		mockMvc.perform(get("/owners")
-			.param("lastName", "Franklin"))
+			.param(CommonAttribute.OWNER_LAST_NAME, "Franklin"))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
 	}
@@ -153,10 +154,10 @@ class OwnerControllerTests {
 	@Test
 	void testProcessFindFormNoOwnersFound() throws Exception {
 		mockMvc.perform(get("/owners")
-			.param("lastName", "Unknown Surname"))
+			.param(CommonAttribute.OWNER_LAST_NAME,"Unknown Surname"))
 			.andExpect(status().isOk())
-			.andExpect(model().attributeHasFieldErrors("owner", "lastName"))
-			.andExpect(model().attributeHasFieldErrorCode("owner", "lastName", "notFound"))
+			.andExpect(model().attributeHasFieldErrors(CommonAttribute.OWNER, CommonAttribute.OWNER_LAST_NAME))
+			.andExpect(model().attributeHasFieldErrorCode(CommonAttribute.OWNER, CommonAttribute.OWNER_LAST_NAME, "notFound"))
 			.andExpect(view().name("owners/findOwners"));
 	}
 
@@ -164,23 +165,23 @@ class OwnerControllerTests {
 	void testInitUpdateOwnerForm() throws Exception {
 		mockMvc.perform(get("/owners/{ownerId}/edit", TEST_OWNER_ID))
 			.andExpect(status().isOk())
-			.andExpect(model().attributeExists("owner"))
-			.andExpect(model().attribute("owner", hasProperty("lastName", is("Franklin"))))
-			.andExpect(model().attribute("owner", hasProperty("firstName", is("George"))))
-			.andExpect(model().attribute("owner", hasProperty("address", is("110 W. Liberty St."))))
-			.andExpect(model().attribute("owner", hasProperty("city", is("Madison"))))
-			.andExpect(model().attribute("owner", hasProperty("telephone", is("6085551023"))))
+			.andExpect(model().attributeExists(CommonAttribute.OWNER))
+			.andExpect(model().attribute(CommonAttribute.OWNER, hasProperty(CommonAttribute.OWNER_LAST_NAME, is("Franklin"))))
+			.andExpect(model().attribute(CommonAttribute.OWNER, hasProperty(CommonAttribute.OWNER_FIRST_NAME, is("George"))))
+			.andExpect(model().attribute(CommonAttribute.OWNER, hasProperty(CommonAttribute.OWNER_ADDRESS, is("110 W. Liberty St."))))
+			.andExpect(model().attribute(CommonAttribute.OWNER, hasProperty(CommonAttribute.OWNER_CITY, is("Madison"))))
+			.andExpect(model().attribute(CommonAttribute.OWNER, hasProperty(CommonAttribute.OWNER_PHONE, is("6085551023"))))
 			.andExpect(view().name("owners/createOrUpdateOwnerForm"));
 	}
 
 	@Test
 	void testProcessUpdateOwnerFormSuccess() throws Exception {
 		mockMvc.perform(post("/owners/{ownerId}/edit", TEST_OWNER_ID)
-			.param("firstName", "Joe")
-			.param("lastName", "Bloggs")
-			.param("address", "123 Caramel Street")
-			.param("city", "London")
-			.param("telephone", "01616291589"))
+			.param(CommonAttribute.OWNER_FIRST_NAME, "Joe")
+			.param(CommonAttribute.OWNER_LAST_NAME, "Bloggs")
+			.param(CommonAttribute.OWNER_ADDRESS, "123 Caramel Street")
+			.param(CommonAttribute.OWNER_CITY, "London")
+			.param(CommonAttribute.OWNER_PHONE, "01616291589"))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(view().name("redirect:/owners/{ownerId}"));
 	}
@@ -188,13 +189,13 @@ class OwnerControllerTests {
 	@Test
 	void testProcessUpdateOwnerFormHasErrors() throws Exception {
 		mockMvc.perform(post("/owners/{ownerId}/edit", TEST_OWNER_ID)
-			.param("firstName", "Joe")
-			.param("lastName", "Bloggs")
-			.param("city", "London"))
+			.param(CommonAttribute.OWNER_FIRST_NAME, "Joe")
+			.param(CommonAttribute.OWNER_LAST_NAME, "Bloggs")
+			.param(CommonAttribute.OWNER_CITY, "London"))
 			.andExpect(status().isOk())
-			.andExpect(model().attributeHasErrors("owner"))
-			.andExpect(model().attributeHasFieldErrors("owner", "address"))
-			.andExpect(model().attributeHasFieldErrors("owner", "telephone"))
+			.andExpect(model().attributeHasErrors(CommonAttribute.OWNER))
+			.andExpect(model().attributeHasFieldErrors(CommonAttribute.OWNER, CommonAttribute.OWNER_ADDRESS))
+			.andExpect(model().attributeHasFieldErrors(CommonAttribute.OWNER, CommonAttribute.OWNER_PHONE))
 			.andExpect(view().name("owners/createOrUpdateOwnerForm"));
 	}
 
@@ -202,13 +203,13 @@ class OwnerControllerTests {
 	void testShowOwner() throws Exception {
 		mockMvc.perform(get("/owners/{ownerId}", TEST_OWNER_ID))
 			.andExpect(status().isOk())
-			.andExpect(model().attribute("owner", hasProperty("lastName", is("Franklin"))))
-			.andExpect(model().attribute("owner", hasProperty("firstName", is("George"))))
-			.andExpect(model().attribute("owner", hasProperty("address", is("110 W. Liberty St."))))
-			.andExpect(model().attribute("owner", hasProperty("city", is("Madison"))))
-			.andExpect(model().attribute("owner", hasProperty("telephone", is("6085551023"))))
-			.andExpect(model().attribute("owner", hasProperty("pets", not(empty()))))
-			.andExpect(model().attribute("owner", hasProperty("pets", new BaseMatcher<List<PetDTO>>() {
+			.andExpect(model().attribute(CommonAttribute.OWNER, hasProperty(CommonAttribute.OWNER_LAST_NAME, is("Franklin"))))
+			.andExpect(model().attribute(CommonAttribute.OWNER, hasProperty(CommonAttribute.OWNER_FIRST_NAME, is("George"))))
+			.andExpect(model().attribute(CommonAttribute.OWNER, hasProperty(CommonAttribute.OWNER_ADDRESS, is("110 W. Liberty St."))))
+			.andExpect(model().attribute(CommonAttribute.OWNER, hasProperty(CommonAttribute.OWNER_CITY, is("Madison"))))
+			.andExpect(model().attribute(CommonAttribute.OWNER, hasProperty(CommonAttribute.OWNER_PHONE, is("6085551023"))))
+			.andExpect(model().attribute(CommonAttribute.OWNER, hasProperty(CommonAttribute.OWNER_PETS, not(empty()))))
+			.andExpect(model().attribute(CommonAttribute.OWNER, hasProperty(CommonAttribute.OWNER_PETS, new BaseMatcher<List<PetDTO>>() {
 
 			@Override
 			public boolean matches(Object item) {
