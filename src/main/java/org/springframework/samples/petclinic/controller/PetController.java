@@ -16,7 +16,7 @@
 package org.springframework.samples.petclinic.controller;
 
 import org.springframework.samples.petclinic.dto.*;
-import org.springframework.samples.petclinic.validator.PetValidator;
+import org.springframework.samples.petclinic.validator.PetDTOValidator;
 import org.springframework.samples.petclinic.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -69,7 +69,7 @@ class PetController {
 
 	@InitBinder("pet")
 	public void initPetBinder(WebDataBinder dataBinder) {
-		dataBinder.setValidator(new PetValidator());
+		dataBinder.setValidator(new PetDTOValidator());
 	}
 
 	@GetMapping("/pets/new")
@@ -81,11 +81,12 @@ class PetController {
 	}
 
 	@PostMapping("/pets/new")
-	public String processCreationForm(OwnerDTO ownerDTO, @Valid PetDTO pet, BindingResult result, ModelMap model) {
-		if (StringUtils.hasLength(pet.getName()) && pet.isNew() && ownerDTO.getPet(pet.getName(), true) != null) {
+	public String processCreationForm(@ModelAttribute("owner") OwnerDTO owner,
+									  @ModelAttribute("pet") @Valid PetDTO pet, BindingResult result, ModelMap model) {
+		if (StringUtils.hasLength(pet.getName()) && pet.isNew() && owner.getPet(pet.getName(), true) != null) {
 			result.rejectValue("name", "duplicate", "already exists");
 		}
-		ownerDTO.addPet(pet);
+		owner.addPet(pet);
 		if (result.hasErrors()) {
 			model.put("pet", pet);
 			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;

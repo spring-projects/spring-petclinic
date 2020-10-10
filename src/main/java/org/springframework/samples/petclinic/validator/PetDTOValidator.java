@@ -16,13 +16,12 @@
 package org.springframework.samples.petclinic.validator;
 
 import org.springframework.samples.petclinic.dto.PetDTO;
-import org.springframework.samples.petclinic.owner.Pet;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 /**
- * <code>Validator</code> for <code>Pet</code> forms.
+ * <code>Validator</code> for <code>PetDTO</code> forms.
  * <p>
  * We're not using Bean Validation annotations here because it is easier to define such
  * validation rule in Java.
@@ -31,13 +30,13 @@ import org.springframework.validation.Validator;
  * @author Ken Krebs
  * @author Juergen Hoeller
  */
-public class PetValidator implements Validator {
+public class PetDTOValidator implements Validator {
 
 	private static final String REQUIRED = "required";
 
 	@Override
 	public void validate(Object obj, Errors errors) {
-		Pet pet = (Pet) obj;
+		PetDTO pet = (PetDTO) obj;
 		String name = pet.getName();
 		// name validation
 		if (!StringUtils.hasLength(name)) {
@@ -60,7 +59,7 @@ public class PetValidator implements Validator {
 	 */
 	@Override
 	public boolean supports(Class<?> clazz) {
-		return Pet.class.isAssignableFrom(clazz);
+		return PetDTO.class.isAssignableFrom(clazz);
 	}
 
 }
