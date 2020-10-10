@@ -71,9 +71,9 @@ class PetControllerTests {
 		cat.setId(3);
 		cat.setName("hamster");
 
-		given(this.petTypeService.findPetTypes()).willReturn(Lists.newArrayList(cat));
 		given(this.ownerService.findById(TEST_OWNER_ID)).willReturn(new OwnerDTO());
 		given(this.petService.findById(TEST_PET_ID)).willReturn(new PetDTO());
+		given(this.petTypeService.findPetTypes()).willReturn(Lists.newArrayList(cat));
 	}
 
 	@Test

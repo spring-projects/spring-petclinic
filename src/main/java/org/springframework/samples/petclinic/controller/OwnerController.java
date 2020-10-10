@@ -46,7 +46,6 @@ class OwnerController {
 	private final OwnerService ownerService;
 	private final VisitService visitService;
 
-	@Autowired
 	OwnerController(OwnerService ownerService, VisitService visitService) {
 		this.ownerService = ownerService;
 		this.visitService = visitService;
