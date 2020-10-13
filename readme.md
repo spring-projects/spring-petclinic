@@ -49,3 +49,12 @@ http://localhost:8080
 ```
 
 ![Screenshot](screenshot.png)
+
+
+For OpenShift
+
+![MySQL Template](mysql-template-settings.png)
+
+Edit the DeploymentConfig for the application pod
+
+![DC Env Vars](app-env-vars.png)
