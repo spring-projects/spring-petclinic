@@ -22,12 +22,20 @@ public class PetService implements BaseService<Pet, PetDTO> {
 
 	@Override
 	public Pet dtoToEntity(PetDTO dto) {
-		return modelMapper.map(dto, Pet.class);
+		if(dto == null) {
+			return new Pet();
+		} else {
+			return modelMapper.map(dto, Pet.class);
+		}
 	}
 
 	@Override
 	public PetDTO entityToDTO(Pet entity) {
-		return modelMapper.map(entity, PetDTO.class);
+		if(entity == null) {
+			return new PetDTO();
+		} else {
+			return modelMapper.map(entity, PetDTO.class);
+		}
 	}
 
 	@Override

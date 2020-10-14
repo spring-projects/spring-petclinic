@@ -46,4 +46,21 @@ public class PersonDTO extends BaseDTO {
 		this.lastName = lastName;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof PersonDTO)) return false;
+
+		PersonDTO personDTO = (PersonDTO) o;
+
+		if (!getFirstName().equals(personDTO.getFirstName())) return false;
+		return getLastName().equals(personDTO.getLastName());
+	}
+
+	@Override
+	public int hashCode() {
+		int result = getFirstName().hashCode();
+		result = 31 * result + getLastName().hashCode();
+		return result;
+	}
 }

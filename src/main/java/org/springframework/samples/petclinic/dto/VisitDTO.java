@@ -65,4 +65,23 @@ public class VisitDTO extends BaseDTO {
 		this.petId = petId;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof VisitDTO)) return false;
+
+		VisitDTO visitDTO = (VisitDTO) o;
+
+		if (!getDate().equals(visitDTO.getDate())) return false;
+		if (!getDescription().equals(visitDTO.getDescription())) return false;
+		return getPetId().equals(visitDTO.getPetId());
+	}
+
+	@Override
+	public int hashCode() {
+		int result = getDate().hashCode();
+		result = 31 * result + getDescription().hashCode();
+		result = 31 * result + getPetId().hashCode();
+		return result;
+	}
 }

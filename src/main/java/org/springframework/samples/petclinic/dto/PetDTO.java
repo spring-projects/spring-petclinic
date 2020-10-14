@@ -84,4 +84,25 @@ public class PetDTO extends NamedDTO {
 		visit.setPetId(this.getId());
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof PetDTO)) return false;
+
+		PetDTO petDTO = (PetDTO) o;
+
+		if (!getBirthDate().equals(petDTO.getBirthDate())) return false;
+		if (!getType().equals(petDTO.getType())) return false;
+		if (!getOwner().equals(petDTO.getOwner())) return false;
+		return getVisits() != null ? getVisits().equals(petDTO.getVisits()) : petDTO.getVisits() == null;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = getBirthDate().hashCode();
+		result = 31 * result + getType().hashCode();
+		result = 31 * result + getOwner().hashCode();
+		result = 31 * result + (getVisits() != null ? getVisits().hashCode() : 0);
+		return result;
+	}
 }

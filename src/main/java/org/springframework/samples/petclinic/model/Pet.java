@@ -107,4 +107,27 @@ public class Pet extends NamedEntity {
 		visit.setPetId(this.getId());
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Pet)) return false;
+		if (!super.equals(o)) return false;
+
+		Pet pet = (Pet) o;
+
+		if (!getBirthDate().equals(pet.getBirthDate())) return false;
+		if (!getType().equals(pet.getType())) return false;
+		if (!getOwner().equals(pet.getOwner())) return false;
+		return getVisits() != null ? getVisits().equals(pet.getVisits()) : pet.getVisits() == null;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = super.hashCode();
+		result = 31 * result + getBirthDate().hashCode();
+		result = 31 * result + getType().hashCode();
+		result = 31 * result + getOwner().hashCode();
+		result = 31 * result + (getVisits() != null ? getVisits().hashCode() : 0);
+		return result;
+	}
 }

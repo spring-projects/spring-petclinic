@@ -51,4 +51,21 @@ public class Person extends BaseEntity {
 		this.lastName = lastName;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Person)) return false;
+
+		Person person = (Person) o;
+
+		if (!getFirstName().equals(person.getFirstName())) return false;
+		return getLastName().equals(person.getLastName());
+	}
+
+	@Override
+	public int hashCode() {
+		int result = getFirstName().hashCode();
+		result = 31 * result + getLastName().hashCode();
+		return result;
+	}
 }
