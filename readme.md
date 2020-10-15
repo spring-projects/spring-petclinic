@@ -54,7 +54,6 @@ http://localhost:8080
 
 ![Screenshot](screenshot.png)
 
-
 ## For OpenShift:
 
 ### Dev Console
@@ -67,7 +66,7 @@ Then move to Developer perspective:
 
 ![Dev Perspective](switch-perspective.png)
 
-And create a new MySQL instance by clicking the `+Add` button and choose `Database` type:
+And create a new MySQL instance by clicking the `+Add` button and choose the `Database` option:
 
 ![Add DB](db.png)
 
@@ -85,13 +84,13 @@ Push the `Create` button.
 
 Let's deploy the Pet Clinic app.
 
-And create a new MySQL instance by clicking the `+Add` button and choose `From Git` type:
+Click the `+Add` button and choose `From Git` type:
 
 Fill the Git repo with the following value `https://github.com/burrsutter/spring-petclinic` and select the project as Java project:
 
 ![Pet Clinic Deploy](petclinic-deploy.png)
 
-Push the link to `Build Configuration`:
+Push the `Build Configuration` link:
 
 ![Build Configuration](build-config.png)
 
@@ -100,11 +99,9 @@ Add the following environment variables for the application Pod:
 ![DC Env Vars](app-env-vars.png)
 
 Finally push the `Create` button and wait until the Build is done and the Pod is up and running (dark blue around the deployment bubble).
+Then push the Open URL button to view the Pet Clinic app:
 
-![Pet Clinic Deployment](petclinic-deploy.png)
+![Pet Clinic Deployment](petclinic-url.png)
 
-Push the Open URL button to view the Pet Clinic app:
 
 ![Pet Clinic UI](output-ui.png)
-
-### Odo
