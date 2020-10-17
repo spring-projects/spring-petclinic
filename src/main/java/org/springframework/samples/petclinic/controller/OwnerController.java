@@ -82,7 +82,7 @@ class OwnerController {
 	}
 
 	@GetMapping(CommonEndPoint.OWNERS)
-	public String processFindForm(@ModelAttribute(CommonAttribute.OWNER) OwnerDTO owner, BindingResult result,
+	public String processFindForm(OwnerDTO owner, BindingResult result,
 			Map<String, Object> model) {
 
 		// allow parameterless GET request for /owners to return all records
