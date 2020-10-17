@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.repository;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.repository.Repository;
@@ -31,6 +32,7 @@ import org.springframework.samples.petclinic.model.Visit;
  * @author Juergen Hoeller
  * @author Sam Brannen
  * @author Michael Isvy
+ * @author Paul-Emmanuel DOS SANTOS FACAO
  */
 public interface VisitRepository extends Repository<Visit, Integer> {
 
@@ -41,6 +43,19 @@ public interface VisitRepository extends Repository<Visit, Integer> {
 	 */
 	void save(Visit visit);
 
+	/**
+	 * Retrieve a {@link Visit} from the data store by id.
+	 * @param id the id to search for
+	 * @return the {@link Visit} if found
+	 */
+	Visit findById(Integer id);
+
 	List<Visit> findByPetId(Integer petId);
+
+	/**
+	 * Retrieve all {@link Visit}s from the data store
+	 * @return a Collection of {@link Visit}s (or an empty Collection if none
+	 */
+	List<Visit> findAll();
 
 }

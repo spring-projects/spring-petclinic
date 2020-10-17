@@ -57,4 +57,18 @@ public class VetDTO extends PersonDTO {
 		getSpecialtiesInternal().add(specialty);
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (!(o instanceof VetDTO))
+			return false;
+		if (!super.equals(o))
+			return false;
+
+		VetDTO vetDTO = (VetDTO) o;
+
+		return getSpecialties().equals(vetDTO.getSpecialties());
+	}
+
 }

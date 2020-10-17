@@ -130,23 +130,20 @@ public class OwnerDTO extends PersonDTO {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof OwnerDTO)) return false;
+		if (this == o)
+			return true;
+		if (!(o instanceof OwnerDTO))
+			return false;
 
 		OwnerDTO ownerDTO = (OwnerDTO) o;
 
-		if (!getAddress().equals(ownerDTO.getAddress())) return false;
-		if (!getCity().equals(ownerDTO.getCity())) return false;
-		if (!getTelephone().equals(ownerDTO.getTelephone())) return false;
+		if (!getAddress().equals(ownerDTO.getAddress()))
+			return false;
+		if (!getCity().equals(ownerDTO.getCity()))
+			return false;
+		if (!getTelephone().equals(ownerDTO.getTelephone()))
+			return false;
 		return getPets() != null ? getPets().equals(ownerDTO.getPets()) : ownerDTO.getPets() == null;
 	}
 
-	@Override
-	public int hashCode() {
-		int result = getAddress().hashCode();
-		result = 31 * result + getCity().hashCode();
-		result = 31 * result + getTelephone().hashCode();
-		result = 31 * result + (getPets() != null ? getPets().hashCode() : 0);
-		return result;
-	}
 }

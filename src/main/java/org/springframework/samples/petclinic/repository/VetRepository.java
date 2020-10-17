@@ -32,8 +32,16 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Juergen Hoeller
  * @author Sam Brannen
  * @author Michael Isvy
+ * @author Paul-Emmanuel DOS SANTOS FACAO
  */
 public interface VetRepository extends Repository<Vet, Integer> {
+
+	/**
+	 * Retrieve a {@link Vet} from the data store by id.
+	 * @param id the id to search for
+	 * @return the {@link Vet} if found
+	 */
+	Vet findById(Integer id);
 
 	/**
 	 * Retrieve all <code>Vet</code>s from the data store.
@@ -42,5 +50,11 @@ public interface VetRepository extends Repository<Vet, Integer> {
 	@Transactional(readOnly = true)
 	@Cacheable("vets")
 	Collection<Vet> findAll();
+
+	/**
+	 * Save a {@link Vet} to the data store, either inserting or updating it.
+	 * @param vet the {@link Vet} to save
+	 */
+	void save(Vet vet);
 
 }

@@ -6,9 +6,16 @@ import org.springframework.samples.petclinic.model.Visit;
 import org.springframework.samples.petclinic.repository.VisitRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
+/**
+ * Simple Service between Visit entity and VisitDTO Data Transfert Object.
+ *
+ * @author Paul-Emmanuel DOS SANTOS FACAO
+ */
 @Service("VisitService")
 public class VisitService implements BaseService<Visit, VisitDTO> {
 
@@ -22,35 +29,51 @@ public class VisitService implements BaseService<Visit, VisitDTO> {
 
 	@Override
 	public Visit dtoToEntity(VisitDTO dto) {
-		return modelMapper.map(dto, Visit.class);
+		if (dto != null) {
+			return modelMapper.map(dto, Visit.class);
+		}
+
+		return new Visit();
 	}
 
 	@Override
 	public VisitDTO entityToDTO(Visit entity) {
-		return modelMapper.map(entity, VisitDTO.class);
+		if (entity != null) {
+			return modelMapper.map(entity, VisitDTO.class);
+		}
+
+		return new VisitDTO();
 	}
 
 	@Override
-	public Collection<VisitDTO> entitiesToDTOS(Collection<Visit> entities) {
-		Collection<VisitDTO> dtos = new HashSet<>();
+	public List<VisitDTO> entitiesToDTOS(List<Visit> entities) {
+		List<VisitDTO> dtos = new ArrayList<>();
 
-		for (Visit entity : entities) {
-			dtos.add(entityToDTO(entity));
-		}
+		entities.forEach(entity -> dtos.add(entityToDTO(entity)));
+
 		return dtos;
 	}
 
 	@Override
-	public Collection<Visit> dtosToEntities(Collection<VisitDTO> dtos) {
-		Collection<Visit> entities = new HashSet<>();
+	public List<Visit> dtosToEntities(List<VisitDTO> dtos) {
+		List<Visit> entities = new ArrayList<>();
 
-		for (VisitDTO dto : dtos) {
-			entities.add(dtoToEntity(dto));
-		}
+		dtos.forEach(dto -> entities.add(dtoToEntity(dto)));
 
 		return entities;
 	}
 
+	@Override
+	public VisitDTO findById(int id) {
+		return entityToDTO(visitRepository.findById(id));
+	}
+
+	@Override
+	public List<VisitDTO> findAll() {
+		return entitiesToDTOS(visitRepository.findAll());
+	}
+
+	@Override
 	public void save(VisitDTO visitDTO) {
 		Visit visit = dtoToEntity(visitDTO);
 		visitRepository.save(visit);

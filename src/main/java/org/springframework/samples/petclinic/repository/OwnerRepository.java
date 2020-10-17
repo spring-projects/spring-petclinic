@@ -16,6 +16,7 @@
 package org.springframework.samples.petclinic.repository;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
@@ -33,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Juergen Hoeller
  * @author Sam Brannen
  * @author Michael Isvy
+ * @author Paul-Emmanuel DOS SANTOS FACAO
  */
 public interface OwnerRepository extends Repository<Owner, Integer> {
 
@@ -55,6 +57,12 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
 	@Query("SELECT owner FROM Owner owner left join fetch owner.pets WHERE owner.id =:id")
 	@Transactional(readOnly = true)
 	Owner findById(@Param("id") Integer id);
+
+	/**
+	 * Retrieve all {@link Owner}s from the data store
+	 * @return a Collection of {@link Owner}s (or an empty Collection if none
+	 */
+	List<Owner> findAll();
 
 	/**
 	 * Save an {@link Owner} to the data store, either inserting or updating it.

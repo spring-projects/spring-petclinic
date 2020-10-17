@@ -25,6 +25,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.samples.petclinic.dto.PetTypeDTO;
 import org.springframework.samples.petclinic.formatter.PetTypeFormatter;
 import org.springframework.samples.petclinic.model.PetType;
+import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.PetTypeService;
 
 import java.text.ParseException;
@@ -45,13 +46,13 @@ import static org.mockito.BDDMockito.given;
 class PetTypeDTOFormatterTests {
 
 	@Mock
-	private PetTypeService petTypeService;
+	private PetService petService;
 
 	private PetTypeFormatter petTypeFormatter;
 
 	@BeforeEach
 	void setup() {
-		this.petTypeFormatter = new PetTypeFormatter(petTypeService);
+		this.petTypeFormatter = new PetTypeFormatter(petService);
 	}
 
 	@Test
@@ -64,17 +65,15 @@ class PetTypeDTOFormatterTests {
 
 	@Test
 	void shouldParse() throws ParseException {
-		given(this.petTypeService.findPetTypes()).willReturn(makePetTypes());
+		given(this.petService.findPetTypes()).willReturn(makePetTypes());
 		PetTypeDTO petType = petTypeFormatter.parse("Bird", Locale.ENGLISH);
 		assertThat(petType.getName()).isEqualTo("Bird");
 	}
 
 	@Test
-	void shouldThrowParseException() throws ParseException {
-		given(this.petTypeService.findPetTypes()).willReturn(makePetTypes());
-		Assertions.assertThrows(ParseException.class, () -> {
-			petTypeFormatter.parse("Fish", Locale.ENGLISH);
-		});
+	void shouldThrowParseException() {
+		given(this.petService.findPetTypes()).willReturn(makePetTypes());
+		Assertions.assertThrows(ParseException.class, () -> petTypeFormatter.parse("Fish", Locale.ENGLISH));
 	}
 
 	/**

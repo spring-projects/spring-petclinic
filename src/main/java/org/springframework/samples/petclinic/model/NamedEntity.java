@@ -46,16 +46,14 @@ public class NamedEntity extends BaseEntity {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof NamedEntity)) return false;
+		if (this == o)
+			return true;
+		if (!(o instanceof NamedEntity))
+			return false;
 
 		NamedEntity that = (NamedEntity) o;
 
 		return getName().equals(that.getName());
 	}
 
-	@Override
-	public int hashCode() {
-		return getName().hashCode();
-	}
 }

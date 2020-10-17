@@ -3,58 +3,77 @@ package org.springframework.samples.petclinic.service;
 import org.modelmapper.ModelMapper;
 import org.springframework.samples.petclinic.dto.PetTypeDTO;
 import org.springframework.samples.petclinic.model.PetType;
-import org.springframework.samples.petclinic.repository.PetRepository;
+import org.springframework.samples.petclinic.repository.PetTypeRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * Simple Service between PetType entity and PetTypeDTO Data Transfert Object.
+ *
+ * @author Paul-Emmanuel DOS SANTOS FACAO
+ */
 @Service("PerTypeService")
 public class PetTypeService implements BaseService<PetType, PetTypeDTO> {
 
-	private final PetRepository petRepository;
+	private final PetTypeRepository petTypeRepository;
 
 	private final ModelMapper modelMapper = new ModelMapper();
 
-	public PetTypeService(PetRepository petRepository) {
-		this.petRepository = petRepository;
+	public PetTypeService(PetTypeRepository petTypeRepository) {
+		this.petTypeRepository = petTypeRepository;
 	}
 
 	@Override
 	public PetType dtoToEntity(PetTypeDTO dto) {
-		return modelMapper.map(dto, PetType.class);
+		if (dto != null) {
+			return modelMapper.map(dto, PetType.class);
+		}
+
+		return new PetType();
 	}
 
 	@Override
 	public PetTypeDTO entityToDTO(PetType entity) {
-		return modelMapper.map(entity, PetTypeDTO.class);
+		if (entity != null) {
+			return modelMapper.map(entity, PetTypeDTO.class);
+		}
+
+		return new PetTypeDTO();
 	}
 
 	@Override
-	public Collection<PetTypeDTO> entitiesToDTOS(Collection<PetType> entities) {
-		Collection<PetTypeDTO> dtos = new HashSet<>();
+	public List<PetTypeDTO> entitiesToDTOS(List<PetType> entities) {
+		List<PetTypeDTO> dtos = new ArrayList<>();
 
-		for (PetType entity : entities) {
-			dtos.add(entityToDTO(entity));
-		}
+		entities.forEach(entity -> dtos.add(entityToDTO(entity)));
 
 		return dtos;
 	}
 
 	@Override
-	public Collection<PetType> dtosToEntities(Collection<PetTypeDTO> dtos) {
-		Collection<PetType> entities = new HashSet<>();
+	public List<PetType> dtosToEntities(List<PetTypeDTO> dtos) {
+		List<PetType> entities = new ArrayList<>();
 
-		for (PetTypeDTO dto : dtos) {
-			entities.add(dtoToEntity(dto));
-		}
+		dtos.forEach(dto -> entities.add(dtoToEntity(dto)));
 
 		return entities;
 	}
 
-	public Collection<PetTypeDTO> findPetTypes() {
-		Collection<PetType> petTypes = petRepository.findPetTypes();
-		return entitiesToDTOS(petTypes);
+	@Override
+	public PetTypeDTO findById(int id) {
+		return entityToDTO(petTypeRepository.findById(id));
+	}
+
+	@Override
+	public List<PetTypeDTO> findAll() {
+		return entitiesToDTOS(petTypeRepository.findAll());
+	}
+
+	@Override
+	public void save(PetTypeDTO dto) {
+		petTypeRepository.save(dtoToEntity(dto));
 	}
 
 }

@@ -1,7 +1,12 @@
 package org.springframework.samples.petclinic.service;
 
-import java.util.Collection;
+import java.util.List;
 
+/**
+ * Interface for all services
+ *
+ * @author Paul-Emmanuel DOS SANTOS FACAO
+ */
 public interface BaseService<E, D> {
 
 	/**
@@ -9,27 +14,45 @@ public interface BaseService<E, D> {
 	 * @param dto DTO
 	 * @return Entity Model
 	 */
-	public E dtoToEntity(D dto);
+	E dtoToEntity(D dto);
 
 	/**
 	 * Convert Entity Model to Data Transfert Object
 	 * @param entity Entity Model
 	 * @return DTO
 	 */
-	public D entityToDTO(E entity);
+	D entityToDTO(E entity);
 
 	/**
 	 * Convert Entities Models Collection to Data Transfert Object Collection
 	 * @param entities Collection of Entity Model
 	 * @return Collection of DTO
 	 */
-	public Collection<D> entitiesToDTOS(Collection<E> entities);
+	List<D> entitiesToDTOS(List<E> entities);
 
 	/**
 	 * Convert Entities Models Collection to Data Transfert Object Collection
 	 * @param dtos Collection of DTO
 	 * @return Collection of Entity Model
 	 */
-	public Collection<E> dtosToEntities(Collection<D> dtos);
+	List<E> dtosToEntities(List<D> dtos);
+
+	/**
+	 * Get DTO object from repository by his ID
+	 * @param id identify object to be found
+	 * @return
+	 */
+	D findById(int id);
+
+	/**
+	 * Get all DTO objects from repository
+	 * @return
+	 */
+	List<D> findAll();
+
+	/**
+	 * Save DTO object to repository
+	 */
+	void save(D dto);
 
 }

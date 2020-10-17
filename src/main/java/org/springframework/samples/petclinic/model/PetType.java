@@ -25,4 +25,9 @@ import javax.persistence.Table;
 @Table(name = "types")
 public class PetType extends NamedEntity {
 
+	@Override
+	public boolean equals(Object obj) {
+		return super.equals(obj);
+	}
+
 }

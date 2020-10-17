@@ -21,6 +21,7 @@ import java.util.Locale;
 
 import org.springframework.format.Formatter;
 import org.springframework.samples.petclinic.dto.PetTypeDTO;
+import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.PetTypeService;
 import org.springframework.stereotype.Component;
 
@@ -37,10 +38,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class PetTypeFormatter implements Formatter<PetTypeDTO> {
 
-	private final PetTypeService petTypeService;
+	private final PetService petService;
 
-	public PetTypeFormatter(PetTypeService petTypeService) {
-		this.petTypeService = petTypeService;
+	public PetTypeFormatter(PetService petService) {
+		this.petService = petService;
 	}
 
 	@Override
@@ -50,7 +51,7 @@ public class PetTypeFormatter implements Formatter<PetTypeDTO> {
 
 	@Override
 	public PetTypeDTO parse(String text, Locale locale) throws ParseException {
-		Collection<PetTypeDTO> findPetTypes = this.petTypeService.findPetTypes();
+		Collection<PetTypeDTO> findPetTypes = this.petService.findPetTypes();
 		for (PetTypeDTO type : findPetTypes) {
 			if (type.getName().equals(text)) {
 				return type;

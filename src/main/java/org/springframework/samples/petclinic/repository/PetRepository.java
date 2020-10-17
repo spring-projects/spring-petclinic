@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.repository;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
@@ -33,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Juergen Hoeller
  * @author Sam Brannen
  * @author Michael Isvy
+ * @author Paul-Emmanuel DOS SANTOS FACAO
  */
 public interface PetRepository extends Repository<Pet, Integer> {
 
@@ -49,8 +51,13 @@ public interface PetRepository extends Repository<Pet, Integer> {
 	 * @param id the id to search for
 	 * @return the {@link Pet} if found
 	 */
-	@Transactional(readOnly = true)
 	Pet findById(Integer id);
+
+	/**
+	 * Retrieve all {@link Pet}s from the data store
+	 * @return a Collection of {@link Pet}s (or an empty Collection if none
+	 */
+	List<Pet> findAll();
 
 	/**
 	 * Save a {@link Pet} to the data store, either inserting or updating it.

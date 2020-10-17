@@ -147,25 +147,4 @@ public class Owner extends Person {
 				.append(CommonAttribute.OWNER_PHONE, this.telephone).toString();
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof Owner)) return false;
-
-		Owner owner = (Owner) o;
-
-		if (!getAddress().equals(owner.getAddress())) return false;
-		if (!getCity().equals(owner.getCity())) return false;
-		if (!getTelephone().equals(owner.getTelephone())) return false;
-		return getPets() != null ? getPets().equals(owner.getPets()) : owner.getPets() == null;
-	}
-
-	@Override
-	public int hashCode() {
-		int result = getAddress().hashCode();
-		result = 31 * result + getCity().hashCode();
-		result = 31 * result + getTelephone().hashCode();
-		result = 31 * result + (getPets() != null ? getPets().hashCode() : 0);
-		return result;
-	}
 }

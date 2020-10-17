@@ -79,7 +79,7 @@ class PetControllerTests {
 
 		given(this.ownerService.findById(TEST_OWNER_ID)).willReturn(new OwnerDTO());
 		given(this.petService.findById(TEST_PET_ID)).willReturn(new PetDTO());
-		given(this.petTypeService.findPetTypes()).willReturn(Lists.newArrayList(cat));
+		given(this.petService.findPetTypes()).willReturn(Lists.newArrayList(cat));
 	}
 
 	@Test

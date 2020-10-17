@@ -78,21 +78,18 @@ public class Visit extends BaseEntity {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof Visit)) return false;
+		if (this == o)
+			return true;
+		if (!(o instanceof Visit))
+			return false;
 
 		Visit visit = (Visit) o;
 
-		if (!getDate().equals(visit.getDate())) return false;
-		if (!getDescription().equals(visit.getDescription())) return false;
+		if (!getDate().equals(visit.getDate()))
+			return false;
+		if (!getDescription().equals(visit.getDescription()))
+			return false;
 		return getPetId().equals(visit.getPetId());
 	}
 
-	@Override
-	public int hashCode() {
-		int result = getDate().hashCode();
-		result = 31 * result + getDescription().hashCode();
-		result = 31 * result + getPetId().hashCode();
-		return result;
-	}
 }

@@ -38,4 +38,16 @@ public class NamedDTO extends BaseDTO {
 		return this.getName();
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (!(o instanceof NamedDTO))
+			return false;
+
+		NamedDTO namedDTO = (NamedDTO) o;
+
+		return getName().equals(namedDTO.getName());
+	}
+
 }

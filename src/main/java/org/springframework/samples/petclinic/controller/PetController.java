@@ -58,7 +58,7 @@ class PetController {
 
 	@ModelAttribute("types")
 	public Collection<PetTypeDTO> populatePetTypes() {
-		return this.petTypeService.findPetTypes();
+		return this.petService.findPetTypes();
 	}
 
 	@ModelAttribute("owner")
