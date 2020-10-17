@@ -35,6 +35,7 @@ import org.springframework.http.MediaType;
 import org.springframework.samples.petclinic.common.CommonAttribute;
 import org.springframework.samples.petclinic.common.CommonEndPoint;
 import org.springframework.samples.petclinic.common.CommonView;
+import org.springframework.samples.petclinic.dto.SpecialtyDTO;
 import org.springframework.samples.petclinic.dto.VetDTO;
 import org.springframework.samples.petclinic.service.VetService;
 import org.springframework.samples.petclinic.model.Specialty;
@@ -65,7 +66,7 @@ class VetControllerTests {
 		helen.setFirstName("Helen");
 		helen.setLastName("Leary");
 		helen.setId(2);
-		Specialty radiology = new Specialty();
+		SpecialtyDTO radiology = new SpecialtyDTO();
 		radiology.setId(1);
 		radiology.setName("radiology");
 		helen.addSpecialty(radiology);

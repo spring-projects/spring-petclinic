@@ -1,9 +1,12 @@
 package org.springframework.samples.petclinic.service;
 
+import net.bytebuddy.matcher.FilterableList;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.internal.util.Lists;
 import org.springframework.samples.petclinic.dto.OwnerDTO;
+import org.springframework.samples.petclinic.dto.PetDTO;
 import org.springframework.samples.petclinic.model.Owner;
+import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
 import org.springframework.samples.petclinic.repository.PetRepository;
 import org.springframework.samples.petclinic.repository.PetTypeRepository;
@@ -52,7 +55,12 @@ public class OwnerService implements BaseService<Owner, OwnerDTO> {
 	public OwnerDTO entityToDTO(Owner entity) {
 		if (entity != null) {
 			OwnerDTO ownerDTO = modelMapper.map(entity, OwnerDTO.class);
-			entity.getPets().forEach(pet -> ownerDTO.addPet(petService.entityToDTO(pet)));
+
+			for( Pet pet : entity.getPets()) {
+				PetDTO petDTO = petService.entityToDTO(pet);
+				ownerDTO.addPet(petDTO);
+			}
+
 			return ownerDTO;
 		}
 

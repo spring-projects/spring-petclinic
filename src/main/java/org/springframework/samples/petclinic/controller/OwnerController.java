@@ -44,7 +44,6 @@ import java.util.Map;
 class OwnerController {
 
 	private final OwnerService ownerService;
-
 	private final VisitService visitService;
 
 	OwnerController(OwnerService ownerService, VisitService visitService) {

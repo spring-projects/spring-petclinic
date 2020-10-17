@@ -29,22 +29,22 @@ import java.util.*;
  */
 public class VetDTO extends PersonDTO {
 
-	private Set<Specialty> specialties;
+	private Set<SpecialtyDTO> specialties;
 
-	protected Set<Specialty> getSpecialtiesInternal() {
+	protected Set<SpecialtyDTO> getSpecialtiesInternal() {
 		if (this.specialties == null) {
 			this.specialties = new HashSet<>();
 		}
 		return this.specialties;
 	}
 
-	protected void setSpecialtiesInternal(Set<Specialty> specialties) {
+	protected void setSpecialtiesInternal(Set<SpecialtyDTO> specialties) {
 		this.specialties = specialties;
 	}
 
 	@XmlElement
-	public List<Specialty> getSpecialties() {
-		List<Specialty> sortedSpecs = new ArrayList<>(getSpecialtiesInternal());
+	public List<SpecialtyDTO> getSpecialties() {
+		List<SpecialtyDTO> sortedSpecs = new ArrayList<>(getSpecialtiesInternal());
 		PropertyComparator.sort(sortedSpecs, new MutableSortDefinition("name", true, true));
 		return Collections.unmodifiableList(sortedSpecs);
 	}
@@ -53,7 +53,7 @@ public class VetDTO extends PersonDTO {
 		return getSpecialtiesInternal().size();
 	}
 
-	public void addSpecialty(Specialty specialty) {
+	public void addSpecialty(SpecialtyDTO specialty) {
 		getSpecialtiesInternal().add(specialty);
 	}
 

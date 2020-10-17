@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.petclinic.dto.VetDTO;
 import org.springframework.samples.petclinic.model.Vet;
+import org.springframework.samples.petclinic.repository.SpecialtyRepository;
 import org.springframework.samples.petclinic.repository.VetRepository;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,8 @@ class VetServiceTest {
 
 	@Autowired
 	private VetRepository vetRepository;
+	@Autowired
+	private SpecialtyRepository specialtyRepository;
 
 	private VetService vetService;
 
@@ -40,7 +43,7 @@ class VetServiceTest {
 
 	@BeforeEach
 	void beforeEach() {
-		vetService = new VetService(vetRepository);
+		vetService = new VetService(vetRepository, specialtyRepository);
 		vet = new Vet();
 		vet.setId(VET_ID);
 		vet.setFirstName(VET_FIRST_NAME);
