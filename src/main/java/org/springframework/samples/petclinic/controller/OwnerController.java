@@ -44,6 +44,7 @@ import java.util.Map;
 class OwnerController {
 
 	private final OwnerService ownerService;
+
 	private final VisitService visitService;
 
 	OwnerController(OwnerService ownerService, VisitService visitService) {
@@ -82,7 +83,7 @@ class OwnerController {
 	}
 
 	@GetMapping(CommonEndPoint.OWNERS)
-	public String processFindForm(OwnerDTO owner, BindingResult result,
+	public String processFindForm(@ModelAttribute(CommonAttribute.OWNER) OwnerDTO owner, BindingResult result,
 			Map<String, Object> model) {
 
 		// allow parameterless GET request for /owners to return all records

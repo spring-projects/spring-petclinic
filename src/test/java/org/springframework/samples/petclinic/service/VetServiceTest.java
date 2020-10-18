@@ -32,6 +32,7 @@ class VetServiceTest {
 
 	@Autowired
 	private VetRepository vetRepository;
+
 	@Autowired
 	private SpecialtyRepository specialtyRepository;
 

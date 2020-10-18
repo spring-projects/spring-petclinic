@@ -97,7 +97,7 @@ public class PetDTO extends NamedDTO {
 			return false;
 		if (!getType().equals(petDTO.getType()))
 			return false;
-		if (!getOwner().equals(petDTO.getOwner()))
+		if (!getOwner().getId().equals(petDTO.getOwner().getId()))
 			return false;
 		return getVisits() != null ? getVisits().equals(petDTO.getVisits()) : petDTO.getVisits() == null;
 	}

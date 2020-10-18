@@ -1,8 +1,10 @@
 package org.springframework.samples.petclinic.service;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.samples.petclinic.dto.OwnerDTO;
 import org.springframework.samples.petclinic.dto.PetDTO;
 import org.springframework.samples.petclinic.dto.PetTypeDTO;
+import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.repository.PetRepository;
@@ -43,7 +45,21 @@ public class PetService implements BaseService<Pet, PetDTO> {
 	public Pet dtoToEntity(PetDTO dto) {
 		if (dto != null) {
 			Pet pet = modelMapper.map(dto, Pet.class);
+			Owner owner = modelMapper.map(dto.getOwner(), Owner.class);
+
 			dto.getVisits().forEach(visitDTO -> pet.addVisit(visitService.dtoToEntity(visitDTO)));
+
+			dto.getOwner().getPets().forEach(petDTO -> {
+				if (petDTO.getId().equals(dto.getId())) {
+					owner.addPet(pet);
+				}
+				else {
+					Pet otherPet = modelMapper.map(petDTO, Pet.class);
+					otherPet.setOwner(owner);
+					owner.addPet(otherPet);
+				}
+			});
+			pet.setOwner(owner);
 			return pet;
 		}
 
@@ -54,7 +70,21 @@ public class PetService implements BaseService<Pet, PetDTO> {
 	public PetDTO entityToDTO(Pet entity) {
 		if (entity != null) {
 			PetDTO petDTO = modelMapper.map(entity, PetDTO.class);
+			OwnerDTO ownerDTO = modelMapper.map(entity.getOwner(), OwnerDTO.class);
+
 			entity.getVisits().forEach(visit -> petDTO.addVisit(visitService.entityToDTO(visit)));
+
+			entity.getOwner().getPets().forEach(pet -> {
+				if (pet.getId().equals(entity.getId())) {
+					ownerDTO.addPet(petDTO);
+				}
+				else {
+					PetDTO otherPetDTO = modelMapper.map(pet, PetDTO.class);
+					otherPetDTO.setOwner(ownerDTO);
+					ownerDTO.addPet(otherPetDTO);
+				}
+			});
+			petDTO.setOwner(ownerDTO);
 			return petDTO;
 		}
 

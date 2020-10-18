@@ -95,7 +95,7 @@ class PetServiceTest {
 		assertThat(found.getName()).isEqualTo(pet.getName());
 		assertThat(found.getBirthDate()).isEqualTo(pet.getBirthDate());
 		assertThat(found.getType()).isEqualTo(pet.getType());
-		assertThat(found.getOwner()).isEqualTo(pet.getOwner());
+		assertThat(found.getOwner().getId()).isEqualTo(pet.getOwner().getId());
 		assertThat(found.getVisits()).isEqualTo(pet.getVisits());
 	}
 
@@ -109,7 +109,7 @@ class PetServiceTest {
 		assertThat(found.getName()).isEqualTo(petDTO.getName());
 		assertThat(found.getBirthDate()).isEqualTo(petDTO.getBirthDate());
 		assertThat(found.getType()).isEqualTo(petDTO.getType());
-		assertThat(found.getOwner()).isEqualTo(petDTO.getOwner());
+		assertThat(found.getOwner().getId()).isEqualTo(petDTO.getOwner().getId());
 		assertThat(found.getVisits()).isEqualTo(petDTO.getVisits());
 	}
 
@@ -158,7 +158,7 @@ class PetServiceTest {
 
 		List<PetDTO> found = petService.findAll();
 
-		assertThat(found).contains(petDTO).containsAll(expected);
+		assertThat(found).hasSize(expected.size() + 1).contains(petDTO).containsAll(expected);
 
 	}
 
@@ -170,7 +170,7 @@ class PetServiceTest {
 
 		petService.save(petDTO);
 
-		assertThat(petService.findAll()).contains(petDTO);
+		assertThat(petService.findAll()).containsAnyOf(petDTO);
 	}
 
 }

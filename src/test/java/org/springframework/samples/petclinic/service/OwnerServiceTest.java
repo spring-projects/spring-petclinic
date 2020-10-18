@@ -10,8 +10,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.petclinic.dto.OwnerDTO;
 import org.springframework.samples.petclinic.dto.PetDTO;
+import org.springframework.samples.petclinic.dto.PetTypeDTO;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
+import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
 import org.springframework.samples.petclinic.repository.PetRepository;
 import org.springframework.samples.petclinic.repository.PetTypeRepository;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 class OwnerServiceTest {
 
-	private final static Integer OWNER_ID = 55;
+	private final static Integer OWNER_ID = 11;
 
 	private final static String OWNER_FIRST_NAME = "Sam";
 
@@ -75,13 +78,19 @@ class OwnerServiceTest {
 	void beforeEach() {
 		petService = new PetService(petRepository, petTypeRepository, visitRepository);
 		ownerService = new OwnerService(ownerRepository, petRepository, petTypeRepository, visitRepository);
+		PetTypeService petTypeService = new PetTypeService(petTypeRepository);
+		Collection<PetTypeDTO> petTypeDTOS = petService.findPetTypes();
+		PetTypeDTO petTypeDTO = petTypeDTOS.stream().findFirst().get();
+		PetType petType = petTypeService.dtoToEntity(petTypeDTO);
 		pet = new Pet();
 		pet.setId(PET_ID);
 		pet.setName(PET_NAME);
+		pet.setType(petType);
 		pet.setBirthDate(LocalDate.parse(PET_BIRTH_DATE));
 		petDTO = new PetDTO();
 		petDTO.setId(PET_ID);
 		petDTO.setName(PET_NAME);
+		petDTO.setType(petTypeDTO);
 		petDTO.setBirthDate(LocalDate.parse(PET_BIRTH_DATE));
 
 		owner = new Owner();
@@ -118,7 +127,7 @@ class OwnerServiceTest {
 		assertThat(found.getPets().size()).isEqualTo(owner.getPets().size());
 
 		for (Pet pet : found.getPets()) {
-			assertThat(owner.getPets()).contains(pet);
+			assertThat(owner.getPets()).extracting("id").contains(pet.getId());
 		}
 
 	}
@@ -138,7 +147,7 @@ class OwnerServiceTest {
 		assertThat(found.getPets().size()).isEqualTo(ownerDTO.getPets().size());
 
 		for (PetDTO petDTO : found.getPets()) {
-			assertThat(ownerDTO.getPets()).contains(petDTO);
+			assertThat(ownerDTO.getPets()).extracting("id").contains(petDTO.getId());
 		}
 	}
 
@@ -200,7 +209,10 @@ class OwnerServiceTest {
 
 		List<OwnerDTO> found = ownerService.findAll();
 
-		assertThat(found).contains(ownerDTO).containsAll(expected);
+		assertThat(found).hasSize(expected.size() + 1)
+				.usingElementComparatorOnFields("lastName", "firstName", "address", "city", "telephone")
+				.contains(ownerDTO).containsAnyElementsOf(expected);
+
 	}
 
 	@Test
@@ -210,8 +222,10 @@ class OwnerServiceTest {
 		assertThat(ownerService.findAll()).doesNotContain(ownerDTO);
 
 		ownerService.save(ownerDTO);
+		List<OwnerDTO> found = ownerService.findAll();
 
-		assertThat(ownerService.findAll()).contains(ownerDTO);
+		assertThat(found).usingElementComparatorOnFields("lastName", "firstName", "address", "city", "telephone")
+				.contains(ownerDTO);
 	}
 
 }

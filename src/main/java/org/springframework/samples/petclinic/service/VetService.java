@@ -24,7 +24,9 @@ import java.util.List;
 public class VetService implements BaseService<Vet, VetDTO> {
 
 	private final VetRepository vetRepository;
+
 	private final SpecialtyService specialtyService;
+
 	private final ModelMapper modelMapper = new ModelMapper();
 
 	public VetService(VetRepository vetRepository, SpecialtyRepository specialtyRepository) {

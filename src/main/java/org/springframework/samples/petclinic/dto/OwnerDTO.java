@@ -86,7 +86,7 @@ public class OwnerDTO extends PersonDTO {
 
 	public void addPet(PetDTO pet) {
 
-		if(!this.getPets().contains(pet)) {
+		if (!this.getPets().contains(pet)) {
 			getPetsInternal().add(pet);
 		}
 		pet.setOwner(this);
