@@ -1,0 +1,25 @@
+org/springframework/samples/petclinic/owner/PetTypeFormatterTests.java
+ org.springframework.samples.petclinic.owner.PetTypeFormatterTests
+ org.springframework.samples.petclinic.owner.PetTypeFormatterTests$1
+ org.springframework.samples.petclinic.owner.PetTypeFormatterTests$2
+org/springframework/samples/petclinic/PetclinicIntegrationTests.java
+ org.springframework.samples.petclinic.PetclinicIntegrationTests
+org/springframework/samples/petclinic/vet/VetControllerTests.java
+ org.springframework.samples.petclinic.vet.VetControllerTests
+org/springframework/samples/petclinic/vet/VetTests.java
+ org.springframework.samples.petclinic.vet.VetTests
+org/springframework/samples/petclinic/owner/OwnerControllerTests.java
+ org.springframework.samples.petclinic.owner.OwnerControllerTests
+ org.springframework.samples.petclinic.owner.OwnerControllerTests$1
+org/springframework/samples/petclinic/model/ValidatorTests.java
+ org.springframework.samples.petclinic.model.ValidatorTests
+org/springframework/samples/petclinic/owner/VisitControllerTests.java
+ org.springframework.samples.petclinic.owner.VisitControllerTests
+org/springframework/samples/petclinic/service/ClinicServiceTests.java
+ org.springframework.samples.petclinic.service.ClinicServiceTests
+org/springframework/samples/petclinic/system/CrashControllerTests.java
+ org.springframework.samples.petclinic.system.CrashControllerTests
+org/springframework/samples/petclinic/owner/PetControllerTests.java
+ org.springframework.samples.petclinic.owner.PetControllerTests
+org/springframework/samples/petclinic/service/EntityUtils.java
+ org.springframework.samples.petclinic.service.EntityUtils

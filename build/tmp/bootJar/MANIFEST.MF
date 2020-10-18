@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Main-Class: org.springframework.boot.loader.JarLauncher
+Start-Class: org.springframework.samples.petclinic.PetClinicApplication
+Spring-Boot-Version: 2.1.9.RELEASE
+Spring-Boot-Classes: BOOT-INF/classes/
+Spring-Boot-Lib: BOOT-INF/lib/
+
