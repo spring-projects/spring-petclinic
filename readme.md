@@ -1,3 +1,7 @@
+# Sprint PetClinic and OpenShift
+
+## Local Development
+
 ```
 mvn package
 
@@ -50,11 +54,54 @@ http://localhost:8080
 
 ![Screenshot](screenshot.png)
 
+## For OpenShift:
 
-For OpenShift
+### Dev Console
 
-![MySQL Template](mysql-template-settings.png)
+Create a new OpenShift `Project` with `spring-petclinic-devconsole` name.
 
-Edit the DeploymentConfig for the application pod
+![Create Project](create-project.png)
+
+Then move to Developer perspective:
+
+![Dev Perspective](switch-perspective.png)
+
+And create a new MySQL instance by clicking the `+Add` button and choose the `Database` option:
+
+![Add DB](db.png)
+
+Choose MySQL Ephimeral:
+
+![MySQL Ephimeral](mysql-ephimeral.png)
+
+and Push `Instantiate Template`.
+
+Then fill the wizard with the following parameters:
+
+![MySQL Template](db-params.png)
+
+Push the `Create` button. 
+
+Let's deploy the Pet Clinic app.
+
+Click the `+Add` button and choose `From Git` type:
+
+Fill the Git repo with the following value `https://github.com/burrsutter/spring-petclinic` and select the project as Java project:
+
+![Pet Clinic Deploy](petclinic-deploy.png)
+
+Push the `Build Configuration` link:
+
+![Build Configuration](build-config.png)
+
+Add the following environment variables for the application Pod:
 
 ![DC Env Vars](app-env-vars.png)
+
+Finally push the `Create` button and wait until the Build is done and the Pod is up and running (dark blue around the deployment bubble).
+Then push the Open URL button to view the Pet Clinic app:
+
+![Pet Clinic Deployment](petclinic-url.png)
+
+
+![Pet Clinic UI](output-ui.png)
