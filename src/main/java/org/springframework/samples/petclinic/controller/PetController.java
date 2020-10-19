@@ -110,7 +110,7 @@ class PetController {
 
 	@PostMapping(CommonEndPoint.PETS_ID_EDIT)
 	public String processUpdateForm(@ModelAttribute(CommonAttribute.PET) @Valid PetDTO pet, BindingResult result,
-			OwnerDTO owner, ModelMap model) {
+			@ModelAttribute(CommonAttribute.OWNER) OwnerDTO owner, ModelMap model) {
 		if (result.hasErrors()) {
 			pet.setOwner(owner);
 			model.put(CommonAttribute.PET, pet);

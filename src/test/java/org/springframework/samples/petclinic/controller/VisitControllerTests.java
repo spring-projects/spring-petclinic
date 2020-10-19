@@ -65,7 +65,7 @@ class VisitControllerTests {
 	@Tag("initNewVisitForm")
 	void testInitNewVisitForm() throws Exception {
 		mockMvc.perform(get(CommonEndPoint.VISITS_NEW, TEST_PET_ID)).andExpect(status().isOk())
-				.andExpect(view().name(CommonView.PET_CREATE_OR_UPDATE));
+				.andExpect(view().name(CommonView.VISIT_CREATE_OR_UPDATE));
 	}
 
 	@Test

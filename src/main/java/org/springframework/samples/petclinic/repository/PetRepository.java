@@ -15,7 +15,6 @@
  */
 package org.springframework.samples.petclinic.repository;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
@@ -52,6 +51,13 @@ public interface PetRepository extends Repository<Pet, Integer> {
 	 * @return the {@link Pet} if found
 	 */
 	Pet findById(Integer id);
+
+	/**
+	 * Retrieve all {@link Pet}d from the data store by owner id.
+	 * @param id the id of owner to search for
+	 * @return a Collection of {@link Pet}s
+	 */
+	List<Pet> findByOwnerId(Integer id);
 
 	/**
 	 * Retrieve all {@link Pet}s from the data store

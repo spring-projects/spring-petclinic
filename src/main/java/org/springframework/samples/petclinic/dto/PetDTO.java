@@ -90,6 +90,8 @@ public class PetDTO extends NamedDTO {
 			return true;
 		if (!(o instanceof PetDTO))
 			return false;
+		if (!super.equals(o))
+			return false;
 
 		PetDTO petDTO = (PetDTO) o;
 
@@ -97,7 +99,7 @@ public class PetDTO extends NamedDTO {
 			return false;
 		if (!getType().equals(petDTO.getType()))
 			return false;
-		if (!getOwner().getId().equals(petDTO.getOwner().getId()))
+		if (getOwner() != null ? !getOwner().getId().equals(petDTO.getOwner().getId()) : petDTO.getOwner() != null)
 			return false;
 		return getVisits() != null ? getVisits().equals(petDTO.getVisits()) : petDTO.getVisits() == null;
 	}

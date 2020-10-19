@@ -80,7 +80,7 @@ class VisitController {
 	// Spring MVC calls method loadPetWithVisit(...) before initNewVisitForm is called
 	@GetMapping(CommonEndPoint.VISITS_NEW)
 	public String initNewVisitForm(@PathVariable("petId") int petId, Map<String, Object> model) {
-		return CommonView.PET_CREATE_OR_UPDATE;
+		return CommonView.VISIT_CREATE_OR_UPDATE;
 	}
 
 	// Spring MVC calls method loadPetWithVisit(...) before processNewVisitForm is called
