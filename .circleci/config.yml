@@ -23,6 +23,17 @@ jobs:
 
     steps:
       - checkout
+      - run: 
+        name: pull master
+        command: git pull master
+      - run: gradle build
+      - run:
+      name: Assemble JAR
+      command: |
+        # Skip this for other nodes
+        if [ "$CIRCLE_NODE_INDEX" == 0 ]; then
+          ./gradlew assemble
+        fi
 
       # Download and cache dependencies
       - restore_cache:
@@ -38,9 +49,29 @@ jobs:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle" }}
 
-      - run: gradle build
+  test: 
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run tests
+          # Use "./gradlew test" instead if tests are not run in parallel
+         command: ./gradlew test
+      - run:
+        name: Generate code coverage report
+        command:
+          ./gradlew testReport
+      - store_test_results:
+        path: build/test-results/test
+      
+
 workflows:
   version: 2
   pipeline:
     jobs:
-      - build
+    - build
+    - test:
+        requires:
+          - build
+
