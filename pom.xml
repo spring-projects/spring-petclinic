@@ -71,9 +71,10 @@
 
     <!-- ================================================== MODELMAPPER -->
     <dependency>
-      <groupId>org.modelmapper.extensions</groupId>
-      <artifactId>modelmapper-spring</artifactId>
-      <version>2.3.0</version>
+      <groupId>org.modelmapper</groupId>
+      <artifactId>modelmapper</artifactId>
+      <version>2.3.8</version>
+      <scope>compile</scope>
     </dependency>
 
     <!-- Databases - Uses H2 by default -->
