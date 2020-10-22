@@ -13,24 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.springframework.samples.petclinic;
+package org.springframework.samples.petclinic.model;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.samples.petclinic.repository.VetRepository;
+import org.springframework.util.SerializationUtils;
 
-@SpringBootTest
-class PetclinicIntegrationTests {
+import static org.assertj.core.api.Assertions.assertThat;
 
-	@Autowired
-	private VetRepository vets;
+/**
+ * @author Dave Syer
+ */
+class VetTests {
 
 	@Test
-	void testFindAll() throws Exception {
-		vets.findAll();
-		vets.findAll(); // served from cache
+	void testSerialization() {
+		Vet vet = new Vet();
+		vet.setFirstName("Zaphod");
+		vet.setLastName("Beeblebrox");
+		vet.setId(123);
+		Vet other = (Vet) SerializationUtils.deserialize(SerializationUtils.serialize(vet));
+		assertThat(other.getFirstName()).isEqualTo(vet.getFirstName());
+		assertThat(other.getLastName()).isEqualTo(vet.getLastName());
+		assertThat(other.getId()).isEqualTo(vet.getId());
 	}
 
 }

@@ -13,22 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.model;
-
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
+package org.springframework.samples.petclinic.dto;
 
 /**
- * Simple JavaBean domain object adds a name property to <code>BaseEntity</code>. Used as
- * a base class for objects needing these properties.
+ * Simple Data Transfert Object with a name property to <code>BaseDTO</code>. Used as a
+ * base class for DTOs needing these properties.
  *
- * @author Ken Krebs
- * @author Juergen Hoeller
+ * @author Paul-Emmanuel DOS SANTOS FACAO
  */
-@MappedSuperclass
-public class NamedEntity extends BaseEntity {
+public class NamedDTO extends BaseDTO {
 
-	@Column(name = "name")
 	private String name;
 
 	public String getName() {
@@ -48,12 +42,12 @@ public class NamedEntity extends BaseEntity {
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
-		if (!(o instanceof NamedEntity))
+		if (!(o instanceof NamedDTO))
 			return false;
 
-		NamedEntity that = (NamedEntity) o;
+		NamedDTO namedDTO = (NamedDTO) o;
 
-		return getName().equals(that.getName());
+		return getName().equals(namedDTO.getName());
 	}
 
 }

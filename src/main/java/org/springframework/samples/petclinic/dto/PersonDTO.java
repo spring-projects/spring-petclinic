@@ -13,25 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.model;
+package org.springframework.samples.petclinic.dto;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotEmpty;
 
 /**
- * Simple JavaBean domain object representing an person.
+ * Simple Data Transfert Object representing a person.
  *
- * @author Ken Krebs
+ * @author Paul-Emmanuel DOS SANTOS FACAO
  */
-@MappedSuperclass
-public class Person extends BaseEntity {
+public class PersonDTO extends BaseDTO {
 
-	@Column(name = "first_name")
 	@NotEmpty
 	private String firstName;
 
-	@Column(name = "last_name")
 	@NotEmpty
 	private String lastName;
 
@@ -55,14 +50,14 @@ public class Person extends BaseEntity {
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
-		if (!(o instanceof Person))
+		if (!(o instanceof PersonDTO))
 			return false;
 
-		Person person = (Person) o;
+		PersonDTO personDTO = (PersonDTO) o;
 
-		if (!getFirstName().equals(person.getFirstName()))
+		if (!getFirstName().equals(personDTO.getFirstName()))
 			return false;
-		return getLastName().equals(person.getLastName());
+		return getLastName().equals(personDTO.getLastName());
 	}
 
 }

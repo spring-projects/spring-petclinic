@@ -13,24 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.springframework.samples.petclinic.dto;
 
-package org.springframework.samples.petclinic;
+import java.io.Serializable;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.samples.petclinic.repository.VetRepository;
+/**
+ * Simple Data Transfert Object with an id property. Used as a base class for DTO needing
+ * this property.
+ *
+ * @author Paul-Emmanuel DOS SANTOS FACAO
+ */
+public class BaseDTO implements Serializable {
 
-@SpringBootTest
-class PetclinicIntegrationTests {
+	private Integer id;
 
-	@Autowired
-	private VetRepository vets;
+	public Integer getId() {
+		return id;
+	}
 
-	@Test
-	void testFindAll() throws Exception {
-		vets.findAll();
-		vets.findAll(); // served from cache
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public boolean isNew() {
+		return this.id == null;
 	}
 
 }
