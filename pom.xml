@@ -6,12 +6,13 @@
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
   <version>2.3.0.BUILD-SNAPSHOT</version>
+  <packaging>war</packaging>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>2.3.3.RELEASE</version>
-  </parent>
+    </parent>
   <name>petclinic</name>
 
   <properties>
@@ -131,6 +132,12 @@
       <artifactId>spring-boot-devtools</artifactId>
       <optional>true</optional>
     </dependency>
+
+    <dependency>
+     <groupId>org.springframework.boot</groupId>
+     <artifactId>spring-boot-starter-tomcat</artifactId>
+     <scope>provided</scope>
+    </dependency>     
   </dependencies>
 
   <build>
@@ -278,6 +285,7 @@
         </dependencies>
       </plugin>
     </plugins>
+    <finalName>${artifactId}</finalName>
   </build>
 
   <licenses>
