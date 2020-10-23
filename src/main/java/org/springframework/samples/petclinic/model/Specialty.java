@@ -13,24 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.springframework.samples.petclinic.model;
 
-package org.springframework.samples.petclinic;
+import java.io.Serializable;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.samples.petclinic.repository.VetRepository;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
-@SpringBootTest
-class PetclinicIntegrationTests {
-
-	@Autowired
-	private VetRepository vets;
-
-	@Test
-	void testFindAll() throws Exception {
-		vets.findAll();
-		vets.findAll(); // served from cache
-	}
+/**
+ * Models a {@link Vet Vet's} specialty (for example, dentistry).
+ *
+ * @author Juergen Hoeller
+ */
+@Entity
+@Table(name = "specialties")
+public class Specialty extends NamedEntity implements Serializable {
 
 }

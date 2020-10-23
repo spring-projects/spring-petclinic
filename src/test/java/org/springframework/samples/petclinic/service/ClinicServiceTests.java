@@ -25,15 +25,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.samples.petclinic.owner.Owner;
-import org.springframework.samples.petclinic.owner.OwnerRepository;
-import org.springframework.samples.petclinic.owner.Pet;
-import org.springframework.samples.petclinic.owner.PetRepository;
-import org.springframework.samples.petclinic.owner.PetType;
-import org.springframework.samples.petclinic.vet.Vet;
-import org.springframework.samples.petclinic.vet.VetRepository;
-import org.springframework.samples.petclinic.visit.Visit;
-import org.springframework.samples.petclinic.visit.VisitRepository;
+import org.springframework.samples.petclinic.model.Owner;
+import org.springframework.samples.petclinic.repository.OwnerRepository;
+import org.springframework.samples.petclinic.model.Pet;
+import org.springframework.samples.petclinic.repository.PetRepository;
+import org.springframework.samples.petclinic.model.PetType;
+import org.springframework.samples.petclinic.model.Vet;
+import org.springframework.samples.petclinic.repository.VetRepository;
+import org.springframework.samples.petclinic.model.Visit;
+import org.springframework.samples.petclinic.repository.VisitRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -112,10 +112,10 @@ class ClinicServiceTests {
 		owner.setCity("Wollongong");
 		owner.setTelephone("4444444444");
 		this.owners.save(owner);
-		assertThat(owner.getId().longValue()).isNotEqualTo(0);
+		assertThat(owner.getId().longValue()).isNotZero();
 
 		owners = this.owners.findByLastName("Schultz");
-		assertThat(owners.size()).isEqualTo(found + 1);
+		assertThat(owners).hasSize(found + 1);
 	}
 
 	@Test
@@ -176,7 +176,7 @@ class ClinicServiceTests {
 
 	@Test
 	@Transactional
-	void shouldUpdatePetName() throws Exception {
+	void shouldUpdatePetName() {
 		Pet pet7 = this.pets.findById(7);
 		String oldName = pet7.getName();
 
@@ -216,7 +216,7 @@ class ClinicServiceTests {
 	}
 
 	@Test
-	void shouldFindVisitsByPetId() throws Exception {
+	void shouldFindVisitsByPetId() {
 		Collection<Visit> visits = this.visits.findByPetId(7);
 		assertThat(visits).hasSize(2);
 		Visit[] visitArr = visits.toArray(new Visit[visits.size()]);
