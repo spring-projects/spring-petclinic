@@ -43,7 +43,7 @@ import org.springframework.test.web.servlet.MockMvc;
  * @author Colin But
  */
 @WebMvcTest(VisitController.class)
-class VisitControllerTests {
+class VisitControllerTest {
 
 	private static final int TEST_PET_ID = 1;
 

@@ -43,7 +43,7 @@ import static org.mockito.BDDMockito.given;
  * @author Colin But
  */
 @ExtendWith(MockitoExtension.class)
-class PetTypeFormatterTests {
+class PetTypeFormatterTest {
 
 	@Mock
 	private PetService petService;

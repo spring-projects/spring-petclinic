@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Dave Syer
  */
-class VetTests {
+class VetTest {
 
 	@Test
 	void testSerialization() {

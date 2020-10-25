@@ -6,13 +6,13 @@
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
   <version>2.3.0.BUILD-SNAPSHOT</version>
+  <name>petclinic</name>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>2.3.3.RELEASE</version>
   </parent>
-  <name>petclinic</name>
 
   <properties>
     <!-- Generic properties -->
@@ -144,11 +144,6 @@
         <version>4.13</version>
         <scope>test</scope>
      </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
@@ -301,6 +296,56 @@
           </dependency>
         </dependencies>
       </plugin>
+
+      <!-- ===================================================== SUREFIRE -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <skipTests>true</skipTests>
+        </configuration>
+        <executions>
+
+          <execution>
+            <id>unit-tests</id>
+            <phase>test</phase>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <configuration>
+              <skipTests>false</skipTests>
+              <systemPropertyVariables>
+                <user.timezone>CET</user.timezone>
+              </systemPropertyVariables>
+              <includes>
+                <include>**/*Test</include>
+              </includes>
+              <excludes>
+                <exclude>**/*IntegrationTest</exclude>
+              </excludes>
+            </configuration>
+          </execution>
+          <execution>
+            <id>integration-tests</id>
+            <phase>integration-test</phase>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <configuration>
+              <skipTests>false</skipTests>
+              <systemPropertyVariables>
+                <user.timezone>CET</user.timezone>
+              </systemPropertyVariables>
+              <includes>
+                <include>**/*IntegrationTest</include>
+              </includes>
+              <excludes>
+                <exclude>**/*Test</exclude>
+              </excludes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
@@ -404,5 +449,6 @@
       </build>
     </profile>
   </profiles>
+
 
 </project>

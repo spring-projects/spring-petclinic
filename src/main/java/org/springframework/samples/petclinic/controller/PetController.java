@@ -47,13 +47,11 @@ class PetController {
 
 	private final PetService petService;
 
-	private final PetTypeService petTypeService;
 
 	@Autowired
 	PetController(OwnerService ownerService, PetService petService, PetTypeService petTypeService) {
 		this.ownerService = ownerService;
 		this.petService = petService;
-		this.petTypeService = petTypeService;
 	}
 
 	@ModelAttribute("types")
@@ -87,10 +85,16 @@ class PetController {
 	@PostMapping(CommonEndPoint.PETS_NEW)
 	public String processCreationForm(@ModelAttribute(CommonAttribute.OWNER) OwnerDTO owner,
 			@ModelAttribute(CommonAttribute.PET) @Valid PetDTO pet, BindingResult result, ModelMap model) {
-		if (StringUtils.hasLength(pet.getName()) && pet.isNew() && owner.getPet(pet.getName(), true) != null) {
-			result.rejectValue(CommonAttribute.NAME, CommonError.DUPLICATE_ARGS, CommonError.DUPLICATE_MESSAGE);
+		if (owner == null) {
+			result.rejectValue(CommonAttribute.OWNER, CommonError.NOT_FOUND_ARGS, CommonError.NOT_FOUND_MESSAGE);
+		} else {
+			if (StringUtils.hasLength(pet.getName()) && pet.isNew() && owner.getPet(pet.getName(), true) != null) {
+				result.rejectValue(CommonAttribute.NAME, CommonError.DUPLICATE_ARGS, CommonError.DUPLICATE_MESSAGE);
+			}
+			owner.addPet(pet);
 		}
-		owner.addPet(pet);
+
+
 		if (result.hasErrors()) {
 			model.put(CommonAttribute.PET, pet);
 			return CommonView.PET_CREATE_OR_UPDATE;

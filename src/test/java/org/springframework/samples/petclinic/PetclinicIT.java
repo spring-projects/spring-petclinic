@@ -16,19 +16,24 @@
 
 package org.springframework.samples.petclinic;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.samples.petclinic.repository.VetRepository;
 
+@Slf4j
 @SpringBootTest
-class PetclinicIntegrationTests {
+class PetclinicIT {
 
 	@Autowired
 	private VetRepository vets;
 
 	@Test
 	void testFindAll() throws Exception {
+		log.info("===================================================================================================");
+		log.info("===                                      in PetclinicIT                                         ===");
+		log.info("===================================================================================================");
 		vets.findAll();
 		vets.findAll(); // served from cache
 	}

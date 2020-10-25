@@ -24,6 +24,7 @@ import org.assertj.core.util.Lists;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +59,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
 @WebMvcTest(OwnerController.class)
-class OwnerControllerTests {
+class OwnerControllerTest {
 
 	private static final int TEST_OWNER_ID = 1;
 
@@ -98,6 +99,7 @@ class OwnerControllerTests {
 
 	@Test
 	@Tag("initCreationForm")
+	@DisplayName("Verify that we get the right view and the right attribute name")
 	void testInitCreationForm() throws Exception {
 		mockMvc.perform(get(CommonEndPoint.OWNERS_NEW)).andExpect(status().isOk())
 				.andExpect(model().attributeExists(CommonAttribute.OWNER))
@@ -107,7 +109,7 @@ class OwnerControllerTests {
 	@Test
 	@Tag("processCreationForm")
 	void testProcessCreationFormSuccess() throws Exception {
-		mockMvc.perform(post("/owners/new").param(CommonAttribute.OWNER_FIRST_NAME, "Joe")
+		mockMvc.perform(post(CommonEndPoint.OWNERS_NEW).param(CommonAttribute.OWNER_FIRST_NAME, "Joe")
 				.param(CommonAttribute.OWNER_LAST_NAME, "Bloggs")
 				.param(CommonAttribute.OWNER_ADDRESS, "123 Caramel Street").param(CommonAttribute.OWNER_CITY, "London")
 				.param(CommonAttribute.OWNER_PHONE, "01316761638")).andExpect(status().is3xxRedirection());
@@ -134,6 +136,7 @@ class OwnerControllerTests {
 
 	@Test
 	@Tag("processFindForm")
+	@DisplayName("Verify that we get the right view and all Owners list")
 	void testProcessFindFormSuccess() throws Exception {
 		given(this.owners.findByLastName("")).willReturn(Lists.newArrayList(george, new OwnerDTO()));
 

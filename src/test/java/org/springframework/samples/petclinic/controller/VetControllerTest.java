@@ -48,7 +48,7 @@ import org.springframework.test.web.servlet.ResultActions;
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
 @WebMvcTest(VetController.class)
-class VetControllerTests {
+class VetControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;

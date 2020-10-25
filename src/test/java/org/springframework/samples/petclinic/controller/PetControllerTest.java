@@ -25,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,10 +54,9 @@ import org.springframework.test.web.servlet.MockMvc;
  */
 @WebMvcTest(value = PetController.class,
 		includeFilters = @ComponentScan.Filter(value = PetTypeFormatter.class, type = FilterType.ASSIGNABLE_TYPE))
-class PetControllerTests {
+class PetControllerTest {
 
 	private static final int TEST_OWNER_ID = 1;
-
 	private static final int TEST_PET_ID = 1;
 
 	@Autowired
@@ -72,7 +72,7 @@ class PetControllerTests {
 	private OwnerService ownerService;
 
 	@BeforeEach
-	void setup() {
+	void beforeEach() {
 		PetTypeDTO cat = new PetTypeDTO();
 		cat.setId(3);
 		cat.setName("hamster");
@@ -84,6 +84,7 @@ class PetControllerTests {
 
 	@Test
 	@Tag("initCreationForm")
+	@DisplayName("Verify that Pet creation form is initialized")
 	void testInitCreationForm() throws Exception {
 		mockMvc.perform(get(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, TEST_OWNER_ID))
 				.andExpect(status().isOk()).andExpect(view().name(CommonView.PET_CREATE_OR_UPDATE))
@@ -92,24 +93,74 @@ class PetControllerTests {
 
 	@Test
 	@Tag("processCreationForm")
-	void testProcessCreationFormSuccess() throws Exception {
+	@DisplayName("Verify that call the right view with parameters when attempt to create Pet")
+	void givenPet_WhenPostPet_thenRedirectToOwnerForm() throws Exception {
 		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, TEST_OWNER_ID)
-				.param(CommonAttribute.PET_NAME, "Betty").param(CommonAttribute.PET_TYPE, "hamster")
-				.param(CommonAttribute.PET_BIRTH_DATE, "2015-02-12")).andExpect(status().is3xxRedirection())
-				.andExpect(view().name(CommonView.OWNER_OWNERS_ID_R));
+			.param(CommonAttribute.PET_NAME, "Betty")
+			.param(CommonAttribute.PET_TYPE, "hamster")
+			.param(CommonAttribute.PET_BIRTH_DATE, "2015-02-12"))
+			.andExpect(status().is3xxRedirection())
+			.andExpect(view().name(CommonView.OWNER_OWNERS_ID_R));
 	}
 
 	@Test
 	@Tag("processCreationForm")
-	void testProcessCreationFormHasErrors() throws Exception {
+	@DisplayName("Verify that return to Pet creation form when pet has no name")
+	void givenPetWithNoName_WhenPostPet_thenReturnToCreationForm() throws Exception {
 		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, TEST_OWNER_ID)
-				.param(CommonAttribute.PET_NAME, "Betty").param(CommonAttribute.PET_BIRTH_DATE, "2015-02-12"))
-				.andExpect(model().attributeHasNoErrors(CommonAttribute.OWNER))
-				.andExpect(model().attributeHasErrors(CommonAttribute.PET))
-				.andExpect(model().attributeHasFieldErrors(CommonAttribute.PET, CommonAttribute.PET_TYPE))
-				.andExpect(model().attributeHasFieldErrorCode(CommonAttribute.PET, CommonAttribute.PET_TYPE,
-						CommonError.REQUIRED_ARGS))
-				.andExpect(status().isOk()).andExpect(view().name(CommonView.PET_CREATE_OR_UPDATE));
+			.param(CommonAttribute.PET_TYPE, "hamster")
+			.param(CommonAttribute.PET_BIRTH_DATE, "2015-02-12"))
+			.andExpect(model().attributeHasNoErrors(CommonAttribute.OWNER))
+			.andExpect(model().attributeHasErrors(CommonAttribute.PET))
+			.andExpect(model().attributeHasFieldErrors(CommonAttribute.PET, CommonAttribute.PET_NAME))
+			.andExpect(model().attributeHasFieldErrorCode(CommonAttribute.PET, CommonAttribute.PET_NAME, CommonError.REQUIRED_ARGS))
+			.andExpect(status().isOk())
+			.andExpect(view().name(CommonView.PET_CREATE_OR_UPDATE));
+	}
+
+	@Test
+	@Tag("processCreationForm")
+	@DisplayName("Verify that return to Pet creation form when pet has no type")
+	void givenPetWithNoType_WhenPostPet_thenReturnToCreationForm() throws Exception {
+		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, TEST_OWNER_ID)
+			.param(CommonAttribute.PET_NAME, "Betty")
+			.param(CommonAttribute.PET_BIRTH_DATE, "2015-02-12"))
+			.andExpect(model().attributeHasNoErrors(CommonAttribute.OWNER))
+			.andExpect(model().attributeHasErrors(CommonAttribute.PET))
+			.andExpect(model().attributeHasFieldErrors(CommonAttribute.PET, CommonAttribute.PET_TYPE))
+			.andExpect(model().attributeHasFieldErrorCode(CommonAttribute.PET, CommonAttribute.PET_TYPE, CommonError.REQUIRED_ARGS))
+			.andExpect(status().isOk())
+			.andExpect(view().name(CommonView.PET_CREATE_OR_UPDATE));
+	}
+
+	@Test
+	@Tag("processCreationForm")
+	@DisplayName("Verify that return to Pet creation form when pet has wrong Owner ID")
+	void givenPetWithWrongOwnerId_WhenPostPet_thenReturnToCreationForm() throws Exception {
+		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, 22)
+			.param(CommonAttribute.PET_NAME, "Betty")
+			.param(CommonAttribute.PET_TYPE, "hamster")
+			.param(CommonAttribute.PET_BIRTH_DATE, "2015-02-12"))
+			.andExpect(model().attributeHasErrors(CommonAttribute.PET))
+			.andExpect(model().attributeHasFieldErrorCode(CommonAttribute.PET, CommonAttribute.OWNER, CommonError.NOT_FOUND_ARGS))
+			.andExpect(status().isOk())
+			.andExpect(view().name(CommonView.PET_CREATE_OR_UPDATE));
+	}
+
+	@Test
+	@Tag("processCreationForm")
+	@DisplayName("Verify that return to Pet creation form when pet has no birth date")
+	void givenPetWithNoBirthDate_WhenPostPet_thenReturnToCreationForm() throws Exception {
+
+		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, TEST_OWNER_ID)
+			.param(CommonAttribute.PET_NAME, "Betty")
+			.param(CommonAttribute.PET_TYPE, "hamster"))
+			.andExpect(model().attributeHasNoErrors(CommonAttribute.OWNER))
+			.andExpect(model().attributeHasErrors(CommonAttribute.PET))
+			.andExpect(model().attributeHasFieldErrors(CommonAttribute.PET, CommonAttribute.PET_BIRTH_DATE))
+			.andExpect(model().attributeHasFieldErrorCode(CommonAttribute.PET, CommonAttribute.PET_BIRTH_DATE, CommonError.REQUIRED_ARGS))
+			.andExpect(status().isOk())
+			.andExpect(view().name(CommonView.PET_CREATE_OR_UPDATE));
 	}
 
 	@Test
