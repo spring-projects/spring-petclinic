@@ -85,7 +85,7 @@ class PetControllerTest {
 	@Test
 	@Tag("initCreationForm")
 	@DisplayName("Verify that Pet creation form is initialized")
-	void testInitCreationForm() throws Exception {
+	void givenOwnerId_whenAskToCreatePet_thenDisplayCreationViewWithRightPet() throws Exception {
 		mockMvc.perform(get(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, TEST_OWNER_ID))
 				.andExpect(status().isOk()).andExpect(view().name(CommonView.PET_CREATE_OR_UPDATE))
 				.andExpect(model().attributeExists(CommonAttribute.PET));
@@ -94,7 +94,7 @@ class PetControllerTest {
 	@Test
 	@Tag("processCreationForm")
 	@DisplayName("Verify that call the right view with parameters when attempt to create Pet")
-	void givenPet_WhenPostPet_thenRedirectToOwnerForm() throws Exception {
+	void givenNewPet_whenPostNewPet_thenSavePetAndRedirectToOwnerView() throws Exception {
 		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, TEST_OWNER_ID)
 			.param(CommonAttribute.PET_NAME, "Betty")
 			.param(CommonAttribute.PET_TYPE, "hamster")
@@ -106,7 +106,7 @@ class PetControllerTest {
 	@Test
 	@Tag("processCreationForm")
 	@DisplayName("Verify that return to Pet creation form when pet has no name")
-	void givenPetWithNoName_WhenPostPet_thenReturnToCreationForm() throws Exception {
+	void givenNewPetWithoutName_whenPostNewPet_thenSavePetAndRedirectToOwnerView() throws Exception {
 		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, TEST_OWNER_ID)
 			.param(CommonAttribute.PET_TYPE, "hamster")
 			.param(CommonAttribute.PET_BIRTH_DATE, "2015-02-12"))
@@ -121,7 +121,7 @@ class PetControllerTest {
 	@Test
 	@Tag("processCreationForm")
 	@DisplayName("Verify that return to Pet creation form when pet has no type")
-	void givenPetWithNoType_WhenPostPet_thenReturnToCreationForm() throws Exception {
+	void givenNewPetWithoutType_whenPostNewPet_thenSavePetAndRedirectToOwnerView() throws Exception {
 		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, TEST_OWNER_ID)
 			.param(CommonAttribute.PET_NAME, "Betty")
 			.param(CommonAttribute.PET_BIRTH_DATE, "2015-02-12"))
@@ -136,7 +136,7 @@ class PetControllerTest {
 	@Test
 	@Tag("processCreationForm")
 	@DisplayName("Verify that return to Pet creation form when pet has wrong Owner ID")
-	void givenPetWithWrongOwnerId_WhenPostPet_thenReturnToCreationForm() throws Exception {
+	void givenNewPetWithWrongOwner_whenPostNewPet_thenSavePetAndRedirectToOwnerView() throws Exception {
 		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, 22)
 			.param(CommonAttribute.PET_NAME, "Betty")
 			.param(CommonAttribute.PET_TYPE, "hamster")
@@ -150,7 +150,7 @@ class PetControllerTest {
 	@Test
 	@Tag("processCreationForm")
 	@DisplayName("Verify that return to Pet creation form when pet has no birth date")
-	void givenPetWithNoBirthDate_WhenPostPet_thenReturnToCreationForm() throws Exception {
+	void givenNewPetWithoutBirthDate_whenPostNewPet_thenSavePetAndRedirectToOwnerView() throws Exception {
 
 		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, TEST_OWNER_ID)
 			.param(CommonAttribute.PET_NAME, "Betty")
@@ -165,7 +165,8 @@ class PetControllerTest {
 
 	@Test
 	@Tag("initUpdateForm")
-	void testInitUpdateForm() throws Exception {
+	@DisplayName("Verify that Pet update form is initialized with the right Pet")
+	void givenPetId_whenGetUpdatePet_thenReturnUpdateViewWithPet() throws Exception {
 		mockMvc.perform(get(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_ID_EDIT, TEST_OWNER_ID, TEST_PET_ID))
 				.andExpect(status().isOk()).andExpect(model().attributeExists(CommonAttribute.PET))
 				.andExpect(view().name(CommonView.PET_CREATE_OR_UPDATE));
@@ -173,7 +174,7 @@ class PetControllerTest {
 
 	@Test
 	@Tag("processUpdateForm")
-	void testProcessUpdateFormSuccess() throws Exception {
+	void givenOwnerAndModifiedPet_whenAskToUpdatePet_thenUpdatePetAndDisplayOwnerView() throws Exception {
 		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_ID_EDIT, TEST_OWNER_ID, TEST_PET_ID)
 				.param(CommonAttribute.PET_NAME, "Betty").param(CommonAttribute.PET_TYPE, "hamster")
 				.param(CommonAttribute.PET_BIRTH_DATE, "2015-02-12")).andExpect(status().is3xxRedirection())

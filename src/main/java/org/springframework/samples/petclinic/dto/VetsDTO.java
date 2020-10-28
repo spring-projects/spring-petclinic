@@ -27,6 +27,13 @@ public class VetsDTO {
 
 	private List<VetDTO> vets;
 
+	public VetsDTO() {
+	}
+
+	public VetsDTO(List<VetDTO> vets) {
+		this.vets = vets;
+	}
+
 	public List<VetDTO> getVetList() {
 		if (vets == null) {
 			vets = new ArrayList<>();

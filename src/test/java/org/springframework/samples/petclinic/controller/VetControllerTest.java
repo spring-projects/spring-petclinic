@@ -57,7 +57,7 @@ class VetControllerTest {
 	private VetService vetService;
 
 	@BeforeEach
-	void setup() {
+	void beforeEach() {
 		VetDTO james = new VetDTO();
 		james.setFirstName("James");
 		james.setLastName("Carter");
