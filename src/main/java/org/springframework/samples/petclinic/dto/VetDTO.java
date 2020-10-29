@@ -17,7 +17,6 @@ package org.springframework.samples.petclinic.dto;
 
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
-import org.springframework.samples.petclinic.model.Specialty;
 
 import javax.xml.bind.annotation.XmlElement;
 import java.util.*;

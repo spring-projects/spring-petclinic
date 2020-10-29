@@ -26,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +76,8 @@ class VetControllerTest {
 
 	@Test
 	@Tag("showVetList")
-	void testShowVetListHtml() throws Exception {
+	@DisplayName("When asking vets get String containing Vets")
+	void whenGetVets_thenReturnStringOfVets() throws Exception {
 		mockMvc.perform(get(CommonEndPoint.VETS_HTML)).andExpect(status().isOk())
 				.andExpect(model().attributeExists(CommonAttribute.VETS))
 				.andExpect(view().name(CommonView.VET_VETS_LIST));
@@ -83,7 +85,8 @@ class VetControllerTest {
 
 	@Test
 	@Tag("showResourcesVetList")
-	void testShowResourcesVetList() throws Exception {
+	@DisplayName("When asking vets get Vets DTO object containing Vets")
+	void whenGetVets_thenReturnVetsDTO() throws Exception {
 		ResultActions actions = mockMvc.perform(get(CommonEndPoint.VETS).accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 
