@@ -14,16 +14,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class OwnerControllerITCase {
 
-    @Autowired
-    private TestRestTemplate restTemplate;
+	@Autowired
+	private TestRestTemplate restTemplate;
 
-    /**
-     * Note: This test exists only for the purpose of serving as an example! Please write tests more sensible
-     * than this for your own applications.
-     */
-    @Test
-    public void assertsUser1IsGeorgeFranklin() {
-        String body = this.restTemplate.getForObject("/owners/1", String.class);
-        assertThat(body).contains("<td><b>George Franklin</b></td>");
-    }
+	/**
+	 * Note: This test exists only for the purpose of serving as an example! Please write
+	 * tests more sensible than this for your own applications.
+	 */
+	@Test
+	public void assertsUser1IsGeorgeFranklin() {
+		String body = this.restTemplate.getForObject("/owners/1", String.class);
+		assertThat(body).contains("<td><b>George Franklin</b></td>");
+	}
+
 }
