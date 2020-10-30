@@ -1,11 +1,11 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2012-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,8 +22,10 @@ import org.springframework.data.repository.Repository;
 import org.springframework.samples.petclinic.model.BaseEntity;
 
 /**
- * Repository class for <code>Visit</code> domain objects All method names are compliant with Spring Data naming
- * conventions so this interface can easily be extended for Spring Data See here: http://static.springsource.org/spring-data/jpa/docs/current/reference/html/jpa.repositories.html#jpa.query-methods.query-creation
+ * Repository class for <code>Visit</code> domain objects All method names are compliant
+ * with Spring Data naming conventions so this interface can easily be extended for Spring
+ * Data. See:
+ * https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories.query-methods.query-creation
  *
  * @author Ken Krebs
  * @author Juergen Hoeller
@@ -32,14 +34,13 @@ import org.springframework.samples.petclinic.model.BaseEntity;
  */
 public interface VisitRepository extends Repository<Visit, Integer> {
 
-    /**
-     * Save a <code>Visit</code> to the data store, either inserting or updating it.
-     *
-     * @param visit the <code>Visit</code> to save
-     * @see BaseEntity#isNew
-     */
-    void save(Visit visit) throws DataAccessException;
+	/**
+	 * Save a <code>Visit</code> to the data store, either inserting or updating it.
+	 * @param visit the <code>Visit</code> to save
+	 * @see BaseEntity#isNew
+	 */
+	void save(Visit visit) throws DataAccessException;
 
-    List<Visit> findByPetId(Integer petId);
+	List<Visit> findByPetId(Integer petId);
 
 }
