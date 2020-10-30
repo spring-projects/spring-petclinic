@@ -57,6 +57,7 @@ import org.springframework.test.web.servlet.MockMvc;
 class PetControllerTest {
 
 	private static final int TEST_OWNER_ID = 1;
+
 	private static final int TEST_PET_ID = 1;
 
 	@Autowired
@@ -96,11 +97,9 @@ class PetControllerTest {
 	@DisplayName("Verify that call the right view with parameters when attempt to create Pet")
 	void givenNewPet_whenPostNewPet_thenSavePetAndRedirectToOwnerView() throws Exception {
 		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, TEST_OWNER_ID)
-			.param(CommonAttribute.PET_NAME, "Betty")
-			.param(CommonAttribute.PET_TYPE, "hamster")
-			.param(CommonAttribute.PET_BIRTH_DATE, "2015-02-12"))
-			.andExpect(status().is3xxRedirection())
-			.andExpect(view().name(CommonView.OWNER_OWNERS_ID_R));
+				.param(CommonAttribute.PET_NAME, "Betty").param(CommonAttribute.PET_TYPE, "hamster")
+				.param(CommonAttribute.PET_BIRTH_DATE, "2015-02-12")).andExpect(status().is3xxRedirection())
+				.andExpect(view().name(CommonView.OWNER_OWNERS_ID_R));
 	}
 
 	@Test
@@ -108,14 +107,13 @@ class PetControllerTest {
 	@DisplayName("Verify that return to Pet creation form when pet has no name")
 	void givenNewPetWithoutName_whenPostNewPet_thenSavePetAndRedirectToOwnerView() throws Exception {
 		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, TEST_OWNER_ID)
-			.param(CommonAttribute.PET_TYPE, "hamster")
-			.param(CommonAttribute.PET_BIRTH_DATE, "2015-02-12"))
-			.andExpect(model().attributeHasNoErrors(CommonAttribute.OWNER))
-			.andExpect(model().attributeHasErrors(CommonAttribute.PET))
-			.andExpect(model().attributeHasFieldErrors(CommonAttribute.PET, CommonAttribute.PET_NAME))
-			.andExpect(model().attributeHasFieldErrorCode(CommonAttribute.PET, CommonAttribute.PET_NAME, CommonError.REQUIRED_ARGS))
-			.andExpect(status().isOk())
-			.andExpect(view().name(CommonView.PET_CREATE_OR_UPDATE));
+				.param(CommonAttribute.PET_TYPE, "hamster").param(CommonAttribute.PET_BIRTH_DATE, "2015-02-12"))
+				.andExpect(model().attributeHasNoErrors(CommonAttribute.OWNER))
+				.andExpect(model().attributeHasErrors(CommonAttribute.PET))
+				.andExpect(model().attributeHasFieldErrors(CommonAttribute.PET, CommonAttribute.PET_NAME))
+				.andExpect(model().attributeHasFieldErrorCode(CommonAttribute.PET, CommonAttribute.PET_NAME,
+						CommonError.REQUIRED_ARGS))
+				.andExpect(status().isOk()).andExpect(view().name(CommonView.PET_CREATE_OR_UPDATE));
 	}
 
 	@Test
@@ -123,28 +121,26 @@ class PetControllerTest {
 	@DisplayName("Verify that return to Pet creation form when pet has no type")
 	void givenNewPetWithoutType_whenPostNewPet_thenSavePetAndRedirectToOwnerView() throws Exception {
 		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, TEST_OWNER_ID)
-			.param(CommonAttribute.PET_NAME, "Betty")
-			.param(CommonAttribute.PET_BIRTH_DATE, "2015-02-12"))
-			.andExpect(model().attributeHasNoErrors(CommonAttribute.OWNER))
-			.andExpect(model().attributeHasErrors(CommonAttribute.PET))
-			.andExpect(model().attributeHasFieldErrors(CommonAttribute.PET, CommonAttribute.PET_TYPE))
-			.andExpect(model().attributeHasFieldErrorCode(CommonAttribute.PET, CommonAttribute.PET_TYPE, CommonError.REQUIRED_ARGS))
-			.andExpect(status().isOk())
-			.andExpect(view().name(CommonView.PET_CREATE_OR_UPDATE));
+				.param(CommonAttribute.PET_NAME, "Betty").param(CommonAttribute.PET_BIRTH_DATE, "2015-02-12"))
+				.andExpect(model().attributeHasNoErrors(CommonAttribute.OWNER))
+				.andExpect(model().attributeHasErrors(CommonAttribute.PET))
+				.andExpect(model().attributeHasFieldErrors(CommonAttribute.PET, CommonAttribute.PET_TYPE))
+				.andExpect(model().attributeHasFieldErrorCode(CommonAttribute.PET, CommonAttribute.PET_TYPE,
+						CommonError.REQUIRED_ARGS))
+				.andExpect(status().isOk()).andExpect(view().name(CommonView.PET_CREATE_OR_UPDATE));
 	}
 
 	@Test
 	@Tag("processCreationForm")
 	@DisplayName("Verify that return to Pet creation form when pet has wrong Owner ID")
 	void givenNewPetWithWrongOwner_whenPostNewPet_thenSavePetAndRedirectToOwnerView() throws Exception {
-		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, 22)
-			.param(CommonAttribute.PET_NAME, "Betty")
-			.param(CommonAttribute.PET_TYPE, "hamster")
-			.param(CommonAttribute.PET_BIRTH_DATE, "2015-02-12"))
-			.andExpect(model().attributeHasErrors(CommonAttribute.PET))
-			.andExpect(model().attributeHasFieldErrorCode(CommonAttribute.PET, CommonAttribute.OWNER, CommonError.NOT_FOUND_ARGS))
-			.andExpect(status().isOk())
-			.andExpect(view().name(CommonView.PET_CREATE_OR_UPDATE));
+		mockMvc.perform(
+				post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, 22).param(CommonAttribute.PET_NAME, "Betty")
+						.param(CommonAttribute.PET_TYPE, "hamster").param(CommonAttribute.PET_BIRTH_DATE, "2015-02-12"))
+				.andExpect(model().attributeHasErrors(CommonAttribute.PET))
+				.andExpect(model().attributeHasFieldErrorCode(CommonAttribute.PET, CommonAttribute.OWNER,
+						CommonError.NOT_FOUND_ARGS))
+				.andExpect(status().isOk()).andExpect(view().name(CommonView.PET_CREATE_OR_UPDATE));
 	}
 
 	@Test
@@ -153,14 +149,13 @@ class PetControllerTest {
 	void givenNewPetWithoutBirthDate_whenPostNewPet_thenSavePetAndRedirectToOwnerView() throws Exception {
 
 		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, TEST_OWNER_ID)
-			.param(CommonAttribute.PET_NAME, "Betty")
-			.param(CommonAttribute.PET_TYPE, "hamster"))
-			.andExpect(model().attributeHasNoErrors(CommonAttribute.OWNER))
-			.andExpect(model().attributeHasErrors(CommonAttribute.PET))
-			.andExpect(model().attributeHasFieldErrors(CommonAttribute.PET, CommonAttribute.PET_BIRTH_DATE))
-			.andExpect(model().attributeHasFieldErrorCode(CommonAttribute.PET, CommonAttribute.PET_BIRTH_DATE, CommonError.REQUIRED_ARGS))
-			.andExpect(status().isOk())
-			.andExpect(view().name(CommonView.PET_CREATE_OR_UPDATE));
+				.param(CommonAttribute.PET_NAME, "Betty").param(CommonAttribute.PET_TYPE, "hamster"))
+				.andExpect(model().attributeHasNoErrors(CommonAttribute.OWNER))
+				.andExpect(model().attributeHasErrors(CommonAttribute.PET))
+				.andExpect(model().attributeHasFieldErrors(CommonAttribute.PET, CommonAttribute.PET_BIRTH_DATE))
+				.andExpect(model().attributeHasFieldErrorCode(CommonAttribute.PET, CommonAttribute.PET_BIRTH_DATE,
+						CommonError.REQUIRED_ARGS))
+				.andExpect(status().isOk()).andExpect(view().name(CommonView.PET_CREATE_OR_UPDATE));
 	}
 
 	@Test

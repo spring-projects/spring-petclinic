@@ -17,6 +17,7 @@ package org.springframework.samples.petclinic.dto;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 /**
@@ -26,12 +27,14 @@ import java.time.LocalDate;
  */
 public class VisitDTO extends BaseDTO {
 
+	@NotNull
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate date;
 
 	@NotEmpty
 	private String description;
 
+	@NotNull
 	private Integer petId;
 
 	/**
@@ -76,7 +79,8 @@ public class VisitDTO extends BaseDTO {
 
 		if (!getDate().equals(visitDTO.getDate()))
 			return false;
-		if (!getDescription().equals(visitDTO.getDescription()))
+		if (getDescription() != null ? !getDescription().equals(visitDTO.getDescription())
+				: visitDTO.getDescription() != null)
 			return false;
 		return getPetId().equals(visitDTO.getPetId());
 	}

@@ -16,6 +16,7 @@
 
 package org.springframework.samples.petclinic.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -24,11 +25,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.util.Lists;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -38,10 +38,15 @@ import org.springframework.samples.petclinic.common.CommonEndPoint;
 import org.springframework.samples.petclinic.common.CommonView;
 import org.springframework.samples.petclinic.dto.SpecialtyDTO;
 import org.springframework.samples.petclinic.dto.VetDTO;
+import org.springframework.samples.petclinic.dto.VetsDTO;
 import org.springframework.samples.petclinic.service.VetService;
-import org.springframework.samples.petclinic.model.Specialty;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
+
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Test class for the {@link VetController}
@@ -57,8 +62,10 @@ class VetControllerTest {
 	@MockBean
 	private VetService vetService;
 
-	@BeforeEach
-	void beforeEach() {
+	static List<VetDTO> vetDTOS;
+
+	@BeforeAll
+	static void beforeAll() {
 		VetDTO james = new VetDTO();
 		james.setFirstName("James");
 		james.setLastName("Carter");
@@ -71,27 +78,43 @@ class VetControllerTest {
 		radiology.setId(1);
 		radiology.setName("radiology");
 		helen.addSpecialty(radiology);
-		given(this.vetService.findAll()).willReturn(Lists.newArrayList(james, helen));
+
+		vetDTOS = Lists.newArrayList(james, helen);
+	}
+
+	@BeforeEach
+	void beforeEach() {
+		given(this.vetService.findAll()).willReturn(vetDTOS);
 	}
 
 	@Test
 	@Tag("showVetList")
 	@DisplayName("When asking vets get String containing Vets")
 	void whenGetVets_thenReturnStringOfVets() throws Exception {
-		mockMvc.perform(get(CommonEndPoint.VETS_HTML)).andExpect(status().isOk())
+		final MvcResult result = mockMvc.perform(get(CommonEndPoint.VETS_HTML)).andExpect(status().is2xxSuccessful())
 				.andExpect(model().attributeExists(CommonAttribute.VETS))
-				.andExpect(view().name(CommonView.VET_VETS_LIST));
+				.andExpect(view().name(CommonView.VET_VETS_LIST)).andReturn();
+
+		VetsDTO found = (VetsDTO) Objects.requireNonNull(result.getModelAndView()).getModel().get(CommonAttribute.VETS);
+
+		assertThat(found.getVetList()).isEqualTo(vetDTOS);
 	}
 
 	@Test
 	@Tag("showResourcesVetList")
 	@DisplayName("When asking vets get Vets DTO object containing Vets")
 	void whenGetVets_thenReturnVetsDTO() throws Exception {
-		ResultActions actions = mockMvc.perform(get(CommonEndPoint.VETS).accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-		actions.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(jsonPath("$.vetList[0].id").value(1));
+		final MvcResult result = mockMvc.perform(get(CommonEndPoint.VETS).accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().is2xxSuccessful()).andReturn();
+
+		String json = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+		VetsDTO found = mapper.readValue(json, VetsDTO.class);
+
+		assertThat(found.getVetList()).isEqualTo(vetDTOS);
 	}
 
 }

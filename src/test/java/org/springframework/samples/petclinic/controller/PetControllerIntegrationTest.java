@@ -36,6 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class PetControllerIntegrationTest {
 
 	private static final int TEST_OWNER_ID = 5;
+
 	private static final int TEST_PET_ID = 6;
 
 	@Autowired
@@ -75,7 +76,8 @@ class PetControllerIntegrationTest {
 		final MvcResult result = mockMvc
 				.perform(get(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, TEST_OWNER_ID)
 						.flashAttr(CommonAttribute.OWNER, ownerDTO))
-				.andExpect(status().isOk()).andExpect(view().name(CommonView.PET_CREATE_OR_UPDATE)).andReturn();
+				.andExpect(status().is2xxSuccessful()).andExpect(view().name(CommonView.PET_CREATE_OR_UPDATE))
+				.andReturn();
 
 		PetDTO petFound = (PetDTO) Objects.requireNonNull(result.getModelAndView()).getModel().get(CommonAttribute.PET);
 
@@ -104,9 +106,10 @@ class PetControllerIntegrationTest {
 	void givenPetId_whenGetUpdatePet_thenReturnUpdateViewWithPet() throws Exception {
 		PetDTO expected = petService.entityToDTO(petRepository.findById(TEST_PET_ID));
 
-		final MvcResult result = mockMvc.perform(get(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_ID_EDIT, TEST_OWNER_ID, TEST_PET_ID))
-			.andExpect(status().isOk()).andExpect(model().attributeExists(CommonAttribute.PET))
-			.andExpect(view().name(CommonView.PET_CREATE_OR_UPDATE)).andReturn();
+		final MvcResult result = mockMvc
+				.perform(get(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_ID_EDIT, TEST_OWNER_ID, TEST_PET_ID))
+				.andExpect(status().isOk()).andExpect(model().attributeExists(CommonAttribute.PET))
+				.andExpect(view().name(CommonView.PET_CREATE_OR_UPDATE)).andReturn();
 
 		PetDTO petFound = (PetDTO) Objects.requireNonNull(result.getModelAndView()).getModel().get(CommonAttribute.PET);
 
@@ -122,13 +125,14 @@ class PetControllerIntegrationTest {
 		petExpected.setName("Nabucho");
 		petExpected.setBirthDate(LocalDate.now());
 
-		final MvcResult result = mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_ID_EDIT, ownerExpected.getId(), petExpected.getId())
-			.flashAttr(CommonAttribute.OWNER, ownerExpected).flashAttr(CommonAttribute.PET, petExpected))
-			.andExpect(view().name(CommonView.OWNER_OWNERS_ID_R))
-			.andReturn();
+		final MvcResult result = mockMvc.perform(
+				post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_ID_EDIT, ownerExpected.getId(), petExpected.getId())
+						.flashAttr(CommonAttribute.OWNER, ownerExpected).flashAttr(CommonAttribute.PET, petExpected))
+				.andExpect(view().name(CommonView.OWNER_OWNERS_ID_R)).andReturn();
 
 		PetDTO petFound = petService.entityToDTO(petRepository.findById(TEST_PET_ID));
 
 		assertThat(petFound).isEqualTo(petExpected);
 	}
+
 }

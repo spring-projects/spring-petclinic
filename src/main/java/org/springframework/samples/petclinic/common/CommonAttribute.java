@@ -43,6 +43,14 @@ public final class CommonAttribute {
 
 	public static final String VISIT = "visit";
 
+	public static final String VISIT_DATE = "date";
+
+	public static final String VISIT_DESCRIPTION = "description";
+
+	public static final String VISIT_PET_ID = "petId";
+
+	public static final String VISITS = "visits";
+
 	private CommonAttribute() {
 		throw new IllegalStateException("Utility class");
 	}

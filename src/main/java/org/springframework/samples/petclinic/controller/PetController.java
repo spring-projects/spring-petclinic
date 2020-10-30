@@ -47,7 +47,6 @@ class PetController {
 
 	private final PetService petService;
 
-
 	@Autowired
 	PetController(OwnerService ownerService, PetService petService, PetTypeService petTypeService) {
 		this.ownerService = ownerService;
@@ -87,13 +86,13 @@ class PetController {
 			@ModelAttribute(CommonAttribute.PET) @Valid PetDTO pet, BindingResult result, ModelMap model) {
 		if (owner == null) {
 			result.rejectValue(CommonAttribute.OWNER, CommonError.NOT_FOUND_ARGS, CommonError.NOT_FOUND_MESSAGE);
-		} else {
+		}
+		else {
 			if (StringUtils.hasLength(pet.getName()) && pet.isNew() && owner.getPet(pet.getName(), true) != null) {
 				result.rejectValue(CommonAttribute.NAME, CommonError.DUPLICATE_ARGS, CommonError.DUPLICATE_MESSAGE);
 			}
 			owner.addPet(pet);
 		}
-
 
 		if (result.hasErrors()) {
 			model.put(CommonAttribute.PET, pet);

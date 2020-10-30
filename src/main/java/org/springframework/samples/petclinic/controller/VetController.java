@@ -52,7 +52,7 @@ class VetController {
 		return CommonView.VET_VETS_LIST;
 	}
 
-	@GetMapping({ CommonEndPoint.VETS })
+	@GetMapping(CommonEndPoint.VETS)
 	public @ResponseBody VetsDTO showResourcesVetList() {
 		// Here we are returning an object of type 'Vets' rather than a collection of Vet
 		// objects so it is simpler for JSon/Object mapping

@@ -26,6 +26,8 @@ import org.springframework.samples.petclinic.dto.PetDTO;
 import org.springframework.samples.petclinic.dto.VisitDTO;
 import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.VisitService;
+import org.springframework.samples.petclinic.validator.PetDTOValidator;
+import org.springframework.samples.petclinic.validator.VisitDTOValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -75,6 +77,11 @@ class VisitController {
 		VisitDTO visit = new VisitDTO();
 		pet.addVisit(visit);
 		return visit;
+	}
+
+	@InitBinder("visit")
+	public void initVisitBinder(WebDataBinder dataBinder) {
+		dataBinder.setValidator(new VisitDTOValidator());
 	}
 
 	// Spring MVC calls method loadPetWithVisit(...) before initNewVisitForm is called

@@ -1,6 +1,5 @@
 package org.springframework.samples.petclinic.controller;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -24,18 +23,21 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
+ * Test class for the {@link VetController}
+ *
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
 @Slf4j
 @SpringBootTest
 @AutoConfigureMockMvc
-public class VetControllerIntegrationTest {
+class VetControllerIntegrationTest {
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -54,19 +56,16 @@ public class VetControllerIntegrationTest {
 		expected = new VetsDTO(vetService.entitiesToDTOS(new ArrayList<>(vets)));
 	}
 
-
 	@Test
 	@Tag("showVetList")
 	@DisplayName("When asking vets get String containing Vets")
 	void whenGetVets_thenReturnStringOfVets() throws Exception {
 
-		final MvcResult result = mockMvc.perform(get(CommonEndPoint.VETS_HTML))
-			.andExpect(status().is2xxSuccessful())
-			.andExpect(model().attributeExists(CommonAttribute.VETS))
-			.andExpect(view().name(CommonView.VET_VETS_LIST))
-			.andReturn();
+		final MvcResult result = mockMvc.perform(get(CommonEndPoint.VETS_HTML)).andExpect(status().is2xxSuccessful())
+				.andExpect(model().attributeExists(CommonAttribute.VETS))
+				.andExpect(view().name(CommonView.VET_VETS_LIST)).andReturn();
 
-		VetsDTO found = (VetsDTO) result.getModelAndView().getModel().get(CommonAttribute.VETS);
+		VetsDTO found = (VetsDTO) Objects.requireNonNull(result.getModelAndView()).getModel().get(CommonAttribute.VETS);
 
 		assertThat(found).isEqualToComparingFieldByField(expected);
 	}
@@ -78,9 +77,8 @@ public class VetControllerIntegrationTest {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-		final MvcResult result = mockMvc.perform(get(CommonEndPoint.VETS))
-			.andExpect(status().is2xxSuccessful())
-			.andReturn();
+		final MvcResult result = mockMvc.perform(get(CommonEndPoint.VETS)).andExpect(status().is2xxSuccessful())
+				.andReturn();
 
 		String json = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
 
