@@ -10,8 +10,6 @@ import org.springframework.samples.petclinic.common.CommonEndPoint;
 import org.springframework.samples.petclinic.common.CommonView;
 import org.springframework.samples.petclinic.dto.OwnerDTO;
 import org.springframework.samples.petclinic.dto.PetDTO;
-import org.springframework.samples.petclinic.dto.PetTypeDTO;
-import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.repository.PetRepository;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.PetService;
@@ -28,6 +26,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
+ * Test class for the {@link PetController}
+ *
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
 @Slf4j
@@ -37,7 +37,7 @@ class PetControllerIntegrationTest {
 
 	private static final int TEST_OWNER_ID = 5;
 
-	private static final int TEST_PET_ID = 6;
+	private static final int PET_ID = 6;
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -57,15 +57,8 @@ class PetControllerIntegrationTest {
 
 	@BeforeEach
 	void beforeEach() {
-		ownerDTO = ownerService.findById(TEST_OWNER_ID);
-		petDTO = new PetDTO();
-		PetType type = petRepository.findPetTypes().get(1);
-		PetTypeDTO typeDTO = new PetTypeDTO();
-		typeDTO.setId(type.getId());
-		typeDTO.setName(type.getName());
-		petDTO.setType(typeDTO);
-		petDTO.setName("Max");
-		petDTO.setBirthDate(LocalDate.now());
+		petDTO = petService.findById(PET_ID);
+		ownerDTO = petDTO.getOwner();
 	}
 
 	@Test
@@ -104,10 +97,10 @@ class PetControllerIntegrationTest {
 	@Tag("initUpdateForm")
 	@DisplayName("Verify that the view to update Pet is initialised with right Pet")
 	void givenPetId_whenGetUpdatePet_thenReturnUpdateViewWithPet() throws Exception {
-		PetDTO expected = petService.entityToDTO(petRepository.findById(TEST_PET_ID));
+		PetDTO expected = petService.entityToDTO(petRepository.findById(PET_ID));
 
 		final MvcResult result = mockMvc
-				.perform(get(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_ID_EDIT, TEST_OWNER_ID, TEST_PET_ID))
+				.perform(get(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_ID_EDIT, ownerDTO.getId(), PET_ID))
 				.andExpect(status().isOk()).andExpect(model().attributeExists(CommonAttribute.PET))
 				.andExpect(view().name(CommonView.PET_CREATE_OR_UPDATE)).andReturn();
 
@@ -120,7 +113,7 @@ class PetControllerIntegrationTest {
 	@Tag("processUpdateForm")
 	@DisplayName("Verify that Pet is updated and the right view is displayed")
 	void givenUpdatePet_whenPostUpdatePet_thenUpdatePetAndRedirectToOwnerView() throws Exception {
-		PetDTO petExpected = petService.entityToDTO(petRepository.findById(TEST_PET_ID));
+		PetDTO petExpected = petService.entityToDTO(petRepository.findById(PET_ID));
 		OwnerDTO ownerExpected = ownerService.findById(petExpected.getOwner().getId());
 		petExpected.setName("Nabucho");
 		petExpected.setBirthDate(LocalDate.now());
@@ -130,7 +123,7 @@ class PetControllerIntegrationTest {
 						.flashAttr(CommonAttribute.OWNER, ownerExpected).flashAttr(CommonAttribute.PET, petExpected))
 				.andExpect(view().name(CommonView.OWNER_OWNERS_ID_R)).andReturn();
 
-		PetDTO petFound = petService.entityToDTO(petRepository.findById(TEST_PET_ID));
+		PetDTO petFound = petService.entityToDTO(petRepository.findById(PET_ID));
 
 		assertThat(petFound).isEqualTo(petExpected);
 	}

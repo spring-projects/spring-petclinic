@@ -72,8 +72,10 @@ public class PetTypeService implements BaseService<PetType, PetTypeDTO> {
 	}
 
 	@Override
-	public void save(PetTypeDTO dto) {
-		petTypeRepository.save(dtoToEntity(dto));
+	public PetTypeDTO save(PetTypeDTO dto) {
+		PetType petType = dtoToEntity(dto);
+		petType = petTypeRepository.save(petType);
+		return entityToDTO(petType);
 	}
 
 }

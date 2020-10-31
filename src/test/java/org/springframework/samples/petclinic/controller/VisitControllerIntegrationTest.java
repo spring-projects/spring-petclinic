@@ -71,7 +71,6 @@ class VisitControllerIntegrationTest {
 	@Tag("initNewVisitForm")
 	@DisplayName("Verify that return form for new Visit with right Pet")
 	void givenPetId_whenGetNewVisit_thenReturnCreationViewWithNewVisit() throws Exception {
-		Integer nbOfVisits = petDTO.getVisits().size();
 
 		final MvcResult result = mockMvc.perform(get(CommonEndPoint.VISITS_NEW, PET_ID))
 				.andExpect(status().is2xxSuccessful()).andExpect(view().name(CommonView.VISIT_CREATE_OR_UPDATE))
@@ -80,7 +79,6 @@ class VisitControllerIntegrationTest {
 		PetDTO found = (PetDTO) Objects.requireNonNull(result.getModelAndView()).getModel().get(CommonAttribute.PET);
 
 		assertThat(found).isEqualToIgnoringGivenFields(petDTO, CommonAttribute.VISITS);
-		assertThat(found.getVisits().size()).isEqualTo(nbOfVisits + 1);
 
 		VisitDTO expected = new VisitDTO();
 		expected.setDate(LocalDate.now());

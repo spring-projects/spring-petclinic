@@ -47,6 +47,6 @@ public interface SpecialtyRepository extends Repository<Specialty, Integer> {
 	 * Save a {@link Specialty} to the data store, either inserting or updating it.
 	 * @param specialty the {@link Specialty} to save
 	 */
-	void save(Specialty specialty);
+	Specialty save(Specialty specialty);
 
 }

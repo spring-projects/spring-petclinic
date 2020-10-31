@@ -1,6 +1,5 @@
 package org.springframework.samples.petclinic.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +12,16 @@ import org.springframework.samples.petclinic.dto.OwnerDTO;
 import org.springframework.samples.petclinic.dto.PetDTO;
 import org.springframework.samples.petclinic.dto.PetTypeDTO;
 import org.springframework.samples.petclinic.dto.VisitDTO;
-import org.springframework.samples.petclinic.model.Owner;
-import org.springframework.samples.petclinic.repository.OwnerRepository;
+import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.ui.Model;
 
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -41,7 +40,7 @@ class OwnerControllerIntegrationTest {
 	private MockMvc mockMvc;
 
 	@Autowired
-	private OwnerRepository ownerRepository;
+	private OwnerService ownerService;
 
 	static private OwnerDTO george;
 
@@ -67,8 +66,9 @@ class OwnerControllerIntegrationTest {
 	@Test
 	@Tag("initCreationForm")
 	@DisplayName("Verify that the view for new Owner is initialised with new OwnerDTO")
-	void testInitCreationForm() throws Exception {
-		final MvcResult result = mockMvc.perform(get(CommonEndPoint.OWNERS_NEW)).andExpect(status().isOk())
+	void whenGetNewOwner_thenReturnCreationViewWithNewOwner() throws Exception {
+
+		final MvcResult result = mockMvc.perform(get(CommonEndPoint.OWNERS_NEW)).andExpect(status().is2xxSuccessful())
 				.andExpect(view().name(CommonView.OWNER_CREATE_OR_UPDATE)).andReturn();
 
 		OwnerDTO found = (OwnerDTO) Objects.requireNonNull(result.getModelAndView()).getModel()
@@ -79,46 +79,37 @@ class OwnerControllerIntegrationTest {
 
 	@Test
 	@Tag("processCreationForm")
-	void testProcessCreationFormSuccess() throws Exception {
-		ObjectMapper mapper = new ObjectMapper();
-
-		String json = mapper.writeValueAsString(george);
+	void givenNewOwner_whenPostNewOwner_thenSaveOwnerAndRedirectToOwnerView() throws Exception {
 
 		final MvcResult result = mockMvc
 				.perform(post(CommonEndPoint.OWNERS_NEW).flashAttr(CommonAttribute.OWNER, george))
 				.andExpect(status().is3xxRedirection()).andReturn();
 
-		json = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		OwnerDTO found = mapper.readValue(json, OwnerDTO.class);
+		String path = Objects.requireNonNull(result.getModelAndView()).getViewName();
+		int ownerId = Integer.parseInt(Objects.requireNonNull(path).split("/")[2]);
+		OwnerDTO found = ownerService.findById(ownerId);
 
-		assertThat(found).isEqualTo(george);
+		assertThat(found).isEqualToIgnoringGivenFields(george, "id");
 	}
 
 	@Test
-	@Disabled
 	@Tag("processFindForm")
 	@DisplayName("Verify that we get the right view and all Owners")
-	void testProcessFindFormSuccess() throws Exception {
-		List<Owner> expected = ownerRepository.findAll();
+	void whenGetFindOwner_thenReturnFindViewWithAllOwners() throws Exception {
+		List<OwnerDTO> expected = ownerService.findAll();
 
 		final MvcResult result = mockMvc.perform(get(CommonEndPoint.OWNERS))
 				.andExpect(MockMvcResultMatchers.status().isOk()).andExpect(view().name(CommonView.OWNER_OWNERS_LIST))
 				.andReturn();
 
-		Collection<OwnerDTO> founds = (Collection<OwnerDTO>) result.getModelAndView().getModel()
-				.get(CommonAttribute.SELECTIONS);
+		Map<String, Object> model = Objects.requireNonNull(result.getModelAndView()).getModel();
+		Collection<OwnerDTO> founds = (Collection<OwnerDTO>) model.get(CommonAttribute.SELECTIONS);
 
 		int[] position = new int[] { 0 };
 
-		founds.forEach(ownerDTO -> {
-			Owner owner = expected.get(position[0]++);
-
-			assertThat(owner.getId()).isEqualTo(ownerDTO.getId());
-			assertThat(owner.getFirstName()).isEqualTo(ownerDTO.getFirstName());
-			assertThat(owner.getLastName()).isEqualTo(ownerDTO.getLastName());
-			assertThat(owner.getTelephone()).isEqualTo(ownerDTO.getTelephone());
-			assertThat(owner.getAddress()).isEqualTo(ownerDTO.getAddress());
-			assertThat(owner.getCity()).isEqualTo(ownerDTO.getCity());
+		founds.forEach(found -> {
+			OwnerDTO owner = expected.get(position[0]++);
+			assertThat(owner).isEqualToComparingFieldByField(found);
 		});
 	}
 

@@ -1,3 +1,23 @@
-dist: trusty
 language: java
-jdk: oraclejdk8
+sudo: true
+dist: trusty
+
+# use Java 8
+jdk: openjdk8
+
+before_install:
+  - chmod +x mvnw
+
+jobs:
+  include:
+    - stage: test
+      script: ./mvnw clean test
+    - stage: verify
+      script: ./mvnw verify
+
+cache:
+  directories:
+    - $HOME/.m2
+
+notifications:
+#  email: email@provider.com

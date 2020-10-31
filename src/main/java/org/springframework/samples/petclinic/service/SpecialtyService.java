@@ -74,8 +74,11 @@ public class SpecialtyService implements BaseService<Specialty, SpecialtyDTO> {
 	}
 
 	@Override
-	public void save(SpecialtyDTO dto) {
-		specialtyRepository.save(dtoToEntity(dto));
+	public SpecialtyDTO save(SpecialtyDTO dto) {
+		Specialty specialty = dtoToEntity(dto);
+		specialty = specialtyRepository.save(specialty);
+
+		return entityToDTO(specialty);
 	}
 
 }

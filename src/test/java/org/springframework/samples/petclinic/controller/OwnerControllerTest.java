@@ -32,6 +32,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.samples.petclinic.common.CommonAttribute;
 import org.springframework.samples.petclinic.common.CommonEndPoint;
+import org.springframework.samples.petclinic.common.CommonError;
 import org.springframework.samples.petclinic.common.CommonView;
 import org.springframework.samples.petclinic.dto.OwnerDTO;
 import org.springframework.samples.petclinic.dto.PetDTO;
@@ -45,6 +46,7 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -61,7 +63,27 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(OwnerController.class)
 class OwnerControllerTest {
 
-	private static final int TEST_OWNER_ID = 1;
+	private static final int OWNER_ID = 15;
+
+	private static final String OWNER_FIRST_NAME = "Joe";
+
+	private static final String OWNER_LAST_NAME = "BLOGGS";
+
+	private static final String OWNER_ADDRESS = "123 Caramel Street";
+
+	private static final String OWNER_CITY = "London";
+
+	private static final String OWNER_PHONE = "6085551023";
+
+	private final static Integer PET_ID = 14;
+
+	private final static String PET_NAME = "bowser";
+
+	private final static LocalDate PET_BIRTH_DATE = LocalDate.of(2020, 7, 11);
+
+	private final static Integer PET_TYPE_ID = 4;
+
+	private final static String PET_TYPE_NAME = "dinausor";
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -72,153 +94,248 @@ class OwnerControllerTest {
 	@MockBean
 	private VisitService visits;
 
-	private OwnerDTO george;
+	private OwnerDTO ownerDTO;
 
 	@BeforeEach
 	void setup() {
-		george = new OwnerDTO();
-		george.setId(TEST_OWNER_ID);
-		george.setFirstName("George");
-		george.setLastName("Franklin");
-		george.setAddress("110 W. Liberty St.");
-		george.setCity("Madison");
-		george.setTelephone("6085551023");
-		PetDTO max = new PetDTO();
-		PetTypeDTO dog = new PetTypeDTO();
-		dog.setName("dog");
-		max.setId(1);
-		max.setType(dog);
-		max.setName("Max");
-		max.setBirthDate(LocalDate.now());
-		george.setPetsInternal(Collections.singleton(max));
-		given(this.owners.findById(TEST_OWNER_ID)).willReturn(george);
+		ownerDTO = new OwnerDTO();
+		ownerDTO.setId(OWNER_ID);
+		ownerDTO.setFirstName(OWNER_FIRST_NAME);
+		ownerDTO.setLastName(OWNER_LAST_NAME);
+		ownerDTO.setAddress(OWNER_ADDRESS);
+		ownerDTO.setCity(OWNER_CITY);
+		ownerDTO.setTelephone(OWNER_PHONE);
+		PetDTO petDTO = new PetDTO();
+		PetTypeDTO petTypeDTO = new PetTypeDTO();
+		petTypeDTO.setId(PET_TYPE_ID);
+		petTypeDTO.setName(PET_TYPE_NAME);
+		petDTO.setId(PET_ID);
+		petDTO.setName(PET_NAME);
+		petDTO.setType(petTypeDTO);
+		petDTO.setBirthDate(PET_BIRTH_DATE);
+		ownerDTO.setPetsInternal(Collections.singleton(petDTO));
+
 		VisitDTO visit = new VisitDTO();
 		visit.setDate(LocalDate.now());
-		given(this.visits.findByPetId(max.getId())).willReturn(Collections.singletonList(visit));
+		given(this.owners.findById(OWNER_ID)).willReturn(ownerDTO);
+		given(this.owners.save(any(OwnerDTO.class))).willReturn(ownerDTO);
+		given(this.visits.findByPetId(petDTO.getId())).willReturn(Collections.singletonList(visit));
 	}
 
 	@Test
 	@Tag("initCreationForm")
-	@DisplayName("Verify that we get the right view and the right attribute name")
-	void testInitCreationForm() throws Exception {
-		mockMvc.perform(get(CommonEndPoint.OWNERS_NEW)).andExpect(status().isOk())
-				.andExpect(model().attributeExists(CommonAttribute.OWNER))
+	@DisplayName("Verify that we get the right creation view and the right attribute name")
+	void whenGetNewOwner_thenReturnCreationViewWithNewOwner() throws Exception {
+		mockMvc.perform(get(CommonEndPoint.OWNERS_NEW)).andExpect(status().is2xxSuccessful())
+				.andExpect(view().name(CommonView.OWNER_CREATE_OR_UPDATE))
+				.andExpect(model().attributeExists(CommonAttribute.OWNER));
+	}
+
+	@Test
+	@Tag("processCreationForm")
+	@DisplayName("Verify that call the right view with parameters when attempt to create Owner")
+	void givenNewOwner_whenPostNewOwner_thenSaveOwnerAndRedirectToOwnerView() throws Exception {
+		// Put Owner ID in endpoint
+		String endPoint = CommonView.OWNER_OWNERS_ID_R.replace("{ownerId}", String.valueOf(OWNER_ID));
+
+		mockMvc.perform(post(CommonEndPoint.OWNERS_NEW).param(CommonAttribute.OWNER_FIRST_NAME, OWNER_FIRST_NAME)
+				.param(CommonAttribute.OWNER_LAST_NAME, OWNER_LAST_NAME)
+				.param(CommonAttribute.OWNER_ADDRESS, OWNER_ADDRESS).param(CommonAttribute.OWNER_CITY, OWNER_CITY)
+				.param(CommonAttribute.OWNER_PHONE, OWNER_PHONE)).andExpect(status().is3xxRedirection())
+				.andExpect(view().name(endPoint));
+	}
+
+	@Test
+	@Tag("processCreationForm")
+	@DisplayName("Verify that return to Owner creation form when Owner has no firstName")
+	void givenNewOwnerWithoutFirstName_whenPostNewOwner_thenRedirectToOwnerUpdateView() throws Exception {
+
+		mockMvc.perform(post(CommonEndPoint.OWNERS_NEW).param(CommonAttribute.OWNER_LAST_NAME, OWNER_LAST_NAME)
+				.param(CommonAttribute.OWNER_ADDRESS, OWNER_ADDRESS).param(CommonAttribute.OWNER_CITY, OWNER_CITY)
+				.param(CommonAttribute.OWNER_PHONE, OWNER_PHONE)).andExpect(status().isOk())
+				.andExpect(model().attributeHasErrors(CommonAttribute.OWNER))
+				.andExpect(model().attributeHasFieldErrors(CommonAttribute.OWNER, CommonAttribute.OWNER_FIRST_NAME))
 				.andExpect(view().name(CommonView.OWNER_CREATE_OR_UPDATE));
 	}
 
 	@Test
 	@Tag("processCreationForm")
-	void testProcessCreationFormSuccess() throws Exception {
-		mockMvc.perform(post(CommonEndPoint.OWNERS_NEW).param(CommonAttribute.OWNER_FIRST_NAME, "Joe")
-				.param(CommonAttribute.OWNER_LAST_NAME, "Bloggs")
-				.param(CommonAttribute.OWNER_ADDRESS, "123 Caramel Street").param(CommonAttribute.OWNER_CITY, "London")
-				.param(CommonAttribute.OWNER_PHONE, "01316761638")).andExpect(status().is3xxRedirection());
+	@DisplayName("Verify that return to Owner creation form when Owner has no lastName")
+	void givenNewOwnerWithoutLastName_whenPostNewOwner_thenRedirectToOwnerUpdateView() throws Exception {
+
+		mockMvc.perform(post(CommonEndPoint.OWNERS_NEW).param(CommonAttribute.OWNER_FIRST_NAME, OWNER_FIRST_NAME)
+				.param(CommonAttribute.OWNER_ADDRESS, OWNER_ADDRESS).param(CommonAttribute.OWNER_CITY, OWNER_CITY)
+				.param(CommonAttribute.OWNER_PHONE, OWNER_PHONE)).andExpect(status().isOk())
+				.andExpect(model().attributeHasErrors(CommonAttribute.OWNER))
+				.andExpect(model().attributeHasFieldErrors(CommonAttribute.OWNER, CommonAttribute.OWNER_LAST_NAME))
+				.andExpect(view().name(CommonView.OWNER_CREATE_OR_UPDATE));
 	}
 
 	@Test
 	@Tag("processCreationForm")
-	void testProcessCreationFormHasErrors() throws Exception {
-		mockMvc.perform(post(CommonEndPoint.OWNERS_NEW).param(CommonAttribute.OWNER_FIRST_NAME, "Joe")
-				.param(CommonAttribute.OWNER_LAST_NAME, "Bloggs").param(CommonAttribute.OWNER_CITY, "London"))
-				.andExpect(status().isOk()).andExpect(model().attributeHasErrors(CommonAttribute.OWNER))
+	@DisplayName("Verify that return to Owner creation form when Owner has no address")
+	void givenNewOwnerWithoutAddress_whenPostNewOwner_thenRedirectToOwnerUpdateView() throws Exception {
+
+		mockMvc.perform(post(CommonEndPoint.OWNERS_NEW).param(CommonAttribute.OWNER_FIRST_NAME, OWNER_FIRST_NAME)
+				.param(CommonAttribute.OWNER_LAST_NAME, OWNER_LAST_NAME).param(CommonAttribute.OWNER_CITY, OWNER_CITY)
+				.param(CommonAttribute.OWNER_PHONE, OWNER_PHONE)).andExpect(status().isOk())
+				.andExpect(model().attributeHasErrors(CommonAttribute.OWNER))
 				.andExpect(model().attributeHasFieldErrors(CommonAttribute.OWNER, CommonAttribute.OWNER_ADDRESS))
+				.andExpect(view().name(CommonView.OWNER_CREATE_OR_UPDATE));
+	}
+
+	@Test
+	@Tag("processCreationForm")
+	@DisplayName("Verify that return to Owner creation form when Owner has no phone")
+	void givenNewOwnerWithoutPhone_whenPostNewOwner_thenRedirectToOwnerUpdateView() throws Exception {
+
+		mockMvc.perform(post(CommonEndPoint.OWNERS_NEW).param(CommonAttribute.OWNER_FIRST_NAME, OWNER_FIRST_NAME)
+				.param(CommonAttribute.OWNER_LAST_NAME, OWNER_LAST_NAME)
+				.param(CommonAttribute.OWNER_ADDRESS, OWNER_ADDRESS).param(CommonAttribute.OWNER_CITY, OWNER_CITY))
+				.andExpect(status().isOk()).andExpect(model().attributeHasErrors(CommonAttribute.OWNER))
 				.andExpect(model().attributeHasFieldErrors(CommonAttribute.OWNER, CommonAttribute.OWNER_PHONE))
 				.andExpect(view().name(CommonView.OWNER_CREATE_OR_UPDATE));
 	}
 
 	@Test
 	@Tag("initFindForm")
-	void testInitFindForm() throws Exception {
-		mockMvc.perform(get(CommonEndPoint.OWNERS_FIND)).andExpect(status().isOk())
-				.andExpect(model().attributeExists(CommonAttribute.OWNER))
-				.andExpect(view().name(CommonView.OWNER_FIND_OWNERS));
+	@DisplayName("Verify that we get the right find view and the right attribute name")
+	void whenGetFindOwner_thenReturnFindViewWithNewOwner() throws Exception {
+		mockMvc.perform(get(CommonEndPoint.OWNERS_FIND)).andExpect(status().is2xxSuccessful())
+				.andExpect(view().name(CommonView.OWNER_FIND_OWNERS))
+				.andExpect(model().attributeExists(CommonAttribute.OWNER));
 	}
 
 	@Test
 	@Tag("processFindForm")
 	@DisplayName("Verify that we get the right view and all Owners list")
-	void testProcessFindFormSuccess() throws Exception {
-		given(this.owners.findByLastName("")).willReturn(Lists.newArrayList(george, new OwnerDTO()));
+	void whenGetFindOwner_thenReturnFindViewWithAllOwners() throws Exception {
+		given(this.owners.findByLastName("")).willReturn(Lists.newArrayList(ownerDTO, new OwnerDTO()));
 
-		mockMvc.perform(get(CommonEndPoint.OWNERS)).andExpect(status().isOk())
+		mockMvc.perform(get(CommonEndPoint.OWNERS)).andExpect(status().is2xxSuccessful())
 				.andExpect(view().name(CommonView.OWNER_OWNERS_LIST));
 	}
 
 	@Test
 	@Tag("processFindForm")
-	void testProcessFindFormByLastName() throws Exception {
-		given(this.owners.findByLastName(george.getLastName())).willReturn(Lists.newArrayList(george));
+	@DisplayName("Verify that we get the right view and the Owner with specified firstName")
+	void givenOwnerLastName_whenGetFindOwner_thenReturnViewWithRightOwner() throws Exception {
+		given(this.owners.findByLastName(ownerDTO.getLastName())).willReturn(Lists.newArrayList(ownerDTO));
 
-		mockMvc.perform(get(CommonEndPoint.OWNERS).param(CommonAttribute.OWNER_LAST_NAME, "Franklin"))
-				.andExpect(status().is3xxRedirection())
-				.andExpect(view().name(CommonView.OWNER_OWNERS_R + TEST_OWNER_ID));
+		mockMvc.perform(get(CommonEndPoint.OWNERS).param(CommonAttribute.OWNER_LAST_NAME, OWNER_LAST_NAME))
+				.andExpect(status().is3xxRedirection()).andExpect(view().name(CommonView.OWNER_OWNERS_R + OWNER_ID));
 	}
 
 	@Test
 	@Tag("processFindForm")
-	void testProcessFindFormNoOwnersFound() throws Exception {
+	@DisplayName("Verify that we get empty view and errors with specified wrong firstName")
+	void givenWrongOwnerLastName_whenGetFindOwner_thenReturnViewWithoutOwner() throws Exception {
 		mockMvc.perform(get(CommonEndPoint.OWNERS).param(CommonAttribute.OWNER_LAST_NAME, "Unknown Surname"))
 				.andExpect(status().isOk())
 				.andExpect(model().attributeHasFieldErrors(CommonAttribute.OWNER, CommonAttribute.OWNER_LAST_NAME))
 				.andExpect(model().attributeHasFieldErrorCode(CommonAttribute.OWNER, CommonAttribute.OWNER_LAST_NAME,
-						"notFound"))
+						CommonError.NOT_FOUND_ARGS))
 				.andExpect(view().name(CommonView.OWNER_FIND_OWNERS));
 	}
 
 	@Test
 	@Tag("initUpdateOwnerForm")
-	void testInitUpdateOwnerForm() throws Exception {
-		mockMvc.perform(get(CommonEndPoint.OWNERS_ID_EDIT, TEST_OWNER_ID)).andExpect(status().isOk())
+	@DisplayName("Verify that we get the right update view and the right Owner")
+	void whenGetUpdateOwner_thenReturnUpdateViewWithRightOwner() throws Exception {
+		mockMvc.perform(get(CommonEndPoint.OWNERS_ID_EDIT, OWNER_ID)).andExpect(status().isOk())
 				.andExpect(model().attributeExists(CommonAttribute.OWNER))
 				.andExpect(model().attribute(CommonAttribute.OWNER,
-						hasProperty(CommonAttribute.OWNER_LAST_NAME, is("Franklin"))))
+						hasProperty(CommonAttribute.OWNER_LAST_NAME, is(OWNER_LAST_NAME))))
 				.andExpect(model().attribute(CommonAttribute.OWNER,
-						hasProperty(CommonAttribute.OWNER_FIRST_NAME, is("George"))))
+						hasProperty(CommonAttribute.OWNER_FIRST_NAME, is(OWNER_FIRST_NAME))))
 				.andExpect(model().attribute(CommonAttribute.OWNER,
-						hasProperty(CommonAttribute.OWNER_ADDRESS, is("110 W. Liberty St."))))
+						hasProperty(CommonAttribute.OWNER_ADDRESS, is(OWNER_ADDRESS))))
 				.andExpect(model().attribute(CommonAttribute.OWNER,
-						hasProperty(CommonAttribute.OWNER_CITY, is("Madison"))))
+						hasProperty(CommonAttribute.OWNER_CITY, is(OWNER_CITY))))
 				.andExpect(model().attribute(CommonAttribute.OWNER,
-						hasProperty(CommonAttribute.OWNER_PHONE, is("6085551023"))))
+						hasProperty(CommonAttribute.OWNER_PHONE, is(OWNER_PHONE))))
 				.andExpect(view().name(CommonView.OWNER_CREATE_OR_UPDATE));
 	}
 
 	@Test
 	@Tag("processUpdateOwnerForm")
-	void testProcessUpdateOwnerFormSuccess() throws Exception {
-		mockMvc.perform(post(CommonEndPoint.OWNERS_ID_EDIT, TEST_OWNER_ID)
-				.param(CommonAttribute.OWNER_FIRST_NAME, "Joe").param(CommonAttribute.OWNER_LAST_NAME, "Bloggs")
-				.param(CommonAttribute.OWNER_ADDRESS, "123 Caramel Street").param(CommonAttribute.OWNER_CITY, "London")
-				.param(CommonAttribute.OWNER_PHONE, "01616291589")).andExpect(status().is3xxRedirection())
-				.andExpect(view().name(CommonView.OWNER_OWNERS_ID_R));
+	@DisplayName("Verify that call the right view with parameters when attempt to update Owner")
+	void givenUpdatedOwner_whenPostOwner_thenSaveOwnerAndRedirectToOwnerView() throws Exception {
+		mockMvc.perform(
+				post(CommonEndPoint.OWNERS_ID_EDIT, OWNER_ID).param(CommonAttribute.OWNER_FIRST_NAME, OWNER_FIRST_NAME)
+						.param(CommonAttribute.OWNER_LAST_NAME, OWNER_LAST_NAME)
+						.param(CommonAttribute.OWNER_ADDRESS, OWNER_ADDRESS)
+						.param(CommonAttribute.OWNER_CITY, OWNER_CITY).param(CommonAttribute.OWNER_PHONE, OWNER_PHONE))
+				.andExpect(status().is3xxRedirection()).andExpect(view().name(CommonView.OWNER_OWNERS_ID_R));
 	}
 
 	@Test
 	@Tag("processUpdateOwnerForm")
-	void testProcessUpdateOwnerFormHasErrors() throws Exception {
+	@DisplayName("Verify that we return to update view if the Owner firsName is wrong")
+	void givenUpdatedOwnerWithoutFirstName_whenPostOwner_thenRedirectToUpdateOwnerView() throws Exception {
 		mockMvc.perform(
-				post(CommonEndPoint.OWNERS_ID_EDIT, TEST_OWNER_ID).param(CommonAttribute.OWNER_FIRST_NAME, "Joe")
-						.param(CommonAttribute.OWNER_LAST_NAME, "Bloggs").param(CommonAttribute.OWNER_CITY, "London"))
+				post(CommonEndPoint.OWNERS_ID_EDIT, OWNER_ID).param(CommonAttribute.OWNER_LAST_NAME, OWNER_LAST_NAME)
+						.param(CommonAttribute.OWNER_ADDRESS, OWNER_ADDRESS)
+						.param(CommonAttribute.OWNER_CITY, OWNER_CITY).param(CommonAttribute.OWNER_PHONE, OWNER_PHONE))
+				.andExpect(status().isOk()).andExpect(model().attributeHasErrors(CommonAttribute.OWNER))
+				.andExpect(model().attributeHasFieldErrors(CommonAttribute.OWNER, CommonAttribute.OWNER_FIRST_NAME))
+				.andExpect(view().name(CommonView.OWNER_CREATE_OR_UPDATE));
+	}
+
+	@Test
+	@Tag("processUpdateOwnerForm")
+	@DisplayName("Verify that we return to update view if the Owner lastName is wrong")
+	void givenUpdatedOwnerWithoutLastName_whenPostOwner_thenRedirectToUpdateOwnerView() throws Exception {
+		mockMvc.perform(
+				post(CommonEndPoint.OWNERS_ID_EDIT, OWNER_ID).param(CommonAttribute.OWNER_FIRST_NAME, OWNER_FIRST_NAME)
+						.param(CommonAttribute.OWNER_ADDRESS, OWNER_ADDRESS)
+						.param(CommonAttribute.OWNER_CITY, OWNER_CITY).param(CommonAttribute.OWNER_PHONE, OWNER_PHONE))
+				.andExpect(status().isOk()).andExpect(model().attributeHasErrors(CommonAttribute.OWNER))
+				.andExpect(model().attributeHasFieldErrors(CommonAttribute.OWNER, CommonAttribute.OWNER_LAST_NAME))
+				.andExpect(view().name(CommonView.OWNER_CREATE_OR_UPDATE));
+	}
+
+	@Test
+	@Tag("processUpdateOwnerForm")
+	@DisplayName("Verify that we return to update view if the Owner address is wrong")
+	void givenUpdatedOwnerWithoutAddress_whenPostOwner_thenRedirectToUpdateOwnerView() throws Exception {
+		mockMvc.perform(
+				post(CommonEndPoint.OWNERS_ID_EDIT, OWNER_ID).param(CommonAttribute.OWNER_FIRST_NAME, OWNER_FIRST_NAME)
+						.param(CommonAttribute.OWNER_LAST_NAME, OWNER_LAST_NAME)
+						.param(CommonAttribute.OWNER_CITY, OWNER_CITY).param(CommonAttribute.OWNER_PHONE, OWNER_PHONE))
 				.andExpect(status().isOk()).andExpect(model().attributeHasErrors(CommonAttribute.OWNER))
 				.andExpect(model().attributeHasFieldErrors(CommonAttribute.OWNER, CommonAttribute.OWNER_ADDRESS))
+				.andExpect(view().name(CommonView.OWNER_CREATE_OR_UPDATE));
+	}
+
+	@Test
+	@Tag("processUpdateOwnerForm")
+	@DisplayName("Verify that we return to update view if the Owner phone is wrong")
+	void givenUpdatedOwnerWithoutPhone_whenPostOwner_thenRedirectToUpdateOwnerView() throws Exception {
+		mockMvc.perform(post(CommonEndPoint.OWNERS_ID_EDIT, OWNER_ID)
+				.param(CommonAttribute.OWNER_FIRST_NAME, OWNER_FIRST_NAME)
+				.param(CommonAttribute.OWNER_LAST_NAME, OWNER_LAST_NAME)
+				.param(CommonAttribute.OWNER_ADDRESS, OWNER_ADDRESS).param(CommonAttribute.OWNER_CITY, OWNER_CITY))
+				.andExpect(status().isOk()).andExpect(model().attributeHasErrors(CommonAttribute.OWNER))
 				.andExpect(model().attributeHasFieldErrors(CommonAttribute.OWNER, CommonAttribute.OWNER_PHONE))
 				.andExpect(view().name(CommonView.OWNER_CREATE_OR_UPDATE));
 	}
 
 	@Test
 	@Tag("processUpdateOwnerForm")
-	void testShowOwner() throws Exception {
-		mockMvc.perform(get(CommonEndPoint.OWNERS_ID, TEST_OWNER_ID)).andExpect(status().isOk())
+	@DisplayName("Verify that we display view with right Owner")
+	void givenOwnerId_whenGetOwner_thenShowOwnerView() throws Exception {
+		mockMvc.perform(get(CommonEndPoint.OWNERS_ID, OWNER_ID)).andExpect(status().isOk())
 				.andExpect(model().attribute(CommonAttribute.OWNER,
-						hasProperty(CommonAttribute.OWNER_LAST_NAME, is("Franklin"))))
+						hasProperty(CommonAttribute.OWNER_LAST_NAME, is(OWNER_LAST_NAME))))
 				.andExpect(model().attribute(CommonAttribute.OWNER,
-						hasProperty(CommonAttribute.OWNER_FIRST_NAME, is("George"))))
+						hasProperty(CommonAttribute.OWNER_FIRST_NAME, is(OWNER_FIRST_NAME))))
 				.andExpect(model().attribute(CommonAttribute.OWNER,
-						hasProperty(CommonAttribute.OWNER_ADDRESS, is("110 W. Liberty St."))))
+						hasProperty(CommonAttribute.OWNER_ADDRESS, is(OWNER_ADDRESS))))
 				.andExpect(model().attribute(CommonAttribute.OWNER,
-						hasProperty(CommonAttribute.OWNER_CITY, is("Madison"))))
+						hasProperty(CommonAttribute.OWNER_CITY, is(OWNER_CITY))))
 				.andExpect(model().attribute(CommonAttribute.OWNER,
-						hasProperty(CommonAttribute.OWNER_PHONE, is("6085551023"))))
+						hasProperty(CommonAttribute.OWNER_PHONE, is(OWNER_PHONE))))
 				.andExpect(
 						model().attribute(CommonAttribute.OWNER, hasProperty(CommonAttribute.OWNER_PETS, not(empty()))))
 				.andExpect(model().attribute(CommonAttribute.OWNER,

@@ -71,7 +71,7 @@ class OwnerController {
 			return CommonView.OWNER_CREATE_OR_UPDATE;
 		}
 		else {
-			this.ownerService.save(owner);
+			owner = this.ownerService.save(owner);
 			return CommonView.OWNER_OWNERS_R + owner.getId();
 		}
 	}

@@ -90,8 +90,11 @@ public class VetService implements BaseService<Vet, VetDTO> {
 	}
 
 	@Override
-	public void save(VetDTO dto) {
-		vetRepository.save(dtoToEntity(dto));
+	public VetDTO save(VetDTO dto) {
+		Vet vet = dtoToEntity(dto);
+		vet = vetRepository.save(vet);
+
+		return entityToDTO(vet);
 	}
 
 }

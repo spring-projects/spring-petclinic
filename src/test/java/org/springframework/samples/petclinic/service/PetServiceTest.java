@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.samples.petclinic.common.CommonAttribute;
 import org.springframework.samples.petclinic.dto.OwnerDTO;
 import org.springframework.samples.petclinic.dto.PetDTO;
 import org.springframework.samples.petclinic.dto.PetTypeDTO;
@@ -36,6 +37,10 @@ class PetServiceTest {
 	private final static String PET_NAME = "bowser";
 
 	private final static String PET_BIRTH_DATE = "2020-07-11";
+
+	private final static Integer PET_TYPE_ID = 4;
+
+	private final static String PET_TYPE_NAME = "dinausor";
 
 	@Autowired
 	private OwnerService ownerService;
@@ -166,8 +171,9 @@ class PetServiceTest {
 	void save() {
 		assertThat(petService.findAll()).doesNotContain(petDTO);
 
-		petService.save(petDTO);
+		PetDTO saved = petService.save(petDTO);
 
+		assertThat(saved).isEqualToIgnoringGivenFields(petDTO, "id");
 		assertThat(petService.findAll()).containsAnyOf(petDTO);
 	}
 

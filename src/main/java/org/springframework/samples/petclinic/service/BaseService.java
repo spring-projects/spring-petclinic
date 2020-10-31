@@ -19,7 +19,7 @@ public interface BaseService<E, D> {
 	/**
 	 * Convert Entity Model to Data Transfert Object
 	 * @param entity Entity Model
-	 * @return DTO
+	 * @return DTO object
 	 */
 	D entityToDTO(E entity);
 
@@ -40,19 +40,20 @@ public interface BaseService<E, D> {
 	/**
 	 * Get DTO object from repository by his ID
 	 * @param id identify object to be found
-	 * @return
+	 * @return DTO object
 	 */
 	D findById(int id);
 
 	/**
 	 * Get all DTO objects from repository
-	 * @return
+	 * @return all DTO objects
 	 */
 	List<D> findAll();
 
 	/**
 	 * Save DTO object to repository
+	 * @return saved DTO object
 	 */
-	void save(D dto);
+	D save(D dto);
 
 }

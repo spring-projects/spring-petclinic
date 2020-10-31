@@ -27,14 +27,12 @@ import java.time.LocalDate;
  */
 public class VisitDTO extends BaseDTO {
 
-	@NotNull
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate date;
 
 	@NotEmpty
 	private String description;
 
-	@NotNull
 	private Integer petId;
 
 	/**

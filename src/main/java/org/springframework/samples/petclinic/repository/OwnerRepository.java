@@ -68,6 +68,6 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
 	 * Save an {@link Owner} to the data store, either inserting or updating it.
 	 * @param owner the {@link Owner} to save
 	 */
-	void save(Owner owner);
+	Owner save(Owner owner);
 
 }

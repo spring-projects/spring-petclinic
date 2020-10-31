@@ -46,6 +46,6 @@ public interface PetTypeRepository extends Repository<PetType, Integer> {
 	 * Save a {@link PetType} to the data store, either inserting or updating it.
 	 * @param petType the {@link PetType} to save
 	 */
-	void save(PetType petType);
+	PetType save(PetType petType);
 
 }

@@ -41,7 +41,7 @@ public interface VisitRepository extends Repository<Visit, Integer> {
 	 * @param visit the <code>Visit</code> to save
 	 * @see BaseEntity#isNew
 	 */
-	void save(Visit visit);
+	Visit save(Visit visit);
 
 	/**
 	 * Retrieve a {@link Visit} from the data store by id.

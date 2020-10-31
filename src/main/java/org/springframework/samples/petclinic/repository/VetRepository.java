@@ -55,6 +55,6 @@ public interface VetRepository extends Repository<Vet, Integer> {
 	 * Save a {@link Vet} to the data store, either inserting or updating it.
 	 * @param vet the {@link Vet} to save
 	 */
-	void save(Vet vet);
+	Vet save(Vet vet);
 
 }

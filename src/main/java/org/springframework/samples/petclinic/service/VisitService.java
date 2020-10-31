@@ -74,9 +74,11 @@ public class VisitService implements BaseService<Visit, VisitDTO> {
 	}
 
 	@Override
-	public void save(VisitDTO visitDTO) {
+	public VisitDTO save(VisitDTO visitDTO) {
 		Visit visit = dtoToEntity(visitDTO);
-		visitRepository.save(visit);
+		visit = visitRepository.save(visit);
+
+		return entityToDTO(visit);
 	}
 
 	public Collection<VisitDTO> findByPetId(Integer petId) {

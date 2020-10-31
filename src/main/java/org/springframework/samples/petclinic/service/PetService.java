@@ -45,6 +45,7 @@ public class PetService implements BaseService<Pet, PetDTO> {
 	public Pet dtoToEntity(PetDTO dto) {
 		if (dto != null) {
 			Pet pet = modelMapper.map(dto, Pet.class);
+			PetType petType = modelMapper.map(dto.getType(), PetType.class);
 			Owner owner = modelMapper.map(dto.getOwner(), Owner.class);
 
 			dto.getVisits().forEach(visitDTO -> pet.addVisit(visitService.dtoToEntity(visitDTO)));
@@ -60,6 +61,7 @@ public class PetService implements BaseService<Pet, PetDTO> {
 				}
 			});
 			pet.setOwner(owner);
+			pet.setType(petType);
 			return pet;
 		}
 
@@ -70,6 +72,7 @@ public class PetService implements BaseService<Pet, PetDTO> {
 	public PetDTO entityToDTO(Pet entity) {
 		if (entity != null) {
 			PetDTO petDTO = modelMapper.map(entity, PetDTO.class);
+			PetTypeDTO petTypeDTO = modelMapper.map(entity.getType(), PetTypeDTO.class);
 			OwnerDTO ownerDTO = modelMapper.map(entity.getOwner(), OwnerDTO.class);
 
 			petRepository.findByOwnerId(ownerDTO.getId()).forEach(pet -> {
@@ -81,6 +84,7 @@ public class PetService implements BaseService<Pet, PetDTO> {
 			entity.getVisits().forEach(visit -> petDTO.addVisit(visitService.entityToDTO(visit)));
 
 			petDTO.setOwner(ownerDTO);
+			petDTO.setType(petTypeDTO);
 			return petDTO;
 		}
 
@@ -117,8 +121,11 @@ public class PetService implements BaseService<Pet, PetDTO> {
 	}
 
 	@Override
-	public void save(PetDTO petDTO) {
-		petRepository.save(dtoToEntity(petDTO));
+	public PetDTO save(PetDTO petDTO) {
+		Pet pet = dtoToEntity(petDTO);
+		pet = petRepository.save(pet);
+
+		return entityToDTO(pet);
 	}
 
 	public List<PetDTO> findByOwnerId(int id) {

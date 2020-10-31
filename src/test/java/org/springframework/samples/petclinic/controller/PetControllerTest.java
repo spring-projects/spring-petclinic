@@ -88,7 +88,7 @@ class PetControllerTest {
 	@DisplayName("Verify that Pet creation form is initialized")
 	void givenOwnerId_whenAskToCreatePet_thenDisplayCreationViewWithRightPet() throws Exception {
 		mockMvc.perform(get(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, TEST_OWNER_ID))
-				.andExpect(status().isOk()).andExpect(view().name(CommonView.PET_CREATE_OR_UPDATE))
+				.andExpect(status().is2xxSuccessful()).andExpect(view().name(CommonView.PET_CREATE_OR_UPDATE))
 				.andExpect(model().attributeExists(CommonAttribute.PET));
 	}
 
@@ -105,7 +105,7 @@ class PetControllerTest {
 	@Test
 	@Tag("processCreationForm")
 	@DisplayName("Verify that return to Pet creation form when pet has no name")
-	void givenNewPetWithoutName_whenPostNewPet_thenSavePetAndRedirectToOwnerView() throws Exception {
+	void givenNewPetWithoutName_whenPostNewPet_thenRedirectToPetUpdate() throws Exception {
 		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, TEST_OWNER_ID)
 				.param(CommonAttribute.PET_TYPE, "hamster").param(CommonAttribute.PET_BIRTH_DATE, "2015-02-12"))
 				.andExpect(model().attributeHasNoErrors(CommonAttribute.OWNER))
@@ -119,7 +119,7 @@ class PetControllerTest {
 	@Test
 	@Tag("processCreationForm")
 	@DisplayName("Verify that return to Pet creation form when pet has no type")
-	void givenNewPetWithoutType_whenPostNewPet_thenSavePetAndRedirectToOwnerView() throws Exception {
+	void givenNewPetWithoutType_whenPostNewPet_thenRedirectToPetUpdate() throws Exception {
 		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, TEST_OWNER_ID)
 				.param(CommonAttribute.PET_NAME, "Betty").param(CommonAttribute.PET_BIRTH_DATE, "2015-02-12"))
 				.andExpect(model().attributeHasNoErrors(CommonAttribute.OWNER))
@@ -133,7 +133,7 @@ class PetControllerTest {
 	@Test
 	@Tag("processCreationForm")
 	@DisplayName("Verify that return to Pet creation form when pet has wrong Owner ID")
-	void givenNewPetWithWrongOwner_whenPostNewPet_thenSavePetAndRedirectToOwnerView() throws Exception {
+	void givenNewPetWithWrongOwner_whenPostNewPet_thenRedirectToPetUpdate() throws Exception {
 		mockMvc.perform(
 				post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, 22).param(CommonAttribute.PET_NAME, "Betty")
 						.param(CommonAttribute.PET_TYPE, "hamster").param(CommonAttribute.PET_BIRTH_DATE, "2015-02-12"))
@@ -146,7 +146,7 @@ class PetControllerTest {
 	@Test
 	@Tag("processCreationForm")
 	@DisplayName("Verify that return to Pet creation form when pet has no birth date")
-	void givenNewPetWithoutBirthDate_whenPostNewPet_thenSavePetAndRedirectToOwnerView() throws Exception {
+	void givenNewPetWithoutBirthDate_whenPostNewPet_thenRedirectToPetUpdate() throws Exception {
 
 		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, TEST_OWNER_ID)
 				.param(CommonAttribute.PET_NAME, "Betty").param(CommonAttribute.PET_TYPE, "hamster"))

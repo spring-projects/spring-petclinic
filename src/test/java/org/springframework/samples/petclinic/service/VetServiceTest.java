@@ -53,7 +53,6 @@ class VetServiceTest {
 		vetDTO.setId(VET_ID);
 		vetDTO.setFirstName(VET_FIRST_NAME);
 		vetDTO.setLastName(VET_LAST_NAME);
-
 	}
 
 	@Test
@@ -121,11 +120,11 @@ class VetServiceTest {
 		List<VetDTO> expected = vetService.findAll();
 
 		assertThat(expected).doesNotContain(vetDTO);
-		vetService.save(vetDTO);
+		VetDTO saved = vetService.save(vetDTO);
 
 		List<VetDTO> found = vetService.findAll();
 
-		assertThat(found).contains(vetDTO).containsAll(expected);
+		assertThat(found).contains(saved).containsAll(expected);
 	}
 
 	@Test
@@ -134,8 +133,9 @@ class VetServiceTest {
 	void save() {
 		assertThat(vetService.findAll()).doesNotContain(vetDTO);
 
-		vetService.save(vetDTO);
+		VetDTO saved = vetService.save(vetDTO);
 
+		assertThat(saved).isEqualToIgnoringGivenFields(vetDTO, "id");
 		assertThat(vetService.findAll()).contains(vetDTO);
 	}
 

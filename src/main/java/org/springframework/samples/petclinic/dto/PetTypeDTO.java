@@ -7,6 +7,10 @@ package org.springframework.samples.petclinic.dto;
  */
 public class PetTypeDTO extends NamedDTO {
 
+	public PetTypeDTO() {
+		super();
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		return super.equals(obj);

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.samples.petclinic.common.CommonAttribute;
 import org.springframework.samples.petclinic.dto.OwnerDTO;
 import org.springframework.samples.petclinic.dto.PetDTO;
 import org.springframework.samples.petclinic.dto.PetTypeDTO;
@@ -174,7 +175,7 @@ class OwnerServiceTest {
 
 		List<OwnerDTO> found = ownerService.entitiesToDTOS(owners);
 
-		assertThat(found).hasSameSizeAs(expected).containsAll(expected);
+		assertThat(found).hasSameSizeAs(expected).containsOnlyOnceElementsOf(expected);
 	}
 
 	@Test
@@ -184,7 +185,9 @@ class OwnerServiceTest {
 		List<OwnerDTO> allDTO = ownerService.findAll();
 		OwnerDTO expected = allDTO.get(2);
 
-		assertThat(ownerService.findById(expected.getId())).isEqualTo(expected);
+		OwnerDTO found = ownerService.findById(expected.getId());
+
+		assertThat(found).isEqualToComparingFieldByField(expected);
 	}
 
 	@Test
@@ -221,9 +224,10 @@ class OwnerServiceTest {
 	void save() {
 		assertThat(ownerService.findAll()).doesNotContain(ownerDTO);
 
-		ownerService.save(ownerDTO);
+		OwnerDTO saved = ownerService.save(ownerDTO);
 		List<OwnerDTO> found = ownerService.findAll();
 
+		assertThat(saved).isEqualToIgnoringGivenFields(ownerDTO, CommonAttribute.OWNER_ID, CommonAttribute.OWNER_PETS);
 		assertThat(found).usingElementComparatorOnFields("lastName", "firstName", "address", "city", "telephone")
 				.contains(ownerDTO);
 	}

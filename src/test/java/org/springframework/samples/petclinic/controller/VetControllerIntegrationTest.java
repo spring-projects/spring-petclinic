@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.samples.petclinic.common.CommonAttribute;
 import org.springframework.samples.petclinic.common.CommonEndPoint;
 import org.springframework.samples.petclinic.common.CommonView;
+import org.springframework.samples.petclinic.dto.VetDTO;
 import org.springframework.samples.petclinic.dto.VetsDTO;
 import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.repository.VetRepository;
@@ -23,6 +24,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -48,12 +50,11 @@ class VetControllerIntegrationTest {
 	@Autowired
 	private VetRepository vetRepository;
 
-	private VetsDTO expected;
+	private VetsDTO vetsDTO;
 
 	@BeforeEach
 	void beforeEach() {
-		Collection<Vet> vets = vetRepository.findAll();
-		expected = new VetsDTO(vetService.entitiesToDTOS(new ArrayList<>(vets)));
+		vetsDTO = new VetsDTO(vetService.findAll());
 	}
 
 	@Test
@@ -67,7 +68,7 @@ class VetControllerIntegrationTest {
 
 		VetsDTO found = (VetsDTO) Objects.requireNonNull(result.getModelAndView()).getModel().get(CommonAttribute.VETS);
 
-		assertThat(found).isEqualToComparingFieldByField(expected);
+		assertThat(found).isEqualToComparingFieldByField(vetsDTO);
 	}
 
 	@Test
@@ -84,7 +85,7 @@ class VetControllerIntegrationTest {
 
 		VetsDTO found = mapper.readValue(json, VetsDTO.class);
 
-		assertThat(found).isEqualToComparingFieldByField(expected);
+		assertThat(found).isEqualToComparingFieldByField(vetsDTO);
 	}
 
 }

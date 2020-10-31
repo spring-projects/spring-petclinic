@@ -90,18 +90,45 @@ public class OwnerService implements BaseService<Owner, OwnerDTO> {
 	@Override
 	public OwnerDTO findById(int ownerId) {
 		Owner owner = ownerRepository.findById(ownerId);
+		List<Pet> pets = petRepository.findByOwnerId(owner.getId());
+
+		pets.forEach(pet -> {
+			// Add pet to the owner
+			owner.addPet(pet);
+			// Add owner to the pet
+			pet.setOwner(owner);
+		});
+
 		return entityToDTO(owner);
 	}
 
 	@Override
 	public List<OwnerDTO> findAll() {
-		return entitiesToDTOS(ownerRepository.findAll());
+		List<Owner> owners = ownerRepository.findAll();
+
+		// Add pets for each owners
+		owners.forEach(owner -> {
+
+			// Find owner pets
+			List<Pet> pets = petRepository.findByOwnerId(owner.getId());
+
+			pets.forEach(pet -> {
+				// Add pet to the owner
+				owner.addPet(pet);
+				// Add owner to the pet
+				pet.setOwner(owner);
+			});
+		});
+
+		return entitiesToDTOS(owners);
 	}
 
 	@Override
-	public void save(OwnerDTO ownerDTO) {
+	public OwnerDTO save(OwnerDTO ownerDTO) {
 		Owner owner = dtoToEntity(ownerDTO);
-		ownerRepository.save(owner);
+		owner = ownerRepository.save(owner);
+
+		return entityToDTO(owner);
 	}
 
 	public List<OwnerDTO> findByLastName(String lastName) {
