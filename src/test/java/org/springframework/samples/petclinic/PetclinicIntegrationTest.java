@@ -22,7 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.samples.petclinic.repository.VetRepository;
 
 @SpringBootTest
-class PetclinicIT {
+class PetclinicIntegrationTest {
 
 	@Autowired
 	private VetRepository vets;
