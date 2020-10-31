@@ -15,12 +15,15 @@
  */
 package org.springframework.samples.petclinic.vet;
 
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.samples.petclinic.model.BaseEntity;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.samples.petclinic.model.BaseEntity;
 
 /**
  * Models a {@link AvailableHour AvailableHour} for each {@link Vet Vet}
@@ -31,29 +34,30 @@ import java.time.LocalDateTime;
 @Table(name = "available_hour")
 public class AvailableHour extends BaseEntity implements Serializable {
 
-    @Column(name = "time_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    private LocalDateTime timeDate;
+	@Column(name = "time_date")
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+	private LocalDateTime timeDate;
 
-    @ManyToOne
-    @JoinColumn(name = "vet_id")
-    private Vet vet;
+	@ManyToOne
+	@JoinColumn(name = "vet_id")
+	private Vet vet;
 
-    public AvailableHour() {}
+	public AvailableHour() {
+	}
 
-    public Vet getVet() {
-        return vet;
-    }
+	public Vet getVet() {
+		return vet;
+	}
 
-    public void setVet(Vet vet) {
-        this.vet = vet;
-    }
+	public void setVet(Vet vet) {
+		this.vet = vet;
+	}
 
-    public LocalDateTime getTimeDate() {
-        return timeDate;
-    }
+	public LocalDateTime getTimeDate() {
+		return timeDate;
+	}
 
-    public void setTimeDate(LocalDateTime timeDate) {
-        this.timeDate = timeDate;
-    }
+	public void setTimeDate(LocalDateTime timeDate) {
+		this.timeDate = timeDate;
+	}
 }
