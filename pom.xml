@@ -14,6 +14,9 @@
     <version>2.3.3.RELEASE</version>
   </parent>
 
+  <!-- ===================================================================== -->
+  <!--                                                            PROPERTIES -->
+  <!-- ===================================================================== -->
   <properties>
     <!-- Generic properties -->
     <java.version>1.8</java.version>
@@ -26,13 +29,22 @@
     <webjars-jquery.version>2.2.4</webjars-jquery.version>
     <wro4j.version>1.8.0</wro4j.version>
 
+    <checkstyle.version>8.32</checkstyle.version>
     <jacoco.version>0.8.5</jacoco.version>
+    <junit.version>4.13</junit.version>
+    <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
+    <lombok.version>1.18.12</lombok.version>
+    <maven-checkstyle-plugin.version>3.1.1</maven-checkstyle-plugin.version>
+    <modelmapper.version>2.3.8</modelmapper.version>
     <nohttp-checkstyle.version>0.0.4.RELEASE</nohttp-checkstyle.version>
     <spring-format.version>0.0.25</spring-format.version>
   </properties>
 
+  <!-- ===================================================================== -->
+  <!--                                                          DEPENDENCIES -->
+  <!-- ===================================================================== -->
   <dependencies>
-    <!-- Spring and Spring Boot dependencies -->
+    <!-- ============================================================ SPRING -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
@@ -59,6 +71,10 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-websocket</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
         <exclusions>
@@ -69,15 +85,7 @@
         </exclusions>
     </dependency>
 
-    <!-- ================================================== MODELMAPPER -->
-    <dependency>
-      <groupId>org.modelmapper</groupId>
-      <artifactId>modelmapper</artifactId>
-      <version>2.3.8</version>
-      <scope>compile</scope>
-    </dependency>
-
-    <!-- Databases - Uses H2 by default -->
+    <!-- ========================================================= DATABASES -->
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
@@ -88,6 +96,15 @@
       <artifactId>mysql-connector-java</artifactId>
       <scope>runtime</scope>
     </dependency>
+
+    <!-- ======================================================= MODELMAPPER -->
+    <dependency>
+      <groupId>org.modelmapper</groupId>
+      <artifactId>modelmapper</artifactId>
+      <version>${modelmapper.version}</version>
+      <scope>compile</scope>
+    </dependency>
+
 
     <!-- caching -->
     <dependency>
@@ -100,6 +117,12 @@
     </dependency>
 
     <!-- webjars -->
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>webjars-locator</artifactId>
+      <version>0.40</version>
+    </dependency>
+
     <dependency>
       <groupId>org.webjars</groupId>
       <artifactId>webjars-locator-core</artifactId>
@@ -119,9 +142,35 @@
       <artifactId>bootstrap</artifactId>
       <version>${webjars-bootstrap.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>stomp-websocket</artifactId>
+      <version>2.3.3-1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>sockjs-client</artifactId>
+      <version>1.1.2</version>
+    </dependency>
+
+
     <!-- end of webjars -->
 
-    <!-- Testing -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>2.10.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.10.2</version>
+    </dependency>
+
+
+    <!-- =========================================================== TESTING -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
@@ -138,20 +187,23 @@
       <artifactId>spring-boot-devtools</artifactId>
       <optional>true</optional>
     </dependency>
-     <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>4.13</version>
-        <scope>test</scope>
-     </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>1.18.12</version>
-      <scope>test</scope>
+      <version>${lombok.version}</version>
     </dependency>
   </dependencies>
 
+  <!-- ===================================================================== -->
+  <!--                                                                 BUILD -->
+  <!-- ===================================================================== -->
   <build>
     <plugins>
       <plugin>
@@ -170,12 +222,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.1.1</version>
+        <version>${maven-checkstyle-plugin.version}</version>
         <dependencies>
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
             <artifactId>checkstyle</artifactId>
-            <version>8.32</version>
+            <version>${checkstyle.version}</version>
           </dependency>
           <dependency>
             <groupId>io.spring.nohttp</groupId>
@@ -297,7 +349,7 @@
         </dependencies>
       </plugin>
 
-      <!-- ===================================================== SUREFIRE -->
+      <!-- ======================================================== SUREFIRE -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -349,6 +401,9 @@
     </plugins>
   </build>
 
+  <!-- ===================================================================== -->
+  <!--                                                             LICENCIES -->
+  <!-- ===================================================================== -->
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>
@@ -356,6 +411,9 @@
     </license>
   </licenses>
 
+  <!-- ===================================================================== -->
+  <!--                                                          REPOSITORIES -->
+  <!-- ===================================================================== -->
   <repositories>
     <repository>
       <id>spring-snapshots</id>
@@ -375,6 +433,9 @@
     </repository>
   </repositories>
 
+  <!-- ===================================================================== -->
+  <!--                                                   PLUGIN REPOSITORIES -->
+  <!-- ===================================================================== -->
   <pluginRepositories>
     <pluginRepository>
       <id>spring-snapshots</id>
@@ -394,7 +455,11 @@
     </pluginRepository>
   </pluginRepositories>
 
+  <!-- ===================================================================== -->
+  <!--                                                              PROFILES -->
+  <!-- ===================================================================== -->
   <profiles>
+    <!-- =============================================================== M2E -->
     <profile>
       <id>m2e</id>
       <activation>
@@ -410,7 +475,7 @@
             <plugin>
               <groupId>org.eclipse.m2e</groupId>
               <artifactId>lifecycle-mapping</artifactId>
-              <version>1.0.0</version>
+              <version>${lifecycle-mapping.version}</version>
               <configuration>
                 <lifecycleMappingMetadata>
                   <pluginExecutions>
@@ -449,6 +514,5 @@
       </build>
     </profile>
   </profiles>
-
 
 </project>
