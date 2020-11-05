@@ -26,8 +26,10 @@ public class WebSocketEventListener {
 
 		final StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
 
-		final String username = (String) headerAccessor.getSessionAttributes().get("username");
+		// final String username = (String)
+		// headerAccessor.getSessionAttributes().get("username");
 
-		sendingOperations.convertAndSend("/topic/public", new WebSocketMessage("Hello" + username));
+		sendingOperations.convertAndSend("/topic/user", new WebSocketMessage("Hello in event lmistener"));
 	}
+
 }

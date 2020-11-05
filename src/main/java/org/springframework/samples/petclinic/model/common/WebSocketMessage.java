@@ -1,6 +1,5 @@
 package org.springframework.samples.petclinic.model.common;
 
-
 import java.time.LocalDate;
 
 public class WebSocketMessage {
@@ -10,7 +9,6 @@ public class WebSocketMessage {
 	private String time;
 
 	private String content;
-
 
 	public WebSocketMessage(String content) {
 		this.time = LocalDate.now().toString();
@@ -40,4 +38,5 @@ public class WebSocketMessage {
 	public void setContent(String content) {
 		this.content = content;
 	}
+
 }

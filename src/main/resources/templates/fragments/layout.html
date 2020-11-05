@@ -18,6 +18,7 @@
     <![endif]-->
 
   <link rel="stylesheet" th:href="@{/resources/css/petclinic.css}" />
+  <link rel="stylesheet" th:href="@{/resources/static/css/style.css}" />
 
 </head>
 
@@ -78,6 +79,8 @@
       </div>
     </div>
   </nav>
+
+
   <div class="container-fluid">
     <div class="container xd-container">
 
@@ -86,18 +89,50 @@
       <br />
       <br />
       <div class="container">
-        <div class="row">
-          <div class="col-12 text-center">
-            <img src="../static/resources/images/spring-pivotal-logo.png"
-              th:src="@{/resources/images/spring-pivotal-logo.png}" alt="Sponsored by Pivotal" /></div>
-        </div>
+
       </div>
     </div>
   </div>
 
+  <footer class="navbar" style="position:absolute; bottom:0; width:100%;">
+    <div id="main-content" class="container">
+      <div class="row">
+        <form class="form-inline">
+          <div class="form-group pull-left" id="conversation">
+            <span id="messageOutput" class="form-control" style="width:200px; "></span>
+          </div>
+          <div class="form-group pull-right" >
+            <img src="../static/resources/images/spring-pivotal-logo.png"
+                 th:src="@{/resources/images/spring-pivotal-logo.png}" alt="Sponsored by Pivotal" />
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </footer>
+
   <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
   <script th:src="@{/webjars/jquery-ui/jquery-ui.min.js}"></script>
   <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+  <script th:src="@{/webjars/sockjs-client/sockjs.min.js}"></script>
+  <script th:src="@{/webjars/stomp-websocket/stomp.min.js}"></script>
+
+  <script type="text/javascript">
+    $(document).ready( function(){
+      var socket = new SockJS('/websocket');
+      var stompClient = Stomp.over(socket);
+
+      stompClient.connect({}, function (frame) {
+        stompClient.subscribe('/topic/public', function (socketMessage) {
+
+          var message = JSON.parse(socketMessage.body).content;
+          alert(message);
+          $('#messageOutput').text(message);
+
+        });
+      });
+    });
+  </script>
 
 </body>
 

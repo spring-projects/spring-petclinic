@@ -14,9 +14,10 @@ public class WebSocketSchedulerConfiguration {
 	@Autowired
 	SimpMessagingTemplate simpMessagingTemplate;
 
-	@Scheduled(fixedDelay = 3000)
+	//@Scheduled(fixedDelay = 3000)
 	public void sendMessages() {
 
-		simpMessagingTemplate.convertAndSend("/topic/user", new WebSocketMessage("Fixed Delay Scheduler"));
+		simpMessagingTemplate.convertAndSend("/topic/public", new WebSocketMessage("Fixed Delay Scheduler"));
 	}
+
 }

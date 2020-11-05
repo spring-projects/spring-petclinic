@@ -22,6 +22,7 @@ import javax.validation.Valid;
 import org.springframework.samples.petclinic.common.CommonAttribute;
 import org.springframework.samples.petclinic.common.CommonEndPoint;
 import org.springframework.samples.petclinic.common.CommonView;
+import org.springframework.samples.petclinic.controller.common.WebSocketSender;
 import org.springframework.samples.petclinic.dto.PetDTO;
 import org.springframework.samples.petclinic.dto.VisitDTO;
 import org.springframework.samples.petclinic.service.PetService;
@@ -46,7 +47,7 @@ import org.springframework.web.bind.annotation.PostMapping;
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
 @Controller
-class VisitController {
+class VisitController extends WebSocketSender {
 
 	private final VisitService visitService;
 
@@ -99,6 +100,7 @@ class VisitController {
 		}
 		else {
 			this.visitService.save(visit);
+			sendMessages(VISIT_CREATED);
 			return CommonView.OWNER_OWNERS_ID_R;
 		}
 	}

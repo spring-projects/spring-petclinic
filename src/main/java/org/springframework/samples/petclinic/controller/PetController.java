@@ -20,6 +20,7 @@ import org.springframework.samples.petclinic.common.CommonAttribute;
 import org.springframework.samples.petclinic.common.CommonEndPoint;
 import org.springframework.samples.petclinic.common.CommonError;
 import org.springframework.samples.petclinic.common.CommonView;
+import org.springframework.samples.petclinic.controller.common.WebSocketSender;
 import org.springframework.samples.petclinic.dto.*;
 import org.springframework.samples.petclinic.validator.PetDTOValidator;
 import org.springframework.samples.petclinic.service.*;
@@ -41,7 +42,7 @@ import java.util.Collection;
  */
 @Controller
 @RequestMapping(CommonEndPoint.OWNERS_ID)
-class PetController {
+class PetController extends WebSocketSender {
 
 	private final OwnerService ownerService;
 
@@ -100,6 +101,7 @@ class PetController {
 		}
 		else {
 			this.petService.save(pet);
+			sendMessages(PET_CREATED);
 			return CommonView.OWNER_OWNERS_ID_R;
 		}
 	}
@@ -122,6 +124,7 @@ class PetController {
 		else {
 			owner.addPet(pet);
 			this.petService.save(pet);
+			sendMessages(PET_UPDATED);
 			return CommonView.OWNER_OWNERS_ID_R;
 		}
 	}

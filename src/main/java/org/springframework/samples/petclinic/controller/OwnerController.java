@@ -19,6 +19,7 @@ import org.springframework.samples.petclinic.common.CommonAttribute;
 import org.springframework.samples.petclinic.common.CommonEndPoint;
 import org.springframework.samples.petclinic.common.CommonError;
 import org.springframework.samples.petclinic.common.CommonView;
+import org.springframework.samples.petclinic.controller.common.WebSocketSender;
 import org.springframework.samples.petclinic.dto.*;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.VisitService;
@@ -41,7 +42,7 @@ import java.util.Map;
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
 @Controller
-class OwnerController {
+class OwnerController extends WebSocketSender {
 
 	private final OwnerService ownerService;
 
@@ -68,10 +69,12 @@ class OwnerController {
 	public String processCreationForm(@ModelAttribute(CommonAttribute.OWNER) @Valid OwnerDTO owner,
 			BindingResult result) {
 		if (result.hasErrors()) {
+			sendMessages(CommonView.OWNER_CREATE_OR_UPDATE);
 			return CommonView.OWNER_CREATE_OR_UPDATE;
 		}
 		else {
 			owner = this.ownerService.save(owner);
+			sendMessages(OWNER_CREATED);
 			return CommonView.OWNER_OWNERS_R + owner.getId();
 		}
 	}
@@ -79,6 +82,7 @@ class OwnerController {
 	@GetMapping(CommonEndPoint.OWNERS_FIND)
 	public String initFindForm(Map<String, Object> model) {
 		model.put(CommonAttribute.OWNER, new OwnerDTO());
+
 		return CommonView.OWNER_FIND_OWNERS;
 	}
 
@@ -107,7 +111,8 @@ class OwnerController {
 		else {
 			// multiple owners found
 			model.put(CommonAttribute.SELECTIONS, results);
-			return CommonView.OWNER_OWNERS_LIST;
+
+ 			return CommonView.OWNER_OWNERS_LIST;
 		}
 	}
 
@@ -127,6 +132,7 @@ class OwnerController {
 		else {
 			owner.setId(ownerId);
 			this.ownerService.save(owner);
+			sendMessages(OWNER_UPDATED);
 			return CommonView.OWNER_OWNERS_ID_R;
 		}
 	}
