@@ -1,36 +1,34 @@
 #!groovy
 
 // "Constants"
-String getCesBuildLibVersion() { '1.44.3' }
-String getCesBuildLibRepo() { 'https://github.com/cloudogu/ces-build-lib/' }
+String getApplication() {"spring-petclinic-plain" }
 String getScmManagerCredentials() { 'scmm-user' }
 String getConfigRepositoryUrl() { "http://scmm-scm-manager:9091/scm/repo/cluster/gitops" }
 String getConfigRepositoryPRUrl() { 'http://scmm-scm-manager:9091/scm/api/v2/pull-requests/cluster/gitops' }
+// The docker daemon cant use the k8s service name, because it is not running inside the cluster
 String getDockerRegistryBaseUrl() { "localhost:9092" }
+String getCesBuildLibVersion() { '1.44.3' }
+String getCesBuildLibRepo() { 'https://github.com/cloudogu/ces-build-lib/' }
+
+cesBuildLib = library(identifier: "ces-build-lib@${cesBuildLibVersion}",
+        retriever: modernSCM([$class: 'GitSCMSource', remote: cesBuildLibRepo])
+).com.cloudogu.ces.cesbuildlib
 
 properties([
         // Don't run concurrent builds, because the ITs use the same port causing random failures on concurrent builds.
         disableConcurrentBuilds()
 ])
 
-cesBuilbLib = library(identifier: "ces-build-lib@${cesBuildLibVersion}",
-        retriever: modernSCM([$class: 'GitSCMSource', remote: cesBuildLibRepo])
-).com.cloudogu.ces.cesbuildlib
-def git = cesBuilbLib.Git.new(this, scmManagerCredentials)
-
 node {
 
-    mvn = cesBuilbLib.MavenWrapper.new(this)
-
-    application = "spring-petclinic-plain"
+    mvn = cesBuildLib.MavenWrapper.new(this)
 
     catchError {
 
         stage('Checkout') {
             checkout scm
-            git.clean('')
+            cesBuildLib.Git.new(this).clean('')
         }
-
 
         stage('Build') {
             mvn 'clean package -DskipTests'
@@ -44,14 +42,8 @@ node {
             mvn "${jacoco}:prepare-agent test ${jacoco}:report"
         }
 
-
         stage('Integration Test') {
             mvn "${jacoco}:prepare-agent-integration failsafe:integration-test failsafe:verify ${jacoco}:report-integration"
-        }
-
-
-        stage('Static Code Analysis') {
-
         }
 
         String imageName = ""
@@ -61,8 +53,7 @@ node {
             mvn "spring-boot:build-image -DskipTests -Dspring-boot.build-image.imageName=${imageName}"
 
             if (isBuildSuccessful()) {
-                def docker = cesBuilbLib.Docker.new(this)
-                // The docker daemon cant use the k8s service name, because it is not running inside the cluster
+                def docker = cesBuildLib.Docker.new(this)
                 docker.withRegistry("http://${dockerRegistryBaseUrl}") {
                     def image = docker.image(imageName)
                     image.push()
@@ -87,6 +78,8 @@ node {
                 ]
 
                 pushToConfigRepo(gitopsConfig)
+            } else {
+                echo 'Skipping deploy, because build not successful'
             }
         }
     }
@@ -97,15 +90,17 @@ node {
 
 String pushToConfigRepo(Map gitopsConfig) {
 
-    def git = cesBuilbLib.Git.new(this, scmManagerCredentials)
-    def applicationRepo = GitRepo.create(git)
+    def git = cesBuildLib.Git.new(this, scmManagerCredentials)
     def changesOnGitOpsRepo = ''
+    
+    // Query and store info about application repo before cloning into gitops repo  
+    def applicationRepo = GitRepo.create(git)
 
+    // Display that Jenkins made the GitOps commits not the application repo author
     git.committerName = 'Jenkins'
     git.committerEmail = 'jenkins@cloudogu.com'
 
     def configRepoTempDir = '.configRepoTempDir'
-
 
     try {
 
@@ -128,12 +123,6 @@ String pushToConfigRepo(Map gitopsConfig) {
         }
     } finally {
         sh "rm -rf ${configRepoTempDir}"
-    }
-
-
-    if (changesOnGitOpsRepo) {
-        // with GitOps we can only add a deployment marker for staging yet
-//        addDeploymentAnnotationToGrafana("staging")
     }
 
     return changesOnGitOpsRepo
@@ -173,10 +162,6 @@ String createApplicationForStageAndPushToBranch(String stage, String branch, Git
     }
 }
 
-/**
- * Reflect build parameters in commit message used for GitOps.
- * This is meant to bring more transparency into GitOps repo.
- */
 String createApplicationCommitMessage(def git, def applicationRepo) {
     String issueIds =  (applicationRepo.commitMessage =~ /#\d*/).collect { "${it} " }.join('')
 
@@ -188,12 +173,8 @@ String createApplicationCommitMessage(def git, def applicationRepo) {
     return message
 }
 
-/**
- * Reflect build parameters version name.
- * This is meant to support GitOps PR reviewers to avoid releasing versions not meant for production.
- */
 String createImageTag() {
-    def git = cesBuilbLib.Git.new(this)
+    def git = cesBuildLib.Git.new(this)
     String branch = git.simpleBranchName
     String branchSuffix = ""
 
@@ -236,9 +217,7 @@ void createPullRequest(Map gitopsConfig) {
     }
 }
 
-String application
-def cesBuilbLib
-
+/** Queries and stores info about current repo and HEAD commit */ 
 class GitRepo {
 
     static GitRepo create(git) {
@@ -261,3 +240,5 @@ class GitRepo {
     final String commitMessage
     final String repositoryUrl
 }
+
+def cesBuildLib

@@ -5,6 +5,9 @@ metadata:
   namespace: production
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: spring-petclinic-plain
   template:
     metadata:
       labels:
@@ -15,9 +18,4 @@ spec:
           image: localhost:9092/petclinic-plain:1
           ports:
             - containerPort: 8080
-          env:
-            - name: SOME_ENV
-              value: "Some Value 12345"
-  selector:
-    matchLabels:
-      app: spring-petclinic-plain
+              name: http

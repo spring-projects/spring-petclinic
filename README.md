@@ -1,12 +1,6 @@
-# Spring PetClinic Sample Application (Cloudogu Ecosystem)
+# Spring PetClinic Sample Application for cloudogu/k8s-gitops-playground
 
-This is the well-known spring sample application petclinic that has been extended to be a showcase for the Cloudogu
-EcoSystem. See [demo.cloudogu.net](https://cloudogu.com/en/#demo).
-
-We extended it by  
-
-* a [Smeagol Wiki](https://github.com/cloudogu/smeagol) (see [Home.md](docs/Home.md))
-* an [integration test](src/test/java/org/springframework/samples/petclinic/owner/OwnerControllerITCase.java) (run with failsafe plugin, see [pom.xml](pom.xml))
-* a Jenkinsfile for building, testing and SonarQube analysis.
+This is the well-known spring sample application petclinic that has been extended to be a showcase for GitOps. 
+See [cloudogu/k8s-gitops-playground](https://github.com/cloudogu/k8s-gitops-playground).
 
 For more details on petclinic, see also [original spring petclinci readme.md](readme-petclinic.md).
