@@ -77,7 +77,8 @@ node {
                         ]
                 ]
 
-                pushToConfigRepo(gitopsConfig)
+                String pushedChanges = pushToConfigRepo(gitopsConfig)
+                currentBuild.description = createBuildDescription(pushedChanges, imageName)
             } else {
                 echo 'Skipping deploy, because build not successful'
             }
@@ -215,6 +216,22 @@ void createPullRequest(Map gitopsConfig) {
             unstable 'Could not create pull request'
         }
     }
+}
+
+private String createBuildDescription(String pushedChanges, String imageName) {
+    String description = ''
+
+    description += "GitOps commits: "
+
+    if (pushedChanges) {
+        description += pushedChanges
+    } else {
+        description += 'No changes'
+    }
+
+    description += "\nImage: ${imageName}"
+
+    return description
 }
 
 /** Queries and stores info about current repo and HEAD commit */ 
