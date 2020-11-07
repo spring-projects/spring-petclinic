@@ -3,7 +3,7 @@ sudo: true
 dist: trusty
 
 # use Java 8
-jdk: openjdk8
+jdk: oraclejdk8
 
 before_install:
   - chmod +x mvnw
