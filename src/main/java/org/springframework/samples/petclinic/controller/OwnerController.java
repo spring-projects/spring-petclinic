@@ -15,10 +15,7 @@
  */
 package org.springframework.samples.petclinic.controller;
 
-import org.springframework.samples.petclinic.common.CommonAttribute;
-import org.springframework.samples.petclinic.common.CommonEndPoint;
-import org.springframework.samples.petclinic.common.CommonError;
-import org.springframework.samples.petclinic.common.CommonView;
+import org.springframework.samples.petclinic.common.*;
 import org.springframework.samples.petclinic.controller.common.WebSocketSender;
 import org.springframework.samples.petclinic.dto.*;
 import org.springframework.samples.petclinic.service.OwnerService;
@@ -69,12 +66,12 @@ class OwnerController extends WebSocketSender {
 	public String processCreationForm(@ModelAttribute(CommonAttribute.OWNER) @Valid OwnerDTO owner,
 			BindingResult result) {
 		if (result.hasErrors()) {
-			sendMessages(CommonView.OWNER_CREATE_OR_UPDATE);
+			sendErrorMessage(CommonWebSocket.OWNER_CREATION_ERROR);
 			return CommonView.OWNER_CREATE_OR_UPDATE;
 		}
 		else {
 			owner = this.ownerService.save(owner);
-			sendMessages(OWNER_CREATED);
+			sendSuccessMessage(CommonWebSocket.OWNER_CREATED);
 			return CommonView.OWNER_OWNERS_R + owner.getId();
 		}
 	}
@@ -101,6 +98,7 @@ class OwnerController extends WebSocketSender {
 			// no owners found
 			result.rejectValue(CommonAttribute.OWNER_LAST_NAME, CommonError.NOT_FOUND_ARGS,
 					CommonError.NOT_FOUND_MESSAGE);
+			sendInfoMessage(CommonWebSocket.OWNER_FIND_ERROR);
 			return CommonView.OWNER_FIND_OWNERS;
 		}
 		else if (results.size() == 1) {
@@ -112,7 +110,7 @@ class OwnerController extends WebSocketSender {
 			// multiple owners found
 			model.put(CommonAttribute.SELECTIONS, results);
 
- 			return CommonView.OWNER_OWNERS_LIST;
+			return CommonView.OWNER_OWNERS_LIST;
 		}
 	}
 
@@ -127,12 +125,14 @@ class OwnerController extends WebSocketSender {
 	public String processUpdateOwnerForm(@ModelAttribute(CommonAttribute.OWNER) @Valid OwnerDTO owner,
 			BindingResult result, @PathVariable("ownerId") int ownerId) {
 		if (result.hasErrors()) {
+			sendErrorMessage(CommonWebSocket.OWNER_UPDATED_ERROR);
 			return CommonView.OWNER_CREATE_OR_UPDATE;
 		}
 		else {
 			owner.setId(ownerId);
 			this.ownerService.save(owner);
-			sendMessages(OWNER_UPDATED);
+
+			sendSuccessMessage(CommonWebSocket.OWNER_UPDATED);
 			return CommonView.OWNER_OWNERS_ID_R;
 		}
 	}

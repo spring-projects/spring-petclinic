@@ -16,12 +16,10 @@
 package org.springframework.samples.petclinic.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.common.CommonAttribute;
-import org.springframework.samples.petclinic.common.CommonEndPoint;
-import org.springframework.samples.petclinic.common.CommonError;
-import org.springframework.samples.petclinic.common.CommonView;
+import org.springframework.samples.petclinic.common.*;
 import org.springframework.samples.petclinic.controller.common.WebSocketSender;
 import org.springframework.samples.petclinic.dto.*;
+import org.springframework.samples.petclinic.model.common.WebSocketMessage;
 import org.springframework.samples.petclinic.validator.PetDTOValidator;
 import org.springframework.samples.petclinic.service.*;
 import org.springframework.stereotype.Controller;
@@ -86,22 +84,25 @@ class PetController extends WebSocketSender {
 	public String processCreationForm(@ModelAttribute(CommonAttribute.OWNER) OwnerDTO owner,
 			@ModelAttribute(CommonAttribute.PET) @Valid PetDTO pet, BindingResult result, ModelMap model) {
 		if (owner == null) {
+			sendErrorMessage(CommonWebSocket.PET_CREATION_ERROR);
 			result.rejectValue(CommonAttribute.OWNER, CommonError.NOT_FOUND_ARGS, CommonError.NOT_FOUND_MESSAGE);
 		}
 		else {
 			if (StringUtils.hasLength(pet.getName()) && pet.isNew() && owner.getPet(pet.getName(), true) != null) {
+				sendErrorMessage(CommonWebSocket.PET_CREATION_ERROR);
 				result.rejectValue(CommonAttribute.NAME, CommonError.DUPLICATE_ARGS, CommonError.DUPLICATE_MESSAGE);
 			}
 			owner.addPet(pet);
 		}
 
 		if (result.hasErrors()) {
+			sendErrorMessage(CommonWebSocket.PET_CREATION_ERROR);
 			model.put(CommonAttribute.PET, pet);
 			return CommonView.PET_CREATE_OR_UPDATE;
 		}
 		else {
 			this.petService.save(pet);
-			sendMessages(PET_CREATED);
+			sendSuccessMessage(CommonWebSocket.PET_CREATED);
 			return CommonView.OWNER_OWNERS_ID_R;
 		}
 	}
@@ -119,12 +120,13 @@ class PetController extends WebSocketSender {
 		if (result.hasErrors()) {
 			pet.setOwner(owner);
 			model.put(CommonAttribute.PET, pet);
+			sendErrorMessage(CommonWebSocket.PET_UPDATED_ERROR);
 			return CommonView.PET_CREATE_OR_UPDATE;
 		}
 		else {
 			owner.addPet(pet);
 			this.petService.save(pet);
-			sendMessages(PET_UPDATED);
+			sendSuccessMessage(CommonWebSocket.PET_UPDATED);
 			return CommonView.OWNER_OWNERS_ID_R;
 		}
 	}

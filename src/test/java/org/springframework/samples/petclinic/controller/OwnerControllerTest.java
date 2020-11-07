@@ -30,10 +30,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.samples.petclinic.common.CommonAttribute;
 import org.springframework.samples.petclinic.common.CommonEndPoint;
 import org.springframework.samples.petclinic.common.CommonError;
 import org.springframework.samples.petclinic.common.CommonView;
+import org.springframework.samples.petclinic.controller.common.WebSocketSender;
 import org.springframework.samples.petclinic.dto.OwnerDTO;
 import org.springframework.samples.petclinic.dto.PetDTO;
 import org.springframework.samples.petclinic.dto.PetTypeDTO;
@@ -61,7 +63,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
 @WebMvcTest(OwnerController.class)
-class OwnerControllerTest {
+class OwnerControllerTest extends WebSocketSender {
 
 	private static final int OWNER_ID = 15;
 
@@ -87,6 +89,9 @@ class OwnerControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
+
+	@MockBean
+	SimpMessagingTemplate simpMessagingTemplate;
 
 	@MockBean
 	private OwnerService owners;

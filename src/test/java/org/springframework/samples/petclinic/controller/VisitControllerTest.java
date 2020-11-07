@@ -32,6 +32,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.samples.petclinic.common.CommonAttribute;
 import org.springframework.samples.petclinic.common.CommonEndPoint;
 import org.springframework.samples.petclinic.common.CommonView;
@@ -73,6 +74,9 @@ class VisitControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
+
+	@MockBean
+	SimpMessagingTemplate simpMessagingTemplate;
 
 	@MockBean
 	private VisitService visitService;

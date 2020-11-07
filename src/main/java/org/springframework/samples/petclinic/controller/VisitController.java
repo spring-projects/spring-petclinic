@@ -22,12 +22,13 @@ import javax.validation.Valid;
 import org.springframework.samples.petclinic.common.CommonAttribute;
 import org.springframework.samples.petclinic.common.CommonEndPoint;
 import org.springframework.samples.petclinic.common.CommonView;
+import org.springframework.samples.petclinic.common.CommonWebSocket;
 import org.springframework.samples.petclinic.controller.common.WebSocketSender;
 import org.springframework.samples.petclinic.dto.PetDTO;
 import org.springframework.samples.petclinic.dto.VisitDTO;
+import org.springframework.samples.petclinic.model.common.WebSocketMessage;
 import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.VisitService;
-import org.springframework.samples.petclinic.validator.PetDTOValidator;
 import org.springframework.samples.petclinic.validator.VisitDTOValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -96,11 +97,12 @@ class VisitController extends WebSocketSender {
 	public String processNewVisitForm(@ModelAttribute(CommonAttribute.VISIT) @Valid VisitDTO visit,
 			BindingResult result) {
 		if (result.hasErrors()) {
+			sendErrorMessage(CommonWebSocket.VISIT_CREATION_ERROR);
 			return CommonView.VISIT_CREATE_OR_UPDATE;
 		}
 		else {
 			this.visitService.save(visit);
-			sendMessages(VISIT_CREATED);
+			sendSuccessMessage(CommonWebSocket.VISIT_CREATED);
 			return CommonView.OWNER_OWNERS_ID_R;
 		}
 	}

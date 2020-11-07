@@ -33,6 +33,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.samples.petclinic.common.CommonAttribute;
 import org.springframework.samples.petclinic.common.CommonEndPoint;
 import org.springframework.samples.petclinic.common.CommonError;
@@ -62,6 +63,9 @@ class PetControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
+
+	@MockBean
+	SimpMessagingTemplate simpMessagingTemplate;
 
 	@MockBean
 	private PetService petService;

@@ -18,6 +18,7 @@ package org.springframework.samples.petclinic.controller;
 import org.springframework.samples.petclinic.common.CommonAttribute;
 import org.springframework.samples.petclinic.common.CommonEndPoint;
 import org.springframework.samples.petclinic.common.CommonView;
+import org.springframework.samples.petclinic.common.CommonWebSocket;
 import org.springframework.samples.petclinic.controller.common.WebSocketSender;
 import org.springframework.samples.petclinic.dto.VetsDTO;
 import org.springframework.samples.petclinic.service.VetService;
@@ -35,7 +36,7 @@ import java.util.Map;
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
 @Controller
-class VetController {
+class VetController extends WebSocketSender {
 
 	private final VetService vetService;
 
@@ -49,6 +50,10 @@ class VetController {
 		// objects so it is simpler for Object-Xml mapping
 		VetsDTO vets = new VetsDTO();
 		vets.getVetList().addAll(this.vetService.findAll());
+
+		if (vets.getVetList().isEmpty()) {
+			sendInfoMessage(CommonWebSocket.VET_FIND_ERROR);
+		}
 		model.put(CommonAttribute.VETS, vets);
 		return CommonView.VET_VETS_LIST;
 	}
@@ -59,6 +64,9 @@ class VetController {
 		// objects so it is simpler for JSon/Object mapping
 		VetsDTO vets = new VetsDTO();
 		vets.getVetList().addAll(this.vetService.findAll());
+		if (vets.getVetList().isEmpty()) {
+			sendInfoMessage(CommonWebSocket.VET_FIND_ERROR);
+		}
 		return vets;
 	}
 

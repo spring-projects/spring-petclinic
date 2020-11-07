@@ -15,7 +15,7 @@
   <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+  <![endif]-->
 
   <link rel="stylesheet" th:href="@{/resources/css/petclinic.css}" />
   <link rel="stylesheet" th:href="@{/resources/static/css/style.css}" />
@@ -98,9 +98,6 @@
     <div id="main-content" class="container">
       <div class="row">
         <form class="form-inline">
-          <div class="form-group pull-left" id="conversation">
-            <span id="messageOutput" class="form-control" style="width:200px; "></span>
-          </div>
           <div class="form-group pull-right" >
             <img src="../static/resources/images/spring-pivotal-logo.png"
                  th:src="@{/resources/images/spring-pivotal-logo.png}" alt="Sponsored by Pivotal" />
@@ -117,21 +114,12 @@
   <script th:src="@{/webjars/sockjs-client/sockjs.min.js}"></script>
   <script th:src="@{/webjars/stomp-websocket/stomp.min.js}"></script>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.3.7/packaged/jquery.noty.packaged.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.4.0/animate.min.css">
+  <script th:src="@{/js/notification.js}"></script>
+
   <script type="text/javascript">
-    $(document).ready( function(){
-      var socket = new SockJS('/websocket');
-      var stompClient = Stomp.over(socket);
-
-      stompClient.connect({}, function (frame) {
-        stompClient.subscribe('/topic/public', function (socketMessage) {
-
-          var message = JSON.parse(socketMessage.body).content;
-          alert(message);
-          $('#messageOutput').text(message);
-
-        });
-      });
-    });
+    displayMessage();
   </script>
 
 </body>

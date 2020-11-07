@@ -16,7 +16,6 @@ import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.ui.Model;
 
 import java.time.LocalDate;
 import java.util.Collection;
