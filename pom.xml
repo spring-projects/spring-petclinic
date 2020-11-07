@@ -27,9 +27,16 @@
     <webjars-bootstrap.version>3.3.6</webjars-bootstrap.version>
     <webjars-jquery-ui.version>1.11.4</webjars-jquery-ui.version>
     <webjars-jquery.version>2.2.4</webjars-jquery.version>
+    <webjars-stomp-websocket.version>2.3.3-1</webjars-stomp-websocket.version>
+    <webjars-sockjs-client.version>1.1.2</webjars-sockjs-client.version>
+    <webjars-webjars-locator.version>0.40</webjars-webjars-locator.version>
+    <webjars-webjars-locator-core.version>0.46</webjars-webjars-locator-core.version>
     <wro4j.version>1.8.0</wro4j.version>
 
     <checkstyle.version>8.32</checkstyle.version>
+    <fasterxml-jackson-core.version>2.10.2</fasterxml-jackson-core.version>
+    <fasterxml-jackson-databind.version>2.10.2</fasterxml-jackson-databind.version>
+
     <jacoco.version>0.8.5</jacoco.version>
     <junit.version>4.13</junit.version>
     <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
@@ -120,12 +127,13 @@
     <dependency>
       <groupId>org.webjars</groupId>
       <artifactId>webjars-locator</artifactId>
-      <version>0.40</version>
+      <version>${webjars-webjars-locator.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.webjars</groupId>
       <artifactId>webjars-locator-core</artifactId>
+      <version>${webjars-webjars-locator-core.version}</version>
     </dependency>
     <dependency>
       <groupId>org.webjars</groupId>
@@ -145,13 +153,13 @@
     <dependency>
       <groupId>org.webjars</groupId>
       <artifactId>stomp-websocket</artifactId>
-      <version>2.3.3-1</version>
+      <version>${webjars-stomp-websocket.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.webjars</groupId>
       <artifactId>sockjs-client</artifactId>
-      <version>1.1.2</version>
+      <version>${webjars-sockjs-client.version}</version>
     </dependency>
 
 
@@ -160,13 +168,13 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <version>2.10.2</version>
+      <version>${fasterxml-jackson-core.version}</version>
     </dependency>
 
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.10.2</version>
+      <version>${fasterxml-jackson-databind.version}</version>
     </dependency>
 
 
