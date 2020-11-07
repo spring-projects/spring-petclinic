@@ -2,8 +2,8 @@ language: java
 sudo: true
 dist: trusty
 
-# use Java 8
-#jdk: oraclejdk8
+# use Java 9
+jdk: oraclejdk9
 
 before_install:
   - chmod +x mvnw
