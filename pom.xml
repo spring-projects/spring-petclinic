@@ -27,15 +27,14 @@
     <webjars-bootstrap.version>3.3.6</webjars-bootstrap.version>
     <webjars-jquery-ui.version>1.11.4</webjars-jquery-ui.version>
     <webjars-jquery.version>2.2.4</webjars-jquery.version>
+    <wro4j.version>1.9.0</wro4j.version>
+
+
     <webjars-stomp-websocket.version>2.3.3-1</webjars-stomp-websocket.version>
     <webjars-sockjs-client.version>1.1.2</webjars-sockjs-client.version>
     <webjars-webjars-locator.version>0.40</webjars-webjars-locator.version>
     <webjars-webjars-locator-core.version>0.46</webjars-webjars-locator-core.version>
-    <wro4j.version>1.9.0</wro4j.version>
-
     <checkstyle.version>8.32</checkstyle.version>
-    <fasterxml-jackson-core.version>2.10.2</fasterxml-jackson-core.version>
-    <fasterxml-jackson-databind.version>2.10.2</fasterxml-jackson-databind.version>
 
     <jacoco.version>0.8.5</jacoco.version>
     <junit.version>4.13</junit.version>
@@ -162,34 +161,7 @@
       <version>${webjars-sockjs-client.version}</version>
     </dependency>
 
-
-    <!-- end of webjars -->
-
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-core</artifactId>
-      <version>${fasterxml-jackson-core.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>${fasterxml-jackson-databind.version}</version>
-    </dependency>
-
-
     <!-- =========================================================== TESTING -->
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-junit-jupiter</artifactId>
-      <scope>test</scope>
-    </dependency>
-
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-devtools</artifactId>
