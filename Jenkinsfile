@@ -27,7 +27,6 @@ node {
 
         stage('Checkout') {
             checkout scm
-            cesBuildLib.Git.new(this).clean('')
         }
 
         stage('Build') {
