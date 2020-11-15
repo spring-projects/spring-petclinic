@@ -5,6 +5,8 @@ DROP TABLE visits IF EXISTS;
 DROP TABLE pets IF EXISTS;
 DROP TABLE types IF EXISTS;
 DROP TABLE owners IF EXISTS;
+DROP TABLE roles IF EXISTS;
+DROP TABLE users IF EXISTS;
 
 
 CREATE TABLE vets (
@@ -62,3 +64,36 @@ CREATE TABLE visits (
 );
 ALTER TABLE visits ADD CONSTRAINT fk_visits_pets FOREIGN KEY (pet_id) REFERENCES pets (id);
 CREATE INDEX visits_pet_id ON visits (pet_id);
+
+CREATE TABLE roles (
+  id          INTEGER IDENTITY PRIMARY KEY,
+  name        VARCHAR(20) NOT NULL
+);
+CREATE INDEX roles_name ON roles (name);
+
+CREATE TABLE users (
+  id              INTEGER IDENTITY PRIMARY KEY,
+  first_name      VARCHAR(30) NOT NULL,
+  last_name       VARCHAR_IGNORECASE(30) NOT NULL,
+  email           VARCHAR(50) NOT NULL,
+  email_verified  BOOLEAN NOT NULL,
+  password        VARCHAR(255) NOT NULL,
+  provider        VARCHAR(20),
+  provider_id     VARCHAR(20),
+  telephone       VARCHAR(20),
+  street1         VARCHAR(50),
+  street2         VARCHAR(50),
+  street3         VARCHAR(50),
+  zip_code        VARCHAR(6),
+  city            VARCHAR(80),
+  country         VARCHAR(50)
+);
+CREATE INDEX users_email ON users (email);
+
+CREATE TABLE public.users_roles (
+    user_id INTEGER NOT NULL,
+    role_id INTEGER NOT NULL
+);
+ALTER TABLE users_roles ADD CONSTRAINT fk_users_roles_user_id FOREIGN KEY (user_id) REFERENCES users (id);
+ALTER TABLE users_roles ADD CONSTRAINT fk_users_roles_role_id FOREIGN KEY (role_id) REFERENCES roles (id);
+CREATE INDEX users_roles_user_id ON users_roles (user_id);

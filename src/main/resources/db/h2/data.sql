@@ -51,3 +51,17 @@ INSERT INTO visits VALUES (1, 7, '2013-01-01', 'rabies shot');
 INSERT INTO visits VALUES (2, 8, '2013-01-02', 'rabies shot');
 INSERT INTO visits VALUES (3, 8, '2013-01-03', 'neutered');
 INSERT INTO visits VALUES (4, 7, '2013-01-04', 'spayed');
+
+INSERT INTO roles VALUES (1,'ADMIN');
+INSERT INTO roles VALUES (2,'STAFF');
+INSERT INTO roles VALUES (3,'USER');
+
+INSERT INTO users VALUES (1, 'George', 'Franklin', 'georges.franklin@petclinic.com', true,'$2a$10$8KypNYtPopFo8Sk5jbKJ4.lCKeBhdApsrkmFfhwjB8nCls8qpzjZG', 'local', null, '6085551023', '110 W. Liberty St.','','',12354,'Madison','USA');
+INSERT INTO users VALUES (2, 'Betty', 'Davis', 'betty.davis@petclinic.com', true, '$2a$10$InKx/fhX3CmLi8zKpHYx/.ETHUlZwvT1xn.Za/pp2JR0iEtYV9a9O', 'local', null, '6085551749','638 Cardinal Ave.', '', '', 6546, 'Sun Prairie', 'USA');
+INSERT INTO users VALUES (3, 'Eduardo', 'Rodriquez', 'eduardo.rodriguez@petclinic.com', true, '$2a$10$P55nbvVibHpoyWzenHngjOf.oEmcj74mI/VJaUZwGX9v8klctzsNW', 'local', null, '6085558763','2693 Commerce St.', '', '', 65454, 'McFarland', 'USA');
+
+INSERT INTO users_roles VALUES (1,1);
+INSERT INTO users_roles VALUES (1,2);
+INSERT INTO users_roles VALUES (1,3);
+INSERT INTO users_roles VALUES (2,3);
+INSERT INTO users_roles VALUES (3,3);

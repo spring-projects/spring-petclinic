@@ -19,6 +19,14 @@ public final class CommonError {
 
 	public static final String REQUIRED_MESSAGE = "required";
 
+	public static final String FORMAT_BETWEEN = "Length should be between : ";
+
+	public static final String FORMAT_LESS = "Length should less than : ";
+
+	public static final String EMAIL_FORMAT = "Not a valid email address !";
+
+	public static final String PHONE_FORMAT = "Not a valid phone number !";
+
 	private CommonError() {
 		throw new IllegalStateException("Utility class");
 	}

@@ -16,9 +16,8 @@
 package org.springframework.samples.petclinic.repository;
 
 import org.springframework.data.repository.Repository;
-import org.springframework.samples.petclinic.model.Specialty;
+import org.springframework.samples.petclinic.model.business.Specialty;
 
-import java.util.Collection;
 import java.util.List;
 
 /**

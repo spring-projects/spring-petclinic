@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.model;
+package org.springframework.samples.petclinic.model.business;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,6 +33,7 @@ import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.core.style.ToStringCreator;
 import org.springframework.samples.petclinic.common.CommonAttribute;
+import org.springframework.samples.petclinic.model.common.Person;
 
 /**
  * Simple JavaBean domain object representing an owner.

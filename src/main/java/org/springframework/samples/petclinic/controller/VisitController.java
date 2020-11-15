@@ -26,7 +26,6 @@ import org.springframework.samples.petclinic.common.CommonWebSocket;
 import org.springframework.samples.petclinic.controller.common.WebSocketSender;
 import org.springframework.samples.petclinic.dto.PetDTO;
 import org.springframework.samples.petclinic.dto.VisitDTO;
-import org.springframework.samples.petclinic.model.common.WebSocketMessage;
 import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.VisitService;
 import org.springframework.samples.petclinic.validator.VisitDTOValidator;

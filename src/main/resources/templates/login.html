@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'users')}">
+
+<body>
+
+<h2 style="text-align:center">Login Manually</h2>
+
+<form th:object="${user}" class="form-horizontal" id="login-user-form" method="post">
+  <div class="form-group has-feedback">
+    <input
+      th:replace="~{fragments/inputField :: input ('Email', 'email', 'email')}" />
+    <input
+      th:replace="~{fragments/inputField :: input ('Password', 'password', 'password')}" />
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button class="btn btn-default" type="submit">Login</button>
+      <a href="/register" class="btn btn-default" ><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+        <span>Register</span></a>
+    </div>
+  </div>
+
+</form>
+
+<h2 style="text-align:center">Login with Social Media</h2>
+
+  <div class="row col-md-12">
+    <div class="col-md-6 offset-md-3" th:each="url : ${urls}" >
+      <a th:if="${url.key == 'Google'}" th:href="${url.value}" class="btn btn-bloc" style="background-color: #dd4b39;color: white">
+        <i class="fa fa-google fa-fw"></i> Login with Google
+      </a>
+      <a th:if="${url.key == 'Twitter'}" th:href="${url.value}" class="btn btn-bloc" style="background-color: #55ACEE;color: white">
+        <i class="fa fa-twitter fa-fw"></i> Login with Twitter
+      </a>
+      <a th:if="${url.key == 'GitHub'}" th:href="${url.value}" class="btn btn-bloc" style="background-color: white;color: black">
+        <i class="fa fa-github fa-fw"></i> Login with Github
+      </a>
+      <a th:if="${url.key == 'Facebook'}" th:href="${url.value}" class="btn btn-bloc" style="background-color: #3B5998;color: white">
+          <i class="fa fa-facebook fa-fw"></i> Login with Facebook
+      </a>
+
+    </div>
+  </div>
+
+</body>
+

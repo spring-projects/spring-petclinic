@@ -15,12 +15,11 @@
  */
 package org.springframework.samples.petclinic.repository;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.repository.Repository;
-import org.springframework.samples.petclinic.model.BaseEntity;
-import org.springframework.samples.petclinic.model.Visit;
+import org.springframework.samples.petclinic.model.common.BaseEntity;
+import org.springframework.samples.petclinic.model.business.Visit;
 
 /**
  * Repository class for <code>Visit</code> domain objects All method names are compliant

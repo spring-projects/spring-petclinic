@@ -17,9 +17,9 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" th:href="@{/resources/css/petclinic.css}" />
-  <link rel="stylesheet" th:href="@{/resources/static/css/style.css}" />
-
+  <!--link rel="stylesheet" th:href="@{/resources/css/style.css}" /-->
 </head>
 
 <body>
@@ -69,10 +69,22 @@
             <span>Veterinarians</span>
           </li>
 
-          <li
-            th:replace="::menuItem ('/oups','error','trigger a RuntimeException to see how it is handled','warning-sign','Error')">
+          <li th:replace="::menuItem ('/oups','error','trigger a RuntimeException to see how it is handled','warning-sign','Error')">
             <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
             <span>Error</span>
+          </li>
+
+          <li th:replace="::menuItem ('/login','user','login for known users','log-in','Login')" sec:authorize="!isAuthenticated()">
+            <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
+            <span>Sign In</span>
+          </li>
+          <li th:replace="::menuItem ('/logout','user','logout','log-out','Logout')" sec:authorize="isAuthenticated()">
+            <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+            <span>Logout</span>
+          </li>
+          <li th:replace="::menuItem ('/users/edit','user','Edit user profile','user','Profile')" sec:authorize="isAuthenticated()">
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+            <span>My account</span>
           </li>
 
         </ul>

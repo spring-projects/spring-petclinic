@@ -16,6 +16,7 @@
 package org.springframework.samples.petclinic.model;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.samples.petclinic.model.business.Vet;
 import org.springframework.util.SerializationUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;

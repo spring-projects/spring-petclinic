@@ -35,6 +35,24 @@ public class CommonWebSocket {
 
 	public static final String PET_DELETED_ERROR = "Error deleting Pet !";
 
+	public static final String USER_LOGGED_IN = "User %s %s logged in successfully !";
+
+	public static final String USER_LOGGED_OUT = "User logged out successfully !";
+
+	public static final String USER_FIND_ERROR = "No User found !";
+
+	public static final String USER_CREATED = "User created";
+
+	public static final String USER_CREATION_ERROR = "Error creating User !";
+
+	public static final String USER_UPDATED = "User updated";
+
+	public static final String USER_UPDATED_ERROR = "Error updating User !";
+
+	public static final String USER_DELETED = "User deleted";
+
+	public static final String USER_DELETED_ERROR = "Error deleting User !";
+
 	public static final String VET_FIND_ERROR = "No Vet found !";
 
 	public static final String VET_CREATED = "Vet created";

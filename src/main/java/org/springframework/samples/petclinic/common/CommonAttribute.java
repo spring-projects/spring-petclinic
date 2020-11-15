@@ -39,6 +39,10 @@ public final class CommonAttribute {
 
 	public static final String PET_TYPE = "type";
 
+	public static final String USER = "user";
+
+	public static final String USER_ID = "id";
+
 	public static final String VETS = "vets";
 
 	public static final String VISIT = "visit";

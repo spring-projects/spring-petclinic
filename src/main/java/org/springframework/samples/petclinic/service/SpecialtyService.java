@@ -2,13 +2,11 @@ package org.springframework.samples.petclinic.service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.samples.petclinic.dto.SpecialtyDTO;
-import org.springframework.samples.petclinic.model.Specialty;
+import org.springframework.samples.petclinic.model.business.Specialty;
 import org.springframework.samples.petclinic.repository.SpecialtyRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 
 /**

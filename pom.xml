@@ -41,6 +41,7 @@
     <modelmapper.version>2.3.8</modelmapper.version>
     <nohttp-checkstyle.version>0.0.4.RELEASE</nohttp-checkstyle.version>
     <spring-format.version>0.0.25</spring-format.version>
+    <spring-cloud-starter-security.version>2.2.4.RELEASE</spring-cloud-starter-security.version>
   </properties>
 
   <!-- ===================================================================== -->
@@ -86,6 +87,15 @@
                 <artifactId>junit-vintage-engine</artifactId>
             </exclusion>
         </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-security</artifactId>
+      <version>${spring-cloud-starter-security.version}</version>
     </dependency>
 
     <!-- ========================================================= DATABASES -->
@@ -158,11 +168,49 @@
       <version>${webjars-sockjs-client.version}</version>
     </dependency>
 
+    <!-- =========================================== THYMELEAF SECURITY -->
+    <dependency>
+      <groupId>org.thymeleaf.extras</groupId>
+      <artifactId>thymeleaf-extras-springsecurity5</artifactId>
+      <version>3.0.4.RELEASE</version>
+    </dependency>
+
+
+    <!-- OAuth2 Client -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-oauth2-client</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-oauth2-client</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-oauth2-jose</artifactId>
+      <version>5.3.4.RELEASE</version>
+    </dependency>
+
+    <!-- JWT library -->
+    <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt</artifactId>
+      <version>0.9.1</version>
+    </dependency>
+
+
     <!-- =========================================================== TESTING -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-devtools</artifactId>
       <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-test</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -175,6 +223,11 @@
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>${lombok.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-web</artifactId>
+      <version>5.3.3.RELEASE</version>
     </dependency>
   </dependencies>
 

@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.common.*;
 import org.springframework.samples.petclinic.controller.common.WebSocketSender;
 import org.springframework.samples.petclinic.dto.*;
-import org.springframework.samples.petclinic.model.common.WebSocketMessage;
 import org.springframework.samples.petclinic.validator.PetDTOValidator;
 import org.springframework.samples.petclinic.service.*;
 import org.springframework.stereotype.Controller;

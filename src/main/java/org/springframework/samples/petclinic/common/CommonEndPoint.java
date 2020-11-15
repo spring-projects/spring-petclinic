@@ -21,6 +21,26 @@ public final class CommonEndPoint {
 
 	public static final String PETS_ID_EDIT = "/pets/{petId}/edit";
 
+	public static final String USERS_ID = "/users/{userId}";
+
+	public static final String USERS_EDIT = "/users/edit";
+
+	public static final String USERS_ID_EDIT = "/users/{ownerId}/edit";
+
+	public static final String USERS_NEW = "/users/new";
+
+	public static final String LOGIN = "/login";
+
+	public static final String LOGIN_SUCCESS = "/login/success";
+
+	public static final String OAUTH2_SUCCESS = "/oauth2/success";
+
+	public static final String LOGOUT = "/logout";
+
+	public static final String LOGOUT_SUCCESS = "/logout/success";
+
+	public static final String REGISTER = "/register";
+
 	public static final String VETS = "/vets";
 
 	public static final String VETS_HTML = "/vets.html";
