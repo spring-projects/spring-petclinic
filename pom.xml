@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
     <modules>
-        <module>petclinic-data</module>
+      <module>petclinic-data</module>
       <module>petclinic-web</module>
     </modules>
     <parent>
@@ -24,11 +24,6 @@
   </properties>
 
   <dependencies>
-      <dependency>
-          <groupId>junit</groupId>
-          <artifactId>junit</artifactId>
-          <scope>test</scope>
-      </dependency>
   </dependencies>
 
   <build>

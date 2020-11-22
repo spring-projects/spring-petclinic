@@ -10,6 +10,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>petclinic-data</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <properties>
+    <spring-boot.repackage.skip>true</spring-boot.repackage.skip>
+  </properties>
 <dependencies>
   <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -29,6 +33,17 @@
     <groupId>mysql</groupId>
     <artifactId>mysql-connector-java</artifactId>
     <scope>runtime</scope>
+  </dependency>
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-test</artifactId>
+    <scope>test</scope>
+    <exclusions>
+      <exclusion>
+        <groupId>org.junit.vintage</groupId>
+        <artifactId>junit-vintage-engine</artifactId>
+      </exclusion>
+    </exclusions>
   </dependency>
 </dependencies>
   <build>
