@@ -11,8 +11,8 @@ import org.springframework.samples.petclinic.common.CommonView;
 import org.springframework.samples.petclinic.dto.OwnerDTO;
 import org.springframework.samples.petclinic.dto.PetDTO;
 import org.springframework.samples.petclinic.repository.PetRepository;
-import org.springframework.samples.petclinic.service.OwnerService;
-import org.springframework.samples.petclinic.service.PetService;
+import org.springframework.samples.petclinic.service.business.OwnerService;
+import org.springframework.samples.petclinic.service.business.PetService;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 

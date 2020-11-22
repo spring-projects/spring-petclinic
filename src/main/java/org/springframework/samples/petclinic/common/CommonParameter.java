@@ -6,6 +6,8 @@ public class CommonParameter {
 
 	public static final int COUNTRY_MAX = 50;
 
+	public static final String DEFAULT_PROVIDER = "local";
+
 	public static final int EMAIL_MAX = 255;
 
 	public static final int EMAIL_MIN = 4;
@@ -31,6 +33,8 @@ public class CommonParameter {
 	public static final int STATUS_MAX = 10;
 
 	public static final int STREET_MAX = 50;
+
+	public static final int TOKEN_EXPIRATION = 60 * 24;
 
 	public static final int ROLE_MAX = 10;
 

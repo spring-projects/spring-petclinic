@@ -40,8 +40,8 @@ import org.springframework.samples.petclinic.dto.PetDTO;
 import org.springframework.samples.petclinic.dto.PetTypeDTO;
 import org.springframework.samples.petclinic.dto.VisitDTO;
 import org.springframework.samples.petclinic.model.business.Visit;
-import org.springframework.samples.petclinic.service.PetService;
-import org.springframework.samples.petclinic.service.VisitService;
+import org.springframework.samples.petclinic.service.business.PetService;
+import org.springframework.samples.petclinic.service.business.VisitService;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 

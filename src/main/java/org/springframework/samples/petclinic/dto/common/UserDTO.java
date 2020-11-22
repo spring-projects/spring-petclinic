@@ -1,92 +1,74 @@
-package org.springframework.samples.petclinic.model.common;
+package org.springframework.samples.petclinic.dto.common;
 
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.samples.petclinic.common.CommonError;
 import org.springframework.samples.petclinic.common.CommonParameter;
+import org.springframework.samples.petclinic.dto.PersonDTO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
 import java.io.Serializable;
+
 import java.util.*;
 
-/**
- * Class used to manage application users
- *
- * @author Paul-Emmanuel DOS SANTOS FACAO
- */
-@Entity(name = "User")
-@Table(name = "users")
-public class User extends Person implements Serializable, UserDetails {
+public class UserDTO extends PersonDTO implements Serializable, UserDetails {
 
-	@NotNull
 	@Size(min = CommonParameter.EMAIL_MIN, max = CommonParameter.EMAIL_MAX, message = CommonError.FORMAT_BETWEEN
 			+ CommonParameter.EMAIL_MIN + " AND " + CommonParameter.EMAIL_MAX + " !")
 	@Pattern(regexp = CommonParameter.EMAIL_REGEXP, message = CommonError.EMAIL_FORMAT)
-	@Column(name = "email", unique = true, length = CommonParameter.EMAIL_MAX)
 	private String email;
 
 	@Size(min = CommonParameter.PASSWORD_MIN, max = CommonParameter.PASSWORD_MAX, message = CommonError.FORMAT_BETWEEN
 		+ CommonParameter.PASSWORD_MIN + " AND " + CommonParameter.PASSWORD_MAX + " !")
-	@Column(name = "password", length = CommonParameter.PASSWORD_MAX)
 	private String password;
+	@Size(min = CommonParameter.PASSWORD_MIN, max = CommonParameter.PASSWORD_MAX, message = CommonError.FORMAT_BETWEEN
+		+ CommonParameter.PASSWORD_MIN + " AND " + CommonParameter.PASSWORD_MAX + " !")
+	private String matchingPassword;
 
-	@NotNull
-	@Column(name = "enabled")
 	private boolean enabled;
-
-	@NotNull
-	@Column(name = "account_unexpired")
 	private boolean accountNonExpired;
-
-	@NotNull
-	@Column(name = "account_unlocked")
 	private boolean accountNonLocked;
-
-	@NotNull
-	@Column(name = "credential_unexpired")
 	private boolean credentialsNonExpired;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"),
-		inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private Set<Role> roles;
+	private Set<RoleDTO> roles;
+
 
 	@Size(max = CommonParameter.PHONE_MAX, message = CommonError.FORMAT_LESS + CommonParameter.PHONE_MAX)
 //	@Pattern(regexp = CommonParameter.PHONE_REGEXP, message = CommonError.PHONE_FORMAT)
-	@Column(name = "telephone", length = CommonParameter.EMAIL_MAX)
 	private String telephone;
 
-
 	@Size(max = CommonParameter.STREET_MAX, message = CommonError.FORMAT_LESS + CommonParameter.STREET_MAX + " !")
-	@Column(name = "street1", length = CommonParameter.STREET_MAX)
 	private String street1;
 
 	@Size(max = CommonParameter.STREET_MAX, message = CommonError.FORMAT_LESS + CommonParameter.STREET_MAX + " !")
-	@Column(name = "street2", length = CommonParameter.STREET_MAX)
 	private String street2;
 
 	@Size(max = CommonParameter.STREET_MAX, message = CommonError.FORMAT_LESS + CommonParameter.STREET_MAX + " !")
-	@Column(name = "street3", length = CommonParameter.STREET_MAX)
 	private String street3;
 
-	@Size(max = CommonParameter.ZIP_MAX, message = CommonError.FORMAT_LESS + CommonParameter.ZIP_MAX + " !")
-	@Column(name = "zip_code", length = CommonParameter.ZIP_MAX)
+	@Size(min = CommonParameter.ZIP_MIN, max = CommonParameter.ZIP_MAX,
+			message = CommonError.FORMAT_BETWEEN + CommonParameter.ZIP_MIN + " AND " + CommonParameter.ZIP_MAX + " !")
 	private String zipCode;
 
 	@Size(max = CommonParameter.CITY_MAX, message = CommonError.FORMAT_LESS + CommonParameter.CITY_MAX + " !")
-	@Column(name = "city", length = CommonParameter.CITY_MAX)
 	private String city;
 
 	@Size(max = CommonParameter.COUNTRY_MAX, message = CommonError.FORMAT_LESS + CommonParameter.COUNTRY_MAX + " !")
-	@Column(name = "country", length = CommonParameter.COUNTRY_MAX)
 	private String country;
+
+	public UserDTO() {
+		super();
+		this.enabled = false;
+		this.accountNonLocked = true;
+		this.accountNonExpired = true;
+		this.credentialsNonExpired = true;
+	}
 
 	@Override
 	public String getUsername() {
@@ -108,6 +90,14 @@ public class User extends Person implements Serializable, UserDetails {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getMatchingPassword() {
+		return matchingPassword;
+	}
+
+	public void setMatchingPassword(String matchingPassword) {
+		this.matchingPassword = matchingPassword;
 	}
 
 	@Override
@@ -146,7 +136,6 @@ public class User extends Person implements Serializable, UserDetails {
 		this.credentialsNonExpired = credentialsNonExpired;
 	}
 
-
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
@@ -156,20 +145,20 @@ public class User extends Person implements Serializable, UserDetails {
 		return grantedAuthorities;
 	}
 
-	protected Set<Role> getRolesInternal() {
+	protected Set<RoleDTO> getRolesInternal() {
 		if (this.roles == null) {
 			this.roles = new HashSet<>();
 		}
 		return this.roles;
 	}
 
-	protected void setRolesInternal(Set<Role> roles) {
+	protected void setRolesInternal(Set<RoleDTO> roles) {
 		this.roles = roles;
 	}
 
 	@XmlElement
-	public List<Role> getRoles() {
-		List<Role> sortedRoles = new ArrayList<>(getRolesInternal());
+	public List<RoleDTO> getRoles() {
+		List<RoleDTO> sortedRoles = new ArrayList<>(getRolesInternal());
 		PropertyComparator.sort(sortedRoles, new MutableSortDefinition("name", true, true));
 		return Collections.unmodifiableList(sortedRoles);
 	}
@@ -178,12 +167,11 @@ public class User extends Person implements Serializable, UserDetails {
 		return getRolesInternal().size();
 	}
 
-	public void addRole(Role role) {
+	public void addRole(RoleDTO role) {
 		getRolesInternal().add(role);
 	}
 
-
-	public void setRoles(Set<Role> roles) {
+	public void setRoles(Set<RoleDTO> roles) {
 		this.roles = roles;
 	}
 
@@ -244,5 +232,37 @@ public class User extends Person implements Serializable, UserDetails {
 		this.country = country;
 	}
 
+	@Override
+	public String toString() {
+		return "UserDTO{" +
+			"email='" + email + '\'' +
+			", password='" + password + '\'' +
+			", matchingPassword='" + matchingPassword + '\'' +
+			", user enabled=" + enabled +
+			", account not expired=" + accountNonExpired +
+			", account not locked=" + accountNonLocked +
+			", credentials not xxpired=" + credentialsNonExpired +
+			", roles=" + roles +
+			", telephone='" + telephone + '\'' +
+			", street1='" + street1 + '\'' +
+			", street2='" + street2 + '\'' +
+			", street3='" + street3 + '\'' +
+			", zipCode='" + zipCode + '\'' +
+			", city='" + city + '\'' +
+			", country='" + country + '\'' +
+			'}';
+	}
 
+	public void encode(String rawPassword) {
+		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
+		this.password = bCryptPasswordEncoder.encode(rawPassword);
+		this.matchingPassword = this.password;
+	}
+
+	public boolean matches(String rawPassword) {
+		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
+		return bCryptPasswordEncoder.matches(rawPassword, this.password);
+	}
 }

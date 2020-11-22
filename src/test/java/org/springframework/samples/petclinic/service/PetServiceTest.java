@@ -17,6 +17,9 @@ import org.springframework.samples.petclinic.model.business.PetType;
 import org.springframework.samples.petclinic.repository.PetRepository;
 import org.springframework.samples.petclinic.repository.PetTypeRepository;
 import org.springframework.samples.petclinic.repository.VisitRepository;
+import org.springframework.samples.petclinic.service.business.OwnerService;
+import org.springframework.samples.petclinic.service.business.PetService;
+import org.springframework.samples.petclinic.service.business.PetTypeService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;

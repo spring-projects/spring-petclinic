@@ -8,6 +8,7 @@ package org.springframework.samples.petclinic.common;
 public final class CommonAttribute {
 
 	public static final String DESCRIPTION = "description";
+	public static final String ID = "id";
 
 	public static final String NAME = "name";
 
@@ -15,7 +16,7 @@ public final class CommonAttribute {
 
 	public static final String OWNER = "owner";
 
-	public static final String OWNER_ID = "id";
+	public static final String OWNER_ID = "ownerId";
 
 	public static final String OWNER_LAST_NAME = "lastName";
 
@@ -39,9 +40,11 @@ public final class CommonAttribute {
 
 	public static final String PET_TYPE = "type";
 
+	public static final String TOKEN = "token";
+
 	public static final String USER = "user";
 
-	public static final String USER_ID = "id";
+	public static final String USER_ID = "userId";
 
 	public static final String VETS = "vets";
 

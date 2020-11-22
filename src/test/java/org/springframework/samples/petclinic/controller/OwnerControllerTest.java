@@ -40,8 +40,8 @@ import org.springframework.samples.petclinic.dto.OwnerDTO;
 import org.springframework.samples.petclinic.dto.PetDTO;
 import org.springframework.samples.petclinic.dto.PetTypeDTO;
 import org.springframework.samples.petclinic.dto.VisitDTO;
-import org.springframework.samples.petclinic.service.OwnerService;
-import org.springframework.samples.petclinic.service.VisitService;
+import org.springframework.samples.petclinic.service.business.OwnerService;
+import org.springframework.samples.petclinic.service.business.VisitService;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.empty;

@@ -21,8 +21,7 @@ import java.util.Locale;
 
 import org.springframework.format.Formatter;
 import org.springframework.samples.petclinic.dto.PetTypeDTO;
-import org.springframework.samples.petclinic.service.PetService;
-import org.springframework.samples.petclinic.service.PetTypeService;
+import org.springframework.samples.petclinic.service.business.PetService;
 import org.springframework.stereotype.Component;
 
 /**

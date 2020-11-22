@@ -42,9 +42,9 @@ import org.springframework.samples.petclinic.dto.OwnerDTO;
 import org.springframework.samples.petclinic.dto.PetDTO;
 import org.springframework.samples.petclinic.dto.PetTypeDTO;
 import org.springframework.samples.petclinic.formatter.PetTypeFormatter;
-import org.springframework.samples.petclinic.service.OwnerService;
-import org.springframework.samples.petclinic.service.PetService;
-import org.springframework.samples.petclinic.service.PetTypeService;
+import org.springframework.samples.petclinic.service.business.OwnerService;
+import org.springframework.samples.petclinic.service.business.PetService;
+import org.springframework.samples.petclinic.service.business.PetTypeService;
 import org.springframework.test.web.servlet.MockMvc;
 
 /**

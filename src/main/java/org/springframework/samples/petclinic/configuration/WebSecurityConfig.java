@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 import org.springframework.core.env.Environment;
-import org.springframework.samples.petclinic.model.common.AuthProvider;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -59,12 +58,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// @formatter:off
 
 		http.authorizeRequests()
-			.antMatchers("/").anonymous()
-			.antMatchers("/login", "/logout", "/register").permitAll()
+			.antMatchers("/").permitAll()
+			.antMatchers("/login", "/logout", "/register","/confirm-account").permitAll()
 			.antMatchers("/websocket/**", "/topic/**", "/app/**").permitAll()
 			.antMatchers("/resources/**").permitAll()
-			.antMatchers("/**").authenticated()
 			.antMatchers("/h2-console/**").permitAll()
+			.antMatchers("/**").authenticated()
+			.antMatchers("/edit/**").authenticated()
 			.anyRequest().authenticated()
 			.and()
 				.formLogin()
@@ -94,10 +94,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// @formatter:on
 	}
 
-	private static final List<String> clients = Arrays.asList("google", "facebook", "github");
+
 
 	@Bean
 	public ClientRegistrationRepository clientRegistrationRepository() {
+		List<String> clients = Arrays.asList("google", "facebook", "github");
+
 		List<ClientRegistration> registrations = clients.stream().map(c -> getRegistration(c))
 				.filter(registration -> registration != null).collect(Collectors.toList());
 
@@ -113,14 +115,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		String clientSecret = env.getProperty(CLIENT_PROPERTY_KEY + client + ".client-secret");
 
-		if (client.equals(AuthProvider.google.name())) {
+		if (client.equals("google")) {
 			return CommonOAuth2Provider.GOOGLE.getBuilder(client).clientId(clientId).clientSecret(clientSecret).build();
 		}
-		if (client.equals(AuthProvider.facebook.name())) {
+		if (client.equals("facebook")) {
 			return CommonOAuth2Provider.FACEBOOK.getBuilder(client).clientId(clientId).clientSecret(clientSecret)
 					.build();
 		}
-		if (client.equals(AuthProvider.github.name())) {
+		if (client.equals("github")) {
 			return CommonOAuth2Provider.GITHUB.getBuilder(client).clientId(clientId).clientSecret(clientSecret).build();
 		}
 

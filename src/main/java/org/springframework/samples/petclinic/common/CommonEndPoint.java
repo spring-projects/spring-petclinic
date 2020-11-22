@@ -25,7 +25,9 @@ public final class CommonEndPoint {
 
 	public static final String USERS_EDIT = "/users/edit";
 
-	public static final String USERS_ID_EDIT = "/users/{ownerId}/edit";
+	public static final String USERS_ID_EDIT = "/users/{userId}/edit";
+
+	public static final String USERS_ID_EDIT_PASSWORD = "/users/{userId}/edit/password";
 
 	public static final String USERS_NEW = "/users/new";
 
@@ -34,6 +36,8 @@ public final class CommonEndPoint {
 	public static final String LOGIN_SUCCESS = "/login/success";
 
 	public static final String OAUTH2_SUCCESS = "/oauth2/success";
+
+	public static final String CONFIRM_ACCOUNT = "/confirm-account";
 
 	public static final String LOGOUT = "/logout";
 

@@ -1,9 +1,10 @@
-package org.springframework.samples.petclinic.service;
+package org.springframework.samples.petclinic.service.common;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.samples.petclinic.dto.RoleDTO;
+import org.springframework.samples.petclinic.dto.common.RoleDTO;
 import org.springframework.samples.petclinic.model.common.Role;
 import org.springframework.samples.petclinic.repository.RoleRepository;
+import org.springframework.samples.petclinic.service.business.BaseService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

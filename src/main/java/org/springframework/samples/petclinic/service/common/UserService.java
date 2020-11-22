@@ -1,11 +1,12 @@
-package org.springframework.samples.petclinic.service;
+package org.springframework.samples.petclinic.service.common;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.samples.petclinic.dto.RoleDTO;
-import org.springframework.samples.petclinic.dto.UserDTO;
+import org.springframework.samples.petclinic.dto.common.RoleDTO;
+import org.springframework.samples.petclinic.dto.common.UserDTO;
 import org.springframework.samples.petclinic.model.common.Role;
 import org.springframework.samples.petclinic.model.common.User;
 import org.springframework.samples.petclinic.repository.UserRepository;
+import org.springframework.samples.petclinic.service.business.BaseService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,13 +38,14 @@ public class UserService implements BaseService<User, UserDTO> {
 		User user = modelMapper.map(dto, User.class);
 		user.setPassword(dto.getPassword());
 
+		/*
 		if (dto.getRoles() != null) {
 			for (RoleDTO roleDTO : dto.getRoles()) {
 				Role role = modelMapper.map(roleDTO, Role.class);
 				user.addRole(role);
 			}
 		}
-
+*/
 		return user;
 	}
 
@@ -56,14 +58,14 @@ public class UserService implements BaseService<User, UserDTO> {
 		UserDTO userDto = modelMapper.map(entity, UserDTO.class);
 		userDto.setPassword(entity.getPassword());
 		userDto.setMatchingPassword(entity.getPassword());
-
+/*
 		if (entity.getRoles() != null) {
 			for (Role role : entity.getRoles()) {
 				RoleDTO roleDTO = modelMapper.map(role, RoleDTO.class);
 				userDto.addRole(roleDTO);
 			}
 		}
-
+*/
 		return userDto;
 	}
 
@@ -112,6 +114,10 @@ public class UserService implements BaseService<User, UserDTO> {
 		User user = userRepository.findByEmail(email);
 
 		return entityToDTO(user);
+	}
+
+	public boolean existByEmail(String email) {
+		return userRepository.existsByEmail(email);
 	}
 
 }

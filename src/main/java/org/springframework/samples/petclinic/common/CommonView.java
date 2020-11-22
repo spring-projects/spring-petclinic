@@ -23,7 +23,7 @@ public final class CommonView {
 
 	public static final String PET_CREATE_OR_UPDATE = "pets/createOrUpdatePetForm";
 
-	public static final String USER_REGISTRATION = "users/registration";
+	public static final String USER_REGISTRATION = "users/userRegistrationForm";
 
 	public static final String USER_LOGIN = "/login";
 
@@ -31,7 +31,9 @@ public final class CommonView {
 
 	public static final String USER_USERS_ID_R = "redirect:/users/{userId}";
 
-	public static final String USER_CREATE_OR_UPDATE = "users/createOrUpdateUserForm";
+	public static final String USER_UPDATE = "users/userUpdateForm";
+
+	public static final String USER_CHANGE_PASSWORD = "users/userChangePasswordForm";
 
 	public static final String USER_DETAILS = "users/userDetails";
 
@@ -40,8 +42,6 @@ public final class CommonView {
 	public static final String USER_READ = "users/user-read";
 
 	public static final String USER_READ_R = "redirect:/users/read/";
-
-	public static final String USER_UPDATE = "users/user-update";
 
 	public static final String USER_UPDATE_R = "redirect:/users/edit/";
 

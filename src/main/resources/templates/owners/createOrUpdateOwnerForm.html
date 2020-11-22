@@ -21,8 +21,9 @@
       <div class="col-sm-offset-2 col-sm-10">
         <button
           th:with="text=${owner['new']} ? 'Add Owner' : 'Update Owner'"
-          class="btn btn-default" type="submit" th:text="${text}">Add
-          Owner</button>
+          class="btn btn-default" type="submit" th:text="${text}">Add Owner
+        </button>
+        <a class="btn btn-default" href="/">Cancel</a>
       </div>
     </div>
   </form>

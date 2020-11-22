@@ -1,4 +1,6 @@
-package org.springframework.samples.petclinic.dto;
+package org.springframework.samples.petclinic.dto.common;
+
+import org.springframework.samples.petclinic.dto.NamedDTO;
 
 import java.io.Serializable;
 
@@ -8,5 +10,4 @@ import java.io.Serializable;
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
 public class RoleDTO extends NamedDTO implements Serializable {
-
 }

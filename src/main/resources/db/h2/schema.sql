@@ -7,7 +7,10 @@ DROP TABLE types IF EXISTS;
 DROP TABLE owners IF EXISTS;
 DROP TABLE roles IF EXISTS;
 DROP TABLE users IF EXISTS;
-
+DROP TABLE users_email IF EXISTS;
+DROP TABLE users_roles IF EXISTS;
+DROP TABLE auth_providers IF EXISTS;
+DROP TABLE credentials IF EXISTS;
 
 CREATE TABLE vets (
   id         INTEGER IDENTITY PRIMARY KEY,
@@ -72,21 +75,22 @@ CREATE TABLE roles (
 CREATE INDEX roles_name ON roles (name);
 
 CREATE TABLE users (
-  id              INTEGER IDENTITY PRIMARY KEY,
-  first_name      VARCHAR(30) NOT NULL,
-  last_name       VARCHAR_IGNORECASE(30) NOT NULL,
-  email           VARCHAR(50) NOT NULL,
-  email_verified  BOOLEAN NOT NULL,
-  password        VARCHAR(255) NOT NULL,
-  provider        VARCHAR(20),
-  provider_id     VARCHAR(20),
-  telephone       VARCHAR(20),
-  street1         VARCHAR(50),
-  street2         VARCHAR(50),
-  street3         VARCHAR(50),
-  zip_code        VARCHAR(6),
-  city            VARCHAR(80),
-  country         VARCHAR(50)
+  id         INTEGER IDENTITY PRIMARY KEY,
+  first_name VARCHAR(30) NOT NULL,
+  last_name  VARCHAR_IGNORECASE(30) NOT NULL,
+  email      VARCHAR(50) NOT NULL,
+  password   VARCHAR(255) NOT NULL,
+  enabled    BOOLEAN NOT NULL,
+  account_unexpired    BOOLEAN NOT NULL DEFAULT true,
+  account_unlocked     BOOLEAN NOT NULL DEFAULT true,
+  credential_unexpired BOOLEAN NOT NULL DEFAULT true,
+  telephone  VARCHAR(20),
+  street1    VARCHAR(50),
+  street2    VARCHAR(50),
+  street3    VARCHAR(50),
+  zip_code   VARCHAR(6),
+  city       VARCHAR(80),
+  country    VARCHAR(50)
 );
 CREATE INDEX users_email ON users (email);
 
@@ -97,3 +101,21 @@ CREATE TABLE public.users_roles (
 ALTER TABLE users_roles ADD CONSTRAINT fk_users_roles_user_id FOREIGN KEY (user_id) REFERENCES users (id);
 ALTER TABLE users_roles ADD CONSTRAINT fk_users_roles_role_id FOREIGN KEY (role_id) REFERENCES roles (id);
 CREATE INDEX users_roles_user_id ON users_roles (user_id);
+
+CREATE TABLE auth_providers (
+  id   INTEGER IDENTITY PRIMARY KEY,
+  name VARCHAR(20) NOT NULL
+);
+CREATE INDEX auth_providers_name ON auth_providers (name);
+
+CREATE TABLE credentials (
+  id          INTEGER IDENTITY PRIMARY KEY,
+  provider_id INTEGER NOT NULL,
+  email       VARCHAR(50) NOT NULL,
+  password    VARCHAR(255) NOT NULL,
+  verified    BOOLEAN NOT NULL,
+  token       VARCHAR(255) DEFAULT NULL,
+  expiration  DATE DEFAULT NULL
+);
+ALTER TABLE credentials ADD CONSTRAINT fk_credentials_provider_id FOREIGN KEY (provider_id) REFERENCES auth_providers (id);
+CREATE INDEX credentials_email ON credentials (email);

@@ -12,6 +12,7 @@ import org.springframework.samples.petclinic.dto.VetDTO;
 import org.springframework.samples.petclinic.model.business.Vet;
 import org.springframework.samples.petclinic.repository.SpecialtyRepository;
 import org.springframework.samples.petclinic.repository.VetRepository;
+import org.springframework.samples.petclinic.service.business.VetService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

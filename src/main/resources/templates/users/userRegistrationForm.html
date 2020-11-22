@@ -1,0 +1,47 @@
+<html xmlns:th="https://www.thymeleaf.org"
+  th:replace="~{fragments/layout :: layout (~{::body},'users')}">
+
+<body>
+
+  <h2>User registration</h2>
+  <form th:object="${user}" class="form-horizontal" id="add-user-form" method="post">
+    <input type="hidden"  th:field="${user.enabled}" />
+    <input type="hidden"  th:field="${user.accountNonExpired}" />
+    <input type="hidden"  th:field="${user.accountNonLocked}" />
+    <input type="hidden"  th:field="${user.credentialsNonExpired}" />
+
+    <div class="form-group has-feedback">
+      <input
+        th:replace="~{fragments/inputField :: input ('Email', 'email', 'email')}" />
+      <input
+        th:replace="~{fragments/inputField :: input ('First Name', 'firstName', 'text')}" />
+      <input
+        th:replace="~{fragments/inputField :: input ('Last Name', 'lastName', 'text')}" />
+      <input
+        th:replace="~{fragments/inputField :: input ('Password', 'password', 'password')}" />
+      <input
+        th:replace="~{fragments/inputField :: input ('Repeat password', 'matchingPassword', 'password')}" />
+      <input
+        th:replace="~{fragments/inputField :: input ('Phone', 'telephone', 'text')}" />
+      <input
+        th:replace="~{fragments/inputField :: input ('Address', 'street1', 'text')}" />
+      <input
+        th:replace="~{fragments/inputField :: input ('Address', 'street2', 'text')}" />
+      <input
+        th:replace="~{fragments/inputField :: input ('Address', 'street3', 'text')}" />
+      <input
+        th:replace="~{fragments/inputField :: input ('City', 'city', 'text')}" />
+      <input
+        th:replace="~{fragments/inputField :: input ('Zip code', 'zipCode', 'text')}" />
+      <input
+        th:replace="~{fragments/inputField :: input ('Country', 'country', 'text')}" />
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button class="btn btn-default" type="submit">Register</button>
+        <a class="btn btn-default" th:href="@{/}">Cancel</a>
+      </div>
+    </div>
+  </form>
+</body>
+</html>

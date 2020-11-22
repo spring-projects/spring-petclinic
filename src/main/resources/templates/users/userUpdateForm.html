@@ -3,19 +3,25 @@
 
 <body>
 
-  <h2>User</h2>
+  <h2>User update</h2>
   <form th:object="${user}" class="form-horizontal" id="add-user-form" method="post">
+    <input type="hidden"  th:field="${user.id}" />
+    <input type="hidden"  th:field="${user.password}" />
+    <input type="hidden"  th:field="${user.matchingPassword}" />
+    <input type="hidden"  th:field="${user.enabled}" />
+    <input type="hidden"  th:field="${user.accountNonExpired}" />
+    <input type="hidden"  th:field="${user.accountNonLocked}" />
+    <input type="hidden"  th:field="${user.credentialsNonExpired}" />
+    <input type="hidden"  th:field="${user.roles}" />
+
+
     <div class="form-group has-feedback">
+      <input
+        th:replace="~{fragments/inputField :: input ('Email', 'email', 'email')}" disabled />
       <input
         th:replace="~{fragments/inputField :: input ('First Name', 'firstName', 'text')}" />
       <input
         th:replace="~{fragments/inputField :: input ('Last Name', 'lastName', 'text')}" />
-      <input
-        th:replace="~{fragments/inputField :: input ('Password', 'password', 'password')}" />
-      <input
-        th:replace="~{fragments/inputField :: input ('Repeat password', 'matchingPassword', 'password')}" />
-      <input
-        th:replace="~{fragments/inputField :: input ('Email', 'email', 'email')}" />
       <input
         th:replace="~{fragments/inputField :: input ('Phone', 'telephone', 'text')}" />
       <input
@@ -33,10 +39,9 @@
     </div>
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
-        <button
-          th:with="text=${user['new']} ? 'Register' : 'Update User'"
-          class="btn btn-default" type="submit" th:text="${text}">Add User</button>
-        <a class="btn btn-default" href="/">Cancel</a>
+        <button class="btn btn-default" type="submit">Update</button>
+        <a class="btn btn-default" th:href="@{'/user/' + ${user.id} + '/edit/password'}">Change password</a>
+        <a class="btn btn-default" th:href="@{/}">Cancel</a>
       </div>
     </div>
   </form>

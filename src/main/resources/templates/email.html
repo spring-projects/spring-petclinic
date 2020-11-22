@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+    <head>
+        <title data-th-remove="all">Template for HTML email (editable)</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    </head>
+    <body>
+        <div style="background-color: #ccc; background-image: url(images/background.png)"
+             data-th-style="|background-color: #ccc; background-image: url(cid:mailBackground)|">
+            <div style="padding: 40px;">
+                <div style="margin-left: auto; margin-right: auto; min-width: 320px; border: solid 1px #555; border-radius: 6px;">
+                    <div style="background-color: #555; padding: 4px 4px 0px 4px; text-align: left;">
+                        <div style="background-image: url(images/logo-background.png);"
+                             data-th-style="|background-image: url(cid:mailBanner)|">
+                            <img style="border: solid 1px #555; border-radius: 6px;"
+                                 src="images/shop-logo.png" data-th-src="|cid:mailLogo|" />
+                        </div>
+                    </div>
+
+                    <div style="padding: 15px 15px 30px 15px; font-family: Verdana, Arial, Helvetica, sans-serif; font-size:1em; background-color: #fff; color:#333;">
+                        <h1>
+                            <span data-th-text="${mailSubject}">Subject</span></p>
+                        </h1>
+                        <p>
+                            <span>Hello </span>
+                            <b data-th-text="${toFirstName}">FirstName</b>
+                            <b data-th-text="${toLastName}">toLastName</b>!
+                        </p>
+
+                        <p th:utext="${#strings.replace(#strings.escapeXml(mailContent),'&#10;','&lt;br&gt;')}">mail content</p>
+                        <a th:href="@{${mailLink}}">Approve the connection</a>
+
+                        <p>
+                            <span data-th-text="${#dates.format(mailDate)}">date</span>
+                        </p>
+                        <p>Regards </p>
+                    </div>
+                    <div style="background-color: #555; padding: 4px 4px 0px 4px; text-align: right;">
+                        <div style="background-image: url(images/logo-background.png);"
+                             data-th-style="|background-image: url(cid:mailBackground)|">
+                            <img style="border: solid 1px #555; border-radius: 6px;"
+                                 src="images/shop-logo.png" data-th-src="|cid:mailBanner|" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
