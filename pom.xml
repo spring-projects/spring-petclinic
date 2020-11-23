@@ -14,7 +14,7 @@
   </parent>
   <groupId>guru.springframework</groupId>
   <artifactId>spring-petclinic</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.2-SNAPSHOT</version>
   <name>spring-petclinic</name>
   <description>spring petclinic app</description>
 
@@ -38,7 +38,7 @@
   </build>
   <scm>
     <developerConnection>scm:git:git@github.com:marc-wagner/spring-petclinic.git</developerConnection>
-    <tag>spring-petclinic-0.0.1</tag>
+    <tag>HEAD</tag>
   </scm>
 
 </project>
