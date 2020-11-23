@@ -47,6 +47,14 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <goal>attach-javadocs</goal>
+          <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <executions>
@@ -62,4 +70,4 @@
       </plugin>
     </plugins>
   </build>
-</project>
+  </project>
