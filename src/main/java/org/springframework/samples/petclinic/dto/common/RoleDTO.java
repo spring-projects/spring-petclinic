@@ -10,4 +10,5 @@ import java.io.Serializable;
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
 public class RoleDTO extends NamedDTO implements Serializable {
+
 }

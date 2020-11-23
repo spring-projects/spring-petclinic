@@ -8,6 +8,7 @@ package org.springframework.samples.petclinic.common;
 public final class CommonAttribute {
 
 	public static final String DESCRIPTION = "description";
+
 	public static final String ID = "id";
 
 	public static final String NAME = "name";

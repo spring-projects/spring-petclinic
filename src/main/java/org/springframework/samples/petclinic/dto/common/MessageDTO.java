@@ -113,14 +113,9 @@ public class MessageDTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "MessageDTO{" +
-			"first name='" + firstName + '\'' +
-			", last name='" + lastName + '\'' +
-			", from='" + from + '\'' +
-			", to='" + to + '\'' +
-			", subject='" + subject + '\'' +
-			", content='" + content + '\'' +
-			", link='" + link + '\'' +
-			'}';
+		return "MessageDTO{" + "first name='" + firstName + '\'' + ", last name='" + lastName + '\'' + ", from='" + from
+				+ '\'' + ", to='" + to + '\'' + ", subject='" + subject + '\'' + ", content='" + content + '\''
+				+ ", link='" + link + '\'' + '}';
 	}
+
 }

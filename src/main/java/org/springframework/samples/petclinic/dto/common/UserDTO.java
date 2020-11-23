@@ -25,22 +25,25 @@ public class UserDTO extends PersonDTO implements Serializable, UserDetails {
 	private String email;
 
 	@Size(min = CommonParameter.PASSWORD_MIN, max = CommonParameter.PASSWORD_MAX, message = CommonError.FORMAT_BETWEEN
-		+ CommonParameter.PASSWORD_MIN + " AND " + CommonParameter.PASSWORD_MAX + " !")
+			+ CommonParameter.PASSWORD_MIN + " AND " + CommonParameter.PASSWORD_MAX + " !")
 	private String password;
+
 	@Size(min = CommonParameter.PASSWORD_MIN, max = CommonParameter.PASSWORD_MAX, message = CommonError.FORMAT_BETWEEN
-		+ CommonParameter.PASSWORD_MIN + " AND " + CommonParameter.PASSWORD_MAX + " !")
+			+ CommonParameter.PASSWORD_MIN + " AND " + CommonParameter.PASSWORD_MAX + " !")
 	private String matchingPassword;
 
 	private boolean enabled;
+
 	private boolean accountNonExpired;
+
 	private boolean accountNonLocked;
+
 	private boolean credentialsNonExpired;
 
 	private Set<RoleDTO> roles;
 
-
 	@Size(max = CommonParameter.PHONE_MAX, message = CommonError.FORMAT_LESS + CommonParameter.PHONE_MAX)
-//	@Pattern(regexp = CommonParameter.PHONE_REGEXP, message = CommonError.PHONE_FORMAT)
+	// @Pattern(regexp = CommonParameter.PHONE_REGEXP, message = CommonError.PHONE_FORMAT)
 	private String telephone;
 
 	@Size(max = CommonParameter.STREET_MAX, message = CommonError.FORMAT_LESS + CommonParameter.STREET_MAX + " !")
@@ -140,7 +143,7 @@ public class UserDTO extends PersonDTO implements Serializable, UserDetails {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 
-		this.roles.forEach(role -> 	grantedAuthorities.add(new SimpleGrantedAuthority(role.getName())));
+		this.roles.forEach(role -> grantedAuthorities.add(new SimpleGrantedAuthority(role.getName())));
 
 		return grantedAuthorities;
 	}
@@ -182,7 +185,6 @@ public class UserDTO extends PersonDTO implements Serializable, UserDetails {
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
 	}
-
 
 	public String getStreet1() {
 		return street1;
@@ -234,23 +236,12 @@ public class UserDTO extends PersonDTO implements Serializable, UserDetails {
 
 	@Override
 	public String toString() {
-		return "UserDTO{" +
-			"email='" + email + '\'' +
-			", password='" + password + '\'' +
-			", matchingPassword='" + matchingPassword + '\'' +
-			", user enabled=" + enabled +
-			", account not expired=" + accountNonExpired +
-			", account not locked=" + accountNonLocked +
-			", credentials not xxpired=" + credentialsNonExpired +
-			", roles=" + roles +
-			", telephone='" + telephone + '\'' +
-			", street1='" + street1 + '\'' +
-			", street2='" + street2 + '\'' +
-			", street3='" + street3 + '\'' +
-			", zipCode='" + zipCode + '\'' +
-			", city='" + city + '\'' +
-			", country='" + country + '\'' +
-			'}';
+		return "UserDTO{" + "email='" + email + '\'' + ", password='" + password + '\'' + ", matchingPassword='"
+				+ matchingPassword + '\'' + ", user enabled=" + enabled + ", account not expired=" + accountNonExpired
+				+ ", account not locked=" + accountNonLocked + ", credentials not xxpired=" + credentialsNonExpired
+				+ ", roles=" + roles + ", telephone='" + telephone + '\'' + ", street1='" + street1 + '\''
+				+ ", street2='" + street2 + '\'' + ", street3='" + street3 + '\'' + ", zipCode='" + zipCode + '\''
+				+ ", city='" + city + '\'' + ", country='" + country + '\'' + '}';
 	}
 
 	public void encode(String rawPassword) {
@@ -265,4 +256,5 @@ public class UserDTO extends PersonDTO implements Serializable, UserDetails {
 
 		return bCryptPasswordEncoder.matches(rawPassword, this.password);
 	}
+
 }

@@ -39,13 +39,9 @@ public class UserService implements BaseService<User, UserDTO> {
 		user.setPassword(dto.getPassword());
 
 		/*
-		if (dto.getRoles() != null) {
-			for (RoleDTO roleDTO : dto.getRoles()) {
-				Role role = modelMapper.map(roleDTO, Role.class);
-				user.addRole(role);
-			}
-		}
-*/
+		 * if (dto.getRoles() != null) { for (RoleDTO roleDTO : dto.getRoles()) { Role
+		 * role = modelMapper.map(roleDTO, Role.class); user.addRole(role); } }
+		 */
 		return user;
 	}
 
@@ -58,14 +54,10 @@ public class UserService implements BaseService<User, UserDTO> {
 		UserDTO userDto = modelMapper.map(entity, UserDTO.class);
 		userDto.setPassword(entity.getPassword());
 		userDto.setMatchingPassword(entity.getPassword());
-/*
-		if (entity.getRoles() != null) {
-			for (Role role : entity.getRoles()) {
-				RoleDTO roleDTO = modelMapper.map(role, RoleDTO.class);
-				userDto.addRole(roleDTO);
-			}
-		}
-*/
+		/*
+		 * if (entity.getRoles() != null) { for (Role role : entity.getRoles()) { RoleDTO
+		 * roleDTO = modelMapper.map(role, RoleDTO.class); userDto.addRole(roleDTO); } }
+		 */
 		return userDto;
 	}
 

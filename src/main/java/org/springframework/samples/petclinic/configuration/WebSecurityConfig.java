@@ -94,8 +94,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// @formatter:on
 	}
 
-
-
 	@Bean
 	public ClientRegistrationRepository clientRegistrationRepository() {
 		List<String> clients = Arrays.asList("google", "facebook", "github");

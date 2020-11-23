@@ -48,14 +48,14 @@ public class UserController extends WebSocketSender {
 
 	private final EmailService emailService;
 
-	public UserController(UserService userService, CredentialService credentialService, RoleService roleService, SecurityServiceImpl securityService, EmailService emailService) {
+	public UserController(UserService userService, CredentialService credentialService, RoleService roleService,
+			SecurityServiceImpl securityService, EmailService emailService) {
 		this.userService = userService;
 		this.credentialService = credentialService;
 		this.roleService = roleService;
 		this.securityService = securityService;
 		this.emailService = emailService;
 	}
-
 
 	@InitBinder("user")
 	public void setAllowedFields(WebDataBinder dataBinder) {
@@ -84,7 +84,7 @@ public class UserController extends WebSocketSender {
 			return CommonView.USER_REGISTRATION;
 		}
 
-		if(userService.existByEmail(user.getEmail())) {
+		if (userService.existByEmail(user.getEmail())) {
 			result.rejectValue("email", "5", "Email already exist !");
 			sendErrorMessage(CommonWebSocket.USER_CREATION_ERROR);
 			return CommonView.USER_REGISTRATION;
@@ -103,15 +103,13 @@ public class UserController extends WebSocketSender {
 		sendSuccessMessage(CommonWebSocket.USER_CREATED);
 
 		// send confirmation mail
-		MessageDTO message = new MessageDTO(
-			user.getFirstName(), user.getLastName(),
-			"admin@petclinic.com",
-			user.getEmail(),
-			"New connexion",
-			"Your attempt to create new account. To confirm your account, please click here : ",
-			"http://localhost:8080/confirm-account?token=" + credential.getToken());
+		MessageDTO message = new MessageDTO(user.getFirstName(), user.getLastName(), "admin@petclinic.com",
+				user.getEmail(), "New connexion",
+				"Your attempt to create new account. To confirm your account, please click here : ",
+				"http://localhost:8080/confirm-account?token=" + credential.getToken());
 
-	//	emailService.sendMailAsynch(message, Locale.getDefault());
+		// TODO
+		// emailService.sendMailAsynch(message, Locale.getDefault());
 
 		log.info(message.toString());
 
@@ -137,7 +135,7 @@ public class UserController extends WebSocketSender {
 		}
 
 		clientRegistrations.forEach(registration -> oauth2AuthenticationUrls.put(registration.getClientName(),
-			"oauth2/authorization/" + registration.getRegistrationId()));
+				"oauth2/authorization/" + registration.getRegistrationId()));
 		model.put("urls", oauth2AuthenticationUrls);
 
 		return CommonView.USER_LOGIN;
@@ -161,7 +159,7 @@ public class UserController extends WebSocketSender {
 
 		CredentialDTO credential = credentialService.findByAuthentication(authentication);
 
-		if( credential.isNew()) {
+		if (credential.isNew()) {
 
 			// first time authentification with this provider
 			credential = credentialService.saveNew(authentication);
@@ -169,7 +167,7 @@ public class UserController extends WebSocketSender {
 
 			UserDTO user = userService.findByEmail(email);
 
-			if(user == null) {
+			if (user == null) {
 				user = new UserDTO();
 				user.setEmail(email);
 				user.encode(credential.getPassword());
@@ -181,13 +179,11 @@ public class UserController extends WebSocketSender {
 			}
 
 			// send confirmation mail
-			MessageDTO message = new MessageDTO(
-				firstName, lastName,
-				"admin@petclinic.com",
-				credential.getEmail(),
-				"New connexion from " + credential.getProvider(),
-				"Your attempt to connect from " + credential.getProvider() + " To confirm this connection, please click the link below : ",
-				"http://localhost:8080/confirm-account?token=" + credential.getToken());
+			MessageDTO message = new MessageDTO(firstName, lastName, "admin@petclinic.com", credential.getEmail(),
+					"New connexion from " + credential.getProvider(),
+					"Your attempt to connect from " + credential.getProvider()
+							+ " To confirm this connection, please click the link below : ",
+					"http://localhost:8080/confirm-account?token=" + credential.getToken());
 
 			log.info(message.toString());
 			emailService.sendMailAsynch(message, Locale.getDefault());
@@ -196,12 +192,12 @@ public class UserController extends WebSocketSender {
 			authentication.eraseCredentials();
 			SecurityContextHolder.clearContext();
 
-		} else if( credential.isVerified()) {
-			securityService.autoLogin(credential.getEmail(),credential.getPassword());
+		}
+		else if (credential.isVerified()) {
+			securityService.autoLogin(credential.getEmail(), credential.getPassword());
 			String message = String.format(CommonWebSocket.USER_LOGGED_IN, firstName, lastName);
 			sendSuccessMessage(message);
 		}
-
 
 		return CommonView.HOME;
 	}
@@ -219,7 +215,7 @@ public class UserController extends WebSocketSender {
 			// find corresponding user
 			UserDTO user = userService.findByEmail(credential.getEmail());
 
-			securityService.autoLogin(credential.getEmail(),credential.getPassword());
+			securityService.autoLogin(credential.getEmail(), credential.getPassword());
 			model.addAttribute(CommonAttribute.USER, user);
 			return CommonView.USER_UPDATE;
 		}
@@ -251,7 +247,8 @@ public class UserController extends WebSocketSender {
 			model.addAttribute(CommonAttribute.USER, user);
 			model.addAttribute(CommonAttribute.USER_ID, user.getId());
 			return CommonView.USER_UPDATE;
-		} catch (Exception exception) {
+		}
+		catch (Exception exception) {
 			// user don't have profile
 		}
 
@@ -266,7 +263,7 @@ public class UserController extends WebSocketSender {
 			return CommonView.USER_UPDATE;
 		}
 
-		if(!user.getPassword().equals(user.getMatchingPassword())) {
+		if (!user.getPassword().equals(user.getMatchingPassword())) {
 			sendErrorMessage(CommonWebSocket.USER_UPDATED_ERROR);
 			return CommonView.USER_UPDATE;
 		}
@@ -290,7 +287,7 @@ public class UserController extends WebSocketSender {
 	}
 
 	@GetMapping("/user/{userId}/edit/password")
-	public String editPassword(@PathVariable("userId") Integer userId, Model model){
+	public String editPassword(@PathVariable("userId") Integer userId, Model model) {
 		try {
 			UserDTO operator = (UserDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			UserDTO user = userService.findById(userId);
@@ -300,7 +297,8 @@ public class UserController extends WebSocketSender {
 				model.addAttribute(CommonAttribute.USER_ID, user.getId());
 				return CommonView.USER_CHANGE_PASSWORD;
 			}
-		} catch (Exception exception) {
+		}
+		catch (Exception exception) {
 			// user don't have profile
 		}
 
@@ -309,20 +307,19 @@ public class UserController extends WebSocketSender {
 
 	@PostMapping("/user/{userId}/edit/password")
 	public String updatePassword(@ModelAttribute(CommonAttribute.USER) @Valid UserDTO user, BindingResult bindingResult,
-								 @PathVariable(CommonAttribute.USER_ID) Integer userId,
-								 @Param("oldPassword") String oldPassword,
-								 @Param("newPassword") String newPassword,
-								 @Param("newMatchingPassword") String newMatchingPassword, Model model) {
+			@PathVariable(CommonAttribute.USER_ID) Integer userId, @Param("oldPassword") String oldPassword,
+			@Param("newPassword") String newPassword, @Param("newMatchingPassword") String newMatchingPassword,
+			Model model) {
 
 		// verify the matching with old password
-		if(!user.matches(oldPassword)){
+		if (!user.matches(oldPassword)) {
 			bindingResult.rejectValue("password", "6", "Bad password !");
 			model.addAttribute(CommonAttribute.USER, user);
 			return CommonView.USER_CHANGE_PASSWORD;
 		}
 
 		// verify matching between two password
-		if(!newPassword.equals(newMatchingPassword)){
+		if (!newPassword.equals(newMatchingPassword)) {
 			bindingResult.rejectValue("password", "7", "Bad matching password !");
 			model.addAttribute(CommonAttribute.USER, user);
 			return CommonView.USER_CHANGE_PASSWORD;
@@ -339,12 +336,12 @@ public class UserController extends WebSocketSender {
 				model.addAttribute(CommonAttribute.USER, user);
 				return CommonView.USER_UPDATE_R;
 			}
-		} catch (NullPointerException exception) {
+		}
+		catch (NullPointerException exception) {
 			log.error(exception.getMessage());
 		}
 
 		return CommonView.HOME;
 	}
-
 
 }

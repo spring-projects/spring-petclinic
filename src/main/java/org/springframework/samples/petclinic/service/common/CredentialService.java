@@ -28,7 +28,8 @@ public class CredentialService {
 
 	private final ModelMapper modelMapper = new ModelMapper();
 
-	public CredentialService(CredentialRepository credentialRepository, BCryptPasswordEncoder bCryptPasswordEncoder, AuthProviderRepository authProviderRepository) {
+	public CredentialService(CredentialRepository credentialRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
+			AuthProviderRepository authProviderRepository) {
 		this.credentialRepository = credentialRepository;
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 		this.authProviderRepository = authProviderRepository;
@@ -86,7 +87,6 @@ public class CredentialService {
 		return entityToDTO(credential);
 	}
 
-
 	public CredentialDTO save(CredentialDTO dto) {
 		Credential credential = dtoToEntity(dto);
 		credential = credentialRepository.save(credential);
@@ -112,7 +112,8 @@ public class CredentialService {
 	public CredentialDTO saveNew(OAuth2AuthenticationToken authentication) {
 		Credential credential = new Credential();
 
-		AuthProvider authProvider = authProviderRepository.findByName(authentication.getAuthorizedClientRegistrationId());
+		AuthProvider authProvider = authProviderRepository
+				.findByName(authentication.getAuthorizedClientRegistrationId());
 
 		credential.setEmail(authentication.getPrincipal().getAttribute("email"));
 		credential.setProviderId(authProvider.getId());
@@ -124,6 +125,5 @@ public class CredentialService {
 		credential = credentialRepository.save(credential);
 		return entityToDTO(credential);
 	}
-
 
 }

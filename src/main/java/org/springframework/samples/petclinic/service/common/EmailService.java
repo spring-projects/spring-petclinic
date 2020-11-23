@@ -40,16 +40,13 @@ public class EmailService {
 	@Autowired
 	protected ITemplateEngine templateEngine;
 
-
 	/**
-	 * sendMailAsynch : for the controller MailController
-	 *                  send mail asynchronously
-	 *
+	 * sendMailAsynch : for the controller MailController send mail asynchronously
 	 * @param messageDTO : message to be send by mail
 	 * @param locale : not used now
 	 */
 	@Async
-	public void sendMailAsynch(MessageDTO messageDTO, Locale locale){
+	public void sendMailAsynch(MessageDTO messageDTO, Locale locale) {
 		sendMail(messageDTO, locale);
 	}
 

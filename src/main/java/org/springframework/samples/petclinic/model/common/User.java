@@ -33,7 +33,7 @@ public class User extends Person implements Serializable, UserDetails {
 	private String email;
 
 	@Size(min = CommonParameter.PASSWORD_MIN, max = CommonParameter.PASSWORD_MAX, message = CommonError.FORMAT_BETWEEN
-		+ CommonParameter.PASSWORD_MIN + " AND " + CommonParameter.PASSWORD_MAX + " !")
+			+ CommonParameter.PASSWORD_MIN + " AND " + CommonParameter.PASSWORD_MAX + " !")
 	@Column(name = "password", length = CommonParameter.PASSWORD_MAX)
 	private String password;
 
@@ -55,14 +55,13 @@ public class User extends Person implements Serializable, UserDetails {
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"),
-		inverseJoinColumns = @JoinColumn(name = "role_id"))
+			inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles;
 
 	@Size(max = CommonParameter.PHONE_MAX, message = CommonError.FORMAT_LESS + CommonParameter.PHONE_MAX)
-//	@Pattern(regexp = CommonParameter.PHONE_REGEXP, message = CommonError.PHONE_FORMAT)
+	// @Pattern(regexp = CommonParameter.PHONE_REGEXP, message = CommonError.PHONE_FORMAT)
 	@Column(name = "telephone", length = CommonParameter.EMAIL_MAX)
 	private String telephone;
-
 
 	@Size(max = CommonParameter.STREET_MAX, message = CommonError.FORMAT_LESS + CommonParameter.STREET_MAX + " !")
 	@Column(name = "street1", length = CommonParameter.STREET_MAX)
@@ -146,12 +145,11 @@ public class User extends Person implements Serializable, UserDetails {
 		this.credentialsNonExpired = credentialsNonExpired;
 	}
 
-
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 
-		this.roles.forEach(role -> 	grantedAuthorities.add(new SimpleGrantedAuthority(role.getName())));
+		this.roles.forEach(role -> grantedAuthorities.add(new SimpleGrantedAuthority(role.getName())));
 
 		return grantedAuthorities;
 	}
@@ -182,7 +180,6 @@ public class User extends Person implements Serializable, UserDetails {
 		getRolesInternal().add(role);
 	}
 
-
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
@@ -194,7 +191,6 @@ public class User extends Person implements Serializable, UserDetails {
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
 	}
-
 
 	public String getStreet1() {
 		return street1;
@@ -243,6 +239,5 @@ public class User extends Person implements Serializable, UserDetails {
 	public void setCountry(String country) {
 		this.country = country;
 	}
-
 
 }

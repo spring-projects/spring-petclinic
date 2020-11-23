@@ -40,6 +40,9 @@ public class CredentialDTO extends BaseDTO {
 			+ CommonParameter.PASSWORD_MIN + " AND " + CommonParameter.PASSWORD_MAX + " !")
 	private String password;
 
+	public CredentialDTO() {
+	}
+
 	public CredentialDTO(UserDTO user) {
 		this.verified = false;
 		this.setToken();
@@ -60,7 +63,6 @@ public class CredentialDTO extends BaseDTO {
 	public void setDefaultProvider() {
 		this.provider = CommonParameter.DEFAULT_PROVIDER;
 	}
-
 
 	public String getEmail() {
 		return email;
@@ -119,4 +121,5 @@ public class CredentialDTO extends BaseDTO {
 
 		return this.expiration.after(Date.from(Instant.now()));
 	}
+
 }
