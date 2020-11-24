@@ -42,6 +42,8 @@ import org.springframework.samples.petclinic.dto.VisitDTO;
 import org.springframework.samples.petclinic.model.business.Visit;
 import org.springframework.samples.petclinic.service.business.PetService;
 import org.springframework.samples.petclinic.service.business.VisitService;
+import org.springframework.samples.petclinic.service.common.UserDetailsServiceImpl;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -74,6 +76,9 @@ class VisitControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
+
+	@MockBean
+	private UserDetailsServiceImpl userDetailsService;
 
 	@MockBean
 	SimpMessagingTemplate simpMessagingTemplate;
@@ -111,6 +116,7 @@ class VisitControllerTest {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("initNewVisitForm")
 	@DisplayName("Verify that return form for new Visit with right Pet")
 	void testInitNewVisitForm() throws Exception {
@@ -132,6 +138,7 @@ class VisitControllerTest {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("processNewVisitForm")
 	@DisplayName("Verify that save Visit")
 	void givenVisitAndOwnerIDAndPetId_whenSaveVisit_thenSaveVisit() throws Exception {
@@ -147,6 +154,7 @@ class VisitControllerTest {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("processNewVisitForm")
 	@DisplayName("Verify that return to update Visit view if Visit has no date")
 	void givenVisitAndOwnerIDAndPetIdAndVisitWithoutDate_whenSaveVisit_thenReturnToCreationView() throws Exception {
@@ -158,6 +166,7 @@ class VisitControllerTest {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("processNewVisitForm")
 	@DisplayName("Verify that return to update Visit view if Visit has no description")
 	void givenVisitAndOwnerIDAndPetIdAndVisitWithoutDescription_whenSaveVisit_thenReturnToCreationView()

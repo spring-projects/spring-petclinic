@@ -28,6 +28,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.*;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -40,6 +41,9 @@ import org.springframework.samples.petclinic.dto.SpecialtyDTO;
 import org.springframework.samples.petclinic.dto.VetDTO;
 import org.springframework.samples.petclinic.dto.VetsDTO;
 import org.springframework.samples.petclinic.service.business.VetService;
+import org.springframework.samples.petclinic.service.common.UserDetailsServiceImpl;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -52,11 +56,15 @@ import java.util.Objects;
  *
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
+@RunWith(SpringRunner.class)
 @WebMvcTest(VetController.class)
 class VetControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
+
+	@MockBean
+	private UserDetailsServiceImpl userDetailsService;
 
 	@MockBean
 	SimpMessagingTemplate simpMessagingTemplate;
@@ -90,6 +98,7 @@ class VetControllerTest {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("showVetList")
 	@DisplayName("When asking vets get String containing Vets")
 	void whenGetVets_thenReturnStringOfVets() throws Exception {
@@ -103,6 +112,7 @@ class VetControllerTest {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("showResourcesVetList")
 	@DisplayName("When asking vets get Vets DTO object containing Vets")
 	void whenGetVets_thenReturnVetsDTO() throws Exception {

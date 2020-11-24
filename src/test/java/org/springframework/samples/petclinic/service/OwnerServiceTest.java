@@ -5,9 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.petclinic.common.CommonAttribute;
 import org.springframework.samples.petclinic.dto.OwnerDTO;
 import org.springframework.samples.petclinic.dto.PetDTO;
@@ -22,7 +22,7 @@ import org.springframework.samples.petclinic.repository.VisitRepository;
 import org.springframework.samples.petclinic.service.business.OwnerService;
 import org.springframework.samples.petclinic.service.business.PetService;
 import org.springframework.samples.petclinic.service.business.PetTypeService;
-import org.springframework.stereotype.Service;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -33,7 +33,8 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
-@DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
+@DataJpaTest
+@RunWith(SpringRunner.class)
 class OwnerServiceTest {
 
 	private final static Integer OWNER_ID = 11;
@@ -211,7 +212,7 @@ class OwnerServiceTest {
 		List<OwnerDTO> expected = ownerService.findAll();
 
 		assertThat(expected).doesNotContain(ownerDTO);
-		ownerService.save(ownerDTO);
+		OwnerDTO saved = ownerService.save(ownerDTO);
 
 		List<OwnerDTO> found = ownerService.findAll();
 
@@ -219,6 +220,7 @@ class OwnerServiceTest {
 				.usingElementComparatorOnFields("lastName", "firstName", "address", "city", "telephone")
 				.contains(ownerDTO).containsAnyElementsOf(expected);
 
+		ownerService.delete(saved);
 	}
 
 	@Test
@@ -230,9 +232,11 @@ class OwnerServiceTest {
 		OwnerDTO saved = ownerService.save(ownerDTO);
 		List<OwnerDTO> found = ownerService.findAll();
 
-		assertThat(saved).isEqualToIgnoringGivenFields(ownerDTO, CommonAttribute.OWNER_ID, CommonAttribute.OWNER_PETS);
+		assertThat(saved).isEqualToIgnoringGivenFields(ownerDTO, CommonAttribute.ID, CommonAttribute.OWNER_PETS);
 		assertThat(found).usingElementComparatorOnFields("lastName", "firstName", "address", "city", "telephone")
 				.contains(ownerDTO);
+
+		OwnerDTO deleted = ownerService.delete(saved);
 	}
 
 }

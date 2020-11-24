@@ -5,6 +5,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.samples.petclinic.common.CommonAttribute;
 import org.springframework.samples.petclinic.common.CommonEndPoint;
 import org.springframework.samples.petclinic.common.CommonView;
@@ -13,6 +14,8 @@ import org.springframework.samples.petclinic.dto.PetDTO;
 import org.springframework.samples.petclinic.repository.PetRepository;
 import org.springframework.samples.petclinic.service.business.OwnerService;
 import org.springframework.samples.petclinic.service.business.PetService;
+import org.springframework.samples.petclinic.service.common.UserDetailsServiceImpl;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -42,6 +45,9 @@ class PetControllerIntegrationTest {
 	@Autowired
 	private MockMvc mockMvc;
 
+	@MockBean
+	private UserDetailsServiceImpl userDetailsService;
+
 	@Autowired
 	private OwnerService ownerService;
 
@@ -62,6 +68,7 @@ class PetControllerIntegrationTest {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("initCreationForm")
 	@DisplayName("Verify that the view for new Pet is initialised with new PetDTO")
 	void givenOwnerId_whenGetNewPet_thenReturnCreationViewWithNewPet() throws Exception {
@@ -78,6 +85,7 @@ class PetControllerIntegrationTest {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("processCreationForm")
 	@DisplayName("Verify that save new Pet and display the view")
 	void givenNewPet_whenPostNewPet_thenSavePetAndRedirectToOwnerView() throws Exception {
@@ -94,6 +102,7 @@ class PetControllerIntegrationTest {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("initUpdateForm")
 	@DisplayName("Verify that the view to update Pet is initialised with right Pet")
 	void givenPetId_whenGetUpdatePet_thenReturnUpdateViewWithPet() throws Exception {
@@ -110,6 +119,7 @@ class PetControllerIntegrationTest {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("processUpdateForm")
 	@DisplayName("Verify that Pet is updated and the right view is displayed")
 	void givenUpdatePet_whenPostUpdatePet_thenUpdatePetAndRedirectToOwnerView() throws Exception {

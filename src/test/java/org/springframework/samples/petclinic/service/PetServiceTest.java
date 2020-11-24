@@ -1,26 +1,24 @@
 package org.springframework.samples.petclinic.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.petclinic.dto.OwnerDTO;
 import org.springframework.samples.petclinic.dto.PetDTO;
 import org.springframework.samples.petclinic.dto.PetTypeDTO;
 import org.springframework.samples.petclinic.model.business.Owner;
 import org.springframework.samples.petclinic.model.business.Pet;
 import org.springframework.samples.petclinic.model.business.PetType;
+import org.springframework.samples.petclinic.repository.OwnerRepository;
 import org.springframework.samples.petclinic.repository.PetRepository;
 import org.springframework.samples.petclinic.repository.PetTypeRepository;
 import org.springframework.samples.petclinic.repository.VisitRepository;
 import org.springframework.samples.petclinic.service.business.OwnerService;
 import org.springframework.samples.petclinic.service.business.PetService;
 import org.springframework.samples.petclinic.service.business.PetTypeService;
-import org.springframework.stereotype.Service;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -29,7 +27,8 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
-@DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
+@DataJpaTest
+@RunWith(SpringRunner.class)
 class PetServiceTest {
 
 	private final static Integer OWNER_ID = 5;
@@ -45,6 +44,8 @@ class PetServiceTest {
 	private final static String PET_TYPE_NAME = "dinausor";
 
 	@Autowired
+	private OwnerRepository ownerRepository;
+
 	private OwnerService ownerService;
 
 	@Autowired
@@ -67,6 +68,7 @@ class PetServiceTest {
 	@BeforeEach
 	void beforeEach() {
 		this.petService = new PetService(petRepository, petTypeRepository, visitRepository);
+		this.ownerService = new OwnerService(ownerRepository, petRepository, petTypeRepository, visitRepository);
 
 		PetTypeService petTypeService = new PetTypeService(petTypeRepository);
 		Collection<PetTypeDTO> petTypeDTOS = petService.findPetTypes();

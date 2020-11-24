@@ -27,9 +27,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.samples.petclinic.common.CommonAttribute;
 import org.springframework.samples.petclinic.common.CommonEndPoint;
@@ -42,6 +45,16 @@ import org.springframework.samples.petclinic.dto.PetTypeDTO;
 import org.springframework.samples.petclinic.dto.VisitDTO;
 import org.springframework.samples.petclinic.service.business.OwnerService;
 import org.springframework.samples.petclinic.service.business.VisitService;
+import org.springframework.samples.petclinic.service.common.UserDetailsServiceImpl;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.empty;
@@ -62,6 +75,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Colin But
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
+@RunWith(SpringRunner.class)
 @WebMvcTest(OwnerController.class)
 class OwnerControllerTest extends WebSocketSender {
 
@@ -89,6 +103,9 @@ class OwnerControllerTest extends WebSocketSender {
 
 	@Autowired
 	private MockMvc mockMvc;
+
+	@MockBean
+	private UserDetailsServiceImpl userDetailsService;
 
 	@MockBean
 	SimpMessagingTemplate simpMessagingTemplate;
@@ -128,6 +145,7 @@ class OwnerControllerTest extends WebSocketSender {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("initCreationForm")
 	@DisplayName("Verify that we get the right creation view and the right attribute name")
 	void whenGetNewOwner_thenReturnCreationViewWithNewOwner() throws Exception {
@@ -137,6 +155,7 @@ class OwnerControllerTest extends WebSocketSender {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("processCreationForm")
 	@DisplayName("Verify that call the right view with parameters when attempt to create Owner")
 	void givenNewOwner_whenPostNewOwner_thenSaveOwnerAndRedirectToOwnerView() throws Exception {
@@ -151,6 +170,7 @@ class OwnerControllerTest extends WebSocketSender {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("processCreationForm")
 	@DisplayName("Verify that return to Owner creation form when Owner has no firstName")
 	void givenNewOwnerWithoutFirstName_whenPostNewOwner_thenRedirectToOwnerUpdateView() throws Exception {
@@ -164,6 +184,7 @@ class OwnerControllerTest extends WebSocketSender {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("processCreationForm")
 	@DisplayName("Verify that return to Owner creation form when Owner has no lastName")
 	void givenNewOwnerWithoutLastName_whenPostNewOwner_thenRedirectToOwnerUpdateView() throws Exception {
@@ -177,6 +198,7 @@ class OwnerControllerTest extends WebSocketSender {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("processCreationForm")
 	@DisplayName("Verify that return to Owner creation form when Owner has no address")
 	void givenNewOwnerWithoutAddress_whenPostNewOwner_thenRedirectToOwnerUpdateView() throws Exception {
@@ -190,6 +212,7 @@ class OwnerControllerTest extends WebSocketSender {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("processCreationForm")
 	@DisplayName("Verify that return to Owner creation form when Owner has no phone")
 	void givenNewOwnerWithoutPhone_whenPostNewOwner_thenRedirectToOwnerUpdateView() throws Exception {
@@ -203,6 +226,7 @@ class OwnerControllerTest extends WebSocketSender {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("initFindForm")
 	@DisplayName("Verify that we get the right find view and the right attribute name")
 	void whenGetFindOwner_thenReturnFindViewWithNewOwner() throws Exception {
@@ -212,6 +236,7 @@ class OwnerControllerTest extends WebSocketSender {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("processFindForm")
 	@DisplayName("Verify that we get the right view and all Owners list")
 	void whenGetFindOwner_thenReturnFindViewWithAllOwners() throws Exception {
@@ -222,6 +247,7 @@ class OwnerControllerTest extends WebSocketSender {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("processFindForm")
 	@DisplayName("Verify that we get the right view and the Owner with specified firstName")
 	void givenOwnerLastName_whenGetFindOwner_thenReturnViewWithRightOwner() throws Exception {
@@ -232,6 +258,7 @@ class OwnerControllerTest extends WebSocketSender {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("processFindForm")
 	@DisplayName("Verify that we get empty view and errors with specified wrong firstName")
 	void givenWrongOwnerLastName_whenGetFindOwner_thenReturnViewWithoutOwner() throws Exception {
@@ -244,6 +271,7 @@ class OwnerControllerTest extends WebSocketSender {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("initUpdateOwnerForm")
 	@DisplayName("Verify that we get the right update view and the right Owner")
 	void whenGetUpdateOwner_thenReturnUpdateViewWithRightOwner() throws Exception {
@@ -263,6 +291,7 @@ class OwnerControllerTest extends WebSocketSender {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("processUpdateOwnerForm")
 	@DisplayName("Verify that call the right view with parameters when attempt to update Owner")
 	void givenUpdatedOwner_whenPostOwner_thenSaveOwnerAndRedirectToOwnerView() throws Exception {
@@ -275,6 +304,7 @@ class OwnerControllerTest extends WebSocketSender {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("processUpdateOwnerForm")
 	@DisplayName("Verify that we return to update view if the Owner firsName is wrong")
 	void givenUpdatedOwnerWithoutFirstName_whenPostOwner_thenRedirectToUpdateOwnerView() throws Exception {
@@ -288,6 +318,7 @@ class OwnerControllerTest extends WebSocketSender {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("processUpdateOwnerForm")
 	@DisplayName("Verify that we return to update view if the Owner lastName is wrong")
 	void givenUpdatedOwnerWithoutLastName_whenPostOwner_thenRedirectToUpdateOwnerView() throws Exception {
@@ -301,6 +332,7 @@ class OwnerControllerTest extends WebSocketSender {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("processUpdateOwnerForm")
 	@DisplayName("Verify that we return to update view if the Owner address is wrong")
 	void givenUpdatedOwnerWithoutAddress_whenPostOwner_thenRedirectToUpdateOwnerView() throws Exception {
@@ -314,6 +346,7 @@ class OwnerControllerTest extends WebSocketSender {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("processUpdateOwnerForm")
 	@DisplayName("Verify that we return to update view if the Owner phone is wrong")
 	void givenUpdatedOwnerWithoutPhone_whenPostOwner_thenRedirectToUpdateOwnerView() throws Exception {
@@ -327,6 +360,7 @@ class OwnerControllerTest extends WebSocketSender {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("processUpdateOwnerForm")
 	@DisplayName("Verify that we display view with right Owner")
 	void givenOwnerId_whenGetOwner_thenShowOwnerView() throws Exception {
