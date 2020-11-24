@@ -39,4 +39,10 @@ public class BaseDTO implements Serializable {
 		return this.id == null;
 	}
 
+	@Override
+	public String toString() {
+		return "BaseDTO{" +
+			"id=" + id +
+			'}';
+	}
 }

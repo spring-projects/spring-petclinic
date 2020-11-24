@@ -59,7 +59,8 @@ public class UserController extends WebSocketSender {
 
 	@InitBinder("user")
 	public void setAllowedFields(WebDataBinder dataBinder) {
-		dataBinder.setDisallowedFields(CommonAttribute.USER_ID);
+	//	dataBinder.setDisallowedFields(CommonAttribute.USER_ID,"roles");
+
 	}
 
 	Map<String, String> oauth2AuthenticationUrls = new HashMap<>();

@@ -50,4 +50,5 @@ public class NamedDTO extends BaseDTO {
 		return getName().equals(namedDTO.getName());
 	}
 
+
 }
