@@ -28,6 +28,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -45,6 +46,9 @@ import org.springframework.samples.petclinic.formatter.PetTypeFormatter;
 import org.springframework.samples.petclinic.service.business.OwnerService;
 import org.springframework.samples.petclinic.service.business.PetService;
 import org.springframework.samples.petclinic.service.business.PetTypeService;
+import org.springframework.samples.petclinic.service.common.UserDetailsServiceImpl;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 /**
@@ -55,6 +59,7 @@ import org.springframework.test.web.servlet.MockMvc;
  */
 @WebMvcTest(value = PetController.class,
 		includeFilters = @ComponentScan.Filter(value = PetTypeFormatter.class, type = FilterType.ASSIGNABLE_TYPE))
+@RunWith(SpringRunner.class)
 class PetControllerTest {
 
 	private static final int TEST_OWNER_ID = 1;
@@ -63,6 +68,9 @@ class PetControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
+
+	@MockBean
+	private UserDetailsServiceImpl userDetailsService;
 
 	@MockBean
 	SimpMessagingTemplate simpMessagingTemplate;
@@ -88,6 +96,7 @@ class PetControllerTest {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("initCreationForm")
 	@DisplayName("Verify that Pet creation form is initialized")
 	void givenOwnerId_whenAskToCreatePet_thenDisplayCreationViewWithRightPet() throws Exception {
@@ -97,6 +106,7 @@ class PetControllerTest {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("processCreationForm")
 	@DisplayName("Verify that call the right view with parameters when attempt to create Pet")
 	void givenNewPet_whenPostNewPet_thenSavePetAndRedirectToOwnerView() throws Exception {
@@ -107,6 +117,7 @@ class PetControllerTest {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("processCreationForm")
 	@DisplayName("Verify that return to Pet creation form when pet has no name")
 	void givenNewPetWithoutName_whenPostNewPet_thenRedirectToPetUpdate() throws Exception {
@@ -121,6 +132,7 @@ class PetControllerTest {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("processCreationForm")
 	@DisplayName("Verify that return to Pet creation form when pet has no type")
 	void givenNewPetWithoutType_whenPostNewPet_thenRedirectToPetUpdate() throws Exception {
@@ -135,6 +147,7 @@ class PetControllerTest {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("processCreationForm")
 	@DisplayName("Verify that return to Pet creation form when pet has wrong Owner ID")
 	void givenNewPetWithWrongOwner_whenPostNewPet_thenRedirectToPetUpdate() throws Exception {
@@ -148,6 +161,7 @@ class PetControllerTest {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("processCreationForm")
 	@DisplayName("Verify that return to Pet creation form when pet has no birth date")
 	void givenNewPetWithoutBirthDate_whenPostNewPet_thenRedirectToPetUpdate() throws Exception {
@@ -163,6 +177,7 @@ class PetControllerTest {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("initUpdateForm")
 	@DisplayName("Verify that Pet update form is initialized with the right Pet")
 	void givenPetId_whenGetUpdatePet_thenReturnUpdateViewWithPet() throws Exception {
@@ -172,6 +187,7 @@ class PetControllerTest {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("processUpdateForm")
 	void givenOwnerAndModifiedPet_whenAskToUpdatePet_thenUpdatePetAndDisplayOwnerView() throws Exception {
 		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_ID_EDIT, TEST_OWNER_ID, TEST_PET_ID)
@@ -181,6 +197,7 @@ class PetControllerTest {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("processUpdateForm")
 	void testProcessUpdateFormHasErrors() throws Exception {
 		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_ID_EDIT, TEST_OWNER_ID, TEST_PET_ID)

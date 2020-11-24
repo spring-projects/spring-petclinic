@@ -10,12 +10,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.samples.petclinic.common.CommonAttribute;
 import org.springframework.samples.petclinic.common.CommonEndPoint;
 import org.springframework.samples.petclinic.common.CommonView;
 import org.springframework.samples.petclinic.dto.VetsDTO;
 import org.springframework.samples.petclinic.repository.VetRepository;
 import org.springframework.samples.petclinic.service.business.VetService;
+import org.springframework.samples.petclinic.service.common.UserDetailsServiceImpl;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -39,6 +42,9 @@ class VetControllerIntegrationTest {
 	@Autowired
 	private MockMvc mockMvc;
 
+	@MockBean
+	private UserDetailsServiceImpl userDetailsService;
+
 	@Autowired
 	private VetService vetService;
 
@@ -53,6 +59,7 @@ class VetControllerIntegrationTest {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("showVetList")
 	@DisplayName("When asking vets get String containing Vets")
 	void whenGetVets_thenReturnStringOfVets() throws Exception {
@@ -67,6 +74,7 @@ class VetControllerIntegrationTest {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("showResourcesVetList")
 	@DisplayName("When asking vets get Vets DTO object containing Vets")
 	void whenGetVets_thenReturnVetsDTO() throws Exception {

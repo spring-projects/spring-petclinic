@@ -5,6 +5,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.samples.petclinic.common.CommonAttribute;
 import org.springframework.samples.petclinic.common.CommonEndPoint;
 import org.springframework.samples.petclinic.common.CommonView;
@@ -13,6 +14,8 @@ import org.springframework.samples.petclinic.dto.PetDTO;
 import org.springframework.samples.petclinic.dto.PetTypeDTO;
 import org.springframework.samples.petclinic.dto.VisitDTO;
 import org.springframework.samples.petclinic.service.business.OwnerService;
+import org.springframework.samples.petclinic.service.common.UserDetailsServiceImpl;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -37,6 +40,9 @@ class OwnerControllerIntegrationTest {
 
 	@Autowired
 	private MockMvc mockMvc;
+
+	@MockBean
+	private UserDetailsServiceImpl userDetailsService;
 
 	@Autowired
 	private OwnerService ownerService;
@@ -63,6 +69,7 @@ class OwnerControllerIntegrationTest {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("initCreationForm")
 	@DisplayName("Verify that the view for new Owner is initialised with new OwnerDTO")
 	void whenGetNewOwner_thenReturnCreationViewWithNewOwner() throws Exception {
@@ -77,6 +84,7 @@ class OwnerControllerIntegrationTest {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("processCreationForm")
 	void givenNewOwner_whenPostNewOwner_thenSaveOwnerAndRedirectToOwnerView() throws Exception {
 
@@ -92,6 +100,7 @@ class OwnerControllerIntegrationTest {
 	}
 
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("processFindForm")
 	@DisplayName("Verify that we get the right view and all Owners")
 	void whenGetFindOwner_thenReturnFindViewWithAllOwners() throws Exception {

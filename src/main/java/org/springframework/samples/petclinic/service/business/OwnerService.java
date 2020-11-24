@@ -131,6 +131,13 @@ public class OwnerService implements BaseService<Owner, OwnerDTO> {
 		return entityToDTO(owner);
 	}
 
+	public OwnerDTO delete(OwnerDTO ownerDTO) {
+		Owner owner = dtoToEntity(ownerDTO);
+		owner = ownerRepository.delete(owner);
+
+		return entityToDTO(owner);
+	}
+
 	public List<OwnerDTO> findByLastName(String lastName) {
 		Collection<Owner> owners = ownerRepository.findByLastName(lastName);
 		return entitiesToDTOS(Lists.from(owners.iterator()));

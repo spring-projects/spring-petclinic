@@ -67,7 +67,15 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
 	/**
 	 * Save an {@link Owner} to the data store, either inserting or updating it.
 	 * @param owner the {@link Owner} to save
+	 * @return the {@link Owner} saved or updated
 	 */
 	Owner save(Owner owner);
+
+	/**
+	 * Delete an {@link Owner} from the data store.
+	 * @param owner the {@link Owner} to delete
+	 * @return the {@link Owner} deleted
+	 */
+	Owner delete(Owner owner);
 
 }
