@@ -16,10 +16,14 @@
 
 package org.springframework.samples.petclinic.system;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.samples.petclinic.controller.WebSecurityConfig;
+import org.springframework.samples.petclinic.service.common.UserDetailsServiceImpl;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -32,16 +36,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Test class for {@link CrashController}
  *
  * @author Colin But
+ * @author Paul-Emmanuel DOS SANTOS FACAO
  */
 // Waiting https://github.com/spring-projects/spring-boot/issues/5574
-@Disabled
-@WebMvcTest(controllers = CrashController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class CrashControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
 
+	@MockBean
+	private UserDetailsServiceImpl userDetailsService;
+
 	@Test
+	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	void testTriggerException() throws Exception {
 		mockMvc.perform(get("/oups")).andExpect(view().name("exception"))
 				.andExpect(model().attributeExists("exception")).andExpect(forwardedUrl("exception"))

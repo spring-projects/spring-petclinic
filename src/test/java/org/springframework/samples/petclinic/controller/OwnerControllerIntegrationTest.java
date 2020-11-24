@@ -31,6 +31,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * Test class for the {@link OwnerController}
+ *
+ * @author Paul-Emmanuel DOS SANTOS FACAO
+ */
 @Slf4j
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -96,7 +101,7 @@ class OwnerControllerIntegrationTest {
 		int ownerId = Integer.parseInt(Objects.requireNonNull(path).split("/")[2]);
 		OwnerDTO found = ownerService.findById(ownerId);
 
-		assertThat(found).isEqualToIgnoringGivenFields(george, "id");
+		assertThat(found).isEqualToIgnoringGivenFields(george, CommonAttribute.ID);
 	}
 
 	@Test

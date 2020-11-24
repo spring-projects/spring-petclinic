@@ -27,10 +27,15 @@ public interface UserRepository extends Repository<User, Integer> {
 
 	/**
 	 * Save an {@link User} to the data store, either inserting or updating it.
-	 * @param user the {@link User} to save
+	 * @param user the {@link User} to delete
+	 * @return the deleted {@link User}
 	 */
 	User save(User user);
 
-	void deleteById(Integer id);
-
+	/**
+ 	 * Delete an {@link User} to the data store.
+	 * @param user the {@link User} to delete
+	 * @return the deleted {@link User}
+	 */
+	User delete(User user);
 }
