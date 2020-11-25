@@ -54,9 +54,9 @@ public class User extends Person implements Serializable, UserDetails {
 	private boolean credentialsNonExpired;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"),
-			inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private Set<Role> roles;
+	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+			inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+	private Collection<Role> roles;
 
 	@Size(max = CommonParameter.PHONE_MAX, message = CommonError.FORMAT_LESS + CommonParameter.PHONE_MAX)
 	// @Pattern(regexp = CommonParameter.PHONE_REGEXP, message = CommonError.PHONE_FORMAT)
@@ -145,6 +145,14 @@ public class User extends Person implements Serializable, UserDetails {
 		this.credentialsNonExpired = credentialsNonExpired;
 	}
 
+	public Collection<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Collection<Role> roles) {
+		this.roles = roles;
+	}
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
@@ -154,35 +162,6 @@ public class User extends Person implements Serializable, UserDetails {
 		return grantedAuthorities;
 	}
 
-	protected Set<Role> getRolesInternal() {
-		if (this.roles == null) {
-			this.roles = new HashSet<>();
-		}
-		return this.roles;
-	}
-
-	protected void setRolesInternal(Set<Role> roles) {
-		this.roles = roles;
-	}
-
-	@XmlElement
-	public List<Role> getRoles() {
-		List<Role> sortedRoles = new ArrayList<>(getRolesInternal());
-		PropertyComparator.sort(sortedRoles, new MutableSortDefinition("name", true, true));
-		return Collections.unmodifiableList(sortedRoles);
-	}
-
-	public int getNrOfRoles() {
-		return getRolesInternal().size();
-	}
-
-	public void addRole(Role role) {
-		getRolesInternal().add(role);
-	}
-
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
 
 	public String getTelephone() {
 		return telephone;

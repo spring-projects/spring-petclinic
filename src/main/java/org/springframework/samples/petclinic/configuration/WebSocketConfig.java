@@ -17,19 +17,16 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 @EnableWebSocketMessageBroker
 public class WebSocketConfig extends AbstractSecurityWebSocketMessageBrokerConfigurer {
 
-/*
-	@Override
-	public void registerStompEndpoints(StompEndpointRegistry stompEndpointRegistry) {
-		stompEndpointRegistry.addEndpoint("/websocket").withSockJS();
-	}
-
-	@Override
-	public void configureMessageBroker(MessageBrokerRegistry registry) {
-		registry.enableSimpleBroker("/topic");
-		registry.setApplicationDestinationPrefixes("/app");
-	}
-
-*/
+	/*
+	 * @Override public void registerStompEndpoints(StompEndpointRegistry
+	 * stompEndpointRegistry) {
+	 * stompEndpointRegistry.addEndpoint("/websocket").withSockJS(); }
+	 *
+	 * @Override public void configureMessageBroker(MessageBrokerRegistry registry) {
+	 * registry.enableSimpleBroker("/topic");
+	 * registry.setApplicationDestinationPrefixes("/app"); }
+	 *
+	 */
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry config) {
 		config.enableSimpleBroker("/topic");
@@ -38,22 +35,18 @@ public class WebSocketConfig extends AbstractSecurityWebSocketMessageBrokerConfi
 
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/websocket")
-			.setAllowedOrigins("*")
-			.withSockJS();
+		registry.addEndpoint("/websocket").setAllowedOrigins("*").withSockJS();
 	}
 
 	@Override
 	protected void configureInbound(MessageSecurityMetadataSourceRegistry message) {
-		message
-			.nullDestMatcher().permitAll()
-			.simpDestMatchers("/app/**").permitAll()
-			.simpSubscribeDestMatchers("/topic/**").permitAll()
-			.anyMessage().denyAll();
+		message.nullDestMatcher().permitAll().simpDestMatchers("/app/**").permitAll()
+				.simpSubscribeDestMatchers("/topic/**").permitAll().anyMessage().denyAll();
 	}
 
 	@Override
 	protected boolean sameOriginDisabled() {
 		return true;
 	}
+
 }

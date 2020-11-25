@@ -3,7 +3,7 @@ package org.springframework.samples.petclinic.repository;
 import org.springframework.samples.petclinic.model.common.Role;
 import org.springframework.data.repository.Repository;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Repository class for <code>Role</code> domain objects All method names are compliant
@@ -31,7 +31,7 @@ public interface RoleRepository extends Repository<Role, Integer> {
 	 * Retrieve all {@link Role}s from the data store
 	 * @return a Collection of {@link Role}s (or an empty Collection if none
 	 */
-	List<Role> findAll();
+	Collection<Role> findAll();
 
 	/**
 	 * Save a {@link Role} to the data store, either inserting or updating it.

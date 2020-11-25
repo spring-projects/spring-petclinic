@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.repository;
 import org.springframework.data.repository.Repository;
 import org.springframework.samples.petclinic.model.common.User;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ public interface UserRepository extends Repository<User, Integer> {
 	 * Retrieve all {@link User}s from the data store
 	 * @return a Collection of {@link User}s (or an empty Collection if none
 	 */
-	List<User> findAll();
+	Collection<User> findAll();
 
 	/**
 	 * Save an {@link User} to the data store, either inserting or updating it.
@@ -33,9 +34,10 @@ public interface UserRepository extends Repository<User, Integer> {
 	User save(User user);
 
 	/**
- 	 * Delete an {@link User} to the data store.
+	 * Delete an {@link User} to the data store.
 	 * @param user the {@link User} to delete
 	 * @return the deleted {@link User}
 	 */
 	User delete(User user);
+
 }

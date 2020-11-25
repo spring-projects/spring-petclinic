@@ -20,21 +20,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-		auth.inMemoryAuthentication()
-			.passwordEncoder(encoder)
-			.withUser(TEST_USER)
-			.password(encoder.encode("secret"))
-			.roles("ROLE_USER");
+		auth.inMemoryAuthentication().passwordEncoder(encoder).withUser(TEST_USER).password(encoder.encode("secret"))
+				.roles("ROLE_USER");
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
-			.antMatchers("/owners/**", "/pets/**", "/users/**", "/visits/**")
-			.authenticated()
-			.antMatchers("/**")
-			.permitAll()
-			.and()
-			.httpBasic();
+		http.authorizeRequests().antMatchers("/owners/**", "/pets/**", "/users/**", "/visits/**").authenticated()
+				.antMatchers("/**").permitAll().and().httpBasic();
 	}
+
 }

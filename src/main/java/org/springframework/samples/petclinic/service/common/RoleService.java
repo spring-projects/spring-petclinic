@@ -8,6 +8,7 @@ import org.springframework.samples.petclinic.service.business.BaseService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -69,7 +70,14 @@ public class RoleService implements BaseService<Role, RoleDTO> {
 
 	@Override
 	public List<RoleDTO> findAll() {
-		return entitiesToDTOS(roleRepository.findAll());
+		Collection<Role> roles = roleRepository.findAll();
+		List<RoleDTO> roleDTOS = new ArrayList<>();
+
+		roles.forEach(role -> {
+			roleDTOS.add(entityToDTO(role));
+		});
+
+		return roleDTOS;
 	}
 
 	@Override

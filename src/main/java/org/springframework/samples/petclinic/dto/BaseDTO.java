@@ -41,8 +41,7 @@ public class BaseDTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "BaseDTO{" +
-			"id=" + id +
-			'}';
+		return "BaseDTO{" + "id=" + id + '}';
 	}
+
 }

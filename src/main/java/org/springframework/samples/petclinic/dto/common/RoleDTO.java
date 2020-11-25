@@ -15,4 +15,5 @@ public class RoleDTO extends NamedDTO implements Serializable {
 	public String toString() {
 		return super.toString();
 	}
+
 }

@@ -5,11 +5,13 @@ import org.springframework.samples.petclinic.dto.common.RoleDTO;
 import org.springframework.samples.petclinic.dto.common.UserDTO;
 import org.springframework.samples.petclinic.model.common.Role;
 import org.springframework.samples.petclinic.model.common.User;
+import org.springframework.samples.petclinic.repository.RoleRepository;
 import org.springframework.samples.petclinic.repository.UserRepository;
 import org.springframework.samples.petclinic.service.business.BaseService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -88,9 +90,14 @@ public class UserService implements BaseService<User, UserDTO> {
 
 	@Override
 	public List<UserDTO> findAll() {
-		List<User> users = userRepository.findAll();
+		Collection<User> users = userRepository.findAll();
+		List<UserDTO> userDTOS = new ArrayList<>();
 
-		return entitiesToDTOS(users);
+		users.forEach(user -> {
+			userDTOS.add(entityToDTO(user));
+		});
+
+		return userDTOS;
 	}
 
 	@Override
@@ -104,6 +111,7 @@ public class UserService implements BaseService<User, UserDTO> {
 
 	public UserDTO findByEmail(String email) {
 		User user = userRepository.findByEmail(email);
+
 
 		return entityToDTO(user);
 	}
