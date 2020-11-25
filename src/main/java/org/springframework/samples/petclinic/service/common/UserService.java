@@ -10,9 +10,7 @@ import org.springframework.samples.petclinic.repository.UserRepository;
 import org.springframework.samples.petclinic.service.business.BaseService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * Simple Service between User entity and UserDTO Data Transfert Object.
@@ -24,10 +22,13 @@ public class UserService implements BaseService<User, UserDTO> {
 
 	private final UserRepository userRepository;
 
+	private final RoleRepository roleRepository;
+
 	private final ModelMapper modelMapper = new ModelMapper();
 
-	public UserService(UserRepository userRepository) {
+	public UserService(UserRepository userRepository, RoleRepository roleRepository) {
 		this.userRepository = userRepository;
+		this.roleRepository = roleRepository;
 	}
 
 	@Override
@@ -40,10 +41,16 @@ public class UserService implements BaseService<User, UserDTO> {
 		User user = modelMapper.map(dto, User.class);
 		user.setPassword(dto.getPassword());
 
-		/*
-		 * if (dto.getRoles() != null) { for (RoleDTO roleDTO : dto.getRoles()) { Role
-		 * role = modelMapper.map(roleDTO, Role.class); user.addRole(role); } }
-		 */
+		if( dto.getRoles()!= null) {
+			Set<Role> roles = new HashSet<>();
+
+			for (String role : dto.getRoles()) {
+				roles.add(roleRepository.findByName(role));
+			}
+
+			user.setRoles(roles);
+		}
+
 		return user;
 	}
 
@@ -56,10 +63,17 @@ public class UserService implements BaseService<User, UserDTO> {
 		UserDTO userDto = modelMapper.map(entity, UserDTO.class);
 		userDto.setPassword(entity.getPassword());
 		userDto.setMatchingPassword(entity.getPassword());
-		/*
-		 * if (entity.getRoles() != null) { for (Role role : entity.getRoles()) { RoleDTO
-		 * roleDTO = modelMapper.map(role, RoleDTO.class); userDto.addRole(roleDTO); } }
-		 */
+
+		if( entity.getRoles()!= null) {
+			List<String> roles = new ArrayList<>();
+
+			for (Role role : entity.getRoles()) {
+				roles.add(role.getName());
+			}
+
+			userDto.setRoles(roles);
+		}
+
 		return userDto;
 	}
 
@@ -111,7 +125,6 @@ public class UserService implements BaseService<User, UserDTO> {
 
 	public UserDTO findByEmail(String email) {
 		User user = userRepository.findByEmail(email);
-
 
 		return entityToDTO(user);
 	}

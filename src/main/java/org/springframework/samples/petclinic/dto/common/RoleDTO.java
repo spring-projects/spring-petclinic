@@ -11,9 +11,6 @@ import java.io.Serializable;
  */
 public class RoleDTO extends NamedDTO implements Serializable {
 
-	@Override
-	public String toString() {
-		return super.toString();
-	}
+
 
 }

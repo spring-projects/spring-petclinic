@@ -96,7 +96,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	public ClientRegistrationRepository clientRegistrationRepository() {
-		List<String> clients = Arrays.asList("google", "facebook", "github");
+		List<String> clients = Arrays.asList("google", "facebook", "github", "twitter");
 
 		List<ClientRegistration> registrations = clients.stream().map(c -> getRegistration(c))
 				.filter(registration -> registration != null).collect(Collectors.toList());

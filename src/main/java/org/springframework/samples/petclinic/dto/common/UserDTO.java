@@ -1,7 +1,5 @@
 package org.springframework.samples.petclinic.dto.common;
 
-import org.springframework.beans.support.MutableSortDefinition;
-import org.springframework.beans.support.PropertyComparator;
 import org.springframework.samples.petclinic.common.CommonError;
 import org.springframework.samples.petclinic.common.CommonParameter;
 import org.springframework.samples.petclinic.dto.PersonDTO;
@@ -12,7 +10,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlElement;
 import java.io.Serializable;
 
 import java.util.*;
@@ -40,7 +37,7 @@ public class UserDTO extends PersonDTO implements Serializable, UserDetails {
 
 	private boolean credentialsNonExpired;
 
-	private Set<RoleDTO> roles;
+	private List<String> roles;
 
 	@Size(max = CommonParameter.PHONE_MAX, message = CommonError.FORMAT_LESS + CommonParameter.PHONE_MAX)
 	// @Pattern(regexp = CommonParameter.PHONE_REGEXP, message = CommonError.PHONE_FORMAT)
@@ -143,39 +140,29 @@ public class UserDTO extends PersonDTO implements Serializable, UserDetails {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 
-		this.roles.forEach(role -> grantedAuthorities.add(new SimpleGrantedAuthority(role.getName())));
+		this.roles.forEach(role -> grantedAuthorities.add(new SimpleGrantedAuthority(role)));
 
 		return grantedAuthorities;
 	}
 
-	protected Set<RoleDTO> getRolesInternal() {
-		if (this.roles == null) {
-			this.roles = new HashSet<>();
+	public List<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
+	}
+
+	public void addRole(String role){
+		if(this.roles==null){
+			this.roles = new ArrayList<>();
 		}
-		return this.roles;
+
+		this.roles.add(role);
 	}
 
-	protected void setRolesInternal(Set<RoleDTO> roles) {
-		this.roles = roles;
-	}
-
-	@XmlElement
-	public List<RoleDTO> getRoles() {
-		List<RoleDTO> sortedRoles = new ArrayList<>(getRolesInternal());
-		PropertyComparator.sort(sortedRoles, new MutableSortDefinition("name", true, true));
-		return Collections.unmodifiableList(sortedRoles);
-	}
-
-	public int getNrOfRoles() {
-		return getRolesInternal().size();
-	}
-
-	public void addRole(RoleDTO role) {
-		getRolesInternal().add(role);
-	}
-
-	public void setRoles(Set<RoleDTO> roles) {
-		this.roles = roles;
+	public void removeRole(String role){
+		this.roles.remove(role);
 	}
 
 	public String getTelephone() {

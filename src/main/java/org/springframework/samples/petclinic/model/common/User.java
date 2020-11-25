@@ -53,10 +53,10 @@ public class User extends Person implements Serializable, UserDetails {
 	@Column(name = "credential_unexpired")
 	private boolean credentialsNonExpired;
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
 	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
 			inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-	private Collection<Role> roles;
+	private Set<Role> roles;
 
 	@Size(max = CommonParameter.PHONE_MAX, message = CommonError.FORMAT_LESS + CommonParameter.PHONE_MAX)
 	// @Pattern(regexp = CommonParameter.PHONE_REGEXP, message = CommonError.PHONE_FORMAT)
@@ -145,12 +145,27 @@ public class User extends Person implements Serializable, UserDetails {
 		this.credentialsNonExpired = credentialsNonExpired;
 	}
 
-	public Collection<Role> getRoles() {
+	public Set<Role> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(Collection<Role> roles) {
+	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+
+	public void addRole(Role role) {
+		if(this.roles==null){
+			this.roles = new HashSet<>();
+		}
+		this.roles.add(role);
+		role.getUsers().add(this);
+	}
+
+	public void removeRole(Role role){
+		if(this.roles!=null){
+			this.roles.remove(role);
+			role.getUsers().remove(this);
+		}
 	}
 
 	@Override
@@ -161,7 +176,6 @@ public class User extends Person implements Serializable, UserDetails {
 
 		return grantedAuthorities;
 	}
-
 
 	public String getTelephone() {
 		return telephone;

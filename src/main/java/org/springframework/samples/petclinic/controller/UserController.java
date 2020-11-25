@@ -92,7 +92,7 @@ public class UserController extends WebSocketSender {
 		}
 
 		// set default role
-		user.addRole(roleService.findByName("ROLE_USER"));
+		user.addRole("ROLE_USER");
 
 		// encode password because we get clear password
 		user.encode(user.getPassword());
@@ -175,7 +175,7 @@ public class UserController extends WebSocketSender {
 				user.setFirstName(firstName);
 				user.setLastName(lastName);
 				user.setEnabled(true);
-				user.addRole(roleService.findByName("ROLE_USER"));
+				user.addRole("ROLE_USER");
 				user = userService.save(user);
 			}
 
@@ -293,7 +293,7 @@ public class UserController extends WebSocketSender {
 			UserDTO operator = (UserDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			UserDTO user = userService.findById(userId);
 
-			if (user.equals(operator) || operator.getRoles().contains(roleService.findByName("ROLE_ADMIN"))) {
+			if (user.equals(operator) || operator.getRoles().contains("ROLE_ADMIN")) {
 				model.addAttribute(CommonAttribute.USER, user);
 				model.addAttribute(CommonAttribute.USER_ID, user.getId());
 				return CommonView.USER_CHANGE_PASSWORD;
@@ -329,7 +329,7 @@ public class UserController extends WebSocketSender {
 		try {
 			UserDTO operator = (UserDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-			if (user.equals(operator) || operator.getRoles().contains(roleService.findByName("ROLE_ADMIN"))) {
+			if (user.equals(operator) || operator.getRoles().contains("ROLE_ADMIN")) {
 				// encode password
 				user.encode(newPassword);
 				user = userService.save(user);
