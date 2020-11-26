@@ -6,6 +6,7 @@
   <h2>User update</h2>
   <form th:object="${user}" class="form-horizontal" id="add-user-form" method="post">
     <input type="hidden"  th:field="${user.id}" />
+    <input type="hidden"  th:field="${user.email}" />
     <input type="hidden"  th:field="${user.password}" />
     <input type="hidden"  th:field="${user.matchingPassword}" />
     <input type="hidden"  th:field="${user.enabled}" />
@@ -17,7 +18,7 @@
 
     <div class="form-group has-feedback">
       <input
-        th:replace="~{fragments/inputField :: input ('Email', 'email', 'email')}" disabled />
+        th:replace="~{fragments/inputField :: input ('Email', 'email', 'emaildisabled')}"  />
       <input
         th:replace="~{fragments/inputField :: input ('First Name', 'firstName', 'text')}" />
       <input

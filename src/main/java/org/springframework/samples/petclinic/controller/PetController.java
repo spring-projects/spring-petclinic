@@ -125,7 +125,7 @@ class PetController extends WebSocketSender {
 			return CommonView.PET_CREATE_OR_UPDATE;
 		}
 		else {
-			owner.addPet(pet);
+			pet.setOwner(owner);
 			this.petService.save(pet);
 			sendSuccessMessage(CommonWebSocket.PET_UPDATED);
 			return CommonView.OWNER_OWNERS_ID_R;
