@@ -245,6 +245,7 @@ public class UserController extends WebSocketSender {
 	public String initUpdateOwnerForm(Model model) {
 		try {
 			UserDTO user = (UserDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			user = userService.findByEmail(user.getEmail());
 			model.addAttribute(CommonAttribute.USER, user);
 			model.addAttribute(CommonAttribute.USER_ID, user.getId());
 			return CommonView.USER_UPDATE;
