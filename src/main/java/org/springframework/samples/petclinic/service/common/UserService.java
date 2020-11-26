@@ -41,7 +41,7 @@ public class UserService implements BaseService<User, UserDTO> {
 		User user = modelMapper.map(dto, User.class);
 		user.setPassword(dto.getPassword());
 
-		if( dto.getRoles()!= null) {
+		if (dto.getRoles() != null) {
 			Set<Role> roles = new HashSet<>();
 
 			for (String role : dto.getRoles()) {
@@ -64,7 +64,7 @@ public class UserService implements BaseService<User, UserDTO> {
 		userDto.setPassword(entity.getPassword());
 		userDto.setMatchingPassword(entity.getPassword());
 
-		if( entity.getRoles()!= null) {
+		if (entity.getRoles() != null) {
 			List<String> roles = new ArrayList<>();
 
 			for (Role role : entity.getRoles()) {

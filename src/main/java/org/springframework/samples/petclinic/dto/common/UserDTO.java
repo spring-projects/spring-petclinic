@@ -153,15 +153,15 @@ public class UserDTO extends PersonDTO implements Serializable, UserDetails {
 		this.roles = roles;
 	}
 
-	public void addRole(String role){
-		if(this.roles==null){
+	public void addRole(String role) {
+		if (this.roles == null) {
 			this.roles = new ArrayList<>();
 		}
 
 		this.roles.add(role);
 	}
 
-	public void removeRole(String role){
+	public void removeRole(String role) {
 		this.roles.remove(role);
 	}
 
