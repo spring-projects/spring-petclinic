@@ -60,12 +60,13 @@ class PetController extends WebSocketSender {
 
 	@ModelAttribute("owner")
 	public OwnerDTO findOwner(@PathVariable("ownerId") int ownerId) {
-		return this.ownerService.findById(ownerId);
+		OwnerDTO ownerDTO = ownerService.findById(ownerId);
+		return  ownerDTO;
 	}
 
 	@InitBinder("owner")
 	public void initOwnerBinder(WebDataBinder dataBinder) {
-		dataBinder.setDisallowedFields(CommonAttribute.OWNER_ID);
+	//	dataBinder.setDisallowedFields(CommonAttribute.OWNER_ID);
 	}
 
 	@InitBinder("pet")
@@ -125,7 +126,7 @@ class PetController extends WebSocketSender {
 			return CommonView.PET_CREATE_OR_UPDATE;
 		}
 		else {
-			pet.setOwner(owner);
+			owner.addPet(pet);
 			this.petService.save(pet);
 			sendSuccessMessage(CommonWebSocket.PET_UPDATED);
 			return CommonView.OWNER_OWNERS_ID_R;

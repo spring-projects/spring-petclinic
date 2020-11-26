@@ -123,9 +123,7 @@ public class PetService implements BaseService<Pet, PetDTO> {
 	@Override
 	public PetDTO save(PetDTO petDTO) {
 		Pet pet = dtoToEntity(petDTO);
-		Owner owner = pet.getOwner();
 		pet = petRepository.save(pet);
-		pet.setOwner(owner);
 
 		return entityToDTO(pet);
 	}

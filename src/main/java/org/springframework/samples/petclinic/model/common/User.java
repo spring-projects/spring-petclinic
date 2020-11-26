@@ -1,7 +1,5 @@
 package org.springframework.samples.petclinic.model.common;
 
-import org.springframework.beans.support.MutableSortDefinition;
-import org.springframework.beans.support.PropertyComparator;
 import org.springframework.samples.petclinic.common.CommonError;
 import org.springframework.samples.petclinic.common.CommonParameter;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,7 +10,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlElement;
 import java.io.Serializable;
 import java.util.*;
 
@@ -21,7 +18,7 @@ import java.util.*;
  *
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
-@Entity(name = "User")
+@Entity
 @Table(name = "users")
 public class User extends Person implements Serializable, UserDetails {
 
