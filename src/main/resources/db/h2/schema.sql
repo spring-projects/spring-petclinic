@@ -71,6 +71,13 @@ CREATE TABLE roles (
 );
 CREATE INDEX roles_name ON roles (name);
 
+DROP TABLE privileges IF EXISTS;
+CREATE TABLE privileges (
+  id          INTEGER IDENTITY PRIMARY KEY,
+  name        VARCHAR(20) NOT NULL
+);
+CREATE INDEX privileges_name ON privileges (name);
+
 
 DROP TABLE users IF EXISTS;
 CREATE TABLE users (
@@ -101,6 +108,13 @@ CREATE TABLE users_roles (
 ALTER TABLE users_roles ADD CONSTRAINT fk_users_roles_user_id FOREIGN KEY (user_id) REFERENCES users (id);
 ALTER TABLE users_roles ADD CONSTRAINT fk_users_roles_role_id FOREIGN KEY (role_id) REFERENCES roles (id);
 CREATE INDEX users_roles_user_id ON users_roles (user_id);
+
+DROP TABLE roles_privileges IF EXISTS;
+CREATE TABLE roles_privileges (
+    role_id INTEGER NOT NULL,
+    privilege_id INTEGER NOT NULL
+);
+
 
 DROP TABLE auth_providers IF EXISTS;
 CREATE TABLE auth_providers (

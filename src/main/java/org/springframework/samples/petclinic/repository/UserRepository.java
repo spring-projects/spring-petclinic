@@ -1,7 +1,11 @@
 package org.springframework.samples.petclinic.repository;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.query.Param;
+import org.springframework.samples.petclinic.model.business.Owner;
 import org.springframework.samples.petclinic.model.common.User;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
@@ -14,9 +18,23 @@ import java.util.List;
  */
 public interface UserRepository extends Repository<User, Integer> {
 
-	User findById(Integer id);
+	/**
+	 * Retrieve an {@link User} from the data store by email.
+	 * @param id the id to search for
+	 * @return the {@link User} if found
+	 */
+	@Query("SELECT user FROM User user left join fetch user.roles WHERE user.id =:id")
+	@Transactional(readOnly = true)
+	User findById(@Param("id") Integer id);
 
-	User findByEmail(String email);
+	/**
+	 * Retrieve an {@link User} from the data store by email.
+	 * @param email the email to search for
+	 * @return the {@link User} if found
+	 */
+	@Query("SELECT user FROM User user left join fetch user.roles WHERE user.email =:email")
+	@Transactional(readOnly = true)
+	User findByEmail(@Param("email") String email);
 
 	Boolean existsByEmail(String email);
 

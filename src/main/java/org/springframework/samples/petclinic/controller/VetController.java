@@ -20,7 +20,7 @@ import org.springframework.samples.petclinic.common.CommonEndPoint;
 import org.springframework.samples.petclinic.common.CommonView;
 import org.springframework.samples.petclinic.common.CommonWebSocket;
 import org.springframework.samples.petclinic.controller.common.WebSocketSender;
-import org.springframework.samples.petclinic.dto.VetsDTO;
+import org.springframework.samples.petclinic.dto.business.VetsDTO;
 import org.springframework.samples.petclinic.service.business.VetService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

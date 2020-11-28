@@ -1,8 +1,9 @@
 package org.springframework.samples.petclinic.dto.common;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.samples.petclinic.common.CommonError;
 import org.springframework.samples.petclinic.common.CommonParameter;
-import org.springframework.samples.petclinic.dto.PersonDTO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +15,8 @@ import java.io.Serializable;
 
 import java.util.*;
 
+@Getter
+@Setter
 public class UserDTO extends PersonDTO implements Serializable, UserDetails {
 
 	@Size(min = CommonParameter.EMAIL_MIN, max = CommonParameter.EMAIL_MAX, message = CommonError.FORMAT_BETWEEN
@@ -37,7 +40,7 @@ public class UserDTO extends PersonDTO implements Serializable, UserDetails {
 
 	private boolean credentialsNonExpired;
 
-	private List<String> roles;
+	private Collection<RoleDTO> roles;
 
 	@Size(max = CommonParameter.PHONE_MAX, message = CommonError.FORMAT_LESS + CommonParameter.PHONE_MAX)
 	// @Pattern(regexp = CommonParameter.PHONE_REGEXP, message = CommonError.PHONE_FORMAT)
@@ -75,38 +78,9 @@ public class UserDTO extends PersonDTO implements Serializable, UserDetails {
 		return email;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	@Override
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getMatchingPassword() {
-		return matchingPassword;
-	}
-
-	public void setMatchingPassword(String matchingPassword) {
-		this.matchingPassword = matchingPassword;
-	}
-
 	@Override
 	public boolean isEnabled() {
 		return enabled;
-	}
-
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
 	}
 
 	@Override
@@ -114,17 +88,9 @@ public class UserDTO extends PersonDTO implements Serializable, UserDetails {
 		return accountNonExpired;
 	}
 
-	public void setAccountNonExpired(boolean accountNonExpired) {
-		this.accountNonExpired = accountNonExpired;
-	}
-
 	@Override
 	public boolean isAccountNonLocked() {
 		return accountNonLocked;
-	}
-
-	public void setAccountNonLocked(boolean accountNonLocked) {
-		this.accountNonLocked = accountNonLocked;
 	}
 
 	@Override
@@ -132,93 +98,60 @@ public class UserDTO extends PersonDTO implements Serializable, UserDetails {
 		return credentialsNonExpired;
 	}
 
-	public void setCredentialsNonExpired(boolean credentialsNonExpired) {
-		this.credentialsNonExpired = credentialsNonExpired;
+	public boolean hasRole(String roleName) {
+		for (RoleDTO roleDTO : this.roles) {
+			if (roleDTO.getName().equals(roleName))
+				return true;
+		}
+		return false;
 	}
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-
-		this.roles.forEach(role -> grantedAuthorities.add(new SimpleGrantedAuthority(role)));
-
-		return grantedAuthorities;
+	public boolean hasPrivilege(String privilegeName) {
+		for (RoleDTO roleDTO : this.roles) {
+			for (PrivilegeDTO privilegeDTO : roleDTO.getPrivileges()) {
+				if (privilegeDTO.getName().equals(privilegeName))
+					return true;
+			}
+		}
+		return false;
 	}
 
-	public List<String> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(List<String> roles) {
-		this.roles = roles;
-	}
-
-	public void addRole(String role) {
+	public void addRole(RoleDTO role) {
 		if (this.roles == null) {
-			this.roles = new ArrayList<>();
+			this.roles = new HashSet<>();
 		}
 
 		this.roles.add(role);
 	}
 
-	public void removeRole(String role) {
+	public void removeRole(RoleDTO role) {
 		this.roles.remove(role);
 	}
 
-	public String getTelephone() {
-		return telephone;
+	private List<GrantedAuthority> getGrantedAuthorities(List<String> privileges) {
+		List<GrantedAuthority> authorities = new ArrayList<>();
+		for (String privilege : privileges) {
+			authorities.add(new SimpleGrantedAuthority(privilege));
+		}
+		return authorities;
 	}
 
-	public void setTelephone(String telephone) {
-		this.telephone = telephone;
+	private List<String> getPrivileges(Collection<RoleDTO> roles) {
+
+		List<String> privileges = new ArrayList<>();
+		List<PrivilegeDTO> collection = new ArrayList<>();
+		for (RoleDTO role : roles) {
+			collection.addAll(role.getPrivileges());
+		}
+		for (PrivilegeDTO item : collection) {
+			privileges.add(item.getName());
+		}
+		return privileges;
 	}
 
-	public String getStreet1() {
-		return street1;
-	}
-
-	public void setStreet1(String street1) {
-		this.street1 = street1;
-	}
-
-	public String getStreet2() {
-		return street2;
-	}
-
-	public void setStreet2(String street2) {
-		this.street2 = street2;
-	}
-
-	public String getStreet3() {
-		return street3;
-	}
-
-	public void setStreet3(String street3) {
-		this.street3 = street3;
-	}
-
-	public String getZipCode() {
-		return zipCode;
-	}
-
-	public void setZipCode(String zipCode) {
-		this.zipCode = zipCode;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	public String getCountry() {
-		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return getGrantedAuthorities(getPrivileges(this.roles));
 	}
 
 	@Override

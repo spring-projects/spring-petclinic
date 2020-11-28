@@ -1,9 +1,9 @@
 package org.springframework.samples.petclinic.service.business;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.samples.petclinic.dto.OwnerDTO;
-import org.springframework.samples.petclinic.dto.PetDTO;
-import org.springframework.samples.petclinic.dto.PetTypeDTO;
+import org.springframework.samples.petclinic.dto.business.OwnerDTO;
+import org.springframework.samples.petclinic.dto.business.PetDTO;
+import org.springframework.samples.petclinic.dto.business.PetTypeDTO;
 import org.springframework.samples.petclinic.model.business.Owner;
 import org.springframework.samples.petclinic.model.business.Pet;
 import org.springframework.samples.petclinic.model.business.PetType;
@@ -27,8 +27,6 @@ public class PetService implements BaseService<Pet, PetDTO> {
 
 	private final PetTypeService petTypeService;
 
-	private final PetTypeRepository petTypeRepository;
-
 	private final VisitService visitService;
 
 	private final ModelMapper modelMapper = new ModelMapper();
@@ -36,7 +34,6 @@ public class PetService implements BaseService<Pet, PetDTO> {
 	public PetService(PetRepository petRepository, PetTypeRepository petTypeRepository,
 			VisitRepository visitRepository) {
 		this.petRepository = petRepository;
-		this.petTypeRepository = petTypeRepository;
 		this.visitService = new VisitService(visitRepository);
 		this.petTypeService = new PetTypeService(petTypeRepository);
 	}

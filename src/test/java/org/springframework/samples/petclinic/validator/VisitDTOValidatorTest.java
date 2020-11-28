@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.samples.petclinic.common.CommonAttribute;
 import org.springframework.samples.petclinic.common.CommonError;
-import org.springframework.samples.petclinic.dto.VisitDTO;
+import org.springframework.samples.petclinic.dto.business.VisitDTO;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;

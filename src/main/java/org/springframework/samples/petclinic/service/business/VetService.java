@@ -2,8 +2,8 @@ package org.springframework.samples.petclinic.service.business;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.internal.util.Lists;
-import org.springframework.samples.petclinic.dto.SpecialtyDTO;
-import org.springframework.samples.petclinic.dto.VetDTO;
+import org.springframework.samples.petclinic.dto.business.SpecialtyDTO;
+import org.springframework.samples.petclinic.dto.business.VetDTO;
 import org.springframework.samples.petclinic.model.business.Specialty;
 import org.springframework.samples.petclinic.repository.SpecialtyRepository;
 import org.springframework.samples.petclinic.repository.VetRepository;

@@ -18,7 +18,9 @@ package org.springframework.samples.petclinic.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.common.*;
 import org.springframework.samples.petclinic.controller.common.WebSocketSender;
-import org.springframework.samples.petclinic.dto.*;
+import org.springframework.samples.petclinic.dto.business.OwnerDTO;
+import org.springframework.samples.petclinic.dto.business.PetDTO;
+import org.springframework.samples.petclinic.dto.business.PetTypeDTO;
 import org.springframework.samples.petclinic.service.business.OwnerService;
 import org.springframework.samples.petclinic.service.business.PetService;
 import org.springframework.samples.petclinic.service.business.PetTypeService;
@@ -40,7 +42,7 @@ import java.util.Collection;
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
 @Controller
-@RequestMapping(CommonEndPoint.OWNERS_ID)
+@RequestMapping("/owners/{ownerId}")
 class PetController extends WebSocketSender {
 
 	private final OwnerService ownerService;
@@ -60,13 +62,12 @@ class PetController extends WebSocketSender {
 
 	@ModelAttribute("owner")
 	public OwnerDTO findOwner(@PathVariable("ownerId") int ownerId) {
-		OwnerDTO ownerDTO = ownerService.findById(ownerId);
-		return  ownerDTO;
+		return ownerService.findById(ownerId);
 	}
 
 	@InitBinder("owner")
 	public void initOwnerBinder(WebDataBinder dataBinder) {
-	//	dataBinder.setDisallowedFields(CommonAttribute.OWNER_ID);
+		dataBinder.setDisallowedFields(CommonAttribute.ID);
 	}
 
 	@InitBinder("pet")
@@ -75,7 +76,7 @@ class PetController extends WebSocketSender {
 	}
 
 	@GetMapping(CommonEndPoint.PETS_NEW)
-	public String initCreationForm(@ModelAttribute(CommonAttribute.OWNER) OwnerDTO owner, ModelMap model) {
+	public String initCreationForm(@ModelAttribute("owner") OwnerDTO owner, ModelMap model) {
 		PetDTO pet = new PetDTO();
 		owner.addPet(pet);
 		model.put(CommonAttribute.PET, pet);
@@ -83,8 +84,8 @@ class PetController extends WebSocketSender {
 	}
 
 	@PostMapping(CommonEndPoint.PETS_NEW)
-	public String processCreationForm(@ModelAttribute(CommonAttribute.OWNER) OwnerDTO owner,
-			@ModelAttribute(CommonAttribute.PET) @Valid PetDTO pet, BindingResult result, ModelMap model) {
+	public String processCreationForm(@ModelAttribute("owner") OwnerDTO owner, @Valid PetDTO pet, BindingResult result,
+			ModelMap model) {
 		if (owner == null) {
 			sendErrorMessage(CommonWebSocket.PET_CREATION_ERROR);
 			result.rejectValue(CommonAttribute.OWNER, CommonError.NOT_FOUND_ARGS, CommonError.NOT_FOUND_MESSAGE);
@@ -109,16 +110,16 @@ class PetController extends WebSocketSender {
 		}
 	}
 
-	@GetMapping(CommonEndPoint.PETS_ID_EDIT)
+	@GetMapping("/pets/{petId}/edit")
 	public String initUpdateForm(@PathVariable("petId") int petId, ModelMap model) {
 		PetDTO pet = this.petService.findById(petId);
 		model.put(CommonAttribute.PET, pet);
 		return CommonView.PET_CREATE_OR_UPDATE;
 	}
 
-	@PostMapping(CommonEndPoint.PETS_ID_EDIT)
-	public String processUpdateForm(@ModelAttribute(CommonAttribute.PET) @Valid PetDTO pet, BindingResult result,
-			@ModelAttribute(CommonAttribute.OWNER) OwnerDTO owner, ModelMap model) {
+	@PostMapping("/pets/{petId}/edit")
+	public String processUpdateForm(@Valid PetDTO pet, BindingResult result, @ModelAttribute("owner") OwnerDTO owner,
+			ModelMap model) {
 		if (result.hasErrors()) {
 			pet.setOwner(owner);
 			model.put(CommonAttribute.PET, pet);

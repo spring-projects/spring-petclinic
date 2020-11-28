@@ -1,5 +1,10 @@
 package org.springframework.samples.petclinic.model.common;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.samples.petclinic.common.CommonParameter;
 
 import javax.persistence.*;
@@ -7,10 +12,18 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Set;
+import java.util.Collection;
 
-@Entity(name = "Role")
+/**
+ * Entity representing a Role.
+ *
+ * @author Paul-Emmanuel DOS SANTOS FACAO
+ */
+@Entity
 @Table(name = "roles")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Role implements Serializable {
 
 	@Id
@@ -23,40 +36,14 @@ public class Role implements Serializable {
 	@Column(name = "name", length = CommonParameter.ROLE_MAX)
 	private String name;
 
-	@ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
-	private Set<User> users;
+	@ManyToMany(mappedBy = "roles")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private Collection<User> users;
 
-	public Role(Integer id, @NotNull @NotEmpty @Size(max = CommonParameter.ROLE_MAX) String name) {
-		this.id = id;
-		this.name = name;
-	}
-
-	public Role() {
-		// empty constructor for creating empty role and add attribute after
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Set<User> getUsers() {
-		return users;
-	}
-
-	public void setUsers(Set<User> users) {
-		this.users = users;
-	}
+	@ManyToMany // (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@JoinTable(name = "roles_privileges", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
+			inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "id"))
+	private Collection<Privilege> privileges;
 
 }

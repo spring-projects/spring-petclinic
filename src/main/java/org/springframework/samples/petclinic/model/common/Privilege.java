@@ -1,42 +1,35 @@
 package org.springframework.samples.petclinic.model.common;
 
-import javax.persistence.*;
-import java.util.Set;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.samples.petclinic.common.CommonParameter;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.Collection;
 
 @Entity
-public class Privilege {
+@Table(name = "privileges")
+@Getter
+@Setter
+@NoArgsConstructor
+public class Privilege implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private Integer id;
 
+	@NotNull
+	@NotEmpty
+	@Size(max = CommonParameter.PRIVILEGE_MAX)
+	@Column(name = "name", length = CommonParameter.PRIVILEGE_MAX)
 	private String name;
 
-	@ManyToMany(mappedBy = "privileges")
-	private Set<Role> roles;
+	@ManyToMany(mappedBy = "privileges", fetch = FetchType.EAGER)
+	private Collection<Role> roles;
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Set<Role> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
 }

@@ -11,13 +11,15 @@ public final class CommonAttribute {
 
 	public static final String ID = "id";
 
+	public static final String EMAIL = "email";
+
 	public static final String NAME = "name";
 
 	public static final String NEW = "new";
 
 	public static final String OWNER = "owner";
 
-	public static final String OWNER_ID = "ownerId";
+	public static final String OWNER_ID = "id";
 
 	public static final String OWNER_LAST_NAME = "lastName";
 
@@ -30,6 +32,8 @@ public final class CommonAttribute {
 	public static final String OWNER_CITY = "city";
 
 	public static final String OWNER_PETS = "pets";
+
+	public static final String PASSWORD = "password";
 
 	public static final String PET = "pet";
 

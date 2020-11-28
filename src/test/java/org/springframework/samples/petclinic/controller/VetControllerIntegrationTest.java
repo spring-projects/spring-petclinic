@@ -14,7 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.samples.petclinic.common.CommonAttribute;
 import org.springframework.samples.petclinic.common.CommonEndPoint;
 import org.springframework.samples.petclinic.common.CommonView;
-import org.springframework.samples.petclinic.dto.VetsDTO;
+import org.springframework.samples.petclinic.dto.business.VetsDTO;
 import org.springframework.samples.petclinic.repository.VetRepository;
 import org.springframework.samples.petclinic.service.business.VetService;
 import org.springframework.samples.petclinic.service.common.UserDetailsServiceImpl;

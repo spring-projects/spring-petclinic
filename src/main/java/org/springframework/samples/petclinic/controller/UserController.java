@@ -59,7 +59,7 @@ public class UserController extends WebSocketSender {
 
 	@InitBinder("user")
 	public void setAllowedFields(WebDataBinder dataBinder) {
-		dataBinder.setDisallowedFields(CommonAttribute.USER_ID,"roles");
+		dataBinder.setDisallowedFields(CommonAttribute.USER_ID, "roles");
 	}
 
 	Map<String, String> oauth2AuthenticationUrls = new HashMap<>();
@@ -91,7 +91,7 @@ public class UserController extends WebSocketSender {
 		}
 
 		// set default role
-		user.addRole("ROLE_USER");
+		user.addRole(roleService.findByName("ROLE_USER"));
 
 		// encode password because we get clear password
 		user.encode(user.getPassword());
@@ -108,8 +108,7 @@ public class UserController extends WebSocketSender {
 				"Your attempt to create new account. To confirm your account, please click here : ",
 				"http://localhost:8080/confirm-account?token=" + credential.getToken());
 
-		// TODO
-		// emailService.sendMailAsynch(message, Locale.getDefault());
+		emailService.sendMailAsynch(message, Locale.getDefault());
 
 		log.info(message.toString());
 
@@ -132,11 +131,13 @@ public class UserController extends WebSocketSender {
 
 		if (type != ResolvableType.NONE && ClientRegistration.class.isAssignableFrom(type.resolveGenerics()[0])) {
 			clientRegistrations = (Iterable<ClientRegistration>) clientRegistrationRepository;
-		}
 
-		clientRegistrations.forEach(registration -> oauth2AuthenticationUrls.put(registration.getClientName(),
-				"oauth2/authorization/" + registration.getRegistrationId()));
-		model.put("urls", oauth2AuthenticationUrls);
+			if (clientRegistrations != null) {
+				clientRegistrations.forEach(registration -> oauth2AuthenticationUrls.put(registration.getClientName(),
+						"oauth2/authorization/" + registration.getRegistrationId()));
+				model.put("urls", oauth2AuthenticationUrls);
+			}
+		}
 
 		return CommonView.USER_LOGIN;
 	}
@@ -174,7 +175,7 @@ public class UserController extends WebSocketSender {
 				user.setFirstName(firstName);
 				user.setLastName(lastName);
 				user.setEnabled(true);
-				user.addRole("ROLE_USER");
+				user.addRole(roleService.findByName("ROLE_USER"));
 				user = userService.save(user);
 			}
 
@@ -193,7 +194,7 @@ public class UserController extends WebSocketSender {
 			SecurityContextHolder.clearContext();
 
 		}
-		else if (credential.isVerified()) {
+		else if (Boolean.TRUE.equals(credential.isVerified())) {
 			securityService.autoLogin(credential.getEmail(), credential.getPassword());
 			String message = String.format(CommonWebSocket.USER_LOGGED_IN, firstName, lastName);
 			sendSuccessMessage(message);
@@ -293,7 +294,7 @@ public class UserController extends WebSocketSender {
 			UserDTO operator = (UserDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			UserDTO user = userService.findById(userId);
 
-			if (user.equals(operator) || operator.getRoles().contains("ROLE_ADMIN")) {
+			if (user.equals(operator) || operator.hasRole("ROLE_ADMIN")) {
 				model.addAttribute(CommonAttribute.USER, user);
 				model.addAttribute(CommonAttribute.USER_ID, user.getId());
 				return CommonView.USER_CHANGE_PASSWORD;
@@ -329,7 +330,7 @@ public class UserController extends WebSocketSender {
 		try {
 			UserDTO operator = (UserDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-			if (user.equals(operator) || operator.getRoles().contains("ROLE_ADMIN")) {
+			if (user.equals(operator) || operator.hasRole("ROLE_ADMIN")) {
 				// encode password
 				user.encode(newPassword);
 				user = userService.save(user);

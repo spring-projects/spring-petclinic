@@ -13,35 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.dto;
+package org.springframework.samples.petclinic.dto.business;
 
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Simple Data Transfert Object with an id property. Used as a base class for DTO needing
- * this property.
+ * Simple Data Transfert Object representing a list of veterinarians.
  *
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
-public class BaseDTO implements Serializable {
+public class VetsDTO {
 
-	private Integer id;
+	private List<VetDTO> vets;
 
-	public Integer getId() {
-		return id;
+	public VetsDTO() {
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public VetsDTO(List<VetDTO> vets) {
+		this.vets = vets;
 	}
 
-	public boolean isNew() {
-		return this.id == null;
-	}
-
-	@Override
-	public String toString() {
-		return "BaseDTO{" + "id=" + id + '}';
+	public List<VetDTO> getVetList() {
+		if (vets == null) {
+			vets = new ArrayList<>();
+		}
+		return vets;
 	}
 
 }

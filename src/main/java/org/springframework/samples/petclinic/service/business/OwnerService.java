@@ -2,14 +2,12 @@ package org.springframework.samples.petclinic.service.business;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.internal.util.Lists;
-import org.springframework.samples.petclinic.dto.OwnerDTO;
-import org.springframework.samples.petclinic.dto.PetDTO;
+import org.springframework.samples.petclinic.dto.business.OwnerDTO;
+import org.springframework.samples.petclinic.dto.business.PetDTO;
 import org.springframework.samples.petclinic.model.business.Owner;
 import org.springframework.samples.petclinic.model.business.Pet;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
 import org.springframework.samples.petclinic.repository.PetRepository;
-import org.springframework.samples.petclinic.repository.PetTypeRepository;
-import org.springframework.samples.petclinic.repository.VisitRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,13 +28,9 @@ public class OwnerService implements BaseService<Owner, OwnerDTO> {
 
 	private final ModelMapper modelMapper = new ModelMapper();
 
-	private PetService petService;
-
-	public OwnerService(OwnerRepository ownerRepository, PetRepository petRepository,
-			PetTypeRepository petTypeRepository, VisitRepository visitRepository) {
+	public OwnerService(OwnerRepository ownerRepository, PetRepository petRepository) {
 		this.ownerRepository = ownerRepository;
 		this.petRepository = petRepository;
-		petService = new PetService(petRepository, petTypeRepository, visitRepository);
 	}
 
 	@Override

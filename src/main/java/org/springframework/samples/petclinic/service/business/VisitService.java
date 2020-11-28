@@ -1,7 +1,7 @@
 package org.springframework.samples.petclinic.service.business;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.samples.petclinic.dto.VisitDTO;
+import org.springframework.samples.petclinic.dto.business.VisitDTO;
 import org.springframework.samples.petclinic.model.business.Visit;
 import org.springframework.samples.petclinic.repository.VisitRepository;
 import org.springframework.stereotype.Service;

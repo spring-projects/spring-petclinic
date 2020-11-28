@@ -27,6 +27,7 @@ public class WebSocketConfig extends AbstractSecurityWebSocketMessageBrokerConfi
 	 * registry.setApplicationDestinationPrefixes("/app"); }
 	 *
 	 */
+
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry config) {
 		config.enableSimpleBroker("/topic");

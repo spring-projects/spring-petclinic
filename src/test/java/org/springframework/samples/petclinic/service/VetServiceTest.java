@@ -8,13 +8,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.samples.petclinic.dto.VetDTO;
+import org.springframework.samples.petclinic.dto.business.VetDTO;
 import org.springframework.samples.petclinic.model.business.Vet;
 import org.springframework.samples.petclinic.repository.SpecialtyRepository;
 import org.springframework.samples.petclinic.repository.VetRepository;
 import org.springframework.samples.petclinic.service.business.VetService;
-import org.springframework.stereotype.Service;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;

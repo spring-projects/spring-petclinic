@@ -13,32 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.dto;
-
-import java.util.ArrayList;
-import java.util.List;
+package org.springframework.samples.petclinic.dto.common;
 
 /**
- * Simple Data Transfert Object representing a list of veterinarians.
+ * Simple Data Transfert Object with a name property to <code>BaseDTO</code>. Used as a
+ * base class for DTOs needing these properties.
  *
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
-public class VetsDTO {
+public class NamedDTO extends BaseDTO {
 
-	private List<VetDTO> vets;
+	private String name;
 
-	public VetsDTO() {
+	public String getName() {
+		return this.name;
 	}
 
-	public VetsDTO(List<VetDTO> vets) {
-		this.vets = vets;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public List<VetDTO> getVetList() {
-		if (vets == null) {
-			vets = new ArrayList<>();
-		}
-		return vets;
+	@Override
+	public String toString() {
+		return this.getName();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (!(o instanceof NamedDTO))
+			return false;
+
+		NamedDTO namedDTO = (NamedDTO) o;
+
+		return getName().equals(namedDTO.getName());
 	}
 
 }

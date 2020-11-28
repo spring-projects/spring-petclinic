@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.Locale;
 
 import org.springframework.format.Formatter;
-import org.springframework.samples.petclinic.dto.PetTypeDTO;
+import org.springframework.samples.petclinic.dto.business.PetTypeDTO;
 import org.springframework.samples.petclinic.service.business.PetService;
 import org.springframework.stereotype.Component;
 

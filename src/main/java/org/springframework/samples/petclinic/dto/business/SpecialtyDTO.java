@@ -1,4 +1,6 @@
-package org.springframework.samples.petclinic.dto;
+package org.springframework.samples.petclinic.dto.business;
+
+import org.springframework.samples.petclinic.dto.common.NamedDTO;
 
 import java.io.Serializable;
 

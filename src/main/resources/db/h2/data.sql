@@ -57,6 +57,12 @@ INSERT INTO roles (id, name) VALUES
   (2,'ROLE_STAFF'),
   (3,'ROLE_USER');
 
+INSERT INTO privileges (id, name) VALUES
+  (1,'CREATE'),
+  (2,'READ'),
+  (3,'UPDATE'),
+  (4,'DELETE');
+
 INSERT INTO users (id, first_name, last_name, email, password, enabled, telephone, street1, zip_code, city, country) VALUES
   (1, 'George', 'Franklin', 'georges.franklin@petclinic.com', '$2a$10$8KypNYtPopFo8Sk5jbKJ4.lCKeBhdApsrkmFfhwjB8nCls8qpzjZG', true, '6085551023', '110 W. Liberty St.',12354,'Madison','USA'),
   (2, 'Betty', 'Davis', 'betty.davis@petclinic.com', '$2a$10$InKx/fhX3CmLi8zKpHYx/.ETHUlZwvT1xn.Za/pp2JR0iEtYV9a9O', true, '6085551749','638 Cardinal Ave.', 6546, 'Sun Prairie', 'USA'),
@@ -67,6 +73,10 @@ INSERT INTO users_roles (user_id, role_id) VALUES
   (1,1),(1,2),(1,3),
   (2,3),(3,3);
 
+INSERT INTO roles_privileges (role_id, privilege_id) values
+  (1,1),(1,2),(1,3),(1,4),
+  (2,1),(2,2),(2,3),
+  (3,1),(3,2);
 
 INSERT INTO auth_providers (id, name) VALUES
   (1,'local'),

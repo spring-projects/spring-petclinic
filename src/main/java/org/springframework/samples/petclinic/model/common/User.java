@@ -1,5 +1,7 @@
 package org.springframework.samples.petclinic.model.common;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.samples.petclinic.common.CommonError;
 import org.springframework.samples.petclinic.common.CommonParameter;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,6 +22,8 @@ import java.util.*;
  */
 @Entity
 @Table(name = "users")
+@Getter
+@Setter
 public class User extends Person implements Serializable, UserDetails {
 
 	@NotNull
@@ -50,10 +54,18 @@ public class User extends Person implements Serializable, UserDetails {
 	@Column(name = "credential_unexpired")
 	private boolean credentialsNonExpired;
 
+	/*
+	 * @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	 *
+	 * @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id",
+	 * referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id",
+	 * referencedColumnName = "id")) private Set<Role> roles;
+	 */
+
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
 			inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-	private Set<Role> roles;
+	private Collection<Role> roles;
 
 	@Size(max = CommonParameter.PHONE_MAX, message = CommonError.FORMAT_LESS + CommonParameter.PHONE_MAX)
 	// @Pattern(regexp = CommonParameter.PHONE_REGEXP, message = CommonError.PHONE_FORMAT)
@@ -89,30 +101,9 @@ public class User extends Person implements Serializable, UserDetails {
 		return email;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	@Override
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	@Override
 	public boolean isEnabled() {
 		return enabled;
-	}
-
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
 	}
 
 	@Override
@@ -120,34 +111,14 @@ public class User extends Person implements Serializable, UserDetails {
 		return accountNonExpired;
 	}
 
-	public void setAccountNonExpired(boolean accountNonExpired) {
-		this.accountNonExpired = accountNonExpired;
-	}
-
 	@Override
 	public boolean isAccountNonLocked() {
 		return accountNonLocked;
 	}
 
-	public void setAccountNonLocked(boolean accountNonLocked) {
-		this.accountNonLocked = accountNonLocked;
-	}
-
 	@Override
 	public boolean isCredentialsNonExpired() {
 		return credentialsNonExpired;
-	}
-
-	public void setCredentialsNonExpired(boolean credentialsNonExpired) {
-		this.credentialsNonExpired = credentialsNonExpired;
-	}
-
-	public Set<Role> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
 	}
 
 	public void addRole(Role role) {
@@ -165,69 +136,31 @@ public class User extends Person implements Serializable, UserDetails {
 		}
 	}
 
+	private List<GrantedAuthority> getGrantedAuthorities(List<String> privileges) {
+		List<GrantedAuthority> authorities = new ArrayList<>();
+		for (String privilege : privileges) {
+			authorities.add(new SimpleGrantedAuthority(privilege));
+		}
+		return authorities;
+	}
+
+	private List<String> getPrivileges(Collection<Role> roles) {
+
+		List<String> privileges = new ArrayList<>();
+		List<Privilege> collection = new ArrayList<>();
+		for (Role role : roles) {
+			collection.addAll(role.getPrivileges());
+		}
+		for (Privilege item : collection) {
+			privileges.add(item.getName());
+		}
+		return privileges;
+	}
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 
-		this.roles.forEach(role -> grantedAuthorities.add(new SimpleGrantedAuthority(role.getName())));
-
-		return grantedAuthorities;
-	}
-
-	public String getTelephone() {
-		return telephone;
-	}
-
-	public void setTelephone(String telephone) {
-		this.telephone = telephone;
-	}
-
-	public String getStreet1() {
-		return street1;
-	}
-
-	public void setStreet1(String street1) {
-		this.street1 = street1;
-	}
-
-	public String getStreet2() {
-		return street2;
-	}
-
-	public void setStreet2(String street2) {
-		this.street2 = street2;
-	}
-
-	public String getStreet3() {
-		return street3;
-	}
-
-	public void setStreet3(String street3) {
-		this.street3 = street3;
-	}
-
-	public String getZipCode() {
-		return zipCode;
-	}
-
-	public void setZipCode(String zipCode) {
-		this.zipCode = zipCode;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	public String getCountry() {
-		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
+		return getGrantedAuthorities(getPrivileges(this.roles));
 	}
 
 }

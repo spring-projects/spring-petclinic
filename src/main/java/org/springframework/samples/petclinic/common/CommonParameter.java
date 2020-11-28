@@ -38,6 +38,8 @@ public class CommonParameter {
 
 	public static final int ROLE_MAX = 10;
 
+	public static final int PRIVILEGE_MAX = 10;
+
 	public static final int ZIP_MAX = 6;
 
 	public static final int ZIP_MIN = 5;

@@ -2,7 +2,7 @@ package org.springframework.samples.petclinic.dto.common;
 
 import org.springframework.samples.petclinic.common.CommonError;
 import org.springframework.samples.petclinic.common.CommonParameter;
-import org.springframework.samples.petclinic.dto.BaseDTO;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;

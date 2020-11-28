@@ -1,7 +1,6 @@
 package org.springframework.samples.petclinic.service.common;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.samples.petclinic.dto.common.RoleDTO;
 import org.springframework.samples.petclinic.dto.common.UserDTO;
 import org.springframework.samples.petclinic.model.common.Role;
 import org.springframework.samples.petclinic.model.common.User;
@@ -40,16 +39,7 @@ public class UserService implements BaseService<User, UserDTO> {
 
 		User user = modelMapper.map(dto, User.class);
 		user.setPassword(dto.getPassword());
-
-		if (dto.getRoles() != null) {
-			Set<Role> roles = new HashSet<>();
-
-			for (String role : dto.getRoles()) {
-				roles.add(roleRepository.findByName(role));
-			}
-
-			user.setRoles(roles);
-		}
+		dto.getRoles().forEach(role -> user.addRole(modelMapper.map(role, Role.class)));
 
 		return user;
 	}
@@ -63,16 +53,6 @@ public class UserService implements BaseService<User, UserDTO> {
 		UserDTO userDto = modelMapper.map(entity, UserDTO.class);
 		userDto.setPassword(entity.getPassword());
 		userDto.setMatchingPassword(entity.getPassword());
-
-		if (entity.getRoles() != null) {
-			List<String> roles = new ArrayList<>();
-
-			for (Role role : entity.getRoles()) {
-				roles.add(role.getName());
-			}
-
-			userDto.setRoles(roles);
-		}
 
 		return userDto;
 	}

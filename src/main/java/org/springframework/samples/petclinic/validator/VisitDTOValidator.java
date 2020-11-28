@@ -2,7 +2,7 @@ package org.springframework.samples.petclinic.validator;
 
 import org.springframework.samples.petclinic.common.CommonAttribute;
 import org.springframework.samples.petclinic.common.CommonError;
-import org.springframework.samples.petclinic.dto.VisitDTO;
+import org.springframework.samples.petclinic.dto.business.VisitDTO;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 

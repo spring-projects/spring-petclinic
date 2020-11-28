@@ -13,41 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.dto;
+package org.springframework.samples.petclinic.dto.common;
+
+import java.io.Serializable;
 
 /**
- * Simple Data Transfert Object with a name property to <code>BaseDTO</code>. Used as a
- * base class for DTOs needing these properties.
+ * Simple Data Transfert Object with an id property. Used as a base class for DTO needing
+ * this property.
  *
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
-public class NamedDTO extends BaseDTO {
+public class BaseDTO implements Serializable {
 
-	private String name;
+	private Integer id;
 
-	public String getName() {
-		return this.name;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public boolean isNew() {
+		return this.id == null;
 	}
 
 	@Override
 	public String toString() {
-		return this.getName();
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (!(o instanceof NamedDTO))
-			return false;
-
-		NamedDTO namedDTO = (NamedDTO) o;
-
-		return getName().equals(namedDTO.getName());
+		return "BaseDTO{" + "id=" + id + '}';
 	}
 
 }

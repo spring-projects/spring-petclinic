@@ -9,9 +9,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.samples.petclinic.common.CommonAttribute;
-import org.springframework.samples.petclinic.dto.OwnerDTO;
-import org.springframework.samples.petclinic.dto.PetDTO;
-import org.springframework.samples.petclinic.dto.PetTypeDTO;
+import org.springframework.samples.petclinic.dto.business.OwnerDTO;
+import org.springframework.samples.petclinic.dto.business.PetDTO;
+import org.springframework.samples.petclinic.dto.business.PetTypeDTO;
 import org.springframework.samples.petclinic.model.business.Owner;
 import org.springframework.samples.petclinic.model.business.Pet;
 import org.springframework.samples.petclinic.model.business.PetType;
@@ -82,7 +82,7 @@ class OwnerServiceTest {
 	@BeforeEach
 	void beforeEach() {
 		petService = new PetService(petRepository, petTypeRepository, visitRepository);
-		ownerService = new OwnerService(ownerRepository, petRepository, petTypeRepository, visitRepository);
+		ownerService = new OwnerService(ownerRepository, petRepository);
 		PetTypeService petTypeService = new PetTypeService(petTypeRepository);
 		Collection<PetTypeDTO> petTypeDTOS = petService.findPetTypes();
 		PetTypeDTO petTypeDTO = petTypeDTOS.stream().findFirst().get();

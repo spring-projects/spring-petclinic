@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.dto;
+package org.springframework.samples.petclinic.dto.business;
 
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.core.style.ToStringCreator;
 import org.springframework.samples.petclinic.common.CommonAttribute;
+import org.springframework.samples.petclinic.dto.common.PersonDTO;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
