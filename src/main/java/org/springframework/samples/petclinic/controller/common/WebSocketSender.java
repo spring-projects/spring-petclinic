@@ -16,6 +16,7 @@ public class WebSocketSender {
 	@Autowired
 	SimpMessagingTemplate simpMessagingTemplate;
 
+
 	public void sendMessage(String message, String type) {
 		// Send message asynchronously
 		new Thread(new Runnable() {

@@ -30,7 +30,7 @@ public class WebSocketConfig extends AbstractSecurityWebSocketMessageBrokerConfi
 
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry config) {
-		config.enableSimpleBroker("/topic");
+		config.enableSimpleBroker("/topic/public");
 		config.setApplicationDestinationPrefixes("/app");
 	}
 
@@ -39,11 +39,7 @@ public class WebSocketConfig extends AbstractSecurityWebSocketMessageBrokerConfi
 		registry.addEndpoint("/websocket").setAllowedOrigins("*").withSockJS();
 	}
 
-	@Override
-	protected void configureInbound(MessageSecurityMetadataSourceRegistry message) {
-		message.nullDestMatcher().permitAll().simpDestMatchers("/app/**").permitAll()
-				.simpSubscribeDestMatchers("/topic/**").permitAll().anyMessage().denyAll();
-	}
+
 
 	@Override
 	protected boolean sameOriginDisabled() {

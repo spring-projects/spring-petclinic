@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 import org.springframework.core.env.Environment;
+import org.springframework.samples.petclinic.common.CommonAttribute;
 import org.springframework.samples.petclinic.common.CommonEndPoint;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,8 +27,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Configuration
-@EnableWebSecurity
-@PropertySource("classpath:application.properties")
+@EnableWebSecurity(debug = true)
+@PropertySource("classpath:oauth2.properties")
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static final String CLIENT_PROPERTY_KEY = "spring.security.oauth2.client.registration.";
@@ -71,8 +72,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.loginPage(CommonEndPoint.LOGIN)
 				.loginProcessingUrl(CommonEndPoint.LOGIN)
 				.defaultSuccessUrl(CommonEndPoint.LOGIN_SUCCESS, true)
-				.usernameParameter("email")
-				.passwordParameter("password")
+				.usernameParameter(CommonAttribute.EMAIL)
+				.passwordParameter(CommonAttribute.PASSWORD)
 				.failureUrl(CommonEndPoint.LOGIN)
 				.permitAll()
 			.and()
@@ -122,6 +123,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		}
 		if (client.equals("github")) {
 			return CommonOAuth2Provider.GITHUB.getBuilder(client).clientId(clientId).clientSecret(clientSecret).build();
+		}
+
+		if (client.equals("twitter")) {
+			return ClientRegistration.withRegistrationId("twitter").clientId(clientId).clientSecret(clientSecret).build();
 		}
 
 		return null;

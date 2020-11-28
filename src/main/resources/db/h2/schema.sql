@@ -1,6 +1,3 @@
-
-
-
 DROP TABLE vets IF EXISTS;
 CREATE TABLE vets (
   id         INTEGER IDENTITY PRIMARY KEY,
@@ -78,7 +75,6 @@ CREATE TABLE privileges (
 );
 CREATE INDEX privileges_name ON privileges (name);
 
-
 DROP TABLE users IF EXISTS;
 CREATE TABLE users (
   id         INTEGER IDENTITY PRIMARY KEY,
@@ -114,7 +110,6 @@ CREATE TABLE roles_privileges (
     role_id INTEGER NOT NULL,
     privilege_id INTEGER NOT NULL
 );
-
 
 DROP TABLE auth_providers IF EXISTS;
 CREATE TABLE auth_providers (

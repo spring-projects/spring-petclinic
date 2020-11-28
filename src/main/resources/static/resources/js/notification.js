@@ -1,7 +1,8 @@
+var stompClient = null;
 
 function displayMessage() {
     var socket = new SockJS('/websocket');
-    var stompClient = Stomp.over(socket);
+    stompClient = Stomp.over(socket);
 
     stompClient.connect({}, function (frame) {
         stompClient.subscribe('/topic/public', function (socketMessage) {
