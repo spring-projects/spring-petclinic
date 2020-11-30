@@ -32,8 +32,35 @@
     <spring-format.version>0.0.25</spring-format.version>
   </properties>
 
+ <dependencyManagement>
+ <dependencies>
+   <dependency>
+     <groupId>com.wavefront</groupId>
+     <artifactId>wavefront-spring-boot</artifactId>
+     <version>2.0.2</version>
+     <type>pom</type>
+     <scope>import</scope>
+   </dependency>
+<dependency>
+<groupId>org.springframework.cloud</groupId>
+<artifactId>spring-cloud-dependencies</artifactId>
+<version>Hoxton.SR8</version>
+<type>pom</type>
+<scope>import</scope>
+</dependency>
+ </dependencies>
+ </dependencyManagement>  
+
   <dependencies>
     <!-- Spring and Spring Boot dependencies -->
+    <dependency>
+      <groupId>com.wavefront</groupId>
+      <artifactId>wavefront-spring-boot-starter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-sleuth</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
