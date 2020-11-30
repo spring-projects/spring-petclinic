@@ -16,7 +16,6 @@
 package org.springframework.samples.petclinic.controller;
 
 import org.springframework.samples.petclinic.common.*;
-import org.springframework.samples.petclinic.controller.common.WebSocketSender;
 import org.springframework.samples.petclinic.dto.business.OwnerDTO;
 import org.springframework.samples.petclinic.dto.business.PetDTO;
 import org.springframework.samples.petclinic.service.business.OwnerService;

@@ -28,7 +28,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -47,9 +49,12 @@ import org.springframework.samples.petclinic.service.business.OwnerService;
 import org.springframework.samples.petclinic.service.business.PetService;
 import org.springframework.samples.petclinic.service.business.PetTypeService;
 import org.springframework.samples.petclinic.service.common.UserDetailsServiceImpl;
+import org.springframework.samples.petclinic.validator.PetDTOValidator;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 
 /**
  * Test class for the {@link PetController}
@@ -60,6 +65,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(value = PetController.class,
 		includeFilters = @ComponentScan.Filter(value = PetTypeFormatter.class, type = FilterType.ASSIGNABLE_TYPE))
 @RunWith(SpringRunner.class)
+@ExtendWith(MockitoExtension.class)
 class PetControllerTest {
 
 	private static final int TEST_OWNER_ID = 1;
@@ -136,6 +142,7 @@ class PetControllerTest {
 	@Tag("processCreationForm")
 	@DisplayName("Verify that return to Pet creation form when pet has no type")
 	void givenNewPetWithoutType_whenPostNewPet_thenRedirectToPetUpdate() throws Exception {
+
 		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, TEST_OWNER_ID)
 				.param(CommonAttribute.PET_NAME, "Betty").param(CommonAttribute.PET_BIRTH_DATE, "2015-02-12"))
 				.andExpect(model().attributeHasNoErrors(CommonAttribute.OWNER))

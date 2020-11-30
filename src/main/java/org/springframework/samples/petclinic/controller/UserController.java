@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ResolvableType;
 import org.springframework.data.repository.query.Param;
 import org.springframework.samples.petclinic.common.*;
-import org.springframework.samples.petclinic.controller.common.WebSocketSender;
 import org.springframework.samples.petclinic.dto.common.CredentialDTO;
 import org.springframework.samples.petclinic.dto.common.MessageDTO;
 import org.springframework.samples.petclinic.dto.common.UserDTO;

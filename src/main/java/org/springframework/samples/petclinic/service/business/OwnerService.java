@@ -100,20 +100,6 @@ public class OwnerService implements BaseService<Owner, OwnerDTO> {
 	public List<OwnerDTO> findAll() {
 		List<Owner> owners = ownerRepository.findAll();
 
-		// Add pets for each owners
-		owners.forEach(owner -> {
-
-			// Find owner pets
-			List<Pet> pets = petRepository.findByOwnerId(owner.getId());
-
-			pets.forEach(pet -> {
-				// Add pet to the owner
-				owner.addPet(pet);
-				// Add owner to the pet
-				pet.setOwner(owner);
-			});
-		});
-
 		return entitiesToDTOS(owners);
 	}
 

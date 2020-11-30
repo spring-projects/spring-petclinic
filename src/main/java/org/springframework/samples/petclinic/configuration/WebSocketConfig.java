@@ -30,7 +30,7 @@ public class WebSocketConfig extends AbstractSecurityWebSocketMessageBrokerConfi
 
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry config) {
-		config.enableSimpleBroker("/topic/public");
+		config.enableSimpleBroker("/topic");
 		config.setApplicationDestinationPrefixes("/app");
 	}
 
@@ -38,8 +38,6 @@ public class WebSocketConfig extends AbstractSecurityWebSocketMessageBrokerConfi
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
 		registry.addEndpoint("/websocket").setAllowedOrigins("*").withSockJS();
 	}
-
-
 
 	@Override
 	protected boolean sameOriginDisabled() {

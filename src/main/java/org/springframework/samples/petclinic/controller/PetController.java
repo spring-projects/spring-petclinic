@@ -17,7 +17,6 @@ package org.springframework.samples.petclinic.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.common.*;
-import org.springframework.samples.petclinic.controller.common.WebSocketSender;
 import org.springframework.samples.petclinic.dto.business.OwnerDTO;
 import org.springframework.samples.petclinic.dto.business.PetDTO;
 import org.springframework.samples.petclinic.dto.business.PetTypeDTO;
@@ -84,8 +83,8 @@ class PetController extends WebSocketSender {
 	}
 
 	@PostMapping(CommonEndPoint.PETS_NEW)
-	public String processCreationForm(@ModelAttribute("owner") OwnerDTO owner, @Valid PetDTO pet, BindingResult result,
-			ModelMap model) {
+	public String processCreationForm(@ModelAttribute("owner") OwnerDTO owner, @ModelAttribute("pet") @Valid PetDTO pet,
+			BindingResult result, ModelMap model) {
 		if (owner == null) {
 			sendErrorMessage(CommonWebSocket.PET_CREATION_ERROR);
 			result.rejectValue(CommonAttribute.OWNER, CommonError.NOT_FOUND_ARGS, CommonError.NOT_FOUND_MESSAGE);
@@ -118,8 +117,8 @@ class PetController extends WebSocketSender {
 	}
 
 	@PostMapping("/pets/{petId}/edit")
-	public String processUpdateForm(@Valid PetDTO pet, BindingResult result, @ModelAttribute("owner") OwnerDTO owner,
-			ModelMap model) {
+	public String processUpdateForm(@ModelAttribute("pet") @Valid PetDTO pet, BindingResult result,
+			@ModelAttribute("owner") OwnerDTO owner, ModelMap model) {
 		if (result.hasErrors()) {
 			pet.setOwner(owner);
 			model.put(CommonAttribute.PET, pet);

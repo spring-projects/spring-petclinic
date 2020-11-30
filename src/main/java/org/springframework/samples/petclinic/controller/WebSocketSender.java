@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.controller.common;
+package org.springframework.samples.petclinic.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -15,7 +15,6 @@ public class WebSocketSender {
 
 	@Autowired
 	SimpMessagingTemplate simpMessagingTemplate;
-
 
 	public void sendMessage(String message, String type) {
 		// Send message asynchronously

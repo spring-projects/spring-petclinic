@@ -20,6 +20,8 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
@@ -123,10 +125,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		}
 		if (client.equals("github")) {
 			return CommonOAuth2Provider.GITHUB.getBuilder(client).clientId(clientId).clientSecret(clientSecret).build();
-		}
-
-		if (client.equals("twitter")) {
-			return ClientRegistration.withRegistrationId("twitter").clientId(clientId).clientSecret(clientSecret).build();
 		}
 
 		return null;

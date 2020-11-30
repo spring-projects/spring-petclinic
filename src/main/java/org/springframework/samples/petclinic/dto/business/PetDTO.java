@@ -86,6 +86,12 @@ public class PetDTO extends NamedDTO {
 	}
 
 	@Override
+	public String toString() {
+		return "PetDTO{" + "birthDate=" + birthDate + ", type=" + type + ", owner=" + owner + ", visits=" + visits
+				+ '}';
+	}
+
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;

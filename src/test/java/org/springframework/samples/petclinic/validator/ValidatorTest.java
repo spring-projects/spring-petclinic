@@ -16,6 +16,7 @@
 
 package org.springframework.samples.petclinic.validator;
 
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Set;
 
@@ -55,7 +56,9 @@ class ValidatorTest {
 		assertThat(constraintViolations).hasSize(2);
 		ConstraintViolation<Person> violation = constraintViolations.iterator().next();
 		assertThat(violation.getPropertyPath().toString()).isEqualTo("firstName");
-		assertThat(violation.getMessage()).isEqualTo("must not be empty");
+
+		assertThat(Arrays.asList("Length should be between : 2 AND 50 !", "must not be empty"))
+				.contains(violation.getMessage());
 	}
 
 }
