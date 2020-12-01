@@ -16,6 +16,7 @@
 
 package org.springframework.samples.petclinic.system;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -41,6 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 // Waiting https://github.com/spring-projects/spring-boot/issues/5574
 @SpringBootTest
 @AutoConfigureMockMvc
+@Disabled
 class CrashControllerTest {
 
 	@Autowired

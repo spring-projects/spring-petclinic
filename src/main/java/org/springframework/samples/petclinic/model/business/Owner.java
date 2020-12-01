@@ -105,20 +105,11 @@ public class Owner extends Person {
 	}
 
 	public void addPet(Pet pet) {
-		if (pet.isNew()) {
+		if (pet.isNew() || this.getPets() == null || !this.getPets().contains(pet)) {
 			getPetsInternal().add(pet);
 		}
 		pet.setOwner(this);
 	}
-	/*
-	 * public void addPet(Pet pet) {
-	 *
-	 * if (this.pets == null) { this.pets = new HashSet<>(); } try { if
-	 * (!this.getPets().contains(pet)) { getPetsInternal().add(pet); } } catch (Exception
-	 * exception) { this.pets = new HashSet<>(); this.pets.add(pet); }
-	 *
-	 * pet.setOwner(this); }
-	 */
 
 	/**
 	 * Return the Pet with the given name, or null if none found for this Owner.

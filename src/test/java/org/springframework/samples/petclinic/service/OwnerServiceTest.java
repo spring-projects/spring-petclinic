@@ -71,13 +71,13 @@ class OwnerServiceTest {
 
 	private OwnerService ownerService;
 
-	private static Owner owner;
+	private Owner owner;
 
-	private static OwnerDTO ownerDTO;
+	private OwnerDTO ownerDTO;
 
-	private static Pet pet;
+	private Pet pet;
 
-	private static PetDTO petDTO;
+	private PetDTO petDTO;
 
 	@BeforeEach
 	void beforeEach() {
