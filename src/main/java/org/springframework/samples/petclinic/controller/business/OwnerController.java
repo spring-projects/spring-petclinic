@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.controller;
+package org.springframework.samples.petclinic.controller.business;
 
 import org.springframework.samples.petclinic.common.*;
+import org.springframework.samples.petclinic.controller.common.WebSocketSender;
 import org.springframework.samples.petclinic.dto.business.OwnerDTO;
 import org.springframework.samples.petclinic.dto.business.PetDTO;
 import org.springframework.samples.petclinic.service.business.OwnerService;

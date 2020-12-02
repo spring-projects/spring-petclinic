@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.controller;
+package org.springframework.samples.petclinic.controller.business;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
@@ -9,6 +9,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.samples.petclinic.common.CommonAttribute;
 import org.springframework.samples.petclinic.common.CommonEndPoint;
 import org.springframework.samples.petclinic.common.CommonView;
+import org.springframework.samples.petclinic.controller.WebSecurityConfig;
+import org.springframework.samples.petclinic.controller.business.PetController;
 import org.springframework.samples.petclinic.dto.business.OwnerDTO;
 import org.springframework.samples.petclinic.dto.business.PetDTO;
 import org.springframework.samples.petclinic.repository.PetRepository;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.samples.petclinic.controller;
+package org.springframework.samples.petclinic.controller.business;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -41,6 +41,8 @@ import org.springframework.samples.petclinic.common.CommonAttribute;
 import org.springframework.samples.petclinic.common.CommonEndPoint;
 import org.springframework.samples.petclinic.common.CommonError;
 import org.springframework.samples.petclinic.common.CommonView;
+import org.springframework.samples.petclinic.controller.WebSecurityConfig;
+import org.springframework.samples.petclinic.controller.business.PetController;
 import org.springframework.samples.petclinic.dto.business.OwnerDTO;
 import org.springframework.samples.petclinic.dto.business.PetDTO;
 import org.springframework.samples.petclinic.dto.business.PetTypeDTO;
@@ -49,12 +51,9 @@ import org.springframework.samples.petclinic.service.business.OwnerService;
 import org.springframework.samples.petclinic.service.business.PetService;
 import org.springframework.samples.petclinic.service.business.PetTypeService;
 import org.springframework.samples.petclinic.service.common.UserDetailsServiceImpl;
-import org.springframework.samples.petclinic.validator.PetDTOValidator;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 
 /**
  * Test class for the {@link PetController}
