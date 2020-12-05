@@ -1,6 +1,9 @@
 package org.springframework.samples.petclinic.service.common;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -21,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureTestDatabase
 @SpringBootTest
 @RunWith(SpringRunner.class)
-class RoleServiceTest {
+class RoleServiceIntegrationTest {
 
 	private final static Integer USER_ID = 2;
 
@@ -42,10 +45,6 @@ class RoleServiceTest {
 
 	private RoleService roleService;
 
-	private User user;
-
-	private UserDTO userDTO;
-
 	private Role role;
 
 	private RoleDTO roleDTO;
@@ -58,8 +57,8 @@ class RoleServiceTest {
 	void beforeEach() {
 		roleService = new RoleService(roleRepository);
 
-		userDTO = userService.findById(USER_ID);
-		user = userService.dtoToEntity(userDTO);
+		UserDTO userDTO = userService.findById(USER_ID);
+		User user = userService.dtoToEntity(userDTO);
 		privilegeDTO = privilegeService.findById(PRIVILEGE_ID);
 		privilege = privilegeService.dtoToEntity(privilegeDTO);
 
@@ -76,69 +75,6 @@ class RoleServiceTest {
 		roleDTO.setUsers(Collections.singleton(userDTO));
 		roleDTO.setPrivileges(Collections.singleton(privilegeDTO));
 		userDTO.setRoles(Collections.singleton(roleDTO));
-	}
-
-	@Test
-	@Tag("dtoToEntity")
-	@DisplayName("Verify the convertion from DTO to Entity")
-	void dtoToEntity() {
-		Role found = roleService.dtoToEntity(roleDTO);
-
-		assertThat(found).isEqualToIgnoringGivenFields(role, "users", "privileges");
-		assertThat(found.getUsers()).usingElementComparatorIgnoringFields("roles").contains(user);
-		assertThat(found.getPrivileges()).usingElementComparatorIgnoringFields("roles").contains(privilege);
-	}
-
-	@Test
-	@Tag("entityToDTO")
-	@DisplayName("Verify the convertion from Entity to DTO")
-	void entityToDTO() {
-		RoleDTO found = roleService.entityToDTO(role);
-
-		assertThat(found).isEqualToIgnoringGivenFields(role, "users", "privileges");
-		assertThat(found.getUsers()).usingElementComparatorIgnoringFields("roles").contains(userDTO);
-		assertThat(found.getPrivileges()).usingElementComparatorIgnoringFields("roles").contains(privilegeDTO);
-	}
-
-	@Test
-	@Tag("dtosToEntities")
-	@DisplayName("Verify the convertion from DTOs list to Entities list")
-	void dtosToEntities() {
-		List<RoleDTO> roleDTOS = roleService.findAll();
-		List<Role> expected = new ArrayList<>();
-		roleDTOS.forEach(dto -> expected.add(roleService.dtoToEntity(dto)));
-		List<Role> found = roleService.dtosToEntities(roleDTOS);
-
-		assertThat(found).hasSameSizeAs(expected);
-
-		for (int i = 0; i < found.size(); i++) {
-			assertThat(found.get(i)).isEqualToIgnoringGivenFields(expected.get(i), "users", "privileges");
-			assertThat(found.get(i).getUsers()).usingElementComparatorIgnoringFields("roles")
-					.contains(expected.get(i).getUsers().toArray(new User[0]));
-			assertThat(found.get(i).getPrivileges()).usingElementComparatorIgnoringFields("roles")
-					.contains(expected.get(i).getPrivileges().toArray(new Privilege[0]));
-		}
-	}
-
-	@Test
-	@Tag("entitiesToDTOS")
-	@DisplayName("Verify the convertion from Entities list to DTOs list")
-	void entitiesToDTOS() {
-		List<RoleDTO> expected = roleService.findAll();
-		List<Role> roles = new ArrayList<>();
-		expected.forEach(dto -> roles.add(roleService.dtoToEntity(dto)));
-
-		List<RoleDTO> found = roleService.entitiesToDTOS(roles);
-
-		assertThat(found).hasSameSizeAs(expected);
-
-		for (int i = 0; i < found.size(); i++) {
-			assertThat(found.get(i)).isEqualToIgnoringGivenFields(expected.get(i), "users", "privileges");
-			assertThat(found.get(i).getUsers()).usingElementComparatorIgnoringFields("roles")
-					.contains(expected.get(i).getUsers().toArray(new UserDTO[0]));
-			assertThat(found.get(i).getPrivileges()).usingElementComparatorIgnoringFields("roles")
-					.contains(expected.get(i).getPrivileges().toArray(new PrivilegeDTO[0]));
-		}
 	}
 
 	@Test
@@ -198,7 +134,6 @@ class RoleServiceTest {
 		Collection<RoleDTO> expected = roleService.findAll();
 		assertThat(expected).doesNotContain(roleDTO);
 
-		roleDTO.setId(expected.size() + 1);
 		roleDTO.setUsers(new HashSet<>());
 		RoleDTO saved = roleService.save(roleDTO);
 

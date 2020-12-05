@@ -19,7 +19,7 @@ import java.util.Collection;
 public class Privilege implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@NotNull
@@ -30,21 +30,5 @@ public class Privilege implements Serializable {
 
 	@ManyToMany(mappedBy = "privileges", fetch = FetchType.EAGER)
 	private Collection<Role> roles;
-
-	/*
-	 * @Override public boolean equals(Object o) { if (this == o) return true; if (!(o
-	 * instanceof Role)) return false;
-	 *
-	 * Privilege privilege = (Privilege) o;
-	 *
-	 * if (!getId().equals(privilege.getId())) return false; if
-	 * (!getName().equals(privilege.getName())) return false;
-	 *
-	 * return getRoles() != null ? getRoles().equals(privilege.getRoles()) :
-	 * privilege.getRoles() == null; }
-	 *
-	 * @Override public String toString() { return "Privilege{" + "id=" + id + ", name='"
-	 * + name + '\'' + ", roles=" + roles + '}'; }
-	 */
 
 }

@@ -45,17 +45,4 @@ public class Role implements Serializable {
 			inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "id"))
 	private Collection<Privilege> privileges;
 
-	/*
-	 * @Override public boolean equals(Object o) { if (this == o) return true; if (!(o
-	 * instanceof Role)) return false;
-	 *
-	 * Role role = (Role) o;
-	 *
-	 * if (!getId().equals(role.getId())) return false; if
-	 * (!getName().equals(role.getName())) return false; if (getUsers() == null &&
-	 * role.getUsers() != null) return false; if (getUsers() != null && role.getUsers() ==
-	 * null) return false; return getPrivileges() != null ?
-	 * getPrivileges().equals(role.getPrivileges()) : role.getPrivileges() == null; }
-	 */
-
 }

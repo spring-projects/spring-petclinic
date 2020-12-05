@@ -88,6 +88,13 @@ public class PrivilegeService implements BaseService<Privilege, PrivilegeDTO> {
 		return entityToDTO(privilege);
 	}
 
+	public PrivilegeDTO delete(PrivilegeDTO dto) {
+		Privilege privilege = dtoToEntity(dto);
+		privilege = privilegeRepository.delete(privilege);
+
+		return entityToDTO(privilege);
+	}
+
 	public PrivilegeDTO findByName(String name) {
 		return entityToDTO(privilegeRepository.findByName(name));
 	}

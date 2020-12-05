@@ -48,4 +48,11 @@ public interface PrivilegeRepository extends Repository<Privilege, Integer> {
 	 */
 	Privilege save(Privilege privilege);
 
+	/**
+	 * Delete a {@link Privilege} to the data store.
+	 * @param privilege the {@link Privilege} to delete
+	 * @return the {@link Privilege} deleted
+	 */
+	Privilege delete(Privilege privilege);
+
 }
