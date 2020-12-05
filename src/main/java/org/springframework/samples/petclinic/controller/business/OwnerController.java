@@ -80,7 +80,7 @@ class OwnerController extends WebSocketSender {
 	@GetMapping(CommonEndPoint.OWNERS_FIND)
 	public String initFindForm(Map<String, Object> model) {
 		model.put(CommonAttribute.OWNER, new OwnerDTO());
-		sendSuccessMessage("TEST WEBSOCKET");
+
 		return CommonView.OWNER_FIND_OWNERS;
 	}
 
@@ -105,13 +105,13 @@ class OwnerController extends WebSocketSender {
 		else if (results.size() == 1) {
 			// 1 owner found
 			owner = results.iterator().next();
-			sendSuccessMessage("TEST WEBSOCKET");
+
 			return CommonView.OWNER_OWNERS_R + owner.getId();
 		}
 		else {
 			// multiple owners found
 			model.put(CommonAttribute.SELECTIONS, results);
-			sendSuccessMessage("TEST WEBSOCKET");
+
 			return CommonView.OWNER_OWNERS_LIST;
 		}
 	}
@@ -120,7 +120,7 @@ class OwnerController extends WebSocketSender {
 	public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
 		OwnerDTO ownerDTO = this.ownerService.findById(ownerId);
 		model.addAttribute(CommonAttribute.OWNER, ownerDTO);
-		sendSuccessMessage("TEST WEBSOCKET");
+
 		return CommonView.OWNER_CREATE_OR_UPDATE;
 	}
 
@@ -155,7 +155,7 @@ class OwnerController extends WebSocketSender {
 		}
 
 		modelAndView.addObject(CommonAttribute.OWNER, owner);
-		sendSuccessMessage("TEST WEBSOCKET");
+
 		return modelAndView;
 	}
 

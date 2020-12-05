@@ -1,5 +1,7 @@
 package org.springframework.samples.petclinic.model.common;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.samples.petclinic.common.CommonError;
 import org.springframework.samples.petclinic.common.CommonParameter;
 
@@ -19,6 +21,8 @@ import java.util.UUID;
  */
 @Entity(name = "Credential")
 @Table(name = "credentials")
+@Getter
+@Setter
 public class Credential extends BaseEntity {
 
 	private static final int TOKEN_EXPIRATION = 60 * 24;
@@ -50,52 +54,8 @@ public class Credential extends BaseEntity {
 	@Column(name = "expiration")
 	private Date expiration;
 
-	public Integer getProviderId() {
-		return providerId;
-	}
-
-	public void setProviderId(Integer providerId) {
-		this.providerId = providerId;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	public Boolean isVerified() {
 		return verified;
-	}
-
-	public void setVerified(Boolean verified) {
-		this.verified = verified;
-	}
-
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
-
-	public Date getExpiration() {
-		return expiration;
-	}
-
-	public void setExpiration(Date expirationDate) {
-		this.expiration = expirationDate;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	public void setExpiration() {

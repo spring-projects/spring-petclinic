@@ -92,7 +92,7 @@ class VisitControllerIntegrationTest {
 		expected.setDate(LocalDate.now());
 		expected.setPetId(PET_ID);
 
-		assertThat(found.getVisits()).contains(expected);
+		assertThat(found.getVisits()).usingElementComparatorOnFields("petId", "date").contains(expected);
 	}
 
 	@Test

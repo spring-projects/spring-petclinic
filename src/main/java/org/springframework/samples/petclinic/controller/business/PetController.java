@@ -42,7 +42,7 @@ import java.util.Collection;
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
 @Controller
-@RequestMapping("/owners/{ownerId}")
+@RequestMapping(CommonEndPoint.OWNERS_ID) // "/owners/{ownerId}")
 class PetController extends WebSocketSender {
 
 	private final OwnerService ownerService;
@@ -62,7 +62,7 @@ class PetController extends WebSocketSender {
 
 	@ModelAttribute("owner")
 	public OwnerDTO findOwner(@PathVariable("ownerId") int ownerId) {
-		return ownerService.findById(ownerId);
+		return this.ownerService.findById(ownerId);
 	}
 
 	@InitBinder("owner")
@@ -110,14 +110,16 @@ class PetController extends WebSocketSender {
 		}
 	}
 
-	@GetMapping("/pets/{petId}/edit")
+	// @GetMapping("/pets/{petId}/edit")
+	@GetMapping(CommonEndPoint.PETS_ID_EDIT)
 	public String initUpdateForm(@PathVariable("petId") int petId, ModelMap model) {
 		PetDTO pet = this.petService.findById(petId);
 		model.put(CommonAttribute.PET, pet);
 		return CommonView.PET_CREATE_OR_UPDATE;
 	}
 
-	@PostMapping("/pets/{petId}/edit")
+	// @PostMapping("/pets/{petId}/edit")
+	@PostMapping(CommonEndPoint.PETS_ID_EDIT)
 	public String processUpdateForm(@ModelAttribute("pet") @Valid PetDTO pet, BindingResult result,
 			@ModelAttribute("owner") OwnerDTO owner, ModelMap model) {
 		if (result.hasErrors()) {

@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Simple Service between Specialty entity and SpecialtyDTO Data Transfert Object.
+ * Simple Service between Role entity and RoleDTO Data Transfert Object.
  *
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
@@ -39,7 +39,9 @@ public class RoleService implements BaseService<Role, RoleDTO> {
 	@Override
 	public RoleDTO entityToDTO(Role entity) {
 		if (entity != null) {
-			return modelMapper.map(entity, RoleDTO.class);
+			RoleDTO roleDTO = modelMapper.map(entity, RoleDTO.class);
+			roleDTO.getUsers().forEach(userDTO -> userDTO.setMatchingPassword(userDTO.getPassword()));
+			return roleDTO;
 		}
 
 		return new RoleDTO();
@@ -64,11 +66,6 @@ public class RoleService implements BaseService<Role, RoleDTO> {
 	}
 
 	@Override
-	public RoleDTO findById(int id) {
-		return entityToDTO(roleRepository.findById(id));
-	}
-
-	@Override
 	public List<RoleDTO> findAll() {
 		Collection<Role> roles = roleRepository.findAll();
 		List<RoleDTO> roleDTOS = new ArrayList<>();
@@ -81,9 +78,21 @@ public class RoleService implements BaseService<Role, RoleDTO> {
 	}
 
 	@Override
+	public RoleDTO findById(int id) {
+		return entityToDTO(roleRepository.findById(id));
+	}
+
+	@Override
 	public RoleDTO save(RoleDTO dto) {
 		Role role = dtoToEntity(dto);
 		role = roleRepository.save(role);
+
+		return entityToDTO(role);
+	}
+
+	public RoleDTO delete(RoleDTO dto) {
+		Role role = dtoToEntity(dto);
+		role = roleRepository.delete(role);
 
 		return entityToDTO(role);
 	}

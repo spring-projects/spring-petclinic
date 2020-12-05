@@ -86,12 +86,6 @@ public class PetDTO extends NamedDTO {
 	}
 
 	@Override
-	public String toString() {
-		return "PetDTO{" + "birthDate=" + birthDate + ", type=" + type + ", owner=" + owner + ", visits=" + visits
-				+ '}';
-	}
-
-	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -100,15 +94,15 @@ public class PetDTO extends NamedDTO {
 		if (!super.equals(o))
 			return false;
 
-		PetDTO petDTO = (PetDTO) o;
+		PetDTO pet = (PetDTO) o;
 
-		if (!getBirthDate().equals(petDTO.getBirthDate()))
+		if (!getBirthDate().equals(pet.getBirthDate()))
 			return false;
-		if (!getType().equals(petDTO.getType()))
+		if (!getType().equals(pet.getType()))
 			return false;
-		if (getOwner() != null ? !getOwner().getId().equals(petDTO.getOwner().getId()) : petDTO.getOwner() != null)
+		if (getOwner() != null ? !getOwner().equals(pet.getOwner()) : pet.getOwner() != null)
 			return false;
-		return getVisits() != null ? getVisits().equals(petDTO.getVisits()) : petDTO.getVisits() == null;
+		return getVisits() != null ? getVisits().equals(pet.getVisits()) : pet.getVisits() == null;
 	}
 
 }

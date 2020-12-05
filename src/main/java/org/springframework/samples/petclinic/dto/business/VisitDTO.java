@@ -17,6 +17,7 @@ package org.springframework.samples.petclinic.dto.business;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.dto.common.BaseDTO;
+import org.springframework.samples.petclinic.model.business.Visit;
 
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
@@ -74,14 +75,13 @@ public class VisitDTO extends BaseDTO {
 		if (!(o instanceof VisitDTO))
 			return false;
 
-		VisitDTO visitDTO = (VisitDTO) o;
+		VisitDTO visit = (VisitDTO) o;
 
-		if (!getDate().equals(visitDTO.getDate()))
+		if (!getDate().equals(visit.getDate()))
 			return false;
-		if (getDescription() != null ? !getDescription().equals(visitDTO.getDescription())
-				: visitDTO.getDescription() != null)
+		if (!getDescription().equals(visit.getDescription()))
 			return false;
-		return getPetId().equals(visitDTO.getPetId());
+		return getPetId().equals(visit.getPetId());
 	}
 
 }

@@ -23,7 +23,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.samples.petclinic.controller.WebSecurityConfig;
-import org.springframework.samples.petclinic.controller.common.CrashController;
 import org.springframework.samples.petclinic.service.common.UserDetailsServiceImpl;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;

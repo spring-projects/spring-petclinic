@@ -43,23 +43,9 @@ input:hover,
 }
 
 /* add appropriate colors to fb, twitter and google buttons */
-.fb {
-  background-color: #3B5998;
-  color: white;
-}
-
-.twitter {
-  background-color: #55ACEE;
-  color: white;
-}
-
-.google {
-  background-color: #dd4b39;
-  color: white;
-}
-
-.github {
-  background-color: #dd4b39;
+.btn-social {
+  width: 25%;
+  margin: 10px;
   color: white;
 }
 

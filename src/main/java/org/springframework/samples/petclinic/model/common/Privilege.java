@@ -1,8 +1,6 @@
 package org.springframework.samples.petclinic.model.common;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.samples.petclinic.common.CommonParameter;
 
 import javax.persistence.*;
@@ -17,6 +15,7 @@ import java.util.Collection;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Privilege implements Serializable {
 
 	@Id
@@ -31,5 +30,21 @@ public class Privilege implements Serializable {
 
 	@ManyToMany(mappedBy = "privileges", fetch = FetchType.EAGER)
 	private Collection<Role> roles;
+
+	/*
+	 * @Override public boolean equals(Object o) { if (this == o) return true; if (!(o
+	 * instanceof Role)) return false;
+	 *
+	 * Privilege privilege = (Privilege) o;
+	 *
+	 * if (!getId().equals(privilege.getId())) return false; if
+	 * (!getName().equals(privilege.getName())) return false;
+	 *
+	 * return getRoles() != null ? getRoles().equals(privilege.getRoles()) :
+	 * privilege.getRoles() == null; }
+	 *
+	 * @Override public String toString() { return "Privilege{" + "id=" + id + ", name='"
+	 * + name + '\'' + ", roles=" + roles + '}'; }
+	 */
 
 }

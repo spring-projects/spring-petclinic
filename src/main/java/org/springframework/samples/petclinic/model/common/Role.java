@@ -1,8 +1,6 @@
 package org.springframework.samples.petclinic.model.common;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.samples.petclinic.common.CommonParameter;
@@ -24,6 +22,7 @@ import java.util.Collection;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Role implements Serializable {
 
 	@Id
@@ -45,5 +44,18 @@ public class Role implements Serializable {
 	@JoinTable(name = "roles_privileges", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
 			inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "id"))
 	private Collection<Privilege> privileges;
+
+	/*
+	 * @Override public boolean equals(Object o) { if (this == o) return true; if (!(o
+	 * instanceof Role)) return false;
+	 *
+	 * Role role = (Role) o;
+	 *
+	 * if (!getId().equals(role.getId())) return false; if
+	 * (!getName().equals(role.getName())) return false; if (getUsers() == null &&
+	 * role.getUsers() != null) return false; if (getUsers() != null && role.getUsers() ==
+	 * null) return false; return getPrivileges() != null ?
+	 * getPrivileges().equals(role.getPrivileges()) : role.getPrivileges() == null; }
+	 */
 
 }

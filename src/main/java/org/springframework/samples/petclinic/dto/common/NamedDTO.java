@@ -34,20 +34,20 @@ public class NamedDTO extends BaseDTO {
 	}
 
 	@Override
-	public String toString() {
-		return this.getName();
-	}
-
-	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
 		if (!(o instanceof NamedDTO))
 			return false;
 
-		NamedDTO namedDTO = (NamedDTO) o;
+		NamedDTO that = (NamedDTO) o;
 
-		return getName().equals(namedDTO.getName());
+		return getName().equals(that.getName());
+	}
+
+	@Override
+	public String toString() {
+		return this.getName();
 	}
 
 }

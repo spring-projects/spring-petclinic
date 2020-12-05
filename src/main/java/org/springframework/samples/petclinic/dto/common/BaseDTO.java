@@ -39,9 +39,14 @@ public class BaseDTO implements Serializable {
 		return this.id == null;
 	}
 
-	@Override
-	public String toString() {
-		return "BaseDTO{" + "id=" + id + '}';
-	}
+	/*
+	 * @Override public boolean equals(Object o) { if (this == o) return true;
+	 *
+	 * if (!(o instanceof BaseDTO)) return false;
+	 *
+	 * BaseDTO baseDTO = (BaseDTO) o;
+	 *
+	 * return new EqualsBuilder().append(getId(), baseDTO.getId()).isEquals(); }
+	 */
 
 }

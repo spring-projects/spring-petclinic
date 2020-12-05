@@ -1,5 +1,9 @@
 package org.springframework.samples.petclinic.dto.common;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.samples.petclinic.common.CommonError;
 import org.springframework.samples.petclinic.common.CommonParameter;
 
@@ -17,6 +21,10 @@ import java.util.UUID;
  *
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CredentialDTO extends BaseDTO {
 
 	@NotNull
@@ -40,9 +48,6 @@ public class CredentialDTO extends BaseDTO {
 			+ CommonParameter.PASSWORD_MIN + " AND " + CommonParameter.PASSWORD_MAX + " !")
 	private String password;
 
-	public CredentialDTO() {
-	}
-
 	public CredentialDTO(UserDTO user) {
 		this.verified = false;
 		this.setToken();
@@ -52,56 +57,12 @@ public class CredentialDTO extends BaseDTO {
 		this.password = user.getId().toString();
 	}
 
-	public String getProvider() {
-		return provider;
-	}
-
-	public void setProvider(String provider) {
-		this.provider = provider;
-	}
-
 	public void setDefaultProvider() {
 		this.provider = CommonParameter.DEFAULT_PROVIDER;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	public Boolean isVerified() {
 		return verified;
-	}
-
-	public void setVerified(Boolean verified) {
-		this.verified = verified;
-	}
-
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
-
-	public Date getExpiration() {
-		return expiration;
-	}
-
-	public void setExpiration(Date expiration) {
-		this.expiration = expiration;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	public void setExpiration() {

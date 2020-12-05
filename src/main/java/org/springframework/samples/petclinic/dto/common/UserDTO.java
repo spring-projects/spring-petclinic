@@ -2,6 +2,8 @@ package org.springframework.samples.petclinic.dto.common;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.samples.petclinic.common.CommonError;
 import org.springframework.samples.petclinic.common.CommonParameter;
 import org.springframework.security.core.GrantedAuthority;
@@ -155,10 +157,32 @@ public class UserDTO extends PersonDTO implements Serializable, UserDetails {
 	}
 
 	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+
+		if (!(o instanceof UserDTO))
+			return false;
+
+		UserDTO userDTO = (UserDTO) o;
+
+		return new EqualsBuilder().appendSuper(super.equals(o)).append(isEnabled(), userDTO.isEnabled())
+				.append(isAccountNonExpired(), userDTO.isAccountNonExpired())
+				.append(isAccountNonLocked(), userDTO.isAccountNonLocked())
+				.append(isCredentialsNonExpired(), userDTO.isCredentialsNonExpired())
+				.append(getEmail(), userDTO.getEmail()).append(getPassword(), userDTO.getPassword())
+				.append(getMatchingPassword(), userDTO.getMatchingPassword()).append(getRoles(), userDTO.getRoles())
+				.append(getTelephone(), userDTO.getTelephone()).append(getStreet1(), userDTO.getStreet1())
+				.append(getStreet2(), userDTO.getStreet2()).append(getStreet3(), userDTO.getStreet3())
+				.append(getZipCode(), userDTO.getZipCode()).append(getCity(), userDTO.getCity())
+				.append(getCountry(), userDTO.getCountry()).isEquals();
+	}
+
+	@Override
 	public String toString() {
 		return "UserDTO{" + "email='" + email + '\'' + ", password='" + password + '\'' + ", matchingPassword='"
-				+ matchingPassword + '\'' + ", user enabled=" + enabled + ", account not expired=" + accountNonExpired
-				+ ", account not locked=" + accountNonLocked + ", credentials not xxpired=" + credentialsNonExpired
+				+ matchingPassword + '\'' + ", enabled=" + enabled + ", accountNonExpired=" + accountNonExpired
+				+ ", accountNonLocked=" + accountNonLocked + ", credentialsNonExpired=" + credentialsNonExpired
 				+ ", roles=" + roles + ", telephone='" + telephone + '\'' + ", street1='" + street1 + '\''
 				+ ", street2='" + street2 + '\'' + ", street3='" + street3 + '\'' + ", zipCode='" + zipCode + '\''
 				+ ", city='" + city + '\'' + ", country='" + country + '\'' + '}';

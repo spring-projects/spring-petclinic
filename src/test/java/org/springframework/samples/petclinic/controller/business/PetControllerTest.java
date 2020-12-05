@@ -32,6 +32,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
@@ -65,9 +66,20 @@ import org.springframework.test.web.servlet.MockMvc;
 		includeFilters = @ComponentScan.Filter(value = PetTypeFormatter.class, type = FilterType.ASSIGNABLE_TYPE))
 @RunWith(SpringRunner.class)
 @ExtendWith(MockitoExtension.class)
+@AutoConfigureTestDatabase
 class PetControllerTest {
 
-	private static final int TEST_OWNER_ID = 1;
+	private static final int OWNER_ID = 15;
+
+	private static final String OWNER_FIRST_NAME = "Joe";
+
+	private static final String OWNER_LAST_NAME = "BLOGGS";
+
+	private static final String OWNER_ADDRESS = "123 Caramel Street";
+
+	private static final String OWNER_CITY = "London";
+
+	private static final String OWNER_PHONE = "6085551023";
 
 	private static final int TEST_PET_ID = 1;
 
@@ -91,13 +103,21 @@ class PetControllerTest {
 
 	@BeforeEach
 	void beforeEach() {
-		PetTypeDTO cat = new PetTypeDTO();
-		cat.setId(3);
-		cat.setName("hamster");
+		PetTypeDTO petTypeDTO = new PetTypeDTO();
+		petTypeDTO.setId(3);
+		petTypeDTO.setName("hamster");
+		OwnerDTO ownerDTO = new OwnerDTO();
+		ownerDTO = new OwnerDTO();
+		ownerDTO.setId(OWNER_ID);
+		ownerDTO.setFirstName(OWNER_FIRST_NAME);
+		ownerDTO.setLastName(OWNER_LAST_NAME);
+		ownerDTO.setAddress(OWNER_ADDRESS);
+		ownerDTO.setCity(OWNER_CITY);
+		ownerDTO.setTelephone(OWNER_PHONE);
 
-		given(this.ownerService.findById(TEST_OWNER_ID)).willReturn(new OwnerDTO());
+		given(this.ownerService.findById(OWNER_ID)).willReturn(ownerDTO);
 		given(this.petService.findById(TEST_PET_ID)).willReturn(new PetDTO());
-		given(this.petService.findPetTypes()).willReturn(Lists.newArrayList(cat));
+		given(this.petService.findPetTypes()).willReturn(Lists.newArrayList(petTypeDTO));
 	}
 
 	@Test
@@ -105,7 +125,7 @@ class PetControllerTest {
 	@Tag("initCreationForm")
 	@DisplayName("Verify that Pet creation form is initialized")
 	void givenOwnerId_whenAskToCreatePet_thenDisplayCreationViewWithRightPet() throws Exception {
-		mockMvc.perform(get(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, TEST_OWNER_ID))
+		mockMvc.perform(get(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, OWNER_ID))
 				.andExpect(status().is2xxSuccessful()).andExpect(view().name(CommonView.PET_CREATE_OR_UPDATE))
 				.andExpect(model().attributeExists(CommonAttribute.PET));
 	}
@@ -115,7 +135,7 @@ class PetControllerTest {
 	@Tag("processCreationForm")
 	@DisplayName("Verify that call the right view with parameters when attempt to create Pet")
 	void givenNewPet_whenPostNewPet_thenSavePetAndRedirectToOwnerView() throws Exception {
-		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, TEST_OWNER_ID)
+		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, OWNER_ID)
 				.param(CommonAttribute.PET_NAME, "Betty").param(CommonAttribute.PET_TYPE, "hamster")
 				.param(CommonAttribute.PET_BIRTH_DATE, "2015-02-12")).andExpect(status().is3xxRedirection())
 				.andExpect(view().name(CommonView.OWNER_OWNERS_ID_R));
@@ -126,7 +146,7 @@ class PetControllerTest {
 	@Tag("processCreationForm")
 	@DisplayName("Verify that return to Pet creation form when pet has no name")
 	void givenNewPetWithoutName_whenPostNewPet_thenRedirectToPetUpdate() throws Exception {
-		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, TEST_OWNER_ID)
+		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, OWNER_ID)
 				.param(CommonAttribute.PET_TYPE, "hamster").param(CommonAttribute.PET_BIRTH_DATE, "2015-02-12"))
 				.andExpect(model().attributeHasNoErrors(CommonAttribute.OWNER))
 				.andExpect(model().attributeHasErrors(CommonAttribute.PET))
@@ -142,7 +162,7 @@ class PetControllerTest {
 	@DisplayName("Verify that return to Pet creation form when pet has no type")
 	void givenNewPetWithoutType_whenPostNewPet_thenRedirectToPetUpdate() throws Exception {
 
-		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, TEST_OWNER_ID)
+		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, OWNER_ID)
 				.param(CommonAttribute.PET_NAME, "Betty").param(CommonAttribute.PET_BIRTH_DATE, "2015-02-12"))
 				.andExpect(model().attributeHasNoErrors(CommonAttribute.OWNER))
 				.andExpect(model().attributeHasErrors(CommonAttribute.PET))
@@ -172,7 +192,7 @@ class PetControllerTest {
 	@DisplayName("Verify that return to Pet creation form when pet has no birth date")
 	void givenNewPetWithoutBirthDate_whenPostNewPet_thenRedirectToPetUpdate() throws Exception {
 
-		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, TEST_OWNER_ID)
+		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_NEW, OWNER_ID)
 				.param(CommonAttribute.PET_NAME, "Betty").param(CommonAttribute.PET_TYPE, "hamster"))
 				.andExpect(model().attributeHasNoErrors(CommonAttribute.OWNER))
 				.andExpect(model().attributeHasErrors(CommonAttribute.PET))
@@ -187,7 +207,7 @@ class PetControllerTest {
 	@Tag("initUpdateForm")
 	@DisplayName("Verify that Pet update form is initialized with the right Pet")
 	void givenPetId_whenGetUpdatePet_thenReturnUpdateViewWithPet() throws Exception {
-		mockMvc.perform(get(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_ID_EDIT, TEST_OWNER_ID, TEST_PET_ID))
+		mockMvc.perform(get(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_ID_EDIT, OWNER_ID, TEST_PET_ID))
 				.andExpect(status().isOk()).andExpect(model().attributeExists(CommonAttribute.PET))
 				.andExpect(view().name(CommonView.PET_CREATE_OR_UPDATE));
 	}
@@ -196,7 +216,7 @@ class PetControllerTest {
 	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("processUpdateForm")
 	void givenOwnerAndModifiedPet_whenAskToUpdatePet_thenUpdatePetAndDisplayOwnerView() throws Exception {
-		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_ID_EDIT, TEST_OWNER_ID, TEST_PET_ID)
+		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_ID_EDIT, OWNER_ID, TEST_PET_ID)
 				.param(CommonAttribute.PET_NAME, "Betty").param(CommonAttribute.PET_TYPE, "hamster")
 				.param(CommonAttribute.PET_BIRTH_DATE, "2015-02-12")).andExpect(status().is3xxRedirection())
 				.andExpect(view().name(CommonView.OWNER_OWNERS_ID_R));
@@ -206,7 +226,7 @@ class PetControllerTest {
 	@WithMockUser(value = WebSecurityConfig.TEST_USER)
 	@Tag("processUpdateForm")
 	void testProcessUpdateFormHasErrors() throws Exception {
-		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_ID_EDIT, TEST_OWNER_ID, TEST_PET_ID)
+		mockMvc.perform(post(CommonEndPoint.OWNERS_ID + CommonEndPoint.PETS_ID_EDIT, OWNER_ID, TEST_PET_ID)
 				.param(CommonAttribute.PET_NAME, "Betty").param(CommonAttribute.PET_BIRTH_DATE, "2015-02-12"))
 				.andExpect(model().attributeHasNoErrors(CommonAttribute.OWNER))
 				.andExpect(model().attributeHasErrors(CommonAttribute.PET)).andExpect(status().isOk())

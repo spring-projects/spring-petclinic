@@ -2,6 +2,8 @@ package org.springframework.samples.petclinic.model.common;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.samples.petclinic.common.CommonError;
 import org.springframework.samples.petclinic.common.CommonParameter;
 import org.springframework.security.core.GrantedAuthority;
@@ -154,5 +156,32 @@ public class User extends Person implements Serializable, UserDetails {
 
 		return getGrantedAuthorities(getPrivileges(this.roles));
 	}
+	/*
+	 * @Override public boolean equals(Object o) { if (this == o) return true;
+	 *
+	 * if (!(o instanceof User)) return false;
+	 *
+	 * User user = (User) o;
+	 *
+	 * return new EqualsBuilder().appendSuper(super.equals(o)).append(isEnabled(),
+	 * user.isEnabled()) .append(isAccountNonExpired(), user.isAccountNonExpired())
+	 * .append(isAccountNonLocked(), user.isAccountNonLocked())
+	 * .append(isCredentialsNonExpired(),
+	 * user.isCredentialsNonExpired()).append(getEmail(), user.getEmail())
+	 * .append(getPassword(), user.getPassword()).append(getRoles(), user.getRoles())
+	 * .append(getTelephone(), user.getTelephone()).append(getStreet1(),
+	 * user.getStreet1()) .append(getStreet2(), user.getStreet2()).append(getStreet3(),
+	 * user.getStreet3()) .append(getZipCode(), user.getZipCode()).append(getCity(),
+	 * user.getCity()) .append(getCountry(), user.getCountry()).isEquals(); }
+	 *
+	 * @Override public int hashCode() { return new HashCodeBuilder(17,
+	 * 37).append(getEmail()).append(getPassword()).append(isEnabled())
+	 * .append(isAccountNonExpired()).append(isAccountNonLocked()).append(
+	 * isCredentialsNonExpired())
+	 * .append(getRoles()).append(getTelephone()).append(getStreet1()).append(getStreet2()
+	 * )
+	 * .append(getStreet3()).append(getZipCode()).append(getCity()).append(getCountry()).
+	 * toHashCode(); }
+	 */
 
 }

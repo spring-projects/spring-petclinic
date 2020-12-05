@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.service;
+package org.springframework.samples.petclinic.service.business;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,9 +19,6 @@ import org.springframework.samples.petclinic.repository.OwnerRepository;
 import org.springframework.samples.petclinic.repository.PetRepository;
 import org.springframework.samples.petclinic.repository.PetTypeRepository;
 import org.springframework.samples.petclinic.repository.VisitRepository;
-import org.springframework.samples.petclinic.service.business.OwnerService;
-import org.springframework.samples.petclinic.service.business.PetService;
-import org.springframework.samples.petclinic.service.business.PetTypeService;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
@@ -134,7 +131,6 @@ class OwnerServiceTest {
 		for (Pet pet : found.getPets()) {
 			assertThat(owner.getPets()).extracting("id").contains(pet.getId());
 		}
-
 	}
 
 	@Test

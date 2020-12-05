@@ -9,13 +9,8 @@ public class SocketSecurityConfig extends AbstractSecurityWebSocketMessageBroker
 
 	@Override
 	protected void configureInbound(MessageSecurityMetadataSourceRegistry message) {
-		// @formatter:off
-
-		// message types other than MESSAGE and SUBSCRIBE
-		message.simpDestMatchers("/app/**").permitAll()
-			.simpSubscribeDestMatchers("/topic/**").permitAll()
-			// catch all
-			.anyMessage().denyAll();
+		message.simpDestMatchers("/app/**").permitAll().simpSubscribeDestMatchers("/topic/**").permitAll().anyMessage()
+				.permitAll();
 
 		// @formatter:on
 	}

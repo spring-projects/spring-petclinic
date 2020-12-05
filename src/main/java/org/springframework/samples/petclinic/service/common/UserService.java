@@ -38,7 +38,6 @@ public class UserService implements BaseService<User, UserDTO> {
 		}
 
 		User user = modelMapper.map(dto, User.class);
-		user.setPassword(dto.getPassword());
 		dto.getRoles().forEach(role -> user.addRole(modelMapper.map(role, Role.class)));
 
 		return user;
@@ -51,7 +50,6 @@ public class UserService implements BaseService<User, UserDTO> {
 		}
 
 		UserDTO userDto = modelMapper.map(entity, UserDTO.class);
-		userDto.setPassword(entity.getPassword());
 		userDto.setMatchingPassword(entity.getPassword());
 
 		return userDto;

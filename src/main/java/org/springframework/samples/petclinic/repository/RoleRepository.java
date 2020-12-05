@@ -43,7 +43,15 @@ public interface RoleRepository extends Repository<Role, Integer> {
 	/**
 	 * Save a {@link Role} to the data store, either inserting or updating it.
 	 * @param role the {@link Role} to save
+	 * @return the {@link Role} saved
 	 */
 	Role save(Role role);
+
+	/**
+	 * Delete a {@link Role} to the data store.
+	 * @param role the {@link Role} to delete
+	 * @return the {@link Role} deleted
+	 */
+	Role delete(Role role);
 
 }

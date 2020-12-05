@@ -20,8 +20,6 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
@@ -29,7 +27,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 @PropertySource("classpath:oauth2.properties")
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -64,7 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 			.antMatchers("/").permitAll()
 			.antMatchers("/login", "/logout", "/register","/confirm-account").permitAll()
-			.antMatchers("/websocket/**", "/topic/**", "/app/**").permitAll()
+			.antMatchers("/webjars/**","/websocket/**", "/topic/**", "/app/**").permitAll()
 			.antMatchers("/resources/**").permitAll()
 			.antMatchers("/h2-console/**").permitAll()
 			.antMatchers("/edit/**").authenticated()

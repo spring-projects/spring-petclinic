@@ -17,9 +17,12 @@
 
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
-      <button class="btn btn-default" type="submit">Login</button>
-      <a href="/register" class="btn btn-default" ><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-        <span>Register</span></a>
+      <button class="btn btn-default" type="submit">
+        <span class="glyphicon glyphicon-log-in" aria-hidden="true"> Login</span>
+      </button>
+      <a href="/register" class="btn btn-default" >
+        <span class="glyphicon glyphicon-pencil" aria-hidden="true"> Register</span>
+      </a>
     </div>
   </div>
 
@@ -28,13 +31,13 @@
 <h2 style="text-align:center">Login with Social Media</h2>
 
   <div class="col-md-12 " th:each="url : ${urls}" style="text-align:center">
-    <a th:if="${url.key == 'Google'}" th:href="${url.value}" class="btn btn-bloc" style="background-color: #dd4b39;color: white">
+    <a th:if="${url.key == 'Google'}" th:href="${url.value}" class="btn btn-bloc btn-social btn-lg" style="background-color: #dd4b39">
       <i class="fa fa-google fa-fw"></i> Login with Google
     </a>
-    <a th:if="${url.key == 'GitHub'}" th:href="${url.value}" class="btn btn-bloc" style="background-color: white;color: black">
+    <a th:if="${url.key == 'GitHub'}" th:href="${url.value}" class="btn btn-bloc btn-social btn-lg" style="background-color: black">
       <i class="fa fa-github fa-fw"></i> Login with Github
     </a>
-    <a th:if="${url.key == 'Facebook'}" th:href="${url.value}" class="btn btn-bloc" style="background-color: #3B5998;color: white">
+    <a th:if="${url.key == 'Facebook'}" th:href="${url.value}" class="btn btn-bloc btn-social btn-lg" style="background-color: #3B5998">
         <i class="fa fa-facebook fa-fw"></i> Login with Facebook
     </a>
 

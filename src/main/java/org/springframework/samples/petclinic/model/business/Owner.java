@@ -141,7 +141,7 @@ public class Owner extends Person {
 
 	@Override
 	public String toString() {
-		return new ToStringCreator(this).append(CommonAttribute.ID, this.getId())
+		return new ToStringCreator(this).append(CommonAttribute.OWNER_ID, this.getId())
 				.append(CommonAttribute.NEW, this.isNew()).append(CommonAttribute.OWNER_LAST_NAME, this.getLastName())
 				.append(CommonAttribute.OWNER_FIRST_NAME, this.getFirstName())
 				.append(CommonAttribute.OWNER_ADDRESS, this.address).append(CommonAttribute.OWNER_CITY, this.city)

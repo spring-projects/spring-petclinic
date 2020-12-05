@@ -15,6 +15,9 @@
  */
 package org.springframework.samples.petclinic.dto.common;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import javax.validation.constraints.NotEmpty;
 
 /**
@@ -53,11 +56,11 @@ public class PersonDTO extends BaseDTO {
 		if (!(o instanceof PersonDTO))
 			return false;
 
-		PersonDTO personDTO = (PersonDTO) o;
+		PersonDTO person = (PersonDTO) o;
 
-		if (!getFirstName().equals(personDTO.getFirstName()))
+		if (!getFirstName().equals(person.getFirstName()))
 			return false;
-		return getLastName().equals(personDTO.getLastName());
+		return getLastName().equals(person.getLastName());
 	}
 
 }
