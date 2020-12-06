@@ -115,12 +115,25 @@ public class User extends Person implements Serializable, UserDetails {
 		return credentialsNonExpired;
 	}
 
-	public void addRole(Role role) {
+	protected Collection<Role> getRolesInternal() {
 		if (this.roles == null) {
 			this.roles = new HashSet<>();
 		}
-		this.roles.add(role);
-		role.getUsers().add(this);
+
+		return this.roles;
+	}
+
+	public Collection<Role> getRoles() {
+		return getRolesInternal();
+	}
+
+	public void addRole(Role role) {
+		if (this.getRoles() == null || !this.getRoles().contains(role)) {
+			getRolesInternal().add(role);
+		}
+		if (!role.getUsers().contains(this)) {
+			role.addUser(this);
+		}
 	}
 
 	public void removeRole(Role role) {
@@ -156,32 +169,5 @@ public class User extends Person implements Serializable, UserDetails {
 
 		return getGrantedAuthorities(getPrivileges(this.roles));
 	}
-	/*
-	 * @Override public boolean equals(Object o) { if (this == o) return true;
-	 *
-	 * if (!(o instanceof User)) return false;
-	 *
-	 * User user = (User) o;
-	 *
-	 * return new EqualsBuilder().appendSuper(super.equals(o)).append(isEnabled(),
-	 * user.isEnabled()) .append(isAccountNonExpired(), user.isAccountNonExpired())
-	 * .append(isAccountNonLocked(), user.isAccountNonLocked())
-	 * .append(isCredentialsNonExpired(),
-	 * user.isCredentialsNonExpired()).append(getEmail(), user.getEmail())
-	 * .append(getPassword(), user.getPassword()).append(getRoles(), user.getRoles())
-	 * .append(getTelephone(), user.getTelephone()).append(getStreet1(),
-	 * user.getStreet1()) .append(getStreet2(), user.getStreet2()).append(getStreet3(),
-	 * user.getStreet3()) .append(getZipCode(), user.getZipCode()).append(getCity(),
-	 * user.getCity()) .append(getCountry(), user.getCountry()).isEquals(); }
-	 *
-	 * @Override public int hashCode() { return new HashCodeBuilder(17,
-	 * 37).append(getEmail()).append(getPassword()).append(isEnabled())
-	 * .append(isAccountNonExpired()).append(isAccountNonLocked()).append(
-	 * isCredentialsNonExpired())
-	 * .append(getRoles()).append(getTelephone()).append(getStreet1()).append(getStreet2()
-	 * )
-	 * .append(getStreet3()).append(getZipCode()).append(getCity()).append(getCountry()).
-	 * toHashCode(); }
-	 */
 
 }

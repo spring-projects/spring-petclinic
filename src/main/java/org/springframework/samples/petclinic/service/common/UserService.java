@@ -37,10 +37,7 @@ public class UserService implements BaseService<User, UserDTO> {
 			return null;
 		}
 
-		User user = modelMapper.map(dto, User.class);
-		dto.getRoles().forEach(role -> user.addRole(modelMapper.map(role, Role.class)));
-
-		return user;
+		return modelMapper.map(dto, User.class);
 	}
 
 	@Override
@@ -97,6 +94,20 @@ public class UserService implements BaseService<User, UserDTO> {
 		User user = dtoToEntity(dto);
 
 		user = userRepository.save(user);
+
+		return entityToDTO(user);
+	}
+
+	public UserDTO delete(UserDTO dto) {
+		User user = dtoToEntity(dto);
+
+		// remove user from roles
+		User finalUser = user;
+		user.getRoles().forEach(role -> {
+			role.removeUser(finalUser);
+			roleRepository.save(role);
+		});
+		user = userRepository.delete(user);
 
 		return entityToDTO(user);
 	}

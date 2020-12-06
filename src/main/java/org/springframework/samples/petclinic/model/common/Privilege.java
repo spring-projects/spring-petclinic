@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashSet;
 
 @Entity
 @Table(name = "privileges")
@@ -30,5 +31,27 @@ public class Privilege implements Serializable {
 
 	@ManyToMany(mappedBy = "privileges", fetch = FetchType.EAGER)
 	private Collection<Role> roles;
+
+	protected Collection<Role> getRolesInternal() {
+		if (this.roles == null) {
+			this.roles = new HashSet<>();
+		}
+
+		return this.roles;
+	}
+
+	public Collection<Role> getRoles() {
+		return getRolesInternal();
+	}
+
+	public void addRole(Role role) {
+		if (this.getRoles() == null || !this.getRoles().contains(role)) {
+			getRolesInternal().add(role);
+		}
+
+		if (!role.getPrivileges().contains(this)) {
+			role.addPrivilege(this);
+		}
+	}
 
 }

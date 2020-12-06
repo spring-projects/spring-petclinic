@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.samples.petclinic.common.CommonParameter;
 
 import javax.validation.constraints.NotEmpty;
@@ -13,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * Simple Data Transfert Object representing a list of roles.
@@ -36,16 +35,46 @@ public class RoleDTO implements Serializable {
 
 	private Collection<PrivilegeDTO> privileges;
 
-	/*
-	 * @Override public boolean equals(Object o) { if (this == o) return true;
-	 *
-	 * if (!(o instanceof RoleDTO)) return false;
-	 *
-	 * RoleDTO roleDTO = (RoleDTO) o;
-	 *
-	 * return new EqualsBuilder().append(getId(), roleDTO.getId()).append(getName(),
-	 * roleDTO.getName()) .append(getUsers(), roleDTO.getUsers()).append(getPrivileges(),
-	 * roleDTO.getPrivileges()).isEquals(); }
-	 */
+	protected Collection<UserDTO> getUsersInternal() {
+		if (this.users == null) {
+			this.users = new HashSet<>();
+		}
+
+		return this.users;
+	}
+
+	public Collection<UserDTO> getUsers() {
+		return getUsersInternal();
+	}
+
+	public void addUser(UserDTO user) {
+		if (this.getUsers() == null || !this.getUsers().contains(user)) {
+			getUsersInternal().add(user);
+		}
+		if (!user.getRoles().contains(this)) {
+			user.addRole(this);
+		}
+	}
+
+	protected Collection<PrivilegeDTO> getPrivilegesInternal() {
+		if (this.privileges == null) {
+			this.privileges = new HashSet<>();
+		}
+
+		return this.privileges;
+	}
+
+	public Collection<PrivilegeDTO> getPrivileges() {
+		return getPrivilegesInternal();
+	}
+
+	public void addPrivilege(PrivilegeDTO privilege) {
+		if (this.getPrivileges() == null || !this.getPrivileges().contains(privilege)) {
+			getPrivilegesInternal().add(privilege);
+		}
+		if (!privilege.getRoles().contains(this)) {
+			privilege.addRole(this);
+		}
+	}
 
 }

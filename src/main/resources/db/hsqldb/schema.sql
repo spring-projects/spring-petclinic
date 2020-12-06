@@ -66,14 +66,14 @@ CREATE INDEX visits_pet_id ON visits (pet_id);
 DROP TABLE roles IF EXISTS;
 CREATE TABLE roles (
   id          INTEGER IDENTITY PRIMARY KEY,
-  name        VARCHAR(20) NOT NULL
+  name        VARCHAR(20) NOT NULL UNIQUE
 );
 CREATE INDEX roles_name ON roles (name);
 
 DROP TABLE privileges IF EXISTS;
 CREATE TABLE privileges (
   id          INTEGER IDENTITY PRIMARY KEY,
-  name        VARCHAR(20) NOT NULL
+  name        VARCHAR(20) NOT NULL UNIQUE
 );
 CREATE INDEX privileges_name ON privileges (name);
 
@@ -113,7 +113,8 @@ CREATE TABLE roles_privileges (
     role_id INTEGER NOT NULL,
     privilege_id INTEGER NOT NULL
 );
-
+ALTER TABLE roles_privileges ADD CONSTRAINT fk_roles_privileges_role_id FOREIGN KEY (role_id) REFERENCES roles (id);
+ALTER TABLE roles_privileges ADD CONSTRAINT fk_roles_privileges_privilege_id FOREIGN KEY (privilege_id) REFERENCES privileges (id);
 
 DROP TABLE auth_providers IF EXISTS;
 CREATE TABLE auth_providers (

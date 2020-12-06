@@ -4,11 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * Simple Data Transfert Object representing a Privileges.
@@ -27,15 +26,26 @@ public class PrivilegeDTO implements Serializable {
 
 	private Collection<RoleDTO> roles;
 
-	/*
-	 * @Override public boolean equals(Object o) { if (this == o) return true;
-	 *
-	 * if (!(o instanceof PrivilegeDTO)) return false;
-	 *
-	 * PrivilegeDTO that = (PrivilegeDTO) o;
-	 *
-	 * return new EqualsBuilder().append(getId(), that.getId()).append(getName(),
-	 * that.getName()) .append(getRoles(), that.getRoles()).isEquals(); }
-	 */
+	protected Collection<RoleDTO> getRolesInternal() {
+		if (this.roles == null) {
+			this.roles = new HashSet<>();
+		}
+
+		return this.roles;
+	}
+
+	public Collection<RoleDTO> getRoles() {
+		return getRolesInternal();
+	}
+
+	public void addRole(RoleDTO role) {
+		if (this.getRoles() == null || !this.getRoles().contains(role)) {
+			getRolesInternal().add(role);
+		}
+
+		if (!role.getPrivileges().contains(this)) {
+			role.addPrivilege(this);
+		}
+	}
 
 }

@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.samples.petclinic.common.CommonError;
 import org.springframework.samples.petclinic.common.CommonParameter;
+import org.springframework.samples.petclinic.model.common.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -118,12 +119,25 @@ public class UserDTO extends PersonDTO implements Serializable, UserDetails {
 		return false;
 	}
 
-	public void addRole(RoleDTO role) {
+	protected Collection<RoleDTO> getRolesInternal() {
 		if (this.roles == null) {
 			this.roles = new HashSet<>();
 		}
 
-		this.roles.add(role);
+		return this.roles;
+	}
+
+	public Collection<RoleDTO> getRoles() {
+		return getRolesInternal();
+	}
+
+	public void addRole(RoleDTO role) {
+		if (this.getRoles() == null || !this.getRoles().contains(role)) {
+			getRolesInternal().add(role);
+		}
+		if (!role.getUsers().contains(this)) {
+			role.addUser(this);
+		}
 	}
 
 	public void removeRole(RoleDTO role) {
