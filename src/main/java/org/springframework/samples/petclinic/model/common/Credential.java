@@ -1,6 +1,8 @@
 package org.springframework.samples.petclinic.model.common;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.samples.petclinic.common.CommonError;
 import org.springframework.samples.petclinic.common.CommonParameter;
@@ -23,6 +25,8 @@ import java.util.UUID;
 @Table(name = "credentials")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Credential extends BaseEntity {
 
 	private static final int TOKEN_EXPIRATION = 60 * 24;
@@ -53,6 +57,15 @@ public class Credential extends BaseEntity {
 
 	@Column(name = "expiration")
 	private Date expiration;
+
+	public Credential(@NotNull Integer providerId, @NotNull @Size(min = CommonParameter.EMAIL_MIN, max = CommonParameter.EMAIL_MAX, message = CommonError.FORMAT_BETWEEN
+		+ CommonParameter.EMAIL_MIN + " AND " + CommonParameter.EMAIL_MAX + " !") @Pattern(regexp = CommonParameter.EMAIL_REGEXP, message = CommonError.EMAIL_FORMAT) String email, @NotNull @Size(min = CommonParameter.PASSWORD_MIN, max = CommonParameter.PASSWORD_MAX, message = CommonError.FORMAT_BETWEEN
+		+ CommonParameter.PASSWORD_MIN + " AND " + CommonParameter.PASSWORD_MAX + " !") String password, @NotNull Boolean verified) {
+		this.providerId = providerId;
+		this.email = email;
+		this.password = password;
+		this.verified = verified;
+	}
 
 	public Boolean isVerified() {
 		return verified;

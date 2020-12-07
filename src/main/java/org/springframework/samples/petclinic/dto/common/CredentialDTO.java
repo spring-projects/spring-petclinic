@@ -37,24 +37,33 @@ public class CredentialDTO extends BaseDTO {
 	private String email;
 
 	@NotNull
+	@Size(min = CommonParameter.PASSWORD_MIN, max = CommonParameter.PASSWORD_MAX, message = CommonError.FORMAT_BETWEEN
+		+ CommonParameter.PASSWORD_MIN + " AND " + CommonParameter.PASSWORD_MAX + " !")
+	private String password;
+
+	@NotNull
 	private Boolean verified;
 
 	private String token;
 
 	private Date expiration;
 
-	@NotNull
-	@Size(min = CommonParameter.PASSWORD_MIN, max = CommonParameter.PASSWORD_MAX, message = CommonError.FORMAT_BETWEEN
-			+ CommonParameter.PASSWORD_MIN + " AND " + CommonParameter.PASSWORD_MAX + " !")
-	private String password;
-
 	public CredentialDTO(UserDTO user) {
-		this.verified = false;
-		this.setToken();
-		this.setExpiration();
 		this.setProvider(CommonParameter.DEFAULT_PROVIDER);
 		this.email = user.getEmail();
 		this.password = user.getId().toString();
+		this.verified = false;
+		this.setToken();
+		this.setExpiration();
+	}
+
+	public CredentialDTO(@NotNull String provider, @NotNull @Size(min = CommonParameter.EMAIL_MIN, max = CommonParameter.EMAIL_MAX, message = CommonError.FORMAT_BETWEEN
+		+ CommonParameter.EMAIL_MIN + " AND " + CommonParameter.EMAIL_MAX + " !") @Pattern(regexp = CommonParameter.EMAIL_REGEXP, message = CommonError.EMAIL_FORMAT) String email, @NotNull @Size(min = CommonParameter.PASSWORD_MIN, max = CommonParameter.PASSWORD_MAX, message = CommonError.FORMAT_BETWEEN
+		+ CommonParameter.PASSWORD_MIN + " AND " + CommonParameter.PASSWORD_MAX + " !") String password, @NotNull Boolean verified) {
+		this.provider = provider;
+		this.email = email;
+		this.password = password;
+		this.verified = verified;
 	}
 
 	public void setDefaultProvider() {
