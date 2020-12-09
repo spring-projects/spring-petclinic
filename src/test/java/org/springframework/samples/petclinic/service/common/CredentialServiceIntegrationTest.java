@@ -1,9 +1,6 @@
 package org.springframework.samples.petclinic.service.common;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -19,7 +16,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.Calendar;
+import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.*;
@@ -28,7 +27,7 @@ import static org.mockito.BDDMockito.given;
 @SpringBootTest
 @AutoConfigureTestDatabase
 @RunWith(SpringRunner.class)
-class CredentialServiceTest {
+class CredentialServiceIntegrationTest {
 
 	private static String PROVIDER_TEST_NAME = "Provider Test";
 
@@ -43,10 +42,10 @@ class CredentialServiceTest {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	@MockBean
+	@Autowired
 	private AuthProviderRepository authProviderRepository;
 
-	@MockBean
+	@Autowired
 	private CredentialRepository credentialRepository;
 
 	private CredentialService credentialService;
@@ -57,8 +56,12 @@ class CredentialServiceTest {
 
 	private AuthProvider authProvider;
 
+	private List<Credential> allCredentials;
+
 	@BeforeEach
 	void beforeEach() {
+		allCredentials = credentialRepository.findAll();
+
 		credentialService = new CredentialService(credentialRepository, bCryptPasswordEncoder, authProviderRepository);
 		authProvider = new AuthProvider(PROVIDER_TEST_ID, PROVIDER_TEST_NAME);
 		credential = new Credential(PROVIDER_TEST_ID, EMAIL_TEST, PASSWORD_TEST, true);
@@ -71,85 +74,31 @@ class CredentialServiceTest {
 		cal.add(Calendar.MINUTE, credential.getTokenExpiration());
 		credential.setExpiration(cal.getTime());
 		credentialDTO.setExpiration(cal.getTime());
-
-		given(authProviderRepository.findByName(anyString())).willReturn(authProvider);
-		given(authProviderRepository.findById(anyInt())).willReturn(authProvider);
 	}
 
-	@Test
-	@Tag("dtoToEntity")
-	@DisplayName("Verify the convertion from DTO to Entity")
-	void dtoToEntity() {
-		Credential found = credentialService.dtoToEntity(credentialDTO);
-
-		assertThat(found).isEqualToComparingFieldByField(credential);
-	}
-
-	@Test
-	@Tag("entityToDTO")
-	@DisplayName("Verify the convertion from Entity to DTO")
-	void entityToDTO() {
-		CredentialDTO found = credentialService.entityToDTO(credential);
-
-		assertThat(found).isEqualToComparingFieldByField(credentialDTO);
-	}
 
 	@Test
 	@Tag("findByEmailAndProvider")
 	@DisplayName("Verify that we call right method to get Credential by Email and Provider")
 	void findByEmailAndProvider() {
-		given(credentialRepository.findByEmailAndProvider(EMAIL_TEST, PROVIDER_TEST_ID)).willReturn(credential);
 
-		CredentialDTO found = credentialService.findByEmailAndProvider(EMAIL_TEST, PROVIDER_TEST_NAME);
+		for(Credential credential: allCredentials) {
+			String email = credential.getEmail();
+			String provider = authProviderRepository.findById(credential.getProviderId()).getName();
+			CredentialDTO found = credentialService.findByEmailAndProvider(email,provider);
+			assertThat(found).isEqualToComparingFieldByField(credentialService.entityToDTO(credential));
+		}
 
-		assertThat(found).isEqualToComparingFieldByField(credentialDTO);
 	}
 
 	@Test
 	@Tag("findByToken")
 	@DisplayName("Verify that we call right method to get Credential by Token")
+	@Disabled
 	void findByToken() {
-		given(credentialRepository.findByToken(TOKEN_TEST)).willReturn(credential);
+		credentialDTO = credentialService.save(credentialDTO);
 
 		CredentialDTO found = credentialService.findByToken(TOKEN_TEST);
-
-		assertThat(found).isEqualToComparingFieldByField(credentialDTO);
-	}
-
-	@Test
-	@Tag("save")
-	@DisplayName("Verify that we call right method to save Credential")
-	void save() {
-		given(credentialRepository.save(any(Credential.class))).willReturn(credential);
-
-		CredentialDTO found = credentialService.save(credentialDTO);
-
-		assertThat(found).isEqualToComparingFieldByField(credentialDTO);
-	}
-
-	@Test
-	@Tag("saveNew")
-	@DisplayName("Verify that we call right method to save Credential from User")
-	void saveNew() {
-		UserDTO user = new UserDTO();
-		user.setEmail(EMAIL_TEST);
-		user.setPassword(PASSWORD_TEST);
-		user.setMatchingPassword(PASSWORD_TEST);
-
-		given(credentialRepository.save(any(Credential.class))).willReturn(credential);
-
-		CredentialDTO found = credentialService.saveNew(user);
-
-		assertThat(found).isEqualToComparingFieldByField(credentialDTO);
-	}
-
-	@Test
-	@Tag("delete")
-	@DisplayName("Verify that we call right method to delete Credential")
-	void delete() {
-		given(credentialRepository.delete(any(Credential.class))).willReturn(credential);
-
-		CredentialDTO found = credentialService.delete(credentialDTO);
 
 		assertThat(found).isEqualToComparingFieldByField(credentialDTO);
 	}

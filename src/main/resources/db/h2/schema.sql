@@ -128,7 +128,7 @@ CREATE TABLE credentials (
   password    VARCHAR(255) NOT NULL,
   verified    BOOLEAN NOT NULL,
   token       VARCHAR(255) DEFAULT NULL,
-  expiration  DATE DEFAULT NULL
+  expiration  TIMESTAMP DEFAULT NULL
 );
 ALTER TABLE credentials ADD CONSTRAINT fk_credentials_provider_id FOREIGN KEY (provider_id) REFERENCES auth_providers (id);
 CREATE INDEX credentials_email ON credentials (email);

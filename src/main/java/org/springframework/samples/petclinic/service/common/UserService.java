@@ -2,7 +2,6 @@ package org.springframework.samples.petclinic.service.common;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.samples.petclinic.dto.common.UserDTO;
-import org.springframework.samples.petclinic.model.common.Role;
 import org.springframework.samples.petclinic.model.common.User;
 import org.springframework.samples.petclinic.repository.RoleRepository;
 import org.springframework.samples.petclinic.repository.UserRepository;

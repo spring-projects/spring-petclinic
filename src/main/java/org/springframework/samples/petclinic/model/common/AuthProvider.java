@@ -23,4 +23,5 @@ public class AuthProvider extends NamedEntity {
 		this.setId(id);
 		this.setName(name);
 	}
+
 }

@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ResolvableType;
 import org.springframework.data.repository.query.Param;
 import org.springframework.samples.petclinic.common.*;
-import org.springframework.samples.petclinic.controller.common.WebSocketSender;
 import org.springframework.samples.petclinic.dto.common.CredentialDTO;
 import org.springframework.samples.petclinic.dto.common.MessageDTO;
 import org.springframework.samples.petclinic.dto.common.UserDTO;
@@ -37,6 +36,9 @@ import java.util.Map;
 @Slf4j
 @Controller
 public class UserController extends WebSocketSender {
+
+	// set true if you whant confirmation email for first provider connection
+	private static final boolean ASK_OAUTH2_CONFIRMATION = false;
 
 	private final UserService userService;
 
@@ -179,15 +181,23 @@ public class UserController extends WebSocketSender {
 				user = userService.save(user);
 			}
 
-			// send confirmation mail
-			MessageDTO message = new MessageDTO(firstName, lastName, "admin@petclinic.com", credential.getEmail(),
-					"New connexion from " + credential.getProvider(),
-					"Your attempt to connect from " + credential.getProvider()
-							+ " To confirm this connection, please click the link below : ",
-					"http://localhost:8080/confirm-account?token=" + credential.getToken());
+			if (ASK_OAUTH2_CONFIRMATION) {
+				// prepare message
+				MessageDTO message = new MessageDTO(firstName, lastName, "admin@petclinic.com", email,
+						"New connexion from " + credential.getProvider(),
+						"Your attempt to connect from " + credential.getProvider()
+								+ " To confirm this connection, please click the link below : ",
+						"http://localhost:8080/confirm-account?token=" + credential.getToken());
 
-			log.info(message.toString());
-			emailService.sendMailAsynch(message, Locale.getDefault());
+				// send confirmation mail
+				emailService.sendMailAsynch(message, Locale.getDefault());
+			}
+			else {
+				credential.setExpiration(null);
+				credential.setToken("");
+				credential.setVerified(true);
+				credentialService.save(credential);
+			}
 
 			// disconnect
 			authentication.eraseCredentials();

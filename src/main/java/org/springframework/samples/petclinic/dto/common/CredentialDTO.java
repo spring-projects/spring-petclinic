@@ -38,7 +38,7 @@ public class CredentialDTO extends BaseDTO {
 
 	@NotNull
 	@Size(min = CommonParameter.PASSWORD_MIN, max = CommonParameter.PASSWORD_MAX, message = CommonError.FORMAT_BETWEEN
-		+ CommonParameter.PASSWORD_MIN + " AND " + CommonParameter.PASSWORD_MAX + " !")
+			+ CommonParameter.PASSWORD_MIN + " AND " + CommonParameter.PASSWORD_MAX + " !")
 	private String password;
 
 	@NotNull
@@ -57,9 +57,15 @@ public class CredentialDTO extends BaseDTO {
 		this.setExpiration();
 	}
 
-	public CredentialDTO(@NotNull String provider, @NotNull @Size(min = CommonParameter.EMAIL_MIN, max = CommonParameter.EMAIL_MAX, message = CommonError.FORMAT_BETWEEN
-		+ CommonParameter.EMAIL_MIN + " AND " + CommonParameter.EMAIL_MAX + " !") @Pattern(regexp = CommonParameter.EMAIL_REGEXP, message = CommonError.EMAIL_FORMAT) String email, @NotNull @Size(min = CommonParameter.PASSWORD_MIN, max = CommonParameter.PASSWORD_MAX, message = CommonError.FORMAT_BETWEEN
-		+ CommonParameter.PASSWORD_MIN + " AND " + CommonParameter.PASSWORD_MAX + " !") String password, @NotNull Boolean verified) {
+	public CredentialDTO(@NotNull String provider,
+			@NotNull @Size(min = CommonParameter.EMAIL_MIN, max = CommonParameter.EMAIL_MAX,
+					message = CommonError.FORMAT_BETWEEN + CommonParameter.EMAIL_MIN + " AND "
+							+ CommonParameter.EMAIL_MAX + " !") @Pattern(regexp = CommonParameter.EMAIL_REGEXP,
+									message = CommonError.EMAIL_FORMAT) String email,
+			@NotNull @Size(min = CommonParameter.PASSWORD_MIN, max = CommonParameter.PASSWORD_MAX,
+					message = CommonError.FORMAT_BETWEEN + CommonParameter.PASSWORD_MIN + " AND "
+							+ CommonParameter.PASSWORD_MAX + " !") String password,
+			@NotNull Boolean verified) {
 		this.provider = provider;
 		this.email = email;
 		this.password = password;

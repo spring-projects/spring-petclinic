@@ -16,6 +16,7 @@
 
 package org.springframework.samples.petclinic.configuration;
 
+import javax.cache.CacheManager;
 import javax.cache.configuration.MutableConfiguration;
 
 import org.springframework.boot.autoconfigure.cache.JCacheManagerCustomizer;
@@ -34,7 +35,11 @@ class CacheConfiguration {
 
 	@Bean
 	public JCacheManagerCustomizer petclinicCacheConfigurationCustomizer() {
-		return cm -> cm.createCache("vets", cacheConfiguration());
+		return (cm) -> {
+			if (cm.getCache("vets") == null) {
+				cm.createCache("vets", cacheConfiguration());
+			}
+		};
 	}
 
 	/**
@@ -50,4 +55,13 @@ class CacheConfiguration {
 		return new MutableConfiguration<>().setStatisticsEnabled(true);
 	}
 
+	class MyCashe implements JCacheManagerCustomizer {
+
+		@Override
+		public void customize(CacheManager cacheManager) {
+			if (cacheManager.getCache("vets") == null) {
+				cacheManager.createCache("vets", cacheConfiguration());
+			}
+		}
+	}
 }

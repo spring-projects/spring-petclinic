@@ -126,4 +126,10 @@ public class CredentialService {
 		return entityToDTO(credential);
 	}
 
+	public CredentialDTO delete(CredentialDTO dto) {
+		Credential credential = dtoToEntity(dto);
+		credential = credentialRepository.delete(credential);
+		return entityToDTO(credential);
+	}
+
 }

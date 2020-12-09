@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.samples.petclinic.model.common.Credential;
+import org.springframework.samples.petclinic.model.common.User;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -43,9 +44,17 @@ public interface CredentialRepository extends Repository<Credential, Integer> {
 	List<Credential> findAll();
 
 	/**
-	 * Save a {@link Credential} to the data store, either inserting or updating it.
+	 * Save an {@link Credential} to the data store, either inserting or updating it.
 	 * @param credential the {@link Credential} to save
+	 * @return the deleted {@link Credential}
 	 */
 	Credential save(Credential credential);
+
+	/**
+	 * Delete an {@link Credential} to the data store.
+	 * @param credential the {@link Credential} to delete
+	 * @return the deleted {@link Credential}
+	 */
+	Credential delete(Credential credential);
 
 }
