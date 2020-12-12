@@ -141,7 +141,7 @@ class PrivilegeServiceIntegrationTest {
 	void save() {
 		List<PrivilegeDTO> expected = privilegeService.findAll();
 
-		assertThat(expected).doesNotContain(privilegeDTO);
+		assertThat(expected).isNotEmpty().doesNotContain(privilegeDTO);
 
 		privilegeDTO.setRoles(new HashSet<>());
 		PrivilegeDTO saved = privilegeService.save(privilegeDTO);

@@ -132,7 +132,7 @@ class RoleServiceIntegrationTest {
 	@DisplayName("Verify that all RoleDTO list contain the new saved one")
 	void save() {
 		Collection<RoleDTO> expected = roleService.findAll();
-		assertThat(expected).doesNotContain(roleDTO);
+		assertThat(expected).isNotEmpty().doesNotContain(roleDTO);
 
 		roleDTO.setUsers(new HashSet<>());
 		RoleDTO saved = roleService.save(roleDTO);

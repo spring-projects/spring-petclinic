@@ -33,8 +33,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static final String CLIENT_PROPERTY_KEY = "spring.security.oauth2.client.registration.";
 
-	@Autowired
-	private UserDetailsService userDetailsService;
+	// @Autowired
+	// private UserDetailsService userDetailsService;
 
 	@Resource
 	private Environment env;

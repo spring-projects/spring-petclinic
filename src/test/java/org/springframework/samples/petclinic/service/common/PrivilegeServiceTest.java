@@ -30,15 +30,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 class PrivilegeServiceTest {
 
-	private final static Integer USER_ID = 2;
+	private static final Integer USER_ID = 2;
 
-	private final static Integer ROLE_ID = 4;
+	private static final Integer ROLE_ID = 4;
 
-	private final static Integer PRIVILEGE_ID = 5;
+	private static final Integer PRIVILEGE_ID = 5;
 
-	private final static String PRIVILEGE_NAME = "TEST_UPDATE";
+	private static final String PRIVILEGE_NAME = "TEST_UPDATE";
 
-	private final static String ROLE_NAME = "ROLE_TEST";
+	private static final String ROLE_NAME = "ROLE_TEST";
 
 	@Autowired
 	private UserService userService;
@@ -200,7 +200,7 @@ class PrivilegeServiceTest {
 	void save() {
 		List<PrivilegeDTO> expected = privilegeService.findAll();
 
-		assertThat(expected).doesNotContain(privilegeDTO);
+		assertThat(expected).isNotEmpty().doesNotContain(privilegeDTO);
 
 		privilegeDTO.setRoles(new HashSet<>());
 		PrivilegeDTO saved = privilegeService.save(privilegeDTO);

@@ -47,6 +47,8 @@ public final class CommonAttribute {
 
 	public static final String TOKEN = "token";
 
+	public static final String URLS = "urls";
+
 	public static final String USER = "user";
 
 	public static final String USER_ID = "userId";

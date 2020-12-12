@@ -38,7 +38,6 @@ import java.util.Map;
 public class UserController extends WebSocketSender {
 
 	// set true if you whant confirmation email for first provider connection
-	private static final boolean ASK_OAUTH2_CONFIRMATION = false;
 
 	private final UserService userService;
 
@@ -105,10 +104,10 @@ public class UserController extends WebSocketSender {
 		sendSuccessMessage(CommonWebSocket.USER_CREATED);
 
 		// send confirmation mail
-		MessageDTO message = new MessageDTO(user.getFirstName(), user.getLastName(), "admin@petclinic.com",
-				user.getEmail(), "New connexion",
+		MessageDTO message = new MessageDTO(user.getFirstName(), user.getLastName(),
+				CommonParameter.PETCLINIC_ADMIN_MAIL, user.getEmail(), "New connexion",
 				"Your attempt to create new account. To confirm your account, please click here : ",
-				"http://localhost:8080/confirm-account?token=" + credential.getToken());
+				CommonEndPoint.PETCLINIC_CONFIRM_ACCOUNT + credential.getToken());
 
 		emailService.sendMailAsynch(message, Locale.getDefault());
 
@@ -136,8 +135,8 @@ public class UserController extends WebSocketSender {
 
 			if (clientRegistrations != null) {
 				clientRegistrations.forEach(registration -> oauth2AuthenticationUrls.put(registration.getClientName(),
-						"oauth2/authorization/" + registration.getRegistrationId()));
-				model.put("urls", oauth2AuthenticationUrls);
+						CommonEndPoint.OAUTH2_AUTHORIZATION + registration.getRegistrationId()));
+				model.put(CommonAttribute.URLS, oauth2AuthenticationUrls);
 			}
 		}
 
@@ -156,7 +155,7 @@ public class UserController extends WebSocketSender {
 	}
 
 	@GetMapping(CommonEndPoint.OAUTH2_SUCCESS)
-	public String postLogin(Model model, OAuth2AuthenticationToken authentication) {
+	public String postLoginOAUTH2(Model model, OAuth2AuthenticationToken authentication) {
 		String firstName = authentication.getPrincipal().getAttribute("given_name");
 		String lastName = authentication.getPrincipal().getAttribute("family_name");
 
@@ -181,9 +180,9 @@ public class UserController extends WebSocketSender {
 				user = userService.save(user);
 			}
 
-			if (ASK_OAUTH2_CONFIRMATION) {
+			if (CommonParameter.ASK_OAUTH2_CONFIRMATION) {
 				// prepare message
-				MessageDTO message = new MessageDTO(firstName, lastName, "admin@petclinic.com", email,
+				MessageDTO message = new MessageDTO(firstName, lastName, CommonParameter.PETCLINIC_ADMIN_MAIL, email,
 						"New connexion from " + credential.getProvider(),
 						"Your attempt to connect from " + credential.getProvider()
 								+ " To confirm this connection, please click the link below : ",
@@ -191,17 +190,20 @@ public class UserController extends WebSocketSender {
 
 				// send confirmation mail
 				emailService.sendMailAsynch(message, Locale.getDefault());
+
+				// disconnect
+				authentication.eraseCredentials();
+				SecurityContextHolder.clearContext();
 			}
 			else {
 				credential.setExpiration(null);
 				credential.setToken("");
 				credential.setVerified(true);
 				credentialService.save(credential);
+				securityService.autoLogin(credential.getEmail(), credential.getPassword());
+				String message = String.format(CommonWebSocket.USER_LOGGED_IN, firstName, lastName);
+				sendSuccessMessage(message);
 			}
-
-			// disconnect
-			authentication.eraseCredentials();
-			SecurityContextHolder.clearContext();
 
 		}
 		else if (Boolean.TRUE.equals(credential.isVerified())) {
@@ -290,7 +292,7 @@ public class UserController extends WebSocketSender {
 	}
 
 	@GetMapping(CommonEndPoint.USERS_ID)
-	public ModelAndView showOwner(@PathVariable("userId") Integer userId) {
+	public ModelAndView showOwner(@PathVariable(CommonAttribute.USER_ID) Integer userId) {
 		ModelAndView modelAndView = new ModelAndView(CommonView.USER_DETAILS);
 		UserDTO user = this.userService.findById(userId);
 
@@ -298,8 +300,8 @@ public class UserController extends WebSocketSender {
 		return modelAndView;
 	}
 
-	@GetMapping("/user/{userId}/edit/password")
-	public String editPassword(@PathVariable("userId") Integer userId, Model model) {
+	@GetMapping(CommonEndPoint.USERS_ID_EDIT_PASSWORD)
+	public String editPassword(@PathVariable(CommonAttribute.USER_ID) Integer userId, Model model) {
 		try {
 			UserDTO operator = (UserDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			UserDTO user = userService.findById(userId);
@@ -317,7 +319,7 @@ public class UserController extends WebSocketSender {
 		return CommonView.HOME;
 	}
 
-	@PostMapping("/user/{userId}/edit/password")
+	@PostMapping(CommonEndPoint.USERS_ID_EDIT_PASSWORD)
 	public String updatePassword(@ModelAttribute(CommonAttribute.USER) @Valid UserDTO user, BindingResult bindingResult,
 			@PathVariable(CommonAttribute.USER_ID) Integer userId, @Param("oldPassword") String oldPassword,
 			@Param("newPassword") String newPassword, @Param("newMatchingPassword") String newMatchingPassword,

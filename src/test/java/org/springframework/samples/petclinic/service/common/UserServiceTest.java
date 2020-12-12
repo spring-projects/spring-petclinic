@@ -218,7 +218,7 @@ class UserServiceTest {
 	@DisplayName("Verify that all UserDTO list contain the new saved one")
 	void save() {
 		Collection<UserDTO> expected = userService.findAll();
-		assertThat(expected).doesNotContain(userDTO);
+		assertThat(expected).isNotEmpty().doesNotContain(userDTO);
 
 		UserDTO saved = userService.save(userDTO);
 

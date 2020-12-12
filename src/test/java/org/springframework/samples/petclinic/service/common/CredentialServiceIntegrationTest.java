@@ -76,16 +76,15 @@ class CredentialServiceIntegrationTest {
 		credentialDTO.setExpiration(cal.getTime());
 	}
 
-
 	@Test
 	@Tag("findByEmailAndProvider")
 	@DisplayName("Verify that we call right method to get Credential by Email and Provider")
 	void findByEmailAndProvider() {
 
-		for(Credential credential: allCredentials) {
+		for (Credential credential : allCredentials) {
 			String email = credential.getEmail();
 			String provider = authProviderRepository.findById(credential.getProviderId()).getName();
-			CredentialDTO found = credentialService.findByEmailAndProvider(email,provider);
+			CredentialDTO found = credentialService.findByEmailAndProvider(email, provider);
 			assertThat(found).isEqualToComparingFieldByField(credentialService.entityToDTO(credential));
 		}
 

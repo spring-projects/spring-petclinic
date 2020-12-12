@@ -63,5 +63,7 @@ class CacheConfiguration {
 				cacheManager.createCache("vets", cacheConfiguration());
 			}
 		}
+
 	}
+
 }

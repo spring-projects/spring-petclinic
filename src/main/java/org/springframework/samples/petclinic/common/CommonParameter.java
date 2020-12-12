@@ -2,6 +2,10 @@ package org.springframework.samples.petclinic.common;
 
 public class CommonParameter {
 
+	public static final boolean ASK_OAUTH2_CONFIRMATION = false;
+
+	public static final String PETCLINIC_ADMIN_MAIL = "admin@petclinic.com";
+
 	public static final int CITY_MAX = 50;
 
 	public static final int COUNTRY_MAX = 50;
