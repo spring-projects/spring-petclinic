@@ -81,9 +81,7 @@ public class UserService implements BaseService<User, UserDTO> {
 		Collection<User> users = userRepository.findAll();
 		List<UserDTO> userDTOS = new ArrayList<>();
 
-		users.forEach(user -> {
-			userDTOS.add(entityToDTO(user));
-		});
+		users.forEach(user -> userDTOS.add(entityToDTO(user)));
 
 		return userDTOS;
 	}

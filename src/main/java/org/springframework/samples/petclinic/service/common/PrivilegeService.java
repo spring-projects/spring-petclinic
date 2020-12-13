@@ -73,9 +73,7 @@ public class PrivilegeService implements BaseService<Privilege, PrivilegeDTO> {
 		Collection<Privilege> privileges = privilegeRepository.findAll();
 		List<PrivilegeDTO> privilegeDTOS = new ArrayList<>();
 
-		privileges.forEach(privilege -> {
-			privilegeDTOS.add(entityToDTO(privilege));
-		});
+		privileges.forEach(privilege -> privilegeDTOS.add(entityToDTO(privilege)));
 
 		return privilegeDTOS;
 	}

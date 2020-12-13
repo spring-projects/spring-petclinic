@@ -10,14 +10,18 @@ before_install:
 
 jobs:
   include:
+    - stage: javaformat
+      script: ./mvnw clean spring-javaformat:apply
     - stage: test
-      script: ./mvnw clean test
+      script: ./mvnw test
     - stage: verify
       script: ./mvnw verify
+    - stage: sonar
+      script: ./mvnw verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
 
 cache:
   directories:
     - $HOME/.m2
 
 notifications:
-#  email: email@provider.com
+  email: pedsf.fullstack@gmail.com

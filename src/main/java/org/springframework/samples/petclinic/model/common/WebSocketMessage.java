@@ -1,5 +1,8 @@
 package org.springframework.samples.petclinic.model.common;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDate;
 
 /**
@@ -7,6 +10,8 @@ import java.time.LocalDate;
  *
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
+@Getter
+@Setter
 public class WebSocketMessage {
 
 	public static final String ALERT = "alert";
@@ -36,38 +41,6 @@ public class WebSocketMessage {
 	public WebSocketMessage(String content, String type) {
 		this.time = LocalDate.now().toString();
 		this.content = content;
-		this.type = type;
-	}
-
-	public String getSender() {
-		return sender;
-	}
-
-	public void setSender(String sender) {
-		this.sender = sender;
-	}
-
-	public String getTime() {
-		return time;
-	}
-
-	public void setTime(String time) {
-		this.time = time;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
 		this.type = type;
 	}
 

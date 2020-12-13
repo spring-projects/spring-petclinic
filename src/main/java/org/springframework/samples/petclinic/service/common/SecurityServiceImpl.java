@@ -1,6 +1,5 @@
 package org.springframework.samples.petclinic.service.common;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -8,7 +7,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-@Slf4j
+/**
+ * Simple Service between AuthProvider entity and AuthProviderDTO Data Transfert Object.
+ *
+ * @author Paul-Emmanuel DOS SANTOS FACAO
+ */
+
 @Service("SecurityService")
 public class SecurityServiceImpl implements SecurityService {
 

@@ -11,12 +11,12 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 
-@Entity
-@Table(name = "privileges")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity(name = "Privilege")
+@Table(name = "privileges")
 public class Privilege implements Serializable {
 
 	@Id

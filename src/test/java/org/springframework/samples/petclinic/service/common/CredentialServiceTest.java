@@ -59,7 +59,7 @@ class CredentialServiceTest {
 
 	@BeforeEach
 	void beforeEach() {
-		credentialService = new CredentialService(credentialRepository, bCryptPasswordEncoder, authProviderRepository);
+		credentialService = new CredentialService(credentialRepository, authProviderRepository);
 		authProvider = new AuthProvider(PROVIDER_TEST_ID, PROVIDER_TEST_NAME);
 		credential = new Credential(PROVIDER_TEST_ID, EMAIL_TEST, PASSWORD_TEST, true);
 		credential.setToken(TOKEN_TEST);

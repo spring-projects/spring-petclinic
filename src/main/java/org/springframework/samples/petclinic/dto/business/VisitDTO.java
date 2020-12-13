@@ -15,6 +15,8 @@
  */
 package org.springframework.samples.petclinic.dto.business;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.dto.common.BaseDTO;
 import org.springframework.samples.petclinic.model.business.Visit;
@@ -27,6 +29,8 @@ import java.time.LocalDate;
  *
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
+@Getter
+@Setter
 public class VisitDTO extends BaseDTO {
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -42,30 +46,6 @@ public class VisitDTO extends BaseDTO {
 	 */
 	public VisitDTO() {
 		this.date = LocalDate.now();
-	}
-
-	public LocalDate getDate() {
-		return this.date;
-	}
-
-	public void setDate(LocalDate date) {
-		this.date = date;
-	}
-
-	public String getDescription() {
-		return this.description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Integer getPetId() {
-		return this.petId;
-	}
-
-	public void setPetId(Integer petId) {
-		this.petId = petId;
 	}
 
 	@Override

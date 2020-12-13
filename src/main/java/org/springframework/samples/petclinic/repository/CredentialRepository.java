@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.samples.petclinic.model.common.Credential;
-import org.springframework.samples.petclinic.model.common.User;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;

@@ -31,6 +31,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -43,7 +45,9 @@ import org.springframework.samples.petclinic.model.common.NamedEntity;
  * @author Juergen Hoeller
  * @author Sam Brannen
  */
-@Entity
+@Getter
+@Setter
+@Entity(name = "Pet")
 @Table(name = "pets")
 public class Pet extends NamedEntity {
 
@@ -61,30 +65,6 @@ public class Pet extends NamedEntity {
 
 	@Transient
 	private Set<Visit> visits = new LinkedHashSet<>();
-
-	public void setBirthDate(LocalDate birthDate) {
-		this.birthDate = birthDate;
-	}
-
-	public LocalDate getBirthDate() {
-		return this.birthDate;
-	}
-
-	public PetType getType() {
-		return this.type;
-	}
-
-	public void setType(PetType type) {
-		this.type = type;
-	}
-
-	public Owner getOwner() {
-		return this.owner;
-	}
-
-	public void setOwner(Owner owner) {
-		this.owner = owner;
-	}
 
 	protected Set<Visit> getVisitsInternal() {
 		if (this.visits == null) {

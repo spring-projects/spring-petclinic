@@ -12,11 +12,11 @@ import javax.persistence.Table;
  *
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
-@Entity(name = "AuthProvider")
-@Table(name = "auth_providers")
-@NoArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
+@Entity(name = "AuthProvider")
+@Table(name = "auth_providers")
 public class AuthProvider extends NamedEntity {
 
 	public AuthProvider(Integer id, String name) {

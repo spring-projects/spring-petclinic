@@ -17,6 +17,11 @@ import javax.mail.internet.MimeMessage;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * Simple Service to send email from PetClinic to users.
+ *
+ * @author Paul-Emmanuel DOS SANTOS FACAO
+ */
 @Slf4j
 @Service("EmailService")
 public class EmailService {

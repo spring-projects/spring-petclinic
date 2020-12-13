@@ -2,8 +2,6 @@ package org.springframework.samples.petclinic.model.common;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.samples.petclinic.common.CommonError;
 import org.springframework.samples.petclinic.common.CommonParameter;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,10 +20,10 @@ import java.util.*;
  *
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
-@Entity
-@Table(name = "users")
 @Getter
 @Setter
+@Entity(name = "User")
+@Table(name = "users")
 public class User extends Person implements Serializable, UserDetails {
 
 	@NotNull

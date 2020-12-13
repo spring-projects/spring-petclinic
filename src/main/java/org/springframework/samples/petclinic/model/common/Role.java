@@ -18,12 +18,12 @@ import java.util.HashSet;
  *
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
-@Entity
-@Table(name = "roles")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity(name = "Role")
+@Table(name = "roles")
 public class Role implements Serializable {
 
 	@Id

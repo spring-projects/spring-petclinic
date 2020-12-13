@@ -26,7 +26,6 @@ Or you can run it from Maven directly using the Spring Boot Maven plugin. If you
 ## In case you find a bug/suggested improvement for Spring Petclinic
 Our issue tracker is available here: https://github.com/spring-projects/spring-petclinic/issues
 
-
 ## Database configuration
 
 In its default configuration, Petclinic uses an in-memory database (H2) which
@@ -42,6 +41,50 @@ docker run -e MYSQL_USER=petclinic -e MYSQL_PASSWORD=petclinic -e MYSQL_ROOT_PAS
 ```
 
 Further documentation is provided [here](https://github.com/spring-projects/spring-petclinic/blob/main/src/main/resources/db/mysql/petclinic_db_setup_mysql.txt).
+
+## Email configuration for Mailtrap
+Open an account on https://mailtrap.io to see email exchanges.
+Set environment variables for Mailtrap connection :
+- SPRING_MAIL_USERNAME
+- SPRING_MAIL_PASSWORD
+
+Theses values are used in application.properties.
+
+## Oauth2 configuration for login with Google, Facebook and Github
+Open an API account on the provider you want to add.
+Set the environment variable corresponding.
+- OAUTH2_GOOGLE_CLIENT_ID
+- OAUTH2_GOOGLE_CLIENT_SECRET
+- OAUTH2_GITHUB_CLIENT_ID
+- OAUTH2_GITHUB_CLIENT_SECRET
+- OAUTH2_FACEBOOK_CLIENT_ID
+- OAUTH2_FACEBOOK_CLIENT_SECRET
+
+Theses values are used in oauth2.properties.
+Decomment corresponding lines in src/main/resources/oauth2.properties for using it on your project.
+
+## SonarQube configuration
+Open an account on https://sonarcloud.io.
+Link SonarQube to your repository on GitHub, GitLab...
+Start a new project for spring-petclinic.
+Setup manually the configuration for your project with Maven and set values in your environment for :
+- SONAR_PETCLINIC_PROJECTKEY
+- SONAR_ORGANIZATION
+- SONAR_PETCLINIC_TOKEN
+
+Theses values are used in lines below from pom.xml.
+
+``` 
+<sonar.projectKey>${env.SONAR_PETCLINIC_PROJECTKEY}</sonar.projectKey>
+<sonar.organization>${env.SONAR_ORGANIZATION}</sonar.organization>
+<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+<sonar.login>${env.SONAR_PETCLINIC_TOKEN}</sonar.login>     
+```
+
+## Travis-CI Configuration
+Open an account on https://travis-ci.org
+Link Travis-CI to your repository on GitHub, GitLab...
+Set environment variable in your Travis-CI project for Mailtrap, Oauth2 and SonarQube.
 
 ## Working with Petclinic in your IDE
 

@@ -15,6 +15,9 @@
  */
 package org.springframework.samples.petclinic.dto.common;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 
 /**
@@ -23,30 +26,14 @@ import java.io.Serializable;
  *
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
+@Getter
+@Setter
 public class BaseDTO implements Serializable {
 
 	private Integer id;
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
 	public boolean isNew() {
 		return this.id == null;
 	}
-
-	/*
-	 * @Override public boolean equals(Object o) { if (this == o) return true;
-	 *
-	 * if (!(o instanceof BaseDTO)) return false;
-	 *
-	 * BaseDTO baseDTO = (BaseDTO) o;
-	 *
-	 * return new EqualsBuilder().append(getId(), baseDTO.getId()).isEquals(); }
-	 */
 
 }

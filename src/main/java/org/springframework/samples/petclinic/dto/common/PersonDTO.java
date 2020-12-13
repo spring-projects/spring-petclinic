@@ -15,8 +15,8 @@
  */
 package org.springframework.samples.petclinic.dto.common;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -25,6 +25,8 @@ import javax.validation.constraints.NotEmpty;
  *
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
+@Getter
+@Setter
 public class PersonDTO extends BaseDTO {
 
 	@NotEmpty
@@ -32,22 +34,6 @@ public class PersonDTO extends BaseDTO {
 
 	@NotEmpty
 	private String lastName;
-
-	public String getFirstName() {
-		return this.firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return this.lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
 
 	@Override
 	public boolean equals(Object o) {

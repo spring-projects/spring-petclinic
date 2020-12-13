@@ -37,13 +37,13 @@ public final class CommonAttribute {
 
 	public static final String PET = "pet";
 
-	public static final String SELECTIONS = "selections";
-
 	public static final String PET_BIRTH_DATE = "birthDate";
 
 	public static final String PET_NAME = "name";
 
 	public static final String PET_TYPE = "type";
+
+	public static final String SELECTIONS = "selections";
 
 	public static final String TOKEN = "token";
 

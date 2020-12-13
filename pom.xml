@@ -33,7 +33,7 @@
     <wro4j.version>1.9.0</wro4j.version>
     <checkstyle.version>8.32</checkstyle.version>
 
-    <jacoco.version>0.8.5</jacoco.version>
+    <jacoco.version>0.8.6</jacoco.version>
     <junit.version>4.13</junit.version>
     <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
     <lombok.version>1.18.12</lombok.version>
@@ -42,6 +42,26 @@
     <nohttp-checkstyle.version>0.0.4.RELEASE</nohttp-checkstyle.version>
     <spring-format.version>0.0.25</spring-format.version>
     <spring-cloud-starter-security.version>2.2.4.RELEASE</spring-cloud-starter-security.version>
+
+    <!-- =================================================================== -->
+    <!--                                                           SONARQUBE -->
+    <!-- Set environment values in your computer and in Travis-CI            -->
+    <!-- =================================================================== -->
+    <sonar.projectKey>${env.SONAR_PETCLINIC_PROJECTKEY}</sonar.projectKey>
+    <sonar.organization>${env.SONAR_ORGANIZATION}</sonar.organization>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    <sonar.login>${env.SONAR_PETCLINIC_TOKEN}</sonar.login>
+    <sonar.language>java</sonar.language>
+    <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+    <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+    <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
+    <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml,../target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+    <sonar.coverage.exclusions>
+      org/springframework/samples/petclinic/common/*.java,
+      org/springframework/samples/petclinic/dto/*.java,
+      org/springframework/samples/petclinic/model/*.java
+      org/springframework/samples/petclinic/repository/*.java
+    </sonar.coverage.exclusions>
   </properties>
 
   <!-- ===================================================================== -->
@@ -253,6 +273,21 @@
   <!--                                                                 BUILD -->
   <!-- ===================================================================== -->
   <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.8.1</version>
+        </plugin>
+        <plugin>
+          <groupId>org.sonarsource.scanner.maven</groupId>
+          <artifactId>sonar-maven-plugin</artifactId>
+          <version>3.6.0.1398</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
     <plugins>
       <plugin>
         <groupId>io.spring.javaformat</groupId>
@@ -322,10 +357,33 @@
           </execution>
         </executions>
       </plugin>
+      <!-- ==================================================== Jacoco -->
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>${jacoco.version}</version>
+        <executions>
+          <execution>
+            <id>prepare-and-report</id>
+            <goals>
+              <goal>prepare-agent</goal>
+              <goal>report</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>report-aggregate</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>report-aggregate</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.basedir}/../target/site/jacoco-aggregate</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!--plugin>
+
         <executions>
           <execution>
             <goals>
@@ -340,7 +398,7 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
+      </plugin-->
 
       <!-- Spring Boot Actuator displays build-related information if a git.properties
         file is present at the classpath -->
@@ -561,6 +619,7 @@
         </pluginManagement>
       </build>
     </profile>
+
   </profiles>
 
 </project>

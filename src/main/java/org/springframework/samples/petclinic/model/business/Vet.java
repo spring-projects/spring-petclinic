@@ -41,7 +41,7 @@ import org.springframework.samples.petclinic.model.common.Person;
  * @author Sam Brannen
  * @author Arjen Poutsma
  */
-@Entity
+@Entity(name = "Vet")
 @Table(name = "vets")
 public class Vet extends Person {
 

@@ -15,6 +15,8 @@
  */
 package org.springframework.samples.petclinic.dto.business;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.core.style.ToStringCreator;
@@ -30,6 +32,8 @@ import java.util.*;
  *
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
+@Getter
+@Setter
 public class OwnerDTO extends PersonDTO {
 
 	@NotEmpty
@@ -43,30 +47,6 @@ public class OwnerDTO extends PersonDTO {
 	private String telephone;
 
 	private Set<PetDTO> pets;
-
-	public String getAddress() {
-		return this.address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public String getCity() {
-		return this.city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	public String getTelephone() {
-		return this.telephone;
-	}
-
-	public void setTelephone(String telephone) {
-		this.telephone = telephone;
-	}
 
 	protected Set<PetDTO> getPetsInternal() {
 		if (this.pets == null) {

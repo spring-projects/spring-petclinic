@@ -21,12 +21,12 @@ import java.util.UUID;
  *
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
-@Entity(name = "Credential")
-@Table(name = "credentials")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity(name = "Credential")
+@Table(name = "credentials")
 public class Credential extends BaseEntity {
 
 	private static final int TOKEN_EXPIRATION = 60 * 24;

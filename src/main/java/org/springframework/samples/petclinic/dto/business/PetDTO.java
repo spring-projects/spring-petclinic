@@ -15,6 +15,8 @@
  */
 package org.springframework.samples.petclinic.dto.business;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -28,6 +30,8 @@ import java.util.*;
  *
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
+@Getter
+@Setter
 public class PetDTO extends NamedDTO {
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -38,30 +42,6 @@ public class PetDTO extends NamedDTO {
 	private OwnerDTO owner;
 
 	private Set<VisitDTO> visits = new LinkedHashSet<>();
-
-	public void setBirthDate(LocalDate birthDate) {
-		this.birthDate = birthDate;
-	}
-
-	public LocalDate getBirthDate() {
-		return this.birthDate;
-	}
-
-	public PetTypeDTO getType() {
-		return this.type;
-	}
-
-	public void setType(PetTypeDTO type) {
-		this.type = type;
-	}
-
-	public OwnerDTO getOwner() {
-		return owner;
-	}
-
-	public void setOwner(OwnerDTO owner) {
-		this.owner = owner;
-	}
 
 	protected Set<VisitDTO> getVisitsInternal() {
 		if (this.visits == null) {

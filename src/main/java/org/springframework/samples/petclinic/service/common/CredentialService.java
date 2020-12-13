@@ -8,7 +8,6 @@ import org.springframework.samples.petclinic.model.common.AuthProvider;
 import org.springframework.samples.petclinic.model.common.Credential;
 import org.springframework.samples.petclinic.repository.AuthProviderRepository;
 import org.springframework.samples.petclinic.repository.CredentialRepository;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
 
@@ -22,16 +21,12 @@ public class CredentialService {
 
 	private final CredentialRepository credentialRepository;
 
-	private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
 	private final AuthProviderRepository authProviderRepository;
 
 	private final ModelMapper modelMapper = new ModelMapper();
 
-	public CredentialService(CredentialRepository credentialRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
-			AuthProviderRepository authProviderRepository) {
+	public CredentialService(CredentialRepository credentialRepository, AuthProviderRepository authProviderRepository) {
 		this.credentialRepository = credentialRepository;
-		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 		this.authProviderRepository = authProviderRepository;
 	}
 
