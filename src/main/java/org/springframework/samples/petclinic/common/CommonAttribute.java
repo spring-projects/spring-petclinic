@@ -13,6 +13,22 @@ public final class CommonAttribute {
 
 	public static final String EMAIL = "email";
 
+	public static final String GITHUB = "github";
+
+	public static final String GITHUB_FIRSTNAME = "login";
+
+	public static final String GITHUB_LASTNAME = "name";
+
+	public static final String GITHUB_PROVIDER_ID = "id";
+
+	public static final String GOOGLE = "google";
+
+	public static final String GOOGLE_FIRSTNAME = "given_name";
+
+	public static final String GOOGLE_LASTNAME = "family_name";
+
+	public static final String GOOGLE_PROVIDER_ID = "sub";
+
 	public static final String NAME = "name";
 
 	public static final String NEW = "new";

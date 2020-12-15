@@ -1,8 +1,10 @@
 package org.springframework.samples.petclinic.service.common;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -12,7 +14,7 @@ import org.springframework.stereotype.Service;
  *
  * @author Paul-Emmanuel DOS SANTOS FACAO
  */
-
+@Slf4j
 @Service("SecurityService")
 public class SecurityServiceImpl implements SecurityService {
 
@@ -43,8 +45,6 @@ public class SecurityServiceImpl implements SecurityService {
 
 		UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
 				userDetails, motDePasse, userDetails.getAuthorities());
-
-		authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
 		if (usernamePasswordAuthenticationToken.isAuthenticated()) {
 			SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);

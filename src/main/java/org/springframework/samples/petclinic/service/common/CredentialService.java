@@ -104,15 +104,14 @@ public class CredentialService {
 		return entityToDTO(credential);
 	}
 
-	public CredentialDTO saveNew(OAuth2AuthenticationToken authentication) {
+	public CredentialDTO saveNew(String provider, String email, String providerId) {
 		Credential credential = new Credential();
 
-		AuthProvider authProvider = authProviderRepository
-				.findByName(authentication.getAuthorizedClientRegistrationId());
+		AuthProvider authProvider = authProviderRepository.findByName(provider);
 
-		credential.setEmail(authentication.getPrincipal().getAttribute("email"));
+		credential.setEmail(email);
 		credential.setProviderId(authProvider.getId());
-		credential.setPassword(authentication.getPrincipal().getAttribute("sub"));
+		credential.setPassword(providerId);
 		credential.setVerified(false);
 		credential.setToken();
 		credential.setExpiration();

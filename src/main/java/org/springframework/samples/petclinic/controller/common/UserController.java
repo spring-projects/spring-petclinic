@@ -156,18 +156,33 @@ public class UserController extends WebSocketSender {
 
 	@GetMapping(CommonEndPoint.OAUTH2_SUCCESS)
 	public String postLoginOAUTH2(Model model, OAuth2AuthenticationToken authentication) {
-		String firstName = authentication.getPrincipal().getAttribute("given_name");
-		String lastName = authentication.getPrincipal().getAttribute("family_name");
+		String firstName;
+		String lastName;
+		String email;
+		String providerId;
+		String provider = authentication.getAuthorizedClientRegistrationId();
+
+		if (provider.equals(CommonAttribute.GOOGLE)) {
+			firstName = authentication.getPrincipal().getAttribute(CommonAttribute.GOOGLE_FIRSTNAME);
+			lastName = authentication.getPrincipal().getAttribute(CommonAttribute.GOOGLE_LASTNAME);
+			providerId = authentication.getPrincipal().getAttribute(CommonAttribute.GOOGLE_PROVIDER_ID);
+		}
+		else {
+			firstName = authentication.getPrincipal().getAttribute(CommonAttribute.GITHUB_FIRSTNAME);
+			lastName = authentication.getPrincipal().getAttribute(CommonAttribute.GITHUB_LASTNAME);
+			providerId = String.valueOf(authentication.getPrincipal().getAttribute(CommonAttribute.GITHUB_PROVIDER_ID));
+		}
+
+		email = authentication.getPrincipal().getAttribute("email");
 
 		CredentialDTO credential = credentialService.findByAuthentication(authentication);
+
+		UserDTO user = userService.findByEmail(email);
 
 		if (credential.isNew()) {
 
 			// first time authentification with this provider
-			credential = credentialService.saveNew(authentication);
-			String email = credential.getEmail();
-
-			UserDTO user = userService.findByEmail(email);
+			credential = credentialService.saveNew(provider, email, providerId);
 
 			if (user == null) {
 				user = new UserDTO();
@@ -200,14 +215,14 @@ public class UserController extends WebSocketSender {
 				credential.setToken("");
 				credential.setVerified(true);
 				credentialService.save(credential);
-				securityService.autoLogin(credential.getEmail(), credential.getPassword());
+				securityService.autoLogin(user.getEmail(), user.getPassword());
 				String message = String.format(CommonWebSocket.USER_LOGGED_IN, firstName, lastName);
 				sendSuccessMessage(message);
 			}
 
 		}
 		else if (Boolean.TRUE.equals(credential.isVerified())) {
-			securityService.autoLogin(credential.getEmail(), credential.getPassword());
+			securityService.autoLogin(user.getEmail(), user.getPassword());
 			String message = String.format(CommonWebSocket.USER_LOGGED_IN, firstName, lastName);
 			sendSuccessMessage(message);
 		}
@@ -215,7 +230,7 @@ public class UserController extends WebSocketSender {
 		return CommonView.HOME;
 	}
 
-	@RequestMapping(value = CommonEndPoint.CONFIRM_ACCOUNT, method = { RequestMethod.GET, RequestMethod.POST })
+	@GetMapping(CommonEndPoint.CONFIRM_ACCOUNT)
 	public String confirmUserAccount(@RequestParam(CommonAttribute.TOKEN) String token, Model model) {
 		CredentialDTO credential = credentialService.findByToken(token);
 

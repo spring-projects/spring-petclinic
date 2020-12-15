@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.controller.common;
 
+import org.springframework.samples.petclinic.exception.FunctionalException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -29,8 +30,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 class CrashController {
 
 	@GetMapping("/oups")
-	public String triggerException() {
-		throw new RuntimeException(
+	public String triggerException() throws FunctionalException {
+		throw new FunctionalException(
 				"Expected: controller used to showcase what " + "happens when an exception is thrown");
 	}
 
