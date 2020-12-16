@@ -159,7 +159,7 @@ public class UserController extends WebSocketSender {
 		String firstName;
 		String lastName;
 		String email;
-		String providerId;
+		String providerId = "";
 		String provider = authentication.getAuthorizedClientRegistrationId();
 
 		if (provider.equals(CommonAttribute.GOOGLE)) {
@@ -170,10 +170,14 @@ public class UserController extends WebSocketSender {
 		else {
 			firstName = authentication.getPrincipal().getAttribute(CommonAttribute.GITHUB_FIRSTNAME);
 			lastName = authentication.getPrincipal().getAttribute(CommonAttribute.GITHUB_LASTNAME);
-			providerId = String.valueOf(authentication.getPrincipal().getAttribute(CommonAttribute.GITHUB_PROVIDER_ID));
+			try {
+				providerId = authentication.getPrincipal().getAttribute(CommonAttribute.GITHUB_PROVIDER_ID).toString();
+			} catch (NullPointerException exception) {
+				log.error("Cast integer to string ",exception);
+			}
 		}
 
-		email = authentication.getPrincipal().getAttribute("email");
+		email = authentication.getPrincipal().getAttribute(CommonAttribute.EMAIL);
 
 		CredentialDTO credential = credentialService.findByAuthentication(authentication);
 
