@@ -161,17 +161,19 @@ public class UserController extends WebSocketSender {
 		String email;
 		String providerId;
 		String provider = authentication.getAuthorizedClientRegistrationId();
-		Map<String,Object> attributes = authentication.getPrincipal().getAttributes();
+		Map<String, Object> attributes = authentication.getPrincipal().getAttributes();
 
 		if (provider.equals(CommonAttribute.GOOGLE)) {
 			firstName = attributes.get(CommonAttribute.GOOGLE_FIRSTNAME).toString();
 			lastName = attributes.get(CommonAttribute.GOOGLE_LASTNAME).toString();
 			providerId = attributes.get(CommonAttribute.GOOGLE_PROVIDER_ID).toString();
-		} else if (provider.equals(CommonAttribute.GITHUB)) {
+		}
+		else if (provider.equals(CommonAttribute.GITHUB)) {
 			firstName = attributes.get(CommonAttribute.GITHUB_FIRSTNAME).toString();
 			lastName = attributes.get(CommonAttribute.GITHUB_LASTNAME).toString();
-			providerId = attributes.get(CommonAttribute.GITHUB_PROVIDER_ID) .toString();
-		} else {
+			providerId = attributes.get(CommonAttribute.GITHUB_PROVIDER_ID).toString();
+		}
+		else {
 			firstName = attributes.get(CommonAttribute.FACEBOOK_FIRSTNAME).toString();
 			lastName = attributes.get(CommonAttribute.FACEBOOK_LASTNAME).toString();
 			providerId = attributes.get(CommonAttribute.FACEBOOK_PROVIDER_ID).toString();
