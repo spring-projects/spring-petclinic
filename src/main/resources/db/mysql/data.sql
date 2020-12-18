@@ -51,3 +51,42 @@ INSERT IGNORE INTO visits VALUES (1, 7, '2010-03-04', 'rabies shot');
 INSERT IGNORE INTO visits VALUES (2, 8, '2011-03-04', 'rabies shot');
 INSERT IGNORE INTO visits VALUES (3, 8, '2009-06-04', 'neutered');
 INSERT IGNORE INTO visits VALUES (4, 7, '2008-09-04', 'spayed');
+
+INSERT INTO roles (id, name) VALUES
+  (1,'ROLE_ADMIN'),
+  (2,'ROLE_STAFF'),
+  (3,'ROLE_USER');
+
+INSERT INTO privileges (id, name) VALUES
+  (1,'CREATE'),
+  (2,'READ'),
+  (3,'UPDATE'),
+  (4,'DELETE');
+
+INSERT INTO users (id, first_name, last_name, email, password, enabled, telephone, street1, zip_code, city, country) VALUES
+  (1, 'George', 'Franklin', 'georges.franklin@petclinic.com', '$2a$10$8KypNYtPopFo8Sk5jbKJ4.lCKeBhdApsrkmFfhwjB8nCls8qpzjZG', true, '6085551023', '110 W. Liberty St.',12354,'Madison','USA'),
+  (2, 'Betty', 'Davis', 'betty.davis@petclinic.com', '$2a$10$InKx/fhX3CmLi8zKpHYx/.ETHUlZwvT1xn.Za/pp2JR0iEtYV9a9O', true, '6085551749','638 Cardinal Ave.', 6546, 'Sun Prairie', 'USA'),
+  (3, 'Eduardo', 'Rodriquez', 'eduardo.rodriguez@petclinic.com', '$2a$10$P55nbvVibHpoyWzenHngjOf.oEmcj74mI/VJaUZwGX9v8klctzsNW', true, '6085558763','2693 Commerce St.', 65454, 'McFarland', 'USA'),
+  (4, 'Paul-Emmanuel','DOS SANTOS FACAO','pedsf.fullstack@gmail.com','$2a$10$AzoUxi1IQFJMzLHcCGmDjuDHAQqAcAiRLz6UMeItdTL3mMWxMZEPC', true, '6085558763','2693 Commerce St.', 65454, 'McFarland', 'USA');
+
+INSERT INTO users_roles (user_id, role_id) VALUES
+  (1,1),(1,2),(1,3),
+  (2,3),(3,3);
+
+INSERT INTO roles_privileges (role_id, privilege_id) values
+  (1,1),(1,2),(1,3),(1,4),
+  (2,1),(2,2),(2,3),
+  (3,1),(3,2);
+
+INSERT INTO auth_providers (id, name) VALUES
+  (1,'local'),
+  (2,'google'),
+  (3,'github'),
+  (4,'facebook');
+
+INSERT INTO credentials (provider_id, email, password, verified) VALUES
+  (1, 'georges.franklin@petclinic.com', '$2a$10$8KypNYtPopFo8Sk5jbKJ4.lCKeBhdApsrkmFfhwjB8nCls8qpzjZG', true),
+  (1, 'betty.davis@petclinic.com', '$2a$10$InKx/fhX3CmLi8zKpHYx/.ETHUlZwvT1xn.Za/pp2JR0iEtYV9a9O', true),
+  (1, 'eduardo.rodriguez@petclinic.com', '$2a$10$P55nbvVibHpoyWzenHngjOf.oEmcj74mI/VJaUZwGX9v8klctzsNW', true),
+  (2, 'pedsf.fullstack@gmail.com','117496521794255275093', true);
+

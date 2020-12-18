@@ -82,7 +82,7 @@ INSERT INTO auth_providers (id, name) VALUES
   (1,'local'),
   (2,'google'),
   (3,'github'),
-  (4,'twitter');
+  (4,'facebook');
 
 INSERT INTO credentials (provider_id, email, password, verified) VALUES
   (1, 'georges.franklin@petclinic.com', '$2a$10$8KypNYtPopFo8Sk5jbKJ4.lCKeBhdApsrkmFfhwjB8nCls8qpzjZG', true),

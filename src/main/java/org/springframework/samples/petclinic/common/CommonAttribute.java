@@ -13,6 +13,14 @@ public final class CommonAttribute {
 
 	public static final String EMAIL = "email";
 
+	public static final String FACEBOOK = "facebook";
+
+	public static final String FACEBOOK_FIRSTNAME = "name";
+
+	public static final String FACEBOOK_LASTNAME = "name";
+
+	public static final String FACEBOOK_PROVIDER_ID = "id";
+
 	public static final String GITHUB = "github";
 
 	public static final String GITHUB_FIRSTNAME = "login";

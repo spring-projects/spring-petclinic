@@ -159,25 +159,25 @@ public class UserController extends WebSocketSender {
 		String firstName;
 		String lastName;
 		String email;
-		String providerId = "";
+		String providerId;
 		String provider = authentication.getAuthorizedClientRegistrationId();
+		Map<String,Object> attributes = authentication.getPrincipal().getAttributes();
 
 		if (provider.equals(CommonAttribute.GOOGLE)) {
-			firstName = authentication.getPrincipal().getAttribute(CommonAttribute.GOOGLE_FIRSTNAME);
-			lastName = authentication.getPrincipal().getAttribute(CommonAttribute.GOOGLE_LASTNAME);
-			providerId = authentication.getPrincipal().getAttribute(CommonAttribute.GOOGLE_PROVIDER_ID);
-		}
-		else {
-			firstName = authentication.getPrincipal().getAttribute(CommonAttribute.GITHUB_FIRSTNAME);
-			lastName = authentication.getPrincipal().getAttribute(CommonAttribute.GITHUB_LASTNAME);
-			try {
-				providerId = authentication.getPrincipal().getAttribute(CommonAttribute.GITHUB_PROVIDER_ID).toString();
-			} catch (NullPointerException exception) {
-				log.error("Cast integer to string ",exception);
-			}
+			firstName = attributes.get(CommonAttribute.GOOGLE_FIRSTNAME).toString();
+			lastName = attributes.get(CommonAttribute.GOOGLE_LASTNAME).toString();
+			providerId = attributes.get(CommonAttribute.GOOGLE_PROVIDER_ID).toString();
+		} else if (provider.equals(CommonAttribute.GITHUB)) {
+			firstName = attributes.get(CommonAttribute.GITHUB_FIRSTNAME).toString();
+			lastName = attributes.get(CommonAttribute.GITHUB_LASTNAME).toString();
+			providerId = attributes.get(CommonAttribute.GITHUB_PROVIDER_ID) .toString();
+		} else {
+			firstName = attributes.get(CommonAttribute.FACEBOOK_FIRSTNAME).toString();
+			lastName = attributes.get(CommonAttribute.FACEBOOK_LASTNAME).toString();
+			providerId = attributes.get(CommonAttribute.FACEBOOK_PROVIDER_ID).toString();
 		}
 
-		email = authentication.getPrincipal().getAttribute(CommonAttribute.EMAIL);
+		email = attributes.get(CommonAttribute.EMAIL).toString();
 
 		CredentialDTO credential = credentialService.findByAuthentication(authentication);
 
@@ -267,7 +267,16 @@ public class UserController extends WebSocketSender {
 	}
 
 	@GetMapping(CommonEndPoint.LOGOUT_SUCCESS)
-	public String postLogout(Model model) {
+	public String postLogout(HttpServletRequest request, HttpServletResponse response) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication != null) {
+			new SecurityContextLogoutHandler().logout(request, response, authentication);
+		}
+
+		SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
+		securityContextLogoutHandler.setInvalidateHttpSession(true);
+		securityContextLogoutHandler.setClearAuthentication(true);
+
 		sendSuccessMessage(CommonWebSocket.USER_LOGGED_OUT);
 		return CommonView.HOME;
 	}
