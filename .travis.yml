@@ -1,5 +1,5 @@
 language: java
-sudo: true
+os: linux
 dist: trusty
 
 # use Java 11
