@@ -109,7 +109,7 @@ public class UserController extends WebSocketSender {
 				"Your attempt to create new account. To confirm your account, please click here : ",
 				CommonEndPoint.PETCLINIC_CONFIRM_ACCOUNT + credential.getToken());
 
-		// emailService.sendMailAsynch(message, Locale.getDefault());
+		emailService.sendMailAsynch(message, Locale.getDefault());
 
 		log.info(message.toString());
 

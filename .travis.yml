@@ -11,9 +11,9 @@ before_install:
 jobs:
   include:
     - stage: javaformat
-      script: ./mvnw clean spring-javaformat:apply
+      script: ./mvnw spring-javaformat:apply
     - stage: test
-      script: ./mvnw test
+      script: ./mvnw clean test
     - stage: verify
       script: ./mvnw verify
     - stage: sonar
