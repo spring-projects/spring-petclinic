@@ -3,11 +3,8 @@ package org.springframework.samples.petclinic.service.business;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.internal.util.Lists;
 import org.springframework.samples.petclinic.dto.business.OwnerDTO;
-import org.springframework.samples.petclinic.dto.business.PetDTO;
 import org.springframework.samples.petclinic.model.business.Owner;
-import org.springframework.samples.petclinic.model.business.Pet;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
-import org.springframework.samples.petclinic.repository.PetRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,25 +21,16 @@ public class OwnerService implements BaseService<Owner, OwnerDTO> {
 
 	private final OwnerRepository ownerRepository;
 
-	private final PetRepository petRepository;
-
 	private final ModelMapper modelMapper = new ModelMapper();
 
-	public OwnerService(OwnerRepository ownerRepository, PetRepository petRepository) {
+	public OwnerService(OwnerRepository ownerRepository) {
 		this.ownerRepository = ownerRepository;
-		this.petRepository = petRepository;
 	}
 
 	@Override
 	public Owner dtoToEntity(OwnerDTO dto) {
 		if (dto != null) {
-			Owner owner = modelMapper.map(dto, Owner.class);
-			dto.getPets().forEach(petDTO -> {
-				Pet pet = modelMapper.map(petDTO, Pet.class);
-				pet.setOwner(owner);
-				owner.addPet(pet);
-			});
-			return owner;
+			return modelMapper.map(dto, Owner.class);
 		}
 
 		return new Owner();
@@ -51,13 +39,7 @@ public class OwnerService implements BaseService<Owner, OwnerDTO> {
 	@Override
 	public OwnerDTO entityToDTO(Owner entity) {
 		if (entity != null) {
-			OwnerDTO ownerDTO = modelMapper.map(entity, OwnerDTO.class);
-			entity.getPets().forEach(pet -> {
-				PetDTO petDTO = modelMapper.map(pet, PetDTO.class);
-				petDTO.setOwner(ownerDTO);
-				ownerDTO.addPet(petDTO);
-			});
-			return ownerDTO;
+			return modelMapper.map(entity, OwnerDTO.class);
 		}
 
 		return new OwnerDTO();
@@ -83,24 +65,12 @@ public class OwnerService implements BaseService<Owner, OwnerDTO> {
 
 	@Override
 	public OwnerDTO findById(int ownerId) {
-		Owner owner = ownerRepository.findById(ownerId);
-		List<Pet> pets = petRepository.findByOwnerId(owner.getId());
-
-		pets.forEach(pet -> {
-			// Add pet to the owner
-			owner.addPet(pet);
-			// Add owner to the pet
-			pet.setOwner(owner);
-		});
-
-		return entityToDTO(owner);
+		return entityToDTO(ownerRepository.findById(ownerId));
 	}
 
 	@Override
 	public List<OwnerDTO> findAll() {
-		List<Owner> owners = ownerRepository.findAll();
-
-		return entitiesToDTOS(owners);
+		return entitiesToDTOS(ownerRepository.findAll());
 	}
 
 	@Override

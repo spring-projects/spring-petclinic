@@ -119,4 +119,11 @@ public class UserService implements BaseService<User, UserDTO> {
 		return userRepository.existsByEmail(email);
 	}
 
+	public UserDTO setEnabled(String email) {
+		User user = userRepository.findByEmail(email);
+		user.setEnabled(true);
+		user = userRepository.save(user);
+		return entityToDTO(user);
+	}
+
 }

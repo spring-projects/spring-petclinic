@@ -67,8 +67,8 @@ class PetServiceTest {
 
 	@BeforeEach
 	void beforeEach() {
-		this.petService = new PetService(petRepository, petTypeRepository, visitRepository);
-		this.ownerService = new OwnerService(ownerRepository, petRepository);
+		this.petService = new PetService(petRepository, petTypeRepository);
+		this.ownerService = new OwnerService(ownerRepository);
 
 		PetTypeService petTypeService = new PetTypeService(petTypeRepository);
 		Collection<PetTypeDTO> petTypeDTOS = petService.findPetTypes();

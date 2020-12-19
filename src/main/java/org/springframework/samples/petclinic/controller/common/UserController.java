@@ -109,11 +109,11 @@ public class UserController extends WebSocketSender {
 				"Your attempt to create new account. To confirm your account, please click here : ",
 				CommonEndPoint.PETCLINIC_CONFIRM_ACCOUNT + credential.getToken());
 
-		emailService.sendMailAsynch(message, Locale.getDefault());
+		// emailService.sendMailAsynch(message, Locale.getDefault());
 
 		log.info(message.toString());
 
-		return CommonView.HOME + user.getId();
+		return CommonView.HOME;
 	}
 
 	@GetMapping(CommonEndPoint.LOGIN)
@@ -156,11 +156,15 @@ public class UserController extends WebSocketSender {
 
 	@GetMapping(CommonEndPoint.OAUTH2_SUCCESS)
 	public String postLoginOAUTH2(Model model, OAuth2AuthenticationToken authentication) {
+
 		String firstName;
 		String lastName;
 		String email;
 		String providerId;
 		String provider = authentication.getAuthorizedClientRegistrationId();
+
+		CredentialDTO credential = credentialService.findByAuthentication(authentication);
+
 		Map<String, Object> attributes = authentication.getPrincipal().getAttributes();
 
 		if (provider.equals(CommonAttribute.GOOGLE)) {
@@ -180,8 +184,6 @@ public class UserController extends WebSocketSender {
 		}
 
 		email = attributes.get(CommonAttribute.EMAIL).toString();
-
-		CredentialDTO credential = credentialService.findByAuthentication(authentication);
 
 		UserDTO user = userService.findByEmail(email);
 
@@ -246,26 +248,14 @@ public class UserController extends WebSocketSender {
 			credential.setExpiration(null);
 			credential = credentialService.save(credential);
 
-			// find corresponding user
-			UserDTO user = userService.findByEmail(credential.getEmail());
+			// Enabled corresponding user
+			UserDTO user = userService.setEnabled(credential.getEmail());
 
 			securityService.autoLogin(credential.getEmail(), credential.getPassword());
 			model.addAttribute(CommonAttribute.USER, user);
-			return CommonView.USER_UPDATE;
 		}
 
 		return CommonView.HOME;
-	}
-
-	@GetMapping(CommonEndPoint.LOGOUT)
-	public String logout(HttpServletRequest request, HttpServletResponse response) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication != null) {
-			new SecurityContextLogoutHandler().logout(request, response, authentication);
-		}
-
-		sendSuccessMessage(CommonWebSocket.USER_LOGGED_OUT);
-		return CommonView.USER_LOGIN_R;
 	}
 
 	@GetMapping(CommonEndPoint.LOGOUT_SUCCESS)
@@ -336,7 +326,7 @@ public class UserController extends WebSocketSender {
 			UserDTO operator = (UserDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			UserDTO user = userService.findById(userId);
 
-			if (user.equals(operator) || operator.hasRole("ROLE_ADMIN")) {
+			if (user.getEmail().equals(operator.getEmail()) || operator.hasRole("ROLE_ADMIN")) {
 				model.addAttribute(CommonAttribute.USER, user);
 				model.addAttribute(CommonAttribute.USER_ID, user.getId());
 				return CommonView.USER_CHANGE_PASSWORD;
@@ -357,14 +347,33 @@ public class UserController extends WebSocketSender {
 
 		// verify the matching with old password
 		if (!user.matches(oldPassword)) {
-			bindingResult.rejectValue("password", "6", "Bad password !");
+			bindingResult.rejectValue(CommonAttribute.PASSWORD, "6", CommonError.PASSWORD_WRONG_MESSAGE);
+			sendErrorMessage(CommonError.PASSWORD_WRONG_MESSAGE);
 			model.addAttribute(CommonAttribute.USER, user);
 			return CommonView.USER_CHANGE_PASSWORD;
 		}
 
 		// verify matching between two password
 		if (!newPassword.equals(newMatchingPassword)) {
-			bindingResult.rejectValue("password", "7", "Bad matching password !");
+			bindingResult.rejectValue(CommonAttribute.PASSWORD, "7", CommonError.PASSWORD_NOT_MATCHING_MESSAGE);
+			sendErrorMessage(CommonError.PASSWORD_NOT_MATCHING_MESSAGE);
+			model.addAttribute(CommonAttribute.USER, user);
+			return CommonView.USER_CHANGE_PASSWORD;
+		}
+
+		// verify password not empty
+		if (newPassword.isEmpty()) {
+			bindingResult.rejectValue(CommonAttribute.PASSWORD, "8", CommonError.PASSWORD_EMPTY_MESSAGE);
+			sendErrorMessage(CommonError.PASSWORD_EMPTY_MESSAGE);
+			model.addAttribute(CommonAttribute.USER, user);
+			return CommonView.USER_CHANGE_PASSWORD;
+		}
+
+		// verify password lenght
+		if (newPassword.length() < CommonParameter.PASSWORD_MIN
+				|| newPassword.length() > CommonParameter.PASSWORD_MAX) {
+			bindingResult.rejectValue(CommonAttribute.PASSWORD, "9", CommonError.PASSWORD_LENGTH_MESSAGE);
+			sendErrorMessage(CommonError.PASSWORD_LENGTH_MESSAGE);
 			model.addAttribute(CommonAttribute.USER, user);
 			return CommonView.USER_CHANGE_PASSWORD;
 		}
@@ -376,7 +385,7 @@ public class UserController extends WebSocketSender {
 				// encode password
 				user.encode(newPassword);
 				user = userService.save(user);
-
+				sendInfoMessage("Password changed !");
 				model.addAttribute(CommonAttribute.USER, user);
 				return CommonView.USER_UPDATE_R;
 			}

@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.samples.petclinic.model.business.Pet;
 import org.springframework.samples.petclinic.model.business.PetType;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,7 +51,9 @@ public interface PetRepository extends Repository<Pet, Integer> {
 	 * @param id the id to search for
 	 * @return the {@link Pet} if found
 	 */
-	Pet findById(Integer id);
+	@Query("SELECT DISTINCT pet FROM Pet pet left join fetch pet.owner WHERE pet.id =:id")
+	@Transactional(readOnly = true)
+	Pet findById(@Param("id") Integer id);
 
 	/**
 	 * Retrieve all {@link Pet}d from the data store by owner id.

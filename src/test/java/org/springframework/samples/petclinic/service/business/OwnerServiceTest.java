@@ -78,8 +78,8 @@ class OwnerServiceTest {
 
 	@BeforeEach
 	void beforeEach() {
-		petService = new PetService(petRepository, petTypeRepository, visitRepository);
-		ownerService = new OwnerService(ownerRepository, petRepository);
+		petService = new PetService(petRepository, petTypeRepository);
+		ownerService = new OwnerService(ownerRepository);
 		PetTypeService petTypeService = new PetTypeService(petTypeRepository);
 		Collection<PetTypeDTO> petTypeDTOS = petService.findPetTypes();
 		PetTypeDTO petTypeDTO = petTypeDTOS.stream().findFirst().get();

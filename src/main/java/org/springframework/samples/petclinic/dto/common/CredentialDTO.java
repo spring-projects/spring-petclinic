@@ -51,7 +51,7 @@ public class CredentialDTO extends BaseDTO {
 	public CredentialDTO(UserDTO user) {
 		this.setProvider(CommonParameter.DEFAULT_PROVIDER);
 		this.email = user.getEmail();
-		this.password = user.getId().toString();
+		this.password = user.getPassword();
 		this.verified = false;
 		this.setToken();
 		this.setExpiration();

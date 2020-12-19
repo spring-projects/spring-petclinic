@@ -70,9 +70,7 @@ public class RoleService implements BaseService<Role, RoleDTO> {
 		Collection<Role> roles = roleRepository.findAll();
 		List<RoleDTO> roleDTOS = new ArrayList<>();
 
-		roles.forEach(role -> {
-			roleDTOS.add(entityToDTO(role));
-		});
+		roles.forEach(role -> roleDTOS.add(entityToDTO(role)));
 
 		return roleDTOS;
 	}

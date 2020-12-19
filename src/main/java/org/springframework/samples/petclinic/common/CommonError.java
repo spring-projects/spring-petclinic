@@ -27,6 +27,14 @@ public final class CommonError {
 
 	public static final String PHONE_FORMAT = "Not a valid phone number !";
 
+	public static final String PASSWORD_WRONG_MESSAGE = "Wrong password !";
+
+	public static final String PASSWORD_NOT_MATCHING_MESSAGE = "New passwords are not matching !";
+
+	public static final String PASSWORD_EMPTY_MESSAGE = "Password can't be empty !";
+
+	public static final String PASSWORD_LENGTH_MESSAGE = "Wrong password lenght !";
+
 	private CommonError() {
 		throw new IllegalStateException("Utility class");
 	}

@@ -223,7 +223,7 @@ class UserControllerTest extends WebSocketSender {
 		given(credentialService.save(any(CredentialDTO.class))).willReturn(credentialDTO);
 
 		mockMvc.perform(post(CommonEndPoint.REGISTER).flashAttr(CommonAttribute.USER, userDTO))
-				.andExpect(status().is3xxRedirection()).andExpect(view().name(CommonView.HOME + user.getId()));
+				.andExpect(status().is3xxRedirection()).andExpect(view().name(CommonView.HOME));
 	}
 
 	@Test
