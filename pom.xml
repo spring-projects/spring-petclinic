@@ -157,6 +157,7 @@
             <id>nohttp-checkstyle-validation</id>
             <phase>validate</phase>
             <configuration>
+              <skip>true</skip>  <!--Skip the checkstyle --> 
               <configLocation>src/checkstyle/nohttp-checkstyle.xml</configLocation>
               <suppressionsLocation>src/checkstyle/nohttp-checkstyle-suppressions.xml</suppressionsLocation>
               <encoding>UTF-8</encoding>
