@@ -16,6 +16,8 @@
 
 package org.springframework.samples.petclinic;
 
+import java.util.*;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -28,8 +30,20 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication(proxyBeanMethods = false)
 public class PetClinicApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(PetClinicApplication.class, args);
-	}
+	public static void main2(String[] args) {
+        SpringApplication.run(PetClinicApplication.class, args);
+    }
+
+    public static void main(String[] args) {
+        List<Integer> ints = new ArrayList<Integer>();
+
+        ints.add(2);
+        ints.add(1);
+
+        Collections.sort(ints, (n1, n2) -> n1.compareTo(n2));
+        for (Integer i : ints) {
+            System.out.println(i);
+        }
+    }
 
 }
