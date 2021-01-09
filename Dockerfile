@@ -2,7 +2,7 @@ FROM maven:3.6.3-jdk-8 AS build-env
 
 COPY . ./
 
-RUN ./mvnw package
+RUN mvn package
 
 FROM openjdk:8-jre-alpine
 EXPOSE 8080
