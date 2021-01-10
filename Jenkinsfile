@@ -9,7 +9,7 @@ pipeline {
     /////////////////////////////////////////////////////////////////////
     environment {
         artifactory_url="https://petclinic.jfrog.io/artifactory"
-        artifactory_repo="mpatel011/spring-petclinic"
+        artifactory_repo="spring-petclinic"
     }
     /////////////////////////////////////////////////////////////////////
     // END
@@ -29,7 +29,7 @@ pipeline {
         stage('deploy image') {
             steps {
                 script {
-                    docker.withRegistry('' , 'jfrog') {
+                    docker.withRegistry('' , 'dockerhub') {
                         dockerImage.push()
                     }
                 }
