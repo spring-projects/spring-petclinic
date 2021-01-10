@@ -43,5 +43,15 @@ pipeline {
                 }
             }
         }
+        stage ('print job summary') {
+            steps {
+                println "------------------------------------------------"
+                println "--------------------INFO------------------------"
+                println "Docker image pushed to Dockerhub: mpatel011/spring-petclinic:$BUILD_NUMBER"
+                println "------------------------------------------------"
+                println "------------------------------------------------"
+                println "----Git repo link: https://github.com/mnpatel0611/spring-petclinic"
+            }
+        }
     }
 }
