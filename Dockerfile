@@ -2,10 +2,10 @@ FROM maven:3.6.3-jdk-8 AS build-env
 WORKDIR /app
 
 COPY pom.xml ./
-RUN mvn validate
 RUN mvn dependency:go-offline
 
 COPY . ./
+RUN mvn validate
 RUN mvn compile test
 RUN mvn package
 
