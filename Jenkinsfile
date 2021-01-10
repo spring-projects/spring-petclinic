@@ -7,6 +7,9 @@ pipeline {
     // START :
     // Definition of Jenkins job configuration
     /////////////////////////////////////////////////////////////////////
+    options {
+        skipStagesAfterUnstable()
+    }
     environment {
         artifactory_url="https://petclinic.jfrog.io/artifactory"
         artifactory_repo="spring-petclinic"
@@ -18,6 +21,11 @@ pipeline {
     /////////////////////////////////////////////////////////////////////
     // START : Stages
     /////////////////////////////////////////////////////////////////////
+    stage('build package') {
+        steps {
+            sh 'mvn validate compile test'
+        }
+    }
     stages {
         stage('build image') {
             steps {
