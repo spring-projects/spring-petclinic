@@ -2,9 +2,11 @@ FROM maven:3.6.3-jdk-8 AS build-env
 WORKDIR /app
 
 COPY pom.xml ./
+RUN mvn validate
 RUN mvn dependency:go-offline
 
 COPY . ./
+RUN mvn compile test
 RUN mvn package
 
 FROM openjdk:8-jre-alpine
