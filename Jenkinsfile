@@ -41,7 +41,8 @@ pipeline {
                 println "------------------------------------------------"
                 println "--------------------INFO------------------------"
                 println "Docker image pushed to Dockerhub: mpatel011/spring-petclinic:$BUILD_NUMBER"
-                println "--artifactory_url:$artifactory_url"
+                println "artifactory_url: $artifactory_url"
+                println "artifactory_repo: $artifactory_repo"
                 println "------------------------------------------------"
                 println "------------------------------------------------"
             }
