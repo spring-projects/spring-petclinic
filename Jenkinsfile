@@ -32,6 +32,8 @@ pipeline {
                 script {
                     dockerImage = docker.build "mpatel011/spring-petclinic:$BUILD_NUMBER"
                 }
+
+                sh "docker images"
             }
         }
         stage('push docker image') {
