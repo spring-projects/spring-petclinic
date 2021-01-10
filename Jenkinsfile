@@ -21,12 +21,12 @@ pipeline {
     /////////////////////////////////////////////////////////////////////
     // START : Stages
     /////////////////////////////////////////////////////////////////////
-    stage('build package') {
-        steps {
-            sh 'mvn validate compile test'
-        }
-    }
     stages {
+        stage('build package') {
+            steps {
+                sh 'mvn validate compile test'
+            }
+        }
         stage('build image') {
             steps {
                 script {
