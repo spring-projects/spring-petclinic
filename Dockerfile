@@ -2,8 +2,6 @@ FROM maven:3.6.3-jdk-8 AS build-env
 
 COPY . ./
 
-ENV MAVEN_OPTS='-Xmx512m -XX:MaxPermSize=128m'
-
 RUN mvn dependency:go-offline
 RUN mvn package
 
