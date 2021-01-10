@@ -27,7 +27,7 @@ pipeline {
                 rtServer (
                     id: "ARTIFACTORY_SERVER",
                     url: "$artifactory_url",
-                    credentialsId: CREDENTIALS
+                    credentialsId: "$CREDENTIALS"
                 )
                 sh 'mvn validate compile test package'
             }
