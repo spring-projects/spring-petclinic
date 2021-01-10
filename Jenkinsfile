@@ -38,17 +38,11 @@ pipeline {
                 rtMavenResolver (
                     id: "MAVEN_RESOLVER",
                     serverId: "ARTIFACTORY_SERVER",
-                    releaseRepo: "libs-release",
+                    releaseRepo: "spring-petclinic",
                     snapshotRepo: "spring-petclinic-snapshot"
                 )
 
-                rtMavenRun (
-                    tool: MAVEN_TOOL, // Tool name from Jenkins configuration
-                    pom: 'pom.xml',
-                    goals: 'validate compile test',
-                    deployerId: "MAVEN_DEPLOYER",
-                    resolverId: "MAVEN_RESOLVER"
-                )
+                sh "mvn validate compile test package"
             }
         }
         stage('build docker image') {
