@@ -5,8 +5,7 @@ COPY pom.xml ./
 RUN mvn dependency:go-offline
 
 COPY . ./
-
-RUN ./mvnw package
+RUN mvn package
 
 FROM openjdk:8-jre-alpine
 EXPOSE 9449
