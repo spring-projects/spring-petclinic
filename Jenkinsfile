@@ -32,6 +32,9 @@ pipeline {
                     docker.withRegistry('' , 'dockerhub') {
                         dockerImage.push()
                     }
+                    docker.withRegistry('' , 'jfrog') {
+                        dockerImage.push()
+                    }
                 }
             }
         }
