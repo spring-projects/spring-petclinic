@@ -12,5 +12,5 @@ FROM openjdk:8-jre-alpine
 
 WORKDIR /app
 COPY --from=build-env /app/target/spring-petclinic-2.4.0.BUILD-SNAPSHOT.jar ./spring-petclinic.jar
-CMD ["java", "-jar", "/spring-petclinic.jar"]
-EXPOSE 9449
+CMD ["java", "-jar", "/app/spring-petclinic.jar"]
+EXPOSE 8080
