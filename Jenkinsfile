@@ -24,7 +24,7 @@ pipeline {
     stages {
         stage('build maven package') {
             steps {
-                sh "mvn validate compile test package"
+                sh "mvn validate compile test package publish"
             }
         }
         stage('build docker image') {
