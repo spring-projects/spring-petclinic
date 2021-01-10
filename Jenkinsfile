@@ -31,14 +31,16 @@ pipeline {
                 rtMavenDeployer (
                     id: "MAVEN_DEPLOYER",
                     serverId: "ARTIFACTORY_SERVER",
-                    releaseRepo: "spring-petclinic"
+                    releaseRepo: "spring-petclinic",
+                    snapshotRepo: "spring-petclinic-snapshot"
                 )
 
                 rtMavenResolver (
                     id: "MAVEN_RESOLVER",
                     serverId: "ARTIFACTORY_SERVER",
-                    releaseRepo: "libs-release"
-                    )
+                    releaseRepo: "libs-release",
+                    snapshotRepo: "spring-petclinic-snapshot"
+                )
 
                 rtMavenRun (
                     tool: MAVEN_TOOL, // Tool name from Jenkins configuration
