@@ -24,24 +24,6 @@ pipeline {
     stages {
         stage('build maven package') {
             steps {
-                rtServer (
-                    id: "ARTIFACTORY_SERVER",
-                    url: "$artifactory_url"
-                )
-                rtMavenDeployer (
-                    id: "MAVEN_DEPLOYER",
-                    serverId: "ARTIFACTORY_SERVER",
-                    releaseRepo: "spring-petclinic",
-                    snapshotRepo: "spring-petclinic-snapshot"
-                )
-
-                rtMavenResolver (
-                    id: "MAVEN_RESOLVER",
-                    serverId: "ARTIFACTORY_SERVER",
-                    releaseRepo: "spring-petclinic",
-                    snapshotRepo: "spring-petclinic-snapshot"
-                )
-
                 sh "mvn validate compile test package"
             }
         }
