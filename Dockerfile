@@ -6,8 +6,10 @@ RUN mvn dependency:go-offline
 
 COPY . ./
 RUN echo "START: Running Tests"
+RUN ./mvnw compile
 RUN ./mvnw test
 RUN echo "END: Tests completed "
+RUN ./mvnw generate-resources
 RUN ./mvnw package
 
 FROM openjdk:8-jre-alpine
