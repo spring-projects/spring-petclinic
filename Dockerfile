@@ -12,5 +12,8 @@ FROM openjdk:8-jre-alpine
 
 WORKDIR /app
 COPY --from=build-env /app/target/spring-petclinic-2.4.0.BUILD-SNAPSHOT.jar ./spring-petclinic.jar
+
+RUN apt-get update && apt-get install -y curl
+RUN curl
 CMD ["java", "-jar", "/app/spring-petclinic.jar"]
 EXPOSE 8080
