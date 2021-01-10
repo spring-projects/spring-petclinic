@@ -6,15 +6,7 @@ pipeline {
     /////////////////////////////////////////////////////////////////////
     // START :
     // Definition of Jenkins job configuration
-    // Job Parameters and any other config is set here, not in Jenkins UI
     /////////////////////////////////////////////////////////////////////
-    options {
-        disableConcurrentBuilds()//Do NOT run in parallel!
-        buildDiscarder(logRotator(numToKeepStr: '50'))
-        timeout(time: 120, unit: 'MINUTES')
-        skipStagesAfterUnstable()
-        timestamps()
-    }
     environment {
         artifactory_url="https://petclinic.jfrog.io/artifactory"
         artifactory_repo="spring-petclinic"
@@ -45,12 +37,13 @@ pipeline {
         }
         stage ('print job summary') {
             steps {
+                println "----Git repo link: https://github.com/mnpatel0611/spring-petclinic"
                 println "------------------------------------------------"
                 println "--------------------INFO------------------------"
                 println "Docker image pushed to Dockerhub: mpatel011/spring-petclinic:$BUILD_NUMBER"
+                println "--artifactory_url:$artifactory_url"
                 println "------------------------------------------------"
                 println "------------------------------------------------"
-                println "----Git repo link: https://github.com/mnpatel0611/spring-petclinic"
             }
         }
     }
