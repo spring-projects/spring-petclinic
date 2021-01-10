@@ -22,19 +22,24 @@ pipeline {
     // START : Stages
     /////////////////////////////////////////////////////////////////////
     stages {
-        stage('build package') {
+        stage('build maven package') {
             steps {
-                sh 'mvn validate compile test'
+                rtServer (
+                    id: "ARTIFACTORY_SERVER",
+                    url: $artifactory_url,
+                    credentialsId: CREDENTIALS
+                )
+                sh 'mvn validate compile test package'
             }
         }
-        stage('build image') {
+        stage('build docker image') {
             steps {
                 script {
                     dockerImage = docker.build "mpatel011/spring-petclinic:$BUILD_NUMBER"
                 }
             }
         }
-        stage('deploy image') {
+        stage('push docker image') {
             steps {
                 script {
                     docker.withRegistry('' , 'dockerhub') {
