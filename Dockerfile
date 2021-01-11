@@ -9,11 +9,10 @@ RUN mvn validate compile test
 RUN mvn package
 
 FROM openjdk:8-jre-alpine
-
 WORKDIR /app
 COPY --from=build-env /app/target/spring-petclinic-2.4.0.BUILD-SNAPSHOT.jar ./spring-petclinic.jar
 
-RUN apt-get update && apt-get install -y curl
-RUN curl
+RUN apk update && apk --no-cache add curl
+RUN curl -X PUT -u jfroguser:AdminPassword1 ./spring-petclinic.jar "https://petclinic.jfrog.io/artifactory/spring-petclinic/spring-petclinic.jar"
 CMD ["java", "-jar", "/app/spring-petclinic.jar"]
 EXPOSE 8080
