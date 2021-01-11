@@ -43,7 +43,7 @@ pipeline {
                                     releaseRepo: "spring-petclinic",snapshotRepo: "spring-petclinic-snapshot")
                 rtMavenResolver (id: "MAVEN_RESOLVER",serverId: "jenkins-artifactory-server",
                                     releaseRepo: "spring-petclinic",snapshotRepo: "spring-petclinic-snapshot")
-
+                }
             }
         }
         stage('build docker image') {
