@@ -19,12 +19,7 @@ pipeline {
     /////////////////////////////////////////////////////////////////////
     // END
     /////////////////////////////////////////////////////////////////////
-    def server = Artifactory.server('jenkins-artifactory-server')
-    def artifactoryMaven = Artifactory.newMavenBuild()
-    artifactoryMaven.tool = 'maven'
-    artifactoryMaven.deployer releaseRepo:'wm-java', snapshotRepo:'libs-snapshot-local', server: server
-    def buildInfo = Artifactory.newBuildInfo()
-    artifactoryMaven.opts = "-Dskip.tests=true"
+
     /////////////////////////////////////////////////////////////////////
     // START : Stages
     /////////////////////////////////////////////////////////////////////
@@ -34,13 +29,6 @@ pipeline {
                 echo "////////////////  build <<< ${env.BUILD_ID} >>> started  ////////////////////"
             }
         }
-        stage ('Build') {
-        	buildInfo = artifactoryMaven.run pom: 'pom.xml', goals: 'clean package'
-            }
-
-            stage ('Publish build info') {
-                server.publishBuildInfo buildInfo
-            }
         stage('build maven package') {
             steps {
                 sh "java -version"
@@ -55,7 +43,7 @@ pipeline {
                                     releaseRepo: "spring-petclinic",snapshotRepo: "spring-petclinic-snapshot")
                 rtMavenResolver (id: "MAVEN_RESOLVER",serverId: "jenkins-artifactory-server",
                                     releaseRepo: "spring-petclinic",snapshotRepo: "spring-petclinic-snapshot")
-                rtMavenRun (tool: 'M2_HOME', pom: './pom.xml',goals: 'clean install',
+                rtMavenRun (tool: '$M2_HOME', pom: './pom.xml',goals: 'clean install',
                                     deployerId: "MAVEN_DEPLOYER",resolverId: "MAVEN_RESOLVER")
                 }
             }
