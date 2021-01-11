@@ -1,3 +1,4 @@
+def server = Artifactory.server 'my-server-id'
 pipeline {
     agent {
         label 'dockerbuild'
