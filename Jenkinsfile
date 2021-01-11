@@ -28,21 +28,11 @@ pipeline {
                 echo "build <<< ${BUILD_NUMBER} >>> starting..."
             }
         }
-        stage('build maven package') {
+        stage('build and push to artifactory') {
             steps {
-//                 sh "java -version"
-//                 sh "mvn -version"
-//                 withMaven {
                 sh "mvn clean validate compile test package"
                 sh "ls -la target"
                 sh 'curl -u jfroguser:AdminPassword1 -T ./target/spring-petclinic-2.4.0.BUILD-SNAPSHOT.jar "${artifactory_repo}/spring-petclinic-2.4.0.BUILD-${BUILD_NUMBER}.jar"'
-//                 rtServer (id: 'jenkins-artifactory-server',url: 'https://petclinic.jfrog.io/artifactory',username: 'jfroguser',
-//                                     password: 'AdminPassword1',bypassProxy: true,timeout: 300)
-//                 rtMavenDeployer (id: "MAVEN_DEPLOYER",serverId: "jenkins-artifactory-server",
-//                                     releaseRepo: "spring-petclinic",snapshotRepo: "spring-petclinic-snapshot")
-//                 rtMavenResolver (id: "MAVEN_RESOLVER",serverId: "jenkins-artifactory-server",
-//                                     releaseRepo: "spring-petclinic",snapshotRepo: "spring-petclinic-snapshot")
-//                 }
             }
         }
         stage('build docker image') {

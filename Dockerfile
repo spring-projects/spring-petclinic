@@ -5,8 +5,7 @@ COPY pom.xml ./
 RUN mvn dependency:go-offline
 
 COPY . ./
-RUN mvn validate compile test
-RUN mvn package
+RUN mvn validate compile test package
 
 FROM openjdk:8-jre-alpine
 WORKDIR /app
