@@ -35,15 +35,15 @@ pipeline {
                 sh "ls -la target"
                 sh "chmod 400 ./target/spring-petclinic-2.4.0.BUILD-SNAPSHOT.jar"
                 sh 'curl -X PUT -u jfroguser:AdminPassword1 ./target/spring-petclinic-2.4.0.BUILD-SNAPSHOT.jar "https://petclinic.jfrog.io/artifactory/spring-petclinic/spring-petclinic-2.4.0.BUILD-${BUILD_NUMBER}.jar"'
+                rtServer (
+                                id: 'Artifactory-1',
+                                url: 'https://petclinic.jfrog.io/artifactory',
+                                username: 'jfroguser',
+                                password: 'AdminPassword1',
+                                bypassProxy: true,
+                                timeout: 300
+                            )
             }
-            rtServer (
-                id: 'Artifactory-1',
-                url: 'https://petclinic.jfrog.io/artifactory',
-                username: 'jfroguser',
-                password: 'AdminPassword1',
-                bypassProxy: true,
-                timeout: 300
-            )
         }
         stage('build docker image') {
             steps {
