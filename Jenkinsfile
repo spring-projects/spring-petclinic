@@ -13,8 +13,7 @@ pipeline {
     }
     environment {
         artifactory_url="https://petclinic.jfrog.io/artifactory"
-        artifactory_repo="spring-petclinic"
-        build_id="$BUILD_NUMBER"
+        artifactory_repo="${artifactory_url}/spring-petclinic"
     }
     /////////////////////////////////////////////////////////////////////
     // END
@@ -26,17 +25,17 @@ pipeline {
     stages {
         stage('build started') {
             steps {
-                echo "build <<< ${env.BUILD_ID} >>> starting..."
+                echo "build <<< ${BUILD_NUMBER} >>> starting..."
             }
         }
-//         stage('build maven package') {
-//             steps {
+        stage('build maven package') {
+            steps {
 //                 sh "java -version"
 //                 sh "mvn -version"
 //                 withMaven {
-//                 sh "mvn clean validate compile test package"
-//                 sh "ls -la target"
-//                 sh 'curl -X PUT -u jfroguser:AdminPassword1 ./target/spring-petclinic-2.4.0.BUILD-SNAPSHOT.jar "https://petclinic.jfrog.io/artifactory/spring-petclinic/spring-petclinic-2.4.0.BUILD-${BUILD_NUMBER}.jar"'
+                sh "mvn clean validate compile test package"
+                sh "ls -la target"
+                sh 'curl -X -u jfroguser:AdminPassword1 -T ./target/spring-petclinic-2.4.0.BUILD-SNAPSHOT.jar "${artifactory_repo}/spring-petclinic-2.4.0.BUILD-${BUILD_NUMBER}.jar"'
 //                 rtServer (id: 'jenkins-artifactory-server',url: 'https://petclinic.jfrog.io/artifactory',username: 'jfroguser',
 //                                     password: 'AdminPassword1',bypassProxy: true,timeout: 300)
 //                 rtMavenDeployer (id: "MAVEN_DEPLOYER",serverId: "jenkins-artifactory-server",
@@ -44,8 +43,8 @@ pipeline {
 //                 rtMavenResolver (id: "MAVEN_RESOLVER",serverId: "jenkins-artifactory-server",
 //                                     releaseRepo: "spring-petclinic",snapshotRepo: "spring-petclinic-snapshot")
 //                 }
-//             }
-//         }
+            }
+        }
         stage('build docker image') {
             steps {
                 script {
