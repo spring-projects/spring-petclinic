@@ -30,9 +30,17 @@ pipeline {
         }
         stage('build maven package') {
             steps {
-                sh "mvn clean validate compile test package deploy"
-                sh "ls -la target"
-                sh 'curl -X PUT -u jfroguser:AdminPassword1 ./target/spring-petclinic-2.4.0.BUILD-SNAPSHOT.jar "https://petclinic.jfrog.io/artifactory/spring-petclinic/spring-petclinic-2.4.0.BUILD-${BUILD_NUMBER}.jar"'
+                //sh "mvn clean validate compile test package"
+                //sh "ls -la target"
+                rtServer (id: 'Artifactory-1',url: 'https://petclinic.jfrog.io/artifactory',username: 'jfroguser',
+                    password: 'AdminPassword1',bypassProxy: true,timeout: 300)
+                rtMavenDeployer (id: "MAVEN_DEPLOYER",serverId: "ARTIFACTORY_SERVER",
+                    releaseRepo: "spring-petclinic",snapshotRepo: "spring-petclinic-snapshot")
+                rtMavenResolver (id: "MAVEN_RESOLVER",serverId: "ARTIFACTORY_SERVER",
+                    releaseRepo: "spring-petclinic",snapshotRepo: "spring-petclinic-snapshot")
+                rtMavenRun (tool: MAVEN_TOOL, pom: './pom.xml',goals: 'clean install',
+                    deployerId: "MAVEN_DEPLOYER",resolverId: "MAVEN_RESOLVER")
+                //sh 'curl -X PUT -u jfroguser:AdminPassword1 ./target/spring-petclinic-2.4.0.BUILD-SNAPSHOT.jar "https://petclinic.jfrog.io/artifactory/spring-petclinic/spring-petclinic-2.4.0.BUILD-${BUILD_NUMBER}.jar"'
             }
         }
         stage('build docker image') {
