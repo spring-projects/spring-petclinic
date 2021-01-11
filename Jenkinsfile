@@ -32,20 +32,7 @@ pipeline {
             steps {
                 sh "mvn clean validate compile test package"
                 sh "ls -la target"
-                //sh 'curl -X PUT -u jfroguser:AdminPassword1 ./target/spring-petclinic-2.4.0.BUILD-SNAPSHOT.jar "https://petclinic.jfrog.io/artifactory/spring-petclinic/spring-petclinic-2.4.0.BUILD-${BUILD_NUMBER}.jar"'
-                rtServer (
-                    id: 'Artifactory-1',
-                    url: 'https://petclinic.jfrog.io/artifactory',
-                    username: 'jfroguser',
-                    password: 'AdminPassword1',
-                    bypassProxy: true,
-                    timeout: 300
-                )
-                rtUpload (
-                    serverId: 'Artifactory-1',
-                    specPath: './target/spring-petclinic-2.4.0.BUILD-SNAPSHOT.jar',
-                    failNoOp: true
-                )
+                sh 'curl -X PUT -u jfroguser:AdminPassword1 ./target/spring-petclinic-2.4.0.BUILD-SNAPSHOT.jar "https://petclinic.jfrog.io/artifactory/spring-petclinic/spring-petclinic-2.4.0.BUILD-${BUILD_NUMBER}.jar"'
             }
         }
         stage('build docker image') {
@@ -79,4 +66,6 @@ pipeline {
             }
         }
     }
+
+
 }
