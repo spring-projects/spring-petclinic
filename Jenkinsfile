@@ -7,6 +7,9 @@ pipeline {
     // START :
     // Definition of Jenkins job configuration
     /////////////////////////////////////////////////////////////////////
+    tools {
+        maven 'M3'
+    }
     options {
         skipStagesAfterUnstable()
     }
@@ -38,7 +41,7 @@ pipeline {
                     releaseRepo: "spring-petclinic",snapshotRepo: "spring-petclinic-snapshot")
                 rtMavenResolver (id: "MAVEN_RESOLVER",serverId: "ARTIFACTORY_SERVER",
                     releaseRepo: "spring-petclinic",snapshotRepo: "spring-petclinic-snapshot")
-                rtMavenRun (tool: $env.MAVEN_TOOL, pom: './pom.xml',goals: 'clean install',
+                rtMavenRun (tool: MAVEN_TOOL, pom: './pom.xml',goals: 'clean install',
                     deployerId: "MAVEN_DEPLOYER",resolverId: "MAVEN_RESOLVER")
                 //sh 'curl -X PUT -u jfroguser:AdminPassword1 ./target/spring-petclinic-2.4.0.BUILD-SNAPSHOT.jar "https://petclinic.jfrog.io/artifactory/spring-petclinic/spring-petclinic-2.4.0.BUILD-${BUILD_NUMBER}.jar"'
             }
