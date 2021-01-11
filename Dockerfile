@@ -3,14 +3,13 @@ WORKDIR /app
 
 COPY pom.xml ./
 RUN mvn dependency:go-offline
-
+RUN echo $build_id
 COPY . ./
 RUN mvn validate compile test
 RUN mvn package
 
 FROM openjdk:8-jre-alpine
 WORKDIR /app
-RUN echo "$build_id"
 COPY --from=build-env /app/target/spring-petclinic-2.4.0.BUILD-SNAPSHOT.jar ./spring-petclinic.jar
 COPY --from=build-env /app/target/spring-petclinic-2.4.0.BUILD-SNAPSHOT.jar ./spring-petclinic-2.4.0.BUILD-${env.BUILD_ID}.jar
 RUN apk update && apk --no-cache add curl
