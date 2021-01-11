@@ -11,7 +11,6 @@ RUN mvn package
 FROM openjdk:8-jre-alpine
 WORKDIR /app
 COPY --from=build-env /app/target/spring-petclinic-2.4.0.BUILD-SNAPSHOT.jar ./spring-petclinic.jar
-RUN apk update && apk --no-cache add curl
 
 CMD ["java", "-jar", "/app/spring-petclinic.jar"]
 EXPOSE 8080
