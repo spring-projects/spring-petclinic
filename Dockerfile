@@ -10,7 +10,7 @@ RUN mvn package
 
 FROM openjdk:8-jre-alpine
 WORKDIR /app
-RUN echo "$ENV_VAR"
+RUN echo "$build_id"
 COPY --from=build-env /app/target/spring-petclinic-2.4.0.BUILD-SNAPSHOT.jar ./spring-petclinic.jar
 COPY --from=build-env /app/target/spring-petclinic-2.4.0.BUILD-SNAPSHOT.jar ./spring-petclinic-2.4.0.BUILD-${env.BUILD_ID}.jar
 RUN apk update && apk --no-cache add curl

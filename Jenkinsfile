@@ -25,7 +25,7 @@ pipeline {
     stages {
         stage('build started') {
             steps {
-                echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
+                echo "////////////////  build <<< ${env.BUILD_ID} >>> started  ////////////////////"
             }
         }
         stage('build maven package') {
@@ -53,14 +53,14 @@ pipeline {
         }
         stage ('print job summary') {
             steps {
-                println "----Git repo link: https://github.com/mnpatel0611/spring-petclinic"
-                println "------------------------------------------------"
-                println "--------------------INFO------------------------"
-                println "Docker image pushed to Dockerhub: mpatel011/spring-petclinic:$BUILD_NUMBER"
-                println "artifactory_url: $artifactory_url"
-                println "artifactory_repo: $artifactory_repo"
-                println "------------------------------------------------"
-                println "------------------------------------------------"
+                echo "----Git repo link: https://github.com/mnpatel0611/spring-petclinic"
+                echo "------------------------------------------------"
+                echo "--------------------INFO------------------------"
+                echo "Docker image pushed to Dockerhub: mpatel011/spring-petclinic:$BUILD_NUMBER"
+                echo "artifactory_url: $artifactory_url"
+                echo "artifactory_repo: $artifactory_repo"
+                echo "------------------------------------------------"
+                echo "------------------------------------------------"
             }
         }
     }
