@@ -24,6 +24,13 @@ pipeline {
     // START : Stages
     /////////////////////////////////////////////////////////////////////
     stages {
+        stage ('clone git repository') {
+            steps{
+                script {
+                    checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/mnpatel0611/spring-petclinic']]])
+                }
+            }
+        }
         stage('build started') {
             steps {
                 echo "////////////////  build <<< ${env.BUILD_ID} >>> started  ////////////////////"
