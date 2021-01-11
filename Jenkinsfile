@@ -32,7 +32,10 @@ pipeline {
             steps {
                 sh "mvn clean validate compile test package"
                 sh "ls -la target"
+                echo "------------------------------------------------"
+                echo "--------------------Start - Push to JFROG Artifactory------------------------"
                 sh 'curl -u jfroguser:AdminPassword1 -T ./target/spring-petclinic-2.4.0.BUILD-SNAPSHOT.jar "${artifactory_repo}/spring-petclinic-2.4.0.BUILD-${BUILD_NUMBER}.jar"'
+                echo "--------------------Complete - Push to JFROG Artifactory------------------------"
             }
         }
         stage('build docker image') {
@@ -58,9 +61,8 @@ pipeline {
                 echo "----Git repo link: https://github.com/mnpatel0611/spring-petclinic"
                 echo "------------------------------------------------"
                 echo "--------------------INFO------------------------"
+                echo "Artifact URL: ${artifactory_repo}/spring-petclinic-2.4.0.BUILD-${BUILD_NUMBER}.jar"
                 echo "Docker image pushed to Dockerhub: mpatel011/spring-petclinic:$BUILD_NUMBER"
-                echo "artifactory_url: $artifactory_url"
-                echo "artifactory_repo: $artifactory_repo"
                 echo "------------------------------------------------"
                 echo "------------------------------------------------"
             }
