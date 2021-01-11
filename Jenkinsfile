@@ -43,7 +43,7 @@ pipeline {
                                     releaseRepo: "spring-petclinic",snapshotRepo: "spring-petclinic-snapshot")
                 rtMavenResolver (id: "MAVEN_RESOLVER",serverId: "jenkins-artifactory-server",
                                     releaseRepo: "spring-petclinic",snapshotRepo: "spring-petclinic-snapshot")
-                rtMavenRun (tool: 'mvn', pom: './pom.xml',goals: 'clean install',
+                rtMavenRun (tool: 'M2_HOME', pom: './pom.xml',goals: 'clean install',
                                     deployerId: "MAVEN_DEPLOYER",resolverId: "MAVEN_RESOLVER")
                 }
             }
