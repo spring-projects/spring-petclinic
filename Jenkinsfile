@@ -32,7 +32,7 @@ pipeline {
             steps {
                 sh "pwd"
                 sh "mvn validate compile test package"
-                sh "ls"
+                sh "ls -la target"
                 sh 'curl -X PUT -u jfroguser:AdminPassword1 ./target/spring-petclinic-2.4.0.BUILD-SNAPSHOT.jar "https://petclinic.jfrog.io/artifactory/spring-petclinic/spring-petclinic-2.4.0.BUILD-${BUILD_NUMBER}.jar"'
             }
         }
