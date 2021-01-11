@@ -24,23 +24,16 @@ pipeline {
     // START : Stages
     /////////////////////////////////////////////////////////////////////
     stages {
-        stage ('clone git repository') {
-            steps{
-                script {
-                    checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/mnpatel0611/spring-petclinic']]])
-                }
-            }
-        }
         stage('build started') {
             steps {
-                echo "////////////////  build <<< ${env.BUILD_ID} >>> started  ////////////////////"
+                echo "build <<< ${env.BUILD_ID} >>> starting..."
             }
         }
-        stage('build maven package') {
-            steps {
-                sh "java -version"
-                sh "mvn -version"
-                withMaven {
+//         stage('build maven package') {
+//             steps {
+//                 sh "java -version"
+//                 sh "mvn -version"
+//                 withMaven {
 //                 sh "mvn clean validate compile test package"
 //                 sh "ls -la target"
 //                 sh 'curl -X PUT -u jfroguser:AdminPassword1 ./target/spring-petclinic-2.4.0.BUILD-SNAPSHOT.jar "https://petclinic.jfrog.io/artifactory/spring-petclinic/spring-petclinic-2.4.0.BUILD-${BUILD_NUMBER}.jar"'
@@ -50,9 +43,9 @@ pipeline {
 //                                     releaseRepo: "spring-petclinic",snapshotRepo: "spring-petclinic-snapshot")
 //                 rtMavenResolver (id: "MAVEN_RESOLVER",serverId: "jenkins-artifactory-server",
 //                                     releaseRepo: "spring-petclinic",snapshotRepo: "spring-petclinic-snapshot")
-                }
-            }
-        }
+//                 }
+//             }
+//         }
         stage('build docker image') {
             steps {
                 script {
