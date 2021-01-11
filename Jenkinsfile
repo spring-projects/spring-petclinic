@@ -13,6 +13,7 @@ pipeline {
     environment {
         artifactory_url="https://petclinic.jfrog.io/artifactory"
         artifactory_repo="spring-petclinic"
+        build_id="$BUILD_NUMBER"
     }
     /////////////////////////////////////////////////////////////////////
     // END
