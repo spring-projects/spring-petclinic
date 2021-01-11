@@ -30,7 +30,7 @@ pipeline {
         }
         stage('build maven package') {
             steps {
-                sh "mvn validate compile test package"
+                sh "mvn clean validate compile test package"
                 sh "ls -la target"
                 //sh 'curl -X PUT -u jfroguser:AdminPassword1 ./target/spring-petclinic-2.4.0.BUILD-SNAPSHOT.jar "https://petclinic.jfrog.io/artifactory/spring-petclinic/spring-petclinic-2.4.0.BUILD-${BUILD_NUMBER}.jar"'
                 rtServer (
