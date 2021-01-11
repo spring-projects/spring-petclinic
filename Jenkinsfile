@@ -8,7 +8,7 @@ pipeline {
     // Definition of Jenkins job configuration
     /////////////////////////////////////////////////////////////////////
     tools {
-        maven 'M3'
+        MAVEN_TOOL 'M3'
     }
     options {
         skipStagesAfterUnstable()
