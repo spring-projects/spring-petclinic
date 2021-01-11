@@ -22,6 +22,11 @@ pipeline {
     // START : Stages
     /////////////////////////////////////////////////////////////////////
     stages {
+        stage('build started') {
+            steps {
+                echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
+            }
+        }
         stage('build maven package') {
             steps {
                 sh "mvn validate compile test package"
