@@ -129,6 +129,7 @@
         <version>${spring-format.version}</version>
         <executions>
           <execution>
+          <?m2e ignore?>
             <phase>validate</phase>
             <goals>
               <goal>validate</goal>
