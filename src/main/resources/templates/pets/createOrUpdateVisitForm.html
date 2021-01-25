@@ -24,7 +24,7 @@
         th:text="${#temporals.format(pet.birthDate, dateFormat)}" /></td>
       <td th:text="${pet.type}" /></td>
       <td
-        th:text="${pet.owner?.firstName + ' ' + pet.owner?.lastName}" /></td>
+        th:text="${pet.owner?.firstName + ' ' + pet.owner?.lastName}"></td>
     </tr>
   </table>
 
