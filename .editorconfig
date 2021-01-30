@@ -10,7 +10,7 @@ indent_style = space
 [*.{java,xml}]
 indent_size = 4
 trim_trailing_whitespace = true
-indent_style = tab
+indent_style = space
 tab_width = 4
 
 [{pom,wro}.xml]
