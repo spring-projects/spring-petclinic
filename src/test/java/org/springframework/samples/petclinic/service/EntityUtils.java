@@ -16,6 +16,7 @@
 
 package org.springframework.samples.petclinic.service;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 import org.springframework.orm.ObjectRetrievalFailureException;
@@ -27,7 +28,6 @@ import org.springframework.samples.petclinic.model.BaseEntity;
  *
  * @author Juergen Hoeller
  * @author Sam Brannen
- * @see org.springframework.samples.petclinic.model.BaseEntity
  * @since 29.10.2003
  */
 public abstract class EntityUtils {

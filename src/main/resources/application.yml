@@ -2,15 +2,17 @@
 database: h2
 spring:
   datasource:
-    schema: classpath*:db/${database}/schema.sql
+#    schema: classpath*:db/${database}/schema.sql
     data: classpath*:db/${database}/data.sql
   jpa:
     hibernate.ddl-auto: none
     open-in-view: false
-spring.thymeleaf.mode: HTML
-
-# Internationalization
-spring.messages.basename: messages/messages
+  liquibase:
+    enabled: true
+    change-log: classpath*:db/db-changelog.yaml
+  thymeleaf.mode: HTML
+  # Internationalization
+  messages.basename: messages/messages
 
 # Actuator
 management.endpoints.web.exposure.include: '*'

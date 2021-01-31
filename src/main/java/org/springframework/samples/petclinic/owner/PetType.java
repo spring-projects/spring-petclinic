@@ -16,8 +16,15 @@
 
 package org.springframework.samples.petclinic.owner;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.samples.petclinic.model.NamedEntity;
 
 /**
@@ -27,6 +34,13 @@ import org.springframework.samples.petclinic.model.NamedEntity;
  */
 @Entity
 @Table(name = "types")
-public class PetType extends NamedEntity {
+@Data
+public class PetType implements NamedEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+
+    @Column(name = "name")
+    private String name;
 
 }

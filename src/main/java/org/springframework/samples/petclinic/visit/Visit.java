@@ -16,13 +16,17 @@
 
 package org.springframework.samples.petclinic.visit;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.samples.petclinic.model.BaseEntity;
 
 /**
  * Simple JavaBean domain object representing a visit.
@@ -32,7 +36,11 @@ import org.springframework.samples.petclinic.model.BaseEntity;
  */
 @Entity
 @Table(name = "visits")
-public class Visit extends BaseEntity {
+@Data
+public class Visit implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
 
     @Column(name = "visit_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -51,29 +59,4 @@ public class Visit extends BaseEntity {
     public Visit() {
         this.date = LocalDate.now();
     }
-
-    public LocalDate getDate() {
-        return this.date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getPetId() {
-        return this.petId;
-    }
-
-    public void setPetId(Integer petId) {
-        this.petId = petId;
-    }
-
 }

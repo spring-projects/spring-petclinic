@@ -28,6 +28,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.samples.petclinic.model.Person;
@@ -42,7 +43,13 @@ import org.springframework.samples.petclinic.model.Person;
  */
 @Entity
 @Table(name = "vets")
+@NoArgsConstructor
 public class Vet extends Person {
+
+    public Vet(String firstName, String lastName) {
+        this.setFirstName(firstName);
+        this.setLastName(lastName);
+    }
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "vet_specialties", joinColumns = @JoinColumn(name = "vet_id"),

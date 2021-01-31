@@ -17,8 +17,12 @@
 package org.springframework.samples.petclinic.model;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotEmpty;
+import lombok.Data;
 
 /**
  * Simple JavaBean domain object representing an person.
@@ -26,7 +30,11 @@ import javax.validation.constraints.NotEmpty;
  * @author Ken Krebs
  */
 @MappedSuperclass
-public class Person extends BaseEntity {
+@Data
+public class Person implements BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
 
     @Column(name = "first_name")
     @NotEmpty
@@ -35,21 +43,5 @@ public class Person extends BaseEntity {
     @Column(name = "last_name")
     @NotEmpty
     private String lastName;
-
-    public String getFirstName() {
-        return this.firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return this.lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 
 }
