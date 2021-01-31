@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20210123-types-table
+      author: anbu
+      changes:
+        - createTable:
+            tableName: types
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(30)
+        - createIndex:
+            indexName: ix1_types_name
+            tableName: types
+            columns:
+              - column:
+                  name: name

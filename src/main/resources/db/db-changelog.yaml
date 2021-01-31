@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - include:
+      file: changelog/20210120-hibernate-sequence.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: changelog/20210120-vets.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: changelog/20210121-specialties.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: changelog/20210122-vet-specialties.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: changelog/20210123-types.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: changelog/20210124-owners.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: changelog/20210125-pets.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: changelog/20210125-visits.yaml
+      relativeToChangelogFile: true

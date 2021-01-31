@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20210124-owners-table
+      author: anbu
+      changes:
+        - createTable:
+            tableName: owners
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: varchar(30)
+              - column:
+                  name: last_name
+                  type: varchar(30)
+              - column:
+                  name: address
+                  type: varchar(255)
+              - column:
+                  name: city
+                  type: varchar(80)
+              - column:
+                  name: telephone
+                  type: varchar(20)
+        - createIndex:
+            indexName: ix1_owners_last_name
+            tableName: owners
+            columns:
+              - column:
+                  name: last_name

@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20210122-vet-specialties-table
+      author: anbu
+      changes:
+        - createTable:
+            tableName: vet_specialties
+            columns:
+              - column:
+                  name: vet_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_vet_specialties_vets
+                    references: vets(id)
+              - column:
+                  name: specialty_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_vet_specialties_specialities
+                    references: specialties(id)

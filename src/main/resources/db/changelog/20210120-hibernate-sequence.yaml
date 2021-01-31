@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20210120-hibernate-sequence
+      author: anbu
+      changes:
+        - createSequence:
+            cacheSize: 100
+            cycle: false
+            incrementBy: 1
+            minValue: 1
+            ordered: false
+            sequenceName: HIBERNATE_SEQUENCE
+            startValue: 1000

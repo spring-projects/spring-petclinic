@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20210125-visits-table
+      author: anbu
+      changes:
+        - createTable:
+            tableName: visits
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: pet_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_visits_pets
+                    references: pets(id)
+              - column:
+                  name: visit_date
+                  type: date
+              - column:
+                  name: description
+                  type: varchar(255)
+        - createIndex:
+            indexName: ix1_visits_pet_id
+            tableName: visits
+            columns:
+              - column:
+                  name: pet_id

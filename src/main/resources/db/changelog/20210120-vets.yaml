@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20210120-vets-table
+      author: anbu
+      changes:
+        - createTable:
+            tableName: vets
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: varchar(30)
+              - column:
+                  name: last_name
+                  type: varchar(30)
+        - createIndex:
+            indexName: ix1_vets_last_name
+            tableName: vets
+            columns:
+              - column:
+                  name: last_name

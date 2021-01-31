@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20210121-specialties-table
+      author: anbu
+      changes:
+        - createTable:
+            tableName: specialties
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(30)
+        - createIndex:
+            indexName: ix1_speialties_name
+            tableName: specialties
+            columns:
+              - column:
+                  name: name

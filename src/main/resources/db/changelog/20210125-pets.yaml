@@ -1,0 +1,40 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20210125-pets-table
+      author: anbu
+      changes:
+        - createTable:
+            tableName: pets
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(30)
+              - column:
+                  name: birth_date
+                  type: date
+              - column:
+                  name: type_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_pets_types
+                    references: types(id)
+              - column:
+                  name: owner_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_pets_owners
+                    references: owners(id)
+        - createIndex:
+            indexName: ix1_pets_name
+            tableName: pets
+            columns:
+              - column:
+                  name: name
