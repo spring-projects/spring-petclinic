@@ -11,5 +11,5 @@
  |___|   |_______| |___| |_______|_______|___|_|  |__|___|_______|  / / / /
  ==================================================================/_/_/_/
 
-:: Built with Spring Boot :: ${spring-boot.version}
+:: Built with Fucking Spring Boot :: ${spring-boot.version}
 
