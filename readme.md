@@ -1,4 +1,4 @@
-# this is mahesh i am from mori - please ignore this text - this for practice
+#git added
 # Spring PetClinic Sample Application [![Build Status](https://travis-ci.org/spring-projects/spring-petclinic.png?branch=main)](https://travis-ci.org/spring-projects/spring-petclinic/)
 
 ## Understanding the Spring Petclinic application with a few diagrams
