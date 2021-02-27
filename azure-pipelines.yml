@@ -32,7 +32,7 @@ jobs:
     - task: CopyFiles@2
       displayName: 'Copy Files to artifact staging directory'
       inputs:
-        SourceFolder: '$(System.DefaultWorkingDirectory)'
+        SourceFolder: '$(System.DefaultWorkingDirectory)/target'
         Contents: '**/target/*.?(war|jar)'
         TargetFolder: $(Build.ArtifactStagingDirectory)
         preserveTimestamp: true
@@ -41,7 +41,7 @@ jobs:
     # https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/utility/publish-build-artifacts?view=azure-devops
     - task: PublishBuildArtifacts@1
       inputs:
-        pathToPublish: '$(Build.ArtifactStagingDirectory)' 
+        pathToPublish: '$(Build.ArtifactStagingDirectory)/target' 
         artifactName: 'jar-artifact' 
         publishLocation: 'Container' # Publishes inside Azure Pipelines artifact folder.
         parallel: true # Increased speed through multi-threaded copying.
