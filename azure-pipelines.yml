@@ -10,7 +10,7 @@ pool:
 
 # Adding extra information into build name, to make it easier to identify builds. 
 # It can be called using '$(Build.BuildNumber)'
-name: $(Build.DefinitionName)-$(SourceBranchName)-$(Date:yyyyMMdd)$(Rev:.r)
+name: $(Build.DefinitionName).$(SourceBranchName).$(Date:yyyyMMdd)$(Rev:.r)
 
 jobs:
   - job: BuildTest
