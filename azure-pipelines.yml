@@ -1,0 +1,34 @@
+
+# Adding extra information into build name, to make it easier to identify builds. 
+# It can be called using '$(Build.BuildNumber)'
+name: $(TeamProject)_$(Build.DefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)
+
+pool:
+  vmImage: ubuntu-latest
+
+jobs:
+  - job: BuildTest
+    displayName: Build and Test Maven Project
+    steps:
+    - task: Maven@3
+      displayName: 'Maven Package'
+      inputs:
+        mavenPomFile: 'pom.xml'
+        mavenOptions: '-Xmx3072m'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.11'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: true
+        testRunTitle: '$(Build.BuildNumber)'
+        testResultsFiles: '**/TEST-*.xml'
+        checkStyleRunAnalysis: true
+        goals: 'package'
+
+    - task: CopyFiles@2
+      displayName: 'Copy Files to artifact staging directory'
+      inputs:
+        SourceFolder: '$(System.DefaultWorkingDirectory)'
+        Contents: '**/target/*.?(war|jar)'
+        TargetFolder: $(Build.ArtifactStagingDirectory)
+    - upload: $(Build.ArtifactStagingDirectory)
+      artifact: drop
