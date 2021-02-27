@@ -1,10 +1,16 @@
+# DEVELOPMENT OPERATIONS CONTINUOUS ASSESSMENT
+
+pool:
+  # Using an Azure DevOps hosted agent. The advantages are:
+  #  - The build VM is deployed by Microsoft, reducing maintenance.
+  #  - Tools within the VM Image are always up to date.
+  #  - Fresh build environment for every run (to reduce contamination from other runs).
+  # https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml
+  vmImage: ubuntu-20.04
 
 # Adding extra information into build name, to make it easier to identify builds. 
 # It can be called using '$(Build.BuildNumber)'
-name: $(TeamProject)_$(Build.DefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)
-
-pool:
-  vmImage: ubuntu-latest
+name: $(Build.DefinitionName)-$(SourceBranchName)-$(Date:yyyyMMdd)$(Rev:.r)
 
 jobs:
   - job: BuildTest
@@ -21,7 +27,6 @@ jobs:
         publishJUnitResults: true
         testRunTitle: '$(Build.BuildNumber)'
         testResultsFiles: '**/TEST-*.xml'
-        checkStyleRunAnalysis: true
         goals: 'package'
 
     - task: CopyFiles@2
@@ -30,5 +35,14 @@ jobs:
         SourceFolder: '$(System.DefaultWorkingDirectory)'
         Contents: '**/target/*.?(war|jar)'
         TargetFolder: $(Build.ArtifactStagingDirectory)
-    - upload: $(Build.ArtifactStagingDirectory)
-      artifact: drop
+        preserveTimestamp: true
+
+    # Publish build artifacts to Azure Pipelines. Extension uses Robocopy "under the hood."
+    # https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/utility/publish-build-artifacts?view=azure-devops
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathToPublish: '$(Build.ArtifactStagingDirectory)' 
+        artifactName: 'jar-artifact' 
+        publishLocation: 'Container' # Publishes inside Azure Pipelines artifact folder.
+        parallel: true # Increased speed through multi-threaded copying.
+        parallelCount: 8 # Dependent upon CPU capabilities.
