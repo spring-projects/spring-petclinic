@@ -29,18 +29,18 @@ jobs:
       displayName: 'Maven Build, Test and Package'
       inputs:
         mavenPomFile: 'pom.xml'
-        mavenOptions: '-Xmx3072m'
+        publishJUnitResults: true
+        testResultsFiles: '**/TEST-*.xml'
+        testRunTitle: '$(Build.BuildNumber)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: '1.11'
-        jdkArchitectureOption: 'x64'
-        publishJUnitResults: true
-        testRunTitle: '$(Build.BuildNumber)'
-        testResultsFiles: '**/TEST-*.xml'
-        goals: 'package'
+        mavenVersionOption: 'Default'
+        mavenOptions: '-Xmx3072m'
+        mavenAuthenticateFeed: false
+        effectivePomSkip: false
+        sonarQubeRunAnalysis: true
+        sqMavenPluginVersionChoice: 'latest'
 
-    - task: SonarCloudAnalyze@1
-      displayName: 'Run SonarCloud Code Analysis' 
-        
     - task: SonarCloudPublish@1
       displayName: 'Publish Quality Gate Result on SonarCloud'
       inputs:
