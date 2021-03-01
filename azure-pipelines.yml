@@ -24,10 +24,9 @@ jobs:
         organization: 'james-flynn-ie'
         scannerMode: 'CLI'
         configMode: 'manual'
-        cliProjectKey: 'spring-petclinic'
         cliProjectName: 'spring-petclinic'
         cliSources: '.'
-        extraProperties: 'sonar.branch.name=$(Build.SourceBranchName) sonar.language=java'
+        extraProperties: 'sonar.branch.name=$(Build.SourceBranchName) sonar.language=java sonar.projectKey=james-flynn-ie_spring-petclinic'
 
     - task: Maven@3
       displayName: 'Maven Build, Test and Package'
