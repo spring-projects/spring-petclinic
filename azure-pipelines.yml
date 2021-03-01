@@ -18,12 +18,13 @@ jobs:
     steps:
 
     - task: SonarCloudPrepare@1
-      displayName: 'Prepare SonarCloud scan'
+      displayName: 'Prepare SonarCloud Code Analysis Scan'
       inputs:
         SonarCloud: 'sonarcloud-svc-connection'
-        organization: 'James Flynn'
-        projectKey: 'spring-petclinic'
         scannerMode: 'Other'
+        organization: 'james-flynn-ie'
+        projectKey: 'spring-petclinic'
+
 
     - task: Maven@3
       displayName: 'Maven Build, Test and Package'
@@ -38,8 +39,11 @@ jobs:
         mavenOptions: '-Xmx3072m'
         mavenAuthenticateFeed: false
         effectivePomSkip: false
-        sonarQubeRunAnalysis: true
-        sqMavenPluginVersionChoice: 'latest'
+        # Run SonarCloud analysis as a separate step
+        sqAnalysisEnabled: true
+    
+    - task: SonarCloudAnalyze@1
+      displayName: 'Run SonarCloud Code Analysis Scan'
 
     - task: SonarCloudPublish@1
       displayName: 'Publish Quality Gate Result on SonarCloud'
