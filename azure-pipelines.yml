@@ -16,18 +16,18 @@ jobs:
   - job: BuildTest
     displayName: Build and Test Maven Project
     steps:
-    - task: Maven@3
-      displayName: 'Maven Package'
-      inputs:
-        mavenPomFile: 'pom.xml'
-        mavenOptions: '-Xmx3072m'
-        javaHomeOption: 'JDKVersion'
-        jdkVersionOption: '1.11'
-        jdkArchitectureOption: 'x64'
-        #publishJUnitResults: true
-        #testRunTitle: '$(Build.BuildNumber)'
-        #testResultsFiles: '**/TEST-*.xml'
-        goals: 'package'
+#    - task: Maven@3
+#      displayName: 'Maven Package'
+#      inputs:
+#        mavenPomFile: 'pom.xml'
+#        mavenOptions: '-Xmx3072m'
+#        javaHomeOption: 'JDKVersion'
+#        jdkVersionOption: '1.11'
+#        jdkArchitectureOption: 'x64'
+#        publishJUnitResults: true
+#        testRunTitle: '$(Build.BuildNumber)'
+#        testResultsFiles: '**/TEST-*.xml'
+#        goals: 'package'
 
     #- task: CopyFiles@2
     #  displayName: 'Copy Files to artifact staging directory'
@@ -47,7 +47,19 @@ jobs:
     #    parallel: true # Increased speed through multi-threaded copying.
     #    parallelCount: 8 # Dependent upon CPU capabilities.
 
+    # Enable this task for testing purposes, to reduce times by not building the code each pipeline run.
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        source: 'specific'
+        project: 'DevOps-CA-pipeline'
+        pipeline: 16
+        path: '$(System.DefaultWorkingDirectory)/target/spring-petclinic-2.4.2.jar'
+        runVersion: 'latest'
+
     - task: AzureWebApp@1
+      displayName: Deploy spring-petclinic to Azure Web Apps service
+      # Only deploy from main branch (for release purposes)
+      # condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
       inputs:
         azureSubscription: 'azure-svc-connection'
         appType: webAppLinux
