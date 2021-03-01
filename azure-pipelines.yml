@@ -46,3 +46,13 @@ jobs:
         publishLocation: 'Container' # Publishes inside Azure Pipelines artifact folder.
         parallel: true # Increased speed through multi-threaded copying.
         parallelCount: 8 # Dependent upon CPU capabilities.
+
+  - job: DeployWebApp
+    steps:
+    - task: AzureWebApp@1
+      inputs:
+        azureSubscription: 'azure-svc-connection'
+        appType: webAppLinux
+        appName: 'james-pet-clinic'
+        package: '$(System.DefaultWorkingDirectory)/**/*.jar'
+  
