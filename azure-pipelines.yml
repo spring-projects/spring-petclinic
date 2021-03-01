@@ -22,25 +22,28 @@ jobs:
       inputs:
         SonarCloud: 'sonarcloud-svc-connection'
         organization: 'james-flynn-ie'
-        scannerMode: 'Other'
+        scannerMode: 'CLI'
         configMode: 'manual'
-        projectKey: 'james-flynn-ie_spring-petclinic'
-        projectName: 'spring-petclinic'
-        extraProperties: 'sonar.branch.name=$(Build.SourceBranchName) sonar.language=java'
+        cliProjectKey: 'james-flynn-ie_spring-petclinic'
+        cliProjectName: 'spring-petclinic'
+        cliSources: '.'
+        extraProperties: 'sonar.branch.name=$(Build.SourceBranchName) sonar.language=java sonar.projectKey=james-flynn-ie_spring-petclinic'
 
     - task: Maven@3
       displayName: 'Maven Build, Test and Package'
       inputs:
         mavenPomFile: 'pom.xml'
-        publishJUnitResults: true
-        testResultsFiles: '**/TEST-*.xml'
-        testRunTitle: '$(Build.BuildNumber)'
+        mavenOptions: '-Xmx3072m'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: '1.11'
-        mavenVersionOption: 'Default'
-        mavenOptions: '-Xmx3072m'
-        sonarQubeRunAnalysis: true
-        sqMavenPluginVersionChoice: 'latest'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: true
+        testRunTitle: '$(Build.BuildNumber)'
+        testResultsFiles: '**/TEST-*.xml'
+        goals: 'package'
+
+    - task: SonarCloudAnalyze@1
+      displayName: 'Run Sonarcloud Code Analysis'
 
     - task: SonarCloudPublish@1
       displayName: 'Publish Quality Gate Result on SonarCloud'
