@@ -13,8 +13,8 @@ pool:
 name: $(Build.DefinitionName).$(SourceBranchName).$(Date:yyyyMMdd)$(Rev:.r)
 
 jobs:
-  - job: BuildTest
-    displayName: Build and Test Maven Project
+  - job: BuildTestDeploy
+    displayName: Build Test and Deploy spring-petclinic Java Web App
     steps:
     - task: Maven@3
       displayName: 'Maven Package'
@@ -41,14 +41,14 @@ jobs:
     # https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/utility/publish-build-artifacts?view=azure-devops
     - task: PublishBuildArtifacts@1
       inputs:
-        pathToPublish: '$(Build.DefaultWorkingDirectory)/target' 
+        pathToPublish: '$(Build.ArtifactStagingDirectory)/target' 
         artifactName: 'jar-artifact' 
         publishLocation: 'Container' # Publishes inside Azure Pipelines artifact folder.
         parallel: true # Increased speed through multi-threaded copying.
         parallelCount: 8 # Dependent upon CPU capabilities.
 
     - task: AzureWebApp@1
-      displayName: Deploy spring-petclinic to Azure Web Apps service
+      displayName: Deploy spring-petclinic to Azure Web App service
       inputs:
         azureSubscription: 'azure-svc-connection'
         appType: webAppLinux
