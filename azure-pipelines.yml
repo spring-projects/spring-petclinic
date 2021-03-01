@@ -29,23 +29,23 @@ jobs:
         testResultsFiles: '**/TEST-*.xml'
         goals: 'package'
 
-    - task: CopyFiles@2
-      displayName: 'Copy Files to artifact staging directory'
-      inputs:
-        SourceFolder: '$(System.DefaultWorkingDirectory)'
-        Contents: '**/target/*.?(war|jar)'
-        TargetFolder: $(Build.ArtifactStagingDirectory)
-        preserveTimestamp: true
+    #- task: CopyFiles@2
+    #  displayName: 'Copy Files to artifact staging directory'
+    #  inputs:
+    #    SourceFolder: '$(System.DefaultWorkingDirectory)'
+    #    Contents: '**/target/*.?(war|jar)'
+    #    TargetFolder: $(Build.ArtifactStagingDirectory)
+    #    preserveTimestamp: true
 
     # Publish build artifacts to Azure Pipelines. Extension uses Robocopy "under the hood."
     # https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/utility/publish-build-artifacts?view=azure-devops
-    - task: PublishBuildArtifacts@1
-      inputs:
-        pathToPublish: '$(Build.ArtifactStagingDirectory)/target' 
-        artifactName: 'jar-artifact' 
-        publishLocation: 'Container' # Publishes inside Azure Pipelines artifact folder.
-        parallel: true # Increased speed through multi-threaded copying.
-        parallelCount: 8 # Dependent upon CPU capabilities.
+    #- task: PublishBuildArtifacts@1
+    #  inputs:
+    #    pathToPublish: '$(Build.ArtifactStagingDirectory)/target' 
+    #    artifactName: 'jar-artifact' 
+    #    publishLocation: 'Container' # Publishes inside Azure Pipelines artifact folder.
+    #    parallel: true # Increased speed through multi-threaded copying.
+    #    parallelCount: 8 # Dependent upon CPU capabilities.
 
   - job: DeployWebApp
     steps:
@@ -54,5 +54,5 @@ jobs:
         azureSubscription: 'azure-svc-connection'
         appType: webAppLinux
         appName: 'james-pet-clinic'
-        package: '$(System.DefaultWorkingDirectory)/**/*.jar'
+        package: '$(System.DefaultWorkingDirectory)/target/*.jar'
   
