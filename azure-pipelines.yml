@@ -23,10 +23,10 @@ jobs:
         SonarCloud: 'sonarcloud-svc-connection'
         scannerMode: 'Other'
         organization: 'james-flynn-ie'
-        projectKey: 'spring-petclinic'
         extraProperties: 
           sonar.branch.name=$(Build.SourceBranchName)
           sonar.language=java
+          sonar.projectKey=spring-petclinic
           sonar.sources=src/main/java/org/springframework/samples/petclinic/*
           sonar.sourceEncoding=UTF-8
 
