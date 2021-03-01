@@ -21,7 +21,7 @@ jobs:
       displayName: 'Prepare SonarCloud scan'
       inputs:
         SonarCloud: 'sonarcloud-svc-connection'
-        organization: 'james-flynn-ie'
+        organization: 'James Flynn'
         projectKey: 'spring-petclinic'
         scannerMode: 'Other'
 
