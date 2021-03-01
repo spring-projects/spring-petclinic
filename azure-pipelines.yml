@@ -49,11 +49,11 @@ jobs:
 
     - task: AzureWebApp@1
       displayName: Deploy spring-petclinic to Azure Web Apps service
-      # Only deploy from main branch (for release purposes)
-      # condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
       inputs:
         azureSubscription: 'azure-svc-connection'
         appType: webAppLinux
         appName: 'james-pet-clinic'
         package: '$(System.DefaultWorkingDirectory)/**/*.jar'
+      # Only deploy web app from main branch (for release purposes)
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
   
