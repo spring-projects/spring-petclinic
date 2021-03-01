@@ -21,14 +21,14 @@ jobs:
       displayName: 'Prepare SonarCloud Code Analysis Scan'
       inputs:
         SonarCloud: 'sonarcloud-svc-connection'
-        scannerMode: 'Other'
+        scannerMode: 'CLI'
+        configMode: 'manual'
+        cliProjectKey: 'spring-petclinic'
         organization: 'james-flynn-ie'
-        extraProperties: 
+        cliSources: 'src/main/java/org/springframework/samples/petclinic/'
+        extraProperties:
           sonar.branch.name=$(Build.SourceBranchName)
           sonar.language=java
-          sonar.projectKey=spring-petclinic
-          sonar.sources=src/main/java/org/springframework/samples/petclinic/*
-          sonar.sourceEncoding=UTF-8
 
     - task: Maven@3
       displayName: 'Maven Build, Test and Package'
@@ -43,8 +43,9 @@ jobs:
         mavenOptions: '-Xmx3072m'
         mavenAuthenticateFeed: false
         effectivePomSkip: false
-        sonarQubeRunAnalysis: true
-        sqMavenPluginVersionChoice: 'latest'
+
+    - task: SonarCloudAnalyze@1
+      displayName: 'Run Sonarcloud Code Analysis'
 
     - task: SonarCloudPublish@1
       displayName: 'Publish Quality Gate Result on SonarCloud'
