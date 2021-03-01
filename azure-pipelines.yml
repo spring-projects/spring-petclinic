@@ -24,9 +24,9 @@ jobs:
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: '1.11'
         jdkArchitectureOption: 'x64'
-        publishJUnitResults: true
-        testRunTitle: '$(Build.BuildNumber)'
-        testResultsFiles: '**/TEST-*.xml'
+        #publishJUnitResults: true
+        #testRunTitle: '$(Build.BuildNumber)'
+        #testResultsFiles: '**/TEST-*.xml'
         goals: 'package'
 
     #- task: CopyFiles@2
@@ -41,18 +41,16 @@ jobs:
     # https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/utility/publish-build-artifacts?view=azure-devops
     #- task: PublishBuildArtifacts@1
     #  inputs:
-    #    pathToPublish: '$(Build.ArtifactStagingDirectory)/target' 
+    #    pathToPublish: '$(Build.DefaultWorkingDirectory)/target' 
     #    artifactName: 'jar-artifact' 
     #    publishLocation: 'Container' # Publishes inside Azure Pipelines artifact folder.
     #    parallel: true # Increased speed through multi-threaded copying.
     #    parallelCount: 8 # Dependent upon CPU capabilities.
 
-  - job: DeployWebApp
-    steps:
     - task: AzureWebApp@1
       inputs:
         azureSubscription: 'azure-svc-connection'
         appType: webAppLinux
         appName: 'james-pet-clinic'
-        package: '$(System.DefaultWorkingDirectory)/target/*.jar'
+        package: '$(System.DefaultWorkingDirectory)/**/*.jar'
   
