@@ -24,6 +24,7 @@ jobs:
         organization: 'james-flynn-ie'
         scannerMode: 'CLI'
         configMode: 'manual'
+        cliProjectKey: 'james-flynn-ie_spring-petclinic'
         cliProjectName: 'spring-petclinic'
         cliSources: '.'
         extraProperties: 'sonar.branch.name=$(Build.SourceBranchName) sonar.language=java sonar.projectKey=james-flynn-ie_spring-petclinic'
