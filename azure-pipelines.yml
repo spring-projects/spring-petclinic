@@ -25,7 +25,7 @@ jobs:
         configMode: 'manual'
         cliProjectKey: 'spring-petclinic'
         organization: 'james-flynn-ie'
-        cliSources: 'src/main/java/org/springframework/samples/petclinic/'
+        cliSources: '.'
         extraProperties:
           sonar.branch.name=$(Build.SourceBranchName)
           sonar.language=java
