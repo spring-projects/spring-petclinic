@@ -34,15 +34,14 @@ jobs:
       displayName: 'Maven Build, Test and Package'
       inputs:
         mavenPomFile: 'pom.xml'
-        publishJUnitResults: true
-        testResultsFiles: '**/TEST-*.xml'
-        testRunTitle: '$(Build.BuildNumber)'
+        mavenOptions: '-Xmx3072m'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: '1.11'
-        mavenVersionOption: 'Default'
-        mavenOptions: '-Xmx3072m'
-        mavenAuthenticateFeed: false
-        effectivePomSkip: false
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: true
+        testRunTitle: '$(Build.BuildNumber)'
+        testResultsFiles: '**/TEST-*.xml'
+        goals: 'package'
 
     - task: SonarCloudAnalyze@1
       displayName: 'Run Sonarcloud Code Analysis'
