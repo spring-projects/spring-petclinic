@@ -16,45 +16,36 @@ jobs:
   - job: BuildTest
     displayName: Build and Test Maven Project
     steps:
-#    - task: Maven@3
-#      displayName: 'Maven Package'
-#      inputs:
-#        mavenPomFile: 'pom.xml'
-#        mavenOptions: '-Xmx3072m'
-#        javaHomeOption: 'JDKVersion'
-#        jdkVersionOption: '1.11'
-#        jdkArchitectureOption: 'x64'
-#        publishJUnitResults: true
-#        testRunTitle: '$(Build.BuildNumber)'
-#        testResultsFiles: '**/TEST-*.xml'
-#        goals: 'package'
+    - task: Maven@3
+      displayName: 'Maven Package'
+      inputs:
+        mavenPomFile: 'pom.xml'
+        mavenOptions: '-Xmx3072m'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.11'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: true
+        testRunTitle: '$(Build.BuildNumber)'
+        testResultsFiles: '**/TEST-*.xml'
+        goals: 'package'
 
-    #- task: CopyFiles@2
-    #  displayName: 'Copy Files to artifact staging directory'
-    #  inputs:
-    #    SourceFolder: '$(System.DefaultWorkingDirectory)'
-    #    Contents: '**/target/*.?(war|jar)'
-    #    TargetFolder: $(Build.ArtifactStagingDirectory)
-    #    preserveTimestamp: true
+    - task: CopyFiles@2
+      displayName: 'Copy Files to artifact staging directory'
+      inputs:
+        SourceFolder: '$(System.DefaultWorkingDirectory)'
+        Contents: '**/target/*.?(war|jar)'
+        TargetFolder: $(Build.ArtifactStagingDirectory)
+        preserveTimestamp: true
 
     # Publish build artifacts to Azure Pipelines. Extension uses Robocopy "under the hood."
     # https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/utility/publish-build-artifacts?view=azure-devops
-    #- task: PublishBuildArtifacts@1
-    #  inputs:
-    #    pathToPublish: '$(Build.DefaultWorkingDirectory)/target' 
-    #    artifactName: 'jar-artifact' 
-    #    publishLocation: 'Container' # Publishes inside Azure Pipelines artifact folder.
-    #    parallel: true # Increased speed through multi-threaded copying.
-    #    parallelCount: 8 # Dependent upon CPU capabilities.
-
-    # Enable this task for testing purposes, to reduce times by not building the code each pipeline run.
-    - task: DownloadPipelineArtifact@2
+    - task: PublishBuildArtifacts@1
       inputs:
-        source: 'specific'
-        project: 'DevOps-CA-pipeline'
-        pipeline: 16
-        path: '$(System.DefaultWorkingDirectory)/target/spring-petclinic-2.4.2.jar'
-        runVersion: 'latest'
+        pathToPublish: '$(Build.DefaultWorkingDirectory)/target' 
+        artifactName: 'jar-artifact' 
+        publishLocation: 'Container' # Publishes inside Azure Pipelines artifact folder.
+        parallel: true # Increased speed through multi-threaded copying.
+        parallelCount: 8 # Dependent upon CPU capabilities.
 
     - task: AzureWebApp@1
       displayName: Deploy spring-petclinic to Azure Web Apps service
