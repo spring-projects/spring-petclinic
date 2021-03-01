@@ -21,14 +21,13 @@ jobs:
       displayName: 'Prepare SonarCloud Code Analysis Scan'
       inputs:
         SonarCloud: 'sonarcloud-svc-connection'
+        organization: 'james-flynn-ie'
         scannerMode: 'CLI'
         configMode: 'manual'
         cliProjectKey: 'spring-petclinic'
-        organization: 'james-flynn-ie'
+        cliProjectName: 'spring-petclinic'
         cliSources: '.'
-        extraProperties:
-          sonar.branch.name=$(Build.SourceBranchName)
-          sonar.language=java
+        extraProperties: 'sonar.branch.name=$(Build.SourceBranchName) sonar.language=java'
 
     - task: Maven@3
       displayName: 'Maven Build, Test and Package'
