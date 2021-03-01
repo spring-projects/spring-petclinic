@@ -16,8 +16,17 @@ jobs:
   - job: BuildTestDeploy
     displayName: Build Test and Deploy spring-petclinic Java Web App
     steps:
+
+    - task: SonarCloudPrepare@1
+      displayName: 'Prepare SonarCloud scan'
+      inputs:
+        SonarCloud: 'sonarcloud-svc-connection'
+        organization: 'james-flynn-ie'
+        projectKey: 'spring-petclinic'
+        scannerMode: 'Other'
+
     - task: Maven@3
-      displayName: 'Maven Package'
+      displayName: 'Maven Build, Test and Package'
       inputs:
         mavenPomFile: 'pom.xml'
         mavenOptions: '-Xmx3072m'
@@ -28,6 +37,14 @@ jobs:
         testRunTitle: '$(Build.BuildNumber)'
         testResultsFiles: '**/TEST-*.xml'
         goals: 'package'
+
+    - task: SonarCloudAnalyze@1
+      displayName: 'Run SonarCloud Code Analysis' 
+        
+    - task: SonarCloudPublish@1
+      displayName: 'Publish Quality Gate Result on SonarCloud'
+      inputs:
+        pollingTimeoutSec: '300'
 
     - task: CopyFiles@2
       displayName: 'Copy Files to artifact staging directory'
