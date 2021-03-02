@@ -8,14 +8,6 @@ pool:
   # see: https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml
   vmImage: ubuntu-20.04
 
-variables:
-  # Sonar scanner does not allow branch name to be set for Pull Requests (PRs), but returns an error if not specified for CI builds.
-  # This conditional block only passes the branch name if build is not for a PR, otherwise it passes the Sonar PR params:
-  ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
-    SonarExtraProperties: 'sonar.branch.name=$(Build.SourceBranchName)'
-  ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-    SonarExtraProperties: 'sonar.pullrequest.key=$(System.PullRequest.PullRequestId) sonar.pullrequest.branch=$(Build.SourceBranchName) sonar.pullrequest.base=$(System.PullRequest.TargetBranch)'
-
 # Adding extra information into build name, to make it easier to identify builds. 
 # It can be called using '$(Build.BuildNumber)'
 # see: https://docs.microsoft.com/en-us/azure/devops/pipelines/process/run-number?view=azure-devops&tabs=yaml
@@ -27,7 +19,7 @@ stages:
     dependsOn: []
     jobs:
     - job: BuildTestDeploy
-      displayName: Build Test and Deploy spring-petclinic Java Web App
+      displayName: Build Test and Package spring-petclinic
       steps:
 
       # Azure DevOps extension for configuring SonarCloud properties
@@ -42,8 +34,13 @@ stages:
           scannerMode: 'Other'
           ProjectKey: 'james-flynn-ie_spring-petclinic'
           ProjectName: 'spring-petclinic'
-          extraProperties: '$(SonarExtraProperties)'
-  
+          # Sonar scanner does not allow branch name to be set for Pull Requests (PRs), but returns an error if not specified for CI builds.
+          # This conditional block only passes the branch name if build is not for a PR, otherwise it passes the Sonar PR params:
+          ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
+            extraProperties: 'sonar.branch.name=$(Build.SourceBranchName)'
+          ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+            extraProperties: 'sonar.pullrequest.key=$(System.PullRequest.PullRequestId) sonar.pullrequest.branch=$(Build.SourceBranchName) sonar.pullrequest.base=$(System.PullRequest.TargetBranch)'
+
       # https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/build/maven?view=azure-devops
       - task: Maven@3
         displayName: 'Maven Build, Test and Package'
@@ -97,8 +94,13 @@ stages:
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
     jobs:
     - job: DeployWebApp
-      displayName: Build Test and Deploy spring-petclinic Java Web App
+      displayName: Deploy spring-petclinic Java Web App
       steps:
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          artifact: 'jar-artifact'
+          path: $(System.DefaultWorkingDirectory)
+
       # Deploy JAR into Azure Web App Service https://docs.microsoft.com/en-us/azure/app-service/overview
       # Azure App Service offers a Web application hosting Platform-as-a-Service, offering:
       #  - Security
