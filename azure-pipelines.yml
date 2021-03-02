@@ -25,9 +25,7 @@ jobs:
   - job: BuildTestDeploy
     displayName: Build Test and Deploy spring-petclinic Java Web App
     steps:
-    - task: PowerShell@1
-      inputs:
-        inlineScript: echo $(SonarExtraProperties)
+    - script: echo $(SonarExtraProperties)
 
     # Azure DevOps extension for configuring SonarCloud properties
     # see: https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarcloud
