@@ -14,7 +14,7 @@ pool:
 name: $(Build.DefinitionName).$(SourceBranchName).$(Date:yyyyMMdd)$(Rev:.r)
 
 stages:
-  - stage: ContinuousIntegration+Delivery
+  - stage: CI_CDelivery
     displayName: 'Continuous Integration and Delivery'
     dependsOn: []
     jobs:
@@ -88,9 +88,9 @@ stages:
           parallel: true # Increased speed through multi-threaded copying.
           parallelCount: 8 # Dependent upon CPU capabilities.
 
-  - stage: ContinuousDeployment
+  - stage: CDeployment
     displayName: 'Continuous Deployment'
-    dependsOn: [ContinuousIntegration+Delivery]
+    dependsOn: [CI_CDelivery]
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
     jobs:
     - job: DeployWebApp
