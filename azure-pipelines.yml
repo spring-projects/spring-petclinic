@@ -8,6 +8,14 @@ pool:
   # see: https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml
   vmImage: ubuntu-20.04
 
+variables:
+  # Sonar scanner does not allow branch name to be set for Pull Requests (PRs), but returns an error if not specified for CI builds.
+  # This conditional block only passes the branch name if build is not for a PR, otherwise it passes the Sonar PR params:
+  ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
+    SonarExtraProperties: 'sonar.branch.name=$(Build.SourceBranchName)'
+  ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+    SonarExtraProperties: 'sonar.pullrequest.key=$(System.PullRequest.PullRequestId) sonar.pullrequest.branch=$(Build.SourceBranchName) sonar.pullrequest.base=$(System.PullRequest.TargetBranch)'
+
 # Adding extra information into build name, to make it easier to identify builds. 
 # It can be called using '$(Build.BuildNumber)'
 # see: https://docs.microsoft.com/en-us/azure/devops/pipelines/process/run-number?view=azure-devops&tabs=yaml
@@ -15,15 +23,11 @@ name: $(Build.DefinitionName).$(SourceBranchName).$(Date:yyyyMMdd)$(Rev:.r)
 
 jobs:
   - job: BuildTestDeploy
-    variables:
-      # Sonar scanner does not allow branch name to be set for Pull Requests (PRs), but returns an error if not specified for CI builds.
-      # This conditional block only passes the branch name if build is not for a PR, otherwise it passes the Sonar PR params:
-      ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
-        SonarExtraProperties: 'sonar.branch.name=$(Build.SourceBranchName)'
-      ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-        SonarExtraProperties: 'sonar.pullrequest.key=$(System.PullRequest.PullRequestId) sonar.pullrequest.branch=$(Build.SourceBranchName) sonar.pullrequest.base=$(System.PullRequest.TargetBranch)'
     displayName: Build Test and Deploy spring-petclinic Java Web App
     steps:
+    - task: PowerShell@1
+      inputs:
+        inlineScript: echo $(SonarExtraProperties)
 
     # Azure DevOps extension for configuring SonarCloud properties
     # see: https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarcloud
