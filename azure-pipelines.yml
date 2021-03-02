@@ -21,87 +21,98 @@ variables:
 # see: https://docs.microsoft.com/en-us/azure/devops/pipelines/process/run-number?view=azure-devops&tabs=yaml
 name: $(Build.DefinitionName).$(SourceBranchName).$(Date:yyyyMMdd)$(Rev:.r)
 
-jobs:
-  - job: BuildTestDeploy
-    displayName: Build Test and Deploy spring-petclinic Java Web App
-    steps:
-    - script: echo $(SonarExtraProperties)
+stages:
+  - stage: CI
+    displayName: 'Continuous Integration'
+    dependsOn: []
+    jobs:
+    - job: BuildTestDeploy
+      displayName: Build Test and Deploy spring-petclinic Java Web App
+      steps:
 
-    # Azure DevOps extension for configuring SonarCloud properties
-    # see: https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarcloud
-    - task: SonarCloudPrepare@1
-      displayName: 'Prepare SonarCloud Code Analysis Scan'
-      inputs:
-        # Azure DevOps Service Connection is used in place of secureSonar Token value within repo.
-        # For configuring, see: https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml
-        SonarCloud: 'sonarcloud-svc-connection'
-        organization: 'james-flynn-ie'
-        scannerMode: 'Other'
-        ProjectKey: 'james-flynn-ie_spring-petclinic'
-        ProjectName: 'spring-petclinic'
-        extraProperties: $(SonarExtraProperties)
+      # Azure DevOps extension for configuring SonarCloud properties
+      # see: https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarcloud
+      - task: SonarCloudPrepare@1
+        displayName: 'Prepare SonarCloud Code Analysis Scan'
+        inputs:
+          # Azure DevOps Service Connection is used in place of secureSonar Token value within repo.
+          # For configuring, see: https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml
+          SonarCloud: 'sonarcloud-svc-connection'
+          organization: 'james-flynn-ie'
+          scannerMode: 'Other'
+          ProjectKey: 'james-flynn-ie_spring-petclinic'
+          ProjectName: 'spring-petclinic'
+          extraProperties: '$(SonarExtraProperties)'
+  
+      # https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/build/maven?view=azure-devops
+      - task: Maven@3
+        displayName: 'Maven Build, Test and Package'
+        inputs:
+          mavenPomFile: 'pom.xml'
+          # 'clean install sonar:sonar' is required to run the Sonarcloud scan ('package' creates the JAR).
+          # see: https://www.coachdevops.com/2020/04/how-to-integrate-sonarqube-in-azure.html
+          goals: 'clean install sonar:sonar package'
+          publishJUnitResults: true
+          testResultsFiles: '**/TEST-*.xml'
+          testRunTitle: '$(Build.BuildNumber)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.11'
+          mavenVersionOption: 'Default'
+          mavenOptions: '-Xmx3072m'
+          mavenAuthenticateFeed: false
+          effectivePomSkip: false
+          sonarQubeRunAnalysis: true
+          sqMavenPluginVersionChoice: 'latest'
+  
+      # Adds results and link to sonarcloud.io reports under 'Extensions' tab on pipeline run report.
+      # see: https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarcloud
+      - task: SonarCloudPublish@1
+        displayName: 'Publish Quality Gate Result on SonarCloud'
+        inputs:
+          pollingTimeoutSec: '300'
 
-    # https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/build/maven?view=azure-devops
-    - task: Maven@3
-      displayName: 'Maven Build, Test and Package'
-      inputs:
-        mavenPomFile: 'pom.xml'
-        # 'clean install sonar:sonar' is required to run the Sonarcloud scan ('package' creates the JAR).
-        # see: https://www.coachdevops.com/2020/04/how-to-integrate-sonarqube-in-azure.html
-        goals: 'clean install sonar:sonar package'
-        publishJUnitResults: true
-        testResultsFiles: '**/TEST-*.xml'
-        testRunTitle: '$(Build.BuildNumber)'
-        javaHomeOption: 'JDKVersion'
-        jdkVersionOption: '1.11'
-        mavenVersionOption: 'Default'
-        mavenOptions: '-Xmx3072m'
-        mavenAuthenticateFeed: false
-        effectivePomSkip: false
-        sonarQubeRunAnalysis: true
-        sqMavenPluginVersionChoice: 'latest'
+      # https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/utility/copy-files?view=azure-devops&tabs=yaml
+      - task: CopyFiles@2
+        displayName: 'Copy Files to artifact staging directory'
+        inputs:
+          SourceFolder: '$(System.DefaultWorkingDirectory)'
+          Contents: '**/target/*.?(war|jar)'
+          TargetFolder: $(Build.ArtifactStagingDirectory)
+          preserveTimestamp: true
+  
+      # Publish build artifacts to Azure Pipelines (Continuous Delivery).
+      # Build artifacts are retained and can be downloaded for local use, or used in other stages or pipeline runs for deployments.
+      # https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/utility/publish-build-artifacts?view=azure-devops
+      - task: PublishBuildArtifacts@1
+        inputs:
+          pathToPublish: '$(Build.ArtifactStagingDirectory)/target' 
+          artifactName: 'jar-artifact' 
+          publishLocation: 'Container' # Publishes inside Azure Pipelines artifact folder.
+          parallel: true # Increased speed through multi-threaded copying.
+          parallelCount: 8 # Dependent upon CPU capabilities.
 
-    # Adds results and link to sonarcloud.io reports under 'Extensions' tab on pipeline run report.
-    # see: https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarcloud
-    - task: SonarCloudPublish@1
-      displayName: 'Publish Quality Gate Result on SonarCloud'
-      inputs:
-        pollingTimeoutSec: '300'
-
-    # https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/utility/copy-files?view=azure-devops&tabs=yaml
-    - task: CopyFiles@2
-      displayName: 'Copy Files to artifact staging directory'
-      inputs:
-        SourceFolder: '$(System.DefaultWorkingDirectory)'
-        Contents: '**/target/*.?(war|jar)'
-        TargetFolder: $(Build.ArtifactStagingDirectory)
-        preserveTimestamp: true
-
-    # Publish build artifacts to Azure Pipelines (Continuous Delivery).
-    # Build artifacts are retained and can be downloaded for local use, or used in other stages or pipeline runs for deployments.
-    # https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/utility/publish-build-artifacts?view=azure-devops
-    - task: PublishBuildArtifacts@1
-      inputs:
-        pathToPublish: '$(Build.ArtifactStagingDirectory)/target' 
-        artifactName: 'jar-artifact' 
-        publishLocation: 'Container' # Publishes inside Azure Pipelines artifact folder.
-        parallel: true # Increased speed through multi-threaded copying.
-        parallelCount: 8 # Dependent upon CPU capabilities.
-
-    # Deploy JAR into Azure Web App Service https://docs.microsoft.com/en-us/azure/app-service/overview
-    # Azure App Service offers a Web application hosting Platform-as-a-Service, offering:
-    #  - Security
-    #  - Load balancing
-    #  - High Availability and autoscaling (based on policies)
-    # For pipeline configuration, see: https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/deploy/azure-rm-web-app?view=azure-devops
-    - task: AzureWebApp@1
-      displayName: Deploy spring-petclinic to Azure Web App service
-      inputs:
-        # For configuring Service Connection, see: https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml
-        azureSubscription: 'azure-svc-connection'
-        appType: webAppLinux
-        appName: 'james-pet-clinic'
-        package: '$(System.DefaultWorkingDirectory)/**/*.jar'
-      # Only deploy web app from main branch (for release purposes)
-      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  - stage: CI
+    displayName: 'Continuous Deployment'
+    dependsOn: [CI]
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+    - job: DeployWebApp
+      displayName: Build Test and Deploy spring-petclinic Java Web App
+      steps:
+      # Deploy JAR into Azure Web App Service https://docs.microsoft.com/en-us/azure/app-service/overview
+      # Azure App Service offers a Web application hosting Platform-as-a-Service, offering:
+      #  - Security
+      #  - Load balancing
+      #  - High Availability and autoscaling (based on policies)
+      # For pipeline configuration, see: https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/deploy/azure-rm-web-app?view=azure-devops
+      - task: AzureWebApp@1
+        displayName: Deploy spring-petclinic to Azure Web App service
+        inputs:
+          # For configuring Service Connection, see: https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml
+          azureSubscription: 'azure-svc-connection'
+          appType: webAppLinux
+          appName: 'james-pet-clinic'
+          package: '$(System.DefaultWorkingDirectory)/**/*.jar'
+        # Only deploy web app from main branch (for release purposes)
+        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
 ...
