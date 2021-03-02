@@ -14,8 +14,8 @@ pool:
 name: $(Build.DefinitionName).$(SourceBranchName).$(Date:yyyyMMdd)$(Rev:.r)
 
 stages:
-  - stage: CI
-    displayName: 'Continuous Integration'
+  - stage: ContinuousIntegration+Delivery
+    displayName: 'Continuous Integration and Delivery'
     dependsOn: []
     jobs:
     - job: BuildTestDeploy
@@ -37,9 +37,9 @@ stages:
           # Sonar scanner does not allow branch name to be set for Pull Requests (PRs), but returns an error if not specified for CI builds.
           # This conditional block only passes the branch name if build is not for a PR, otherwise it passes the Sonar PR params:
           ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
-            extraProperties: 'sonar.branch.name=$(Build.SourceBranchName)'
+            extraProperties: 'sonar.branch.name=$(Build.SourceBranchName) sonar.projectKey=james-flynn-ie_spring-petclinic'
           ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-            extraProperties: 'sonar.pullrequest.key=$(System.PullRequest.PullRequestId) sonar.pullrequest.branch=$(Build.SourceBranchName) sonar.pullrequest.base=$(System.PullRequest.TargetBranch)'
+            extraProperties: 'sonar.pullrequest.key=$(System.PullRequest.pullRequestNumber) sonar.pullrequest.branch=$(Build.SourceBranchName) sonar.pullrequest.base=$(System.PullRequest.TargetBranch) sonar.projectKey=james-flynn-ie_spring-petclinic'
 
       # https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/build/maven?view=azure-devops
       - task: Maven@3
@@ -88,9 +88,9 @@ stages:
           parallel: true # Increased speed through multi-threaded copying.
           parallelCount: 8 # Dependent upon CPU capabilities.
 
-  - stage: CD
+  - stage: ContinuousDeployment
     displayName: 'Continuous Deployment'
-    dependsOn: [CI]
+    dependsOn: [ContinuousIntegration+Delivery]
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
     jobs:
     - job: DeployWebApp
@@ -116,5 +116,4 @@ stages:
           appName: 'james-pet-clinic'
           package: '$(System.DefaultWorkingDirectory)/**/*.jar'
         # Only deploy web app from main branch (for release purposes)
-        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
 ...
