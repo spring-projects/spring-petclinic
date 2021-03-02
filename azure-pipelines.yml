@@ -40,13 +40,13 @@ stages:
             extraProperties: |
               sonar.branch.name=$(Build.SourceBranchName)
               sonar.language=java
-              sonar.projectKey=james-flynn-ie_spring-petclinic'
+              sonar.projectKey=james-flynn-ie_spring-petclinic
           ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
             extraProperties: |
               sonar.pullrequest.key=$(System.PullRequest.pullRequestNumber)
               sonar.pullrequest.branch=$(Build.SourceBranchName)
               sonar.pullrequest.base=$(System.PullRequest.TargetBranch)
-              sonar.projectKey=james-flynn-ie_spring-petclinic'
+              sonar.projectKey=james-flynn-ie_spring-petclinic
 
       # https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/build/maven?view=azure-devops
       - task: Maven@3
