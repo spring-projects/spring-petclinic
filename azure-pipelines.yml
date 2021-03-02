@@ -91,7 +91,7 @@ stages:
           parallel: true # Increased speed through multi-threaded copying.
           parallelCount: 8 # Dependent upon CPU capabilities.
 
-  - stage: CI
+  - stage: CD
     displayName: 'Continuous Deployment'
     dependsOn: [CI]
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
