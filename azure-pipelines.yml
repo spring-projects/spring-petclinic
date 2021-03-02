@@ -30,11 +30,6 @@ jobs:
         scannerMode: 'Other'
         ProjectKey: 'james-flynn-ie_spring-petclinic'
         ProjectName: 'spring-petclinic'
-        extraProperties: |
-          # see: https://sonarcloud.io/documentation/analysis/analysis-parameters/
-          sonar.branch.name=$(Build.SourceBranchName)
-          sonar.language=java
-          sonar.projectKey=james-flynn-ie_spring-petclinic
 
     # https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/build/maven?view=azure-devops
     - task: Maven@3
