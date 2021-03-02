@@ -22,25 +22,30 @@ jobs:
       inputs:
         SonarCloud: 'sonarcloud-svc-connection'
         organization: 'james-flynn-ie'
-        scannerMode: 'CLI'
-        configMode: 'manual'
-        cliProjectKey: 'james-flynn-ie_spring-petclinic'
-        cliProjectName: 'spring-petclinic'
-        cliSources: '.'
-        extraProperties: 'sonar.branch.name=$(Build.SourceBranchName) sonar.language=java sonar.projectKey=james-flynn-ie_spring-petclinic'
+        scannerMode: 'Other'
+        ProjectKey: 'james-flynn-ie_spring-petclinic'
+        ProjectName: 'spring-petclinic'
+        extraProperties: |
+          sonar.branch.name=$(Build.SourceBranchName)
+          sonar.language=java
+          sonar.projectKey=james-flynn-ie_spring-petclinic
 
     - task: Maven@3
       displayName: 'Maven Build, Test and Package'
       inputs:
         mavenPomFile: 'pom.xml'
-        mavenOptions: '-Xmx3072m'
+        goals: 'clean install sonar:sonar package'
+        publishJUnitResults: true
+        testResultsFiles: '**/TEST-*.xml'
+        testRunTitle: '$(Build.BuildNumber)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: '1.11'
-        jdkArchitectureOption: 'x64'
-        publishJUnitResults: true
-        testRunTitle: '$(Build.BuildNumber)'
-        testResultsFiles: '**/TEST-*.xml'
-        goals: 'package'
+        mavenVersionOption: 'Default'
+        mavenOptions: '-Xmx3072m'
+        mavenAuthenticateFeed: false
+        effectivePomSkip: false
+        sonarQubeRunAnalysis: true
+        sqMavenPluginVersionChoice: 'latest'
 
     - task: SonarCloudAnalyze@1
       displayName: 'Run Sonarcloud Code Analysis'
