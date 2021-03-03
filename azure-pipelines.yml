@@ -66,7 +66,7 @@ stages:
           mavenAuthenticateFeed: false
           effectivePomSkip: false
           sonarQubeRunAnalysis: true
-          sqMavenPluginVersionChoice: 'latest'
+          sqMavenPluginVersionChoice: 'latest' # Select latest SonarQube plugin for Maven. Relies on POM dependency version, if not set.
   
       # Adds results and link to sonarcloud.io reports under 'Extensions' tab on pipeline run report.
       # see: https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarcloud
@@ -98,11 +98,13 @@ stages:
   - stage: CDeployment
     displayName: 'Continuous Deployment'
     dependsOn: [CI_CDelivery]
+    # Only deploy web app to production env using main branch. This stage will be skipped for all other branches.
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
     jobs:
     - job: DeployWebApp
       displayName: Deploy spring-petclinic Java Web App
       steps:
+      # Need to download JAR built in CI-CDelivery stage first, as artifacts are not passed between stages.
       - task: DownloadPipelineArtifact@2
         inputs:
           artifact: 'jar-artifact'
@@ -110,17 +112,18 @@ stages:
 
       # Deploy JAR into Azure Web App Service https://docs.microsoft.com/en-us/azure/app-service/overview
       # Azure App Service offers a Web application hosting Platform-as-a-Service, offering:
+      #  - Hosting
+      #  - Public URL
+      #  - High Availability and autoscaling (based on policies)
       #  - Security
       #  - Load balancing
-      #  - High Availability and autoscaling (based on policies)
-      # For pipeline configuration, see: https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/deploy/azure-rm-web-app?view=azure-devops
+      # See: https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/deploy/azure-rm-web-app?view=azure-devops
       - task: AzureWebApp@1
         displayName: Deploy spring-petclinic to Azure Web App service
         inputs:
-          # For configuring Service Connection, see: https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml
+          # For configuring a Service Connection, see: https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml
           azureSubscription: 'azure-svc-connection'
           appType: webAppLinux
           appName: 'james-pet-clinic'
           package: '$(System.DefaultWorkingDirectory)/**/*.jar'
-        # Only deploy web app from main branch (for release purposes)
 ...
