@@ -1,24 +1,39 @@
-FROM tutum/tomcat
+# This workflow will build a package using Maven and then publish it to GitHub packages when a release is created
+# For more information see: https://github.com/actions/setup-java#apache-maven-with-a-settings-path 
+# test
 
-RUN rm -rf /tomcat/webapps/*
+name: Maven Package
 
-#install maven and git to build project
-RUN apt-get update && apt-get install -y wget git-core maven
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
-RUN mkdir /opt/aspectj && cd /opt/aspectj &&\
-    wget -O aspectjweaver-1.8.2.jar http://search.maven.org/remotecontent?filepath=org/aspectj/aspectjweaver/1.8.2/aspectjweaver-1.8.2.jar
+jobs:
+  build:
 
-ADD ./setenv.sh /tomcat/bin/setenv.sh
+    runs-on: ubuntu-latest
 
-# Pull petclinic
-RUN git clone https://github.com/stagemonitor/spring-petclinic.git
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 1.11
+      uses: actions/setup-java@v1
+      with:
+        java-version: '11'
+        server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+        settings-path: ${{ github.workspace }} # location for the settings.xml file
 
-# Build petclinic
-WORKDIR /spring-petclinic
-RUN rm src/main/resources/stagemonitor.properties
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
 
-ADD ./stagemonitor.properties /spring-petclinic/src/main/resources/stagemonitor.properties
+    - name: Build and Push Docker Image
+      uses: mr-smithers-excellent/docker-build-push@v4
+      with:
+        image: eugenedemo1/pet-clinic-maven-test
+        registry: docker.io
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
 
-RUN mvn package &&\
-    mv /spring-petclinic/target/petclinic.war /tomcat/webapps/petclinic.war &&\
-    rm -rf /spring-petclinic
