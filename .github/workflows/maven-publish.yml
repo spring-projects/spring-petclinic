@@ -30,10 +30,10 @@ jobs:
       run: mvn -B package --file pom.xml
 
     - name: Build and Push Docker Image
-      uses: mr-smithers-excellent/docker-build-push@v4
+      uses: mr-smithers-excellent/docker-build-push@v5
       with:
         image: eugenedemo1/pet-clinic-maven-test
-        tag: v1, latest
+        tags: v1, latest
         registry: docker.io
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
