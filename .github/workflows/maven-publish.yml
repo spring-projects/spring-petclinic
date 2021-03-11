@@ -41,7 +41,7 @@ jobs:
     - name: Build and Push Docker Image
       uses: raccoondev/push-docker-gcr
       with:
-        gcr_host: eu.gcr.io
+        gcr_host: gcr.io
         image_name: git-ops-automation/pet-clinic-test
         image_tag: latest
         env:
