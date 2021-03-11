@@ -50,15 +50,15 @@ jobs:
       run: |
         gcloud auth configure-docker
       
-    - name: Build
+    - name: Docker Build
       run: |
         docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/helloworld:latest .
 
-    - name: Push
+    - name: Docker Push
       run: |
         docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/helloworld:latest
 
-#    - name: Deploy
+#    - name: Docker Deploy
 #      run: |
 #        gcloud run deploy helloworld \
 #        --region europe-west1 \
