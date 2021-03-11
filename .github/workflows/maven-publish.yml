@@ -29,11 +29,21 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
-    - name: Build and Push Docker Image
-      uses: mr-smithers-excellent/docker-build-push@v5
-      with:
-        image: eugenedemo1/pet-clinic-maven-test
+#    - name: Build and Push Docker Image
+#      uses: mr-smithers-excellent/docker-build-push@v5
+#      with:
+#        image: eugenedemo1/pet-clinic-maven-test
 #        tags: v1, latest
-        registry: docker.io
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+#        registry: docker.io
+#        username: ${{ secrets.DOCKER_USERNAME }}
+#        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build and Push Docker Image
+      uses: raccoondev/push-docker-gcr
+      with:
+        gcr_host: eu.gcr.io
+        image_name: git-ops-automation/pet-clinic-test
+        image_tag: latest
+        env:
+          GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
+          GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
