@@ -52,11 +52,11 @@ jobs:
       
     - name: Docker Build
       run: |
-        docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/helloworld:latest .
+        docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/helloworld:$GITHUB_SHA .
 
     - name: Docker Push
       run: |
-        docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/helloworld:latest
+        docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/helloworld:$GITHUB_SHA
 
 #    - name: Docker Deploy
 #      run: |
