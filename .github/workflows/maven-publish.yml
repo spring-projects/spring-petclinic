@@ -58,11 +58,11 @@ jobs:
       run: |
         docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/helloworld:latest
 
-    - name: Deploy
-      run: |
-        gcloud run deploy helloworld \
-        --region europe-west1 \
-        --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/helloworld \
-        --platform managed \
-        --allow-unauthenticated \
-        --project ${{ secrets.GCP_PROJECT_ID }}
+#    - name: Deploy
+#      run: |
+#        gcloud run deploy helloworld \
+#        --region europe-west1 \
+#        --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/helloworld \
+#        --platform managed \
+#        --allow-unauthenticated \
+#        --project ${{ secrets.GCP_PROJECT_ID }}
