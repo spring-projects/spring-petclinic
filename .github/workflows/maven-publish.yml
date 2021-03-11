@@ -39,7 +39,7 @@ jobs:
 #        password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Setup GCP Service Account
-      uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      uses: google-github-actions/setup-gcloud@master
       with:
         version: 'latest'
         service_account_email: ${{ secrets.GCP_SA_EMAIL }}
