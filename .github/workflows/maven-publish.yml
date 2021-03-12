@@ -1,6 +1,6 @@
 # This workflow will build a package using Maven and then publish it to GitHub packages when a release is created
 # For more information see: https://github.com/actions/setup-java#apache-maven-with-a-settings-path 
-# 
+# test
 
 name: Maven Package
 
@@ -61,7 +61,6 @@ jobs:
     - name: env
       run: |
         export IMAGE_ID="gcr.io/${{ secrets.GCP_PROJECT_ID }}/helloworld:$GITHUB_SHA"
-#        echo "::set-env name=IMAGE_ID::$IMAGE_ID"
         echo "IMAGE_ID=$IMAGE_ID" >> $GITHUB_ENV
 
     - name: Repository Dispatch
