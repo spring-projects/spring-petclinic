@@ -58,6 +58,11 @@ jobs:
       run: |
         docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/helloworld:$GITHUB_SHA
 
+    - name: env
+      run: |
+        export IMAGE_ID="gcr.io/${{ secrets.GCP_PROJECT_ID }}/helloworld:$GITHUB_SHA"
+        echo "::set-env name=IMAGE_ID::$IMAGE_ID"    
+
     - name: Repository Dispatch
       uses: peter-evans/repository-dispatch@v1
       with:
@@ -65,8 +70,8 @@ jobs:
         repository: YevheniiPokhvalii/spring-petclinic-gitops-test
         event-type: kubernetes-event
         client-payload: '{"ref": "${{ github.ref }}", "image_id": "$IMAGE_ID"}'
-      env:
-        IMAGE_ID: "gcr.io/${{ secrets.GCP_PROJECT_ID }}/helloworld:$GITHUB_SHA"
+#      env:
+#        IMAGE_ID: "gcr.io/${{ secrets.GCP_PROJECT_ID }}/helloworld:$GITHUB_SHA"
 
 #    - name: Docker Deploy
 #      run: |
