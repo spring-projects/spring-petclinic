@@ -58,6 +58,14 @@ jobs:
       run: |
         docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/helloworld:$GITHUB_SHA
 
+    - name: Repository Dispatch
+      uses: peter-evans/repository-dispatch@v1
+      with:
+        token: ${{ secrets.REPO_ACCESS_TOKEN }}
+        repository: YevheniiPokhvalii/spring-petclinic-gitops-test
+        event-type: kubernetes-event
+        client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ GITHUB_SHA }}"}'
+
 #    - name: Docker Deploy
 #      run: |
 #        gcloud run deploy helloworld \
@@ -66,3 +74,4 @@ jobs:
 #        --platform managed \
 #        --allow-unauthenticated \
 #        --project ${{ secrets.GCP_PROJECT_ID }}
+
