@@ -70,8 +70,6 @@ jobs:
         repository: YevheniiPokhvalii/spring-petclinic-gitops-test
         event-type: kubernetes-event
         client-payload: '{"ref": "${{ github.ref }}", "image_id": "$IMAGE_ID"}'
-#      env:
-#        IMAGE_ID: "gcr.io/${{ secrets.GCP_PROJECT_ID }}/helloworld:$GITHUB_SHA"
 
 #    - name: Docker Deploy
 #      run: |
