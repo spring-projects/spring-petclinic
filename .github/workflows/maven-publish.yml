@@ -61,7 +61,7 @@ jobs:
     - name: env
       run: |
         export IMAGE_ID="gcr.io/${{ secrets.GCP_PROJECT_ID }}/helloworld:$GITHUB_SHA"
-        echo "::set-env name=IMAGE_ID::$IMAGE_ID"
+#        echo "::set-env name=IMAGE_ID::$IMAGE_ID"
         echo "IMAGE_ID=$IMAGE_ID" >> $GITHUB_ENV
 
     - name: Repository Dispatch
