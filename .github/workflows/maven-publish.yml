@@ -66,7 +66,7 @@ jobs:
         event-type: kubernetes-event
         client-payload: '{"ref": "${{ github.ref }}", "image_id": "$IMAGE_ID"}'
       env:
-        IMAGE_ID: gcr.io/${{ secrets.GCP_PROJECT_ID }}/helloworld:$GITHUB_SHA
+        IMAGE_ID: "gcr.io/${{ secrets.GCP_PROJECT_ID }}/helloworld:$GITHUB_SHA"
 
 #    - name: Docker Deploy
 #      run: |
