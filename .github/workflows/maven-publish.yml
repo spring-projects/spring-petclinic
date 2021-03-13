@@ -70,8 +70,10 @@ jobs:
         repository: YevheniiPokhvalii/spring-petclinic-gitops-test
         event-type: kubernetes-event
         client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
-      run: |
-        echo ${{ github.event.client_payload.sha }}
+
+    -name: test run
+     run: |
+       echo ${{ github.event.client_payload.sha }}
 
 #    - name: Docker Deploy
 #      run: |
