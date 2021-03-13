@@ -71,7 +71,7 @@ jobs:
         event-type: kubernetes-event
         client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
 
-    -name: test run
+    - name: test run
      run: |
        echo ${{ github.event.client_payload.sha }}
 
