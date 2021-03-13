@@ -72,8 +72,8 @@ jobs:
         client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
 
     - name: test run
-     run: |
-       echo ${{ github.event.client_payload.sha }}
+      run: |
+        echo ${{ github.event.client_payload.sha }}
 
 #    - name: Docker Deploy
 #      run: |
