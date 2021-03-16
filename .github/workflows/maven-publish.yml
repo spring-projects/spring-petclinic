@@ -45,11 +45,6 @@ jobs:
       run: |
         docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/helloworld:$GITHUB_SHA
 
-    - name: env
-      run: |
-        export IMAGE_ID="gcr.io/${{ secrets.GCP_PROJECT_ID }}/helloworld:$GITHUB_SHA"
-        echo "IMAGE_ID=$IMAGE_ID" >> $GITHUB_ENV
-
     - name: Repository Dispatch
       uses: peter-evans/repository-dispatch@v1
       with:
