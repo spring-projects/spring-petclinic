@@ -13,42 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.model;
+package org.springframework.cheapy.model;
 
-import javax.persistence.Column;
+import java.io.Serializable;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.validation.constraints.NotEmpty;
 
 /**
- * Simple JavaBean domain object representing an person.
+ * Simple JavaBean domain object with an id property. Used as a base class for objects
+ * needing this property.
  *
  * @author Ken Krebs
+ * @author Juergen Hoeller
  */
 @MappedSuperclass
-public class Person extends BaseEntity {
+public class BaseEntity implements Serializable {
 
-	@Column(name = "first_name")
-	@NotEmpty
-	private String firstName;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
-	@Column(name = "last_name")
-	@NotEmpty
-	private String lastName;
-
-	public String getFirstName() {
-		return this.firstName;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
-	public String getLastName() {
-		return this.lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public boolean isNew() {
+		return this.id == null;
 	}
 
 }

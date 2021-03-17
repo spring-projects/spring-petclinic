@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-package org.springframework.samples.petclinic;
+package org.springframework.cheapy.system;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 
+@Controller
+class WelcomeController {
 
-@SpringBootTest
-class PetclinicIntegrationTests {
-
+	@GetMapping("/")
+	public String welcome() {
+		return "welcome";
+	}
 
 }

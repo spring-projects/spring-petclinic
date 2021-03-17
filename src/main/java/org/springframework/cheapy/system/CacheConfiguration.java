@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.samples.petclinic.system;
+package org.springframework.cheapy.system;
 
 import javax.cache.configuration.MutableConfiguration;
 
