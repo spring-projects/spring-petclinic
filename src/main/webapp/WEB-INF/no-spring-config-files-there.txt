@@ -1,0 +1,4 @@
+All Spring config files (including Spring MVC ones) are inside src/main/resource.
+There are mostly 2 reasons to that:
+- All Spring config files are grouped into one single place
+- It is simpler to reference them from inside JUnit tests
