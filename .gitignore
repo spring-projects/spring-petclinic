@@ -10,3 +10,4 @@ target/*
 .sts4-cache/
 .vscode
 _site/
+/bin/
