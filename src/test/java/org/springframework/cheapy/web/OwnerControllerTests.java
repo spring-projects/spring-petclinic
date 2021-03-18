@@ -16,32 +16,24 @@
 
 package org.springframework.cheapy.web;
 
-import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
-
-import org.assertj.core.util.Lists;
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.cheapy.model.Owner;
-import org.springframework.cheapy.repository.OwnerRepository;
-import org.springframework.test.web.servlet.MockMvc;
-
-import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
+import org.assertj.core.util.Lists;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.cheapy.model.Owner;
+import org.springframework.cheapy.service.OwnerService;
+import org.springframework.test.web.servlet.MockMvc;
 
 /**
  * Test class for {@link OwnerController}
@@ -57,7 +49,7 @@ class OwnerControllerTests {
 	private MockMvc mockMvc;
 
 	@MockBean
-	private OwnerRepository owners;
+	private OwnerService ownerService;
 
 
 	private Owner george;
@@ -72,7 +64,7 @@ class OwnerControllerTests {
 		george.setCity("Madison");
 		george.setTelephone("6085551023");
 
-		given(this.owners.findById(TEST_OWNER_ID)).willReturn(george);
+		given(this.ownerService.findOwnerById(TEST_OWNER_ID)).willReturn(george);
 
 
 	}
@@ -108,13 +100,13 @@ class OwnerControllerTests {
 
 	@Test
 	void testProcessFindFormSuccess() throws Exception {
-		given(this.owners.findByLastName("")).willReturn(Lists.newArrayList(george, new Owner()));
+		given(this.ownerService.findByLastName("")).willReturn(Lists.newArrayList(george, new Owner()));
 		mockMvc.perform(get("/owners")).andExpect(status().isOk()).andExpect(view().name("owners/ownersList"));
 	}
 
 	@Test
 	void testProcessFindFormByLastName() throws Exception {
-		given(this.owners.findByLastName(george.getLastName())).willReturn(Lists.newArrayList(george));
+		given(this.ownerService.findByLastName(george.getLastName())).willReturn(Lists.newArrayList(george));
 		mockMvc.perform(get("/owners").param("lastName", "Franklin")).andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
 	}
