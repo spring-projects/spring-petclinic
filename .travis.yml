@@ -2,8 +2,13 @@ dist: trusty
 language: java
 jdk: oraclejdk8
 services:
-  - docker
-before_script:
-  - docker login -u springbuildmaster -p "$DOCKERHUB_PASSWORD"
+  - mysql
+install:
+  - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+before_install:
+- chmod +x mvnw
+- mysql -e 'CREATE DATABASE cheapy;'
+- sudo apt-get update
 script:
-  - ./mvnw spring-boot:build-image -D spring-boot.build-image.imageName=springio/petclinic && [ "${TRAVIS_BRANCH}" = "main" ] && docker push springio/petclinic
+  - mvn test -Dspring.profiles.active=mysql-travis
+
