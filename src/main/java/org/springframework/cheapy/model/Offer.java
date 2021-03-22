@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Table;
@@ -48,6 +49,7 @@ public class Offer extends BaseEntity {
 	private StatusOffer type;
 	
 	@ManyToOne
+	@JoinColumn(name="client_id")
 	private Client client;
 
 	public LocalDateTime getStart() {

@@ -15,27 +15,32 @@
  */
 package org.springframework.cheapy.model;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "time_offers")
 public class TimeOffer extends Offer {
 
+	@DateTimeFormat(pattern = "HH:mm")
 	@NotBlank
-	private String schedule;
+	private LocalTime init;
+
+	@DateTimeFormat(pattern = "HH:mm")
+	@NotBlank
+	private LocalTime finish;
 
 	@NotBlank
 	private String discount;
 
-	public String getSchedule() {
-		return schedule;
-	}
 
-	public void setSchedule(String schedule) {
-		this.schedule = schedule;
-	}
 
 	public String getDiscount() {
 		return discount;

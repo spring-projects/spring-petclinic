@@ -8,9 +8,8 @@ import javax.validation.constraints.NotBlank;
 
 
 @MappedSuperclass
-public class User {
+public class User extends BaseEntity {
 
-	@Id
 	@NotBlank
 	String username;
 
