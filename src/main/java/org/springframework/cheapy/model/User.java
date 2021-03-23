@@ -1,30 +1,34 @@
 package org.springframework.cheapy.model;
 
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 
-@Entity
-@Table(name = "users")
-public class User extends BaseEntity {
-
-	@NotBlank
-	String username;
-
-	@NotBlank
-	String password;
-
-	@Email
-	@NotBlank
-	String email;
+//@Entity
+//@Table(name = "users")
+@MappedSuperclass
+public class User{
 	
-	@OneToOne
-	Authorities authority;
+	@Id
+	private String username;
+
+	@NotBlank
+	private String password;
+	
+	boolean enabled;
+	
+	
 
 	public String getUsername() {
 		return username;
@@ -42,19 +46,11 @@ public class User extends BaseEntity {
 		this.password = password;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public Authorities getAuthority() {
-		return authority;
-	}
-
-	public void setAuthority(Authorities authority) {
-		this.authority = authority;
-	}
+//	public Set<Authorities> getAuthority() {
+//		return authorities;
+//	}
+//
+//	public void setAuthorities(Set<Authorities> authorities) {
+//		this.authorities = authorities;
+//	}
 }
