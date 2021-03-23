@@ -7,13 +7,13 @@
       <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
       <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="Variables pr�-d�finies" enabled="true">
         <collectionProp name="Arguments.arguments">
-          <elementProp name="PETCLINIC_HOST" elementType="Argument">
-            <stringProp name="Argument.name">PETCLINIC_HOST</stringProp>
+          <elementProp name="CHEAPY_HOST" elementType="Argument">
+            <stringProp name="Argument.name">CHEAPY_HOST</stringProp>
             <stringProp name="Argument.value">localhost</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="PETCLINIC_PORT" elementType="Argument">
-            <stringProp name="Argument.name">PETCLINIC_PORT</stringProp>
+          <elementProp name="CHEAPY_PORT" elementType="Argument">
+            <stringProp name="Argument.name">CHEAPY_PORT</stringProp>
             <stringProp name="Argument.value">8080</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
@@ -52,8 +52,8 @@
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="Variables pr�-d�finies" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
-          <stringProp name="HTTPSampler.domain">${PETCLINIC_HOST}</stringProp>
-          <stringProp name="HTTPSampler.port">${PETCLINIC_PORT}</stringProp>
+          <stringProp name="HTTPSampler.domain">${CHEAPY_HOST}</stringProp>
+          <stringProp name="HTTPSampler.port">${CHEAPY_PORT}</stringProp>
           <stringProp name="HTTPSampler.connect_timeout"></stringProp>
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
@@ -115,7 +115,7 @@
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">${CONTEXT_WEB}/resources/css/petclinic.css</stringProp>
+          <stringProp name="HTTPSampler.path">${CONTEXT_WEB}/resources/css/cheapy.css</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
