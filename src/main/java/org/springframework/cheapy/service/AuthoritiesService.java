@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public class AuthoritiesService {
-
+/*
 	private AuthoritiesRepository authoritiesRepository;
 	private UserService userService;
 
@@ -46,7 +46,7 @@ public class AuthoritiesService {
 	
 	@Transactional
 	public Authorities findAuthoritiyByUser(User user) {
-		return this.authoritiesRepository.findByUser(user);
+		return this.authoritiesRepository.findByUser(user.getUsername());
 	}
 
 	@Transactional
@@ -59,7 +59,7 @@ public class AuthoritiesService {
 		Authorities authority = new Authorities();
 		Optional<User> user = userService.findUser(username);
 		if(user.isPresent()) {
-			authority.setUser(user.get());
+			authority.setUser(user.get().getUsername());
 			authority.setAuthority(role);
 			//user.get().getAuthorities().add(authority);
 			authoritiesRepository.save(authority);
@@ -67,5 +67,5 @@ public class AuthoritiesService {
 			throw new DataAccessException("User '"+username+"' not found!") {};
 	}
 
-
+*/
 }

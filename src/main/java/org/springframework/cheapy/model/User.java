@@ -1,13 +1,16 @@
 package org.springframework.cheapy.model;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 
-@MappedSuperclass
+@Entity
+@Table(name = "users")
 public class User extends BaseEntity {
 
 	@NotBlank
