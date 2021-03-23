@@ -37,7 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
-
+/*
 	private UserRepository userRepository;
 
 	@Autowired
@@ -60,4 +60,5 @@ public class UserService {
 		String currentPrincipalName = authentication.getName();             //Obtiene el nombre del ususario actual
 		return this.userRepository.findByUsername(currentPrincipalName);         //Obtiene el usuario con ese nombre
 	}
+	*/
 }

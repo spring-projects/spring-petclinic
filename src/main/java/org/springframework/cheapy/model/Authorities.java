@@ -12,7 +12,15 @@ public class Authorities {
 	String username;
 
 	String authority;
-
+	
+	public String getUsername() {
+		return username;
+	}
+	
+	public void setUser(String username) {
+		this.username = username;
+	}
+	
 	public String getAuthority() {
 		return authority;
 	}
