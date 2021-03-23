@@ -27,10 +27,16 @@
 					<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
 					<span>Home</span>
 				</petclinic:menuItem>
-
+				
+				<petclinic:menuItem active="${name eq 'ofertas'}" url="/ofertas"
+					title="ofertas">
+					<span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>
+					<span>Ver ofertas</span>
+				</petclinic:menuItem>
+				
 				<petclinic:menuItem active="${name eq 'contactanos'}" url="/contactanos"
 					title="contactanos">
-					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>
 					<span>Contáctanos</span>
 				</petclinic:menuItem>
 
