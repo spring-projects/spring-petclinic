@@ -54,5 +54,4 @@ public class User extends BaseEntity {
 	public void setAuthority(Authorities authority) {
 		this.authority = authority;
 	}
-
 }

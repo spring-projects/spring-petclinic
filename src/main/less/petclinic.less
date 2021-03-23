@@ -13,24 +13,24 @@
  */
 @icon-font-path:    "../../webjars/bootstrap/fonts/";
 
-@spring-green:      #6db33f;
-@spring-dark-green: #5fa134;
+@spring-blue:      rgb(0, 64, 128);
+@spring-dark-blue: rgb(0, 0, 128);
 @spring-brown:      #34302D;
 @spring-grey:       #838789;
 @spring-light-grey: #f1f1f1;
 
 @body-bg:                           @spring-light-grey;
 @text-color:                        @spring-brown;
-@link-color:                        @spring-dark-green;
-@link-hover-color:                  @spring-dark-green;
+@link-color:                        @spring-dark-blue;
+@link-hover-color:                  @spring-dark-blue;
 
 @navbar-default-link-color:         @spring-light-grey;
 @navbar-default-link-active-color:  @spring-light-grey;
 @navbar-default-link-hover-color:   @spring-light-grey;
-@navbar-default-link-hover-bg:      @spring-green;
+@navbar-default-link-hover-bg:      @spring-blue;
 @navbar-default-toggle-icon-bar-bg: @spring-light-grey;
 @navbar-default-toggle-hover-bg:    transparent;
-@navbar-default-link-active-bg:     @spring-green;
+@navbar-default-link-active-bg:     @spring-blue;
 
 @border-radius-base:             0;
 @border-radius-large:            0;
@@ -38,7 +38,7 @@
 
 @btn-default-color:              @spring-light-grey;
 @btn-default-bg:                 @spring-brown;
-@btn-default-border:             @spring-green;
+@btn-default-border:             @spring-blue;
 
 @nav-tabs-active-link-hover-color:        @spring-light-grey;
 @nav-tabs-active-link-hover-bg:           @spring-brown;
@@ -46,7 +46,7 @@
 @nav-tabs-border-color:                   @spring-brown;
 
 @pagination-active-bg:                    @spring-brown;
-@pagination-active-border:                @spring-green;
+@pagination-active-border:                @spring-blue;
 @table-border-color:                      @spring-brown;
 
 .table > thead > tr > th {
@@ -125,7 +125,7 @@ h1 {
 }
 
 .splash {
-  background: @spring-green;
+  background: @spring-blue;
   color: @spring-brown;
   display: none;
 }
@@ -202,6 +202,42 @@ table td.action-column {
 
 .status-help-content-table td {
   color: @spring-brown;
+}
+
+img.img-responsive{     
+	display: block;     
+	margin-left: auto;     
+	margin-right: auto 
+}
+
+.img-home{
+  display: table;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.btn-home{
+  display: table;
+  margin: 0 auto;
+}
+
+.btn-home button {
+  background-color: rgb(0, 64, 128); 
+  border: 1px solid rgb(0, 0, 160); 
+  color: white; 
+  padding: 10px 24px; 
+  cursor: pointer; 
+  width: 100%; 
+  display: block; 
+}
+
+.btn-home button:not(:last-child) {
+  border-bottom: none; 
+}
+
+
+.btn-home button:hover {
+  background-color: rgb(0, 64, 128);
 }
 
 .alert-success {

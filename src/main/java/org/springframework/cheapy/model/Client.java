@@ -90,5 +90,4 @@ public class Client extends User {
 	public void setFood(String food) {
 		this.food = food;
 	}
-
 }
