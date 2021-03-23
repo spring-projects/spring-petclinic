@@ -13,3 +13,6 @@ INSERT INTO owners VALUES (10, 'Carlos', 'Estaban', '2335 Independence La.', 'Wa
 INSERT INTO food_offers(start, end, code, type, client_id, food, discount, units) VALUES ('2021-06-15 12:00:00', '2021-06-16 12:00:00', 'jkhlljk', 'active', null, 'macarrones', '15%', 10);
 
 INSERT INTO time_offers(start, end, code, type, client_id, init, finish, discount) VALUES ('2021-06-15 12:00:00', '2021-06-16 12:00:00', 'jkhlljk', 'active', null, '12:00:00', '13:00:00', '10%');
+
+
+

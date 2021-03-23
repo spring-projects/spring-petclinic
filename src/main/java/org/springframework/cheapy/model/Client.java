@@ -11,7 +11,10 @@ import javax.validation.constraints.NotEmpty;
 @Entity
 @Table(name = "clients")
 public class Client extends User {
-
+	
+	@NotEmpty
+	private String email;
+	
 	@NotEmpty
 	private String address;
 
@@ -42,7 +45,15 @@ public class Client extends User {
 	
 	@OneToMany
 	private Set<TimeOffer> timeOffers;
-
+	
+	public String getEmail() {
+		return email;
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
 	public String getAddress() {
 		return address;
 	}

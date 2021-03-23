@@ -2,24 +2,30 @@ package org.springframework.cheapy.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "authorities")
-public class Authorities {
+public class Authorities extends BaseEntity{
 	
-	@Id
-	String username;
+	
+	//@ManyToOne
+    //@JoinColumn(name = "username")
+	//private User usern;
 
-	String authority;
+    @Size(min = 3, max = 50)
+    private String authority;
 	
-	public String getUsername() {
-		return username;
-	}
-	
-	public void setUser(String username) {
-		this.username = username;
-	}
+//	public User getUsername() {
+//		return usern;
+//	}
+//	
+//	public void setUser(User user) {
+//		this.usern = user;
+//	}
 	
 	public String getAuthority() {
 		return authority;
