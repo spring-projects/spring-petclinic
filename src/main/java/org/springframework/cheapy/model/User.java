@@ -1,19 +1,15 @@
 package org.springframework.cheapy.model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-@Entity
-@Table(name = "users")
-public class User {
 
-	@Id
+@MappedSuperclass
+public class User extends BaseEntity {
+
 	@NotBlank
 	String username;
 
@@ -23,6 +19,9 @@ public class User {
 	@Email
 	@NotBlank
 	String email;
+	
+	@OneToOne
+	Authorities authority;
 
 	public String getUsername() {
 		return username;
@@ -55,8 +54,5 @@ public class User {
 	public void setAuthority(Authorities authority) {
 		this.authority = authority;
 	}
-
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
-	private Authorities authority;
 
 }
