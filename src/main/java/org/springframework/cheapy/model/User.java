@@ -28,8 +28,7 @@ public class User{
 	
 	boolean enabled;
 	
-	//@OneToMany(cascade = CascadeType.ALL, mappedBy = "usern")
-	//Set<Authorities> authorities;
+	
 
 	public String getUsername() {
 		return username;

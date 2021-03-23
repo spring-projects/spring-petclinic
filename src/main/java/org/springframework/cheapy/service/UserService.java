@@ -21,7 +21,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.cheapy.model.User;
-import org.springframework.cheapy.repository.UserRepository;
+import org.springframework.cheapy.repository.UsuarioRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
