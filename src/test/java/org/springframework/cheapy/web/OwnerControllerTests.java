@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+/*
 package org.springframework.cheapy.web;
 
 import static org.hamcrest.Matchers.hasProperty;
@@ -40,6 +40,7 @@ import org.springframework.test.web.servlet.MockMvc;
  *
  * @author Colin But
  */
+/*
 @WebMvcTest(OwnerController.class)
 class OwnerControllerTests {
 
@@ -161,3 +162,4 @@ class OwnerControllerTests {
 	}
 
 }
+*/
