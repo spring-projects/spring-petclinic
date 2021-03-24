@@ -2,13 +2,14 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
 
+
 <cheapy:layout pageName="error">
 
-    <spring:url value="/resources/images/pets.png" var="petsImage"/>
-    <img src="${petsImage}"/>
-
-    <h2>Something happened...</h2>
+    <h2>Algo malo ha pasado...</h2>
+    
+    <spring:url value="/resources/images/Logo Cheapy.png" htmlEscape="true" var="cheapyImage"/>
+    <img class="img-responsive" src="${cheapyImage}"/>
 
     <p>${exception.message}</p>
-
+	
 </cheapy:layout>
