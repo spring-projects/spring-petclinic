@@ -17,6 +17,7 @@
 package org.springframework.samples.petclinic.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -93,10 +94,12 @@ class ClinicServiceTests {
 	@Test
 	void shouldFindSingleOwnerWithPet() {
 		Owner owner = this.owners.findById(1);
-		assertThat(owner.getLastName()).startsWith("Franklin");
-		assertThat(owner.getPets()).hasSize(1);
-		assertThat(owner.getPets().get(0).getType()).isNotNull();
-		assertThat(owner.getPets().get(0).getType().getName()).isEqualTo("cat");
+		assertAll(
+			() -> assertThat(owner.getLastName()).startsWith("Franklin"),
+			() -> assertThat(owner.getPets()).hasSize(1),
+			() -> assertThat(owner.getPets().get(0).getType()).isNotNull(),
+			() -> assertThat(owner.getPets().get(0).getType().getName()).isEqualTo("cat")
+		);
 	}
 
 	@Test
@@ -136,9 +139,10 @@ class ClinicServiceTests {
 	@Test
 	void shouldFindPetWithCorrectId() {
 		Pet pet7 = this.pets.findById(7);
-		assertThat(pet7.getName()).startsWith("Samantha");
-		assertThat(pet7.getOwner().getFirstName()).isEqualTo("Jean");
-
+		assertAll(
+			() -> assertThat(pet7.getName()).startsWith("Samantha"),
+			() -> assertThat(pet7.getOwner().getFirstName()).isEqualTo("Jean")
+		);
 	}
 
 	@Test
@@ -191,12 +195,13 @@ class ClinicServiceTests {
 	@Test
 	void shouldFindVets() {
 		Collection<Vet> vets = this.vets.findAll();
-
 		Vet vet = EntityUtils.getById(vets, Vet.class, 3);
-		assertThat(vet.getLastName()).isEqualTo("Douglas");
-		assertThat(vet.getNrOfSpecialties()).isEqualTo(2);
-		assertThat(vet.getSpecialties().get(0).getName()).isEqualTo("dentistry");
-		assertThat(vet.getSpecialties().get(1).getName()).isEqualTo("surgery");
+		assertAll(
+			() -> assertThat(vet.getLastName()).isEqualTo("Douglas"),
+			() -> assertThat(vet.getNrOfSpecialties()).isEqualTo(2),
+			() -> assertThat(vet.getSpecialties().get(0).getName()).isEqualTo("dentistry"),
+			() -> assertThat(vet.getSpecialties().get(1).getName()).isEqualTo("surgery")
+		);
 	}
 
 	@Test
@@ -220,8 +225,10 @@ class ClinicServiceTests {
 		Collection<Visit> visits = this.visits.findByPetId(7);
 		assertThat(visits).hasSize(2);
 		Visit[] visitArr = visits.toArray(new Visit[visits.size()]);
-		assertThat(visitArr[0].getDate()).isNotNull();
-		assertThat(visitArr[0].getPetId()).isEqualTo(7);
+		assertAll(
+			() -> assertThat(visitArr[0].getDate()).isNotNull(),
+			() -> assertThat(visitArr[0].getPetId()).isEqualTo(7)
+		);
 	}
 
 }
