@@ -42,7 +42,6 @@ public class Offer extends BaseEntity {
 	@Future
 	private LocalDateTime end;
 
-	@NotBlank
 	private String code;
 
 	@Enumerated(value = EnumType.STRING)
@@ -82,6 +81,14 @@ public class Offer extends BaseEntity {
 
 	public void setType(StatusOffer type) {
 		this.type = type;
+	}
+	
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
 	}
 
 }
