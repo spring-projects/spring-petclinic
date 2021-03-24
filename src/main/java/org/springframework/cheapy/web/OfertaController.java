@@ -61,7 +61,7 @@ public class OfertaController {
 
 
 	@GetMapping("/offers")
-	public String processFindForm(BindingResult result, Map<String, Object> model) {
+	public String processFindForm( Map<String, Object> model) {
 
 		List<FoodOffer> foodOfferLs=this.foodOfferService.findAllFoodOffer();
 		List<NuOffer> nuOfferLs=this.nuOfferService.findAllNuOffer();

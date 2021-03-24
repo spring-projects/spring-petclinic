@@ -11,7 +11,7 @@
     <table id="foodOfferTable" class="table table-striped">
         <thead>
         <tr>
-        	<th style="width: 150px;">Restaurante</th>
+        	<!-- <th style="width: 150px;">Restaurante</th> -->
         	<th style="width: 150px;">Plato</th>
             <th style="width: 150px;">Fecha inicio</th>
             <th style="width: 200px;">Fecha fin</th>
@@ -21,12 +21,12 @@
         <tbody>
         <c:forEach items="${foodOfferLs}" var="foodOffer">
             <tr>
-                <td>
+                <%-- <td>
                     <spring:url value="/offers/food/{offerId}" var="foodOfferUrl">
                         <spring:param name="offerId" value="${foodOffer.id}"/>
                     </spring:url>
                     <a href="${fn:escapeXml(foodOfferUrl)}"><c:out value="${foodOffer.client.username}"/></a>
-                </td>
+                </td> --%>
                 <td>
                     <c:out value="${foodOffer.food}"/>
                 </td>
@@ -47,7 +47,7 @@
     <table id="nuOfferTable" class="table table-striped">
         <thead>
         <tr>
-        	<th style="width: 150px;">Restaurante</th>
+        	<!-- <th style="width: 150px;">Restaurante</th> -->
             <th style="width: 150px;">Fecha inicio</th>
             <th style="width: 200px;">Fecha fin</th>
             
@@ -56,12 +56,12 @@
         <tbody>
         <c:forEach items="${nuOfferLs}" var="nuOffer">
             <tr>
-                <td>
+                <%-- <td>
                     <spring:url value="/offers/nu/{offerId}" var="nuOfferUrl">
                         <spring:param name="offerId" value="${nuOffer.id}"/>
                     </spring:url>
                     <a href="${fn:escapeXml(nuOfferUrl)}"><c:out value="${nuOffer.client.username}"/></a>
-                </td>
+                </td> --%>
                 <td>
                     <c:out value="${nuOffer.start}"/>
                 </td>
@@ -78,7 +78,7 @@
     <table id="speedOfferTable" class="table table-striped">
         <thead>
         <tr>
-        	<th style="width: 150px;">Restaurante</th>
+        	<!-- <th style="width: 150px;">Restaurante</th> -->
             <th style="width: 150px;">Fecha inicio</th>
             <th style="width: 200px;">Fecha fin</th>
             
@@ -87,12 +87,12 @@
         <tbody>
         <c:forEach items="${speedOfferLs}" var="speedOffer">
             <tr>
-                <td>
+                <%-- <td>
                     <spring:url value="/offers/speed/{offerId}" var="speedOfferUrl">
                         <spring:param name="offerId" value="${speedOffer.id}"/>
                     </spring:url>
                     <a href="${fn:escapeXml(speedOfferUrl)}"><c:out value="${speedOffer.client.username}"/></a>
-                </td>
+                </td> --%>
                 <td>
                     <c:out value="${speedOffer.start}"/>
                 </td>
@@ -109,7 +109,7 @@
     <table id="timeOfferTable" class="table table-striped">
         <thead>
         <tr>
-        	<th style="width: 150px;">Restaurante</th>
+        	<!-- <th style="width: 150px;">Restaurante</th> -->
             <th style="width: 150px;">Fecha inicio</th>
             <th style="width: 200px;">Fecha fin</th>
             
@@ -118,17 +118,17 @@
         <tbody>
         <c:forEach items="${timeOfferLs}" var="timeOffer">
             <tr>
-                <td>
+                <%-- <td>
                     <spring:url value="/offers/time/{offerId}" var="timeOfferUrl">
                         <spring:param name="offerId" value="${timeOffer.id}"/>
                     </spring:url>
                     <a href="${fn:escapeXml(timeOfferUrl)}"><c:out value="${timeOffer.client.username}"/></a>
-                </td>
+                </td> --%>
                 <td>
                     <c:out value="${timeOffer.start}"/>
                 </td>
                 <td>
-                    <c:out value="${foodOffer.end}"/>
+                    <c:out value="${timeOffer.end}"/>
                 </td>
                   
             </tr>
