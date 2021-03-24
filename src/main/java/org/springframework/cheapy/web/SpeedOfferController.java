@@ -30,6 +30,7 @@ import org.springframework.cheapy.service.TimeOfferService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 
 /**
@@ -38,8 +39,8 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @author Arjen Poutsma
  * @author Michael Isvy
  */
-@Controller
-public class OfertaController {
+@Controller 
+public class SpeedOfferController {
 
 	//private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
 
@@ -50,7 +51,7 @@ public class OfertaController {
 
 
 
-	public OfertaController(final FoodOfferService foodOfferService, final NuOfferService nuOfferService,
+	public SpeedOfferController(final FoodOfferService foodOfferService, final NuOfferService nuOfferService,
 			final SpeedOfferService speedOfferService, final TimeOfferService timeOfferService) {
 		this.foodOfferService = foodOfferService;
 		this.nuOfferService = nuOfferService;
@@ -60,20 +61,14 @@ public class OfertaController {
 	}
 
 
-	@GetMapping("/offers")
-	public String processFindForm( Map<String, Object> model) {
+	@GetMapping("/offers/speed/{speedOfferId}")
+	public String processShowForm(@PathVariable("speedOfferId") int speedOfferId, Map<String, Object> model) {
 
-		List<FoodOffer> foodOfferLs=this.foodOfferService.findAllFoodOffer();
-		List<NuOffer> nuOfferLs=this.nuOfferService.findAllNuOffer();
-		List<SpeedOffer> speedOfferLs=this.speedOfferService.findAllSpeedOffer();
-		List<TimeOffer> timeOfferLs=this.timeOfferService.findAllTimeOffer();
+		SpeedOffer speedOffer=this.speedOfferService.findSpeedOfferById(speedOfferId);
 		
-		model.put("foodOfferLs", foodOfferLs);
-		model.put("nuOfferLs", nuOfferLs);
-		model.put("speedOfferLs", speedOfferLs);
-		model.put("timeOfferLs", timeOfferLs);
+		model.put("speedOffer", speedOffer);
 		
-		return "offers/offersList";
+		return "speedOffers/speedOffersShow";
 
 	}
 
