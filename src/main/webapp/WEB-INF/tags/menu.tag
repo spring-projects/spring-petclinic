@@ -41,11 +41,6 @@
 				</cheapy:menuItem>
 
 				
-				<cheapy:menuItem active="${name eq 'login'}" url="/login"
-					title="login">
-					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-					<span>Login</span>
-				</cheapy:menuItem>
 
 			</ul>
 
