@@ -22,7 +22,7 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @Table(name = "food_offers")
 public class FoodOffer extends Offer {
-
+//Plato específico
 	@NotBlank
 	private String food;
 

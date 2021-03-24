@@ -28,7 +28,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @Table(name = "time_offers")
 public class TimeOffer extends Offer {
-
+//Oferta por franja horaria
 	@DateTimeFormat(pattern = "HH:mm")
 	@NotBlank
 	private LocalTime init;
