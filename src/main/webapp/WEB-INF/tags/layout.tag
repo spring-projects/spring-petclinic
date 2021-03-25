@@ -1,25 +1,25 @@
 <%@ tag trimDirectiveWhitespaces="true" %>
-<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
 
 <%@ attribute name="pageName" required="true" %>
 <%@ attribute name="customScript" required="false" fragment="true"%>
 
 <!doctype html>
 <html>
-<petclinic:htmlHeader/>
+<cheapy:htmlHeader/>
 
 <body>
-<petclinic:bodyHeader menuName="${pageName}"/>
+<cheapy:bodyHeader menuName="${pageName}"/>
 
 <div class="container-fluid">
     <div class="container xd-container">
 
         <jsp:doBody/>
 
-        <petclinic:pivotal/>
+        <cheapy:pivotal/>
     </div>
 </div>
-<petclinic:footer/>
+<cheapy:footer/>
 <jsp:invoke fragment="customScript" />
 
 </body>

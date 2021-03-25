@@ -15,6 +15,7 @@
  */
 package org.springframework.cheapy.web;
 
+
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -86,4 +87,16 @@ public class SpeedOfferController {
 		}
 		return "redirect:/speedOffers/";
 	}
+  
+  	@GetMapping("/offers/speed/{speedOfferId}")
+	public String processShowForm(@PathVariable("speedOfferId") int speedOfferId, Map<String, Object> model) {
+
+		SpeedOffer speedOffer=this.speedOfferService.findSpeedOfferById(speedOfferId);
+		
+		model.put("speedOffer", speedOffer);
+		
+		return "speedOffers/speedOffersShow";
+
+	}
+
 }

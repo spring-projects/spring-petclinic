@@ -1,7 +1,6 @@
 package org.springframework.cheapy.web;
 
 import java.util.Map;
-
 import javax.validation.Valid;
 
 import org.springframework.cheapy.model.Client;
@@ -81,5 +80,17 @@ public class TimeOfferController {
 		
 
 	}
+  
+  @GetMapping("/offers/time/{timeOfferId}")
+	public String processShowForm(@PathVariable("timeOfferId") int timeOfferId, Map<String, Object> model) {
+
+		TimeOffer timeOffer=this.timeOfferService.findTimeOfferById(timeOfferId);
+		
+		model.put("timeOffer", timeOffer);
+		
+		return "timeOffers/timeOffersShow";
+
+	}
 	
+
 }

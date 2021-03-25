@@ -81,5 +81,18 @@ public class NuOfferController {
 		
 
 	}
+  
+  	@GetMapping("/offers/nu/{nuOfferId}")
+	public String processShowForm(@PathVariable("nuOfferId") int nuOfferId, Map<String, Object> model) {
+
+		NuOffer nuOffer=this.nuOfferService.findNuOfferById(nuOfferId);
+		
+		model.put("nuOffer", nuOffer);
+		
+		return "nuOffers/nuOffersShow";
+
+	}
+
+
 	
 }

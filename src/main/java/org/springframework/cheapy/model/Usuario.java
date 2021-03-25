@@ -5,22 +5,101 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 @Entity
-@Table(name = "users")
-public class Usuario extends User{
+@Table(name = "usuarios")
+public class Usuario extends BaseEntity{
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-	private Set<Authorities> authorities;
+	/** nombre, apellidos, dni, direccion, telefono, email, username
+	 * (id,nombre, apellidos, dni, direccion, telefono, email, usuar)
+	 */
+	private static final long serialVersionUID = 1L;
 
-	public Set<Authorities> getAuthorities() {
-		return authorities;
+	@NotBlank
+	private String	nombre;
+
+	@NotBlank
+	private String	apellidos;
+
+	@NotBlank
+	private String	dni;
+
+	@NotBlank
+	private String	direccion;
+
+	@NotBlank
+	//@Pattern(regexp = "([+][^0][\\d]{0,2})?[ ]?([(][\\d]{0,4}[)])?[ ]?([\\d]{6,10})$")
+	private String	telefono;
+
+	@Email
+	@NotBlank
+	private String	email;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "username", referencedColumnName = "username")
+	private User usuar;
+
+	public String getNombre() {
+		return nombre;
 	}
 
-	public void setAuthorities(Set<Authorities> authorities) {
-		this.authorities = authorities;
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
+
+	public String getApellidos() {
+		return apellidos;
+	}
+
+	public void setApellidos(String apellidos) {
+		this.apellidos = apellidos;
+	}
+
+	public String getDni() {
+		return dni;
+	}
+
+	public void setDni(String dni) {
+		this.dni = dni;
+	}
+
+	public String getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
+	public String getTelefono() {
+		return telefono;
+	}
+
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public User getUser() {
+		return usuar;
+	}
+
+	public void setUser(User username) {
+		this.usuar = username;
+	}
+	
 	
 }
