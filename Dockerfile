@@ -1,3 +1,4 @@
 FROM java:8-jdk-alpine
-COPY /home/owlleg6/builds/petclinic.jar /home/spring-petclinic-2.4.2.jar
-CMD ["java","-jar","/home/spring-petclinic-2.4.2.jar"]
+WORKDIR /home/owlleg6/builds/
+COPY petclinic.jar /home/spring-petclinic.jar
+CMD ["java","-jar","/home/petclinic.jar"]
