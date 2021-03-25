@@ -15,9 +15,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 
-//@Entity
-//@Table(name = "users")
-@MappedSuperclass
+@Entity
+@Table(name = "users")
+//@MappedSuperclass
 public class User{
 	
 	@Id
@@ -46,11 +46,4 @@ public class User{
 		this.password = password;
 	}
 
-//	public Set<Authorities> getAuthority() {
-//		return authorities;
-//	}
-//
-//	public void setAuthorities(Set<Authorities> authorities) {
-//		this.authorities = authorities;
-//	}
 }

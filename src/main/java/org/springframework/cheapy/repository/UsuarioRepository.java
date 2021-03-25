@@ -7,6 +7,6 @@ import org.springframework.cheapy.model.Usuario;
 
 public interface UsuarioRepository extends CrudRepository<Usuario, String> {
 
-	Usuario findByUsername(String currentPrincipalName);
+	//Usuario findByUsername(String currentPrincipalName);
 
 }
