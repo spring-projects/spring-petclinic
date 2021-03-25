@@ -15,18 +15,12 @@
         	<th style="width: 150px;">Plato</th>
             <th style="width: 150px;">Fecha inicio</th>
             <th style="width: 200px;">Fecha fin</th>
-            
+            <th> </th>
         </tr>
         </thead>
         <tbody>
         <c:forEach items="${foodOfferLs}" var="foodOffer">
             <tr>
-                <%-- <td>
-                    <spring:url value="/offers/food/{offerId}" var="foodOfferUrl">
-                        <spring:param name="offerId" value="${foodOffer.id}"/>
-                    </spring:url>
-                    <a href="${fn:escapeXml(foodOfferUrl)}"><c:out value="${foodOffer.client.username}"/></a>
-                </td> --%>
                 <td>
                     <c:out value="${foodOffer.food}"/>
                 </td>
@@ -36,6 +30,12 @@
                 <td>
                     <c:out value="${foodOffer.end}"/>
                 </td>
+                <td>
+                <spring:url value="/offers/food/{foodOfferId}" var="foodOfferUrl">
+                        <spring:param name="foodOfferId" value="${foodOffer.id}"/>
+                    </spring:url>
+                    <a href="${fn:escapeXml(foodOfferUrl)}"/>Enlace</a>
+                </td> 
                   
             </tr>
         </c:forEach>
@@ -115,11 +115,11 @@
         	<!-- <th style="width: 150px;">Restaurante</th> -->
             <th style="width: 150px;">Fecha inicio</th>
             <th style="width: 200px;">Fecha fin</th>
-            
+            <th> </th>
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${timeOfferLs}" var="timeOffer">
+        	<c:forEach items="${timeOfferLs}" var="timeOffer">
             <tr>
                 
                 <td>
@@ -128,12 +128,12 @@
                 <td>
                     <c:out value="${timeOffer.end}"/>
                 </td>
-                <%-- <td>
-                    <spring:url value="/offers/time/{timeOfferId}" var="timeOfferUrl">
+                <td>
+                <spring:url value="/offers/time/{timeOfferId}" var="timeOfferUrl">
                         <spring:param name="timeOfferId" value="${timeOffer.id}"/>
                     </spring:url>
-                    <a href="${fn:escapeXml(timeOfferUrl)}"><c:out value="${timeOffer.client.username}"/></a>
-                </td> --%>
+                    <a href="${fn:escapeXml(timeOfferUrl)}"/>Enlace</a>
+                </td> 
             </tr>
         </c:forEach>
         </tbody>

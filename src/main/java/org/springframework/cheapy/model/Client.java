@@ -24,6 +24,7 @@ public class Client extends BaseEntity{
 	private static final long serialVersionUID = 1L;
 
 	// (id, email, address, init, finish, telephone, description, code, food, usuar)
+
 	@NotEmpty
 	private String email;
 	

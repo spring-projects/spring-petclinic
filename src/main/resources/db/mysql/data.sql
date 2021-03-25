@@ -16,12 +16,6 @@ INSERT INTO time_offers(start, end, code, type, client_id, init, finish, discoun
 INSERT INTO speed_offers(start, end, code, type, client_id, gold, discount_gold, silver, discount_silver, bronze, discount_bronze) VALUES ('2021-06-15 12:00:00', '2021-06-16 12:00:00', 'jkhlljk', 'active', null,5,'25%',10,'15%',15,'10%' );
 INSERT INTO nu_offers(start, end, code, type, client_id, gold, discount_gold, silver, discount_silver, bronze, discount_bronze) VALUES ('2021-06-15 12:00:00', '2021-06-16 12:00:00', 'jkhlljk', 'active', null,15,'25%',10,'15%',5,'10%' );
 
---insert into usuarios(username, password, enabled) values ('admin3', 'admin', true);
---insert into authorities(id ,usuario, authority) values (42,'admin3', 'admin');
-
---INSERT INTO users(username,password,enabled) VALUES ('admin1','4dm1n',TRUE);
---INSERT INTO authorities(id,username,authority) VALUES (1,'admin1','admin');
-
 INSERT INTO users (dtype,username,password,enabled) VALUES ('user','admin','admin', TRUE );
 INSERT INTO authorities VALUES ('admin','admin');
 INSERT INTO users (dtype,username,password,enabled) VALUES ('user','manoli','manoli', TRUE );

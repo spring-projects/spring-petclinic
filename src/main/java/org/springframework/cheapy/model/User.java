@@ -1,19 +1,8 @@
 package org.springframework.cheapy.model;
 
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
 
 @Entity
 @Table(name = "users")
@@ -27,7 +16,12 @@ public class User{
 	private String password;
 	
 	boolean enabled;
+
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 
 	public String getUsername() {
