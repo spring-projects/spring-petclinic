@@ -37,12 +37,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/resources/**", "/webjars/**", "/h2-console/**").permitAll()
 		.antMatchers(HttpMethod.GET, "/", "/oups").permitAll()
 		.antMatchers("/users/new").permitAll()
+		.antMatchers("/nuOffers/**").hasAnyAuthority("admin","client")
+		.antMatchers("/timeOffers/**").hasAnyAuthority("admin","client")
 		.antMatchers("/usuarios/new").permitAll()
 		.antMatchers("/admin/**").hasAnyAuthority("admin")
 		.antMatchers("/speedOffers/**").hasAnyAuthority("admin", "client")
 		.antMatchers("/foodOffers/**").hasAnyAuthority("admin", "client")
 		.antMatchers("/owners/**").hasAnyAuthority("owner", "admin")
-		.antMatchers("/vets/**").authenticated().anyRequest().denyAll()
 		.and().formLogin()
 			/* .loginPage("/login") */
 			.failureUrl("/login-error").and().logout().logoutSuccessUrl("/");

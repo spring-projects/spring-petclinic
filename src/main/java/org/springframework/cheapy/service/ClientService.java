@@ -19,7 +19,6 @@ package org.springframework.cheapy.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cheapy.model.Client;
 import org.springframework.cheapy.repository.ClientRepository;
-import org.springframework.cheapy.repository.SpeedOfferRepository;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,12 +26,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-/**
- * Mostly used as a facade for all Petclinic controllers Also a placeholder
- * for @Transactional and @Cacheable annotations
- *
- * @author Michael Isvy
- */
 
 @Service
 public class ClientService {
@@ -44,11 +37,13 @@ public class ClientService {
 		this.clientRepository = clientRepository;
 	}
 
+	
 	@Transactional
-	public Client getCurrentclient() throws DataAccessException {
+	public Client getCurrentClient() throws DataAccessException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String currentPrincipalName = authentication.getName();
-		return this.clientRepository.findByUsername(currentPrincipalName);
+		String username = authentication.getName();            
+		return this.clientRepository.findByUsername(username);
+
 	}
 	
 }

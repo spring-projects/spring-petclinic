@@ -40,6 +40,7 @@ public class Offer extends BaseEntity {
 	@Future
 	private LocalDateTime end;
 
+  
 	private String code;
 
 	@Enumerated(value = EnumType.STRING)

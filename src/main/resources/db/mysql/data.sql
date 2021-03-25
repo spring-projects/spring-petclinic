@@ -10,12 +10,11 @@ INSERT INTO owners VALUES (9, 'David', 'Schroeder', '2749 Blackhawk Trail', 'Mad
 INSERT INTO owners VALUES (10, 'Carlos', 'Estaban', '2335 Independence La.', 'Waunakee', '6085555487');
 
 
+
 INSERT INTO food_offers(start, end, code, type, client_id, food, discount, units) VALUES ('2021-06-15 12:00:00', '2021-06-16 12:00:00', 'FO-1', 'active', null, 'macarrones', '15%', 10);
 INSERT INTO speed_offers(start, end, code, type, client_id, gold, discount_gold, silver, discount_silver, bronze, discount_bronze) VALUES ('2021-06-15 12:00:00', '2021-06-16 12:00:00', 'SP-1', 'active', null, 5, '15%', 10, '10%', 15, '5%');
 INSERT INTO time_offers(start, end, code, type, client_id, init, finish, discount) VALUES ('2021-06-15 12:00:00', '2021-06-16 12:00:00', 'jkhlljk', 'active', null, '12:00:00', '13:00:00', '10%');
 
---insert into usuarios(username, password, enabled) values ('admin3', 'admin', true);
---insert into authorities(id ,usuario, authority) values (42,'admin3', 'admin');
 
-INSERT INTO users(username,password,enabled) VALUES ('admin1','4dm1n',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (1,'admin1','admin');
+
+
