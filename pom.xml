@@ -5,12 +5,12 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
-  <version>2.3.0.BUILD-SNAPSHOT</version>
+  <version>2.4.2</version>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.3.5.RELEASE</version>
+    <version>2.4.2</version>
   </parent>
   <name>petclinic</name>
 
@@ -25,7 +25,7 @@
     <webjars-bootstrap.version>3.3.6</webjars-bootstrap.version>
     <webjars-jquery-ui.version>1.11.4</webjars-jquery-ui.version>
     <webjars-jquery.version>2.2.4</webjars-jquery.version>
-    <wro4j.version>1.9.0</wro4j.version>
+    <wro4j.version>1.8.0</wro4j.version>
 
     <jacoco.version>0.8.5</jacoco.version>
     <nohttp-checkstyle.version>0.0.4.RELEASE</nohttp-checkstyle.version>
@@ -257,6 +257,7 @@
           <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties
           </generateGitPropertiesFilename>
           <failOnNoGitDirectory>false</failOnNoGitDirectory>
+          <failOnUnableToExtractRepoInfo>false</failOnUnableToExtractRepoInfo>
         </configuration>
       </plugin>
 

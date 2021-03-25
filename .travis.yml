@@ -1,3 +1,9 @@
 dist: trusty
 language: java
 jdk: oraclejdk8
+services:
+  - docker
+before_script:
+  - docker login -u springbuildmaster -p "$DOCKERHUB_PASSWORD"
+script:
+  - ./mvnw spring-boot:build-image -D spring-boot.build-image.imageName=springio/petclinic && [ "${TRAVIS_BRANCH}" = "main" ] && docker push springio/petclinic
