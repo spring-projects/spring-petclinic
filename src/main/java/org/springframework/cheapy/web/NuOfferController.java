@@ -71,12 +71,13 @@ public class NuOfferController {
 		if(nuOffer.getClient().equals(client)) {
 			nuOffer.setType(StatusOffer.active);
 			nuOffer.setCode("NU-"+nuOfferId);
+			this.nuOfferService.saveNuOffer(nuOffer);
 			
 			return "redirect:/nuOffers/" + nuOffer.getId();	
 		} else {
 		         modelMap.addAttribute("message", "You don't have access to this number offer");
 		        }
-		        return "redirect:/nuOffers/" + nuOffer.getId();
+		        return "redirect:/nuOffers/";
 		
 
 	}

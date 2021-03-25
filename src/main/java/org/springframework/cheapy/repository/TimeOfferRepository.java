@@ -1,11 +1,10 @@
 package org.springframework.cheapy.repository;
 
-import org.springframework.cheapy.model.NuOffer;
 import org.springframework.cheapy.model.TimeOffer;
 import org.springframework.data.repository.Repository;
 
 
-public interface TimeOfferRepository extends Repository<NuOffer, Integer> {
+public interface TimeOfferRepository extends Repository<TimeOffer, Integer> {
 
 
 

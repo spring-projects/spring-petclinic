@@ -8,21 +8,21 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TimeOfferService {
-	private TimeOfferRepository TimeOfferRepository;
+	private TimeOfferRepository timeOfferRepository;
 
 
 	@Autowired
 	public TimeOfferService(final TimeOfferRepository TimeOfferRepository) {
-		this.TimeOfferRepository = TimeOfferRepository;
+		this.timeOfferRepository = TimeOfferRepository;
 	}
 
 	public TimeOffer findTimeOfferById(final int id) {
-		return this.TimeOfferRepository.findTimeOfferById(id);
+		return this.timeOfferRepository.findTimeOfferById(id);
 	}
 
 	
 	public void saveTimeOffer(final TimeOffer TimeOffer) throws DataAccessException { //
-		this.TimeOfferRepository.save(TimeOffer);
+		this.timeOfferRepository.save(TimeOffer);
 
 	}
 }

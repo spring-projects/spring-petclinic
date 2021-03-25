@@ -71,12 +71,13 @@ public class TimeOfferController {
 		if(timeOffer.getClient().equals(client)) {
 			timeOffer.setType(StatusOffer.active);
 			timeOffer.setCode("TI-"+timeOfferId);
+			this.timeOfferService.saveTimeOffer(timeOffer);
 			
 			return "redirect:/timeOffers/" + timeOffer.getId();	
 		} else {
-		         modelMap.addAttribute("message", "You don't have access to this number offer");
+		         modelMap.addAttribute("message", "You don't have access to this time offer");
 		        }
-		        return "redirect:/timeOffers/" + timeOffer.getId();
+		        return "redirect:/timeOffers/";
 		
 
 	}
