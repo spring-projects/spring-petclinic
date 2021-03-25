@@ -23,7 +23,7 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @Table(name = "speed_offers")
 public class SpeedOffer extends Offer {
-
+//Ofertar por rapidez comiendo
 	@NotBlank
 	private Integer gold; // x minutos
 

@@ -23,7 +23,7 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @Table(name = "nu_offers")
 public class NuOffer extends Offer {
-
+//Oferta por numero de comensales
 	@NotBlank
 	private Integer gold;
 
