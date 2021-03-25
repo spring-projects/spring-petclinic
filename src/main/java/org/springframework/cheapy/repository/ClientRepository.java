@@ -1,6 +1,7 @@
 
 package org.springframework.cheapy.repository;
 
+
 import org.springframework.cheapy.model.Client;
 import org.springframework.data.repository.CrudRepository;
 

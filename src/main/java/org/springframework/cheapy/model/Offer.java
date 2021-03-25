@@ -40,11 +40,12 @@ public class Offer extends BaseEntity {
 	@Future
 	private LocalDateTime end;
 
-	
+  
 	private String code;
 
 	@Enumerated(value = EnumType.STRING)
 	private StatusOffer type;
+	
 	
 	@ManyToOne
 	@JoinColumn(name="client_id")
@@ -85,7 +86,7 @@ public class Offer extends BaseEntity {
 	public Client getClient() {
 		return client;
 	}
-	
+
 	public void setClient(Client client) {
 		this.client = client;
 	}

@@ -36,12 +36,14 @@ public class ClientService {
 	public ClientService(final ClientRepository clientRepository) {
 		this.clientRepository = clientRepository;
 	}
+
 	
 	@Transactional
 	public Client getCurrentClient() throws DataAccessException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();            
 		return this.clientRepository.findByUsername(username);
+
 	}
 	
 }
