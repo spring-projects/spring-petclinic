@@ -23,7 +23,13 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "food_offers")
 public class FoodOffer extends Offer {
-//Plato específico
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	//Plato específico
 	@NotBlank
 	private String food;
 

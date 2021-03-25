@@ -45,7 +45,6 @@ public class SpeedOfferController {
 	public SpeedOfferController(final SpeedOfferService speedOfferService, final ClientService clientService) {
 		this.speedOfferService = speedOfferService;
 		this.clientService = clientService;
-
 	}
 
 	@InitBinder
@@ -66,7 +65,7 @@ public class SpeedOfferController {
 			return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
 		}
 		else {
-			Client client = this.clientService.getCurrentclient();
+			Client client = this.clientService.getCurrentClient();
 			speedOffer.setClient(client);
 			speedOffer.setType(StatusOffer.hidden);
 			this.speedOfferService.saveSpeedOffer(speedOffer);
@@ -77,7 +76,7 @@ public class SpeedOfferController {
 	@GetMapping(value = "/speedOffers/{speedOfferId}/activate")
 	public String activateSpeedOffer(@PathVariable("speedOfferId") final int speedOfferId, ModelMap modelMap) {
 		SpeedOffer speedOffer = this.speedOfferService.findSpeedOfferById(speedOfferId);
-		Client client = this.clientService.getCurrentclient();
+		Client client = this.clientService.getCurrentClient();
 		if(speedOffer.getClient().equals(client)) {
 			speedOffer.setType(StatusOffer.active);
 			speedOffer.setCode("SP-"+speedOfferId);
@@ -92,11 +91,7 @@ public class SpeedOfferController {
 	public String processShowForm(@PathVariable("speedOfferId") int speedOfferId, Map<String, Object> model) {
 
 		SpeedOffer speedOffer=this.speedOfferService.findSpeedOfferById(speedOfferId);
-		
 		model.put("speedOffer", speedOffer);
-		
 		return "speedOffers/speedOffersShow";
-
 	}
-
 }
