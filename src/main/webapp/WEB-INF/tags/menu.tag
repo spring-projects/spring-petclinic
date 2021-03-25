@@ -28,7 +28,7 @@
 					<span>Home</span>
 				</cheapy:menuItem>
 				
-				<cheapy:menuItem active="${name eq 'ofertas'}" url="/ofertas"
+				<cheapy:menuItem active="${name eq 'ofertas'}" url="/offers"
 					title="ofertas">
 					<span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>
 					<span>Ver ofertas</span>

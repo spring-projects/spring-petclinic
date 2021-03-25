@@ -31,7 +31,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @MappedSuperclass
 public class Offer extends BaseEntity {
-
+//Clase padre
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	@NotBlank
 	@Future
