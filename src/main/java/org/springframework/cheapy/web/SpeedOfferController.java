@@ -79,7 +79,7 @@ public class SpeedOfferController {
 		Client client = this.clientService.getCurrentclient();
 		if(speedOffer.getClient().equals(client)) {
 			speedOffer.setType(StatusOffer.active);
-			speedOffer.setCode("SE-"+speedOfferId);
+			speedOffer.setCode("SP-"+speedOfferId);
 			this.speedOfferService.saveSpeedOffer(speedOffer);
 		} else {
 			modelMap.addAttribute("message", "You don't have access to this speed offer");
