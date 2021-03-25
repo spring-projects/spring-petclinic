@@ -10,6 +10,10 @@ import javax.validation.constraints.NotNull;
 @Table(name = "speed_offers")
 public class SpeedOffer extends Offer {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@NotNull
 	private Integer gold; // x minutos

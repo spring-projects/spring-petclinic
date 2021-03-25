@@ -1,6 +1,5 @@
 package org.springframework.cheapy.model;
 
-import java.time.LocalTime;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -12,8 +11,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "clients")

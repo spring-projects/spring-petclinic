@@ -49,7 +49,7 @@ public class FoodOfferController {
 			return VIEWS_FOOD_OFFER_CREATE_OR_UPDATE_FORM;
 		}
 		else {
-			Client client = this.clientService.getCurrentclient();
+			Client client = this.clientService.getCurrentClient();
 			foodOffer.setClient(client);
 			foodOffer.setType(StatusOffer.hidden);
 			this.foodOfferService.saveFoodOffer(foodOffer);
@@ -60,7 +60,7 @@ public class FoodOfferController {
 	@GetMapping(value = "/foodOffers/{foodOfferId}/activate")
 	public String activateFoodOffer(@PathVariable("foodOfferId") final int foodOfferId, ModelMap modelMap) {
 		FoodOffer foodOffer = this.foodOfferService.findFoodOfferById(foodOfferId);
-		Client client = this.clientService.getCurrentclient();
+		Client client = this.clientService.getCurrentClient();
 		if(foodOffer.getClient().equals(client)) {
 			foodOffer.setType(StatusOffer.active);
 			foodOffer.setCode("FO-"+foodOfferId);

@@ -29,7 +29,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @MappedSuperclass
 public class Offer extends BaseEntity {
-//Clase padre
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	//Clase padre
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	@NotNull
 	@Future

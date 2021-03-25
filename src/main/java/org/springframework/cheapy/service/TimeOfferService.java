@@ -1,5 +1,7 @@
 package org.springframework.cheapy.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cheapy.model.TimeOffer;
 import org.springframework.cheapy.repository.TimeOfferRepository;
@@ -21,12 +23,12 @@ public class TimeOfferService {
 		return this.timeOfferRepository.findTimeOfferById(id);
 	}
   
-  public List<TimeOffer> findAllTimeOffer() { //
+  public List<TimeOffer> findAllTimeOffer() { 
 		return this.timeOfferRepository.findAllTimeOffer();
 	}
 
 	
-	public void saveTimeOffer(final TimeOffer TimeOffer) throws DataAccessException { //
+	public void saveTimeOffer(final TimeOffer TimeOffer) throws DataAccessException { 
 		this.timeOfferRepository.save(TimeOffer);
 
 
