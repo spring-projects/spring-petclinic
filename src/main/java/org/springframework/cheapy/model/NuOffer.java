@@ -19,26 +19,27 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "nu_offers")
 public class NuOffer extends Offer {
 //Oferta por numero de comensales
-	@NotBlank
+	@NotNull
 	private Integer gold;
 
 	@Column(name = "discount_gold")
 	@NotBlank
 	private String discountGold;
 
-	@NotBlank
+	@NotNull
 	private Integer silver;
 
 	@Column(name = "discount_silver")
 	@NotBlank
 	private String discountSilver;
 
-	@NotBlank
+	@NotNull
 	private Integer bronze;
 
 	@Column(name = "discount_bronze")

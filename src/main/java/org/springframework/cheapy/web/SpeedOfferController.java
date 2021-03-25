@@ -15,22 +15,29 @@
  */
 package org.springframework.cheapy.web;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.cheapy.model.FoodOffer;
 import org.springframework.cheapy.model.NuOffer;
 import org.springframework.cheapy.model.SpeedOffer;
+import org.springframework.cheapy.model.StatusOffer;
 import org.springframework.cheapy.model.TimeOffer;
 import org.springframework.cheapy.service.FoodOfferService;
 import org.springframework.cheapy.service.NuOfferService;
 import org.springframework.cheapy.service.SpeedOfferService;
 import org.springframework.cheapy.service.TimeOfferService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 
 /**
@@ -42,7 +49,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller 
 public class SpeedOfferController {
 
-	//private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
+	private static final String VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM = "speedOffers/createOrUpdateSpeedOfferForm";
 
 	private final FoodOfferService foodOfferService;
 	private final NuOfferService nuOfferService; 
@@ -99,6 +106,82 @@ public class SpeedOfferController {
 //		mav.addObject(owner);
 //		return mav;
 //	}
+	
+	@GetMapping(value = "/offers/speed/{speedOfferId}/edit")
+	public String updateNuOffer(@PathVariable("speedOfferId") final int speedOfferId, final Principal principal, final ModelMap model) {
+
+//		if (!this.comprobarIdentidad(principal, vehiculoId)) {
+//			return "exception";
+//		}
+		
+		SpeedOffer speedOffer=this.speedOfferService.findSpeedOfferById(speedOfferId);
+		model.put("speedOffer", speedOffer);
+		return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
+	}
+
+	@PostMapping(value = "/offers/speed/{speedOfferId}/edit")
+	public String updateNuOffer(@Valid final SpeedOffer speedOfferEdit, final BindingResult result, @PathVariable("speedOfferId") final int speedOfferId, final Principal principal, final ModelMap model) {
+
+//		if (!this.comprobarIdentidad(principal, vehiculoId)) {
+//			return "exception";
+//		}
+
+		if (result.hasErrors()) {
+			model.put("speedOffer", speedOfferEdit);
+			return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
+
+		} else {
+
+			SpeedOffer speedOfferOld=this.speedOfferService.findSpeedOfferById(speedOfferId);
+
+			BeanUtils.copyProperties(speedOfferEdit, speedOfferOld, "id", "client_id");
+			
+			this.speedOfferService.saveSpeedOffer(speedOfferOld);
+
+			return "redirect:";
+		}
+
+	}
+	
+	@GetMapping(value = "/offers/speed/{speedOfferId}/disable")
+	public String disableSpeedOffer(@PathVariable("speedOfferId") final int speedOfferId, final Principal principal, final ModelMap model) {
+
+//		if (!this.comprobarIdentidad(principal, vehiculoId)) {
+//			return "exception";
+//		}
+//
+//		if (this.tieneCitasAceptadasYPendientes(vehiculoId)) {
+//			model.addAttribute("x", true);
+//
+//		} else {
+//			model.addAttribute("x", false);
+//		}
+
+		SpeedOffer speedOffer=this.speedOfferService.findSpeedOfferById(speedOfferId);
+		model.put("speedOffer", speedOffer);
+		return "speedOffers/speedOffersDisable";
+	}
+
+	@PostMapping(value = "/offers/speed/{speedOfferId}/disable")	
+	public String disableNuOfferForm(@PathVariable("speedOfferId") final int speedOfferId, final Principal principal, final ModelMap model) {
+
+//		if (!this.comprobarIdentidad(principal, vehiculoId)) {
+//			return "exception";
+//		}
+//
+//		if (this.tieneCitasAceptadasYPendientes(vehiculoId)) {
+//			return "redirect:/cliente/vehiculos/{vehiculoId}/disable";
+//
+//		} else {
+		SpeedOffer speedOffer=this.speedOfferService.findSpeedOfferById(speedOfferId);
+		
+		speedOffer.setType(StatusOffer.inactive);
+		
+		this.speedOfferService.saveSpeedOffer(speedOffer);
+		
+		return "redirect:";
+			
+	}
 	
 	
 }

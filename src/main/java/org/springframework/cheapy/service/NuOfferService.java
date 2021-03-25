@@ -30,7 +30,7 @@ public class NuOfferService {
 
 	}
 	
-	public void saveOwner(final NuOffer nuOffer) throws DataAccessException { //
+	public void saveNuOffer(final NuOffer nuOffer) throws DataAccessException { //
 		this.nuOfferRepository.save(nuOffer);
 
 	}

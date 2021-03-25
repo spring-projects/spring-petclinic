@@ -15,22 +15,29 @@
  */
 package org.springframework.cheapy.web;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.cheapy.model.FoodOffer;
 import org.springframework.cheapy.model.NuOffer;
 import org.springframework.cheapy.model.SpeedOffer;
+import org.springframework.cheapy.model.StatusOffer;
 import org.springframework.cheapy.model.TimeOffer;
 import org.springframework.cheapy.service.FoodOfferService;
 import org.springframework.cheapy.service.NuOfferService;
 import org.springframework.cheapy.service.SpeedOfferService;
 import org.springframework.cheapy.service.TimeOfferService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 
 /**
@@ -42,7 +49,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller 
 public class NuOfferController {
 
-	//private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
+	private static final String VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM = "nuOffers/createOrUpdateNuOfferForm";
 
 	private final FoodOfferService foodOfferService;
 	private final NuOfferService nuOfferService; 
@@ -100,5 +107,81 @@ public class NuOfferController {
 //		return mav;
 //	}
 	
+	
+	@GetMapping(value = "/offers/nu/{nuOfferId}/edit")
+	public String updateNuOffer(@PathVariable("nuOfferId") final int nuOfferId, final Principal principal, final ModelMap model) {
+
+//		if (!this.comprobarIdentidad(principal, vehiculoId)) {
+//			return "exception";
+//		}
+		
+		NuOffer nuOffer=this.nuOfferService.findNuOfferById(nuOfferId);
+		model.put("nuOffer", nuOffer);
+		return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
+	}
+
+	@PostMapping(value = "/offers/nu/{nuOfferId}/edit")
+	public String updateNuOffer(@Valid final NuOffer nuOfferEdit, final BindingResult result, @PathVariable("nuOfferId") final int nuOfferId, final Principal principal, final ModelMap model) {
+
+//		if (!this.comprobarIdentidad(principal, vehiculoId)) {
+//			return "exception";
+//		}
+
+		if (result.hasErrors()) {
+			model.put("nuOffer", nuOfferEdit);
+			return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
+
+		} else {
+
+			NuOffer nuOfferOld=this.nuOfferService.findNuOfferById(nuOfferId);
+
+			BeanUtils.copyProperties(nuOfferEdit, nuOfferOld, "id", "client_id");
+			
+			this.nuOfferService.saveNuOffer(nuOfferOld);
+
+			return "redirect:";
+		}
+
+	}
+	
+	@GetMapping(value = "/offers/nu/{nuOfferId}/disable")
+	public String disableNuOffer(@PathVariable("nuOfferId") final int nuOfferId, final Principal principal, final ModelMap model) {
+
+//		if (!this.comprobarIdentidad(principal, vehiculoId)) {
+//			return "exception";
+//		}
+//
+//		if (this.tieneCitasAceptadasYPendientes(vehiculoId)) {
+//			model.addAttribute("x", true);
+//
+//		} else {
+//			model.addAttribute("x", false);
+//		}
+
+		NuOffer nuOffer=this.nuOfferService.findNuOfferById(nuOfferId);
+		model.put("nuOffer", nuOffer);
+		return "nuOffers/nuOffersDisable";
+	}
+
+	@PostMapping(value = "/offers/nu/{nuOfferId}/disable")	
+	public String disableNuOfferForm(@PathVariable("nuOfferId") final int nuOfferId, final Principal principal, final ModelMap model) {
+
+//		if (!this.comprobarIdentidad(principal, vehiculoId)) {
+//			return "exception";
+//		}
+//
+//		if (this.tieneCitasAceptadasYPendientes(vehiculoId)) {
+//			return "redirect:/cliente/vehiculos/{vehiculoId}/disable";
+//
+//		} else {
+		NuOffer nuOffer=this.nuOfferService.findNuOfferById(nuOfferId);
+		
+		nuOffer.setType(StatusOffer.inactive);
+		
+		this.nuOfferService.saveNuOffer(nuOffer);
+		
+		return "redirect:";
+			
+	}
 	
 }
