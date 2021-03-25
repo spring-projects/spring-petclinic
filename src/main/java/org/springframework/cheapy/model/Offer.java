@@ -17,15 +17,13 @@ package org.springframework.cheapy.model;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Table;
 import javax.validation.constraints.Future;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -33,20 +31,21 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class Offer extends BaseEntity {
 //Clase padre
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
-	@NotBlank
+	@NotNull
 	@Future
 	private LocalDateTime start;
 
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
-	@NotBlank
+	@NotNull
 	@Future
 	private LocalDateTime end;
 
-	@NotBlank
+  
 	private String code;
 
 	@Enumerated(value = EnumType.STRING)
 	private StatusOffer type;
+	
 	
 	@ManyToOne
 	@JoinColumn(name="client_id")
@@ -82,6 +81,14 @@ public class Offer extends BaseEntity {
 
 	public void setType(StatusOffer type) {
 		this.type = type;
+	}
+	
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
 	}
 
 }

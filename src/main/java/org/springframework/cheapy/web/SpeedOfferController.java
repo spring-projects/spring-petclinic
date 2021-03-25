@@ -15,53 +15,80 @@
  */
 package org.springframework.cheapy.web;
 
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.Map;
 
-import org.springframework.cheapy.model.FoodOffer;
-import org.springframework.cheapy.model.NuOffer;
+import javax.validation.Valid;
+
+import org.springframework.cheapy.model.Client;
 import org.springframework.cheapy.model.SpeedOffer;
-import org.springframework.cheapy.model.TimeOffer;
-import org.springframework.cheapy.service.FoodOfferService;
-import org.springframework.cheapy.service.NuOfferService;
+import org.springframework.cheapy.model.StatusOffer;
+import org.springframework.cheapy.service.ClientService;
 import org.springframework.cheapy.service.SpeedOfferService;
-import org.springframework.cheapy.service.TimeOfferService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
-
-/**
- * @author Juergen Hoeller
- * @author Ken Krebs
- * @author Arjen Poutsma
- * @author Michael Isvy
- */
-@Controller 
+@Controller
 public class SpeedOfferController {
 
-	//private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
+	private static final String VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM = "speedOffers/createOrUpdateSpeedOfferForm";
 
-	private final FoodOfferService foodOfferService;
-	private final NuOfferService nuOfferService; 
 	private final SpeedOfferService speedOfferService;
-	private final TimeOfferService timeOfferService;
+	private final ClientService clientService;
 
-
-
-	public SpeedOfferController(final FoodOfferService foodOfferService, final NuOfferService nuOfferService,
-			final SpeedOfferService speedOfferService, final TimeOfferService timeOfferService) {
-		this.foodOfferService = foodOfferService;
-		this.nuOfferService = nuOfferService;
+	public SpeedOfferController(final SpeedOfferService speedOfferService, final ClientService clientService) {
 		this.speedOfferService = speedOfferService;
-		this.timeOfferService = timeOfferService;
+		this.clientService = clientService;
 
 	}
 
+	@InitBinder
+	public void setAllowedFields(WebDataBinder dataBinder) {
+		dataBinder.setDisallowedFields("id");
+	}
 
-	@GetMapping("/offers/speed/{speedOfferId}")
+	@GetMapping("/speedOffers/new")
+	public String initCreationForm(Map<String, Object> model) {
+		SpeedOffer speedOffer = new SpeedOffer();
+		model.put("speedOffer", speedOffer);
+		return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
+	}
+
+	@PostMapping("/speedOffers/new")
+	public String processCreationForm(@Valid SpeedOffer speedOffer, BindingResult result) {
+		if (result.hasErrors()) {
+			return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
+		}
+		else {
+			Client client = this.clientService.getCurrentclient();
+			speedOffer.setClient(client);
+			speedOffer.setType(StatusOffer.hidden);
+			this.speedOfferService.saveSpeedOffer(speedOffer);
+			return "redirect:/speedOffers/" + speedOffer.getId();
+		}
+	}
+	
+	@GetMapping(value = "/speedOffers/{speedOfferId}/activate")
+	public String activateSpeedOffer(@PathVariable("speedOfferId") final int speedOfferId, ModelMap modelMap) {
+		SpeedOffer speedOffer = this.speedOfferService.findSpeedOfferById(speedOfferId);
+		Client client = this.clientService.getCurrentclient();
+		if(speedOffer.getClient().equals(client)) {
+			speedOffer.setType(StatusOffer.active);
+			speedOffer.setCode("SP-"+speedOfferId);
+			this.speedOfferService.saveSpeedOffer(speedOffer);
+		} else {
+			modelMap.addAttribute("message", "You don't have access to this speed offer");
+		}
+		return "redirect:/speedOffers/";
+	}
+  
+  	@GetMapping("/offers/speed/{speedOfferId}")
 	public String processShowForm(@PathVariable("speedOfferId") int speedOfferId, Map<String, Object> model) {
 
 		SpeedOffer speedOffer=this.speedOfferService.findSpeedOfferById(speedOfferId);
@@ -72,33 +99,4 @@ public class SpeedOfferController {
 
 	}
 
-//	@GetMapping("/owners/{ownerId}/edit")
-//	public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
-//		Owner owner = this.ownerService.findOwnerById(ownerId);
-//		model.addAttribute(owner);
-//		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
-//	}
-//
-//	@PostMapping("/owners/{ownerId}/edit")
-//	public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result,
-//			@PathVariable("ownerId") int ownerId) {
-//		if (result.hasErrors()) {
-//			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
-//		}
-//		else {
-//			owner.setId(ownerId);
-//			this.ownerService.saveOwner(owner);
-//			return "redirect:/owners/{ownerId}";
-//		}
-//	}
-//	@GetMapping("/owners/{ownerId}")
-//	public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
-//		ModelAndView mav = new ModelAndView("owners/ownerDetails");
-//		Owner owner = this.ownerService.findOwnerById(ownerId);
-//		
-//		mav.addObject(owner);
-//		return mav;
-//	}
-	
-	
 }
