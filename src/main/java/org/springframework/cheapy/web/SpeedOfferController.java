@@ -73,8 +73,8 @@ public class SpeedOfferController {
 		}
 	}
 	
-	@GetMapping(value = "/speedOffers/{speedOfferid}/activate")
-	public String activateSpeedOffer(@PathVariable("speedOffer") final int speedOfferId, final ModelMap modelMap) {
+	@GetMapping(value = "/speedOffers/{speedOfferId}/activate")
+	public String activateSpeedOffer(@PathVariable("speedOfferId") final int speedOfferId, ModelMap modelMap) {
 		SpeedOffer speedOffer = this.speedOfferService.findSpeedOfferById(speedOfferId);
 		Client client = this.clientService.getCurrentclient();
 		if(speedOffer.getClient().equals(client)) {
@@ -84,6 +84,6 @@ public class SpeedOfferController {
 		} else {
 			modelMap.addAttribute("message", "You don't have access to this speed offer");
 		}
-		return "redirect:/speedOffers/" + speedOffer.getId();
+		return "redirect:/speedOffers/";
 	}
 }

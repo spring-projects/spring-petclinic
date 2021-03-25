@@ -73,17 +73,17 @@ public class FoodOfferController {
 		}
 	}
 	
-	@GetMapping(value = "/foodOffers/{foodOfferid}/activate")
-	public String activateFoodOffer(@PathVariable("foodOffer") final int foodOfferId, final ModelMap modelMap) {
+	@GetMapping(value = "/foodOffers/{foodOfferId}/activate")
+	public String activateFoodOffer(@PathVariable("foodOfferId") final int foodOfferId, ModelMap modelMap) {
 		FoodOffer foodOffer = this.foodOfferService.findFoodOfferById(foodOfferId);
 		Client client = this.clientService.getCurrentclient();
 		if(foodOffer.getClient().equals(client)) {
 			foodOffer.setType(StatusOffer.active);
-			foodOffer.setCode("SE-"+foodOfferId);
+			foodOffer.setCode("FE-"+foodOfferId);
 			this.foodOfferService.saveFoodOffer(foodOffer);
 		} else {
 			modelMap.addAttribute("message", "You don't have access to this food offer");
 		}
-		return "redirect:/foodOffers/" + foodOffer.getId();
+		return "redirect:/foodOffers/";
 	}
 }
