@@ -79,7 +79,7 @@ public class FoodOfferController {
 		Client client = this.clientService.getCurrentclient();
 		if(foodOffer.getClient().equals(client)) {
 			foodOffer.setType(StatusOffer.active);
-			foodOffer.setCode("FE-"+foodOfferId);
+			foodOffer.setCode("FO-"+foodOfferId);
 			this.foodOfferService.saveFoodOffer(foodOffer);
 		} else {
 			modelMap.addAttribute("message", "You don't have access to this food offer");
