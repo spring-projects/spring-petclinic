@@ -41,11 +41,6 @@
 				</cheapy:menuItem>
 
 				
-				<cheapy:menuItem active="${name eq 'login'}" url="/login"
-					title="login">
-					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-					<span>Login</span>
-				</cheapy:menuItem>
 
 			</ul>
 
@@ -74,10 +69,10 @@
 											<p class="text-left">
 												<strong><sec:authentication property="name" /></strong>
 											</p>
-											<p class="text-left">
-												<a href="<c:url value="/logout" />"
-													class="btn btn-primary btn-block btn-sm">Logout</a>
-											</p>
+											<form action="/logout" method=post>
+												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+												<input type="submit" value="logout">
+											</form>
 										</div>
 									</div>
 								</div>
