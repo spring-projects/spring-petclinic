@@ -4,9 +4,9 @@
 <%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
-
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 <!-- %@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %-->  
 
 <style>
@@ -280,13 +280,15 @@
 	    <div class="fadeIn first">
 	      <img src="/resources/images/Logo Cheapy.png" id="icon" />
 	    </div>
-	
+		<div th:if="${param.error}">
+			<p class="text-danger"> Invalid username or password</p>
+		</div>
 	    <!-- Login Form -->
 	    <form class='form-signin' action="/login" method='POST'>
-	      <input type="text" id="login" class="fadeIn second" name="login" placeholder="login">
-	      <input type="password" id="password" class="fadeIn third" name="login" placeholder="password">
+	      <input type="text" id="username" class="fadeIn second" name="username" placeholder="username" required autofocus>
+	      <input type="password" id="password" class="fadeIn third" name="password" placeholder="password" required>
 	      <sec:csrfInput />  
-		  <input type="submit" class="fadeIn fourth" value="Log In">
+		  <input type="submit" class="fadeIn fourth" value="Login">
 	    </form>
 	
 	    <!-- Remind Passowrd -->
