@@ -19,6 +19,8 @@ INSERT INTO nu_offers(start, end, code, type, client_id, gold, discount_gold, si
 --insert into usuarios(username, password, enabled) values ('admin3', 'admin', true);
 --insert into authorities(id ,usuario, authority) values (42,'admin3', 'admin');
 
-INSERT INTO users(username,password,enabled) VALUES ('admin1','4dm1n',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (1,'admin1','admin');
+INSERT INTO users(username,password,enabled) VALUES ('cliente','cliente',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (1,'cliente','client');
 
+INSERT INTO clients(email, address, timetable,telephone,description,code,food) VALUES ('cliente@hotmail.com','Calle Tahona nº5','12:00-23:00','954876351','Descripcion','codigo','variado');
+--INSERT INTO authorities(id,username,authority) VALUES (31,'cliente','client');

@@ -10,7 +10,7 @@ import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "clients")
-public class Client extends User {
+public class Client extends BaseEntity{
 	
 	@NotEmpty
 	private String email;
