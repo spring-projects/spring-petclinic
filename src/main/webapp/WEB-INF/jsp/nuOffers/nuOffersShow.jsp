@@ -6,7 +6,7 @@
 
 <cheapy:layout pageName="timeOffer">
 
-    <h2>Oferta por número de comensales</h2>
+    <h2>Oferta por nï¿½mero de comensales</h2>
 
 
     <table class="table table-striped">
@@ -48,9 +48,14 @@
         </tr>
     </table>
 
-    <%-- <spring:url value="{ownerId}/edit" var="editUrl">
-        <spring:param name="ownerId" value="${owner.id}"/>
+    <spring:url value="{nuOfferId}/edit" var="editUrl">
+    <spring:param name="nuOfferId" value="${nuOffer.id}"/>
     </spring:url>
-    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Edit Owner</a> --%>
+    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Editar Oferta</a>
+    
+    <spring:url value="{nuOfferId}/disable" var="editUrl">
+    <spring:param name="nuOfferId" value="${nuOffer.id}"/>
+    </spring:url>
+    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Eliminar Oferta</a>
 
 </cheapy:layout>

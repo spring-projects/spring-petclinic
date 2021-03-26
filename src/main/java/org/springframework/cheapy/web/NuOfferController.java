@@ -25,6 +25,7 @@ import javax.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cheapy.model.FoodOffer;
 import org.springframework.cheapy.model.NuOffer;
+import org.springframework.cheapy.model.Owner;
 import org.springframework.cheapy.model.SpeedOffer;
 import org.springframework.cheapy.model.StatusOffer;
 import org.springframework.cheapy.model.TimeOffer;
@@ -33,9 +34,12 @@ import org.springframework.cheapy.service.NuOfferService;
 import org.springframework.cheapy.service.SpeedOfferService;
 import org.springframework.cheapy.service.TimeOfferService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -51,20 +55,18 @@ public class NuOfferController {
 
 	private static final String VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM = "nuOffers/createOrUpdateNuOfferForm";
 
-	private final FoodOfferService foodOfferService;
 	private final NuOfferService nuOfferService; 
-	private final SpeedOfferService speedOfferService;
-	private final TimeOfferService timeOfferService;
 
 
 
-	public NuOfferController(final FoodOfferService foodOfferService, final NuOfferService nuOfferService,
-			final SpeedOfferService speedOfferService, final TimeOfferService timeOfferService) {
-		this.foodOfferService = foodOfferService;
+	public NuOfferController(final NuOfferService nuOfferService) {
 		this.nuOfferService = nuOfferService;
-		this.speedOfferService = speedOfferService;
-		this.timeOfferService = timeOfferService;
 
+	}
+	
+	@InitBinder
+	public void setAllowedFields(WebDataBinder dataBinder) {
+		dataBinder.setDisallowedFields("id");
 	}
 
 
@@ -139,9 +141,29 @@ public class NuOfferController {
 			
 			this.nuOfferService.saveNuOffer(nuOfferOld);
 
-			return "redirect:";
+			return "offers/offersList";
 		}
 
+	}
+	
+	@GetMapping(value ="/offers/nu/{nuOfferId}/edit")
+	public String initUpdateNuOfferForm(@PathVariable("nuOfferId") int nuOfferId, Model model) {
+		NuOffer nuOffer=this.nuOfferService.findNuOfferById(nuOfferId);
+		model.addAttribute(nuOffer);
+		return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
+	}
+
+	@PostMapping("/offers/nu/{nuOfferId}/edit")
+	public String processUpdateOwnerForm(@Valid NuOffer nuOffer, BindingResult result,
+			@PathVariable("nuOfferId") int nuOfferId) {
+		if (result.hasErrors()) {
+			return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
+		}
+		else {
+			nuOffer.setId(nuOfferId);
+			this.nuOfferService.saveNuOffer(nuOffer);
+			return "redirect:/offers/nu/{nuOfferId}";
+		}
 	}
 	
 	@GetMapping(value = "/offers/nu/{nuOfferId}/disable")
