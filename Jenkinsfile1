@@ -1,0 +1,70 @@
+#!groovy
+
+pipeline {
+    environment {
+        registry = "owlleg68/petclinic"
+        registryCredential = 'dockerhub_id'
+        dockerImage = 'spring-petclinic:2.4.2'
+    }
+    
+    agent {
+        label 'builder'
+    }
+      
+    tools {
+        maven "maven" // You need to add a maven with name "3.6.3" in the Global Tools Configuration page
+    }
+
+    stages {
+        stage('Checkout'){
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/owlleg6/spring-petclinic.git']]])
+            }
+        }
+
+
+        stage("Build") {
+            steps {
+                sh 'pwd'
+                sh 'mvn clean install'
+                sh 'cp target/*.jar /home/owlleg6/builds/petclinic.jar'   
+                
+                //sh "mvn --version"
+                //sh "sudo mvn clean install"
+            }
+        }
+
+        stage('Build Docker image with Spring') {
+            steps {
+                //script{
+                //    dockerImage = docker.build registry    
+                //}
+                sh 'mvn spring-boot:build-image'
+                
+            }
+            
+        }
+            
+        stage('Push Image') {
+            script {
+                docker.withRegistry( 'spring-petclinic:2.4.2', registryCredential ) {
+                dockerImage.push()
+            }
+        }
+
+
+        stage('Artifacts') {
+            steps {
+                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true, followSymlinks: false
+            }
+        
+        }
+    }
+    
+    post {
+        always {
+            cleanWs()
+        }
+    }
+
+}
