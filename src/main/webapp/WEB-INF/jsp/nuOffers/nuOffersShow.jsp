@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
 
-<cheapy:layout pageName="timeOffer">
+<cheapy:layout pageName="nuOffer">
 
     <h2>Oferta por n�mero de comensales</h2>
 

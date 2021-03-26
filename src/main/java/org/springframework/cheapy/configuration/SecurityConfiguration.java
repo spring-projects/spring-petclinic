@@ -20,9 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * and open the template in the editor.
  */
 
-/**
- * @author japarejo
- */
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -37,20 +35,32 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/resources/**", "/webjars/**", "/h2-console/**").permitAll()
 		.antMatchers(HttpMethod.GET, "/", "/oups").permitAll()
 		.antMatchers("/users/new").permitAll()
+
+		.antMatchers("/nuOffers/**").hasAnyAuthority("admin","client")
+		.antMatchers("/timeOffers/**").hasAnyAuthority("admin","client")
+
+		.antMatchers("/login/**").anonymous()
+		.antMatchers("/logout").permitAll()
+
 		.antMatchers("/usuarios/new").permitAll()
-		.antMatchers("/offers/**").permitAll()
 		.antMatchers("/admin/**").hasAnyAuthority("admin")
+		.antMatchers("/speedOffers/**").hasAnyAuthority("admin", "client")
+		.antMatchers("/foodOffers/**").hasAnyAuthority("admin", "client")
 		.antMatchers("/owners/**").hasAnyAuthority("owner", "admin")
-		.antMatchers("/vets/**").authenticated().anyRequest().denyAll()
+
+		.antMatchers("/clients/new").permitAll()
+		.antMatchers("/offers/**").hasAnyAuthority("admin")
+
 		.and().formLogin()
-			/* .loginPage("/login") */
-			.failureUrl("/login-error").and().logout().logoutSuccessUrl("/");
+			.loginPage("/login").permitAll()
+			.failureUrl("/login?error")
+		    .and().logout().logoutSuccessUrl("/login");
 
 		// Configuración para que funcione la consola de administración
 		// de la BD H2 (deshabilitar las cabeceras de protección contra
 		// ataques de tipo csrf y habilitar los framesets si su contenido
 		// se sirve desde esta misma página.
-		http.csrf().ignoringAntMatchers("/h2-console/**");
+		//http.csrf().ignoringAntMatchers("/h2-console/**");
 		http.headers().frameOptions().sameOrigin();
 	}
 
