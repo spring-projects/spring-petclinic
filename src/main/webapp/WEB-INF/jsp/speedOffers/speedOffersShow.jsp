@@ -48,9 +48,9 @@
         </tr>
     </table>
 
-    <%-- <spring:url value="{ownerId}/edit" var="editUrl">
-        <spring:param name="ownerId" value="${owner.id}"/>
+    <spring:url value="{speedOfferId}/edit" var="editUrl">
+        <spring:param name="speedOfferId" value="${speedOffer.id}"/>
     </spring:url>
-    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Edit Owner</a> --%>
+    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Editar oferta</a>
 
 </cheapy:layout>
