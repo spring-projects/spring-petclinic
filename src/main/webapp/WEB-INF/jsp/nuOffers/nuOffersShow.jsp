@@ -49,13 +49,13 @@
     </table>
 
     <spring:url value="{nuOfferId}/edit" var="editUrl">
-    <spring:param name="nuOfferId" value="${nuOffer.id}"/>
+     <spring:param name="nuOfferId" value="${nuOffer.id}"/>
     </spring:url>
-    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Editar Oferta</a>
+    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Editar oferta</a>
     
     <spring:url value="{nuOfferId}/disable" var="editUrl">
     <spring:param name="nuOfferId" value="${nuOffer.id}"/>
     </spring:url>
-    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Eliminar Oferta</a>
+    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Desactiva oferta</a>
 
 </cheapy:layout>

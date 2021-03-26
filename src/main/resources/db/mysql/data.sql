@@ -31,8 +31,7 @@ INSERT INTO clients  VALUES (1,'manoli@gmail.com','C/Betis','10:00','22:00','608
 INSERT INTO clients  VALUES (2,'david@gmail.com','C/Sevilla','09:30','22:00','608726190', 'description 2', 'code2', 'americana','david');
 
 INSERT INTO food_offers(start, end, code, type, client_id, food, discount, units) VALUES ('2021-06-15 12:00:00', '2021-06-16 12:00:00', 'FO-1', 'active', null, 'macarrones', '15%', 10);
-INSERT INTO speed_offers(start, end, code, type, client_id, gold, discount_gold, silver, discount_silver, bronze, discount_bronze) VALUES ('2021-06-15 12:00:00', '2021-06-16 12:00:00', 'SP-1', 'active', null, 5, '15%', 10, '10%', 15, '5%');
-INSERT INTO time_offers(start, end, code, type, client_id, init, finish, discount) VALUES ('2021-06-15 12:00:00', '2021-06-16 12:00:00', 'jkhlljk', 'active', null, '12:00:00', '13:00:00', '10%');
-INSERT INTO speed_offers(start, end, code, type, client_id, gold, discount_gold, silver, discount_silver, bronze, discount_bronze) VALUES ('2021-06-15 12:00:00', '2021-06-16 12:00:00', 'jkhlljk', 'active', null,5,'25%',10,'15%',15,'10%' );
-INSERT INTO nu_offers(start, end, code, type, client_id, gold, discount_gold, silver, discount_silver, bronze, discount_bronze) VALUES ('2021-06-15 12:00:00', '2021-06-16 12:00:00', 'jkhlljk', 'active', null,15,'25%',10,'15%',5,'10%' );
+INSERT INTO time_offers(start, end, code, type, client_id, init, finish, discount) VALUES ('2021-06-15 12:00:00', '2021-06-16 12:00:00', 'T-1', 'active', null, '12:00:00', '13:00:00', '10%');
+INSERT INTO speed_offers(start, end, code, type, client_id, gold, discount_gold, silver, discount_silver, bronze, discount_bronze) VALUES ('2021-06-15 12:00:00', '2021-06-16 12:00:00', 'SP-1', 'active', null,5,'25%',10,'15%',15,'10%' );
+INSERT INTO nu_offers(start, end, code, type, client_id, gold, discount_gold, silver, discount_silver, bronze, discount_bronze) VALUES ('2021-06-15 12:00:00', '2021-06-16 12:00:00', 'NU-1', 'active', null,15,'25%',10,'15%',5,'10%' );
 
