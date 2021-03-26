@@ -2,9 +2,9 @@
 
 pipeline {
     environment {
-        registry = "owlleg68/petclinic"
+        registry = "owlleg68/spring-petclinic"
         registryCredential = 'dockerhub_id'
-        dockerImage = 'spring-petclinic:2.4.2'
+        dockerImage = ''
     }
     
     agent {
@@ -34,24 +34,27 @@ pipeline {
             }
         }
 
-        stage('Build Docker image with Spring') {
+        stage('Build Docker image') {
             steps {
-                //script{
-                //    dockerImage = docker.build registry    
-                //}
-                sh 'mvn spring-boot:build-image'
+                script{
+                    dockerImage = docker.build registry    
+                }
+                //sh 'mvn spring-boot:build-image'
                 
             }
             
         }
             
         stage('Push Image') {
-            script {
-                docker.withRegistry( 'spring-petclinic:2.4.2', registryCredential ) {
-                dockerImage.push()
+            steps {
+                script {
+                    docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push()
+                    }
+                }
             }
-        	}
-				}
+        }
+
 
         stage('Artifacts') {
             steps {
