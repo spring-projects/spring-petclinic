@@ -1,6 +1,7 @@
 
 package org.springframework.cheapy.web;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import javax.validation.Valid;
 import org.springframework.cheapy.model.Client;
@@ -76,6 +77,9 @@ public class FoodOfferController {
 		FoodOffer foodOffer=this.foodOfferService.findFoodOfferById(foodOfferId);
 		
 		model.put("foodOffer", foodOffer);
+		
+		//Se añade formateador de fecha al modelo	
+		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
 		
 		return "foodOffers/foodOffersShow";
 

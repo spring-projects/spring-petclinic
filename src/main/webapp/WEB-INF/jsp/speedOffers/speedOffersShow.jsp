@@ -3,50 +3,58 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
 
 <cheapy:layout pageName="speedOffer">
 
-    <h2>Oferta por comer veloz</h2>
+    <h2><fmt:message key="speedOffer"/></h2>
 
 
-    <table class="table table-striped">
+    <table class="table table-striped" id="speedOffer-table">
         <tr>
-            <th>Inicio de la oferta</th>
-            <td><b><c:out value="${speedOffer.start}"/></b></td>
+            <th><fmt:message key="offerBeginning"/></th>
+            <td><c:out value="${localDateTimeFormat.format(speedOffer.start)}"/></td>
         </tr>
         <tr>
-            <th>Fin de la oferta</th>
-            <td><c:out value="${speedOffer.end}"/></td>
+            <th><fmt:message key="offerEnding"/></th>
+            <td><c:out value="${localDateTimeFormat.format(speedOffer.end)}"/></td>
         </tr>
         <tr>
-            <th>Meta oro</th>
+            <th><fmt:message key="goldGoal"/></th>
             <td><c:out value="${speedOffer.gold}"/></td>
         </tr>
         <tr>
-            <th>Descuento oro</th>
+            <th><fmt:message key="goldDiscount"/></th>
             <td><c:out value="${speedOffer.discountGold}"/></td>
         </tr>
         <tr>
-            <th>Meta plata</th>
+            <th><fmt:message key="silverGoal"/></th>
             <td><c:out value="${speedOffer.silver}"/></td>
         </tr>
         <tr>
-            <th>Descuento plata</th>
+            <th><fmt:message key="silverDiscount"/></th>
             <td><c:out value="${speedOffer.discountSilver}"/></td>
         </tr>
         <tr>
-            <th>Meta bronce</th>
+            <th><fmt:message key="bronzeGoal"/></th>
             <td><c:out value="${speedOffer.bronze}"/></td>
         </tr>
         <tr>
-            <th>Descuento bronce</th>
+            <th><fmt:message key="bronzeDiscount"/></th>
             <td><c:out value="${speedOffer.discountBronze}"/></td>
         </tr>
         <tr>
-            <th>Codigo de la oferta</th>
+            <th><fmt:message key="offerCode"/></th>
             <td><c:out value="${speedOffer.code}"/></td>
         </tr>
     </table>
+    
+    <div class="btn-return">
+	    <button type="button" role="link" onclick="window.location='/offers'" style="font-family: 'Lobster'; font-size: 20px;">
+	    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true" style="padding: 5px"> </span>
+	    <fmt:message key="return"/> </button>
+    </div>
 
     <%-- <spring:url value="{ownerId}/edit" var="editUrl">
         <spring:param name="ownerId" value="${owner.id}"/>

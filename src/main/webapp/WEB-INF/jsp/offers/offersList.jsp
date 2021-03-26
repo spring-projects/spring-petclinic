@@ -4,17 +4,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
+<link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
 
 <cheapy:layout pageName="ofertas">
-    <h2>Ofertas por plato específico</h2>
+    <h2><fmt:message key="foodOffers"/></h2>
 
     <table id="foodOfferTable" class="table table-striped">
         <thead>
         <tr>
         	<!-- <th style="width: 150px;">Restaurante</th> -->
-        	<th style="width: 150px;">Plato</th>
-            <th style="width: 150px;">Fecha inicio</th>
-            <th style="width: 200px;">Fecha fin</th>
+        	<th><fmt:message key="food"/></th>
+            <th><fmt:message key="startDate"/></th>
+            <th><fmt:message key="endDate"/></th>
             <th> </th>
         </tr>
         </thead>
@@ -25,16 +26,20 @@
                     <c:out value="${foodOffer.food}"/>
                 </td>
                 <td>
-                    <c:out value="${foodOffer.start}"/>
+                    <c:out value="${localDateTimeFormat.format(foodOffer.start)}"/>
                 </td>
                 <td>
-                    <c:out value="${foodOffer.end}"/>
+                    <c:out value="${localDateTimeFormat.format(foodOffer.end)}"/>
                 </td>
                 <td>
-                <spring:url value="/offers/food/{foodOfferId}" var="foodOfferUrl">
-                        <spring:param name="foodOfferId" value="${foodOffer.id}"/>
-                    </spring:url>
-                    <a href="${fn:escapeXml(foodOfferUrl)}"/>Enlace</a>
+	                <spring:url value="/offers/food/{foodOfferId}" var="foodOfferUrl">
+	                        <spring:param name="foodOfferId" value="${foodOffer.id}"/>
+	                </spring:url>
+	                <div class="btn-detalles">
+                		<button type="button" role="link" onclick="window.location='${fn:escapeXml(foodOfferUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
+                		<span class="glyphicon glyphicon-info-sign" aria-hidden="true" style="padding: 5px"> </span>
+	                	<fmt:message key="details"/></button>
+            		</div>
                 </td> 
                   
             </tr>
@@ -42,14 +47,14 @@
         </tbody>
     </table>
     
-    <h2>Ofertas por número de comensales</h2>
+    <h2><fmt:message key="nuOffers"/></h2>
 
     <table id="nuOfferTable" class="table table-striped">
         <thead>
         <tr>
         	<!-- <th style="width: 150px;">Restaurante</th> -->
-            <th style="width: 150px;">Fecha inicio</th>
-            <th style="width: 200px;">Fecha fin</th>
+            <th><fmt:message key="startDate"/></th>
+            <th><fmt:message key="endDate"/></th>
             <th> </th>
             
         </tr>
@@ -59,29 +64,33 @@
             <tr>
                 
                 <td>
-                    <c:out value="${nuOffer.start}"/>
+                    <c:out value="${localDateTimeFormat.format(nuOffer.start)}"/>
                 </td>
                 <td>
-                    <c:out value="${nuOffer.end}"/>
+                    <c:out value="${localDateTimeFormat.format(nuOffer.end)}"/>
                 </td>
                 <td>
-                <spring:url value="/offers/nu/{nuOfferId}" var="nuOfferUrl">
-                        <spring:param name="nuOfferId" value="${nuOffer.id}"/>
-                    </spring:url>
-                    <a href="${fn:escapeXml(nuOfferUrl)}"/>Enlace</a>
+	                <spring:url value="/offers/nu/{nuOfferId}" var="nuOfferUrl">
+	                        <spring:param name="nuOfferId" value="${nuOffer.id}"/>
+	                </spring:url>
+	                <div class="btn-detalles">
+		                <button type="button" role="link" onclick="window.location='${fn:escapeXml(nuOfferUrl)}'" class="btn-detalles" style="font-family: 'Lobster'; font-size: 20px;">
+		                <span class="glyphicon glyphicon-info-sign" aria-hidden="true" style="padding: 5px"> </span>
+		                <fmt:message key="details"/> </button>
+		            </div>
                 </td>  
             </tr>
         </c:forEach>
         </tbody>
     </table>
-    <h2>Ofertas rapidez comiendo</h2>
+    <h2><fmt:message key="speedOffers"/></h2>
 
     <table id="speedOfferTable" class="table table-striped">
         <thead>
         <tr>
         	<!-- <th style="width: 150px;">Restaurante</th> -->
-            <th style="width: 150px;">Fecha inicio</th>
-            <th style="width: 200px;">Fecha fin</th>
+            <th><fmt:message key="startDate"/></th>
+            <th><fmt:message key="endDate"/></th>
             <th> </th>
             
         </tr>
@@ -91,30 +100,34 @@
             <tr>
                 
                 <td>
-                    <c:out value="${speedOffer.start}"/>
+                    <c:out value="${localDateTimeFormat.format(speedOffer.start)}"/>
                 </td>
                 <td>
-                    <c:out value="${speedOffer.end}"/>
+                    <c:out value="${localDateTimeFormat.format(speedOffer.end)}"/>
                 </td>
                 <td>
                     <spring:url value="/offers/speed/{speedOfferId}" var="speedOfferUrl">
                         <spring:param name="speedOfferId" value="${speedOffer.id}"/>
                     </spring:url>
-                    <a href="${fn:escapeXml(speedOfferUrl)}"/>Enlace</a>
+                    <div class="btn-detalles">
+	                    <button type="button" role="link" onclick="window.location='${fn:escapeXml(speedOfferUrl)}'" class="btn-detalles" style="font-family: 'Lobster'; font-size: 20px;">
+	                    <span class="glyphicon glyphicon-info-sign" aria-hidden="true" style="padding: 5px"> </span>
+	                    <fmt:message key="details"/> </button>
+	                </div>
                 </td>
                   
             </tr>
         </c:forEach>
         </tbody>
     </table>
-    <h2>Ofertas por franja horaria</h2>
+    <h2><fmt:message key="timeOffers"/></h2>
 
     <table id="timeOfferTable" class="table table-striped">
         <thead>
         <tr>
         	<!-- <th style="width: 150px;">Restaurante</th> -->
-            <th style="width: 150px;">Fecha inicio</th>
-            <th style="width: 200px;">Fecha fin</th>
+            <th><fmt:message key="startDate"/></th>
+            <th><fmt:message key="endDate"/></th>
             <th> </th>
         </tr>
         </thead>
@@ -123,16 +136,20 @@
             <tr>
                 
                 <td>
-                    <c:out value="${timeOffer.start}"/>
+                    <c:out value="${localDateTimeFormat.format(timeOffer.start)}"/>
                 </td>
                 <td>
-                    <c:out value="${timeOffer.end}"/>
+                    <c:out value="${localDateTimeFormat.format(timeOffer.end)}"/>
                 </td>
                 <td>
-                <spring:url value="/offers/time/{timeOfferId}" var="timeOfferUrl">
+                	<spring:url value="/offers/time/{timeOfferId}" var="timeOfferUrl">
                         <spring:param name="timeOfferId" value="${timeOffer.id}"/>
                     </spring:url>
-                    <a href="${fn:escapeXml(timeOfferUrl)}"/>Enlace</a>
+                    <div class="btn-detalles">
+	                    <button type="button" role="link" onclick="window.location='${fn:escapeXml(timeOfferUrl)}'" class="btn-detalles" style="font-family: 'Lobster'; font-size: 20px;">
+	                    <span class="glyphicon glyphicon-info-sign" aria-hidden="true" style="padding: 5px"> </span>
+	                    <fmt:message key="details"/> </button>
+	                </div>
                 </td> 
             </tr>
         </c:forEach>

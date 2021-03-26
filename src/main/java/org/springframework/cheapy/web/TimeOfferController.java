@@ -1,5 +1,6 @@
 package org.springframework.cheapy.web;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import javax.validation.Valid;
 
@@ -87,6 +88,9 @@ public class TimeOfferController {
 		TimeOffer timeOffer=this.timeOfferService.findTimeOfferById(timeOfferId);
 		
 		model.put("timeOffer", timeOffer);
+		
+		//Se añade formateador de fecha al modelo	
+		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
 		
 		return "timeOffers/timeOffersShow";
 

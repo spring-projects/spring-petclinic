@@ -16,6 +16,7 @@
 package org.springframework.cheapy.web;
 
 
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -92,6 +93,9 @@ public class SpeedOfferController {
 
 		SpeedOffer speedOffer=this.speedOfferService.findSpeedOfferById(speedOfferId);
 		model.put("speedOffer", speedOffer);
+		
+		//Se añade formateador de fecha al modelo	
+		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
 		return "speedOffers/speedOffersShow";
 	}
 }
