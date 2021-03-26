@@ -1,20 +1,16 @@
 package org.springframework.cheapy.service;
 
-import java.util.Collection;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cheapy.model.FoodOffer;
-import org.springframework.cheapy.model.Owner;
 import org.springframework.cheapy.repository.FoodOfferRepository;
-import org.springframework.cheapy.repository.OwnerRepository;
+import java.util.List;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 @Service
 public class FoodOfferService {
+	
 	private FoodOfferRepository foodOfferRepository;
-
 
 	@Autowired
 	public FoodOfferService(final FoodOfferRepository foodOfferRepository) {
@@ -24,13 +20,11 @@ public class FoodOfferService {
 	public FoodOffer findFoodOfferById(final int id) {
 		return this.foodOfferRepository.findById(id);
 	}
-
-	public List<FoodOffer> findAllFoodOffer() { //
+  	public List<FoodOffer> findAllFoodOffer() { //
 		return this.foodOfferRepository.findAllFoodOffer();
-
 	}
-	
-	public void saveOwner(final FoodOffer foodOffer) throws DataAccessException { //
+
+	public void saveFoodOffer(final FoodOffer foodOffer) throws DataAccessException {
 		this.foodOfferRepository.save(foodOffer);
 
 	}

@@ -4,9 +4,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
 
-<cheapy:layout pageName="timeOffer">
+<cheapy:layout pageName="nuOffer">
 
-    <h2>Oferta por número de comensales</h2>
+    <h2>Oferta por nï¿½mero de comensales</h2>
 
 
     <table class="table table-striped">
@@ -49,8 +49,13 @@
     </table>
 
     <spring:url value="{nuOfferId}/edit" var="editUrl">
-        <spring:param name="nuOfferId" value="${nuOffer.id}"/>
+     <spring:param name="nuOfferId" value="${nuOffer.id}"/>
     </spring:url>
-    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Editar ofeta</a>
+    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Editar oferta</a>
+    
+    <spring:url value="{nuOfferId}/disable" var="editUrl">
+    <spring:param name="nuOfferId" value="${nuOffer.id}"/>
+    </spring:url>
+    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Desactiva oferta</a>
 
 </cheapy:layout>

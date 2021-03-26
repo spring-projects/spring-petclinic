@@ -1,11 +1,11 @@
 
 package org.springframework.cheapy.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cheapy.model.NuOffer;
 import org.springframework.cheapy.repository.NuOfferRepository;
+import java.util.Collection;
+import java.util.List;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +23,7 @@ public class NuOfferService {
 
 	@Transactional
 	public NuOffer findNuOfferById(final int id) {
-		return this.nuOfferRepository.findById(id);
+		return this.nuOfferRepository.findNuOfferById(id);
 	}
 
 	@Transactional
