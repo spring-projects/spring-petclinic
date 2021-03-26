@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
 
-<cheapy:layout pageName="owners">
+<cheapy:layout pageName="ofertas">
     <h2>Ofertas por plato específico</h2>
 
     <table id="foodOfferTable" class="table table-striped">

@@ -18,18 +18,25 @@ package org.springframework.cheapy.model;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "food_offers")
 public class FoodOffer extends Offer {
-//Plato específico
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	//Plato específico
 	@NotBlank
 	private String food;
 
 	@NotBlank
 	private String discount;
 
-	@NotBlank
+	@NotNull
 	private Integer units; // revisar
 
 	public String getFood() {
