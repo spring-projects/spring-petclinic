@@ -35,3 +35,4 @@ INSERT INTO speed_offers(start, end, code, type, client_id, gold, discount_gold,
 INSERT INTO time_offers(start, end, code, type, client_id, init, finish, discount) VALUES ('2021-06-15 12:00:00', '2021-06-16 12:00:00', 'jkhlljk', 'active', null, '12:00:00', '13:00:00', '10%');
 INSERT INTO speed_offers(start, end, code, type, client_id, gold, discount_gold, silver, discount_silver, bronze, discount_bronze) VALUES ('2021-06-15 12:00:00', '2021-06-16 12:00:00', 'jkhlljk', 'active', null,5,'25%',10,'15%',15,'10%' );
 INSERT INTO nu_offers(start, end, code, type, client_id, gold, discount_gold, silver, discount_silver, bronze, discount_bronze) VALUES ('2021-06-15 12:00:00', '2021-06-16 12:00:00', 'jkhlljk', 'active', null,15,'25%',10,'15%',5,'10%' );
+

@@ -10,11 +10,8 @@ import javax.validation.constraints.NotNull;
 @Table(name = "nu_offers")
 public class NuOffer extends Offer {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-
+  
 	@NotNull
 	private Integer gold;
 

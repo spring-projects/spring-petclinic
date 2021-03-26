@@ -27,6 +27,9 @@
                     <c:when test="${speedOffer['new']}">
                         <button class="btn btn-default" type="submit">Add Speed Offer</button>
                     </c:when>
+                    <c:otherwise>
+                        <button class="btn btn-default" type="submit">Update Offer</button>
+                    </c:otherwise>
                 </c:choose>
             </div>
         </div>

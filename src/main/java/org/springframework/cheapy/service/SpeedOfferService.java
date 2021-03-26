@@ -28,10 +28,8 @@ public class SpeedOfferService {
 		return this.speedOfferRepository.findAllSpeedOffer();
 
 	}
-
-
-	public void saveSpeedOffer(final SpeedOffer speedOffer) throws DataAccessException {
-
+	
+	public void saveSpeedOffer(final SpeedOffer speedOffer) throws DataAccessException { //
 		this.speedOfferRepository.save(speedOffer);
 
 	}
