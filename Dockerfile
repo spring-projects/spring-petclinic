@@ -1,5 +1,5 @@
 FROM java:8-jdk-alpine
-WORKDIR /home/owlleg6/builds/
-ADD ./target/*.jar spring-petclinic.jar
+ADD ./target/*.jar /usr/app/petclinic.jar
+WORKDIR	/usr/app
 EXPOSE 8080
-CMD ["java","-jar","/home/petclinic.jar"]
+ENTRYPOINT ["java","-jar","petclinic.jar"]
