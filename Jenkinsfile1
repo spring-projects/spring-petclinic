@@ -50,8 +50,8 @@ pipeline {
                 docker.withRegistry( 'spring-petclinic:2.4.2', registryCredential ) {
                 dockerImage.push()
             }
-        }
-
+        	}
+				}
 
         stage('Artifacts') {
             steps {
