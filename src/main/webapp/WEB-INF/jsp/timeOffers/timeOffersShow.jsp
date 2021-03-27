@@ -6,7 +6,7 @@
 
 <cheapy:layout pageName="timeOffer">
 
-    <h2>Oferta por franja horária</h2>
+    <h2>Oferta por franja horaria</h2>
 
 
     <table class="table table-striped">
@@ -27,5 +27,15 @@
             <td><c:out value="${timeOffer.code}"/></td>
         </tr>
     </table>
+    
+    <spring:url value="{timeOfferId}/edit" var="editUrl">
+    <spring:param name="timeOfferId" value="${timeOffer.id}"/>
+    </spring:url>
+    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Editar oferta</a>
+    
+    <spring:url value="{timeOfferId}/disable" var="editUrl">
+    <spring:param name="timeOfferId" value="${timeOffer.id}"/>
+    </spring:url>
+    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Desactivar oferta</a>
 
 </cheapy:layout>

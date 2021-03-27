@@ -12,6 +12,9 @@
     </h2>
     <form:form modelAttribute="timeOffer" class="form-horizontal" id="add-timeOffer-form">
         <div class="form-group has-feedback">
+        	<form:hidden path="id"/>
+            <form:hidden path="code"/>
+            <form:hidden path="type"/>
             <petclinic:inputField label="Fecha de inicio" name="start"/>
             <petclinic:inputField label="Fecha de fin" name="end"/>
             

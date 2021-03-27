@@ -12,6 +12,9 @@
     </h2>
     <form:form modelAttribute="foodOffer" class="form-horizontal" id="add-foodOffer-form">
         <div class="form-group has-feedback">
+        	<form:hidden path="id"/>
+            <form:hidden path="code"/>
+            <form:hidden path="type"/>
             <petclinic:inputField label="Start Date" name="start"/>
             <petclinic:inputField label="End Date" name="end"/>
             <petclinic:inputField label="Food" name="food"/>
@@ -24,6 +27,9 @@
                     <c:when test="${foodOffer['new']}">
                         <button class="btn btn-default" type="submit">Add Food Offer</button>
                     </c:when>
+                    <c:otherwise>
+                        <button class="btn btn-default" type="submit">Modificar</button>
+                    </c:otherwise>
                 </c:choose>
             </div>
         </div>
