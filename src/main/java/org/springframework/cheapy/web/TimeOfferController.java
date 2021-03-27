@@ -1,19 +1,18 @@
 package org.springframework.cheapy.web;
 
 import java.util.Map;
+
 import javax.validation.Valid;
 
 import org.springframework.cheapy.model.Client;
-import org.springframework.cheapy.model.TimeOffer;
 import org.springframework.cheapy.model.StatusOffer;
+import org.springframework.cheapy.model.TimeOffer;
 import org.springframework.cheapy.service.ClientService;
 import org.springframework.cheapy.service.TimeOfferService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -21,7 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class TimeOfferController {
 
-	private static final String VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM = "timeOffers/createOrUpdateTimeOfferForm";
+	private static final String VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM = "offers/time/createOrUpdateTimeOfferForm";
 
 	private final TimeOfferService timeOfferService;
 	private final ClientService clientService;
@@ -34,19 +33,15 @@ public class TimeOfferController {
 		
 	}
 
-	@InitBinder
-	public void setAllowedFields(WebDataBinder dataBinder) {
-		dataBinder.setDisallowedFields("id");
-	}
 
-	@GetMapping("/timeOffers/new")
+	@GetMapping("/offers/time/new")
 	public String initCreationForm(Map<String, Object> model) {
 		TimeOffer timeOffer = new TimeOffer();
 		model.put("timeOffer", timeOffer);
 		return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
 	}
 
-	@PostMapping("/timeOffers/new")
+	@PostMapping("/offers/time/new")
 	public String processCreationForm(@Valid TimeOffer timeOffer, BindingResult result) {
 		if (result.hasErrors()) {
 			return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
@@ -60,10 +55,10 @@ public class TimeOfferController {
 			
 			
 			this.timeOfferService.saveTimeOffer(timeOffer);
-			return "redirect:/TimeOffers/" + timeOffer.getId();
+			return "redirect:/offers/time/" + timeOffer.getId();
 		}
 	}
-	@GetMapping(value ="/timeOffers/{timeOfferId}/activate")
+	@GetMapping(value ="/offers/time/{timeOfferId}/activate")
 	public String activateTimeOffer(@PathVariable("timeOfferId") final int timeOfferId, final ModelMap modelMap) {
 		Client client = this.clientService.getCurrentClient();
 		TimeOffer timeOffer=this.timeOfferService.findTimeOfferById(timeOfferId);
@@ -72,11 +67,10 @@ public class TimeOfferController {
 			timeOffer.setCode("TI-"+timeOfferId);
 			this.timeOfferService.saveTimeOffer(timeOffer);
 			
-			return "redirect:/timeOffers/" + timeOffer.getId();	
 		} else {
 		         modelMap.addAttribute("message", "You don't have access to this time offer");
 		        }
-		        return "redirect:/timeOffers/";
+		        return "redirect:/offers/time/" + timeOffer.getId();
 		
 
 	}
@@ -88,7 +82,7 @@ public class TimeOfferController {
 		
 		model.put("timeOffer", timeOffer);
 		
-		return "timeOffers/timeOffersShow";
+		return "offers/time/timeOffersShow";
 
 	}
 	

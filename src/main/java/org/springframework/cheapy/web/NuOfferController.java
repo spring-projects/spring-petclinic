@@ -12,9 +12,7 @@ import org.springframework.cheapy.service.NuOfferService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -22,7 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class NuOfferController {
 
-	private static final String VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM = "nuOffers/createOrUpdateNuOfferForm";
+	private static final String VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM = "offers/nu/createOrUpdateNuOfferForm";
 
 	private final NuOfferService nuOfferService;
 	private final ClientService clientService;
@@ -35,19 +33,16 @@ public class NuOfferController {
 		
 	}
 
-	@InitBinder
-	public void setAllowedFields(WebDataBinder dataBinder) {
-		dataBinder.setDisallowedFields("id");
-	}
 
-	@GetMapping("/nuOffers/new")
+
+	@GetMapping("/offers/nu/new")
 	public String initCreationForm(Map<String, Object> model) {
 		NuOffer nuOffer = new NuOffer();
 		model.put("nuOffer", nuOffer);
 		return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
 	}
 
-	@PostMapping("/nuOffers/new")
+	@PostMapping("/offers/nu/new")
 	public String processCreationForm(@Valid NuOffer nuOffer, BindingResult result) {
 		if (result.hasErrors()) {
 			return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
@@ -61,10 +56,10 @@ public class NuOfferController {
 			
 			
 			this.nuOfferService.saveNuOffer(nuOffer);
-			return "redirect:/nuOffers/" + nuOffer.getId();
+			return "redirect:/offers/nu/"+nuOffer.getId();
 		}
 	}
-	@GetMapping(value ="/nuOffers/{nuOfferId}/activate")
+	@GetMapping(value ="/offers/nu/{nuOfferId}/activate")
 	public String activateNuOffer(@PathVariable("nuOfferId") final int nuOfferId, final ModelMap modelMap) {
 		Client client = this.clientService.getCurrentClient();
 		NuOffer nuOffer=this.nuOfferService.findNuOfferById(nuOfferId);
@@ -73,11 +68,11 @@ public class NuOfferController {
 			nuOffer.setCode("NU-"+nuOfferId);
 			this.nuOfferService.saveNuOffer(nuOffer);
 			
-			return "redirect:/nuOffers/" + nuOffer.getId();	
+
 		} else {
 		         modelMap.addAttribute("message", "You don't have access to this number offer");
 		        }
-		        return "redirect:/nuOffers/";
+		        return "redirect:/offers/nu/"+nuOffer.getId();
 		
 
 	}
@@ -89,7 +84,7 @@ public class NuOfferController {
 		
 		model.put("nuOffer", nuOffer);
 		
-		return "nuOffers/nuOffersShow";
+		return "offers/nu/nuOffersShow";
 
 	}
 
