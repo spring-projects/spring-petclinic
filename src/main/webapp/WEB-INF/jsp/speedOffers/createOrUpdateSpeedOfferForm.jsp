@@ -14,7 +14,7 @@
         <div class="form-group has-feedback">
             <form:hidden path="id"/>
             <form:hidden path="code"/>
-            <form:hidden path="type"/>
+            <form:hidden path="status"/>
             <petclinic:inputField label="Start Date" name="start"/>
             <petclinic:inputField label="End Date" name="end"/>
             <petclinic:inputField label="Gold" name="gold"/>

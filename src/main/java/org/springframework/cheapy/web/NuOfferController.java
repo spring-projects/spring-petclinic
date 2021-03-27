@@ -55,7 +55,7 @@ public class NuOfferController {
 		if (result.hasErrors()) {
 			return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
 		} else {
-			nuOffer.setType(StatusOffer.hidden);
+			nuOffer.setStatus(StatusOffer.hidden);
 
 			Client client = this.clientService.getCurrentClient();
 
@@ -71,7 +71,7 @@ public class NuOfferController {
 		Client client = this.clientService.getCurrentClient();
 		NuOffer nuOffer = this.nuOfferService.findNuOfferById(nuOfferId);
 		if (nuOffer.getClient().equals(client)) {
-			nuOffer.setType(StatusOffer.active);
+			nuOffer.setStatus(StatusOffer.active);
 			nuOffer.setCode("NU-" + nuOfferId);
 			this.nuOfferService.saveNuOffer(nuOffer);
 
@@ -142,7 +142,7 @@ public class NuOfferController {
 		}
 
 		NuOffer nuOffer = this.nuOfferService.findNuOfferById(nuOfferId);
-		nuOffer.setType(StatusOffer.inactive);
+		nuOffer.setStatus(StatusOffer.inactive);
 		this.nuOfferService.saveNuOffer(nuOffer);
 		return "redirect:/offers";
 

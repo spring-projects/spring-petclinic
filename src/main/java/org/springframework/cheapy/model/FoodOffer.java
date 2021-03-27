@@ -17,6 +17,7 @@ package org.springframework.cheapy.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -24,20 +25,15 @@ import javax.validation.constraints.NotNull;
 @Table(name = "food_offers")
 public class FoodOffer extends Offer {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	//Plato específico
 	@NotBlank
 	private String food;
 
-	@NotBlank
-	private String discount;
-
 	@NotNull
-	private Integer units; // revisar
+	@Min(0)
+	private Integer discount;
 
 	public String getFood() {
 		return food;
@@ -47,20 +43,12 @@ public class FoodOffer extends Offer {
 		this.food = food;
 	}
 
-	public String getDiscount() {
+	public Integer getDiscount() {
 		return discount;
 	}
 
-	public void setDiscount(String discount) {
+	public void setDiscount(Integer discount) {
 		this.discount = discount;
-	}
-
-	public Integer getUnits() {
-		return units;
-	}
-
-	public void setUnits(Integer units) {
-		this.units = units;
 	}
 
 }

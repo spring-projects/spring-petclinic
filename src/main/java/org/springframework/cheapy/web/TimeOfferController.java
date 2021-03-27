@@ -54,7 +54,7 @@ public class TimeOfferController {
 		if (result.hasErrors()) {
 			return VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
 		} else {
-			timeOffer.setType(StatusOffer.hidden);
+			timeOffer.setStatus(StatusOffer.hidden);
 
 			Client client = this.clientService.getCurrentClient();
 
@@ -70,7 +70,7 @@ public class TimeOfferController {
 		Client client = this.clientService.getCurrentClient();
 		TimeOffer timeOffer = this.timeOfferService.findTimeOfferById(timeOfferId);
 		if (timeOffer.getClient().equals(client)) {
-			timeOffer.setType(StatusOffer.active);
+			timeOffer.setStatus(StatusOffer.active);
 			timeOffer.setCode("TI-" + timeOfferId);
 			this.timeOfferService.saveTimeOffer(timeOffer);
 
@@ -144,7 +144,7 @@ public class TimeOfferController {
 
 		TimeOffer timeOffer = this.timeOfferService.findTimeOfferById(timeOfferId);
 
-		timeOffer.setType(StatusOffer.inactive);
+		timeOffer.setStatus(StatusOffer.inactive);
 
 		this.timeOfferService.saveTimeOffer(timeOffer);
 

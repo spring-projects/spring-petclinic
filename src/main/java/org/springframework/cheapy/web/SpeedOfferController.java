@@ -54,7 +54,7 @@ public class SpeedOfferController {
 		} else {
 			Client client = this.clientService.getCurrentClient();
 			speedOffer.setClient(client);
-			speedOffer.setType(StatusOffer.hidden);
+			speedOffer.setStatus(StatusOffer.hidden);
 			this.speedOfferService.saveSpeedOffer(speedOffer);
 			return "redirect:/speedOffers/" + speedOffer.getId();
 		}
@@ -65,7 +65,7 @@ public class SpeedOfferController {
 		SpeedOffer speedOffer = this.speedOfferService.findSpeedOfferById(speedOfferId);
 		Client client = this.clientService.getCurrentClient();
 		if (speedOffer.getClient().equals(client)) {
-			speedOffer.setType(StatusOffer.active);
+			speedOffer.setStatus(StatusOffer.active);
 			speedOffer.setCode("SP-" + speedOfferId);
 			this.speedOfferService.saveSpeedOffer(speedOffer);
 		} else {
@@ -133,7 +133,7 @@ public class SpeedOfferController {
 
 		SpeedOffer speedOffer = this.speedOfferService.findSpeedOfferById(speedOfferId);
 
-		speedOffer.setType(StatusOffer.inactive);
+		speedOffer.setStatus(StatusOffer.inactive);
 
 		this.speedOfferService.saveSpeedOffer(speedOffer);
 
