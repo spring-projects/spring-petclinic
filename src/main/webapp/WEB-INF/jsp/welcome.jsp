@@ -14,8 +14,9 @@
                 <img class="img-responsive" src="${cheapyImage}"/>
             </div>
             <div class="btn-home">
-                <a href="/offers"><button type="button" style="font-family: 'Lobster'; font-size: 20px;">
-                	<span class="glyphicon glyphicon-cutlery" aria-hidden="true" style="margin-right:8px"></span>Ver Ofertas</button></a>
+                <button type="button" role="link" onclick="window.location='/offers'" style="font-family: 'Lobster'; font-size: 20px;">
+                <span class="glyphicon glyphicon-cutlery" aria-hidden="true" style="padding: 5px"> </span>
+                <fmt:message key="listOffers"/> </button>
             </div>
         </div>
     </div>

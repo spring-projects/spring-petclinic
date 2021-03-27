@@ -51,6 +51,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.antMatchers("/clients/new").permitAll()
 		.antMatchers("/offers/**").hasAnyAuthority("admin", "cliente")
 
+
 		.and().formLogin()
 			.loginPage("/login").permitAll()
 			.failureUrl("/login?error")

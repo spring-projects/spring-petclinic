@@ -79,6 +79,9 @@ public class SpeedOfferController {
 
 		SpeedOffer speedOffer = this.speedOfferService.findSpeedOfferById(speedOfferId);
 		model.put("speedOffer", speedOffer);
+		
+		//Se añade formateador de fecha al modelo	
+		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
 		return "speedOffers/speedOffersShow";
 	}
 

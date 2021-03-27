@@ -5,7 +5,7 @@
 
 <cheapy:layout pageName="error">
 
-    <h2>Algo malo ha pasado...</h2>
+    <h2 style="text-align:center">Algo malo ha pasado...</h2>
     
     <spring:url value="/resources/images/Logo Cheapy.png" htmlEscape="true" var="cheapyImage"/>
     <img class="img-responsive" src="${cheapyImage}"/>
