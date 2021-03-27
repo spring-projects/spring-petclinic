@@ -12,6 +12,9 @@
     </h2>
     <form:form modelAttribute="speedOffer" class="form-horizontal" id="add-speedOffer-form">
         <div class="form-group has-feedback">
+            <form:hidden path="id"/>
+            <form:hidden path="code"/>
+            <form:hidden path="type"/>
             <petclinic:inputField label="Start Date" name="start"/>
             <petclinic:inputField label="End Date" name="end"/>
             <petclinic:inputField label="Gold" name="gold"/>
@@ -25,8 +28,11 @@
             <div class="col-sm-offset-2 col-sm-10">
                 <c:choose>
                     <c:when test="${speedOffer['new']}">
-                        <button class="btn btn-default" type="submit">Add Speed Offer</button>
+                        <button class="btn btn-default" type="submit">Crear oferta</button>
                     </c:when>
+                    <c:otherwise>
+                        <button class="btn btn-default" type="submit">Modificar</button>
+                    </c:otherwise>
                 </c:choose>
             </div>
         </div>
