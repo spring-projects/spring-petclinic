@@ -13,7 +13,6 @@
       		<form:form modelAttribute="foodOffer" class="form-horizontal">
 	            <input type="hidden" name="food" value="${food_offer.food}" />
 	            <input type="hidden" name="discount" value="${food_offer.discount}" />
-	            <input type="hidden" name="units" value="${food_offer.units}" />
 
         		<button class="btn btn-default" type="submit">Eliminar Oferta</button>
         	</form:form>

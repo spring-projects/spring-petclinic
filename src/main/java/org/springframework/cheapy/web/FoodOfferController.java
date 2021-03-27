@@ -53,7 +53,7 @@ public class FoodOfferController {
 		} else {
 			Client client = this.clientService.getCurrentClient();
 			foodOffer.setClient(client);
-			foodOffer.setType(StatusOffer.hidden);
+			foodOffer.setStatus(StatusOffer.hidden);
 			this.foodOfferService.saveFoodOffer(foodOffer);
 			return "redirect:/foodOffers/" + foodOffer.getId();
 		}
@@ -64,7 +64,7 @@ public class FoodOfferController {
 		FoodOffer foodOffer = this.foodOfferService.findFoodOfferById(foodOfferId);
 		Client client = this.clientService.getCurrentClient();
 		if (foodOffer.getClient().equals(client)) {
-			foodOffer.setType(StatusOffer.active);
+			foodOffer.setStatus(StatusOffer.active);
 			foodOffer.setCode("FO-" + foodOfferId);
 			this.foodOfferService.saveFoodOffer(foodOffer);
 		} else {
@@ -135,7 +135,7 @@ public class FoodOfferController {
 
 		FoodOffer foodOffer = this.foodOfferService.findFoodOfferById(foodOfferId);
 
-		foodOffer.setType(StatusOffer.inactive);
+		foodOffer.setStatus(StatusOffer.inactive);
 
 		this.foodOfferService.saveFoodOffer(foodOffer);
 

@@ -27,10 +27,6 @@
             <td><c:out value="${foodOffer.discount}"/></td>
         </tr>
         <tr>
-            <th>Cantidad</th>
-            <td><c:out value="${foodOffer.units}"/></td>
-        </tr>
-        <tr>
             <th>Codigo de la oferta</th>
             <td><c:out value="${foodOffer.code}"/></td>
         </tr>

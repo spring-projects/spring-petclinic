@@ -4,7 +4,6 @@ import java.time.LocalTime;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -12,13 +11,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @Table(name = "time_offers")
 public class TimeOffer extends Offer {
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
-	//Oferta por franja horaria
+	// Oferta por franja horaria
+
 	@DateTimeFormat(pattern = "HH:mm")
 	@NotNull
 	private LocalTime init;
@@ -27,8 +24,8 @@ public class TimeOffer extends Offer {
 	@NotNull
 	private LocalTime finish;
 
-	@NotBlank
-	private String discount;
+	@NotNull
+	private Integer discount;
 
 	public LocalTime getInit() {
 		return init;
@@ -46,11 +43,11 @@ public class TimeOffer extends Offer {
 		this.finish = finish;
 	}
 
-	public String getDiscount() {
+	public Integer getDiscount() {
 		return discount;
 	}
 
-	public void setDiscount(String discount) {
+	public void setDiscount(Integer discount) {
 		this.discount = discount;
 	}
 
