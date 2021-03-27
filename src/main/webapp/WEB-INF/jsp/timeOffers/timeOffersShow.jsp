@@ -8,10 +8,11 @@
 
 <cheapy:layout pageName="timeOffer">
 
-    <h2><fmt:message key="timeOffer"/></h2>
+    <h2 style="text-align:center;padding:5px"><fmt:message key="timeOffer"/></h2>
 
 
     <table class="table table-striped">
+        <thead>
         <tr>
             <th><fmt:message key="offerBeginning"/></th>
             <td><c:out value="${localDateTimeFormat.format(timeOffer.start)}"/></td>
@@ -28,6 +29,7 @@
             <th><fmt:message key="offerCode"/></th>
             <td><c:out value="${timeOffer.code}"/></td>
         </tr>
+        </thead>
     </table>
     
     <div class="btn-return">

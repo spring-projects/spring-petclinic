@@ -7,7 +7,7 @@
 <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
 
 <cheapy:layout pageName="ofertas">
-    <h2><fmt:message key="foodOffers"/></h2>
+    <h2 style="text-align:center;padding:5px"><fmt:message key="foodOffers"/></h2>
 
     <table id="foodOfferTable" class="table table-striped">
         <thead>
@@ -47,7 +47,7 @@
         </tbody>
     </table>
     
-    <h2><fmt:message key="nuOffers"/></h2>
+    <h2 style="text-align:center;padding:5px"><fmt:message key="nuOffers"/></h2>
 
     <table id="nuOfferTable" class="table table-striped">
         <thead>
@@ -83,7 +83,7 @@
         </c:forEach>
         </tbody>
     </table>
-    <h2><fmt:message key="speedOffers"/></h2>
+    <h2 style="text-align:center;padding:5px"><fmt:message key="speedOffers"/></h2>
 
     <table id="speedOfferTable" class="table table-striped">
         <thead>
@@ -120,7 +120,7 @@
         </c:forEach>
         </tbody>
     </table>
-    <h2><fmt:message key="timeOffers"/></h2>
+    <h2 style="text-align:center;padding:5px"><fmt:message key="timeOffers"/></h2>
 
     <table id="timeOfferTable" class="table table-striped">
         <thead>

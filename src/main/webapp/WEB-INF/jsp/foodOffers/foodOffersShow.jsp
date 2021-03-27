@@ -1,17 +1,18 @@
 <%@ page session="false" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
 <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
 
 <cheapy:layout pageName="foodOffer">
 
-    <h2><fmt:message key="foodOffer"/></h2>
+    <h2 style="text-align:center;padding:5px"><fmt:message key="foodOffer"/></h2>
 
 
-    <table class="table table-striped">
+    <table class="table table-striped" id="foodOfferTable">
+    	<thead>
         <tr>
             <th><fmt:message key="offerBeginning"/></th>
             <td><c:out value="${localDateTimeFormat.format(foodOffer.start)}"/></td>
@@ -36,6 +37,7 @@
             <th><fmt:message key="offerCode"/></th>
             <td><c:out value="${foodOffer.code}"/></td>
         </tr>
+        </thead>
     </table>
     
     <div class="btn-return">
