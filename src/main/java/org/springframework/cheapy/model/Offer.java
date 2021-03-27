@@ -29,10 +29,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @MappedSuperclass
 public class Offer extends BaseEntity {
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 	//Clase padre
@@ -46,7 +43,6 @@ public class Offer extends BaseEntity {
 	@Future
 	private LocalDateTime end;
 
-  
 	private String code;
 
 	@Enumerated(value = EnumType.STRING)

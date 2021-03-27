@@ -31,7 +31,6 @@ public class FoodOfferController {
 		this.clientService = clientService;
 	}
 
-
 	@GetMapping("/offers/food/new")
 	public String initCreationForm(Map<String, Object> model) {
 		FoodOffer foodOffer = new FoodOffer();
@@ -65,6 +64,7 @@ public class FoodOfferController {
 			modelMap.addAttribute("message", "You don't have access to this food offer");
 		}
 		return "redirect:/offers/food/"+foodOfferId;
+
 	}
 	@GetMapping("/offers/food/{foodOfferId}")
 	public String processShowForm(@PathVariable("foodOfferId") int foodOfferId, Map<String, Object> model) {

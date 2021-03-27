@@ -27,8 +27,8 @@ INSERT INTO usuarios VALUES (2, 'Paco', 'Naranjo', '21154416G', 'C/Esperanza', '
 INSERT INTO usuarios VALUES (3, 'Lolo', 'Lopez', '25486596L', 'C/Macarena', '690670547' ,'Lolo@gmail.com','lolo');
 INSERT INTO usuarios VALUES (4, 'Pepe', 'Lopez', '12456776V', 'C/Macarena', '690670547', 'Pepe@gmail.com','pepe');
 
-INSERT INTO clients  VALUES (1,'manoli@gmail.com','C/Betis','10:00','22:00','608726190', 'description 1', 'code1', 'ESPAÑOLA','manoli');
-INSERT INTO clients  VALUES (2,'david@gmail.com','C/Sevilla','09:30','22:00','608726190', 'description 2', 'code2', 'americana','david');
+INSERT INTO clients VALUES (1,'manoli@gmail.com','C/Betis','10:00','22:00','608726190', 'description 1', 'code1', 'ESPAÑOLA','manoli');
+INSERT INTO clients VALUES (2,'david@gmail.com','C/Sevilla','09:30','22:00','608726190', 'description 2', 'code2', 'americana','david');
 
 INSERT INTO food_offers(start, end, code, type, client_id, food, discount, units) VALUES ('2021-06-15 12:00:00', '2021-06-16 12:00:00', 'FO-1', 'active', null, 'macarrones', '15%', 10);
 INSERT INTO speed_offers(start, end, code, type, client_id, gold, discount_gold, silver, discount_silver, bronze, discount_bronze) VALUES ('2021-06-15 12:00:00', '2021-06-16 12:00:00', 'SP-1', 'active', null, 5, '15%', 10, '10%', 15, '5%');

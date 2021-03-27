@@ -19,6 +19,7 @@
             <petclinic:inputField label="Hora de final" name="finish"/>
             <petclinic:inputField label="Descuento" name="discount"/>
 
+
             </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
