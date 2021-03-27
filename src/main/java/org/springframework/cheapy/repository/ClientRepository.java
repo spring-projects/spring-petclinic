@@ -10,5 +10,5 @@ public interface ClientRepository extends CrudRepository<Client, String> {
 	@Query("SELECT client FROM Client client WHERE username =:username")
 	@Transactional(readOnly = true)
 	Client findByUsername(String username);
-
+	
 }

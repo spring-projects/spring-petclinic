@@ -8,7 +8,9 @@
 
 <cheapy:layout pageName="foodOffer">
 
+
     <h2 style="text-align:center;padding:5px"><fmt:message key="foodOffer"/></h2>
+
 
 
     <table class="table table-striped" id="foodOfferTable">
@@ -46,9 +48,14 @@
 	    <fmt:message key="return"/> </button>
     </div>
 
-    <%-- <spring:url value="{ownerId}/edit" var="editUrl">
-        <spring:param name="ownerId" value="${owner.id}"/>
+    <spring:url value="{foodOfferId}/edit" var="editUrl">
+    <spring:param name="foodOfferId" value="${foodOffer.id}"/>
     </spring:url>
-    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Edit Owner</a> --%>
+    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Editar oferta</a>
+    
+    <spring:url value="{foodOfferId}/disable" var="editUrl">
+    <spring:param name="foodOfferId" value="${foodOffer.id}"/>
+    </spring:url>
+    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Desactivar oferta</a>
 
 </cheapy:layout>

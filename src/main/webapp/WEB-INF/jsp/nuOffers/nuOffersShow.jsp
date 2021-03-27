@@ -56,9 +56,14 @@
 	    <fmt:message key="return"/> </button>
     </div>
 
-    <%-- <spring:url value="{ownerId}/edit" var="editUrl">
-        <spring:param name="ownerId" value="${owner.id}"/>
+    <spring:url value="{nuOfferId}/edit" var="editUrl">
+    <spring:param name="nuOfferId" value="${nuOffer.id}"/>
     </spring:url>
-    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Edit Owner</a> --%>
+    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Editar oferta</a>
+    
+    <spring:url value="{nuOfferId}/disable" var="editUrl">
+    <spring:param name="nuOfferId" value="${nuOffer.id}"/>
+    </spring:url>
+    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Desactivar oferta</a>
 
 </cheapy:layout>

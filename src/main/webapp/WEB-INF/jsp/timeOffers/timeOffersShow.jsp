@@ -31,11 +31,21 @@
         </tr>
         </thead>
     </table>
+
+    <spring:url value="{timeOfferId}/edit" var="editUrl">
+    <spring:param name="timeOfferId" value="${timeOffer.id}"/>
+    </spring:url>
+    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Editar oferta</a>
     
+    <spring:url value="{timeOfferId}/disable" var="editUrl">
+    <spring:param name="timeOfferId" value="${timeOffer.id}"/>
+    </spring:url>
+    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Desactivar oferta</a>
+
     <div class="btn-return">
 	    <button type="button" role="link" onclick="window.location='/offers'" style="font-family: 'Lobster'; font-size: 20px;">
 	    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true" style="padding: 5px"> </span>
 	    <fmt:message key="return"/> </button>
     </div>
-
+  
 </cheapy:layout>

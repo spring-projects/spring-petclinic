@@ -12,6 +12,9 @@
     </h2>
     <form:form modelAttribute="nuOffer" class="form-horizontal" id="add-nuOffer-form">
         <div class="form-group has-feedback">
+            <form:hidden path="id"/>
+            <form:hidden path="code"/>
+            <form:hidden path="status"/>
             <petclinic:inputField label="Fecha de inicio" name="start"/>
             <petclinic:inputField label="Fecha de fin" name="end"/>
             
@@ -27,10 +30,10 @@
             <div class="col-sm-offset-2 col-sm-10">
                 <c:choose>
                     <c:when test="${nuOffer['new']}">
-                        <button class="btn btn-default" type="submit">Add Offer</button>
+                        <button class="btn btn-default" type="submit">Crear oferta</button>
                     </c:when>
                     <c:otherwise>
-                        <button class="btn btn-default" type="submit">Update Offer</button>
+                        <button class="btn btn-default" type="submit">Modificar</button>
                     </c:otherwise>
                 </c:choose>
             </div>
