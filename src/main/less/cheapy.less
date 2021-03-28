@@ -47,10 +47,10 @@
 
 @pagination-active-bg:                    @spring-brown;
 @pagination-active-border:                @spring-blue;
-@table-border-color:                      @spring-brown;
+@table-border-color:                      rgb(0, 64, 128);
 
-.table > thead > tr > th {
-  background-color: lighten(@spring-brown, 3%);
+ .table > thead > tr > th {
+  background-color: rgb(40, 140, 215);
   color: @spring-light-grey;
 }
 
@@ -237,7 +237,131 @@ img.img-responsive{
 
 
 .btn-home button:hover {
-  background-color: rgb(0, 64, 128);
+  background-color: rgb(40, 140, 215);
+}
+
+#foodOfferTable th {
+  width: 25%;
+}
+
+#nuOfferTable th {
+  width: 33%;
+}
+
+#speedOfferTable th {
+  width: 33%;
+}
+
+#timeOfferTable th {
+  width: 33%;
+}
+
+.btn-detalles button {
+  background-color: rgb(0, 64, 128); 
+  border: 1px solid rgb(0, 0, 160); 
+  color: white; 
+  padding: 10px 24px; 
+  cursor: pointer; 
+  display: block; 
+  float: right;
+}
+
+.btn-detalles button:not(:last-child) {
+  border-bottom: none; 
+}
+
+
+.btn-detalles button:hover {
+  background-color: rgb(40, 140, 215);
+}
+
+.btn-return{
+  display: table;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.btn-return button {
+  background-color: rgb(0, 64, 128); 
+  border: 1px solid rgb(0, 0, 160); 
+  color: white; 
+  padding: 10px 24px; 
+  cursor: pointer; 
+  display: block;
+  left: 0%;
+}
+
+.btn-return button:not(:last-child) {
+  border-bottom: none; 
+}
+
+
+.btn-return button:hover {
+  background-color: rgb(40, 140, 215);
+}
+
+#foodOfferTable td{
+  vertical-align:middle;
+}
+
+#nuOfferTable td{
+  vertical-align:middle;
+}
+
+#speedOfferTable td{
+  vertical-align:middle;
+}
+
+#timeOfferTable td{
+  vertical-align:middle;
+}
+
+#nuOffer-table tr:nth-child(3){
+  background-color: rgb(255, 215, 0);
+}
+
+#nuOffer-table tr:nth-child(4){
+  background-color: rgb(255, 215, 0);
+}
+
+#nuOffer-table tr:nth-child(5){
+  background-color: rgb(192, 192, 192);
+}
+
+#nuOffer-table tr:nth-child(6){
+  background-color: rgb(192, 192, 192);
+}
+
+#nuOffer-table tr:nth-child(7){
+  background-color: rgb(204, 128, 51);
+}
+
+#nuOffer-table tr:nth-child(8){
+  background-color: rgb(204, 128, 51);
+}
+
+#speedOffer-table tr:nth-child(3){
+  background-color: rgb(255, 215, 0);
+}
+
+#speedOffer-table tr:nth-child(4){
+  background-color: rgb(255, 215, 0);
+}
+
+#speedOffer-table tr:nth-child(5){
+  background-color: rgb(192, 192, 192);
+}
+
+#speedOffer-table tr:nth-child(6){
+  background-color: rgb(192, 192, 192);
+}
+
+#speedOffer-table tr:nth-child(7){
+  background-color: rgb(204, 128, 51);
+}
+
+#speedOffer-table tr:nth-child(8){
+  background-color: rgb(204, 128, 51);
 }
 
 .alert-success {

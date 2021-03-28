@@ -32,7 +32,8 @@ public class Offer extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	//Clase padre
+	// Clase padre
+
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	@NotNull
 	@Future
@@ -46,11 +47,10 @@ public class Offer extends BaseEntity {
 	private String code;
 
 	@Enumerated(value = EnumType.STRING)
-	private StatusOffer type;
-	
-	
+	private StatusOffer status;
+
 	@ManyToOne
-	@JoinColumn(name="client_id")
+	@JoinColumn(name = "client_id")
 	private Client client;
 
 	public LocalDateTime getStart() {
@@ -77,14 +77,14 @@ public class Offer extends BaseEntity {
 		this.code = code;
 	}
 
-	public StatusOffer getType() {
-		return type;
+	public StatusOffer getStatus() {
+		return status;
 	}
 
-	public void setType(StatusOffer type) {
-		this.type = type;
+	public void setStatus(StatusOffer type) {
+		this.status = type;
 	}
-	
+
 	public Client getClient() {
 		return client;
 	}

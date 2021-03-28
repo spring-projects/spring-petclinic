@@ -1,5 +1,6 @@
 package org.springframework.cheapy.web;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +43,9 @@ public class OfertaController {
 		model.put("nuOfferLs", nuOfferLs);
 		model.put("speedOfferLs", speedOfferLs);
 		model.put("timeOfferLs", timeOfferLs);
+		
+		//Se añade formateador de fecha al modelo	
+		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
 		
 		return "offers/offersList";
 
