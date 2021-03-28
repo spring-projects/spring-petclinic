@@ -27,4 +27,6 @@ class WelcomeController {
 		return "welcome";
 	}
 
+	
+	
 }

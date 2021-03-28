@@ -1,12 +1,12 @@
 <%@ page session="false" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
 <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
 <!-- %@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %-->  
 
-<petclinic:layout pageName="home">
-    <h2 class="text-center" style="font-family: 'Lobster'; font-size: 50px; color: rgb(0, 64, 128); padding:20px"><fmt:message key="welcome"/></h2>
+<cheapy:layout pageName="home">
+    <h2 class="text-center" style="font-family: 'Lobster'; font-size: 60px; color: rgb(0, 64, 128); padding:30px"><fmt:message key="welcome"/></h2>
     <div class="row">
         <div class="col-md-12">
             <div class="img-home">
@@ -14,9 +14,10 @@
                 <img class="img-responsive" src="${cheapyImage}"/>
             </div>
             <div class="btn-home">
-                <button type="button"><span class="glyphicon glyphicon-cutlery" aria-hidden="true" style="padding: 5px"></span>  Ver Ofertas</button>
-                
+                <button type="button" role="link" onclick="window.location='/offers'" style="font-family: 'Lobster'; font-size: 20px;">
+                <span class="glyphicon glyphicon-cutlery" aria-hidden="true" style="padding: 5px"> </span>
+                <fmt:message key="listOffers"/> </button>
             </div>
         </div>
     </div>
-</petclinic:layout>
+</cheapy:layout>

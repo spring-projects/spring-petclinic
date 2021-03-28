@@ -17,39 +17,40 @@ package org.springframework.cheapy.model;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Table;
 import javax.validation.constraints.Future;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 @MappedSuperclass
 public class Offer extends BaseEntity {
 
+	private static final long serialVersionUID = 1L;
+
+	// Clase padre
+
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
-	@NotBlank
+	@NotNull
 	@Future
 	private LocalDateTime start;
 
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
-	@NotBlank
+	@NotNull
 	@Future
 	private LocalDateTime end;
 
-	@NotBlank
 	private String code;
 
 	@Enumerated(value = EnumType.STRING)
-	private StatusOffer type;
-	
+	private StatusOffer status;
+
 	@ManyToOne
-	@JoinColumn(name="client_id")
+	@JoinColumn(name = "client_id")
 	private Client client;
 
 	public LocalDateTime getStart() {
@@ -76,12 +77,20 @@ public class Offer extends BaseEntity {
 		this.code = code;
 	}
 
-	public StatusOffer getType() {
-		return type;
+	public StatusOffer getStatus() {
+		return status;
 	}
 
-	public void setType(StatusOffer type) {
-		this.type = type;
+	public void setStatus(StatusOffer type) {
+		this.status = type;
+	}
+
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
 	}
 
 }

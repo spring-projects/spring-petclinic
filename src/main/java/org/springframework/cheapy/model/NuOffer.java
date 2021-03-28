@@ -1,49 +1,44 @@
-/*
- * Copyright 2012-2019 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.springframework.cheapy.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "nu_offers")
 public class NuOffer extends Offer {
 
-	@NotBlank
-	private Integer gold;
+	//Oferta por numero de comensales
+	private static final long serialVersionUID = 1L;
+  
+	@NotNull
+	@Min(1)
+	private Integer	gold;
 
 	@Column(name = "discount_gold")
-	@NotBlank
-	private String discountGold;
+	@NotNull
+	@Min(0)
+	private Integer	discountGold;
 
-	@NotBlank
-	private Integer silver;
+	@NotNull
+	@Min(1)
+	private Integer	silver;
 
 	@Column(name = "discount_silver")
-	@NotBlank
-	private String discountSilver;
+	@NotNull
+	@Min(0)
+	private Integer	discountSilver;
 
-	@NotBlank
-	private Integer bronze;
+	@NotNull
+	@Min(1)
+	private Integer	bronze;
 
 	@Column(name = "discount_bronze")
-	@NotBlank
-	private String discountBronze;
+	@NotNull
+	@Min(0)
+	private Integer	discountBronze;
 
 	public Integer getGold() {
 		return gold;
@@ -53,11 +48,11 @@ public class NuOffer extends Offer {
 		this.gold = gold;
 	}
 
-	public String getDiscountGold() {
+	public Integer getDiscountGold() {
 		return discountGold;
 	}
 
-	public void setDiscountGold(String discountGold) {
+	public void setDiscountGold(Integer discountGold) {
 		this.discountGold = discountGold;
 	}
 
@@ -69,11 +64,11 @@ public class NuOffer extends Offer {
 		this.silver = silver;
 	}
 
-	public String getDiscountSilver() {
+	public Integer getDiscountSilver() {
 		return discountSilver;
 	}
 
-	public void setDiscountSilver(String discountSilver) {
+	public void setDiscountSilver(Integer discountSilver) {
 		this.discountSilver = discountSilver;
 	}
 
@@ -85,11 +80,11 @@ public class NuOffer extends Offer {
 		this.bronze = bronze;
 	}
 
-	public String getDiscountBronze() {
+	public Integer getDiscountBronze() {
 		return discountBronze;
 	}
 
-	public void setDiscountBronze(String discountBronze) {
+	public void setDiscountBronze(Integer discountBronze) {
 		this.discountBronze = discountBronze;
 	}
 
