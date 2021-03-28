@@ -12,9 +12,11 @@ INSERT INTO owners VALUES (10, 'Carlos', 'Estaban', '2335 Independence La.', 'Wa
 INSERT INTO users (dtype,username,password,enabled) VALUES ('User','admin','admin', TRUE );
 INSERT INTO authorities VALUES ('admin','admin');
 INSERT INTO users (dtype,username,password,enabled) VALUES ('User','manoli','manoli', TRUE );
-INSERT INTO authorities VALUES ('manoli','cliente');
+
+INSERT INTO authorities VALUES ('manoli','client');
 INSERT INTO users (dtype,username,password,enabled) VALUES ('User','david','david', TRUE );
-INSERT INTO authorities VALUES ('david','cliente');
+INSERT INTO authorities VALUES ('david','client');
+
 INSERT INTO users (dtype,username,password,enabled) VALUES ('User','paco','paco', TRUE );
 INSERT INTO authorities VALUES ('paco','usuario');
 INSERT INTO users (dtype,username,password,enabled) VALUES ('User','lolo','lolo', TRUE );

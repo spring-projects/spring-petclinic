@@ -36,21 +36,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.GET, "/", "/oups").permitAll()
 		.antMatchers("/users/new").permitAll()
 
-		.antMatchers("/offers/nu/**").hasAnyAuthority("admin","cliente")
-		.antMatchers("/offers/time/**").hasAnyAuthority("admin","cliente")
-
 		.antMatchers("/login/**").anonymous()
 		.antMatchers("/logout").permitAll()
 
 		.antMatchers("/usuarios/new").permitAll()
 		.antMatchers("/admin/**").hasAnyAuthority("admin")
-		.antMatchers("/offers/speed/**").hasAnyAuthority("admin", "cliente")
-		.antMatchers("/offers/food/**").hasAnyAuthority("admin", "cliente")
+
 		.antMatchers("/owners/**").hasAnyAuthority("owner", "admin")
 
-		.antMatchers("/clients/new").permitAll()
-		.antMatchers("/offers").permitAll()
+		.antMatchers("/offers/**/new").hasAnyAuthority("admin", "client")
+		.antMatchers("/offers/**/activate").hasAnyAuthority("admin","client")
 		
+		.antMatchers("/clients/new").permitAll()
+		.antMatchers("/offers/**").permitAll()
 
 
 		.and().formLogin()

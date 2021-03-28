@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class SpeedOfferController {
 
-	private static final String VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM = "speedOffers/createOrUpdateSpeedOfferForm";
+	private static final String VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM = "offers/speed/createOrUpdateSpeedOfferForm";
 
 	private final SpeedOfferService speedOfferService;
 	private final ClientService clientService;
@@ -29,26 +29,16 @@ public class SpeedOfferController {
 		this.speedOfferService = speedOfferService;
 		this.clientService = clientService;
 	}
-	
-	/*private boolean checkIdentity(final int speedOfferId) {
-		boolean res = false;
-		Client client = this.clientService.getCurrentClient();
-		SpeedOffer speedOffer = this.speedOfferService.findSpeedOfferById(speedOfferId);
-		Client clientOffer = speedOffer.getClient();
-		if (client.equals(clientOffer)) {
-			res = true;
-		}
-		return res;
-	}*/
 
-	@GetMapping("/speedOffers/new")
+
+	@GetMapping("/offers/speed/new")
 	public String initCreationForm(Map<String, Object> model) {
 		SpeedOffer speedOffer = new SpeedOffer();
 		model.put("speedOffer", speedOffer);
 		return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
 	}
 
-	@PostMapping("/speedOffers/new")
+	@PostMapping("/offers/speed/new")
 	public String processCreationForm(@Valid SpeedOffer speedOffer, BindingResult result) {
 		if (result.hasErrors()) {
 			return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
@@ -57,11 +47,12 @@ public class SpeedOfferController {
 			speedOffer.setClient(client);
 			speedOffer.setStatus(StatusOffer.hidden);
 			this.speedOfferService.saveSpeedOffer(speedOffer);
-			return "redirect:/speedOffers/" + speedOffer.getId();
+			return "redirect:/offers/speed/" + speedOffer.getId();
 		}
 	}
 
-	@GetMapping(value = "/speedOffers/{speedOfferId}/activate")
+	
+	@GetMapping(value = "/offers/speed/{speedOfferId}/activate")
 	public String activateSpeedOffer(@PathVariable("speedOfferId") final int speedOfferId, ModelMap modelMap) {
 		SpeedOffer speedOffer = this.speedOfferService.findSpeedOfferById(speedOfferId);
 		Client client = this.clientService.getCurrentClient();
@@ -72,7 +63,7 @@ public class SpeedOfferController {
 		} else {
 			modelMap.addAttribute("message", "You don't have access to this speed offer");
 		}
-		return "redirect:/speedOffers/";
+		return "redirect:/offers/speed/" + speedOffer.getId();
 	}
 
 	@GetMapping("/offers/speed/{speedOfferId}")
@@ -80,8 +71,9 @@ public class SpeedOfferController {
 
 		SpeedOffer speedOffer = this.speedOfferService.findSpeedOfferById(speedOfferId);
 		model.put("speedOffer", speedOffer);
+
 		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-		return "speedOffers/speedOffersShow";
+		return "offers/speed/speedOffersShow";
 	}
 
 	@GetMapping(value = "/offers/speed/{speedOfferId}/edit")

@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class TimeOfferController {
 
-	private static final String VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM = "timeOffers/createOrUpdateTimeOfferForm";
 
+	private static final String VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM = "offers/time/createOrUpdateTimeOfferForm";
 	private final TimeOfferService timeOfferService;
 	private final ClientService clientService;
 
@@ -30,27 +30,15 @@ public class TimeOfferController {
 		this.timeOfferService = timeOfferService;
 		this.clientService = clientService;
 
-	}
-	
-	/*private boolean checkIdentity(final int timeOfferId) {
-		boolean res = false;
-		Client client = this.clientService.getCurrentClient();
-		TimeOffer timeOffer = this.timeOfferService.findTimeOfferById(timeOfferId);
-		Client clientOffer = timeOffer.getClient();
-		if (client.equals(clientOffer)) {
-			res = true;
-		}
-		return res;
-	}
-*/
-	@GetMapping("/timeOffers/new")
+
+	@GetMapping("/offers/time/new")
 	public String initCreationForm(Map<String, Object> model) {
 		TimeOffer timeOffer = new TimeOffer();
 		model.put("timeOffer", timeOffer);
 		return VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
 	}
 
-	@PostMapping("/timeOffers/new")
+	@PostMapping("/offers/time/new")
 	public String processCreationForm(@Valid TimeOffer timeOffer, BindingResult result) {
 		if (result.hasErrors()) {
 			return VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
@@ -62,11 +50,11 @@ public class TimeOfferController {
 			timeOffer.setClient(client);
 
 			this.timeOfferService.saveTimeOffer(timeOffer);
-			return "redirect:/TimeOffers/" + timeOffer.getId();
+			return "redirect:/offers/time/" + timeOffer.getId();
 		}
 	}
 
-	@GetMapping(value = "/timeOffers/{timeOfferId}/activate")
+	@GetMapping(value ="/offers/time/{timeOfferId}/activate")
 	public String activateTimeOffer(@PathVariable("timeOfferId") final int timeOfferId, final ModelMap modelMap) {
 		Client client = this.clientService.getCurrentClient();
 		TimeOffer timeOffer = this.timeOfferService.findTimeOfferById(timeOfferId);
@@ -75,11 +63,12 @@ public class TimeOfferController {
 			timeOffer.setCode("TI-" + timeOfferId);
 			this.timeOfferService.saveTimeOffer(timeOffer);
 
-			return "redirect:/timeOffers/" + timeOffer.getId();
+			
 		} else {
 			modelMap.addAttribute("message", "You don't have access to this time offer");
 		}
-		return "redirect:/timeOffers/";
+		return "redirect:/timeOffers/" + timeOffer.getId();
+
 
 	}
 
@@ -92,7 +81,7 @@ public class TimeOfferController {
 
 		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
 		
-		return "timeOffers/timeOffersShow";
+		return "offers/time/timeOffersShow";
 
 	}
 
