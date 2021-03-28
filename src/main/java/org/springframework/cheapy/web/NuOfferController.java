@@ -30,8 +30,7 @@ public class NuOfferController {
 	public NuOfferController(final NuOfferService nuOfferService, final ClientService clientService) {
 		this.nuOfferService = nuOfferService;
 		this.clientService = clientService;
-
-
+	}
 
 	@GetMapping("/offers/nu/new")
 	public String initCreationForm(Map<String, Object> model) {
@@ -68,7 +67,7 @@ public class NuOfferController {
 		} else {
 			modelMap.addAttribute("message", "You don't have access to this number offer");
 		}
-		return "redirect:/nuOffers/"+ nuOffer.getId();
+		return "redirect:/offers/nu/"+ nuOffer.getId();
 
 	}
 

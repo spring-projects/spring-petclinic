@@ -54,6 +54,7 @@ class NuOfferControllerTest {
 		user1.setPassword("user1");
 		Client client1 = new Client();
 		client1.setId(TEST_CLIENT_ID);
+		client1.setName("client1");
 		client1.setEmail("client1");
 		client1.setAddress("client1");
 		client1.setInit("01:00");
@@ -62,7 +63,7 @@ class NuOfferControllerTest {
 		client1.setDescription("client1");
 		client1.setCode("client1");
 		client1.setFood("client1");
-		client1.setUsername(user1);
+		client1.setUsuar(user1);
 		BDDMockito.given(this.clientService.getCurrentClient()).willReturn(client1);
 		
 		NuOffer nu1test = new NuOffer();
@@ -70,11 +71,11 @@ class NuOfferControllerTest {
 		nu1test.setStart(LocalDateTime.of(2021, 12, 23, 12, 30));
 		nu1test.setEnd(LocalDateTime.of(2022, 12, 23, 12, 30));
 		nu1test.setGold(5);
-		nu1test.setDiscountGold("15%");
+		nu1test.setDiscountGold(15);
 		nu1test.setSilver(10);
-		nu1test.setDiscountGold("10%");
-		nu1test.setGold(15);
-		nu1test.setDiscountGold("5%");
+		nu1test.setDiscountSilver(10);
+		nu1test.setBronze(15);
+		nu1test.setDiscountBronze(5);
 		nu1test.setClient(client1);
 		this.nu1 = nu1test;
 		BDDMockito.given(this.nuOfferService.findNuOfferById(TEST_NUOFFER_ID)).willReturn(this.nu1);

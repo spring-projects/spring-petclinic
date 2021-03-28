@@ -29,7 +29,7 @@ public class TimeOfferController {
 	public TimeOfferController(final TimeOfferService timeOfferService, ClientService clientService) {
 		this.timeOfferService = timeOfferService;
 		this.clientService = clientService;
-
+	}
 
 	@GetMapping("/offers/time/new")
 	public String initCreationForm(Map<String, Object> model) {
@@ -67,7 +67,7 @@ public class TimeOfferController {
 		} else {
 			modelMap.addAttribute("message", "You don't have access to this time offer");
 		}
-		return "redirect:/timeOffers/" + timeOffer.getId();
+		return "redirect:/offers/time/" + timeOffer.getId();
 
 
 	}

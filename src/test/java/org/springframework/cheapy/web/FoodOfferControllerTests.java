@@ -53,8 +53,9 @@ class FoodOfferControllerTest {
 		User user1 = new User();
 		user1.setUsername("user1");
 		user1.setPassword("user1");
-		Client client1 = new Client();
+		Client client1 = new Client();;
 		client1.setId(TEST_CLIENT_ID);
+		client1.setName("client1");
 		client1.setEmail("client1");
 		client1.setAddress("client1");
 		client1.setInit("01:00");
@@ -63,7 +64,7 @@ class FoodOfferControllerTest {
 		client1.setDescription("client1");
 		client1.setCode("client1");
 		client1.setFood("client1");
-		client1.setUsername(user1);
+		client1.setUsuar(user1);
 		BDDMockito.given(this.clientService.getCurrentClient()).willReturn(client1);
 		
 		FoodOffer fo1test = new FoodOffer();
@@ -71,8 +72,7 @@ class FoodOfferControllerTest {
 		fo1test.setStart(LocalDateTime.of(2021, 12, 23, 12, 30));
 		fo1test.setEnd(LocalDateTime.of(2022, 12, 23, 12, 30));
 		fo1test.setFood("fo1test");
-		fo1test.setDiscount("fo1test");
-		fo1test.setUnits(1);
+		fo1test.setDiscount(1);
 		fo1test.setClient(client1);
 		this.fo1 = fo1test;
 		BDDMockito.given(this.foodOfferService.findFoodOfferById(TEST_FOODOFFER_ID)).willReturn(this.fo1);
@@ -96,8 +96,7 @@ class FoodOfferControllerTest {
 					.param("start", "23/12/2021 12:30")
 					.param("end", "23/12/2022 12:30")
 					.param("food", "food")
-					.param("discount", "10%")
-					.param("units", "1"))
+					.param("discount", "10"))
 				.andExpect(status().is3xxRedirection());
 	}
 
@@ -109,14 +108,12 @@ class FoodOfferControllerTest {
 					.param("start", "lsqdufhlqhf")
 					.param("end", "")
 					.param("food", "")
-					.param("discount", "")
-					.param("units", "qsdfy"))
+					.param("discount", ""))
 				.andExpect(model().attributeHasErrors("foodOffer"))
 				.andExpect(model().attributeHasFieldErrors("foodOffer", "start"))
 				.andExpect(model().attributeHasFieldErrors("foodOffer", "end"))
 				.andExpect(model().attributeHasFieldErrors("foodOffer", "food"))
 				.andExpect(model().attributeHasFieldErrors("foodOffer", "discount"))
-				.andExpect(model().attributeHasFieldErrors("foodOffer", "units"))
 				.andExpect(view().name("offers/food/createOrUpdateFoodOfferForm"));
 	}
 	
