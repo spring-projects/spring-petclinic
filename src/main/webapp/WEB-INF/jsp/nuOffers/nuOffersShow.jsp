@@ -50,20 +50,28 @@
         </tr>
     </table>
     
-    <div class="btn-return">
-	    <button type="button" role="link" onclick="window.location='/offers'" style="font-family: 'Lobster'; font-size: 20px;">
-	    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true" style="padding: 5px"> </span>
-	    <fmt:message key="return"/> </button>
-    </div>
+    <div class="btn-menu">
+	    <div class="btn-return">
+		    <button type="button" role="link" onclick="window.location='/offers'" style="font-family: 'Lobster'; font-size: 20px;"> 
+		    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true" style="padding: 5px"> </span> 
+		    <fmt:message key="return"/> </button>
+	    </div>
 
-    <spring:url value="{nuOfferId}/edit" var="editUrl">
-    <spring:param name="nuOfferId" value="${nuOffer.id}"/>
-    </spring:url>
-    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Editar oferta</a>
-    
-    <spring:url value="{nuOfferId}/disable" var="editUrl">
-    <spring:param name="nuOfferId" value="${nuOffer.id}"/>
-    </spring:url>
-    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Desactivar oferta</a>
+		<div class="btns-edit">
+		    <spring:url value="{nuOfferId}/edit" var="editUrl">
+		    <spring:param name="nuOfferId" value="${nuOffer.id}"/>
+		    </spring:url>
+		    <button type="button" role="link" onclick="window.location='${fn:escapeXml(editUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
+            <span class="glyphicon 	glyphicon glyphicon-edit" aria-hidden="true" style="padding: 5px"> </span>
+	        Editar oferta</button>
+	    
+		    <spring:url value="{nuOfferId}/disable" var="editUrl">
+		    <spring:param name="nuOfferId" value="${nuOffer.id}"/>
+		    </spring:url>
+		    <button type="button" role="link" onclick="window.location='${fn:escapeXml(editUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
+            <span class="glyphicon glyphicon glyphicon-trash" aria-hidden="true" style="padding: 5px"> </span>
+	        Desactivar oferta</button>
+	    </div>
+    </div>
 
 </cheapy:layout>
