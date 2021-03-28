@@ -1,6 +1,7 @@
 package org.springframework.cheapy.web;
 
 
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -31,7 +32,7 @@ public class TimeOfferController {
 
 	}
 	
-	private boolean checkIdentity(final int timeOfferId) {
+	/*private boolean checkIdentity(final int timeOfferId) {
 		boolean res = false;
 		Client client = this.clientService.getCurrentClient();
 		TimeOffer timeOffer = this.timeOfferService.findTimeOfferById(timeOfferId);
@@ -41,7 +42,7 @@ public class TimeOfferController {
 		}
 		return res;
 	}
-
+*/
 	@GetMapping("/timeOffers/new")
 	public String initCreationForm(Map<String, Object> model) {
 		TimeOffer timeOffer = new TimeOffer();
@@ -89,6 +90,8 @@ public class TimeOfferController {
 
 		model.put("timeOffer", timeOffer);
 
+		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+		
 		return "timeOffers/timeOffersShow";
 
 	}
@@ -96,9 +99,6 @@ public class TimeOfferController {
 	@GetMapping(value = "/offers/time/{timeOfferId}/edit")
 	public String updateTimeOffer(@PathVariable("timeOfferId") final int timeOfferId, final ModelMap model) {
 		
-		if (!this.checkIdentity(timeOfferId)) {
-			return "error";
-		}
 
 		TimeOffer timeOffer = this.timeOfferService.findTimeOfferById(timeOfferId);
 		model.addAttribute("timeOffer", timeOffer);
@@ -108,9 +108,6 @@ public class TimeOfferController {
 	@PostMapping(value = "/offers/time/{timeOfferId}/edit")
 	public String updateTimeOffer(@Valid final TimeOffer timeOfferEdit, final BindingResult result, final ModelMap model) {
 		
-		if (!this.checkIdentity(timeOfferEdit.getId())) {
-			return "error";
-		}
 
 		if (result.hasErrors()) {
 			model.addAttribute("timeOffer", timeOfferEdit);
@@ -125,10 +122,7 @@ public class TimeOfferController {
 
 	@GetMapping(value = "/offers/time/{timeOfferId}/disable")
 	public String disableTimeOffer(@PathVariable("timeOfferId") final int timeOfferId, final ModelMap model) {
-		
-		if (!this.checkIdentity(timeOfferId)) {
-			return "error";
-		}
+
 
 		TimeOffer timeOffer = this.timeOfferService.findTimeOfferById(timeOfferId);
 		model.put("timeOffer", timeOffer);
@@ -138,9 +132,6 @@ public class TimeOfferController {
 	@PostMapping(value = "/offers/time/{timeOfferId}/disable")
 	public String disableTimeOfferForm(@PathVariable("timeOfferId") final int timeOfferId, final ModelMap model) {
 		
-		if (!this.checkIdentity(timeOfferId)) {
-			return "error";
-		}
 
 		TimeOffer timeOffer = this.timeOfferService.findTimeOfferById(timeOfferId);
 
