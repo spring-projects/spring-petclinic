@@ -1,6 +1,7 @@
 package org.springframework.cheapy.web;
 
 import java.security.Principal;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -32,7 +33,7 @@ public class NuOfferController {
 
 	}
 
-	private boolean checkIdentity(final int nuOfferId) {
+	/*private boolean checkIdentity(final int nuOfferId) {
 		boolean res = false;
 		Client client = this.clientService.getCurrentClient();
 		NuOffer nuOffer = this.nuOfferService.findNuOfferById(nuOfferId);
@@ -41,7 +42,7 @@ public class NuOfferController {
 			res = true;
 		}
 		return res;
-	}
+	}*/
 
 	@GetMapping("/nuOffers/new")
 	public String initCreationForm(Map<String, Object> model) {
@@ -87,6 +88,7 @@ public class NuOfferController {
 	public String processShowForm(@PathVariable("nuOfferId") int nuOfferId, Map<String, Object> model) {
 		NuOffer nuOffer = this.nuOfferService.findNuOfferById(nuOfferId);
 		model.put("nuOffer", nuOffer);
+		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
 		return "nuOffers/nuOffersShow";
 
 	}
@@ -94,9 +96,6 @@ public class NuOfferController {
 	@GetMapping(value = "/offers/nu/{nuOfferId}/edit")
 	public String updateNuOffer(@PathVariable("nuOfferId") final int nuOfferId, final ModelMap model) {
 
-		if (!this.checkIdentity(nuOfferId)) {
-			return "error";
-		}
 
 		NuOffer nuOffer = this.nuOfferService.findNuOfferById(nuOfferId);
 		model.addAttribute("nuOffer", nuOffer);
@@ -105,10 +104,6 @@ public class NuOfferController {
 
 	@PostMapping(value = "/offers/nu/{nuOfferId}/edit")
 	public String updateNuOffer(@Valid final NuOffer nuOfferEdit, final BindingResult result, final ModelMap model) {
-
-		if (!this.checkIdentity(nuOfferEdit.getId())) {
-			return "error";
-		}
 
 		if (result.hasErrors()) {
 			model.addAttribute("nuOffer", nuOfferEdit);
@@ -124,9 +119,6 @@ public class NuOfferController {
 	public String disableNuOffer(@PathVariable("nuOfferId") final int nuOfferId, final Principal principal,
 			final ModelMap model) {
 
-		if (!this.checkIdentity(nuOfferId)) {
-			return "error";
-		}
 
 		NuOffer nuOffer = this.nuOfferService.findNuOfferById(nuOfferId);
 		model.put("nuOffer", nuOffer);
@@ -137,9 +129,6 @@ public class NuOfferController {
 	public String disableNuOfferForm(@PathVariable("nuOfferId") final int nuOfferId, final Principal principal,
 			final ModelMap model) {
 
-		if (!this.checkIdentity(nuOfferId)) {
-			return "error";
-		}
 
 		NuOffer nuOffer = this.nuOfferService.findNuOfferById(nuOfferId);
 		nuOffer.setStatus(StatusOffer.inactive);

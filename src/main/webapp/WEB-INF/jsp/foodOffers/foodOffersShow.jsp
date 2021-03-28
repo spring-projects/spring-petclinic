@@ -31,10 +31,7 @@
             <th><fmt:message key="discount"/></th>
             <td><c:out value="${foodOffer.discount}"/></td>
         </tr>
-        <tr>
-            <th><fmt:message key="cuantity"/></th>
-            <td><c:out value="${foodOffer.units}"/></td>
-        </tr>
+
         <tr>
             <th><fmt:message key="offerCode"/></th>
             <td><c:out value="${foodOffer.code}"/></td>
@@ -57,5 +54,5 @@
     <spring:param name="foodOfferId" value="${foodOffer.id}"/>
     </spring:url>
     <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Desactivar oferta</a>
-
+	
 </cheapy:layout>
