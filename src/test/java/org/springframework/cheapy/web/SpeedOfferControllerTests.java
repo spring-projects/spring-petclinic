@@ -55,6 +55,7 @@ class SpeedOfferControllerTest {
 		user1.setPassword("user1");
 		Client client1 = new Client();
 		client1.setId(TEST_CLIENT_ID);
+		client1.setName("client1");
 		client1.setEmail("client1");
 		client1.setAddress("client1");
 		client1.setInit("01:00");
@@ -63,7 +64,7 @@ class SpeedOfferControllerTest {
 		client1.setDescription("client1");
 		client1.setCode("client1");
 		client1.setFood("client1");
-		client1.setUsername(user1);
+		client1.setUsuar(user1);
 		BDDMockito.given(this.clientService.getCurrentClient()).willReturn(client1);
 		
 		SpeedOffer sp1test = new SpeedOffer();
@@ -71,11 +72,11 @@ class SpeedOfferControllerTest {
 		sp1test.setStart(LocalDateTime.of(2021, 12, 23, 12, 30));
 		sp1test.setEnd(LocalDateTime.of(2022, 12, 23, 12, 30));
 		sp1test.setGold(5);
-		sp1test.setDiscountGold("15%");
+		sp1test.setDiscountGold(15);
 		sp1test.setSilver(10);
-		sp1test.setDiscountGold("10%");
-		sp1test.setGold(15);
-		sp1test.setDiscountGold("5%");
+		sp1test.setDiscountSilver(10);
+		sp1test.setBronze(15);
+		sp1test.setDiscountBronze(5);
 		sp1test.setClient(client1);
 		this.sp1 = sp1test;
 		BDDMockito.given(this.speedOfferService.findSpeedOfferById(TEST_SPEEDOFFER_ID)).willReturn(this.sp1);
@@ -99,11 +100,11 @@ class SpeedOfferControllerTest {
 					.param("start", "23/12/2021 12:30")
 					.param("end", "23/12/2022 12:30")
 					.param("gold", "5")
-					.param("discountGold", "15%")
+					.param("discountGold", "15")
 					.param("silver", "10")
-					.param("discountSilver", "10%")
+					.param("discountSilver", "10")
 					.param("bronze", "15")
-					.param("discountBronze", "5%"))
+					.param("discountBronze", "5"))
 				.andExpect(status().is3xxRedirection());
 	}
 

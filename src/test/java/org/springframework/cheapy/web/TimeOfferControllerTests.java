@@ -55,6 +55,7 @@ class TimeOfferControllerTest {
 		user1.setPassword("user1");
 		Client client1 = new Client();
 		client1.setId(TEST_CLIENT_ID);
+		client1.setName("client1");
 		client1.setEmail("client1");
 		client1.setAddress("client1");
 		client1.setInit("01:00");
@@ -63,7 +64,7 @@ class TimeOfferControllerTest {
 		client1.setDescription("client1");
 		client1.setCode("client1");
 		client1.setFood("client1");
-		client1.setUsername(user1);
+		client1.setUsuar(user1);
 		BDDMockito.given(this.clientService.getCurrentClient()).willReturn(client1);
 		
 		TimeOffer time1test = new TimeOffer();
@@ -72,7 +73,7 @@ class TimeOfferControllerTest {
 		time1test.setEnd(LocalDateTime.of(2022, 12, 23, 12, 30));
 		time1test.setInit(LocalTime.of(12, 00));
 		time1test.setFinish(LocalTime.of(13, 00));
-		time1test.setDiscount("10");
+		time1test.setDiscount(10);
 		time1test.setClient(client1);
 		this.time1 = time1test;
 		BDDMockito.given(this.timeOfferService.findTimeOfferById(TEST_TIMEOFFER_ID)).willReturn(this.time1);	
