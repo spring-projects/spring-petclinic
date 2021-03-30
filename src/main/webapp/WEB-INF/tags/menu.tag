@@ -25,7 +25,7 @@
 				<cheapy:menuItem active="${name eq 'home'}" url="/"
 					title="home page">
 					<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-					<span>Home</span>
+					<span>Inicio</span>
 				</cheapy:menuItem>
 				
 				<cheapy:menuItem active="${name eq 'ofertas'}" url="/offers"
@@ -34,6 +34,12 @@
 					<span>Ver ofertas</span>
 				</cheapy:menuItem>
 				
+				<sec:authorize access="hasAnyAuthority('client')">
+				<cheapy:menuItem active="${name eq 'ofertas'}" url="/myOffers" title="misOfertas">
+					<span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>
+					<span>Mis ofertas</span>
+				</cheapy:menuItem>
+				</sec:authorize>
 				<!--  
 				<cheapy:menuItem active="${name eq 'contactanos'}" url="/contactanos"
 					title="contactanos">
