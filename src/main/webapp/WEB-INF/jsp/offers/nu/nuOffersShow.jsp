@@ -37,7 +37,7 @@
             <td><c:out value="${nuOffer.discountSilver}"/></td>
         </tr>
         <tr>
-            <th>Meta bronce</th>
+            <th><fmt:message key="bronzeGoal"/></th>
             <td><c:out value="${nuOffer.bronze}"/></td>
         </tr>
         <tr>

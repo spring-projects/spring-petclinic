@@ -8,7 +8,7 @@
 <petclinic:layout pageName="foodOffer">
 
 	<jsp:body>
-        <h2> Â¿Esta seguro de que quiere eliminar su oferta? </h2>
+        <h2> ¿Está seguro de que quiere eliminar su oferta? </h2>
       		
       		<form:form modelAttribute="foodOffer" class="form-horizontal">
 	            <input type="hidden" name="init" value="${time_offer.init}" />

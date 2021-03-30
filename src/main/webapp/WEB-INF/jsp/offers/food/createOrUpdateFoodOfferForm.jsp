@@ -8,15 +8,15 @@
 
 <petclinic:layout pageName="foodOffers">
     <h2>
-        <c:if test="${foodOffer['new']}">New </c:if> FoodOffer
+        <c:if test="${foodOffer['new']}">Nueva </c:if> Oferta de plato específico
     </h2>
     <form:form modelAttribute="foodOffer" class="form-horizontal" id="add-foodOffer-form">
         <div class="form-group has-feedback">
         	<form:hidden path="id"/>
             <form:hidden path="code"/>
             <form:hidden path="status"/>
-            <petclinic:inputField label="Start Date" name="start"/>
-            <petclinic:inputField label="End Date" name="end"/>
+            <petclinic:inputField label="Fecha de inicio" placeholder="15/06/2021 14:00" name="start"/>
+            <petclinic:inputField label="Fecha de fin" placeholder="15/06/2021 16:00" name="end"/>
             <petclinic:inputField label="Food" name="food"/>
             <petclinic:inputField label="Discount" name="discount"/>
         </div>

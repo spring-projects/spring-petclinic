@@ -8,18 +8,18 @@
 
 <petclinic:layout pageName="NumOffers">
     <h2>
-        <c:if test="${nuOffer['new']}">New </c:if> NuOffer
+        <c:if test="${nuOffer['new']}">Nueva </c:if> Oferta por número de comensales
     </h2>
     <form:form modelAttribute="nuOffer" class="form-horizontal" id="add-nuOffer-form">
         <div class="form-group has-feedback">
             <form:hidden path="id"/>
             <form:hidden path="code"/>
             <form:hidden path="status"/>
-            <petclinic:inputField label="Fecha de inicio" name="start"/>
-            <petclinic:inputField label="Fecha de fin" name="end"/>
+            <petclinic:inputField label="Fecha de inicio" placeholder="15/06/2021 14:00" name="start"/>
+            <petclinic:inputField label="Fecha de fin" placeholder="15/06/2021 16:00" name="end"/>
             
             <petclinic:inputField label="Oro" name="gold"/>
-            <petclinic:inputField label="descuento de oro" name="discountGold"/>
+            <petclinic:inputField label="Descuento de oro" name="discountGold"/>
             <petclinic:inputField label="Plata" name="silver"/>
             <petclinic:inputField label="Descuento de plata" name="discountSilver"/>
             <petclinic:inputField label="Bronce" name="bronze"/>

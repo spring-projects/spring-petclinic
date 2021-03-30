@@ -8,7 +8,7 @@
 <petclinic:layout pageName="nuOffer">
 
 	<jsp:body>
-        <h2> Â¿Esta seguro de que quiere dar de baja su offer? </h2>
+        <h2> ¿Está seguro de que quiere dar de baja su oferta? </h2>
       		
       		 <form:form modelAttribute="nuOffer" class="form-horizontal">
 	            <input type="hidden" name="gold" value="${nu_offer.gold}" />

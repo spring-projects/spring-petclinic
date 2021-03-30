@@ -8,21 +8,21 @@
 
 <petclinic:layout pageName="speedOffers">
     <h2>
-        <c:if test="${speedOffer['new']}">New </c:if> SpeedOffer
+        <c:if test="${speedOffer['new']}">Nueva </c:if> Oferta por velocidad
     </h2>
     <form:form modelAttribute="speedOffer" class="form-horizontal" id="add-speedOffer-form">
         <div class="form-group has-feedback">
             <form:hidden path="id"/>
             <form:hidden path="code"/>
             <form:hidden path="status"/>
-            <petclinic:inputField label="Start Date" name="start"/>
-            <petclinic:inputField label="End Date" name="end"/>
-            <petclinic:inputField label="Gold" name="gold"/>
-            <petclinic:inputField label="Gold Discount" name="discountGold"/>
-            <petclinic:inputField label="Silver" name="silver"/>
-            <petclinic:inputField label="Silver Discount" name="discountSilver"/>
-            <petclinic:inputField label="Bronze" name="bronze"/>
-            <petclinic:inputField label="Bronze Discount" name="discountBronze"/>
+            <petclinic:inputField label="Fecha de inicio" placeholder="15/06/2021 14:00" name="start"/>
+            <petclinic:inputField label="Fecha de fin" placeholder="15/06/2021 16:00" name="end"/>
+            <petclinic:inputField label="Oro" name="gold"/>
+            <petclinic:inputField label="Descuento oro" name="discountGold"/>
+            <petclinic:inputField label="Plata" name="silver"/>
+            <petclinic:inputField label="Descuento plata" name="discountSilver"/>
+            <petclinic:inputField label="Bronce" name="bronze"/>
+            <petclinic:inputField label="Descuento bronce" name="discountBronze"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

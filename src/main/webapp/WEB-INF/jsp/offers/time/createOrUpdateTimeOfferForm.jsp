@@ -8,15 +8,15 @@
 
 <petclinic:layout pageName="TimeOffers">
     <h2>
-        <c:if test="${timeOffer['new']}">New </c:if> TimeOffer
+        <c:if test="${timeOffer['new']}">Nueva </c:if> Oferta por tiempo
     </h2>
     <form:form modelAttribute="timeOffer" class="form-horizontal" id="add-timeOffer-form">
         <div class="form-group has-feedback">
         	<form:hidden path="id"/>
             <form:hidden path="code"/>
             <form:hidden path="status"/>
-            <petclinic:inputField label="Fecha de inicio" name="start"/>
-            <petclinic:inputField label="Fecha de fin" name="end"/>
+            <petclinic:inputField label="Fecha de inicio" placeholder="15/06/2021 14:00" name="start"/>
+            <petclinic:inputField label="Fecha de fin" placeholder="15/06/2021 16:00" name="end"/>
             
             <petclinic:inputField label="Hora de inicio" name="init"/>
             <petclinic:inputField label="Hora de final" name="finish"/>
@@ -28,10 +28,10 @@
             <div class="col-sm-offset-2 col-sm-10">
                 <c:choose>
                     <c:when test="${timeOffer['new']}">
-                        <button class="btn btn-default" type="submit">Add Offer</button>
+                        <button class="btn btn-default" type="submit">Añadir oferta</button>
                     </c:when>
                     <c:otherwise>
-                        <button class="btn btn-default" type="submit">Update Offer</button>
+                        <button class="btn btn-default" type="submit">Actualizar oferta</button>
                     </c:otherwise>
                 </c:choose>
             </div>
