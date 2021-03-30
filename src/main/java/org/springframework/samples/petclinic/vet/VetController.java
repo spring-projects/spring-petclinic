@@ -21,8 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Map;
 
-
-
 /**
  * @author Juergen Hoeller
  * @author Mark Fisher
