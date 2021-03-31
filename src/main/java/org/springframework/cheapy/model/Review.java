@@ -23,7 +23,18 @@ public class Review extends BaseEntity{
 	@Range(min = 1, max = 5)
 	private Integer stars;
 
+	@ManyToOne
+	@JoinColumn(name = "username", referencedColumnName = "username")
+	private User escritor;
 	
+	public User getEscritor() {
+		return escritor;
+	}
+
+	public void setEscritor(User escritor) {
+		this.escritor = escritor;
+	}
+
 	public String getOpinion() {
 		return opinion;
 	}

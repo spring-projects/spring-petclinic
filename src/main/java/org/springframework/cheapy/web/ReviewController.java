@@ -6,8 +6,11 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.springframework.cheapy.model.Client;
 import org.springframework.cheapy.model.Review;
+import org.springframework.cheapy.model.User;
 import org.springframework.cheapy.service.ReviewService;
+import org.springframework.cheapy.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -21,9 +24,21 @@ public class ReviewController {
 
 	private static final String VIEWS_REVIEWS_CREATE_OR_UPDATE_FORM = "reviews/createOrUpdateReviewForm";
 	private final ReviewService reviewService;
+	private final UserService userService;
 
-	public ReviewController(final ReviewService reviewService) {
+	public ReviewController(final ReviewService reviewService, final UserService userService) {
 		this.reviewService = reviewService;
+		this.userService = userService;
+	}
+	private boolean checkIdentity(final int reviewId) {
+		boolean res = false;
+		User user = this.userService.getCurrentUser();
+		Review review = this.reviewService.findReviewById(reviewId);
+		User reviewsAuthor = review.getEscritor();
+		if (user.equals(reviewsAuthor)) {
+			res = true;
+		}
+		return res;
 	}
 	@GetMapping("/reviews")
 	public String processFindForm( Map<String, Object> model) {
@@ -47,6 +62,9 @@ public class ReviewController {
 		if (result.hasErrors()) {
 			return VIEWS_REVIEWS_CREATE_OR_UPDATE_FORM;
 		} else {
+			User escritor = this.userService.getCurrentUser();
+			review.setEscritor(escritor);
+			
 			this.reviewService.saveReview(review);
 			return "redirect:/reviews/" + review.getId();
 		}
@@ -68,7 +86,9 @@ public class ReviewController {
 
 	@GetMapping(value = "/reviews/{reviewId}/edit")
 	public String updateReview(@PathVariable("reviewId") final int reviewId, final ModelMap model) {
-		
+		if (!this.checkIdentity(reviewId)) {
+			return "error";
+		}
 
 		Review review = this.reviewService.findReviewById(reviewId);
 		model.addAttribute("review", review);
@@ -77,12 +97,17 @@ public class ReviewController {
 
 	@PostMapping(value = "/reviews/{reviewId}/edit")
 	public String updateReview(@Valid final Review reviewEdit, final BindingResult result, final ModelMap model) {
-		
+		if (!this.checkIdentity(reviewEdit.getId())) {
+			return "error";
+		}
 		if (result.hasErrors()) {
 			model.addAttribute("review", reviewEdit);
 			return ReviewController.VIEWS_REVIEWS_CREATE_OR_UPDATE_FORM;
 
 		} else {
+			User escritor = this.userService.getCurrentUser();
+			reviewEdit.setEscritor(escritor);
+			
 			this.reviewService.saveReview(reviewEdit);
 			return "redirect:/reviews/" + reviewEdit.getId();
 		}
