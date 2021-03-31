@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class TimeOfferController {
 
-
 	private static final String VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM = "offers/time/createOrUpdateTimeOfferForm";
 	private final TimeOfferService timeOfferService;
 	private final ClientService clientService;
@@ -29,6 +28,17 @@ public class TimeOfferController {
 	public TimeOfferController(final TimeOfferService timeOfferService, ClientService clientService) {
 		this.timeOfferService = timeOfferService;
 		this.clientService = clientService;
+	}
+	
+	private boolean checkIdentity(final int timeOfferId) {
+		boolean res = false;
+		Client client = this.clientService.getCurrentClient();
+		TimeOffer timeOffer = this.timeOfferService.findTimeOfferById(timeOfferId);
+		Client clientOffer = timeOffer.getClient();
+		if (client.equals(clientOffer)) {
+			res = true;
+		}
+		return res;
 	}
 
 	@GetMapping("/offers/time/new")
@@ -88,6 +98,9 @@ public class TimeOfferController {
 	@GetMapping(value = "/offers/time/{timeOfferId}/edit")
 	public String updateTimeOffer(@PathVariable("timeOfferId") final int timeOfferId, final ModelMap model) {
 		
+		if (!this.checkIdentity(timeOfferId)) {
+			return "error";
+		}
 
 		TimeOffer timeOffer = this.timeOfferService.findTimeOfferById(timeOfferId);
 		model.addAttribute("timeOffer", timeOffer);
@@ -97,6 +110,9 @@ public class TimeOfferController {
 	@PostMapping(value = "/offers/time/{timeOfferId}/edit")
 	public String updateTimeOffer(@Valid final TimeOffer timeOfferEdit, final BindingResult result, final ModelMap model) {
 		
+		if (!this.checkIdentity(timeOfferEdit.getId())) {
+			return "error";
+		}
 
 		if (result.hasErrors()) {
 			model.addAttribute("timeOffer", timeOfferEdit);
@@ -111,16 +127,22 @@ public class TimeOfferController {
 
 	@GetMapping(value = "/offers/time/{timeOfferId}/disable")
 	public String disableTimeOffer(@PathVariable("timeOfferId") final int timeOfferId, final ModelMap model) {
-
+		
+		if (!this.checkIdentity(timeOfferId)) {
+			return "error";
+		}
 
 		TimeOffer timeOffer = this.timeOfferService.findTimeOfferById(timeOfferId);
 		model.put("timeOffer", timeOffer);
-		return "timeOffers/timeOffersDisable";
+		return "offers/time/timeOffersDisable";
 	}
 
 	@PostMapping(value = "/offers/time/{timeOfferId}/disable")
 	public String disableTimeOfferForm(@PathVariable("timeOfferId") final int timeOfferId, final ModelMap model) {
 		
+		if (!this.checkIdentity(timeOfferId)) {
+			return "error";
+		}
 
 		TimeOffer timeOffer = this.timeOfferService.findTimeOfferById(timeOfferId);
 
@@ -128,7 +150,7 @@ public class TimeOfferController {
 
 		this.timeOfferService.saveTimeOffer(timeOffer);
 
-		return "redirect:/offers";
+		return "redirect:/myOffers";
 
 
 	}

@@ -29,7 +29,17 @@ public class SpeedOfferController {
 		this.speedOfferService = speedOfferService;
 		this.clientService = clientService;
 	}
-
+	
+	private boolean checkIdentity(final int speedOfferId) {
+		boolean res = false;
+		Client client = this.clientService.getCurrentClient();
+		SpeedOffer speedOffer = this.speedOfferService.findSpeedOfferById(speedOfferId);
+		Client clientOffer = speedOffer.getClient();
+		if (client.equals(clientOffer)) {
+			res = true;
+		}
+		return res;
+	}
 
 	@GetMapping("/offers/speed/new")
 	public String initCreationForm(Map<String, Object> model) {
@@ -79,6 +89,10 @@ public class SpeedOfferController {
 	@GetMapping(value = "/offers/speed/{speedOfferId}/edit")
 	public String updateSpeedOffer(@PathVariable("speedOfferId") final int speedOfferId, final ModelMap model) {
 		
+		if (!this.checkIdentity(speedOfferId)) {
+			return "error";
+		}
+		
 		SpeedOffer speedOffer = this.speedOfferService.findSpeedOfferById(speedOfferId);
 		model.addAttribute("speedOffer", speedOffer);
 		return SpeedOfferController.VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
@@ -86,6 +100,10 @@ public class SpeedOfferController {
 
 	@PostMapping(value = "/offers/speed/{speedOfferId}/edit")
 	public String updateSpeedOffer(@Valid final SpeedOffer speedOfferEdit, final BindingResult result, final ModelMap model) {
+		
+		if (!this.checkIdentity(speedOfferEdit.getId())) {
+			return "error";
+		}
 		
 		if (result.hasErrors()) {
 			model.addAttribute("speedOffer", speedOfferEdit);
@@ -100,16 +118,22 @@ public class SpeedOfferController {
 
 	@GetMapping(value = "/offers/speed/{speedOfferId}/disable")
 	public String disableSpeedOffer(@PathVariable("speedOfferId") final int speedOfferId, final ModelMap model) {
-
+		
+		if (!this.checkIdentity(speedOfferId)) {
+			return "error";
+		}
 
 		SpeedOffer speedOffer = this.speedOfferService.findSpeedOfferById(speedOfferId);
 		model.put("speedOffer", speedOffer);
-		return "speedOffers/speedOffersDisable";
+		return "offers/speed/speedOffersDisable";
 	}
 
 	@PostMapping(value = "/offers/speed/{speedOfferId}/disable")
 	public String disableSpeedOfferForm(@PathVariable("speedOfferId") final int speedOfferId, final ModelMap model) {
 		
+		if (!this.checkIdentity(speedOfferId)) {
+			return "error";
+		}
 
 		SpeedOffer speedOffer = this.speedOfferService.findSpeedOfferById(speedOfferId);
 
@@ -117,7 +141,7 @@ public class SpeedOfferController {
 
 		this.speedOfferService.saveSpeedOffer(speedOffer);
 
-		return "redirect:/offers";
+		return "redirect:/myOffers";
 
 	}
 }

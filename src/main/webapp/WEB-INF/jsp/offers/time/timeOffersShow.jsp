@@ -4,6 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
 
 <cheapy:layout pageName="timeOffer">
@@ -31,16 +32,20 @@
         </tr>
         </thead>
     </table>
-
+	
+	<sec:authorize access="hasAnyAuthority('client')">
     <spring:url value="{timeOfferId}/edit" var="editUrl">
     <spring:param name="timeOfferId" value="${timeOffer.id}"/>
     </spring:url>
     <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Editar oferta</a>
+    </sec:authorize>
     
+    <sec:authorize access="hasAnyAuthority('client')">
     <spring:url value="{timeOfferId}/disable" var="editUrl">
     <spring:param name="timeOfferId" value="${timeOffer.id}"/>
     </spring:url>
     <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Desactivar oferta</a>
+    </sec:authorize>
 
     <div class="btn-return">
 	    <button type="button" role="link" onclick="window.location='/offers'" style="font-family: 'Lobster'; font-size: 20px;">

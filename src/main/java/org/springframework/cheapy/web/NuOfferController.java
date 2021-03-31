@@ -38,6 +38,17 @@ public class NuOfferController {
 		model.put("nuOffer", nuOffer);
 		return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
 	}
+	
+	private boolean checkIdentity(final int nuOfferId) {
+		boolean res = false;
+		Client client = this.clientService.getCurrentClient();
+		NuOffer nuOffer = this.nuOfferService.findNuOfferById(nuOfferId);
+		Client clientOffer = nuOffer.getClient();
+		if (client.equals(clientOffer)) {
+			res = true;
+		}
+		return res;
+	}
 
 	@PostMapping("/offers/nu/new")
 	public String processCreationForm(@Valid NuOffer nuOffer, BindingResult result) {
@@ -83,7 +94,10 @@ public class NuOfferController {
 
 	@GetMapping(value = "/offers/nu/{nuOfferId}/edit")
 	public String updateNuOffer(@PathVariable("nuOfferId") final int nuOfferId, final ModelMap model) {
-
+		
+		if (!this.checkIdentity(nuOfferId)) {
+			return "error";
+		}
 
 		NuOffer nuOffer = this.nuOfferService.findNuOfferById(nuOfferId);
 		model.addAttribute("nuOffer", nuOffer);
@@ -92,6 +106,10 @@ public class NuOfferController {
 
 	@PostMapping(value = "/offers/nu/{nuOfferId}/edit")
 	public String updateNuOffer(@Valid final NuOffer nuOfferEdit, final BindingResult result, final ModelMap model) {
+		
+		if (!this.checkIdentity(nuOfferEdit.getId())) {
+			return "error";
+		}
 
 		if (result.hasErrors()) {
 			model.addAttribute("nuOffer", nuOfferEdit);
@@ -104,24 +122,28 @@ public class NuOfferController {
 	}
 
 	@GetMapping(value = "/offers/nu/{nuOfferId}/disable")
-	public String disableNuOffer(@PathVariable("nuOfferId") final int nuOfferId, final Principal principal,
-			final ModelMap model) {
+	public String disableNuOffer(@PathVariable("nuOfferId") final int nuOfferId, final Principal principal, final ModelMap model) {
 
+		if (!this.checkIdentity(nuOfferId)) {
+			return "error";
+		}
 
 		NuOffer nuOffer = this.nuOfferService.findNuOfferById(nuOfferId);
 		model.put("nuOffer", nuOffer);
-		return "nuOffers/nuOffersDisable";
+		return "offers/nu/nuOffersDisable";
 	}
 
 	@PostMapping(value = "/offers/nu/{nuOfferId}/disable")
-	public String disableNuOfferForm(@PathVariable("nuOfferId") final int nuOfferId, final Principal principal,
-			final ModelMap model) {
+	public String disableNuOfferForm(@PathVariable("nuOfferId") final int nuOfferId, final Principal principal, final ModelMap model) {
 
-
+		if (!this.checkIdentity(nuOfferId)) {
+			return "error";
+		}
+		
 		NuOffer nuOffer = this.nuOfferService.findNuOfferById(nuOfferId);
 		nuOffer.setStatus(StatusOffer.inactive);
 		this.nuOfferService.saveNuOffer(nuOffer);
-		return "redirect:/offers";
+		return "redirect:/myOffers";
 
 	}
 
