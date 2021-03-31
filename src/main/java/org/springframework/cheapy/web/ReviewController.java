@@ -1,12 +1,10 @@
 package org.springframework.cheapy.web;
 
-
 import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
 
-import org.springframework.cheapy.model.Client;
 import org.springframework.cheapy.model.Review;
 import org.springframework.cheapy.model.User;
 import org.springframework.cheapy.service.ReviewService;

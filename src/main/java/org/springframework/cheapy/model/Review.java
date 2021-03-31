@@ -16,7 +16,7 @@ public class Review extends BaseEntity{
 	
 	private static final long serialVersionUID = 1L;
 	
-	@NotBlank
+	@NotBlank(message = "Debe rellenar la valoración de Cheapy")
 	private String opinion;
 	
 	@NotNull
