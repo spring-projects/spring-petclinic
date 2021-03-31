@@ -35,12 +35,12 @@ public class Offer extends BaseEntity {
 	// Clase padre
 
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
-	@NotNull(message = "Debe introducir una fecha de inicio.")
+	@NotNull(message = "Debe introducir una fecha de inicio")
 	@Future(message = "La fecha debe debe ser futura")
 	private LocalDateTime start;
 
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
-	@NotNull(message = "Debe introducir una fecha de fin.")
+	@NotNull(message = "Debe introducir una fecha de fin")
 	@Future(message = "La fecha debe debe ser futura")
 	private LocalDateTime end;
 

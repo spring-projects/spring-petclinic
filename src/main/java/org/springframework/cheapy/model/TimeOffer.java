@@ -17,11 +17,11 @@ public class TimeOffer extends Offer {
 	// Oferta por franja horaria
 
 	@DateTimeFormat(pattern = "HH:mm")
-	@NotNull
+	@NotNull(message = "Debe introducir una hora de inicio")
 	private LocalTime init;
 
 	@DateTimeFormat(pattern = "HH:mm")
-	@NotNull
+	@NotNull(message = "Debe introducir una hora de fin")
 	private LocalTime finish;
 
 	@NotNull(message = "Debe rellenar el descuento")
