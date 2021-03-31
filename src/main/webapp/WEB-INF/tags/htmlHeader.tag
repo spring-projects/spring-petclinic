@@ -14,7 +14,7 @@ Cheapy :: a Spring Framework demonstration
     <spring:url value="/resources/images/faviconChikito.png" var="favicon"/>
     <link rel="shortcut icon" type="image/x-icon" href="${favicon}">
 
-    <title>Cheapy : eat fast, eat cheapy</title>
+    <title>Cheapy: Eat fast, eat cheapy</title>
 
     <%-- CSS generated from LESS --%>
     <spring:url value="/resources/css/cheapy.css" var="cheapyCss"/>

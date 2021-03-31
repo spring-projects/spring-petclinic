@@ -29,7 +29,7 @@
         </tr>
         <tr>
             <th><fmt:message key="discount"/></th>
-            <td><c:out value="${foodOffer.discount}"/></td>
+            <td><c:out value="${foodOffer.discount} %"/></td>
         </tr>
 
         <tr>

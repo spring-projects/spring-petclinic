@@ -23,7 +23,7 @@
         </tr>
         <tr>
             <th><fmt:message key="discount"/></th>
-            <td><c:out value="${timeOffer.discount}"/></td>
+            <td><c:out value="${timeOffer.discount} %"/></td>
         </tr>
         <tr>
             <th><fmt:message key="offerCode"/></th>

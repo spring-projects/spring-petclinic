@@ -6,6 +6,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Range;
+
 @Entity
 @Table(name = "nu_offers")
 public class NuOffer extends Offer {
@@ -13,31 +15,31 @@ public class NuOffer extends Offer {
 	//Oferta por numero de comensales
 	private static final long serialVersionUID = 1L;
   
-	@NotNull
+	@NotNull(message = "Debe rellenar el tiempo del rango oro")
 	@Min(1)
 	private Integer	gold;
 
 	@Column(name = "discount_gold")
-	@NotNull
-	@Min(0)
+	@NotNull(message = "Debe rellenar el descuento del rango oro")
+	@Range(min = 0, max = 100, message = "El descuento debe estar entre 0 y 100 %")
 	private Integer	discountGold;
 
-	@NotNull
+	@NotNull(message = "Debe rellenar el tiempo del rango plata")
 	@Min(1)
 	private Integer	silver;
 
 	@Column(name = "discount_silver")
-	@NotNull
-	@Min(0)
+	@NotNull(message = "Debe rellenar el descuento del rango plata")
+	@Range(min = 0, max = 100, message = "El descuento debe estar entre 0 y 100 %")
 	private Integer	discountSilver;
 
-	@NotNull
+	@NotNull(message = "Debe rellenar el tiempo del rango bronce")
 	@Min(1)
 	private Integer	bronze;
 
 	@Column(name = "discount_bronze")
-	@NotNull
-	@Min(0)
+	@NotNull(message = "Debe rellenar el descuento del rango bronce")
+	@Range(min = 0, max = 100, message = "El descuento debe estar entre 0 y 100 %")
 	private Integer	discountBronze;
 
 	public Integer getGold() {

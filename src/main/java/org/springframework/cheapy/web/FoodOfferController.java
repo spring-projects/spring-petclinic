@@ -31,7 +31,6 @@ public class FoodOfferController {
 		this.clientService = clientService;
 	}
 
-
 	@GetMapping("/offers/food/new")
 	public String initCreationForm(Map<String, Object> model) {
 		FoodOffer foodOffer = new FoodOffer();

@@ -26,7 +26,7 @@
         </tr>
         <tr>
             <th><fmt:message key="goldDiscount"/></th>
-            <td><c:out value="${speedOffer.discountGold}"/></td>
+            <td><c:out value="${speedOffer.discountGold} %"/></td>
         </tr>
         <tr>
             <th><fmt:message key="silverGoal"/></th>
@@ -34,7 +34,7 @@
         </tr>
         <tr>
             <th><fmt:message key="silverDiscount"/></th>
-            <td><c:out value="${speedOffer.discountSilver}"/></td>
+            <td><c:out value="${speedOffer.discountSilver} %"/></td>
         </tr>
         <tr>
             <th><fmt:message key="bronzeGoal"/></th>
@@ -42,7 +42,7 @@
         </tr>
         <tr>
             <th><fmt:message key="bronzeDiscount"/></th>
-            <td><c:out value="${speedOffer.discountBronze}"/></td>
+            <td><c:out value="${speedOffer.discountBronze} %"/></td>
         </tr>
         <tr>
             <th><fmt:message key="offerCode"/></th>

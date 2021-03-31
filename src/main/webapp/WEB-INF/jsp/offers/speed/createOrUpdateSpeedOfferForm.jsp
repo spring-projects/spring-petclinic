@@ -4,9 +4,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
 
-<petclinic:layout pageName="speedOffers">
+<cheapy:layout pageName="speedOffers">
     <h2>
         <c:if test="${speedOffer['new']}">Nueva </c:if> Oferta por velocidad
     </h2>
@@ -15,14 +15,14 @@
             <form:hidden path="id"/>
             <form:hidden path="code"/>
             <form:hidden path="status"/>
-            <petclinic:inputField label="Fecha de inicio" placeholder="15/06/2021 14:00" name="start"/>
-            <petclinic:inputField label="Fecha de fin" placeholder="15/06/2021 16:00" name="end"/>
-            <petclinic:inputField label="Oro" name="gold"/>
-            <petclinic:inputField label="Descuento oro" name="discountGold"/>
-            <petclinic:inputField label="Plata" name="silver"/>
-            <petclinic:inputField label="Descuento plata" name="discountSilver"/>
-            <petclinic:inputField label="Bronce" name="bronze"/>
-            <petclinic:inputField label="Descuento bronce" name="discountBronze"/>
+            <cheapy:inputField label="Fecha de inicio" placeholder="15/06/2021 14:00" name="start"/>
+            <cheapy:inputField label="Fecha de fin" placeholder="15/06/2021 16:00" name="end"/>
+            <cheapy:inputField label="Oro" name="gold"/>
+            <cheapy:inputField label="Descuento oro" name="discountGold"/>
+            <cheapy:inputField label="Plata" name="silver"/>
+            <cheapy:inputField label="Descuento plata" name="discountSilver"/>
+            <cheapy:inputField label="Bronce" name="bronze"/>
+            <cheapy:inputField label="Descuento bronce" name="discountBronze"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
@@ -37,4 +37,4 @@
             </div>
         </div>
     </form:form>
-</petclinic:layout>
+</cheapy:layout>

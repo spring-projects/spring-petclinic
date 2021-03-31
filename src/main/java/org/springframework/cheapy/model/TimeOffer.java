@@ -24,7 +24,7 @@ public class TimeOffer extends Offer {
 	@NotNull
 	private LocalTime finish;
 
-	@NotNull
+	@NotNull(message = "Debe rellenar el descuento")
 	private Integer discount;
 
 	public LocalTime getInit() {
