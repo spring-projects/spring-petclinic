@@ -35,7 +35,7 @@
 				</cheapy:menuItem>
 				
 				<sec:authorize access="hasAnyAuthority('client')">
-				<cheapy:menuItem active="${name eq 'ofertas'}" url="/myOffers" title="misOfertas">
+				<cheapy:menuItem active="${name eq 'ofertasM'}" url="/myOffers" title="misOfertas">
 					<span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>
 					<span>Mis ofertas</span>
 				</cheapy:menuItem>
@@ -47,7 +47,16 @@
 					<span>Contáctanos</span>
 				</cheapy:menuItem>
 				-->
-				
+				<sec:authorize access="isAuthenticated()">
+				<cheapy:menuItem active="${name eq 'reviews'}" url="/reviews" title="opiniones">
+					<span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>
+					<span>Opiniones</span>
+				</cheapy:menuItem>
+				<cheapy:menuItem active="${name eq 'reviewsN'}" url="/reviews/new" title="valóranos">
+					<span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>
+					<span>Valóranos</span>
+				</cheapy:menuItem>
+				</sec:authorize>
 
 			</ul>
 
