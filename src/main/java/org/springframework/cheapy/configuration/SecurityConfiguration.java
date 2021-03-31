@@ -37,7 +37,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.antMatchers("/users/new").permitAll()
 
 		.antMatchers("/login/**").anonymous()
-		.antMatchers("/logout").permitAll()
+		.antMatchers("/logout").authenticated()
 
 		.antMatchers("/usuarios/new").permitAll()
 		.antMatchers("/admin/**").hasAnyAuthority("admin")
@@ -50,11 +50,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.antMatchers("/clients/new").permitAll()
 		.antMatchers("/offers/**").permitAll()
 
+		.antMatchers("/reviews/**").authenticated()
 
 		.and().formLogin()
-			.loginPage("/login").permitAll()
+			.loginPage("/login")
 			.failureUrl("/login?error")
-		    .and().logout().logoutSuccessUrl("/login");
+		    .and().logout().logoutSuccessUrl("/");
 
 		// Configuración para que funcione la consola de administración
 		// de la BD H2 (deshabilitar las cabeceras de protección contra
