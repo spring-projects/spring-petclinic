@@ -30,7 +30,17 @@ public class FoodOfferController {
 		this.foodOfferService = foodOfferService;
 		this.clientService = clientService;
 	}
-
+	
+	private boolean checkIdentity(final int foodOfferId) {
+		boolean res = false;
+		Client client = this.clientService.getCurrentClient();
+		FoodOffer foodOffer = this.foodOfferService.findFoodOfferById(foodOfferId);
+		Client clientOffer = foodOffer.getClient();
+		if (client.equals(clientOffer)) {
+			res = true;
+		}
+		return res;
+	}
 
 	@GetMapping("/offers/food/new")
 	public String initCreationForm(Map<String, Object> model) {
@@ -76,7 +86,6 @@ public class FoodOfferController {
 		
 		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
 		
-		
 		return "offers/food/foodOffersShow";
 
 	}
@@ -84,14 +93,21 @@ public class FoodOfferController {
 	@GetMapping(value = "/offers/food/{foodOfferId}/edit")
 	public String updateFoodOffer(@PathVariable("foodOfferId") final int foodOfferId, final ModelMap model) {
 		
+		if (!this.checkIdentity(foodOfferId)) {
+			return "error";
+		}
+		
 		FoodOffer foodOffer = this.foodOfferService.findFoodOfferById(foodOfferId);
 		model.addAttribute("foodOffer", foodOffer);
 		return FoodOfferController.VIEWS_FOOD_OFFER_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping(value = "/offers/food/{foodOfferId}/edit")
-	public String updateFoodOffer(@Valid final FoodOffer foodOfferEdit, final BindingResult result,
-			final ModelMap model) {
+	public String updateFoodOffer(@Valid final FoodOffer foodOfferEdit, final BindingResult result, final ModelMap model) {
+		
+		if (!this.checkIdentity(foodOfferEdit.getId())) {
+			return "error";
+		}
 
 		if (result.hasErrors()) {
 			model.addAttribute("foodOffer", foodOfferEdit);
@@ -105,16 +121,22 @@ public class FoodOfferController {
 
 	@GetMapping(value = "/offers/food/{foodOfferId}/disable")
 	public String disableFoodOffer(@PathVariable("foodOfferId") final int foodOfferId, final ModelMap model) {
-
+		
+		if (!this.checkIdentity(foodOfferId)) {
+			return "error";
+		}
 
 		FoodOffer foodOffer = this.foodOfferService.findFoodOfferById(foodOfferId);
 		model.put("foodOffer", foodOffer);
-		return "foodOffers/foodOffersDisable";
+		return "offers/food/foodOffersDisable";
 	}
 
 	@PostMapping(value = "/offers/food/{foodOfferId}/disable")
 	public String disableFoodOfferForm(@PathVariable("foodOfferId") final int foodOfferId, final ModelMap model) {
-
+		
+		if (!this.checkIdentity(foodOfferId)) {
+			return "error";
+		}
 
 		FoodOffer foodOffer = this.foodOfferService.findFoodOfferById(foodOfferId);
 
@@ -122,7 +144,7 @@ public class FoodOfferController {
 
 		this.foodOfferService.saveFoodOffer(foodOffer);
 
-		return "redirect:/offers";
+		return "redirect:/myOffers";
 
 	}
 }

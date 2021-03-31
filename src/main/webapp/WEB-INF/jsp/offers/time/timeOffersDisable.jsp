@@ -2,10 +2,10 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
+<%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<petclinic:layout pageName="foodOffer">
+<cheapy:layout pageName="foodOffer">
 
 	<jsp:body>
         <h2> ¿Está seguro de que quiere eliminar su oferta? </h2>
@@ -21,4 +21,4 @@
             <a class="btn btn-default" href='<spring:url value="/offers" htmlEscape="true"/>'>Volver</a>
            
     </jsp:body>
-</petclinic:layout>
+</cheapy:layout>

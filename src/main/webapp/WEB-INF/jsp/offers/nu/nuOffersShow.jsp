@@ -4,6 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
 
 <cheapy:layout pageName="nuOffer">
@@ -26,7 +27,7 @@
         </tr>
         <tr>
             <th><fmt:message key="goldDiscount"/></th>
-            <td><c:out value="${nuOffer.discountGold}"/></td>
+            <td><c:out value="${nuOffer.discountGold} %"/></td>
         </tr>
         <tr>
             <th><fmt:message key="silverGoal"/></th>
@@ -34,7 +35,7 @@
         </tr>
         <tr>
             <th><fmt:message key="silverDiscount"/></th>
-            <td><c:out value="${nuOffer.discountSilver}"/></td>
+            <td><c:out value="${nuOffer.discountSilver} %"/></td>
         </tr>
         <tr>
             <th><fmt:message key="bronzeGoal"/></th>
@@ -42,7 +43,7 @@
         </tr>
         <tr>
             <th><fmt:message key="bronzeDiscount"/></th>
-            <td><c:out value="${nuOffer.discountBronze}"/></td>
+            <td><c:out value="${nuOffer.discountBronze} %"/></td>
         </tr>
         <tr>
             <th><fmt:message key="offerCode"/></th>
@@ -55,15 +56,19 @@
 	    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true" style="padding: 5px"> </span>
 	    <fmt:message key="return"/> </button>
     </div>
-
+    
+	<sec:authorize access="hasAnyAuthority('client')">
     <spring:url value="{nuOfferId}/edit" var="editUrl">
     <spring:param name="nuOfferId" value="${nuOffer.id}"/>
     </spring:url>
     <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Editar oferta</a>
+    </sec:authorize>
     
+    <sec:authorize access="hasAnyAuthority('client')">
     <spring:url value="{nuOfferId}/disable" var="editUrl">
     <spring:param name="nuOfferId" value="${nuOffer.id}"/>
     </spring:url>
     <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Desactivar oferta</a>
+    </sec:authorize>
 
 </cheapy:layout>
