@@ -8,7 +8,7 @@
 
 <cheapy:layout pageName="reviewsN">
     <h2>
-        <c:if test="${review['new']}">Nueva </c:if> Opinión
+        <c:if test="${review['new']}">Nueva </c:if> Reseña
     </h2>
     <form:form modelAttribute="review" class="form-horizontal" id="add-review-form">
         <div class="form-group has-feedback">
@@ -20,10 +20,10 @@
             <div class="col-sm-offset-2 col-sm-10">
                 <c:choose>
                     <c:when test="${review['new']}">
-                        <button class="btn btn-default" type="submit">Crear Opinión</button>
+                        <button class="btn btn-default" type="submit">Crear Reseña</button>
                     </c:when>
                     <c:otherwise>
-                        <button class="btn btn-default" type="submit">Modificar Opinión</button>
+                        <button class="btn btn-default" type="submit">Modificar Reseña</button>
                     </c:otherwise>
                 </c:choose>
             </div>
