@@ -37,6 +37,11 @@
     </spring:url>
     <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Editar oferta</a>
     
+    <spring:url value="{timeOfferId}/activate" var="activateUrl">
+    <spring:param name="timeOfferId" value="${timeOffer.id}"/>
+    </spring:url>
+    <a href="${fn:escapeXml(activateUrl)}" class="btn btn-default">Activar oferta</a>
+    
     <spring:url value="{timeOfferId}/disable" var="editUrl">
     <spring:param name="timeOfferId" value="${timeOffer.id}"/>
     </spring:url>
