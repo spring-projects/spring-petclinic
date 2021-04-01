@@ -18,8 +18,10 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Running build automation'
-                sh 'mvn clean'
-                archiveArtifacts artifacts: 'dist/petclinic.zip'
+                sh '''
+                   mvn clean
+                   mvn build
+                   '''
            }
         }
         stage('Test') {
