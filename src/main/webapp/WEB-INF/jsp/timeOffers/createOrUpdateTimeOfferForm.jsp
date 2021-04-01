@@ -16,12 +16,12 @@
         	<form:hidden path="id"/>
             <form:hidden path="code"/>
             <form:hidden path="status"/>
-            <petclinic:inputField label="Fecha de inicio" name="start"/>
-            <petclinic:inputField label="Fecha de fin" name="end"/>
+            <petclinic:inputField label="Fecha de inicio" placeholder="dd/MM/yyyy HH:mm" name="start"/>
+            <petclinic:inputField label="Fecha de fin" placeholder="dd/MM/yyyy HH:mm" name="end"/>
             
-            <petclinic:inputField label="Hora de inicio" name="init"/>
-            <petclinic:inputField label="Hora de final" name="finish"/>
-            <petclinic:inputField label="Decuento" name="discount"/>
+            <petclinic:inputField label="Hora de inicio" placeholder="HH:mm" name="init"/>
+            <petclinic:inputField label="Hora de final" placeholder="HH:mm" name="finish"/>
+            <petclinic:inputField label="Descuento" placeholder="XX% (Ej.15)" name="discount"/>
 
             </div>
         <div class="form-group">

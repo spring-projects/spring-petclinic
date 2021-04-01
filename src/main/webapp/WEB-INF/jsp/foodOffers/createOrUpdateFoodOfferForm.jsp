@@ -16,10 +16,10 @@
         	<form:hidden path="id"/>
             <form:hidden path="code"/>
             <form:hidden path="status"/>
-            <petclinic:inputField label="Start Date" name="start"/>
-            <petclinic:inputField label="End Date" name="end"/>
-            <petclinic:inputField label="Food" name="food"/>
-            <petclinic:inputField label="Discount" name="discount"/>
+            <petclinic:inputField label="Fecha de Inicio" placeholder="dd/MM/yyyy HH:mm" name="start"/>
+            <petclinic:inputField label="Fecha de Fin" placeholder="dd/MM/yyyy HH:mm" name="end"/>
+            <petclinic:inputField label="Plato" placeholder="Ej. Macarrones" name="food"/>
+            <petclinic:inputField label="Descuento" placeholder="Ej. 50" name="discount"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

@@ -12,6 +12,9 @@ import org.springframework.cheapy.service.FoodOfferService;
 import org.springframework.cheapy.service.NuOfferService;
 import org.springframework.cheapy.service.SpeedOfferService;
 import org.springframework.cheapy.service.TimeOfferService;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -49,6 +52,12 @@ public class OfertaController {
 		
 		return "offers/offersList";
 
+	}
+	
+	@GetMapping("/offersCreate")
+	public String createOffers() {
+		
+		return "offers/offersCreate";
 	}
 
 //	@GetMapping("/owners/{ownerId}/edit")

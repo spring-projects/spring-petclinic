@@ -25,7 +25,7 @@
 				<cheapy:menuItem active="${name eq 'home'}" url="/"
 					title="home page">
 					<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-					<span>Home</span>
+					<span>Inicio</span>
 				</cheapy:menuItem>
 				
 				<cheapy:menuItem active="${name eq 'ofertas'}" url="/offers"

@@ -16,14 +16,14 @@
             <form:hidden path="id"/>
             <form:hidden path="code"/>
             <form:hidden path="status"/>
-            <petclinic:inputField label="Start Date" name="start"/>
-            <petclinic:inputField label="End Date" name="end"/>
-            <petclinic:inputField label="Gold" name="gold"/>
-            <petclinic:inputField label="Gold Discount" name="discountGold"/>
-            <petclinic:inputField label="Silver" name="silver"/>
-            <petclinic:inputField label="Silver Discount" name="discountSilver"/>
-            <petclinic:inputField label="Bronze" name="bronze"/>
-            <petclinic:inputField label="Bronze Discount" name="discountBronze"/>
+            <petclinic:inputField label="Fecha de Inicio" placeholder="dd/MM/yyyy HH:mm" name="start"/>
+            <petclinic:inputField label="Fecha de Fin"  placeholder="dd/MM/yyyy HH:mm" name="end"/>
+            <petclinic:inputField label="Tiempo para comer (nivel Oro)" placeholder="XX minutos (Ej. 5)" name="gold"/>
+            <petclinic:inputField label="Descuento nivel Oro" placeholder="XX% (Ej. 35)" name="discountGold"/>
+            <petclinic:inputField label="Tiempo para comer (nivel Plata)" placeholder="XX minutos (Ej. 10)" name="silver"/>
+            <petclinic:inputField label="Descuento nivel Plata" placeholder="XX% (Ej. 15)" name="discountSilver"/>
+            <petclinic:inputField label="Tiempo para comer (nivel Bronce)" placeholder="XX minutos (Ej. 20)" name="bronze"/>
+            <petclinic:inputField label="Descuento nivel Bronce" placeholder="XX% (Ej. 5)" name="discountBronze"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
