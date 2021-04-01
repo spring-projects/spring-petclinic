@@ -19,7 +19,7 @@ pipeline {
             steps {
                 echo 'Running build automation'
                 sh '''
-                        ./mvnw package
+                        ./mvnw clean
                    '''
            }
         }
