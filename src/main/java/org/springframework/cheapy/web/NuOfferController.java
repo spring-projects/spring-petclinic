@@ -4,20 +4,19 @@ import java.security.Principal;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.cheapy.model.NuOffer;
 import org.springframework.cheapy.model.StatusOffer;
+import org.springframework.beans.BeanUtils;
 import org.springframework.cheapy.model.Client;
 import org.springframework.cheapy.service.ClientService;
 import org.springframework.cheapy.service.NuOfferService;
 import org.springframework.stereotype.Controller;
-
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -34,11 +33,6 @@ public class NuOfferController {
 		this.clientService = clientService;
 	}
 
-//	@InitBinder
-//    public void setAllowedFields(WebDataBinder dataBinder) {
-//        dataBinder.setDisallowedFields("id");
-//    }
-
 	@GetMapping("/offers/nu/new")
 	public String initCreationForm(Map<String, Object> model) {
 		NuOffer nuOffer = new NuOffer();
@@ -52,6 +46,15 @@ public class NuOfferController {
 		NuOffer nuOffer = this.nuOfferService.findNuOfferById(nuOfferId);
 		Client clientOffer = nuOffer.getClient();
 		if (client.equals(clientOffer)) {
+			res = true;
+		}
+		return res;
+	}
+
+	private boolean checkOffer(final NuOffer session, final NuOffer offer) {
+		boolean res = false;
+		if (session.getId() == offer.getId() && session.getStatus() == offer.getStatus()
+				&& (session.getCode() == null ? offer.getCode() == "" : session.getCode().equals(offer.getCode())) && !(session.getStatus().equals(StatusOffer.inactive))) {
 			res = true;
 		}
 		return res;
@@ -100,21 +103,31 @@ public class NuOfferController {
 	}
 
 	@GetMapping(value = "/offers/nu/{nuOfferId}/edit")
-	public String updateNuOffer(@PathVariable("nuOfferId") final int nuOfferId, final ModelMap model) {
+	public String updateNuOffer(@PathVariable("nuOfferId") final int nuOfferId, final ModelMap model,
+			HttpServletRequest request) {
 
 		if (!this.checkIdentity(nuOfferId)) {
 			return "error";
 		}
-
 		NuOffer nuOffer = this.nuOfferService.findNuOfferById(nuOfferId);
+		if (nuOffer.getStatus().equals(StatusOffer.inactive)) {
+			return "error";
+		}
 		model.addAttribute("nuOffer", nuOffer);
+		request.getSession().setAttribute("idNu", nuOfferId);
 		return NuOfferController.VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping(value = "/offers/nu/{nuOfferId}/edit")
-	public String updateNuOffer(@Valid final NuOffer nuOfferEdit, final BindingResult result, final ModelMap model) {
+	public String updateNuOffer(@Valid final NuOffer nuOfferEdit, final BindingResult result, final ModelMap model,
+			HttpServletRequest request) {
 
 		if (!this.checkIdentity(nuOfferEdit.getId())) {
+			return "error";
+		}
+		Integer id = (Integer) request.getSession().getAttribute("idNu");
+		NuOffer nuOffer = this.nuOfferService.findNuOfferById(id);
+		if (!this.checkOffer(nuOffer, nuOfferEdit)) {
 			return "error";
 		}
 
@@ -123,6 +136,8 @@ public class NuOfferController {
 			return NuOfferController.VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
 
 		} else {
+			BeanUtils.copyProperties(this.nuOfferService.findNuOfferById(nuOfferEdit.getId()), nuOfferEdit, "start",
+					"end", "gold", "discount_gold", "silver", "discount_silver", "bronze", "discount_bronze");
 			this.nuOfferService.saveNuOffer(nuOfferEdit);
 			return "redirect:/offers/nu/" + nuOfferEdit.getId();
 		}

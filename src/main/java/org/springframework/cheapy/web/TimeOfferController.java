@@ -1,11 +1,12 @@
 package org.springframework.cheapy.web;
 
-
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.cheapy.model.Client;
 import org.springframework.cheapy.model.StatusOffer;
 import org.springframework.cheapy.model.TimeOffer;
@@ -29,13 +30,22 @@ public class TimeOfferController {
 		this.timeOfferService = timeOfferService;
 		this.clientService = clientService;
 	}
-	
+
 	private boolean checkIdentity(final int timeOfferId) {
 		boolean res = false;
 		Client client = this.clientService.getCurrentClient();
 		TimeOffer timeOffer = this.timeOfferService.findTimeOfferById(timeOfferId);
 		Client clientOffer = timeOffer.getClient();
 		if (client.equals(clientOffer)) {
+			res = true;
+		}
+		return res;
+	}
+
+	private boolean checkOffer(final TimeOffer session, final TimeOffer offer) {
+		boolean res = false;
+		if (session.getId() == offer.getId() && session.getStatus() == offer.getStatus()
+				&& (session.getCode() == null ? offer.getCode() == "" : session.getCode().equals(offer.getCode())) && !(session.getStatus().equals(StatusOffer.inactive))) {
 			res = true;
 		}
 		return res;
@@ -64,7 +74,7 @@ public class TimeOfferController {
 		}
 	}
 
-	@GetMapping(value ="/offers/time/{timeOfferId}/activate")
+	@GetMapping(value = "/offers/time/{timeOfferId}/activate")
 	public String activateTimeOffer(@PathVariable("timeOfferId") final int timeOfferId, final ModelMap modelMap) {
 		Client client = this.clientService.getCurrentClient();
 		TimeOffer timeOffer = this.timeOfferService.findTimeOfferById(timeOfferId);
@@ -73,12 +83,10 @@ public class TimeOfferController {
 			timeOffer.setCode("TI-" + timeOfferId);
 			this.timeOfferService.saveTimeOffer(timeOffer);
 
-			
 		} else {
 			modelMap.addAttribute("message", "You don't have access to this time offer");
 		}
 		return "redirect:/offers/time/" + timeOffer.getId();
-
 
 	}
 
@@ -90,27 +98,38 @@ public class TimeOfferController {
 		model.put("timeOffer", timeOffer);
 
 		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-		
+
 		return "offers/time/timeOffersShow";
 
 	}
 
 	@GetMapping(value = "/offers/time/{timeOfferId}/edit")
-	public String updateTimeOffer(@PathVariable("timeOfferId") final int timeOfferId, final ModelMap model) {
-		
+	public String updateTimeOffer(@PathVariable("timeOfferId") final int timeOfferId, final ModelMap model,
+			HttpServletRequest request) {
+
 		if (!this.checkIdentity(timeOfferId)) {
 			return "error";
 		}
-
 		TimeOffer timeOffer = this.timeOfferService.findTimeOfferById(timeOfferId);
+		if (timeOffer.getStatus().equals(StatusOffer.inactive)) {
+			return "error";
+		}
+
 		model.addAttribute("timeOffer", timeOffer);
+		request.getSession().setAttribute("idTime", timeOfferId);
 		return TimeOfferController.VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping(value = "/offers/time/{timeOfferId}/edit")
-	public String updateTimeOffer(@Valid final TimeOffer timeOfferEdit, final BindingResult result, final ModelMap model) {
-		
+	public String updateTimeOffer(@Valid final TimeOffer timeOfferEdit, final BindingResult result,
+			final ModelMap model, HttpServletRequest request) {
+
 		if (!this.checkIdentity(timeOfferEdit.getId())) {
+			return "error";
+		}
+		Integer id = (Integer) request.getSession().getAttribute("idTime");
+		TimeOffer timeOffer = this.timeOfferService.findTimeOfferById(id);
+		if (!this.checkOffer(timeOffer, timeOfferEdit)) {
 			return "error";
 		}
 
@@ -119,6 +138,8 @@ public class TimeOfferController {
 			return TimeOfferController.VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
 
 		} else {
+			BeanUtils.copyProperties(this.timeOfferService.findTimeOfferById(timeOfferEdit.getId()), timeOfferEdit,
+					"start", "end", "init", "finish", "discount");
 			this.timeOfferService.saveTimeOffer(timeOfferEdit);
 			return "redirect:/offers/time/" + timeOfferEdit.getId();
 		}
@@ -127,7 +148,7 @@ public class TimeOfferController {
 
 	@GetMapping(value = "/offers/time/{timeOfferId}/disable")
 	public String disableTimeOffer(@PathVariable("timeOfferId") final int timeOfferId, final ModelMap model) {
-		
+
 		if (!this.checkIdentity(timeOfferId)) {
 			return "error";
 		}
@@ -139,7 +160,7 @@ public class TimeOfferController {
 
 	@PostMapping(value = "/offers/time/{timeOfferId}/disable")
 	public String disableTimeOfferForm(@PathVariable("timeOfferId") final int timeOfferId, final ModelMap model) {
-		
+
 		if (!this.checkIdentity(timeOfferId)) {
 			return "error";
 		}
@@ -151,7 +172,6 @@ public class TimeOfferController {
 		this.timeOfferService.saveTimeOffer(timeOffer);
 
 		return "redirect:/myOffers";
-
 
 	}
 

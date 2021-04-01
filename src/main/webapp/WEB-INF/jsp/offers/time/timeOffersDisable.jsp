@@ -11,10 +11,6 @@
         <h2> ¿Está seguro de que quiere eliminar su oferta? </h2>
       		
       		<form:form modelAttribute="foodOffer" class="form-horizontal">
-	            <input type="hidden" name="init" value="${time_offer.init}" />
-	            <input type="hidden" name="finish" value="${time_offer.finish}" />
-	            <input type="hidden" name="discount" value="${time_offer.discount}" />
-
         		<button class="btn btn-default" type="submit">Eliminar Oferta</button>
         	</form:form>
         

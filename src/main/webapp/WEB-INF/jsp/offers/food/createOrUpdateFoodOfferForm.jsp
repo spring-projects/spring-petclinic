@@ -10,6 +10,7 @@
     <h2>
         <c:if test="${foodOffer['new']}">Nueva </c:if> Oferta de plato específico
     </h2>
+    
     <form:form modelAttribute="foodOffer" class="form-horizontal" id="add-foodOffer-form">
         <div class="form-group has-feedback">
         	<form:hidden path="id"/>
