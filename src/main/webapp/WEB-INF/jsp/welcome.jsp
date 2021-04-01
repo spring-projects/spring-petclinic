@@ -6,7 +6,7 @@
 <!-- %@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %-->  
 
 <cheapy:layout pageName="home">
-    <h2 class="text-center" style="font-family: 'Lobster'; font-size: 50px; color: rgb(0, 64, 128); padding:20px"><fmt:message key="welcome"/></h2>
+    <h2 class="text-center" style="font-family: 'Lobster'; font-size: 60px; color: rgb(0, 64, 128); padding:30px"><fmt:message key="welcome"/></h2>
     <div class="row">
         <div class="col-md-12">
             <div class="img-home">
@@ -14,8 +14,9 @@
                 <img class="img-responsive" src="${cheapyImage}"/>
             </div>
             <div class="btn-home">
-                <button type="button"><span class="glyphicon glyphicon-cutlery" aria-hidden="true" style="padding: 5px"></span>  Ver Ofertas</button>
-                
+                <button type="button" role="link" onclick="window.location='/offers'" style="font-family: 'Lobster'; font-size: 20px;">
+                <span class="glyphicon glyphicon-cutlery" aria-hidden="true" style="padding: 5px"> </span>
+                <fmt:message key="listOffers"/> </button>
             </div>
         </div>
     </div>

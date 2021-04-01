@@ -25,7 +25,7 @@
 				<cheapy:menuItem active="${name eq 'home'}" url="/"
 					title="home page">
 					<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-					<span>Home</span>
+					<span>Inicio</span>
 				</cheapy:menuItem>
 				
 				<cheapy:menuItem active="${name eq 'ofertas'}" url="/offers"
@@ -34,12 +34,19 @@
 					<span>Ver ofertas</span>
 				</cheapy:menuItem>
 				
+				<sec:authorize access="hasAnyAuthority('client')">
+				<cheapy:menuItem active="${name eq 'ofertas'}" url="/myOffers" title="misOfertas">
+					<span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>
+					<span>Mis ofertas</span>
+				</cheapy:menuItem>
+				</sec:authorize>
+				<!--  
 				<cheapy:menuItem active="${name eq 'contactanos'}" url="/contactanos"
 					title="contactanos">
 					<span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>
 					<span>Contáctanos</span>
 				</cheapy:menuItem>
-
+				-->
 				
 
 			</ul>
@@ -48,7 +55,7 @@
 			<ul class="nav navbar-nav navbar-right">
 				<sec:authorize access="!isAuthenticated()">
 					<li><a href="<c:url value="/login" />">Login</a></li>
-					<li><a href="<c:url value="/users/new" />">Register</a></li>
+					<!--<li><a href="<c:url value="/users/new" />">Register</a></li>-->
 				</sec:authorize>
 				<sec:authorize access="isAuthenticated()">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
@@ -59,10 +66,10 @@
 						<ul class="dropdown-menu">
 							<li>
 								<div class="navbar-login">
-									<div class="row">
-										<div class="col-lg-4">
+									<div class="row" >
+										<div class="col-lg-4" style="">
 											<p class="text-center">
-												<span class="glyphicon glyphicon-user icon-size"></span>
+												<span class="glyphicon glyphicon-user icon-size" ></span>
 											</p>
 										</div>
 										<div class="col-lg-8">
@@ -71,7 +78,7 @@
 											</p>
 											<form action="/logout" method=post>
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-												<input type="submit" value="logout">
+												<input type="submit" value="logout" style="align-content:center;color:white;background-color:#004080;padding:10px; border:none; text-align:center">
 											</form>
 										</div>
 									</div>

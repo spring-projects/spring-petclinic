@@ -6,7 +6,7 @@
 <%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
 <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
 
-<cheapy:layout pageName="ofertas">
+<cheapy:layout pageName="myOffers">
     <h2 style="text-align:center;padding:5px"><fmt:message key="foodOffers"/></h2>
 
     <table id="foodOfferTable" class="table table-striped">

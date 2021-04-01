@@ -1,6 +1,6 @@
 package org.springframework.cheapy.model;
 
-import java.time.LocalTime;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,31 +13,31 @@ import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 @Entity
 @Table(name = "clients")
-public class Client extends BaseEntity{
-	/**
-	 * 
-	 */
+public class Client extends BaseEntity {
+
 	private static final long serialVersionUID = 1L;
 
-	// (id, email, address, init, finish, telephone, description, code, food, usuar)
+	// (id, name, email, address, init, finish, telephone, description, code, food,
+	// usuar)
+
+	@NotEmpty
+	private String name;
 
 	@NotEmpty
 	private String email;
-	
+
 	@NotEmpty
 	private String address;
 
-	//@DateTimeFormat(pattern = "HH:mm")
-    @NotBlank
-    private String init;
+	// Hora de apertura del local
+	@NotBlank
+	private String init;
 
-    //@DateTimeFormat(pattern = "HH:mm")
-    @NotBlank
-    private String finish;
+	// Hora de cierre del local
+	@NotBlank
+	private String finish;
 
 	@NotEmpty
 	@Digits(fraction = 0, integer = 10)
@@ -46,38 +46,45 @@ public class Client extends BaseEntity{
 	@NotEmpty
 	private String description;
 
+	// Codigo de activacion de cuenta
 	@NotEmpty
 	private String code;
 
 	@NotEmpty
 	private String food;
-	
+
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "username", referencedColumnName = "username")
 	private User usuar;
-	
+
 	@OneToMany
-	private Set<FoodOffer> foodOffers;
-	
+	private List<FoodOffer> foodOffers;
+
 	@OneToMany
-	private Set<NuOffer> nuOffers;
-	
+	private List<NuOffer> nuOffers;
+
 	@OneToMany
-	private Set<SpeedOffer> speedOffers;
-	
+	private List<SpeedOffer> speedOffers;
+
 	@OneToMany
-	private Set<TimeOffer> timeOffers;
-	
-	
-	
+	private List<TimeOffer> timeOffers;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String getEmail() {
 		return email;
 	}
-	
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 	public String getAddress() {
 		return address;
 	}
@@ -85,7 +92,6 @@ public class Client extends BaseEntity{
 	public void setAddress(String address) {
 		this.address = address;
 	}
-
 
 	public String getInit() {
 		return init;
@@ -101,14 +107,6 @@ public class Client extends BaseEntity{
 
 	public void setFinish(String finish) {
 		this.finish = finish;
-	}
-
-	public User getUsername() {
-		return usuar;
-	}
-
-	public void setUsername(User username) {
-		this.usuar = username;
 	}
 
 	public String getTelephone() {
@@ -143,35 +141,43 @@ public class Client extends BaseEntity{
 		this.food = food;
 	}
 
-	public Set<FoodOffer> getFoodOffers() {
+	public User getUsuar() {
+		return usuar;
+	}
+
+	public void setUsuar(User usuar) {
+		this.usuar = usuar;
+	}
+
+	public List<FoodOffer> getFoodOffers() {
 		return foodOffers;
 	}
 
-	public void setFoodOffers(Set<FoodOffer> foodOffers) {
+	public void setFoodOffers(List<FoodOffer> foodOffers) {
 		this.foodOffers = foodOffers;
 	}
 
-	public Set<NuOffer> getNuOffers() {
+	public List<NuOffer> getNuOffers() {
 		return nuOffers;
 	}
 
-	public void setNuOffers(Set<NuOffer> nuOffers) {
+	public void setNuOffers(List<NuOffer> nuOffers) {
 		this.nuOffers = nuOffers;
 	}
 
-	public Set<SpeedOffer> getSpeedOffers() {
+	public List<SpeedOffer> getSpeedOffers() {
 		return speedOffers;
 	}
 
-	public void setSpeedOffers(Set<SpeedOffer> speedOffers) {
+	public void setSpeedOffers(List<SpeedOffer> speedOffers) {
 		this.speedOffers = speedOffers;
 	}
 
-	public Set<TimeOffer> getTimeOffers() {
+	public List<TimeOffer> getTimeOffers() {
 		return timeOffers;
 	}
 
-	public void setTimeOffers(Set<TimeOffer> timeOffers) {
+	public void setTimeOffers(List<TimeOffer> timeOffers) {
 		this.timeOffers = timeOffers;
 	}
 

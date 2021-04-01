@@ -3,34 +3,42 @@ package org.springframework.cheapy.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "speed_offers")
 public class SpeedOffer extends Offer {
 
+	// Ofertar por rapidez comiendo
+	private static final long serialVersionUID = 1L;
 
 	@NotNull
-	private Integer gold; // x minutos
+	@Min(0)
+	private Integer gold;
 
 	@Column(name = "discount_gold")
-	@NotBlank
-	private String discountGold;
+	@NotNull
+	@Min(0)
+	private Integer discountGold;
 
 	@NotNull
+	@Min(0)
 	private Integer silver;
 
 	@Column(name = "discount_silver")
-	@NotBlank
-	private String discountSilver;
+	@NotNull
+	@Min(0)
+	private Integer discountSilver;
 
 	@NotNull
+	@Min(0)
 	private Integer bronze;
 
 	@Column(name = "discount_bronze")
-	@NotBlank
-	private String discountBronze;
+	@NotNull
+	@Min(0)
+	private Integer discountBronze;
 
 	public Integer getGold() {
 		return gold;
@@ -40,11 +48,11 @@ public class SpeedOffer extends Offer {
 		this.gold = gold;
 	}
 
-	public String getDiscountGold() {
+	public Integer getDiscountGold() {
 		return discountGold;
 	}
 
-	public void setDiscountGold(String discountGold) {
+	public void setDiscountGold(Integer discountGold) {
 		this.discountGold = discountGold;
 	}
 
@@ -56,11 +64,11 @@ public class SpeedOffer extends Offer {
 		this.silver = silver;
 	}
 
-	public String getDiscountSilver() {
+	public Integer getDiscountSilver() {
 		return discountSilver;
 	}
 
-	public void setDiscountSilver(String discountSilver) {
+	public void setDiscountSilver(Integer discountSilver) {
 		this.discountSilver = discountSilver;
 	}
 
@@ -72,11 +80,11 @@ public class SpeedOffer extends Offer {
 		this.bronze = bronze;
 	}
 
-	public String getDiscountBronze() {
+	public Integer getDiscountBronze() {
 		return discountBronze;
 	}
 
-	public void setDiscountBronze(String discountBronze) {
+	public void setDiscountBronze(Integer discountBronze) {
 		this.discountBronze = discountBronze;
 	}
 
