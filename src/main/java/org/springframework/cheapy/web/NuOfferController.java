@@ -8,9 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.cheapy.model.NuOffer;
+import org.springframework.cheapy.model.SpeedOffer;
 import org.springframework.cheapy.model.StatusOffer;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cheapy.model.Client;
+import org.springframework.cheapy.model.FoodOffer;
 import org.springframework.cheapy.service.ClientService;
 import org.springframework.cheapy.service.NuOfferService;
 import org.springframework.stereotype.Controller;
@@ -32,14 +34,7 @@ public class NuOfferController {
 		this.nuOfferService = nuOfferService;
 		this.clientService = clientService;
 	}
-
-	@GetMapping("/offers/nu/new")
-	public String initCreationForm(Map<String, Object> model) {
-		NuOffer nuOffer = new NuOffer();
-		model.put("nuOffer", nuOffer);
-		return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
-	}
-
+	
 	private boolean checkIdentity(final int nuOfferId) {
 		boolean res = false;
 		Client client = this.clientService.getCurrentClient();
@@ -59,12 +54,55 @@ public class NuOfferController {
 		}
 		return res;
 	}
+	
+	private boolean checkDates(final NuOffer nuOffer) {
+		boolean res = false;
+		if(nuOffer.getEnd().isAfter(nuOffer.getStart())) {
+			res = true;
+		}
+		return res;
+	}
+	
+	private boolean checkConditions(final NuOffer NuOffer) {
+		boolean res = false;
+		if(NuOffer.getGold() > NuOffer.getSilver() && NuOffer.getSilver() > NuOffer.getBronze()) {
+			res = true;
+		}
+		return res;
+	}
+	
+	private boolean checkDiscounts(final NuOffer NuOffer) {
+		boolean res = false;
+		if(NuOffer.getDiscountGold() > NuOffer.getDiscountSilver() && NuOffer.getDiscountSilver() > NuOffer.getDiscountBronze()) {
+			res = true;
+		}
+		return res;
+	}
+
+	@GetMapping("/offers/nu/new")
+	public String initCreationForm(Map<String, Object> model) {
+		NuOffer nuOffer = new NuOffer();
+		model.put("nuOffer", nuOffer);
+		return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
+	}
 
 	@PostMapping("/offers/nu/new")
 	public String processCreationForm(@Valid NuOffer nuOffer, BindingResult result) {
 		if (result.hasErrors()) {
 			return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
 		} else {
+			if(!this.checkDates(nuOffer)) {
+				//Poner aqui mensaje de error
+				return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
+			}
+			if(!this.checkConditions(nuOffer)) {
+				//Poner aqui mensaje de error
+				return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
+			}
+			if(!this.checkDiscounts(nuOffer)) {
+				//Poner aqui mensaje de error
+				return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
+			}
 			nuOffer.setStatus(StatusOffer.hidden);
 
 			Client client = this.clientService.getCurrentClient();
@@ -136,6 +174,18 @@ public class NuOfferController {
 			return NuOfferController.VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
 
 		} else {
+			if(!this.checkDates(nuOffer)) {
+				//Poner aqui mensaje de error
+				return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
+			}
+			if(!this.checkConditions(nuOffer)) {
+				//Poner aqui mensaje de error
+				return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
+			}
+			if(!this.checkDiscounts(nuOffer)) {
+				//Poner aqui mensaje de error
+				return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
+			}
 			BeanUtils.copyProperties(this.nuOfferService.findNuOfferById(nuOfferEdit.getId()), nuOfferEdit, "start",
 					"end", "gold", "discount_gold", "silver", "discount_silver", "bronze", "discount_bronze");
 			this.nuOfferService.saveNuOffer(nuOfferEdit);

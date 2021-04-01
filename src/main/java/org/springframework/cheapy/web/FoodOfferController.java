@@ -52,6 +52,14 @@ public class FoodOfferController {
 		}
 		return res;
 	}
+	
+	private boolean checkDates(final FoodOffer foodOffer) {
+		boolean res = false;
+		if(foodOffer.getEnd().isAfter(foodOffer.getStart())) {
+			res = true;
+		}
+		return res;
+	}
 
 	@GetMapping("/offers/food/new")
 	public String initCreationForm(Map<String, Object> model) {
@@ -65,6 +73,10 @@ public class FoodOfferController {
 		if (result.hasErrors()) {
 			return VIEWS_FOOD_OFFER_CREATE_OR_UPDATE_FORM;
 		} else {
+			if(!this.checkDates(foodOffer)) {
+				//Poner aqui mensaje de error
+				return VIEWS_FOOD_OFFER_CREATE_OR_UPDATE_FORM;
+			}
 			Client client = this.clientService.getCurrentClient();
 			foodOffer.setClient(client);
 			foodOffer.setStatus(StatusOffer.hidden);
@@ -122,13 +134,11 @@ public class FoodOfferController {
 			final ModelMap model, HttpServletRequest request) {
 
 		if (!this.checkIdentity(foodOfferEdit.getId())) {
-			System.out.println("Fallo Indentity");
 			return "error";
 		}
 		Integer id = (Integer) request.getSession().getAttribute("idFood");
 		FoodOffer foodOffer = this.foodOfferService.findFoodOfferById(id);
 		if (!this.checkOffer(foodOffer, foodOfferEdit)) {
-			System.out.println("Fallo offer");
 			return "error";
 		}
 
@@ -137,6 +147,10 @@ public class FoodOfferController {
 			return FoodOfferController.VIEWS_FOOD_OFFER_CREATE_OR_UPDATE_FORM;
 
 		} else {
+			if(!this.checkDates(foodOfferEdit)) {
+				//Poner aqui mensaje de error
+				return FoodOfferController.VIEWS_FOOD_OFFER_CREATE_OR_UPDATE_FORM;
+			}
 			BeanUtils.copyProperties(this.foodOfferService.findFoodOfferById(foodOfferEdit.getId()), foodOfferEdit,
 					"start", "end", "food", "discount");
 			this.foodOfferService.saveFoodOffer(foodOfferEdit);

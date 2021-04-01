@@ -10,6 +10,7 @@ import org.springframework.cheapy.model.SpeedOffer;
 import org.springframework.cheapy.model.StatusOffer;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cheapy.model.Client;
+import org.springframework.cheapy.model.FoodOffer;
 import org.springframework.cheapy.service.ClientService;
 import org.springframework.cheapy.service.SpeedOfferService;
 import org.springframework.stereotype.Controller;
@@ -51,6 +52,30 @@ public class SpeedOfferController {
 		}
 		return res;
 	}
+	
+	private boolean checkDates(final SpeedOffer speedOffer) {
+		boolean res = false;
+		if(speedOffer.getEnd().isAfter(speedOffer.getStart())) {
+			res = true;
+		}
+		return res;
+	}
+	
+	private boolean checkConditions(final SpeedOffer speedOffer) {
+		boolean res = false;
+		if(speedOffer.getGold() < speedOffer.getSilver() && speedOffer.getSilver() < speedOffer.getBronze()) {
+			res = true;
+		}
+		return res;
+	}
+	
+	private boolean checkDiscounts(final SpeedOffer speedOffer) {
+		boolean res = false;
+		if(speedOffer.getDiscountGold() > speedOffer.getDiscountSilver() && speedOffer.getDiscountSilver() > speedOffer.getDiscountBronze()) {
+			res = true;
+		}
+		return res;
+	}
 
 	@GetMapping("/offers/speed/new")
 	public String initCreationForm(Map<String, Object> model) {
@@ -64,6 +89,18 @@ public class SpeedOfferController {
 		if (result.hasErrors()) {
 			return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
 		} else {
+			if(!this.checkDates(speedOffer)) {
+				//Poner aqui mensaje de error
+				return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
+			}
+			if(!this.checkConditions(speedOffer)) {
+				//Poner aqui mensaje de error
+				return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
+			}
+			if(!this.checkDiscounts(speedOffer)) {
+				//Poner aqui mensaje de error
+				return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
+			}
 			Client client = this.clientService.getCurrentClient();
 			speedOffer.setClient(client);
 			speedOffer.setStatus(StatusOffer.hidden);
@@ -130,6 +167,18 @@ public class SpeedOfferController {
 			return SpeedOfferController.VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
 
 		} else {
+			if(!this.checkDates(speedOffer)) {
+				//Poner aqui mensaje de error
+				return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
+			}
+			if(!this.checkConditions(speedOffer)) {
+				//Poner aqui mensaje de error
+				return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
+			}
+			if(!this.checkDiscounts(speedOffer)) {
+				//Poner aqui mensaje de error
+				return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
+			}
 			BeanUtils.copyProperties(this.speedOfferService.findSpeedOfferById(speedOfferEdit.getId()), speedOfferEdit,
 					"start", "end", "gold", "discount_gold", "silver", "discount_silver", "bronze", "discount_bronze");
 			this.speedOfferService.saveSpeedOffer(speedOfferEdit);

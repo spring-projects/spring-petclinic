@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.cheapy.model.Client;
+import org.springframework.cheapy.model.FoodOffer;
 import org.springframework.cheapy.model.StatusOffer;
 import org.springframework.cheapy.model.TimeOffer;
 import org.springframework.cheapy.service.ClientService;
@@ -50,6 +51,22 @@ public class TimeOfferController {
 		}
 		return res;
 	}
+	
+	private boolean checkDates(final TimeOffer timeOffer) {
+		boolean res = false;
+		if(timeOffer.getEnd().isAfter(timeOffer.getStart())) {
+			res = true;
+		}
+		return res;
+	}
+	
+	private boolean checkTimes(final TimeOffer timeOffer) {
+		boolean res = false;
+		if(timeOffer.getFinish().isAfter(timeOffer.getInit())) {
+			res = true;
+		}
+		return res;
+	}
 
 	@GetMapping("/offers/time/new")
 	public String initCreationForm(Map<String, Object> model) {
@@ -63,6 +80,16 @@ public class TimeOfferController {
 		if (result.hasErrors()) {
 			return VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
 		} else {
+			if(!this.checkDates(timeOffer)) {
+				//Poner aqui mensaje de error
+				return VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
+			}
+			
+			if(!this.checkTimes(timeOffer)) {
+				//Poner aqui mensaje de error
+				return VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
+			}
+			
 			timeOffer.setStatus(StatusOffer.hidden);
 
 			Client client = this.clientService.getCurrentClient();
@@ -138,6 +165,14 @@ public class TimeOfferController {
 			return TimeOfferController.VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
 
 		} else {
+			if(!this.checkDates(timeOffer)) {
+				//Poner aqui mensaje de error
+				return VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
+			}
+			if(!this.checkTimes(timeOffer)) {
+				//Poner aqui mensaje de error
+				return VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
+			}
 			BeanUtils.copyProperties(this.timeOfferService.findTimeOfferById(timeOfferEdit.getId()), timeOfferEdit,
 					"start", "end", "init", "finish", "discount");
 			this.timeOfferService.saveTimeOffer(timeOfferEdit);
