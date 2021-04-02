@@ -6,7 +6,7 @@
 <%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
 <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
 
-<cheapy:layout pageName="myOffers">
+<cheapy:layout pageName="ofertasM">
     <h2 style="text-align:center;padding:5px"><fmt:message key="foodOffers"/></h2>
 	<c:if test="${empty foodOfferLs }">
 		<p id="vacio" >No hay ninguna oferta por plato específico activa.</p>
