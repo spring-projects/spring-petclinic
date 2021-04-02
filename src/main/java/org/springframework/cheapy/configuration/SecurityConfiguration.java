@@ -44,11 +44,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 		.antMatchers("/owners/**").hasAnyAuthority("owner", "admin")
 
+
 		.antMatchers("/offers/**/new").hasAnyAuthority("admin", "client")
 		.antMatchers("/offers/**/activate").hasAnyAuthority("admin","client")
-		
+
 		.antMatchers("/clients/new").permitAll()
 		.antMatchers("/offers/**").permitAll()
+		.antMatchers("/offersCreate").hasAuthority("client")
+
 
 
 		.and().formLogin()
@@ -69,7 +72,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	public void configure(final AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication().dataSource(this.dataSource)
 			//[login de admin,owner y vet] .usersByUsernameQuery("select username,password,enabled " + "from users " + "where username = ?")
-			.usersByUsernameQuery("select username, password, enabled from users where username=?").authoritiesByUsernameQuery("select username, authority " + "from authorities " + "where username = ?") 
+			.usersByUsernameQuery("select username, password, enabled from users where username=?").authoritiesByUsernameQuery("select username, authority " + "from authorities " + "where username = ?")
 			.passwordEncoder(this.passwordEncoder());
 
 	}
