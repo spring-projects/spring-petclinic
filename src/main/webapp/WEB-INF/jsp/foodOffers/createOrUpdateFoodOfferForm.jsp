@@ -4,10 +4,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
 <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
 
-<petclinic:layout pageName="foodOffers">
+<cheapy:layout pageName="foodOffers">
     <h2 style="text-align:center;padding:5px">
         <c:if test="${foodOffer['new']}"><fmt:message key="new"/> </c:if> <fmt:message key="foodOffer"/>
     </h2>
@@ -16,10 +16,10 @@
         	<form:hidden path="id"/>
             <form:hidden path="code"/>
             <form:hidden path="status"/>
-            <petclinic:inputField label="Fecha de Inicio" placeholder="dd/MM/yyyy HH:mm" name="start"/>
-            <petclinic:inputField label="Fecha de Fin" placeholder="dd/MM/yyyy HH:mm" name="end"/>
-            <petclinic:inputField label="Plato" placeholder="Ej. Macarrones" name="food"/>
-            <petclinic:inputField label="Descuento" placeholder="Ej. 50" name="discount"/>
+            <cheapy:inputField label="Fecha de Inicio" placeholder="dd/MM/yyyy HH:mm" name="start"/>
+            <cheapy:inputField label="Fecha de Fin" placeholder="dd/MM/yyyy HH:mm" name="end"/>
+            <cheapy:inputField label="Plato" placeholder="Ej. Macarrones" name="food"/>
+            <cheapy:inputField label="Descuento" placeholder="Ej. 50" name="discount"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
@@ -40,4 +40,16 @@
             </div>
         </div>
     </form:form>
-</petclinic:layout>
+    
+    <div class="btn-return">
+		    <button type="button" role="link" onclick="goBack()" style="font-family: 'Lobster'; font-size: 20px;"> 
+		    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true" style="padding: 5px"> </span> 
+		    <fmt:message key="return"/> </button>
+	</div>
+   	<script>
+		function goBack() {
+		  window.history.back()
+		}
+	</script>
+	
+</cheapy:layout>

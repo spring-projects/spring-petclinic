@@ -22,27 +22,27 @@
         </tr>
         <tr>
             <th><fmt:message key="goldGoal"/></th>
-            <td><c:out value="${speedOffer.gold}"/></td>
+            <td><c:out value="${speedOffer.gold} minutos"/></td>
         </tr>
         <tr>
             <th><fmt:message key="goldDiscount"/></th>
-            <td><c:out value="${speedOffer.discountGold}"/></td>
+            <td><c:out value="${speedOffer.discountGold}%"/></td>
         </tr>
         <tr>
             <th><fmt:message key="silverGoal"/></th>
-            <td><c:out value="${speedOffer.silver}"/></td>
+            <td><c:out value="${speedOffer.silver} minutos"/></td>
         </tr>
         <tr>
             <th><fmt:message key="silverDiscount"/></th>
-            <td><c:out value="${speedOffer.discountSilver}"/></td>
+            <td><c:out value="${speedOffer.discountSilver}%"/></td>
         </tr>
         <tr>
             <th><fmt:message key="bronzeGoal"/></th>
-            <td><c:out value="${speedOffer.bronze}"/></td>
+            <td><c:out value="${speedOffer.bronze} minutos"/></td>
         </tr>
         <tr>
             <th><fmt:message key="bronzeDiscount"/></th>
-            <td><c:out value="${speedOffer.discountBronze}"/></td>
+            <td><c:out value="${speedOffer.discountBronze}%"/></td>
         </tr>
         <tr>
             <th><fmt:message key="offerCode"/></th>
@@ -52,7 +52,7 @@
     
     <div class="btn-menu">
 	    <div class="btn-return">
-		    <button type="button" role="link" onclick="window.location='/offers'" style="font-family: 'Lobster'; font-size: 20px;"> 
+		    <button type="button" role="link" onclick="goBack()" style="font-family: 'Lobster'; font-size: 20px;"> 
 		    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true" style="padding: 5px"> </span> 
 		    <fmt:message key="return"/> </button>
 	    </div>
@@ -73,6 +73,11 @@
 	        Desactivar oferta</button>
 	    </div>
     </div>
-
+	
+	<script>
+		function goBack() {
+		  window.history.back()
+		}
+	</script>
 
 </cheapy:layout>

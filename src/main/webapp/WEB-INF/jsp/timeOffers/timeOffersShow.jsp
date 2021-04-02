@@ -11,7 +11,7 @@
     <h2 style="text-align:center;padding:5px"><fmt:message key="timeOffer"/></h2>
 
 
-    <table class="table table-striped">
+    <table id="timeOfferTable" class="table table-striped">
         <thead>
         <tr>
             <th><fmt:message key="offerBeginning"/></th>
@@ -22,8 +22,16 @@
             <td><c:out value="${localDateTimeFormat.format(timeOffer.end)}"/></td>
         </tr>
         <tr>
+            <th><fmt:message key="init"/></th>
+            <td><c:out value="${timeOffer.init}h"/></td>
+        </tr>
+        <tr>
+            <th><fmt:message key="finish"/></th>
+            <td><c:out value="${timeOffer.finish}h"/></td>
+        </tr>
+        <tr>
             <th><fmt:message key="discount"/></th>
-            <td><c:out value="${timeOffer.discount}"/></td>
+            <td><c:out value="${timeOffer.discount}%"/></td>
         </tr>
         <tr>
             <th><fmt:message key="offerCode"/></th>
@@ -34,7 +42,7 @@
 
 	<div class="btn-menu">
 	    <div class="btn-return">
-		    <button type="button" role="link" onclick="window.location='/offers'" style="font-family: 'Lobster'; font-size: 20px;"> 
+		    <button type="button" role="link" onclick="goBack()" style="font-family: 'Lobster'; font-size: 20px;"> 
 		    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true" style="padding: 5px"> </span> 
 		    <fmt:message key="return"/> </button>
 	    </div>
@@ -56,6 +64,11 @@
 	    </div>
     </div>
     
+    <script>
+		function goBack() {
+		  window.history.back()
+		}
+	</script>
 
   
 </cheapy:layout>
