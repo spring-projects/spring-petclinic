@@ -5,36 +5,55 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
+<link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
 
 <cheapy:layout pageName="TimeOffers">
-    <h2>
-        <c:if test="${timeOffer['new']}">Nueva </c:if> Oferta por tiempo
+    <h2 style="text-align:center;padding:5px">
+        <c:if test="${timeOffer['new']}"><fmt:message key="new"/> </c:if> <fmt:message key="timeOffer"/>
     </h2>
     <form:form modelAttribute="timeOffer" class="form-horizontal" id="add-timeOffer-form">
         <div class="form-group has-feedback">
         	<form:hidden path="id"/>
             <form:hidden path="code"/>
             <form:hidden path="status"/>
-            <cheapy:inputField label="Fecha de inicio" placeholder="15/06/2021 14:00" name="start"/>
-            <cheapy:inputField label="Fecha de fin" placeholder="15/06/2021 16:00" name="end"/>
-            
-            <cheapy:inputField label="Hora de inicio" name="init"/>
-            <cheapy:inputField label="Hora de final" name="finish"/>
-            <cheapy:inputField label="Descuento" name="discount"/>
+            <cheapy:inputField label="Fecha de inicio" placeholder="dd/MM/yyyy HH:mm" name="start"/>
+            <cheapy:inputField label="Fecha de fin" placeholder="dd/MM/yyyy HH:mm" name="end"/>
+
+            <cheapy:inputField label="Hora de inicio" placeholder="HH:mm" name="init"/>
+            <cheapy:inputField label="Hora de final" placeholder="HH:mm" name="finish"/>
+            <cheapy:inputField label="Descuento" placeholder="XX% (Ej.15)" name="discount"/>
 
 
             </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <c:choose>
-                    <c:when test="${timeOffer['new']}">
-                        <button class="btn btn-default" type="submit">Añadir oferta</button>
-                    </c:when>
-                    <c:otherwise>
-                        <button class="btn btn-default" type="submit">Actualizar oferta</button>
-                    </c:otherwise>
-                </c:choose>
+            	<div class="btn-mod">
+	                <c:choose>
+	                    <c:when test="${timeOffer['new']}">
+	                        <button class="btn btn-default" type="submit" style="font-family: 'Lobster'; font-size: 20px;">
+	                        <span class="glyphicon glyphicon-floppy-save" aria-hidden="true" style="padding: 5px"> </span>
+	                        Crear oferta</button>
+	                    </c:when>
+	                    <c:otherwise>
+	                        <button class="btn btn-default" type="submit" style="font-family: 'Lobster'; font-size: 20px;">
+	                        <span class="glyphicon glyphicon-floppy-save" aria-hidden="true" style="padding: 5px"> </span>
+	                        Modificar</button>
+	                    </c:otherwise>
+	                </c:choose>
+                </div>
             </div>
         </div>
     </form:form>
+
+    <div class="btn-return">
+		    <button type="button" role="link" onclick="goBack()" style="font-family: 'Lobster'; font-size: 20px;">
+		    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true" style="padding: 5px"> </span>
+		    <fmt:message key="return"/> </button>
+	</div>
+   	<script>
+		function goBack() {
+		  window.history.back()
+		}
+	</script>
+
 </cheapy:layout>

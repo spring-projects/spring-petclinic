@@ -8,11 +8,12 @@
 <cheapy:layout pageName="foodOffer">
 
 	<jsp:body>
-        <h2> ¿Está seguro de que quiere eliminar su oferta? </h2>
+        <h2> Â¿EstÃ¡ seguro de que quiere eliminar su oferta? </h2>
       		
       		<form:form modelAttribute="foodOffer" class="form-horizontal">
-	            <input type="hidden" name="food" value="${food_offer.food}" />
-	            <input type="hidden" name="discount" value="${food_offer.discount}" />
+            
+	            <input type="hidden" name="food" value="${foodOffer.food}" />
+	            <input type="hidden" name="discount" value="${foodOffer.discount}" />
 
         		<button class="btn btn-default" type="submit">Eliminar Oferta</button>
         	</form:form>

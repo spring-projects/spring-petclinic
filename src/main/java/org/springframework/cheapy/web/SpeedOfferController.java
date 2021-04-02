@@ -3,11 +3,14 @@ package org.springframework.cheapy.web;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.cheapy.model.SpeedOffer;
 import org.springframework.cheapy.model.StatusOffer;
+import org.springframework.beans.BeanUtils;
 import org.springframework.cheapy.model.Client;
+import org.springframework.cheapy.model.FoodOffer;
 import org.springframework.cheapy.service.ClientService;
 import org.springframework.cheapy.service.SpeedOfferService;
 import org.springframework.stereotype.Controller;
@@ -29,13 +32,46 @@ public class SpeedOfferController {
 		this.speedOfferService = speedOfferService;
 		this.clientService = clientService;
 	}
-	
+
 	private boolean checkIdentity(final int speedOfferId) {
 		boolean res = false;
 		Client client = this.clientService.getCurrentClient();
 		SpeedOffer speedOffer = this.speedOfferService.findSpeedOfferById(speedOfferId);
 		Client clientOffer = speedOffer.getClient();
 		if (client.equals(clientOffer)) {
+			res = true;
+		}
+		return res;
+	}
+
+	private boolean checkOffer(final SpeedOffer session, final SpeedOffer offer) {
+		boolean res = false;
+		if (session.getId() == offer.getId() && session.getStatus() == offer.getStatus()
+				&& (session.getCode() == null ? offer.getCode() == "" : session.getCode().equals(offer.getCode())) && !(session.getStatus().equals(StatusOffer.inactive))) {
+			res = true;
+		}
+		return res;
+	}
+	
+	private boolean checkDates(final SpeedOffer speedOffer) {
+		boolean res = false;
+		if(speedOffer.getEnd().isAfter(speedOffer.getStart())) {
+			res = true;
+		}
+		return res;
+	}
+	
+	private boolean checkConditions(final SpeedOffer speedOffer) {
+		boolean res = false;
+		if(speedOffer.getGold() < speedOffer.getSilver() && speedOffer.getSilver() < speedOffer.getBronze()) {
+			res = true;
+		}
+		return res;
+	}
+	
+	private boolean checkDiscounts(final SpeedOffer speedOffer) {
+		boolean res = false;
+		if(speedOffer.getDiscountGold() > speedOffer.getDiscountSilver() && speedOffer.getDiscountSilver() > speedOffer.getDiscountBronze()) {
 			res = true;
 		}
 		return res;
@@ -53,6 +89,18 @@ public class SpeedOfferController {
 		if (result.hasErrors()) {
 			return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
 		} else {
+			if(!this.checkDates(speedOffer)) {
+				//Poner aqui mensaje de error
+				return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
+			}
+			if(!this.checkConditions(speedOffer)) {
+				//Poner aqui mensaje de error
+				return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
+			}
+			if(!this.checkDiscounts(speedOffer)) {
+				//Poner aqui mensaje de error
+				return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
+			}
 			Client client = this.clientService.getCurrentClient();
 			speedOffer.setClient(client);
 			speedOffer.setStatus(StatusOffer.hidden);
@@ -61,7 +109,6 @@ public class SpeedOfferController {
 		}
 	}
 
-	
 	@GetMapping(value = "/offers/speed/{speedOfferId}/activate")
 	public String activateSpeedOffer(@PathVariable("speedOfferId") final int speedOfferId, ModelMap modelMap) {
 		SpeedOffer speedOffer = this.speedOfferService.findSpeedOfferById(speedOfferId);
@@ -87,29 +134,53 @@ public class SpeedOfferController {
 	}
 
 	@GetMapping(value = "/offers/speed/{speedOfferId}/edit")
-	public String updateSpeedOffer(@PathVariable("speedOfferId") final int speedOfferId, final ModelMap model) {
-		
+	public String updateSpeedOffer(@PathVariable("speedOfferId") final int speedOfferId, final ModelMap model, HttpServletRequest request) {
+
 		if (!this.checkIdentity(speedOfferId)) {
 			return "error";
 		}
-		
 		SpeedOffer speedOffer = this.speedOfferService.findSpeedOfferById(speedOfferId);
+		if (speedOffer.getStatus().equals(StatusOffer.inactive)) {
+			return "error";
+		}
+
 		model.addAttribute("speedOffer", speedOffer);
+		request.getSession().setAttribute("idSpeed", speedOfferId);
 		return SpeedOfferController.VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping(value = "/offers/speed/{speedOfferId}/edit")
-	public String updateSpeedOffer(@Valid final SpeedOffer speedOfferEdit, final BindingResult result, final ModelMap model) {
-		
+	public String updateSpeedOffer(@Valid final SpeedOffer speedOfferEdit, final BindingResult result,
+			final ModelMap model, HttpServletRequest request) {
+
 		if (!this.checkIdentity(speedOfferEdit.getId())) {
 			return "error";
 		}
-		
+		Integer id = (Integer) request.getSession().getAttribute("idSpeed");
+		SpeedOffer speedOffer = this.speedOfferService.findSpeedOfferById(id);
+		if (!this.checkOffer(speedOffer, speedOfferEdit)) {
+			return "error";
+		}
+
 		if (result.hasErrors()) {
 			model.addAttribute("speedOffer", speedOfferEdit);
 			return SpeedOfferController.VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
 
 		} else {
+			if(!this.checkDates(speedOffer)) {
+				//Poner aqui mensaje de error
+				return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
+			}
+			if(!this.checkConditions(speedOffer)) {
+				//Poner aqui mensaje de error
+				return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
+			}
+			if(!this.checkDiscounts(speedOffer)) {
+				//Poner aqui mensaje de error
+				return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
+			}
+			BeanUtils.copyProperties(this.speedOfferService.findSpeedOfferById(speedOfferEdit.getId()), speedOfferEdit,
+					"start", "end", "gold", "discount_gold", "silver", "discount_silver", "bronze", "discount_bronze");
 			this.speedOfferService.saveSpeedOffer(speedOfferEdit);
 			return "redirect:/offers/speed/" + speedOfferEdit.getId();
 		}
@@ -118,7 +189,7 @@ public class SpeedOfferController {
 
 	@GetMapping(value = "/offers/speed/{speedOfferId}/disable")
 	public String disableSpeedOffer(@PathVariable("speedOfferId") final int speedOfferId, final ModelMap model) {
-		
+
 		if (!this.checkIdentity(speedOfferId)) {
 			return "error";
 		}
@@ -130,7 +201,7 @@ public class SpeedOfferController {
 
 	@PostMapping(value = "/offers/speed/{speedOfferId}/disable")
 	public String disableSpeedOfferForm(@PathVariable("speedOfferId") final int speedOfferId, final ModelMap model) {
-		
+
 		if (!this.checkIdentity(speedOfferId)) {
 			return "error";
 		}

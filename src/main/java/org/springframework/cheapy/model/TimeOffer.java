@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -25,6 +26,7 @@ public class TimeOffer extends Offer {
 	private LocalTime finish;
 
 	@NotNull(message = "Debe rellenar el descuento")
+	@Range(min = 0, max = 100, message = "El descuento debe estar entre 0 y 100 %")
 	private Integer discount;
 
 	public LocalTime getInit() {

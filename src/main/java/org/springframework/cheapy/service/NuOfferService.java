@@ -35,6 +35,11 @@ public class NuOfferService {
 		this.nuOfferRepository.save(nuOffer);
 	}
 	
+	@Transactional
+	public void saveUpdateNuOffer(final NuOffer nuOfferNew, final NuOffer nuOfferOld) throws DataAccessException {
+		this.nuOfferRepository.save(nuOfferNew);
+	}
+	
 	public List<NuOffer> findActiveNuOffer() {
 		return this.nuOfferRepository.findActiveNuOffer(StatusOffer.active);
 	}

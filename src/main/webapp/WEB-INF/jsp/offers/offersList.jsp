@@ -8,12 +8,16 @@
 
 <cheapy:layout pageName="ofertas">
     <h2 style="text-align:center;padding:5px"><fmt:message key="foodOffers"/></h2>
-
+	<c:if test="${empty foodOfferLs }">
+		<p id="vacio" >No hay ninguna oferta por plato específico activa.</p>
+	</c:if>
+	<c:if test="${not empty foodOfferLs }">
     <table id="foodOfferTable" class="table table-striped">
         <thead>
         <tr>
         	<!-- <th style="width: 150px;">Restaurante</th> -->
         	<th><fmt:message key="food"/></th>
+        	<th><fmt:message key="discount"/></th>
             <th><fmt:message key="startDate"/></th>
             <th><fmt:message key="endDate"/></th>
             <th> </th>
@@ -24,6 +28,9 @@
             <tr>
                 <td>
                     <c:out value="${foodOffer.food}"/>
+                </td>
+                <td>
+                    <c:out value="${foodOffer.discount}%"/>
                 </td>
                 <td>
                     <c:out value="${localDateTimeFormat.format(foodOffer.start)}"/>
@@ -46,15 +53,20 @@
         </c:forEach>
         </tbody>
     </table>
-    
+    </c:if>
     <h2 style="text-align:center;padding:5px"><fmt:message key="nuOffers"/></h2>
-
+	<c:if test="${empty nuOfferLs }">
+		<p id="vacio" >No hay ninguna oferta por plato específico activa.</p>
+	</c:if>
+	<c:if test="${not empty nuOfferLs }">
     <table id="nuOfferTable" class="table table-striped">
         <thead>
         <tr>
         	<!-- <th style="width: 150px;">Restaurante</th> -->
             <th><fmt:message key="startDate"/></th>
             <th><fmt:message key="endDate"/></th>
+            <th><fmt:message key="goldGoal"/></th>
+            <th><fmt:message key="goldDiscount"/></th>
             <th> </th>
             
         </tr>
@@ -70,6 +82,12 @@
                     <c:out value="${localDateTimeFormat.format(nuOffer.end)}"/>
                 </td>
                 <td>
+                    <c:out value="${nuOffer.gold} comensales"/>
+                </td>
+                <td>
+                    <c:out value="${nuOffer.discountGold}%"/>
+                </td>
+                <td>
 	                <spring:url value="/offers/nu/{nuOfferId}" var="nuOfferUrl">
 	                        <spring:param name="nuOfferId" value="${nuOffer.id}"/>
 	                </spring:url>
@@ -83,14 +101,21 @@
         </c:forEach>
         </tbody>
     </table>
+    </c:if>
+    
     <h2 style="text-align:center;padding:5px"><fmt:message key="speedOffers"/></h2>
-
+	<c:if test="${empty speedOfferLs }">
+		<p id="vacio" >No hay ninguna oferta por plato específico activa.</p>
+	</c:if>
+	<c:if test="${not empty speedOfferLs }">
     <table id="speedOfferTable" class="table table-striped">
         <thead>
         <tr>
         	<!-- <th style="width: 150px;">Restaurante</th> -->
             <th><fmt:message key="startDate"/></th>
             <th><fmt:message key="endDate"/></th>
+            <th><fmt:message key="goldGoal"/></th>
+            <th><fmt:message key="goldDiscount"/></th>
             <th> </th>
             
         </tr>
@@ -104,6 +129,12 @@
                 </td>
                 <td>
                     <c:out value="${localDateTimeFormat.format(speedOffer.end)}"/>
+                </td>
+                <td>
+                    <c:out value="${speedOffer.gold} minutos"/>
+                </td>
+                <td>
+                    <c:out value="${speedOffer.discountGold}%"/>
                 </td>
                 <td>
                     <spring:url value="/offers/speed/{speedOfferId}" var="speedOfferUrl">
@@ -120,14 +151,21 @@
         </c:forEach>
         </tbody>
     </table>
+    </c:if>
+    
     <h2 style="text-align:center;padding:5px"><fmt:message key="timeOffers"/></h2>
-
+	<c:if test="${empty timeOfferLs }">
+		<p id="vacio" >No hay ninguna oferta por plato específico activa.</p>
+	</c:if>
+	<c:if test="${not empty timeOfferLs }">
     <table id="timeOfferTable" class="table table-striped">
         <thead>
         <tr>
         	<!-- <th style="width: 150px;">Restaurante</th> -->
             <th><fmt:message key="startDate"/></th>
             <th><fmt:message key="endDate"/></th>
+            <th><fmt:message key="init"/></th>
+            <th><fmt:message key="finish"/></th>
             <th> </th>
         </tr>
         </thead>
@@ -142,6 +180,13 @@
                     <c:out value="${localDateTimeFormat.format(timeOffer.end)}"/>
                 </td>
                 <td>
+                    <c:out value="${timeOffer.init}h"/>
+                </td>
+                <td>
+                    <c:out value="${timeOffer.finish}h"/>
+                </td>
+                
+                <td>
                 	<spring:url value="/offers/time/{timeOfferId}" var="timeOfferUrl">
                         <spring:param name="timeOfferId" value="${timeOffer.id}"/>
                     </spring:url>
@@ -155,4 +200,16 @@
         </c:forEach>
         </tbody>
     </table>
+    </c:if>
+    
+    <div class="btn-return">
+		    <button type="button" role="link" onclick="goBack()" style="font-family: 'Lobster'; font-size: 20px;"> 
+		    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true" style="padding: 5px"> </span> 
+		    <fmt:message key="return"/> </button>
+	</div>
+    <script>
+		function goBack() {
+		  window.history.back()
+		}
+	</script>
 </cheapy:layout>
