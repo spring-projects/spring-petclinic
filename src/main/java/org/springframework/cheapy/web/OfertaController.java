@@ -8,23 +8,30 @@ import org.springframework.cheapy.model.FoodOffer;
 import org.springframework.cheapy.model.NuOffer;
 import org.springframework.cheapy.model.SpeedOffer;
 import org.springframework.cheapy.model.TimeOffer;
+import org.springframework.cheapy.service.ClientService;
 import org.springframework.cheapy.service.FoodOfferService;
 import org.springframework.cheapy.service.NuOfferService;
 import org.springframework.cheapy.service.SpeedOfferService;
 import org.springframework.cheapy.service.TimeOfferService;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class OfertaController {
 
+	private final ClientService clientService;
+
 	private final FoodOfferService foodOfferService;
-	private final NuOfferService nuOfferService; 
+	private final NuOfferService nuOfferService;
 	private final SpeedOfferService speedOfferService;
 	private final TimeOfferService timeOfferService;
 
 	public OfertaController(final FoodOfferService foodOfferService, final NuOfferService nuOfferService,
-			final SpeedOfferService speedOfferService, final TimeOfferService timeOfferService) {
+			final SpeedOfferService speedOfferService, final TimeOfferService timeOfferService, ClientService clientService) {
+		this.clientService = clientService;
 		this.foodOfferService = foodOfferService;
 		this.nuOfferService = nuOfferService;
 		this.speedOfferService = speedOfferService;
@@ -34,22 +41,52 @@ public class OfertaController {
 	@GetMapping("/offers")
 	public String processFindForm( Map<String, Object> model) {
 
-		List<FoodOffer> foodOfferLs=this.foodOfferService.findAllFoodOffer();
-		List<NuOffer> nuOfferLs=this.nuOfferService.findAllNuOffer();
-		List<SpeedOffer> speedOfferLs=this.speedOfferService.findAllSpeedOffer();
-		List<TimeOffer> timeOfferLs=this.timeOfferService.findAllTimeOffer();
-		
+		List<FoodOffer> foodOfferLs=this.foodOfferService.findActiveFoodOffer();
+		List<NuOffer> nuOfferLs=this.nuOfferService.findActiveNuOffer();
+		List<SpeedOffer> speedOfferLs=this.speedOfferService.findActiveSpeedOffer();
+		List<TimeOffer> timeOfferLs=this.timeOfferService.findActiveTimeOffer();
+
 		model.put("foodOfferLs", foodOfferLs);
 		model.put("nuOfferLs", nuOfferLs);
 		model.put("speedOfferLs", speedOfferLs);
 		model.put("timeOfferLs", timeOfferLs);
-		
-		//Se añade formateador de fecha al modelo	
+
+		//Se añade formateador de fecha al modelo
 		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-		
+
 		return "offers/offersList";
 
 	}
+
+
+	@GetMapping("/myOffers")
+	public String processMyOffersForm( Map<String, Object> model) {
+
+		int actual = this.clientService.getCurrentClient().getId();
+
+		List<FoodOffer> foodOfferLs = this.foodOfferService.findFoodOfferByUserId(actual);
+		List<NuOffer> nuOfferLs = this.nuOfferService.findNuOfferByUserId(actual);
+		List<SpeedOffer> speedOfferLs = this.speedOfferService.findSpeedOfferByUserId(actual);
+		List<TimeOffer> timeOfferLs = this.timeOfferService.findTimeOfferByUserId(actual);
+
+		model.put("foodOfferLs", foodOfferLs);
+		model.put("nuOfferLs", nuOfferLs);
+		model.put("speedOfferLs", speedOfferLs);
+		model.put("timeOfferLs", timeOfferLs);
+
+		//Se añade formateador de fecha al modelo
+		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+
+		return "offers/myOffersList";
+		}
+
+		@GetMapping("/offersCreate")
+		public String createOffers() {
+
+			return "offers/offersCreate";
+		}
+
+
 
 //	@GetMapping("/owners/{ownerId}/edit")
 //	public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
@@ -74,10 +111,10 @@ public class OfertaController {
 //	public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
 //		ModelAndView mav = new ModelAndView("owners/ownerDetails");
 //		Owner owner = this.ownerService.findOwnerById(ownerId);
-//		
+//
 //		mav.addObject(owner);
 //		return mav;
 //	}
-	
-	
+
+
 }
