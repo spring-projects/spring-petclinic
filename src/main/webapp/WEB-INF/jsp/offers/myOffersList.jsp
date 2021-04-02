@@ -8,7 +8,10 @@
 
 <cheapy:layout pageName="myOffers">
     <h2 style="text-align:center;padding:5px"><fmt:message key="foodOffers"/></h2>
-
+	<c:if test="${empty foodOfferLs }">
+		<p id="vacio" >No hay ninguna oferta por plato específico activa.</p>
+	</c:if>
+	<c:if test="${not empty foodOfferLs }">
     <table id="foodOfferTable" class="table table-striped">
         <thead>
         <tr>
@@ -18,7 +21,7 @@
             <th><fmt:message key="endDate"/></th>
             <th> <spring:url value="/offers/food/new" var="newFoodUrl">
     </spring:url>
-    <a href="${fn:escapeXml(newFoodUrl)}" class="btn btn-default">Nueva oferta</a></th>
+    <!--  <a href="${fn:escapeXml(newFoodUrl)}" class="btn btn-default">Nueva oferta</a></th>-->
         </tr>
         </thead>
         <tbody>
@@ -48,9 +51,12 @@
         </c:forEach>
         </tbody>
     </table>
-    
+    </c:if>
     <h2 style="text-align:center;padding:5px"><fmt:message key="nuOffers"/></h2>
-
+	<c:if test="${empty nuOfferLs }">
+		<p id="vacio" >No hay ninguna oferta por plato específico activa.</p>
+	</c:if>
+	<c:if test="${not empty nuOfferLs }">
     <table id="nuOfferTable" class="table table-striped">
         <thead>
         <tr>
@@ -59,7 +65,7 @@
             <th><fmt:message key="endDate"/></th>
             <th> <spring:url value="/offers/nu/new" var="newNuUrl">
     </spring:url>
-    <a href="${fn:escapeXml(newNuUrl)}" class="btn btn-default">Nueva oferta</a></th>
+    <!--  <a href="${fn:escapeXml(newNuUrl)}" class="btn btn-default">Nueva oferta</a></th>-->
             
         </tr>
         </thead>
@@ -87,8 +93,13 @@
         </c:forEach>
         </tbody>
     </table>
+    </c:if>
+    
     <h2 style="text-align:center;padding:5px"><fmt:message key="speedOffers"/></h2>
-
+	<c:if test="${empty foodOfferLs }">
+		<p id="vacio" >No hay ninguna oferta por plato específico activa.</p>
+	</c:if>
+	<c:if test="${not empty speedOfferLs }">
     <table id="speedOfferTable" class="table table-striped">
         <thead>
         <tr>
@@ -97,7 +108,7 @@
             <th><fmt:message key="endDate"/></th>
             <th> <spring:url value="/offers/speed/new" var="newSpeedUrl">
     </spring:url>
-    <a href="${fn:escapeXml(newSpeedUrl)}" class="btn btn-default">Nueva oferta</a></th>
+   <!-- <a href="${fn:escapeXml(newSpeedUrl)}" class="btn btn-default">Nueva oferta</a></th>-->
             
         </tr>
         </thead>
@@ -126,8 +137,13 @@
         </c:forEach>
         </tbody>
     </table>
+    </c:if>
+    
     <h2 style="text-align:center;padding:5px"><fmt:message key="timeOffers"/></h2>
-
+	<c:if test="${empty timeOfferLs }">
+		<p id="vacio" >No hay ninguna oferta por plato específico activa.</p>
+	</c:if>
+	<c:if test="${not empty timeOfferLs }">
     <table id="timeOfferTable" class="table table-striped">
         <thead>
         <tr>
@@ -136,7 +152,7 @@
             <th><fmt:message key="endDate"/></th>
             <th><spring:url value="/offers/time/new" var="newTimeUrl">
     </spring:url>
-    <a href="${fn:escapeXml(newTimeUrl)}" class="btn btn-default">Nueva oferta</a> </th>
+    <!--<a href="${fn:escapeXml(newTimeUrl)}" class="btn btn-default">Nueva oferta</a> </th>-->
         </tr>
         </thead>
         <tbody>
@@ -163,4 +179,5 @@
         </c:forEach>
         </tbody>
     </table>
+    </c:if>
 </cheapy:layout>

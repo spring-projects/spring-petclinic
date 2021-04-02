@@ -8,7 +8,10 @@
 
 <cheapy:layout pageName="ofertas">
     <h2 style="text-align:center;padding:5px"><fmt:message key="foodOffers"/></h2>
-
+	<c:if test="${empty foodOfferLs }">
+		<p id="vacio" >No hay ninguna oferta por plato específico activa.</p>
+	</c:if>
+	<c:if test="${not empty foodOfferLs }">
     <table id="foodOfferTable" class="table table-striped">
         <thead>
         <tr>
@@ -50,9 +53,12 @@
         </c:forEach>
         </tbody>
     </table>
-    
+    </c:if>
     <h2 style="text-align:center;padding:5px"><fmt:message key="nuOffers"/></h2>
-
+	<c:if test="${empty nuOfferLs }">
+		<p id="vacio" >No hay ninguna oferta por plato específico activa.</p>
+	</c:if>
+	<c:if test="${not empty nuOfferLs }">
     <table id="nuOfferTable" class="table table-striped">
         <thead>
         <tr>
@@ -95,8 +101,13 @@
         </c:forEach>
         </tbody>
     </table>
+    </c:if>
+    
     <h2 style="text-align:center;padding:5px"><fmt:message key="speedOffers"/></h2>
-
+	<c:if test="${empty speedOfferLs }">
+		<p id="vacio" >No hay ninguna oferta por plato específico activa.</p>
+	</c:if>
+	<c:if test="${not empty speedOfferLs }">
     <table id="speedOfferTable" class="table table-striped">
         <thead>
         <tr>
@@ -140,8 +151,13 @@
         </c:forEach>
         </tbody>
     </table>
+    </c:if>
+    
     <h2 style="text-align:center;padding:5px"><fmt:message key="timeOffers"/></h2>
-
+	<c:if test="${empty timeOfferLs }">
+		<p id="vacio" >No hay ninguna oferta por plato específico activa.</p>
+	</c:if>
+	<c:if test="${not empty timeOfferLs }">
     <table id="timeOfferTable" class="table table-striped">
         <thead>
         <tr>
@@ -184,6 +200,8 @@
         </c:forEach>
         </tbody>
     </table>
+    </c:if>
+    
     <div class="btn-return">
 		    <button type="button" role="link" onclick="goBack()" style="font-family: 'Lobster'; font-size: 20px;"> 
 		    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true" style="padding: 5px"> </span> 

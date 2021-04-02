@@ -22,7 +22,7 @@
                 <fmt:message key="listOffers"/> </button>
             </div>
             
-   			<sec:authorize access="hasAnyAuthority('cliente')">
+   			<sec:authorize access="hasAnyAuthority('client')">
 	        <div class="btn-home">
                 <button type="button" role="link" onclick="window.location='/offersCreate'" style="font-family: 'Lobster'; font-size: 20px;margin:5px;">
                 <span class="glyphicon glyphicon-cutlery" aria-hidden="true" style="padding: 5px"> </span>

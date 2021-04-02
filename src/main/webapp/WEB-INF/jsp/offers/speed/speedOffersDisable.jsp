@@ -11,12 +11,12 @@
         <h2> ¿Esta seguro de que quiere dar de baja su offer? </h2>
       		
       		 <form:form modelAttribute="speedOffer" class="form-horizontal">
-	            <input type="hidden" name="gold" value="${nu_offer.gold}" />
-	            <input type="hidden" name="discountGold" value="${nu_offer.discount_gold}" />
-	            <input type="hidden" name="silver" value="${nu_offer.silver}" />
-	            <input type="hidden" name="discountSilver" value="${nu_offer.discount_silver}" />
-	            <input type="hidden" name="bronze" value="${nu_offer.bronze}" />
-	            <input type="hidden" name="discountBronze" value="${nu_offer.discount_bronze}" />
+	            <input type="hidden" name="gold" value="${speedOffer.gold}" />
+	            <input type="hidden" name="discountGold" value="${speedOffer.discountGold}" />
+	            <input type="hidden" name="silver" value="${speedOffer.silver}" />
+	            <input type="hidden" name="discountSilver" value="${speedOffer.discountSilver}" />
+	            <input type="hidden" name="bronze" value="${speedOffer.bronze}" />
+	            <input type="hidden" name="discountBronze" value="${speedOffer.discountBronze}" />
 
         		<button class="btn btn-default" type="submit">Dar de baja</button>
         	</form:form>

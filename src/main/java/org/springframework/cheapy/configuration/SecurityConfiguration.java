@@ -44,12 +44,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 		.antMatchers("/owners/**").hasAnyAuthority("owner", "admin")
 
-
+		.antMatchers("/offers/**/edit").hasAnyAuthority("admin", "client")
 		.antMatchers("/offers/**/new").hasAnyAuthority("admin", "client")
 		.antMatchers("/offers/**/activate").hasAnyAuthority("admin","client")
 
 		.antMatchers("/clients/new").permitAll()
-		.antMatchers("/offers/**").permitAll()
+		.antMatchers("/offers").permitAll()
 		.antMatchers("/offersCreate").hasAuthority("client")
 
 

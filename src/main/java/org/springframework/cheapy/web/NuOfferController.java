@@ -110,7 +110,7 @@ public class NuOfferController {
 
 		NuOffer nuOffer = this.nuOfferService.findNuOfferById(nuOfferId);
 		model.put("nuOffer", nuOffer);
-		return "nuOffers/nuOffersDisable";
+		return "offers/nu/nuOffersDisable";
 	}
 
 	@PostMapping(value = "/offers/nu/{nuOfferId}/disable")

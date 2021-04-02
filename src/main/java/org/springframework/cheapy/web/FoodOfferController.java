@@ -109,7 +109,7 @@ public class FoodOfferController {
 
 		FoodOffer foodOffer = this.foodOfferService.findFoodOfferById(foodOfferId);
 		model.put("foodOffer", foodOffer);
-		return "foodOffers/foodOffersDisable";
+		return "offers/food/foodOffersDisable";
 	}
 
 	@PostMapping(value = "/offers/food/{foodOfferId}/disable")
