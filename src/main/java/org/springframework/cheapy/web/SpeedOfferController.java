@@ -104,7 +104,7 @@ public class SpeedOfferController {
 
 		SpeedOffer speedOffer = this.speedOfferService.findSpeedOfferById(speedOfferId);
 		model.put("speedOffer", speedOffer);
-		return "speedOffers/speedOffersDisable";
+		return "offers/speed/speedOffersDisable";
 	}
 
 	@PostMapping(value = "/offers/speed/{speedOfferId}/disable")

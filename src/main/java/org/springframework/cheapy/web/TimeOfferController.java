@@ -115,7 +115,7 @@ public class TimeOfferController {
 
 		TimeOffer timeOffer = this.timeOfferService.findTimeOfferById(timeOfferId);
 		model.put("timeOffer", timeOffer);
-		return "timeOffers/timeOffersDisable";
+		return "offers/time/timeOffersDisable";
 	}
 
 	@PostMapping(value = "/offers/time/{timeOfferId}/disable")

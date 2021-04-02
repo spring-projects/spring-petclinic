@@ -9,25 +9,25 @@
 <cheapy:layout pageName="crearOfertas">
 	<div class="btn-create-max">
 	    <div class="btn-create">
-	                <button type="button" role="link" onclick="window.location='/foodOffers/new'" style="font-family: 'Lobster'; font-size: 20px;">
+	                <button type="button" role="link" onclick="window.location='/offers/food/new'" style="font-family: 'Lobster'; font-size: 20px;">
 	                <span class="glyphicon glyphicon-cutlery" aria-hidden="true" style="padding: 5px"> </span>
 	                <fmt:message key="createFoodOffers"/> </button>
 	   	</div>
 	   	
 	   	<div class="btn-create">
-	                <button type="button" role="link" onclick="window.location='/nuOffers/new'" style="font-family: 'Lobster'; font-size: 20px;">
+	                <button type="button" role="link" onclick="window.location='/offers/nu/new'" style="font-family: 'Lobster'; font-size: 20px;">
 	                <span class="glyphicon glyphicon-cutlery" aria-hidden="true" style="padding: 5px"> </span>
 	                <fmt:message key="createNuOffers"/> </button>
 	   	</div>
 	   	
 	   	<div class="btn-create">
-	                <button type="button" role="link" onclick="window.location='/speedOffers/new'" style="font-family: 'Lobster'; font-size: 20px;">
+	                <button type="button" role="link" onclick="window.location='/offers/speed/new'" style="font-family: 'Lobster'; font-size: 20px;">
 	                <span class="glyphicon glyphicon-cutlery" aria-hidden="true" style="padding: 5px"> </span>
 	                <fmt:message key="createSpeedOffers"/> </button>
 	   	</div>
 	   	
 		<div class="btn-create">
-			     	<button type="button" role="link" onclick="window.location='/timeOffers/new'" style="font-family: 'Lobster'; font-size: 20px;">
+			     	<button type="button" role="link" onclick="window.location='/offers/time/new'" style="font-family: 'Lobster'; font-size: 20px;">
 	                <span class="glyphicon glyphicon-cutlery" aria-hidden="true" style="padding: 5px"> </span>
 	                <fmt:message key="createTimeOffers"/> </button>
 	   	</div>
