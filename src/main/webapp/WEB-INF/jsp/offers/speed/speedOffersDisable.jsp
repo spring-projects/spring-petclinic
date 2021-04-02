@@ -2,15 +2,16 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
+<%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<petclinic:layout pageName="speedOffer">
+<cheapy:layout pageName="speedOffer">
 
 	<jsp:body>
-        <h2> ¿Esta seguro de que quiere dar de baja su offer? </h2>
+        <h2> �Est� seguro de que quiere dar de baja su oferta? </h2>
       		
       		 <form:form modelAttribute="speedOffer" class="form-horizontal">
+
 	            <input type="hidden" name="gold" value="${speedOffer.gold}" />
 	            <input type="hidden" name="discountGold" value="${speedOffer.discountGold}" />
 	            <input type="hidden" name="silver" value="${speedOffer.silver}" />
@@ -24,4 +25,4 @@
             <a class="btn btn-default" href='<spring:url value="/offers" htmlEscape="true"/>'>Volver</a>
            
     </jsp:body>
-</petclinic:layout>
+</cheapy:layout>

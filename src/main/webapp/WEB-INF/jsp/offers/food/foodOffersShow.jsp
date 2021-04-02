@@ -9,7 +9,6 @@
 
 <cheapy:layout pageName="foodOffer">
 
-
     <h2 style="text-align:center;padding:5px"><fmt:message key="foodOffer"/></h2>
 
 

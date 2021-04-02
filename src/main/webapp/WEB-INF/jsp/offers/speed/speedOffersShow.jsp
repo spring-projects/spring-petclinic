@@ -9,8 +9,9 @@
 
 <cheapy:layout pageName="speedOffer">
 
-    <h2 style="text-align:center;padding:5px"><fmt:message key="speedOffer"/></h2>
-
+	<h2 style="text-align: center; padding: 5px">
+		<fmt:message key="speedOffer" />
+	</h2>
 
     <table class="table table-striped" id="speedOffer-table">
         <tr>

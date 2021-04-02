@@ -19,11 +19,11 @@
             <cheapy:inputField label="Fecha de Inicio" placeholder="dd/MM/yyyy HH:mm" name="start"/>
             <cheapy:inputField label="Fecha de Fin"  placeholder="dd/MM/yyyy HH:mm" name="end"/>
             
-            <cheapy:inputField label="Número de comensales (nivel Oro)" placeholder="XX (Ej. 6)" name="gold"/>
+            <cheapy:inputField label="NÃºmero de comensales (nivel Oro)" placeholder="XX (Ej. 6)" name="gold"/>
             <cheapy:inputField label="Descuento de nivel oro" placeholder="XX% (Ej. 30)" name="discountGold"/>
-            <cheapy:inputField label="Número de comensales (nivel Plata)" placeholder="XX (Ej. 4)" name="silver"/>
+            <cheapy:inputField label="NÃºmero de comensales (nivel Plata)" placeholder="XX (Ej. 4)" name="silver"/>
             <cheapy:inputField label="Descuento de plata" placeholder="XX% (Ej. 15)" name="discountSilver"/>
-            <cheapy:inputField label="Número de comensales (nivel Bronce)" placeholder="XX (Ej. 2)" name="bronze"/>
+            <cheapy:inputField label="NÃºmero de comensales (nivel Bronce)" placeholder="XX (Ej. 2)" name="bronze"/>
 			<cheapy:inputField label="Descuento de bronce" placeholder="XX% (Ej. 5)" name="discountBronze"/>
 
             </div>

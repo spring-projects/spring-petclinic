@@ -9,8 +9,9 @@
 
 <cheapy:layout pageName="nuOffer">
 
-    <h2 style="text-align:center;padding:5px"><fmt:message key="nuOffer"/></h2>
-
+	<h2 style="text-align: center; padding: 5px">
+		<fmt:message key="nuOffer" />
+	</h2>
 
     <table class="table table-striped" id="nuOffer-table">
         <tr>

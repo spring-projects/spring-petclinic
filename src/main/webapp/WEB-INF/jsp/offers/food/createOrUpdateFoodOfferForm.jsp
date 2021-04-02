@@ -11,6 +11,7 @@
     <h2 style="text-align:center;padding:5px">
         <c:if test="${foodOffer['new']}"><fmt:message key="new"/> </c:if> <fmt:message key="foodOffer"/>
     </h2>
+    
     <form:form modelAttribute="foodOffer" class="form-horizontal" id="add-foodOffer-form">
         <div class="form-group has-feedback">
         	<form:hidden path="id"/>
