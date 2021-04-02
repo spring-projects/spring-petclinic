@@ -76,7 +76,7 @@ public class ReviewController {
 		Review review = this.reviewService.findReviewById(reviewId);
 
 		model.put("review", review);
-
+		
 		
 		return "reviews/reviewsShow";
 
