@@ -14,10 +14,6 @@ before_install:
   - chmod +x mvnw
   - mysql -e 'CREATE DATABASE cheapy;'
   - sudo apt-get update
-install:
-  - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-  - pip install codacy-coverage
-
 after_success:
   - java -jar ~/codacy-coverage-reporter-assembly-latest.jar report -l Java -r target/jacoco/jacoco.xml
 
