@@ -13,7 +13,7 @@
     <form:form modelAttribute="review" class="form-horizontal" id="add-review-form">
         <div class="form-group has-feedback">
         	<form:hidden path="id"/>
-            <cheapy:inputField label="Opinión" name="opinion"/>
+            <cheapy:textAreaField label="Opinión" name="opinion"/>
             <cheapy:inputField label="Estrellas" name="stars"/>
         </div>
         <div class="form-group">
