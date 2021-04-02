@@ -13,16 +13,19 @@ import org.springframework.cheapy.service.FoodOfferService;
 import org.springframework.cheapy.service.NuOfferService;
 import org.springframework.cheapy.service.SpeedOfferService;
 import org.springframework.cheapy.service.TimeOfferService;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class OfertaController {
-	
+
 	private final ClientService clientService;
-	
+
 	private final FoodOfferService foodOfferService;
-	private final NuOfferService nuOfferService; 
+	private final NuOfferService nuOfferService;
 	private final SpeedOfferService speedOfferService;
 	private final TimeOfferService timeOfferService;
 
@@ -42,40 +45,49 @@ public class OfertaController {
 		List<NuOffer> nuOfferLs=this.nuOfferService.findActiveNuOffer();
 		List<SpeedOffer> speedOfferLs=this.speedOfferService.findActiveSpeedOffer();
 		List<TimeOffer> timeOfferLs=this.timeOfferService.findActiveTimeOffer();
-		
+
 		model.put("foodOfferLs", foodOfferLs);
 		model.put("nuOfferLs", nuOfferLs);
 		model.put("speedOfferLs", speedOfferLs);
 		model.put("timeOfferLs", timeOfferLs);
-		
-		//Se añade formateador de fecha al modelo	
+
+		//Se añade formateador de fecha al modelo
 		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-		
+
 		return "offers/offersList";
 
 	}
-	
+
+
 	@GetMapping("/myOffers")
 	public String processMyOffersForm( Map<String, Object> model) {
-		
+
 		int actual = this.clientService.getCurrentClient().getId();
-		
+
 		List<FoodOffer> foodOfferLs = this.foodOfferService.findFoodOfferByUserId(actual);
 		List<NuOffer> nuOfferLs = this.nuOfferService.findNuOfferByUserId(actual);
 		List<SpeedOffer> speedOfferLs = this.speedOfferService.findSpeedOfferByUserId(actual);
 		List<TimeOffer> timeOfferLs = this.timeOfferService.findTimeOfferByUserId(actual);
-		
+
 		model.put("foodOfferLs", foodOfferLs);
 		model.put("nuOfferLs", nuOfferLs);
 		model.put("speedOfferLs", speedOfferLs);
 		model.put("timeOfferLs", timeOfferLs);
-		
-		//Se añade formateador de fecha al modelo	
-		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-		
-		return "offers/myOffersList";
 
-	}
+		//Se añade formateador de fecha al modelo
+		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+
+		return "offers/myOffersList";
+		}
+
+		@GetMapping("/offersCreate")
+		public String createOffers() {
+
+			return "offers/offersCreate";
+		}
+
+
+
 //	@GetMapping("/owners/{ownerId}/edit")
 //	public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
 //		Owner owner = this.ownerService.findOwnerById(ownerId);
@@ -99,10 +111,10 @@ public class OfertaController {
 //	public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
 //		ModelAndView mav = new ModelAndView("owners/ownerDetails");
 //		Owner owner = this.ownerService.findOwnerById(ownerId);
-//		
+//
 //		mav.addObject(owner);
 //		return mav;
 //	}
-	
-	
+
+
 }

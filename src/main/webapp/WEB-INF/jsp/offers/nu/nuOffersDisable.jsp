@@ -5,12 +5,19 @@
 <%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<cheapy:layout pageName="nuOffer">
+<petclinic:layout pageName="nuOfferDisable">
 
 	<jsp:body>
-        <h2> ¿Está seguro de que quiere dar de baja su oferta? </h2>
+        <h2> Â¿EstÃ¡ seguro de que quiere dar de baja su offer? </h2>
       		
       		 <form:form modelAttribute="nuOffer" class="form-horizontal">
+	            <input type="hidden" name="gold" value="${nuOffer.gold}" />
+	            <input type="hidden" name="discountGold" value="${nuOffer.discountGold}" />
+	            <input type="hidden" name="silver" value="${nuOffer.silver}" />
+	            <input type="hidden" name="discountSilver" value="${nuOffer.discountSilver}" />
+	            <input type="hidden" name="bronze" value="${nuOffer.bronze}" />
+	            <input type="hidden" name="discountBronze" value="${nuOffer.discountBronze}" />
+
         		<button class="btn btn-default" type="submit">Dar de baja</button>
         	</form:form>
         

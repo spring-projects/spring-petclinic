@@ -5,12 +5,16 @@
 <%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<cheapy:layout pageName="foodOffer">
+<petclinic:layout pageName="timeOffer">
 
 	<jsp:body>
-        <h2> ¿Está seguro de que quiere eliminar su oferta? </h2>
+        <h2> ï¿½Estï¿½ seguro de que quiere eliminar su oferta? </h2>
       		
-      		<form:form modelAttribute="foodOffer" class="form-horizontal">
+      		<form:form modelAttribute="timeOffer" class="form-horizontal">
+	            <input type="hidden" name="init" value="${timeOffer.init}" />
+	            <input type="hidden" name="finish" value="${timeOffer.finish}" />
+	            <input type="hidden" name="discount" value="${timeOffer.discount}" />
+
         		<button class="btn btn-default" type="submit">Eliminar Oferta</button>
         	</form:form>
         

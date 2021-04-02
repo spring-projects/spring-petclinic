@@ -8,9 +8,17 @@
 <cheapy:layout pageName="speedOffer">
 
 	<jsp:body>
-        <h2> ¿Está seguro de que quiere dar de baja su oferta? </h2>
+        <h2> ï¿½Estï¿½ seguro de que quiere dar de baja su oferta? </h2>
       		
       		 <form:form modelAttribute="speedOffer" class="form-horizontal">
+
+	            <input type="hidden" name="gold" value="${speedOffer.gold}" />
+	            <input type="hidden" name="discountGold" value="${speedOffer.discountGold}" />
+	            <input type="hidden" name="silver" value="${speedOffer.silver}" />
+	            <input type="hidden" name="discountSilver" value="${speedOffer.discountSilver}" />
+	            <input type="hidden" name="bronze" value="${speedOffer.bronze}" />
+	            <input type="hidden" name="discountBronze" value="${speedOffer.discountBronze}" />
+
         		<button class="btn btn-default" type="submit">Dar de baja</button>
         	</form:form>
         
