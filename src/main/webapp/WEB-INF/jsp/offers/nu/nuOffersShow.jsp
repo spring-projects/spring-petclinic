@@ -66,7 +66,7 @@
 		    <button type="button" role="link" onclick="window.location='${fn:escapeXml(editUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
             <span class="glyphicon 	glyphicon glyphicon-edit" aria-hidden="true" style="padding: 5px"> </span>
 	        Editar oferta</button>
-			<c:if test="${nuOffer.status eq 'inactive' }">
+			<c:if test="${nuOffer.status eq 'hidden' }">
 		        <spring:url value="{nuOfferId}/activate" var="activateUrl">
 		        <spring:param name="nuOfferId" value="${nuOffer.id}"/>
 		        </spring:url>
@@ -84,8 +84,8 @@
 			        Desactivar oferta</button>
 		    </c:if>
 	    </div>
+	    </sec:authorize>
     </div>
-	</sec:authorize>
 	<script>
 		function goBack() {
 		  window.history.back()

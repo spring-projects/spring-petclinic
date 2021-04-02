@@ -54,7 +54,7 @@
             <span class="glyphicon 	glyphicon glyphicon-edit" aria-hidden="true" style="padding: 5px"> </span>
           Editar oferta</button>
 		
-		<c:if test="${foodOffer.status eq 'inactive' }">
+		<c:if test="${foodOffer.status eq 'hidden' }">
         <spring:url value="{foodOfferId}/activate" var="activateUrl">
         <spring:param name="foodOfferId" value="${foodOffer.id}"/>
         </spring:url>
@@ -72,9 +72,8 @@
           Desactivar oferta</button>
          </c:if>
       </div>
-      
+      </sec:authorize>
     </div>
-	</sec:authorize>
   	<script>
   		function goBack() {
   		  window.history.back()

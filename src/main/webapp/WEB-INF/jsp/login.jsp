@@ -282,26 +282,24 @@
 	    <div class="fadeIn first">
 	      <img src="/resources/images/Logo Cheapy.png" id="icon" />
 	      <c:if test= "${not empty param}" > 
-	      	<p class="text-danger"> El usuario y/o la contraseÃ±a son incorrectos </p> 
+	      	<p class="text-danger"> El usuario y/o la contraseña son incorrectos </p> 
 	      
 	      </c:if>
 	    </div>
-		<div th:if="${param.error}">
-			<p class="text-danger">Nombre de usuario o contraseÃ±a invÃ¡lido</p>
-		</div>
+
 	    <!-- Login Form -->
 	    <form class='form-signin' action="/login" method='POST'>
-	      <input type="text" id="username" class="fadeIn second" name="username" placeholder="nombre de usuario" required autofocus>
-	      <input type="password" id="password" class="fadeIn third" name="password" placeholder="contraseÃ±a" required>
+	      <input type="text" id="username" class="fadeIn second" name="username" placeholder="Usuario" required autofocus>
+	      <input type="password" id="password" class="fadeIn third" name="password" placeholder="Contraseña" required>
 	      <sec:csrfInput />  
-		  <input type="submit" class="fadeIn fourth" value="Acceder">
+		  <input type="submit" class="fadeIn fourth" value="Iniciar sesión">
 	    </form>
 	
-	    <!-- Remind Passowrd
+	    <!-- Remind Passowrd 
 	    <div id="formFooter">
-	      <a class="underlineHover" href="#">Â¿OlvidÃ³ su contraseÃ±a?</a>
+	      <a class="underlineHover" href="#">¿Olvidó su contraseña?</a>
 	    </div>
-	
+	-->
 	  </div>
 	</div>    
 

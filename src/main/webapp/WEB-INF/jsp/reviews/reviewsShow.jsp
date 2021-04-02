@@ -4,6 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
 
 <cheapy:layout pageName="review">
@@ -24,15 +25,27 @@
     </table>
     
     <div class="btn-return">
-	    <button type="button" role="link" onclick="window.location='/reviews'" style="font-family: 'Lobster'; font-size: 20px;">
+	    <button type="button" role="link" onclick="goBack()" style="font-family: 'Lobster'; font-size: 20px;">
 	    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true" style="padding: 5px"> </span>
 	    <fmt:message key="return"/> </button>
     </div>
 
-    <spring:url value="{reviewId}/edit" var="editUrl">
-    <spring:param name="reviewId" value="${review.id}"/>
-    </spring:url>
-    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Editar opinión</a>
-    
+	<sec:authentication var="principal" property="principal" />
+	<div class="btns-edit">
+		<c:if test="${ principal.username eq review.escritor.username }">
+	    	<spring:url value="{reviewId}/edit" var="editUrl">
+		    <spring:param name="reviewId" value="${review.id}"/>
+		    </spring:url>
+		    
+			<button type="button" role="link" onclick="window.location='${fn:escapeXml(editUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
+	        <span class="glyphicon glyphicon glyphicon-edit" aria-hidden="true" style="padding: 5px"> </span>
+		        Editar opinión</button>
+    	</c:if>
+    </div>
+    <script>
+		function goBack() {
+		  window.history.back()
+		}
+	</script>
   
 </cheapy:layout>
