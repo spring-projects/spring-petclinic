@@ -37,4 +37,8 @@ public class FoodOfferService {
 	public List<FoodOffer> findFoodOfferByUserId(final int id) {
 		return this.foodOfferRepository.findByUserId(id);
 	}
+	
+	public List<FoodOffer> findFoodOfferActOclByUserId(final int id) {
+		return this.foodOfferRepository.findFoodOfferActOclByUserId(id);
+	}
 }

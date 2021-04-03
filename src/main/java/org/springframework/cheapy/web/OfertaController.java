@@ -64,10 +64,10 @@ public class OfertaController {
 
 		int actual = this.clientService.getCurrentClient().getId();
 
-		List<FoodOffer> foodOfferLs = this.foodOfferService.findFoodOfferByUserId(actual);
-		List<NuOffer> nuOfferLs = this.nuOfferService.findNuOfferByUserId(actual);
-		List<SpeedOffer> speedOfferLs = this.speedOfferService.findSpeedOfferByUserId(actual);
-		List<TimeOffer> timeOfferLs = this.timeOfferService.findTimeOfferByUserId(actual);
+		List<FoodOffer> foodOfferLs = this.foodOfferService.findFoodOfferActOclByUserId(actual);
+		List<NuOffer> nuOfferLs = this.nuOfferService.findNuOfferActOclByUserId(actual);
+		List<SpeedOffer> speedOfferLs = this.speedOfferService.findSpeedOfferActOclByUserId(actual);
+		List<TimeOffer> timeOfferLs = this.timeOfferService.findTimeOfferActOclByUserId(actual);
 
 		model.put("foodOfferLs", foodOfferLs);
 		model.put("nuOfferLs", nuOfferLs);
