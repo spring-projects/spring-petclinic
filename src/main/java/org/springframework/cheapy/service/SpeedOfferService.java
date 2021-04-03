@@ -44,4 +44,8 @@ public class SpeedOfferService {
 	public List<SpeedOffer> findSpeedOfferByUserId(final int id) {
 		return this.speedOfferRepository.findByUserId(id);
 	}
+	
+	public List<SpeedOffer> findSpeedOfferActOclByUserId(final int id) {
+		return this.speedOfferRepository.findSpeedOfferActOclByUserId(id);
+	}
 }

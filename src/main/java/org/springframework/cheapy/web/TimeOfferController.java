@@ -121,12 +121,15 @@ public class TimeOfferController {
 	public String processShowForm(@PathVariable("timeOfferId") int timeOfferId, Map<String, Object> model) {
 
 		TimeOffer timeOffer = this.timeOfferService.findTimeOfferById(timeOfferId);
-
+		if(!timeOffer.getStatus().equals(StatusOffer.active)) {
+			return "error";
+		}else {
 		model.put("timeOffer", timeOffer);
 
 		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
 
 		return "offers/time/timeOffersShow";
+		}
 
 	}
 

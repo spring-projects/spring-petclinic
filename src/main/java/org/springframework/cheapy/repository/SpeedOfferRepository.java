@@ -29,4 +29,8 @@ public interface SpeedOfferRepository extends Repository<SpeedOffer, Integer> {
 	@Query("SELECT speedOffer FROM SpeedOffer speedOffer WHERE speedOffer.client.id =:id")
 	@Transactional(readOnly = true)
 	List<SpeedOffer> findByUserId(@Param("id") Integer id);
+	
+	@Query("SELECT speedOffer FROM SpeedOffer speedOffer WHERE speedOffer.client.id =:id AND speedOffer.status!= 'inactive'")
+	@Transactional(readOnly = true)
+	List<SpeedOffer> findSpeedOfferActOclByUserId(@Param("id") Integer id);
 }
