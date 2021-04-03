@@ -28,4 +28,8 @@ public interface FoodOfferRepository extends Repository<FoodOffer, Integer> {
 	@Query("SELECT foodOffer FROM FoodOffer foodOffer WHERE foodOffer.client.id =:id")
 	@Transactional(readOnly = true)
 	List<FoodOffer> findByUserId(@Param("id") Integer id);
+	
+	@Query("SELECT foodOffer FROM FoodOffer foodOffer WHERE foodOffer.client.id =:id AND foodOffer.status!= 'inactive'")
+	@Transactional(readOnly = true)
+	List<FoodOffer> findFoodOfferActOclByUserId(@Param("id") Integer id);
 }

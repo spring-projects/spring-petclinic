@@ -27,4 +27,8 @@ public interface NuOfferRepository extends Repository<NuOffer, Integer> {
 	@Query("SELECT nuOffer FROM NuOffer nuOffer WHERE nuOffer.client.id =:id")
 	@Transactional(readOnly = true)
 	List<NuOffer> findByUserId(@Param("id") Integer id);
+	
+	@Query("SELECT nuOffer FROM NuOffer nuOffer WHERE nuOffer.client.id =:id AND nuOffer.status!= 'inactive'")
+	@Transactional(readOnly = true)
+	List<NuOffer> findNuOfferActOclByUserId(@Param("id") Integer id);
 }

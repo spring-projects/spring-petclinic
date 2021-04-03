@@ -97,11 +97,11 @@ class NuOfferControllerTest {
 				.with(SecurityMockMvcRequestPostProcessors.csrf())
 				.param("start", "23/12/2021 12:30")
 				.param("end", "23/12/2022 12:30")
-				.param("gold", "5")
+				.param("gold", "15")
 				.param("discountGold", "15")
 				.param("silver", "10")
 				.param("discountSilver", "10")
-				.param("bronze", "15")
+				.param("bronze", "5")
 				.param("discountBronze", "5"))
 				.andExpect(status().is3xxRedirection());
 	}

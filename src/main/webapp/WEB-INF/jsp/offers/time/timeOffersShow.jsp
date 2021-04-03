@@ -56,7 +56,7 @@
             <span class="glyphicon 	glyphicon glyphicon-edit" aria-hidden="true" style="padding: 5px"> </span>
 	        Editar oferta</button>
 
-			<c:if test="${timeOffer.status eq 'inactive' }">
+			<c:if test="${timeOffer.status eq 'hidden' }">
 		        <spring:url value="{timeOfferId}/activate" var="activateUrl">
 		        <spring:param name="timeOfferId" value="${timeOffer.id}"/>
 		        </spring:url>
@@ -75,8 +75,9 @@
 	        </c:if>
 	        
 	    </div>
+	    </sec:authorize>
     </div>
-	</sec:authorize>
+	
     <script>
 		function goBack() {
 		  window.history.back()
