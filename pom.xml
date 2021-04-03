@@ -27,7 +27,12 @@
     <webjars-jquery.version>2.2.4</webjars-jquery.version>
     <wro4j.version>1.8.0</wro4j.version>
 
-    <jacoco.version>0.8.5</jacoco.version>
+    <jacoco.version>0.7.6.201602180812</jacoco.version>
+	<jacoco.outputDir>${project.build.directory}</jacoco.outputDir>
+	<jacoco.utreportpath>${project.build.directory}/jacoco</jacoco.utreportpath>
+    <jacoco.utreportfile>${jacoco.utreportpath}/jacoco.exec</jacoco.utreportfile>
+	<jacoco.itreportpath>${project.build.directory}/jacoco</jacoco.itreportpath>
+	<jacoco.itreportfile>${jacoco.itreportpath}/jacoco-it.exec</jacoco.itreportfile>
     <nohttp-checkstyle.version>0.0.4.RELEASE</nohttp-checkstyle.version>
     <spring-format.version>0.0.25</spring-format.version>
   </properties>
@@ -152,46 +157,59 @@
   <build>
     <plugins>
       
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <!-- Spring Boot Actuator displays build-related information
-              if a META-INF/build-info.properties file is present -->
-            <goals>
-              <goal>build-info</goal>
-            </goals>
-            <configuration>
-              <additionalProperties>
-                <encoding.source>${project.build.sourceEncoding}</encoding.source>
-                <encoding.reporting>${project.reporting.outputEncoding}</encoding.reporting>
-                <java.source>${maven.compiler.source}</java.source>
-                <java.target>${maven.compiler.target}</java.target>
-              </additionalProperties>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>${jacoco.version}</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>prepare-agent</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>report</id>
-            <phase>prepare-package</phase>
-            <goals>
-              <goal>report</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+						<plugin>
+								<groupId>org.jacoco</groupId>
+								<artifactId>jacoco-maven-plugin</artifactId>
+								<version>${jacoco.version}</version>
+								<executions>
+										<execution>
+												<id>pre-unit-test</id>
+												<phase>process-test-classes</phase>
+												<goals>
+														<goal>prepare-agent</goal>
+												</goals>
+												<configuration>
+														<propertyName>surefireArgLine</propertyName>
+														<destFile>${jacoco.utreportfile}</destFile>
+														<append>true</append>
+												</configuration>
+										</execution>
+										<execution>
+												<id>post-unit-test</id>
+												<phase>test</phase>
+												<goals>
+														<goal>report</goal>
+												</goals>
+												<configuration>
+														<outputDirectory>${jacoco.utreportpath}</outputDirectory>
+														<dataFile>${jacoco.utreportfile}</dataFile>
+												</configuration>
+										</execution>
+										<execution>
+												<id>pre-integration-test</id>
+												<phase>pre-integration-test</phase>
+												<goals>
+														<goal>prepare-agent-integration</goal>
+												</goals>
+												<configuration>
+														<propertyName>failsafeArgLine</propertyName>
+														<destFile>${jacoco.itreportfile}</destFile>
+														<append>true</append>
+												</configuration>
+										</execution>
+										<execution>
+												<id>post-integration-test</id>
+												<phase>post-integration-test</phase>
+												<goals>
+														<goal>report</goal>
+												</goals>
+												<configuration>
+														<outputDirectory>${jacoco.itreportpath}</outputDirectory>
+														<dataFile>${jacoco.itreportfile}</dataFile>
+												</configuration>
+										</execution>
+								</executions>
+						</plugin>
 
       <!-- Spring Boot Actuator displays build-related information if a git.properties
         file is present at the classpath -->
