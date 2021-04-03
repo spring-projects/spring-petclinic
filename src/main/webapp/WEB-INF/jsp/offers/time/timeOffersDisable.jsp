@@ -12,9 +12,6 @@
         <h2 class="text-center" style="font-family: 'Lobster'; font-size: 30px; color: rgb(0, 64, 128); padding:30px"><em>¿Está seguro de que quiere eliminar su oferta?</em></h2>
       		
       		<form:form modelAttribute="timeOffer" class="form-horizontal">
-	            <input type="hidden" name="init" value="${timeOffer.init}" />
-	            <input type="hidden" name="finish" value="${timeOffer.finish}" />
-	            <input type="hidden" name="discount" value="${timeOffer.discount}" />
 
         		<div class="btns-edit">
         			<button type="submit" style="font-family: 'Lobster'; font-size: 20px;">
