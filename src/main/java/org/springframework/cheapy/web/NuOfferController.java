@@ -174,15 +174,15 @@ public class NuOfferController {
 			return NuOfferController.VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
 
 		} else {
-			if(!this.checkDates(nuOffer)) {
+			if(!this.checkDates(nuOfferEdit)) {
 				//Poner aqui mensaje de error
 				return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
 			}
-			if(!this.checkConditions(nuOffer)) {
+			if(!this.checkConditions(nuOfferEdit)) {
 				//Poner aqui mensaje de error
 				return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
 			}
-			if(!this.checkDiscounts(nuOffer)) {
+			if(!this.checkDiscounts(nuOfferEdit)) {
 				//Poner aqui mensaje de error
 				return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
 			}
