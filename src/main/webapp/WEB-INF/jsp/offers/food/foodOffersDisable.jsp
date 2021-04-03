@@ -15,23 +15,13 @@
             
 	            <input type="hidden" name="food" value="${foodOffer.food}" />
 	            <input type="hidden" name="discount" value="${foodOffer.discount}" />
-				<div class="btns-edit">
+				<div class="btns-edit2">
         			<button type="submit" style="font-family: 'Lobster'; font-size: 20px;">
         			<span class="glyphicon glyphicon glyphicon-trash" aria-hidden="true" style="padding: 5px"> </span>
         			Dar de baja</button>
         		</div>
         	</form:form>
         
-            <div class="btn-return">
-			    <button type="button" role="link" onclick="goBack()" style="font-family: 'Lobster'; font-size: 20px;">
-			    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true" style="padding: 5px"> </span>
-			    <fmt:message key="return"/> </button>
-		    </div>
-           <script>
-				function goBack() {
-				  window.history.back()
-				}
-			</script>
     </jsp:body>
     
 </cheapy:layout>

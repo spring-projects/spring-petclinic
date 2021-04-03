@@ -23,6 +23,11 @@
             </div>
             
    			<sec:authorize access="hasAnyAuthority('client')">
+   			<div class="btn-home">
+                <button type="button" role="link" onclick="window.location='/myOffers'" style="font-family: 'Lobster'; font-size: 20px;margin:5px;">
+                <span class="glyphicon glyphicon-cutlery" aria-hidden="true" style="padding: 5px"> </span>
+                <fmt:message key="myOffers"/> </button>
+            </div>
 	        <div class="btn-home">
                 <button type="button" role="link" onclick="window.location='/offersCreate'" style="font-family: 'Lobster'; font-size: 20px;margin:5px;">
                 <span class="glyphicon glyphicon-cutlery" aria-hidden="true" style="padding: 5px"> </span>

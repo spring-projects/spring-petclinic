@@ -44,16 +44,6 @@
             </div>
         </div>
     </form:form>
-    
-    <div class="btn-return">
-		    <button type="button" role="link" onclick="goBack()" style="font-family: 'Lobster'; font-size: 20px;"> 
-		    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true" style="padding: 5px"> </span> 
-		    <fmt:message key="return"/> </button>
-	</div>
-   	<script>
-		function goBack() {
-		  window.history.back()
-		}
-	</script>
+   
 	
 </cheapy:layout>

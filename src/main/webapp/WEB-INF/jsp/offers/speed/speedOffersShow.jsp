@@ -53,19 +53,19 @@
     </table>
 
     <div class="btn-menu">
-	    <div class="btn-return">
-		    <button type="button" role="link" onclick="goBack()" style="font-family: 'Lobster'; font-size: 20px;">
-		    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true" style="padding: 5px"> </span>
-		    <fmt:message key="return"/> </button>
-	    </div>
+	    
 	<sec:authorize access="hasAnyAuthority('client')">
+	<sec:authentication var="principal" property="principal" />
 		<div class="btns-edit">
-		    <spring:url value="{speedOfferId}/edit" var="editUrl">
-		    <spring:param name="speedOfferId" value="${speedOffer.id}"/>
-		    </spring:url>
-		    <button type="button" role="link" onclick="window.location='${fn:escapeXml(editUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
-            <span class="glyphicon 	glyphicon glyphicon-edit" aria-hidden="true" style="padding: 5px"> </span>
-	        Editar oferta</button>
+		<c:if test="${ principal.username eq speedOffer.client.usuar.username}">
+			<c:if test="${speedOffer.status eq 'active' || speedOffer.status eq 'hidden' }">
+			    <spring:url value="{speedOfferId}/edit" var="editUrl">
+			    <spring:param name="speedOfferId" value="${speedOffer.id}"/>
+			    </spring:url>
+			    <button type="button" role="link" onclick="window.location='${fn:escapeXml(editUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
+	            <span class="glyphicon 	glyphicon glyphicon-edit" aria-hidden="true" style="padding: 5px"> </span>
+		        Editar oferta</button>
+			</c:if>
 
 			<c:if test="${speedOffer.status eq 'hidden' }">
 		        <spring:url value="{speedOfferId}/activate" var="activateUrl">
@@ -84,14 +84,12 @@
 	            <span class="glyphicon glyphicon glyphicon-trash" aria-hidden="true" style="padding: 5px"> </span>
 		        Desactivar oferta</button>
 	        </c:if>
+	    </c:if>
 	    </div>
 	    </sec:authorize>
+	
     </div>
 	
-	<script>
-		function goBack() {
-		  window.history.back()
-		}
-	</script>
+	
 
 </cheapy:layout>

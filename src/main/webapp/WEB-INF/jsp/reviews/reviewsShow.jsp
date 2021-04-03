@@ -24,11 +24,7 @@
         
     </table>
     
-    <div class="btn-return">
-	    <button type="button" role="link" onclick="goBack()" style="font-family: 'Lobster'; font-size: 20px;">
-	    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true" style="padding: 5px"> </span>
-	    <fmt:message key="return"/> </button>
-    </div>
+    
 
 	<sec:authentication var="principal" property="principal" />
 	<div class="btns-edit">
@@ -42,10 +38,6 @@
 		        Editar opinión</button>
     	</c:if>
     </div>
-    <script>
-		function goBack() {
-		  window.history.back()
-		}
-	</script>
+    
   
 </cheapy:layout>
