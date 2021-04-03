@@ -133,10 +133,14 @@ public class NuOfferController {
 	@GetMapping("/offers/nu/{nuOfferId}")
 	public String processShowForm(@PathVariable("nuOfferId") int nuOfferId, Map<String, Object> model) {
 		NuOffer nuOffer = this.nuOfferService.findNuOfferById(nuOfferId);
+		if(!nuOffer.getStatus().equals(StatusOffer.active)) {
+			return "error";
+		}else {
 		model.put("nuOffer", nuOffer);
 
 		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
 		return "offers/nu/nuOffersShow";
+		}
 
 	}
 
@@ -174,15 +178,15 @@ public class NuOfferController {
 			return NuOfferController.VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
 
 		} else {
-			if(!this.checkDates(nuOffer)) {
+			if(!this.checkDates(nuOfferEdit)) {
 				//Poner aqui mensaje de error
 				return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
 			}
-			if(!this.checkConditions(nuOffer)) {
+			if(!this.checkConditions(nuOfferEdit)) {
 				//Poner aqui mensaje de error
 				return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
 			}
-			if(!this.checkDiscounts(nuOffer)) {
+			if(!this.checkDiscounts(nuOfferEdit)) {
 				//Poner aqui mensaje de error
 				return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
 			}

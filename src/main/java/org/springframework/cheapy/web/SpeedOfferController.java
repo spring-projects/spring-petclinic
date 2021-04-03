@@ -125,12 +125,15 @@ public class SpeedOfferController {
 
 	@GetMapping("/offers/speed/{speedOfferId}")
 	public String processShowForm(@PathVariable("speedOfferId") int speedOfferId, Map<String, Object> model) {
-
 		SpeedOffer speedOffer = this.speedOfferService.findSpeedOfferById(speedOfferId);
+		if(!speedOffer.getStatus().equals(StatusOffer.active)) {
+			return "error";
+		}else {
 		model.put("speedOffer", speedOffer);
 
 		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
 		return "offers/speed/speedOffersShow";
+		}
 	}
 
 	@GetMapping(value = "/offers/speed/{speedOfferId}/edit")
@@ -167,15 +170,15 @@ public class SpeedOfferController {
 			return SpeedOfferController.VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
 
 		} else {
-			if(!this.checkDates(speedOffer)) {
+			if(!this.checkDates(speedOfferEdit)) {
 				//Poner aqui mensaje de error
 				return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
 			}
-			if(!this.checkConditions(speedOffer)) {
+			if(!this.checkConditions(speedOfferEdit)) {
 				//Poner aqui mensaje de error
 				return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
 			}
-			if(!this.checkDiscounts(speedOffer)) {
+			if(!this.checkDiscounts(speedOfferEdit)) {
 				//Poner aqui mensaje de error
 				return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
 			}

@@ -121,12 +121,15 @@ public class TimeOfferController {
 	public String processShowForm(@PathVariable("timeOfferId") int timeOfferId, Map<String, Object> model) {
 
 		TimeOffer timeOffer = this.timeOfferService.findTimeOfferById(timeOfferId);
-
+		if(!timeOffer.getStatus().equals(StatusOffer.active)) {
+			return "error";
+		}else {
 		model.put("timeOffer", timeOffer);
 
 		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
 
 		return "offers/time/timeOffersShow";
+		}
 
 	}
 
@@ -165,11 +168,11 @@ public class TimeOfferController {
 			return TimeOfferController.VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
 
 		} else {
-			if(!this.checkDates(timeOffer)) {
+			if(!this.checkDates(timeOfferEdit)) {
 				//Poner aqui mensaje de error
 				return VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
 			}
-			if(!this.checkTimes(timeOffer)) {
+			if(!this.checkTimes(timeOfferEdit)) {
 				//Poner aqui mensaje de error
 				return VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
 			}
