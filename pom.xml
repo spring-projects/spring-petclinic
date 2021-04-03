@@ -29,9 +29,8 @@
 
     <jacoco.version>0.7.6.201602180812</jacoco.version>
 	<jacoco.outputDir>${project.build.directory}</jacoco.outputDir>
-	<jacoco.utreportpath>${project.build.directory}/jacoco</jacoco.utreportpath>
+	<jacoco.utreportpath>${project.build.directory}</jacoco.utreportpath>
     <jacoco.utreportfile>${jacoco.utreportpath}/jacoco.exec</jacoco.utreportfile>
-	<jacoco.itreportpath>${project.build.directory}/jacoco</jacoco.itreportpath>
 	<jacoco.itreportfile>${jacoco.itreportpath}/jacoco-it.exec</jacoco.itreportfile>
     <nohttp-checkstyle.version>0.0.4.RELEASE</nohttp-checkstyle.version>
     <spring-format.version>0.0.25</spring-format.version>
