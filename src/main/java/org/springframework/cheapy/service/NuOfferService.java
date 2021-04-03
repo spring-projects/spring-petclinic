@@ -3,6 +3,7 @@ package org.springframework.cheapy.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cheapy.model.NuOffer;
+import org.springframework.cheapy.model.StatusOffer;
 import org.springframework.cheapy.repository.NuOfferRepository;
 import java.util.List;
 import org.springframework.dao.DataAccessException;
@@ -32,5 +33,18 @@ public class NuOfferService {
 	@Transactional
 	public void saveNuOffer(final NuOffer nuOffer) throws DataAccessException {
 		this.nuOfferRepository.save(nuOffer);
+	}
+	
+	@Transactional
+	public void saveUpdateNuOffer(final NuOffer nuOfferNew, final NuOffer nuOfferOld) throws DataAccessException {
+		this.nuOfferRepository.save(nuOfferNew);
+	}
+	
+	public List<NuOffer> findActiveNuOffer() {
+		return this.nuOfferRepository.findActiveNuOffer(StatusOffer.active);
+	}
+	
+	public List<NuOffer> findNuOfferByUserId(final int id) {
+		return this.nuOfferRepository.findByUserId(id);
 	}
 }

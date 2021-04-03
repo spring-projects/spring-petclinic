@@ -6,7 +6,7 @@
 <%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
 <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
 
-<cheapy:layout pageName="ofertas">
+<cheapy:layout pageName="ofertasM">
     <h2 style="text-align:center;padding:5px"><fmt:message key="foodOffers"/></h2>
 	<c:if test="${empty foodOfferLs }">
 		<p id="vacio" >No hay ninguna oferta por plato específico activa.</p>
@@ -17,10 +17,11 @@
         <tr>
         	<!-- <th style="width: 150px;">Restaurante</th> -->
         	<th><fmt:message key="food"/></th>
-        	<th><fmt:message key="discount"/></th>
             <th><fmt:message key="startDate"/></th>
             <th><fmt:message key="endDate"/></th>
-            <th> </th>
+            <th> <spring:url value="/offers/food/new" var="newFoodUrl">
+    </spring:url>
+    <!--  <a href="${fn:escapeXml(newFoodUrl)}" class="btn btn-default">Nueva oferta</a></th>-->
         </tr>
         </thead>
         <tbody>
@@ -28,9 +29,6 @@
             <tr>
                 <td>
                     <c:out value="${foodOffer.food}"/>
-                </td>
-                <td>
-                    <c:out value="${foodOffer.discount}%"/>
                 </td>
                 <td>
                     <c:out value="${localDateTimeFormat.format(foodOffer.start)}"/>
@@ -65,9 +63,9 @@
         	<!-- <th style="width: 150px;">Restaurante</th> -->
             <th><fmt:message key="startDate"/></th>
             <th><fmt:message key="endDate"/></th>
-            <th><fmt:message key="goldGoal"/></th>
-            <th><fmt:message key="goldDiscount"/></th>
-            <th> </th>
+            <th> <spring:url value="/offers/nu/new" var="newNuUrl">
+    </spring:url>
+    <!--  <a href="${fn:escapeXml(newNuUrl)}" class="btn btn-default">Nueva oferta</a></th>-->
             
         </tr>
         </thead>
@@ -80,12 +78,6 @@
                 </td>
                 <td>
                     <c:out value="${localDateTimeFormat.format(nuOffer.end)}"/>
-                </td>
-                <td>
-                    <c:out value="${nuOffer.gold} comensales"/>
-                </td>
-                <td>
-                    <c:out value="${nuOffer.discountGold}%"/>
                 </td>
                 <td>
 	                <spring:url value="/offers/nu/{nuOfferId}" var="nuOfferUrl">
@@ -104,7 +96,7 @@
     </c:if>
     
     <h2 style="text-align:center;padding:5px"><fmt:message key="speedOffers"/></h2>
-	<c:if test="${empty speedOfferLs }">
+	<c:if test="${empty foodOfferLs }">
 		<p id="vacio" >No hay ninguna oferta por plato específico activa.</p>
 	</c:if>
 	<c:if test="${not empty speedOfferLs }">
@@ -114,9 +106,9 @@
         	<!-- <th style="width: 150px;">Restaurante</th> -->
             <th><fmt:message key="startDate"/></th>
             <th><fmt:message key="endDate"/></th>
-            <th><fmt:message key="goldGoal"/></th>
-            <th><fmt:message key="goldDiscount"/></th>
-            <th> </th>
+            <th> <spring:url value="/offers/speed/new" var="newSpeedUrl">
+    </spring:url>
+   <!-- <a href="${fn:escapeXml(newSpeedUrl)}" class="btn btn-default">Nueva oferta</a></th>-->
             
         </tr>
         </thead>
@@ -129,12 +121,6 @@
                 </td>
                 <td>
                     <c:out value="${localDateTimeFormat.format(speedOffer.end)}"/>
-                </td>
-                <td>
-                    <c:out value="${speedOffer.gold} minutos"/>
-                </td>
-                <td>
-                    <c:out value="${speedOffer.discountGold}%"/>
                 </td>
                 <td>
                     <spring:url value="/offers/speed/{speedOfferId}" var="speedOfferUrl">
@@ -164,9 +150,9 @@
         	<!-- <th style="width: 150px;">Restaurante</th> -->
             <th><fmt:message key="startDate"/></th>
             <th><fmt:message key="endDate"/></th>
-            <th><fmt:message key="init"/></th>
-            <th><fmt:message key="finish"/></th>
-            <th> </th>
+            <th><spring:url value="/offers/time/new" var="newTimeUrl">
+    </spring:url>
+    <!--<a href="${fn:escapeXml(newTimeUrl)}" class="btn btn-default">Nueva oferta</a> </th>-->
         </tr>
         </thead>
         <tbody>
@@ -179,13 +165,6 @@
                 <td>
                     <c:out value="${localDateTimeFormat.format(timeOffer.end)}"/>
                 </td>
-                <td>
-                    <c:out value="${timeOffer.init}h"/>
-                </td>
-                <td>
-                    <c:out value="${timeOffer.finish}h"/>
-                </td>
-                
                 <td>
                 	<spring:url value="/offers/time/{timeOfferId}" var="timeOfferUrl">
                         <spring:param name="timeOfferId" value="${timeOffer.id}"/>
@@ -201,15 +180,4 @@
         </tbody>
     </table>
     </c:if>
-    
-    <div class="btn-return">
-		    <button type="button" role="link" onclick="goBack()" style="font-family: 'Lobster'; font-size: 20px;"> 
-		    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true" style="padding: 5px"> </span> 
-		    <fmt:message key="return"/> </button>
-	</div>
-    <script>
-		function goBack() {
-		  window.history.back()
-		}
-	</script>
 </cheapy:layout>

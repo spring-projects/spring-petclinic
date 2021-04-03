@@ -1,5 +1,6 @@
 package org.springframework.cheapy.model;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -57,16 +58,16 @@ public class Client extends BaseEntity {
 	private User usuar;
 
 	@OneToMany
-	private Set<FoodOffer> foodOffers;
+	private List<FoodOffer> foodOffers;
 
 	@OneToMany
-	private Set<NuOffer> nuOffers;
+	private List<NuOffer> nuOffers;
 
 	@OneToMany
-	private Set<SpeedOffer> speedOffers;
+	private List<SpeedOffer> speedOffers;
 
 	@OneToMany
-	private Set<TimeOffer> timeOffers;
+	private List<TimeOffer> timeOffers;
 
 	public String getName() {
 		return name;
@@ -148,35 +149,35 @@ public class Client extends BaseEntity {
 		this.usuar = usuar;
 	}
 
-	public Set<FoodOffer> getFoodOffers() {
+	public List<FoodOffer> getFoodOffers() {
 		return foodOffers;
 	}
 
-	public void setFoodOffers(Set<FoodOffer> foodOffers) {
+	public void setFoodOffers(List<FoodOffer> foodOffers) {
 		this.foodOffers = foodOffers;
 	}
 
-	public Set<NuOffer> getNuOffers() {
+	public List<NuOffer> getNuOffers() {
 		return nuOffers;
 	}
 
-	public void setNuOffers(Set<NuOffer> nuOffers) {
+	public void setNuOffers(List<NuOffer> nuOffers) {
 		this.nuOffers = nuOffers;
 	}
 
-	public Set<SpeedOffer> getSpeedOffers() {
+	public List<SpeedOffer> getSpeedOffers() {
 		return speedOffers;
 	}
 
-	public void setSpeedOffers(Set<SpeedOffer> speedOffers) {
+	public void setSpeedOffers(List<SpeedOffer> speedOffers) {
 		this.speedOffers = speedOffers;
 	}
 
-	public Set<TimeOffer> getTimeOffers() {
+	public List<TimeOffer> getTimeOffers() {
 		return timeOffers;
 	}
 
-	public void setTimeOffers(Set<TimeOffer> timeOffers) {
+	public void setTimeOffers(List<TimeOffer> timeOffers) {
 		this.timeOffers = timeOffers;
 	}
 
