@@ -4,10 +4,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
 
 <cheapy:layout pageName="ofertas">
     <h2 style="text-align:center;padding:5px"><fmt:message key="foodOffers"/></h2>
+    
 	<c:if test="${empty foodOfferLs }">
 		<p id="vacio" >No hay ninguna oferta por plato específico activa.</p>
 	</c:if>
@@ -16,16 +18,21 @@
         <thead>
         <tr>
         	<!-- <th style="width: 150px;">Restaurante</th> -->
+        	<th><fmt:message key="name"/></th>
         	<th><fmt:message key="food"/></th>
         	<th><fmt:message key="discount"/></th>
             <th><fmt:message key="startDate"/></th>
             <th><fmt:message key="endDate"/></th>
+            
             <th> </th>
         </tr>
         </thead>
         <tbody>
         <c:forEach items="${foodOfferLs}" var="foodOffer">
             <tr>
+            	<td>
+                    <c:out value="${foodOffer.client.name}"/>
+                </td>
                 <td>
                     <c:out value="${foodOffer.food}"/>
                 </td>
@@ -38,6 +45,7 @@
                 <td>
                     <c:out value="${localDateTimeFormat.format(foodOffer.end)}"/>
                 </td>
+                
                 <td>
 	                <spring:url value="/offers/food/{foodOfferId}" var="foodOfferUrl">
 	                        <spring:param name="foodOfferId" value="${foodOffer.id}"/>
@@ -56,13 +64,14 @@
     </c:if>
     <h2 style="text-align:center;padding:5px"><fmt:message key="nuOffers"/></h2>
 	<c:if test="${empty nuOfferLs }">
-		<p id="vacio" >No hay ninguna oferta por plato específico activa.</p>
+		<p id="vacio" >No hay ninguna oferta por número de comensales activa.</p>
 	</c:if>
 	<c:if test="${not empty nuOfferLs }">
     <table id="nuOfferTable" class="table table-striped">
         <thead>
         <tr>
         	<!-- <th style="width: 150px;">Restaurante</th> -->
+            <th><fmt:message key="name"/></th>
             <th><fmt:message key="startDate"/></th>
             <th><fmt:message key="endDate"/></th>
             <th><fmt:message key="goldGoal"/></th>
@@ -74,7 +83,9 @@
         <tbody>
         <c:forEach items="${nuOfferLs}" var="nuOffer">
             <tr>
-                
+                <td>
+                    <c:out value="${nuOffer.client.name}"/>
+                </td>
                 <td>
                     <c:out value="${localDateTimeFormat.format(nuOffer.start)}"/>
                 </td>
@@ -105,13 +116,14 @@
     
     <h2 style="text-align:center;padding:5px"><fmt:message key="speedOffers"/></h2>
 	<c:if test="${empty speedOfferLs }">
-		<p id="vacio" >No hay ninguna oferta por plato específico activa.</p>
+		<p id="vacio" >No hay ninguna oferta por tiempo empleado en comer activa.</p>
 	</c:if>
 	<c:if test="${not empty speedOfferLs }">
     <table id="speedOfferTable" class="table table-striped">
         <thead>
         <tr>
         	<!-- <th style="width: 150px;">Restaurante</th> -->
+            <th><fmt:message key="name"/></th>
             <th><fmt:message key="startDate"/></th>
             <th><fmt:message key="endDate"/></th>
             <th><fmt:message key="goldGoal"/></th>
@@ -123,7 +135,9 @@
         <tbody>
         <c:forEach items="${speedOfferLs}" var="speedOffer">
             <tr>
-                
+                <td>
+                    <c:out value="${speedOffer.client.name}"/>
+                </td>
                 <td>
                     <c:out value="${localDateTimeFormat.format(speedOffer.start)}"/>
                 </td>
@@ -155,13 +169,14 @@
     
     <h2 style="text-align:center;padding:5px"><fmt:message key="timeOffers"/></h2>
 	<c:if test="${empty timeOfferLs }">
-		<p id="vacio" >No hay ninguna oferta por plato específico activa.</p>
+		<p id="vacio" >No hay ninguna oferta por franja horaria activa.</p>
 	</c:if>
 	<c:if test="${not empty timeOfferLs }">
     <table id="timeOfferTable" class="table table-striped">
         <thead>
         <tr>
         	<!-- <th style="width: 150px;">Restaurante</th> -->
+            <th><fmt:message key="name"/></th>
             <th><fmt:message key="startDate"/></th>
             <th><fmt:message key="endDate"/></th>
             <th><fmt:message key="init"/></th>
@@ -172,7 +187,9 @@
         <tbody>
         	<c:forEach items="${timeOfferLs}" var="timeOffer">
             <tr>
-                
+                <td>
+                    <c:out value="${timeOffer.client.name}"/>
+                </td>
                 <td>
                     <c:out value="${localDateTimeFormat.format(timeOffer.start)}"/>
                 </td>
@@ -201,15 +218,6 @@
         </tbody>
     </table>
     </c:if>
-    
-    <div class="btn-return">
-		    <button type="button" role="link" onclick="goBack()" style="font-family: 'Lobster'; font-size: 20px;"> 
-		    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true" style="padding: 5px"> </span> 
-		    <fmt:message key="return"/> </button>
-	</div>
-    <script>
-		function goBack() {
-		  window.history.back()
-		}
-	</script>
+  
+	
 </cheapy:layout>

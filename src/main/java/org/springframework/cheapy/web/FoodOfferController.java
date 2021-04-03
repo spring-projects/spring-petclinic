@@ -105,13 +105,15 @@ public class FoodOfferController {
 	public String processShowForm(@PathVariable("foodOfferId") int foodOfferId, Map<String, Object> model) {
 
 		FoodOffer foodOffer = this.foodOfferService.findFoodOfferById(foodOfferId);
-
+		if(!foodOffer.getStatus().equals(StatusOffer.active)) {
+			return "error";
+		}else {
 		model.put("foodOffer", foodOffer);
 
 		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
 
 		return "offers/food/foodOffersShow";
-
+		}
 	}
 
 	@GetMapping(value = "/offers/food/{foodOfferId}/edit")

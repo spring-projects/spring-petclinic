@@ -18,15 +18,22 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
+            	<div class="btn-mod">
                 <c:choose>
                     <c:when test="${review['new']}">
-                        <button class="btn btn-default" type="submit">Crear Reseña</button>
+                        <button class="btn btn-default" type="submit" style="font-family: 'Lobster'; font-size: 20px;">
+	                        <span class="glyphicon glyphicon-floppy-save" aria-hidden="true" style="padding: 5px"> </span>
+	                        Crear reseña</button>
                     </c:when>
                     <c:otherwise>
                         <button class="btn btn-default" type="submit">Modificar Reseña</button>
                     </c:otherwise>
                 </c:choose>
+                </div>
             </div>
         </div>
+        
+        
+	
     </form:form>
 </cheapy:layout>

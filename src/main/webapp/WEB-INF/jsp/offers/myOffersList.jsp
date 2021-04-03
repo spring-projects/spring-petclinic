@@ -9,7 +9,7 @@
 <cheapy:layout pageName="ofertasM">
     <h2 style="text-align:center;padding:5px"><fmt:message key="foodOffers"/></h2>
 	<c:if test="${empty foodOfferLs }">
-		<p id="vacio" >No hay ninguna oferta por plato específico activa.</p>
+		<p id="vacio" >No hay ninguna oferta por plato específico creada.</p>
 	</c:if>
 	<c:if test="${not empty foodOfferLs }">
     <table id="foodOfferTable" class="table table-striped">
@@ -19,6 +19,7 @@
         	<th><fmt:message key="food"/></th>
             <th><fmt:message key="startDate"/></th>
             <th><fmt:message key="endDate"/></th>
+            <th><fmt:message key="status"/></th>
             <th> <spring:url value="/offers/food/new" var="newFoodUrl">
     </spring:url>
     <!--  <a href="${fn:escapeXml(newFoodUrl)}" class="btn btn-default">Nueva oferta</a></th>-->
@@ -35,6 +36,9 @@
                 </td>
                 <td>
                     <c:out value="${localDateTimeFormat.format(foodOffer.end)}"/>
+                </td>
+                <td>
+                    <c:out value="${foodOffer.status}"/>
                 </td>
                 <td>
 	                <spring:url value="/offers/food/{foodOfferId}" var="foodOfferUrl">
@@ -54,7 +58,7 @@
     </c:if>
     <h2 style="text-align:center;padding:5px"><fmt:message key="nuOffers"/></h2>
 	<c:if test="${empty nuOfferLs }">
-		<p id="vacio" >No hay ninguna oferta por plato específico activa.</p>
+		<p id="vacio" >No hay ninguna oferta por número de comensales creada.</p>
 	</c:if>
 	<c:if test="${not empty nuOfferLs }">
     <table id="nuOfferTable" class="table table-striped">
@@ -63,6 +67,7 @@
         	<!-- <th style="width: 150px;">Restaurante</th> -->
             <th><fmt:message key="startDate"/></th>
             <th><fmt:message key="endDate"/></th>
+            <th><fmt:message key="status"/></th>
             <th> <spring:url value="/offers/nu/new" var="newNuUrl">
     </spring:url>
     <!--  <a href="${fn:escapeXml(newNuUrl)}" class="btn btn-default">Nueva oferta</a></th>-->
@@ -78,6 +83,9 @@
                 </td>
                 <td>
                     <c:out value="${localDateTimeFormat.format(nuOffer.end)}"/>
+                </td>
+                <td>
+                    <c:out value="${nuOffer.status}"/>
                 </td>
                 <td>
 	                <spring:url value="/offers/nu/{nuOfferId}" var="nuOfferUrl">
@@ -96,8 +104,8 @@
     </c:if>
     
     <h2 style="text-align:center;padding:5px"><fmt:message key="speedOffers"/></h2>
-	<c:if test="${empty foodOfferLs }">
-		<p id="vacio" >No hay ninguna oferta por plato específico activa.</p>
+	<c:if test="${empty speedOfferLs }">
+		<p id="vacio" >No hay ninguna oferta por tiempo empleado en comer creada.</p>
 	</c:if>
 	<c:if test="${not empty speedOfferLs }">
     <table id="speedOfferTable" class="table table-striped">
@@ -106,6 +114,7 @@
         	<!-- <th style="width: 150px;">Restaurante</th> -->
             <th><fmt:message key="startDate"/></th>
             <th><fmt:message key="endDate"/></th>
+            <th><fmt:message key="status"/></th>
             <th> <spring:url value="/offers/speed/new" var="newSpeedUrl">
     </spring:url>
    <!-- <a href="${fn:escapeXml(newSpeedUrl)}" class="btn btn-default">Nueva oferta</a></th>-->
@@ -121,6 +130,9 @@
                 </td>
                 <td>
                     <c:out value="${localDateTimeFormat.format(speedOffer.end)}"/>
+                </td>
+                <td>
+                    <c:out value="${speedOffer.status}"/>
                 </td>
                 <td>
                     <spring:url value="/offers/speed/{speedOfferId}" var="speedOfferUrl">
@@ -141,7 +153,7 @@
     
     <h2 style="text-align:center;padding:5px"><fmt:message key="timeOffers"/></h2>
 	<c:if test="${empty timeOfferLs }">
-		<p id="vacio" >No hay ninguna oferta por plato específico activa.</p>
+		<p id="vacio" >No hay ninguna oferta por franja horaria creada.</p>
 	</c:if>
 	<c:if test="${not empty timeOfferLs }">
     <table id="timeOfferTable" class="table table-striped">
@@ -150,6 +162,7 @@
         	<!-- <th style="width: 150px;">Restaurante</th> -->
             <th><fmt:message key="startDate"/></th>
             <th><fmt:message key="endDate"/></th>
+            <th><fmt:message key="status"/></th>
             <th><spring:url value="/offers/time/new" var="newTimeUrl">
     </spring:url>
     <!--<a href="${fn:escapeXml(newTimeUrl)}" class="btn btn-default">Nueva oferta</a> </th>-->
@@ -164,6 +177,9 @@
                 </td>
                 <td>
                     <c:out value="${localDateTimeFormat.format(timeOffer.end)}"/>
+                </td>
+                <td>
+                    <c:out value="${timeOffer.status}"/>
                 </td>
                 <td>
                 	<spring:url value="/offers/time/{timeOfferId}" var="timeOfferUrl">

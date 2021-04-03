@@ -3,12 +3,20 @@ language: java
 jdk: oraclejdk8
 services:
   - mysql
-install:
-  - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+cache:
+  directories:
+  - "$HOME/.m2"
+before_cache:
+  - rm -rf $HOME/.m2/repository/com/autentia/traviscodacy
 before_install:
-- chmod +x mvnw
-- mysql -e 'CREATE DATABASE cheapy;'
-- sudo apt-get update
-script:
-  - mvn test -Dspring.profiles.active=mysql-travis
+  - sudo apt-get install jq
+  - wget -O ~/codacy-coverage-reporter-assembly-latest.jar $(curl https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r .assets[0].browser_download_url)
+  - chmod +x mvnw
+  - mysql -e 'CREATE DATABASE cheapy;'
+  - sudo apt-get update
+after_success:
+  - ls
+  - ls target
+  - ls target/jacoco 
+  - java -jar ~/codacy-coverage-reporter-assembly-latest.jar report -l Java -r target/jacoco/jacoco.xml
 
