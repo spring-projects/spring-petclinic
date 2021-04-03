@@ -7,7 +7,7 @@ pipeline {
                 checkout scm
             }
         }
-        stage ('Initialize') {
+        stage ('Initialaze') {
             steps {
                 sh '''
                     echo "PATH = ${PATH}"
@@ -19,13 +19,13 @@ pipeline {
             steps {
                 echo 'Running build automation'
                 sh '''
-                        ./mvnw clean
+                        ./mvnw package
                    '''
            }
         }
-        stage('Test') {
+        stage('CREATE ARTIFACT') {
             steps {
-                echo 'Testing..'
+                echo 'Creating artifact..'
             }
         }
         stage('Deploy') {
