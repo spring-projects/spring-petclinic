@@ -15,5 +15,5 @@ before_install:
   - mysql -e 'CREATE DATABASE cheapy;'
   - sudo apt-get update
 after_success:
-  - java -jar ~/codacy-coverage-reporter-assembly-latest.jar report -l Java -r target/jacoco/jacoco.xml
+  - java -jar ~/codacy-coverage-reporter-assembly-latest.jar report -l Java -r target/site/jacoco/jacoco.xml
 
