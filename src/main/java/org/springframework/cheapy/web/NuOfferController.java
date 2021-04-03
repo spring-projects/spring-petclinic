@@ -65,7 +65,7 @@ public class NuOfferController {
 	
 	private boolean checkConditions(final NuOffer NuOffer) {
 		boolean res = false;
-		if(NuOffer.getGold() > NuOffer.getSilver() && NuOffer.getSilver() > NuOffer.getBronze()) {
+		if(NuOffer.getGold() >= NuOffer.getSilver() && NuOffer.getSilver() >= NuOffer.getBronze()) {
 			res = true;
 		}
 		return res;
@@ -73,7 +73,7 @@ public class NuOfferController {
 	
 	private boolean checkDiscounts(final NuOffer NuOffer) {
 		boolean res = false;
-		if(NuOffer.getDiscountGold() > NuOffer.getDiscountSilver() && NuOffer.getDiscountSilver() > NuOffer.getDiscountBronze()) {
+		if(NuOffer.getDiscountGold() >= NuOffer.getDiscountSilver() && NuOffer.getDiscountSilver() >= NuOffer.getDiscountBronze()) {
 			res = true;
 		}
 		return res;
@@ -92,15 +92,15 @@ public class NuOfferController {
 			return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
 		} else {
 			if(!this.checkDates(nuOffer)) {
-				//Poner aqui mensaje de error
+				result.rejectValue("end","" ,"La fecha de fin debe ser posterior a la fecha de inicio");
 				return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
 			}
 			if(!this.checkConditions(nuOffer)) {
-				//Poner aqui mensaje de error
+				result.rejectValue("gold","" ,"Oro debe ser mayor o igual que plata, y plata mayor o igual que bronce");
 				return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
 			}
 			if(!this.checkDiscounts(nuOffer)) {
-				//Poner aqui mensaje de error
+				result.rejectValue("discountGold","" ,"El descuento de Oro debe ser mayor o igual que el de plata, y el de plata mayor o igual que el de bronce");
 				return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
 			}
 			nuOffer.setStatus(StatusOffer.hidden);
@@ -175,15 +175,15 @@ public class NuOfferController {
 
 		} else {
 			if(!this.checkDates(nuOfferEdit)) {
-				//Poner aqui mensaje de error
+				result.rejectValue("end","" ,"La fecha de fin debe ser posterior a la fecha de inicio");
 				return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
 			}
 			if(!this.checkConditions(nuOfferEdit)) {
-				//Poner aqui mensaje de error
+				result.rejectValue("gold","" ,"Oro debe ser mayor o igual que plata, y plata mayor o igual que bronce");
 				return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
 			}
 			if(!this.checkDiscounts(nuOfferEdit)) {
-				//Poner aqui mensaje de error
+				result.rejectValue("discountGold","" ,"El descuento de Oro debe ser mayor o igual que el de plata, y el de plata mayor o igual que el de bronce");
 				return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
 			}
 			BeanUtils.copyProperties(this.nuOfferService.findNuOfferById(nuOfferEdit.getId()), nuOfferEdit, "start",

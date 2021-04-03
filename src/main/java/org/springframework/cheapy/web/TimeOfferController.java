@@ -81,12 +81,12 @@ public class TimeOfferController {
 			return VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
 		} else {
 			if(!this.checkDates(timeOffer)) {
-				//Poner aqui mensaje de error
+				result.rejectValue("end","" ,"La fecha de fin debe ser posterior a la fecha de inicio");
 				return VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
 			}
 			
 			if(!this.checkTimes(timeOffer)) {
-				//Poner aqui mensaje de error
+				result.rejectValue("finish","" ,"La hora de fin debe ser posterior a la de inicio");
 				return VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
 			}
 			
@@ -166,11 +166,11 @@ public class TimeOfferController {
 
 		} else {
 			if(!this.checkDates(timeOfferEdit)) {
-				//Poner aqui mensaje de error
+				result.rejectValue("end","" ,"La fecha de fin debe ser posterior a la fecha de inicio");
 				return VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
 			}
 			if(!this.checkTimes(timeOfferEdit)) {
-				//Poner aqui mensaje de error
+				result.rejectValue("finish","" ,"La hora de fin debe ser posterior a la de inicio");
 				return VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
 			}
 			BeanUtils.copyProperties(this.timeOfferService.findTimeOfferById(timeOfferEdit.getId()), timeOfferEdit,

@@ -74,7 +74,7 @@ public class FoodOfferController {
 			return VIEWS_FOOD_OFFER_CREATE_OR_UPDATE_FORM;
 		} else {
 			if(!this.checkDates(foodOffer)) {
-				//Poner aqui mensaje de error
+				result.rejectValue("end","" ,"La fecha de fin debe ser posterior a la fecha de inicio");
 				return VIEWS_FOOD_OFFER_CREATE_OR_UPDATE_FORM;
 			}
 			Client client = this.clientService.getCurrentClient();
@@ -148,7 +148,7 @@ public class FoodOfferController {
 
 		} else {
 			if(!this.checkDates(foodOfferEdit)) {
-				//Poner aqui mensaje de error
+				result.rejectValue("end","" ,"La fecha de fin debe ser posterior a la fecha de inicio");
 				return FoodOfferController.VIEWS_FOOD_OFFER_CREATE_OR_UPDATE_FORM;
 			}
 			BeanUtils.copyProperties(this.foodOfferService.findFoodOfferById(foodOfferEdit.getId()), foodOfferEdit,

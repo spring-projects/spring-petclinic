@@ -6,11 +6,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.springframework.cheapy.model.SpeedOffer;
-import org.springframework.cheapy.model.StatusOffer;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cheapy.model.Client;
-import org.springframework.cheapy.model.FoodOffer;
+import org.springframework.cheapy.model.SpeedOffer;
+import org.springframework.cheapy.model.StatusOffer;
 import org.springframework.cheapy.service.ClientService;
 import org.springframework.cheapy.service.SpeedOfferService;
 import org.springframework.stereotype.Controller;
@@ -63,7 +62,7 @@ public class SpeedOfferController {
 	
 	private boolean checkConditions(final SpeedOffer speedOffer) {
 		boolean res = false;
-		if(speedOffer.getGold() < speedOffer.getSilver() && speedOffer.getSilver() < speedOffer.getBronze()) {
+		if(speedOffer.getGold() <= speedOffer.getSilver() && speedOffer.getSilver() <= speedOffer.getBronze()) {
 			res = true;
 		}
 		return res;
@@ -71,7 +70,7 @@ public class SpeedOfferController {
 	
 	private boolean checkDiscounts(final SpeedOffer speedOffer) {
 		boolean res = false;
-		if(speedOffer.getDiscountGold() > speedOffer.getDiscountSilver() && speedOffer.getDiscountSilver() > speedOffer.getDiscountBronze()) {
+		if(speedOffer.getDiscountGold() >= speedOffer.getDiscountSilver() && speedOffer.getDiscountSilver() >= speedOffer.getDiscountBronze()) {
 			res = true;
 		}
 		return res;
@@ -90,15 +89,15 @@ public class SpeedOfferController {
 			return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
 		} else {
 			if(!this.checkDates(speedOffer)) {
-				//Poner aqui mensaje de error
+				result.rejectValue("end","" ,"La fecha de fin debe ser posterior a la fecha de inicio");
 				return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
 			}
 			if(!this.checkConditions(speedOffer)) {
-				//Poner aqui mensaje de error
+				result.rejectValue("gold","" ,"Oro debe ser menor o igual que plata, y plata menor o igual que bronce");
 				return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
 			}
 			if(!this.checkDiscounts(speedOffer)) {
-				//Poner aqui mensaje de error
+				result.rejectValue("discountGold","" ,"El descuento de Oro debe ser menor o igual que el de plata, y el de plata menor o igual que el de bronce");
 				return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
 			}
 			Client client = this.clientService.getCurrentClient();
@@ -168,15 +167,15 @@ public class SpeedOfferController {
 
 		} else {
 			if(!this.checkDates(speedOfferEdit)) {
-				//Poner aqui mensaje de error
+				result.rejectValue("end","" ,"La fecha de fin debe ser posterior a la fecha de inicio");
 				return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
 			}
 			if(!this.checkConditions(speedOfferEdit)) {
-				//Poner aqui mensaje de error
+				result.rejectValue("gold","" ,"Oro debe ser menor o igual que plata, y plata menor o igual que bronce");
 				return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
 			}
 			if(!this.checkDiscounts(speedOfferEdit)) {
-				//Poner aqui mensaje de error
+				result.rejectValue("discountGold","" ,"El descuento de Oro debe ser menor o igual que el de plata, y el de plata menor o igual que el de bronce");
 				return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
 			}
 			BeanUtils.copyProperties(this.speedOfferService.findSpeedOfferById(speedOfferEdit.getId()), speedOfferEdit,
