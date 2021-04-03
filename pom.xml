@@ -28,6 +28,11 @@
     <wro4j.version>1.8.0</wro4j.version>
 
     <jacoco.version>0.8.5</jacoco.version>
+    <jacoco.utreportpath>${project.build.directory}/jacoco</jacoco.utreportpath>
+	<jacoco.utreportfile>${project.build.directory}/jacoco.exec</jacoco.utreportfile>
+
+	<jacoco.itreportpath>${project.build.directory}/jacoco</jacoco.itreportpath>
+	<jacoco.itreportfile>${jacoco.itreportpath}/jacoco-it.exec</jacoco.itreportfile>
     <nohttp-checkstyle.version>0.0.4.RELEASE</nohttp-checkstyle.version>
     <spring-format.version>0.0.25</spring-format.version>
   </properties>
@@ -140,7 +145,11 @@
       <artifactId>spring-boot-devtools</artifactId>
       <optional>true</optional>
     </dependency>
-        
+    <dependency>
+    <groupId>org.postgresql</groupId>
+    <artifactId>postgresql</artifactId>
+    <scope>runtime</scope>
+</dependency>
   </dependencies>
   
   
@@ -178,6 +187,7 @@
             <goals>
               <goal>prepare-agent</goal>
             </goals>
+
           </execution>
           <execution>
             <id>report</id>
@@ -185,6 +195,21 @@
             <goals>
               <goal>report</goal>
             </goals>
+            <configuration>
+				<outputDirectory>${jacoco.utreportpath}</outputDirectory>
+				<dataFile>${jacoco.utreportfile}</dataFile>
+			</configuration>
+          </execution>
+          <execution>
+            <id>test</id>
+            <phase>test</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <configuration>
+				<outputDirectory>${jacoco.utreportpath}</outputDirectory>
+				<dataFile>${jacoco.utreportfile}</dataFile>
+			</configuration>
           </execution>
         </executions>
       </plugin>
