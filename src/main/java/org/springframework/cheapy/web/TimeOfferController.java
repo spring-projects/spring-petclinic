@@ -165,11 +165,11 @@ public class TimeOfferController {
 			return TimeOfferController.VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
 
 		} else {
-			if(!this.checkDates(timeOffer)) {
+			if(!this.checkDates(timeOfferEdit)) {
 				//Poner aqui mensaje de error
 				return VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
 			}
-			if(!this.checkTimes(timeOffer)) {
+			if(!this.checkTimes(timeOfferEdit)) {
 				//Poner aqui mensaje de error
 				return VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
 			}

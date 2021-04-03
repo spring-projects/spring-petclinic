@@ -13,13 +13,6 @@
       		
       		 <form:form modelAttribute="speedOffer" class="form-horizontal">
 
-	            <input type="hidden" name="gold" value="${speedOffer.gold}" />
-	            <input type="hidden" name="discountGold" value="${speedOffer.discountGold}" />
-	            <input type="hidden" name="silver" value="${speedOffer.silver}" />
-	            <input type="hidden" name="discountSilver" value="${speedOffer.discountSilver}" />
-	            <input type="hidden" name="bronze" value="${speedOffer.bronze}" />
-	            <input type="hidden" name="discountBronze" value="${speedOffer.discountBronze}" />
-
         		<div class="btns-edit">
         			<button type="submit" style="font-family: 'Lobster'; font-size: 20px;">
         			<span class="glyphicon glyphicon glyphicon-trash" aria-hidden="true" style="padding: 5px"> </span>

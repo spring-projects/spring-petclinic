@@ -167,15 +167,15 @@ public class SpeedOfferController {
 			return SpeedOfferController.VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
 
 		} else {
-			if(!this.checkDates(speedOffer)) {
+			if(!this.checkDates(speedOfferEdit)) {
 				//Poner aqui mensaje de error
 				return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
 			}
-			if(!this.checkConditions(speedOffer)) {
+			if(!this.checkConditions(speedOfferEdit)) {
 				//Poner aqui mensaje de error
 				return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
 			}
-			if(!this.checkDiscounts(speedOffer)) {
+			if(!this.checkDiscounts(speedOfferEdit)) {
 				//Poner aqui mensaje de error
 				return VIEWS_SPEED_OFFER_CREATE_OR_UPDATE_FORM;
 			}

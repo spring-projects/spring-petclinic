@@ -13,8 +13,6 @@
       		
       		<form:form modelAttribute="foodOffer" class="form-horizontal">
             
-	            <input type="hidden" name="food" value="${foodOffer.food}" />
-	            <input type="hidden" name="discount" value="${foodOffer.discount}" />
 				<div class="btns-edit">
         			<button type="submit" style="font-family: 'Lobster'; font-size: 20px;">
         			<span class="glyphicon glyphicon glyphicon-trash" aria-hidden="true" style="padding: 5px"> </span>
