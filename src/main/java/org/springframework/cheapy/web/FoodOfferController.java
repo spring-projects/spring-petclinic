@@ -55,7 +55,7 @@ public class FoodOfferController {
 	
 	private boolean checkDates(final FoodOffer foodOffer) {
 		boolean res = false;
-		if(foodOffer.getEnd().isAfter(foodOffer.getStart())) {
+		if(foodOffer.getEnd()==null || foodOffer.getStart()==null || foodOffer.getEnd().isAfter(foodOffer.getStart())) {
 			res = true;
 		}
 		return res;
@@ -70,19 +70,20 @@ public class FoodOfferController {
 
 	@PostMapping("/offers/food/new")
 	public String processCreationForm(@Valid FoodOffer foodOffer, BindingResult result) {
-		if (result.hasErrors()) {
-			return VIEWS_FOOD_OFFER_CREATE_OR_UPDATE_FORM;
-		} else {
+		
 			if(!this.checkDates(foodOffer)) {
-				//Poner aqui mensaje de error
-				return VIEWS_FOOD_OFFER_CREATE_OR_UPDATE_FORM;
+				result.rejectValue("end","" ,"La fecha de fin debe ser posterior a la fecha de inicio");
+				
 			}
+			if (result.hasErrors()) {
+				return VIEWS_FOOD_OFFER_CREATE_OR_UPDATE_FORM;
+			} 
 			Client client = this.clientService.getCurrentClient();
 			foodOffer.setClient(client);
 			foodOffer.setStatus(StatusOffer.hidden);
 			this.foodOfferService.saveFoodOffer(foodOffer);
 			return "redirect:/offers/food/" + foodOffer.getId();
-		}
+		
 	}
 
 	@GetMapping(value = "/offers/food/{foodOfferId}/activate")
@@ -143,21 +144,22 @@ public class FoodOfferController {
 		if (!this.checkOffer(foodOffer, foodOfferEdit)) {
 			return "error";
 		}
-
-		if (result.hasErrors()) {
-			model.addAttribute("foodOffer", foodOfferEdit);
-			return FoodOfferController.VIEWS_FOOD_OFFER_CREATE_OR_UPDATE_FORM;
-
-		} else {
+ 
 			if(!this.checkDates(foodOfferEdit)) {
-				//Poner aqui mensaje de error
+				result.rejectValue("end","" ,"La fecha de fin debe ser posterior a la fecha de inicio");
+				
+			}
+			
+			if (result.hasErrors()) {
+				model.addAttribute("foodOffer", foodOfferEdit);
 				return FoodOfferController.VIEWS_FOOD_OFFER_CREATE_OR_UPDATE_FORM;
+
 			}
 			BeanUtils.copyProperties(this.foodOfferService.findFoodOfferById(foodOfferEdit.getId()), foodOfferEdit,
 					"start", "end", "food", "discount");
 			this.foodOfferService.saveFoodOffer(foodOfferEdit);
 			return "redirect:/offers/food/" + foodOfferEdit.getId();
-		}
+		
 	}
 
 	@GetMapping(value = "/offers/food/{foodOfferId}/disable")

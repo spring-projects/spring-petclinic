@@ -180,7 +180,7 @@
             <th><fmt:message key="startDate"/></th>
             <th><fmt:message key="endDate"/></th>
             <th><fmt:message key="init"/></th>
-            <th><fmt:message key="finish"/></th>
+            <th><fmt:message key="finishOffer"/></th>
             <th> </th>
         </tr>
         </thead>

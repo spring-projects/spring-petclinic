@@ -27,7 +27,7 @@
             <td><c:out value="${timeOffer.init}h"/></td>
         </tr>
         <tr>
-            <th><fmt:message key="finish"/></th>
+            <th><fmt:message key="finishOffer"/></th>
             <td><c:out value="${timeOffer.finish}h"/></td>
         </tr>
         <tr>

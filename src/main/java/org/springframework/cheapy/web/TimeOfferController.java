@@ -8,7 +8,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.cheapy.model.Client;
-import org.springframework.cheapy.model.FoodOffer;
 import org.springframework.cheapy.model.StatusOffer;
 import org.springframework.cheapy.model.TimeOffer;
 import org.springframework.cheapy.service.ClientService;
@@ -54,7 +53,7 @@ public class TimeOfferController {
 	
 	private boolean checkDates(final TimeOffer timeOffer) {
 		boolean res = false;
-		if(timeOffer.getEnd().isAfter(timeOffer.getStart())) {
+		if(timeOffer.getEnd()==null || timeOffer.getStart()==null || timeOffer.getEnd().isAfter(timeOffer.getStart())) {
 			res = true;
 		}
 		return res;
@@ -62,7 +61,7 @@ public class TimeOfferController {
 	
 	private boolean checkTimes(final TimeOffer timeOffer) {
 		boolean res = false;
-		if(timeOffer.getFinish().isAfter(timeOffer.getInit())) {
+		if(timeOffer.getFinish()==null || timeOffer.getInit()==null || timeOffer.getFinish().isAfter(timeOffer.getInit())) {
 			res = true;
 		}
 		return res;
@@ -77,18 +76,20 @@ public class TimeOfferController {
 
 	@PostMapping("/offers/time/new")
 	public String processCreationForm(@Valid TimeOffer timeOffer, BindingResult result) {
-		if (result.hasErrors()) {
-			return VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
-		} else {
+		
 			if(!this.checkDates(timeOffer)) {
-				//Poner aqui mensaje de error
-				return VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
+				result.rejectValue("end","" ,"La fecha de fin debe ser posterior a la fecha de inicio");
+				
 			}
 			
 			if(!this.checkTimes(timeOffer)) {
-				//Poner aqui mensaje de error
-				return VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
+				result.rejectValue("finish","" ,"La hora de fin debe ser posterior a la de inicio");
+				
 			}
+			
+			if (result.hasErrors()) {
+				return VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
+			} 
 			
 			timeOffer.setStatus(StatusOffer.hidden);
 
@@ -98,7 +99,7 @@ public class TimeOfferController {
 
 			this.timeOfferService.saveTimeOffer(timeOffer);
 			return "redirect:/offers/time/" + timeOffer.getId();
-		}
+		
 	}
 
 	@GetMapping(value = "/offers/time/{timeOfferId}/activate")
@@ -163,24 +164,26 @@ public class TimeOfferController {
 			return "error";
 		}
 
-		if (result.hasErrors()) {
-			model.addAttribute("timeOffer", timeOfferEdit);
-			return TimeOfferController.VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
-
-		} else {
+		 
 			if(!this.checkDates(timeOfferEdit)) {
-				//Poner aqui mensaje de error
-				return VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
+				result.rejectValue("end","" ,"La fecha de fin debe ser posterior a la fecha de inicio");
+				
 			}
 			if(!this.checkTimes(timeOfferEdit)) {
-				//Poner aqui mensaje de error
-				return VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
+				result.rejectValue("finish","" ,"La hora de fin debe ser posterior a la de inicio");
+				
 			}
+			if (result.hasErrors()) {
+				model.addAttribute("timeOffer", timeOfferEdit);
+				return TimeOfferController.VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
+
+			}
+			
 			BeanUtils.copyProperties(this.timeOfferService.findTimeOfferById(timeOfferEdit.getId()), timeOfferEdit,
 					"start", "end", "init", "finish", "discount");
 			this.timeOfferService.saveTimeOffer(timeOfferEdit);
 			return "redirect:/offers/time/" + timeOfferEdit.getId();
-		}
+		
 
 	}
 

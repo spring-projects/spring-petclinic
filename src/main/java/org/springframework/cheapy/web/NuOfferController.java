@@ -7,12 +7,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.springframework.cheapy.model.NuOffer;
-import org.springframework.cheapy.model.SpeedOffer;
-import org.springframework.cheapy.model.StatusOffer;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cheapy.model.Client;
-import org.springframework.cheapy.model.FoodOffer;
+import org.springframework.cheapy.model.NuOffer;
+import org.springframework.cheapy.model.StatusOffer;
 import org.springframework.cheapy.service.ClientService;
 import org.springframework.cheapy.service.NuOfferService;
 import org.springframework.stereotype.Controller;
@@ -57,15 +55,17 @@ public class NuOfferController {
 	
 	private boolean checkDates(final NuOffer nuOffer) {
 		boolean res = false;
-		if(nuOffer.getEnd().isAfter(nuOffer.getStart())) {
+		if(nuOffer.getEnd()==null || nuOffer.getStart()==null || nuOffer.getEnd().isAfter(nuOffer.getStart())) {
 			res = true;
 		}
 		return res;
 	}
 	
-	private boolean checkConditions(final NuOffer NuOffer) {
+	private boolean checkConditions(final NuOffer nuOffer) {
 		boolean res = false;
-		if(NuOffer.getGold() > NuOffer.getSilver() && NuOffer.getSilver() > NuOffer.getBronze()) {
+		if(nuOffer.getGold()==null || nuOffer.getSilver()==null || nuOffer.getBronze()==null) {
+			
+		}else if(nuOffer.getGold() >= nuOffer.getSilver() && nuOffer.getSilver() >= nuOffer.getBronze()) {
 			res = true;
 		}
 		return res;
@@ -73,7 +73,8 @@ public class NuOfferController {
 	
 	private boolean checkDiscounts(final NuOffer NuOffer) {
 		boolean res = false;
-		if(NuOffer.getDiscountGold() > NuOffer.getDiscountSilver() && NuOffer.getDiscountSilver() > NuOffer.getDiscountBronze()) {
+		if(NuOffer.getDiscountGold()==null || NuOffer.getDiscountSilver()==null || NuOffer.getDiscountBronze()==null) {	
+		}else if(NuOffer.getDiscountGold() >= NuOffer.getDiscountSilver() && NuOffer.getDiscountSilver() >= NuOffer.getDiscountBronze()) {
 			res = true;
 		}
 		return res;
@@ -88,21 +89,23 @@ public class NuOfferController {
 
 	@PostMapping("/offers/nu/new")
 	public String processCreationForm(@Valid NuOffer nuOffer, BindingResult result) {
-		if (result.hasErrors()) {
-			return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
-		} else {
+		
 			if(!this.checkDates(nuOffer)) {
-				//Poner aqui mensaje de error
-				return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
+				result.rejectValue("end","" ,"La fecha de fin debe ser posterior a la fecha de inicio");
+				
 			}
 			if(!this.checkConditions(nuOffer)) {
-				//Poner aqui mensaje de error
-				return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
+				result.rejectValue("gold","" ,"Oro debe ser mayor o igual que plata, y plata mayor o igual que bronce");
+				
 			}
 			if(!this.checkDiscounts(nuOffer)) {
-				//Poner aqui mensaje de error
-				return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
+				result.rejectValue("discountGold","" ,"El descuento de Oro debe ser mayor o igual que el de plata, y el de plata mayor o igual que el de bronce");
+				
 			}
+			
+			if (result.hasErrors()) {
+				return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
+			} 
 			nuOffer.setStatus(StatusOffer.hidden);
 
 			Client client = this.clientService.getCurrentClient();
@@ -111,7 +114,7 @@ public class NuOfferController {
 
 			this.nuOfferService.saveNuOffer(nuOffer);
 			return "redirect:/offers/nu/" + nuOffer.getId();
-		}
+		
 	}
 
 	@GetMapping(value = "/offers/nu/{nuOfferId}/activate")
@@ -173,28 +176,30 @@ public class NuOfferController {
 			return "error";
 		}
 
-		if (result.hasErrors()) {
-			model.addAttribute("nuOffer", nuOfferEdit);
-			return NuOfferController.VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
-
-		} else {
 			if(!this.checkDates(nuOfferEdit)) {
-				//Poner aqui mensaje de error
-				return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
+				result.rejectValue("end","" ,"La fecha de fin debe ser posterior a la fecha de inicio");
+				
 			}
 			if(!this.checkConditions(nuOfferEdit)) {
-				//Poner aqui mensaje de error
-				return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
+				result.rejectValue("gold","" ,"Oro debe ser mayor o igual que plata, y plata mayor o igual que bronce");
+				
 			}
 			if(!this.checkDiscounts(nuOfferEdit)) {
-				//Poner aqui mensaje de error
-				return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
+				result.rejectValue("discountGold","" ,"El descuento de Oro debe ser mayor o igual que el de plata, y el de plata mayor o igual que el de bronce");
+				
 			}
+			
+
+			if (result.hasErrors()) {
+				model.addAttribute("nuOffer", nuOfferEdit);
+				return NuOfferController.VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
+
+			} 
 			BeanUtils.copyProperties(this.nuOfferService.findNuOfferById(nuOfferEdit.getId()), nuOfferEdit, "start",
 					"end", "gold", "discount_gold", "silver", "discount_silver", "bronze", "discount_bronze");
 			this.nuOfferService.saveNuOffer(nuOfferEdit);
 			return "redirect:/offers/nu/" + nuOfferEdit.getId();
-		}
+		
 	}
 
 	@GetMapping(value = "/offers/nu/{nuOfferId}/disable")
