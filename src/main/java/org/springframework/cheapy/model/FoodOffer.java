@@ -17,9 +17,10 @@ package org.springframework.cheapy.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Range;
 
 @Entity
 @Table(name = "food_offers")
@@ -28,11 +29,11 @@ public class FoodOffer extends Offer {
 	private static final long serialVersionUID = 1L;
 
 	//Plato específico
-	@NotBlank
+	@NotBlank(message = "Debe rellenar la comida a ofertar")
 	private String food;
 
-	@NotNull
-	@Min(0)
+	@NotNull(message = "Debe rellenar el descuento que proporciona")
+	@Range(min = 0, max = 100, message = "El descuento debe estar entre 0 y 100 %")
 	private Integer discount;
 
 	public String getFood() {

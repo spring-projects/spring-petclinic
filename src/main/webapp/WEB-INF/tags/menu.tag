@@ -28,14 +28,13 @@
 					<span>Inicio</span>
 				</cheapy:menuItem>
 				
-				<cheapy:menuItem active="${name eq 'ofertas'}" url="/offers"
-					title="ofertas">
+				<cheapy:menuItem active="${name eq 'ofertas'}" url="/offers" title="ofertas">
 					<span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>
 					<span>Ver ofertas</span>
 				</cheapy:menuItem>
 				
 				<sec:authorize access="hasAnyAuthority('client')">
-				<cheapy:menuItem active="${name eq 'ofertas'}" url="/myOffers" title="misOfertas">
+				<cheapy:menuItem active="${name eq 'ofertasM'}" url="/myOffers" title="misOfertas">
 					<span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>
 					<span>Mis ofertas</span>
 				</cheapy:menuItem>
@@ -44,22 +43,29 @@
 				<cheapy:menuItem active="${name eq 'contactanos'}" url="/contactanos"
 					title="contactanos">
 					<span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>
-					<span>Contáctanos</span>
+					<span>Contï¿½ctanos</span>
 				</cheapy:menuItem>
 				-->
-				
-
+				<sec:authorize access="isAuthenticated()">
+					<cheapy:menuItem active="${name eq 'reviews'}" url="/reviews" title="opiniones">
+						<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+						<span>Reseñas</span>
+					</cheapy:menuItem>
+					<cheapy:menuItem active="${name eq 'reviewsN'}" url="/reviews/new" title="valóranos">
+						<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+						<span>Valóranos</span>
+					</cheapy:menuItem>
+				</sec:authorize>
 			</ul>
-
 
 			<ul class="nav navbar-nav navbar-right">
 				<sec:authorize access="!isAuthenticated()">
-					<li><a href="<c:url value="/login" />">Login</a></li>
+					<li><a href="<c:url value="/login" />">Iniciar sesión</a></li>
 					<!--<li><a href="<c:url value="/users/new" />">Register</a></li>-->
 				</sec:authorize>
 				<sec:authorize access="isAuthenticated()">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span> 
+						data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span>
 							<strong><sec:authentication property="name" /></strong> <span
 							class="glyphicon glyphicon-chevron-down"></span>
 					</a>
@@ -104,8 +110,5 @@
 				</sec:authorize>
 			</ul>
 		</div>
-
-
-
 	</div>
 </nav>

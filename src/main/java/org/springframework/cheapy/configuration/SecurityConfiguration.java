@@ -37,24 +37,28 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.antMatchers("/users/new").permitAll()
 
 		.antMatchers("/login/**").anonymous()
-		.antMatchers("/logout").permitAll()
+		.antMatchers("/logout").authenticated()
 
 		.antMatchers("/usuarios/new").permitAll()
 		.antMatchers("/admin/**").hasAnyAuthority("admin")
 
 		.antMatchers("/owners/**").hasAnyAuthority("owner", "admin")
 
+		.antMatchers("/offers/**/edit").hasAnyAuthority("admin", "client")
 		.antMatchers("/offers/**/new").hasAnyAuthority("admin", "client")
 		.antMatchers("/offers/**/activate").hasAnyAuthority("admin","client")
-		
-		.antMatchers("/clients/new").permitAll()
-		.antMatchers("/offers/**").permitAll()
 
+		.antMatchers("/clients/new").permitAll()
+		.antMatchers("/offers").permitAll()
+		.antMatchers("/offersCreate").hasAuthority("client")
+
+
+		.antMatchers("/reviews/**").authenticated()
 
 		.and().formLogin()
-			.loginPage("/login").permitAll()
+			.loginPage("/login")
 			.failureUrl("/login?error")
-		    .and().logout().logoutSuccessUrl("/login");
+		    .and().logout().logoutSuccessUrl("/");
 
 		// Configuración para que funcione la consola de administración
 		// de la BD H2 (deshabilitar las cabeceras de protección contra
@@ -69,7 +73,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	public void configure(final AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication().dataSource(this.dataSource)
 			//[login de admin,owner y vet] .usersByUsernameQuery("select username,password,enabled " + "from users " + "where username = ?")
-			.usersByUsernameQuery("select username, password, enabled from users where username=?").authoritiesByUsernameQuery("select username, authority " + "from authorities " + "where username = ?") 
+			.usersByUsernameQuery("select username, password, enabled from users where username=?").authoritiesByUsernameQuery("select username, authority " + "from authorities " + "where username = ?")
 			.passwordEncoder(this.passwordEncoder());
 
 	}
