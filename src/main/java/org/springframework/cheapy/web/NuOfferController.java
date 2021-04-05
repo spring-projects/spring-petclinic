@@ -136,13 +136,17 @@ public class NuOfferController {
 	@GetMapping("/offers/nu/{nuOfferId}")
 	public String processShowForm(@PathVariable("nuOfferId") int nuOfferId, Map<String, Object> model) {
 		NuOffer nuOffer = this.nuOfferService.findNuOfferById(nuOfferId);
-		if(!nuOffer.getStatus().equals(StatusOffer.active)) {
-			return "error";
+		if(nuOffer.getStatus().equals(StatusOffer.active)) {
+			model.put("nuOffer", nuOffer);
+			model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+			return "offers/nu/nuOffersShow";
+		}else if(nuOffer.getStatus().equals(StatusOffer.hidden)&&(this.checkIdentity(nuOfferId))) {
+				model.put("nuOffer", nuOffer);
+				model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+				return "offers/nu/nuOffersShow";
+			
 		}else {
-		model.put("nuOffer", nuOffer);
-
-		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-		return "offers/nu/nuOffersShow";
+			return "error";
 		}
 
 	}

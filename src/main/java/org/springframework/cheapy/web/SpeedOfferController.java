@@ -131,13 +131,17 @@ public class SpeedOfferController {
 	@GetMapping("/offers/speed/{speedOfferId}")
 	public String processShowForm(@PathVariable("speedOfferId") int speedOfferId, Map<String, Object> model) {
 		SpeedOffer speedOffer = this.speedOfferService.findSpeedOfferById(speedOfferId);
-		if(!speedOffer.getStatus().equals(StatusOffer.active)) {
-			return "error";
+		if(speedOffer.getStatus().equals(StatusOffer.active)) {
+			model.put("speedOffer", speedOffer);
+			model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+			return "offers/speed/speedOffersShow";
+		}else if(speedOffer.getStatus().equals(StatusOffer.hidden)&&(this.checkIdentity(speedOfferId))) {
+				model.put("speedOffer", speedOffer);
+				model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+				return "offers/speed/speedOffersShow";
+			
 		}else {
-		model.put("speedOffer", speedOffer);
-
-		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-		return "offers/speed/speedOffersShow";
+			return "error";
 		}
 	}
 
