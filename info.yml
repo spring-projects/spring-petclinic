@@ -1,0 +1,14 @@
+project:
+  name: 'Cheapy'
+  owner: 'afternoon'
+  teamId: '19'
+  identities:
+    github:
+      url: 'https://github.com/cheapy-ispp/cheapy'
+    travis:
+      url: 'https://travis-ci.com/github/cheapy-ispp/cheapy'
+  members:
+    member:
+      name: 'Cheapy'
+      surname: 'Cheapy' 
+      githubUsername: 'cheapy-ispp'
