@@ -7,14 +7,7 @@ pipeline {
                 checkout scm
             }
         }
-        stage ('Test maven') {
-                steps {
-                sh '''
-                    mvn --version
-                    mvn clean test surefire-report:report
-                '''
-                }
-        }
+
         stage('Build') {
             steps {
                 echo 'Running build automation'
@@ -27,7 +20,7 @@ pipeline {
             steps {
                 echo 'Creating Docker Image...'
                 sh '''
-                     docker build -t rodley/pet-clinic:${BUILD_NUMBER} -f Dockerfile
+                     docker build . -t rodley/pet-clinic:${BUILD_NUMBER} -f Dockerfile
                    '''
             }
         }
