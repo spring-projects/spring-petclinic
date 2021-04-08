@@ -2,6 +2,7 @@ package org.springframework.cheapy.web;
 
 import java.security.Principal;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -78,6 +79,15 @@ public class NuOfferController {
 			res = true;
 		}
 		return res;
+	}
+	
+	@GetMapping("/offers/nuOfferList")
+	public String processFindForm(Map<String, Object> model) {
+		List<NuOffer> foodOfferLs=this.nuOfferService.findActiveNuOffer();
+		model.put("nuOfferLs", foodOfferLs);
+		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+		return "offers/nu/nuOffersList";
+
 	}
 
 	@GetMapping("/offers/nu/new")
