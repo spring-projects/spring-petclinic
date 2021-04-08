@@ -25,7 +25,7 @@ pipeline {
         }
         stage('CREATE ARTIFACT') {
             steps {
-                archiveArtifacts artifacts: 'spring-petclinic-2.4.2.jar', fingerprint: true, followSymlinks: false, onlyIfSuccessful: true
+                archiveArtifacts artifacts: 'target/spring-petclinic-2.4.2.jar', fingerprint: true, followSymlinks: false, onlyIfSuccessful: true
             }
         }
         stage('Deploy') {
