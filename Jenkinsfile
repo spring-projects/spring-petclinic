@@ -37,12 +37,11 @@ pipeline {
                sh """#!/bin/bash -xe
                     
                     docker push()
-                    Image push("latest")
-                       } 
+                    docker push("latest")
                     echo "Pushed Docker Image: ${env.IMAGE_NAME}"
-                      }
                     docker rmi ${env.IMAGE_NAME} ${env.IMAGE_NAME_LATEST}
                   """
+               }
             }
         }
         
