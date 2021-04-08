@@ -11,7 +11,7 @@ pipeline {
                 steps {
                 sh '''
                     mvn --version
-                    mvn clean test serefire-report:report
+                    mvn clean test surefire-report:report
                 '''
                 }
         }
