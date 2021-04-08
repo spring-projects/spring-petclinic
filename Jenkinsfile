@@ -25,7 +25,7 @@ pipeline {
         }
         stage('CREATE ARTIFACT') {
             steps {
-                echo 'Creating Docker Image...''
+                echo 'Creating Docker Image...'
                 sh '''
                      docker build -t rodley/pet-clinic:${BUILD_NUMBER} -f Dockerdile
                    '''
