@@ -34,7 +34,6 @@ pipeline {
         stage('Push artifact to docker registry') {
             steps {
                script {
-                    #!/bin/bash -xe
                     docker.withRegistry('', 'dockerhub_id') {
                     dockerImage.push()
                     dockerImage.push("latest")
