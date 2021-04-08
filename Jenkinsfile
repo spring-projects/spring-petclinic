@@ -18,10 +18,6 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Running build automation'
-                echo '${env.IMAGE_BASE}'
-                echo '${env.IMAGE_TAG}'
-                echo '${env.IMAGE_NAME}'
-                echo '${env.IMAGE_NAME_LATEST}'
                 sh '''
                     ./mvnw package
                    '''
@@ -30,7 +26,7 @@ pipeline {
         stage('CREATE ARTIFACT') {
             steps {
                 echo 'Creating Docker Image...'
-                sh '''
+                sh '''#!/bin/bash -xe
                      docker build . -t ${env.IMAGE_NAME} -f ${env.DOCKERFILE_NAME}
                    '''
             }
@@ -38,6 +34,7 @@ pipeline {
         stage('Push artifact to docker registry') {
             steps {
                script {
+                    #!/bin/bash -xe
                     docker.withRegistry('', 'dockerhub_id') {
                     dockerImage.push()
                     dockerImage.push("latest")
