@@ -36,10 +36,8 @@ pipeline {
                withRegistry(credentialsID: 'dockerhub_id') {
                sh """#!/bin/bash -xe
                     
-                    docker push()
-                    docker push("latest")
+                    docker push ${env.IMAGE_NAME}
                     echo "Pushed Docker Image: ${env.IMAGE_NAME}"
-                    docker rmi ${env.IMAGE_NAME} ${env.IMAGE_NAME_LATEST}
                   """
                }
             }
