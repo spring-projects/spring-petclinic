@@ -26,9 +26,9 @@ pipeline {
         stage('CREATE ARTIFACT') {
             steps {
                 echo 'Creating Docker Image...'
-                sh '''#!/bin/bash -xe
+                sh """#!/bin/bash -xe
                      docker build . -t ${env.IMAGE_NAME} -f ${env.DOCKERFILE_NAME}
-                   '''
+                   """
             }
         }
         stage('Push artifact to docker registry') {
