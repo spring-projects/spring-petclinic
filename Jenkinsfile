@@ -1,6 +1,6 @@
 environment {
   IMAGE_BASE = 'rodley/spring-petclinic'
-  IMAGE_TAG = "v$BUILD_NUMBER"
+  IMAGE_TAG = "$BUILD_NUMBER"
   IMAGE_NAME = "${env.IMAGE_BASE}:${env.IMAGE_TAG}"
   IMAGE_NAME_LATEST = "${env.IMAGE_BASE}:latest"
   DOCKERFILE_NAME = "Dockerfile"
