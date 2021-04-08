@@ -8,7 +8,6 @@ pipeline {
             }
         }
         stage ('Test maven') {
-            steps {
                 try {
                 sh '''
                     mvn --version
@@ -16,8 +15,7 @@ pipeline {
                 '''
                 } catch(err) {
                     sh "echo error Maven test"
-                }
-            }
+             }
         }
         stage('Build') {
             steps {
