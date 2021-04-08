@@ -7,12 +7,16 @@ pipeline {
                 checkout scm
             }
         }
-        stage ('Initialaze') {
+        stage ('Test maven') {
             steps {
+                try {
                 sh '''
-                    echo "PATH = ${PATH}"
-                    echo "M2_HOME = ${M2_HOME}"
-                ''' 
+                    mvn --version
+                    mvn clean test serefire-report:report
+                '''
+                } catch(err) {
+                    sh "echo error Maven test"
+                }
             }
         }
         stage('Build') {
