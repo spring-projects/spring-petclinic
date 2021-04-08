@@ -27,8 +27,16 @@ pipeline {
             steps {
                 echo 'Creating Docker Image...'
                 sh '''
-                     docker build -t rodley/pet-clinic:${BUILD_NUMBER} -f Dockerdile
+                     docker build -t rodley/pet-clinic:${BUILD_NUMBER} -f Dockerfile
                    '''
+            }
+        }
+        stage('Push artifact to docker registry') {
+            steps {
+                echo 'Push docker image tu registry'
+                withDockerRegistry(credentialsId: 'dockerhub_id') {
+                sh "docker push rodley/pet-clinic:${BUILD_NUMBER}"
+                }
             }
         }
         stage('Deploy') {
