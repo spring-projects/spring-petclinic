@@ -19,13 +19,16 @@ pipeline {
             steps {
                 echo 'Running build automation'
                 sh '''
-                        ./mvnw package
+                    ./mvnw package
                    '''
            }
         }
         stage('CREATE ARTIFACT') {
             steps {
-                archiveArtifacts artifacts: 'target/spring-petclinic-2.4.2.jar', fingerprint: true, followSymlinks: false, onlyIfSuccessful: true
+                echo 'Creating Docker Image...''
+                sh '''
+                     docker build -t rodley/pet-clinic:${BUILD_NUMBER} -f Dockerdile
+                   '''
             }
         }
         stage('Deploy') {
