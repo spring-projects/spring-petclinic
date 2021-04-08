@@ -33,7 +33,6 @@ pipeline {
         }
         stage('Push artifact to docker registry') {
             steps {
-                echo 'Push docker image tu registry'
                 withDockerRegistry(credentialsId: 'dockerhub_id') {
                 sh "docker push rodley/pet-clinic:${BUILD_NUMBER}"
                 }
