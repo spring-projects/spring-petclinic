@@ -33,14 +33,16 @@ pipeline {
         }
         stage('Push artifact to docker registry') {
             steps {
-               script {
-                    docker.withRegistry('', 'dockerhub_id') {
-                    dockerImage.push()
-                    dockerImage.push("latest")
+               withRegistry(credentialsID: 'dockerhub_id') {
+               sh """#!/bin/bash -xe
+                    
+                    docker push()
+                    Image push("latest")
                        } 
                     echo "Pushed Docker Image: ${env.IMAGE_NAME}"
                       }
-                    sh "docker rmi ${env.IMAGE_NAME} ${env.IMAGE_NAME_LATEST}"
+                    docker rmi ${env.IMAGE_NAME} ${env.IMAGE_NAME_LATEST}
+                  """
             }
         }
         
