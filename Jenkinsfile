@@ -1,3 +1,10 @@
+environment {
+  IMAGE_BASE = 'rodley/spring-petclinic'
+  IMAGE_TAG = "v$BUILD_NUMBER"
+  IMAGE_NAME = "${env.IMAGE_BASE}:${env.IMAGE_TAG}"
+  IMAGE_NAME_LATEST = "${env.IMAGE_BASE}:latest"
+  DOCKERFILE_NAME = "Dockerfile"
+}
 pipeline {
     agent any
 
@@ -20,15 +27,14 @@ pipeline {
             steps {
                 echo 'Creating Docker Image...'
                 sh '''
-                     docker build . -t rodley/pet-clinic:${BUILD_NUMBER} -f Dockerfile
+                     docker build . -t ${env.IMAGE_NAME} -f ${env.DOCKERFILE_NAME}
                    '''
             }
         }
         stage('Push artifact to docker registry') {
             steps {
                script {
-                    def dockerImage = docker.build("${env.IMAGE_NAME}", "-f ${env.DOCKERFILE_NAME} .")
-                    docker.withRegistry('', 'dockerhub-creds') {
+                    docker.withRegistry('', 'dockerhub_id') {
                     dockerImage.push()
                     dockerImage.push("latest")
                        } 
