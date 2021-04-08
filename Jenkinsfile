@@ -8,14 +8,12 @@ pipeline {
             }
         }
         stage ('Test maven') {
-                try {
+                steps {
                 sh '''
                     mvn --version
                     mvn clean test serefire-report:report
                 '''
-                } catch(err) {
-                    sh "echo error Maven test"
-             }
+                }
         }
         stage('Build') {
             steps {
