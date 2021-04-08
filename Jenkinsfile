@@ -18,6 +18,11 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Running build automation'
+                echo $BUILD_NUMBER
+                echo $IMAGE_BASE
+                echo $IMAGE_TAG
+                echo $IMAGE_NAME
+                echo $IMAGE_NAME_LATEST
                 sh '''
                     ./mvnw package
                    '''
