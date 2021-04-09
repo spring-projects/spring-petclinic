@@ -1,6 +1,7 @@
 
 package org.springframework.cheapy.web;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -10,7 +11,15 @@ import javax.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cheapy.model.Client;
 import org.springframework.cheapy.model.FoodOffer;
+import org.springframework.cheapy.model.NuOffer;
+import org.springframework.cheapy.model.SpeedOffer;
+import org.springframework.cheapy.model.StatusOffer;
+import org.springframework.cheapy.model.TimeOffer;
 import org.springframework.cheapy.service.ClientService;
+import org.springframework.cheapy.service.FoodOfferService;
+import org.springframework.cheapy.service.NuOfferService;
+import org.springframework.cheapy.service.SpeedOfferService;
+import org.springframework.cheapy.service.TimeOfferService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -23,20 +32,25 @@ public class ClientController {
 	private static final String VIEWS_CREATE_OR_UPDATE_CLIENT = "clients/createOrUpdateClientForm";
 
 	private final ClientService clientService;
+	
+	private final FoodOfferService foodOfferService;
+	
+	private final SpeedOfferService speedOfferService;
+	
+	private final NuOfferService nuOfferService;
+	
+	private final TimeOfferService timeOfferService;
+	
 
-	public ClientController(final ClientService clientService) {
+	public ClientController(final ClientService clientService, FoodOfferService foodOfferService, 
+			SpeedOfferService speedOfferService, NuOfferService nuOfferService, TimeOfferService timeOfferService) {
 		this.clientService = clientService;
+		this.foodOfferService=foodOfferService;
+		this.speedOfferService=speedOfferService;
+		this.nuOfferService=nuOfferService;
+		this.timeOfferService=timeOfferService;
 	}
 
-
-
-	private boolean checkDates(final FoodOffer foodOffer) {
-		boolean res = false;
-		if(foodOffer.getEnd()==null || foodOffer.getStart()==null || foodOffer.getEnd().isAfter(foodOffer.getStart())) {
-			res = true;
-		}
-		return res;
-	}
 
 
 
@@ -100,8 +114,23 @@ public class ClientController {
 
 		Client client = this.clientService.getCurrentClient();
 
+		
+		
+		List<FoodOffer> foodOffers=this.foodOfferService.findFoodOfferByUserId(client.getId());
+		List<SpeedOffer> speedOffers=this.speedOfferService.findSpeedOfferByUserId(client.getId());
+		List<NuOffer> nuOffers=this.nuOfferService.findNuOfferByUserId(client.getId());
+		List<TimeOffer> timeOffers=this.timeOfferService.findTimeOfferByUserId(client.getId());
+		
+		foodOffers.stream().forEach(f->f.setStatus(StatusOffer.inactive));
+		
+		speedOffers.stream().forEach(s->s.setStatus(StatusOffer.inactive));
+		
+		nuOffers.stream().forEach(n->n.setStatus(StatusOffer.inactive));
+		
+		timeOffers.stream().forEach(t->t.setStatus(StatusOffer.inactive));
+		
+		
 		client.getUsuar().setEnabled(false);
-
 		this.clientService.saveClient(client);
 		
 	try {
