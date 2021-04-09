@@ -12,9 +12,9 @@ import javax.validation.constraints.NotBlank;
 @Table(name = "usuarios")
 public class Usuario extends BaseEntity{
 	
-	/** nombre, apellidos, dni, direccion, telefono, email, username
-	 * (id,nombre, apellidos, dni, direccion, telefono, email, usuar)
-	 */
+	/* nombre, apellidos, dni, direccion, telefono, email, username
+	  (id,nombre, apellidos, dni, direccion, telefono, email, usuar)*/
+	
 	private static final long serialVersionUID = 1L;
 
 	@NotBlank
@@ -89,11 +89,11 @@ public class Usuario extends BaseEntity{
 		this.email = email;
 	}
 
-	public User getUser() {
+	public User getUsuar() {
 		return usuar;
 	}
 
-	public void setUser(User username) {
+	public void setUsuar(User username) {
 		this.usuar = username;
 	}
 	
