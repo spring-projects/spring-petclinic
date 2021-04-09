@@ -7,15 +7,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.cheapy.model.SpeedOffer;
-import org.springframework.cheapy.model.StatusOffer;
 import org.springframework.cheapy.model.Usuario;
 import org.springframework.cheapy.service.UsuarioService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
