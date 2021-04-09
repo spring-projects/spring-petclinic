@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class UsuarioController {
 
-	private static final String VIEWS_USUARIO_CREATE_OR_UPDATE_FORM = "usuarios/createOrUpdateUsuariosForm";
+	private static final String VIEWS_USUARIO_CREATE_OR_UPDATE_FORM = "usuarios/createOrUpdateUsuarioForm";
 
 	private final UsuarioService usuarioService;
 

@@ -13,6 +13,10 @@ public interface UsuarioRepository extends Repository<Usuario, String> {
 	@Transactional(readOnly = true)
 	Usuario findByUsername(String username);
 	
+	@Query("SELECT usuario FROM Usuario usuario")
+	@Transactional(readOnly = true)
+	List<Usuario> findAllUsuario();
+	
 	void save(Usuario usuario);
 	
 }

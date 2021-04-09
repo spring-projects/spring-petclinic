@@ -1,6 +1,8 @@
 
 package org.springframework.cheapy.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cheapy.model.Usuario;
 import org.springframework.cheapy.repository.UsuarioRepository;
@@ -26,6 +28,16 @@ public class UsuarioService {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
 		return this.usuarioRepository.findByUsername(username);
+	}
+	
+	@Transactional
+	public Usuario findByUsername(String username) throws DataAccessException {
+		return this.usuarioRepository.findByUsername(username);
+	}
+	
+	@Transactional
+	public List<Usuario> findAllUsuario() throws DataAccessException {
+		return this.usuarioRepository.findAllUsuario();
 	}
 
 	@Transactional
