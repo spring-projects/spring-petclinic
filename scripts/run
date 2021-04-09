@@ -1,0 +1,10 @@
+#!/bin/sh
+
+exec 2>&1
+# Create directories where couchbase stores its data
+
+if [ "$(whoami)" = "couchbase" ]; then
+  exec /opt/couchbase/bin/couchbase-server -- -kernel global_enable_tracing false -noinput
+else
+  exec chpst -ucouchbase  /opt/couchbase/bin/couchbase-server -- -kernel global_enable_tracing false -noinput
+fi
