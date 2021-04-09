@@ -16,11 +16,11 @@
 package org.springframework.samples.petclinic.owner;
 
 import java.util.Map;
+import java.util.UUID;
 
 import javax.validation.Valid;
 
 import org.springframework.samples.petclinic.visit.Visit;
-import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -40,13 +40,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 class VisitController {
 
-	private final VisitRepository visits;
+	private final PetRepository petRepository;
 
-	private final PetRepository pets;
-
-	public VisitController(VisitRepository visits, PetRepository pets) {
-		this.visits = visits;
-		this.pets = pets;
+	public VisitController(PetRepository petRepository) {
+		this.petRepository = petRepository;
 	}
 
 	@InitBinder
@@ -62,29 +59,35 @@ class VisitController {
 	 * @return Pet
 	 */
 	@ModelAttribute("visit")
-	public Visit loadPetWithVisit(@PathVariable("petId") int petId, Map<String, Object> model) {
-		Pet pet = this.pets.findById(petId);
-		pet.setVisitsInternal(this.visits.findByPetId(petId));
+	public Visit loadPetWithVisit(@PathVariable("petId") String petId, Map<String, Object> model) {
+		Pet pet = this.petRepository.findById(petId).get();
 		model.put("pet", pet);
 		Visit visit = new Visit();
-		pet.addVisit(visit);
 		return visit;
 	}
 
 	// Spring MVC calls method loadPetWithVisit(...) before initNewVisitForm is called
 	@GetMapping("/owners/*/pets/{petId}/visits/new")
-	public String initNewVisitForm(@PathVariable("petId") int petId, Map<String, Object> model) {
+	public String initNewVisitForm(@PathVariable("petId") String petId, Map<String, Object> model) {
+		Pet pet = this.petRepository.findById(petId).get();
+		model.put("pet", pet);
 		return "pets/createOrUpdateVisitForm";
 	}
 
 	// Spring MVC calls method loadPetWithVisit(...) before processNewVisitForm is called
 	@PostMapping("/owners/{ownerId}/pets/{petId}/visits/new")
-	public String processNewVisitForm(@Valid Visit visit, BindingResult result) {
+	public String processNewVisitForm(@PathVariable("petId") String petId, @Valid Visit visit, BindingResult result) {
 		if (result.hasErrors()) {
 			return "pets/createOrUpdateVisitForm";
 		}
 		else {
-			this.visits.save(visit);
+			if (visit.getId() == null) {
+				visit.setId(UUID.randomUUID().toString());
+			}
+			Pet pet = petRepository.findById(petId).get();
+			pet.addVisit(visit);
+
+			this.petRepository.save(pet);
 			return "redirect:/owners/{ownerId}";
 		}
 	}

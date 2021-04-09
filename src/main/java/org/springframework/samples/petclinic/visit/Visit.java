@@ -16,14 +16,12 @@
 package org.springframework.samples.petclinic.visit;
 
 import java.time.LocalDate;
+import java.time.temporal.TemporalField;
+import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.samples.petclinic.model.BaseEntity;
 
 /**
  * Simple JavaBean domain object representing a visit.
@@ -31,50 +29,51 @@ import org.springframework.samples.petclinic.model.BaseEntity;
  * @author Ken Krebs
  * @author Dave Syer
  */
-@Entity
-@Table(name = "visits")
-public class Visit extends BaseEntity {
-
-	@Column(name = "visit_date")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private LocalDate date;
+public class Visit {
 
 	@NotEmpty
-	@Column(name = "description")
+	private String id;
+
+	private Long visitDate;
+
+	@NotEmpty
 	private String description;
 
-	@Column(name = "pet_id")
-	private Integer petId;
+	public Visit(@NotEmpty String id, Long visitDate, @NotEmpty String description) {
+		this.id = id;
+		this.visitDate = visitDate;
+		this.description = description;
+	}
 
 	/**
 	 * Creates a new instance of Visit for the current date
 	 */
 	public Visit() {
-		this.date = LocalDate.now();
+		this.visitDate = new Date().getTime();
 	}
 
-	public LocalDate getDate() {
-		return this.date;
+	public String getId() {
+		return id;
 	}
 
-	public void setDate(LocalDate date) {
-		this.date = date;
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public Long getVisitDate() {
+		return visitDate;
+	}
+
+	public void setVisitDate(Long visitDate) {
+		this.visitDate = visitDate;
 	}
 
 	public String getDescription() {
-		return this.description;
+		return description;
 	}
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public Integer getPetId() {
-		return this.petId;
-	}
-
-	public void setPetId(Integer petId) {
-		this.petId = petId;
 	}
 
 }

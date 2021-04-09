@@ -43,7 +43,7 @@ public class PetValidator implements Validator {
 		}
 
 		// type validation
-		if (pet.isNew() && pet.getType() == null) {
+		if (pet.isNew() && pet.getPetType() == null) {
 			errors.rejectValue("type", REQUIRED, REQUIRED);
 		}
 

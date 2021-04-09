@@ -1,0 +1,27 @@
+image:
+  file: .gitpod.Dockerfile
+
+tasks:
+- name: Start Couchbase
+  before:  cd /opt/couchbase/ && ./start-cb.sh && sleep 10
+- name: Start app
+  init: ./mvnw package -DskipTests
+  command: java -jar target/*.jar
+
+# exposed ports
+ports:
+- port: 8091
+  onOpen: open-preview
+- port: 8080
+  onOpen: open-preview
+- port: 8092-10000
+  onOpen: ignore
+- port: 4369
+  onOpen: ignore
+
+vscode:
+  extensions:
+    - redhat.java
+    - vscjava.vscode-java-debug
+    - vscjava.vscode-java-test
+    - pivotal.vscode-spring-boot

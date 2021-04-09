@@ -23,7 +23,9 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Juergen Hoeller
@@ -46,13 +48,13 @@ class PetController {
 	}
 
 	@ModelAttribute("types")
-	public Collection<PetType> populatePetTypes() {
-		return this.pets.findPetTypes();
+	public List<String> populatePetTypes() {
+		return Arrays.asList("cat", "dog", "lizard", "snake", "bird", "hamster");
 	}
 
 	@ModelAttribute("owner")
-	public Owner findOwner(@PathVariable("ownerId") int ownerId) {
-		return this.owners.findById(ownerId);
+	public Owner findOwner(@PathVariable("ownerId") String ownerId) {
+		return this.owners.findById(ownerId).get();
 	}
 
 	@InitBinder("owner")
@@ -68,30 +70,42 @@ class PetController {
 	@GetMapping("/pets/new")
 	public String initCreationForm(Owner owner, ModelMap model) {
 		Pet pet = new Pet();
-		owner.addPet(pet);
+		pet.setOwnerId(owner.getId());
 		model.put("pet", pet);
+		model.put("owner", owner);
 		return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping("/pets/new")
 	public String processCreationForm(Owner owner, @Valid Pet pet, BindingResult result, ModelMap model) {
-		if (StringUtils.hasLength(pet.getName()) && pet.isNew() && owner.getPet(pet.getName(), true) != null) {
+		if (StringUtils.hasLength(pet.getName()) && pet.isNew() && !isPetNameUnique(owner.getId(), pet.getName())) {
 			result.rejectValue("name", "duplicate", "already exists");
 		}
-		owner.addPet(pet);
+		pet.setOwnerId(owner.getId());
 		if (result.hasErrors()) {
 			model.put("pet", pet);
 			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 		}
 		else {
+			pet.setOwnerId(owner.getId());
 			this.pets.save(pet);
 			return "redirect:/owners/{ownerId}";
 		}
 	}
 
+	private boolean isPetNameUnique(String ownerId, String petName) {
+		List<Pet> pets = this.pets.findByOwnerId(ownerId);
+		for (Pet pet : pets) {
+			if (pet.getName().equalsIgnoreCase(petName)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	@GetMapping("/pets/{petId}/edit")
-	public String initUpdateForm(@PathVariable("petId") int petId, ModelMap model) {
-		Pet pet = this.pets.findById(petId);
+	public String initUpdateForm(@PathVariable("petId") String petId, ModelMap model) {
+		Pet pet = this.pets.findById(petId).get();
 		model.put("pet", pet);
 		return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 	}
@@ -99,12 +113,12 @@ class PetController {
 	@PostMapping("/pets/{petId}/edit")
 	public String processUpdateForm(@Valid Pet pet, BindingResult result, Owner owner, ModelMap model) {
 		if (result.hasErrors()) {
-			pet.setOwner(owner);
 			model.put("pet", pet);
+			model.put("owner", owner);
 			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 		}
 		else {
-			owner.addPet(pet);
+			pet.setOwnerId(owner.getId());
 			this.pets.save(pet);
 			return "redirect:/owners/{ownerId}";
 		}

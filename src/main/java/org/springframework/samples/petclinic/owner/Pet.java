@@ -24,17 +24,15 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.validation.constraints.NotEmpty;
 
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.couchbase.core.mapping.Document;
+import org.springframework.data.couchbase.core.mapping.id.GeneratedValue;
+import org.springframework.data.couchbase.core.mapping.id.GenerationStrategy;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.samples.petclinic.model.NamedEntity;
 import org.springframework.samples.petclinic.visit.Visit;
 
 /**
@@ -44,69 +42,94 @@ import org.springframework.samples.petclinic.visit.Visit;
  * @author Juergen Hoeller
  * @author Sam Brannen
  */
-@Entity
-@Table(name = "pets")
-public class Pet extends NamedEntity {
+@Document
+public class Pet {
 
-	@Column(name = "birth_date")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private LocalDate birthDate;
+	@Id
+	@GeneratedValue(strategy = GenerationStrategy.UNIQUE)
+	private String id;
 
-	@ManyToOne
-	@JoinColumn(name = "type_id")
-	private PetType type;
+	@NotEmpty
+	private String name;
 
-	@ManyToOne
-	@JoinColumn(name = "owner_id")
-	private Owner owner;
+	private String birthDate;
 
-	@Transient
-	private Set<Visit> visits = new LinkedHashSet<>();
+	private String petType;
 
-	public void setBirthDate(LocalDate birthDate) {
+	@NotEmpty
+	private String ownerId;
+
+	private List<Visit> visits = new ArrayList<>();
+
+	public Pet() {
+	}
+
+	public Pet(String id, @NotEmpty String name, String birthDate, String petType, @NotEmpty String ownerId,
+			List<Visit> visits) {
+		this.id = id;
+		this.name = name;
+		this.birthDate = birthDate;
+		this.petType = petType;
+		this.ownerId = ownerId;
+		this.visits = visits;
+	}
+
+	public String getPetType() {
+		return petType;
+	}
+
+	public void setPetType(String petType) {
+		this.petType = petType;
+	}
+
+	public void setBirthDate(String birthDate) {
 		this.birthDate = birthDate;
 	}
 
-	public LocalDate getBirthDate() {
+	public String getBirthDate() {
 		return this.birthDate;
 	}
 
-	public PetType getType() {
-		return this.type;
+	public String getId() {
+		return id;
 	}
 
-	public void setType(PetType type) {
-		this.type = type;
+	public void setId(String id) {
+		this.id = id;
 	}
 
-	public Owner getOwner() {
-		return this.owner;
+	public String getName() {
+		return name;
 	}
 
-	protected void setOwner(Owner owner) {
-		this.owner = owner;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	protected Set<Visit> getVisitsInternal() {
-		if (this.visits == null) {
-			this.visits = new HashSet<>();
-		}
-		return this.visits;
+	public void setVisits(List<Visit> visits) {
+		this.visits = visits;
 	}
 
-	protected void setVisitsInternal(Collection<Visit> visits) {
-		this.visits = new LinkedHashSet<>(visits);
+	public String getOwnerId() {
+		return ownerId;
+	}
+
+	public void setOwnerId(String ownerId) {
+		this.ownerId = ownerId;
 	}
 
 	public List<Visit> getVisits() {
-		List<Visit> sortedVisits = new ArrayList<>(getVisitsInternal());
-		PropertyComparator.sort(sortedVisits, new MutableSortDefinition("date", false, false));
+		List<Visit> sortedVisits = new ArrayList<>(visits);
+		PropertyComparator.sort(sortedVisits, new MutableSortDefinition("visitDate", false, false));
 		return Collections.unmodifiableList(sortedVisits);
 	}
 
 	public void addVisit(Visit visit) {
-		getVisitsInternal().add(visit);
-		visit.setPetId(this.getId());
+		visits.add(visit);
+	}
+
+	public boolean isNew() {
+		return this.id == null;
 	}
 
 }

@@ -15,7 +15,6 @@
  */
 package org.springframework.samples.petclinic.owner;
 
-import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,11 +43,11 @@ class OwnerController {
 
 	private final OwnerRepository owners;
 
-	private VisitRepository visits;
+	private final PetRepository petRepository;
 
-	public OwnerController(OwnerRepository clinicService, VisitRepository visits) {
+	public OwnerController(OwnerRepository clinicService, PetRepository petRepository) {
 		this.owners = clinicService;
-		this.visits = visits;
+		this.petRepository = petRepository;
 	}
 
 	@InitBinder
@@ -107,15 +107,15 @@ class OwnerController {
 	}
 
 	@GetMapping("/owners/{ownerId}/edit")
-	public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
-		Owner owner = this.owners.findById(ownerId);
+	public String initUpdateOwnerForm(@PathVariable("ownerId") String ownerId, Model model) {
+		Owner owner = this.owners.findById(ownerId).get();
 		model.addAttribute(owner);
 		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping("/owners/{ownerId}/edit")
 	public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result,
-			@PathVariable("ownerId") int ownerId) {
+			@PathVariable("ownerId") String ownerId) {
 		if (result.hasErrors()) {
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 		}
@@ -132,13 +132,12 @@ class OwnerController {
 	 * @return a ModelMap with the model attributes for the view
 	 */
 	@GetMapping("/owners/{ownerId}")
-	public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
+	public ModelAndView showOwner(@PathVariable("ownerId") String ownerId) {
 		ModelAndView mav = new ModelAndView("owners/ownerDetails");
-		Owner owner = this.owners.findById(ownerId);
-		for (Pet pet : owner.getPets()) {
-			pet.setVisitsInternal(visits.findByPetId(pet.getId()));
-		}
+		Owner owner = this.owners.findById(ownerId).get();
+		List<Pet> pets = this.petRepository.findByOwnerId(ownerId);
 		mav.addObject(owner);
+		mav.addObject("pets", pets);
 		return mav;
 	}
 

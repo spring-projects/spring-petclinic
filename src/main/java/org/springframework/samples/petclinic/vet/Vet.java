@@ -15,64 +15,91 @@
  */
 package org.springframework.samples.petclinic.vet;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 import javax.xml.bind.annotation.XmlElement;
 
-import org.springframework.beans.support.MutableSortDefinition;
-import org.springframework.beans.support.PropertyComparator;
-import org.springframework.samples.petclinic.model.Person;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.couchbase.core.mapping.Document;
+import org.springframework.data.couchbase.core.mapping.id.GeneratedValue;
 
 /**
  * Simple JavaBean domain object representing a veterinarian.
  *
- * @author Ken Krebs
- * @author Juergen Hoeller
- * @author Sam Brannen
- * @author Arjen Poutsma
+ * @author Denis Rosa
  */
-@Entity
-@Table(name = "vets")
-public class Vet extends Person {
+@Document
+public class Vet {
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "vet_specialties", joinColumns = @JoinColumn(name = "vet_id"),
-			inverseJoinColumns = @JoinColumn(name = "specialty_id"))
-	private Set<Specialty> specialties;
+	@Id
+	@GeneratedValue
+	private String id;
 
-	protected Set<Specialty> getSpecialtiesInternal() {
+	@NotEmpty
+	private String firstName;
+
+	@NotEmpty
+	private String lastName;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	private Set<String> specialties = new HashSet<>();
+
+	protected Set<String> getSpecialtiesInternal() {
 		if (this.specialties == null) {
 			this.specialties = new HashSet<>();
 		}
 		return this.specialties;
 	}
 
-	protected void setSpecialtiesInternal(Set<Specialty> specialties) {
+	public Vet() {
+	}
+
+	public Vet(String id, @NotEmpty String firstName, @NotEmpty String lastName, Set<String> specialties) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.specialties = specialties;
+	}
+
+	protected void setSpecialtiesInternal(Set<String> specialties) {
 		this.specialties = specialties;
 	}
 
 	@XmlElement
-	public List<Specialty> getSpecialties() {
-		List<Specialty> sortedSpecs = new ArrayList<>(getSpecialtiesInternal());
-		PropertyComparator.sort(sortedSpecs, new MutableSortDefinition("name", true, true));
-		return Collections.unmodifiableList(sortedSpecs);
+	public Set<String> getSpecialties() {
+		return specialties;
 	}
 
 	public int getNrOfSpecialties() {
 		return getSpecialtiesInternal().size();
 	}
 
-	public void addSpecialty(Specialty specialty) {
+	public void addSpecialty(String specialty) {
 		getSpecialtiesInternal().add(specialty);
 	}
 
