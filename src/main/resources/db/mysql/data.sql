@@ -1,19 +1,20 @@
-INSERT INTO users (dtype,username,password,enabled) VALUES ('User','admin','admin', TRUE );
+INSERT INTO users (username,password,enabled) VALUES ('admin','admin', TRUE );
 INSERT INTO authorities VALUES ('admin','admin');
 
-INSERT INTO users (dtype,username,password,enabled) VALUES ('User','manoli','manoli', TRUE );
+INSERT INTO users (username,password,enabled) VALUES ('manoli','manoli', TRUE );
 INSERT INTO authorities VALUES ('manoli','client');
-INSERT INTO users (dtype,username,password,enabled) VALUES ('User','david','david', TRUE );
+INSERT INTO users (username,password,enabled) VALUES ('david','david', TRUE );
 INSERT INTO authorities VALUES ('david','client');
 
-INSERT INTO users (dtype,username,password,enabled) VALUES ('User','paco','paco', TRUE );
+INSERT INTO users (username,password,enabled) VALUES ('paco','paco', TRUE );
 INSERT INTO authorities VALUES ('paco','usuario');
-INSERT INTO users (dtype,username,password,enabled) VALUES ('User','lolo','lolo', TRUE );
+INSERT INTO users (username,password,enabled) VALUES ('lolo','lolo', TRUE );
 INSERT INTO authorities VALUES ('lolo','usuario');
-INSERT INTO users (dtype,username,password,enabled) VALUES ('User','pepe','pepe', TRUE );
+INSERT INTO users (username,password,enabled) VALUES ('pepe','pepe', TRUE );
 INSERT INTO authorities VALUES ('pepe','usuario');
 
-INSERT INTO usuarios (id, nombre, apellidos, dni, direccion, telefono, email, username) VALUES (1, 'admin', 'admin', 'admin', 'C/admin', '000000000', 'admin@gmail.com','admin');
+INSERT INTO administrators (id, username) VALUES (1, 'admin');
+
 INSERT INTO usuarios (id, nombre, apellidos, dni, direccion, telefono, email, username) VALUES (2, 'Paco', 'Naranjo', '21154416G', 'C/Esperanza', '666973647', 'Paco@gmail.com','paco');
 INSERT INTO usuarios (id, nombre, apellidos, dni, direccion, telefono, email, username) VALUES (3, 'Lolo', 'Lopez', '25486596L', 'C/Macarena', '690670547' ,'Lolo@gmail.com','lolo');
 INSERT INTO usuarios (id, nombre, apellidos, dni, direccion, telefono, email, username) VALUES (4, 'Pepe', 'Lopez', '12456776V', 'C/Macarena', '690670547', 'Pepe@gmail.com','pepe');

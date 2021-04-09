@@ -48,6 +48,14 @@
                 <fmt:message key="showUsuario"/> </button>
             </div>
 	        </sec:authorize>
+	        
+	        <sec:authorize access="hasAnyAuthority('admin')">
+	        <div class="btn-home">
+                <button type="button" role="link" onclick="window.location='/administrators/usuarios'" style="font-family: 'Lobster'; font-size: 20px;margin:5px;">
+                <span class="glyphicon glyphicon-cutlery" aria-hidden="true" style="padding: 5px"> </span>
+                <fmt:message key="showUsuarios"/> </button>
+            </div>
+	        </sec:authorize>
 		   
         </div>
     </div>
