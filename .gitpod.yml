@@ -10,9 +10,9 @@ tasks:
 
 # exposed ports
 ports:
-- port: 8091
-  onOpen: open-preview
 - port: 8080
+  onOpen: open-preview
+- port: 8091
   onOpen: open-preview
 - port: 8092-10000
   onOpen: ignore
