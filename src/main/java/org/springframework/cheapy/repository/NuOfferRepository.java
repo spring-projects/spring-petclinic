@@ -2,7 +2,6 @@ package org.springframework.cheapy.repository;
 
 import java.util.List;
 
-import org.springframework.cheapy.model.FoodOffer;
 import org.springframework.cheapy.model.NuOffer;
 import org.springframework.cheapy.model.StatusOffer;
 import org.springframework.data.repository.Repository;

@@ -33,6 +33,15 @@
                 <span class="glyphicon glyphicon-cutlery" aria-hidden="true" style="padding: 5px"> </span>
                 <fmt:message key="createOffers"/> </button>
             </div>
+            
+	        </sec:authorize>
+	        
+	        <sec:authorize access="hasAnyAuthority('usuario')">
+	        <div class="btn-home">
+                <button type="button" role="link" onclick="window.location='/usuarios/show'" style="font-family: 'Lobster'; font-size: 20px;margin:5px;">
+                <span class="glyphicon glyphicon-cutlery" aria-hidden="true" style="padding: 5px"> </span>
+                <fmt:message key="showUsuario"/> </button>
+            </div>
 	        </sec:authorize>
 		   
         </div>
