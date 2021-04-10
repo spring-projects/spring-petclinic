@@ -14,11 +14,11 @@
     <table class="table table-striped" id="usuarioTable">
     	<thead>
         <tr>
-            <th><fmt:message key="nombre"/></th>
+            <th><fmt:message key="nameUser"/></th>
             <td><c:out value="${usuario.nombre}"/></td>
         </tr>
         <tr>
-            <th><fmt:message key="apellidos"/></th>
+            <th><fmt:message key="surname"/></th>
             <td><c:out value="${usuario.apellidos}"/></td>
         </tr>
 		<tr>
@@ -26,11 +26,11 @@
             <td><c:out value="${usuario.dni}"/></td>
         </tr>
         <tr>
-            <th><fmt:message key="direccion"/></th>
+            <th><fmt:message key="addressUser"/></th>
             <td><c:out value="${usuario.direccion}"/> </td>
         </tr>
         <tr>
-            <th><fmt:message key="telefono"/></th>
+            <th><fmt:message key="telephone"/></th>
             <td><c:out value="${usuario.telefono}"/></td>
         </tr>
         <tr>

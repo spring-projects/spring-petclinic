@@ -9,7 +9,7 @@
 <cheapy:layout pageName="usuario">
 
 	<jsp:body>
-        <h2 class="text-center" style="font-family: 'Lobster'; font-size: 30px; color: rgb(0, 64, 128); padding:30px"><em>Â¿EstÃ¡ seguro de que quiere eliminar su cuenta?</em></h2>
+        <h2 class="text-center" style="font-family: 'Lobster'; font-size: 30px; color: rgb(0, 64, 128); padding:30px"><em>¿Está seguro de que quiere eliminar su cuenta?</em></h2>
       		
       		 <form:form modelAttribute="usuario" class="form-horizontal">
 

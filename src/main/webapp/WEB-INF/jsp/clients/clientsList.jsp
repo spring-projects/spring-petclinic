@@ -18,8 +18,8 @@
         <thead>
         <tr>
 
-        	<th><fmt:message key="nameClient"/></th>
-        	<th><fmt:message key="username"/></th>
+        	<th><fmt:message key="name"/></th>
+        	<th><fmt:message key="user"/></th>
         	<th><fmt:message key="enabled"/></th>   
             <th> </th>
         </tr>
