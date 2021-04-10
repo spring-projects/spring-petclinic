@@ -9,20 +9,36 @@ INSERT INTO owners VALUES (8, 'Maria', 'Escobito', '345 Maple St.', 'Madison', '
 INSERT INTO owners VALUES (9, 'David', 'Schroeder', '2749 Blackhawk Trail', 'Madison', '6085559435');
 INSERT INTO owners VALUES (10, 'Carlos', 'Estaban', '2335 Independence La.', 'Waunakee', '6085555487');
 
-INSERT INTO users (dtype,id,username,password,enabled) VALUES ('User',1,'admin','admin', TRUE );
-INSERT INTO authorities (id,username,authority) VALUES (1,'admin','admin');
+--INSERT INTO users (dtype,id,username,password,enabled) VALUES ('User',1,'admin','admin', TRUE );
+--INSERT INTO authorities (id,username,authority) VALUES (1,'admin','admin');
 
-INSERT INTO users (dtype,id,username,password,enabled) VALUES ('User',2,'manoli','manoli', TRUE );
-INSERT INTO authorities (id,username,authority) VALUES (2,'manoli','client');
-INSERT INTO users (dtype,id,username,password,enabled) VALUES ('User',3,'david','david', TRUE );
-INSERT INTO authorities (id,username,authority) VALUES (3,'david','client');
+--INSERT INTO users (dtype,id,username,password,enabled) VALUES ('User',2,'manoli','manoli', TRUE );
+--INSERT INTO authorities (id,username,authority) VALUES (2,'manoli','client');
+--INSERT INTO users (dtype,id,username,password,enabled) VALUES ('User',3,'david','david', TRUE );
+--INSERT INTO authorities (id,username,authority) VALUES (3,'david','client');
+--
+--INSERT INTO users (dtype,id,username,password,enabled) VALUES ('User',4,'paco','paco', TRUE );
+--INSERT INTO authorities (id,username,authority) VALUES (4,'paco','usuario');
+--INSERT INTO users (dtype,id,username,password,enabled) VALUES ('User',5,'lolo','lolo', TRUE );
+--INSERT INTO authorities (id,username,authority) VALUES (5,'lolo','usuario');
+--INSERT INTO users (dtype,id,username,password,enabled) VALUES ('User',6,'pepe','pepe', TRUE );
+--INSERT INTO authorities (id,username,authority) VALUES (6,'pepe','usuario');
 
-INSERT INTO users (dtype,id,username,password,enabled) VALUES ('User',4,'paco','paco', TRUE );
-INSERT INTO authorities (id,username,authority) VALUES (4,'paco','usuario');
-INSERT INTO users (dtype,id,username,password,enabled) VALUES ('User',5,'lolo','lolo', TRUE );
-INSERT INTO authorities (id,username,authority) VALUES (5,'lolo','usuario');
-INSERT INTO users (dtype,id,username,password,enabled) VALUES ('User',6,'pepe','pepe', TRUE );
-INSERT INTO authorities (id,username,authority) VALUES (6,'pepe','usuario');
+INSERT INTO users (dtype,username,password,enabled) VALUES ('User','admin','admin', TRUE );
+INSERT INTO authorities (username,authority) VALUES ('admin','admin');
+
+INSERT INTO users (dtype,username,password,enabled) VALUES ('User','manoli','manoli', TRUE );
+INSERT INTO authorities (username,authority) VALUES ('manoli','client');
+INSERT INTO users (dtype,username,password,enabled) VALUES ('User','david','david', TRUE );
+INSERT INTO authorities (username,authority) VALUES ('david','client');
+
+INSERT INTO users (dtype,username,password,enabled) VALUES ('User','paco','paco', TRUE );
+INSERT INTO authorities (username,authority) VALUES ('paco','usuario');
+INSERT INTO users (dtype,username,password,enabled) VALUES ('User','lolo','lolo', TRUE );
+INSERT INTO authorities (username,authority) VALUES ('lolo','usuario');
+INSERT INTO users (dtype,username,password,enabled) VALUES ('User','pepe','pepe', TRUE );
+INSERT INTO authorities (username,authority) VALUES ('pepe','usuario');
+
 
 INSERT INTO usuarios (id, nombre, apellidos, direccion, municipio, email, username) VALUES (1, 'admin', 'admin',  'C/admin', 'carmona', 'admin@gmail.com','admin');
 INSERT INTO usuarios (id, nombre, apellidos, direccion, municipio, email, username) VALUES (2, 'Paco', 'Naranjo', 'C/Esperanza', 'sevilla', 'Paco@gmail.com','paco');

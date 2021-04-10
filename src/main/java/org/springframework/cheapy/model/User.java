@@ -11,14 +11,11 @@ import net.bytebuddy.implementation.bind.annotation.Default;
 
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity{
+public class User {
 	
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
+	@Id
 	@NotBlank
 	private String username;
 
@@ -51,5 +48,48 @@ public class User extends BaseEntity{
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((enabled == null) ? 0 : enabled.hashCode());
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (enabled == null) {
+			if (other.enabled != null)
+				return false;
+		} else if (!enabled.equals(other.enabled))
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "User [username=" + username + ", password=" + password + ", enabled=" + enabled + "]";
+	}
+	
 
 }

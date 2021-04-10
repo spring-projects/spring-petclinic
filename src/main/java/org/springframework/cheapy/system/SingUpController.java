@@ -31,9 +31,13 @@ public class SingUpController {
 
 	//private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
 
+	@Autowired
 	private final ClientService clientService;
+	@Autowired
 	private final UserService userService;
+	@Autowired
 	private final UsuarioService usuarioService;
+	@Autowired
 	private final AuthoritiesService authoritiesService;
 
 
@@ -76,9 +80,12 @@ public class SingUpController {
 			return "singup/singUpUser";
 		}
 		else {
-			this.userService.saveUser(user);
+			//auth.setId(1);
+			//this.authoritiesService.saveAuthorities(auth);
 			this.usuarioService.saveUsuario(usuario);
-			this.authoritiesService.saveAuthorities(auth);
+			this.userService.saveUser(user);
+			this.authoritiesService.saveAuthorities(usuario.getUsuar().getUsername(), "usuario");
+			
 			return "redirect:/";
 		}
 	}
