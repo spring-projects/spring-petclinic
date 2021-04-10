@@ -58,8 +58,8 @@ class TimeOfferControllerTest {
 		client1.setName("client1");
 		client1.setEmail("client1");
 		client1.setAddress("client1");
-		client1.setInit("01:00");
-		client1.setFinish("01:01");
+		client1.setInit(LocalTime.of(12, 00));
+		client1.setFinish(LocalTime.of(01, 01));
 		client1.setTelephone("123456789");
 		client1.setDescription("client1");
 		client1.setCode("client1");

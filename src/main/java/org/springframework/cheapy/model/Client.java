@@ -1,5 +1,6 @@
 package org.springframework.cheapy.model;
 
+import java.time.LocalTime;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -9,8 +10,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "clients")
@@ -31,12 +34,14 @@ public class Client extends BaseEntity {
 	private String address;
 
 	// Hora de apertura del local
-	@NotBlank
-	private String init;
+	@DateTimeFormat(pattern = "HH:mm")
+	@NotNull(message = "Debe introducir una hora de apertura")
+	private LocalTime init;
 
 	// Hora de cierre del local
-	@NotBlank
-	private String finish;
+	@DateTimeFormat(pattern = "HH:mm")
+	@NotNull(message = "Debe introducir una hora de cierre")
+	private LocalTime finish;
 
 	@NotEmpty
 	@Digits(fraction = 0, integer = 10)
@@ -92,19 +97,19 @@ public class Client extends BaseEntity {
 		this.address = address;
 	}
 
-	public String getInit() {
+	public LocalTime getInit() {
 		return init;
 	}
 
-	public void setInit(String init) {
+	public void setInit(LocalTime init) {
 		this.init = init;
 	}
 
-	public String getFinish() {
+	public LocalTime getFinish() {
 		return finish;
 	}
 
-	public void setFinish(String finish) {
+	public void setFinish(LocalTime finish) {
 		this.finish = finish;
 	}
 
