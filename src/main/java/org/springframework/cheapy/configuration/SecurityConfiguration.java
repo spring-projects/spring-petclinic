@@ -21,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 
 
+@SuppressWarnings("deprecation")
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -35,12 +36,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/resources/**", "/webjars/**", "/h2-console/**").permitAll()
 		.antMatchers(HttpMethod.GET, "/", "/oups").permitAll()
 		.antMatchers("/users/new").permitAll()
+		
+		.antMatchers("/clients/new").permitAll()
+		.antMatchers("/clients/edit").hasAnyAuthority("client")
+		.antMatchers("/clients/disable").hasAnyAuthority("client")
 
 		.antMatchers("/login/**").anonymous()
 		.antMatchers("/logout").authenticated()
 
 		.antMatchers("/usuarios/new").permitAll()
-		.antMatchers("/admin/**").hasAnyAuthority("admin")
+		.antMatchers("/usuarios/**").hasAnyAuthority("usuario")
+		.antMatchers("/administrators/**").hasAnyAuthority("admin")
 
 		.antMatchers("/owners/**").hasAnyAuthority("owner", "admin")
 
@@ -48,7 +54,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.antMatchers("/offers/**/new").hasAnyAuthority("admin", "client")
 		.antMatchers("/offers/**/activate").hasAnyAuthority("admin","client")
 
-		.antMatchers("/clients/new").permitAll()
 		.antMatchers("/offers").permitAll()
 		.antMatchers("/offersCreate").hasAuthority("client")
 

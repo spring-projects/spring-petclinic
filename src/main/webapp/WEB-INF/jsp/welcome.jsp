@@ -23,19 +23,33 @@
 	                <fmt:message key="listOffers"/> </button>
 	            </div>
 	            
-	   			<sec:authorize access="hasAnyAuthority('client')">
-	   			<div class="btn-home">
-	                <button type="button" role="link" onclick="window.location='/myOffers'" style="font-family: 'Lobster'; font-size: 20px;margin:5px;" class="btn-block">
-	                <span class="glyphicon glyphicon-cutlery" aria-hidden="true" style="padding: 5px"> </span>
-	                <fmt:message key="myOffers"/> </button>
-	            </div>
-		        <div class="btn-home">
-	                <button type="button" role="link" onclick="window.location='/offersCreate'" style="font-family: 'Lobster'; font-size: 20px;margin:5px;" class="btn-block">
-	                <span class="glyphicon glyphicon-cutlery" aria-hidden="true" style="padding: 5px"> </span>
-	                <fmt:message key="createOffers"/> </button>
-	            </div>
-		        </sec:authorize>
-		   	</div>
+              <sec:authorize access="hasAnyAuthority('client')">
+              <div class="btn-home">
+                      <button type="button" role="link" onclick="window.location='/myOffers'" style="font-family: 'Lobster'; font-size: 20px;margin:5px;" class="btn-block">
+                      <span class="glyphicon glyphicon-cutlery" aria-hidden="true" style="padding: 5px"> </span>
+                      <fmt:message key="myOffers"/> </button>
+                  </div>
+                <div class="btn-home">
+                      <button type="button" role="link" onclick="window.location='/offersCreate'" style="font-family: 'Lobster'; font-size: 20px;margin:5px;" class="btn-block">
+                      <span class="glyphicon glyphicon-cutlery" aria-hidden="true" style="padding: 5px"> </span>
+                      <fmt:message key="createOffers"/> </button>
+                  </div>
+                <div class="btn-home">
+                    <button type="button" role="link" onclick="window.location='/clients/show'" style="font-family: 'Lobster'; font-size: 20px;margin:5px;">
+                    <span class="glyphicon glyphicon-cutlery" aria-hidden="true" style="padding: 5px"> </span>
+                    <fmt:message key="clientShow"/> </button>
+                </div>           
+
+              </sec:authorize>
+            </div>
+	        <sec:authorize access="hasAnyAuthority('usuario')">
+	        <div class="btn-home">
+                <button type="button" role="link" onclick="window.location='/usuarios/show'" style="font-family: 'Lobster'; font-size: 20px;margin:5px;">
+                <span class="glyphicon glyphicon-cutlery" aria-hidden="true" style="padding: 5px"> </span>
+                <fmt:message key="showUsuario"/> </button>
+            </div>
+	        </sec:authorize>
+
         </div>
     </div>
-</cheapy:layout>
+</cheapy:layout>		        	 	        

@@ -4,10 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cheapy.model.Review;
-import org.springframework.cheapy.model.StatusOffer;
-import org.springframework.cheapy.model.TimeOffer;
 import org.springframework.cheapy.repository.ReviewRepository;
-import org.springframework.cheapy.repository.TimeOfferRepository;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
