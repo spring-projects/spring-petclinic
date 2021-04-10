@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +58,13 @@ public class ClientController {
 	}
 
 
-
+	private boolean checkTimes(final Client client) {
+		boolean res = false;
+		if(client.getFinish()==null || client.getInit()==null || client.getFinish().isAfter(client.getInit())) {
+			res = true;
+		}
+		return res;
+	}
 
 
 	@GetMapping("/clients/show")
@@ -91,7 +96,11 @@ public class ClientController {
 
 
 		Client clienteSesion = this.clientService.getCurrentClient();
-
+		
+		if(!this.checkTimes(clientEdit)) {
+			result.rejectValue("finish","" ,"La hora de cierre debe ser posterior a la hora de apertura");
+			
+		}
 	
 
 			if (result.hasErrors()) {

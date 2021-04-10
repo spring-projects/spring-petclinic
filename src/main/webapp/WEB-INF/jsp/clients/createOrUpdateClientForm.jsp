@@ -9,7 +9,7 @@
 
 <cheapy:layout pageName="clients">
     <h2 style="text-align:center;padding:5px">
-        <c:if test="${client['new']}"><fmt:message key="new"/> </c:if> <fmt:message key="client"/>
+        <fmt:message key="client"/>
     </h2>
     
     <form:form modelAttribute="client" class="form-horizontal" id="add-client-form">

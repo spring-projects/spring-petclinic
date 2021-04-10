@@ -19,8 +19,8 @@ INSERT INTO usuarios (id, nombre, apellidos, dni, direccion, telefono, email, us
 INSERT INTO usuarios (id, nombre, apellidos, dni, direccion, telefono, email, username) VALUES (3, 'Lolo', 'Lopez', '25486596L', 'C/Macarena', '690670547' ,'Lolo@gmail.com','lolo');
 INSERT INTO usuarios (id, nombre, apellidos, dni, direccion, telefono, email, username) VALUES (4, 'Pepe', 'Lopez', '12456776V', 'C/Macarena', '690670547', 'Pepe@gmail.com','pepe');
 
-INSERT INTO clients (id, name, email, address, init, finish, telephone, description, code, food, username) VALUES (1,'bar manoli','manoli@gmail.com','C/Betis','10:00','22:00','608726190', 'description 1', 'code1', 'ESPAÑOLA','manoli');
-INSERT INTO clients (id, name, email, address, init, finish, telephone, description, code, food, username)  VALUES (2,'bar david','david@gmail.com','C/Sevilla','09:30','22:00','608726190', 'description 2', 'code2', 'americana','david');
+INSERT INTO clients (id, name, email, address, init, finish, telephone, description, code, food, username) VALUES (1,'bar manoli','manoli@gmail.com','C/Betis','10:00:00','22:00:00','608726190', 'description 1', 'code1', 'ESPAÑOLA','manoli');
+INSERT INTO clients (id, name, email, address, init, finish, telephone, description, code, food, username)  VALUES (2,'bar david','david@gmail.com','C/Sevilla','09:30:00','22:00:00','608726190', 'description 2', 'code2', 'americana','david');
 
 INSERT INTO food_offers(start, end, code, status, client_id, food, discount) VALUES ('2021-08-14 12:00:00', '2021-08-15 12:00:00', 'FO-1', 'inactive', 1, 'macarrones', 15);
 INSERT INTO food_offers(start, end, code, status, client_id, food, discount) VALUES ('2021-08-15 12:00:00', '2021-08-16 12:00:00', 'FO-2', 'active', 1, 'macarrones con tomate', 10);
