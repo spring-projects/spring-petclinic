@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cheapy.model.Authorities;
 import org.springframework.dao.DataAccessException;
 
-public interface AuthoritiesRepository extends  CrudRepository<Authorities, Integer>{
+public interface AuthoritiesRepository extends  CrudRepository<Authorities, String>{
 
 //	@Autowired
 //	void save(Authorities authorities);

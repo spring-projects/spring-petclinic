@@ -29,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class AuthoritiesService {
 
+	@Autowired
 	private AuthoritiesRepository authoritiesRepository;
 //	private UserService userService;
 /*
