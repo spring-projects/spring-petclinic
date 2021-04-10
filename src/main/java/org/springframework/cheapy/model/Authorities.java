@@ -3,12 +3,18 @@ package org.springframework.cheapy.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "authorities")
-public class Authorities{
+public class Authorities extends BaseEntity{
 	
-	@Id
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@NotNull
 	String username;
 	
 	String authority;

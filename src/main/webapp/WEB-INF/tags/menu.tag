@@ -63,6 +63,10 @@
 					<li><a href="<c:url value="/login" />">Iniciar sesión</a></li>
 					<!--<li><a href="<c:url value="/users/new" />">Register</a></li>-->
 				</sec:authorize>
+				<sec:authorize access="!isAuthenticated()">
+					<li><a href="<c:url value="/users/new" />">Registrarse</a></li>
+					<!--<li><a href="<c:url value="/users/new" />">Register</a></li>-->
+				</sec:authorize>
 				<sec:authorize access="isAuthenticated()">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span>

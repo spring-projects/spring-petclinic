@@ -1,6 +1,7 @@
 package org.springframework.cheapy.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cheapy.model.FoodOffer;
 import org.springframework.cheapy.model.User;
 import org.springframework.cheapy.repository.UserRepository;
 import org.springframework.dao.DataAccessException;
@@ -25,5 +26,8 @@ public class UserService {
 		String username = authentication.getName();
 		return this.userRepository.findByUsername(username);
 	}
-	
+
+	public void saveUser(final User user) throws DataAccessException {
+		this.userRepository.save(user);
+	}
 }

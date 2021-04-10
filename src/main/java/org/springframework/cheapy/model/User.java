@@ -5,20 +5,36 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
+import org.springframework.boot.context.properties.bind.DefaultValue;
+
+import net.bytebuddy.implementation.bind.annotation.Default;
+
 @Entity
 @Table(name = "users")
-public class User{
+public class User extends BaseEntity{
 	
-	@Id
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@NotBlank
 	private String username;
 
 	@NotBlank
 	private String password;
 	
-	boolean enabled;
-
-	private static final long serialVersionUID = 1L;
 	
+	private Boolean enabled;
+	
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
 
 	public String getUsername() {
 		return username;
