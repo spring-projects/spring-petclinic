@@ -94,7 +94,7 @@
 	  background-color: #56baed;
 	  border: none;
 	  color: white;
-	  padding: 15px 80px;
+	  padding: 15px;
 	  text-align: center;
 	  text-decoration: none;
 	  display: inline-block;
@@ -110,6 +110,7 @@
 	  -ms-transition: all 0.3s ease-in-out;
 	  -o-transition: all 0.3s ease-in-out;
 	  transition: all 0.3s ease-in-out;
+	  width: 60%;
 	}
 	
 	input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover  {
@@ -143,6 +144,7 @@
 	  transition: all 0.5s ease-in-out;
 	  -webkit-border-radius: 5px 5px 5px 5px;
 	  border-radius: 5px 5px 5px 5px;
+	  margin: 0 auto;
 	}
 	
 	input[type=text]:focus {
@@ -292,7 +294,9 @@
 	      <input type="text" id="username" class="fadeIn second" name="username" placeholder="Usuario" required autofocus>
 	      <input type="password" id="password" class="fadeIn third" name="password" placeholder="Contraseña" required>
 	      <sec:csrfInput />  
-		  <input type="submit" class="fadeIn fourth" value="Iniciar sesión">
+	      <div style="text-align: center;">
+		  	<input type="submit" class="fadeIn fourth" value="Iniciar sesión">
+		  </div>
 	    </form>
 	
 	    <!-- Remind Passowrd 

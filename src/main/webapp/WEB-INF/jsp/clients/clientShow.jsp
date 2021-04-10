@@ -67,11 +67,20 @@
 	        <button type="button" role="link" onclick="window.location='${fn:escapeXml(disableUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
 	            <span class="glyphicon 	glyphicon glyphicon-edit" aria-hidden="true" style="padding: 5px"> </span>
 	          Borrar  cliente</button>
-
-		
-
       </div>
       </sec:authorize>
+      <sec:authorize access="hasAnyAuthority('admin')">
+		<sec:authentication var="principal" property="principal" />
+    	<div class="btns-edit">
+		
+	        <spring:url value="/administrators/clients/{username}/disable" var="deactivateUrl">
+	        	<spring:param name="username" value="${client.usuar.username}"/>
+	        </spring:url>
+	        <button type="button" role="link" onclick="window.location='${fn:escapeXml(deactivateUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
+	        	<span class="glyphicon glyphicon glyphicon-trash" aria-hidden="true" style="padding: 5px"> </span>
+	         Desactivar cliente</button>
+    	</div>
+    </sec:authorize>
     </div>
   	
 

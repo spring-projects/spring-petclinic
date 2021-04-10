@@ -56,6 +56,18 @@
 	         Desactivar usuario</button>
     	</div>
     </sec:authorize>
+    <sec:authorize access="hasAnyAuthority('admin')">
+		<sec:authentication var="principal" property="principal" />
+    	<div class="btns-edit">
+		
+	        <spring:url value="/administrators/usuarios/{username}/disable" var="deactivateUrl">
+	        	<spring:param name="username" value="${usuario.usuar.username}"/>
+	        </spring:url>
+	        <button type="button" role="link" onclick="window.location='${fn:escapeXml(deactivateUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
+	        	<span class="glyphicon glyphicon glyphicon-trash" aria-hidden="true" style="padding: 5px"> </span>
+	         Desactivar usuario</button>
+    	</div>
+    </sec:authorize>
     </div>
   	
 

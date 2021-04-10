@@ -1,6 +1,9 @@
 package org.springframework.cheapy.repository;
 
+
 import java.util.Optional;
+import java.util.List;
+
 
 import org.springframework.cheapy.model.Client;
 import org.springframework.data.jpa.repository.Query;
@@ -16,6 +19,12 @@ public interface ClientRepository extends CrudRepository<Client, String> {
 
 	Optional<Client> findById(Integer id);
 	
+
 //	void save(Client client);
+
+	@Query("SELECT client FROM Client client")
+	@Transactional(readOnly = true)
+	List<Client> findAllClient();
+	
 	
 }
