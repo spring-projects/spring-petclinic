@@ -31,7 +31,7 @@
         <c:forEach items="${foodOfferLs}" var="foodOffer">
             <tr>
             	<td>
-                    <c:out value="${foodOffer.client.name}"/>
+                    <a href="/restaurant/${foodOffer.client.id}"><c:out value="${foodOffer.client.name}"/></a>
                 </td>
                 <td>
                     <c:out value="${foodOffer.food}"/>
@@ -84,7 +84,7 @@
         <c:forEach items="${nuOfferLs}" var="nuOffer">
             <tr>
                 <td>
-                    <c:out value="${nuOffer.client.name}"/>
+                <a href="/restaurant/${nuOffer.client.id}"><c:out value="${nuOffer.client.name}"/></a>
                 </td>
                 <td>
                     <c:out value="${localDateTimeFormat.format(nuOffer.start)}"/>
@@ -136,7 +136,7 @@
         <c:forEach items="${speedOfferLs}" var="speedOffer">
             <tr>
                 <td>
-                    <c:out value="${speedOffer.client.name}"/>
+                	<a href="/restaurant/${speedOffer.client.id}"><c:out value="${speedOffer.client.name}"/></a>
                 </td>
                 <td>
                     <c:out value="${localDateTimeFormat.format(speedOffer.start)}"/>
@@ -188,7 +188,7 @@
         	<c:forEach items="${timeOfferLs}" var="timeOffer">
             <tr>
                 <td>
-                    <c:out value="${timeOffer.client.name}"/>
+                    <a href="/restaurant/${timeOffer.client.id}"><c:out value="${timeOffer.client.name}"/></a>
                 </td>
                 <td>
                     <c:out value="${localDateTimeFormat.format(timeOffer.start)}"/>

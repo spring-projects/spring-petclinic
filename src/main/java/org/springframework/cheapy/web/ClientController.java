@@ -7,14 +7,17 @@ import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cheapy.model.Client;
 import org.springframework.cheapy.model.FoodOffer;
 import org.springframework.cheapy.model.NuOffer;
 import org.springframework.cheapy.model.SpeedOffer;
 import org.springframework.cheapy.model.StatusOffer;
 import org.springframework.cheapy.model.TimeOffer;
+import org.springframework.cheapy.repository.ClientRepository;
 import org.springframework.cheapy.service.ClientService;
 import org.springframework.cheapy.service.FoodOfferService;
 import org.springframework.cheapy.service.NuOfferService;
@@ -24,6 +27,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -40,6 +44,9 @@ public class ClientController {
 	private final NuOfferService nuOfferService;
 	
 	private final TimeOfferService timeOfferService;
+	
+	@Autowired
+	private ClientRepository clientRepo;
 	
 
 	public ClientController(final ClientService clientService, FoodOfferService foodOfferService, 
@@ -140,5 +147,13 @@ public class ClientController {
 	}
 		return "redirect:/login";
 
+	}
+	@GetMapping(value = "/restaurant/{clientId}")
+	public String showRestaurant(final ModelMap model, @PathVariable("clientId") Integer id) {
+
+		Client client = this.clientRepo.findById(id).get();
+		System.out.println(client.getDescription());
+		model.put("client", client);
+		return "clients/restaurantShow";
 	}
 }
