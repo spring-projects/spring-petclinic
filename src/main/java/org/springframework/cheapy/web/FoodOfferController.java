@@ -2,6 +2,7 @@
 package org.springframework.cheapy.web;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -59,6 +60,15 @@ public class FoodOfferController {
 			res = true;
 		}
 		return res;
+	}
+	
+	@GetMapping("/offers/foodOfferList")
+	public String processFindForm(Map<String, Object> model) {
+		List<FoodOffer> foodOfferLs=this.foodOfferService.findActiveFoodOffer();
+		model.put("foodOfferLs", foodOfferLs);
+		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+		return "offers/food/foodOffersList";
+
 	}
 
 	@GetMapping("/offers/food/new")

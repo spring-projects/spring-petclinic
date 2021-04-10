@@ -8,6 +8,31 @@
 <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
 
 <cheapy:layout pageName="ofertas">
+
+	<spring:url value="/offers/foodOfferList" var="foodOfferUrl">
+    </spring:url>
+    <button type="button" role="link" onclick="window.location='/offers/foodOfferList'" style="font-family: 'Lobster'; font-size: 20px;">
+	<span class="glyphicon 	glyphicon glyphicon-edit" aria-hidden="true" style="padding: 5px"> </span>
+	Ofertas de plato especifico</button>
+	
+	<spring:url value="/offers/nuOfferList" var="nuOfferUrl">
+    </spring:url>
+    <button type="button" role="link" onclick="window.location='/offers/nuOfferList'" style="font-family: 'Lobster'; font-size: 20px;">
+	<span class="glyphicon 	glyphicon glyphicon-edit" aria-hidden="true" style="padding: 5px"> </span>
+	Ofertas por número de comensales</button>
+	
+	<spring:url value="/offers/speedOfferList" var="speedOfferUrl">
+    </spring:url>
+    <button type="button" role="link" onclick="window.location='/offers/speedOfferList'" style="font-family: 'Lobster'; font-size: 20px;">
+	<span class="glyphicon 	glyphicon glyphicon-edit" aria-hidden="true" style="padding: 5px"> </span>
+	Ofertas de velocidad</button>
+	
+	<spring:url value="/offers/timeOfferList" var="timeOfferUrl">
+    </spring:url>
+    <button type="button" role="link" onclick="window.location='/offers/timeOfferList'" style="font-family: 'Lobster'; font-size: 20px;">
+	<span class="glyphicon 	glyphicon glyphicon-edit" aria-hidden="true" style="padding: 5px"> </span>
+	Ofertas de franja horaria</button>
+
     <h2 style="text-align:center;padding:5px"><fmt:message key="foodOffers"/></h2>
     
 	<c:if test="${empty foodOfferLs }">
