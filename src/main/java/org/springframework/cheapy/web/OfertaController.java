@@ -43,9 +43,9 @@ public class OfertaController {
 		Pageable elements = PageRequest.of(0, 3);
 
 		List<FoodOffer> foodOfferLs = this.foodOfferService.findActiveFoodOffer(elements);
-		List<NuOffer> nuOfferLs = this.nuOfferService.findActiveNuOffer();
-		List<SpeedOffer> speedOfferLs = this.speedOfferService.findActiveSpeedOffer();
-		List<TimeOffer> timeOfferLs = this.timeOfferService.findActiveTimeOffer();
+		List<NuOffer> nuOfferLs = this.nuOfferService.findActiveNuOffer(elements);
+		List<SpeedOffer> speedOfferLs = this.speedOfferService.findActiveSpeedOffer(elements);
+		List<TimeOffer> timeOfferLs = this.timeOfferService.findActiveTimeOffer(elements);
 
 		model.put("foodOfferLs", foodOfferLs);
 		model.put("nuOfferLs", nuOfferLs);

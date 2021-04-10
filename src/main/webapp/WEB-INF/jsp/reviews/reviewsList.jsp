@@ -21,7 +21,7 @@
         </thead>
         <tbody>
         <c:choose>
-	        <c:when test="${fn:length(reviewsLs) == 0}">
+	        <c:when test="${empty reviewsLs}">
 	        	<tr><td colspan="4"><em><c:out value="No se ha realizado ninguna valoración por el momento."/></em></td></tr>
 	        </c:when>
 	        <c:otherwise>
@@ -56,4 +56,21 @@
         </c:choose>
         </tbody>
     </table>
+        <c:if test='${page!=0}'>
+    	<spring:url value="/reviewsList/{page}" var="reviewsListUrl">
+    		<spring:param name="page" value="${page-1}"/>
+    	</spring:url>
+    	<button type="button" role="link" onclick="window.location='${fn:escapeXml(reviewsListUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
+		<span class="glyphicon 	glyphicon glyphicon-edit" aria-hidden="true" style="padding: 5px"> </span>
+		Pág. anterior</button>
+    </c:if>
+    <c:out value='${page}'></c:out>
+    <c:if test="${fn:length(reviewsLs) == 6}">
+    	<spring:url value="/reviewsList/{page}" var="reviewsListUrl">
+    		<spring:param name="page" value="${page+1}"/>
+    	</spring:url>
+    	<button type="button" role="link" onclick="window.location='${fn:escapeXml(reviewsListUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
+		<span class="glyphicon 	glyphicon glyphicon-edit" aria-hidden="true" style="padding: 5px"> </span>
+		Pág. siguiente</button>
+	</c:if>
 </cheapy:layout>

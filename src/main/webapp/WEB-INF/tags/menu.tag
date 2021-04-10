@@ -61,7 +61,7 @@
 				</cheapy:menuItem>
 				-->
 				<sec:authorize access="isAuthenticated()">
-					<cheapy:menuItem active="${name eq 'reviews'}" url="/reviews" title="opiniones">
+					<cheapy:menuItem active="${name eq 'reviews'}" url="/reviewsList/0" title="opiniones">
 						<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
 						<span>Reseñas</span>
 					</cheapy:menuItem>

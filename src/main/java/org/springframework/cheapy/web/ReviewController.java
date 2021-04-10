@@ -1,3 +1,4 @@
+
 package org.springframework.cheapy.web;
 
 import java.util.List;
@@ -9,6 +10,8 @@ import org.springframework.cheapy.model.Review;
 import org.springframework.cheapy.model.User;
 import org.springframework.cheapy.service.ReviewService;
 import org.springframework.cheapy.service.UserService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -19,10 +22,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class ReviewController {
 
+	private static final String	VIEWS_REVIEWS_CREATE_OR_UPDATE_FORM	= "reviews/createOrUpdateReviewForm";
+	private final ReviewService	reviewService;
+	private final UserService	userService;
 
-	private static final String VIEWS_REVIEWS_CREATE_OR_UPDATE_FORM = "reviews/createOrUpdateReviewForm";
-	private final ReviewService reviewService;
-	private final UserService userService;
 
 	public ReviewController(final ReviewService reviewService, final UserService userService) {
 		this.reviewService = reviewService;
@@ -38,46 +41,44 @@ public class ReviewController {
 		}
 		return res;
 	}
-	@GetMapping("/reviews")
-	public String processFindForm( Map<String, Object> model) {
+	@GetMapping("/reviewsList/{page}")
+	public String processFindForm(@PathVariable("page") final int page, final Map<String, Object> model) {
+		Pageable elements = PageRequest.of(page, 6);
 
-		List<Review> reviewsLs=this.reviewService.findAllReviews();
+		List<Review> reviewsLs = this.reviewService.findAllReviews(elements);
 		model.put("reviewsLs", reviewsLs);
-		
+
 		return "reviews/reviewsList";
 
 	}
 
 	@GetMapping("/reviews/new")
-	public String initCreationForm(Map<String, Object> model) {
+	public String initCreationForm(final Map<String, Object> model) {
 		Review review = new Review();
 		model.put("review", review);
-		return VIEWS_REVIEWS_CREATE_OR_UPDATE_FORM;
+		return ReviewController.VIEWS_REVIEWS_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping("/reviews/new")
-	public String processCreationForm(@Valid Review review, BindingResult result) {
+	public String processCreationForm(@Valid final Review review, final BindingResult result) {
 		if (result.hasErrors()) {
-			return VIEWS_REVIEWS_CREATE_OR_UPDATE_FORM;
+			return ReviewController.VIEWS_REVIEWS_CREATE_OR_UPDATE_FORM;
 		} else {
 			User escritor = this.userService.getCurrentUser();
 			review.setEscritor(escritor);
-			
+
 			this.reviewService.saveReview(review);
 			return "redirect:/reviews/" + review.getId();
 		}
 	}
 
-	
-
 	@GetMapping("/reviews/{reviewId}")
-	public String processShowForm(@PathVariable("reviewId") int reviewId, Map<String, Object> model) {
+	public String processShowForm(@PathVariable("reviewId") final int reviewId, final Map<String, Object> model) {
 
 		Review review = this.reviewService.findReviewById(reviewId);
 
 		model.put("review", review);
-		
-		
+
 		return "reviews/reviewsShow";
 
 	}
@@ -105,7 +106,7 @@ public class ReviewController {
 		} else {
 			User escritor = this.userService.getCurrentUser();
 			reviewEdit.setEscritor(escritor);
-			
+
 			this.reviewService.saveReview(reviewEdit);
 			return "redirect:/reviews/" + reviewEdit.getId();
 		}
