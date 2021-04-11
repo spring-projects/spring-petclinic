@@ -39,4 +39,8 @@ public interface FoodOfferRepository extends PagingAndSortingRepository<FoodOffe
 	@Transactional(readOnly = true)
 	List<FoodOffer> findFoodOfferByClientName(String name);
 	
+	@Query("SELECT foodOffer FROM FoodOffer foodOffer WHERE foodOffer.client.food LIKE :name AND foodOffer.status= 'active'")
+	@Transactional(readOnly = true)
+	List<FoodOffer> findFoodOfferByClientFood(String name);
+	
 }

@@ -59,4 +59,9 @@ public class NuOfferService {
 		String nameEdit = "%"+name+"%";
 		return this.nuOfferRepository.findNuOfferByClientName(nameEdit);
 	}
+	
+	public List<NuOffer> findNuOfferByClientFood(String name) {
+		String nameEdit = "%"+name+"%";
+		return this.nuOfferRepository.findNuOfferByClientFood(nameEdit);
+	}
 }
