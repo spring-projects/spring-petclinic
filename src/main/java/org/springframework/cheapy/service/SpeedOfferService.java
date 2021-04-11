@@ -49,4 +49,9 @@ public class SpeedOfferService {
 	public List<SpeedOffer> findSpeedOfferActOclByUserId(final int id) {
 		return this.speedOfferRepository.findSpeedOfferActOclByUserId(id);
 	}
+	
+	public List<SpeedOffer> findSpeedOfferByClientName(String name) {
+		String nameEdit = "%"+name+"%";
+		return this.speedOfferRepository.findSpeedOfferByClientName(nameEdit);
+	}
 }

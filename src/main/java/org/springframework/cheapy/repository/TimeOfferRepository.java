@@ -33,4 +33,8 @@ public interface TimeOfferRepository extends PagingAndSortingRepository<FoodOffe
 	@Query("SELECT timeOffer FROM TimeOffer timeOffer WHERE timeOffer.client.id =:id AND timeOffer.status!= 'inactive'")
 	@Transactional(readOnly = true)
 	List<TimeOffer> findTimeOfferActOclByUserId(@Param("id") Integer id);
+	
+	@Query("SELECT timeOffer FROM TimeOffer timeOffer WHERE timeOffer.client.name LIKE :name AND timeOffer.status= 'active'")
+	@Transactional(readOnly = true)
+	List<TimeOffer> findTimeOfferByClientName(String name);
 }

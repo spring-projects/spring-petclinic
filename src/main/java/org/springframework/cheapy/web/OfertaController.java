@@ -58,6 +58,25 @@ public class OfertaController {
 		return "offers/offersList";
 
 	}
+	
+	@GetMapping("/offersByName")
+	public String processFindFormByName(final Map<String, Object> model, String name) {
+
+		List<FoodOffer> foodOfferLs = this.foodOfferService.findFoodOfferByClientName(name);
+		List<NuOffer> nuOfferLs = this.nuOfferService.findNuOfferByClientName(name);
+		List<SpeedOffer> speedOfferLs = this.speedOfferService.findSpeedOfferByClientName(name);
+		List<TimeOffer> timeOfferLs = this.timeOfferService.findTimeOfferByClientName(name);
+		model.put("foodOfferLs", foodOfferLs);
+		model.put("nuOfferLs", nuOfferLs);
+		model.put("speedOfferLs", speedOfferLs);
+		model.put("timeOfferLs", timeOfferLs);
+
+		//Se añade formateador de fecha al modelo
+		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+
+		return "offers/offersListSearch";
+
+	}
 
 	@GetMapping("/myOffers")
 	public String processMyOffersForm(final Map<String, Object> model) {
