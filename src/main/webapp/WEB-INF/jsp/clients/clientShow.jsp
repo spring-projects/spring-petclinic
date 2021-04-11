@@ -69,16 +69,26 @@
 	          Borrar  cliente</button>
       </div>
       </sec:authorize>
-      <sec:authorize access="hasAnyAuthority('admin')">
+        <sec:authorize access="hasAnyAuthority('admin')">
 		<sec:authentication var="principal" property="principal" />
     	<div class="btns-edit">
-		
+		<c:if test="${ client.usuar.enabled eq true}">
 	        <spring:url value="/administrators/clients/{username}/disable" var="deactivateUrl">
 	        	<spring:param name="username" value="${client.usuar.username}"/>
 	        </spring:url>
 	        <button type="button" role="link" onclick="window.location='${fn:escapeXml(deactivateUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
 	        	<span class="glyphicon glyphicon glyphicon-trash" aria-hidden="true" style="padding: 5px"> </span>
 	         Desactivar cliente</button>
+    	 </c:if>
+    	 
+    	 		<c:if test="${ client.usuar.enabled eq false}">
+	        <spring:url value="/administrators/clients/{username}/activate" var="activateUrl">
+	        	<spring:param name="username" value="${client.usuar.username}"/>
+	        </spring:url>
+	        <button type="button" role="link" onclick="window.location='${fn:escapeXml(activateUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
+	        	<span class="glyphicon glyphicon glyphicon-trash" aria-hidden="true" style="padding: 5px"> </span>
+	         Activar cliente</button>
+    	 </c:if>
     	</div>
     </sec:authorize>
     </div>

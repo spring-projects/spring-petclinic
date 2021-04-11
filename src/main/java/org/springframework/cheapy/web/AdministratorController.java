@@ -89,4 +89,20 @@ public class AdministratorController {
 		this.clientService.saveClient(client);
 		return "redirect:/administrators/clients";
 	}
+	
+	@GetMapping(value = "/administrators/clients/{username}/activate")
+	public String activateClient(@PathVariable("username") final String username, final ModelMap model) {
+
+		Client client = this.clientService.findByUsername(username);
+		model.put("client", client);
+		return "clients/clientActivate";
+	}
+	@PostMapping(value = "/administrators/clients/{username}/activate")
+	public String activateClientForm(@PathVariable("username") final String username, final ModelMap model, final HttpServletRequest request) {
+
+		Client client = this.clientService.findByUsername(username);
+		client.getUsuar().setEnabled(true);
+		this.clientService.saveClient(client);
+		return "redirect:/administrators/clients";
+	}
 }
