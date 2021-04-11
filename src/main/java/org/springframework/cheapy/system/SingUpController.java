@@ -7,6 +7,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cheapy.model.Authorities;
+import org.springframework.cheapy.model.Client;
+import org.springframework.cheapy.model.Code;
 import org.springframework.cheapy.model.Municipio;
 import org.springframework.cheapy.model.Owner;
 import org.springframework.cheapy.model.User;
@@ -56,7 +58,7 @@ public class SingUpController {
 	}
 
 	@GetMapping("/users/new")
-	public String initCreationForm(Map<String, Object> model) {
+	public String singUpUserForm(Map<String, Object> model) {
 		Usuario usuario = new Usuario();
 		
 		User user=new User();
@@ -69,7 +71,7 @@ public class SingUpController {
 	}
 
 	@PostMapping("/users/new")
-	public String processCreationForm(/*@Valid User user,*/ @Valid Usuario usuario, BindingResult result) {
+	public String singUpUserForm(/*@Valid User user,*/ @Valid Usuario usuario, BindingResult result) {
 		Authorities auth=new Authorities();
 		User user= usuario.getUsuar();
 		user.setEnabled(true);
@@ -90,6 +92,48 @@ public class SingUpController {
 		}
 	}
 
+	@GetMapping("/clients/new")
+	public String singUpClientForm(Map<String, Object> model) {
+		Client cliente = new Client();
+		
+		User user=new User();
+		
+		cliente.setUsuar(user);
+		model.put("municipio", Municipio.values());
+		model.put("cliente", cliente);
+		//model.put("user", user);
+		return "singup/singUpClient";
+	}
+
+	@PostMapping("/clients/new")
+	public String singUpClientForm(/*@Valid User user,*/ @Valid Client cliente, BindingResult result) {
+		Authorities auth=new Authorities();
+		System.out.println(cliente.getCode().getCode());
+		String cod=cliente.getCode().getCode();
+		Code code=this.clientService.findCodeByCode(cod);
+		User user= cliente.getUsuar();
+		user.setEnabled(true);
+		cliente.setUsuar(user);
+		auth.setUsername(user.getUsername());
+		auth.setAuthority("client");
+		if (result.hasErrors()) {
+			return "singup/singUpClient";
+		}else if(code.getActivo().equals(false)) {
+			return "error";
+		}else {
+			//auth.setId(1);
+			//this.authoritiesService.saveAuthorities(auth);
+			code.setActivo(false);
+			this.clientService.saveCode(code);
+			cliente.setCode(code);
+			this.clientService.saveClient(cliente);
+			this.userService.saveUser(user);
+			this.authoritiesService.saveAuthorities(cliente.getUsuar().getUsername(), "client");
+			
+			
+			return "redirect:/";
+		}
+	}
 //	@GetMapping("/owners/find")
 //	public String initFindForm(Map<String, Object> model) {
 //		model.put("owner", new Owner());

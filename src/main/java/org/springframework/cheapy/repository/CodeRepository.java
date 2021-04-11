@@ -8,12 +8,12 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-public interface ClientRepository extends Repository<Client, Integer> {
+public interface CodeRepository extends Repository<Code, Integer> {
 
-	@Query("SELECT client FROM Client client WHERE username =:username")
+	void save(Code code);
+
+	@Query("SELECT code FROM Code code WHERE code.code =:code")
 	@Transactional(readOnly = true)
-	Client findByUsername(String username);
+	Code findCodeByCode(String code);
 	
-	void save(Client client);
-
 }
