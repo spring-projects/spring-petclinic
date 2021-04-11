@@ -30,7 +30,7 @@ public class AdministratorController {
 	
 	@GetMapping("/administrators/usuarios")
 	public String processFindUsuariosForm(Map<String, Object> model) {
-		List<Usuario> usuarioLs = this.usuarioService.findAllUsuario();
+		List<Usuario> usuarioLs = this.usuarioService.findUsuarioEnabled();
 		model.put("usuarioLs", usuarioLs);
 		return "usuarios/usuariosList";
 	}
