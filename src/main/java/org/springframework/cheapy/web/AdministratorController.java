@@ -6,8 +6,17 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.cheapy.model.Client;
+import org.springframework.cheapy.model.FoodOffer;
+import org.springframework.cheapy.model.NuOffer;
+import org.springframework.cheapy.model.SpeedOffer;
+import org.springframework.cheapy.model.StatusOffer;
+import org.springframework.cheapy.model.TimeOffer;
 import org.springframework.cheapy.model.Usuario;
 import org.springframework.cheapy.service.ClientService;
+import org.springframework.cheapy.service.FoodOfferService;
+import org.springframework.cheapy.service.NuOfferService;
+import org.springframework.cheapy.service.SpeedOfferService;
+import org.springframework.cheapy.service.TimeOfferService;
 import org.springframework.cheapy.service.UsuarioService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -22,10 +31,21 @@ public class AdministratorController {
 
 	private final UsuarioService usuarioService;
 	private final ClientService clientService;
+	
+	private final FoodOfferService foodOfferService;
+	private final SpeedOfferService speedOfferService;
+	private final NuOfferService nuOfferService;
+	private final TimeOfferService timeOfferService;
 
-	public AdministratorController(final UsuarioService usuarioService, ClientService clientService) {
+	public AdministratorController(final UsuarioService usuarioService, ClientService clientService, 
+			FoodOfferService foodOfferService, SpeedOfferService speedOfferService, NuOfferService nuOfferService,
+			TimeOfferService timeOfferService ) {
 		this.usuarioService = usuarioService;
 		this.clientService=clientService;
+		this.foodOfferService=foodOfferService;
+		this.speedOfferService=speedOfferService;
+		this.nuOfferService=nuOfferService;
+		this.timeOfferService=timeOfferService;
 	}
 	
 	@GetMapping("/administrators/usuarios")
@@ -86,6 +106,36 @@ public class AdministratorController {
 
 		Client client = this.clientService.findByUsername(username);
 		client.getUsuar().setEnabled(false);
+		
+		List<FoodOffer> foodOffers=this.foodOfferService.findFoodOfferByUserId(client.getId());
+		List<SpeedOffer> speedOffers=this.speedOfferService.findSpeedOfferByUserId(client.getId());
+		List<NuOffer> nuOffers=this.nuOfferService.findNuOfferByUserId(client.getId());
+		List<TimeOffer> timeOffers=this.timeOfferService.findTimeOfferByUserId(client.getId());
+		
+		foodOffers.stream().forEach(f->f.setStatus(StatusOffer.inactive));
+		
+		speedOffers.stream().forEach(s->s.setStatus(StatusOffer.inactive));
+		
+		nuOffers.stream().forEach(n->n.setStatus(StatusOffer.inactive));
+		
+		timeOffers.stream().forEach(t->t.setStatus(StatusOffer.inactive));
+		
+		this.clientService.saveClient(client);
+		return "redirect:/administrators/clients";
+	}
+	
+	@GetMapping(value = "/administrators/clients/{username}/activate")
+	public String activateClient(@PathVariable("username") final String username, final ModelMap model) {
+
+		Client client = this.clientService.findByUsername(username);
+		model.put("client", client);
+		return "clients/clientActivate";
+	}
+	@PostMapping(value = "/administrators/clients/{username}/activate")
+	public String activateClientForm(@PathVariable("username") final String username, final ModelMap model, final HttpServletRequest request) {
+
+		Client client = this.clientService.findByUsername(username);
+		client.getUsuar().setEnabled(true);
 		this.clientService.saveClient(client);
 		return "redirect:/administrators/clients";
 	}
