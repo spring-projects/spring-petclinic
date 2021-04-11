@@ -50,4 +50,9 @@ public class FoodOfferService {
 		String nameEdit = "%"+name+"%";
 		return this.foodOfferRepository.findFoodOfferByClientName(nameEdit);
 	}
+	
+	public List<FoodOffer> findFoodOfferByClientFood(String name) {
+		String nameEdit = "%"+name+"%";
+		return this.foodOfferRepository.findFoodOfferByClientFood(nameEdit);
+	}
 }

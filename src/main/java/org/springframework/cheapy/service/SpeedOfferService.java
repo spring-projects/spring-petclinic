@@ -54,4 +54,9 @@ public class SpeedOfferService {
 		String nameEdit = "%"+name+"%";
 		return this.speedOfferRepository.findSpeedOfferByClientName(nameEdit);
 	}
+	
+	public List<SpeedOffer> findSpeedOfferByClientFood(String name) {
+		String nameEdit = "%"+name+"%";
+		return this.speedOfferRepository.findSpeedOfferByClientFood(nameEdit);
+	}
 }

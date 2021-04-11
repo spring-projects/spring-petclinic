@@ -50,4 +50,9 @@ public class TimeOfferService {
 		String nameEdit = "%"+name+"%";
 		return this.timeOfferRepository.findTimeOfferByClientName(nameEdit);
 	}
+	
+	public List<TimeOffer> findTimeOfferByClientFood(String name) {
+		String nameEdit = "%"+name+"%";
+		return this.timeOfferRepository.findTimeOfferByClientFood(nameEdit);
+	}
 }

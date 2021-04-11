@@ -44,6 +44,11 @@
   		<button type="submit"><i class="fa fa-search"></i></button>
 	</form>
 	
+	<form class="example" action="/offersByFood">
+  		<input type="text" name="name">
+  		<button type="submit"><i class="fa fa-search"></i></button>
+	</form>
+	
 
     <h2 style="text-align:center;padding:5px"><fmt:message key="foodOffers"/></h2>
     
