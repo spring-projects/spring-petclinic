@@ -54,4 +54,9 @@ public class NuOfferService {
 	public List<NuOffer> findNuOfferActOclByUserId(final int id) {
 		return this.nuOfferRepository.findNuOfferActOclByUserId(id);
 	}
+	
+	public List<NuOffer> findNuOfferByClientName(String name) {
+		String nameEdit = "%"+name+"%";
+		return this.nuOfferRepository.findNuOfferByClientName(nameEdit);
+	}
 }

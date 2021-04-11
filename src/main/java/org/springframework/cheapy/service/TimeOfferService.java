@@ -45,4 +45,9 @@ public class TimeOfferService {
 	public List<TimeOffer> findTimeOfferActOclByUserId(final int id) {
 		return this.timeOfferRepository.findTimeOfferActOclByUserId(id);
 	}
+	
+	public List<TimeOffer> findTimeOfferByClientName(String name) {
+		String nameEdit = "%"+name+"%";
+		return this.timeOfferRepository.findTimeOfferByClientName(nameEdit);
+	}
 }
