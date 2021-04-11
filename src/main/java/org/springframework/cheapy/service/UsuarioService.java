@@ -39,6 +39,11 @@ public class UsuarioService {
 	public List<Usuario> findAllUsuario() throws DataAccessException {
 		return this.usuarioRepository.findAllUsuario();
 	}
+	
+	@Transactional
+	public List<Usuario> findUsuarioEnabled() throws DataAccessException {
+		return this.usuarioRepository.findUsuarioEnabled();
+	}
 
 	@Transactional
 	public void saveUsuario(final Usuario usuario) throws DataAccessException {
