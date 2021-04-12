@@ -53,6 +53,13 @@
 					<span>Usuarios</span>
 				</cheapy:menuItem>
 				</sec:authorize>
+				
+				<sec:authorize access="hasAnyAuthority('admin')">
+				<cheapy:menuItem active="${name eq 'registro'}" url="/offersRecord" title="offersRecord">
+					<span class="glyphicon " aria-hidden="true"></span>
+					<span>Registro de ofertas</span>
+				</cheapy:menuItem>
+				</sec:authorize>
 				<!--  
 				<cheapy:menuItem active="${name eq 'contactanos'}" url="/contactanos"
 					title="contactanos">
