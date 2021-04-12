@@ -84,6 +84,7 @@ public class ClientController {
 	public String updateClient( final ModelMap model, HttpServletRequest request) {
 
 		Client client = this.clientService.getCurrentClient();
+		
 
 		model.addAttribute("client", client);
 
@@ -96,7 +97,8 @@ public class ClientController {
 
 
 		Client clienteSesion = this.clientService.getCurrentClient();
-		
+		clientEdit.setCode(clienteSesion.getCode());
+		clientEdit.setMunicipio(clienteSesion.getMunicipio());
 		if(!this.checkTimes(clientEdit)) {
 			result.rejectValue("finish","" ,"La hora de cierre debe ser posterior a la hora de apertura");
 			
@@ -161,7 +163,6 @@ public class ClientController {
 	public String showRestaurant(final ModelMap model, @PathVariable("clientId") Integer id) {
 
 		Client client = this.clientRepo.findById(id).get();
-		System.out.println(client.getDescription());
 		model.put("client", client);
 		return "clients/restaurantShow";
 	}
