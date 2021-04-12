@@ -5,10 +5,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
-import org.springframework.boot.context.properties.bind.DefaultValue;
-
-import net.bytebuddy.implementation.bind.annotation.Default;
-
 @Entity
 @Table(name = "users")
 public class User {

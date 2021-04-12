@@ -18,6 +18,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cheapy.configuration.SecurityConfiguration;
 import org.springframework.cheapy.model.Client;
+import org.springframework.cheapy.model.Code;
 import org.springframework.cheapy.model.SpeedOffer;
 import org.springframework.cheapy.model.User;
 import org.springframework.cheapy.service.ClientService;

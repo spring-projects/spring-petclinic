@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.cheapy.model.Municipio;
 import org.springframework.cheapy.model.Usuario;
 import org.springframework.cheapy.service.UsuarioService;
 import org.springframework.stereotype.Controller;
@@ -37,15 +38,21 @@ public class UsuarioController {
 	public String updateUsuario(final ModelMap model, HttpServletRequest request) {
 		Usuario usuario = this.usuarioService.getCurrentUsuario();
 		model.addAttribute("usuario", usuario);
+		model.put("municipio", Municipio.values());
 		return UsuarioController.VIEWS_USUARIO_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping(value = "/usuarios/edit")
 	public String updateUsuario(@Valid final Usuario usuarioEdit, final BindingResult result,
 			final ModelMap model, HttpServletRequest request) {
-
+		
+		if (result.hasErrors()) {
+			model.addAttribute("usuario", usuarioEdit);
+			model.put("municipio", Municipio.values());
+			return UsuarioController.VIEWS_USUARIO_CREATE_OR_UPDATE_FORM;
+		}
 		Usuario usuario = this.usuarioService.getCurrentUsuario();
-		BeanUtils.copyProperties(usuario, usuarioEdit, "nombre", "apellidos", "dni", "direccion", "telefono", "usuar");
+		BeanUtils.copyProperties(usuario, usuarioEdit, "nombre", "apellidos", "municipio", "direccion","email", "usuar");
 		usuarioEdit.getUsuar().setUsername(usuario.getNombre());
 		usuarioEdit.getUsuar().setEnabled(true);
 		this.usuarioService.saveUsuario(usuarioEdit);
