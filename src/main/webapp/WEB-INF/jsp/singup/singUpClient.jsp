@@ -274,10 +274,10 @@
 </style>
 <cheapy:layout pageName="singUp">
     <h2 style="text-align:center;padding:5px">
-        <fmt:message key="new"/><fmt:message key="user"/>
+        <fmt:message key="new"/><fmt:message key="client"/>
     </h2>
 	<form:form modelAttribute="cliente" class="form-horizontal"
-		id="add-foodOffer-form">
+		id="add-client-form">
 		<div class="form-group has-feedback">
 			<cheapy:inputField label="Nombre" placeholder="Ponga aqui su nombre"
 				name="name" />
@@ -291,9 +291,9 @@
 				</c:forEach>
 			</select>
 			</div>
-			<cheapy:inputField label="Hora de apertura" placeholder="Ponga aqui su hora de apertura"
+			<cheapy:inputField label="Hora de apertura" placeholder="Ponga aqui su hora de apertura (formato HH:mm)"
 				name="init" />
-			<cheapy:inputField label="Hora de cierre" placeholder="Ponga aqui su hora de cierre"
+			<cheapy:inputField label="Hora de cierre" placeholder="Ponga aqui su hora de cierre (formato HH:mm)"
 				name="finish" />
 			<cheapy:inputField label="Teléfono" placeholder="Ponga aqui el teléfono del local"
 				name="telephone" />

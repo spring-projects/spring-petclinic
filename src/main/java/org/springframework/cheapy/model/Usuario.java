@@ -90,14 +90,6 @@ public class Usuario extends BaseEntity{
 	}
 
 
-	public User getUsuar() {
-		return usuar;
-	}
-
-	public void setUsuar(User username) {
-		this.usuar = username;
-	}
-
 	
 	
 }

@@ -53,9 +53,6 @@ public class ClientService {
 		return this.clientRepository.findByUsername(username);
 	}
 	
-	public void saveClient(final Client client) throws DataAccessException {
-		this.clientRepository.save(client);
-	}
 	@Transactional
 	public List<Client> findAllClient() throws DataAccessException {
 		return this.clientRepository.findAllClient();
