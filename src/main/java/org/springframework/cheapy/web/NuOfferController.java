@@ -1,6 +1,7 @@
 package org.springframework.cheapy.web;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
@@ -14,12 +15,14 @@ import org.springframework.cheapy.model.NuOffer;
 import org.springframework.cheapy.model.StatusOffer;
 import org.springframework.cheapy.service.ClientService;
 import org.springframework.cheapy.service.NuOfferService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class NuOfferController {
@@ -98,8 +101,15 @@ public class NuOfferController {
 	}
 
 	@PostMapping("/offers/nu/new")
-	public String processCreationForm(@Valid NuOffer nuOffer, BindingResult result) {
+	public String processCreationForm(@RequestParam(value="start") String x,@Valid NuOffer nuOffer,BindingResult result) {
 		
+			System.out.println(x);
+			LocalDateTime y= LocalDateTime.parse(x);
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+	        String formatDateTime = y.format(formatter);
+			System.out.println(formatDateTime);
+			LocalDateTime start2=LocalDateTime.parse(formatDateTime,formatter);
+			nuOffer.setStart(start2);
 			if(!this.checkDates(nuOffer)) {
 				result.rejectValue("end","" ,"La fecha de fin debe ser posterior a la fecha de inicio");
 				
@@ -114,6 +124,7 @@ public class NuOfferController {
 			}
 			
 			if (result.hasErrors()) {
+				System.out.println(result.getAllErrors());
 				return VIEWS_NU_OFFER_CREATE_OR_UPDATE_FORM;
 			} 
 			nuOffer.setStatus(StatusOffer.hidden);
