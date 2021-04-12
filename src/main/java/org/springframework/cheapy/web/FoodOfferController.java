@@ -2,6 +2,7 @@
 package org.springframework.cheapy.web;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,8 @@ import org.springframework.cheapy.model.FoodOffer;
 import org.springframework.cheapy.model.StatusOffer;
 import org.springframework.cheapy.service.ClientService;
 import org.springframework.cheapy.service.FoodOfferService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -23,10 +26,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class FoodOfferController {
 
-	private static final String VIEWS_FOOD_OFFER_CREATE_OR_UPDATE_FORM = "offers/food/createOrUpdateFoodOfferForm";
+	private static final String		VIEWS_FOOD_OFFER_CREATE_OR_UPDATE_FORM	= "offers/food/createOrUpdateFoodOfferForm";
 
-	private final FoodOfferService foodOfferService;
-	private final ClientService clientService;
+	private final FoodOfferService	foodOfferService;
+	private final ClientService		clientService;
+
 
 	public FoodOfferController(final FoodOfferService foodOfferService, final ClientService clientService) {
 		this.foodOfferService = foodOfferService;
@@ -46,48 +50,58 @@ public class FoodOfferController {
 
 	private boolean checkOffer(final FoodOffer session, final FoodOffer offer) {
 		boolean res = false;
-		if (session.getId() == offer.getId() && session.getStatus() == offer.getStatus()
-				&& (session.getCode() == null ? offer.getCode() == "" : session.getCode().equals(offer.getCode())) && !(session.getStatus().equals(StatusOffer.inactive))) {
+		if (session.getId() == offer.getId() && session.getStatus() == offer.getStatus() && (session.getCode() == null ? offer.getCode() == "" : session.getCode().equals(offer.getCode())) && !session.getStatus().equals(StatusOffer.inactive)) {
 			res = true;
 		}
 		return res;
 	}
-	
+
 	private boolean checkDates(final FoodOffer foodOffer) {
 		boolean res = false;
-		if(foodOffer.getEnd()==null || foodOffer.getStart()==null || foodOffer.getEnd().isAfter(foodOffer.getStart())) {
+		if (foodOffer.getEnd() == null || foodOffer.getStart() == null || foodOffer.getEnd().isAfter(foodOffer.getStart())) {
 			res = true;
 		}
 		return res;
+	}
+
+	@GetMapping("/offers/foodOfferList/{page}")
+	public String processFindForm(@PathVariable("page") final int page, final Map<String, Object> model) {
+		Pageable elements = PageRequest.of(page, 5);
+
+		List<FoodOffer> foodOfferLs = this.foodOfferService.findActiveFoodOffer(elements);
+		model.put("foodOfferLs", foodOfferLs);
+		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+		return "offers/food/foodOffersList";
+
 	}
 
 	@GetMapping("/offers/food/new")
-	public String initCreationForm(Map<String, Object> model) {
+	public String initCreationForm(final Map<String, Object> model) {
 		FoodOffer foodOffer = new FoodOffer();
 		model.put("foodOffer", foodOffer);
-		return VIEWS_FOOD_OFFER_CREATE_OR_UPDATE_FORM;
+		return FoodOfferController.VIEWS_FOOD_OFFER_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping("/offers/food/new")
-	public String processCreationForm(@Valid FoodOffer foodOffer, BindingResult result) {
-		
-			if(!this.checkDates(foodOffer)) {
-				result.rejectValue("end","" ,"La fecha de fin debe ser posterior a la fecha de inicio");
-				
-			}
-			if (result.hasErrors()) {
-				return VIEWS_FOOD_OFFER_CREATE_OR_UPDATE_FORM;
-			} 
-			Client client = this.clientService.getCurrentClient();
-			foodOffer.setClient(client);
-			foodOffer.setStatus(StatusOffer.hidden);
-			this.foodOfferService.saveFoodOffer(foodOffer);
-			return "redirect:/offers/food/" + foodOffer.getId();
-		
+	public String processCreationForm(@Valid final FoodOffer foodOffer, final BindingResult result) {
+
+		if (!this.checkDates(foodOffer)) {
+			result.rejectValue("end", "", "La fecha de fin debe ser posterior a la fecha de inicio");
+
+		}
+		if (result.hasErrors()) {
+			return FoodOfferController.VIEWS_FOOD_OFFER_CREATE_OR_UPDATE_FORM;
+		}
+		Client client = this.clientService.getCurrentClient();
+		foodOffer.setClient(client);
+		foodOffer.setStatus(StatusOffer.hidden);
+		this.foodOfferService.saveFoodOffer(foodOffer);
+		return "redirect:/offers/food/" + foodOffer.getId();
+
 	}
 
 	@GetMapping(value = "/offers/food/{foodOfferId}/activate")
-	public String activateFoodOffer(@PathVariable("foodOfferId") final int foodOfferId, ModelMap modelMap) {
+	public String activateFoodOffer(@PathVariable("foodOfferId") final int foodOfferId, final ModelMap modelMap) {
 		FoodOffer foodOffer = this.foodOfferService.findFoodOfferById(foodOfferId);
 		Client client = this.clientService.getCurrentClient();
 		if (foodOffer.getClient().equals(client)) {
@@ -102,26 +116,25 @@ public class FoodOfferController {
 	}
 
 	@GetMapping("/offers/food/{foodOfferId}")
-	public String processShowForm(@PathVariable("foodOfferId") int foodOfferId, Map<String, Object> model) {
+	public String processShowForm(@PathVariable("foodOfferId") final int foodOfferId, final Map<String, Object> model) {
 
 		FoodOffer foodOffer = this.foodOfferService.findFoodOfferById(foodOfferId);
-		if(foodOffer.getStatus().equals(StatusOffer.active)) {
+		if (foodOffer.getStatus().equals(StatusOffer.active)) {
 			model.put("foodOffer", foodOffer);
 			model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
 			return "offers/food/foodOffersShow";
-		
-		}else if(foodOffer.getStatus().equals(StatusOffer.hidden)&&(this.checkIdentity(foodOfferId))) {
-				model.put("foodOffer", foodOffer);
-				model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-				return "offers/food/foodOffersShow";
-		}else {
+
+		} else if (foodOffer.getStatus().equals(StatusOffer.hidden) && this.checkIdentity(foodOfferId)) {
+			model.put("foodOffer", foodOffer);
+			model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+			return "offers/food/foodOffersShow";
+		} else {
 			return "error";
 		}
 	}
 
 	@GetMapping(value = "/offers/food/{foodOfferId}/edit")
-	public String updateFoodOffer(@PathVariable("foodOfferId") final int foodOfferId, final ModelMap model,
-			HttpServletRequest request) {
+	public String updateFoodOffer(@PathVariable("foodOfferId") final int foodOfferId, final ModelMap model, final HttpServletRequest request) {
 
 		if (!this.checkIdentity(foodOfferId)) {
 			return "error";
@@ -136,8 +149,7 @@ public class FoodOfferController {
 	}
 
 	@PostMapping(value = "/offers/food/{foodOfferId}/edit")
-	public String updateFoodOffer(@Valid final FoodOffer foodOfferEdit, final BindingResult result,
-			final ModelMap model, HttpServletRequest request) {
+	public String updateFoodOffer(@Valid final FoodOffer foodOfferEdit, final BindingResult result, final ModelMap model, final HttpServletRequest request) {
 
 		if (!this.checkIdentity(foodOfferEdit.getId())) {
 			return "error";
@@ -147,22 +159,21 @@ public class FoodOfferController {
 		if (!this.checkOffer(foodOffer, foodOfferEdit)) {
 			return "error";
 		}
- 
-			if(!this.checkDates(foodOfferEdit)) {
-				result.rejectValue("end","" ,"La fecha de fin debe ser posterior a la fecha de inicio");
-				
-			}
-			
-			if (result.hasErrors()) {
-				model.addAttribute("foodOffer", foodOfferEdit);
-				return FoodOfferController.VIEWS_FOOD_OFFER_CREATE_OR_UPDATE_FORM;
 
-			}
-			BeanUtils.copyProperties(this.foodOfferService.findFoodOfferById(foodOfferEdit.getId()), foodOfferEdit,
-					"start", "end", "food", "discount");
-			this.foodOfferService.saveFoodOffer(foodOfferEdit);
-			return "redirect:/offers/food/" + foodOfferEdit.getId();
-		
+		if (!this.checkDates(foodOfferEdit)) {
+			result.rejectValue("end", "", "La fecha de fin debe ser posterior a la fecha de inicio");
+
+		}
+
+		if (result.hasErrors()) {
+			model.addAttribute("foodOffer", foodOfferEdit);
+			return FoodOfferController.VIEWS_FOOD_OFFER_CREATE_OR_UPDATE_FORM;
+
+		}
+		BeanUtils.copyProperties(this.foodOfferService.findFoodOfferById(foodOfferEdit.getId()), foodOfferEdit, "start", "end", "food", "discount");
+		this.foodOfferService.saveFoodOffer(foodOfferEdit);
+		return "redirect:/offers/food/" + foodOfferEdit.getId();
+
 	}
 
 	@GetMapping(value = "/offers/food/{foodOfferId}/disable")

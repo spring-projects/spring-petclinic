@@ -216,9 +216,15 @@ img.img-responsive{
   padding: 20px;
 }
 
-.btn-home{
-  display: table;
-  margin: 0 auto;
+.btn-block {
+  display: block;
+  width: 25%;
+}
+
+.btn-home {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .btn-home button {
@@ -227,7 +233,6 @@ img.img-responsive{
   color: white; 
   padding: 10px 24px; 
   cursor: pointer; 
-  width: 100%; 
   display: block; 
 }
 
@@ -240,9 +245,12 @@ img.img-responsive{
   background-color: rgb(40, 140, 215);
 }
 
-.btn-home{
-  display: table;
-  margin: 0 auto;
+
+.btn-home-max button {
+	padding: 20px;
+	margin-left:auto;
+	margin-right: auto;
+	margin-bottom: 20px;
 }
 
 .btn-create button {
@@ -342,6 +350,13 @@ text-align: center;
   float:left;
 }
 
+.btn-menu button {
+	margin-left:auto;
+	margin-right: auto;
+	margin-bottom: 20px;
+	margin-right: 20px;
+}
+
 .btns-edit{
   display: table;
   margin: 0 auto;
@@ -354,10 +369,6 @@ text-align: center;
   color: white; 
   padding: 10px 24px; 
   cursor: pointer; 
-}
-
-.btns-edit button:not(:last-child) {
-  border-bottom: none; 
 }
 
 
@@ -511,11 +522,51 @@ text-align: center;
   background-color: rgb(204, 128, 51);
 }
 
+#clientTable th{
+	width: 30%;
+	text-align: center;
+}
+
+#clientTable td{
+	vertical-align:middle;
+text-align: center;
+}
+
+#reviewTable th{
+	width: 30%;
+	text-align: center;
+}
+
+#reviewTable td{
+	vertical-align:middle;
+text-align: center;
+}
+
+#usuarioTable th{
+	width: 20%;
+	text-align: center;
+	vertical-align:middle;
+}
+
+#usuarioTable td{
+	width:20%;
+	vertical-align:middle;
+text-align: center;
+}
+
 #vacio {
 	text-align:center;
 	font-size: 120%;
 	padding:10px;
 	color: rgb(29, 142, 226);
+}
+
+ .row-full{
+ width: 100vw;
+ position: relative;
+ margin-left: -50vw;
+ height: 100px;
+ left: 50%;
 }
 
 .alert-success {

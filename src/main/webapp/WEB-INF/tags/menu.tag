@@ -39,6 +39,20 @@
 					<span>Mis ofertas</span>
 				</cheapy:menuItem>
 				</sec:authorize>
+				
+				<sec:authorize access="hasAnyAuthority('admin')">
+				<cheapy:menuItem active="${name eq 'clientes'}" url="/administrators/clients" title="clients">
+					<span class="glyphicon " aria-hidden="true"></span>
+					<span>Clientes</span>
+				</cheapy:menuItem>
+				</sec:authorize>
+				
+				<sec:authorize access="hasAnyAuthority('admin')">
+				<cheapy:menuItem active="${name eq 'usuarios'}" url="/administrators/usuarios" title="usuarios">
+					<span class="glyphicon " aria-hidden="true"></span>
+					<span>Usuarios</span>
+				</cheapy:menuItem>
+				</sec:authorize>
 				<!--  
 				<cheapy:menuItem active="${name eq 'contactanos'}" url="/contactanos"
 					title="contactanos">
@@ -47,7 +61,7 @@
 				</cheapy:menuItem>
 				-->
 				<sec:authorize access="isAuthenticated()">
-					<cheapy:menuItem active="${name eq 'reviews'}" url="/reviews" title="opiniones">
+					<cheapy:menuItem active="${name eq 'reviews'}" url="/reviewsList/0" title="opiniones">
 						<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
 						<span>Reseñas</span>
 					</cheapy:menuItem>

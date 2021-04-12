@@ -1,6 +1,8 @@
 package org.springframework.cheapy.service;
 
+import java.util.List;
 import javax.validation.Valid;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cheapy.model.Client;
@@ -46,4 +48,16 @@ public class ClientService {
 		return this.codeRepository.findCodeByCode(code);
 	}
 	
+	@Transactional
+	public Client findByUsername(String username) throws DataAccessException {
+		return this.clientRepository.findByUsername(username);
+	}
+	
+	public void saveClient(final Client client) throws DataAccessException {
+		this.clientRepository.save(client);
+	}
+	@Transactional
+	public List<Client> findAllClient() throws DataAccessException {
+		return this.clientRepository.findAllClient();
+	}
 }

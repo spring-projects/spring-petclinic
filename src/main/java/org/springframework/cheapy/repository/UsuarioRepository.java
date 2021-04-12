@@ -1,20 +1,28 @@
 
 package org.springframework.cheapy.repository;
 
+import java.util.List;
+
+import org.springframework.cheapy.model.Usuario;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cheapy.model.User;
-import org.springframework.cheapy.model.Usuario;
 
-public interface UsuarioRepository extends  Repository<Usuario, Integer> {
+public interface UsuarioRepository extends Repository<Usuario, String> {
 
-	@Query("SELECT u FROM User u WHERE username =:username")
+	@Query("SELECT usuario FROM Usuario usuario WHERE username =:username")
 	@Transactional(readOnly = true)
-	User findByUsername(String username);
+	Usuario findByUsername(String username);
 	
+	@Query("SELECT usuario FROM Usuario usuario")
+	@Transactional(readOnly = true)
+	List<Usuario> findAllUsuario();
+	
+	@Query("SELECT usuario FROM Usuario usuario WHERE usuario.usuar.enabled = true")
+	@Transactional(readOnly = true)
+	List<Usuario> findUsuarioEnabled();
 	
 	void save(Usuario usuario);
+	
+
 }

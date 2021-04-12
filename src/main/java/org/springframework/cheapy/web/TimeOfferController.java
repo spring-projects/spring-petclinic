@@ -1,6 +1,8 @@
+
 package org.springframework.cheapy.web;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +14,8 @@ import org.springframework.cheapy.model.StatusOffer;
 import org.springframework.cheapy.model.TimeOffer;
 import org.springframework.cheapy.service.ClientService;
 import org.springframework.cheapy.service.TimeOfferService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -22,11 +26,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class TimeOfferController {
 
-	private static final String VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM = "offers/time/createOrUpdateTimeOfferForm";
-	private final TimeOfferService timeOfferService;
-	private final ClientService clientService;
+	private static final String		VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM	= "offers/time/createOrUpdateTimeOfferForm";
+	private final TimeOfferService	timeOfferService;
+	private final ClientService		clientService;
 
-	public TimeOfferController(final TimeOfferService timeOfferService, ClientService clientService) {
+
+	public TimeOfferController(final TimeOfferService timeOfferService, final ClientService clientService) {
 		this.timeOfferService = timeOfferService;
 		this.clientService = clientService;
 	}
@@ -44,62 +49,72 @@ public class TimeOfferController {
 
 	private boolean checkOffer(final TimeOffer session, final TimeOffer offer) {
 		boolean res = false;
-		if (session.getId() == offer.getId() && session.getStatus() == offer.getStatus()
-				&& (session.getCode() == null ? offer.getCode() == "" : session.getCode().equals(offer.getCode())) && !(session.getStatus().equals(StatusOffer.inactive))) {
+		if (session.getId() == offer.getId() && session.getStatus() == offer.getStatus() && (session.getCode() == null ? offer.getCode() == "" : session.getCode().equals(offer.getCode())) && !session.getStatus().equals(StatusOffer.inactive)) {
 			res = true;
 		}
 		return res;
 	}
-	
+
 	private boolean checkDates(final TimeOffer timeOffer) {
 		boolean res = false;
-		if(timeOffer.getEnd()==null || timeOffer.getStart()==null || timeOffer.getEnd().isAfter(timeOffer.getStart())) {
+		if (timeOffer.getEnd() == null || timeOffer.getStart() == null || timeOffer.getEnd().isAfter(timeOffer.getStart())) {
 			res = true;
 		}
 		return res;
 	}
-	
+
 	private boolean checkTimes(final TimeOffer timeOffer) {
 		boolean res = false;
-		if(timeOffer.getFinish()==null || timeOffer.getInit()==null || timeOffer.getFinish().isAfter(timeOffer.getInit())) {
+		if (timeOffer.getFinish() == null || timeOffer.getInit() == null || timeOffer.getFinish().isAfter(timeOffer.getInit())) {
 			res = true;
 		}
 		return res;
+	}
+
+	@GetMapping("/offers/timeOfferList/{page}")
+	public String processFindForm(@PathVariable("page") final int page, final Map<String, Object> model) {
+		Pageable elements = PageRequest.of(page, 5);
+
+		List<TimeOffer> timeOfferLs = this.timeOfferService.findActiveTimeOffer(elements);
+		model.put("timeOfferLs", timeOfferLs);
+		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+		return "offers/time/timeOffersList";
+
 	}
 
 	@GetMapping("/offers/time/new")
-	public String initCreationForm(Map<String, Object> model) {
+	public String initCreationForm(final Map<String, Object> model) {
 		TimeOffer timeOffer = new TimeOffer();
 		model.put("timeOffer", timeOffer);
-		return VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
+		return TimeOfferController.VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping("/offers/time/new")
-	public String processCreationForm(@Valid TimeOffer timeOffer, BindingResult result) {
-		
-			if(!this.checkDates(timeOffer)) {
-				result.rejectValue("end","" ,"La fecha de fin debe ser posterior a la fecha de inicio");
-				
-			}
-			
-			if(!this.checkTimes(timeOffer)) {
-				result.rejectValue("finish","" ,"La hora de fin debe ser posterior a la de inicio");
-				
-			}
-			
-			if (result.hasErrors()) {
-				return VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
-			} 
-			
-			timeOffer.setStatus(StatusOffer.hidden);
+	public String processCreationForm(@Valid final TimeOffer timeOffer, final BindingResult result) {
 
-			Client client = this.clientService.getCurrentClient();
+		if (!this.checkDates(timeOffer)) {
+			result.rejectValue("end", "", "La fecha de fin debe ser posterior a la fecha de inicio");
 
-			timeOffer.setClient(client);
+		}
 
-			this.timeOfferService.saveTimeOffer(timeOffer);
-			return "redirect:/offers/time/" + timeOffer.getId();
-		
+		if (!this.checkTimes(timeOffer)) {
+			result.rejectValue("finish", "", "La hora de fin debe ser posterior a la de inicio");
+
+		}
+
+		if (result.hasErrors()) {
+			return TimeOfferController.VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
+		}
+
+		timeOffer.setStatus(StatusOffer.hidden);
+
+		Client client = this.clientService.getCurrentClient();
+
+		timeOffer.setClient(client);
+
+		this.timeOfferService.saveTimeOffer(timeOffer);
+		return "redirect:/offers/time/" + timeOffer.getId();
+
 	}
 
 	@GetMapping(value = "/offers/time/{timeOfferId}/activate")
@@ -119,26 +134,25 @@ public class TimeOfferController {
 	}
 
 	@GetMapping("/offers/time/{timeOfferId}")
-	public String processShowForm(@PathVariable("timeOfferId") int timeOfferId, Map<String, Object> model) {
+	public String processShowForm(@PathVariable("timeOfferId") final int timeOfferId, final Map<String, Object> model) {
 		TimeOffer timeOffer = this.timeOfferService.findTimeOfferById(timeOfferId);
-		if(timeOffer.getStatus().equals(StatusOffer.active)) {
+		if (timeOffer.getStatus().equals(StatusOffer.active)) {
 			model.put("timeOffer", timeOffer);
 			model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
 			return "offers/time/timeOffersShow";
-			
-		} else if(timeOffer.getStatus().equals(StatusOffer.hidden)&&(this.checkIdentity(timeOfferId))) {
-				model.put("timeOffer", timeOffer);
-				model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-				return "offers/time/timeOffersShow";
-			
-		}else {
+
+		} else if (timeOffer.getStatus().equals(StatusOffer.hidden) && this.checkIdentity(timeOfferId)) {
+			model.put("timeOffer", timeOffer);
+			model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+			return "offers/time/timeOffersShow";
+
+		} else {
 			return "error";
 		}
 	}
 
 	@GetMapping(value = "/offers/time/{timeOfferId}/edit")
-	public String updateTimeOffer(@PathVariable("timeOfferId") final int timeOfferId, final ModelMap model,
-			HttpServletRequest request) {
+	public String updateTimeOffer(@PathVariable("timeOfferId") final int timeOfferId, final ModelMap model, final HttpServletRequest request) {
 
 		if (!this.checkIdentity(timeOfferId)) {
 			return "error";
@@ -154,8 +168,7 @@ public class TimeOfferController {
 	}
 
 	@PostMapping(value = "/offers/time/{timeOfferId}/edit")
-	public String updateTimeOffer(@Valid final TimeOffer timeOfferEdit, final BindingResult result,
-			final ModelMap model, HttpServletRequest request) {
+	public String updateTimeOffer(@Valid final TimeOffer timeOfferEdit, final BindingResult result, final ModelMap model, final HttpServletRequest request) {
 
 		if (!this.checkIdentity(timeOfferEdit.getId())) {
 			return "error";
@@ -166,26 +179,23 @@ public class TimeOfferController {
 			return "error";
 		}
 
-		 
-			if(!this.checkDates(timeOfferEdit)) {
-				result.rejectValue("end","" ,"La fecha de fin debe ser posterior a la fecha de inicio");
-				
-			}
-			if(!this.checkTimes(timeOfferEdit)) {
-				result.rejectValue("finish","" ,"La hora de fin debe ser posterior a la de inicio");
-				
-			}
-			if (result.hasErrors()) {
-				model.addAttribute("timeOffer", timeOfferEdit);
-				return TimeOfferController.VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
+		if (!this.checkDates(timeOfferEdit)) {
+			result.rejectValue("end", "", "La fecha de fin debe ser posterior a la fecha de inicio");
 
-			}
-			
-			BeanUtils.copyProperties(this.timeOfferService.findTimeOfferById(timeOfferEdit.getId()), timeOfferEdit,
-					"start", "end", "init", "finish", "discount");
-			this.timeOfferService.saveTimeOffer(timeOfferEdit);
-			return "redirect:/offers/time/" + timeOfferEdit.getId();
-		
+		}
+		if (!this.checkTimes(timeOfferEdit)) {
+			result.rejectValue("finish", "", "La hora de fin debe ser posterior a la de inicio");
+
+		}
+		if (result.hasErrors()) {
+			model.addAttribute("timeOffer", timeOfferEdit);
+			return TimeOfferController.VIEWS_TIME_OFFER_CREATE_OR_UPDATE_FORM;
+
+		}
+
+		BeanUtils.copyProperties(this.timeOfferService.findTimeOfferById(timeOfferEdit.getId()), timeOfferEdit, "start", "end", "init", "finish", "discount");
+		this.timeOfferService.saveTimeOffer(timeOfferEdit);
+		return "redirect:/offers/time/" + timeOfferEdit.getId();
 
 	}
 
