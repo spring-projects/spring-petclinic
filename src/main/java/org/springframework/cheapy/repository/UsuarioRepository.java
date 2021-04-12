@@ -1,3 +1,4 @@
+
 package org.springframework.cheapy.repository;
 
 import java.util.List;
@@ -23,4 +24,5 @@ public interface UsuarioRepository extends Repository<Usuario, String> {
 	
 	void save(Usuario usuario);
 	
+
 }

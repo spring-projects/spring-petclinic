@@ -5,6 +5,15 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cheapy.model.Usuario;
+
+package org.springframework.cheapy.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cheapy.model.FoodOffer;
+import org.springframework.cheapy.model.User;
+import org.springframework.cheapy.model.Usuario;
+import org.springframework.cheapy.repository.UserRepository;
+
 import org.springframework.cheapy.repository.UsuarioRepository;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
@@ -17,11 +26,11 @@ public class UsuarioService {
 
 	private UsuarioRepository usuarioRepository;
 
-
 	@Autowired
 	public UsuarioService(final UsuarioRepository usuarioRepository) {
 		this.usuarioRepository = usuarioRepository;
 	}
+
 	
 	@Transactional
 	public Usuario getCurrentUsuario() throws DataAccessException {

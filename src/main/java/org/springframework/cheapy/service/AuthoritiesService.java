@@ -19,10 +19,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthoritiesService {
-/*
-	private AuthoritiesRepository authoritiesRepository;
-	private UserService userService;
 
+	@Autowired
+	private AuthoritiesRepository authoritiesRepository;
+//	private UserService userService;
+/*
 	@Autowired
 	public AuthoritiesService(AuthoritiesRepository authoritiesRepository,UserService userService) {
 		this.authoritiesRepository = authoritiesRepository;
@@ -33,12 +34,20 @@ public class AuthoritiesService {
 	public Authorities findAuthoritiyByUser(User user) {
 		return this.authoritiesRepository.findByUser(user.getUsername());
 	}
-
+*/
 	@Transactional
 	public void saveAuthorities(Authorities authorities) throws DataAccessException {
 		authoritiesRepository.save(authorities);
 	}
 	
+	@Transactional
+	public void saveAuthorities(String username, String role) throws DataAccessException {
+		Authorities authority = new Authorities();
+		authority.setUsername(username);
+		authority.setAuthority(role);
+		authoritiesRepository.save(authority);
+	}
+/*	
 	@Transactional
 	public void saveAuthorities(String username, String role) throws DataAccessException {
 		Authorities authority = new Authorities();
