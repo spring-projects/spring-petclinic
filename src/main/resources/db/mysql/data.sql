@@ -25,7 +25,7 @@ INSERT INTO codes (id,code,activo) VALUES (3,'code3',TRUE);
 INSERT INTO codes (id,code,activo) VALUES (4,'code4',TRUE);
 
 INSERT INTO clients (id, name, email, address, municipio, init, finish, telephone, description, food, username, code) VALUES (1,'bar manoli','manoli@gmail.com','C/Betis', 'sevilla','10:00','22:00','608726190', 'description 1', 'ESPAÑOLA','manoli', 'code1');
-INSERT INTO clients (id, name, email, address, municipio, init, finish, telephone, description, food, username, code)  VALUES (2,'bar david','david@gmail.com','C/Sevilla', 'dosHermanas','09:30','22:00','608726190', 'description 2', 'americana','david', 'code2');
+INSERT INTO clients (id, name, email, address, municipio, init, finish, telephone, description, food, username, code)  VALUES (2,'bar david','david@gmail.com','C/Sevilla', 'dos_hermanas','09:30','22:00','608726190', 'description 2', 'americana','david', 'code2');
 
 
 INSERT INTO food_offers(start, end, code, status, client_id, food, discount) VALUES ('2021-08-14 12:00:00', '2021-08-15 12:00:00', 'FO-1', 'inactive', 1, 'macarrones', 15);
