@@ -15,7 +15,12 @@
  */
 package org.springframework.cheapy.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cheapy.model.Authorities;
+import org.springframework.cheapy.repository.AuthoritiesRepository;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AuthoritiesService {

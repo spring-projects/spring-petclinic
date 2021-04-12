@@ -36,6 +36,7 @@ public class Client extends BaseEntity {
 	private String address;
 	
 	@Enumerated(value = EnumType.STRING)
+	@NotNull
 	private Municipio municipio;
 
 	// Hora de apertura del local
