@@ -41,12 +41,20 @@
 	
 	<form class="example" action="/offersByName">
   		<input type="text" name="name">
-  		<button type="submit"><i class="fa fa-search"></i></button>
+  		<button type="submit">Buscar por nombre</button>
 	</form>
 	
 	<form class="example" action="/offersByFood">
   		<input type="text" name="name">
-  		<button type="submit"><i class="fa fa-search"></i></button>
+  		<button type="submit">Buscar por comida</button>
+	</form>
+	
+	<form class="example" action="/offersByPlace">
+		<select name="municipios">
+			<option value="" label="Chose Type" />
+        	<options value="${municipios}"/>
+		<select>
+	<button type="submit">Buscar por municipio</button>
 	</form>
 	
 
@@ -67,6 +75,7 @@
         	<th><fmt:message key="discount"/></th>
             <th><fmt:message key="startDate"/></th>
             <th><fmt:message key="endDate"/></th>
+            <th><fmt:message key="municipio"/></th>
             
             <th> </th>
         </tr>
@@ -88,6 +97,9 @@
                 </td>
                 <td>
                     <c:out value="${localDateTimeFormat.format(foodOffer.end)}"/>
+                </td>
+                <td>
+                    <c:out value="${foodOffer.client.municipio}"/>
                 </td>
                 
                 <td>

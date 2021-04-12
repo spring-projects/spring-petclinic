@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.cheapy.model.FoodOffer;
+import org.springframework.cheapy.model.Municipio;
 import org.springframework.cheapy.model.NuOffer;
 import org.springframework.cheapy.model.SpeedOffer;
 import org.springframework.cheapy.model.TimeOffer;
@@ -52,15 +53,18 @@ public class OfertaController {
 		model.put("speedOfferLs", speedOfferLs);
 		model.put("timeOfferLs", timeOfferLs);
 
+		// Añade la lista de municipios al desplegable
+		model.put("municipios", Municipio.values());
+
 		//Se añade formateador de fecha al modelo
 		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
 
 		return "offers/offersList";
 
 	}
-	
+
 	@GetMapping("/offersByName")
-	public String processFindFormByName(final Map<String, Object> model, String name) {
+	public String processFindFormByName(final Map<String, Object> model, final String name) {
 
 		List<FoodOffer> foodOfferLs = this.foodOfferService.findFoodOfferByClientName(name);
 		List<NuOffer> nuOfferLs = this.nuOfferService.findNuOfferByClientName(name);
@@ -71,15 +75,18 @@ public class OfertaController {
 		model.put("speedOfferLs", speedOfferLs);
 		model.put("timeOfferLs", timeOfferLs);
 
+		// Añade la lista de municipios al desplegable
+		model.put("municipios", Municipio.values());
+
 		//Se añade formateador de fecha al modelo
 		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
 
 		return "offers/offersListSearch";
 
 	}
-	
+
 	@GetMapping("/offersByFood")
-	public String processFindFormByFood(final Map<String, Object> model, String name) {
+	public String processFindFormByFood(final Map<String, Object> model, final String name) {
 
 		List<FoodOffer> foodOfferLs = this.foodOfferService.findFoodOfferByClientFood(name);
 		List<NuOffer> nuOfferLs = this.nuOfferService.findNuOfferByClientFood(name);
@@ -89,6 +96,25 @@ public class OfertaController {
 		model.put("nuOfferLs", nuOfferLs);
 		model.put("speedOfferLs", speedOfferLs);
 		model.put("timeOfferLs", timeOfferLs);
+
+		// Añade la lista de municipios al desplegable
+		model.put("municipios", Municipio.values());
+
+		//Se añade formateador de fecha al modelo
+		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+
+		return "offers/offersListSearch";
+
+	}
+
+	@GetMapping("/offersByPlace")
+	public String processFindFormByPlace(final Map<String, Object> model, final String municip) {
+
+		List<FoodOffer> foodOfferLs = this.foodOfferService.findFoodOfferByClientPlace(municip);
+		model.put("foodOfferLs", foodOfferLs);
+
+		// Añade la lista de municipios al desplegable
+		model.put("municipios", Municipio.values());
 
 		//Se añade formateador de fecha al modelo
 		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
