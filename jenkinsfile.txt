@@ -1,0 +1,81 @@
+pipeline {
+
+   agent any
+
+   stages {
+
+      stage('Build') {
+
+         steps {
+
+            // Get some code from a GitHub repository
+
+            git branch: 'main', url: 'https://github.com/suchita2007/spring-petclinic.git'
+
+
+            // Run Maven on a linux agent.
+            
+
+            sh "./mvnw package"
+           
+
+         }
+
+
+         post {
+
+            success {
+
+               
+               archiveArtifacts 'target/*.jar'
+                
+
+            }
+
+         }
+      }
+      stage('Build Docker image'){
+          steps{
+               sh 'docker build -t suchita2007/spring-boot .'
+          }
+         
+          }
+       stage('Docker push to Ecr')
+       {       steps{
+                  withCredentials([string(credentialsId: 'DOCKER_HUB_PASSWORD2', variable: 'DOCKER_HUB_PASSWORD2')]) {
+                              sh 'docker login -u suchita2007 -p ${DOCKER_HUB_PASSWORD2}'
+                }
+                sh 'docker push suchita2007/spring-boot'
+           }
+       }
+       stage('Deploy to container Using Ansible'){
+           steps{
+                   sh 'docker pull suchita2007/spring-boot'
+                   sh 'docker run -i -t -d -p 8090:8080 suchita2007/spring-boot'
+           }
+       }
+   }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
