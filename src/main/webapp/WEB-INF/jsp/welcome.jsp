@@ -34,23 +34,11 @@
                       <span class="glyphicon glyphicon-cutlery" aria-hidden="true" style="padding: 5px"> </span>
                       <fmt:message key="createOffers"/> </button>
                   </div>
-                <div class="btn-home">
-                    <button type="button" role="link" onclick="window.location='/clients/show'" style="font-family: 'Lobster'; font-size: 20px;margin:5px;" class="btn-block">
-                    <span class="glyphicon glyphicon-cutlery" aria-hidden="true" style="padding: 5px"> </span>
-                    <fmt:message key="clientShow"/> </button>
-                </div>           
+                     
 
               </sec:authorize>
             </div>
-	        <sec:authorize access="hasAnyAuthority('usuario')">
-		    <div class="btn-home-max">
-		        <div class="btn-home">
-	                <button type="button" role="link" onclick="window.location='/usuarios/show'" style="font-family: 'Lobster'; font-size: 20px;margin:5px;">
-	                <span class="glyphicon glyphicon-cutlery" aria-hidden="true" style="padding: 5px"> </span>
-	                <fmt:message key="showUsuario"/> </button>
-	            </div>
-	        </div>
-	        </sec:authorize>
+	        
 
         </div>
     </div>

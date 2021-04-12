@@ -71,8 +71,21 @@
 					</cheapy:menuItem>
 				</sec:authorize>
 			</ul>
-
+			
 			<ul class="nav navbar-nav navbar-right">
+	   
+                <sec:authorize access="hasAnyAuthority('client')">
+					<cheapy:menuItem active="${name eq 'miPerfil'}" url="/clients/show" title="miPerfil">
+						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+						<span>Mi perfil</span>
+					</cheapy:menuItem> 		           		            
+		        </sec:authorize>
+				<sec:authorize access="hasAnyAuthority('usuario')">
+					<cheapy:menuItem active="${name eq 'miPerfil'}" url="/usuarios/show" title="miPerfil">
+						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+						<span>Mi perfil</span>
+					</cheapy:menuItem> 		           		            
+		        </sec:authorize>
 				<sec:authorize access="!isAuthenticated()">
 					<li><a href="<c:url value="/login" />">Iniciar sesión</a></li>
 					<!--<li><a href="<c:url value="/users/new" />">Register</a></li>-->

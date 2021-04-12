@@ -16,7 +16,7 @@
         <div class="form-group has-feedback">
 
 			<form:hidden path="code"/>
-			<cheapy:inputField label="Contraseña" placeholder="Restaurante pepito" name="usuar.password"/>
+			<cheapy:passwordField label="Contraseña" placeholder="Restaurante pepito" name="usuar.password"/>
 		
 
             <cheapy:inputField label="Hora de inicio" placeholder="HH:mm" name="init"/>
