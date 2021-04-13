@@ -14,15 +14,13 @@
     
     <form:form modelAttribute="client" class="form-horizontal" id="add-client-form">
         <div class="form-group has-feedback">
-
-			<cheapy:inputField label="Contraseña" placeholder="Restaurante pepito" name="usuar.password"/>
-		
-
+			                
+            <cheapy:passwordField label="ContraseÃ±a" placeholder="Restaurante pepito" name="usuar.password"/>		
             <cheapy:inputField label="Hora de inicio" placeholder="HH:mm" name="init"/>
             <cheapy:inputField label="Hora de fin" placeholder="HH:mm" name="finish"/>
             <cheapy:inputField label="Name" placeholder="Restaurante pepito" name="name"/>
             <cheapy:inputField label="Email" placeholder="" name="email"/>
-            <cheapy:inputField label="Dirección" placeholder="" name="address"/>
+            <cheapy:inputField label="DirecciÃ³n" placeholder="" name="address"/>
             <div class="form-group">                   
             <label>Municipio: </label>
 			<select name="municipio">

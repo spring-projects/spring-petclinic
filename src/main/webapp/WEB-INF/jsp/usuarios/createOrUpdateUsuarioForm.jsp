@@ -26,7 +26,7 @@
 			</div>
             <cheapy:inputField label="Direccion" name="direccion"/>
             <cheapy:inputField label="Email" name="email"/>
-            <cheapy:inputField label="Password" name="usuar.password"/>
+            <cheapy:passwordField label="Password" name="usuar.password"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
