@@ -61,7 +61,7 @@
               </tr>
             </thead>
             <tr th:each="visit : ${pet.visits}">
-              <td th:text="${#dates.format(new java.util.Date(visit.visitDate), 'yyyy-MM-dd')}"></td>
+              <td th:text="${visit.visitDate}"></td>
               <td th:text="${visit?.description}"></td>
             </tr>
             <tr>

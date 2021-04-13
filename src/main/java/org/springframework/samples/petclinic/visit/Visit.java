@@ -15,13 +15,13 @@
  */
 package org.springframework.samples.petclinic.visit;
 
-import java.time.LocalDate;
-import java.time.temporal.TemporalField;
+import org.springframework.data.couchbase.core.mapping.id.GeneratedValue;
+import org.springframework.data.couchbase.core.mapping.id.GenerationStrategy;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.validation.constraints.NotEmpty;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * Simple JavaBean domain object representing a visit.
@@ -31,15 +31,14 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 public class Visit {
 
-	@NotEmpty
 	private String id;
 
-	private Long visitDate;
+	private String visitDate;
 
 	@NotEmpty
 	private String description;
 
-	public Visit(@NotEmpty String id, Long visitDate, @NotEmpty String description) {
+	public Visit(@NotEmpty String id, String visitDate, @NotEmpty String description) {
 		this.id = id;
 		this.visitDate = visitDate;
 		this.description = description;
@@ -49,7 +48,8 @@ public class Visit {
 	 * Creates a new instance of Visit for the current date
 	 */
 	public Visit() {
-		this.visitDate = new Date().getTime();
+		SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+		this.visitDate = f.format(new Date());
 	}
 
 	public String getId() {
@@ -60,11 +60,11 @@ public class Visit {
 		this.id = id;
 	}
 
-	public Long getVisitDate() {
+	public String getVisitDate() {
 		return visitDate;
 	}
 
-	public void setVisitDate(Long visitDate) {
+	public void setVisitDate(String visitDate) {
 		this.visitDate = visitDate;
 	}
 

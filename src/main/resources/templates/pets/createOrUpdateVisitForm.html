@@ -4,8 +4,7 @@
 <body>
 
   <h2>
-    <th:block th:if="${visit['new']}">New </th:block>
-    Visit
+
   </h2>
 
   <b>Pet</b>
@@ -31,7 +30,7 @@
   <form th:object="${visit}" class="form-horizontal" method="post">
     <div class="form-group has-feedback">
       <input
-        th:replace="~{fragments/inputField :: input ('Date', 'visitDate', 'text')}"  />
+        th:replace="~{fragments/inputField :: input ('Date', 'visitDate', 'date')}" />
       <input
         th:replace="~{fragments/inputField :: input ('Description', 'description', 'text')}" />
     </div>
@@ -51,8 +50,8 @@
       <th>Date</th>
       <th>Description</th>
     </tr>
-    <tr th:if="${!visit['new']}" th:each="visit : ${pet.visits}">
-      <td th:text="${#dates.format(new java.util.Date(visit.visitDate), 'yyyy-MM-dd')}"></td>
+    <tr th:each="visit : ${pet.visits}">
+      <td th:text="${visit.visitDate}"></td>
       <td th:text=" ${visit.description}"></td>
     </tr>
   </table>

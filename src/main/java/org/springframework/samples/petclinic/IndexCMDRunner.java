@@ -90,24 +90,16 @@ public class IndexCMDRunner implements CommandLineRunner {
 		petRepository.save(new Pet("pet-4", "Jewel", "2010-03-07", "dog", "owner-3", new ArrayList()));
 		petRepository.save(new Pet("pet-5", "Iggy", "2010-11-30", "lizard", "owner-4", new ArrayList()));
 		petRepository.save(new Pet("pet-6", "George", "2010-01-20", "snake", "owner-5", new ArrayList()));
-		petRepository.save(new Pet("pet-7", "Samantha", "2012-09-04", "cat", "owner-6",
-				Arrays.asList(new Visit("visit-1", toMilliseconds("2013-01-01"), "rabies shot"),
-						new Visit("visit-4", toMilliseconds("2013-01-04"), "spayed"))));
-		petRepository.save(new Pet("pet-8", "Max", "2012-09-04", "cat", "owner-6",
-				Arrays.asList(new Visit("visit-2", toMilliseconds("2013-01-02"), "rabies shot"),
-						new Visit("visit-3", toMilliseconds("2013-01-03"), "neutered"))));
+		petRepository.save(new Pet("pet-7", "Samantha", "2012-09-04", "cat", "owner-6", Arrays.asList(
+				new Visit("visit-1", "2013-01-01", "rabies shot"), new Visit("visit-4", "2013-01-04", "spayed"))));
+		petRepository.save(new Pet("pet-8", "Max", "2012-09-04", "cat", "owner-6", Arrays.asList(
+				new Visit("visit-2", "2013-01-02", "rabies shot"), new Visit("visit-3", "2013-01-03", "neutered"))));
 
 		petRepository.save(new Pet("pet-9", "Lucky", "2011-08-06", "bird", "owner-7", new ArrayList()));
 		petRepository.save(new Pet("pet-10", "Mulligan", "2007-02-24", "dog", "owner-8", new ArrayList()));
 		petRepository.save(new Pet("pet-11", "Freddy", "2010-03-09", "bird", "owner-9", new ArrayList()));
 		petRepository.save(new Pet("pet-12", "Lucky", "2010-06-24", "dog", "owner-10", new ArrayList()));
 		petRepository.save(new Pet("pet-13", "Sly", "2012-06-08", "cat", "owner-10", new ArrayList()));
-	}
-
-	private long toMilliseconds(String targetDate) throws Exception {
-		SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
-		Date d = f.parse(targetDate);
-		return d.getTime();
 	}
 
 }
