@@ -78,6 +78,8 @@ The following items should be installed in your system:
 |--------------------------|---|
 |The Main Class | [PetClinicApplication](https://github.com/spring-projects/spring-petclinic/blob/main/src/main/java/org/springframework/samples/petclinic/PetClinicApplication.java) |
 |Caching | [CacheConfiguration](https://github.com/spring-projects/spring-petclinic/blob/main/src/main/java/org/springframework/samples/petclinic/system/CacheConfiguration.java) |
+|Couchbase Configuration | [CouchbaseConfig](https://github.com/deniswsrosa/couchbase-spring-petclinic/blob/main/src/main/java/org/springframework/samples/petclinic/config/CouchbaseConfig.java) |
+
 
 ## Interesting Spring Petclinic branches and forks
 
