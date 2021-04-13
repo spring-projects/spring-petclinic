@@ -37,7 +37,7 @@
             <td><c:out value="${client.address}"/> </td>
         </tr><tr>
         <tr>
-            <th><fmt:message key="municipioClient"/></th>
+            <th><fmt:message key="municipio"/></th>
             <td><c:out value="${client.municipio}"/> </td>
         </tr><tr>
             <th><fmt:message key="telephone"/></th>

@@ -15,12 +15,12 @@
     <form:form modelAttribute="client" class="form-horizontal" id="add-client-form">
         <div class="form-group has-feedback">
 			                
-            <cheapy:passwordField label="ContraseÃ±a" placeholder="Restaurante pepito" name="usuar.password"/>		
+            <cheapy:passwordField label="Contraseña" placeholder="Restaurante pepito" name="usuar.password"/>		
             <cheapy:inputField label="Hora de inicio" placeholder="HH:mm" name="init"/>
             <cheapy:inputField label="Hora de fin" placeholder="HH:mm" name="finish"/>
-            <cheapy:inputField label="Name" placeholder="Restaurante pepito" name="name"/>
+            <cheapy:inputField label="Nombre" placeholder="Restaurante pepito" name="name"/>
             <cheapy:inputField label="Email" placeholder="" name="email"/>
-            <cheapy:inputField label="DirecciÃ³n" placeholder="" name="address"/>
+            <cheapy:inputField label="Dirección" placeholder="" name="address"/>
             <div class="form-group">                   
             <label>Municipio: </label>
 			<select name="municipio">
@@ -29,9 +29,9 @@
 				</c:forEach>
 			</select>
 			</div>
-            <cheapy:inputField label="telephone" placeholder="" name="telephone"/>
-            <cheapy:inputField label="description" placeholder="" name="description"/>
-            <cheapy:inputField label="food" placeholder="food" name="food"/>
+            <cheapy:inputField label="Teléfono" placeholder="" name="telephone"/>
+            <cheapy:inputField label="descripción" placeholder="" name="description"/>
+            <cheapy:inputField label="Comida" placeholder="food" name="food"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

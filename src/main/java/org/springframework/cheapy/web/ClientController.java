@@ -110,7 +110,7 @@ public class ClientController {
 				return ClientController.VIEWS_CREATE_OR_UPDATE_CLIENT;
 			}
 			
-			BeanUtils.copyProperties(clienteSesion, clientEdit, "name", "email", "address","init", "finish","telephone", "description","food","usuar");
+			BeanUtils.copyProperties(clienteSesion, clientEdit, "name", "email", "address","init","municipio", "finish","telephone", "description","food","usuar");
 			clientEdit.getUsuar().setUsername(clienteSesion.getUsuar().getUsername());
 			clientEdit.getUsuar().setEnabled(true);
 			this.clientService.saveClient(clientEdit);
