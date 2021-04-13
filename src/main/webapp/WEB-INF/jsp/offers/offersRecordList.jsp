@@ -51,7 +51,15 @@
 		                    <c:out value="${localDateTimeFormat.format(datos.key.end)}"/>
 		                </td>
 		                <td>
-		                    <c:out value="${datos.key.status}"/>
+		                	<c:if test="${datos.key.status == 'active'}">
+		                    	<c:out value="Activa"/>
+		                    </c:if>	
+		                    <c:if test="${datos.key.status == 'hidden'}">
+		                    	<c:out value="Oculta"/>
+		                    </c:if>	
+		                    <c:if test="${datos.key.status == 'inactive'}">
+		                    	<c:out value="Inactiva"/>
+		                    </c:if>		                 
 		                </td>
 		                
 		                <td>
