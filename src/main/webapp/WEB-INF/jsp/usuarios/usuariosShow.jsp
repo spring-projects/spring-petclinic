@@ -22,17 +22,14 @@
             <td><c:out value="${usuario.apellidos}"/></td>
         </tr>
 		<tr>
-            <th><fmt:message key="dni"/></th>
-            <td><c:out value="${usuario.dni}"/></td>
+            <th><fmt:message key="municipio"/></th>
+            <td><c:out value="${usuario.municipio}"/></td>
         </tr>
         <tr>
             <th><fmt:message key="addressUser"/></th>
             <td><c:out value="${usuario.direccion}"/> </td>
         </tr>
-        <tr>
-            <th><fmt:message key="telephone"/></th>
-            <td><c:out value="${usuario.telefono}"/></td>
-        </tr>
+
         <tr>
             <th><fmt:message key="email"/></th>
             <td><c:out value="${usuario.email}"/></td>

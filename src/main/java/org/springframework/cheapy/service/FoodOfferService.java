@@ -45,4 +45,14 @@ public class FoodOfferService {
 	public List<FoodOffer> findFoodOfferActOclByUserId(final int id) {
 		return this.foodOfferRepository.findFoodOfferActOclByUserId(id);
 	}
+	
+	public List<FoodOffer> findFoodOfferByClientName(String name) {
+		String nameEdit = "%"+name+"%";
+		return this.foodOfferRepository.findFoodOfferByClientName(nameEdit);
+	}
+	
+	public List<FoodOffer> findFoodOfferByClientFood(String name) {
+		String nameEdit = "%"+name+"%";
+		return this.foodOfferRepository.findFoodOfferByClientFood(nameEdit);
+	}
 }

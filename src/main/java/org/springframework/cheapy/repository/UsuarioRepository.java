@@ -1,3 +1,4 @@
+
 package org.springframework.cheapy.repository;
 
 import java.util.List;
@@ -17,6 +18,11 @@ public interface UsuarioRepository extends Repository<Usuario, String> {
 	@Transactional(readOnly = true)
 	List<Usuario> findAllUsuario();
 	
+	@Query("SELECT usuario FROM Usuario usuario WHERE usuario.usuar.enabled = true")
+	@Transactional(readOnly = true)
+	List<Usuario> findUsuarioEnabled();
+	
 	void save(Usuario usuario);
 	
+
 }

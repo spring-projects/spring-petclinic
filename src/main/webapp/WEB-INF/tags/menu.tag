@@ -61,7 +61,7 @@
 				</cheapy:menuItem>
 				-->
 				<sec:authorize access="isAuthenticated()">
-					<cheapy:menuItem active="${name eq 'reviews'}" url="/reviews" title="opiniones">
+					<cheapy:menuItem active="${name eq 'reviews'}" url="/reviewsList/0" title="opiniones">
 						<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
 						<span>Reseñas</span>
 					</cheapy:menuItem>
@@ -88,6 +88,14 @@
 		        </sec:authorize>
 				<sec:authorize access="!isAuthenticated()">
 					<li><a href="<c:url value="/login" />">Iniciar sesión</a></li>
+					<!--<li><a href="<c:url value="/users/new" />">Register</a></li>-->
+				</sec:authorize>
+				<sec:authorize access="!isAuthenticated()">
+					<li><a href="<c:url value="/users/new" />">Registrarse Usuario</a></li>
+					<!--<li><a href="<c:url value="/users/new" />">Register</a></li>-->
+				</sec:authorize>
+				<sec:authorize access="!isAuthenticated()">
+					<li><a href="<c:url value="/clients/new" />">Registrarse Cliente</a></li>
 					<!--<li><a href="<c:url value="/users/new" />">Register</a></li>-->
 				</sec:authorize>
 				<sec:authorize access="isAuthenticated()">

@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -32,6 +34,10 @@ public class Client extends BaseEntity {
 
 	@NotEmpty
 	private String address;
+	
+	@Enumerated(value = EnumType.STRING)
+	@NotNull
+	private Municipio municipio;
 
 	// Hora de apertura del local
 	@DateTimeFormat(pattern = "HH:mm")
@@ -51,8 +57,8 @@ public class Client extends BaseEntity {
 	private String description;
 
 	// Codigo de activacion de cuenta
-	@NotEmpty
-	private String code;
+//	@NotEmpty
+//	private String code;
 
 	@NotEmpty
 	private String food;
@@ -60,6 +66,10 @@ public class Client extends BaseEntity {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "username", referencedColumnName = "username")
 	private User usuar;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "code", referencedColumnName = "code")
+	private Code cod;
 
 	@OneToMany
 	private List<FoodOffer> foodOffers;
@@ -129,12 +139,20 @@ public class Client extends BaseEntity {
 		this.description = description;
 	}
 
-	public String getCode() {
-		return code;
+	public Municipio getMunicipio() {
+		return municipio;
 	}
 
-	public void setCode(String code) {
-		this.code = code;
+	public void setMunicipio(Municipio municipio) {
+		this.municipio = municipio;
+	}
+
+	public Code getCode() {
+		return cod;
+	}
+
+	public void setCode(Code code) {
+		this.cod = code;
 	}
 
 	public String getFood() {

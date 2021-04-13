@@ -17,11 +17,11 @@ public class UsuarioService {
 
 	private UsuarioRepository usuarioRepository;
 
-
 	@Autowired
 	public UsuarioService(final UsuarioRepository usuarioRepository) {
 		this.usuarioRepository = usuarioRepository;
 	}
+
 	
 	@Transactional
 	public Usuario getCurrentUsuario() throws DataAccessException {
@@ -38,6 +38,11 @@ public class UsuarioService {
 	@Transactional
 	public List<Usuario> findAllUsuario() throws DataAccessException {
 		return this.usuarioRepository.findAllUsuario();
+	}
+	
+	@Transactional
+	public List<Usuario> findUsuarioEnabled() throws DataAccessException {
+		return this.usuarioRepository.findUsuarioEnabled();
 	}
 
 	@Transactional

@@ -43,9 +43,9 @@ public class OfertaController {
 		Pageable elements = PageRequest.of(0, 3);
 
 		List<FoodOffer> foodOfferLs = this.foodOfferService.findActiveFoodOffer(elements);
-		List<NuOffer> nuOfferLs = this.nuOfferService.findActiveNuOffer();
-		List<SpeedOffer> speedOfferLs = this.speedOfferService.findActiveSpeedOffer();
-		List<TimeOffer> timeOfferLs = this.timeOfferService.findActiveTimeOffer();
+		List<NuOffer> nuOfferLs = this.nuOfferService.findActiveNuOffer(elements);
+		List<SpeedOffer> speedOfferLs = this.speedOfferService.findActiveSpeedOffer(elements);
+		List<TimeOffer> timeOfferLs = this.timeOfferService.findActiveTimeOffer(elements);
 
 		model.put("foodOfferLs", foodOfferLs);
 		model.put("nuOfferLs", nuOfferLs);
@@ -56,6 +56,44 @@ public class OfertaController {
 		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
 
 		return "offers/offersList";
+
+	}
+	
+	@GetMapping("/offersByName")
+	public String processFindFormByName(final Map<String, Object> model, String name) {
+
+		List<FoodOffer> foodOfferLs = this.foodOfferService.findFoodOfferByClientName(name);
+		List<NuOffer> nuOfferLs = this.nuOfferService.findNuOfferByClientName(name);
+		List<SpeedOffer> speedOfferLs = this.speedOfferService.findSpeedOfferByClientName(name);
+		List<TimeOffer> timeOfferLs = this.timeOfferService.findTimeOfferByClientName(name);
+		model.put("foodOfferLs", foodOfferLs);
+		model.put("nuOfferLs", nuOfferLs);
+		model.put("speedOfferLs", speedOfferLs);
+		model.put("timeOfferLs", timeOfferLs);
+
+		//Se añade formateador de fecha al modelo
+		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+
+		return "offers/offersListSearch";
+
+	}
+	
+	@GetMapping("/offersByFood")
+	public String processFindFormByFood(final Map<String, Object> model, String name) {
+
+		List<FoodOffer> foodOfferLs = this.foodOfferService.findFoodOfferByClientFood(name);
+		List<NuOffer> nuOfferLs = this.nuOfferService.findNuOfferByClientFood(name);
+		List<SpeedOffer> speedOfferLs = this.speedOfferService.findSpeedOfferByClientFood(name);
+		List<TimeOffer> timeOfferLs = this.timeOfferService.findTimeOfferByClientFood(name);
+		model.put("foodOfferLs", foodOfferLs);
+		model.put("nuOfferLs", nuOfferLs);
+		model.put("speedOfferLs", speedOfferLs);
+		model.put("timeOfferLs", timeOfferLs);
+
+		//Se añade formateador de fecha al modelo
+		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+
+		return "offers/offersListSearch";
 
 	}
 

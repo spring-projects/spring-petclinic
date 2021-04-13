@@ -12,6 +12,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cheapy.model.Client;
 import org.springframework.cheapy.model.FoodOffer;
+import org.springframework.cheapy.model.Municipio;
 import org.springframework.cheapy.model.NuOffer;
 import org.springframework.cheapy.model.SpeedOffer;
 import org.springframework.cheapy.model.StatusOffer;
@@ -84,7 +85,8 @@ public class ClientController {
 	public String updateClient( final ModelMap model, HttpServletRequest request) {
 
 		Client client = this.clientService.getCurrentClient();
-
+		
+		model.put("municipio", Municipio.values());
 		model.addAttribute("client", client);
 
 		return ClientController.VIEWS_CREATE_OR_UPDATE_CLIENT;
@@ -96,7 +98,6 @@ public class ClientController {
 
 
 		Client clienteSesion = this.clientService.getCurrentClient();
-		
 		if(!this.checkTimes(clientEdit)) {
 			result.rejectValue("finish","" ,"La hora de cierre debe ser posterior a la hora de apertura");
 			
@@ -105,6 +106,7 @@ public class ClientController {
 
 			if (result.hasErrors()) {
 				model.addAttribute("client", clientEdit);
+				model.put("municipio", Municipio.values());
 				return ClientController.VIEWS_CREATE_OR_UPDATE_CLIENT;
 			}
 			
@@ -161,7 +163,6 @@ public class ClientController {
 	public String showRestaurant(final ModelMap model, @PathVariable("clientId") Integer id) {
 
 		Client client = this.clientRepo.findById(id).get();
-		System.out.println(client.getDescription());
 		model.put("client", client);
 		return "clients/restaurantShow";
 	}

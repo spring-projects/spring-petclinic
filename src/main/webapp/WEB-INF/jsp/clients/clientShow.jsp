@@ -36,6 +36,10 @@
             <th><fmt:message key="addressClient"/></th>
             <td><c:out value="${client.address}"/> </td>
         </tr><tr>
+        <tr>
+            <th><fmt:message key="municipioClient"/></th>
+            <td><c:out value="${client.municipio}"/> </td>
+        </tr><tr>
             <th><fmt:message key="telephone"/></th>
             <td><c:out value="${client.telephone}"/> </td>
         </tr><tr>
@@ -73,12 +77,23 @@
 		<sec:authentication var="principal" property="principal" />
     	<div class="btns-edit">
 		
+	        <c:if test="${ client.usuar.enabled eq true}">
 	        <spring:url value="/administrators/clients/{username}/disable" var="deactivateUrl">
 	        	<spring:param name="username" value="${client.usuar.username}"/>
 	        </spring:url>
 	        <button type="button" role="link" onclick="window.location='${fn:escapeXml(deactivateUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
 	        	<span class="glyphicon glyphicon glyphicon-trash" aria-hidden="true" style="padding: 5px"> </span>
 	         Desactivar cliente</button>
+    	 </c:if>
+
+    	 		<c:if test="${ client.usuar.enabled eq false}">
+	        <spring:url value="/administrators/clients/{username}/activate" var="activateUrl">
+	        	<spring:param name="username" value="${client.usuar.username}"/>
+	        </spring:url>
+	        <button type="button" role="link" onclick="window.location='${fn:escapeXml(activateUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
+	        	<span class="glyphicon glyphicon glyphicon-trash" aria-hidden="true" style="padding: 5px"> </span>
+	         Activar cliente</button>
+    	 </c:if>
     	</div>
     </sec:authorize>
     </div>
