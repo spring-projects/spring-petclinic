@@ -26,4 +26,4 @@
         image: "suchita2007/spring-boot"
         state: started
         published_ports:
-          - 0.0.0.0:8091:8080
+          - 0.0.0.0:8096:8080
