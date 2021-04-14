@@ -1,0 +1,13 @@
+---
+  - hosts: web-servers
+    become: true
+    tasks:
+     - name: stop previous version docker
+       shell: docker stop suchita_demo
+     - name: remove stopped container
+       shell: docker rm -f suchita_demo	  
+     - name: remove docker images
+       shell: docker image rm -f suchita2007/suchita_demo
+       
+     - name: create docker image
+       shell: docker run -d --name suchita_demo -p 8090:8080 suchita2007/suchita_demo
