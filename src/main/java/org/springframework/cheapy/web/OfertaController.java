@@ -127,37 +127,6 @@ public class OfertaController {
 		return "offers/offersCreate";
 	}
 	
-	@GetMapping("/offersRecord")
-	public String processOffersRecordForm(final Map<String, Object> model) {
-		
-		Pageable p = PageRequest.of(0, 3);
-		
-		Map<Offer, String> datos = new HashMap<Offer, String>();
-		
-		for(Offer of:this.foodOfferService.findAllFoodOffer(p)) {
-			datos.put(of, "food");
-		}
-		
-		for(Offer of:this.nuOfferService.findAllNuOffer(p)) {
-			datos.put(of, "nu");
-		}
-		
-		for(Offer of:this.speedOfferService.findAllSpeedOffer(p)) {
-			datos.put(of, "speed");
-		}
-		
-		for(Offer of:this.timeOfferService.findAllTimeOffer(p)) {
-			datos.put(of, "time");
-		}
-		
-		model.put("datos", datos);
-
-		//Se añade formateador de fecha al modelo
-		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-
-		return "offers/offersRecordList";
-	}
-	
 	//	@GetMapping("/owners/{ownerId}/edit")
 	//	public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
 	//		Owner owner = this.ownerService.findOwnerById(ownerId);
