@@ -1,5 +1,11 @@
 # QA Assignment
 
+## Running tests
+You can run the Cucumber features from your IDE or via the command line:
+```shell
+./mvnw -P itest integration-test
+```
+
 ## Finding owners
 The scenarios for this feature are incomplete or even naive. Please cover more cases in more reliable way.
 
