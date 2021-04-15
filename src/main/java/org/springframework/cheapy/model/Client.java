@@ -145,13 +145,6 @@ public class Client extends BaseEntity {
 		this.description = description;
 	}
 
-	public Municipio getMunicipio() {
-		return municipio;
-	}
-
-	public void setMunicipio(Municipio municipio) {
-		this.municipio = municipio;
-	}
 
 	public Code getCode() {
 		return cod;
