@@ -13,11 +13,18 @@ import io.cucumber.java.en.When;
 
 public class StepDefinition extends SpringIntegrationTest {
 
+	public static final String BASE_URL = "http://localhost:8080";
+
 	private final WebDriver webDriver = Browser.webDriver;
 
 	@Given("^I go to the main page$")
 	public void mainPage() {
-		webDriver.navigate().to("http://localhost:8080");
+		webDriver.navigate().to(BASE_URL);
+	}
+
+	@Given("^I go to the find-owners page$")
+	public void findOwnersPage() {
+		webDriver.navigate().to(BASE_URL + "/owners/find");
 	}
 
 	@When("^I click on the link with title \"([^\"]*)\"$")
