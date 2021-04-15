@@ -50,13 +50,14 @@
 	</form>
 	
 	<form class="example" action="/offersByPlace">
-		<select name="municipios">
-			<option value="" label="Chose Type" />
-        	<options value="${municipios}"/>
-		<select>
-	<button type="submit">Buscar por municipio</button>
+		<select name="municipio">
+		<option value="">Escoge municipio</option>
+		<c:forEach items="${municipios}" var="entry">
+			<option value="${entry}">${entry}</option>
+		</c:forEach>
+		</select>
+		<button type="submit">Buscar por municipio</button>
 	</form>
-	
 
     <h2 style="text-align:center;padding:5px"><fmt:message key="foodOffers"/></h2>
     

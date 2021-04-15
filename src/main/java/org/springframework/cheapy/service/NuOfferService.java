@@ -4,6 +4,7 @@ package org.springframework.cheapy.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cheapy.model.Municipio;
 import org.springframework.cheapy.model.NuOffer;
 import org.springframework.cheapy.model.StatusOffer;
 import org.springframework.cheapy.repository.NuOfferRepository;
@@ -54,14 +55,18 @@ public class NuOfferService {
 	public List<NuOffer> findNuOfferActOclByUserId(final int id) {
 		return this.nuOfferRepository.findNuOfferActOclByUserId(id);
 	}
-	
-	public List<NuOffer> findNuOfferByClientName(String name) {
-		String nameEdit = "%"+name+"%";
+
+	public List<NuOffer> findNuOfferByClientName(final String name) {
+		String nameEdit = "%" + name + "%";
 		return this.nuOfferRepository.findNuOfferByClientName(nameEdit);
 	}
-	
-	public List<NuOffer> findNuOfferByClientFood(String name) {
-		String nameEdit = "%"+name+"%";
+
+	public List<NuOffer> findNuOfferByClientFood(final String name) {
+		String nameEdit = "%" + name + "%";
 		return this.nuOfferRepository.findNuOfferByClientFood(nameEdit);
+	}
+
+	public List<NuOffer> findNuOfferByClientPlace(final Municipio mun) {
+		return this.nuOfferRepository.findNuOfferByClientPlace(mun);
 	}
 }

@@ -5,6 +5,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.cheapy.model.FoodOffer;
 import org.springframework.cheapy.model.Municipio;
 import org.springframework.cheapy.model.NuOffer;
@@ -108,10 +110,17 @@ public class OfertaController {
 	}
 
 	@GetMapping("/offersByPlace")
-	public String processFindFormByPlace(final Map<String, Object> model, final String municip) {
+	public String processFindFormByPlace(final Map<String, Object> model, final HttpServletRequest request) {
+		Municipio mun = Municipio.valueOf(request.getParameter("municipio"));
 
-		List<FoodOffer> foodOfferLs = this.foodOfferService.findFoodOfferByClientPlace(municip);
+		List<FoodOffer> foodOfferLs = this.foodOfferService.findFoodOfferByClientPlace(mun);
+		List<NuOffer> nuOfferLs = this.nuOfferService.findNuOfferByClientPlace(mun);
+		List<SpeedOffer> speedOfferLs = this.speedOfferService.findSpeedOfferByClientPlace(mun);
+		List<TimeOffer> timeOfferLs = this.timeOfferService.findTimeOfferByClientPlace(mun);
 		model.put("foodOfferLs", foodOfferLs);
+		model.put("nuOfferLs", nuOfferLs);
+		model.put("speedOfferLs", speedOfferLs);
+		model.put("timeOfferLs", timeOfferLs);
 
 		// Añade la lista de municipios al desplegable
 		model.put("municipios", Municipio.values());

@@ -2,6 +2,8 @@
 package org.springframework.cheapy.repository;
 
 import java.util.List;
+
+import org.springframework.cheapy.model.Municipio;
 import org.springframework.cheapy.model.NuOffer;
 import org.springframework.cheapy.model.StatusOffer;
 import org.springframework.data.domain.Pageable;
@@ -31,12 +33,16 @@ public interface NuOfferRepository extends PagingAndSortingRepository<NuOffer, I
 	@Query("SELECT nuOffer FROM NuOffer nuOffer WHERE nuOffer.client.id =:id AND nuOffer.status!= 'inactive'")
 	@Transactional(readOnly = true)
 	List<NuOffer> findNuOfferActOclByUserId(@Param("id") Integer id);
-	
+
 	@Query("SELECT nuOffer FROM NuOffer nuOffer WHERE nuOffer.client.name LIKE :name AND nuOffer.status= 'active'")
 	@Transactional(readOnly = true)
 	List<NuOffer> findNuOfferByClientName(String name);
-	
+
 	@Query("SELECT nuOffer FROM NuOffer nuOffer WHERE nuOffer.client.food LIKE :name AND nuOffer.status= 'active'")
 	@Transactional(readOnly = true)
 	List<NuOffer> findNuOfferByClientFood(String name);
+
+	@Query("SELECT nuOffer FROM NuOffer nuOffer WHERE nuOffer.client.municipio =:municipio AND nuOffer.status= 'active'")
+	@Transactional(readOnly = true)
+	List<NuOffer> findNuOfferByClientPlace(Municipio municipio);
 }

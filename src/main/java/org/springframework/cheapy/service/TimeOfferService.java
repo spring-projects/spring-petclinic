@@ -4,6 +4,7 @@ package org.springframework.cheapy.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cheapy.model.Municipio;
 import org.springframework.cheapy.model.StatusOffer;
 import org.springframework.cheapy.model.TimeOffer;
 import org.springframework.cheapy.repository.TimeOfferRepository;
@@ -45,14 +46,18 @@ public class TimeOfferService {
 	public List<TimeOffer> findTimeOfferActOclByUserId(final int id) {
 		return this.timeOfferRepository.findTimeOfferActOclByUserId(id);
 	}
-	
-	public List<TimeOffer> findTimeOfferByClientName(String name) {
-		String nameEdit = "%"+name+"%";
+
+	public List<TimeOffer> findTimeOfferByClientName(final String name) {
+		String nameEdit = "%" + name + "%";
 		return this.timeOfferRepository.findTimeOfferByClientName(nameEdit);
 	}
-	
-	public List<TimeOffer> findTimeOfferByClientFood(String name) {
-		String nameEdit = "%"+name+"%";
+
+	public List<TimeOffer> findTimeOfferByClientFood(final String name) {
+		String nameEdit = "%" + name + "%";
 		return this.timeOfferRepository.findTimeOfferByClientFood(nameEdit);
+	}
+
+	public List<TimeOffer> findTimeOfferByClientPlace(final Municipio mun) {
+		return this.timeOfferRepository.findTimeOfferByClientPlace(mun);
 	}
 }
