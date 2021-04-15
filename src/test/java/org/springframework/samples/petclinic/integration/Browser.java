@@ -11,24 +11,20 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class Browser {
+
 	public final static WebDriver webDriver = createDriver();
 
 	private static WebDriver createDriver() {
 		setupDriver();
-		ChromeDriver chromeDriver = new ChromeDriver(
-			new ChromeDriverService.Builder().withSilent(true).build(),
-			chromeOptions()
-		);
+		ChromeDriver chromeDriver = new ChromeDriver(new ChromeDriverService.Builder().withSilent(true).build(),
+				chromeOptions());
 		chromeDriver.manage().window().setSize(new Dimension(1024, 768));
 		chromeDriver.manage().timeouts().implicitlyWait(0L, TimeUnit.SECONDS);
 		return chromeDriver;
 	}
 
 	private static void setupDriver() {
-		WebDriverManager
-			.chromedriver()
-			.timeout(60)
-			.setup();
+		WebDriverManager.chromedriver().timeout(60).setup();
 	}
 
 	private static ChromeOptions chromeOptions() {
@@ -40,4 +36,5 @@ public class Browser {
 		chromeOptions.addArguments("--disable-browser-side-navigation");
 		return chromeOptions;
 	}
+
 }

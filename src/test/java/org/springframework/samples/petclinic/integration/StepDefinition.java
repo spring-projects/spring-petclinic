@@ -12,6 +12,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class StepDefinition extends SpringIntegrationTest {
+
 	private final WebDriver webDriver = Browser.webDriver;
 
 	@Given("^I go to the main page$")
@@ -48,4 +49,5 @@ public class StepDefinition extends SpringIntegrationTest {
 		WebElement webElement = webDriver.findElement(elementSelector);
 		webElement.submit();
 	}
+
 }
