@@ -4,6 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
 
 <cheapy:layout pageName="reviews">
@@ -26,6 +27,7 @@
 	        </c:when>
 	        <c:otherwise>
 	        <c:forEach items="${reviewsLs}" var="review">
+	       
 	            <tr>
 	<!--                 <td> -->
 	<%--                     <c:out value="nombre por definir"/> <!-- ${review.usuario.nombre},${review.usuario.apellidos}  --> --%>
@@ -34,7 +36,10 @@
 	                    <c:out value="${review.escritor.username}"/>
 	                </td>
 	                <td>
-	                    <c:out value="${review.stars}"/>
+	                
+	                    <!--<c:out value="${review.stars}"/> -->
+	                    <cheapy:showStars value='${review.stars}'></cheapy:showStars>
+
 	                </td>
 	                <td>
 	                    <c:out value="${review.opinion}"/>
@@ -51,6 +56,7 @@
 	                </td> 
 	                  
 	            </tr>
+	           
 	        </c:forEach>
 	        </c:otherwise>
         </c:choose>
