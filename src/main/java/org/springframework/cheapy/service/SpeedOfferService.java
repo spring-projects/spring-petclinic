@@ -4,6 +4,7 @@ package org.springframework.cheapy.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cheapy.model.Municipio;
 import org.springframework.cheapy.model.SpeedOffer;
 import org.springframework.cheapy.model.StatusOffer;
 import org.springframework.cheapy.repository.SpeedOfferRepository;
@@ -49,14 +50,18 @@ public class SpeedOfferService {
 	public List<SpeedOffer> findSpeedOfferActOclByUserId(final int id) {
 		return this.speedOfferRepository.findSpeedOfferActOclByUserId(id);
 	}
-	
-	public List<SpeedOffer> findSpeedOfferByClientName(String name) {
-		String nameEdit = "%"+name+"%";
+
+	public List<SpeedOffer> findSpeedOfferByClientName(final String name) {
+		String nameEdit = "%" + name + "%";
 		return this.speedOfferRepository.findSpeedOfferByClientName(nameEdit);
 	}
-	
-	public List<SpeedOffer> findSpeedOfferByClientFood(String name) {
-		String nameEdit = "%"+name+"%";
+
+	public List<SpeedOffer> findSpeedOfferByClientFood(final String name) {
+		String nameEdit = "%" + name + "%";
 		return this.speedOfferRepository.findSpeedOfferByClientFood(nameEdit);
+	}
+
+	public List<SpeedOffer> findSpeedOfferByClientPlace(final Municipio mun) {
+		return this.speedOfferRepository.findSpeedOfferByClientPlace(mun);
 	}
 }

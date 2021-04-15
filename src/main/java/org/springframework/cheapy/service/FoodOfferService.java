@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cheapy.model.FoodOffer;
+import org.springframework.cheapy.model.Municipio;
 import org.springframework.cheapy.model.StatusOffer;
 import org.springframework.cheapy.repository.FoodOfferRepository;
 import org.springframework.dao.DataAccessException;
@@ -45,14 +46,18 @@ public class FoodOfferService {
 	public List<FoodOffer> findFoodOfferActOclByUserId(final int id) {
 		return this.foodOfferRepository.findFoodOfferActOclByUserId(id);
 	}
-	
-	public List<FoodOffer> findFoodOfferByClientName(String name) {
-		String nameEdit = "%"+name+"%";
+
+	public List<FoodOffer> findFoodOfferByClientName(final String name) {
+		String nameEdit = "%" + name + "%";
 		return this.foodOfferRepository.findFoodOfferByClientName(nameEdit);
 	}
-	
-	public List<FoodOffer> findFoodOfferByClientFood(String name) {
-		String nameEdit = "%"+name+"%";
+
+	public List<FoodOffer> findFoodOfferByClientFood(final String name) {
+		String nameEdit = "%" + name + "%";
 		return this.foodOfferRepository.findFoodOfferByClientFood(nameEdit);
+	}
+
+	public List<FoodOffer> findFoodOfferByClientPlace(final Municipio municip) {
+		return this.foodOfferRepository.findFoodOfferByClientPlace(municip);
 	}
 }

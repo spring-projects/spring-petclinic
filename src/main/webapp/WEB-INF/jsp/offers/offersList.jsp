@@ -65,6 +65,15 @@
   		</div>
 	</form>
 	
+	<form class="example" action="/offersByPlace">
+		<select name="municipio">
+		<option value="">Escoge municipio</option>
+		<c:forEach items="${municipios}" var="entry">
+			<option value="${entry}">${entry}</option>
+		</c:forEach>
+		</select>
+		<button type="submit">Buscar por municipio</button>
+	</form>
 
     <h2 style="text-align:center;padding:5px"><fmt:message key="foodOffers"/></h2>
     
@@ -83,6 +92,7 @@
         	<th><fmt:message key="discount"/></th>
             <th><fmt:message key="startDate"/></th>
             <th><fmt:message key="endDate"/></th>
+            <th><fmt:message key="municipio"/></th>
             
             <th> </th>
         </tr>
@@ -104,6 +114,9 @@
                 </td>
                 <td>
                     <c:out value="${localDateTimeFormat.format(foodOffer.end)}"/>
+                </td>
+                <td>
+                    <c:out value="${foodOffer.client.municipio}"/>
                 </td>
                 
                 <td>

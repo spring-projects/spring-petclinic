@@ -1,3 +1,4 @@
+
 package org.springframework.cheapy.model;
 
 import java.time.LocalTime;
@@ -21,121 +22,126 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Table(name = "clients")
 public class Client extends BaseEntity {
 
-	private static final long serialVersionUID = 1L;
+	private static final long	serialVersionUID	= 1L;
 
 	// (id, name, email, address, init, finish, telephone, description, code, food,
 	// usuar)
 
 	@NotEmpty
-	private String name;
+	private String				name;
 
 	@NotEmpty
-	private String email;
+	private String				email;
 
 	@NotEmpty
-	private String address;
-	
-	@Enumerated(value = EnumType.STRING)
+	private String				address;
+
 	@NotNull
-	private Municipio municipio;
+	@Enumerated(value = EnumType.STRING)
+	private Municipio			municipio;
 
 	// Hora de apertura del local
 	@DateTimeFormat(pattern = "HH:mm")
 	@NotNull(message = "Debe introducir una hora de apertura")
-	private LocalTime init;
+	private LocalTime			init;
 
 	// Hora de cierre del local
 	@DateTimeFormat(pattern = "HH:mm")
 	@NotNull(message = "Debe introducir una hora de cierre")
-	private LocalTime finish;
+	private LocalTime			finish;
 
 	@NotEmpty
 	@Digits(fraction = 0, integer = 10)
-	private String telephone;
+	private String				telephone;
 
 	@NotEmpty
-	private String description;
-
-	// Codigo de activacion de cuenta
-//	@NotEmpty
-//	private String code;
+	private String				description;
 
 	@NotEmpty
-	private String food;
+	private String				food;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "username", referencedColumnName = "username")
-	private User usuar;
+	private User				usuar;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "code", referencedColumnName = "code")
 	private Code cod;
 
 	@OneToMany
-	private List<FoodOffer> foodOffers;
+	private List<FoodOffer>		foodOffers;
 
 	@OneToMany
-	private List<NuOffer> nuOffers;
+	private List<NuOffer>		nuOffers;
 
 	@OneToMany
-	private List<SpeedOffer> speedOffers;
+	private List<SpeedOffer>	speedOffers;
 
 	@OneToMany
-	private List<TimeOffer> timeOffers;
+	private List<TimeOffer>		timeOffers;
+
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
 	public String getEmail() {
-		return email;
+		return this.email;
 	}
 
-	public void setEmail(String email) {
+	public void setEmail(final String email) {
 		this.email = email;
 	}
 
 	public String getAddress() {
-		return address;
+		return this.address;
 	}
 
-	public void setAddress(String address) {
+	public void setAddress(final String address) {
 		this.address = address;
 	}
 
-	public LocalTime getInit() {
-		return init;
+	public Municipio getMunicipio() {
+		return this.municipio;
 	}
 
-	public void setInit(LocalTime init) {
+	public void setMunicipio(final Municipio municipio) {
+		this.municipio = municipio;
+	}
+
+	public LocalTime getInit() {
+		return this.init;
+	}
+
+	public void setInit(final LocalTime init) {
 		this.init = init;
 	}
 
 	public LocalTime getFinish() {
-		return finish;
+		return this.finish;
 	}
 
-	public void setFinish(LocalTime finish) {
+	public void setFinish(final LocalTime finish) {
 		this.finish = finish;
 	}
 
 	public String getTelephone() {
-		return telephone;
+		return this.telephone;
 	}
 
-	public void setTelephone(String telephone) {
+	public void setTelephone(final String telephone) {
 		this.telephone = telephone;
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
-	public void setDescription(String description) {
+	public void setDescription(final String description) {
 		this.description = description;
 	}
 
@@ -156,50 +162,50 @@ public class Client extends BaseEntity {
 	}
 
 	public String getFood() {
-		return food;
+		return this.food;
 	}
 
-	public void setFood(String food) {
+	public void setFood(final String food) {
 		this.food = food;
 	}
 
 	public User getUsuar() {
-		return usuar;
+		return this.usuar;
 	}
 
-	public void setUsuar(User usuar) {
+	public void setUsuar(final User usuar) {
 		this.usuar = usuar;
 	}
 
 	public List<FoodOffer> getFoodOffers() {
-		return foodOffers;
+		return this.foodOffers;
 	}
 
-	public void setFoodOffers(List<FoodOffer> foodOffers) {
+	public void setFoodOffers(final List<FoodOffer> foodOffers) {
 		this.foodOffers = foodOffers;
 	}
 
 	public List<NuOffer> getNuOffers() {
-		return nuOffers;
+		return this.nuOffers;
 	}
 
-	public void setNuOffers(List<NuOffer> nuOffers) {
+	public void setNuOffers(final List<NuOffer> nuOffers) {
 		this.nuOffers = nuOffers;
 	}
 
 	public List<SpeedOffer> getSpeedOffers() {
-		return speedOffers;
+		return this.speedOffers;
 	}
 
-	public void setSpeedOffers(List<SpeedOffer> speedOffers) {
+	public void setSpeedOffers(final List<SpeedOffer> speedOffers) {
 		this.speedOffers = speedOffers;
 	}
 
 	public List<TimeOffer> getTimeOffers() {
-		return timeOffers;
+		return this.timeOffers;
 	}
 
-	public void setTimeOffers(List<TimeOffer> timeOffers) {
+	public void setTimeOffers(final List<TimeOffer> timeOffers) {
 		this.timeOffers = timeOffers;
 	}
 
