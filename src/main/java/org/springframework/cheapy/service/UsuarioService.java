@@ -17,11 +17,11 @@ public class UsuarioService {
 
 	private UsuarioRepository usuarioRepository;
 
-
 	@Autowired
 	public UsuarioService(final UsuarioRepository usuarioRepository) {
 		this.usuarioRepository = usuarioRepository;
 	}
+
 	
 	@Transactional
 	public Usuario getCurrentUsuario() throws DataAccessException {

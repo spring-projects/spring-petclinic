@@ -57,16 +57,16 @@ public class Client extends BaseEntity {
 	@NotEmpty
 	private String				description;
 
-	// Codigo de activacion de cuenta
-	@NotEmpty
-	private String				code;
-
 	@NotEmpty
 	private String				food;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "username", referencedColumnName = "username")
 	private User				usuar;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "code", referencedColumnName = "code")
+	private Code cod;
 
 	@OneToMany
 	private List<FoodOffer>		foodOffers;
@@ -145,12 +145,20 @@ public class Client extends BaseEntity {
 		this.description = description;
 	}
 
-	public String getCode() {
-		return this.code;
+	public Municipio getMunicipio() {
+		return municipio;
 	}
 
-	public void setCode(final String code) {
-		this.code = code;
+	public void setMunicipio(Municipio municipio) {
+		this.municipio = municipio;
+	}
+
+	public Code getCode() {
+		return cod;
+	}
+
+	public void setCode(Code code) {
+		this.cod = code;
 	}
 
 	public String getFood() {

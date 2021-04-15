@@ -16,27 +16,24 @@
         <div class="form-group has-feedback">
             <cheapy:inputField label="Nombre" name="nombre"/>
             <cheapy:inputField label="Apellidos" name="apellidos"/>
-            <cheapy:inputField label="DNI" name="dni"/>
+	<div class="form-group">                   
+            <label>Municipio: </label>
+			<select name="municipio">
+				<c:forEach items="${municipio}" var="entry">
+					<option value="${entry}">${entry}</option>
+				</c:forEach>
+			</select>
+			</div>
             <cheapy:inputField label="Direccion" name="direccion"/>
-            <cheapy:inputField label="Telefono" name="telefono"/>
             <cheapy:inputField label="Email" name="email"/>
-            <cheapy:inputField label="Password" name="usuar.password"/>
+            <cheapy:passwordField label="Password" name="usuar.password"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
             	<div class="btn-mod">
-	                <c:choose>
-	                    <c:when test="${usuario['new']}">
-	                        <button class="btn btn-default" type="submit" style="font-family: 'Lobster'; font-size: 20px;">
-	                        <span class="glyphicon glyphicon-floppy-save" aria-hidden="true" style="padding: 5px"> </span>
-	                        Crear usuario</button>
-	                    </c:when>
-	                    <c:otherwise>
 	                        <button class="btn btn-default" type="submit" style="font-family: 'Lobster'; font-size: 20px;">
 	                        <span class="glyphicon glyphicon-floppy-save" aria-hidden="true" style="padding: 5px"> </span>
 	                        Modificar</button>
-	                    </c:otherwise>
-	                </c:choose>
                 </div>
             </div>
         </div>

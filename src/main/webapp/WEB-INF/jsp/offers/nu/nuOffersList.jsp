@@ -7,40 +7,42 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
 
-<cheapy:layout pageName="ofertas">
-
-	<spring:url value="/offers/foodOfferList/{page}" var="foodOfferListUrl">
-		<spring:param name="page" value="0"/>
-    </spring:url>
-    <button type="button" role="link" onclick="window.location='${fn:escapeXml(foodOfferListUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
-	<span class="glyphicon 	glyphicon glyphicon-edit" aria-hidden="true" style="padding: 5px"> </span>
-	Ofertas de plato especifico</button>
-	
-	<spring:url value="/offers/nuOfferList/{page}" var="nuOfferListUrl">
-		<spring:param name="page" value="0"/>
-    </spring:url>
-    <button type="button" role="link" onclick="window.location='${fn:escapeXml(nuOfferListUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
-	<span class="glyphicon 	glyphicon glyphicon-edit" aria-hidden="true" style="padding: 5px"> </span>
-	Ofertas por número de comensales</button>
-	
-	<spring:url value="/offers/speedOfferList/{page}" var="speedOfferListUrl">
-		<spring:param name="page" value="0"/>
-    </spring:url>
-    <button type="button" role="link" onclick="window.location='${fn:escapeXml(speedOfferListUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
-	<span class="glyphicon 	glyphicon glyphicon-edit" aria-hidden="true" style="padding: 5px"> </span>
-	Ofertas de velocidad</button>
-	
-	<spring:url value="/offers/timeOfferList/{page}" var="timeOfferListUrl">
-		<spring:param name="page" value="0"/>
-    </spring:url>
-    <button type="button" role="link" onclick="window.location='${fn:escapeXml(timeOfferListUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
-	<span class="glyphicon 	glyphicon glyphicon-edit" aria-hidden="true" style="padding: 5px"> </span>
-	Ofertas de franja horaria</button>
-
+<cheapy:layout pageName="ofertas por numero de comensales">
+	<div class="text-center">
+		<div class="btn-filter-max">
+			<spring:url value="/offers/foodOfferList/{page}" var="foodOfferListUrl">
+				<spring:param name="page" value="0"/>
+		    </spring:url>
+		    <button type="button" role="link" class="btn-filter" onclick="window.location='${fn:escapeXml(foodOfferListUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
+			<span class="glyphicon 	glyphicon glyphicon-cutlery" aria-hidden="true" style="padding: 5px"> </span>
+			Ofertas de plato especifico</button>
+			
+			<spring:url value="/offers/nuOfferList/{page}" var="nuOfferListUrl">
+				<spring:param name="page" value="0"/>
+		    </spring:url>
+		    <button type="button" role="link" class="btn-filter-active" onclick="window.location='${fn:escapeXml(nuOfferListUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
+			<span class="glyphicon 	glyphicon glyphicon-cutlery" aria-hidden="true" style="padding: 5px"> </span>
+			Ofertas por nÃºmero de comensales</button>
+			
+			<spring:url value="/offers/speedOfferList/{page}" var="speedOfferListUrl">
+				<spring:param name="page" value="0"/>
+		    </spring:url>
+		    <button type="button" role="link" class="btn-filter" onclick="window.location='${fn:escapeXml(speedOfferListUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
+			<span class="glyphicon 	glyphicon glyphicon-cutlery" aria-hidden="true" style="padding: 5px"> </span>
+			Ofertas de velocidad</button>
+			
+			<spring:url value="/offers/timeOfferList/{page}" var="timeOfferListUrl">
+				<spring:param name="page" value="0"/>
+		    </spring:url>
+		    <button type="button" role="link" class="btn-filter" onclick="window.location='${fn:escapeXml(timeOfferListUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
+			<span class="glyphicon 	glyphicon glyphicon-cutlery" aria-hidden="true" style="padding: 5px"> </span>
+			Ofertas de franja horaria</button>
+		</div>
+	</div>
 
     <h2 style="text-align:center;padding:5px"><fmt:message key="nuOffers"/></h2>
 	<c:if test="${empty nuOfferLs }">
-		<p id="vacio" >No hay ninguna oferta por número de comensales activa.</p>
+		<p id="vacio" >No hay ninguna oferta por nï¿½mero de comensales activa.</p>
 	</c:if>
 	<c:if test="${not empty nuOfferLs }">
     <table id="nuOfferTable" class="table table-striped">
@@ -94,7 +96,7 @@
     	</spring:url>
     	<button type="button" role="link" onclick="window.location='${fn:escapeXml(nuOfferListUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
 		<span class="glyphicon 	glyphicon glyphicon-edit" aria-hidden="true" style="padding: 5px"> </span>
-		Pág. anterior</button>
+		Pï¿½g. anterior</button>
     </c:if>
     <c:out value='${page}'></c:out>
     <c:if test="${fn:length(nuOfferLs) == 5}">
@@ -103,7 +105,7 @@
     	</spring:url>
     	<button type="button" role="link" onclick="window.location='${fn:escapeXml(nuOfferListUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
 		<span class="glyphicon 	glyphicon glyphicon-edit" aria-hidden="true" style="padding: 5px"> </span>
-		Pág. siguiente</button>
+		Pï¿½g. siguiente</button>
 	</c:if>
     </c:if>
 	
