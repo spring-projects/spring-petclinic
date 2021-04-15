@@ -14,7 +14,7 @@ Open the `src/test/resources/scenarios/FindOwners.feature` and follow instructio
 Open `src/test/resources/scenarios/AddOwners.feature` and follow instructions given in the comments.
 
 ## Bonus tasks
-1. The browser doesn't close after all tests. Fix it.
+1. The browser doesn't close after all tests. Please fix it.
 2. There is something wrong with the way the HTML elements are selected.
    Prepare a suggestion of how to improve it or even implement such a change.
 3. Suggest a replacement for Selenium.
