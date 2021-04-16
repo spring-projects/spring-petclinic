@@ -7,25 +7,31 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <cheapy:layout pageName="review">
 
+
     <h2 style="font-family: 'Lobster'; text-align:center; font-size:200%;  color: rgb(0, 64, 128); padding:10px"><fmt:message key="review"/></h2>
+
+    <form:form modelAttribute="review" class="form-horizontal" id="add-review-form">
+
 
 
     <table class="table table-striped" id="review-table">
         <tr>
             <th><fmt:message key="stars"/></th>
-            <td><c:out value="${review.stars}"/></td>
+           <!--  <td><c:out value="${review.stars}"/></td>--> 
+            <td><cheapy:ratingStar label="" name="stars" disabled="true"></cheapy:ratingStar></td>
         </tr>
         <tr>
             <th><fmt:message key="opinion"/></th>
             <td><c:out value="${review.opinion}"/></td>
         </tr>
-        
+    
     </table>
     
-    
+    </form:form>
 
 	<sec:authentication var="principal" property="principal" />
 	<div class="btns-edit">
