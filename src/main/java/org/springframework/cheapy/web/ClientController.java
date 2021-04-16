@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cheapy.model.Client;
 import org.springframework.cheapy.model.FoodOffer;
 import org.springframework.cheapy.model.Municipio;
@@ -17,7 +16,6 @@ import org.springframework.cheapy.model.NuOffer;
 import org.springframework.cheapy.model.SpeedOffer;
 import org.springframework.cheapy.model.StatusOffer;
 import org.springframework.cheapy.model.TimeOffer;
-import org.springframework.cheapy.repository.ClientRepository;
 import org.springframework.cheapy.service.ClientService;
 import org.springframework.cheapy.service.FoodOfferService;
 import org.springframework.cheapy.service.NuOfferService;
@@ -45,8 +43,6 @@ public class ClientController {
 	
 	private final TimeOfferService timeOfferService;
 	
-	@Autowired
-	private ClientRepository clientRepo;
 	
 
 	public ClientController(final ClientService clientService, FoodOfferService foodOfferService, 
@@ -100,6 +96,11 @@ public class ClientController {
 		Client clienteSesion = this.clientService.getCurrentClient();
 		if(!this.checkTimes(clientEdit)) {
 			result.rejectValue("finish","" ,"La hora de cierre debe ser posterior a la hora de apertura");
+			
+		}
+		
+		if(clientEdit.getUsuar().getPassword().equals("")) {
+			result.rejectValue("usuar.password","" ,"La contraseña no puede estar vacía");
 			
 		}
 	
@@ -162,7 +163,7 @@ public class ClientController {
 	@GetMapping(value = "/restaurant/{clientId}")
 	public String showRestaurant(final ModelMap model, @PathVariable("clientId") Integer id) {
 
-		Client client = this.clientRepo.findById(id).get();
+		Client client = this.clientService.findById(id);
 		model.put("client", client);
 		return "clients/restaurantShow";
 	}

@@ -1,13 +1,10 @@
 package org.springframework.cheapy.service;
 
 import java.util.List;
-import javax.validation.Valid;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cheapy.model.Client;
 import org.springframework.cheapy.model.Code;
-import org.springframework.cheapy.model.Usuario;
 import org.springframework.cheapy.repository.ClientRepository;
 import org.springframework.cheapy.repository.CodeRepository;
 import org.springframework.dao.DataAccessException;
@@ -51,6 +48,11 @@ public class ClientService {
 	@Transactional
 	public Client findByUsername(String username) throws DataAccessException {
 		return this.clientRepository.findByUsername(username);
+	}
+	
+	@Transactional
+	public Client findById(Integer id) throws DataAccessException {
+		return this.clientRepository.findById(id);
 	}
 	
 	@Transactional
