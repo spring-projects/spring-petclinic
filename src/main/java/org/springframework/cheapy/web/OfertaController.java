@@ -2,7 +2,6 @@
 package org.springframework.cheapy.web;
 
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -114,6 +113,17 @@ public class OfertaController {
 
 	@GetMapping("/offersByPlace")
 	public String processFindFormByPlace(final Map<String, Object> model, final HttpServletRequest request) {
+
+		if (request.getParameter("municipio").equals("") || request.getParameter("municipio").equals(null)) {
+			// Añade la lista de municipios al desplegable
+			model.put("municipios", Municipio.values());
+
+			//Se añade formateador de fecha al modelo
+			model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+
+			return "redirect:/offers/";
+		}
+
 		Municipio mun = Municipio.valueOf(request.getParameter("municipio"));
 
 		List<FoodOffer> foodOfferLs = this.foodOfferService.findFoodOfferByClientPlace(mun);
@@ -161,30 +171,30 @@ public class OfertaController {
 
 		return "offers/offersCreate";
 	}
-	
+
 	@GetMapping("/offersRecord")
 	public String processOffersRecordForm(final Map<String, Object> model) {
-		
+
 		Pageable p = PageRequest.of(0, 3);
-		
+
 		Map<Offer, String> datos = new HashMap<Offer, String>();
-		
-		for(Offer of:this.foodOfferService.findAllFoodOffer(p)) {
+
+		for (Offer of : this.foodOfferService.findAllFoodOffer(p)) {
 			datos.put(of, "food");
 		}
-		
-		for(Offer of:this.nuOfferService.findAllNuOffer(p)) {
+
+		for (Offer of : this.nuOfferService.findAllNuOffer(p)) {
 			datos.put(of, "nu");
 		}
-		
-		for(Offer of:this.speedOfferService.findAllSpeedOffer(p)) {
+
+		for (Offer of : this.speedOfferService.findAllSpeedOffer(p)) {
 			datos.put(of, "speed");
 		}
-		
-		for(Offer of:this.timeOfferService.findAllTimeOffer(p)) {
+
+		for (Offer of : this.timeOfferService.findAllTimeOffer(p)) {
 			datos.put(of, "time");
 		}
-		
+
 		model.put("datos", datos);
 
 		//Se añade formateador de fecha al modelo
@@ -192,7 +202,7 @@ public class OfertaController {
 
 		return "offers/offersRecordList";
 	}
-	
+
 	//	@GetMapping("/owners/{ownerId}/edit")
 	//	public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
 	//		Owner owner = this.ownerService.findOwnerById(ownerId);
