@@ -1,7 +1,9 @@
 # QA Assignment
 
 ## How to start?
-Follow the instructions in the [readme](readme.md) file.
+1. Follow the instructions in the [readme](readme.md) file.
+2. Switch the branch to `cucumber`.
+3. Create a pull request with your changes.
 
 ## Running tests
 You can run the Cucumber features from your IDE or via the command line:
