@@ -6,6 +6,7 @@
 <%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
 
 <cheapy:layout pageName="ofertas">
@@ -46,36 +47,38 @@
 	</div>		
 	
 	<form class="example" action="/offersByName">
-		<h2 class="text-center" style="font-size: 100%" >Búsqueda por nombre del bar/restaurante: </h2>
+		<h2 class="text-center" style="font-family: 'Lobster'; text-align:center; font-size:150%;  color: rgb(0, 64, 128); padding:10px;" >Búsqueda por nombre del bar/restaurante: </h2>
 		<div class="text-center">
-	  		<input type="text" placeholder="Búsqueda por nombre" name="name">
-	  		<button type="submit"><i class="fa fa-search"></i>
+	  		<input type="text" placeholder="Búsqueda por nombre" name="name" style="border:solid; border-color: rgb(0, 64, 128);">
+	  		<button type="submit" class="btn-search"><i class="fa fa-search"></i>
 	  		<span class="glyphicon 	glyphicon glyphicon-search" aria-hidden="true" style="padding: 5px"> </span>
 	  		</button>
   		</div>
 	</form>
 	
 	<form class="example" action="/offersByFood">
-		<h2 class="text-center" style="font-size: 100%" >Búsqueda por comida: </h2>
+		<h2 class="text-center" style="font-family: 'Lobster'; text-align:center; font-size:150%;  color: rgb(0, 64, 128); padding:10px;" >Búsqueda por tipo de comida: </h2>
 		<div class="text-center">
-	  		<input type="text" placeholder="Búsqueda por comida (Ej: Macarrones)" name="name">
-	  		<button type="submit"><i class="fa fa-search"></i>
+	  		<input type="text" placeholder="Búsqueda por tipo comida (Ej: americana)" name="name" style="border:solid; border-color: rgb(0, 64, 128);">
+	  		<button type="submit" class="btn-search"><i class="fa fa-search"></i>
 	  		<span class="glyphicon 	glyphicon glyphicon-search" aria-hidden="true" style="padding: 5px"> </span>
 	  		</button>
   		</div>
 	</form>
 	
 	<form class="example" action="/offersByPlace">
-		<select name="municipio">
-		<option value="">Escoge municipio</option>
-		<c:forEach items="${municipios}" var="entry">
-			<option value="${entry}">${entry}</option>
-		</c:forEach>
-		</select>
-		<button type="submit">Buscar por municipio</button>
+		<div class="text-center">
+			<select name="municipio" class="select-municipio" >
+			
+			<c:forEach items="${municipios}" var="entry">
+				<option value="${entry}">${entry.toString()}</option>
+			</c:forEach>
+			</select>
+			<button type="submit" class="btn-mas">Buscar por municipio</button>
+		</div>
 	</form>
 
-    <h2 style="text-align:center;padding:5px"><fmt:message key="foodOffers"/></h2>
+    <h2 style="font-family: 'Lobster'; text-align:center; font-size:200%;  color: rgb(0, 64, 128); padding:10px"><fmt:message key="foodOffers"/>:</h2>
     
 	<c:if test="${empty foodOfferLs }">
 		<p id="vacio" >No hay ninguna oferta por plato específico activa.</p>
@@ -134,19 +137,21 @@
         </c:forEach>
         </tbody>
     </table>
-    <button type="button" role="link" onclick="window.location='${fn:escapeXml(foodOfferListUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
-	<span class="glyphicon 	glyphicon glyphicon-edit" aria-hidden="true" style="padding: 5px"> </span>
-	Ver más</button>
+    <div class="text-center">
+	    <button type="button" class="btn-mas" role="link" onclick="window.location='${fn:escapeXml(foodOfferListUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
+		<span class="glyphicon 	glyphicon glyphicon-plus" aria-hidden="true" style="padding: 5px"> </span>
+		Ver más</button>
+	</div>
     </div>
     
     </c:if>
-    <h2 style="text-align:center;padding:5px"><fmt:message key="nuOffers"/></h2>
+    <h2 style="font-family: 'Lobster'; text-align:center; font-size:200%;  color: rgb(0, 64, 128); padding:10px"><fmt:message key="nuOffers"/>:</h2>
 	<c:if test="${empty nuOfferLs }">
-		<p id="vacio" >No hay ninguna oferta por n�mero de comensales activa.</p>
+		<p id="vacio" >No hay ninguna oferta por número de comensales activa.</p>
 	</c:if>
 	<c:if test="${not empty nuOfferLs }">
 
- 		<div class="table-responsive">        
+ 	<div class="table-responsive">        
     <table id="nuOfferTable" class="table table-striped">
         <thead>
         <tr>
@@ -156,6 +161,7 @@
             <th><fmt:message key="endDate"/></th>
             <th><fmt:message key="goldGoal"/></th>
             <th><fmt:message key="goldDiscount"/></th>
+            <th><fmt:message key="municipio"/></th>
             <th> </th>
             
         </tr>
@@ -179,6 +185,9 @@
                     <c:out value="${nuOffer.discountGold}%"/>
                 </td>
                 <td>
+                    <c:out value="${nuOffer.client.municipio}"/>
+                </td>
+                <td>
 	                <spring:url value="/offers/nu/{nuOfferId}" var="nuOfferUrl">
 	                        <spring:param name="nuOfferId" value="${nuOffer.id}"/>
 	                </spring:url>
@@ -192,14 +201,16 @@
         </c:forEach>
         </tbody>
     </table>
-    <button type="button" role="link" onclick="window.location='${fn:escapeXml(nuOfferListUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
-	<span class="glyphicon 	glyphicon glyphicon-edit" aria-hidden="true" style="padding: 5px"> </span>
-	Ver más</button>
+    <div class="text-center">
+	    <button type="button" class="btn-mas" role="link" onclick="window.location='${fn:escapeXml(nuOfferListUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
+		<span class="glyphicon 	glyphicon glyphicon-plus" aria-hidden="true" style="padding: 5px"> </span>
+		Ver más</button>
+	</div>
     </div>
 
     </c:if>
     
-    <h2 style="text-align:center;padding:5px"><fmt:message key="speedOffers"/></h2>
+    <h2 style="font-family: 'Lobster'; text-align:center; font-size:200%;  color: rgb(0, 64, 128); padding:10px"><fmt:message key="speedOffers"/>:</h2>
 	<c:if test="${empty speedOfferLs }">
 		<p id="vacio" >No hay ninguna oferta por tiempo empleado en comer activa.</p>
 	</c:if>
@@ -215,6 +226,7 @@
 		            <th><fmt:message key="endDate"/></th>
 		            <th><fmt:message key="goldGoal"/></th>
 		            <th><fmt:message key="goldDiscount"/></th>
+		            <th><fmt:message key="municipio"/></th>
 		            <th> </th>
 		            
 		        </tr>
@@ -238,6 +250,9 @@
 		                    <c:out value="${speedOffer.discountGold}%"/>
 		                </td>
 		                <td>
+		                    <c:out value="${speedOffer.client.municipio}"/>
+		                </td>
+		                <td>
 		                    <spring:url value="/offers/speed/{speedOfferId}" var="speedOfferUrl">
 		                        <spring:param name="speedOfferId" value="${speedOffer.id}"/>
 		                    </spring:url>
@@ -252,15 +267,17 @@
 		        </c:forEach>
 		        </tbody>
 		    </table>
-		  	<spring:url value="/offers/speedOfferList" var="speedOfferUrl"></spring:url>
-   			<button type="button" role="link" onclick="window.location='${fn:escapeXml(speedOfferListUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
-			<span class="glyphicon 	glyphicon glyphicon-edit" aria-hidden="true" style="padding: 5px"> </span>
-			Ver más</button>
+		    <div class="text-center">
+			  	<spring:url value="/offers/speedOfferList" var="speedOfferUrl"></spring:url>
+	   			<button type="button" class="btn-mas" role="link" onclick="window.location='${fn:escapeXml(speedOfferListUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
+				<span class="glyphicon 	glyphicon glyphicon-plus" aria-hidden="true" style="padding: 5px"> </span>
+				Ver más</button>
+			</div>
 	    </div>
 
     </c:if>
     
-    <h2 style="text-align:center;padding:5px"><fmt:message key="timeOffers"/></h2>
+    <h2 style="font-family: 'Lobster'; text-align:center; font-size:200%;  color: rgb(0, 64, 128); padding:10px"><fmt:message key="timeOffers"/>:</h2>
 	<c:if test="${empty timeOfferLs }">
 		<p id="vacio" >No hay ninguna oferta por franja horaria activa.</p>
 	</c:if>
@@ -276,6 +293,7 @@
 		            <th><fmt:message key="endDate"/></th>
 		            <th><fmt:message key="init"/></th>
 		            <th><fmt:message key="finishOffer"/></th>
+		            <th><fmt:message key="municipio"/></th>
 		            <th> </th>
 		        </tr>
 		        </thead>
@@ -297,6 +315,9 @@
 		                <td>
 		                    <c:out value="${timeOffer.finish}h"/>
 		                </td>
+		                <td>
+		                    <c:out value="${timeOffer.client.municipio}"/>
+		                </td>
 		                
 		                <td>
 		                	<spring:url value="/offers/time/{timeOfferId}" var="timeOfferUrl">
@@ -311,10 +332,12 @@
 		            </tr>
 		        </c:forEach>
 		    </table>
-		    <spring:url value="/offers/timeOfferList" var="timeOfferUrl"></spring:url>
-    		<button type="button" role="link" onclick="window.location='${fn:escapeXml(timeOfferListUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
-			<span class="glyphicon 	glyphicon glyphicon-edit" aria-hidden="true" style="padding: 5px"> </span>
-			Ver más</button>
+		    <div class="text-center">
+			    <spring:url value="/offers/timeOfferList" var="timeOfferUrl"></spring:url>
+	    		<button type="button" class="btn-mas" role="link" onclick="window.location='${fn:escapeXml(timeOfferListUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
+				<span class="glyphicon 	glyphicon glyphicon-plus" aria-hidden="true" style="padding: 5px"> </span>
+				Ver más</button>
+			</div>
   	  </div>
     </c:if>
   

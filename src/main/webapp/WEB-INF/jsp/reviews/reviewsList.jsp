@@ -4,10 +4,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
 
 <cheapy:layout pageName="reviews">
-    <h2 style="text-align:center;padding:5px"><fmt:message key="reviews"/></h2>
+    <h2 style="font-family: 'Lobster'; text-align:center; font-size:200%;  color: rgb(0, 64, 128); padding:10px"><fmt:message key="reviews"/></h2>
 
     <table id="reviewTable" class="table table-striped">
         <thead>
@@ -22,7 +23,7 @@
         <tbody>
         <c:choose>
 	        <c:when test="${empty reviewsLs}">
-	        	<tr><td colspan="4"><em><c:out value="No se ha realizado ninguna valoraci�n por el momento."/></em></td></tr>
+	        	<tr><td colspan="4"><em><c:out value="No se ha realizado ninguna valoración por el momento."/></em></td></tr>
 	        </c:when>
 	        <c:otherwise>
 	        <c:forEach items="${reviewsLs}" var="review">
@@ -56,21 +57,28 @@
         </c:choose>
         </tbody>
     </table>
-        <c:if test='${page!=0}'>
+    <div class="text-center">
+    	<c:out value='Página ${page}'></c:out>
+    </div>
+    <c:if test='${page!=0}'>
+    <div class="text-left">
     	<spring:url value="/reviewsList/{page}" var="reviewsListUrl">
     		<spring:param name="page" value="${page-1}"/>
     	</spring:url>
-    	<button type="button" role="link" onclick="window.location='${fn:escapeXml(reviewsListUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
-		<span class="glyphicon 	glyphicon glyphicon-edit" aria-hidden="true" style="padding: 5px"> </span>
-		P�g. anterior</button>
+    	<button type="button" class="btn-pag" role="link" onclick="window.location='${fn:escapeXml(reviewsListUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
+		<span class="glyphicon 	glyphicon glyphicon-arrow-left" aria-hidden="true" style="padding: 5px"> </span>
+		Pág. anterior</button>
+ 	</div>
     </c:if>
-    <c:out value='${page}'></c:out>
+    
     <c:if test="${fn:length(reviewsLs) == 6}">
+    <div class="text-right">
     	<spring:url value="/reviewsList/{page}" var="reviewsListUrl">
     		<spring:param name="page" value="${page+1}"/>
     	</spring:url>
-    	<button type="button" role="link" onclick="window.location='${fn:escapeXml(reviewsListUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
-		<span class="glyphicon 	glyphicon glyphicon-edit" aria-hidden="true" style="padding: 5px"> </span>
-		P�g. siguiente</button>
+    	<button type="button" class="btn-pag" role="link" onclick="window.location='${fn:escapeXml(reviewsListUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
+		<span class="glyphicon 	glyphicon glyphicon-arrow-right" aria-hidden="true" style="padding: 5px"> </span>
+		Pág. siguiente</button>
+	</div>
 	</c:if>
 </cheapy:layout>

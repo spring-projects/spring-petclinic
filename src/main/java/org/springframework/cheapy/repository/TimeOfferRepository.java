@@ -13,7 +13,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-public interface TimeOfferRepository extends PagingAndSortingRepository<FoodOffer, Integer> {
+public interface TimeOfferRepository extends PagingAndSortingRepository<TimeOffer, Integer> {
 
 	TimeOffer findTimeOfferById(int timeOfferId);
 
@@ -21,7 +21,7 @@ public interface TimeOfferRepository extends PagingAndSortingRepository<FoodOffe
 	@Transactional(readOnly = true)
 	List<TimeOffer> findAllTimeOffer(Pageable p);
 
-	void save(TimeOffer timeOffer);
+	//void save(TimeOffer timeOffer);
 
 	@Query("SELECT timeOffer FROM TimeOffer timeOffer WHERE timeOffer.status =:status")
 	@Transactional(readOnly = true)

@@ -5,6 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 
 <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
 
@@ -32,7 +33,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/2.4.4/js/bootstrap-datetimepicker.min.js"></script>
 
 <cheapy:layout pageName="NumOffers">
-    <h2 style="text-align:center;padding:5px">
+    <h2 style="font-family: 'Lobster'; text-align:center; font-size:200%;  color: rgb(0, 64, 128); padding:10px">
         <c:if test="${nuOffer['new']}"><fmt:message key="new"/> </c:if> <fmt:message key="nuOffer"/>
     </h2>    
     
@@ -66,11 +67,11 @@
 			
 			<cheapy:inputField label="Fecha de Inicio" placeholder="dd/MM/yyyy HH:mm" name="start"/>
             <cheapy:inputField label="Fecha de Fin"  placeholder="dd/MM/yyyy HH:mm" name="end"/> 
-            <cheapy:inputField label="Número de comensales (nivel Oro)" placeholder="XX (Ej. 6)" name="gold"/>
+            <cheapy:inputField label="NÃºmero de comensales (nivel Oro)" placeholder="XX (Ej. 6)" name="gold"/>
             <cheapy:inputField label="Descuento de nivel oro" placeholder="XX% (Ej. 30)" name="discountGold"/>
-            <cheapy:inputField label="Número de comensales (nivel Plata)" placeholder="XX (Ej. 4)" name="silver"/>
+            <cheapy:inputField label="NÃºmero de comensales (nivel Plata)" placeholder="XX (Ej. 4)" name="silver"/>
             <cheapy:inputField label="Descuento de plata" placeholder="XX% (Ej. 15)" name="discountSilver"/>
-            <cheapy:inputField label="Número de comensales (nivel Bronce)" placeholder="XX (Ej. 2)" name="bronze"/>
+            <cheapy:inputField label="NÃºmero de comensales (nivel Bronce)" placeholder="XX (Ej. 2)" name="bronze"/>
 			<cheapy:inputField label="Descuento de bronce" placeholder="XX% (Ej. 5)" name="discountBronze"/>
  
             </div>

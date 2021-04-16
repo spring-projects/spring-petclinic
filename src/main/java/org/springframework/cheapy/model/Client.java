@@ -27,13 +27,13 @@ public class Client extends BaseEntity {
 	// (id, name, email, address, init, finish, telephone, description, code, food,
 	// usuar)
 
-	@NotEmpty
+	@NotEmpty(message="No debe estar vacío")
 	private String				name;
 
-	@NotEmpty
+	@NotEmpty(message="No debe estar vacío")
 	private String				email;
 
-	@NotEmpty
+	@NotEmpty(message="No debe estar vacío")
 	private String				address;
 
 	@NotNull
@@ -145,13 +145,6 @@ public class Client extends BaseEntity {
 		this.description = description;
 	}
 
-	public Municipio getMunicipio() {
-		return municipio;
-	}
-
-	public void setMunicipio(Municipio municipio) {
-		this.municipio = municipio;
-	}
 
 	public Code getCode() {
 		return cod;

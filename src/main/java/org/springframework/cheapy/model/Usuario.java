@@ -19,20 +19,20 @@ public class Usuario extends BaseEntity{
 	
 	private static final long serialVersionUID = 1L;
 
-	@NotBlank
+	@NotBlank(message="No debe estar vacío")
 	private String	nombre;
 
-	@NotBlank
+	@NotBlank(message="No debe estar vacío")
 	private String	apellidos;
 
-	@NotBlank
+	@NotBlank(message="No debe estar vacío")
 	private String	direccion;
 
 	@Enumerated(value = EnumType.STRING)
 	private Municipio municipio;
 	
 	@Email
-	@NotBlank
+	@NotBlank(message="No debe estar vacío")
 	private String	email;
 
 	@OneToOne(cascade = CascadeType.ALL)
