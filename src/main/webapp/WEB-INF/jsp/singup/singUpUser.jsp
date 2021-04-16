@@ -6,6 +6,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -273,33 +274,41 @@
 
 </style>
 <cheapy:layout pageName="singUp">
-    <h2 style="text-align:center;padding:5px">
-        <fmt:message key="new"/><fmt:message key="user"/>
+<div class="text-center">
+    <h2 style="font-family: 'Lobster'; text-align:center; font-size:200%;  color: rgb(0, 64, 128); padding:10px">
+        <fmt:message key="new"/><fmt:message key="usuario"/>
     </h2>
+</div>
 	<form:form modelAttribute="usuario" class="form-horizontal"
-		id="add-foodOffer-form">
+		id="add-user-form">
 		<div class="form-group has-feedback">
 			<cheapy:inputField label="Nombre" placeholder="Ponga aqui su nombre"
 				name="nombre" />
 			<cheapy:inputField label="Apellidos" placeholder="Ponga aqui sus apellidos"
 				name="apellidos" />
-			<cheapy:inputField label="Direccion" placeholder="Ponga aqui su dirección"
+			<cheapy:inputField label="Direccion" placeholder="Ponga aqui su direcciÃ³n"
 				name="direccion" />
-			<div class="form-group">                   
-            <label>Municipio: </label>
-			<select name="municipio">
-				<c:forEach items="${municipio}" var="entry">
-					<option value="${entry}">${entry}</option>
-				</c:forEach>
-			</select>
-			</div>
+			
 			<cheapy:inputField label="Email" placeholder="Ponga aqui su email"
 				name="email" />
 			<cheapy:inputField label="Nombre de usuario" placeholder="Ponga aqui su nombre de usuario"
 				name="usuar.username" />
-			<cheapy:inputField label="Contraseña" placeholder="Ponga aqui su contraseña"
+			<cheapy:passwordField label="ContraseÃ±a" placeholder="Ponga aqui su contraseÃ±a" 
 				name="usuar.password" />
-			<input type="submit" class="fadeIn fourth" value="Registrarse">
+			<div class="form-group">                   
+	            <label class="col-sm-2 control-label">Municipio </label>
+	            <div class="col-sm-10">
+				<select name="municipio" class="select-municipio" style="width:80%;text-align-last:center;" >
+					
+					<c:forEach items="${municipio}" var="entry">
+						<option value="${entry}">${entry.toString()}</option>
+					</c:forEach>
+				</select>
+				</div>
+			</div>
+			<div class="text-center">
+				<input type="submit" class="fadeIn fourth" value="Registrarse">
+			</div>
 		</div>
 	</form:form>
 

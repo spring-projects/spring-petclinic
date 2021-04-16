@@ -5,15 +5,21 @@
 <%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
+
 <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
 
 <cheapy:layout pageName="timeOffer">
 
-    <h2 style="text-align:center;padding:5px"><fmt:message key="timeOffer"/></h2>
+    <h2 style="font-family: 'Lobster'; text-align:left; font-size:200%;  color: rgb(0, 64, 128); padding:10px; margin-bottom:20px;"><fmt:message key="timeOffer"/>:</h2>
 
 
     <table id="timeOfferTable" class="table table-striped">
         <thead>
+        <tr>
+            <th><fmt:message key="client"/></th>
+            <td><c:out value="${timeOffer.client.name}"/> </td>
+        </tr>
         <tr>
             <th><fmt:message key="offerBeginning"/></th>
             <td><c:out value="${localDateTimeFormat.format(timeOffer.start)}"/></td>
@@ -37,6 +43,10 @@
         <tr>
             <th><fmt:message key="offerCode"/></th>
             <td><c:out value="${timeOffer.code}"/></td>
+        </tr>
+        <tr>
+            <th><fmt:message key="municipio"/></th>
+            <td><c:out value="${timeOffer.client.municipio}"/> </td>
         </tr>
         </thead>
     </table>

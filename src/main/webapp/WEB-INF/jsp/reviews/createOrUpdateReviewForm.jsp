@@ -5,17 +5,19 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
+<link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
 
 <cheapy:layout pageName="reviewsN">
-    <h2>
-        <c:if test="${review['new']}">Nueva </c:if> Reseña
+    <h2 style="font-family: 'Lobster'; text-align:center; font-size:200%;  color: rgb(0, 64, 128); padding:10px">
+    	<c:if test="${review['new']}">Nueva </c:if> ReseÃƒÂ±a
     </h2>
     <form:form modelAttribute="review" class="form-horizontal" id="add-review-form">
         <div class="form-group has-feedback">
         	<form:hidden path="id"/>
-            <cheapy:textAreaField label="Opinión" name="opinion"/>
+            <cheapy:textAreaField label="OpiniÃ³n" name="opinion"/>
            <!-- <cheapy:inputField label="Estrellas" name="stars"/>  -->
-            <cheapy:ratingStar label="Valoración" name="stars" disabled="false"></cheapy:ratingStar>
+            <cheapy:ratingStar label="ValoraciÃ³n" name="stars" disabled="false"></cheapy:ratingStar>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
@@ -24,10 +26,10 @@
                     <c:when test="${review['new']}">
                         <button class="btn btn-default" type="submit" style="font-family: 'Lobster'; font-size: 20px;">
 	                        <span class="glyphicon glyphicon-floppy-save" aria-hidden="true" style="padding: 5px"> </span>
-	                        Crear reseña</button>
+	                        Crear reseÃƒÂ±a</button>
                     </c:when>
                     <c:otherwise>
-                        <button class="btn btn-default" type="submit">Modificar Reseña</button>
+                        <button class="btn btn-default" type="submit">Modificar ReseÃƒÂ±a</button>
                     </c:otherwise>
                 </c:choose>
                 </div>

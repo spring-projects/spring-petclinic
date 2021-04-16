@@ -14,10 +14,10 @@ INSERT INTO users (username,password,enabled) VALUES ('pepe','pepe', TRUE );
 INSERT INTO authorities (username,authority) VALUES ('pepe','usuario');
 
 
-INSERT INTO usuarios (id, nombre, apellidos, direccion, municipio, email, username) VALUES (1, 'admin', 'admin',  'C/admin', 'carmona', 'admin@gmail.com','admin');
-INSERT INTO usuarios (id, nombre, apellidos, direccion, municipio, email, username) VALUES (2, 'Paco', 'Naranjo', 'C/Esperanza', 'sevilla', 'Paco@gmail.com','paco');
-INSERT INTO usuarios (id, nombre, apellidos, direccion, municipio, email, username) VALUES (3, 'Lolo', 'Lopez',  'C/Macarena', 'dos_hermanas', 'Lolo@gmail.com','lolo');
-INSERT INTO usuarios (id, nombre, apellidos, direccion, municipio, email, username) VALUES (4, 'Pepe', 'Lopez', 'C/Macarena', 'carmona', 'Pepe@gmail.com','pepe');
+INSERT INTO usuarios (id, nombre, apellidos, direccion, municipio, email, username) VALUES (1, 'admin', 'admin',  'C/admin', 'Carmona', 'admin@gmail.com','admin');
+INSERT INTO usuarios (id, nombre, apellidos, direccion, municipio, email, username) VALUES (2, 'Paco', 'Naranjo', 'C/Esperanza', 'Sevilla', 'Paco@gmail.com','paco');
+INSERT INTO usuarios (id, nombre, apellidos, direccion, municipio, email, username) VALUES (3, 'Lolo', 'Lopez',  'C/Macarena', 'Dos_Hermanas', 'Lolo@gmail.com','lolo');
+INSERT INTO usuarios (id, nombre, apellidos, direccion, municipio, email, username) VALUES (4, 'Pepe', 'Lopez', 'C/Macarena', 'Carmona', 'Pepe@gmail.com','pepe');
 
 INSERT INTO codes (id,code,activo) VALUES (1,'code1',FALSE);
 INSERT INTO codes (id,code,activo) VALUES (2,'code2',FALSE);
