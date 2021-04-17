@@ -12,9 +12,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -51,7 +51,7 @@ public class Client extends BaseEntity {
 	private LocalTime			finish;
 
 	@NotEmpty
-	@Digits(fraction = 0, integer = 10)
+	@Pattern(regexp="\\d{9}",message="Debe tener 9 dígitos")
 	private String				telephone;
 
 	@NotEmpty

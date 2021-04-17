@@ -16,14 +16,14 @@
     <form:form modelAttribute="client" class="form-horizontal" id="add-client-form">
         <div class="form-group has-feedback">
 			                
-            <cheapy:passwordField label="Contrase�a" placeholder="Restaurante pepito" name="usuar.password"/>		
+            <cheapy:passwordField label="Contraseña" placeholder="Restaurante pepito" name="usuar.password"/>		
             <cheapy:inputField label="Hora de inicio" placeholder="HH:mm" name="init"/>
             <cheapy:inputField label="Hora de fin" placeholder="HH:mm" name="finish"/>
             <cheapy:inputField label="Nombre" placeholder="Restaurante pepito" name="name"/>
             <cheapy:inputField label="Email" placeholder="" name="email"/>
-            <cheapy:inputField label="Direcci�n" placeholder="" name="address"/>           
-            <cheapy:inputField label="Tel�fono" placeholder="" name="telephone"/>
-            <cheapy:inputField label="descripci�n" placeholder="" name="description"/>
+            <cheapy:inputField label="Dirección" placeholder="" name="address"/>           
+            <cheapy:inputField label="Teléfono" placeholder="" name="telephone"/>
+            <cheapy:inputField label="descripción" placeholder="" name="description"/>
             <cheapy:inputField label="Comida" placeholder="food" name="food"/>
             <div class="form-group">                   
 	            <label class="col-sm-2 control-label">Municipio: </label>
