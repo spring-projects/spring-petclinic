@@ -4,6 +4,7 @@ package org.springframework.cheapy.repository;
 import java.util.List;
 
 import org.springframework.cheapy.model.FoodOffer;
+import org.springframework.cheapy.model.Municipio;
 import org.springframework.cheapy.model.StatusOffer;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -34,13 +35,17 @@ public interface FoodOfferRepository extends PagingAndSortingRepository<FoodOffe
 	@Query("SELECT foodOffer FROM FoodOffer foodOffer WHERE foodOffer.client.id =:id AND foodOffer.status!= 'inactive'")
 	@Transactional(readOnly = true)
 	List<FoodOffer> findFoodOfferActOclByUserId(@Param("id") Integer id);
-	
+
 	@Query("SELECT foodOffer FROM FoodOffer foodOffer WHERE foodOffer.client.name LIKE :name AND foodOffer.status= 'active'")
 	@Transactional(readOnly = true)
 	List<FoodOffer> findFoodOfferByClientName(String name);
-	
+
 	@Query("SELECT foodOffer FROM FoodOffer foodOffer WHERE foodOffer.client.food LIKE :name AND foodOffer.status= 'active'")
 	@Transactional(readOnly = true)
 	List<FoodOffer> findFoodOfferByClientFood(String name);
-	
+
+	@Query("SELECT foodOffer FROM FoodOffer foodOffer WHERE foodOffer.client.municipio =:municipio AND foodOffer.status= 'active'")
+	@Transactional(readOnly = true)
+	List<FoodOffer> findFoodOfferByClientPlace(Municipio municipio);
+
 }

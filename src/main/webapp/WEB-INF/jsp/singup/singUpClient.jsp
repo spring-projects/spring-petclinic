@@ -6,6 +6,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -273,31 +274,25 @@
 
 </style>
 <cheapy:layout pageName="singUp">
-    <h2 style="text-align:center;padding:5px">
+<div class="text-center">
+    <h2 style="font-family: 'Lobster'; text-align:center; font-size:200%;  color: rgb(0, 64, 128); padding:10px">
         <fmt:message key="new"/><fmt:message key="client"/>
     </h2>
+</div>
 	<form:form modelAttribute="cliente" class="form-horizontal"
 		id="add-client-form">
 		<div class="form-group has-feedback">
 			<cheapy:inputField label="Nombre" placeholder="Ponga aqui su nombre"
 				name="name" />
-			<cheapy:inputField label="Direccion" placeholder="Ponga aqui su direcci髇"
-				name="address" />
-			<div class="form-group">                   
-            <label>Municipio: </label>
-			<select name="municipio">
-				<c:forEach items="${municipio}" var="entry">
-					<option value="${entry}">${entry}</option>
-				</c:forEach>
-			</select>
-			</div>
+			<cheapy:inputField label="Direccion" placeholder="Ponga aqui su direcci贸n"
+				name="address" />			
 			<cheapy:inputField label="Hora de apertura" placeholder="Ponga aqui su hora de apertura (formato HH:mm)"
 				name="init" />
 			<cheapy:inputField label="Hora de cierre" placeholder="Ponga aqui su hora de cierre (formato HH:mm)"
 				name="finish" />
-			<cheapy:inputField label="Tel閒ono" placeholder="Ponga aqui el tel閒ono del local"
+			<cheapy:inputField label="Tel茅fono" placeholder="Ponga aqui el tel茅fono del local"
 				name="telephone" />
-			<cheapy:inputField label="Descripci髇" placeholder="Ponga aqui su descripci髇"
+			<cheapy:inputField label="Descripci贸n" placeholder="Ponga aqui su descripci贸n"
 				name="description" />
 			<cheapy:inputField label="Email" placeholder="Ponga aqui su email"
 				name="email" />
@@ -305,11 +300,23 @@
 				name="food" />
 			<cheapy:inputField label="Nombre de usuario" placeholder="Ponga aqui su nombre de usuario"
 				name="usuar.username" />
-			<cheapy:inputField label="Contrase馻" placeholder="Ponga aqui su contrase馻"
+			<cheapy:passwordField label="Contrase帽a" placeholder="Ponga aqui su contrase帽a"
 				name="usuar.password" />
-			<cheapy:inputField label="C骴igo de activaci髇" placeholder="Ponga aqui el c骴igo que se le suministro al firmar el contrato"
+			<cheapy:inputField label="C贸digo de activaci贸n" placeholder="Ponga aqui el c贸digo que se le suministro al firmar el contrato"
 				name="code.code" />
-			<input type="submit" class="fadeIn fourth" value="Registrarse">
+			<div class="form-group">                   
+	            <label class="col-sm-2 control-label">Municipio: </label>
+	            <div class="col-sm-10">
+				<select name="municipio" class="select-municipio" style="width:80%;text-align-last:center;">
+					<c:forEach items="${municipio}" var="entry">
+						<option value="${entry}">${entry.toString()}</option>
+					</c:forEach>
+				</select>
+				</div>
+			</div>	
+			<div class="text-center">
+				<input type="submit" class="fadeIn fourth" value="Registrarse">
+			</div>
 		</div>
 	</form:form>
 

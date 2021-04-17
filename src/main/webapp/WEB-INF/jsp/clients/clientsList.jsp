@@ -5,10 +5,11 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
 
 <cheapy:layout pageName="clients">
-    <h2 style="text-align:center;padding:5px"><fmt:message key="clients"/></h2>
+    <h2 style="font-family: 'Lobster'; text-align:center; font-size:200%;  color: rgb(0, 64, 128); padding:10px"><fmt:message key="clients"/></h2>
     
 	<c:if test="${empty clientLs }">
 		<p id="vacio" >No hay ningun Cliente.</p>

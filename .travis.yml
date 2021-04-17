@@ -13,7 +13,6 @@ before_install:
   - wget -O ~/codacy-coverage-reporter-assembly-latest.jar $(curl https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r .assets[0].browser_download_url)
   - chmod +x mvnw
   - mysql -e 'CREATE DATABASE cheapy;'
-  - sudo apt-get update
 after_success:
   - ls
   - ls target

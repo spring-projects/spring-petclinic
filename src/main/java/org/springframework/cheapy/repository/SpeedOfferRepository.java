@@ -3,6 +3,7 @@ package org.springframework.cheapy.repository;
 
 import java.util.List;
 
+import org.springframework.cheapy.model.Municipio;
 import org.springframework.cheapy.model.SpeedOffer;
 import org.springframework.cheapy.model.StatusOffer;
 import org.springframework.data.domain.Pageable;
@@ -34,12 +35,16 @@ public interface SpeedOfferRepository extends PagingAndSortingRepository<SpeedOf
 	@Query("SELECT speedOffer FROM SpeedOffer speedOffer WHERE speedOffer.client.id =:id AND speedOffer.status!= 'inactive'")
 	@Transactional(readOnly = true)
 	List<SpeedOffer> findSpeedOfferActOclByUserId(@Param("id") Integer id);
-	
+
 	@Query("SELECT speedOffer FROM SpeedOffer speedOffer WHERE speedOffer.client.name LIKE :name AND speedOffer.status= 'active'")
 	@Transactional(readOnly = true)
 	List<SpeedOffer> findSpeedOfferByClientName(String name);
-	
+
 	@Query("SELECT speedOffer FROM SpeedOffer speedOffer WHERE speedOffer.client.food LIKE :name AND speedOffer.status= 'active'")
 	@Transactional(readOnly = true)
 	List<SpeedOffer> findSpeedOfferByClientFood(String name);
+
+	@Query("SELECT speedOffer FROM SpeedOffer speedOffer WHERE speedOffer.client.municipio =:municipio AND speedOffer.status= 'active'")
+	@Transactional(readOnly = true)
+	List<SpeedOffer> findSpeedOfferByClientPlace(Municipio municipio);
 }

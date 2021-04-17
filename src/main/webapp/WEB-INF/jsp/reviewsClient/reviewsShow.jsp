@@ -33,9 +33,10 @@
     
     </form:form>
 
-	<sec:authentication var="principal" property="principal" />
+	<sec:authorize access="isAuthenticated()">
+	<sec:authentication var="principal" property="principal"  />
 	<div class="btns-edit">
-		<c:if test="${ principal.username eq review.escritor.username }">
+		<c:if test="${principal.username eq review.escritor.username}">
 	    	<spring:url value="{reviewId}/edit" var="editUrl">
 		    <spring:param name="reviewId" value="${review.id}"/>
 		    </spring:url>
@@ -44,7 +45,8 @@
 	        <span class="glyphicon glyphicon glyphicon-edit" aria-hidden="true" style="padding: 5px"> </span>
 		        Editar opinión</button>
     	</c:if>
+    	
     </div>
-    
+    </sec:authorize>
   
 </cheapy:layout>

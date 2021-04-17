@@ -1,5 +1,31 @@
+
 package org.springframework.cheapy.model;
 
 public enum Municipio {
-sevilla,dos_hermanas,carmona,bollullos,pilas,montellano,mairena_aljarafe,mairena_alcor
+	Dos_Hermanas{
+		@Override
+		public String toString() {
+			return "Dos Hermanas";
+		}
+		
+	}
+	
+	, Sevilla{
+		@Override
+		public String toString() {
+			return "Sevilla";
+			
+		}
+		
+	}
+	
+	, Carmona{
+		@Override
+		public String toString() {
+			return "Carmona";
+			
+		}
+		
+	}
+	
 }

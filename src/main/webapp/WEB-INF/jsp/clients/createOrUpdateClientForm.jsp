@@ -5,33 +5,36 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
 
 <cheapy:layout pageName="clients">
-    <h2 style="text-align:center;padding:5px">
+    <h2 style="font-family: 'Lobster'; text-align:center; font-size:200%;  color: rgb(0, 64, 128); padding:10px">
         <fmt:message key="client"/>
     </h2>
     
     <form:form modelAttribute="client" class="form-horizontal" id="add-client-form">
         <div class="form-group has-feedback">
 			                
-            <cheapy:passwordField label="Contraseña" placeholder="Restaurante pepito" name="usuar.password"/>		
+            <cheapy:passwordField label="Contraseï¿½a" placeholder="Restaurante pepito" name="usuar.password"/>		
             <cheapy:inputField label="Hora de inicio" placeholder="HH:mm" name="init"/>
             <cheapy:inputField label="Hora de fin" placeholder="HH:mm" name="finish"/>
             <cheapy:inputField label="Nombre" placeholder="Restaurante pepito" name="name"/>
             <cheapy:inputField label="Email" placeholder="" name="email"/>
-            <cheapy:inputField label="Dirección" placeholder="" name="address"/>
-            <div class="form-group">                   
-            <label>Municipio: </label>
-			<select name="municipio">
-				<c:forEach items="${municipio}" var="entry">
-					<option value="${entry}">${entry}</option>
-				</c:forEach>
-			</select>
-			</div>
-            <cheapy:inputField label="Teléfono" placeholder="" name="telephone"/>
-            <cheapy:inputField label="descripción" placeholder="" name="description"/>
+            <cheapy:inputField label="Direcciï¿½n" placeholder="" name="address"/>           
+            <cheapy:inputField label="Telï¿½fono" placeholder="" name="telephone"/>
+            <cheapy:inputField label="descripciï¿½n" placeholder="" name="description"/>
             <cheapy:inputField label="Comida" placeholder="food" name="food"/>
+            <div class="form-group">                   
+	            <label class="col-sm-2 control-label">Municipio: </label>
+	            <div class="col-sm-10">
+					<select name="municipio" class="select-municipio" style="width:80%;text-align-last:center;">
+						<c:forEach items="${municipio}" var="entry">
+							<option value="${entry}">${entry.toString()}</option>
+						</c:forEach>
+					</select>
+				</div>
+			</div>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

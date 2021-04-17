@@ -47,7 +47,7 @@
 	                    <c:out value="${review.opinion}"/>
 	                </td>
 	                <td>
-		                <spring:url value="/reviews/{reviewId}" var="reviewUrl">
+		                <spring:url value="/reviewsClient/{reviewId}" var="reviewUrl">
 		                        <spring:param name="reviewId" value="${review.id}"/>
 		                </spring:url>
 		                <div class="btn-detalles">
@@ -69,8 +69,9 @@
     </div>
     <c:if test='${page!=0}'>
     <div class="text-left">
-    	<spring:url value="/reviewsList/{page}" var="reviewsListUrl">
+    	<spring:url value="/reviewsClientList/{client}/{page}" var="reviewsListUrl">
     		<spring:param name="page" value="${page-1}"/>
+    		<spring:param name="client" value="${client}"/>
     	</spring:url>
     	<button type="button" class="btn-pag" role="link" onclick="window.location='${fn:escapeXml(reviewsListUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
 		<span class="glyphicon 	glyphicon glyphicon-arrow-left" aria-hidden="true" style="padding: 5px"> </span>
@@ -80,8 +81,9 @@
     
     <c:if test="${fn:length(reviewsLs) == 6}">
     <div class="text-right">
-    	<spring:url value="/reviewsList/{page}" var="reviewsListUrl">
+    	<spring:url value="/reviewsClientList/{client}/{page}" var="reviewsListUrl">
     		<spring:param name="page" value="${page+1}"/>
+    		<spring:param name="client" value="${client}"/>
     	</spring:url>
     	<button type="button" class="btn-pag" role="link" onclick="window.location='${fn:escapeXml(reviewsListUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
 		<span class="glyphicon 	glyphicon glyphicon-arrow-right" aria-hidden="true" style="padding: 5px"> </span>

@@ -4,10 +4,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
 
 <cheapy:layout pageName="ofertasM">
-    <h2 style="text-align:center;padding:5px">Registro de Ofertas</h2>
+    <h2 style="font-family: 'Lobster'; text-align:center; font-size:200%;  color: rgb(0, 64, 128); padding:10px">Historial de Ofertas</h2>
 	<c:if test="${empty datos }">
 		<p id="vacio" >No hay ninguna oferta creada.</p>
 	</c:if>

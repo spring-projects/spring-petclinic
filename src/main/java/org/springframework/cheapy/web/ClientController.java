@@ -161,9 +161,11 @@ public class ClientController {
 	}
 	@GetMapping(value = "/restaurant/{clientId}")
 	public String showRestaurant(final ModelMap model, @PathVariable("clientId") Integer id) {
-
+		
 		Client client = this.clientRepo.findById(id).get();
+		Integer valoraciones=this.clientService.mediaValoraciones(client);
 		model.put("client", client);
+		model.put("reviews", valoraciones);
 		return "clients/restaurantShow";
 	}
 }

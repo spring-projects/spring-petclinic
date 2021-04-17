@@ -5,11 +5,12 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="cheapy" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
 
 <cheapy:layout pageName="client">
 
-    <h2 style="text-align:center;padding:5px"><fmt:message key="client"/></h2>
+    <h2 style="font-family: 'Lobster'; text-align:center; font-size:200%;  color: rgb(0, 64, 128); padding:10px"><fmt:message key="client"/></h2>
 
 
 	
@@ -44,15 +45,36 @@
         </tr><tr>
             <th><fmt:message key="foodClient"/></th>
             <td><c:out value="${client.food}%"/> </td>
-        </tr>
+   
         
         
         
         </thead>
     </table>
-
+    <div style="font-size: 150%" >
+    <fmt:message key="reviews"/>
+		<cheapy:showStars  value="${reviews}"></cheapy:showStars> 
+	</div>
     <div class="btn-menu">
-    </div>
-  	
+  
+    
+      <div class="text-left">
+    	<spring:url value="/reviewsClientList/{client}/0" var="reviewsListUrl">
+    		<spring:param name="client" value="${client.usuar.username}"/>
+    	</spring:url>
+    	<button type="button" class="btn-pag" role="link" onclick="window.location='${fn:escapeXml(reviewsListUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
+		Valoraciones</button>
+ 	
+ 	<sec:authorize access="hasAnyAuthority('usuario')">
+ 	     
+    	<spring:url value="/reviewsClient/new/{client}/" var="reviewsCreateUrl">
+    		<spring:param name="client" value="${client.usuar.username}"/>
+    	</spring:url>
+    	<button type="button" class="btn-pag" role="link" onclick="window.location='${fn:escapeXml(reviewsCreateUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
+		Valorar</button>
+ 	
+ 	</sec:authorize>
+  	</div>
+  	</div>
 
 </cheapy:layout>

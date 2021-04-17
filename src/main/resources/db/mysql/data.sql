@@ -14,18 +14,18 @@ INSERT INTO users (username,password,enabled) VALUES ('pepe','pepe', TRUE );
 INSERT INTO authorities (username,authority) VALUES ('pepe','usuario');
 
 
-INSERT INTO usuarios (id, nombre, apellidos, direccion, municipio, email, username) VALUES (1, 'admin', 'admin',  'C/admin', 'carmona', 'admin@gmail.com','admin');
-INSERT INTO usuarios (id, nombre, apellidos, direccion, municipio, email, username) VALUES (2, 'Paco', 'Naranjo', 'C/Esperanza', 'sevilla', 'Paco@gmail.com','paco');
-INSERT INTO usuarios (id, nombre, apellidos, direccion, municipio, email, username) VALUES (3, 'Lolo', 'Lopez',  'C/Macarena', 'dos_hermanas', 'Lolo@gmail.com','lolo');
-INSERT INTO usuarios (id, nombre, apellidos, direccion, municipio, email, username) VALUES (4, 'Pepe', 'Lopez', 'C/Macarena', 'carmona', 'Pepe@gmail.com','pepe');
+INSERT INTO usuarios (id, nombre, apellidos, direccion, municipio, email, username) VALUES (1, 'admin', 'admin',  'C/admin', 'Carmona', 'admin@gmail.com','admin');
+INSERT INTO usuarios (id, nombre, apellidos, direccion, municipio, email, username) VALUES (2, 'Paco', 'Naranjo', 'C/Esperanza', 'Sevilla', 'Paco@gmail.com','paco');
+INSERT INTO usuarios (id, nombre, apellidos, direccion, municipio, email, username) VALUES (3, 'Lolo', 'Lopez',  'C/Macarena', 'Dos_Hermanas', 'Lolo@gmail.com','lolo');
+INSERT INTO usuarios (id, nombre, apellidos, direccion, municipio, email, username) VALUES (4, 'Pepe', 'Lopez', 'C/Macarena', 'Carmona', 'Pepe@gmail.com','pepe');
 
 INSERT INTO codes (id,code,activo) VALUES (1,'code1',FALSE);
 INSERT INTO codes (id,code,activo) VALUES (2,'code2',FALSE);
 INSERT INTO codes (id,code,activo) VALUES (3,'code3',TRUE);
 INSERT INTO codes (id,code,activo) VALUES (4,'code4',TRUE);
 
-INSERT INTO clients (id, name, email, address, municipio, init, finish, telephone, description, food, username, code) VALUES (1,'bar manoli','manoli@gmail.com','C/Betis', 'sevilla','10:00','22:00','608726190', 'description 1', 'ESPAÑOLA','manoli', 'code1');
-INSERT INTO clients (id, name, email, address, municipio, init, finish, telephone, description, food, username, code)  VALUES (2,'bar david','david@gmail.com','C/Sevilla', 'dos_hermanas','09:30','22:00','608726190', 'description 2', 'americana','david', 'code2');
+INSERT INTO clients (id, name, email, address, municipio, init, finish, telephone, description, code, food, username) VALUES (1,'bar manoli','manoli@gmail.com','C/Betis', 'Sevilla','10:00:00','22:00:00','608726190', 'description 1', 'code1', 'ESPAÑOLA','manoli');
+INSERT INTO clients (id, name, email, address, municipio, init, finish, telephone, description, code, food, username)  VALUES (2,'bar david','david@gmail.com', 'C/Sevilla', 'Dos_Hermanas','09:30:00','22:00:00','608726190', 'description 2', 'code2', 'americana','david');
 
 
 INSERT INTO food_offers(start, end, code, status, client_id, food, discount) VALUES ('2021-08-14 12:00:00', '2021-08-15 12:00:00', 'FO-1', 'inactive', 1, 'macarrones', 15);
@@ -63,3 +63,14 @@ INSERT INTO nu_offers(start, end, code, status, client_id, gold, discount_gold, 
 INSERT INTO nu_offers(start, end, code, status, client_id, gold, discount_gold, silver, discount_silver, bronze, discount_bronze) VALUES ('2021-08-15 12:00:00', '2021-08-16 12:00:00', 'NU-6', 'active',2,20,30,15,10,10,5);
 INSERT INTO nu_offers(start, end, code, status, client_id, gold, discount_gold, silver, discount_silver, bronze, discount_bronze) VALUES ('2021-08-15 12:00:00', '2021-08-16 12:00:00', 'NU-7', 'active',2,20,35,15,15,10,5);
 INSERT INTO nu_offers(start, end, code, status, client_id, gold, discount_gold, silver, discount_silver, bronze, discount_bronze) VALUES ('2021-08-16 12:00:00', '2021-08-17 12:00:00', null, 'hidden',1,15,25,10,15,5,10);
+
+INSERT INTO review_client(opinion, stars, username, client ) VALUES ('Es un bar muy bueno para ir a comer',5,'paco',1);
+INSERT INTO review_client(opinion, stars, username, client ) VALUES ('Las ofertas eran buenas pero el servicio mejorable',2,'lolo',1);
+INSERT INTO review_client(opinion, stars, username, client ) VALUES ('Nos trataron genial a mi y a mi amigo',4,'pepe',1);
+INSERT INTO review_client(opinion, stars, username, client ) VALUES ('Abren a todas horas!!!',5,'paco',1);
+INSERT INTO review_client(opinion, stars, username, client ) VALUES ('La comida de hoy estaba muy rica',4,'lolo',1);
+INSERT INTO review_client(opinion, stars, username, client ) VALUES ('Recomiendo ir por la noche, tiene muy buenas vistas',4,'pepe',1);
+INSERT INTO review_client(opinion, stars, username, client ) VALUES ('No retrasmiten futbol',1,'pepe',1);
+INSERT INTO review_client(opinion, stars, username, client ) VALUES ('Un sitio perfecto para llevar a tu pareja',5,'paco',2);
+INSERT INTO review_client(opinion, stars, username, client ) VALUES ('En hora punta nunca hay sitio',2,'lolo',2);
+INSERT INTO review_client(opinion, stars, username, client ) VALUES ('Fui una vez por probar y ahora voy todas las tardes',4,'pepe',2);
