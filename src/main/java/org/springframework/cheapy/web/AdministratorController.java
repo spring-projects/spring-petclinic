@@ -1,13 +1,18 @@
 package org.springframework.cheapy.web;
 
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.cheapy.model.Client;
 import org.springframework.cheapy.model.FoodOffer;
 import org.springframework.cheapy.model.NuOffer;
+import org.springframework.cheapy.model.Offer;
 import org.springframework.cheapy.model.SpeedOffer;
 import org.springframework.cheapy.model.StatusOffer;
 import org.springframework.cheapy.model.TimeOffer;
@@ -18,6 +23,8 @@ import org.springframework.cheapy.service.NuOfferService;
 import org.springframework.cheapy.service.SpeedOfferService;
 import org.springframework.cheapy.service.TimeOfferService;
 import org.springframework.cheapy.service.UsuarioService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -138,5 +145,99 @@ public class AdministratorController {
 		client.getUsuar().setEnabled(true);
 		this.clientService.saveClient(client);
 		return "redirect:/administrators/clients";
+	}
+	
+	@GetMapping("/administrators/offersRecord")
+	public String processOffersRecordForm(final Map<String, Object> model) {
+		
+		Pageable p = PageRequest.of(0, 3);
+		
+		List<Object[]> datos = new ArrayList<Object[]>();
+		
+		for(Offer of:this.foodOfferService.findAllFoodOffer(p)) {
+			Object[] fo = {of, "food"};
+			datos.add(fo);
+		}
+		
+		for(Offer of:this.nuOfferService.findAllNuOffer(p)) {
+			Object[] nu = {of, "nu"};
+			datos.add(nu);
+		}
+		
+		for(Offer of:this.speedOfferService.findAllSpeedOffer(p)) {
+			Object[] sp = {of, "speed"};
+			datos.add(sp);
+		}
+		
+		for(Offer of:this.timeOfferService.findAllTimeOffer(p)) {
+			Object[] ti = {of, "time"};
+			datos.add(ti);
+		}
+		
+		model.put("datos", datos);
+
+		//Se añade formateador de fecha al modelo
+		model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+
+		return "offers/offersRecordList";
+	}
+	
+	@GetMapping("/administrators/offers/nu/{nuOfferId}")
+	public String processShowNuForm(@PathVariable("nuOfferId") final int nuOfferId, final Map<String, Object> model) {
+		
+		NuOffer nuOffer = this.nuOfferService.findNuOfferById(nuOfferId);
+		
+		if (nuOffer != null) {
+			model.put("nuOffer", nuOffer);
+			model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+			return "offers/nu/nuOffersShow";
+		}	else {
+			return "welcome";
+		}
+
+	}
+	
+	@GetMapping("/administrators/offers/food/{foodOfferId}")
+	public String processShowFoodForm(@PathVariable("foodOfferId") final int foodOfferId, final Map<String, Object> model) {
+
+		FoodOffer foodOffer = this.foodOfferService.findFoodOfferById(foodOfferId);
+		
+		if (foodOffer != null) {
+			model.put("foodOffer", foodOffer);
+			model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+			return "offers/food/foodOffersShow";
+
+		} else {
+			return "welcome";
+		}
+	}
+	
+	@GetMapping("/administrators/offers/speed/{speedOfferId}")
+	public String processShowSpeedForm(@PathVariable("speedOfferId") final int speedOfferId, final Map<String, Object> model) {
+		
+		SpeedOffer speedOffer = this.speedOfferService.findSpeedOfferById(speedOfferId);
+		
+		if (speedOffer != null) {
+			model.put("speedOffer", speedOffer);
+			model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+			return "offers/speed/speedOffersShow";
+		} else {
+			return "welcome";
+		}
+	}
+	
+	@GetMapping("/administrators/offers/time/{timeOfferId}")
+	public String processShowTimeForm(@PathVariable("timeOfferId") final int timeOfferId, final Map<String, Object> model) {
+		
+		TimeOffer timeOffer = this.timeOfferService.findTimeOfferById(timeOfferId);
+		
+		if (timeOffer != null) {
+			model.put("timeOffer", timeOffer);
+			model.put("localDateTimeFormat", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+			return "offers/time/timeOffersShow";
+
+		} else {
+			return "welcome";
+		}
 	}
 }

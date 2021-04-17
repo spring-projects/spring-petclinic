@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.cheapy.model.FoodOffer;
 import org.springframework.cheapy.model.Municipio;
+
 import org.springframework.cheapy.model.StatusOffer;
 import org.springframework.cheapy.model.TimeOffer;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface TimeOfferRepository extends PagingAndSortingRepository<TimeOffer, Integer> {
 
-	TimeOffer findTimeOfferById(int timeOfferId);
+	@Query("SELECT timeOffer FROM TimeOffer timeOffer WHERE timeOffer.id =:id")
+	@Transactional(readOnly = true)
+	TimeOffer findTimeOfferById(int id);
+
 
 	@Query("SELECT timeOffer FROM TimeOffer timeOffer")
 	@Transactional(readOnly = true)

@@ -63,3 +63,14 @@ INSERT INTO nu_offers(start, end, code, status, client_id, gold, discount_gold, 
 INSERT INTO nu_offers(start, end, code, status, client_id, gold, discount_gold, silver, discount_silver, bronze, discount_bronze) VALUES ('2021-08-15 12:00:00', '2021-08-16 12:00:00', 'NU-6', 'active',2,20,30,15,10,10,5);
 INSERT INTO nu_offers(start, end, code, status, client_id, gold, discount_gold, silver, discount_silver, bronze, discount_bronze) VALUES ('2021-08-15 12:00:00', '2021-08-16 12:00:00', 'NU-7', 'active',2,20,35,15,15,10,5);
 INSERT INTO nu_offers(start, end, code, status, client_id, gold, discount_gold, silver, discount_silver, bronze, discount_bronze) VALUES ('2021-08-16 12:00:00', '2021-08-17 12:00:00', null, 'hidden',1,15,25,10,15,5,10);
+
+INSERT INTO review_client(opinion, stars, username, client ) VALUES ('Es un bar muy bueno para ir a comer',5,'paco',1);
+INSERT INTO review_client(opinion, stars, username, client ) VALUES ('Las ofertas eran buenas pero el servicio mejorable',2,'lolo',1);
+INSERT INTO review_client(opinion, stars, username, client ) VALUES ('Nos trataron genial a mi y a mi amigo',4,'pepe',1);
+INSERT INTO review_client(opinion, stars, username, client ) VALUES ('Abren a todas horas!!!',5,'paco',1);
+INSERT INTO review_client(opinion, stars, username, client ) VALUES ('La comida de hoy estaba muy rica',4,'lolo',1);
+INSERT INTO review_client(opinion, stars, username, client ) VALUES ('Recomiendo ir por la noche, tiene muy buenas vistas',4,'pepe',1);
+INSERT INTO review_client(opinion, stars, username, client ) VALUES ('No retrasmiten futbol',1,'pepe',1);
+INSERT INTO review_client(opinion, stars, username, client ) VALUES ('Un sitio perfecto para llevar a tu pareja',5,'paco',2);
+INSERT INTO review_client(opinion, stars, username, client ) VALUES ('En hora punta nunca hay sitio',2,'lolo',2);
+INSERT INTO review_client(opinion, stars, username, client ) VALUES ('Fui una vez por probar y ahora voy todas las tardes',4,'pepe',2);
