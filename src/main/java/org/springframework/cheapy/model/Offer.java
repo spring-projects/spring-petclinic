@@ -34,11 +34,11 @@ public class Offer extends BaseEntity {
 
 	// Clase padre
 
-	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	@NotNull(message = "Debe introducir una fecha de inicio")
 	private LocalDateTime start;
 
-	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	@NotNull(message = "Debe introducir una fecha de fin")
 	private LocalDateTime end;
 

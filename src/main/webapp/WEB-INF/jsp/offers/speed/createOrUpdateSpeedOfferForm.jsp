@@ -18,8 +18,8 @@
             <form:hidden path="id"/>
             <form:hidden path="code"/>
             <form:hidden path="status"/>
-            <cheapy:inputField label="Fecha de Inicio" placeholder="dd/MM/yyyy HH:mm" name="start"/>
-            <cheapy:inputField label="Fecha de Fin"  placeholder="dd/MM/yyyy HH:mm" name="end"/>
+            <cheapy:dateField label="Fecha de Inicio" placeholder="dd/MM/yyyy HH:mm" name="start"/>
+            <cheapy:dateField label="Fecha de Fin"  placeholder="dd/MM/yyyy HH:mm" name="end"/>
             <cheapy:inputField label="Tiempo para comer (nivel Oro)" placeholder="XX minutos (Ej. 5)" name="gold"/>
             <cheapy:inputField label="Descuento nivel Oro" placeholder="XX% (Ej. 35)" name="discountGold"/>
             <cheapy:inputField label="Tiempo para comer (nivel Plata)" placeholder="XX minutos (Ej. 10)" name="silver"/>

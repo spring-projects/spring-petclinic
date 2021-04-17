@@ -18,8 +18,8 @@
         	<form:hidden path="id"/>
             <form:hidden path="code"/>
             <form:hidden path="status"/>
-            <cheapy:inputField label="Fecha de Inicio" placeholder="dd/MM/yyyy HH:mm" name="start"/>
-            <cheapy:inputField label="Fecha de Fin" placeholder="dd/MM/yyyy HH:mm" name="end"/>
+            <cheapy:dateField label="Fecha de Inicio" placeholder="dd/MM/yyyy HH:mm" name="start"/>
+            <cheapy:dateField label="Fecha de Fin" placeholder="dd/MM/yyyy HH:mm" name="end"/>
             <cheapy:inputField label="Plato" placeholder="Ej. Macarrones" name="food"/>
             <cheapy:inputField label="Descuento" placeholder="Ej. 50" name="discount"/>
         </div>

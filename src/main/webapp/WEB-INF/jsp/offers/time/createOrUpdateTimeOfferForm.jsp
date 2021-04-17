@@ -17,8 +17,8 @@
         	<form:hidden path="id"/>
             <form:hidden path="code"/>
             <form:hidden path="status"/>
-            <cheapy:inputField label="Fecha de inicio" placeholder="dd/MM/yyyy HH:mm" name="start"/>
-            <cheapy:inputField label="Fecha de fin" placeholder="dd/MM/yyyy HH:mm" name="end"/>
+            <cheapy:dateField label="Fecha de inicio" placeholder="dd/MM/yyyy HH:mm" name="start"/>
+            <cheapy:dateField label="Fecha de fin" placeholder="dd/MM/yyyy HH:mm" name="end"/>
 
             <cheapy:inputField label="Hora de inicio" placeholder="HH:mm" name="init"/>
             <cheapy:inputField label="Hora de final" placeholder="HH:mm" name="finish"/>
