@@ -30,4 +30,9 @@ public class UserService {
 	public void saveUser(final User user) throws DataAccessException {
 		this.userRepository.save(user);
 	}
+	
+	public Boolean duplicateUsername(String username) throws DataAccessException {
+		return this.userRepository.duplicateUsername(username);
+	}
+	
 }

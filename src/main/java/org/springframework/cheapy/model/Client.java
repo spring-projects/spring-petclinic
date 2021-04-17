@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -30,6 +31,7 @@ public class Client extends BaseEntity {
 	@NotEmpty(message="No debe estar vacío")
 	private String				name;
 
+	@Email
 	@NotEmpty(message="No debe estar vacío")
 	private String				email;
 

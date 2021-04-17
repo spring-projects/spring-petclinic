@@ -1,5 +1,7 @@
 package org.springframework.cheapy.repository;
 
+import java.util.List;
+
 import org.springframework.cheapy.model.Client;
 import org.springframework.cheapy.model.Code;
 import org.springframework.cheapy.model.Usuario;
@@ -15,5 +17,9 @@ public interface CodeRepository extends Repository<Code, Integer> {
 	@Query("SELECT code FROM Code code WHERE code.code =:code")
 	@Transactional(readOnly = true)
 	Code findCodeByCode(String code);
+
+	@Query("SELECT (count(*) > 0) FROM Code code WHERE code.code =:cod")
+	@Transactional(readOnly = true)
+	Boolean goodCode(String cod);
 	
 }

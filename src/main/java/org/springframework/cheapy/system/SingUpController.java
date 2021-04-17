@@ -1,5 +1,6 @@
 package org.springframework.cheapy.system;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -77,17 +79,38 @@ public class SingUpController {
 	}
 
 	@PostMapping("/users/new")
-	public String singUpUserForm(/*@Valid User user,*/ @Valid Usuario usuario, BindingResult result) {
+	public String singUpUserForm(@Valid Usuario usuario, BindingResult result, Map<String, Object> model) {
 		Authorities auth=new Authorities();
 		User user= usuario.getUsuar();
 		user.setEnabled(true);
 		usuario.setUsuar(user);
 		auth.setUsername(user.getUsername());
 		auth.setAuthority("usuario");
-		if (result.hasErrors()) {
-			return "singup/singUpUser";
+		Boolean duplicate=this.userService.duplicateUsername(usuario.getUsuar().getUsername());
+		if(duplicate==true) {
+			result.rejectValue("usuar.username","" ,"El nombre de usuario ya esta registrado");
 		}
-		else {
+		if (result.hasErrors()) {
+			model.put("municipio", Municipio.values());
+			
+			if(usuario.getUsuar().getPassword().equals("")) {
+				result.rejectValue("usuar.password","" ,"La contraseña no puede estar vacía");
+			}
+			if(usuario.getUsuar().getUsername().equals("")) {
+				result.rejectValue("usuar.username","" ,"El nombre de usuario no puede estar vacío");
+			}
+			return "singup/singUpUser";
+		 }else if(usuario.getUsuar().getPassword().equals("")||usuario.getUsuar().getUsername().equals("")) {
+			 model.put("municipio", Municipio.values());
+			 if(usuario.getUsuar().getPassword().equals("")) {
+					result.rejectValue("usuar.password","" ,"La contraseña no puede estar vacía");
+				}
+				if(usuario.getUsuar().getUsername().equals("")) {
+					result.rejectValue("usuar.username","" ,"El nombre de usuario no puede estar vacío");
+				}
+				return "singup/singUpUser";
+		 }else {
+			
 			//auth.setId(1);
 			//this.authoritiesService.saveAuthorities(auth);
 			this.usuarioService.saveUsuario(usuario);
@@ -112,11 +135,16 @@ public class SingUpController {
 	}
 
 	@PostMapping("/clients/new")
-	public String singUpClientForm(/*@Valid User user,*/ @Valid Client cliente, final BindingResult result, final ModelMap model,
-			HttpServletRequest request) {
+	public String singUpClientForm(@ModelAttribute("cliente") @Valid Client cliente, BindingResult result,  Map<String, Object> model) {
 		Authorities auth=new Authorities();
 		String cod=cliente.getCode().getCode();
-		Code code=this.clientService.findCodeByCode(cod);
+		Code code=new Code();
+		code.setActivo(false);
+		Boolean exist= this.clientService.goodCode(cod);
+		if(exist==true) {
+			code=this.clientService.findCodeByCode(cod);
+		}
+		
 		User user= cliente.getUsuar();
 		user.setEnabled(true);
 		cliente.setUsuar(user);
@@ -126,13 +154,37 @@ public class SingUpController {
 			result.rejectValue("finish","" ,"La hora de cierre debe ser posterior a la hora de apertura");
 			
 		}
+		Boolean duplicate=this.userService.duplicateUsername(cliente.getUsuar().getUsername());
+		if(duplicate==true) {
+			result.rejectValue("usuar.username","" ,"El nombre de usuario ya esta registrado");
+		}
 		if (result.hasErrors()) {
 			model.put("municipio", Municipio.values());
 			model.put("cliente", cliente);
+			if(cliente.getUsuar().getPassword().equals("")) {
+				result.rejectValue("usuar.password","" ,"La contraseña no puede estar vacía");
+			}
+			if(cliente.getUsuar().getUsername().equals("")) {
+				result.rejectValue("usuar.username","" ,"El nombre de usuario no puede estar vacío");
+			}
+			if(code.getActivo().equals(false)) {
+				result.rejectValue("code.code","" ,"El código introducido no es válido");
+			}
 			return "singup/singUpClient";
-		}else if(code.getActivo().equals(false)) {
-			return "error";
-		}else {
+		}else if(cliente.getUsuar().getPassword().equals("")||cliente.getUsuar().getUsername().equals("")||code.getActivo().equals(false)) {
+			 model.put("municipio", Municipio.values());
+			 model.put("cliente", cliente); 
+			 if(cliente.getUsuar().getPassword().equals("")) {
+					result.rejectValue("usuar.password","" ,"La contraseña no puede estar vacía");
+			}
+			if(cliente.getUsuar().getUsername().equals("")) {
+					result.rejectValue("usuar.username","" ,"El nombre de usuario no puede estar vacío");
+			}
+			if(code.getActivo().equals(false)) {
+				result.rejectValue("code.code","" ,"El código introducido no es válido");
+			}
+				return "singup/singUpClient";
+		 }else {
 			code.setActivo(false);
 			this.clientService.saveCode(code);
 			cliente.setCode(code);

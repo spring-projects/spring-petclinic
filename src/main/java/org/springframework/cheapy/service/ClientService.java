@@ -73,4 +73,8 @@ public class ClientService {
 				return 0;
 			}
 	}
+
+	public Boolean goodCode(String cod) {
+		return this.codeRepository.goodCode(cod);
+	}
 }
