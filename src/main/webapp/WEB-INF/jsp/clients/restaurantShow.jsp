@@ -45,15 +45,36 @@
         </tr><tr>
             <th><fmt:message key="foodClient"/></th>
             <td><c:out value="${client.food}%"/> </td>
-        </tr>
+   
         
         
         
         </thead>
     </table>
-
+    <div style="font-size: 150%" >
+    <fmt:message key="reviews"/>
+		<cheapy:showStars  value="${reviews}"></cheapy:showStars> 
+	</div>
     <div class="btn-menu">
-    </div>
-  	
+  
+    
+      <div class="text-left">
+    	<spring:url value="/reviewsClientList/{client}/0" var="reviewsListUrl">
+    		<spring:param name="client" value="${client.usuar.username}"/>
+    	</spring:url>
+    	<button type="button" class="btn-pag" role="link" onclick="window.location='${fn:escapeXml(reviewsListUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
+		Valoraciones</button>
+ 	
+ 	<sec:authorize access="hasAnyAuthority('usuario')">
+ 	     
+    	<spring:url value="/reviewsClient/new/{client}/" var="reviewsCreateUrl">
+    		<spring:param name="client" value="${client.usuar.username}"/>
+    	</spring:url>
+    	<button type="button" class="btn-pag" role="link" onclick="window.location='${fn:escapeXml(reviewsCreateUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
+		Valorar</button>
+ 	
+ 	</sec:authorize>
+  	</div>
+  	</div>
 
 </cheapy:layout>
