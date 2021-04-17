@@ -46,12 +46,19 @@ public class UsuarioController {
 	public String updateUsuario(@Valid final Usuario usuarioEdit, final BindingResult result,
 			final ModelMap model, HttpServletRequest request) {
 		
+		Usuario usuario = this.usuarioService.getCurrentUsuario();
+		
+		if(usuario.getUsuar().getPassword().equals("")) {
+			result.rejectValue("usuar.password","" ,"La contraseña no puede estar vacía");
+			
+		}
+		
 		if (result.hasErrors()) {
 			model.addAttribute("usuario", usuarioEdit);
 			model.put("municipio", Municipio.values());
 			return UsuarioController.VIEWS_USUARIO_CREATE_OR_UPDATE_FORM;
 		}
-		Usuario usuario = this.usuarioService.getCurrentUsuario();
+
 		BeanUtils.copyProperties(usuario, usuarioEdit, "nombre", "apellidos", "municipio", "direccion","email", "usuar");
 		usuarioEdit.getUsuar().setUsername(usuario.getNombre());
 		usuarioEdit.getUsuar().setEnabled(true);
