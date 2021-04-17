@@ -55,7 +55,7 @@
 				</sec:authorize>
 				
 				<sec:authorize access="hasAnyAuthority('admin')">
-				<cheapy:menuItem active="${name eq 'registro'}" url="/offersRecord" title="offersRecord">
+				<cheapy:menuItem active="${name eq 'registro'}" url="/administrators/offersRecord" title="offersRecord">
 					<span class="glyphicon " aria-hidden="true"></span>
 					<span>Historial de ofertas</span>
 				</cheapy:menuItem>

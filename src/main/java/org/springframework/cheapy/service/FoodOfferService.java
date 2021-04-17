@@ -26,7 +26,7 @@ public class FoodOfferService {
 	public FoodOffer findFoodOfferById(final int id) {
 		return this.foodOfferRepository.findByIdFO(id);
 	}
-
+	
 	public List<FoodOffer> findAllFoodOffer(final Pageable p) { //
 		return this.foodOfferRepository.findAllFoodOffer();
 	}

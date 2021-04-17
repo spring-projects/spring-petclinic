@@ -18,6 +18,7 @@
 		        <thead>
 		        <tr>
 		        	<th>Restaurante</th>
+		        	<th>ID</th>
 		        	<th>Tipo de oferta</th>
 		            <th><fmt:message key="startDate"/></th>
 		            <th><fmt:message key="endDate"/></th>
@@ -29,43 +30,47 @@
 		        <c:forEach items="${datos}" var="datos">
 		            <tr>
 		                <td>
-		                    <c:out value="${datos.key.client.name}"/>
+		                    <c:out value="${datos[0].client.name}"/>
 		                </td>
 		                <td>
-		                	<c:if test="${datos.value == 'time'}">
+		                    <c:out value="${datos[0].id}"/>
+		                </td>
+		                <td>
+		                	<c:if test="${datos[1] == 'time'}">
 		                    	<c:out value="Por franja horaria"/>
 		                    </c:if>
-		                    <c:if test="${datos.value == 'nu'}">
+		                    <c:if test="${datos[1] == 'nu'}">
 		                    	<c:out value="Por numero de comensales"/>
 		                    </c:if>
-		                    <c:if test="${datos.value == 'speed'}">
+		                    <c:if test="${datos[1] == 'speed'}">
 		                    	<c:out value="Por rapidez"/>
 		                    </c:if>
-		                    <c:if test="${datos.value == 'food'}">
+		                    <c:if test="${datos[1] == 'food'}">
 		                    	<c:out value="Por plato especifico"/>
 		                    </c:if>
 		                </td>
+		                
 		                <td>
-		                    <c:out value="${localDateTimeFormat.format(datos.key.start)}"/>
+		                    <c:out value="${localDateTimeFormat.format(datos[0].start)}"/>
 		                </td>
 		                <td>
-		                    <c:out value="${localDateTimeFormat.format(datos.key.end)}"/>
+		                    <c:out value="${localDateTimeFormat.format(datos[0].end)}"/>
 		                </td>
 		                <td>
-		                	<c:if test="${datos.key.status == 'active'}">
+		                	<c:if test="${datos[0].status == 'active'}">
 		                    	<c:out value="Activa"/>
 		                    </c:if>	
-		                    <c:if test="${datos.key.status == 'hidden'}">
+		                    <c:if test="${datos[0].status == 'hidden'}">
 		                    	<c:out value="Oculta"/>
 		                    </c:if>	
-		                    <c:if test="${datos.key.status == 'inactive'}">
+		                    <c:if test="${datos[0].status == 'inactive'}">
 		                    	<c:out value="Inactiva"/>
 		                    </c:if>		                 
 		                </td>
 		                
 		                <td>
-	                	<spring:url value="/offers/${datos.value}/${datos.key.id}" var="offerUrl">
-	                        <spring:param name="foodOfferId" value="${foodOffer.id}"/>
+	                	<spring:url value="/administrators/offers/${datos[1]}/${datos[0].id}" var="offerUrl">
+	                        <spring:param name="offerId" value="${datos[0].id}"/>
 	                	</spring:url>
 	               		<div class="btn-detalles">
                 			<button type="button" role="link" onclick="window.location='${fn:escapeXml(offerUrl)}'" style="font-family: 'Lobster'; font-size: 20px;">
