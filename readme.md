@@ -17,7 +17,7 @@ The following items should be installed in your system:
 ## Running petclinic locally
 You can build a jar file and run it from the command line:
 
-```
+```shell
 # Clone the repository (remember to change the URL to your forked one):
 git clone git@github.com:cleankod/spring-petclinic.git
 
