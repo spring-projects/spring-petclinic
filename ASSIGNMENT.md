@@ -3,14 +3,15 @@
 ## How to start?
 1. Fork the project's repository.
 2. Follow the instructions in the [readme](readme.md) file.
-3. Switch the branch to `cucumber`.
-4. Create a pull request with your changes.
+3. Create a pull request with your changes.
 
 ## Running tests
 You can run the Cucumber features from your IDE or via the command line:
 ```shell
 ./mvnw -P itest integration-test
 ```
+Make sure the application is not started elsewhere. If it is, the `8080` port used by the application will already be occupied,
+and therefore the tests will fail.
 
 ## Assignment
 
