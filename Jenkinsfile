@@ -13,7 +13,7 @@ pipeline {
         script {
           docker.image('maven:3.8.1-jdk-8').inside {
           // /var/jenkins_home/workspace/MeFirstPipelineJob
-          sh 'mvn -B clean package -Dcheckstyle.skip'
+          sh 'mvn -B clean package'
         }
       }
 }
