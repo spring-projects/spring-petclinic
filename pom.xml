@@ -124,12 +124,12 @@
   <distributionManagement>
    <snapshotRepository>
       <id>nexus-snapshots</id>
-      <url>http://172.19.0.3:8081/repository/maven-snapshots/</url>
+      <url>172.19.0.3:8081/repository/maven-snapshots/</url>
    </snapshotRepository>
    <repository>
          <id>nexus</id>
          <name>Nexus Staging Repo</name>
-         <url>http://172.19.0.3:8081/repository/maven-releases/</url>
+         <url>172.19.0.3:8081/repository/maven-releases/</url>
        </repository>
 </distributionManagement>
 
@@ -166,7 +166,7 @@
    </executions>
    <configuration>
       <serverId>nexus</serverId>
-      <nexusUrl>http://172.19.0.3:8081/nexus/</nexusUrl>
+      <nexusUrl>172.19.0.3:8081/nexus/</nexusUrl>
       <skipStaging>true</skipStaging>
    </configuration>
 </plugin>
