@@ -11,7 +11,7 @@ pipeline {
     stage('build') {
       steps {
         script {
-          docker.image('maven:3.3-jdk-8').inside {
+          docker.image('maven:3.8.1-jdk-8').inside {
           // /var/jenkins_home/workspace/MeFirstPipelineJob
           sh 'mvn -B clean package -Dcheckstyle.skip'
         }
