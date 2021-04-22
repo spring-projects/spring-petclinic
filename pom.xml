@@ -121,6 +121,18 @@
     </dependency>
   </dependencies>
 
+  <distributionManagement>
+   <snapshotRepository>
+      <id>nexus-snapshots</id>
+      <url>http://172.19.0.3:8081/repository/maven-snapshots/</url>
+   </snapshotRepository>
+   <repository>
+         <id>nexus</id>
+         <name>Nexus Staging Repo</name>
+         <url>http://172.19.0.3:8081/repository/maven-releases/</url>
+       </repository>
+</distributionManagement>
+
   <build>
     <plugins>
       <plugin>
@@ -137,6 +149,26 @@
          <forkedProcessExitTimeoutInSeconds>10000</forkedProcessExitTimeoutInSeconds>
            <useSystemClassLoader>false</useSystemClassLoader>
        </configuration>
+</plugin>
+
+<plugin>
+   <groupId>org.sonatype.plugins</groupId>
+   <artifactId>nexus-staging-maven-plugin</artifactId>
+   <version>1.5.1</version>
+   <executions>
+      <execution>
+         <id>default-deploy</id>
+         <phase>deploy</phase>
+         <goals>
+            <goal>deploy</goal>
+         </goals>
+      </execution>
+   </executions>
+   <configuration>
+      <serverId>nexus</serverId>
+      <nexusUrl>http://172.19.0.3:8081/nexus/</nexusUrl>
+      <skipStaging>true</skipStaging>
+   </configuration>
 </plugin>
 
       <plugin>
