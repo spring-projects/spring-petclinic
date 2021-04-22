@@ -32,8 +32,9 @@ pipeline {
             echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
             artifactPath = filesByGlob[0].path;
             artifactExists = fileExists artifactPath;
-          }
-            when(artifactExists) {
+
+            if(artifactExists) {
+            echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
 
             nexusArtifactUploader(
                       nexusVersion: NEXUS_VERSION,
@@ -54,8 +55,11 @@ pipeline {
                         type: "pom"]
                              ]
                          );
-                     }
+                     } else {
+                        error "*** File: ${artifactPath}, could not be found";
                     }
                 }
             }
         }
+     }
+  }
