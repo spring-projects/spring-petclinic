@@ -124,10 +124,20 @@
   <build>
     <plugins>
       <plugin>
-  <groupId>org.apache.maven.plugins</groupId>
-  <artifactId>maven-surefire-plugin</artifactId>
-  <version>3.0.0-M5</version>
+       <artifactId>maven-failsafe-plugin</artifactId>
+       <configuration>
+           <useSystemClassLoader>false</useSystemClassLoader>
+       </configuration>
+   </plugin>
+   <plugin>
+     <groupId>org.apache.maven.plugins</groupId>
+     <artifactId>maven-surefire-plugin</artifactId>
+     <version>3.0.0-M5</version>
+       <configuration>
+           <useSystemClassLoader>false</useSystemClassLoader>
+       </configuration>
 </plugin>
+
       <plugin>
         <groupId>io.spring.javaformat</groupId>
         <artifactId>spring-javaformat-maven-plugin</artifactId>
