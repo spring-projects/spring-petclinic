@@ -31,6 +31,11 @@ pipeline {
       }
     }
  }
+ stage('checkout') {
+   steps {
+     checkout scm
+ }
+}
       stage('push') {
         steps {
           script {
