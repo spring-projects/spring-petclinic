@@ -59,17 +59,7 @@ pipeline {
             // if(artifactExists) {
             // echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
 
-            def nexusArtifactUploader nexusVersion: "nexus3", protocol: "http", nexusUrl: "172.19.0.3:8081", groupId: pom.groupId, version: pom.version, repository: "maven-nexus-repo", credentialsId: "e6072e08-87bc-481e-9e4a-55d506546356", artifacts: [
-                                [artifactId: pom.artifactId,
-                                classifier: '',
-                                file: "target/*.jar",
-                                type: pom.packaging],
-                                [artifactId: pom.artifactId,
-                                classifier: '',
-                                file: "pom.xml",
-                                type: "pom"]
-                            ]
-                        ;
+            def nexusArtifactUploader nexusVersion: "nexus3", protocol: "http", nexusUrl: "172.19.0.3:8081", groupId: pom.groupId, version: pom.version, repository: "maven-nexus-repo", credentialsId: "e6072e08-87bc-481e-9e4a-55d506546356", artifacts: [ [artifactId: pom.artifactId, classifier: '', file: "target/*.jar", type: pom.packaging], [artifactId: pom.artifactId, classifier: '', file: "pom.xml", type: "pom"] ];
                     //  } else {
                     //     error "*** File: ${artifactPath}, could not be found";
                     // }
