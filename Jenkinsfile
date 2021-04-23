@@ -51,10 +51,10 @@ pipeline {
       stage('push') {
         steps {
             def pom = readMavenPom file: "pom.xml";
-            filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
-            // echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
-            artifactPath = filesByGlob[0].path;
-            artifactExists = fileExists artifactPath;
+            // filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
+            // // echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
+            // artifactPath = filesByGlob[0].path;
+            // artifactExists = fileExists artifactPath;
             //
             // if(artifactExists) {
             // echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
@@ -62,7 +62,7 @@ pipeline {
             def nexusArtifactUploader nexusVersion: "nexus3", protocol: "http", nexusUrl: "172.19.0.3:8081", groupId: pom.groupId, version: pom.version, repository: "maven-nexus-repo", credentialsId: "e6072e08-87bc-481e-9e4a-55d506546356", artifacts: [
                                 [artifactId: pom.artifactId,
                                 classifier: '',
-                                file: artifactPath,
+                                file: "target/*.jar",
                                 type: pom.packaging],
                                 [artifactId: pom.artifactId,
                                 classifier: '',
