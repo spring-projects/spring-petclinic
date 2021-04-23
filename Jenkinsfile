@@ -1,11 +1,11 @@
 pipeline {
   agent any
-  environment {
-        NEXUS_VERSION = "nexus3"
-        NEXUS_PROTOCOL = "http"
-        NEXUS_URL = "172.19.0.3:8081"
-        NEXUS_REPOSITORY = "maven-nexus-repo"
-        NEXUS_CREDENTIAL_ID = "e6072e08-87bc-481e-9e4a-55d506546356"
+  parameters {
+    string(NEXUS_VERSION: 'nexus3')
+    string(NEXUS_PROTOCOL: 'http')
+    string(NEXUS_URL: '172.19.0.3:8081')
+    string(NEXUS_REPOSITORY: 'maven-nexus-repo')
+    string(NEXUS_CREDENTIAL_ID: 'e6072e08-87bc-481e-9e4a-55d506546356')
     }
   stages {
     stage('pull') {
@@ -36,17 +36,7 @@ pipeline {
             if(artifactExists) {
             echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
 
-            def nexusArtifactUploader(
-                      ${NEXUS_VERSION},
-                      ${NEXUS_PROTOCOL},
-                      ${NEXUS_URL},
-                      pom.groupId,
-                      pom.version,
-                      ${NEXUS_REPOSITORY},
-                      ${NEXUS_CREDENTIAL_ID},
-                      artifacts: [
-                        [artifactId: pom.artifactId,
-                        classifier: '',
+            def nexusArtifactUploader( ${NEXUS_VERSION}, ${NEXUS_PROTOCOL}, ${NEXUS_URL}, pom.groupId, pom.version, ${NEXUS_REPOSITORY}, ${NEXUS_CREDENTIAL_ID}, artifacts: [ [artifactId: pom.artifactId, classifier: '',
                         file: artifactPath,
                         type: pom.packaging],
                         [artifactId: pom.artifactId,
