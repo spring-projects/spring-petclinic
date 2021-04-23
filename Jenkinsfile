@@ -32,11 +32,14 @@ pipeline {
             echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
             artifactPath = filesByGlob[0].path;
             artifactExists = fileExists artifactPath;
+            //
+            // if(artifactExists) {
+            // echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
 
-            if(artifactExists) {
-            echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
-
-            def nexusArtifactUploader( ${NEXUS_VERSION}, ${NEXUS_PROTOCOL}, ${NEXUS_URL}, pom.groupId, pom.version, ${NEXUS_REPOSITORY}, ${NEXUS_CREDENTIAL_ID}, artifacts: [ [artifactId: pom.artifactId, classifier: '',
+            def nexusArtifactUploader(${params.NEXUS_VERSION}, ${params.NEXUS_PROTOCOL}, ${params.NEXUS_URL}, pom.groupId, pom.version, ${params.NEXUS_REPOSITORY}, ${params.NEXUS_CREDENTIAL_ID},
+                      artifacts: [
+                        [artifactId: pom.artifactId,
+                        classifier: '',
                         file: artifactPath,
                         type: pom.packaging],
                         [artifactId: pom.artifactId,
@@ -45,9 +48,9 @@ pipeline {
                         type: "pom"]
                              ]
                          );
-                     } else {
-                        error "*** File: ${artifactPath}, could not be found";
-                    }
+                    //  } else {
+                    //     error "*** File: ${artifactPath}, could not be found";
+                    // }
                 }
             }
         }
