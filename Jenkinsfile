@@ -1,11 +1,18 @@
 pipeline {
   agent any
-  parameters {
-    string(name: 'NEXUS_VERSION', defaultValue: "nexus3")
-    string(name: 'NEXUS_PROTOCOL', defaultValue: "http")
-    string(name: 'NEXUS_URL', defaultValue: "172.19.0.3:8081")
-    string(name: 'NEXUS_REPOSITORY', defaultValue: "maven-nexus-repo")
-    string(name: 'NEXUS_CREDENTIAL_ID', defaultValue: "e6072e08-87bc-481e-9e4a-55d506546356")
+  // parameters {
+  //   string(name: 'NEXUS_VERSION', defaultValue: "nexus3")
+  //   string(name: 'NEXUS_PROTOCOL', defaultValue: "http")
+  //   string(name: 'NEXUS_URL', defaultValue: "172.19.0.3:8081")
+  //   string(name: 'NEXUS_REPOSITORY', defaultValue: "maven-nexus-repo")
+  //   string(name: 'NEXUS_CREDENTIAL_ID', defaultValue: "e6072e08-87bc-481e-9e4a-55d506546356")
+  //   }
+  environment {
+    NEXUS_VERSION = ${"nexus3"}
+    NEXUS_PROTOCOL = ${"http"}
+    NEXUS_URL = ${"172.19.0.3:8081"}
+    NEXUS_REPOSITORY = ${"maven-nexus-repo"}
+    NEXUS_CREDENTIAL_ID = ${"e6072e08-87bc-481e-9e4a-55d506546356"}
     }
   stages {
     stage('pull') {
