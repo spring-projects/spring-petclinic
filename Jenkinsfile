@@ -8,11 +8,11 @@ pipeline {
   //   string(name: 'NEXUS_CREDENTIAL_ID', defaultValue: "e6072e08-87bc-481e-9e4a-55d506546356")
   //   }
   environment {
-    NEXUS_VERSION = ${"nexus3"}
-    NEXUS_PROTOCOL = ${"http"}
-    NEXUS_URL = ${"172.19.0.3:8081"}
-    NEXUS_REPOSITORY = ${"maven-nexus-repo"}
-    NEXUS_CREDENTIAL_ID = ${"e6072e08-87bc-481e-9e4a-55d506546356"}
+    "nexus3" = ${NEXUS_VERSION}
+    "http" = ${NEXUS_PROTOCOL}
+    "172.19.0.3:8081" = ${NEXUS_URL}
+    "maven-nexus-repo" = ${NEXUS_REPOSITORY}
+    "e6072e08-87bc-481e-9e4a-55d506546356" = ${NEXUS_CREDENTIAL_ID}
     }
   stages {
     stage('pull') {
