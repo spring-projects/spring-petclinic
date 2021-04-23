@@ -50,6 +50,7 @@ pipeline {
 // }
       stage('push') {
         steps {
+          script {
             pom = readMavenPom file: "pom.xml";
             filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
             echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
@@ -59,7 +60,7 @@ pipeline {
             // if(artifactExists) {
             // echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
 
-            nexusArtifactUploader nexusVersion: ${env.NEXUS_VERSION}, protocol: ${env.NEXUS_PROTOCOL}, nexusUrl: ${env.NEXUS_URL}, groupId: pom.groupId, version: pom.version, repository: ${env.NEXUS_REPOSITORY}, credentialsId: ${env.NEXUS_CREDENTIAL_ID}, artifacts: [
+            nexusArtifactUploader nexusVersion: "${env.NEXUS_VERSION}", protocol: "${env.NEXUS_PROTOCOL}", nexusUrl: "${env.NEXUS_URL}", groupId: pom.groupId, version: pom.version, repository: "${env.NEXUS_REPOSITORY}", credentialsId: "${env.NEXUS_CREDENTIAL_ID}", artifacts: [
                                 [artifactId: pom.artifactId,
                                 classifier: '',
                                 file: artifactPath,
@@ -70,6 +71,8 @@ pipeline {
                                 type: "pom"]
                             ]
                         ;
+          }
+
                     //  } else {
                     //     error "*** File: ${artifactPath}, could not be found";
                     // }
