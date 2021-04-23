@@ -36,6 +36,18 @@ pipeline {
      checkout scm
  }
 }
+// stage('Publish') {
+//     def pom = readMavenPom file: 'pom.xml'
+//     nexusPublisher nexusInstanceId: 'your-nexus-instance-id', \
+//         nexusRepositoryId: ${env.NEXUS_REPOSITORY}, \
+//         packages: [[$class: 'MavenPackage', \
+//         mavenAssetList: [[classifier: '', extension: '', filePath: "target/${pom.artifactId}-${pom.version}.${pom.packaging}"], \
+//                          [classifier: 'sources', extension: '', filePath: "target/${pom.artifactId}-${pom.version}-sources.${pom.packaging}"]], \
+//         mavenCoordinate: [artifactId: "${pom.artifactId}", \
+//         groupId: "${pom.groupId}", \
+//         packaging: "${pom.packaging}", \
+//         version: "${pom.version}-${env.BUILD_NUMBER}"]]]
+// }
       stage('push') {
         steps {
           script {
@@ -50,18 +62,25 @@ pipeline {
             // if(artifactExists) {
             // echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
 
-            nexusArtifactUploader(${params.NEXUS_VERSION}, ${params.NEXUS_PROTOCOL}, ${params.NEXUS_URL}, pom.groupId, pom.version, ${params.NEXUS_REPOSITORY}, ${params.NEXUS_CREDENTIAL_ID},
-                      artifacts: [
-                        [artifactId: pom.artifactId,
-                        classifier: '',
-                        file: artifactPath,
-                        type: pom.packaging],
-                        [artifactId: pom.artifactId,
-                        classifier: '',
-                        file: "pom.xml",
-                        type: "pom"]
-                             ]
-                         );
+            nexusArtifactUploader
+                            nexusVersion: ${env.NEXUS_VERSION},
+                            protocol: ${env.NEXUS_PROTOCOL},
+                            nexusUrl: ${env.NEXUS_URL},
+                            groupId: pom.groupId,
+                            version: pom.version,
+                            repository: ${env.NEXUS_REPOSITORY},
+                            credentialsId: ${env.NEXUS_CREDENTIAL_ID},
+                            artifacts: [
+                                [artifactId: pom.artifactId,
+                                classifier: '',
+                                file: artifactPath,
+                                type: pom.packaging],
+                                [artifactId: pom.artifactId,
+                                classifier: '',
+                                file: "pom.xml",
+                                type: "pom"]
+                            ]
+                        ;
                     //  } else {
                     //     error "*** File: ${artifactPath}, could not be found";
                     // }
