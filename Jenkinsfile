@@ -36,7 +36,7 @@ pipeline {
             // if(artifactExists) {
             // echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
 
-            def nexusArtifactUploader(${params.NEXUS_VERSION}, ${params.NEXUS_PROTOCOL}, ${params.NEXUS_URL}, pom.groupId, pom.version, ${params.NEXUS_REPOSITORY}, ${params.NEXUS_CREDENTIAL_ID},
+            nexusArtifactUploader(${params.NEXUS_VERSION}, ${params.NEXUS_PROTOCOL}, ${params.NEXUS_URL}, pom.groupId, pom.version, ${params.NEXUS_REPOSITORY}, ${params.NEXUS_CREDENTIAL_ID},
                       artifacts: [
                         [artifactId: pom.artifactId,
                         classifier: '',
