@@ -3,9 +3,9 @@ pipeline {
   parameters {
     string(name: 'NEXUS_VERSION', defaultValue: 'nexus3')
     string(name: 'NEXUS_PROTOCOL', defaultValue: 'http')
-    string(name: '172.19.0.3:8081', defaultValue: '172.19.0.3:8081')
-    string(name: 'maven-nexus-repo', defaultValue: 'maven-nexus-repo')
-    string(name: 'e6072e08-87bc-481e-9e4a-55d506546356', defaultValue: 'e6072e08-87bc-481e-9e4a-55d506546356')
+    string(name: 'NEXUS_URL', defaultValue: '172.19.0.3:8081')
+    string(name: 'NEXUS_REPOSITORY', defaultValue: 'maven-nexus-repo')
+    string(name: 'NEXUS_CREDENTIAL_ID', defaultValue: 'e6072e08-87bc-481e-9e4a-55d506546356')
     }
   stages {
     stage('pull') {
