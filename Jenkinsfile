@@ -31,16 +31,15 @@ pipeline {
     //
     // }
 
- //    stage('build') {
- //      steps {
- //        script {
- //          docker.image('maven:3.8.1-jdk-8').inside {
- //          sh 'cp /var/jenkins_home/.m2/settings.xml 6859117773ac:/usr/share/maven/ref/'
- //          sh 'mvn -B clean package'
- //        }
- //      }
- //    }
- // }
+    stage('build') {
+      steps {
+        script {
+          docker.image('maven:3.8.1-jdk-8').inside {
+          sh 'mvn -B clean package'
+        }
+      }
+    }
+ }
  // stage("publish to nexus") {
  //             steps {
  //                 script {
@@ -94,6 +93,7 @@ pipeline {
                   withCredentials([usernameColonPassword(credentialsId: 'nexus-deployment-user', variable: 'DEPLOYMENT')]) {
                       sh '''
                         curl -u "$DEPLOYMENT" http://${NEXUS_URL}/repository/${NEXUS_REPOSITORY}/org/springframework/samples/spring-petclinic/2.4.2/spring-petclinic-2.4.2.jar >output
+                        (java  -jar spring-petclinic-2.4.2.jar --server.port=8083>> server.log 2>&1&)
                         nohup java  -jar spring-petclinic-2.4.2.jar --server.port=8083>> server.log 2>&1&
                       '''
                       }
