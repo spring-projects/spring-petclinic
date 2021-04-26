@@ -1,12 +1,8 @@
 pipeline {
   agent any
-  // parameters {
-  //   string(name: 'NEXUS_VERSION', defaultValue: "nexus3")
-  //   string(name: 'NEXUS_PROTOCOL', defaultValue: "http")
-  //   string(name: 'NEXUS_URL', defaultValue: "172.19.0.3:8081")
-  //   string(name: 'NEXUS_REPOSITORY', defaultValue: "maven-nexus-repo")
-  //   string(name: 'NEXUS_CREDENTIAL_ID', defaultValue: "e6072e08-87bc-481e-9e4a-55d506546356")
-  //   }
+  parameters {
+    string(name: 'SETTINGS', defaultValue: "/var/tmp/settings-docker.xml")
+    }
   environment {
     NEXUS_VERSION = "nexus3"
     NEXUS_PROTOCOL = "http"
@@ -22,61 +18,83 @@ pipeline {
         url: 'git://github.com/VSAzima/spring-petclinic'
       }
     }
-    stage('build') {
-      steps {
-        script {
-          docker.image('maven:3.8.1-jdk-8').inside {
-          sh 'mvn -B clean package'
-        }
-      }
-    }
- }
- stage("publish to nexus") {
-             steps {
-                 script {
-                     // Read POM xml file using 'readMavenPom' step , this step 'readMavenPom' is included in: https://plugins.jenkins.io/pipeline-utility-steps
-                     pom = readMavenPom file: "pom.xml";
-                     // Find built artifact under target folder
-                     filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
-                     // Print some info from the artifact found
-                     echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
-                     // Extract the path from the File found
-                     artifactPath = filesByGlob[0].path;
-                     // Assign to a boolean response verifying If the artifact name exists
-                     artifactExists = fileExists artifactPath;
+    //
+    // stage('File Param WA') {
+    //   steps {
+    //     sh'''
+    //     cd /tmp/
+    //     '''
+    //     writeFile file: 'settings-docker.xml', text: params.SETTINGS
+    //     mvn -B -f /tmp/settings-docker.xml  -s /usr/share/maven/ref/settings-docker.xml dependency:resolve
+    //   }
+    //
+    //
+    // }
 
-                     if(artifactExists) {
-                         echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
-
-                         nexusArtifactUploader(
-                             nexusVersion: NEXUS_VERSION,
-                             protocol: NEXUS_PROTOCOL,
-                             nexusUrl: NEXUS_URL,
-                             groupId: pom.groupId,
-                             version: pom.version,
-                             repository: NEXUS_REPOSITORY,
-                             credentialsId: NEXUS_CREDENTIAL_ID,
-                             artifacts: [
-                                 // Artifact generated such as .jar, .ear and .war files.
-                                 [artifactId: pom.artifactId,
-                                 classifier: '',
-                                 file: artifactPath,
-                                 type: pom.packaging],
-
-                                 // Lets upload the pom.xml file for additional information for Transitive dependencies
-                                 [artifactId: pom.artifactId,
-                                 classifier: '',
-                                 file: "pom.xml",
-                                 type: "pom"]
-                             ]
-                         );
-
-                     } else {
-                         error "*** File: ${artifactPath}, could not be found";
-                     }
-                 }
-
+ //    stage('build') {
+ //      steps {
+ //        script {
+ //          docker.image('maven:3.8.1-jdk-8').inside {
+ //          sh 'cp /var/jenkins_home/.m2/settings.xml 6859117773ac:/usr/share/maven/ref/'
+ //          sh 'mvn -B clean package'
+ //        }
+ //      }
+ //    }
+ // }
+ // stage("publish to nexus") {
+ //             steps {
+ //                 script {
+ //                     // Read POM xml file using 'readMavenPom' step , this step 'readMavenPom' is included in: https://plugins.jenkins.io/pipeline-utility-steps
+ //                     pom = readMavenPom file: "pom.xml";
+ //                     // Find built artifact under target folder
+ //                     filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
+ //                     // Print some info from the artifact found
+ //                     echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
+ //                     // Extract the path from the File found
+ //                     artifactPath = filesByGlob[0].path;
+ //                     // Assign to a boolean response verifying If the artifact name exists
+ //                     artifactExists = fileExists artifactPath;
+ //
+ //                     if(artifactExists) {
+ //                         echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
+ //
+ //                         nexusArtifactUploader(
+ //                             nexusVersion: NEXUS_VERSION,
+ //                             protocol: NEXUS_PROTOCOL,
+ //                             nexusUrl: NEXUS_URL,
+ //                             groupId: pom.groupId,
+ //                             version: pom.version,
+ //                             repository: NEXUS_REPOSITORY,
+ //                             credentialsId: NEXUS_CREDENTIAL_ID,
+ //                             artifacts: [
+ //                                 // Artifact generated such as .jar, .ear and .war files.
+ //                                 [artifactId: pom.artifactId,
+ //                                 classifier: '',
+ //                                 file: artifactPath,
+ //                                 type: pom.packaging],
+ //
+ //                                 // Lets upload the pom.xml file for additional information for Transitive dependencies
+ //                                 [artifactId: pom.artifactId,
+ //                                 classifier: '',
+ //                                 file: "pom.xml",
+ //                                 type: "pom"]
+ //                             ]
+ //                         );
+ //
+ //                     } else {
+ //                         error "*** File: ${artifactPath}, could not be found";
+ //                     }
+ //                 }
+ //
+ //                }
+ //            }
+            stage('run') {
+              steps {
+                script {
+                  sh 'wget http://localhost:8081/repository/maven-nexus-repo/org/springframework/samples/spring-petclinic/2.4.2/spring-petclinic-2.4.2.jar'
+                  sh 'java -jar spring-petclinic-2.4.2.jar'
                 }
+              }
             }
+         }
         }
-    }
