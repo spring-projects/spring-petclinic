@@ -92,7 +92,7 @@ pipeline {
               steps {
                 script {
                   sshagent(credentials: 'e6072e08-87bc-481e-9e4a-55d506546356') {
-                    sh 'scp http://localhost:8081/repository/maven-nexus-repo/org/springframework/samples/spring-petclinic/2.4.2/spring-petclinic-2.4.2.jar'
+                    sh('scp http://172.19.0.3:8081/repository/maven-nexus-repo/org/springframework/samples/spring-petclinic/2.4.2/spring-petclinic-2.4.2.jar /var/jenkins_home/spring-petclinic-2.4.2.jar')
                   }
                   // sh 'curl -L -X GET "http://172.19.0.3:8081/service/rest/v1/search/assets/download?sort=version&repository=maven-nexus-repo&maven.groupId=org.springframework.samples&maven.artifactId=spring-petclinic&maven.extension=jar" -H "accept: application/json"'
                     sh 'java -jar spring-petclinic-2.4.2.jar'
