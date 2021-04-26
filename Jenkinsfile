@@ -91,7 +91,7 @@ pipeline {
             stage('run') {
               steps {
                 script {
-                  sh 'wget http://localhost:8081/repository/maven-nexus-repo/org/springframework/samples/spring-petclinic/2.4.2/spring-petclinic-2.4.2.jar'
+                  sh 'wget http://172.19.0.3:8081/repository/maven-nexus-repo/org/springframework/samples/spring-petclinic/2.4.2/spring-petclinic-2.4.2.jar'
                   sh 'java -jar spring-petclinic-2.4.2.jar'
                 }
               }
