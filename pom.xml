@@ -342,14 +342,14 @@
       </snapshots>
     </repository>
 
-    <repository>
+    <!-- <repository>
       <id>maven-central</id>
       <name>maven-central</name>
       <url>http://172.19.0.3:8081/repository/maven-nexus-repo/</url>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
-    </repository>
+    </repository> -->
     <repository>
       <id>maven-central</id>
       <name>maven-central</name>
