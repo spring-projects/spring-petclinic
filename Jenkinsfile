@@ -91,8 +91,11 @@ pipeline {
             stage('run') {
               steps {
                 script {
-                  sh 'curl -L -X GET "http://172.19.0.3:8081/service/rest/v1/search/assets/download?sort=version&repository=maven-nexus-repo&maven.groupId=org.springframework.samples&maven.artifactId=spring-petclinic&maven.extension=jar" -H "accept: application/json"'
-                  sh 'java -jar spring-petclinic-2.4.2.jar'
+                  sshagent(credentials: 'e6072e08-87bc-481e-9e4a-55d506546356') {
+                    sh 'scp http://localhost:8081/repository/maven-nexus-repo/org/springframework/samples/spring-petclinic/2.4.2/spring-petclinic-2.4.2.jar'
+                  }
+                  // sh 'curl -L -X GET "http://172.19.0.3:8081/service/rest/v1/search/assets/download?sort=version&repository=maven-nexus-repo&maven.groupId=org.springframework.samples&maven.artifactId=spring-petclinic&maven.extension=jar" -H "accept: application/json"'
+                    sh 'java -jar spring-petclinic-2.4.2.jar'
                 }
               }
             }
