@@ -93,7 +93,7 @@ pipeline {
                 script {
                   withCredentials([usernameColonPassword(credentialsId: 'nexus-deployment-user', variable: 'DEPLOYMENT')]) {
                       sh '''
-                        curl -u "$DEPLOYMENT" http://172.19.0.3:8081/repository/maven-nexus-repo/org/springframework/samples/spring-petclinic/2.4.2/spring-petclinic-2.4.2.jar >output
+                        curl -u "$DEPLOYMENT" http://${NEXUS_URL}/repository/${NEXUS_REPOSITORY}/org/springframework/samples/spring-petclinic/2.4.2/spring-petclinic-2.4.2.jar >output
                         nohup java  -jar spring-petclinic-2.4.2.jar --server.port=8083>> server.log 2>&1&
                       '''
                       }
