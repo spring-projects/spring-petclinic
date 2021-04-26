@@ -91,7 +91,7 @@ pipeline {
             stage('run') {
               steps {
                 script {
-                  sh 'curl -L -X GET "http://172.19.0.3:8081/service/rest/v1/search/assets/download?sort=version&repository=maven-nexus-repo&maven.groupId=org.springframework.boot&maven.artifactId=spring-petclinic&maven.extension=jar" -H "accept: application/json"'
+                  sh 'curl -L -X GET "http://172.19.0.3:8081/service/rest/v1/search/assets/download?sort=version&repository=maven-nexus-repo&maven.groupId=org.springframework.samples&maven.artifactId=spring-petclinic&maven.extension=jar" -H "accept: application/json"'
                   sh 'java -jar spring-petclinic-2.4.2.jar'
                 }
               }
