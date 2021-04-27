@@ -28,7 +28,7 @@
     <wro4j.version>1.8.0</wro4j.version>
 
     <jacoco.version>0.8.5</jacoco.version>
-    <nohttp-checkstyle.version>0.0.4.RELEASE</nohttp-checkstyle.version>
+    <!-- <nohttp-checkstyle.version>0.0.4.RELEASE</nohttp-checkstyle.version> -->
     <spring-format.version>0.0.25</spring-format.version>
   </properties>
 
@@ -194,7 +194,7 @@
             <artifactId>checkstyle</artifactId>
             <version>8.32</version>
           </dependency>
-          <dependency>
+          <!-- <dependency>
             <groupId>io.spring.nohttp</groupId>
             <artifactId>nohttp-checkstyle</artifactId>
             <version>${nohttp-checkstyle.version}</version>
@@ -217,7 +217,7 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
+      </plugin> -->
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
