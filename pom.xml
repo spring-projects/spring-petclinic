@@ -241,6 +241,7 @@
         <executions>
           <execution>
             <phase>generate-resources</phase>
+            <?m2e execute onConfiguration,onIncremental?>
             <goals>
               <goal>run</goal>
             </goals>
