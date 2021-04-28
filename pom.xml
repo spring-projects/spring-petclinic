@@ -193,7 +193,7 @@
             <groupId>com.puppycrawl.tools</groupId>
             <artifactId>checkstyle</artifactId>
             <version>8.32</version>
-          </dependency> -->
+          </dependency>
           <dependency>
             <groupId>io.spring.nohttp</groupId>
             <artifactId>nohttp-checkstyle</artifactId>
