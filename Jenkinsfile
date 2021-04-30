@@ -34,7 +34,7 @@ pipeline {
     stage('build') {
       steps {
         script {
-          docker.image('maven:3.8.1-jdk-8').inside {
+          docker.image('maven:3.8.1-jdk-8').inside("--network=jenkins_default") {
           sh 'mvn -B clean package'
         }
       }
