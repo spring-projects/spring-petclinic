@@ -34,12 +34,20 @@ pipeline {
     stage('build') {
       steps {
         script {
-          docker.image('maven:3.8.1-jdk-8').inside {
-          sh 'mvn -B clean package'
+          docker.image('maven:3.8.1-jdk-8').withRun {
+            sh 'docker rename $HOSTNAME maven-jdk-8'
+            sh 'docker network connect jenkins_default maven-jdk-8'
+            .inside {
+            sh 'mvn -B clean package'
+        //   }
+        //   docker.image('maven:3.8.1-jdk-8').inside {
+        //   sh 'mvn -B clean package'
+        // }
         }
       }
     }
- }
+  }
+}
  stage("publish to nexus") {
              steps {
                  script {
