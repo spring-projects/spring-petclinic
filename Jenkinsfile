@@ -35,6 +35,8 @@ pipeline {
       steps {
         script {
           docker.image('maven:3.8.1-jdk-8').inside {
+            sh 'docker rename $HOSTNAME maven'
+            sh 'docker network connect jenkins_default maven'
           sh 'mvn -B clean package'
         }
       }
