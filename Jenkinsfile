@@ -34,7 +34,7 @@ pipeline {
     stage('build') {
       steps {
         script {
-          withCredentials([usernameColonPassword(credentialsId: 'ngx', variable: 'ROOT_CERT')]) {
+          withCredentials([file(credentialsId: 'ngx', variable: 'ROOT_CERT')]) {
           docker.image('maven:3.8.1-jdk-8').inside("--network=jenkins_default") {
           sh 'cp $ROOT_CERT /usr/local/share/ca-certificates/ && update-ca-certificates'
           sh 'mvn -B clean package'
