@@ -1,8 +1,8 @@
 pipeline {
   agent any
-  parameters {
-    string(name: 'SETTINGS', defaultValue: "/var/tmp/settings-docker.xml")
-    }
+  // parameters {
+  //   string(name: 'SETTINGS', defaultValue: "/var/tmp/settings-docker.xml")
+  //   }
   environment {
     NEXUS_VERSION = "nexus3"
     NEXUS_PROTOCOL = "http"
