@@ -361,6 +361,19 @@
                         <ignore/>
                       </action>
                     </pluginExecution>
+                    <pluginExecution>
+                      <pluginExecutionFilter>
+                        <groupId>io.spring.javaformat</groupId>
+                        <artifactId>spring-javaformat-maven-plugin</artifactId>
+                        <versionRange>[0,)</versionRange>
+                        <goals>
+                          <goal>validate</goal>
+                        </goals>
+                      </pluginExecutionFilter>
+                      <action>
+                        <ignore/>
+                      </action>
+                    </pluginExecution>
                   </pluginExecutions>
                 </lifecycleMappingMetadata>
               </configuration>
