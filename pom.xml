@@ -353,7 +353,7 @@
     <repository>
       <id>maven-central</id>
       <name>maven-central</name>
-      <url>https://172.19.0.4/</url>
+      <url>https://web</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
