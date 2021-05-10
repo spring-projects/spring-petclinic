@@ -4,6 +4,6 @@ jdk: oraclejdk8
 services:
   - docker
 before_script:
-  - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && [ "${TRAVIS_BRANCH}" = "main" ] && docker login -u springbuildmaster -p "$DOCKERHUB_PASSWORD"'
+  - '[ "${TRAVIS_PULL_REQUEST}" != "false" ] || [ "${TRAVIS_BRANCH}" != "main" ] || docker login -u springbuildmaster -p "$DOCKERHUB_PASSWORD"'
 script:
-  - ./mvnw spring-boot:build-image -D spring-boot.build-image.imageName=springio/petclinic && [ "${TRAVIS_BRANCH}" = "main" ] && docker push springio/petclinic
+  - ./mvnw spring-boot:build-image -D spring-boot.build-image.imageName=springio/petclinic && ([ "${TRAVIS_BRANCH}" != "main" ] || docker push springio/petclinic)
