@@ -17,11 +17,11 @@
 package org.springframework.samples.petclinic.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.time.LocalDate;
 import java.util.Collection;
 
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -66,6 +66,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Sam Brannen
  * @author Michael Isvy
  * @author Dave Syer
+ * @author Elvys Soares
  */
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 class ClinicServiceTests {
@@ -94,10 +95,12 @@ class ClinicServiceTests {
 	@Test
 	void shouldFindSingleOwnerWithPet() {
 		Owner owner = this.owners.findById(1);
-		assertAll(() -> assertThat(owner.getLastName()).startsWith("Franklin"),
-				() -> assertThat(owner.getPets()).hasSize(1),
-				() -> assertThat(owner.getPets().get(0).getType()).isNotNull(),
-				() -> assertThat(owner.getPets().get(0).getType().getName()).isEqualTo("cat"));
+		SoftAssertions softly = new SoftAssertions();
+		softly.assertThat(owner.getLastName()).startsWith("Franklin");
+		softly.assertThat(owner.getPets()).hasSize(1);
+		softly.assertThat(owner.getPets().get(0).getType()).isNotNull();
+		softly.assertThat(owner.getPets().get(0).getType().getName()).isEqualTo("cat");
+		softly.assertAll();
 	}
 
 	@Test
@@ -137,8 +140,10 @@ class ClinicServiceTests {
 	@Test
 	void shouldFindPetWithCorrectId() {
 		Pet pet7 = this.pets.findById(7);
-		assertAll(() -> assertThat(pet7.getName()).startsWith("Samantha"),
-				() -> assertThat(pet7.getOwner().getFirstName()).isEqualTo("Jean"));
+		SoftAssertions softly = new SoftAssertions();
+		softly.assertThat(pet7.getName()).startsWith("Samantha");
+		softly.assertThat(pet7.getOwner().getFirstName()).isEqualTo("Jean");
+		softly.assertAll();
 	}
 
 	@Test
@@ -192,10 +197,12 @@ class ClinicServiceTests {
 	void shouldFindVets() {
 		Collection<Vet> vets = this.vets.findAll();
 		Vet vet = EntityUtils.getById(vets, Vet.class, 3);
-		assertAll(() -> assertThat(vet.getLastName()).isEqualTo("Douglas"),
-				() -> assertThat(vet.getNrOfSpecialties()).isEqualTo(2),
-				() -> assertThat(vet.getSpecialties().get(0).getName()).isEqualTo("dentistry"),
-				() -> assertThat(vet.getSpecialties().get(1).getName()).isEqualTo("surgery"));
+		SoftAssertions softly = new SoftAssertions();
+		softly.assertThat(vet.getLastName()).isEqualTo("Douglas");
+		softly.assertThat(vet.getNrOfSpecialties()).isEqualTo(2);
+		softly.assertThat(vet.getSpecialties().get(0).getName()).isEqualTo("dentistry");
+		softly.assertThat(vet.getSpecialties().get(1).getName()).isEqualTo("surgery");
+		softly.assertAll();
 	}
 
 	@Test
@@ -219,8 +226,10 @@ class ClinicServiceTests {
 		Collection<Visit> visits = this.visits.findByPetId(7);
 		assertThat(visits).hasSize(2);
 		Visit[] visitArr = visits.toArray(new Visit[visits.size()]);
-		assertAll(() -> assertThat(visitArr[0].getDate()).isNotNull(),
-				() -> assertThat(visitArr[0].getPetId()).isEqualTo(7));
+		SoftAssertions softly = new SoftAssertions();
+		softly.assertThat(visitArr[0].getDate()).isNotNull();
+		softly.assertThat(visitArr[0].getPetId()).isEqualTo(7);
+		softly.assertAll();
 	}
 
 }
