@@ -69,7 +69,7 @@ jobs:
     - name: Pack Remote Build
       uses: dfreilich/pack-action@v1
       with:
-        args: 'build ${{ env.IMAGE_NAME }} --path ${{ github.workspace }} --builder ${{ env.BUILDER }} --env BP_JVM_VERSION=8.* --publish'
+        args: 'build ${{ env.IMAGE_NAME }} --builder ${{ env.BUILDER }} --env BP_JVM_VERSION=8.* --publish'
         username: ${{ env.USERNAME }}
         password: ${{ secrets.GITHUB_TOKEN }}
         registry: ${{ env.REGISTRY }}
