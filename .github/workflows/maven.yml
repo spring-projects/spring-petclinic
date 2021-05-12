@@ -40,7 +40,7 @@ jobs:
       USERNAME: 'omearaj'
       IMG_NAME: 'spring-petclinic'
       REGISTRY: 'ghcr.io'
-      BUILDER: 'paketobuildpacks/builder:tiny'
+      BUILDER: 'paketobuildpacks/builder:base'
       IMAGE_NAME: 'ghrc.io/omearaj/spring-petclinic'
     
     steps:
