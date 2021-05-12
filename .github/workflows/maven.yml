@@ -62,5 +62,5 @@ jobs:
         image: 'spring-petclinic'
         tag: '1.0.0'
         path: 'target/spring-petclinic-2.4.5.jar'
-        builder: 'gcr.io/paketo-buildpacks/spring-boot:tiny'
+        builder: 'gcr.io/paketo-buildpacks/spring-boot'
         env: 'BP_JVM_VERSION=8.*'
