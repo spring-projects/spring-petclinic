@@ -40,7 +40,7 @@ jobs:
       USERNAME: 'omearaj'
       IMG_NAME: 'spring-petclinic'
       REGISTRY: 'ghcr.io'
-      BUILDER: 'paketobuildpacks/builder:full'
+      BUILDER: 'paketobuildpacks/builder:base'
       IMAGE_NAME: 'ghrc.io/omearaj/spring-petclinic'
     
     steps:
@@ -64,12 +64,10 @@ jobs:
     
     #- name: Set App Name
       #run: 'echo "::set-env name=IMG_NAME::$(echo ${REGISTRY})/$(echo ${USERNAME})/$(echo ${IMG_NAME})"'
-    - name: list
-      run: ls -la
     - name: Pack Remote Build
       uses: dfreilich/pack-action@v1
       with:
-        args: 'build ${{ env.IMAGE_NAME }} --builder ${{ env.BUILDER }} --env BP_JVM_VERSION=8.* --publish'
+        args: 'build ${{ env.IMAGE_NAME }} --path . --builder ${{ env.BUILDER }} --env BP_JVM_VERSION=8.* --publish'
         username: ${{ env.USERNAME }}
         password: ${{ secrets.GITHUB_TOKEN }}
         registry: ${{ env.REGISTRY }}
