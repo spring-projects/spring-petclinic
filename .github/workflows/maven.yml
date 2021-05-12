@@ -64,6 +64,8 @@ jobs:
     
     #- name: Set App Name
       #run: 'echo "::set-env name=IMG_NAME::$(echo ${REGISTRY})/$(echo ${USERNAME})/$(echo ${IMG_NAME})"'
+    - name: list
+      run: ls -la
     - name: Pack Remote Build
       uses: dfreilich/pack-action@v1
       with:
