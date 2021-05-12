@@ -47,13 +47,13 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     
-    #- name: Cache local Maven repository
-    #  uses: actions/cache@v2
-    #  with:
-    #   path: ~/.m2/repository
-    #   key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-    #   restore-keys: |
-    #    ${{ runner.os }}-maven-
+    - name: Cache local Maven repository
+      uses: actions/cache@v2
+      with:
+       path: ~/.m2/repository
+       key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+       restore-keys: |
+        ${{ runner.os }}-maven-
     
     #- name: Setup Java and Build
     #  uses: actions/setup-java@v2
@@ -71,20 +71,23 @@ jobs:
     #    username: ${{ env.USERNAME }}
     #    password: ${{ secrets.GITHUB_TOKEN }}
     #    registry: ${{ env.REGISTRY }}
- 
-    
-    
-    
-    
-    
-    
-    
-    
+     
     - name: Build image
+      id: build-image
       uses: bigloupe/buildpacks-action@master
       with:
-        image: 'spring-petclinic'
-        tag: '1.0.0'
+        image: '${{ env.IMAGE_NAME }} '
+        tag: 'latest-${{ github.sha }}'
         path: '.'
         builder: 'gcr.io/paketo-buildpacks/builder:base'
         env: 'BP_JVM_VERSION=8.*'
+        
+    - name: Push To GHRC.io
+      id: push-to-quay
+      uses: redhat-actions/push-to-registry@v2
+      with:
+        image: ${{ steps.build-image.outputs.image }}
+        tags: ${{ steps.build-image.outputs.tag }}
+        registry: ghrc.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.github.token }}
