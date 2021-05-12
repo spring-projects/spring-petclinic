@@ -55,12 +55,12 @@ jobs:
        restore-keys: |
         ${{ runner.os }}-maven-
     
-    - name: Setup Java and Build
-      uses: actions/setup-java@v2
-      with:
-        distribution: 'adopt'
-        java-version: 8
-    - run: mvn -B install --no-transfer-progress --file pom.xml
+    #- name: Setup Java and Build
+    #  uses: actions/setup-java@v2
+    #  with:
+    #    distribution: 'adopt'
+    #    java-version: 8
+    #- run: mvn -B install --no-transfer-progress --file pom.xml
     
     #- name: Set App Name
       #run: 'echo "::set-env name=IMG_NAME::$(echo ${REGISTRY})/$(echo ${USERNAME})/$(echo ${IMG_NAME})"'
