@@ -42,6 +42,6 @@ jobs:
       with:
         image: 'spring-petclinic'
         tag: '1.0.0'
-        path: 'target/spring-petclinic-'
+        path: 'target/spring-petclinic-2.4.5.jar'
         builder: 'gcr.io/paketo-buildpacks/builder:tiny'
         env: 'HELLO=WORLD FOO=BAR BAZ'
