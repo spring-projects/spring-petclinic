@@ -64,6 +64,9 @@ jobs:
     
     #- name: Set App Name
       #run: 'echo "::set-env name=IMG_NAME::$(echo ${REGISTRY})/$(echo ${USERNAME})/$(echo ${IMG_NAME})"'
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3
+      
     - name: Pack Remote Build
       uses: dfreilich/pack-action@v1
       with:
