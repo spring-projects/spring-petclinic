@@ -3,10 +3,13 @@
 
 name: build-and-test
 
-on: [push, pull_request]
+on: 
+ push:
+  branches: main
+ pull_request:
 
 jobs:
-  build:
+  build-and-test-matrix:
     runs-on: ubuntu-latest
 
     strategy:
@@ -29,3 +32,59 @@ jobs:
         distribution: 'adopt'
         java-version: ${{ matrix.java-version }}
     - run: mvn -B install --no-transfer-progress --file pom.xml
+      
+  build-image-and-publish:
+    runs-on: ubuntu-latest
+    needs: [build-and-test-matrix]
+    env:
+      USERNAME: 'omearaj'
+      IMG_NAME: 'spring-petclinic'
+      REGISTRY: 'ghcr.io'
+      BUILDER: 'paketobuildpacks/builder:base'
+      IMAGE_NAME: 'ghrc.io/omearaj/spring-petclinic'
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    
+    #- name: Cache local Maven repository
+    #  uses: actions/cache@v2
+    #  with:
+    #   path: ~/.m2/repository
+    #   key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+    #   restore-keys: |
+    #    ${{ runner.os }}-maven-
+    
+    #- name: Setup Java and Build
+    #  uses: actions/setup-java@v2
+    #  with:
+    #    distribution: 'adopt'
+    #    java-version: 8
+    #- run: mvn -B install --no-transfer-progress --file pom.xml
+    
+    #- name: Set App Name
+      #run: 'echo "::set-env name=IMG_NAME::$(echo ${REGISTRY})/$(echo ${USERNAME})/$(echo ${IMG_NAME})"'
+   # - name: Pack Remote Build
+   #   uses: dfreilich/pack-action@v1
+   #   with:
+   #     args: 'build ${{ env.IMAGE_NAME }} --builder ${{ env.BUILDER }} --env "BP_JVM_VERSION=8.*" --publish'
+   #     username: ${{ env.USERNAME }}
+   #     password: ${{ secrets.GITHUB_TOKEN }}
+   #     registry: ${{ env.REGISTRY }}
+ 
+    
+    
+    
+    
+    
+    
+    
+    
+    #- name: Build image
+    #  uses: bigloupe/buildpacks-action@master
+    #  with:
+    #    image: 'spring-petclinic'
+    #    tag: '1.0.0'
+    #    path: 'target/spring-petclinic-2.4.5.jar'
+    #    builder: 'gcr.io/paketo-buildpacks/spring-boot'
+    #    env: 'BP_JVM_VERSION=8.*'
