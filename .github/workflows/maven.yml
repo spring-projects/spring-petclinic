@@ -32,14 +32,7 @@ jobs:
         distribution: 'adopt'
         java-version: ${{ matrix.java-version }}
     - run: mvn -B install --no-transfer-progress --file pom.xml
-    
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v2
-      with:
-       name: spring-petclinic
-       path: ${{ github.workspace }}/target/spring-petclinic*
-  
-  
+      
   build-image-and-publish:
     runs-on: ubuntu-latest
     needs: [build-and-test-matrix]
