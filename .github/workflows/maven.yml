@@ -86,8 +86,8 @@ jobs:
       id: push-to-quay
       uses: redhat-actions/push-to-registry@v2
       with:
-        image: ${{ steps.build-image.outputs.image }}
-        tags: ${{ steps.build-image.outputs.tag }}
+        image: ghrc.io/omearaj/spring-petclinic
+        tags: latest-${{ github.sha }}
         registry: ghrc.io
         username: ${{ github.actor }}
         password: ${{ secrets.github.token }}
