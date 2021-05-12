@@ -74,6 +74,7 @@ jobs:
         registry: ${{ env.REGISTRY }}
     
     - name: Setup tmate session
+      if: ${{ failure() }}
       uses: mxschmitt/action-tmate@v3
      
    # - name: Build image
