@@ -6,7 +6,7 @@ name: build-and-test
 on: [push, pull_request]
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     strategy:
@@ -29,3 +29,19 @@ jobs:
         distribution: 'adopt'
         java-version: ${{ matrix.java-version }}
     - run: mvn -B install --no-transfer-progress --file pom.xml
+  
+  build-image-and-publish:
+    runs-on: ubuntu-latest
+    needs: [build-and-test]
+    
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Build image
+      uses: bigloupe/buildpacks-action@master
+      with:
+        image: 'spring-petclinic'
+        tag: '1.0.0'
+        path: 'target/spring-petclinic-'
+        builder: 'gcr.io/paketo-buildpacks/builder:tiny'
+        env: 'HELLO=WORLD FOO=BAR BAZ'
