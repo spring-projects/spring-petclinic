@@ -76,7 +76,7 @@ jobs:
       id: build-image
       uses: bigloupe/buildpacks-action@master
       with:
-        image: '${{ env.IMAGE_NAME }} '
+        image: 'ghrc.io/omearaj/spring-petclinic'
         tag: 'latest-${{ github.sha }}'
         path: '.'
         builder: 'gcr.io/paketo-buildpacks/builder:base'
