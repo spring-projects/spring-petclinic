@@ -3,7 +3,7 @@
 
 name: build-and-test
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -14,8 +14,17 @@ jobs:
         java-version: [ 8, 11, 15 ]
 
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-java@v2
+    - name: Checkout Repo
+      uses: actions/checkout@v2
+    - name: Cache local Maven repository
+      uses: actions/cache@v2
+      with:
+       path: ~/.m2/repository
+       key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+       restore-keys: |
+        ${{ runner.os }}-maven-
+    - name: Setup Java and Build
+      uses: actions/setup-java@v2
       with:
         distribution: 'adopt'
         java-version: ${{ matrix.java-version }}
