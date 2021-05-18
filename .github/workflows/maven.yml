@@ -56,7 +56,7 @@ jobs:
         ${{ runner.os }}-maven-
         
     - uses: andrioid/setup-pack@latest
-    - name: Build Image using Pack 
+    - name: "😆 Image using Pack" 
       run: |
         pack build ghrc.io/omearaj/spring-petclinic --builder paketobuildpacks/builder:base --env 'BP_JVM_VERSION=8.*'
     
