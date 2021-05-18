@@ -1,0 +1,24 @@
+# dependabot.yml file with updates
+# disabled for Docker and limited for npm
+
+version: 2
+updates:
+  # Configuration for Dockerfile
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      # Disable all pull requests for Docker dependencies
+    open-pull-requests-limit: 0
+
+  # Configuration for maven
+  - package-ecosystem: "maven"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+    ignore:
+      # Ignore some updates to the 'bootstrap' package
+      - dependency-name: "bootstrap"
+        # Ignore only new versions for 4.x and 5.x
+        versions: ["4.x", "5.x"]
