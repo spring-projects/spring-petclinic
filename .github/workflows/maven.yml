@@ -65,17 +65,17 @@ jobs:
     #- name: Set App Name
       #run: 'echo "::set-env name=IMG_NAME::$(echo ${REGISTRY})/$(echo ${USERNAME})/$(echo ${IMG_NAME})"'
       
-    - name: Pack Remote Build
-      uses: dfreilich/pack-action@v1
-      with:
-        args: 'build ${{ env.IMAGE_NAME }} --path ./spring-petclinic --builder ${{ env.BUILDER }} --env "BP_JVM_VERSION=8.*" --publish'
-        username: ${{ env.USERNAME }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-        registry: ${{ env.REGISTRY }}
+ #   - name: Pack Remote Build
+ #     uses: dfreilich/pack-action@v1
+ #     with:
+ #       args: 'build ${{ env.IMAGE_NAME }} --path ./spring-petclinic --builder ${{ env.BUILDER }} --env "BP_JVM_VERSION=8.*" --publish'
+ #       username: ${{ env.USERNAME }}
+ #       password: ${{ secrets.GITHUB_TOKEN }}
+ #       registry: ${{ env.REGISTRY }}
     
-    - name: Setup tmate session
-      if: ${{ failure() }}
-      uses: mxschmitt/action-tmate@v3
+ #   - name: Setup tmate session
+ #     if: ${{ failure() }}
+ #     uses: mxschmitt/action-tmate@v3
      
    # - name: Build image
    #   id: build-image
