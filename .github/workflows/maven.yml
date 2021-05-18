@@ -55,7 +55,7 @@ jobs:
        restore-keys: |
         ${{ runner.os }}-maven-
         
-    - uses: andrioid/setup-pack@latest
+    - uses: andrioid/setup-pack@v1.0.1
     - name: "😆 Image using Pack" 
       run: |
         pack build ghrc.io/omearaj/spring-petclinic --builder paketobuildpacks/builder:base --env 'BP_JVM_VERSION=8.*'
