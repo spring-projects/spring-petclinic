@@ -47,13 +47,18 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     
-    #- name: Cache local Maven repository
-    #  uses: actions/cache@v2
-    #  with:
-    #   path: ~/.m2/repository
-    #   key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-    #   restore-keys: |
-    #    ${{ runner.os }}-maven-
+    - name: Cache local Maven repository
+      uses: actions/cache@v2
+      with:
+       path: ~/.m2/repository
+       key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+       restore-keys: |
+        ${{ runner.os }}-maven-
+        
+    - uses: andrioid/setup-pack@v1.0.1
+    - name: "😆 Image using Pack" 
+      run: |
+        pack build ghrc.io/omearaj/spring-petclinic --builder paketobuildpacks/builder:base --env 'BP_JVM_VERSION=8.*'
     
     #- name: Setup Java and Build
     #  uses: actions/setup-java@v2
@@ -64,27 +69,35 @@ jobs:
     
     #- name: Set App Name
       #run: 'echo "::set-env name=IMG_NAME::$(echo ${REGISTRY})/$(echo ${USERNAME})/$(echo ${IMG_NAME})"'
-    #- name: Pack Remote Build
-    #  uses: dfreilich/pack-action@v1
-    #  with:
-    #    args: 'build ${{ env.IMAGE_NAME }} --path /home/runner/work/spring-petclinic/spring-petclinic --builder ${{ env.BUILDER }} --env "BP_JVM_VERSION=8.*" --publish'
-    #    username: ${{ env.USERNAME }}
-    #    password: ${{ secrets.GITHUB_TOKEN }}
-    #    registry: ${{ env.REGISTRY }}
- 
+      
+ #   - name: Pack Remote Build
+ #     uses: dfreilich/pack-action@v1
+ #     with:
+ #       args: 'build ${{ env.IMAGE_NAME }} --path ./spring-petclinic --builder ${{ env.BUILDER }} --env "BP_JVM_VERSION=8.*" --publish'
+ #       username: ${{ env.USERNAME }}
+ #       password: ${{ secrets.GITHUB_TOKEN }}
+ #       registry: ${{ env.REGISTRY }}
     
-    
-    
-    
-    
-    
-    
-    
-    - name: Build image
-      uses: bigloupe/buildpacks-action@master
-      with:
-        image: 'spring-petclinic'
-        tag: '1.0.0'
-        path: '.'
-        builder: 'gcr.io/paketo-buildpacks/builder:base'
-        env: 'BP_JVM_VERSION=8.*'
+ #   - name: Setup tmate session
+ #     if: ${{ failure() }}
+ #     uses: mxschmitt/action-tmate@v3
+     
+   # - name: Build image
+   #   id: build-image
+   #   uses: bigloupe/buildpacks-action@master
+   #   with:
+   #     image: 'ghrc.io/omearaj/spring-petclinic'
+   #     tag: 'latest-${{ github.sha }}'
+   #     path: '.'
+   #     builder: 'gcr.io/paketo-buildpacks/builder:base'
+   #     env: 'BP_JVM_VERSION=8.*'
+        
+   # - name: Push To GHRC.io
+   #   id: push-to-quay
+   #   uses: redhat-actions/push-to-registry@v2
+   #   with:
+   #     image: ghrc.io/omearaj/spring-petclinic
+   #     tags: latest-${{ github.sha }}
+   #     registry: ghrc.io
+   #     username: ${{ github.actor }}
+   #     password: ${{ secrets.github.token }}
