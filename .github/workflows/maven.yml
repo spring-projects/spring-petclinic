@@ -33,27 +33,27 @@ jobs:
         java-version: ${{ matrix.java-version }}
     - run: mvn -B install --no-transfer-progress --file pom.xml
       
-  build-image-and-publish:
-    runs-on: ubuntu-latest
-    needs: [build-and-test-matrix]
-    env:
-      USERNAME: 'omearaj'
-      IMG_NAME: 'spring-petclinic'
-      REGISTRY: 'ghcr.io'
-      BUILDER: 'paketobuildpacks/builder:base'
-      IMAGE_NAME: 'ghrc.io/omearaj/spring-petclinic'
+#  build-image-and-publish:
+#    runs-on: ubuntu-latest
+#    needs: [build-and-test-matrix]
+#    env:
+#      USERNAME: 'omearaj'
+#      IMG_NAME: 'spring-petclinic'
+#      REGISTRY: 'ghcr.io'
+#      BUILDER: 'paketobuildpacks/builder:base'
+#      IMAGE_NAME: 'ghrc.io/omearaj/spring-petclinic'
     
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+#    steps:
+#    - name: Checkout
+#      uses: actions/checkout@v2
     
-    - name: Cache local Maven repository
-      uses: actions/cache@v2
-      with:
-       path: ~/.m2/repository
-       key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-       restore-keys: |
-        ${{ runner.os }}-maven-
+#    - name: Cache local Maven repository
+#      uses: actions/cache@v2
+#      with:
+3       path: ~/.m2/repository
+#       key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+ #      restore-keys: |
+ #       ${{ runner.os }}-maven-
     
     #- name: Setup Java and Build
     #  uses: actions/setup-java@v2
