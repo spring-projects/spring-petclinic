@@ -58,7 +58,8 @@ jobs:
     - uses: andrioid/setup-pack@v1.0.1
     - name: "😆 Image using Pack" 
       run: |
-        pack build ghrc.io/omearaj/spring-petclinic --builder paketobuildpacks/builder:base --env 'BP_JVM_VERSION=8.*'
+        docker login https://ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
+        pack build ghcr.io/octodemo/spring-petclinic --builder paketobuildpacks/builder:base --env 'BP_JVM_VERSION=8.*' --publish
     
     #- name: Setup Java and Build
     #  uses: actions/setup-java@v2
