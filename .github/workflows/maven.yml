@@ -69,11 +69,11 @@ jobs:
    
     - uses: andrioid/setup-pack@v1.0.1
    
-    - name: "😆 Build container image with CNB pack"
+    - name: "😎 container image with CNB pack"
       run: |
         pack build ghcr.io/octodemo/spring-petclinic/spring-petclinic:${{ github.sha }} --builder paketobuildpacks/builder:base --env 'BP_JVM_VERSION=8.*' --tag ghcr.io/octodemo/spring-petclinic/spring-petclinic:latest --publish
     
-    - name: Check container image for vulnerabilities🛡
+    - name: 🛡 Scan container image for vulnerabilities
       uses: anchore/scan-action@v2
       id: scan
       with:
@@ -85,7 +85,7 @@ jobs:
       with:
         sarif_file: ${{ steps.scan.outputs.sarif }}
     
-    - name: Run Snyk to check Docker image for vulnerabilities 🚓 
+    - name: 🚓 Run Snyk to check Docker image for vulnerabilities
       # Snyk can be used to break the build when it detects vulnerabilities.
       # In this case we want to upload the issues to GitHub Code Scanning
       continue-on-error: true
@@ -98,7 +98,10 @@ jobs:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
         image: ghcr.io/octodemo/spring-petclinic/spring-petclinic:latest
+    - name: ls
+      run:
+        ls
     - name: Upload result to GitHub Code Scanning
       uses: github/codeql-action/upload-sarif@v1
       with:
-        sarif_file: ${{ steps.snyk.outputs.sarif }}
+        sarif_file: snyk.sarif
