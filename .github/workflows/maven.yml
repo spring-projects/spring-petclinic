@@ -69,25 +69,28 @@ jobs:
    
     - uses: andrioid/setup-pack@v1.0.1
    
-    - name: "😆 Image using Pack"
+    - name: "😆 Build container image with CNB pack"
       run: |
         pack build ghcr.io/octodemo/spring-petclinic/spring-petclinic:${{ github.sha }} --builder paketobuildpacks/builder:base --env 'BP_JVM_VERSION=8.*' --tag ghcr.io/octodemo/spring-petclinic/spring-petclinic:latest --publish
     
-    - uses: anchore/scan-action@v2
+    - name: Check container image for vulnerabilities🛡
+      uses: anchore/scan-action@v2
       id: scan
       with:
         image: "ghcr.io/octodemo/spring-petclinic/spring-petclinic:latest"
         acs-report-enable: true
+    
     - name: upload Anchore scan SARIF report
       uses: github/codeql-action/upload-sarif@v1
       with:
         sarif_file: ${{ steps.scan.outputs.sarif }}
     
-    - name: Run Snyk to check Docker image for vulnerabilities
+    - name: Run Snyk to check Docker image for vulnerabilities 🚓 
       # Snyk can be used to break the build when it detects vulnerabilities.
       # In this case we want to upload the issues to GitHub Code Scanning
       continue-on-error: true
       uses: snyk/actions/docker@master
+      id: snyk
       env:
         # In order to use the Snyk Action you will need to have a Snyk API token.
         # More details in https://github.com/snyk/actions#getting-your-snyk-token
@@ -98,4 +101,4 @@ jobs:
     - name: Upload result to GitHub Code Scanning
       uses: github/codeql-action/upload-sarif@v1
       with:
-        sarif_file: snyk.sarif
+        sarif_file: ${{ steps.snyk.outputs.sarif }}
