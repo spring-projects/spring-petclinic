@@ -55,50 +55,15 @@ jobs:
        restore-keys: |
         ${{ runner.os }}-maven-
         
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+   
     - uses: andrioid/setup-pack@v1.0.1
-    - name: "😆 Image using Pack" 
+   
+    - name: "😆 Image using Pack"
       run: |
-        docker login https://ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
-        pack build ghcr.io/octodemo/spring-petclinic --builder paketobuildpacks/builder:base --env 'BP_JVM_VERSION=8.*' --publish
-    
-    #- name: Setup Java and Build
-    #  uses: actions/setup-java@v2
-    #  with:
-    #    distribution: 'adopt'
-    #    java-version: 8
-    #- run: mvn -B install --no-transfer-progress --file pom.xml
-    
-    #- name: Set App Name
-      #run: 'echo "::set-env name=IMG_NAME::$(echo ${REGISTRY})/$(echo ${USERNAME})/$(echo ${IMG_NAME})"'
-      
- #   - name: Pack Remote Build
- #     uses: dfreilich/pack-action@v1
- #     with:
- #       args: 'build ${{ env.IMAGE_NAME }} --path ./spring-petclinic --builder ${{ env.BUILDER }} --env "BP_JVM_VERSION=8.*" --publish'
- #       username: ${{ env.USERNAME }}
- #       password: ${{ secrets.GITHUB_TOKEN }}
- #       registry: ${{ env.REGISTRY }}
-    
- #   - name: Setup tmate session
- #     if: ${{ failure() }}
- #     uses: mxschmitt/action-tmate@v3
-     
-   # - name: Build image
-   #   id: build-image
-   #   uses: bigloupe/buildpacks-action@master
-   #   with:
-   #     image: 'ghrc.io/omearaj/spring-petclinic'
-   #     tag: 'latest-${{ github.sha }}'
-   #     path: '.'
-   #     builder: 'gcr.io/paketo-buildpacks/builder:base'
-   #     env: 'BP_JVM_VERSION=8.*'
-        
-   # - name: Push To GHRC.io
-   #   id: push-to-quay
-   #   uses: redhat-actions/push-to-registry@v2
-   #   with:
-   #     image: ghrc.io/omearaj/spring-petclinic
-   #     tags: latest-${{ github.sha }}
-   #     registry: ghrc.io
-   #     username: ${{ github.actor }}
-   #     password: ${{ secrets.github.token }}
+        pack build ghcr.io/octodemo/spring-petclinic/spring-petclinic --builder paketobuildpacks/builder:base --env 'BP_JVM_VERSION=8.*' --publish
