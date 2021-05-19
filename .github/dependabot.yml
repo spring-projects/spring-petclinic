@@ -19,6 +19,6 @@ updates:
     open-pull-requests-limit: 10
     ignore:
       # Ignore some updates to the 'bootstrap' package
-      - dependency-name: "org.webjars-bootstrap"
+      - dependency-name: "org.webjars:bootstrap"
         # Ignore only new versions for 4.x and 5.x
-        versions: ["4.x", "5.x"]
+        versions: ["3.4.x", "4.x", "5.x"]
