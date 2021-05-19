@@ -28,7 +28,7 @@
     <wro4j.version>1.8.0</wro4j.version>
 
     <jacoco.version>0.8.5</jacoco.version>
-    <nohttp-checkstyle.version>0.0.4.RELEASE</nohttp-checkstyle.version>
+    <nohttp-checkstyle.version>0.0.8</nohttp-checkstyle.version>
     <spring-format.version>0.0.28</spring-format.version>
   </properties>
 
