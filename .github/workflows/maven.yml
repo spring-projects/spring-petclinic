@@ -65,10 +65,10 @@ jobs:
       with:
         registry: ghcr.io
         username: ${{ github.repository_owner }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+        password: ${{ secrets.OCTODEMO_PAT }}
    
     - uses: andrioid/setup-pack@v1.0.1
    
     - name: "😆 Image using Pack"
       run: |
-        pack build ghcr.io/octodemo/spring-petclinic/spring-petclinic:${{ github.sha }} --builder paketobuildpacks/builder:base --env 'BP_JVM_VERSION=8.*' --tag ghcr.io/octodemo/spring-petclinic/spring-petclinic:latest 
+        pack build ghcr.io/octodemo/spring-petclinic/spring-petclinic:${{ github.sha }} --builder paketobuildpacks/builder:base --env 'BP_JVM_VERSION=8.*' --tag ghcr.io/octodemo/spring-petclinic/spring-petclinic:latest --publish 
