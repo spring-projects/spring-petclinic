@@ -1,7 +1,7 @@
 # This workflow will build a Java project with Maven
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 
-name: build-and-test
+name: Build and Test Image
 
 on: 
  push:
@@ -69,16 +69,19 @@ jobs:
    
     - uses: andrioid/setup-pack@v1.0.1
    
-    - name: "😆 Image using Pack"
+    - name: "😎 Build container image with CNB pack"
       run: |
         pack build ghcr.io/octodemo/spring-petclinic/spring-petclinic:${{ github.sha }} --builder paketobuildpacks/builder:base --env 'BP_JVM_VERSION=8.*' --tag ghcr.io/octodemo/spring-petclinic/spring-petclinic:latest --publish
     
-    - uses: anchore/scan-action@v2
+    - name: 🛡 Scan container image for vulnerabilities
+      uses: anchore/scan-action@v2
       id: scan
       with:
         image: "ghcr.io/octodemo/spring-petclinic/spring-petclinic:latest"
         acs-report-enable: true
-    - name: upload Anchore scan SARIF report
+    
+    - name: ⬆️ Upload Anchore scan SARIF report
       uses: github/codeql-action/upload-sarif@v1
       with:
         sarif_file: ${{ steps.scan.outputs.sarif }}
+    
