@@ -7,6 +7,11 @@ on:
  push:
   branches: main
  pull_request:
+ 
+env:
+ org_name: octodemo
+ repo_name: spring-petclinic
+ image_name: spring-petclinic
 
 jobs:
   build-and-test-matrix:
@@ -66,4 +71,4 @@ jobs:
    
     - name: "😆 Image using Pack"
       run: |
-        pack build ghcr.io/octodemo/spring-petclinic/spring-petclinic --builder paketobuildpacks/builder:base --env 'BP_JVM_VERSION=8.*' --publish
+        pack build ghcr.io/octodemo/spring-petclinic/spring-petclinic:${{ github.sha }} --builder paketobuildpacks/builder:base --env 'BP_JVM_VERSION=8.*' --tag ghcr.io/octodemo/spring-petclinic/spring-petclinic:latest 
