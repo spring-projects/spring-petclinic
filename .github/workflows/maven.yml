@@ -69,7 +69,7 @@ jobs:
    
     - uses: andrioid/setup-pack@v1.0.1
    
-    - name: "😎 container image with CNB pack"
+    - name: "😎 Build container image with CNB pack"
       run: |
         pack build ghcr.io/octodemo/spring-petclinic/spring-petclinic:${{ github.sha }} --builder paketobuildpacks/builder:base --env 'BP_JVM_VERSION=8.*' --tag ghcr.io/octodemo/spring-petclinic/spring-petclinic:latest --publish
     
@@ -80,12 +80,12 @@ jobs:
         image: "ghcr.io/octodemo/spring-petclinic/spring-petclinic:latest"
         acs-report-enable: true
     
-    - name: upload Anchore scan SARIF report
+    - name: ⬆️ Upload Anchore scan SARIF report
       uses: github/codeql-action/upload-sarif@v1
       with:
         sarif_file: ${{ steps.scan.outputs.sarif }}
     
-    - name: 🚓 Run Snyk to check Docker image for vulnerabilities
+    - name: 🚓  Run Snyk to check Docker image for vulnerabilities
       # Snyk can be used to break the build when it detects vulnerabilities.
       # In this case we want to upload the issues to GitHub Code Scanning
       continue-on-error: true
@@ -101,7 +101,7 @@ jobs:
     - name: ls
       run:
         ls
-    - name: Upload result to GitHub Code Scanning
+    - name: ⬆️ Upload result to GitHub Code Scanning
       uses: github/codeql-action/upload-sarif@v1
       with:
-        sarif_file: snyk.sarif
+        sarif_file: results.sarif
