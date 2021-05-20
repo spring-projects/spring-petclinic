@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: spring-petclinic
-  description: 
+  description: Older application used at various times in the Devops Bootcamp
   annotations:
     github.com/project-slug: 'liatrio/spring-petclinic'
   tags:
