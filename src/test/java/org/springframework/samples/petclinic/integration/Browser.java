@@ -1,14 +1,14 @@
 package org.springframework.samples.petclinic.integration;
 
-import java.util.concurrent.TimeUnit;
-
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.test.context.event.annotation.AfterTestClass;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
+import java.util.concurrent.TimeUnit;
 
 public class Browser {
 
@@ -17,7 +17,7 @@ public class Browser {
 	private static WebDriver createDriver() {
 		setupDriver();
 		ChromeDriver chromeDriver = new ChromeDriver(new ChromeDriverService.Builder().withSilent(true).build(),
-				chromeOptions());
+			chromeOptions());
 		chromeDriver.manage().window().setSize(new Dimension(1024, 768));
 		chromeDriver.manage().timeouts().implicitlyWait(0L, TimeUnit.SECONDS);
 		return chromeDriver;
@@ -36,5 +36,9 @@ public class Browser {
 		chromeOptions.addArguments("--disable-browser-side-navigation");
 		return chromeOptions;
 	}
+
+
+
+
 
 }
