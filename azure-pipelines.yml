@@ -80,7 +80,7 @@ stages:
 - stage: DeployDev
   displayName: Deploy dev stage
   dependsOn: Build
-  condition: succeeded()
+  condition: and(succeeded(), eq(variables.isMain, false))
   jobs:
   - deployment: DeployLinuxWebApp
     displayName: Deploy Linux Web App
