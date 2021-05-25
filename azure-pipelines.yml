@@ -54,8 +54,8 @@ stages:
       artifact: drop
 
 # Deploy to prod if "isMain" == true
-- stage: Deploy
-  displayName: Deploy stage
+- stage: DeployProd
+  displayName: Deploy prod stage
   dependsOn: Build
   condition: and(succeeded(), eq(variables.isMain, true))
   jobs:
@@ -77,8 +77,8 @@ stages:
               package: '$(Pipeline.Workspace)/drop/**/target/*.?(war|jar)'
 
 # Deploy to dev if "isMain" == false
-- stage: Deploy
-  displayName: Deploy stage
+- stage: DeployDev
+  displayName: Deploy dev stage
   dependsOn: Build
   condition: succeeded()
   jobs:
