@@ -1,0 +1,17 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: spring-petclinic
+  description: Older application used at various times in the Devops Bootcamp
+  annotations:
+    github.com/project-slug: 'liatrio/spring-petclinic'
+  tags:
+    - bootcamp
+  links:
+    - url: https://devops-bootcamp.liatr.io/#/1-introduction/overview
+      title: Devops Bootcamp
+      icon: dashboard
+spec:
+  type: website
+  lifecycle: production
+  owner: liatrio
