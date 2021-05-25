@@ -3,22 +3,29 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
+# WORKING THEORY: 
+# Check if build is main branch, run prod template
+# If build is any other branch, run dev template
+# Otherwise, assume pull request trigger, run test template
+
 trigger:
   branches:
     include:
-      - main
-
+    - '*'  # must quote since "*" is a YAML reserved character; we want a string
+  
 variables:
-
+  # Boolean: true if the detected branch is main
+  isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
   # Azure Resource Manager connection created during pipeline creation
   azureSubscription: '22796952-c4ae-4c29-bdff-8099e49d9c2a'
-
+  # Production Web app name
+  webAppNameProd: 'java-pet-clinic'
+  # Production Environment name
+  environmentNameProd: 'java-pet-clinic'
   # Web app name
-  webAppName: 'java-pet-clinic'
-
+  webAppNameDev: 'java-pet-clinic-dev'
   # Environment name
-  environmentName: 'java-pet-clinic'
-
+  environmentNameDev: 'java-pet-clinic-dev'
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
 
@@ -30,7 +37,6 @@ stages:
     displayName: Maven Package and Publish Artifacts
     pool:
       vmImage: $(vmImageName)
-
     steps:
     - task: Maven@3
       displayName: 'Maven Package'
@@ -47,14 +53,15 @@ stages:
     - upload: $(Build.ArtifactStagingDirectory)
       artifact: drop
 
+# Deploy to prod if "isMain" == true
 - stage: Deploy
   displayName: Deploy stage
   dependsOn: Build
-  condition: succeeded()
+  condition: and(succeeded(), eq(variables.isMain, true))
   jobs:
   - deployment: DeployLinuxWebApp
     displayName: Deploy Linux Web App
-    environment: $(environmentName)
+    environment: $(environmentNameProd)
     pool:
       vmImage: $(vmImageName)
     strategy:
@@ -66,5 +73,28 @@ stages:
             inputs:
               azureSubscription: $(azureSubscription)
               appType: webAppLinux
-              appName: $(webAppName)
+              appName: $(webAppNameProd)
+              package: '$(Pipeline.Workspace)/drop/**/target/*.?(war|jar)'
+
+# Deploy to dev if "isMain" == false
+- stage: Deploy
+  displayName: Deploy stage
+  dependsOn: Build
+  condition: succeeded()
+  jobs:
+  - deployment: DeployLinuxWebApp
+    displayName: Deploy Linux Web App
+    environment: $(environmentNameDev)
+    pool:
+      vmImage: $(vmImageName)
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureWebApp@1
+            displayName: 'Azure Web App Deploy: java-pet-clinic-dev'
+            inputs:
+              azureSubscription: $(azureSubscription)
+              appType: webAppLinux
+              appName: $(webAppNameDev)
               package: '$(Pipeline.Workspace)/drop/**/target/*.?(war|jar)'
