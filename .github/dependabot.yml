@@ -22,3 +22,9 @@ updates:
       - dependency-name: "org.webjars:bootstrap"
         # Ignore only new versions for 4.x and 5.x
         versions: ["3.4.x", "4.x", "5.x"]
+  
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
