@@ -21,10 +21,14 @@
 2) (Once only) create the PetClinic database and user by executing the "db/mysql/user.sql"
    scripts. You can connect to the database running in the docker container using 
    `mysql -u root -h localhost --protocol tcp`, but you don't need to run the script there
-   because the petclinic user is already set up if you use the provided `docker-compose.yaml`.
+   because the petclinic user is already set up if you use the provided `docker-compose.yml`.
 
 3) Run the app with `spring.profiles.active=mysql` (e.g. as a System property via the command
-   line, but any way that sets that property in a Spring Boot app should work).
+   line, but any way that sets that property in a Spring Boot app should work). For example use
+   
+   mvn spring-boot:run -Dspring-boot.run.profiles=mysql
+
+   To activate the profile on the command line.
 
 N.B. the "petclinic" database has to exist for the app to work with the JDBC URL value
 as it is configured by default. This condition is taken care of automatically by the 
