@@ -1,9 +1,0 @@
-#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
-#Tue Jun 01 01:45:58 CEST 2021
-https\://repo.maven.apache.org/maven2/.lastUpdated=1622504758441
-https\://repo.spring.io/milestone/.error=
-https\://repo.spring.io/milestone/.lastUpdated=1622504758119
-https\://repo.spring.io/snapshot/.error=
-https\://gitlab.com/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven/.error=Could not transfer artifact javax.validation\:validation-api\:pom\:2.0.1.Final from/to gitlab-maven (https\://gitlab.com/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven)\: Illegal character in path at index 36\: https\://gitlab.com/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven/javax/validation/validation-api/2.0.1.Final/validation-api-2.0.1.Final.pom
-https\://repo.spring.io/snapshot/.lastUpdated=1622504757758
-@default-gitlab-maven-https\://gitlab.com/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven/.lastUpdated=1622504757765

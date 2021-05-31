@@ -1,9 +1,0 @@
-#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
-#Tue Jun 01 00:29:06 CEST 2021
-https\://repo.maven.apache.org/maven2/.lastUpdated=1622500146946
-https\://repo.spring.io/milestone/.error=
-https\://repo.spring.io/milestone/.lastUpdated=1622500146848
-https\://repo.spring.io/snapshot/.error=
-https\://gitlab.com/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven/.error=Could not transfer artifact org.xmlunit\:xmlunit-parent\:pom\:2.8.2 from/to gitlab-maven (https\://gitlab.com/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven)\: Illegal character in path at index 36\: https\://gitlab.com/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven/org/xmlunit/xmlunit-parent/2.8.2/xmlunit-parent-2.8.2.pom
-https\://repo.spring.io/snapshot/.lastUpdated=1622500146627
-@default-gitlab-maven-https\://gitlab.com/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven/.lastUpdated=1622500146629
