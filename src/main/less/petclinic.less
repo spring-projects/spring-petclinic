@@ -49,6 +49,22 @@
 @pagination-active-border:                @spring-green;
 @table-border-color:                      @spring-brown;
 
+@alert-success-bg:      @spring-light-grey;
+@alert-success-border:  @spring-light-grey;
+@alert-success-text:    @spring-green
+
+@alert-info-bg:      @spring-light-grey;
+@alert-info-border:  @spring-light-grey;
+@alert-info-text:    @spring-green
+
+@alert-warning-bg:      @spring-light-grey;
+@alert-warning-border:  orange;
+@alert-warning-text:    orange;
+
+@alert-danger-bg:      @spring-light-grey;
+@alert-danger-border:  red;
+@alert-danger-text:    red;
+
 .table > thead > tr > th {
   background-color: lighten(@spring-brown, 3%);
   color: @spring-light-grey;
@@ -190,7 +206,7 @@ table td.action-column {
 }
 
 .label-success {
-  text-color: green;
+  text-color: @spring-green;
 }
 .deployment-status-deployed {
   .label-success;
