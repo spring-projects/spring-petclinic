@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <packaging>jar</packaging>
+    <groupId>org.webjars.npm</groupId>
+    <artifactId>jshint</artifactId>
+    <version>2.11.0</version>
+    <name>jshint</name>
+    <description>WebJar for jshint</description>
+    <url>https://www.webjars.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <scm>
+        <url>https://github.com/jshint/jshint</url>
+        <connection>https://github.com/jshint/jshint.git</connection>
+        <developerConnection>https://github.com/jshint/jshint.git</developerConnection>
+        <tag>v2.11.0</tag>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>webjars</id>
+            <url>https://www.webjars.org</url>
+        </developer>
+    </developers>
+
+    <licenses>
+        
+        <license>
+            <name>MIT</name>
+            <url>https://spdx.org/licenses/MIT#licenseText</url>
+            <distribution>repo</distribution>
+        </license>
+        
+    </licenses>
+
+    
+    <issueManagement>
+        <url>https://github.com/jshint/jshint/issues</url>
+    </issueManagement>
+    
+
+    <dependencies>
+        
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>strip-json-comments</artifactId>
+            <version>[1.0,1.1)</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>console-browserify</artifactId>
+            <version>[1.1,1.2)</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>shelljs</artifactId>
+            <version>[0.3,0.4)</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>lodash</artifactId>
+            <version>[4.17.11,4.18)</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>htmlparser2</artifactId>
+            <version>[3.8,3.9)</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>minimatch</artifactId>
+            <version>[3.0.2,3.1)</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>exit</artifactId>
+            <version>[0.1,0.2)</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>cli</artifactId>
+            <version>[1.0.0,1.1)</version>
+        </dependency>
+        
+        
+    </dependencies>
+
+</project>

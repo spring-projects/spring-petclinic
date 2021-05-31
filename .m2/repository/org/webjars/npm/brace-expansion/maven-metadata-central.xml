@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.webjars.npm</groupId>
+  <artifactId>brace-expansion</artifactId>
+  <versioning>
+    <latest>1.1.11</latest>
+    <release>1.1.11</release>
+    <versions>
+      <version>1.1.0</version>
+      <version>1.1.7</version>
+      <version>1.1.8</version>
+      <version>1.1.11</version>
+    </versions>
+    <lastUpdated>20180213031143</lastUpdated>
+  </versioning>
+</metadata>

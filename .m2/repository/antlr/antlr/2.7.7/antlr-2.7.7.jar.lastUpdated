@@ -1,0 +1,9 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Tue Jun 01 00:30:35 CEST 2021
+https\://repo.maven.apache.org/maven2/.lastUpdated=1622500235223
+https\://repo.spring.io/milestone/.error=
+https\://repo.spring.io/milestone/.lastUpdated=1622500190396
+https\://repo.spring.io/snapshot/.error=
+https\://gitlab.com/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven/.error=Could not transfer artifact antlr\:antlr\:jar\:2.7.7 from/to gitlab-maven (https\://gitlab.com/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven)\: Illegal character in path at index 36\: https\://gitlab.com/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven/antlr/antlr/2.7.7/antlr-2.7.7.jar
+https\://repo.spring.io/snapshot/.lastUpdated=1622500185622
+@default-gitlab-maven-https\://gitlab.com/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven/.lastUpdated=1622500185646

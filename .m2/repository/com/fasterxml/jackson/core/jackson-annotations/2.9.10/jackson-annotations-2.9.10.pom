@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion> 
+  <parent>
+    <groupId>com.fasterxml.jackson</groupId>
+    <!-- this is one of few Jackson modules that depends on parent and NOT jackson-bom -->
+    <artifactId>jackson-parent</artifactId>
+    <version>2.9.1.2</version>
+  </parent>
+
+  <groupId>com.fasterxml.jackson.core</groupId>
+  <artifactId>jackson-annotations</artifactId>
+  <name>Jackson-annotations</name>
+  <version>2.9.10</version>
+  <packaging>bundle</packaging>
+  <description>Core annotations used for value types, used by Jackson data binding package.
+  </description>
+  <inceptionYear>2008</inceptionYear>
+
+  <url>http://github.com/FasterXML/jackson</url>
+  <scm>
+    <connection>scm:git:git@github.com:FasterXML/jackson-annotations.git</connection>
+    <developerConnection>scm:git:git@github.com:FasterXML/jackson-annotations.git</developerConnection>
+    <url>http://github.com/FasterXML/jackson-annotations</url>
+    <tag>jackson-annotations-2.9.10</tag>
+  </scm>
+
+  <properties>
+    <!-- 02-Oct-2015, tatu: Retain Java6/JDK1.6 compatibility for annotations for Jackson 2.x -->
+    <javac.src.version>1.6</javac.src.version>
+    <javac.target.version>1.6</javac.target.version>
+    <!-- 02-Jun-2016, tatu: Looks like newer versions (3.0+) of bundle plugin require Java 7 (directly
+            or via transitive deps), so need to downgrade
+      -->
+    <version.plugin.bundle>2.5.3</version.plugin.bundle>
+
+    <osgi.export>com.fasterxml.jackson.annotation.*;version=${project.version}</osgi.export>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <!-- 06-Sep-2017, tatu: Try to generate "automatic module name" -->
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+	<!-- IMPORTANT! Parent defines plenty of defaults; make sure to merge config -->
+        <configuration>
+          <!-- note: usually would use `packageVersion.package`, but not used with annotations pkg -->
+          <instructions combine.children="merge">
+            <Automatic-Module-Name>com.fasterxml.jackson.annotation</Automatic-Module-Name>
+          </instructions>
+	</configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

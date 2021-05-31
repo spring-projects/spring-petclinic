@@ -1,0 +1,9 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Tue Jun 01 00:30:35 CEST 2021
+https\://repo.maven.apache.org/maven2/.lastUpdated=1622500235230
+https\://repo.spring.io/milestone/.error=
+https\://repo.spring.io/milestone/.lastUpdated=1622500190412
+https\://repo.spring.io/snapshot/.error=
+https\://gitlab.com/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven/.error=Could not transfer artifact jakarta.activation\:jakarta.activation-api\:jar\:1.2.2 from/to gitlab-maven (https\://gitlab.com/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven)\: Illegal character in path at index 36\: https\://gitlab.com/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven/jakarta/activation/jakarta.activation-api/1.2.2/jakarta.activation-api-1.2.2.jar
+https\://repo.spring.io/snapshot/.lastUpdated=1622500185626
+@default-gitlab-maven-https\://gitlab.com/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven/.lastUpdated=1622500185649

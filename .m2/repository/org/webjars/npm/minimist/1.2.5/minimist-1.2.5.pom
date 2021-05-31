@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <packaging>jar</packaging>
+    <groupId>org.webjars.npm</groupId>
+    <artifactId>minimist</artifactId>
+    <version>1.2.5</version>
+    <name>minimist</name>
+    <description>WebJar for minimist</description>
+    <url>https://www.webjars.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <scm>
+        <url>https://github.com/substack/minimist</url>
+        <connection>https://github.com/substack/minimist.git</connection>
+        <developerConnection>https://github.com/substack/minimist.git</developerConnection>
+        <tag>v1.2.5</tag>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>webjars</id>
+            <url>https://www.webjars.org</url>
+        </developer>
+    </developers>
+
+    <licenses>
+        
+        <license>
+            <name>MIT</name>
+            <url>https://spdx.org/licenses/MIT#licenseText</url>
+            <distribution>repo</distribution>
+        </license>
+        
+    </licenses>
+
+    
+    <issueManagement>
+        <url>https://github.com/substack/minimist/issues</url>
+    </issueManagement>
+    
+
+    <dependencies>
+        
+        
+    </dependencies>
+
+</project>

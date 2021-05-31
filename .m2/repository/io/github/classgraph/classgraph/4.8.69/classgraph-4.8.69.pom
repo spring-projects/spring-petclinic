@@ -1,0 +1,611 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.github.classgraph</groupId>
+    <artifactId>classgraph</artifactId>
+    <version>4.8.69</version>
+    <name>ClassGraph</name>
+
+    <description>The uber-fast, ultra-lightweight classpath and module scanner for JVM languages.</description>
+
+    <url>https://github.com/classgraph/classgraph</url>
+
+    <licenses>
+        <license>
+            <name>The MIT License (MIT)</name>
+            <url>http://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Luke Hutchison</name>
+            <email>luke.hutch@gmail.com</email>
+            <organization>ClassGraph</organization>
+            <organizationUrl>https://github.com/classgraph</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git@github.com:classgraph/classgraph.git</connection>
+        <developerConnection>scm:git:git@github.com:classgraph/classgraph.git</developerConnection>
+        <url>https://github.com/classgraph/classgraph</url>
+        <tag>classgraph-4.8.69</tag>
+    </scm>
+
+    <issueManagement>
+        <url>https://github.com/classgraph/classgraph/issues</url>
+    </issueManagement>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
+    <properties>
+        <!-- Set UTF-8 encoding for Maven plugins and output -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- Default to generating Javadoc in HTML 4.01 format -->
+        <javadoc.html.version />
+
+        <!-- Warnings are disabled, in order to suppress warning about bootstrap classpath not being set -->
+        <!-- (which arises as a result of building for JDK 7 on JDK8+, allowing for use of @FunctionalInterface) -->
+        <!-- <maven.compiler.showWarnings>true</maven.compiler.showWarnings> -->
+        <!-- <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation> -->
+    </properties>
+
+    <!-- Test dependencies (main has no dependencies). -->
+    <!-- Find dependency updates with: ./mvnw versions:display-dependency-updates -->
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.6.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-core</artifactId>
+            <version>1.23</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-generator-annprocess</artifactId>
+            <version>1.23</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.15.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.enterprise</groupId>
+            <artifactId>cdi-api</artifactId>
+            <version>2.0.SP1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.url</groupId>
+            <artifactId>pax-url-aether</artifactId>
+            <version>2.6.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.0-alpha1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>2.0.0-alpha1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <version>1.0.2.Final</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- "provided" dependencies (soft compile-time dependencies that do not create a runtime dependency): -->
+
+        <dependency>
+            <!-- Needed for Eclipse nullability analysis to work, but use "provided" as the scope so that we -->
+            <!-- don't add a hard dependency on the JDT annotations, because we don't use the annotations in -->
+            <!-- any of the ClassGraph code, so these annotations are not needed at runtime. -->
+            <!-- See: https://bugs.eclipse.org/bugs/show_bug.cgi?id=552198 -->
+            <groupId>org.eclipse.jdt</groupId>
+            <artifactId>org.eclipse.jdt.annotation</artifactId>
+            <version>2.2.400</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Plugins are listed here, but configured in pluginManagement, for compatibility with Eclipse. -->
+            <!-- See: https://stackoverflow.com/a/10483284/3950982 -->
+            <!-- Find updates with: ./mvnw versions:display-plugin-updates -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.0.0-M3</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.1.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M4</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.0.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version><!--$NO-MVN-MAN-VER$ -->
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.2.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.1.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.8</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>3.0.0-M1</version>
+            </plugin>
+
+            <!-- Override versions of the following plugins, inherited from the super-pom, with latest versions -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.1.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>3.0.0-M1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>3.0.0-M1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.8.2</version>
+            </plugin>
+        </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <!-- Enforce minimum Maven version, and JDK 7 API -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.codehaus.mojo</groupId>
+                            <artifactId>animal-sniffer-enforcer-rule</artifactId>
+                            <version>1.18</version>
+                        </dependency>
+                    </dependencies>
+                    <executions>
+                        <!-- Require Maven version. -->
+                        <execution>
+                            <id>enforce-versions</id>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>enforce</goal>
+                            </goals>
+                            <configuration>
+                                <rules>
+                                    <requireMavenVersion>
+                                        <version>[3.6.3,)</version>
+                                    </requireMavenVersion>
+                                </rules>
+                                <!-- This is disabled currently because of a bug in maven-enforcer-plugin-3.0.0-M3: -->
+                                <!-- https://issues.apache.org/jira/browse/MENFORCER-351 -->
+                                <skip>true</skip>
+                            </configuration>
+                        </execution>
+                        <!-- Display environment info -->
+                        <execution>
+                            <id>display-info</id>
+                            <phase>compile</phase>
+                            <goals>
+                                <goal>display-info</goal>
+                            </goals>
+                        </execution>
+                        <!-- Check main project for compatibility with JDK 7 API -->
+                        <execution>
+                            <id>check-signatures</id>
+                            <phase>compile</phase>
+                            <goals>
+                                <goal>enforce</goal>
+                            </goals>
+                            <configuration>
+                                <rules>
+                                    <checkSignatureRule implementation="org.codehaus.mojo.animal_sniffer.enforcer.CheckSignatureRule">
+                                        <signature>
+                                            <groupId>org.codehaus.mojo.signature</groupId>
+                                            <!-- Check against JDK 7 API -->
+                                            <artifactId>java17</artifactId>
+                                            <version>1.0</version>
+                                        </signature>
+                                    </checkSignatureRule>
+                                </rules>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <executions>
+                        <!-- Copy LICENSE-ClassGraph.txt to build root -->
+                        <execution>
+                            <id>copy-license-to-target</id>
+                            <phase>process-resources</phase>
+                            <goals>
+                                <goal>copy-resources</goal>
+                            </goals>
+                            <configuration>
+                                <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+                                <resources>
+                                    <resource>
+                                        <directory>${basedir}</directory>
+                                        <filtering>false</filtering>
+                                        <includes>
+                                            <include>LICENSE-ClassGraph.txt</include>
+                                        </includes>
+                                    </resource>
+                                </resources>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>copy-license-to-javadocs</id>
+                            <phase>process-resources</phase>
+                            <goals>
+                                <goal>copy-resources</goal>
+                            </goals>
+                            <configuration>
+                                <outputDirectory>${project.build.directory}/apidocs</outputDirectory>
+                                <resources>
+                                    <resource>
+                                        <directory>${basedir}</directory>
+                                        <filtering>false</filtering>
+                                        <includes>
+                                            <include>LICENSE-ClassGraph.txt</include>
+                                        </includes>
+                                    </resource>
+                                </resources>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <!-- Put module-info.class in META-INF/versions/9 to maximize backwards -->
+                            <!-- compatibility. This has to be done after the jar is created, since -->
+                            <!-- module-info.class cannot be copied to the target directory, otherwise -->
+                            <!-- this build or the following incremental build will cause Animal Sniffer -->
+                            <!-- to fail, since it depends upon ASM 5, which balks when it hits -->
+                            <!-- module-info.class with: "Execution check-signatures of goal -->
+                            <!-- org.apache.maven.plugins:maven-enforcer-plugin:3.0.0-M3:enforce failed: -->
+                            <!-- This feature requires ASM6". -->
+                            <id>add-module-info-to-jar</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                            <configuration>
+                                <target>
+                                    <jar update="true" destfile="${project.build.directory}/${project.build.finalName}.jar">
+                                        <zipfileset prefix="META-INF/versions/9" dir="${project.basedir}/src/module-info/io.github.classgraph" includes="module-info.class" />
+                                    </jar>
+                                </target>
+                            </configuration>
+                        </execution>
+
+                        <execution>
+                            <!-- Strip out m2e directives from pom.xml, since Sonatype can't handle them. -->
+                            <!-- This has to be done after the jar is built, since Maven adds the pom.xml file -->
+                            <!-- to the jarfile directly, rather than first creating it in the target directory. -->
+                            <id>strip-m2e-directives</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                            <configuration>
+                                <tasks>
+                                    <!-- Unzip pom.xml, and replace m2e directives with comments -->
+                                    <copy todir="${project.build.directory}/tmp">
+                                        <zipfileset src="${project.build.directory}/${project.build.finalName}.jar">
+                                            <patternset>
+                                                <include name="META-INF/maven/io.github.classgraph/classgraph/pom.xml" />
+                                            </patternset>
+                                        </zipfileset>
+                                        <filterchain>
+                                            <tokenfilter>
+                                                <replacestring from="&lt;?" to="&lt;-- " />
+                                            </tokenfilter>
+                                            <tokenfilter>
+                                                <replacestring from="?&gt;" to=" --&gt;" />
+                                            </tokenfilter>
+                                        </filterchain>
+                                    </copy>
+                                    <!-- Update jarfile with modified pom.xml -->
+                                    <zip basedir="${project.build.directory}/tmp" destfile="${project.build.directory}/${project.build.finalName}.jar" update="true" />
+                                </tasks>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- Compile sources (main for JDK 7, test for JDK 8) -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <encoding>UTF-8</encoding>
+                        <!-- Can't use "release" option, because ClassGraph needs to be built in JDK 7 -->
+                        <!-- compatibility mode, and the @FunctionalInterface annotation was not available -->
+                        <!-- in JDK 7. If building with "source" and "target" switches, unknown annotations -->
+                        <!-- compile fine as long as they exist in the compiling JDK (in this case, JDK 8+). -->
+                        <!-- Missing annotations don't trigger a linkage error or ClassNotFoundException -->
+                        <!-- unless the annotation is actually read. -->
+                        <!-- However, note that not explicitly specifying a JDK 7 rt.jar as the bootstrap -->
+                        <!-- classpath (in order to build on a newer JDK, which does have @FunctionalInterface) -->
+                        <!-- will lead to the following build-time warning, if maven.compiler.showWarnings -->
+                        <!-- is set to true: -->
+                        <!-- "[WARNING] bootstrap class path not set in conjunction with -source 7" -->
+                        <source>7</source>
+                        <target>7</target>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>default-testCompile</id>
+                            <phase>test-compile</phase>
+                            <goals>
+                                <goal>testCompile</goal>
+                            </goals>
+                            <configuration>
+                                <encoding>UTF-8</encoding>
+                                <!-- Tests use some JDK 8 features, such as lambdas -->
+                                <source>8</source>
+                                <target>8</target>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- Execute unit tests -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                </plugin>
+
+                <!-- Add src/test/perf to test sources -->
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>add-test-source</id>
+                            <phase>generate-test-sources</phase>
+                            <goals>
+                                <goal>add-test-source</goal>
+                            </goals>
+                            <configuration>
+                                <sources>
+                                    <source>src/test/perf</source>
+                                </sources>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- Create binary jar -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <configuration>
+                        <forceCreation>true</forceCreation>
+                        <archive>
+                            <forced>true</forced>
+                            <manifest>
+                                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                                <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                            </manifest>
+                            <manifestEntries>
+                                <!-- Add OSGi bundle attributes to manifest -->
+                                <Bundle-Category>Utilities</Bundle-Category>
+                                <Bundle-License>http://opensource.org/licenses/MIT</Bundle-License>
+                                <Bundle-ManifestVersion>2</Bundle-ManifestVersion>
+                                <Bundle-Name>ClassGraph</Bundle-Name>
+                                <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
+                                <Bundle-Vendor>Luke Hutchison</Bundle-Vendor>
+                                <Bundle-Description>${project.description}</Bundle-Description>
+                                <Bundle-Version>${project.version}</Bundle-Version>
+                                <Require-Capability>osgi.ee;filter:="(&amp;(osgi.ee=JavaSE)(version=1.7))"</Require-Capability>
+                                <Export-Package>io.github.classgraph;version="${project.version}"</Export-Package>
+                                <!-- Make sure "requires" entries in the module descriptor match these imports: -->
+                                <!-- src/main/module-info/io.github.classgraph/module-info.java -->
+                                <Import-Package>javax.xml.xpath,javax.xml.namespace,javax.xml.parsers,org.w3c.dom,jdk.internal.misc;resolution:="optional",sun.misc;resolution:="optional",sun.nio.ch;resolution:="optional"</Import-Package>
+                                <!-- This is a multi-release jar, since module-info.class will be added to -->
+                                <!-- META-INF/versions/9 , so we need to set the Multi-Release entry to true -->
+                                <Multi-Release>true</Multi-Release>
+                            </manifestEntries>
+                        </archive>
+                    </configuration>
+                </plugin>
+
+                <!-- Create source jar -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>jar-no-fork</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- Create Javadoc jar -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>attach-javadocs</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                            <configuration>
+                                <source>8</source>
+                                <additionalOptions>${javadoc.html.version}</additionalOptions>
+                                <doclint>all</doclint>
+                                <excludePackageNames>nonapi.*</excludePackageNames>
+                                <show>public</show>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- Stage jars on Sonatype Nexus -->
+                <!-- See: http://java.dzone.com/articles/deploy-maven-central -->
+                <!-- and: http://central.sonatype.org/pages/apache-maven.html -->
+                <plugin>
+                    <groupId>org.sonatype.plugins</groupId>
+                    <artifactId>nexus-staging-maven-plugin</artifactId>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <serverId>ossrh</serverId>
+                        <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                        <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        <stagingProgressTimeoutMinutes>10</stagingProgressTimeoutMinutes>
+                    </configuration>
+                </plugin>
+
+                <!-- Deploy jars -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <configuration>
+                        <phase>deploy</phase>
+                        <goals>deploy</goals>
+                        <autoVersionSubmodules>true</autoVersionSubmodules>
+                        <!-- Activate release profile -->
+                        <releaseProfiles>release</releaseProfiles>
+                        <!-- Work around bug where releaseProfiles tag doesn't actually work yet -->
+                        <arguments>-Prelease</arguments>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <profiles>
+        <!-- Compile Javadoc to HTML5 if building with JDK 9+ -->
+        <profile>
+            <id>jdk9plus</id>
+            <properties>
+                <javadoc.html.version>-html5</javadoc.html.version>
+                <!-- coverall version 4.3.0 does not work with java 9. -->
+                <!-- See: https://github.com/trautonen/coveralls-maven-plugin/issues/112 -->
+                <coveralls.skip>true</coveralls.skip>
+            </properties>
+            <activation>
+                <jdk>[9,)</jdk>
+            </activation>
+        </profile>
+
+        <!-- Sign jars for release (./mvnw clean release:prepare release:perform) -->
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <configuration>
+                            <gpgArguments>
+                                <arg>--pinentry-mode</arg>
+                                <arg>loopback</arg>
+                            </gpgArguments>
+                            <keyname>${gpg.keyname}</keyname>
+                            <passphraseServerId>${gpg.keyname}</passphraseServerId>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

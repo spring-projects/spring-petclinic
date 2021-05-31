@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <packaging>jar</packaging>
+    <groupId>org.webjars.npm</groupId>
+    <artifactId>path-is-absolute</artifactId>
+    <version>1.0.1</version>
+    <name>path-is-absolute</name>
+    <description>WebJar for path-is-absolute</description>
+    <url>http://webjars.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <scm>
+        <url>git+https://github.com/sindresorhus/path-is-absolute</url>
+        <connection>git+https://github.com/sindresorhus/path-is-absolute.git</connection>
+        <developerConnection>git+https://github.com/sindresorhus/path-is-absolute.git</developerConnection>
+        <tag>v1.0.1</tag>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>webjars</id>
+            <url>http://webjars.org</url>
+        </developer>
+    </developers>
+
+    <licenses>
+        
+        <license>
+            <name>MIT</name>
+            <url>https://spdx.org/licenses/MIT#licenseText</url>
+            <distribution>repo</distribution>
+        </license>
+        
+    </licenses>
+
+    <dependencies>
+        
+    </dependencies>
+
+</project>

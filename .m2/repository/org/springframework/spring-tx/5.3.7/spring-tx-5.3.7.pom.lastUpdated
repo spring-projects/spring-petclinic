@@ -1,0 +1,9 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Tue Jun 01 00:28:16 CEST 2021
+https\://repo.maven.apache.org/maven2/.lastUpdated=1622500096599
+https\://repo.spring.io/milestone/.error=
+https\://repo.spring.io/milestone/.lastUpdated=1622500096515
+https\://repo.spring.io/snapshot/.error=
+https\://gitlab.com/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven/.error=Could not transfer artifact org.springframework\:spring-tx\:pom\:5.3.7 from/to gitlab-maven (https\://gitlab.com/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven)\: Illegal character in path at index 36\: https\://gitlab.com/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven/org/springframework/spring-tx/5.3.7/spring-tx-5.3.7.pom
+https\://repo.spring.io/snapshot/.lastUpdated=1622500096179
+@default-gitlab-maven-https\://gitlab.com/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven/.lastUpdated=1622500096181

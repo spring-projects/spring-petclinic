@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <packaging>jar</packaging>
+    <groupId>org.webjars.npm</groupId>
+    <artifactId>source-map</artifactId>
+    <version>0.6.1</version>
+    <name>source-map</name>
+    <description>WebJar for source-map</description>
+    <url>http://webjars.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <scm>
+        <url>https://github.com/mozilla/source-map</url>
+        <connection>https://github.com/mozilla/source-map.git</connection>
+        <developerConnection>https://github.com/mozilla/source-map.git</developerConnection>
+        <tag>v0.6.1</tag>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>webjars</id>
+            <url>http://webjars.org</url>
+        </developer>
+    </developers>
+
+    <licenses>
+        
+        <license>
+            <name>BSD 3-Clause</name>
+            <url>https://spdx.org/licenses/BSD 3-Clause#licenseText</url>
+            <distribution>repo</distribution>
+        </license>
+        
+    </licenses>
+
+    
+    <issueManagement>
+        <url>https://github.com/mozilla/source-map/issues</url>
+    </issueManagement>
+    
+
+    <dependencies>
+        
+        
+    </dependencies>
+
+</project>

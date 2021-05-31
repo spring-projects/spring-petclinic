@@ -1,0 +1,9 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Tue Jun 01 00:28:47 CEST 2021
+https\://repo.maven.apache.org/maven2/.lastUpdated=1622500127581
+https\://repo.spring.io/milestone/.error=
+https\://repo.spring.io/milestone/.lastUpdated=1622500127488
+https\://repo.spring.io/snapshot/.error=
+https\://gitlab.com/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven/.error=Could not transfer artifact org.thymeleaf.extras\:thymeleaf-extras-java8time\:pom\:3.0.4.RELEASE from/to gitlab-maven (https\://gitlab.com/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven)\: Illegal character in path at index 36\: https\://gitlab.com/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven/org/thymeleaf/extras/thymeleaf-extras-java8time/3.0.4.RELEASE/thymeleaf-extras-java8time-3.0.4.RELEASE.pom
+https\://repo.spring.io/snapshot/.lastUpdated=1622500127233
+@default-gitlab-maven-https\://gitlab.com/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven/.lastUpdated=1622500127234

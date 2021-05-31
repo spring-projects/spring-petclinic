@@ -1,0 +1,70 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<parent>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-parent</artifactId>
+    <version>1.5.6</version>
+	</parent>
+	
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.slf4j</groupId>
+	<artifactId>jcl-over-slf4j</artifactId>
+	<packaging>jar</packaging>
+	<name>JCL 1.1.1 implemented over SLF4J</name>
+
+	<url>http://www.slf4j.org</url>
+	<description>
+		JCL 1.1.1 implementation over SLF4J
+	</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-nop</artifactId>
+      <version>${project.version}</version>
+      <scope>provided</scope>
+  </dependency>
+   
+  </dependencies>
+
+  <build>
+    <plugins>		
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Bundle-Version>${project.version}</Bundle-Version>
+              <Bundle-Description>${project.description}</Bundle-Description>
+              <Implementation-Version>${project.version}</Implementation-Version>
+            </manifestEntries>
+            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+          </archive>
+        </configuration>			
+      </plugin>
+    </plugins>
+  </build>
+
+  <!-- Check whether we comply with the interfaces of JCL 1.1.1
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>clirr-maven-plugin</artifactId>
+        <configuration>
+          <comparisonArtifacts>            
+            <comparisonArtifact>
+              <groupId>commons-logging</groupId>
+              <artifactId>commons-logging</artifactId>
+              <version>1.1.1</version>
+            </comparisonArtifact>
+          </comparisonArtifacts>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+  -->
+
+</project>

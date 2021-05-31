@@ -1,0 +1,9 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Tue Jun 01 00:28:18 CEST 2021
+https\://repo.maven.apache.org/maven2/.lastUpdated=1622500098358
+https\://repo.spring.io/milestone/.error=
+https\://repo.spring.io/milestone/.lastUpdated=1622500098267
+https\://repo.spring.io/snapshot/.error=
+https\://gitlab.com/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven/.error=Could not transfer artifact org.hibernate\:hibernate-core\:pom\:5.4.31.Final from/to gitlab-maven (https\://gitlab.com/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven)\: Illegal character in path at index 36\: https\://gitlab.com/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven/org/hibernate/hibernate-core/5.4.31.Final/hibernate-core-5.4.31.Final.pom
+https\://repo.spring.io/snapshot/.lastUpdated=1622500098052
+@default-gitlab-maven-https\://gitlab.com/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven/.lastUpdated=1622500098053

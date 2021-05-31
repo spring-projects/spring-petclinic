@@ -1,0 +1,520 @@
+<?xml version="1.0"?>
+<!--
+  This file is licensed to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.xmlunit</groupId>
+  <artifactId>xmlunit-parent</artifactId>
+  <packaging>pom</packaging>
+  <version>2.8.2</version>
+  <name>org.xmlunit:xmlunit-parent</name>
+  <description>Parent POM for all artifacts of XMLUnit</description>
+  <url>https://www.xmlunit.org/</url>
+
+  <properties>
+    <maven.compile.source>1.7</maven.compile.source>
+    <maven.compile.target>1.7</maven.compile.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.sourceEncoding>UTF-8</project.reporting.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+    <!-- location of any manifest file used by maven-jar-plugin -->
+    <manifestfile>${project.build.directory}/osgi/MANIFEST.MF</manifestfile>
+
+    <!-- overridden via profile for Java 8+ -->
+    <javadoc.additionalparam></javadoc.additionalparam>
+
+    <maven.javadoc.source>1.7</maven.javadoc.source>
+
+    <maven.surefire.plugin.version>2.22.0</maven.surefire.plugin.version>
+
+    <!-- Jakarta XML Binding version -->
+    <jakarta.xml.bind.version>2.3.3</jakarta.xml.bind.version>
+  </properties>
+
+  <inceptionYear>2001</inceptionYear>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <organization>
+    <name>XMLUnit</name>
+    <url>https://www.xmlunit.org/</url>
+  </organization>
+
+  <scm>
+    <connection>scm:git:git@github.com:xmlunit/xmlunit.git</connection>
+    <developerConnection>scm:git:git@github.com:xmlunit/xmlunit.git</developerConnection>
+    <url>git@github.com:xmlunit/xmlunit.git</url>
+  </scm>
+
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/xmlunit/xmlunit/issues</url>
+  </issueManagement>
+
+  <mailingLists>
+    <mailingList>
+      <name>XMLUnit General Mailing list</name>
+      <subscribe>https://lists.sourceforge.net/lists/listinfo/xmlunit-general</subscribe>
+      <unsubscribe>https://lists.sourceforge.net/lists/listinfo/xmlunit-general</unsubscribe>
+      <archive>https://sourceforge.net/p/xmlunit/mailman/xmlunit-general/</archive>
+    </mailingList>
+  </mailingLists>
+
+  <modules>
+    <module>xmlunit-core</module>
+    <module>xmlunit-assertj</module>
+    <module>xmlunit-matchers</module>
+    <module>xmlunit-legacy</module>
+    <module>xmlunit-placeholders</module>
+  </modules>
+
+  <developers>
+    <developer>
+      <id>XMLUnit</id>
+      <name>XMLUnit Contributors</name>
+      <email>xmlunit-general@lists.sourceforge.net</email>
+      <organization>XMLUnit</organization>
+      <organizationUrl>https://www.xmlunit.org/</organizationUrl>
+    </developer>
+  </developers>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>jakarta.xml.bind</groupId>
+        <artifactId>jakarta.xml.bind-api</artifactId>
+        <version>${jakarta.xml.bind.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.glassfish.jaxb</groupId>
+        <artifactId>jaxb-runtime</artifactId>
+        <version>${jakarta.xml.bind.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.12</version>
+      </dependency>
+      <dependency>
+        <groupId>org.hamcrest</groupId>
+        <artifactId>hamcrest-library</artifactId>
+        <version>1.3</version>
+      </dependency>
+      <dependency>
+        <groupId>org.hamcrest</groupId>
+        <artifactId>hamcrest-core</artifactId>
+        <version>1.3</version>
+      </dependency>
+      <dependency>
+        <groupId>org.xmlunit</groupId>
+        <artifactId>xmlunit-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.xmlunit</groupId>
+        <artifactId>xmlunit-core</artifactId>
+        <classifier>tests</classifier>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.xmlunit</groupId>
+        <artifactId>xmlunit-matchers</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.xmlunit</groupId>
+        <artifactId>xmlunit-assertj</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>2.1.0</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-core</artifactId>
+        <version>2.9.0</version>
+      </dependency>
+      <dependency>
+        <groupId>net.bytebuddy</groupId>
+        <artifactId>byte-buddy</artifactId>
+        <version>1.10.10</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.6.0</version>
+          <configuration>
+            <source>${maven.compile.source}</source>
+            <target>${maven.compile.target}</target>
+            <encoding>${project.build.sourceEncoding}</encoding>
+            <!-- Fix incremental compiler bug, see https://jira.codehaus.org/browse/MCOMPILER-205 -->
+            <excludes>
+              <exclude>**/package-info.java</exclude>
+            </excludes>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>buildnumber-maven-plugin</artifactId>
+          <version>1.4</version>
+          <configuration>
+            <getRevisionOnlyOnce>true</getRevisionOnlyOnce>
+            <timestampFormat>{0,date,yyyy-MM-dd HH:mm:ssa}</timestampFormat>
+          </configuration>
+          <executions>
+            <execution>
+              <phase>validate</phase>
+              <goals>
+                <goal>create</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.0.2</version>
+          <configuration>
+            <archive>
+              <manifestFile>${manifestfile}</manifestFile>
+              <manifest>
+                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+              </manifest>
+              <manifestEntries>
+                <X-Compile-Source-JDK>${maven.compile.source}</X-Compile-Source-JDK>
+                <X-Compile-Target-JDK>${maven.compile.target}</X-Compile-Target-JDK>
+                <build-time>${maven.build.timestamp}</build-time>
+                <X-Git-Hash>${buildNumber} (Branch ${scmBranch})</X-Git-Hash>
+                <Automatic-Module-Name>${automatic.module.name}</Automatic-Module-Name>
+              </manifestEntries>
+            </archive>
+          </configuration>
+          <executions>
+            <execution>
+              <goals>
+                <goal>test-jar</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${maven.surefire.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-shade-plugin</artifactId>
+          <version>2.4.3</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.felix</groupId>
+          <artifactId>maven-bundle-plugin</artifactId>
+          <version>3.2.0</version>
+          <inherited>true</inherited>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>2.10.4</version>
+          <configuration>
+            <windowtitle>XMLUnit for Java ${project.version} API</windowtitle>
+            <doctitle>XMLUnit for Java ${project.version} API</doctitle>
+            <groups>
+              <group>
+                <title>XMLUnit Core ${project.version}</title>
+                <packages>org.xmlunit*</packages>
+              </group>
+              <group>
+                <title>XMLUnit Hamcrest Matchers ${project.version}</title>
+                <packages>org.xmlunit.matchers*</packages>
+              </group>
+              <group>
+                <title>XMLUnit AssertJ 3.x Assertions ${project.version}</title>
+                <packages>org.xmlunit.assertj3*</packages>
+              </group>
+              <group>
+                <title>XMLUnit AssertJ 2.x/3.x Assertions ${project.version}</title>
+                <packages>org.xmlunit.assertj*</packages>
+              </group>
+              <group>
+                <title>XMLUnit Legacy ${project.version}</title>
+                <packages>org.custommonkey.xmlunit*</packages>
+              </group>
+              <group>
+                <title>XMLUnit Placeholders ${project.version}</title>
+                <packages>org.xmlunit.placeholder*</packages>
+              </group>
+            </groups>
+            <quiet>true</quiet>
+            <source>${maven.javadoc.source}</source>
+            <encoding>${project.build.sourceEncoding}</encoding>
+            <docencoding>${project.build.sourceEncoding}</docencoding>
+            <notimestamp>true</notimestamp>
+            <links>
+              <link>http://docs.oracle.com/javase/6/docs/api/</link>
+            </links>
+            <additionalparam>${javadoc.additionalparam}</additionalparam>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.jacoco</groupId>
+          <artifactId>jacoco-maven-plugin</artifactId>
+          <version>0.8.1</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>1.4.1</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>buildnumber-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <configuration>
+          <!--
+            dummy entry to stop bundle plugin from picking up jar config and reporting
+            WARNING: Duplicate name in Manifest
+            See http://markmail.org/message/mpkl24wk3jrjhhjg
+          -->
+          <archive>
+            <forced>true</forced>
+          </archive>
+          <excludeDependencies>true</excludeDependencies>
+          <manifestLocation>${project.build.directory}/osgi</manifestLocation>
+          <instructions>
+            <!-- stops the "uses" clauses being added to "Export-Package" manifest entry -->
+            <_nouses>true</_nouses>
+            <!-- Stop the JAVA_1_n_HOME variables from being treated as headers by Bnd -->
+            <_removeheaders>JAVA_1_3_HOME,JAVA_1_4_HOME,JAVA_1_5_HOME,JAVA_1_6_HOME,JAVA_1_7_HOME,JAVA_1_8_HOME</_removeheaders>
+            <Bundle-SymbolicName>org.xmlunit.${project.artifactId}</Bundle-SymbolicName>
+            <Bundle-Description>${project.description}</Bundle-Description>
+            <Export-Package>org.xmlunit.*;version=${project.version};-noimport:=true</Export-Package>
+            <Private-Package></Private-Package>
+            <Import-Package>*</Import-Package>
+            <DynamicImport-Package></DynamicImport-Package>
+            <Bundle-DocURL>${project.url}</Bundle-DocURL>
+          </instructions>
+        </configuration>
+        <executions>
+          <execution>
+            <id>bundle-manifest</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>manifest</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.0.0</version>
+        <inherited>false</inherited>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>project</descriptorRef>
+          </descriptorRefs>
+          <attach>false</attach>
+          <finalName>xmlunit-${project.version}-src</finalName>
+          <tarLongFileMode>posix</tarLongFileMode>
+          <appendAssemblyId>false</appendAssemblyId>
+        </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  <profiles>
+    <profile>
+      <id>jacoco</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>prepare-agent</id>
+                <goals>
+                  <goal>prepare-agent</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.eluder.coveralls</groupId>
+            <artifactId>coveralls-maven-plugin</artifactId>
+            <version>3.2.1</version>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>sonatype-oss-release</id>
+      <distributionManagement>
+        <snapshotRepository>
+          <id>sonatype-nexus-snapshots</id>
+          <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+          <id>sonatype-nexus-staging</id>
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+      </distributionManagement>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>3.0.1</version>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar-no-fork</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <configuration>
+              <quiet>true</quiet>
+              <source>${maven.compile.source}</source>
+              <encoding>${project.build.sourceEncoding}</encoding>
+              <docencoding>${project.build.sourceEncoding}</docencoding>
+              <notimestamp>true</notimestamp>
+              <links>
+                <link>http://docs.oracle.com/javase/6/docs/api/</link>
+              </links>
+              <additionalparam>${javadoc.additionalparam}</additionalparam>
+            </configuration>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.6</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>enforce-no-snapshots</id>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+                <configuration>
+                  <rules>
+                    <requireReleaseDeps>
+                      <message>No Snapshots Allowed!</message>
+                    </requireReleaseDeps>
+                  </rules>
+                  <fail>true</fail>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>java8+</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <jdk>[1.8,)</jdk>
+      </activation>
+      <modules>
+        <module>xmlunit-assertj3</module>
+      </modules>
+      <properties>
+        <javadoc.additionalparam>-Xdoclint:html,syntax,accessibility,reference</javadoc.additionalparam>
+      </properties>
+    </profile>
+    <profile>
+      <id>java14+</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <jdk>[14,)</jdk>
+      </activation>
+      <dependencyManagement>
+        <dependencies>
+          <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>3.3.3</version>
+            <scope>test</scope>
+          </dependency>
+        </dependencies>
+      </dependencyManagement>
+    </profile>
+  </profiles>
+</project>

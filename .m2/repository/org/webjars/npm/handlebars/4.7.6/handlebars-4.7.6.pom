@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <packaging>jar</packaging>
+    <groupId>org.webjars.npm</groupId>
+    <artifactId>handlebars</artifactId>
+    <version>4.7.6</version>
+    <name>handlebars</name>
+    <description>WebJar for handlebars</description>
+    <url>https://www.webjars.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <scm>
+        <url>https://github.com/wycats/handlebars.js</url>
+        <connection>https://github.com/wycats/handlebars.js.git</connection>
+        <developerConnection>https://github.com/wycats/handlebars.js.git</developerConnection>
+        <tag>v4.7.6</tag>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>webjars</id>
+            <url>https://www.webjars.org</url>
+        </developer>
+    </developers>
+
+    <licenses>
+        
+        <license>
+            <name>MIT</name>
+            <url>https://spdx.org/licenses/MIT#licenseText</url>
+            <distribution>repo</distribution>
+        </license>
+        
+    </licenses>
+
+    
+    <issueManagement>
+        <url>https://github.com/wycats/handlebars.js/issues</url>
+    </issueManagement>
+    
+
+    <dependencies>
+        
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>source-map</artifactId>
+            <version>[0.6.1,0.7)</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>minimist</artifactId>
+            <version>[1.2.5,2)</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>wordwrap</artifactId>
+            <version>[1.0.0,2)</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>neo-async</artifactId>
+            <version>[2.6.0,3)</version>
+        </dependency>
+        
+        
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>uglify-js</artifactId>
+            <version>[3.1.4,4)</version>
+            <optional>true</optional>
+        </dependency>
+        
+    </dependencies>
+
+</project>

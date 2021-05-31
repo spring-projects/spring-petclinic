@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+
+    <packaging>jar</packaging>
+    <groupId>org.webjars</groupId>
+    <artifactId>jquery</artifactId>
+    <version>3.6.0</version>
+    <name>jquery</name>
+    <description>WebJar for jQuery</description>
+    <url>http://webjars.org</url>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>http://github.com/webjars/jquery</url>
+        <connection>scm:git:https://github.com/webjars/jquery.git</connection>
+        <developerConnection>scm:git:https://github.com/webjars/jquery.git</developerConnection>
+        <tag>jquery-3.6.0</tag>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>jamesward</id>
+            <name>James Ward</name>
+            <email>james@jamesward.org</email>
+        </developer>
+    </developers>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <downloadUrl>https://cdnjs.cloudflare.com/ajax/libs/jquery/${version.unrevise}</downloadUrl>
+        <destinationDir>${project.build.outputDirectory}/META-INF/resources/webjars/${project.artifactId}/${project.version}</destinationDir>
+        <requirejs>
+            {
+                "paths": {
+                    "jquery": "jquery",
+                    "jquery-slim": "jquery.slim"
+                },
+                "shim": {
+                    "jquery": { "exports": "$" },
+                    "jquery-slim": { "exports": "$" }
+                }
+            }
+        </requirejs>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.jamesward</groupId>
+                <artifactId>unsnapshot-maven-plugin</artifactId>
+                <version>0.2</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>unsnapshot</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>wagon-maven-plugin</artifactId>
+                <version>1.0-beta-4</version>
+                <executions>
+                    <execution>
+                        <id>download-js</id>
+                        <phase>process-resources</phase>
+                        <goals><goal>download-single</goal></goals>
+                        <configuration>
+                            <url>${downloadUrl}</url>
+                            <fromFile>jquery.js</fromFile>
+                            <toFile>${destinationDir}/jquery.js</toFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>download-min-js</id>
+                        <phase>process-resources</phase>
+                        <goals><goal>download-single</goal></goals>
+                        <configuration>
+                            <url>${downloadUrl}</url>
+                            <fromFile>jquery.min.js</fromFile>
+                            <toFile>${destinationDir}/jquery.min.js</toFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>download-source-map</id>
+                        <phase>process-resources</phase>
+                        <goals><goal>download-single</goal></goals>
+                        <configuration>
+                            <url>${downloadUrl}</url>
+                            <fromFile>jquery.min.map</fromFile>
+                            <toFile>${destinationDir}/jquery.min.map</toFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>download-slim-js</id>
+                        <phase>process-resources</phase>
+                        <goals><goal>download-single</goal></goals>
+                        <configuration>
+                            <url>${downloadUrl}</url>
+                            <fromFile>jquery.slim.js</fromFile>
+                            <toFile>${destinationDir}/jquery.slim.js</toFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>download-slim-min-js</id>
+                        <phase>process-resources</phase>
+                        <goals><goal>download-single</goal></goals>
+                        <configuration>
+                            <url>${downloadUrl}</url>
+                            <fromFile>jquery.slim.min.js</fromFile>
+                            <toFile>${destinationDir}/jquery.slim.min.js</toFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>download-slim-source-map</id>
+                        <phase>process-resources</phase>
+                        <goals><goal>download-single</goal></goals>
+                        <configuration>
+                            <url>${downloadUrl}</url>
+                            <fromFile>jquery.slim.min.map</fromFile>
+                            <toFile>${destinationDir}/jquery.slim.min.map</toFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.8</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>sonatype-nexus-staging</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+        </plugins>
+        <extensions>
+            <extension>
+                <!-- this extension is required by wagon in order to pass the proxy -->
+                <!-- cf. http://jira.codehaus.org/browse/MNG-5237 -->
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-http-lightweight</artifactId>
+                <version>2.4</version>
+            </extension>
+        </extensions>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+                <targetPath>${destinationDir}</targetPath>
+            </resource>
+        </resources>
+    </build>
+
+</project>

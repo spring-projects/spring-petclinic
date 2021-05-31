@@ -1,0 +1,105 @@
+<!--
+ Copyright 2009 Google Inc.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  >
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.google.javascript</groupId>
+  <artifactId>closure-compiler-parent</artifactId>
+  <packaging>pom</packaging>
+
+  <name>Closure Compiler Parent</name>
+  <version>v20201102</version>
+
+  <url>https://github.com/google/closure-compiler/</url>
+  <description>
+    Closure Compiler is a JavaScript optimizing compiler. It parses your
+    JavaScript, analyzes it, removes dead code and rewrites and minimizes
+    what's left. It also checks syntax, variable references, and types, and
+    warns about common JavaScript pitfalls. It is used in many of Google's
+    JavaScript apps, including Gmail, Google Web Search, Google Maps, and
+    Google Docs.
+  </description>
+  <inceptionYear>2009</inceptionYear>
+
+  <prerequisites>
+    <maven>2.2.1</maven>
+  </prerequisites>
+
+  <scm>
+    <connection>
+      scm:git:https://github.com/google/closure-compiler.git
+    </connection>
+    <developerConnection>
+      scm:git:git@github.com:google/closure-compiler.git
+    </developerConnection>
+    <url>
+      https://github.com/google/closure-compiler
+    </url>
+  </scm>
+
+  <issueManagement>
+    <system>code.google.com</system>
+    <url>http://github.com/google/closure-compiler/issues</url>
+  </issueManagement>
+
+  <organization>
+    <name>Google</name>
+    <url>http://www.google.com</url>
+  </organization>
+
+  <developers>
+    <developer>
+      <id>closure-compiler-authors</id>
+      <name>Closure Compiler Authors</name>
+      <email>closure-compiler-discuss@googlegroups.com </email>
+    </developer>
+  </developers>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <!--
+    TODO: test deployment without this parent.
+    http://central.sonatype.org/pages/apache-maven.html#deprecated-oss-parent says
+
+    > In the past all the plugin configuration and other setup was
+    > managed by a Maven parent POM with the latest coordinates of
+    > org.sonatype.oss:oss-parent:9. This project leaked SCM, URL and
+    > other details and its usage is discouraged. Maintenance of the
+    > project has stopped and it no longer works with latest tooling
+    > such as Maven versions or Java versions.
+
+    It may be sufficient to include a <distributionManagement> per
+    http://central.sonatype.org/pages/apache-maven.html#distribution-management-and-authentication
+  -->
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>9</version>
+  </parent>
+
+  <modules>
+    <module>closure-compiler-externs.pom.xml</module>
+    <module>closure-compiler-main.pom.xml</module>
+  </modules>
+</project>

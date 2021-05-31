@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.webjars.npm</groupId>
+  <artifactId>cli</artifactId>
+  <versioning>
+    <latest>1.0.1</latest>
+    <release>1.0.1</release>
+    <versions>
+      <version>0.6.6</version>
+      <version>0.7.0</version>
+      <version>0.7.1</version>
+      <version>0.11.1</version>
+      <version>0.11.3</version>
+      <version>1.0.0</version>
+      <version>1.0.1</version>
+    </versions>
+    <lastUpdated>20170712130555</lastUpdated>
+  </versioning>
+</metadata>

@@ -1,0 +1,1321 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<!--
+
+	Global parent pom.xml for Spring Data modules to inherit from.
+
+	- Shared resources are pulled in from the spring-data-build-resources dependency (images, CSS, XSLTs for documentation generation)
+	- Renders reference documentation from Asciidoctor file named index.adoc within src/main/asciidoc
+	- In the "distribute" profile, an assembly is generated:
+	  - one to be uploaded to static.springsource.org (incl. javadoc (browsable), reference docs as described before)
+
+	Preconfigures the following:
+
+	- Logging dependencies: SLF4j + Commons Logging bridge and Logback as test dependency
+	- Test dependencies: JUnit 4+5 / Mockito
+	- Dependency versions for commonly used dependencies
+
+	-->
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>spring-data-parent</artifactId>
+	<packaging>pom</packaging>
+
+	<parent>
+		<groupId>org.springframework.data.build</groupId>
+		<artifactId>spring-data-build</artifactId>
+		<version>2.5.1</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<name>Spring Data Build - General parent module</name>
+	<description>Global parent pom.xml to be used by Spring Data modules</description>
+	<url>https://www.spring.io/spring-data</url>
+	<inceptionYear>2011</inceptionYear>
+
+	<organization>
+		<name>Pivotal Software, Inc.</name>
+		<url>https://www.spring.io</url>
+	</organization>
+
+	<developers>
+		<developer>
+			<id>odrotbohm</id>
+			<name>Oliver Drotbohm</name>
+			<email>odrotbohm at pivotal.io</email>
+			<organization>Pivotal Software, Inc.</organization>
+			<organizationUrl>https://www.spring.io</organizationUrl>
+			<roles>
+				<role>Project lead</role>
+			</roles>
+			<timezone>+1</timezone>
+		</developer>
+		<developer>
+			<id>mpaluch</id>
+			<name>Mark Paluch</name>
+			<email>mpaluch at pivotal.io</email>
+			<organization>Pivotal Software, Inc.</organization>
+			<organizationUrl>https://www.spring.io</organizationUrl>
+			<roles>
+				<role>Project lead</role>
+			</roles>
+			<timezone>+1</timezone>
+		</developer>
+	</developers>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>https://www.apache.org/licenses/LICENSE-2.0</url>
+			<comments>
+				Copyright 2008-2020 the original author or authors.
+
+				Licensed under the Apache License, Version 2.0 (the "License");
+				you may not use this file except in compliance with the License.
+				You may obtain a copy of the License at
+
+				https://www.apache.org/licenses/LICENSE-2.0
+
+				Unless required by applicable law or agreed to in writing, software
+				distributed under the License is distributed on an "AS IS" BASIS,
+				WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+				implied.
+				See the License for the specific language governing permissions and
+				limitations under the License.
+			</comments>
+		</license>
+	</licenses>
+
+	<properties>
+
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.root>${basedir}</project.root>
+		<source.level>1.8</source.level>
+		<dist.id>${project.artifactId}</dist.id>
+		<jacoco.destfile>${project.build.directory}/jacoco.exec</jacoco.destfile>
+		<maven.kotlin.skip>false</maven.kotlin.skip>
+
+		<apt>1.1.3</apt>
+		<aspectj>1.9.6</aspectj>
+		<assertj>3.19.0</assertj>
+		<cdi>1.0</cdi>
+		<commons-io>2.5</commons-io>
+		<guava>19.0</guava>
+		<hamcrest>1.3</hamcrest>
+		<jackson>2.12.3</jackson>
+		<jacoco>0.8.7</jacoco>
+		<jodatime>2.10.10</jodatime>
+		<jmolecules-integration>0.3.0</jmolecules-integration>
+		<jsonpath>2.4.0</jsonpath>
+		<!-- Deprecated: Use junit-vintage-engine and JUnit 4 is included as transitive dependency -->
+		<junit>4.13.2</junit>
+		<junit5>5.7.1</junit5>
+		<kotlin>1.5.0</kotlin>
+		<kotlin-coroutines>1.4.3</kotlin-coroutines>
+		<logback>1.2.3</logback>
+		<lombok>1.18.20</lombok>
+		<mockito>3.9.0</mockito>
+		<mockk>1.11.0</mockk>
+		<querydsl>4.4.0</querydsl>
+		<reactor>2020.0.7</reactor>
+		<rxjava>1.3.8</rxjava>
+		<rxjava-reactive-streams>1.2.1</rxjava-reactive-streams>
+		<rxjava2>2.2.21</rxjava2>
+		<rxjava3>3.0.12</rxjava3>
+		<slf4j>1.7.26</slf4j>
+		<spring>5.3.7</spring>
+		<spring-hateoas>1.3.1</spring-hateoas>
+		<spring-plugin>2.0.0.RELEASE</spring-plugin>
+		<testcontainers>1.15.3</testcontainers>
+		<threetenbp>1.5.1</threetenbp>
+		<validation>1.1.0.Final</validation>
+		<webbeans>2.0.22</webbeans>
+		<javax-annotation-api>1.3.2</javax-annotation-api>
+
+		<!-- Used in asciidoc reference documentation -->
+		<releasetrain>2021.0.1</releasetrain>
+
+		<!-- To be overridden by individual modules -->
+		<java-module-name/>
+
+	</properties>
+
+	<profiles>
+
+		<profile>
+
+			<!-- Profile to be run on the CI server, JARs JavaDocs -->
+
+			<id>ci</id>
+
+			<build>
+				<plugins>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>package-javadoc</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+								<phase>package</phase>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-checkstyle-plugin</artifactId>
+						<configuration>
+							<checkstyleRules>
+								<module name="Checker">
+
+									<!-- Configure checker to use UTF-8 encoding -->
+									<property name="charset" value="UTF-8"/>
+
+									<module name="io.spring.nohttp.checkstyle.check.NoHttpCheck">
+										<!-- XML requires double escaping, config gets XML-processed twice -->
+										<property name="allowlist" value="http://www\.querydsl\.com.*&amp;#10;http://www\.prowaveconsulting\.com.*&amp;#10;http://www\.scispike\.com.*&amp;#10;http://.*.icu-project\.org.*"/>
+									</module>
+								</module>
+							</checkstyleRules>
+							<includes>**/*</includes>
+							<excludes>
+								**/.flattened-pom.xml,.git/**/*,target/**/*,**/target/**/*,.idea/**/*,**/spring.schemas,**/*.svg,mvnw,mvnw.cmd,**/*.graphml,work/**/*
+							</excludes>
+							<sourceDirectories>./</sourceDirectories>
+						</configuration>
+						<executions>
+							<execution>
+								<phase>
+									validate
+								</phase>
+								<goals>
+									<goal>check</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+
+				</plugins>
+			</build>
+
+		</profile>
+
+		<!-- Used to build Java 11+ -->
+		<profile>
+			<id>java11</id>
+
+			<properties>
+				<jaxb.version>2.2.11</jaxb.version>
+				<java-activation.version>1.1.1</java-activation.version>
+			</properties>
+
+			<dependencies>
+				<dependency>
+					<groupId>javax.xml.bind</groupId>
+					<artifactId>jaxb-api</artifactId>
+					<version>${jaxb.version}</version>
+					<scope>provided</scope>
+				</dependency>
+
+				<dependency>
+					<groupId>javax.activation</groupId>
+					<artifactId>activation</artifactId>
+					<version>${java-activation.version}</version>
+					<scope>provided</scope>
+				</dependency>
+
+				<dependency>
+					<groupId>javax.annotation</groupId>
+					<artifactId>javax.annotation-api</artifactId>
+					<version>${javax-annotation-api}</version>
+					<scope>provided</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+
+		<!--
+			Profile to be run before a release is executed, currently does the following:
+
+			- Prevents thrid-party snapshot dependencies in projects
+		-->
+
+		<profile>
+			<id>pre-release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-enforcer-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>enforce-no-third-party-snapshots</id>
+								<goals>
+									<goal>enforce</goal>
+								</goals>
+								<configuration>
+									<rules>
+										<requireReleaseDeps>
+											<failWhenParentIsSnapshot>false</failWhenParentIsSnapshot>
+											<excludes>
+												<exclude>org.springframework.data.build:*</exclude>
+												<exclude>org.springframework.data:*</exclude>
+											</excludes>
+										</requireReleaseDeps>
+									</rules>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+
+			<!-- Profile for SonarCube -->
+
+			<id>sonarcube</id>
+
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
+						<version>${jacoco}</version>
+						<configuration>
+							<destFile>${jacoco.destfile}</destFile>
+						</configuration>
+						<executions>
+							<execution>
+								<id>jacoco-initialize</id>
+								<goals>
+									<goal>prepare-agent</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+
+			<!--
+				Profile to be activated when building the docs artifacts.
+			-->
+
+			<id>distribute</id>
+
+			<properties>
+				<shared.resources>${project.build.directory}/shared-resources</shared.resources>
+				<generated-asciidoc-sources.directory>${project.build.directory}/generated-asciidoc-sources/source/
+				</generated-asciidoc-sources.directory>
+				<generated-docs.directory>${project.build.directory}/generated-docs</generated-docs.directory>
+				<maven.main.skip>true</maven.main.skip>
+				<maven.test.skip>true</maven.test.skip>
+				<aspectj.skip>true</aspectj.skip>
+				<maven.kotlin.skip>true</maven.kotlin.skip>
+				<maven.install.skip>true</maven.install.skip>
+				<maven.deploy.skip>true</maven.deploy.skip>
+				<skipTests>true</skipTests>
+			</properties>
+
+			<dependencies>
+				<dependency>
+					<groupId>io.spring.docresources</groupId>
+					<artifactId>spring-doc-resources</artifactId>
+					<version>0.2.5</version>
+					<type>zip</type>
+					<optional>true</optional>
+				</dependency>
+				<dependency>
+					<groupId>org.springframework.data.build</groupId>
+					<artifactId>spring-data-build-resources</artifactId>
+					<version>2.5.1</version>
+					<type>zip</type>
+					<optional>true</optional>
+				</dependency>
+			</dependencies>
+
+			<build>
+
+				<plugins>
+
+					<!--
+						Unpacks the content of spring-data-build-resources into the shared resources folder.
+					-->
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>unpack-doc-resources</id>
+								<goals>
+									<goal>unpack-dependencies</goal>
+								</goals>
+								<phase>generate-resources</phase>
+								<configuration>
+									<includeGroupIds>io.spring.docresources</includeGroupIds>
+									<includeArtifactIds>spring-doc-resources</includeArtifactIds>
+									<includeTypes>zip</includeTypes>
+									<excludeTransitive>true</excludeTransitive>
+									<outputDirectory>${generated-asciidoc-sources.directory}</outputDirectory>
+								</configuration>
+							</execution>
+							<execution>
+								<id>unpack-shared-resources</id>
+								<goals>
+									<goal>unpack-dependencies</goal>
+								</goals>
+								<phase>generate-resources</phase>
+								<configuration>
+									<includeGroupIds>${project.groupId}</includeGroupIds>
+									<includeArtifactIds>spring-data-build-resources</includeArtifactIds>
+									<includeTypes>zip</includeTypes>
+									<excludeTransitive>true</excludeTransitive>
+									<outputDirectory>${shared.resources}</outputDirectory>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+					<!--
+						Configures JavaDoc generation.
+					-->
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>aggregate-javadoc</id>
+								<goals>
+									<goal>aggregate-no-fork</goal>
+								</goals>
+								<phase>prepare-package</phase>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+
+							<execution>
+								<id>copy-documentation-resources</id>
+								<phase>generate-resources</phase>
+								<configuration>
+									<target>
+										<copy todir="${project.root}/target/site/reference/html/images">
+											<fileset dir="${basedir}/src/main/asciidoc" erroronmissingdir="false">
+												<include name="**/*.png"/>
+												<include name="**/*.gif"/>
+												<include name="**/*.jpg"/>
+											</fileset>
+											<flattenmapper/>
+										</copy>
+									</target>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+
+							<execution>
+								<id>create-generated-docs-resources</id>
+								<phase>process-resources</phase>
+								<configuration>
+									<target>
+										<copy failonerror="false" todir="${generated-asciidoc-sources.directory}/">
+											<fileset dir="${project.root}/src/main/asciidoc" includes="**/*.adoc"/>
+										</copy>
+										<copy failonerror="false" todir="${generated-asciidoc-sources.directory}/images/">
+											<fileset dir="${project.root}/src/main/asciidoc/images"/>
+										</copy>
+
+										<copy todir="${generated-docs.directory}">
+											<fileset dir="${generated-asciidoc-sources.directory}">
+												<include name="css/**"/>
+												<include name="js/**"/>
+											</fileset>
+										</copy>
+									</target>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+
+							<execution>
+								<id>rename-reference-docs</id>
+								<phase>prepare-package</phase>
+								<configuration>
+									<target>
+
+										<!-- Copy files for the single-file HTML version -->
+										<copy failonerror="false" todir="${project.root}/target/site/reference/html/images">
+											<fileset dir="${generated-docs.directory}/images"/>
+										</copy>
+
+										<!-- Copy shared resources. Spring Data ones first to override the ones shared -->
+										<copy failonerror="false" todir="${project.root}/target/site/reference/html/">
+											<fileset dir="${shared.resources}">
+												<include name="css/**"/>
+												<include name="js/**"/>
+											</fileset>
+										</copy>
+
+										<copy failonerror="false" todir="${project.root}/target/site/reference/html/">
+											<fileset dir="${generated-asciidoc-sources.directory}">
+												<include name="css/**"/>
+												<include name="js/**"/>
+											</fileset>
+										</copy>
+
+										<copy failonerror="false" todir="${project.root}/target/site/reference/html/">
+											<fileset dir="${generated-docs.directory}" includes="*.html"/>
+										</copy>
+
+										<!-- Copy and rename the Epub file -->
+										<copy failonerror="false" file="${generated-docs.directory}/index.pdf" tofile="${project.root}/target/site/reference/pdf/${dist.id}-reference.pdf"/>
+
+										<!-- Copy and rename the PDF file -->
+										<copy failonerror="false" file="${generated-docs.directory}/index.epub" tofile="${project.root}/target/site/reference/epub/${dist.id}-reference.epub"/>
+
+									</target>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+
+						</executions>
+
+					</plugin>
+
+					<plugin>
+						<groupId>org.jfrog.buildinfo</groupId>
+						<artifactId>artifactory-maven-plugin</artifactId>
+					</plugin>
+
+				</plugins>
+
+				<pluginManagement>
+					<plugins>
+
+						<!--
+							Asciidoctor
+						-->
+
+						<plugin>
+							<groupId>org.asciidoctor</groupId>
+							<artifactId>asciidoctor-maven-plugin</artifactId>
+							<executions>
+
+								<execution>
+									<id>html</id>
+									<phase>compile</phase>
+									<goals>
+										<goal>process-asciidoc</goal>
+									</goals>
+									<configuration>
+										<sourceDirectory>${generated-asciidoc-sources.directory}</sourceDirectory>
+										<sourceDocumentName>index.adoc</sourceDocumentName>
+										<backend>html5</backend>
+										<outputDirectory>${generated-docs.directory}</outputDirectory>
+										<sourceHighlighter>highlight.js</sourceHighlighter>
+										<attributes>
+											<highlightjsdir>js/highlight</highlightjsdir>
+											<highlightjs-theme>github</highlightjs-theme>
+											<linkcss>true</linkcss>
+											<sectanchors>true</sectanchors>
+											<stylesdir>./css</stylesdir>
+											<stylesheet>spring.css</stylesheet>
+											<toc>left</toc>
+										</attributes>
+									</configuration>
+								</execution>
+							</executions>
+
+							<configuration>
+								<doctype>book</doctype>
+								<attributes>
+									<doctype>book</doctype>
+									<docinfo>shared</docinfo>
+									<icons>font</icons>
+									<sectids>false</sectids>
+									<imagesdir>images</imagesdir>
+									<version>${project.version}</version>
+									<projectName>${project.name}</projectName>
+									<projectVersion>${project.version}</projectVersion>
+									<aspectjVersion>${aspectj}</aspectjVersion>
+									<querydslVersion>${querydsl}</querydslVersion>
+									<springVersion>${spring}</springVersion>
+									<releasetrainVersion>${releasetrain}</releasetrainVersion>
+									<allow-uri-read>true</allow-uri-read>
+									<toclevels>4</toclevels>
+									<numbered>true</numbered>
+								</attributes>
+							</configuration>
+
+						</plugin>
+
+						<!--
+							Creates the documentation zip file.
+						-->
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-assembly-plugin</artifactId>
+							<executions>
+								<execution>
+									<id>docs</id>
+									<goals>
+										<goal>single</goal>
+									</goals>
+									<phase>package</phase>
+									<configuration>
+										<descriptors>
+											<descriptor>${shared.resources}/assemblies/docs.xml</descriptor>
+										</descriptors>
+										<finalName>${dist.id}</finalName>
+										<appendAssemblyId>true</appendAssemblyId>
+									</configuration>
+								</execution>
+							</executions>
+						</plugin>
+
+						<!-- Deploy to Artifactory -->
+
+						<plugin>
+							<groupId>org.jfrog.buildinfo</groupId>
+							<artifactId>artifactory-maven-plugin</artifactId>
+							<executions>
+								<execution>
+									<id>deploy-docs</id>
+									<goals>
+										<goal>publish</goal>
+									</goals>
+									<phase>deploy</phase>
+									<configuration>
+										<artifactory>
+											<includeEnvVars>false</includeEnvVars>
+										</artifactory>
+										<deployProperties>
+											<zip.name>${dist.id}</zip.name>
+											<zip.displayname>${dist.id}</zip.displayname>
+											<zip.deployed>false</zip.deployed>
+											<zip.type>docs</zip.type>
+										</deployProperties>
+										<buildInfo>
+											<!-- Retain only a single build -->
+											<buildName>Spring Data Docs ${dist.id} ${project.version}</buildName>
+											<buildRetentionCount>1</buildRetentionCount>
+										</buildInfo>
+										<publisher>
+											<contextUrl>{{artifactory.server}}</contextUrl>
+											<username>{{artifactory.username}}</username>
+											<password>{{artifactory.password}}</password>
+											<repoKey>{{artifactory.distribution-repository}}</repoKey>
+											<snapshotRepoKey>{{artifactory.distribution-repository}}</snapshotRepoKey>
+											<includePatterns>*-docs.zip</includePatterns>
+										</publisher>
+									</configuration>
+								</execution>
+							</executions>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+
+		</profile>
+
+		<profile>
+
+			<!--
+				Profile to be activated when building the schema artifacts.
+			-->
+
+			<id>distribute-schema</id>
+
+			<properties>
+				<shared.resources>${project.build.directory}/shared-resources</shared.resources>
+				<maven.main.skip>true</maven.main.skip>
+				<maven.test.skip>true</maven.test.skip>
+				<aspectj.skip>true</aspectj.skip>
+				<maven.kotlin.skip>true</maven.kotlin.skip>
+				<maven.install.skip>true</maven.install.skip>
+				<maven.deploy.skip>true</maven.deploy.skip>
+				<skipTests>true</skipTests>
+			</properties>
+
+			<dependencies>
+				<dependency>
+					<groupId>org.springframework.data.build</groupId>
+					<artifactId>spring-data-build-resources</artifactId>
+					<version>2.5.1</version>
+					<type>zip</type>
+					<optional>true</optional>
+				</dependency>
+			</dependencies>
+
+			<build>
+
+				<plugins>
+
+					<!--
+						Unpacks the content of spring-data-build-resources into the shared resources folder.
+					-->
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>unpack-shared-resources</id>
+								<goals>
+									<goal>unpack-dependencies</goal>
+								</goals>
+								<phase>generate-resources</phase>
+								<configuration>
+									<includeGroupIds>${project.groupId}</includeGroupIds>
+									<includeArtifactIds>spring-data-build-resources</includeArtifactIds>
+									<includeTypes>zip</includeTypes>
+									<excludeTransitive>true</excludeTransitive>
+									<outputDirectory>${shared.resources}</outputDirectory>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+					<!--
+						Copies all namespaces schemas to target/schemas flatten the directory structure.
+						Depended on by the site.xml assembly descriptor.
+						Conditional execution if schemas are present.
+					-->
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+
+							<execution>
+								<id>collect-schema-files</id>
+								<phase>prepare-package</phase>
+								<configuration>
+									<target>
+										<copy todir="${project.root}/target/schemas">
+											<fileset dir="${basedir}" erroronmissingdir="false">
+												<include name="**/src/main/resources/**/config/spring-*.xsd"/>
+											</fileset>
+											<flattenmapper/>
+										</copy>
+									</target>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+
+							<execution>
+								<id>check-schema-files</id>
+								<phase>prepare-package</phase>
+								<configuration>
+									<target>
+										<condition property="assembly.skipAssembly">
+											<not>
+												<available file="${project.root}/target/schemas"/>
+											</not>
+										</condition>
+									</target>
+									<exportAntProperties>true</exportAntProperties>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+
+					<!--
+						Creates the schema zip file.
+					-->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>docs</id>
+								<goals>
+									<goal>single</goal>
+								</goals>
+								<phase>package</phase>
+								<configuration>
+									<descriptors>
+										<descriptor>${shared.resources}/assemblies/schema.xml</descriptor>
+									</descriptors>
+									<finalName>${dist.id}</finalName>
+									<appendAssemblyId>true</appendAssemblyId>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>org.jfrog.buildinfo</groupId>
+						<artifactId>artifactory-maven-plugin</artifactId>
+					</plugin>
+
+				</plugins>
+
+				<pluginManagement>
+					<plugins>
+
+						<!-- Deploy to Artifactory -->
+
+						<plugin>
+							<groupId>org.jfrog.buildinfo</groupId>
+							<artifactId>artifactory-maven-plugin</artifactId>
+							<executions>
+								<execution>
+									<id>deploy-schema</id>
+									<goals>
+										<goal>publish</goal>
+									</goals>
+									<phase>deploy</phase>
+									<configuration>
+										<artifactory>
+											<includeEnvVars>false</includeEnvVars>
+										</artifactory>
+										<deployProperties>
+											<zip.name>${dist.id}</zip.name>
+											<zip.displayname>${dist.id}</zip.displayname>
+											<zip.deployed>false</zip.deployed>
+											<zip.type>schema</zip.type>
+										</deployProperties>
+										<buildInfo>
+											<!-- Retain only a single build -->
+											<buildName>Spring Data Schema ${dist.id} ${project.version}</buildName>
+											<buildRetentionCount>1</buildRetentionCount>
+										</buildInfo>
+										<publisher>
+											<contextUrl>{{artifactory.server}}</contextUrl>
+											<username>{{artifactory.username}}</username>
+											<password>{{artifactory.password}}</password>
+											<repoKey>{{artifactory.distribution-repository}}</repoKey>
+											<snapshotRepoKey>{{artifactory.distribution-repository}}</snapshotRepoKey>
+											<includePatterns>*-schema.zip</includePatterns>
+										</publisher>
+									</configuration>
+								</execution>
+							</executions>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+
+		</profile>
+
+		<profile>
+			<id>spring53-next</id>
+			<properties>
+				<spring>5.3.8-SNAPSHOT</spring>
+			</properties>
+			<repositories>
+				<repository>
+					<id>spring-libs-snapshot</id>
+					<url>https://repo.spring.io/libs-snapshot</url>
+				</repository>
+			</repositories>
+		</profile>
+
+		<profile>
+			<id>jackson-next</id>
+			<properties>
+				<jackson>2.12.0</jackson>
+			</properties>
+			<repositories>
+				<repository>
+					<id>spring-libs-snapshot</id>
+					<url>https://repo.spring.io/libs-snapshot</url>
+				</repository>
+			</repositories>
+		</profile>
+
+	</profiles>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>io.projectreactor</groupId>
+				<artifactId>reactor-bom</artifactId>
+				<version>${reactor}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-framework-bom</artifactId>
+				<version>${spring}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.jetbrains.kotlin</groupId>
+				<artifactId>kotlin-bom</artifactId>
+				<version>${kotlin}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.jetbrains.kotlinx</groupId>
+				<artifactId>kotlinx-coroutines-bom</artifactId>
+				<version>${kotlin-coroutines}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson</groupId>
+				<artifactId>jackson-bom</artifactId>
+				<version>${jackson}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.junit</groupId>
+				<artifactId>junit-bom</artifactId>
+				<version>${junit5}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+
+		<!-- Test -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.vintage</groupId>
+			<artifactId>junit-vintage-engine</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>${mockito}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-junit-jupiter</artifactId>
+			<version>${mockito}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>${assertj}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok}</version>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+
+		<!--
+			Default versioned declarations of managed plugins
+			to be overridden when the distribute profile is active.
+			If this section was missing, Maven would complain about
+			missing version numbers for executions without the
+			profile active.
+		-->
+
+		<pluginManagement>
+
+			<plugins>
+
+				<plugin>
+					<groupId>org.asciidoctor</groupId>
+					<artifactId>asciidoctor-maven-plugin</artifactId>
+					<version>2.0.0-RC.1</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-antrun-plugin</artifactId>
+					<version>3.0.0</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>3.3.0</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.8.1</version>
+					<configuration>
+						<forceJavacCompilerUse>true</forceJavacCompilerUse>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-checkstyle-plugin</artifactId>
+					<version>3.1.1</version>
+					<dependencies>
+						<dependency>
+							<groupId>com.puppycrawl.tools</groupId>
+							<artifactId>checkstyle</artifactId>
+							<version>8.33</version>
+						</dependency>
+						<dependency>
+							<groupId>io.spring.nohttp</groupId>
+							<artifactId>nohttp-checkstyle</artifactId>
+							<version>0.0.5.RELEASE</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<version>3.1.2</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>3.0.0-M1</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-enforcer-plugin</artifactId>
+					<version>3.0.0-M3</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<version>3.0.0-M5</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>3.2.0</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>3.2.0</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>3.2.1</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>3.0.0-M5</version>
+					<configuration>
+						<useSystemClassLoader>false</useSystemClassLoader>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>3.1.0</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.projectlombok</groupId>
+					<artifactId>lombok-maven-plugin</artifactId>
+					<version>1.18.20.0</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.jfrog.buildinfo</groupId>
+					<artifactId>artifactory-maven-plugin</artifactId>
+					<version>3.2.1</version>
+					<dependencies>
+						<dependency>
+							<groupId>org.jfrog.buildinfo</groupId>
+							<artifactId>build-info-extractor</artifactId>
+							<version>2.25.4</version>
+						</dependency>
+						<dependency>
+							<groupId>org.jfrog.buildinfo</groupId>
+							<artifactId>build-info-api</artifactId>
+							<version>2.25.4</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+
+			</plugins>
+
+		</pluginManagement>
+
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.jetbrains.kotlin</groupId>
+				<artifactId>kotlin-maven-plugin</artifactId>
+				<version>${kotlin}</version>
+				<configuration>
+					<jvmTarget>${source.level}</jvmTarget>
+					<apiVersion>1.3</apiVersion>
+					<languageVersion>1.3</languageVersion>
+					<skip>${maven.kotlin.skip}</skip>
+					<args>
+						<arg>-Xsuppress-version-warnings</arg>
+					</args>
+				</configuration>
+				<executions>
+					<execution>
+						<id>compile</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+						<configuration>
+							<sourceDirs>
+								<sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
+								<sourceDir>${project.basedir}/src/main/java</sourceDir>
+							</sourceDirs>
+						</configuration>
+					</execution>
+					<execution>
+						<id>test-compile</id>
+						<phase>test-compile</phase>
+						<goals>
+							<goal>test-compile</goal>
+						</goals>
+						<configuration>
+							<sourceDirs>
+								<sourceDir>${project.basedir}/src/test/kotlin</sourceDir>
+								<sourceDir>${project.basedir}/src/test/java</sourceDir>
+							</sourceDirs>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${source.level}</source>
+					<target>${source.level}</target>
+				</configuration>
+				<executions>
+					<execution>
+						<id>default-compile</id>
+						<phase>none</phase>
+					</execution>
+					<execution>
+						<id>default-testCompile</id>
+						<phase>none</phase>
+					</execution>
+					<execution>
+						<id>java-compile</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>java-test-compile</id>
+						<phase>test-compile</phase>
+						<goals>
+							<goal>testCompile</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<useSystemClassLoader>false</useSystemClassLoader>
+					<useFile>false</useFile>
+					<includes>
+						<include>**/*Tests.java</include>
+					</includes>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Implementation-Title>${project.name}</Implementation-Title>
+							<Implementation-Version>${project.version}</Implementation-Version>
+							<Automatic-Module-Name>${java-module-name}</Automatic-Module-Name>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>add-kotlin-source</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${project.basedir}/src/main/kotlin</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<locale>en_US</locale>
+					<breakiterator>true</breakiterator>
+					<header>${project.name}</header>
+					<source>${source.level}</source>
+					<quiet>true</quiet>
+					<javadocDirectory>${shared.resources}/javadoc</javadocDirectory>
+					<overview>${shared.resources}/javadoc/overview.html</overview>
+					<stylesheetfile>${shared.resources}/javadoc/spring-javadoc.css</stylesheetfile>
+					<!-- copies doc-files subdirectory which contains image resources -->
+					<docfilessubdirs>true</docfilessubdirs>
+					<additionalOptions>
+						<additionalOption>-Xdoclint:none</additionalOption>
+					</additionalOptions>
+					<links>
+						<link>https://docs.spring.io/spring/docs/${spring}/javadoc-api/</link>
+						<link>https://docs.spring.io/spring-data/commons/docs/current/api/</link>
+						<link>https://docs.oracle.com/javase/8/docs/api/</link>
+					</links>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>enforce-maven-version</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireMavenVersion>
+									<version>3.5.0</version>
+								</requireMavenVersion>
+								<requireJavaVersion>
+									<version>1.8</version>
+								</requireJavaVersion>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+
+	<repositories>
+		<repository>
+			<id>spring-libs-snapshot</id>
+			<url>https://repo.spring.io/libs-snapshot</url>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>spring-plugins-release</id>
+			<url>https://repo.spring.io/plugins-release</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>spring-libs-milestone</id>
+			<url>https://repo.spring.io/libs-milestone</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+</project>

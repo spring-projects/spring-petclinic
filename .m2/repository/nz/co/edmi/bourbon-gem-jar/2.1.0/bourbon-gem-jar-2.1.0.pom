@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>nz.co.edmi</groupId>
+  <artifactId>bourbon-gem-jar</artifactId>
+  <version>2.1.0</version>
+  <packaging>jar</packaging>
+
+  <name>Thoughtbot Bourbon Gem in a Jar</name>
+  <inceptionYear>2012</inceptionYear>
+  <url>https://github.com/edmi-nz/bourbon-gem-jar</url>
+
+  <description>
+    Repackages the thoughtbot Bourbon gem into a jar for use in Java projects.
+    The bourbon-gem-jar package version follows the thoughtbot-bourbon.gem
+    versions located http://thoughtbot.com/bourbon/ (https://github.com/thoughtbot/bourbon). 
+    Simply change the version of this package to download and repackage the 
+    same GEM version.
+  </description>
+
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>http://www.opensource.org/licenses/mit-license.php</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>EDMI NZ</name>
+      <url>https://github.com/edmi-nz/bourbon-gem-jar</url>
+    </developer>
+  </developers>
+
+
+  <scm>
+    <url>https://svanders@github.com/edmi-nz/bourbon-gem-jar.git</url>
+    <developerConnection>scm:git@github.com:edmi-nz/bourbon-gem-jar.git</developerConnection>
+    <connection>scm:git:git@github.com:edmi-nz/bourbon-gem-jar.git</connection>
+  </scm>
+
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/edmi-nz/bourbon-gem-jar/issues</url>
+  </issueManagement>
+
+  <build>
+    <resources>
+      <resource>
+        <directory>bin</directory>
+        <targetPath>./bin</targetPath>
+      </resource>
+      <resource>
+        <directory>cache</directory>
+        <targetPath>./cache</targetPath>
+      </resource>
+      <resource>
+        <directory>doc</directory>
+        <targetPath>./doc</targetPath>
+        <excludes>
+          <exclude>**/*</exclude>
+        </excludes>
+      </resource>
+      <resource>
+        <directory>gems</directory>
+        <targetPath>./gems</targetPath>
+      </resource>
+      <resource>
+        <directory>specifications</directory>
+        <targetPath>./specifications</targetPath>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>2.4.1</version>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>${basedir}/bin</directory>
+              <followSymlinks>false</followSymlinks>
+            </fileset>
+            <fileset>
+              <directory>${basedir}/cache</directory>
+              <followSymlinks>false</followSymlinks>
+            </fileset>
+            <fileset>
+              <directory>${basedir}/doc</directory>
+              <followSymlinks>false</followSymlinks>
+            </fileset>
+            <fileset>
+              <directory>${basedir}/gems</directory>
+              <followSymlinks>false</followSymlinks>
+            </fileset>
+            <fileset>
+              <directory>${basedir}/specifications</directory>
+              <followSymlinks>false</followSymlinks>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.jruby.plugins</groupId>
+        <artifactId>jruby-rake-plugin</artifactId>
+        <version>1.6.7</version>
+        <executions>
+          <execution>
+            <id>install gems</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>gem</goal>
+            </goals>
+            <configuration>
+              <args>install -i . bourbon -v ${project.version} --no-rdoc --no-ri</args>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>create-empty-directory</id>
+            <phase>package</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <tasks>
+                <mkdir dir="${basedir}/target/classes/doc"/>
+              </tasks>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <includes>
+            <include>**/specifications/bourbon-${project.version}.gemspec</include>
+            <include>**/gems/bourbon-${project.version}/**</include>
+            <include>**/bin/bourbon*</include>
+            <include>**/cache/bourbon-${project.version}.gem</include>
+            <include>**/doc/*</include>
+            <include>**/META-INF/*</include>
+          </includes>
+          <excludes>
+            <exclude>**/gems/sass*</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>me.n4u.sass</groupId>
+      <artifactId>sass-gems</artifactId>
+      <version>[3.1.16, 3.2)</version>
+    </dependency>
+  </dependencies>
+
+  <profiles>
+    <profile>
+      <id>development</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+    </profile>
+    <profile>
+      <id>release-sign-artifacts</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>performRelease</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.4</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+      <distributionManagement>
+        <repository>
+          <id>sonatype-nexus-staging</id>
+          <name>Nexus Release Repository</name>
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+        <snapshotRepository>
+          <id>sonatype-nexus-snapshots</id>
+          <name>Sonatype Nexus Snapshots</name>
+          <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+      </distributionManagement>
+    </profile>
+  </profiles>
+
+
+</project>

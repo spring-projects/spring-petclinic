@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <packaging>jar</packaging>
+    <groupId>org.webjars.npm</groupId>
+    <artifactId>wrappy</artifactId>
+    <version>1.0.2</version>
+    <name>wrappy</name>
+    <description>WebJar for wrappy</description>
+    <url>http://webjars.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <scm>
+         <url>https://github.com/npm/wrappy</url> 
+        <connection>https://github.com/npm/wrappy.git</connection>
+        <developerConnection>https://github.com/npm/wrappy.git</developerConnection>
+        <tag>v1.0.2</tag>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>webjars</id>
+            <url>http://webjars.org</url>
+        </developer>
+    </developers>
+
+    <licenses>
+        
+        <license>
+            <name>ISC</name>
+            <url>https://spdx.org/licenses/ISC#licenseText</url>
+            <distribution>repo</distribution>
+        </license>
+        
+    </licenses>
+
+    <dependencies>
+        
+        
+    </dependencies>
+
+</project>

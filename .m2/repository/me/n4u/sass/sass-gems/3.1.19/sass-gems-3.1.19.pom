@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>me.n4u.sass</groupId>
+    <artifactId>sass-gems</artifactId>
+    <version>3.1.19</version>
+    <packaging>jar</packaging>
+
+    <name>SASS Gems - Gem in a Jar for SASS</name>
+    <inceptionYear>2012</inceptionYear>
+    <url>https://github.com/dmitrye/sass-gems</url>
+
+    <description>
+        This is a repackaged GEM in a JAR format of the sass-lang.gem package. The sass-gems package version
+        follows the sass-lang.gem versions located http://rubyforge.org/frs/?group_id=9702. Simply change
+        the version of this package to download and repackage the same GEM version.
+    </description>
+
+    <developers>
+        <developer>
+            <name>Dmitry Erman</name>
+            <url>https://github.com/dmitrye/sass-gems</url>
+        </developer>
+    </developers>
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/dmitrye/sass-gems</url>
+        <developerConnection>scm:git:git@github.com:dmitrye/sass-gems.git</developerConnection>
+        <connection>scm:git:git@github.com:dmitrye/sass-gems.git</connection>
+    </scm>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/dmitrye/sass-gems/issues</url>
+    </issueManagement>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>bin</directory>
+                <targetPath>./bin</targetPath>
+            </resource>
+            <resource>
+                <directory>cache</directory>
+                <targetPath>./cache</targetPath>
+            </resource>
+            <resource>
+                <directory>doc</directory>
+                <targetPath>./doc</targetPath>
+                <excludes>
+                    <exclude>**/*</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>gems</directory>
+                <targetPath>./gems</targetPath>
+            </resource>
+            <resource>
+                <directory>specifications</directory>
+                <targetPath>./specifications</targetPath>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.jruby.plugins</groupId>
+                <artifactId>jruby-rake-plugin</artifactId>
+                <version>1.6.7</version>
+                <executions>
+                    <execution>
+                        <id>install gems</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>gem</goal>
+                        </goals>
+                        <configuration>
+                            <args>install -i . sass -v ${project.version} --no-rdoc --no-ri</args>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>create-empty-directory</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <mkdir dir="${basedir}/target/classes/doc"/>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <includes>
+                        <include>**/specifications/sass-${project.version}.gemspec</include>
+                        <include>**/gems/sass-${project.version}/**</include>
+                        <include>**/bin/**</include>
+                        <include>**/cache/sass-${project.version}.gem</include>
+                        <include>**/doc/*</include>
+                        <include>**/META-INF/*</include>
+                    </includes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <profiles>
+        <profile>
+            <id>development</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>release-sign-artifacts</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.4</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <distributionManagement>
+                <repository>
+                    <id>sonatype-nexus-staging</id>
+                    <name>Nexus Release Repository</name>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+                <snapshotRepository>
+                    <id>sonatype-nexus-snapshots</id>
+                    <name>Sonatype Nexus Snapshots</name>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+                </snapshotRepository>
+            </distributionManagement>
+        </profile>
+    </profiles>
+
+</project>

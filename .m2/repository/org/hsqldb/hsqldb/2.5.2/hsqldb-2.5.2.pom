@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.hsqldb</groupId>
+  <artifactId>hsqldb</artifactId>
+  <version>2.5.2</version>
+  <name>HyperSQL Database</name>
+  <description>HSQLDB - Lightweight 100% Java SQL Database Engine</description>
+  <url>http://hsqldb.org</url>
+  <inceptionYear>2001</inceptionYear>
+  <organization>
+    <name>The HSQL Development Group</name>
+    <url>http://hsqldb.org</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>HSQLDB License, a BSD open source license</name>
+      <url>http://hsqldb.org/web/hsqlLicense.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>unsaved</id>
+      <name>Blaine Simpson</name>
+      <email>blaine.simpson@admc.com</email>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:svn:http://svn.code.sf.net/p/hsqldb/svn/base/</connection>
+    <tag>2.5.2</tag>
+    <url>http://sourceforge.net/p/hsqldb/svn/HEAD/tree/base/tags/2.6.0</url>
+  </scm>
+</project>

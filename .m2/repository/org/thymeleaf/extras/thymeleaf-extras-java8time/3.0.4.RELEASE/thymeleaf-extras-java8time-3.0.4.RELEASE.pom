@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ =============================================================================
+  ~
+  ~   Copyright (c) 2011-2018, The THYMELEAF team (http://www.thymeleaf.org)
+  ~
+  ~   Licensed under the Apache License, Version 2.0 (the "License");
+  ~   you may not use this file except in compliance with the License.
+  ~   You may obtain a copy of the License at
+  ~
+  ~       http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~   Unless required by applicable law or agreed to in writing, software
+  ~   distributed under the License is distributed on an "AS IS" BASIS,
+  ~   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~   See the License for the specific language governing permissions and
+  ~   limitations under the License.
+  ~
+  ~ =============================================================================
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.thymeleaf.extras</groupId>
+    <artifactId>thymeleaf-extras-java8time</artifactId>
+    <packaging>jar</packaging>
+    <version>3.0.4.RELEASE</version>
+    <name>thymeleaf-extras-java8time</name>
+    <url>http://www.thymeleaf.org</url>
+
+    <description>Modern server-side Java template engine for both web and standalone environments</description>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <organization>
+        <name>The THYMELEAF team</name>
+        <url>http://www.thymeleaf.org</url>
+    </organization>
+
+    <scm>
+        <url>scm:git:git@github.com:thymeleaf/thymeleaf-extras-java8time.git</url>
+        <connection>scm:git:git@github.com:thymeleaf/thymeleaf-extras-java8time.git</connection>
+        <developerConnection>scm:git:git@github.com:thymeleaf/thymeleaf-extras-java8time.git</developerConnection>
+    <tag>thymeleaf-extras-java8time-3.0.4.RELEASE</tag>
+  </scm>
+
+    <developers>
+        <developer>
+            <id>danielfernandez</id>
+            <name>Daniel Fernandez</name>
+            <email>daniel.fernandez AT 11thlabs DOT org</email>
+            <roles>
+                <role>Project Admin</role>
+                <role>Lead Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>jmiguelsamper</id>
+            <name>Jose Miguel Samper</name>
+            <email>jmiguelsamper AT users DOT sourceforge DOT net</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>ultraq</id>
+            <name>Emanuel Rabina</name>
+            <email>emanuelrabina AT gmail DOT com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+    </distributionManagement>
+
+    <repositories>
+        <repository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+
+    <properties>
+        <maven.compile.source>1.8</maven.compile.source>
+        <maven.compile.target>1.8</maven.compile.target>
+        <project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
+        <!-- A project-name-based approach is adopted for the module name (instead of a reverse-DNS one) -->
+        <!-- Note this name is computed from the artifactID by means of a Groovy plugin during init.     -->
+        <module.name>${project.automaticmodulename}</module.name>
+        <thymeleaf.version>3.0.11.RELEASE</thymeleaf.version>
+        <slf4j.version>1.7.25</slf4j.version>
+        <!-- The following dependencies are for testing only -->
+        <junit.version>4.12</junit.version>
+        <log4j.version>1.2.17</log4j.version>
+    </properties>
+
+
+    <build>
+
+        <resources>
+
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+
+            <resource>
+                <directory>.</directory>
+                <targetPath>META-INF</targetPath>
+                <includes>
+                    <include>LICENSE.txt</include>
+                    <include>NOTICE.txt</include>
+                </includes>
+            </resource>
+
+        </resources>
+
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+        </testResources>
+
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <configuration>
+                    <source>${maven.compile.source}</source>
+                    <target>${maven.compile.target}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <archive>
+                        <addMavenDescriptor>false</addMavenDescriptor>
+                        <manifest>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                        </manifest>
+                        <manifestEntries>
+                            <!-- These two entries are non-standard, specified by the Apache Software Foundation in -->
+                            <!-- their release preparation procedures as a way to pass this information on to the   -->
+                            <!-- library users. See: http://commons.apache.org/releases/prepare.html                -->
+                            <X-Compile-Source-JDK>${maven.compile.source}</X-Compile-Source-JDK>
+                            <X-Compile-Target-JDK>${maven.compile.target}</X-Compile-Target-JDK>
+                            <!-- Set the Built-By attribute in MANIFEST.MF to avoid displaying specific user names. -->
+                            <Built-By>thymeleaf</Built-By>
+                            <!-- Setting this automatic module name will fix the module name used by the artifact   -->
+                            <!-- even if the library is not yet fully modularised.                                  -->
+                            <Automatic-Module-Name>${module.name}</Automatic-Module-Name>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.0.1</version>
+                <configuration>
+                    <show>protected</show>
+                    <noqualifier>java.lang</noqualifier>
+                    <source>8</source>
+                    <overview>${basedir}/src/main/javadoc/overview.html</overview>
+                    <javadocDirectory>${basedir}/src/main/javadoc</javadocDirectory>
+                    <reportOutputDirectory>${project.reporting.outputDirectory}/api/${project.artifactId}/apidocs</reportOutputDirectory>
+                    <additionalJOption>--no-module-directories</additionalJOption>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.gmavenplus</groupId>
+                <artifactId>gmavenplus-plugin</artifactId>
+                <version>1.6.2</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <scripts>
+                        <!-- This script is meant to initialise a project property to be used as an automatic  -->
+                        <!-- module name. This is computed from the artifactID, replacing '-' forbidden chars. -->
+                        <script>
+                            def automaticmodulename = "${project.artifactId}".replace('-', '.')
+                            project.properties.setProperty('project.automaticmodulename', automaticmodulename)
+                        </script>
+                    </scripts>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.codehaus.groovy</groupId>
+                        <artifactId>groovy-all</artifactId>
+                        <version>2.5.3</version>
+                        <scope>runtime</scope>
+                        <type>pom</type>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>make-assembly-dist</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>${basedir}/src/assembly/dist.xml</descriptor>
+                            </descriptors>
+                            <appendAssemblyId>true</appendAssemblyId>
+                            <finalName>thymeleaf-extras-java8time-${project.version}</finalName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+            </plugin>
+
+
+        </plugins>
+
+    </build>
+
+
+
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.thymeleaf</groupId>
+            <artifactId>thymeleaf</artifactId>
+            <version>${thymeleaf.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j.version}</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.sun.jdmk</groupId>
+                    <artifactId>jmxtools</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.jmx</groupId>
+                    <artifactId>jmxri</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.jms</groupId>
+                    <artifactId>jms</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+
+    </dependencies>
+
+
+</project>

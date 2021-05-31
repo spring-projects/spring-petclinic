@@ -1,0 +1,628 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2013, 2021 Oracle and/or its affiliates. All rights reserved.
+
+    This program and the accompanying materials are made available under the
+    terms of the Eclipse Distribution License v. 1.0, which is available at
+    http://www.eclipse.org/org/documents/edl-v10.php.
+
+    SPDX-License-Identifier: BSD-3-Clause
+
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.sun.xml.bind</groupId>
+        <artifactId>jaxb-bom-ext</artifactId>
+        <version>2.3.4</version>
+        <relativePath>boms/bom-ext/pom.xml</relativePath>
+    </parent>
+
+    <groupId>com.sun.xml.bind.mvn</groupId>
+    <artifactId>jaxb-parent</artifactId>
+    <version>2.3.4</version>
+    <packaging>pom</packaging>
+    <name>Jakarta XML Binding Implementation</name>
+    <description>
+        Open source Implementation of Jakarta XML Binding (formerly JSR-222)
+    </description>
+
+    <url>https://eclipse-ee4j.github.io/jaxb-ri</url>
+    <scm>
+        <connection>scm:git:ssh://git@github.com/eclipse-ee4j/jaxb-ri</connection>
+        <developerConnection>scm:git:ssh://git@github.com/eclipse-ee4j/jaxb-ri.git</developerConnection>
+        <url>https://github.com/eclipse-ee4j/jaxb-ri.git</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <licenses>
+        <license>
+            <name>Eclipse Distribution License - v 1.0</name>
+            <url>http://www.eclipse.org/org/documents/edl-v10.php</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Roman Grigoriadi</name>
+            <email>roman.grigoriadi@oracle.com</email>
+            <organization>Oracle Corporation</organization>
+        </developer>
+    </developers>
+
+    <issueManagement>
+        <system>github</system>
+        <url>https://github.com/eclipse-ee4j/jaxb-ri/issues</url>
+    </issueManagement>
+
+    <mailingLists>
+        <mailingList>
+            <name>Jakarta XML Binding Implementation mailing list</name>
+            <post>jaxb-impl-dev@eclipse.org</post>
+            <subscribe>https://accounts.eclipse.org/mailing-list/jaxb-impl-dev</subscribe>
+            <unsubscribe>https://accounts.eclipse.org/mailing-list/jaxb-impl-dev</unsubscribe>
+            <archive>https://accounts.eclipse.org/mailing-list/jaxb-impl-dev</archive>
+        </mailingList>
+    </mailingLists>
+
+    <properties>
+        <copyright.exclude>tools/config/copyright-exclude</copyright.exclude>
+        <copyright.ignoreyear>false</copyright.ignoreyear>
+        <copyright.scmonly>true</copyright.scmonly>
+        <copyright.template>tools/config/copyright.txt</copyright.template>
+        <copyright.update>false</copyright.update>
+        <spotbugs.exclude/>
+        <spotbugs.skip>false</spotbugs.skip>
+        <spotbugs.threshold>High</spotbugs.threshold>
+        <spotbugs.version>4.2.0</spotbugs.version>
+
+        <junit.version>4.13.2</junit.version>
+
+        <module.path>${project.build.directory}/mods</module.path>
+        <!-- This will work ONLY if mvn is run from root folder. In case of runing from submodules - fail :( -->
+        <skipOsgiTests>true</skipOsgiTests>
+        <felix.junit4osgi>1.0.0</felix.junit4osgi>
+        <felix.osgi.core>6.0.0</felix.osgi.core>
+        <jmockit.version>1.34</jmockit.version>
+        <mrjar.sourceDirectory>${project.basedir}/src/main/java-mr</mrjar.sourceDirectory>
+        <base.java.level>8</base.java.level>
+        <upper.java.level>9</upper.java.level>
+        <root.dir>${session.executionRootDirectory}/..</root.dir>
+        <oss.disallow.snapshots>true</oss.disallow.snapshots>
+        <vendor.name>Eclipse Foundation</vendor.name>
+        <vendor.id>org.eclipse</vendor.id>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Test -->
+            <dependency>
+                <groupId>org.jmockit</groupId>
+                <artifactId>jmockit</artifactId>
+                <version>${jmockit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
+            <!-- JDK dependencies -->
+            <dependency>
+                <!-- required by com.sun.tools.xjc.Options on JDK < 9
+               (com.sun.org.apache.xml.internal.resolver.CatalogManager
+                com.sun.org.apache.xml.internal.resolver.tools.CatalogResolver) -->
+                <groupId>com.sun.org.apache.xml.internal</groupId>
+                <artifactId>resolver</artifactId>
+                <version>20050927</version>
+            </dependency>
+
+            <!-- CQ #20807 -->
+            <!-- contains com.sun.source.tree and com.sun.source.util JDK provided packages required by jxc (ApNavigator) -->
+            <dependency>
+                <groupId>org.checkerframework</groupId>
+                <artifactId>compiler</artifactId>
+                <version>2.4.0</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.2.0</version>
+                    <configuration>
+                        <escapeString>\</escapeString>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <version>5.1.1</version>
+                    <configuration>
+                        <niceManifest>true</niceManifest>
+                        <instructions>
+                            <_noextraheaders>true</_noextraheaders>
+                        </instructions>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.2.0</version>
+                    <configuration>
+                        <archive>
+                            <manifest>
+                                <addDefaultEntries>false</addDefaultEntries>
+                            </manifest>
+                        </archive>
+                        <excludes>
+                            <exclude>META-INF/jpms.args</exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>3.1.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
+                    <configuration>
+                        <source>1.8</source>
+                        <target>1.8</target>
+                        <compilerArgs>
+                            <arg>-Xlint:all</arg>
+                            <!--<XDignore.symbol.file/>-->
+                        </compilerArgs>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.0.0-M5</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>3.2.1</version>
+                    <configuration>
+                        <archive>
+                            <manifestEntries>
+                                <Specification-Title>Jakarta XML Binding</Specification-Title>
+                                <Specification-Version>${jaxb-api.majorVersion}.${jaxb-api.minorVersion}</Specification-Version>
+                                <Implementation-Title>Jakarta XML Binding Implementation</Implementation-Title>
+                                <Implementation-Version>${project.version}</Implementation-Version>
+                                <Implementation-Vendor>${vendor.name}</Implementation-Vendor>
+                                <Implementation-Vendor-Id>${vendor.id}</Implementation-Vendor-Id>
+                                <Git-Revision>${buildNumber}</Git-Revision>
+                                <Git-Url>${project.scm.connection}</Git-Url>
+                                <Build-Id>${project.version}</Build-Id>
+                                <Build-Version>JAXB RI ${project.version}</Build-Version>
+                                <Major-Version>${jaxb.majorVersion}.${jaxb.minorVersion}.${jaxb.incrementalVersion}</Major-Version>
+                            </manifestEntries>
+                        </archive>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>3.3.0</version>
+                    <configuration>
+                        <archive>
+                            <manifestEntries>
+                                <Specification-Title>Jakarta XML Binding</Specification-Title>
+                                <Specification-Version>${jaxb-api.majorVersion}.${jaxb-api.minorVersion}</Specification-Version>
+                                <Implementation-Title>Jakarta XML Binding Implementation</Implementation-Title>
+                                <Implementation-Version>${project.version}</Implementation-Version>
+                                <Implementation-Vendor>${vendor.name}</Implementation-Vendor>
+                                <Implementation-Vendor-Id>${vendor.id}</Implementation-Vendor-Id>
+                                <Git-Revision>${buildNumber}</Git-Revision>
+                                <Git-Url>${project.scm.connection}</Git-Url>
+                                <Build-Id>${project.version}</Build-Id>
+                                <Build-Version>JAXB RI ${project.version}</Build-Version>
+                                <Major-Version>${jaxb.majorVersion}.${jaxb.minorVersion}.${jaxb.incrementalVersion}</Major-Version>
+                            </manifestEntries>
+                        </archive>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>3.2.0</version>
+                    <configuration>
+                        <archive>
+                            <manifest>
+                                <addDefaultEntries>false</addDefaultEntries>
+                            </manifest>
+                        </archive>
+                        <release>11</release>
+                        <notimestamp>true</notimestamp>
+                        <aggregate>false</aggregate>
+                        <dependencySourceExcludes>
+                            <dependencySourceExclude>com.sun.xml.bind:*</dependencySourceExclude>
+                            <dependencySourceExclude>com.sun.tools.xjc:*</dependencySourceExclude>
+                            <dependencySourceExclude>com.sun.tools.jxc:*</dependencySourceExclude>
+                        </dependencySourceExcludes>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>3.2.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.glassfish.copyright</groupId>
+                    <artifactId>glassfish-copyright-maven-plugin</artifactId>
+                    <version>2.4</version>
+                    <configuration>
+                        <templateFile>${copyright.template}</templateFile>
+                        <excludeFile>${copyright.exclude}</excludeFile>
+                        <!-- skip files not under SCM-->
+                        <scmOnly>${copyright.scmonly}</scmOnly>
+                        <!-- for use with repair -->
+                        <update>${copyright.update}</update>
+                        <!-- check that year is correct -->
+                        <ignoreYear>${copyright.ignoreyear}</ignoreYear>
+                        <quiet>false</quiet>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>com.github.spotbugs</groupId>
+                    <artifactId>spotbugs-maven-plugin</artifactId>
+                    <version>${spotbugs.version}</version>
+                    <configuration>
+                        <skip>${spotbugs.skip}</skip>
+                        <threshold>${spotbugs.threshold}</threshold>
+                        <findbugsXmlWithMessages>true</findbugsXmlWithMessages>
+                        <excludeFilterFile>
+                            ${spotbugs.exclude}
+                        </excludeFilterFile>
+                        <fork>true</fork>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>properties-maven-plugin</artifactId>
+                    <version>1.0.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>buildnumber-maven-plugin</artifactId>
+                    <version>1.4</version>
+                    <configuration>
+                        <locale>en-US</locale>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>3.0.0-M3</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>3.0.0</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.apache.ant</groupId>
+                            <artifactId>ant</artifactId>
+                            <version>1.10.9</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.apache.ant</groupId>
+                            <artifactId>ant-junit</artifactId>
+                            <version>1.10.9</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>3.0.0-M5</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>jaxb.version</id>
+                        <goals>
+                            <goal>parse-version</goal>
+                        </goals>
+                        <phase>validate</phase>
+                        <configuration>
+                            <propertyPrefix>jaxb</propertyPrefix>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>jaxb-api.version</id>
+                        <goals>
+                            <goal>parse-version</goal>
+                        </goals>
+                        <phase>validate</phase>
+                        <configuration>
+                            <propertyPrefix>jaxb-api</propertyPrefix>
+                            <versionString>${jaxb-api.version}</versionString>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-legal-resource</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>add-resource</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>${root.dir}</directory>
+                                    <targetPath>META-INF</targetPath>
+                                    <includes>
+                                        <include>LICENSE.md</include>
+                                        <include>NOTICE.md</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce-versions</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <rules>
+                        <requireJavaVersion>
+                            <version>[11,)</version>
+                        </requireJavaVersion>
+                        <requireMavenVersion>
+                            <version>[3.6.0,)</version>
+                        </requireMavenVersion>
+                        <DependencyConvergence/>
+                    </rules>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>create-buildnumber</id>
+                        <goals>
+                            <goal>create</goal>
+                        </goals>
+                        <configuration>
+                            <getRevisionOnlyOnce>true</getRevisionOnlyOnce>
+                            <shortRevisionLength>7</shortRevisionLength>
+                            <revisionOnScmFailure>unknown</revisionOnScmFailure>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-compile</id>
+                        <configuration>
+                            <source>${upper.java.level}</source>
+                            <target>${upper.java.level}</target>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>base-compile</id>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <release>${base.java.level}</release>
+                            <excludes>
+                                <exclude>module-info.java</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-jar</id>
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <addDefaultEntries>false</addDefaultEntries>
+                                </manifest>
+                                <manifestEntries>
+                                    <Specification-Title>Jakarta XML Binding</Specification-Title>
+                                    <Specification-Version>${jaxb-api.majorVersion}.${jaxb-api.minorVersion}</Specification-Version>
+                                    <Implementation-Title>Jakarta XML Binding Implementation</Implementation-Title>
+                                    <Implementation-Version>${project.version}</Implementation-Version>
+                                    <Implementation-Vendor>${vendor.name}</Implementation-Vendor>
+                                    <Implementation-Vendor-Id>${vendor.id}</Implementation-Vendor-Id>
+                                    <Git-Revision>${buildNumber}</Git-Revision>
+                                    <Git-Url>${project.scm.connection}</Git-Url>
+                                    <Build-Id>${project.version}</Build-Id>
+                                    <Build-Version>JAXB RI ${project.version}</Build-Version>
+                                    <Major-Version>${jaxb.majorVersion}.${jaxb.minorVersion}.${jaxb.incrementalVersion}</Major-Version>
+                                </manifestEntries>
+                            </archive>
+                            <excludes>
+                                <exclude>META-INF/jpms.args</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <addDefaultEntries>false</addDefaultEntries>
+                                </manifest>
+                            </archive>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <modules>
+        <module>boms/bom</module>
+        <module>boms/bom-ext</module>
+        <module>external</module>
+        <module>xsom</module>
+        <module>txw</module>
+        <module>codemodel</module>
+        <module>runtime</module>
+        <module>xjc</module>
+        <module>jxc</module>
+        <module>bundles</module>
+    </modules>
+
+    <profiles>
+        <profile>
+            <id>default-profile</id>
+            <activation>
+                <property>
+                    <name>!dev</name>
+                </property>
+            </activation>
+            <!--            <properties>
+                <skipOsgiTests>false</skipOsgiTests>
+            </properties>-->
+            <modules>
+                <module>docs</module>
+                <module>tools/osgi_tests</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>oss-release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-enforcer-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>enforce-no-snapshots</id>
+                                <goals>
+                                    <goal>enforce</goal>
+                                </goals>
+                                <configuration>
+                                    <rules>
+                                        <requireReleaseDeps>
+                                            <message>No SNAPSHOT dependency allowed!</message>
+                                        </requireReleaseDeps>
+                                        <requireReleaseVersion>
+                                            <message>release version no SNAPSHOT Allowed!</message>
+                                        </requireReleaseVersion>
+                                    </rules>
+                                    <fail>${oss.disallow.snapshots}</fail>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>dev-impl</id>
+            <activation>
+                <property>
+                    <name>dev</name>
+                </property>
+            </activation>
+        </profile>
+        <profile>
+            <id>coverage</id>
+            <activation>
+                <property>
+                    <name>jacoco-build</name>
+                </property>
+            </activation>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.jacoco</groupId>
+                            <artifactId>jacoco-maven-plugin</artifactId>
+                            <version>0.8.6</version>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>default-prepare-agent</id>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>default-report</id>
+                                <goals>
+                                    <goal>report</goal>
+                                </goals>
+                                <!-- configuration should be removed once this bug https://github.com/jacoco/jacoco/issues/407 is fixed -->
+                                <configuration>
+                                    <excludes>
+                                        <exclude>com/sun/istack/logging/StackHelper.class</exclude>
+                                        <exclude>com/sun/xml/bind/StackHelper.class</exclude>
+                                        <exclude>com/sun/tools/jxc/SchemaGenerator.class</exclude>
+                                        <exclude>com/sun/tools/jxc/SchemaGenerator$JavacOptions.class</exclude>
+                                        <exclude>com/sun/tools/jxc/SchemaGenerator$Runner.class</exclude>
+                                        <exclude>com/sun/tools/jxc/SchemaGenTask.class</exclude>
+                                        <exclude>com/sun/tools/xjc/CatalogUtil.class</exclude>
+                                        <exclude>com/sun/xml/bind/v2/runtime/reflect/opt/*.class</exclude>
+                                    </excludes>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

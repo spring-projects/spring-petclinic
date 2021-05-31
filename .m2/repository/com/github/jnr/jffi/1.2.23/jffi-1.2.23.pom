@@ -1,0 +1,260 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>7</version>
+  </parent>
+  <groupId>com.github.jnr</groupId>
+  <artifactId>jffi</artifactId>
+  <packaging>jar</packaging>
+  <version>1.2.23</version>
+  <name>jffi</name>
+  <description>Java Foreign Function Interface</description>
+  <url>http://github.com/jnr/jffi</url>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <scm>
+    <connection>scm:git:git@github.com:jnr/jffi.git</connection>
+    <developerConnection>scm:git:git@github.com:jnr/jffi.git</developerConnection>
+    <url>git@github.com:jnr/jffi.git</url>
+  </scm>
+
+  <developers>
+    <developer>
+      <id>wmeissner</id>
+      <name>Wayne Meissner</name>
+      <email>wmeissner@gmail.com</email>
+    </developer>
+  </developers>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <properties>
+    <maven.test.skip>true</maven.test.skip>
+    <maven.test.failure.ignore>true</maven.test.failure.ignore>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.6</maven.compiler.source>
+    <maven.compiler.target>1.6</maven.compiler.target>
+    <make.exe>make</make.exe>
+  </properties>
+
+  <profiles>
+      <profile>
+          <id>linux-profile</id>
+          <activation>
+              <os><name>linux</name></os>
+          </activation>
+      </profile>
+      <profile>
+          <id>freebsd-profile</id>
+          <activation>
+              <os><name>freebsd</name></os>
+          </activation>
+          <properties>
+              <make.exe>gmake</make.exe>
+          </properties>
+      </profile>
+      <profile>
+        <id>dragonfly-profile</id>
+        <activation>
+          <os><name>dragonflybsd</name></os>
+        </activation>
+        <properties>
+          <make.exe>gmake</make.exe>
+        </properties>
+      </profile>
+  </profiles>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
+        <configuration>
+          <debug>true</debug>
+          <showDeprecation>true</showDeprecation>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>2.4.0</version>
+        <extensions>false</extensions>
+        <executions>
+          <execution>
+            <id>jffi-complete</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>manifest</goal>
+            </goals>
+            <configuration>
+              <manifestLocation>${project.build.directory}/META-INF-complete</manifestLocation>
+              <instructions>
+                <_nouses>true</_nouses>
+                <Import-Package />
+                <Bundle-SymbolicName>com.github.jnr.jffi</Bundle-SymbolicName>
+                <Main-Class>com.kenai.jffi.Main</Main-Class>
+              </instructions>
+            </configuration>
+          </execution>
+          <!-- Alternate execution to generate the native JAR's manifest -->
+          <execution>
+            <id>native-assembly</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>manifest</goal>
+            </goals>
+            <configuration>
+              <manifestLocation>${project.build.directory}/META-INF-native</manifestLocation>
+              <instructions>
+                <_nouses>true</_nouses>
+                <Import-Package />
+                <Export-Package />
+                <Fragment-Host>com.github.jnr.jffi</Fragment-Host>
+                <Bundle-ClassPath>.,jni</Bundle-ClassPath>
+                <Bundle-Description>Java Foreign Function Interface - Native Libraries</Bundle-Description>
+                <Bundle-SymbolicName>com.github.jnr.jffi.native</Bundle-SymbolicName>
+                <Require-Bundle>com.github.jnr.jffi</Require-Bundle>
+              </instructions>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+<!--
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.1</version>
+        <executions>
+          <execution>
+            <id>build-native-library</id>
+            <phase>process-classes</phase>
+            <configuration>
+              <tasks>
+                <property name="os.name" value="${os.name}" />
+                <property name="os.arch" value="${os.arch}" />
+                <property name="java.home" value="${java.home}" />
+                <property name="dist.dir" value="${project.build.directory}" />
+                <property name="build.dir" value="${project.build.directory}" />
+                <property name="build.classes.dir" value="${project.build.outputDirectory}" />
+                <ant antfile="custom-build.xml" dir="." target="-assemble-native-jar" />
+                <unjar src="${project.build.directory}/native.jar" dest="${project.build.outputDirectory}" />
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+-->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-antrun-plugin</artifactId>
+          <version>1.6</version>
+          <executions>
+            <execution>
+            <id>build-native-library</id>
+            <phase>generate-sources</phase>
+            <configuration>
+              <tasks>
+                <property name="os.name" value="${os.name}" />
+                <property name="os.arch" value="${os.arch}" />
+                <property name="java.home" value="${java.home}" />
+                <property name="dist.dir" value="${project.build.directory}" />
+                <property name="build.dir" value="${project.build.directory}" />
+                <property name="build.classes.dir" value="${project.build.outputDirectory}" />
+                <ant antfile="version.xml" dir="." target="-generate-version-source" />
+              </tasks>
+              <sourceRoot>
+                ${project.build.directory}/java
+              </sourceRoot>
+
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+            <execution>
+                <phase>process-test-resources</phase>
+                <goals>
+                    <goal>run</goal>
+                </goals>
+                <configuration>
+                    <tasks>
+                      <unzip dest="${project.build.directory}/" overwrite="true">
+                          <patternset>
+                            <include name="**/*.so" />
+                            <include name="**/*.dylib" />
+                            <include name="**/*.jnilib" />
+                            <include name="**/*.dll" />
+                            <include name="**/*.a" />
+                          </patternset>
+                          <fileset dir="archive">
+                            <include name="**/*.jar" />
+                          </fileset>
+                      </unzip>
+                    </tasks>
+                </configuration>
+            </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.2</version>
+        <executions>
+          <execution>
+            <id>jffi-complete</id>
+            <phase>package</phase> <!-- append to the packaging phase. -->
+            <goals>
+              <goal>single</goal> <!-- goals == mojos -->
+            </goals>
+            <configuration>
+              <descriptors>
+                <descriptor>src/main/assembly/complete.xml</descriptor>
+              </descriptors>
+              <archive>
+                <index>true</index>
+                <manifestFile>${project.build.directory}/META-INF-complete/MANIFEST.MF</manifestFile>
+              </archive>
+              <!-- <appendAssemblyId>false</appendAssemblyId> -->
+            </configuration>
+          </execution>
+          <execution>
+            <id>native-assembly</id> <!-- this is used for inheritance merges -->
+            <phase>package</phase> <!-- append to the packaging phase. -->
+            <goals>
+              <goal>single</goal> <!-- goals == mojos -->
+            </goals>
+            <configuration>
+              <descriptors>
+                <descriptor>src/main/assembly/native.xml</descriptor>
+              </descriptors>
+              <archive>
+                <index>true</index>
+                <manifestFile>${project.build.directory}/META-INF-native/MANIFEST.MF</manifestFile>
+              </archive>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

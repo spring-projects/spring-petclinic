@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <packaging>jar</packaging>
+    <groupId>org.webjars.npm</groupId>
+    <artifactId>domhandler</artifactId>
+    <version>2.3.0</version>
+    <name>domhandler</name>
+    <description>WebJar for domhandler</description>
+    <url>http://webjars.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <scm>
+        <url>https://github.com/fb55/DomHandler</url>
+        <connection>git://github.com/fb55/DomHandler.git</connection>
+        <developerConnection>git://github.com/fb55/DomHandler.git</developerConnection>
+        <tag>v2.3.0</tag>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>webjars</id>
+            <url>http://webjars.org</url>
+        </developer>
+    </developers>
+
+    <licenses>
+        
+        <license>
+            <name>BSD 2-Clause</name>
+            <url>https://spdx.org/licenses/BSD 2-Clause#licenseText</url>
+            <distribution>repo</distribution>
+        </license>
+        
+    </licenses>
+
+    <dependencies>
+        
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>domelementtype</artifactId>
+            <version>[1,2)</version>
+        </dependency>
+        
+    </dependencies>
+
+</project>

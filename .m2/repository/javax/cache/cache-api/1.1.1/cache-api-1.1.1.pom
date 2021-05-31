@@ -1,0 +1,325 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+        <!--Fixes broken Maven 3 warning-->
+        <relativePath/>
+    </parent>
+    <groupId>javax.cache</groupId>
+    <artifactId>cache-api</artifactId>
+    <version>1.1.1</version>
+    <packaging>jar</packaging>
+
+    <name>JSR107 API and SPI</name>
+    <url>https://github.com/jsr107/jsr107spec</url>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>A business-friendly OSS license</comments>
+        </license>
+    </licenses>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+
+    <dependencies>
+
+        <!--This is only needed if you are using a CDI based implementation of the annotations support.
+            In CDI 1.1. we should be able to remove this dependency completely. -->
+        <dependency>
+            <groupId>javax.enterprise</groupId>
+            <artifactId>cdi-api</artifactId>
+            <version>1.0-SP4</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+            <exclusions>
+                <exclusion>
+                    <artifactId>jsr250-api</artifactId>
+                    <groupId>javax.annotation</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jboss-interceptors-api_1.1_spec</artifactId>
+                    <groupId>org.jboss.spec.javax.interceptor</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>javax.inject</artifactId>
+                    <groupId>javax.inject</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+
+                </executions>
+                <configuration>
+                    <failOnError>false</failOnError>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>2.12</version>
+                <executions>
+                    <execution>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>checkstyle</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <configLocation>${basedir}/checkstyle/checkstyle.xml
+                    </configLocation>
+                    <suppressionsLocation>${basedir}/checkstyle/suppressions.xml
+                    </suppressionsLocation>
+                    <headerLocation>${basedir}/checkstyle/ClassHeader.txt
+                    </headerLocation>
+                    <enableRSS>false</enableRSS>
+                    <linkXRef>true</linkXRef>
+                    <consoleOutput>true</consoleOutput>
+                    <failsOnError>true</failsOnError>
+                    <failOnViolation>true</failOnViolation>
+                    <includeTestSourceDirectory>false</includeTestSourceDirectory>
+                    <enableRulesSummary>true</enableRulesSummary>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <archive>
+                        <manifestFile>
+                            ${project.build.outputDirectory}/META-INF/MANIFEST.MF
+                        </manifestFile>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>2.3.7</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <_include>bnd.bnd</_include>
+                        <Include-Resource>{maven-resources}</Include-Resource>
+                    </instructions>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>bundle-manifest</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>manifest</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.6</version>
+                <configuration>
+                </configuration>
+            </plugin>
+
+            <!--
+            To run a build with clover instrumentation:
+            mvn clean com.atlassian.maven.plugins:maven-clover2-plugin:setup install
+
+            To run the clover report:
+            mvn com.atlassian.maven.plugins:maven-clover2-plugin:clover
+            -->
+            <plugin>
+                <groupId>com.atlassian.maven.plugins</groupId>
+                <artifactId>maven-clover2-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <cloverDatabase>${java.io.tmpdir}/clover/clover.db</cloverDatabase>
+                    <singleCloverDatabase>true</singleCloverDatabase>
+                    <license>insert license here</license>
+                    <instrumentation>method</instrumentation>
+                    <includesTestSourceRoots>false</includesTestSourceRoots>
+                </configuration>
+            </plugin>
+
+
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <!--Only releases need to be signed. Use mvn -Prelease clean deploy to deploy releases -->
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- run doclint on java8.
+             but do not complain if documentation is missing for parameter or return statement.
+             the profile enables automatically on java 8. this is backwards compatible,
+             if someone wants to build on java 7. -->
+        <profile>
+          <id>doclint-java8-all-but-missing</id>
+          <activation>
+            <jdk>[1.8,)</jdk>
+          </activation>
+
+          <build>
+            <plugins>
+              <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                  <version>3.1.0</version>
+                <configuration>
+                    <doclint>all</doclint>
+                    <doclint>-missing</doclint>
+                </configuration>
+              </plugin>
+            </plugins>
+          </build>
+        </profile>
+
+    </profiles>
+
+    <scm>
+        <connection>scm:git:git@github.com:juven/git-demo.git</connection>
+        <developerConnection>scm:git:git@github.com:juven/git-demo.git
+        </developerConnection>
+        <url>git@github.com:juven/git-demo.git</url>
+    </scm>
+
+
+    <!--Note: site URL repeated here to ensure correct deployment path-->
+    <distributionManagement>
+        <!--
+        The server id here defined must also appear in ~/.m2/settings.xml with username
+        -->
+        <repository>
+            <id>sourceforge-releases</id>
+            <name>Sourceforge Release Repository</name>
+            <url>http://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+        <snapshotRepository>
+            <id>sourceforge-snapshots</id>
+            <name>Sourceforge Snapshot Repository</name>
+            <url>http://oss.sonatype.org/content/repositories/sourceforge-snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>2.6</version>
+                <reportSets>
+                    <reportSet>
+
+                        <reports><!-- select reports -->
+                            <!--<report>index</report>-->
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+
+            <!--Use mvn compile site to generate this-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>3.0.5</version>
+                <configuration>
+                    <effort>Max</effort>
+                    <threshold>Low</threshold>
+                    <excludeFilterFile>${basedir}/findbugs/findbugs-exclude.xml
+                    </excludeFilterFile>
+                </configuration>
+
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>2.5</version>
+            </plugin>
+
+
+        </plugins>
+
+    </reporting>
+
+
+
+</project>

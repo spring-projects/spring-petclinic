@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <packaging>jar</packaging>
+    <groupId>org.webjars.npm</groupId>
+    <artifactId>htmlparser2</artifactId>
+    <version>3.8.3</version>
+    <name>htmlparser2</name>
+    <description>WebJar for htmlparser2</description>
+    <url>http://webjars.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <scm>
+        <url>https://github.com/fb55/htmlparser2</url>
+        <connection>git://github.com/fb55/htmlparser2.git</connection>
+        <developerConnection>git://github.com/fb55/htmlparser2.git</developerConnection>
+        <tag>v3.8.3</tag>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>webjars</id>
+            <url>http://webjars.org</url>
+        </developer>
+    </developers>
+
+    <licenses>
+        
+        <license>
+            <name>MIT</name>
+            <url>https://spdx.org/licenses/MIT#licenseText</url>
+            <distribution>repo</distribution>
+        </license>
+        
+    </licenses>
+
+    <dependencies>
+        
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>readable-stream</artifactId>
+            <version>[1.1,1.2)</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>entities</artifactId>
+            <version>[1.0,1.1)</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>domutils</artifactId>
+            <version>[1.5,1.6)</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>domelementtype</artifactId>
+            <version>[1,2)</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>domhandler</artifactId>
+            <version>[2.3,2.4)</version>
+        </dependency>
+        
+    </dependencies>
+
+</project>
