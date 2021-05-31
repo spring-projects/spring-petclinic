@@ -19,7 +19,7 @@ build_job:
       -Dorg.slf4j.simpleLogger.showDateTime=true
       -Djava.awt.headless=true
       --batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true
-  image: openjdk:8-alpine
+  image: openjdk:16-alpine
 
 test_job:
   stage: test
@@ -31,7 +31,7 @@ test_job:
       -Dorg.slf4j.simpleLogger.showDateTime=true
       -Djava.awt.headless=true
       --batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true
-  image: openjdk:8-alpine
+  image: openjdk:16-alpine
 
 #TESTING : Version du MOOC
 #code_quality_job:
