@@ -235,10 +235,18 @@ table td.action-column {
   color: @spring-brown;
 }
 
-.alert-variant {
-  background-color: @spring-light-grey;
-  border: @spring-light-grey;
-  color: black;
+@mixin alert-variant($background, $border, $color) {
+  color: $color;
+  @include gradient-bg($background);
+  border-color: $border;
+
+  hr {
+    border-top-color: darken($border, 5%);
+  }
+
+  .alert-link {
+    color: darken($color, 10%);
+  }
 }
 
 .alert-success {
