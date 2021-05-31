@@ -65,9 +65,9 @@
 @alert-danger-border:  red;
 @alert-danger-text:    red;
 
-@mixin alert-variant($background, $border, $color) {
+.alert-variant($background, $border, $color) {
   color: $color;
-  @include gradient-bg($background);
+  @background: $background;
   border-color: $border;
 
   hr {
@@ -249,18 +249,6 @@ table td.action-column {
   color: @spring-brown;
 }
 
-.alert-success {
-  @include alert-variant(fade(@alert-success-bg, 70%); @alert-success-border; @alert-success-text);
-}
-.alert-info {
-  @include alert-variant(fade(@alert-info-bg, 70%); @alert-info-border; @alert-info-text);
-}
-.alert-warning {
-  @include alert-variant(fade(@alert-warning-bg, 70%); @alert-warning-border; @alert-warning-text);
-}
-.alert-danger {
-  @include alert-variant(fade(@alert-danger-bg, 70%); @alert-danger-border; @alert-danger-text);
-}
 
 .myspinner {
   animation-name: spinner;
