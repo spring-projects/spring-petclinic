@@ -65,6 +65,20 @@
 @alert-danger-border:  red;
 @alert-danger-text:    red;
 
+@mixin .alert-variant($background, $border, $color) {
+  color: $color;
+  @include gradient-bg($background);
+  border-color: $border;
+
+  hr {
+    border-top-color: darken($border, 5%);
+  }
+
+  .alert-link {
+    color: darken($color, 10%);
+  }
+}
+
 .table > thead > tr > th {
   background-color: lighten(@spring-brown, 3%);
   color: @spring-light-grey;
@@ -233,20 +247,6 @@ table td.action-column {
 
 .status-help-content-table td {
   color: @spring-brown;
-}
-
-@mixin alert-variant($background, $border, $color) {
-  color: $color;
-  @include gradient-bg($background);
-  border-color: $border;
-
-  hr {
-    border-top-color: darken($border, 5%);
-  }
-
-  .alert-link {
-    color: darken($color, 10%);
-  }
 }
 
 .alert-success {
