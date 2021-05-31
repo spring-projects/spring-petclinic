@@ -1,0 +1,43 @@
+/*
+Error: Invalid CSS after "...order, $color) ": expected expression (e.g. 1px, bold), was "{"
+        on line 68 of petclinic.less
+
+63: 
+64: @alert-danger-bg:      @spring-light-grey;
+65: @alert-danger-border:  red;
+66: @alert-danger-text:    red;
+67: 
+68: @mixin alert-variant($background, $border, $color) {
+69:   color: $color;
+70:   @include gradient-bg($background);
+71:   border-color: $border;
+72: 
+73:   hr {
+
+Backtrace:
+petclinic.less:68
+/usr/lib/ruby/vendor_ruby/sass/scss/parser.rb:1308:in `expected'
+/usr/lib/ruby/vendor_ruby/sass/script/lexer.rb:240:in `expected!'
+/usr/lib/ruby/vendor_ruby/sass/script/parser.rb:897:in `assert_done'
+/usr/lib/ruby/vendor_ruby/sass/script/parser.rb:146:in `parse_mixin_definition_arglist'
+/usr/lib/ruby/vendor_ruby/sass/engine.rb:1123:in `parse_mixin_definition'
+/usr/lib/ruby/vendor_ruby/sass/engine.rb:1113:in `parse_mixin_directive'
+/usr/lib/ruby/vendor_ruby/sass/engine.rb:834:in `parse_directive'
+/usr/lib/ruby/vendor_ruby/sass/engine.rb:654:in `parse_line'
+/usr/lib/ruby/vendor_ruby/sass/engine.rb:539:in `build_tree'
+/usr/lib/ruby/vendor_ruby/sass/engine.rb:558:in `block in append_children'
+/usr/lib/ruby/vendor_ruby/sass/engine.rb:557:in `each'
+/usr/lib/ruby/vendor_ruby/sass/engine.rb:557:in `append_children'
+/usr/lib/ruby/vendor_ruby/sass/engine.rb:417:in `_to_tree'
+/usr/lib/ruby/vendor_ruby/sass/engine.rb:389:in `_render_with_sourcemap'
+/usr/lib/ruby/vendor_ruby/sass/engine.rb:307:in `render_with_sourcemap'
+/usr/lib/ruby/vendor_ruby/sass/exec/sass_scss.rb:383:in `run'
+/usr/lib/ruby/vendor_ruby/sass/exec/sass_scss.rb:63:in `process_result'
+/usr/lib/ruby/vendor_ruby/sass/exec/base.rb:50:in `parse'
+/usr/lib/ruby/vendor_ruby/sass/exec/base.rb:18:in `parse!'
+/usr/bin/sass:8:in `<main>'
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Error: Invalid CSS after \"...order, $color) \": expected expression (e.g. 1px, bold), was \"{\"\A         on line 68 of petclinic.less\A \A 63: \A 64: @alert-danger-bg:      @spring-light-grey;\A 65: @alert-danger-border:  red;\A 66: @alert-danger-text:    red;\A 67: \A 68: @mixin alert-variant($background, $border, $color) {\A 69:   color: $color;\A 70:   @include gradient-bg($background);\A 71:   border-color: $border;\A 72: \A 73:   hr {"; }
