@@ -108,6 +108,13 @@
       <artifactId>spring-boot-devtools</artifactId>
       <optional>true</optional>
     </dependency>
+    
+    <!-- Annotation Fix -->
+    <dependency>
+    <groupId>javax.annotation</groupId>
+    <artifactId>javax.annotation-api</artifact Id>
+    <version>1.2</version>
+  </dependency>
   </dependencies>
 
   <build>
