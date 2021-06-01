@@ -49,6 +49,62 @@
 @pagination-active-border:                @spring-green;
 @table-border-color:                      @spring-brown;
 
+@alert-success-bg:      @spring-light-grey;
+@alert-success-border:  @spring-light-grey;
+@alert-success-text:    @spring-green;
+
+@alert-info-bg:      @spring-light-grey;
+@alert-info-border:  @spring-light-grey;
+@alert-info-text:    @spring-green;
+
+@alert-warning-bg:      @spring-light-grey;
+@alert-warning-border:  orange;
+@alert-warning-text:    orange;
+
+@alert-danger-bg:      @spring-light-grey;
+@alert-danger-border:  red;
+@alert-danger-text:    red;
+
+@enable-gratients: true;
+
+.gradient-bg($color) {
+  @if $enable-gradients {
+    background: $color linear-gradient(180deg, mix($body-bg, $color, 15%), $color) repeat-x;
+  } @else {
+    background-color: $color;
+  }
+}
+
+.alert-variant($background, $border, $color) {
+  color: $color;
+  @include gradient-bg($background);
+  border-color: $border;
+
+  hr {
+    border-top-color: darken($border, 5%);
+  }
+
+  .alert-link {
+    color: darken($color, 10%);
+  }
+}
+
+.label-info {
+  font-weight: bold;
+}
+
+.label-warning {
+  text-color: orange;
+}
+
+.label-danger {
+  text-color: red;
+}
+
+.label-success {
+  text-color: green;
+}
+
 .table > thead > tr > th {
   background-color: lighten(@spring-brown, 3%);
   color: @spring-light-grey;
@@ -205,16 +261,16 @@ table td.action-column {
 }
 
 .alert-success {
-  .alert-variant(fade(@alert-success-bg, 70%); @alert-success-border; @alert-success-text);
+  @include alert-variant(fade(#f1f1f1, 70%); #f1f1f1; #f1f1f1);
 }
 .alert-info {
-  .alert-variant(fade(@alert-info-bg, 70%); @alert-info-border; @alert-info-text);
+  @include alert-variant(fade(@alert-info-bg, 70%); @alert-info-border; @alert-info-text);
 }
 .alert-warning {
-  .alert-variant(fade(@alert-warning-bg, 70%); @alert-warning-border; @alert-warning-text);
+  @include alert-variant(fade(@alert-warning-bg, 70%); @alert-warning-border; @alert-warning-text);
 }
 .alert-danger {
-  .alert-variant(fade(@alert-danger-bg, 70%); @alert-danger-border; @alert-danger-text);
+  @include alert-variant(fade(@alert-danger-bg, 70%); @alert-danger-border; @alert-danger-text);
 }
 
 .myspinner {
