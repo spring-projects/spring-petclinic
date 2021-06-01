@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
-  <version>2.4.5</version>
+  <version>2.4.5-rabbit</version>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
