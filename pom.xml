@@ -25,10 +25,9 @@
     <webjars-bootstrap.version>5.0.1</webjars-bootstrap.version>
     <webjars-jquery-ui.version>1.12.1</webjars-jquery-ui.version>
     <webjars-jquery.version>3.6.0</webjars-jquery.version>
-    <wro4j.version>1.10.0</wro4j.version>
     <webjars-validation-api.version>2.0.1.Final</webjars-validation-api.version>
+    <wro4j.version>1.10.0</wro4j.version>
     <jacoco.version>0.8.7</jacoco.version>
-
   </properties>
 
   <dependencies>
