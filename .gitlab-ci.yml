@@ -1,8 +1,8 @@
 stages:
   - build
-#  - test
-#  - quality
-#  - package
+  - test
+  - quality
+  - package
 
 cache:
   paths:
