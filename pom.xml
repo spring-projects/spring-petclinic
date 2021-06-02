@@ -127,11 +127,15 @@
       <version>${activeweb-lessc-maven-plugin.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.hibernate</groupId>
+      <groupId>org.hibernate.validator</groupId>
       <artifactId>hibernate-validator</artifactId>
       <version>${hibernate-validator.version}</version>
     </dependency>
-
+    <dependency>
+      <groupId>org.hibernate.validator</groupId>
+      <artifactId>hibernate-validator-annotation-processor</artifactId>
+      <version>${hibernate-validator.version}</version>
+    </dependency>
   </dependencies>
 
   <build>
