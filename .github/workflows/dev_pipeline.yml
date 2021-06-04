@@ -21,11 +21,10 @@ jobs:
         distribution: 'adopt'
     - run: mvn -B package --file pom.xml
     - run: mvn --batch-mode --update-snapshots verify
-    - run: mkdir staging && cp target/*.jar staging
     - uses: actions/upload-artifact@v2
       with:
         name: application-jars
-        path: staging
+        path: target
   package:
     name: Build Docker image and push to GitHub Packages
     needs: build
