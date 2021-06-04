@@ -6,6 +6,6 @@ ENV TZ Africa/Johannesburg
 ENV DEPLOY_STAGE staging
 
 WORKDIR /app
-COPY target/* /app/
+ADD target/ target
 
-ENTRYPOINT ["java","-jar","/app/*.jar"]
+ENTRYPOINT ["java","-jar","/app/target/*.jar"]
