@@ -57,4 +57,3 @@ jobs:
         push: true
         tags: |
           docker.pkg.github.com/${{ env.IMAGE_REPOSITORY }}/spring-petclinic-image:${{ github.sha }}
-          docker.pkg.github.com/${{ env.IMAGE_REPOSITORY }}/spring-petclinic-image:${{ github.ref }}
