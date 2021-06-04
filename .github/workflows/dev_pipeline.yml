@@ -49,11 +49,11 @@ jobs:
       run: |
         echo IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
         echo IMAGE_TAG=$(echo ${{ github.ref }} | tr '[:upper:]' '[:lower:]' | awk '{split($0,a,"/"); print a[3]}') >> $GITHUB_ENV
-    - run: mkdir target && mv *.jar target
+    - run: pwd && echo && ls -al && echo && mkdir ./target && mv -v *.jar ./target && echo && ls -al  && ls -al ./target/
     - id: docker-build-push
       name: Docker Build and Push
       uses: docker/build-push-action@v2
       with:
         push: true
         tags: |
-          docker.pkg.github.com/${{ env.IMAGE_REPOSITORY }}/spring-petclinic-image:${{ github.sha }}
+          docker.pkg.github.com/${{ env.IMAGE_REPOSITORY }}/spring-petclinic:${{ github.sha }}
