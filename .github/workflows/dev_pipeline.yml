@@ -49,6 +49,7 @@ jobs:
       run: |
         echo IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
         echo IMAGE_TAG=$(echo ${{ github.ref }} | tr '[:upper:]' '[:lower:]' | awk '{split($0,a,"/"); print a[3]}') >> $GITHUB_ENV
+    - run: ls -al
     - id: docker-build-push
       name: Docker Build and Push
       uses: docker/build-push-action@v2
