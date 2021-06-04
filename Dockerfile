@@ -5,7 +5,7 @@ LABEL Gabri Botha <bothagabri@gmail.com>
 ENV TZ Africa/Johannesburg
 ENV DEPLOY_STAGE staging
 
+COPY . /app
 WORKDIR /app
-ADD target/ target
 
-ENTRYPOINT ["java","-jar","/app/target/*.jar"]
+ENTRYPOINT ["java","-jar","./target/*.jar"]
