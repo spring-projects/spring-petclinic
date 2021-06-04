@@ -46,10 +46,15 @@ jobs:
         registry: docker.pkg.github.com
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-    - name: Build the Docker image
+    - name: PrepareReg Names
+      run: |
+        echo IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
+        echo IMAGE_TAG=$(echo ${{ github.ref }} | tr '[:upper:]' '[:lower:]' | awk '{split($0,a,"/"); print a[3]}') >> $GITHUB_ENV
+    - id: docker-build-push
+      name: Docker Build and Push
       uses: docker/build-push-action@v2
       with:
         push: true
         tags: |
-          docker.pkg.github.com/${{ github.repository }}/spring-petclinic-image:${{ github.sha }}
-          docker.pkg.github.com/${{ github.repository }}/spring-petclinic-image:${{ github.ref }}
+          docker.pkg.github.com/${{ env.IMAGE_REPOSITORY }}/spring-petclinic-image:${{ github.sha }}
+          docker.pkg.github.com/${{ env.IMAGE_REPOSITORY }}/spring-petclinic-image:${{ github.ref }}
