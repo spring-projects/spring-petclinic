@@ -28,6 +28,7 @@ jobs:
         path: staging
   package:
     name: Build Docker image and push to GitHub Packages
+    needs: build
     runs-on: ubuntu-latest
     permissions:
       packages: write
