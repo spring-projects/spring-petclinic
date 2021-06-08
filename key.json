@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "lyrical-rampart-315807",
+  "private_key_id": "922fca1266a086ad7b9b64bec383b760fe9f03c6",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCuBvAFlYGi9yR7\n8QYZDrNk3NQ9zPZBfiF0BeEaloLq7tgVYZv/HLtonKuWw+lNz+Evw+AQq8jgdcUK\ntglmoqF34DQB2bW9Bw/ArmEGMUclbkyeg+SGV8I0aKm5TnDzw0qzzGDEBVfOJY50\nMssRQkfQBiQ5RVzx45+HXJnUieBkCqJ4pFa6HMrtTOt9jTV7wUOB3jQPWN3Z18Nk\nHEhJ9ROpP4FELLbMnJe1IkzvjATmlQQKKkC63AXv067Al96Bzyng0vwARuRBBgOv\n556TWil+zZYUCGFRjO1cc55omqR+zZSiDDemfCVkwCtPCLANVB5BkCR32f+FF+y2\n1OKiopZRAgMBAAECggEAA6T5TJKjP1LlOz5n92ke3GPsAsXQBT0uF+sMxLo7cGOo\nrTeeX9Rdv9zNEp2UcpOB2/atB/MDBEwEa1ChMoUsHrxYdnlKfynepx/iarHoPfpO\nUDZYotrDt5uBV2mTP7rv+EM1e7wVaPJRe7E5yQkeGMxcy0FpZyw88br17T+nGM01\nMA84li8Nmad+3XN+eSwqY/V6MqR8rkDR0j3GIOlPQ52u9d+V08vV533ArLhXDcM7\nJ6Y14K0MLG2D+VYz0i7OAcYgo+5IBJwJukU9J5Fu6PMc+bQtr5pdFDvYs0MCwotW\nhxutjWRnmjOoykHSVjQPY8FycMuX1bpCn+W+OgiOqQKBgQDg078+YfvwL7/9pWO3\nn865Z+XPcFHDqygwOy4sOFR7909PgI6c04mZwO/2r0wlO/YyoRylyxdMhHYuLkE2\nEFhpXIDc7mwjCgRygXFA607PaHbv/1KU7kcqqIdSckcBejpxaYqQsQ3jQ7KINnpT\nVimZE2k3vnLGTwTCiwzMAIVxOQKBgQDGKApFqiaReXlHK2MSj0xFNAnpsX+NwMJq\nanAGwTT/A3vFoVmvvK/YyCufQgbKx5hv5RJjQZr8ZxAsl58iDIOURadjRfDuDFnd\nClBEJ2EGr2EVvFR7r5NyLtGwrJYFSqTUIMGB84DlfbNOKgeoKyqAvO4FUuiINyMt\n30SoQkuF2QKBgDj0KyxIciQkVISS0zH/H8VEFql4EJ56y1F8jHPTSUOmIMdJD9eW\nlvMGN0PMoIOGLxYgTjuJuTs/Cxkjyo1BksQOFO7izy4JKZtAQ0po0awlEIw3p9nm\nisy5qJ4wKOCs8AUu8VU6JQR/b8il1FMsLpmCm1LtwfGOruwBgZpkP2mxAoGACDWC\nb25kGKS6pHskqJEtLLTCMF89FIdGxpfQOkdoxaPETeSoTYJ4mnd4bymSFHZ+Vyxb\nPadrH0e5wM8rNYLlNJBKJe+w0nvKgUC7IIetGlTLpdXefh1A83sDDtmngWKdP3h3\n68VFsrwpYHSXSp03LowlJC1SGsqF95GHS50reckCgYEAtstudNKS/1EGZDkn26Y2\nhv4fDkQyfzntLt37llrPPWvlVqK1q2kCYEjgmzidbFPRc/AzumcX20fdDa34Hdlr\nhcGTrnt9S4oYxRU5ZaYXAqtyafIxDdLqlWYt5fF6OxItLTpLDMCsF8zQrxUpf6q0\nOvXZpx9OCHjQlDL+NZTzF5U=\n-----END PRIVATE KEY-----\n",
+  "client_email": "kubevisor-interview-2@lyrical-rampart-315807.iam.gserviceaccount.com",
+  "client_id": "117489869270509969580",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/kubevisor-interview-2%40lyrical-rampart-315807.iam.gserviceaccount.com"
+}
