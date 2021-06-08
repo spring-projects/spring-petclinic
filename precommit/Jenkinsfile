@@ -1,0 +1,35 @@
+pipeline {
+  agent any 
+  environment {
+
+  }
+  triggers {
+      //polls repo every 2 hours from 10am to 19pm on weekdays for changes
+      pollSCM('H H(10-19)/2 * * 1-5')
+  }
+     options {
+         //reduces dick I/O, may result in losing data
+       durabilityHint('PERFORMANCE_OPTIMIZED')
+   }
+  stages {
+    stage('pull') {
+      steps {
+        git branch: "main",
+        credentialsId: 'azima-git-ssh',
+        url: 'git://github.com/VSAzima/spring-petclinic'
+      }
+    }
+    stage('build') {
+      steps {
+        script {
+          withCredentials([file(credentialsId: 'ngx', variable: 'ROOT_CERT'),file(credentialsId:'m2', variable: 'SETTINGS')]) {
+          docker.image('maven:3.8.1-jdk-8').inside("-u root --network=jenkins_default") {
+          sh 'cp $ROOT_CERT /usr/local/share/ca-certificates/ && update-ca-certificates && cp $SETTINGS /root/.m2'
+          sh 'mvn -B clean package'
+        }
+      }
+      }
+    }
+  }
+}
+}
