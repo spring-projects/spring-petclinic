@@ -1,0 +1,40 @@
+pipeline {
+    agent any
+    environment {
+    NEXUS_VERSION = "nexus3"
+    NEXUS_PROTOCOL = "http"
+    NEXUS_URL = "172.19.0.3:8081"
+    NEXUS_REPOSITORY = "maven-nexus-repo"
+    NEXUS_CREDENTIAL_ID = "e6072e08-87bc-481e-9e4a-55d506546356"
+    REGISTRY = "http://localhost:8281/repository/docker_snapshots/"
+    REGISTRY_CREDENTIAL = "deployment"
+    }
+    }
+    triggers {
+
+    }
+    stages {
+        stage {
+            steps {
+            build job: 'build', parameters: [
+            string(name: 'artifact_version', value: env.ARTIFACT_VERSION)
+            ], wait: true 
+            } 
+        }
+             stage('run') {
+               steps {
+                 script {
+                   withCredentials([usernameColonPassword(credentialsId: 'deployment', variable: 'DEPLOYMENT')]) {
+                       sh '''
+                         curl -u "$DEPLOYMENT" http://${NEXUS_URL}/repository/${NEXUS_REPOSITORY}/org/springframework/samples/spring-petclinic/2.4.2/spring-petclinic-2.4.2.jar >output
+                         (java  -jar spring-petclinic-2.4.2.jar --server.port=8083>> server.log 2>&1&)
+                         nohup java  -jar spring-petclinic-2.4.2.jar --server.port=8083>> server.log 2>&1&
+                       '''
+                       }
+                 }
+               }
+             }
+
+    }
+
+}

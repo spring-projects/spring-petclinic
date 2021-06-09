@@ -85,7 +85,8 @@ stage ('image build and load') {
     steps {
       script {
         pom = readMavenPom file: "pom.xml";
-        docker.build registry + ":${pom.version}"
+        env.POM_VERSION = ${pom.version}
+        docker.build registry + ":$POM_VERSION"
       }
       script {
         docker.withRegistry( '', REGISTRY_CREDENTIAL ) {
@@ -97,6 +98,16 @@ stage ('image build and load') {
       }
     }
   }
+   post 
+ {
+    success 
+    {
+        script 
+        {
+            env.ARTIFACT_VERSION = $POM_VERSION
+        }
+    } 
+ }
 }
 
 }
