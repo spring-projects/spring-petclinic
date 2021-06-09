@@ -1,1 +1,1 @@
-commit no2 on automatiReleasesBranch
+commit no3 on automaticReleasesBranch
