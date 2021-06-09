@@ -1,1 +1,1 @@
-add first feature of the changelog generator1.
+create release for the changelog generator1.
