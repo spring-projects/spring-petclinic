@@ -1,20 +1,24 @@
-- name: Run Changelog CI
-    uses: saadmk11/changelog-ci@v0.8.0
-    with:
-      # Optional, you can provide any name for your changelog file,
-      # defaults to `CHANGELOG.md` if not provided.
-      changelog_filename: MY_CHANGELOG.md
-      # Optional, only required when you want more customization
-      # e.g: group your changelog by labels with custom titles,
-      # different version prefix, pull request title and version number regex etc.
-      # config file can be in JSON or YAML format.
-      config_file: changelog-ci-config.json
-      # Optional, This will be used to configure git
-      # defaults to `github-actions[bot]` if not provided.
-      committer_username: 'test'
-      committer_email: 'test@test.com'
-    env:
-      # optional, only required for `private` repositories
-      # and required if the changelog comment
-      # option is turned on through the config file
-      GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+name: Changelog CI
+
+# Controls when the action will run. Triggers the workflow on a pull request
+on:
+  pull_request:
+    types: [ opened, reopened ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository
+      - uses: actions/checkout@v2
+
+      - name: Run Changelog CI
+        uses: saadmk11/changelog-ci@v0.8.0
+        with:
+          changelog_filename: CHANGELOG.md
+          config_file: changelog-ci-config.json
+        # Add this if you are using it on a private repository
+        # Or if you have turned on commenting through the config file.
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
