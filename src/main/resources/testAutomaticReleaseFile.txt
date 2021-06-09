@@ -1,1 +1,1 @@
-commit no3 on automaticReleasesBranch
+release from tag 1.2.0
