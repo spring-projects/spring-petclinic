@@ -1,0 +1,102 @@
+pipeline {
+    agent any
+    environment {
+    NEXUS_VERSION = "nexus3"
+    NEXUS_PROTOCOL = "http"
+    NEXUS_URL = "172.19.0.3:8081"
+    NEXUS_REPOSITORY = "maven-nexus-repo"
+    NEXUS_CREDENTIAL_ID = "e6072e08-87bc-481e-9e4a-55d506546356"
+    REGISTRY = "http://localhost:8281/repository/docker_snapshots/"
+    REGISTRY_CREDENTIAL = "deployment"
+    }
+    triggers {
+        //polls repo every 2 hours from 10am to 19pm on weekdays for changes
+        pollSCM('H H(10-19)/2 * * 1-5')  
+    }
+  stages {
+    stage('pull') {
+        when { branch 'dev' }
+      steps {
+        git branch: "dev",
+        credentialsId: 'azima-git-ssh',
+        url: 'git://github.com/VSAzima/spring-petclinic'
+      }
+    }
+    stage('build') {
+      steps {
+        script {
+          withCredentials([file(credentialsId: 'ngx', variable: 'ROOT_CERT'),file(credentialsId:'m2', variable: 'SETTINGS')]) {
+          docker.image('maven:3.8.1-jdk-8').inside("-u root --network=jenkins_default") {
+          sh 'cp $ROOT_CERT /usr/local/share/ca-certificates/ && update-ca-certificates && cp $SETTINGS /root/.m2'
+          sh 'mvn -B clean package'
+        }
+      }
+      }
+    }
+  }
+stage("publish to nexus") {
+             steps {
+                 script {
+                     // Read POM xml file using 'readMavenPom' step , this step 'readMavenPom' is included in: https://plugins.jenkins.io/pipeline-utility-steps
+                     pom = readMavenPom file: "pom.xml";
+                     // Find built artifact under target folder
+                     filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
+                     // Print some info from the artifact found
+                     echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
+                     // Extract the path from the File found
+                     artifactPath = filesByGlob[0].path;
+                     // Assign to a boolean response verifying If the artifact name exists
+                     artifactExists = fileExists artifactPath;
+
+                     if(artifactExists) {
+                         echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
+
+                         nexusArtifactUploader(
+                             nexusVersion: NEXUS_VERSION,
+                             protocol: NEXUS_PROTOCOL,
+                             nexusUrl: NEXUS_URL,
+                             groupId: pom.groupId,
+                             version: pom.version,
+                             repository: NEXUS_REPOSITORY,
+                             credentialsId: NEXUS_CREDENTIAL_ID,
+                             artifacts: [
+                                 // Artifact generated such as .jar, .ear and .war files.
+                                 [artifactId: pom.artifactId,
+                                 classifier: '',
+                                 file: artifactPath,
+                                 type: pom.packaging],
+
+                                 // Lets upload the pom.xml file for additional information for Transitive dependencies
+                                 [artifactId: pom.artifactId,
+                                 classifier: '',
+                                 file: "pom.xml",
+                                 type: "pom"]
+                             ]
+                         );
+
+                     } else {
+                         error "*** File: ${artifactPath}, could not be found";
+                     }
+                 }
+
+                }
+            }  
+stage ('image build and load') {
+    steps {
+      script {
+        pom = readMavenPom file: "pom.xml";
+        docker.build registry + ":${pom.version}"
+      }
+      script {
+        docker.withRegistry( '', REGISTRY_CREDENTIAL ) {
+        dockerImage.push()
+      }
+    }
+      script {
+        sh "docker rmi $REGISTRY:${pom.version}"
+      }
+    }
+  }
+}
+
+}
