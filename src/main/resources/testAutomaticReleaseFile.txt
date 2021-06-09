@@ -1,1 +1,1 @@
-release from tag 1.2.0
+first test of the changelog generator1.
