@@ -1,40 +1,38 @@
 pipeline {
-    agent any
     environment {
     NEXUS_VERSION = "nexus3"
     NEXUS_PROTOCOL = "http"
     NEXUS_URL = "172.19.0.3:8281"
-    NEXUS_REPOSITORY = "maven-snapshots"
+    NEXUS_REPOSITORY = "maven-releases"
     NEXUS_CREDENTIAL_ID = "deployment"//deployment user
-    REGISTRY = "http://localhost:8281/repository/docker_snapshots/"
+    REGISTRY = "http://localhost:8281/repository/docker_releases/"
     REGISTRY_CREDENTIAL = "deployment"
     }
     triggers {
-        //polls repo every 2 hours from 10am to 19pm on weekdays for changes
-        pollSCM('H H(10-19)/2 * * 1-5')  
+
     }
-  stages {
-    stage('pull') {
-        when { branch 'dev' }
-      steps {
-        git branch: "dev",
-        credentialsId: 'azima-git-ssh',
-        url: 'git://github.com/VSAzima/spring-petclinic'
-      }
-    }
-    stage('build') {
+    stages {
+            stage('release') {
       steps {
         script {
           withCredentials([file(credentialsId: 'ngx', variable: 'ROOT_CERT'),file(credentialsId:'m2', variable: 'SETTINGS')]) {
           docker.image('maven:3.8.1-jdk-8').inside("-u root --network=jenkins_default") {
           sh 'cp $ROOT_CERT /usr/local/share/ca-certificates/ && update-ca-certificates && cp $SETTINGS /root/.m2'
-          sh 'mvn -B clean package'
+          sh 'mvn release:perform'
         }
       }
       }
     }
-  }
-stage('publish to nexus') {
+ }
+            stage('version') {//change version number
+                     script {
+                     pom = readMavenPom file: "pom.xml";
+                     VERSION_NUMBER = VersionNumber(versionNumberString: "${pom.version}")
+                     currentBuild.displayName = "${VERSION_NUMBER}"
+                     sh "ant -Dversion=${VERSION_NUMBER} build"
+                }
+            }
+             stage('publish to nexus') {
              steps {
                  script {
                      // Read POM xml file using 'readMavenPom' step , this step 'readMavenPom' is included in: https://plugins.jenkins.io/pipeline-utility-steps
@@ -80,11 +78,11 @@ stage('publish to nexus') {
                  }
 
                 }
-            }  
-stage('image build and load') {
+            }
+            stage('image build and load') {
     steps {
       script {}
-        docker.build registry + ":$BUILD_NUMBER"
+        docker.build registry + ":$BUILD_NUMBER"//change version number
       }
       script {
         docker.withRegistry( '', REGISTRY_CREDENTIAL ) {
@@ -92,7 +90,6 @@ stage('image build and load') {
       }
     }
     }
-  }
-}
+    }
 
 }

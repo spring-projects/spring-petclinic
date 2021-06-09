@@ -6,6 +6,9 @@ pipeline {
   triggers {
       //polls repo every 2 hours from 10am to 19pm on weekdays for changes
       pollSCM('H H(10-19)/2 * * 1-5')
+              git branch: "main", "dev" //???
+        credentialsId: 'azima-git-ssh', //???
+        url: 'git://github.com/VSAzima/spring-petclinic' //???
   }
      options {
          //reduces dick I/O, may result in losing data
@@ -14,7 +17,7 @@ pipeline {
   stages {
     stage('pull') {
       steps {
-        git branch: "main",
+        git branch: "main", "dev"
         credentialsId: 'azima-git-ssh',
         url: 'git://github.com/VSAzima/spring-petclinic'
       }
