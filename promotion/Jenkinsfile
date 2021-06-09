@@ -16,7 +16,7 @@ pipeline {
       steps {
         script {
           withCredentials([file(credentialsId: 'ngx', variable: 'ROOT_CERT'),file(credentialsId:'m2', variable: 'SETTINGS')]) {
-          docker.image('maven:3.8.1-jdk-8').inside("-u root --network=jenkins_default") {
+          docker.image('maven:3.8.1-jdk-8').inside("-u root --network=circle_net") {
           sh 'cp $ROOT_CERT /usr/local/share/ca-certificates/ && update-ca-certificates && cp $SETTINGS /root/.m2'
           sh 'mvn release:perform'
         }
@@ -25,12 +25,21 @@ pipeline {
     }
  }
             stage('version') {//change version number
+                    steps {
+                     script { 
+                          pom = readMavenPom file: "pom.xml";
+                          echo: "***version ${pom.version}";
+                          String xStr=${pom.version};
+                          String remv_last = xStr.substring(xStr.indexOf("/") + 1);
+                          int new_version=remv_last.toInteger()+1;
+                     }
                      script {
-                     pom = readMavenPom file: "pom.xml";
-                     VERSION_NUMBER = VersionNumber(versionNumberString: "${pom.version}")
+                     VERSION_NUMBER = VersionNumber(versionNumberString: "${new_version}")
                      currentBuild.displayName = "${VERSION_NUMBER}"
                      sh "ant -Dversion=${VERSION_NUMBER} build"
                 }
+                    }
+
             }
              stage('publish to nexus') {
              steps {
@@ -82,7 +91,7 @@ pipeline {
             stage('image build and load') {
     steps {
       script {}
-        docker.build registry + ":$BUILD_NUMBER"//change version number
+        docker.build registry + ":${VERSION_NUMBER}"//change version number
       }
       script {
         docker.withRegistry( '', REGISTRY_CREDENTIAL ) {

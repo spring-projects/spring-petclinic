@@ -353,7 +353,7 @@
     <repository>
       <id>maven-central</id>
       <name>maven-central</name>
-      <url>https://web</url>
+      <url>https://webnginx</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
