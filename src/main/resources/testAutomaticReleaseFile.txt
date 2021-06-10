@@ -1,1 +1,1 @@
-Commit for the changelog generator.
+Commit for the changelog generator2.
