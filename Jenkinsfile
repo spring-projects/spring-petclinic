@@ -4,7 +4,7 @@ pipeline {
         registryCredential = 'dockerhub_id' 
         dockerImage = '' 
     }
-    agent slave1
+    agent any
     stages {
         stage('Build') {
             steps {
