@@ -18,7 +18,8 @@ pipeline {
                    sh 'echo $(curl localhost:80)'
                  }
              }
-         }     
+         }
+     }   
      stage('Push Docker Image') {
         when {
             branch 'main'
@@ -32,5 +33,5 @@ pipeline {
             }
         }
     }
- }
 }
+
