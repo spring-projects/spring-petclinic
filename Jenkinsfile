@@ -5,7 +5,7 @@ pipeline {
             steps {
                 echo 'Running build automation'
                 sh './mvnw package'
-                archiveArtifacts artifacts: '/trainSchedule.zip'
+                archiveArtifacts artifacts: '/*.zip'
             }
         }
         stage('Build Docker Image') {
