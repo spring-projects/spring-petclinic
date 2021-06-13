@@ -50,12 +50,12 @@ pipeline {
                 script {
                   sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@${env.prod_ip} \"docker pull sprientera/pet:${env.BUILD_NUMBER}\""
                   try {
-                      sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@${env.server_api \"docker stop pet\""
-                      sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@${env.server_api \"docker rm pet\""
+                      sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@${env.server_api}\"docker stop pet\""
+                      sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@${env.server_api}\"docker rm pet\""
                   } catch (err) {
                      echo: 'caught error: $err'
                   }
-                  sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@${env.server_api \"docker run --restart always --name pet -p 80:80 -d sprientera/pet:${env.BUILD_NUMBER}\""
+                  sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@${env.server_api}\"docker run --restart always --name pet -p 80:80 -d sprientera/pet:${env.BUILD_NUMBER}\""
                     }
                 }
             }
