@@ -4,7 +4,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Running build automation'
-                sh './mvnw package
+                sh './mvnw package'
             }
         }           
     stage('Build Docker Image') {
