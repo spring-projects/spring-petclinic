@@ -1,9 +1,10 @@
-FROM node:anapsix/alpine-java
+FROM openjdk:16-alpine3.13
 WORKDIR /usr/src/app
-COPY package*.jar ./
-RUN mvn install
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+RUN ./mvnw dependency:go-offline
 COPY . .
-EXPOSE 8080
+EXPOSE 8081
 CMD [ "java", "-jar target/*.jar" ]
 
  
