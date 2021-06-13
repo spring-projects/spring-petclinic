@@ -1,7 +1,9 @@
-FROM node:ubuntu
+FROM node:anapsix/alpine-java
 WORKDIR /usr/src/app
 COPY package*.jar ./
-RUN npm install
+RUN mvn install
 COPY . .
 EXPOSE 8080
-CMD [ "npm", "start" ]
+CMD [ "java", "-jar target/*.jar" ]
+
+ 
