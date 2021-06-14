@@ -19,10 +19,7 @@ pipeline {
             }
             steps {
                 script {
-                    app = docker.build("sprientera/pet")
-                    app.inside {
-                        sh 'echo $(curl localhost:8080)'
-                    }
+                    app = docker.build("sprientera/pet")                  
                 }
             }
         }
