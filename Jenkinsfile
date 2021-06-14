@@ -21,7 +21,7 @@ pipeline {
                 script {
                     app = docker.build("sprientera/pet")
                     app.inside {
-                        sh 'echo $(curl localhost:80)'
+                        sh 'echo $(curl localhost:8081)'
                     }
                 }
             }
