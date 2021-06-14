@@ -21,7 +21,7 @@ pipeline {
                 script {
                     app = docker.build("sprientera/pet")
                     app.inside {
-                        sh 'echo $(curl localhost:8081)'
+                        sh 'echo $(curl localhost:8080)'
                     }
                 }
             }
@@ -55,7 +55,7 @@ pipeline {
                   } catch (err) {
                      echo: 'caught error: $err'
                   }
-                  sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@${env.server_api} \"docker run --restart always --name pet -p 8081:8081 -d sprientera/pet:${env.BUILD_NUMBER}\""
+                  sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@${env.server_api} \"docker run --restart always --name pet -p 8081:8080 -d sprientera/pet:${env.BUILD_NUMBER}\""
                     }
                 }
             }
