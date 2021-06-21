@@ -19,10 +19,10 @@ public class AddSpansToCache {
 	@Value("${petclinic.outboudExternalService.serviceType:ehcache}")
 	String serviceType;
 
-	@Value("${petclinic.outboudExternalService.ApplicationName:Cache}")
+	@Value("${wavefront.application.name:Cache}")
 	String applicationName;
 
-	@Value("${petclinic.inboudExternalService.ComponentName:ehcache}")
+	@Value("${petclinic.outboundExternalService.ComponentName:ehcache}")
 	String componentName;
 
 	final Tracer tracer;
