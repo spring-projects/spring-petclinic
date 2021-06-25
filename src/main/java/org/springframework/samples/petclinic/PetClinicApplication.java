@@ -44,10 +44,10 @@ public class PetClinicApplication {
 	// property with `ReloadableResourceBundleMessageSource` where the `file:`
 	// notation is supported
 	@Bean
-	public MessageSource messageSource()
-	{
+	public MessageSource messageSource() {
 		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-		messageSource.setBasenames( messagesBasename );
+		messageSource.setBasenames(messagesBasename);
 		return messageSource;
 	}
+
 }
