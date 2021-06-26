@@ -8,4 +8,4 @@ RUN ./mvnw package
 
 EXPOSE 8080
 
-CMD java -jar target/*.jar
+CMD ./mvnw spring-boot:run -Dspring-boot.run.profiles=mysql
