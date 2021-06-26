@@ -10,3 +10,9 @@ mysql:
     - MYSQL_DATABASE=petclinic
   volumes:
     - "./conf.d:/etc/mysql/conf.d:ro"
+app:
+    image: hllvc/spring-petclinic
+    depends_on:
+      - mysql
+    ports:
+      - "3000:8080"
