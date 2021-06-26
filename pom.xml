@@ -27,7 +27,7 @@
     <webjars-jquery.version>2.2.4</webjars-jquery.version>
     <wro4j.version>1.8.0</wro4j.version>
 
-    <jacoco.version>0.8.5</jacoco.version>
+    <jacoco.version>0.8.6</jacoco.version>
     <nohttp-checkstyle.version>0.0.4.RELEASE</nohttp-checkstyle.version>
     <spring-format.version>0.0.25</spring-format.version>
   </properties>
