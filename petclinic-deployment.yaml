@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: petclinic
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: spring-petclinic
+  template:
+    metadata:
+      labels:
+        app: spring-petclinic
+    spec:
+      containers:
+      - name: petclinic
+        image: spring-petclinic
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8081
+          name: "http"
+        volumeMounts:
+          - name: app-config
+            mountPath: /application.yml
+            subPath: application.yml
+            readOnly: true
+      volumes:
+        - name: app-config
+          configMap:
+            name: petclinic-configmap
