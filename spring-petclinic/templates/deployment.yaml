@@ -1,61 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "spring-petclinic.fullname" . }}
-  labels:
-    {{- include "spring-petclinic.labels" . | nindent 4 }}
+  name: petclinic-deployment-{{ .Chart.AppVersion }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-  {{- end }}
+  replicas: 1
   selector:
     matchLabels:
-      {{- include "spring-petclinic.selectorLabels" . | nindent 6 }}
+      app: {{ .Values.petclinic.label }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
-      annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       labels:
-        {{- include "spring-petclinic.selectorLabels" . | nindent 8 }}
+        app: {{ .Values.petclinic.label }}
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      serviceAccountName: {{ include "spring-petclinic.serviceAccountName" . }}
-      securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+        - name: petclinic
+          image: {{ .Values.petclinic.image }}
+          imagePullPolicy: Never
           ports:
-            - name: http
-              containerPort: 80
-              protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+            - containerPort: {{ .Values.petclinic.server.port }}
+              name: "http"
+          volumeMounts:
+            - name: app-config
+              mountPath: /application.yml
+              subPath: {{ .Values.petclinic.configmap.application.properties.name }}
+              readOnly: true
+      volumes:
+        - name: app-config
+          configMap:
+            name: {{ .Values.petclinic.configmap.name }}

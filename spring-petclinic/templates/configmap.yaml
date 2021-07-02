@@ -1,8 +1,8 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: petclinic-configmap
+  name: {{ .Values.petclinic.configmap.name }}
 data:
-  application.yml: |
+  {{ .Values.petclinic.configmap.application.properties.name }}: |
     server:
-      port: 8081
+      port: {{ .Values.petclinic.server.port }}
