@@ -1,10 +1,10 @@
 services:
   app:
     image: hllvc/spring-petclinic:latest
-    ports:
-      - "3000:8080"
     links:
       - mysql:mysql
+    ports:
+      - "3000:8080"
   mysql:
     image: mysql:5.7
     ports:
