@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('clone') {
             steps {
-                git branch: 'declarative', 
+                git branch: 'wavefront', 
                 url: 'https://github.com/kasasravankumar/spring-petclinic.git'
             }
         }
