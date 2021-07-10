@@ -28,11 +28,11 @@ pipeline {
 			agent {
 				dockerfile {
 					filename 'Dockerfile.run'
-					args '-v $HOME/.m2:/root/.m2 -v $HOME/app:/root/app --network petclinic'
+					args '-v $HOME/.m2:/root/.m2 -v $HOME/app:/root/app --network petclinic -t petclinic-app'
 				}
 			}
 			steps {
-				echo "Running App"
+				sh 'docker run --network petclinic -p8080:3000 -v $HOME/app:/root/app petclinic-app'
 			}
 		}
 
