@@ -3,5 +3,4 @@ VOLUME [ ".m2" ]
 VOLUME [ "/app" ]
 WORKDIR /app
 EXPOSE 8080
-ENTRYPOINT [ "java" ]
-CMD [ "-jar", "-Dspring.profiles.active=mysql" ,"app.jar" ]
+CMD [ "java", "-jar", "-Dspring.profiles.active=mysql" ,"app.jar" ]
