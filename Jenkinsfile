@@ -1,6 +1,6 @@
 pipeline {
 
-	agent any
+	agent none
 
 	stages {
 
@@ -9,7 +9,7 @@ pipeline {
 				dockerfile {
 					filename 'Dockerfile.build'
 					dir '.'
-					args '-v $HOME/.m2:/root/.m2 -v ./app:/root/app'
+					args '-v $HOME/.m2:/root/.m2 -v $HOME/app:/root/app'
 				}
 			}
 			steps {
@@ -17,15 +17,21 @@ pipeline {
 			}
 		}
 
+		stage('MySQL setup') {
+			steps {
+				sh 'docker run --network petclinic -e MYSQL_USER=petclinic -e MYSQL_PASSWORD=petclinic -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=petclinic -p 3306:3306 mysql:5.7.8'
+			}
+		}
+
 		stage('Run') {
 			agent {
 				dockerfile {
 					filename 'Dockerfile.run'
-					args '-v $HOME/.m2:/root/.m2 -v ./app:/root/app'
+					args '-v $HOME/.m2:/root/.m2 -v $HOME/app:/root/app --network petclinic'
 				}
 			}
 			steps {
-				echo 'App Running'
+
 			}
 		}
 
