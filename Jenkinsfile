@@ -20,7 +20,7 @@ pipeline {
 		stage('MySQL setup') {
 			steps {
 				sh 'docker network create petclinic'
-				sh 'docker run --network petclinic -e MYSQL_USER=petclinic -e MYSQL_PASSWORD=petclinic -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=petclinic -p 3306:3306 mysql:5.7.8'
+				sh 'docker run -d --network petclinic -e MYSQL_USER=petclinic -e MYSQL_PASSWORD=petclinic -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=petclinic -p 3306:3306 mysql:5.7.8'
 			}
 		}
 
