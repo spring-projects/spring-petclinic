@@ -31,7 +31,7 @@ pipeline {
 				}
 			}
 			steps {
-
+				echo "Running App"
 			}
 		}
 
