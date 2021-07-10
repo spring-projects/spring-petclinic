@@ -1,0 +1,10 @@
+FROM openjdk:8-jdk-alpine
+VOLUME [ "/app" ]
+WORKDIR /app
+COPY .mvn .mvn
+COPY mvnw .
+COPY mvnw.cmd .
+COPY pom.xml .
+RUN ./mvnw -B -e dependency:go-offline
+COPY src src
+RUN ./mvnw package

@@ -1,0 +1,6 @@
+FROM openjdk:8-jre-alpine
+VOLUME [ "/app" ]
+WORKDIR /app
+EXPOSE 8080
+ENTRYPOINT [ "java" ]
+CMD [ "-jar", "-Dspring.profiles.active=mysql" ,"app.jar" ]
