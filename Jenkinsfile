@@ -9,7 +9,7 @@ pipeline {
 				dockerfile {
 					filename 'Dockerfile.build'
 					dir '.'
-					args '-d -v $HOME/.m2:/root/.m2 -v /build:/root/build'
+					args '-d -v $HOME/.m2:/root/.m2 -v .:/build'
 				}
 			}
 			steps {
@@ -21,7 +21,7 @@ pipeline {
 			agent {
 				dockerfile {
 					filename 'Dockerfile.run'
-					dir '.'
+					dir '/build'
 				}
 			}
 			steps {
