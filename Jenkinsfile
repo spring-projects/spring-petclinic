@@ -27,6 +27,7 @@ pipeline {
 			agent {
 				dockerfile {
 					filename 'Dockerfile.run'
+					dir '.'
 					args '-d -v $HOME/app:/root/app --link petclinic-mysql'
 				}
 			}
