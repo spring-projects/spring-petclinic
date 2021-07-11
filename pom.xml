@@ -122,6 +122,7 @@
   </dependencies>
 
   <build>
+		<finalName>app</finalName>
     <plugins>
       <plugin>
         <groupId>io.spring.javaformat</groupId>
