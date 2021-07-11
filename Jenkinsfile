@@ -21,7 +21,7 @@ pipeline {
 			agent {
 				dockerfile {
 					filename 'Dockerfile.run'
-					dir '/build'
+					dir '.'
 				}
 			}
 			steps {
