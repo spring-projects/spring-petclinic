@@ -26,7 +26,7 @@ pipeline {
 				}
 			}
 			steps {
-				sh 'Done'
+				echo 'Done'
 			}
 		}
 
