@@ -4,6 +4,10 @@ pipeline {
 
 	stages {
 
+		stage('Clone Repo') {
+			checkout scm
+		}
+
 		stage('Build') {
 			agent {
 				dockerfile {
@@ -25,14 +29,17 @@ pipeline {
 		}
 
 		stage('Run') {
-			agent {
-				dockerfile {
-					filename 'Dockerfile.run'
-					args '-v $HOME/.m2:/root/.m2 -v $HOME/app:/root/app --network petclinic -t petclinic-app'
-				}
-			}
+			def app = docker.build('petclinic-app:${env.BUILD_ID}', '-f Dockerfile.run')
+			app.push()
+			app.push('latest')
+			/* agent { */
+			/* 	dockerfile { */
+			/* 		filename 'Dockerfile.run' */
+			/* 		args '-v $HOME/.m2:/root/.m2 -v $HOME/app:/root/app --network petclinic -t petclinic-app' */
+			/* 	} */
+			/* } */
 			steps {
-				sh 'docker run --network petclinic -p8080:3000 -v $HOME/app:/root/app petclinic-app'
+				sh 'docker run --network petclinic -p8080:3000 -v $HOME/app:/root/app petclinic-app:latest'
 			}
 		}
 
