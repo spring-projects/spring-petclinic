@@ -32,7 +32,7 @@ pipeline {
 				}
 			}
 			steps {
-				sh 'docker run -d --network petclinic -p8080:3000 -v $HOME/app:/root/app petclinic-app'
+				sh 'App Running'
 			}
 		}
 
