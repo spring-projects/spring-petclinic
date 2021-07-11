@@ -9,7 +9,7 @@ pipeline {
 				dockerfile {
 					filename 'Dockerfile.build'
 					dir '.'
-					args '-v $HOME/.m2:/root/.m2 -v $HOME/app:/root/app'
+					args '-d -v $HOME/.m2:/root/.m2 -v $HOME/app:/root/app'
 				}
 			}
 			steps {
@@ -28,7 +28,7 @@ pipeline {
 			agent {
 				dockerfile {
 					filename 'Dockerfile.run'
-					args '-v $HOME/app:/root/app --network petclinic -t petclinic-app'
+					args '-d -v $HOME/app:/root/app --network petclinic'
 				}
 			}
 			steps {
