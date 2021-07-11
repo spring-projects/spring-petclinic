@@ -19,8 +19,7 @@ pipeline {
 
 		stage('MySQL setup') {
 			steps {
-				sh 'docker network create petclinic || true'
-				sh 'docker run -d --network petclinic -e MYSQL_USER=petclinic -e MYSQL_PASSWORD=petclinic -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=petclinic -p 3306:3306 mysql:5.7.8'
+				sh 'docker run -d --name petclinic-mysql -e MYSQL_USER=petclinic -e MYSQL_PASSWORD=petclinic -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=petclinic -p 3306:3306 mysql:5.7.8'
 			}
 		}
 
@@ -28,7 +27,7 @@ pipeline {
 			agent {
 				dockerfile {
 					filename 'Dockerfile.run'
-					args '-d -v $HOME/app:/root/app --network petclinic'
+					args '-d -v $HOME/app:/root/app --link petclinic-mysql'
 				}
 			}
 			steps {
