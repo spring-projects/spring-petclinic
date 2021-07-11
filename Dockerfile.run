@@ -1,6 +1,6 @@
 FROM openjdk:8-jre-alpine
 # WORKDIR /app
-COPY /build/target/app.jar .
+# COPY /build/target/app.jar .
 EXPOSE 8080
 CMD [ "ls" ]
 # CMD [ "java", "-jar", "-Dspring.profiles.active=mysql" ,"app.jar" ]
