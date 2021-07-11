@@ -25,17 +25,14 @@ pipeline {
 		}
 
 		stage('Run') {
-			def app = docker.build('petclinic-app:${env.BUILD_ID}', '-f Dockerfile.run')
-			app.push()
-			app.push('latest')
-			/* agent { */
-			/* 	dockerfile { */
-			/* 		filename 'Dockerfile.run' */
-			/* 		args '-v $HOME/.m2:/root/.m2 -v $HOME/app:/root/app --network petclinic -t petclinic-app' */
-			/* 	} */
-			/* } */
+			agent {
+				dockerfile {
+					filename 'Dockerfile.run'
+					args '-v $HOME/app:/root/app --network petclinic -t petclinic-app'
+				}
+			}
 			steps {
-				sh 'docker run --network petclinic -p8080:3000 -v $HOME/app:/root/app petclinic-app:latest'
+				sh 'docker run -d --network petclinic -p8080:3000 -v $HOME/app:/root/app petclinic-app'
 			}
 		}
 

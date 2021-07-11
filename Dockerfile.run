@@ -1,5 +1,4 @@
 FROM openjdk:8-jre-alpine
-VOLUME [ ".m2" ]
 VOLUME [ "/app" ]
 WORKDIR /app
 EXPOSE 8080
