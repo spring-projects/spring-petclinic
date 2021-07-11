@@ -17,22 +17,16 @@ pipeline {
 			}
 		}
 
-		stage('MySQL setup') {
-			steps {
-				sh 'docker run -d --name petclinic-mysql -e MYSQL_USER=petclinic -e MYSQL_PASSWORD=petclinic -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=petclinic -p 3306:3306 mysql:5.7.8'
-			}
-		}
-
 		stage('Run') {
 			agent {
 				dockerfile {
 					filename 'Dockerfile.run'
 					dir '.'
-					args '-d -v $HOME/app:/root/app --link petclinic-mysql'
+					additionalBuildArgs '-t hllvc/spring-petclinic:latest'
 				}
 			}
 			steps {
-				echo 'App Running'
+				sh 'docker-compose up'
 			}
 		}
 
