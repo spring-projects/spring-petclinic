@@ -9,7 +9,7 @@ pipeline {
 				dockerfile {
 					filename 'Dockerfile.build'
 					dir '.'
-					args '-d -v $HOME/.m2:/root/.m2 -v $HOME/app:/root/app'
+					args '-d -v $HOME/.m2:/root/.m2 -v /build:/root/build'
 				}
 			}
 			steps {
@@ -22,7 +22,6 @@ pipeline {
 				dockerfile {
 					filename 'Dockerfile.run'
 					dir '.'
-					args '-d -v $HOME/app:/root/app'
 				}
 			}
 			steps {

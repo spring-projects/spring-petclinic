@@ -1,11 +1,11 @@
 FROM openjdk:8-jdk-alpine
-VOLUME [ ".m2" ]
-VOLUME [ "/app" ]
-WORKDIR /app
+VOLUME [ "/root/.m2" ]
+VOLUME [ "/build" ]
+WORKDIR /build
 COPY .mvn .mvn
 COPY mvnw .
 COPY mvnw.cmd .
 COPY pom.xml .
-RUN ./mvnw -B -e -Djar.finalName=app dependency:go-offline
+RUN ./mvnw -B -e dependency:go-offline
 COPY src src
 RUN ./mvnw package
