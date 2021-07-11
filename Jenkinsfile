@@ -32,7 +32,7 @@ pipeline {
 				}
 			}
 			steps {
-				sh 'App Running'
+				echo 'App Running'
 			}
 		}
 
