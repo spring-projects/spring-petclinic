@@ -4,10 +4,6 @@ pipeline {
 
 	stages {
 
-		stage('Clone Repo') {
-			checkout scm
-		}
-
 		stage('Build') {
 			agent {
 				dockerfile {
