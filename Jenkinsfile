@@ -9,7 +9,7 @@ pipeline {
 				dockerfile {
 					filename 'Dockerfile.build'
 					dir '.'
-					args '-v $HOME/.m2:/.m2 -v ${WORKSPACE}:/build'
+					args '-v $HOME/.m2:/.m2 -v ${WORKSPACE}/build:/build'
 				}
 			}
 			steps {

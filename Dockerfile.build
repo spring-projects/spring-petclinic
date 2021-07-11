@@ -2,10 +2,10 @@ FROM openjdk:8-jdk-alpine
 VOLUME [ "/.m2" ]
 VOLUME [ "/build" ]
 WORKDIR /build
-# COPY .mvn .mvn
-# COPY mvnw .
-# COPY mvnw.cmd .
-# COPY pom.xml .
+COPY .mvn .mvn
+COPY mvnw .
+COPY mvnw.cmd .
+COPY pom.xml .
 RUN ./mvnw -B -e dependency:go-offline
-# COPY src src
+COPY src src
 RUN ./mvnw package
