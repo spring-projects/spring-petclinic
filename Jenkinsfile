@@ -18,22 +18,16 @@ pipeline {
 		}
 
 		stage('Run') {
-			steps {
-				script {
-					def runtimeImage = docker.build('petclinic', '-f Dockerfile.run')
-					runtimeImage.run();
+			agent {
+				dockerfile {
+					filename 'Dockerfile.run'
+					dir '.'
+					args '-d -v $HOME/app:/root/app'
 				}
 			}
-			/* agent { */
-			/* 	dockerfile { */
-			/* 		filename 'Dockerfile.run' */
-			/* 		dir '.' */
-			/* 		additionalBuildArgs '-t hllvc/spring-petclinic:latest' */
-			/* 	} */
-			/* } */
-			/* steps { */
-			/* 	sh 'docker-compose up' */
-			/* } */
+			steps {
+				sh 'Done'
+			}
 		}
 
 	}
