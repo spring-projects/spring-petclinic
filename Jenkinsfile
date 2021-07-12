@@ -13,7 +13,7 @@ pipeline {
 				}
 			}
 			steps {
-				docker cp petclinic_build:/build/target/app.jar .
+				sh 'docker cp petclinic_build:/build/target/app.jar .'
 			}
 		}
 
