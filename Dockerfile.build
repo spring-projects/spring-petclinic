@@ -1,5 +1,3 @@
 FROM openjdk:8-jdk-alpine
 WORKDIR /build
-COPY . .
-RUN ./mvnw -B -e dependency:go-offline
-RUN ./mvnw package
+CMD [ "./build.sh" ]

@@ -9,11 +9,11 @@ pipeline {
 				dockerfile {
 					filename 'Dockerfile.build'
 					dir '.'
-					args '-v $HOME/.m2:/root/.m2 --name petclinic_build'
+					args '-v $HOME/.m2:/root/.m2'
 				}
 			}
 			steps {
-				sh 'docker cp petclinic_build:/build/target/app.jar .'
+				echo 'Build done'
 			}
 		}
 
