@@ -62,7 +62,7 @@ pipeline {
                 branch 'main'
             }
             steps {
-                sh (echo 'Deploying to Production from main...')  
+                sh (echo \'Deploying to Production from main...\')  
             }
         post {
             always {
