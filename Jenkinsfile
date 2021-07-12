@@ -64,11 +64,11 @@ pipeline {
             steps {
                 echo 'Deploying to Production from main...'  
             }
-            post {
-                always {
-                    //jiraSendDeploymentInfo site: '<sitename>.atlassian.net', environmentId: 'us-prod-1', environmentName: 'us-prod-1', environmentType: 'production'
-                    jiraAddComment comment: 'build ', idOrKey: 'Task1', site: 'https://butenko992.atlassian.net'
-                }
+        post {
+            always {
+                //jiraSendDeploymentInfo site: '<sitename>.atlassian.net', environmentId: 'us-prod-1', environmentName: 'us-prod-1', environmentType: 'production'
+                jiraAddComment comment: 'build ', idOrKey: 'Task1', site: 'https://butenko992.atlassian.net'
             }
-        }   
-    }
+        }
+    }   
+}
