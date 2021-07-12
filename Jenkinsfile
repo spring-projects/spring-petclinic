@@ -57,8 +57,8 @@ pipeline {
                 }
             }
         }
-        node {
         stage('JIRA') {
+            script {
             def testIssue = [fields: [ // id or key must present for project.
                                project: [id: 'DEV'],
                                summary: 'New JIRA Created from Jenkins.',
@@ -68,10 +68,10 @@ pipeline {
                                issuetype: [id: '3']]]
 
                                response = jiraEditIssue idOrKey: 'DEV-1', issue: testIssue
-
+            
     echo response.successful.toString()
     echo response.data.toString()
-  }
+            }
 }
     }
 }    
