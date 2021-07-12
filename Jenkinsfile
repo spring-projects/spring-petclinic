@@ -6,6 +6,11 @@ pipeline {
     }
     agent any
     stages {
+          stage('Jira2') {
+            steps {
+                jiraAddComment idOrKey: 'DEV-1', comment: 'hello', site: 'butenko992'
+            }
+        }
         stage('Build') {
             steps {
                 echo 'Running build automation'
