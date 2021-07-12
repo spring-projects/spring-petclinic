@@ -58,6 +58,7 @@ pipeline {
             }
         }
         stage('JIRA') {
+            steps {
             script {
             def testIssue = [fields: [ // id or key must present for project.
                                project: [id: 'DEV'],
@@ -66,11 +67,10 @@ pipeline {
                                customfield_1000: 'customValue',
                                // id or name must present for issuetype.
                                issuetype: [id: '3']]]
-
-                               response = jiraEditIssue idOrKey: 'DEV-1', issue: testIssue
-            
+                               response = jiraEditIssue idOrKey: 'DEV-1', issue: testIssue          
     echo response.successful.toString()
     echo response.data.toString()
+            }
             }
 }
     }
