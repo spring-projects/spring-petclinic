@@ -61,9 +61,6 @@ pipeline {
             when {
                 branch 'main'
             }
-            steps {
-                sh (echo \'Deploying to Production from main...\')  
-            }
         post {
             always {
                 //jiraSendDeploymentInfo site: '<sitename>.atlassian.net', environmentId: 'us-prod-1', environmentName: 'us-prod-1', environmentType: 'production'
