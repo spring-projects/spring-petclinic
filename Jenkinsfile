@@ -61,6 +61,10 @@ pipeline {
             when {
                 branch 'main'
             }
+            steps {
+                echo 'add jira'
+                }
+            }
         post {
             always {
                 //jiraSendDeploymentInfo site: '<sitename>.atlassian.net', environmentId: 'us-prod-1', environmentName: 'us-prod-1', environmentType: 'production'
