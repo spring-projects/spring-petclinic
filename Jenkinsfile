@@ -9,11 +9,11 @@ pipeline {
 				dockerfile {
 					filename 'Dockerfile.build'
 					dir '.'
-					args '-v $HOME/.m2:/.m2 -v /tmp/petclinic_build:/build'
+					args '-v $HOME/.m2:/root/.m2 --name petclinic_build'
 				}
 			}
 			steps {
-				echo "App Built"
+				docker cp petclinic_build:/build/target/app.jar .
 			}
 		}
 
@@ -22,7 +22,6 @@ pipeline {
 				dockerfile {
 					filename 'Dockerfile.run'
 					dir '.'
-					args '-v /tmp/petclinic_build:/app'
 				}
 			}
 			steps {
