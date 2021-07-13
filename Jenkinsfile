@@ -3,7 +3,7 @@ pipeline {
 	agent any
 
 	environment {
-		BUILD_CONTAINER_ID = ''
+		BUILD_CONTAINER_ID='test'
 	}
 
 	stages {
@@ -18,9 +18,13 @@ pipeline {
 				}
 			}
 			steps {
-				sh 'docker run -v $HOME/.m2:/root/.m2 -d petclinic-build > build_id'
-				env.BUILD_CONTAINER_ID = sh (returnStdout: true, script: 'echo $(cat build_id)').trim()
-			}
+				sh 'docker run -v $HOME/.m2:/root/.m2 -d petclinic-build > id'
+				script {
+					BUILD_CONTAINER_ID = sh(
+						script: 'echo $(cat id)'
+					).trim()
+				}
+			 }
 		}
 
 		stage('Run') {
