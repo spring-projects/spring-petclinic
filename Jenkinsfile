@@ -4,22 +4,23 @@ pipeline {
         registryCredential = 'dockerhub_id' 
         dockerImage = '' 
         RELEASE_NOTES = sh (script: """git log --format="medium" -1 ${GIT_COMMIT}""", returnStdout:true)
-        TaskID = ''
+        
     }
     agent any
     stages {
         stage('get hash') {
             steps {
                sh 'echo ${RELEASE_NOTES}'
-              sh 'echo ${GIT_COMMIT_MSG}'
+               sh 'echo ${GIT_COMMIT_MSG}'
+               sh 'echo 'git log -1 --pretty=%''
             }
         }
         stage('Jira2') {
             steps {
                 script {
-                    TaskID = sh 'git log -1 --pretty=%'
+                    commit = sh 'git log -1 --pretty=%'
                     sh 'echo ${TaskID}'
-                    jiraAddComment idOrKey: "${TaskID}", comment: 'build successfull', site: 'butenko992'
+                    jiraAddComment idOrKey: "${commit}", comment: 'build successfull', site: 'butenko992'
                 }
             }
         }
