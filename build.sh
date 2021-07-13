@@ -10,4 +10,4 @@ else
 	git checkout jenkins
 fi
 
-./mvnw package
+./mvnw package -DskipTests
