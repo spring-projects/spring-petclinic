@@ -1,10 +1,4 @@
 services:
-  app:
-    image: petclinic-run
-    links:
-      - mysql:mysql
-    ports:
-      - "3000:8080"
   mysql:
     image: mysql:5.7
     ports:
@@ -17,3 +11,11 @@ services:
       - MYSQL_DATABASE=petclinic
     volumes:
       - "./conf.d:/etc/mysql/conf.d:ro"
+  app:
+    image: petclinic-run
+    depend_on:
+      - mysql
+    links:
+      - mysql:mysql
+    ports:
+      - "3000:8080"
