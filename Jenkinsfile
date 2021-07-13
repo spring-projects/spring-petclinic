@@ -9,11 +9,13 @@ pipeline {
 	stages {
 
 		stage('Build') {
-			dockerfile {
-				filename 'Dockerfile.build'
-				dir '.'
-				additionalBuildArgs '-t petclinic-build'
-				args '$HOME/.m2:/root/.m2'
+			agent {
+				dockerfile {
+					filename 'Dockerfile.build'
+					dir '.'
+					additionalBuildArgs '-t petclinic-build'
+					args '$HOME/.m2:/root/.m2'
+				}
 			}
 			steps {
 				BUILD_CONTAINER_ID = "sh 'docker run -v $HOME/.m2:/root/.m2 -d petclinic-build'"
@@ -21,9 +23,11 @@ pipeline {
 		}
 
 		stage('Run') {
-			dockerfile {
-				filename 'Dockerfile.run'
-				additionalBuildArgs '-t petclinic-run'
+			agent {
+				dockerfile {
+					filename 'Dockerfile.run'
+					additionalBuildArgs '-t petclinic-run'
+				}
 			}
 			steps {
 				sh 'docker cp ${BUILD_CONTAINER_ID}:/build/target/app.jar .'
