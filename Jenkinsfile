@@ -15,7 +15,11 @@ pipeline {
         }
         stage('Jira2') {
             steps {
-                jiraAddComment idOrKey: "${TaskID}", comment: 'build successfull', site: 'butenko992'
+                script {
+                    TaskID = sh 'git log -1 --pretty=%'
+                    sh 'echo ${TaskID}'
+                    jiraAddComment idOrKey: "${TaskID}", comment: 'build successfull', site: 'butenko992'
+                }
             }
         }
         stage('Build') {
