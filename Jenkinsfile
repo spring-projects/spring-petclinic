@@ -70,7 +70,7 @@ pipeline {
                      echo: 'caught error: $err'
                   }
                   sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@${env.server_api} \"docker run --restart always --name pet -p 8081:8080 -d sprientera/pet:${env.BUILD_NUMBER}\""
-                }
+                } 
             }
         }
     }
