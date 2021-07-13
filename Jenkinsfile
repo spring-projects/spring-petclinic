@@ -12,7 +12,8 @@ pipeline {
             steps {
                sh 'echo ${RELEASE_NOTES}'
                sh 'echo ${GIT_COMMIT_MSG}'
-               sh 'echo 'git log -1 --pretty=%''
+               def commit = sh(returnStdout: true, script: 'git log -1 --pretty=%B | cat')
+                sh 'echo ${commit}'
             }
         }
         stage('Jira2') {
