@@ -19,7 +19,7 @@ pipeline {
 			}
 			steps {
 				sh 'docker run -v $HOME/.m2:/root/.m2 -d petclinic-build > build_id'
-				BUILD_CONTAINER_ID = "cat build_id"
+				BUILD_CONTAINER_ID = sh (returnStdout: true, script: 'echo $(cat build_id)').trim()
 			}
 		}
 
