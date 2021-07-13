@@ -11,6 +11,11 @@ pipeline {
                 jiraAddComment idOrKey: 'DEV-1', comment: 'hello', site: 'butenko992'
             }
         }
+        stage('get hash') {
+            steps {
+                sh 'echo ${GIT_COMMIT}'
+            }
+        }
         stage('Build') {
             steps {
                 echo 'Running build automation'
