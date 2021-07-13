@@ -3,9 +3,9 @@ pipeline {
         registry = "sprientera/pet" 
         registryCredential = 'dockerhub_id' 
         dockerImage = '' 
+    }
 //        RELEASE_NOTES = sh (script: """git log --format="medium" -1 ${GIT_COMMIT}""", returnStdout:true)
 //        commit = sh (script: "git log -1 --pretty=%B", , returnStdout: true).trim()
-    }
     agent any
     stages {
 //        stage('Jira2') {
@@ -68,7 +68,7 @@ pipeline {
         }
         stage('get hash') {
             steps {
-                sh 'echo ${GIT_COMMIT_MSG}'
+              //  sh 'echo ${GIT_COMMIT_MSG}'
                 script {
                     commit = sh (script: "git log -1 --pretty=%B", , returnStdout: true).trim()
                     sh 'echo ${commit}'
@@ -76,11 +76,10 @@ pipeline {
             }
         }
     }
-    post {
-        success {
-            echo 'I succeeded!'
-            jiraAddComment idOrKey: "${commit}", comment: 'build successfull from commit', site: 'butenko992'
-            }
+        post {
+            success {
+                echo 'I succeeded!'
+                jiraAddComment idOrKey: "${commit}", comment: 'build successfull from commit', site: 'butenko992'
         }
     }
 }
