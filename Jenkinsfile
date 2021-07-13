@@ -16,7 +16,7 @@ pipeline {
 		stage('Run') {
 			steps {
 					sh 'docker build -f Dockerfile.run -t petclinic-run .'
-					sh 'docker-compose up'
+					sh 'docker-compose up -d'
 			}
 		}
 
