@@ -1,3 +1,4 @@
 FROM openjdk:8-jdk-alpine
 WORKDIR /build
 CMD [ "./build.sh" ]
+COPY build.sh .

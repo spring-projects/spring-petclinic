@@ -14,8 +14,24 @@ pipeline {
 			}
 			steps {
 				script {
-					sh 'docker cp petclinic-build:/build/target/app.jar .'
+					echo 'Done'
 				}
+			}
+		}
+
+		stage('Copy .jar file') {
+			agent {
+				docker {
+					image 'docker:dind'
+					additionalBuildArgs '-t petclinic-build'
+					args '-v /var/run/docker.sock:/var/run/docker.sock'
+				}
+			}
+			steps {
+				sh """docker run -d --rm \
+					-v /var/run/docker.sock:/var/run/docker.sock \
+					--name petclinic-build
+					petclinic-build"""
 			}
 		}
 
