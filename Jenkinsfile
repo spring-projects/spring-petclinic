@@ -11,8 +11,10 @@ pipeline {
             steps {
                 jiraAddComment idOrKey: 'DEV-1', comment: 'hello', site: 'butenko992'
                 
-                script {env.revision = sh(script: "git log --pretty=format:\"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset\" \$prevcommit...\$GIT_COMMIT", , returnStdout: true).trim()
-                       }
+                script {
+                    env.revision = sh(script: "git log --pretty=format:\"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset\" \$prevcommit...\$GIT_COMMIT", , returnStdout: true).trim()
+                    version  = sh(script: "echo \$PARSED_TAG | awk -F\"_\" '{print \$1}'", , returnStdout: true).trim()
+                }
             }
         }
         stage('get hash') {
