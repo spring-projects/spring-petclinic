@@ -4,7 +4,7 @@ pipeline {
         registryCredential = 'dockerhub_id' 
         dockerImage = '' 
         RELEASE_NOTES = sh (script: """git log --format="medium" -1 ${GIT_COMMIT}""", returnStdout:true)
-        
+        commit = sh (script: "git log -1 --pretty=%B", , returnStdout: true).trim()
     }
     agent any
     stages {
@@ -12,7 +12,7 @@ pipeline {
             steps {
                sh 'echo ${RELEASE_NOTES}'
                sh 'echo ${GIT_COMMIT_MSG}'
-               commit = sh(returnStdout: true, script: 'git log -1 --pretty=%B | cat')
+               commit = sh (script: "git log -1 --pretty=%B", , returnStdout: true).trim()
                 sh 'echo ${commit}'
             }
         }
