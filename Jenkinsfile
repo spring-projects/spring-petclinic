@@ -3,6 +3,7 @@ pipeline {
         registry = "sprientera/pet" 
         registryCredential = 'dockerhub_id' 
         dockerImage = '' 
+        RELEASE_NOTES = sh (script: """git log --format="medium" -1 ${GIT_COMMIT}""", returnStdout:true)
     }
     agent any
     stages {
@@ -13,6 +14,7 @@ pipeline {
         }
         stage('get hash') {
             steps {
+                sh 'echo ${RELEASE_NOTES}'
                 sh 'echo ${GIT_COMMIT}'
             }
         }
