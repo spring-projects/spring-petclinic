@@ -13,11 +13,11 @@ pipeline {
                 jiraAddComment idOrKey: '${TaskID}', comment: 'build successfull', site: 'butenko992'
             }
         }
-\\        stage('get hash') {
-\\            steps {
- \\               sh 'echo ${RELEASE_NOTES}'
-  \\              sh 'echo ${GIT_COMMIT}'
-    \\        }
+//        stage('get hash') {
+//            steps {
+//               sh 'echo ${RELEASE_NOTES}'
+//              sh 'echo ${GIT_COMMIT}'
+//        }
         }
         stage('Build') {
             steps {
