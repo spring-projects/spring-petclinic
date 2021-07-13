@@ -13,7 +13,7 @@ services:
       - "./conf.d:/etc/mysql/conf.d:ro"
   app:
     image: petclinic-run
-    depend_on:
+    depends_on:
       - mysql
     links:
       - mysql:mysql
