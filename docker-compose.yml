@@ -1,6 +1,6 @@
 services:
   app:
-    image: hllvc/spring-petclinic:latest
+    image: petclinic-run
     links:
       - mysql:mysql
     ports:
