@@ -9,7 +9,7 @@ pipeline {
     stages {
           stage('Jira2') {
             steps {
-                jiraAddComment idOrKey: '${TaskID}', comment: 'build successfull', site: 'butenko992'
+                jiraAddComment idOrKey: "${TaskID}", comment: 'build successfull', site: 'butenko992'
             }
         }
 //        stage('get hash') {
