@@ -1,4 +1,5 @@
 FROM openjdk:8-jdk-alpine
 WORKDIR /build
 CMD [ "./build.sh" ]
+RUN apk add bash
 COPY build.sh .
