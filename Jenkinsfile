@@ -12,15 +12,14 @@ pipeline {
             steps {
                sh 'echo ${RELEASE_NOTES}'
                sh 'echo ${GIT_COMMIT_MSG}'
-               def commit = sh(returnStdout: true, script: 'git log -1 --pretty=%B | cat')
+               commit = sh(returnStdout: true, script: 'git log -1 --pretty=%B | cat')
                 sh 'echo ${commit}'
             }
         }
         stage('Jira2') {
             steps {
                 script {
-                    commit = sh 'git log -1 --pretty=%'
-                    sh 'echo ${TaskID}'
+                    sh 'echo ${commit}'
                     jiraAddComment idOrKey: "${commit}", comment: 'build successfull', site: 'butenko992'
                 }
             }
