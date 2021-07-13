@@ -4,24 +4,20 @@ pipeline {
         registryCredential = 'dockerhub_id' 
         dockerImage = '' 
         RELEASE_NOTES = sh (script: """git log --format="medium" -1 ${GIT_COMMIT}""", returnStdout:true)
+        TaskID = ''
     }
     agent any
     stages {
           stage('Jira2') {
             steps {
-                jiraAddComment idOrKey: 'DEV-1', comment: 'hello', site: 'butenko992'
-                
-                script {
-                    env.revision = sh(script: "git log --pretty=format:\"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset\" \$prevcommit...\$GIT_COMMIT", , returnStdout: true).trim()
-                    version  = sh(script: "echo \$PARSED_TAG | awk -F\"_\" '{print \$1}'", , returnStdout: true).trim()
-                }
+                jiraAddComment idOrKey: '${TaskID}', comment: 'build successfull', site: 'butenko992'
             }
         }
-        stage('get hash') {
-            steps {
-                sh 'echo ${RELEASE_NOTES}'
-                sh 'echo ${GIT_COMMIT}'
-            }
+\\        stage('get hash') {
+\\            steps {
+ \\               sh 'echo ${RELEASE_NOTES}'
+  \\              sh 'echo ${GIT_COMMIT}'
+    \\        }
         }
         stage('Build') {
             steps {
@@ -74,21 +70,5 @@ pipeline {
                 }
             }
         }
-        stage('JIRA') {
-            steps {
-            script {
-            def testIssue = [fields: [ // id or key must present for project.
-                               project: [id: 'DEV'],
-                               summary: 'New JIRA Created from Jenkins.',
-                               description: 'New JIRA Created from Jenkins.',
-                               customfield_1000: 'customValue',
-                               // id or name must present for issuetype.
-                               issuetype: [id: '3']]]
-                               response = jiraEditIssue idOrKey: 'DEV-1', issue: testIssue          
-    echo response.successful.toString()
-    echo response.data.toString()
-            }
-            }
-}
     }
 }    
