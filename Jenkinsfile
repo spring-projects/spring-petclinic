@@ -18,7 +18,8 @@ pipeline {
 				}
 			}
 			steps {
-				BUILD_CONTAINER_ID = "sh 'docker run -v $HOME/.m2:/root/.m2 -d petclinic-build'"
+				sh 'docker run -v $HOME/.m2:/root/.m2 -d petclinic-build > build_id'
+				BUILD_CONTAINER_ID = "cat build_id"
 			}
 		}
 
