@@ -1,8 +1,8 @@
 #!/bin/bash
 
-if [[ -f spring-petclinic ]]; then
+if [[ -e spring-petclinic ]]; then
 	cd spring-petclinic
-	git chekcout jenkins
+	git checkout jenkins
 	git pull jenkins
 else
 	git clone https://github.com/hllvc/spring-petclinic.git

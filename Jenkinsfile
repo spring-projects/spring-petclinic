@@ -10,7 +10,7 @@ pipeline {
 					filename 'Dockerfile.build'
 					dir '.'
 					additionalBuildArgs '-t petclinic-build'
-					args '-v $HOME/.m2:/root/.m2 --name petclinic-build'
+					args '-v $HOME/.m2:/root/.m2'
 				}
 			}
 			steps {
@@ -24,14 +24,13 @@ pipeline {
 			agent {
 				docker {
 					image 'docker:dind'
-					args '-v /var/run/docker.sock:/var/run/docker.sock'
+					args '-v /var/run/docker.sock:/var/run/docker.sock --user root'
 				}
 			}
 			steps {
-				sh """docker run -d --rm \
+				sh """docker run -d \
 					-v /var/run/docker.sock:/var/run/docker.sock \
-					--name petclinic-build
-					petclinic-build"""
+					--name petclinic-build petclinic-build"""
 				sh 'docker cp petclinic-build:/build/target/app.jar .'
 			}
 		}
