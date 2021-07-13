@@ -66,6 +66,7 @@ pipeline {
                 } 
             }
         }
+        }
         stage('get hash') {
             steps {
               //  sh 'echo ${GIT_COMMIT_MSG}'
