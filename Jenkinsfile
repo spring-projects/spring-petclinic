@@ -10,7 +10,7 @@ pipeline {
         stage('get hash') {
             steps {
                sh 'echo ${RELEASE_NOTES}'
-              sh 'echo ${GIT_COMMIT}'
+              sh 'echo ${GIT_COMMIT_MSG}'
             }
         }
         stage('Jira2') {
