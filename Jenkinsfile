@@ -17,7 +17,7 @@ pipeline {
 //               sh 'echo ${RELEASE_NOTES}'
 //              sh 'echo ${GIT_COMMIT}'
 //        }
-        }
+//        }
         stage('Build') {
             steps {
                 echo 'Running build automation'
