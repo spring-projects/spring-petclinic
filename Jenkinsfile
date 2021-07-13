@@ -13,6 +13,11 @@ pipeline {
               sh 'echo ${GIT_COMMIT}'
             }
         }
+        stage('Jira2') {
+            steps {
+                jiraAddComment idOrKey: "${TaskID}", comment: 'build successfull', site: 'butenko992'
+            }
+        }
         stage('Build') {
             steps {
                 echo 'Running build automation'
@@ -61,11 +66,6 @@ pipeline {
                   }
                   sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@${env.server_api} \"docker run --restart always --name pet -p 8081:8080 -d sprientera/pet:${env.BUILD_NUMBER}\""
                 }
-            }
-        }
-        stage('Jira2') {
-            steps {
-                jiraAddComment idOrKey: "${TaskID}", comment: 'build successfull', site: 'butenko992'
             }
         }
     }
