@@ -23,5 +23,6 @@ jobs:
       - run: ./mvnw compile
   Test-Petclinic:
     runs-on: ubuntu-latest
+    needs: [ Build-Petclinic ]
     steps:
       - run: find
