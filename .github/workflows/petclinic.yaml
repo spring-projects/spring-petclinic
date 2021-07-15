@@ -54,7 +54,6 @@ jobs:
           name: petclinic-build
           path: target/
       - run: find
-      - run: echo ${{ secrets.ACR_URL }}
       - name: Login to ACR
         uses: docker/login-action@v1
         with:
@@ -66,5 +65,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: my_container:latest
+          tags: ${{ secrets.ACR_URL }}/my_container:latest
         
