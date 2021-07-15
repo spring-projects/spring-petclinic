@@ -18,11 +18,17 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
-      - run: echo "Hello Github Actions"
-      - run: find
       - run: ./mvnw compile
+      - uses: actions/upload-artifact@v2
+        with:
+          name: petclinic-build
+          path: target/
   Test-Petclinic:
     runs-on: ubuntu-latest
     needs: [ Build-Petclinic ]
     steps:
+      - uses: actions/dwwonload-artifact@v2
+        with:
+          name: petclinic-build
+          path: target/
       - run: find
