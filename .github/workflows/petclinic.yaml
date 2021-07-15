@@ -2,9 +2,18 @@ name: Build Petclinic
 on: [ push ]
 jobs:
   Build-Petclinic:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu
     steps:
       - name: Check out repo code
         uses: actions/checkout@v2        
+      - name: Set up Java 8
+        uses: actions/setup-java@v2
+        with:
+          java-version: '8'
       - run: echo "Hello Github Actions"
+      - run: find
+      - run: ./mvnw compile
+  Test-Petclinic:
+    runs-on: ubuntu
+    steps:
       - run: find
