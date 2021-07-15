@@ -1,0 +1,7 @@
+name: Build Petclinic
+on: [ push ]
+jobs:
+  Build-Petclinic:
+    runs-on: ubuntu-latest
+    steps:
+      run: echo "Hello Github Actions"
