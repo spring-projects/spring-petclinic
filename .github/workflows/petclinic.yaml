@@ -54,6 +54,7 @@ jobs:
       - name: Set up Docker
         uses: docker/build-push-action@v2
         with:
+          context: .
           push: false
           tags: my_container:latest
         
