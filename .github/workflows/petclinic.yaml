@@ -66,4 +66,10 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.ACR_URL }}/my_container:latest
+
+  Finalize-Petclinic:
+    runs-on: ubuntu-latest
+    needs: [ Test-Petclinic, Dockerize-Petclinic ]
+    steps:
+      - run: echo "Success!"
         
