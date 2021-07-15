@@ -51,6 +51,7 @@ jobs:
         with:
           name: petclinic-build
           path: target/
+      - run: find
       - name: Set up Docker
         uses: docker/build-push-action@v2
         with:
