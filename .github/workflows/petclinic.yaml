@@ -23,6 +23,7 @@ jobs:
         with:
           name: petclinic-build
           path: target/
+
   Test-Petclinic:
     runs-on: ubuntu-latest
     needs: [ Build-Petclinic ]
@@ -39,3 +40,14 @@ jobs:
           name: petclinic-build
           path: target/
       - run: mvn test
+
+  Dockerize-Petclinic:
+    runs-on: ubuntu-latest
+    needs: [ Build-Petclinic ]
+    steps:
+      - name: Set up Docker
+        uses: docker/build-push-action@v2
+        with:
+          push: false
+          tags: my_container:latest
+        
