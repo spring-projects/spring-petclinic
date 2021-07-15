@@ -4,4 +4,7 @@ jobs:
   Build-Petclinic:
     runs-on: ubuntu-latest
     steps:
+      - name: Check out repo code
+        uses: actions/checkout@v2        
       - run: echo "Hello Github Actions"
+      - run: find
