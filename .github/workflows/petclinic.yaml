@@ -27,8 +27,15 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ Build-Petclinic ]
     steps:
+      - name: Cache local Maven repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
       - uses: actions/download-artifact@v2
         with:
           name: petclinic-build
           path: target/
-      - run: find
+      - run: mvn test
