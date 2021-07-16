@@ -1,4 +1,4 @@
-name: Build Petclinic
+name: Build Petclinic Simplified
 on: [ push, pull_request ]
 jobs:
   Simplified-Build-Petclinic:
