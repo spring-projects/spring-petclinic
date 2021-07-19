@@ -224,6 +224,9 @@
                     <buildArgs>
                         <JAR_FILE>target/spring-petclinic-${project.version}.jar</JAR_FILE>
                     </buildArgs>
+                    <serverId>docker-registry</serverId>
+                    <registryUrl>https://docker-registry:5000/v2/</registryUrl>
+
                 </configuration>
             </plugin>      
 <!-- smartinj -->
