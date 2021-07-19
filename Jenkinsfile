@@ -37,8 +37,8 @@ pipeline {
                     currentBuild.resultIsBetterOrEqualTo('SUCCESS')
                 }
             }
-            stage('Build image') {
-                    app = docker.build("docker-registry:5000/petclinic")
+            steps {
+               app = docker.build("docker-registry:5000/petclinic")
             }
         }
     }
