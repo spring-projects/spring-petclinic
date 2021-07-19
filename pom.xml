@@ -207,7 +207,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <repository>docker-registry:5000/petclinic</repository>
+                    <imageName>docker-registry:5000/petclinic</imageName>
                     <tag>latest</tag>
                     <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
                     <pullNewerImage>false</pullNewerImage>
