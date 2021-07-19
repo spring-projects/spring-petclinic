@@ -5,8 +5,6 @@ pipeline {
     }
     environment {
         SPRING_PROFILES_ACTIVE = "ci"
-        MVN_POM_VERSION = readMavenPom().getVersion()
-        MVN_ARTIFACTID = readMavenPom().getArtifactId()
     }
     stages {
         stage('Initialize') {
