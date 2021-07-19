@@ -47,16 +47,18 @@ pipeline {
                         }
                     }
                 }
-                stage('Push image') {
+                stage('Deploy [docker-registry:5000]') {
                     steps {
-                        dir(".") {
-                            withMaven(maven: 'M3', options: [jacocoPublisher(disabled: true)]) {
-                                sh "mvn dockerfile:push -Ddockerfile.skip=false"
+                        script {
+                            docker.withTool('20.10.7') {
+                                docker.withRegistry('https://docker-registry:5000', 'registry-id') {
+                                    def image = docker.image('docker-registry:5000/petclinic:v1')
+                                    image.push "v1"
+                                }
                             }
                         }
                     }
                 }
-
             }
         }
     }
