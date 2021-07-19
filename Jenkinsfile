@@ -32,14 +32,22 @@ pipeline {
                 }
             }
         }
-        stage('Deploy [Build & Push Docker container image]') {
+        stage('Deploy [Docker]') {
             when {
                 expression {
                     currentBuild.resultIsBetterOrEqualTo('SUCCESS')
                 }
             }
-            steps {
-               app = docker.build("docker-registry:5000/petclinic")
+            stages {
+                stage('Build image') {
+                    steps {
+                        dir(".") {
+                            withMaven(maven: 'M3', options: [jacocoPublisher(disabled: true)]) {
+                                sh "mvn dockerfile:build -Ddockerfile.skip=false"
+                            }
+                        }
+                    }
+                }
             }
         }
     }
