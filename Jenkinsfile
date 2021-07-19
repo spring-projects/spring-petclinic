@@ -42,7 +42,7 @@ pipeline {
                     steps {
                         dir(".") {
                             withMaven(maven: 'M3', options: [jacocoPublisher(disabled: true)]) {
-                                sh "mvn dockerfile:build -Ddockerfile.skip=false"
+                                sh "mvn dockerfile:build -Ddockerfile.skip=false -DpushImage"
                             }
                         }
                     }
