@@ -40,7 +40,6 @@ pipeline {
             stages {
                 stage('Build image') {
                     app = docker.build("docker-registry:5000/petclinic")
-                    }
                 }
             }
         }
