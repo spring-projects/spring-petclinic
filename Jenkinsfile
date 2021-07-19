@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools {
-        jdk 'JDK 8'
+        jdk 'JDK 11'
     }
     environment {
         SPRING_PROFILES_ACTIVE = "ci"
