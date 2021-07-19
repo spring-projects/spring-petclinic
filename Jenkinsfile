@@ -6,7 +6,7 @@ node {
     }
     
     stage ('SCM checkout') {
-        git credentialsId: 'github_login', url: 'https://github.com/smartinj/spring-petclinic.git'
+        git credentialsId: 'Jenkins', url: 'https://github.com/smartinj/spring-petclinic.git'
     }
     
     stage ('MVN Package') {
