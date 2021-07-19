@@ -205,10 +205,20 @@
                             <goal>build</goal>
                         </goals>
                     </execution>
+                    <execution>
+                      <id>push-image</id>
+                      <phase>deploy</phase>
+                      <goals>
+                        <goal>push</goal>
+                      </goals>
+                      <configuration>
+                        <imageName>docker-registry:5000/petclinic:v1</imageName>
+                      </configuration>
+                    </execution>                    
                 </executions>
                 <configuration>
-                    <imageName>docker-registry:5000/petclinic</imageName>
-                    <tag>latest</tag>
+                    <repository>docker-registry:5000/petclinic</repository>
+                    <tag>v1</tag>
                     <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
                     <pullNewerImage>false</pullNewerImage>
                     <buildArgs>
