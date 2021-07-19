@@ -1,19 +1,26 @@
-node {
-    
-    environment{
-        echo " project Info "
-        ENVIRONMENT_NAME = 'CI'
+pipeline {
+    agent any
+    tools {
+        jdk 'JDK 8'
     }
-    
-    stage ('SCM checkout') {
-        git credentialsId: 'Jenkins', url: 'https://github.com/smartinj/spring-petclinic.git'
+    environment {
+        SPRING_PROFILES_ACTIVE = "ci"
+        MVN_POM_VERSION = readMavenPom().getVersion()
+        MVN_ARTIFACTID = readMavenPom().getArtifactId()
     }
-    
-    stage ('MVN Package') {
-        def mvnHome = tool name: 'M3', type: 'maven'
-        def mvnCMD = "${mvnHome}/bin/mvn"
-        sh "${mvnCMD} clean package -DskipTests"
-    }
+    stages {
+        stage('Initialize') {
+            steps {
+                sh "printenv"
+            }
+        }
+        stage('Compile') {
+            steps {
+                withMaven(maven: 'M3', options: [artifactsPublisher(disabled: true), jacocoPublisher(disabled: true)]) {
+                    sh "mvn clean compile"
+                }
+            }
+        }
     
     
     stage ('Build Docker Image') {
