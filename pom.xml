@@ -191,6 +191,33 @@
           </execution>
         </executions>
       </plugin>
+<!-- smartinj -->
+<!-- smartinj -->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>${dockerfile-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>build-image</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <repository>docker-registry:5000/petclinic</repository>
+                    <tag>latest</tag>
+                    <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+                    <pullNewerImage>false</pullNewerImage>
+                    <buildArgs>
+                        <JAR_FILE>target/petclinic-${project.version}.jar</JAR_FILE>
+                    </buildArgs>
+                </configuration>
+            </plugin>      
+<!-- smartinj -->
+<!-- smartinj -->    
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
