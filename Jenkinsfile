@@ -1,4 +1,5 @@
 pipeline {
+    def app
     agent any
     tools {
         jdk 'JDK 1.8'
