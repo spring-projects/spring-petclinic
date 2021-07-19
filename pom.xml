@@ -196,7 +196,7 @@
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>dockerfile-maven-plugin</artifactId>
-                <version>${dockerfile-maven-plugin.version}</version>
+                <version>1.4.13</version>
                 <executions>
                     <execution>
                         <id>build-image</id>
@@ -212,7 +212,7 @@
                     <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
                     <pullNewerImage>false</pullNewerImage>
                     <buildArgs>
-                        <JAR_FILE>target/petclinic-${project.version}.jar</JAR_FILE>
+                        <JAR_FILE>target/spring-petclinic-${project.version}.jar</JAR_FILE>
                     </buildArgs>
                 </configuration>
             </plugin>      
