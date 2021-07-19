@@ -14,7 +14,7 @@ pipeline {
         }
         stage('Compile') {
             steps {
-                withMaven(maven: 'M3', options: [artifactsPublisher(disabled: true), jacocoPublisher(disabled: true)]) {
+                withMaven {
                     sh "mvn clean compile"
                 }
             }
