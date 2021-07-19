@@ -39,12 +39,7 @@ pipeline {
             }
             stages {
                 stage('Build image') {
-                    steps {
-                        dir(".") {
-                            withMaven(maven: 'M3', options: [jacocoPublisher(disabled: true)]) {
-                                sh "mvn dockerfile:build -Ddockerfile.skip=false"
-                            }
-                        }
+                    app = docker.build("docker-registry:5000/petclinic")
                     }
                 }
             }
