@@ -2,20 +2,23 @@ pipeline {
     environment { 
         registry = "sprientera/pet" 
         registryCredential = 'dockerhub_id' 
-        dockerImage = '' 
+        dockerImage =  '' 
+        RELEASE_NOTES = sh (script: """git log --format="medium" -1 ${GIT_COMMIT}""", returnStdout:true)
     }
-//        RELEASE_NOTES = sh (script: """git log --format="medium" -1 ${GIT_COMMIT}""", returnStdout:true)
-//        commit = sh (script: "git log -1 --pretty=%B", , returnStdout: true).trim()
     agent any
     stages {
-//        stage('Jira2') {
-  //          steps {
-    //            script {
-      //              sh 'echo ${commit}'
-        //            jiraAddComment idOrKey: "${commit}", comment: 'build successfull from commit', site: 'butenko992'
-          //      }
-            //}
-        //}
+          stage('Jira2') {
+            steps {
+                jiraAddComment idOrKey: 'DEV-1', comment: 'hello', site: 'butenko992'
+                env.revision = sh(script: "git log --pretty=format:\"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset\" \$prevcommit...\$GIT_COMMIT", , returnStdout: true).trim()
+            }
+        }
+        stage('get hash') {
+            steps {
+                sh 'echo ${RELEASE_NOTES}'
+                sh 'echo ${GIT_COMMIT}'
+            }
+        }
         stage('Build') {
             steps {
                 echo 'Running build automation'
@@ -63,24 +66,25 @@ pipeline {
                      echo: 'caught error: $err'
                   }
                   sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@${env.server_api} \"docker run --restart always --name pet -p 8081:8080 -d sprientera/pet:${env.BUILD_NUMBER}\""
-                } 
-            }
-        }
-        }
-        stage('get hash') {
-            steps {
-              //  sh 'echo ${GIT_COMMIT_MSG}'
-                script {
-                    commit = sh (script: "git log -1 --pretty=%B", , returnStdout: true).trim()
-                    sh 'echo ${commit}'
+                    }
                 }
             }
         }
-    }
-        post {
-            success {
-                echo 'I succeeded!'
-                jiraAddComment idOrKey: "${commit}", comment: 'build successfull from commit', site: 'butenko992'
-        }
-    }
+        stage('JIRA') {
+            steps {
+            script {
+            def testIssue = [fields: [ // id or key must present for project.
+                               project: [id: 'DEV'],
+                               summary: 'New JIRA Created from Jenkins.',
+                               description: 'New JIRA Created from Jenkins.',
+                               customfield_1000: 'customValue',
+                               // id or name must present for issuetype.
+                               issuetype: [id: '3']]]
+                               response = jiraEditIssue idOrKey: 'DEV-1', issue: testIssue          
+    echo response.successful.toString()
+    echo response.data.toString()
+            }
+            }
 }
+    }
+}    
