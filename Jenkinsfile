@@ -50,7 +50,7 @@ pipeline {
                 stage('Deploy [docker-registry:5000]') {
                     steps {
                         script {
-                            docker.withTool('20.10.7') {
+                            docker.withTool('19.03.9') {
                                 docker.withRegistry('https://docker-registry:5000', 'registry-id') {
                                     def image = docker.image('docker-registry:5000/petclinic:v1')
                                     image.push "v1"
