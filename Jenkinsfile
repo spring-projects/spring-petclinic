@@ -19,6 +19,34 @@ pipeline {
                 }
             }
         }
+        stage('Package') {
+            when {
+                expression {
+                    currentBuild.resultIsBetterOrEqualTo('SUCCESS')
+                }
+            }
+            steps {
+                withMaven(maven: 'M3', options: [jacocoPublisher(disabled: true)]) {
+                    sh "mvn -DskipTests package"
+                }
+            }
+        }
+        stage('Deploy [Build & Push Docker container image]') {
+            when {
+                expression {
+                    currentBuild.resultIsBetterOrEqualTo('SUCCESS')
+                }
+            }
+            stages {
+                stage('Build image') {
+                    steps {
+                        dir(".") {
+                            withMaven(maven: 'M3', options: [jacocoPublisher(disabled: true)]) {
+                                sh "mvn dockerfile:build -Ddockerfile.skip=false"
+                            }
+                        }
+                    }
+                }
     }
 
 }
