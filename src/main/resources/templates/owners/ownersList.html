@@ -24,8 +24,7 @@
               <td th:text="${owner.address}"/>
               <td th:text="${owner.city}"/>
               <td th:text="${owner.telephone}"/>
-              <!-- <td><span th:each="pet : ${owner.pets}" th:text="${pet.name} + ', '"/></td> -->
-              <td th:text="${owner.petNamesSplitByComma}"/>
+              <td><span th:each="pet, iterPet : ${owner.pets}" th:text="!${iterPet.last} ? ${pet.name} + ' (' + ${pet.type.name} + '), ' : ${pet.name} + ' (' + ${pet.type.name} + ')'"/></td>
           </tr>
         </tbody>
     </table>
