@@ -147,4 +147,32 @@ public class Owner extends Person {
 				.append("telephone", this.telephone).toString();
 	}
 
+	/* Added By Welb - 2021-07-21 */
+
+	public String getPetNamesSplitByComma() {
+
+		List<Pet> pets = this.getPets();
+
+		if(pets.size() > 0) {
+
+			StringBuilder petNames = new StringBuilder();
+
+			for (Pet p : pets) {
+				petNames.append(p.getName() + "(" + p.getType().getName() + ")");
+				petNames.append(", ");
+			}
+
+			// Clear the last comma and space
+			petNames.deleteCharAt(petNames.length() - 2);
+
+			return petNames.toString();
+
+		} else {
+			return "";
+		}
+
+	}
+
+	/* ************************** */
+
 }
