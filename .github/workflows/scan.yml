@@ -1,0 +1,69 @@
+# CI Test - Build the action container
+# build test container which has default test files and validate
+name: CRDA scan Java Example
+on: [ push, workflow_dispatch ]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Analyse Java project
+    env:
+      MVN_REPO_DIR: ~/.m2/repository
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+  
+      # If none of these files has changed, we assume that the contents of .m2/repository can be fetched from the cache.
+      - name: Hash Maven files
+        run: |
+          echo "MVN_HASH=${{ hashFiles('pom.xml', '.mvn/**/*', 'mvnw*') }}" >> $GITHUB_ENV
+
+      # Download the m2 repository from the cache to speed up the build.
+      - name: Check for Maven cache
+        id: check-mvn-cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.MVN_REPO_DIR }}
+          key: ${{ env.MVN_HASH }}
+
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - run: java -version
+
+      - run: mvn -ntp -B package
+
+      # If there was no cache hit above, store the output into the cache now.
+      - name: Save Maven repo into cache
+        if: ${{ steps.check-mvn-cache.outputs.cache-hit }} != 'true'
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.MVN_REPO_DIR }}
+          key: ${{ env.MVN_HASH }}
+
+      - name: Install CRDA
+        uses: redhat-actions/openshift-tools-installer@v1
+        with:
+          source: github
+          github_pat: ${{ github.token }}
+          crda: "latest"
+
+      - name: CRDA Scan
+        uses: divyansh42/crda-action@update
+        with:
+          manifest_file_path: pom.xml
+          crda_key: ${{ secrets.CRDA_KEY }}
+          # snyk_token: ${{ secrets.SNYK_TOKEN }}
+          consent_telemetry: true
+
+      - name: Print Analysis Report
+        run: cat crda_analysis_report.json
+
+      - name: Print Sarif
+        run: cat output.sarif
+
+      - name: Upload result to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: output.sarif
