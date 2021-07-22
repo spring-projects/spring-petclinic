@@ -3,7 +3,10 @@ pipeline {
            stages {
                 stage("Hello") {
                      steps {
-                          echo 'Hello World!!!!'
+                      timeout(time: 1, unit: 'MINUTES') {
+                                         sh 'for n in `seq 1 10`; do echo $n; sleep 1; done'
+                                     }
+                         echo 'Hello World!!!!'
                      }
                 }
            }
