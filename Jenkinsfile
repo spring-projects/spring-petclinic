@@ -3,10 +3,25 @@ pipeline {
            stages {
                 stage("Hello") {
                      steps {
-                      timeout(time: 1, unit: 'MINUTES') {
-                                         sh 'for n in `seq 1 10`; do echo $n; sleep 1; done'
-                                     }
                          echo 'Hello World!!!!'
+                     }
+                }
+                stage("Build") {
+                     steps {
+                     git url: '', branch: 'jenkins-test'
+                     echo 'Checkout branch'
+                     script {
+                     image = docker.build("asalanevich/spring-petclinic:${env.BUILD_ID}")
+                     }
+                }
+                stage("Push") {
+                     steps {
+                     withCredentials([usernamePassword(credentialsId: 'jenkins-docker', usernameVariable: 'login', passwordVariable: 'password')])
+                     sh """
+                     docker login -u ${login} -p ${password}
+                     docker push asalanevich/spring-petclinic:${env.BUILD_ID}
+                     docker push asalanevich/spring-petclinic:latest
+                     """
                      }
                 }
            }
