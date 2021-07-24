@@ -81,6 +81,12 @@
       <artifactId>mysql-connector-java</artifactId>
       <scope>runtime</scope>
     </dependency>
+    <!-- Gavin Johnson, 20210721: Added YBDB JDBC driver -->
+    <dependency>
+      <groupId>com.yugabyte</groupId>
+      <artifactId>jdbc-yugabytedb</artifactId>
+      <version>42.2.7-yb-5-beta.1</version>
+    </dependency>
 
     <!-- caching -->
     <dependency>

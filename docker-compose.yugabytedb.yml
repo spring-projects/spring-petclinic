@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+  yugabyte:
+    image: yugabytedb/yugabyte:latest
+    container_name: yugabyte
+    volumes:
+      - '~/yb_data:/home/yugabyte/var'
+    command: ["bin/yugabyted", "start", "--daemon=false"]
+    ports:
+      - "7000:7000"
+      - "9000:9000"
+      - "5433:5433"
+      - "9042:9042"
+    environment:
+      - YSQL_USER=petclinic
+      - YSQL_PASSWORD=petclinic
+      - YSQL_DATABASE=petclinic
