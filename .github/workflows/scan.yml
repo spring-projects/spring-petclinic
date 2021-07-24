@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-  
+
       # If none of these files has changed, we assume that the contents of .m2/repository can be fetched from the cache.
       - name: Hash Maven files
         run: |
@@ -50,20 +50,34 @@ jobs:
           crda: "latest"
 
       - name: CRDA Scan
+        id: scan
         uses: divyansh42/crda-action@update
         with:
           manifest_file_path: pom.xml
           crda_key: ${{ secrets.CRDA_KEY }}
+          analysis_report_file_name: java
           # snyk_token: ${{ secrets.SNYK_TOKEN }}
           consent_telemetry: true
 
-      - name: Print Analysis Report
-        run: cat crda_analysis_report.json
+      # - name: Print Analysis Report
+      #   run: cat crda_analysis_report.json
 
-      - name: Print Sarif
-        run: cat output.sarif
+      # - name: Print Sarif
+      #   run: cat output.sarif
 
       - name: Upload result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v1
         with:
-          sarif_file: output.sarif
+          sarif_file: ${{ steps.scan.outputs.crda_report_sarif }}
+
+      - name: Save intermediate files
+        run: |
+          mkdir -p uploads
+          mv ${{ steps.scan.outputs.crda_report_json }} uploads
+          mv ${{ steps.scan.outputs.crda_report_sarif }} uploads
+
+      - name: Upload merged Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: workfiles_java
+          path: ./uploads
