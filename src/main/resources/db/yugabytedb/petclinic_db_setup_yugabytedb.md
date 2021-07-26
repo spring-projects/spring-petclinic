@@ -21,7 +21,7 @@
 
 3) Run the app with `spring.profiles.active=yugabytedb`; `spring-boot.run.arguments="--DB_INIT=never"` for runs after the first; and `spring-boot.run.arguments="--YBDB_URL=jdbc:postgresql://[host]:[port]/petclinic?load-balance=true"` to connect to your YugabyteDB cluster (if using the Docker container, you don't need to include this).
    
-   For example, from the root of the project, use: `./mvnw spring-boot:run -Dspring-boot.run.profiles=yugabytedb -Dspring-boot.run.arguments="--YBDB_URL=jdbc:postgresql://[host]:[port]/petclinic?load-balance=true"` for the first run and `./mvnw spring-boot:run -Dspring-boot.run.profiles=yugabytedb -Dspring-boot.run.arguments="--YBDB_URL=jdbc:postgresql://[host]:[port]/petclinic?load-balance=true" -Dspring-boot.run.arguments="--DB_INIT=never"` for subsequent runs.
+   For example, from the root of the project, use: `./mvnw spring-boot:run -Dspring-boot.run.profiles=yugabytedb -Dspring-boot.run.arguments="--YBDB_URL=jdbc:postgresql://[host]:[port]/petclinic?load-balance=true"` for the first run and `./mvnw spring-boot:run -Dspring-boot.run.profiles=yugabytedb -Dspring-boot.run.arguments="--YBDB_URL=jdbc:postgresql://[host]:[port]/petclinic?load-balance=true, --DB_INIT=never"` for subsequent runs.
    
    If using the Docker container, from the root of the project, use: `./mvnw spring-boot:run -Dspring-boot.run.profiles=yugabytedb` for the first run and `./mvnw spring-boot:run -Dspring-boot.run.profiles=yugabytedb -Dspring-boot.run.arguments="--DB_INIT=never"` for subsequent runs.
 
