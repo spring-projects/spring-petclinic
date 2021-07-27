@@ -1,12 +1,30 @@
-mysql:
-  image: mysql:5.7
-  ports:
-    - "3306:3306"
-  environment:
-    - MYSQL_ROOT_PASSWORD=
-    - MYSQL_ALLOW_EMPTY_PASSWORD=true
-    - MYSQL_USER=petclinic
-    - MYSQL_PASSWORD=petclinic
-    - MYSQL_DATABASE=petclinic
-  volumes:
-    - "./conf.d:/etc/mysql/conf.d:ro"
+version: "3"
+services:
+    backend:
+      image: petc
+      ports:
+        - "8080:8080"
+      depends_on:
+        - "mysql"
+    mysql:
+      image: mysql:5.7
+      ports:
+        - "3306:3306"
+      environment:
+        - MYSQL_ROOT_PASSWORD=
+        - MYSQL_ALLOW_EMPTY_PASSWORD=true
+        - MYSQL_USER=petclinic
+        - MYSQL_PASSWORD=petclinic
+        - MYSQL_DATABASE=petclinic
+      volumes:
+        - "./conf.d:/etc/mysql/conf.d:ro"
+    nginx:
+      image: nginx
+      ports:
+        - "8000:80"
+      volumes:
+        - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      depends_on:
+        - "mysql"
+        - "backend"
+

@@ -1,0 +1,17 @@
+In order to convert ec2 deployer to docker deployer we need 3 dockers :
+1- backend docker container that will replace the ec2.
+2- frontend docker container that will replace the ELB.
+3- DB docker container .
+
+so to do that we need to follow below steps:
+
+1-clone https://github.com/spring-projects/spring-petclinic.git
+2-run ./mvnw package command .
+3-create Dockerfile for the backend (app will run on it)
+4-create nginx config file to use as loadbalancer.(we chose to use the official image of nginx or to create custom docker file)
+5-create docker-compose.yml and update it to include the petclinic app, nginx and the mysql.
+(we can use the official mysql image in the docker-compose.
+6-to run the app we need to run the command docker-compose up and then go to UPSTREAM NAME:PORT CONFIGURED should find the petclinic app .
+
+ec2 deployer
+docker deployer

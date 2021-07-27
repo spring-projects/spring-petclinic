@@ -1,0 +1,2 @@
+After you have the docker file for the app , nginx config file updated and docker-compose.yml updated accordingly
+all we have to do is run the command: docker-compose up and navigate to UPSTREAM NAME:PORT CONFIGURED should find the petclinic app.
