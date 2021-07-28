@@ -49,7 +49,7 @@ jobs:
 
       - name: CRDA Scan
         id: scan
-        uses: redhat-actions@main
+        uses: redhat-actions/crda@main
         with:
           manifest_file_path: pom.xml
           crda_key: ${{ secrets.CRDA_KEY }}
