@@ -2,7 +2,7 @@ name: CRDA scan Java Example
 on: [ push, workflow_dispatch ]
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     name: Analyse Java project
     env:
       MVN_REPO_DIR: ~/.m2/repository
@@ -53,12 +53,9 @@ jobs:
         with:
           manifest_file_path: pom.xml
           crda_key: ${{ secrets.CRDA_KEY }}
-          analysis_report_file_name: java
-          # snyk_token: ${{ secrets.SNYK_TOKEN }}
-          consent_telemetry: true
           fail_on_vulnerability: false
 
-      - name: Print Report Link
+      - name: Echo Report Link
         run: echo ${{ steps.scan.outputs.report_link }}
 
       - name: Upload result to GitHub Code Scanning
