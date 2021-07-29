@@ -1,0 +1,17 @@
+schemaVersion: 2.0.0
+metadata:
+  name: spring-petclinic
+components:
+  - name: maven
+    container:
+      image: quay.io/eclipse/che-java8-maven:nightly
+      volumeMounts:
+        - name: mavenrepo
+          path: /root/.m2
+      env:
+        - name: ENV_VAR
+          value: value
+      memoryLimit: 1536M
+  - name: mavenrepo
+    volume:
+      size: 1G
