@@ -1,17 +1,45 @@
-schemaVersion: 2.0.0
+schemaVersion: 2.1.0
 metadata:
   name: spring-petclinic
+attributes:
+  che-theia.eclipse.org/sidecar-policy: USE_DEV_CONTAINER
 components:
-  - name: maven
+  - name: tools
     container:
-      image: quay.io/eclipse/che-java8-maven:nightly
+      image: quay.io/eclipse/che-java11-maven:next
+      endpoints:
+        - exposure: none
+          name: debug
+          protocol: tcp
+          targetPort: 5005
+        - exposure: public
+          name: 8080-tcp
+          protocol: http
+          targetPort: 8080
       volumeMounts:
-        - name: mavenrepo
-          path: /root/.m2
-      env:
-        - name: ENV_VAR
-          value: value
+        - name: m2
+          path: /home/user/.m2
       memoryLimit: 1536M
-  - name: mavenrepo
+  - name: m2
     volume:
       size: 1G
+commands:
+  - id: build
+    exec:
+      component: tools
+      workingDir: ${PROJECTS_ROOT}/spring-petclinic
+      commandLine: mvn clean install
+      group:
+        kind: build
+        isDefault: true
+  - id: run
+    exec:
+      component: tools
+      workingDir: ${PROJECTS_ROOT}/spring-petclinic
+      commandLine: >-
+        java -jar -Xdebug
+        -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
+        target/*.jar
+      group:
+        kind: run
+        isDefault: true
