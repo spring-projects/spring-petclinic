@@ -1,0 +1,50 @@
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-analyze:
+    name: Test and Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+    steps:
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: 11
+          distribution: temurin
+
+      - name: Cache Maven Repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-m2-repository-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2-repository
+
+      - name: Cache Maven Wrapper (spring-petclinic)
+        uses: actions/cache@v2
+        with:
+          path: ./spring-petclinic/.mvn/wrapper/maven-wrapper.jar
+          key: ${{ runner.os }}-maven-wrapper-${{ hashFiles('./spring-petclinic/.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: ${{ runner.os }}-spring-petclinic-maven-wrapper
+
+      - uses: actions/checkout@v2
+
+      - name: Build and Run Contrast Scan
+        run: ./mvnw --batch-mode verify
+        env:
+          CONTRAST__API__URL: https://teamserver-staging.contsec.com/Contrast
+          CONTRAST__API__ORGANIZATION_ID: 6fb73b19-37de-44e2-8ac8-0a8de2707048
+          CONTRAST__API__USER_NAME: ${{ secrets.CONTRAST__API__USER_NAME }}
+          CONTRAST__API__API_KEY: ${{ secrets.CONTRAST__API__API_KEY }}
+          CONTRAST__API__SERVICE_KEY: ${{ secrets.CONTRAST__API__SERVICE_KEY }}
+
+      - name: Upload Contrast Scan Results
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: target/contrast-scan-reports/contrast-scan-results.sarif.json
