@@ -1,0 +1,21 @@
+FROM centos:7
+
+RUN yum -y update && yum -y install epel-release https://packages.endpoint.com/rhel/7/os/x86_64/endopoint-repo-1.7-1.x86_64.rpm
+RUN yum -y install \
+	git \
+	sudo \
+	java-1.8.0-openjdk-devel
+
+COPY maven/apache-maven-3.8.1-bin.tar.gz apache-maven-3.8.1-bin.tar.gz
+RUN mkdir /usr/share/maven \
+	&& tar -xzf apache-maven-3.8.1-bin.tar.gz -C /usr/share/maven --strip-components=1 \
+	&& ln -s /usr/share/maven/bin/mvn /usr/bin/mvn \
+	&& rm apache-maven-3.8.1-bin.tar.gz
+
+COPY maven/settings.xml /usr/share/maven/conf/settings.xml
+COPY maven/toolchains.xml /usr/share/maven/conf/toolchains.xml
+
+ENV JAVA_HOME /usr/lib/jvm/jre
+ENV MAVEN_HOME /usr/share/maven
+ENV MAVEN_CONFIG /root/.m2
+ENV MAVEN_OPTS -Dmaven.repo.local=.m2/repository
