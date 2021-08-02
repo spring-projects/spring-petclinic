@@ -21,7 +21,7 @@ stages:
     displayName: BuildMaven
     jobs:
       - job: build
-        contaner:
+        container:
           image: springclinic.jfrog.io/default-docker-local/docker_repo:latest
         workspace:
           clean: all
