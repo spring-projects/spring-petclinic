@@ -23,7 +23,7 @@ stages:
       - job: build
         container:
           image: springclinic.jfrog.io/default-docker-local/docker_repo:latest
-          endpoint: "artifactory"
+          endpoint: "Artifactory"
         workspace:
           clean: all
         steps:
