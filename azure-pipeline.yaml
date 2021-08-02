@@ -1,0 +1,37 @@
+trigger:
+  branches:
+    include:
+      - feat/*
+
+parameters:
+  - name: pom
+    displayName: Location Of pom.xml
+    type: string
+    default: pom.xml
+  
+pool:
+  name: Default
+  
+variables: 
+  MAVEN_CACHE_FOLDER: $(Pipeline.Workspace)/.m2/repository
+  MAVEN_OPTS: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
+  
+stages:
+  - stage: BuildMaven
+    displayName: BuildMaven
+    jobs:
+      - job: build
+        contaner:
+          image: springclinic.jfrog.io/default-docker-local/docker_repo:latest
+        workspace:
+          clean: all
+        steps:
+          - task: Maven@3
+            displayName: mvn clean
+            inputs:
+              mavenPomFile: ${{parameters.pom}}
+              mavenOptions: $(MAVEN_OPTS)
+              goals: clean
+              
+        
+  
