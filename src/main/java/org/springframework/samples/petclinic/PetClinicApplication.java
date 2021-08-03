@@ -19,11 +19,13 @@ package org.springframework.samples.petclinic;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.lang.reflect.InvocationTargetException;
+import java.nio.file.FileSystems;
+
 /**
  * PetClinic Spring Boot Application.
  *
  * @author Dave Syer
- *
  */
 @SpringBootApplication(proxyBeanMethods = false)
 public class PetClinicApplication {
@@ -32,4 +34,23 @@ public class PetClinicApplication {
 		SpringApplication.run(PetClinicApplication.class, args);
 	}
 
+	public static String takeAppMapSnapshot() {
+		return takeAppMapSnapshot(FileSystems.getDefault().getPath(System.getProperty("user.dir")).resolve("checkpoint.appmap.json").toString());
+	}
+
+	public static String takeAppMapSnapshot(String filePath) {
+		try {
+			Object recorder = Class.forName("com.appland.appmap.record.Recorder").getMethod("getInstance").invoke(null);
+			Boolean hasActiveSession = (Boolean) recorder.getClass().getMethod("hasActiveSession").invoke(recorder);
+			if ( !hasActiveSession.booleanValue() ) {
+				return "There's no AppMap recording in progress. Start an AppMap recording in order to take a snapshot.";
+			}
+
+			Object recording = recorder.getClass().getMethod("checkpoint").invoke(recorder);
+			recording.getClass().getMethod("moveTo", String.class).invoke(recording, filePath);
+			return filePath;
+		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+	}
 }
