@@ -8,13 +8,11 @@ Petclinic is a [Spring Boot](https://spring.io/guides/gs/spring-boot) applicatio
 
 
 ```
-git clone https://github.com/spring-projects/spring-petclinic.git
-cd spring-petclinic
-./mvnw package
-java -jar target/*.jar
+docker pull attaulbari/springclinic:52
+docker run -p 8081:8080 attaulbari/springclinic:52
 ```
 
-You can then access petclinic here: http://localhost:8080/
+Open the browser paste http://localhost:8081/ and you will see the application runinning inside container.
 
 <img width="1042" alt="petclinic-screenshot" src="https://cloud.githubusercontent.com/assets/838318/19727082/2aee6d6c-9b8e-11e6-81fe-e889a5ddfded.png">
 
