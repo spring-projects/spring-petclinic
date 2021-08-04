@@ -5,7 +5,6 @@ pipeline {
         registryCredential = 'dockerhub' 
         dockerImage = ''
         JAVA_TOOL_OPTIONS = "-Duser.home=/home/jenkins"
-        MAVEN_CONFIG=/home/jenkins/.m2
         }
     
     agent any
