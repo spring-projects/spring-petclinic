@@ -8,10 +8,21 @@ pipeline {
     stages {
         stage("Build") {
             steps {
-            sh "docker build -t ledger-service ."
+            sh "mvn clean install -Dcheckstyle.skip"
             }
         }
     }
+    
+    
+    stages {
+        stage("Build") {
+            steps {
+            sh "docker build -t ledger-service ."
+            }
+        }
+    }    
+    
+    
 
     post {
         always {
