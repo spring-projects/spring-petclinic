@@ -1,4 +1,11 @@
 pipeline {
+    
+    environment { 
+        registry = "attaulbari/springclinic"
+        registryCredential = 'dockerhub' 
+        dockerImage = ''
+        }
+    
     agent any
 
     tools {
@@ -13,14 +20,52 @@ pipeline {
             }
         }
         
+        
+        stage("upload") {
+            steps {
+                rtUpload (
+                    buildName: JOB_NAME,
+                    buildNumber: BUILD_NUMBER,
+                    serverId: SERVER_ID,
+                     spec: '''{
+                               "files": [
+                                  {
+                                    "pattern": "**/target/*.jar",
+                                    "target": "result/",
+                                    "recursive": "false"
+                                    }
+                                  ]
+                              }'''  
+                            )
+                          }
+                        }
+                                  
+        
     
         stage("Dcoker") {
             steps {
-            sh "docker build -t springclinic:${env.BUILD_ID} ."
+                script {
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER" 
+                    }
+                }
             }
-        }
+            
+        stage("Deploy Image"){
+            steps {
+                script {
+                    docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push()
+                     }
+                   }   
+                }                 
+             }
     
-    
+        stage("Image clean up") {
+            steps {
+                sh "docker rmi $registry:$BUILD_NUMBER" 
+                   }
+            }
+            
     
     }    
     
