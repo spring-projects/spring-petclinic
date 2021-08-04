@@ -12,6 +12,7 @@ pipeline {
         }
       }
       steps {
+        sh 'cp settings.xml /home/jenkins/.m2/'
         sh 'mvn clean install -Dcheckstyle.skip'
       }
     }
