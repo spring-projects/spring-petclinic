@@ -1,26 +1,34 @@
-#!groovy
-
 pipeline {
-  agent none
-  stages {
-    stage('Maven Install') {
-      agent {
+     environment {
+         JAVA_TOOL_OPTIONS = "-Duser.home=/home/jenkins"
+    }
+    agent {
         docker {
-          image 'maven:3.8.1'
-          label "docker"
-          args "-v /tmp/maven:/home/maven/.m2 -e MAVEN_CONFIG=/home/maven/.m2"
+            image "maven:3.8.1-jdk-11"
+            label "docker"
+            args "-v /tmp/maven:/home/jenkins/.m2 -e MAVEN_CONFIG=/home/jenkins/.m2"
         }
-      }
-      steps {
-        sh 'cp settings.xml /home/jenkins/.m2/'
-        sh 'mvn clean install -Dcheckstyle.skip'
-      }
     }
-    stage('Docker Build') {
-      agent any
-      steps {
-        sh 'docker build -t shanem/spring-petclinic:latest .'
-      }
+
+    stages {
+        stage('Build') {
+            steps {
+                sh 'cp settings.xml /home/jenkins/.m2/'
+                sh 'mvn clean install -Dcheckstyle.skip'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'docker build -t shanem/spring-petclinic:latest .'
+                // bat '.\\mvnw test'
+            }
+
+            post {
+                always {
+                    junit '**/target/surefire-reports/TEST-*.xml'
+                    cleanWs()
+                }
+            }
+        }
     }
-  }
 }
