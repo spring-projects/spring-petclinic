@@ -35,13 +35,16 @@ pipeline {
                     docker.withRegistry( '', registryCredential ) {
                         dockerImage.push()
                      }
+                   }   
+                }                 
+             }
+    
+        stage("Image clean up") {
+            steps {
+                sh "docker rmi $registry:$BUILD_NUMBER" 
                    }
-                   
-                 }
-                 
-                }
-    
-    
+            }
+            
     
     }    
     
