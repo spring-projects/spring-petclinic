@@ -1,4 +1,11 @@
 pipeline {
+    
+    environment { 
+        registry = "attaulbari/springclinic"
+        registryCredential = 'dockerhub' 
+        dockerImage = ''
+        }
+    
     agent any
 
     tools {
