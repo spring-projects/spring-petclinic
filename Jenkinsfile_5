@@ -21,7 +21,6 @@ pipeline {
         stage('Test') {
             steps {
                 sh 'mvn test -Dcheckstyle.skip'
-                // bat '.\\mvnw test'
             }
 
             post {
@@ -33,6 +32,7 @@ pipeline {
             steps {
                 sh 'docker build -t shanem/spring-petclinic:latest .'   
                 cleanWs()
+                }
                 }
             }
         }
