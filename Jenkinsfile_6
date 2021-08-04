@@ -7,6 +7,8 @@ pipeline {
       agent {
         docker {
           image 'maven:3.8.1'
+          label "docker"
+          args "-v /tmp/maven:/home/maven/.m2 -e MAVEN_CONFIG=/home/maven/.m2"
         }
       }
       steps {
