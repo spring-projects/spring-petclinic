@@ -4,6 +4,8 @@ pipeline {
         registry = "attaulbari/springclinic"
         registryCredential = 'dockerhub' 
         dockerImage = ''
+        JAVA_TOOL_OPTIONS = "-Duser.home=/home/jenkins"
+        MAVEN_CONFIG=/home/jenkins/.m2
         }
     
     agent any
@@ -15,7 +17,7 @@ pipeline {
     stages {
         stage("Build") {
             steps {
-            sh 'cp settings.xml /root/.m2/'
+            sh 'cp settings.xml /home/jenkins/.m2/'
             sh "mvn clean install -Dcheckstyle.skip"
             }
         }
