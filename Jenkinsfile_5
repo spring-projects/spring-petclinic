@@ -28,7 +28,7 @@ pipeline {
                     junit '**/target/surefire-reports/TEST-*.xml'
                     
                 }
-        stage('Docker Build') {
+        stage('Build') {
             steps {
                 sh 'docker build -t shanem/spring-petclinic:latest .'   
                 cleanWs()
