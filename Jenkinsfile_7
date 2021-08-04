@@ -13,7 +13,7 @@ pipeline {
         }
     
     
-        stage("Build") {
+        stage("Dcoker") {
             steps {
             sh "docker build -t ledger-service ."
             }
