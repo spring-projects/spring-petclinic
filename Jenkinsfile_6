@@ -17,7 +17,7 @@ pipeline {
                 sh 'mvn clean install -Dcheckstyle.skip'
             }
         }
-        stage('Test') {
+        stage('Build Docker Image') {
             steps {
                 sh 'docker build -t shanem/spring-petclinic:latest .'
                 // bat '.\\mvnw test'
