@@ -7,6 +7,13 @@ node {
         checkout scm
     }
 
+
+    stage('Build image') {
+        sh 'cp settings.xml /home/jenkins/.m2/'
+        sh 'mvn clean install -Dcheckstyle.skip'
+    }
+
+
     stage('Build image') {
         /* This builds the actual image; synonymous to
          * docker build on the command line */
