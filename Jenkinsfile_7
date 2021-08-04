@@ -16,7 +16,7 @@ pipeline {
     
         stage("Dcoker") {
             steps {
-            sh "docker build -t ledger-service ."
+            sh "docker build -t springclinic:${env.BUILD_ID} ."
             }
         }
     }    
