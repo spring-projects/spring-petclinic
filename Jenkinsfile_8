@@ -16,12 +16,9 @@ pipeline {
         stage("Dcoker") {
             steps {
               scripts {
-                dockerImage = docker.build registry + ":$BUILD_NUMBER" 
-                
+                dockerImage = docker.build registry + ":$BUILD_NUMBER"               
             }
-        }
-    
-    
+        }      
     }    
     
     post {
