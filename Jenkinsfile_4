@@ -13,7 +13,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'cp settings.xml /home/jenkins/.m2/'
-                sh 'mvn clean install'
+                sh 'mvn clean install -Dcheckstyle.skip'
             }
         }
         stage('Test') {
