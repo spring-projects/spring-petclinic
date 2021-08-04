@@ -12,18 +12,24 @@ pipeline {
     }
 
     stages {
-        stage("Build") {
+        stage('Build') {
             steps {
-                sh "mvn -version"
-                sh "mvn test -Dcheckstyle.skip"
-                sh "mvn clean install -Dcheckstyle.skip"
+                sh 'cp settings.xml /home/jenkins/.m2/'
+                sh 'mvn clean install -Dcheckstyle.skip'
             }
         }
-    }
+        stage('Test') {
+            steps {
+                sh 'mvn test -Dcheckstyle.skip'
+                // bat '.\\mvnw test'
+            }
 
-    post {
-        always {
-            cleanWs()
+            post {
+                always {
+                    junit '**/target/surefire-reports/TEST-*.xml'
+                    cleanWs()
+                }
+            }
         }
     }
 }
