@@ -21,7 +21,7 @@ pipeline {
         }
         
         
-        stage("upload") {
+        stage("upload to artifactory") {
             steps {
                 rtUpload (
                     buildName: JOB_NAME,
@@ -42,7 +42,7 @@ pipeline {
                                   
         
     
-        stage("Dcoker") {
+        stage("Dcoker build") {
             steps {
                 script {
                     dockerImage = docker.build registry + ":$BUILD_NUMBER" 
@@ -50,7 +50,7 @@ pipeline {
                 }
             }
             
-        stage("Deploy Image"){
+        stage("Deploy Image to dockerhub"){
             steps {
                 script {
                     docker.withRegistry( '', registryCredential ) {
