@@ -12,19 +12,26 @@ pipeline {
             sh "mvn clean install -Dcheckstyle.skip"
             }
         }
-              
+        
+    
         stage("Dcoker") {
             steps {
-              scripts {
-                dockerImage = docker.build registry + ":$BUILD_NUMBER"               
+                script {
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER" 
+                    }
+                }
             }
-        }      
+    
+    
+    
     }    
     
     
+
     post {
         always {
             junit '**/target/surefire-reports/TEST-*.xml'
             cleanWs()
         }
     }
+}
