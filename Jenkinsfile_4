@@ -12,6 +12,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
+                sh 'cp settings.xml /home/jenkins/.m2/'
                 sh 'mvn clean compile -Dcheckstyle.skip'
                 // bat '.\\mvnw clean compile'
             }
