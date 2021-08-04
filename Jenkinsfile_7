@@ -1,12 +1,18 @@
-node {
-    def app
+#node {
+#    def app
+#
+#    stage('Clone repository') {
+#        /* Let's make sure we have the repository cloned to our workspace */
+#
+#        checkout scm
+#    }
 
-    stage('Clone repository') {
-        /* Let's make sure we have the repository cloned to our workspace */
+pipeline {
+    agent any
 
-        checkout scm
+    tools {
+        maven "3.8.1" // You need to add a maven with name "3.6.0" in the Global Tools Configuration page
     }
-
 
     stage('Build image') {
         sh 'mvn clean install -Dcheckstyle.skip'
