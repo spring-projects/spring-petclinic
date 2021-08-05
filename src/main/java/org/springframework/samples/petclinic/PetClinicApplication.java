@@ -16,8 +16,12 @@
 
 package org.springframework.samples.petclinic;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.MessageSource;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
 /**
  * PetClinic Spring Boot Application.
@@ -28,8 +32,22 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication(proxyBeanMethods = false)
 public class PetClinicApplication {
 
+	@Value("${spring.messages.basename}")
+	private String messagesBasename;
+
 	public static void main(String[] args) {
 		SpringApplication.run(PetClinicApplication.class, args);
+	}
+
+	// The spring.messages.basename property in application.properties does not
+	// support external paths like `file:/some/path/messages` so we set the
+	// property with `ReloadableResourceBundleMessageSource` where the `file:`
+	// notation is supported
+	@Bean
+	public MessageSource messageSource() {
+		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+		messageSource.setBasenames(messagesBasename);
+		return messageSource;
 	}
 
 }
