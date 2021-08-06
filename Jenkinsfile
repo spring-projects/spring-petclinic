@@ -12,7 +12,10 @@ pipeline {
     }
     stage('build') {
       steps {
-        docker build -t thorak2001/spring-petclinic:latest .
+        echo 'Starting to build docker image'
+        script {
+          def app = docker.build("thorak2001/spring-petclinic:${env.BUILD_ID}")
+        } 
       }
     }
     stage('create artifact') {
