@@ -12,7 +12,9 @@ pipeline {
     }
     stage('build') {
       steps {
-        echo 'Docker image build'
+        sh """
+          docker build -t thorak2001/spring-petclinic:latest .
+        """
       }
     }
     stage('create artifact') {
