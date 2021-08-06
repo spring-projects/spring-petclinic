@@ -1,6 +1,5 @@
 pipeline {
   agent any
-  def app
   stages {
     stage('checkout') {
       steps {
@@ -13,7 +12,7 @@ pipeline {
     }
     stage('build') {
       steps {
-        app = docker.build("thorak2001/spring-petclinic:latest")
+        docker build -t thorak2001/spring-petclinic:latest .
       }
     }
     stage('create artifact') {
