@@ -30,7 +30,7 @@ spec:
   stages {
     stage('checkout') {
       steps {
-        container ('jnlp')
+        container ('jnlp') {
           checkout([
             $class: 'GitSCM', 
             branches: [[name: '*/main']], 
