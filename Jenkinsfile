@@ -1,8 +1,7 @@
 pipeline {
   agent {
     kubernetes {
-      label 'spring-petclinic-demo'
-      defaultContainer 'jnlp'
+      label 'jenkins-jenkins-agent'
     }
   }
   stages {
