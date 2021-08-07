@@ -1,23 +1,31 @@
 pipeline {
+  environment {
+    registry = "thorak2001/spring-petclinic"
+    registryCredential = 'dockerhub'
+    dockerImage = ''
+  }
   agent any
   stages {
-    stage('checkout') {
+    stage('Cloning Git') {
       steps {
-        checkout([
-          $class: 'GitSCM', 
-          branches: [[name: '*/main']], 
-          userRemoteConfigs: [[url: 'https://github.com/thorak007/spring-petclinic.git']]
-        ])
+        git 'https://github.com/thorak007/spring-petclinic.git'
       }
     }
-    stage('build') {
-      steps {
-        echo 'Starting to build docker image'
+    stage('Building image') {
+      steps{
         script {
-          def app = docker.build("thorak2001/spring-petclinic:${env.BUILD_ID}")
-        } 
+          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+        }
+      }
+    }
+    stage('Deploy Image') {
+      steps{
+        script {
+          docker.withRegistry( '', registryCredential ) {
+            dockerImage.push()
+          }
+        }
       }
     }
   }
 }
-
