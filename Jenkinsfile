@@ -7,7 +7,7 @@ pipeline {
   agent {
     kubernetes {
       defaultContainer 'jnlp'
-      yamlFile ‘jenkins-slave.yaml'
+      yamlFile 'jenkins-slave.yaml'
     }
   }
   stages {
