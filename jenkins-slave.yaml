@@ -1,0 +1,17 @@
+metadata:
+  labels:
+    app: jenkins-slave
+spec:
+  containers:
+    - name: toolbox
+      image: thorak2001/jenkins-slave:0.0.1
+      command:
+        - cat
+      tty: true
+      volumeMounts:
+        - mountPath: /var/run/docker.sock
+          name: docker-sock
+  volumes:
+    - name: docker-sock
+      hostPath:
+        path: /var/run/docker.sock

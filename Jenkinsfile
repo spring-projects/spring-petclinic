@@ -4,25 +4,36 @@ pipeline {
     registryCredential = 'dockerhub'
     dockerImage = ''
   }
-  agent any
+  agent {
+    kubernetes {
+      defaultContainer 'jnlp'
+      yamlFile ‘jenkins-slave.yaml'
+    }
+  }
   stages {
     stage('Cloning Git') {
       steps {
-        git 'https://github.com/thorak007/spring-petclinic.git'
+        container('toolbox') {
+          checkout scm
+        }
       }
     }
     stage('Building image') {
-      steps{
-        script {
-          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+      steps {
+        container('toolbox') {
+          script {
+            dockerImage = docker.build registry + ":$BUILD_NUMBER"
+          }
         }
       }
     }
     stage('Deploy Image') {
-      steps{
-        script {
-          docker.withRegistry( '', registryCredential ) {
-            dockerImage.push()
+      steps {
+        container('toolbox') {
+          script {
+            docker.withRegistry( '', registryCredential ) {
+              dockerImage.push()
+            }
           }
         }
       }
