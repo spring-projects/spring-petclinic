@@ -30,7 +30,7 @@ spec:
   stages {
     stage('checkout') {
       steps {
-        container ('jnlp') {
+        container('jnlp') {
           checkout([
             $class: 'GitSCM', 
             branches: [[name: '*/main']], 
@@ -41,7 +41,7 @@ spec:
     }
     stage('build') {
       steps {
-        container ('docker') {
+        container('docker') {
           echo 'Starting to build docker image'
           script {
             def app = docker.build("thorak2001/spring-petclinic:${env.BUILD_ID}")
