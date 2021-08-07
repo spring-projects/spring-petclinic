@@ -26,6 +26,7 @@ spec:
         path: /var/run/docker.sock
 """
 }
+  }
   stages {
     stage('checkout') {
       steps {
