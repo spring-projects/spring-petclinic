@@ -4,6 +4,7 @@ WORKDIR /app
 
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
+RUN echo "nameserver  8.8.8.8" > /etc/resolv.conf
 RUN ./mvnw dependency:go-offline
 
 COPY src ./src
