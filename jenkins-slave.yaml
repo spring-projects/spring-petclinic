@@ -4,7 +4,7 @@ metadata:
 spec:
   containers:
     - name: toolbox
-      image: thorak2001/jenkins-slave:0.0.1
+      image: thorak2001/jenkins-slave:0.0.2
       command:
         - cat
       tty: true
