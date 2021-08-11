@@ -53,7 +53,7 @@ pipeline {
             sh """
               helm repo add app-chart https://thorak007.github.io/app-chart
               helm repo update
-              helm upgrade app-release-dev app-chart/mychart --set deploy.containerTag=${dockerImageTag}
+              helm upgrade app-release-dev app-chart/mychart --set deploy.containerTag=${dockerImageTag} -n dev
             """
           }
         }
@@ -69,7 +69,7 @@ pipeline {
             sh """
               helm repo add app-chart https://thorak007.github.io/app-chart
               helm repo update
-              helm upgrade app-release-prod app-chart/mychart --set deploy.containerTag=${dockerImageTag}
+              helm upgrade app-release-prod app-chart/mychart --set deploy.containerTag=${dockerImageTag} -n prod
             """
           }
         }
