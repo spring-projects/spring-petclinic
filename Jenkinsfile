@@ -22,7 +22,9 @@ pipeline {
       steps {
         container('toolbox') {
           script {
-            dockerImage = docker.build registry + ":$BUILD_NUMBER"
+            sh """ 
+              docker build --network=host -t ${registry}:${env.BUILD_NUMBER} .
+            """
           }
         }
       }
@@ -32,7 +34,9 @@ pipeline {
         container('toolbox') {
           script {
             docker.withRegistry( '', registryCredential ) {
-              dockerImage.push()
+              sh """
+                docker push "${registry}:${env.BUILD_NUMBER}"
+              """
             }
           }
         }
@@ -40,3 +44,4 @@ pipeline {
     }
   }
 }
+
