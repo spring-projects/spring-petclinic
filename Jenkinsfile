@@ -2,6 +2,7 @@ pipeline {
   environment {
     registry = "thorak2001/spring-petclinic"
     registryCredential = 'dockerhub'
+    dockerImageTag = 'latest'
     dockerImage = ''
   }
   agent {
@@ -11,14 +12,14 @@ pipeline {
     }
   }
   stages {
-    stage('Cloning Git') {
+    stage('CHECKOUT') {
       steps {
         container('toolbox') {
           checkout scm
         }
       }
     }
-    stage('Building image') {
+    stage('BUILD') {
       steps {
         container('toolbox') {
           script {
@@ -29,7 +30,7 @@ pipeline {
         }
       }
     }
-    stage('Deploy Image') {
+    stage('CREATE ARTIFACT') {
       steps {
         container('toolbox') {
           script {
@@ -42,6 +43,37 @@ pipeline {
         }
       }
     }
+    stage('DEPLOY CI') {
+      when {
+        branch 'dev'
+      }
+      steps {
+        container('toolbox') {
+          script {
+            sh """
+              helm repo add app-chart https://thorak007.github.io/app-chart
+              helm repo update
+              helm upgrade app-release app-chart/mychart --set deploy.containerTag=${dockerImageTag}
+            """
+          }
+        }
+      }
+    }
+    stage('DEPLOY QA') {
+      when {
+        branch 'prod'
+      }
+      steps {
+        container('toolbox') {
+          script {
+            sh """
+              helm repo add app-chart https://thorak007.github.io/app-chart
+              helm repo update
+              helm upgrade app-release app-chart/mychart --set deploy.containerTag=${dockerImageTag}
+            """
+          }
+        }
+      }
+    }
   }
 }
-
