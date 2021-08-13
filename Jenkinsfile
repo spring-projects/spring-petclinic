@@ -2,8 +2,6 @@ pipeline {
   environment {
     registry = "thorak2001/spring-petclinic"
     registryCredential = 'dockerhub'
-    dockerImageTag = 'latest'
-    dockerImage = ''
   }
   agent {
     kubernetes {
@@ -53,7 +51,7 @@ pipeline {
             sh """
               helm repo add app-chart https://thorak007.github.io/app-chart
               helm repo update
-              helm upgrade app-release-dev app-chart/mychart --set deploy.containerTag=${dockerImageTag} -n dev
+              helm upgrade app-release-dev app-chart/mychart --set deploy.containerTag=${env.BUILD_NUMBER} -n dev --reuse-values
             """
           }
         }
@@ -69,7 +67,7 @@ pipeline {
             sh """
               helm repo add app-chart https://thorak007.github.io/app-chart
               helm repo update
-              helm upgrade app-release-prod app-chart/mychart --set deploy.containerTag=${dockerImageTag} -n prod
+              helm upgrade app-release-prod app-chart/mychart --set deploy.containerTag=${env.BUILD_NUMBER} -n prod --reuse-values
             """
           }
         }
