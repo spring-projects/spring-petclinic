@@ -17,12 +17,23 @@ pipeline {
         }
       }
     }
+    stage('TEST') {
+      steps {
+        container('toolbox') {
+          script {
+            sh """
+              docker build --network=host -t ${registry}:${env.BUILD_NUMBER} --target test .
+            """
+          }
+        }
+      }
+    }
     stage('BUILD') {
       steps {
         container('toolbox') {
           script {
             sh """ 
-              docker build --network=host -t ${registry}:${env.BUILD_NUMBER} .
+              docker build --network=host -t ${registry}:${env.BUILD_NUMBER} --target production .
             """
           }
         }
