@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('show work directory') {
       steps {
-        sh 'ls -la'
+        sh 'ls -la && pwd'
       }
     }
 
