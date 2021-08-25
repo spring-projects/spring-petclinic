@@ -19,5 +19,11 @@ pipeline {
       }
     }
 
+    stage('build app') {
+      steps {
+        sh 'mvn package -Dmaven.test.skip=true'
+      }
+    }
+
   }
 }
