@@ -27,8 +27,9 @@ pipeline {
 
     stage('release') {
       steps {
-        sh 'git push --set-upstream origin pet-project'
+        sh 'git remote add springpet https://github.com/NikosNS/spring-petclinic.git'
         git(url: 'https://github.com/NikosNS/spring-petclinic.git', branch: 'pet-project', credentialsId: 'git')
+        sh 'git push --set-upstream springpet pet-project'
         sh './mvnw release:prepare'
       }
     }
