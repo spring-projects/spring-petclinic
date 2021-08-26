@@ -27,7 +27,6 @@ pipeline {
 
     stage('release') {
       steps {
-        sh 'git remote add springpet https://github.com/NikosNS/spring-petclinic.git'
         git(url: 'https://github.com/NikosNS/spring-petclinic.git', branch: 'pet-project', credentialsId: 'git')
         sh 'git config --global credential.helper cache'
         sh 'git push --set-upstream springpet pet-project'
