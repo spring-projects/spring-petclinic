@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('show work directory') {
       steps {
-        sh 'ls -la && pwd'
+        sh 'sudo cp /home/ubuntu/pom.xml /var/lib/jenkins/workspace/spring-petclinic_pet-project'
       }
     }
 
