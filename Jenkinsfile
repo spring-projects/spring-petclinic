@@ -25,5 +25,11 @@ pipeline {
       }
     }
 
+    stage('release') {
+      steps {
+        sh './mvnw release:prepare'
+      }
+    }
+
   }
 }
