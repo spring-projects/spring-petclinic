@@ -57,6 +57,7 @@
     <tr th:if="${!visit['new']}" th:each="visit : ${pet.visits}">
       <td th:text="${#temporals.format(visit.date, 'yyyy-MM-dd')}"></td>
       <td th:text=" ${visit.description}"></td>
+      <td th:text=" ${visit.getVeterinarians().getFirstName() + ' ' + visit.getVeterinarians().getLastName()}"></td>
     </tr>
   </table>
 
