@@ -15,20 +15,19 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import java.util.Collection;
 import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.springframework.samples.petclinic.vet.Vet;
+import org.springframework.samples.petclinic.vet.VetRepository;
 import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Juergen Hoeller
@@ -44,9 +43,12 @@ class VisitController {
 
 	private final PetRepository pets;
 
-	public VisitController(VisitRepository visits, PetRepository pets) {
+	private final VetRepository vets;
+
+	public VisitController(VisitRepository visits, PetRepository pets, VetRepository vets) {
 		this.visits = visits;
 		this.pets = pets;
+		this.vets = vets;
 	}
 
 	@InitBinder
@@ -67,6 +69,7 @@ class VisitController {
 		pet.setVisitsInternal(this.visits.findByPetId(petId));
 		model.put("pet", pet);
 		Visit visit = new Visit();
+		model.put("veterinarians", this.vets.findAll());
 		pet.addVisit(visit);
 		return visit;
 	}
@@ -79,7 +82,7 @@ class VisitController {
 
 	// Spring MVC calls method loadPetWithVisit(...) before processNewVisitForm is called
 	@PostMapping("/owners/{ownerId}/pets/{petId}/visits/new")
-	public String processNewVisitForm(@Valid Visit visit, BindingResult result) {
+	public String processNewVisitForm(@RequestParam Integer veterinarians, @Valid Visit visit, BindingResult result) {
 		if (result.hasErrors()) {
 			return "pets/createOrUpdateVisitForm";
 		}
