@@ -48,5 +48,6 @@ public interface VisitRepository extends Repository<Visit, Integer> {
 	@Transactional(readOnly = true)
 	boolean existsById(int visitId);
 
+	@Transactional(readOnly = true)
     Visit findById(int visitId);
 }

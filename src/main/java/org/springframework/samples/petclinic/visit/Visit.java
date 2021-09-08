@@ -45,6 +45,9 @@ public class Visit extends BaseEntity {
 	@Column(name = "pet_id")
 	private Integer petId;
 
+	@Column(name = "activity")
+	private boolean activity = true;
+
 	@ManyToOne
 	@JoinColumn(name = "veterinarians_id")
 	private Vet veterinarians;
@@ -55,6 +58,14 @@ public class Visit extends BaseEntity {
 
 	public void setVeterinarians(Vet veterinarians) {
 		this.veterinarians = veterinarians;
+	}
+
+	public boolean isActivity() {
+		return activity;
+	}
+
+	public void setActivity(boolean activity) {
+		this.activity = activity;
 	}
 
 	/**

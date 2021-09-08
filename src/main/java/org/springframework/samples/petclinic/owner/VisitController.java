@@ -116,4 +116,16 @@ class VisitController {
 			return "redirect:/owners/{ownerId}";
 		}
 	}
+
+	@PostMapping("/owners/{ownerId}/pets/{petId}/visits/{visitId}/cancel")
+	public String cancelVisitForm(@PathVariable("visitId") int visitId,
+								  Map<String, Object> model) {
+		if (visits.existsById(visitId)) {
+			Visit visit = visits.findById(visitId);
+			visit.setActivity(false);
+			this.visits.save(visit);
+			return "redirect:/owners/{ownerId}";
+		} else
+			return ResponseEntity.notFound().build().toString();
+	}
 }

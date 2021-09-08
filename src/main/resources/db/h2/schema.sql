@@ -59,6 +59,7 @@ CREATE TABLE visits (
   pet_id      INTEGER NOT NULL,
   visit_date  DATE,
   description VARCHAR(255),
+  activity    BOOLEAN DEFAULT TRUE,
   veterinarians_id INTEGER NOT NULL
 );
 ALTER TABLE visits ADD CONSTRAINT fk_visits_pets FOREIGN KEY (pet_id) REFERENCES pets (id);
