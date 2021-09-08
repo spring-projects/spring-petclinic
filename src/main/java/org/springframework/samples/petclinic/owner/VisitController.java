@@ -20,6 +20,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.samples.petclinic.vet.VetRepository;
 import org.springframework.samples.petclinic.visit.Visit;
@@ -60,6 +61,7 @@ class VisitController {
 	 * Called before each and every @RequestMapping annotated method. 2 goals: - Make sure
 	 * we always have fresh data - Since we do not use the session scope, make sure that
 	 * Pet object always has an id (Even though id is not part of the form fields)
+	 *
 	 * @param petId
 	 * @return Pet
 	 */
@@ -85,11 +87,33 @@ class VisitController {
 	public String processNewVisitForm(@RequestParam Integer veterinarians, @Valid Visit visit, BindingResult result) {
 		if (result.hasErrors()) {
 			return "pets/createOrUpdateVisitForm";
-		}
-		else {
+		} else {
 			this.visits.save(visit);
 			return "redirect:/owners/{ownerId}";
 		}
 	}
 
+	@GetMapping("/owners/*/pets/{petId}/visits/{visitId}/edit")
+	public String viewUpdateVisitForm(@PathVariable("visitId") int visitId,
+									  Map<String, Object> model) {
+		if (visits.existsById(visitId)) {
+			model.put("visit", visits.findById(visitId));
+			return "pets/createOrUpdateVisitForm";
+		} else
+			return ResponseEntity.notFound().build().toString();
+	}
+
+	@PostMapping("/owners/{ownerId}/pets/{petId}/visits/{visitId}/edit")
+	public String processUpdateVisitForm(@PathVariable("visitId") int visitId,
+										 @Valid Visit visit,
+										 BindingResult result,
+										 Map<String, Object> model) {
+		if (result.hasErrors()) {
+			return "pets/createOrUpdateVisitForm";
+		} else {
+			visit.setId(visitId);
+			this.visits.save(visit);
+			return "redirect:/owners/{ownerId}";
+		}
+	}
 }

@@ -65,6 +65,9 @@
               <td th:text="${#temporals.format(visit.date, 'yyyy-MM-dd')}"></td>
               <td th:text="${visit?.description}"></td>
               <td th:text="${visit.getVeterinarians().getFirstName() + ' ' + visit.getVeterinarians().getLastName()}"></td>
+              <td><a
+                th:href="@{{ownerId}/pets/{petId}/visits/{visitId}/edit(ownerId=${owner.id},petId=${pet.id},visitId=${visit.getId()})}">Edit
+                Visit</a></td>
             </tr>
             <tr>
               <td><a

@@ -15,12 +15,12 @@
  */
 package org.springframework.samples.petclinic.visit;
 
-import java.util.List;
-
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.repository.Repository;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Repository class for <code>Visit</code> domain objects All method names are compliant
@@ -44,4 +44,9 @@ public interface VisitRepository extends Repository<Visit, Integer> {
 
 	@Transactional(readOnly = true)
 	List<Visit> findByPetId(Integer petId);
+
+	@Transactional(readOnly = true)
+	boolean existsById(int visitId);
+
+    Visit findById(int visitId);
 }
