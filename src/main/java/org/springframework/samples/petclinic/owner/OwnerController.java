@@ -15,6 +15,8 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +30,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,15 +42,26 @@ import java.util.Map;
 @Controller
 class OwnerController {
 
+
 	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
 
-	private final OwnerRepository owners;
+	private final OwnerRepository ownerRepository;
+
+	private  OwnerService ownerService;
 
 	private VisitRepository visits;
 
-	public OwnerController(OwnerRepository clinicService, VisitRepository visits) {
-		this.owners = clinicService;
+	private String lastName;
+
+	private int totalPages=0;
+
+
+
+
+	public OwnerController(OwnerRepository clinicService, VisitRepository visits,OwnerService ownerService) {
+		this.ownerRepository = clinicService;
 		this.visits = visits;
+		this.ownerService=ownerService;
 	}
 
 	@InitBinder
@@ -68,7 +82,7 @@ class OwnerController {
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 		}
 		else {
-			this.owners.save(owner);
+			this.ownerRepository.save(owner);
 			return "redirect:/owners/" + owner.getId();
 		}
 	}
@@ -80,7 +94,7 @@ class OwnerController {
 	}
 
 	@GetMapping("/owners")
-	public String processFindForm(Owner owner, BindingResult result, Map<String, Object> model) {
+	public String processFindForm(Owner owner, BindingResult result, Map<String, Object> model, Pageable pageable, Model paginationModel) {
 
 		// allow parameterless GET request for /owners to return all records
 		if (owner.getLastName() == null) {
@@ -88,40 +102,58 @@ class OwnerController {
 		}
 
 		// find owners by last name
-		Collection<Owner> results = this.owners.findByLastName(owner.getLastName());
-		if (results.isEmpty()) {
+		Page<Owner> ownersResults= this.ownerRepository.findByLastName(owner.getLastName(),pageable);
+		lastName=owner.getLastName();
+		if (ownersResults.isEmpty()) {
 			// no owners found
 			result.rejectValue("lastName", "notFound", "not found");
 			return "owners/findOwners";
 		}
-		else if (results.size() == 1) {
+		else if (ownersResults.getTotalElements() == 1) {
 			// 1 owner found
-			owner = results.iterator().next();
+			owner = ownersResults.iterator().next();
 			return "redirect:/owners/" + owner.getId();
 		}
 		else {
 			// multiple owners found
-			model.put("selections", results);
-			return "owners/ownersList";
+			lastName=owner.getLastName();
+			return findPaginated(1, paginationModel,pageable);
 		}
 	}
 
+
+	@GetMapping("/ownerpage/{pageNo}")
+	public String findPaginated(@PathVariable(value="pageNo") int pageNo, Model model,Pageable pageable)
+	{
+
+		Page<Owner> results = this.ownerRepository.findByLastName(lastName, pageable);
+		model.addAttribute("listOwners",results);
+		Page<Owner> page=ownerService.findPaginatedForOwnersLastName(pageNo, lastName);
+		List<Owner> listOwners=page.getContent();
+		model.addAttribute("currentPage",pageNo);
+		model.addAttribute("totalPages",page.getTotalPages());
+		model.addAttribute("totalItems",page.getTotalElements());
+		model.addAttribute("listOwners",listOwners);
+		return "owners/ownersList";
+	}
+
+
 	@GetMapping("/owners/{ownerId}/edit")
 	public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
-		Owner owner = this.owners.findById(ownerId);
+		Owner owner = this.ownerRepository.findById(ownerId);
 		model.addAttribute(owner);
 		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping("/owners/{ownerId}/edit")
 	public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result,
-			@PathVariable("ownerId") int ownerId) {
+										 @PathVariable("ownerId") int ownerId) {
 		if (result.hasErrors()) {
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 		}
 		else {
 			owner.setId(ownerId);
-			this.owners.save(owner);
+			this.ownerRepository.save(owner);
 			return "redirect:/owners/{ownerId}";
 		}
 	}
@@ -134,12 +166,11 @@ class OwnerController {
 	@GetMapping("/owners/{ownerId}")
 	public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
 		ModelAndView mav = new ModelAndView("owners/ownerDetails");
-		Owner owner = this.owners.findById(ownerId);
+		Owner owner = this.ownerRepository.findById(ownerId);
 		for (Pet pet : owner.getPets()) {
 			pet.setVisitsInternal(visits.findByPetId(pet.getId()));
 		}
 		mav.addObject(owner);
 		return mav;
 	}
-
 }

@@ -2,32 +2,58 @@
 
 <html xmlns:th="https://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'owners')}">
 
-  <body>
+<body>
 
-    <h2>Owners</h2>
+<h2>Owners</h2>
 
-    <table id="owners" class="table table-striped">
-        <thead>
-        <tr>
-            <th style="width: 150px;">Name</th>
-            <th style="width: 200px;">Address</th>
-            <th>City</th>
-            <th style="width: 120px">Telephone</th>
-            <th>Pets</th>
-        </tr>
-        </thead>
-        <tbody>
-          <tr th:each="owner : ${selections}">
-              <td>
-                  <a th:href="@{/owners/__${owner.id}__}" th:text="${owner.firstName + ' ' + owner.lastName}"/></a>
-              </td>
-              <td th:text="${owner.address}"/>
-              <td th:text="${owner.city}"/>
-              <td th:text="${owner.telephone}"/>
-              <td><span th:text="${#strings.listJoin(owner.pets, ', ')}"/></td>
-          </tr>
-        </tbody>
-    </table>
+<table id="owners" class="table table-striped">
+  <thead>
+  <tr>
+    <th style="width: 150px;">Name</th>
+    <th style="width: 200px;">Address</th>
+    <th>City</th>
+    <th style="width: 120px">Telephone</th>
+    <th>Pets</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="owner : ${selections}">
+    <td>
+      <a th:href="@{/owners/__${owner.id}__}" th:text="${owner.firstName + ' ' + owner.lastName}"/></a>
+    </td>
+    <td th:text="${owner.address}"/>
+    <td th:text="${owner.city}"/>
+    <td th:text="${owner.telephone}"/>
+    <td><span th:text="${#strings.listJoin(owner.pets, ', ')}"/></td>
+  </tr>
+  </tbody>
+</table>
 
-  </body>
+<div th:if="${totalPages > 1}">
+  <div>
+    <div>
+      Total Rows: [[${totalItems}]]
+    </div>
+    <div>
+                    <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+      <a th:if="${currentPage != i}" th:href="@{'/ownerpage/' + ${i}}">[[${i}]]</a>
+      <span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp; &nbsp;
+                    </span>
+    </div>
+    <div>
+      <a th:if="${currentPage < totalPages}" th:href="@{'/ownerpage/' + ${currentPage + 1}}">Next</a>
+      <span th:unless="${currentPage < totalPages}">Next</span>
+    </div>
+
+    <div>
+      <a th:if="${currentPage < totalPages}" th:href="@{'/ownerpage/' + ${totalPages}}">Last</a>
+      <span th:unless="${currentPage < totalPages}">Last</span>
+    </div>
+  </div>
+</div>
+</div>
+
+
+</body>
 </html>
+

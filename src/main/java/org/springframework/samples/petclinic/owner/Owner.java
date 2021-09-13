@@ -21,13 +21,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
+
+import javax.xml.bind.annotation.XmlElement;
 
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
@@ -59,7 +57,8 @@ public class Owner extends Person {
 	@Digits(fraction = 0, integer = 10)
 	private String telephone;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner",fetch= FetchType.EAGER)
 	private Set<Pet> pets;
 
 	public String getAddress() {
@@ -97,6 +96,7 @@ public class Owner extends Person {
 		this.pets = pets;
 	}
 
+	@XmlElement
 	public List<Pet> getPets() {
 		List<Pet> sortedPets = new ArrayList<>(getPetsInternal());
 		PropertyComparator.sort(sortedPets, new MutableSortDefinition("name", true, true));
@@ -142,9 +142,9 @@ public class Owner extends Person {
 	public String toString() {
 		return new ToStringCreator(this)
 
-				.append("id", this.getId()).append("new", this.isNew()).append("lastName", this.getLastName())
-				.append("firstName", this.getFirstName()).append("address", this.address).append("city", this.city)
-				.append("telephone", this.telephone).toString();
+			.append("id", this.getId()).append("new", this.isNew()).append("lastName", this.getLastName())
+			.append("firstName", this.getFirstName()).append("address", this.address).append("city", this.city)
+			.append("telephone", this.telephone).toString();
 	}
 
 }

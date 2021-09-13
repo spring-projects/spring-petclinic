@@ -63,6 +63,8 @@ public class Pet extends NamedEntity {
 	@Transient
 	private Set<Visit> visits = new LinkedHashSet<>();
 
+
+
 	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
 	}

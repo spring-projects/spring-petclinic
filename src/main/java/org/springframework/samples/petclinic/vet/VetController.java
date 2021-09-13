@@ -15,10 +15,15 @@
  */
 package org.springframework.samples.petclinic.vet;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,19 +37,36 @@ class VetController {
 
 	private final VetRepository vets;
 
+	@Autowired
+	private VetService vetService;
+
 	public VetController(VetRepository clinicService) {
 		this.vets = clinicService;
 	}
 
 	@GetMapping("/vets.html")
-	public String showVetList(Map<String, Object> model) {
+	public String showVetList(Map<String, Object> model, Model paginationModel) {
 		// Here we are returning an object of type 'Vets' rather than a collection of Vet
 		// objects so it is simpler for Object-Xml mapping
 		Vets vets = new Vets();
 		vets.getVetList().addAll(this.vets.findAll());
 		model.put("vets", vets);
-		return "vets/vetList";
+		return findPaginated(1, vets,paginationModel);
+
 	}
+
+	@GetMapping("/vetpage/{pageNo}")
+	public String findPaginated(@PathVariable(value="pageNo") int pageNo, Vets vets, Model model)
+	{
+		Page<Vet> page=vetService.findPaginated(pageNo);
+		List<Vet> listVets=page.getContent();
+		model.addAttribute("currentPage",pageNo);
+		model.addAttribute("totalPages",page.getTotalPages());
+		model.addAttribute("totalItems",page.getTotalElements());
+		model.addAttribute("listVets",listVets);
+		return  "vets/vetList";
+	}
+
 
 	@GetMapping({ "/vets" })
 	public @ResponseBody Vets showResourcesVetList() {
