@@ -15,8 +15,8 @@
  */
 package org.springframework.samples.petclinic.owner;
 
-import java.util.Collection;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
@@ -42,9 +42,10 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
 	 * @return a Collection of matching {@link Owner}s (or an empty Collection if none
 	 * found)
 	 */
-	@Query("SELECT DISTINCT owner FROM Owner owner left join fetch owner.pets WHERE owner.lastName LIKE :lastName%")
+
+	@Query("SELECT DISTINCT owner FROM Owner owner left join  owner.pets WHERE owner.lastName LIKE :lastName% ")
 	@Transactional(readOnly = true)
-	Collection<Owner> findByLastName(@Param("lastName") String lastName);
+	Page<Owner> findByLastName(@Param("lastName") String lastName, Pageable pageable);
 
 	/**
 	 * Retrieve an {@link Owner} from the data store by id.
@@ -60,5 +61,12 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
 	 * @param owner the {@link Owner} to save
 	 */
 	void save(Owner owner);
+
+	/**
+	 * Returnes all the owners from data store
+	 **/
+	@Query("SELECT owner FROM Owner owner")
+	@Transactional(readOnly = true)
+	Page<Owner> findAll(Pageable pageable);
 
 }
