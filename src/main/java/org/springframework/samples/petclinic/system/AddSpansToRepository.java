@@ -1,8 +1,7 @@
 package org.springframework.samples.petclinic.system;
 
-import brave.Span;
-import brave.Span.Kind;
-import brave.Tracer;
+import org.springframework.cloud.sleuth.Span;
+import org.springframework.cloud.sleuth.Tracer;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -31,7 +30,7 @@ public class AddSpansToRepository {
 		String joinPointName = joinpoint.getSignature().toString();
 		Span newSpan = this.tracer.nextSpan().name(joinPointName).start();
 
-		newSpan.kind(Kind.CLIENT);
+		newSpan.tag("span.kind", "client");
 		newSpan.tag("component", "java-jdbc");
 		newSpan.tag("db.type", dbType);
 		newSpan.tag("db.instance", dbInstance);
@@ -41,10 +40,11 @@ public class AddSpansToRepository {
 		}
 		catch (RuntimeException | Error e) {
 			newSpan.error(e);
+			newSpan.event(String.valueOf(e));
 			throw e;
 		}
 		finally {
-			newSpan.finish();
+			newSpan.end();
 		}
 
 	}

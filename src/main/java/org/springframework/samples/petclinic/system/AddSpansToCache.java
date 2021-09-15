@@ -1,12 +1,11 @@
 package org.springframework.samples.petclinic.system;
 
-import brave.Span;
-import brave.Span.Kind;
-import brave.Tracer;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.sleuth.Span;
+import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -37,7 +36,7 @@ public class AddSpansToCache {
 		String joinPointName = joinpoint.getSignature().toString();
 		Span newSpan = this.tracer.nextSpan().name(joinPointName).start();
 
-		newSpan.kind(Kind.CLIENT);
+		newSpan.tag("span.kind", String.valueOf(Span.Kind.CLIENT));
 		newSpan.tag("_outboundExternalService", serviceType);
 		newSpan.tag("_externalApplication", applicationName);
 		newSpan.tag("_externalComponent", componentName);
@@ -46,10 +45,11 @@ public class AddSpansToCache {
 		}
 		catch (RuntimeException | Error e) {
 			newSpan.error(e);
+			newSpan.event(String.valueOf(e));
 			throw e;
 		}
 		finally {
-			newSpan.finish();
+			newSpan.end();
 		}
 
 	}
