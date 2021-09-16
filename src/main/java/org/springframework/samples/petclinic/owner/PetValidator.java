@@ -22,8 +22,8 @@ import org.springframework.validation.Validator;
 /**
  * <code>Validator</code> for <code>Pet</code> forms.
  * <p>
- * We're not using Bean Validation annotations here because it is easier to define such
- * validation rule in Java.
+ * We're not using Bean Validation annotations here because it is easier to
+ * define such validation rule in Java.
  * </p>
  *
  * @author Ken Krebs

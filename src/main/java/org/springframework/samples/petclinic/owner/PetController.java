@@ -82,8 +82,7 @@ class PetController {
 		if (result.hasErrors()) {
 			model.put("pet", pet);
 			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
-		}
-		else {
+		} else {
 			this.pets.save(pet);
 			return "redirect:/owners/{ownerId}";
 		}
@@ -102,8 +101,7 @@ class PetController {
 			pet.setOwner(owner);
 			model.put("pet", pet);
 			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
-		}
-		else {
+		} else {
 			owner.addPet(pet);
 			this.pets.save(pet);
 			return "redirect:/owners/{ownerId}";
