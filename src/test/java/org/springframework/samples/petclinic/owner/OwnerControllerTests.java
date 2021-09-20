@@ -126,22 +126,27 @@ class OwnerControllerTests {
 
 		Page<Owner> ownerResults = Mockito.mock(Page.class);
 
-		Mockito.when(owners.findByLastName(george.getLastName(),pageable)).thenReturn(ownerResults);
-		/** Blocking below statements as return type is Page
-		 given(this.owners.findByLastName("")).willReturn(Lists.newArrayList(george, new Owner()));
-		 mockMvc.perform(get("/owners")).andExpect(status().isOk()).andExpect(view().name("owners/ownersList")); **/
+		Mockito.when(owners.findByLastName(george.getLastName(), pageable)).thenReturn(ownerResults);
+		/**
+		 * Blocking below statements as return type is Page
+		 * given(this.owners.findByLastName("")).willReturn(Lists.newArrayList(george, new
+		 * Owner()));
+		 * mockMvc.perform(get("/owners")).andExpect(status().isOk()).andExpect(view().name("owners/ownersList"));
+		 **/
 	}
 
 	@Test
 	void testProcessFindFormByLastName() throws Exception {
 		Page<Owner> ownerResults = Mockito.mock(Page.class);
-		Mockito.when(owners.findByLastName(george.getLastName(),pageable)).thenReturn(ownerResults);
+		Mockito.when(owners.findByLastName(george.getLastName(), pageable)).thenReturn(ownerResults);
 		mockMvc.perform(get("/owners").param("lastName", "Franklin")).andExpect(status().is3xxRedirection())
 			.andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
-		/**Blocking below statements as return type is Page
-		 given(this.owners.findByLastName(george.getLastName()).willReturn(Lists.newArrayList(george));
-		 mockMvc.perform(get("/owners").param("lastName", "Franklin")).andExpect(status().is3xxRedirection())
-		 .andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
+		/**
+		 * Blocking below statements as return type is Page
+		 * given(this.owners.findByLastName(george.getLastName()).willReturn(Lists.newArrayList(george));
+		 * mockMvc.perform(get("/owners").param("lastName",
+		 * "Franklin")).andExpect(status().is3xxRedirection())
+		 * .andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
 		 **/
 	}
 

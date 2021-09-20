@@ -51,25 +51,24 @@ class VetController {
 		Vets vets = new Vets();
 		vets.getVetList().addAll(this.vets.findAll());
 		model.put("vets", vets);
-		return findPaginated(1, vets,paginationModel);
+		return findPaginated(1, vets, paginationModel);
 
 	}
 
 	@GetMapping("/vetpage/{pageNo}")
-	public String findPaginated(@PathVariable(value="pageNo") int pageNo, Vets vets, Model model)
-	{
-		Page<Vet> page=vetService.findPaginated(pageNo);
-		List<Vet> listVets=page.getContent();
-		model.addAttribute("currentPage",pageNo);
-		model.addAttribute("totalPages",page.getTotalPages());
-		model.addAttribute("totalItems",page.getTotalElements());
-		model.addAttribute("listVets",listVets);
-		return  "vets/vetList";
+	public String findPaginated(@PathVariable(value = "pageNo") int pageNo, Vets vets, Model model) {
+		Page<Vet> page = vetService.findPaginated(pageNo);
+		List<Vet> listVets = page.getContent();
+		model.addAttribute("currentPage", pageNo);
+		model.addAttribute("totalPages", page.getTotalPages());
+		model.addAttribute("totalItems", page.getTotalElements());
+		model.addAttribute("listVets", listVets);
+		return "vets/vetList";
 	}
 
-
-	@GetMapping({ "/vets" })
-	public @ResponseBody Vets showResourcesVetList() {
+	@GetMapping({"/vets"})
+	public @ResponseBody
+	Vets showResourcesVetList() {
 		// Here we are returning an object of type 'Vets' rather than a collection of Vet
 		// objects so it is simpler for JSon/Object mapping
 		Vets vets = new Vets();

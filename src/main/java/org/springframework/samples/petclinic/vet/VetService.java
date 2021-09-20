@@ -12,10 +12,9 @@ public class VetService {
 	@Autowired
 	VetRepository vetRepository;
 
-	public Page<Vet> findPaginated(int pageNo)
-	{
-		int pageSize=5;
-		Pageable pageable= PageRequest.of(pageNo-1,pageSize);
+	public Page<Vet> findPaginated(int pageNo) {
+		int pageSize = 5;
+		Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
 		return vetRepository.findAll(pageable);
 	}
 

@@ -9,21 +9,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class OwnerService {
 
-
 	@Autowired
 	OwnerRepository ownerRepository;
 
+	public Page<Owner> findPaginatedForOwnersLastName(int pageNo, String lastname) {
 
-	public Page<Owner> findPaginatedForOwnersLastName(int pageNo, String lastname)
-	{
-
-		int pageSize=5;
-		Pageable pageable= PageRequest.of(pageNo-1,pageSize);
-		return  ownerRepository.findByLastName(lastname,pageable);
+		int pageSize = 5;
+		Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+		return ownerRepository.findByLastName(lastname, pageable);
 
 	}
-
-
-
 
 }

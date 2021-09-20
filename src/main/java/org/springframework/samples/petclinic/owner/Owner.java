@@ -57,8 +57,7 @@ public class Owner extends Person {
 	@Digits(fraction = 0, integer = 10)
 	private String telephone;
 
-
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner",fetch= FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner", fetch = FetchType.EAGER)
 	private Set<Pet> pets;
 
 	public String getAddress() {
@@ -112,6 +111,7 @@ public class Owner extends Person {
 
 	/**
 	 * Return the Pet with the given name, or null if none found for this Owner.
+	 *
 	 * @param name to test
 	 * @return true if pet name is already in use
 	 */
@@ -121,6 +121,7 @@ public class Owner extends Person {
 
 	/**
 	 * Return the Pet with the given name, or null if none found for this Owner.
+	 *
 	 * @param name to test
 	 * @return true if pet name is already in use
 	 */
