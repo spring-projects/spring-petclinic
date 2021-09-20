@@ -76,7 +76,8 @@ class OwnerController {
 	public String processCreationForm(@Valid Owner owner, BindingResult result) {
 		if (result.hasErrors()) {
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
-		} else {
+		}
+		else {
 			this.ownerRepository.save(owner);
 			return "redirect:/owners/" + owner.getId();
 		}
@@ -90,7 +91,7 @@ class OwnerController {
 
 	@GetMapping("/owners")
 	public String processFindForm(Owner owner, BindingResult result, Map<String, Object> model, Pageable pageable,
-								  Model paginationModel) {
+			Model paginationModel) {
 
 		// allow parameterless GET request for /owners to return all records
 		if (owner.getLastName() == null) {
@@ -104,11 +105,13 @@ class OwnerController {
 			// no owners found
 			result.rejectValue("lastName", "notFound", "not found");
 			return "owners/findOwners";
-		} else if (ownersResults.getTotalElements() == 1) {
+		}
+		else if (ownersResults.getTotalElements() == 1) {
 			// 1 owner found
 			owner = ownersResults.iterator().next();
 			return "redirect:/owners/" + owner.getId();
-		} else {
+		}
+		else {
 			// multiple owners found
 			lastName = owner.getLastName();
 			return findPaginated(1, paginationModel, pageable);
@@ -138,10 +141,11 @@ class OwnerController {
 
 	@PostMapping("/owners/{ownerId}/edit")
 	public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result,
-										 @PathVariable("ownerId") int ownerId) {
+			@PathVariable("ownerId") int ownerId) {
 		if (result.hasErrors()) {
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
-		} else {
+		}
+		else {
 			owner.setId(ownerId);
 			this.ownerRepository.save(owner);
 			return "redirect:/owners/{ownerId}";
@@ -150,7 +154,6 @@ class OwnerController {
 
 	/**
 	 * Custom handler for displaying an owner.
-	 *
 	 * @param ownerId the ID of the owner to display
 	 * @return a ModelMap with the model attributes for the view
 	 */
