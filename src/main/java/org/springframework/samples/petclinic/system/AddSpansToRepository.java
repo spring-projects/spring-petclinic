@@ -30,6 +30,7 @@ public class AddSpansToRepository {
 		String joinPointName = joinpoint.getSignature().toString();
 		Span newSpan = this.tracer.nextSpan().name(joinPointName).start();
 
+		newSpan.event("adsadsafda");
 		newSpan.tag("span.kind", "client");
 		newSpan.tag("component", "java-jdbc");
 		newSpan.tag("db.type", dbType);
