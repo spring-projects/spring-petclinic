@@ -16,6 +16,7 @@
 package org.springframework.samples.petclinic.owner;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
@@ -46,18 +47,13 @@ class OwnerController {
 
 	private final OwnerRepository ownerRepository;
 
-	private OwnerService ownerService;
-
-	private VisitRepository visits;
+	private final VisitRepository visits;
 
 	private String lastName;
 
-	private int totalPages = 0;
-
-	public OwnerController(OwnerRepository clinicService, VisitRepository visits, OwnerService ownerService) {
+	public OwnerController(OwnerRepository clinicService, VisitRepository visits) {
 		this.ownerRepository = clinicService;
 		this.visits = visits;
-		this.ownerService = ownerService;
 	}
 
 	@InitBinder
@@ -123,13 +119,21 @@ class OwnerController {
 
 		Page<Owner> results = this.ownerRepository.findByLastName(lastName, pageable);
 		model.addAttribute("listOwners", results);
-		Page<Owner> page = ownerService.findPaginatedForOwnersLastName(pageNo, lastName);
+		Page<Owner> page = findPaginatedForOwnersLastName(pageNo, lastName);
 		List<Owner> listOwners = page.getContent();
 		model.addAttribute("currentPage", pageNo);
 		model.addAttribute("totalPages", page.getTotalPages());
 		model.addAttribute("totalItems", page.getTotalElements());
 		model.addAttribute("listOwners", listOwners);
 		return "owners/ownersList";
+	}
+
+	public Page<Owner> findPaginatedForOwnersLastName(int pageNo, String lastname) {
+
+		int pageSize = 5;
+		Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+		return ownerRepository.findByLastName(lastname, pageable);
+
 	}
 
 	@GetMapping("/owners/{ownerId}/edit")

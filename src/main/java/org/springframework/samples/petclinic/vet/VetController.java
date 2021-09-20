@@ -17,6 +17,8 @@ package org.springframework.samples.petclinic.vet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,9 +39,6 @@ class VetController {
 
 	private final VetRepository vets;
 
-	@Autowired
-	private VetService vetService;
-
 	public VetController(VetRepository clinicService) {
 		this.vets = clinicService;
 	}
@@ -57,13 +56,19 @@ class VetController {
 
 	@GetMapping("/vetpage/{pageNo}")
 	public String findPaginated(@PathVariable(value = "pageNo") int pageNo, Vets vets, Model model) {
-		Page<Vet> page = vetService.findPaginated(pageNo);
+		Page<Vet> page = findPaginated(pageNo);
 		List<Vet> listVets = page.getContent();
 		model.addAttribute("currentPage", pageNo);
 		model.addAttribute("totalPages", page.getTotalPages());
 		model.addAttribute("totalItems", page.getTotalElements());
 		model.addAttribute("listVets", listVets);
 		return "vets/vetList";
+	}
+
+	public Page<Vet> findPaginated(int pageNo) {
+		int pageSize = 5;
+		Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+		return vets.findAll(pageable);
 	}
 
 	@GetMapping({ "/vets" })
