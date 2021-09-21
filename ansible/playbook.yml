@@ -46,7 +46,7 @@
         mode: 755
     - name: copy files
       copy:
-        src: /home/ubuntu18/Desktop/jenkins-ansible/ansible/
+        src: /var/lib/jenkins/workspace/Ansible-Freestyle/ansible/
         dest: /home/ubuntu/
   
     - name: docker build 
