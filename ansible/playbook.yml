@@ -1,0 +1,59 @@
+- hosts: east
+  become: true
+  tasks:
+    - name: install dependencies
+      apt:
+        name: "{{item}}"
+        state: present
+        update_cache: yes
+      loop:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - gnupg-agent
+        - software-properties-common
+    - name: GPG
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+    - name: repository docker
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu bionic stable
+        state: present
+    - name: install docker
+      apt:
+        name: "{{item}}"
+        state: latest
+        update_cache: yes
+      loop:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+    - name: Add remote "ubuntu" user to "docker" group
+      user:
+        name: ubuntu
+        group: docker
+        append: yes
+    - name: Start docker
+      service:
+        name: docker
+        state: started
+        enabled: yes
+    - name: install docker compose    
+      get_url:
+        url: https://github.com/docker/compose/releases/download/1.27.3/docker-compose-Linux-x86_64
+        dest: /usr/bin/docker-compose
+        mode: 755
+    - name: copy files
+      copy:
+        src: /home/ubuntu18/Desktop/jenkins-ansible/ansible/
+        dest: /home/ubuntu/
+  
+    - name: docker build 
+      shell: docker-compose -f /home/ubuntu/docker-compose.yml build
+
+    - name: docker down 
+      shell: docker-compose -f /home/ubuntu/docker-compose.yml down
+
+    - name: docker up 
+      shell: docker-compose -f /home/ubuntu/docker-compose.yml up -d
