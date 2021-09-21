@@ -2,5 +2,5 @@
 ubuntu@3.109.201.121
 
 [east:vars]
-ansible_ssh_private_key_file= /home/ubuntu/key.pem
+ansible_ssh_private_key_file= /home/ubuntu18/Desktop/jenkins-ansible/ansible/key.pem
 ansible_python_interpreter=/usr/bin/python3
