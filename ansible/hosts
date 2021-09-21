@@ -1,5 +1,5 @@
 [east]
-ubuntu@3.109.4.53
+ubuntu@3.109.201.121
 
 [east:vars]
 ansible_ssh_private_key_file= /home/ubuntu/key.pem
