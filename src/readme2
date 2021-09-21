@@ -1,0 +1,13 @@
+¡Este reto es bien sencillo!
+
+
+
+Crear un objeto de la clase Owner, rellenar tus datos personales (o de tu compañero),
+y mediante JDBC parametrizado insertarte a ti mismo como un propietario de mascotas.
+
+Luego, si tienes mascota en casa, asígnate una mediante la clase Pet y JDBC parametrizado,
+y por último, borra tus datos.
+
+
+
+¡Suerte!
