@@ -43,3 +43,13 @@ commands:
       group:
         kind: run
         isDefault: true
+  - id: Debug
+    exec:
+      component: tools
+      workingDir: ${PROJECTS_ROOT}/target
+      commandLine: >-
+        java -jar -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 spring-petclinic-2.4.5.jar --spring.profiles.active=mysql | tee /workspace_logs/run-debug.log
+        workdir: /projects/petclinic/target
+      group:
+        kind: run
+        isDefault: true
