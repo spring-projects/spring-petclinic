@@ -9,7 +9,7 @@ services:
       depends_on:
         - mysql-server
       ports:
-        - 80:8080
+        - 8080:8080
       networks:
         - conti-test
 
