@@ -19,7 +19,7 @@ components:
       volumeMounts:
         - name: m2
           path: /home/user/.m2
-      memoryLimit: 3Gi
+      memoryLimit: 1536M
   - name: m2
     volume:
       size: 1G
