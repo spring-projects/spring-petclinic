@@ -19,7 +19,7 @@ components:
       volumeMounts:
         - name: m2
           path: /home/user/.m2
-      memoryLimit: 1536M
+      memoryLimit: 3Gi
   - name: m2
     volume:
       size: 1G
@@ -40,16 +40,6 @@ commands:
         java -jar -Xdebug
         -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
         target/*.jar
-      group:
-        kind: run
-        isDefault: true
-  - id: Debug
-    exec:
-      component: tools
-      workingDir: ${PROJECTS_ROOT}/target
-      commandLine: >-
-        java -jar -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 spring-petclinic-2.4.5.jar 
-        --spring.profiles.active=mysql | tee /workspace_logs/run-debug.log
       group:
         kind: run
         isDefault: true
