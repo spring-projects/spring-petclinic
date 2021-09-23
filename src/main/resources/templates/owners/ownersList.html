@@ -32,26 +32,27 @@
   <span>Pages:</span>
   <span>[</span>
   <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-      <a th:if="${currentPage != i}" th:href="@{'/ownerpage/' + ${i}}">[[${i}]]</a>
+      <a th:if="${currentPage != i}" th:href="@{'/owners/' + ${i}}">[[${i}]]</a>
       <span th:unless="${currentPage != i}">[[${i}]]</span>
     </span>
   <span>]&nbsp;</span>
   <span>
-      <a th:if="${currentPage > 1}" th:href="@{'/ownerpage/1'}" title="First" class="glyphicon glyphicon-backward"></a>
+      <a th:if="${currentPage > 1}" th:href="@{'/owners/?pageNo=1'}" title="First"
+         class="glyphicon glyphicon-backward"></a>
       <span th:unless="${currentPage > 1}" title="First" class="glyphicon glyphicon-backward"></span>
     </span>
   <span>
-      <a th:if="${currentPage > 1}" th:href="@{'/ownerpage/' + ${currentPage - 1}}" title="Previous"
+      <a th:if="${currentPage > 1}" th:href="@{'/owners/?pageNo=' + ${currentPage - 1}}" title="Previous"
          class="glyphicon glyphicon-triangle-left"></a>
       <span th:unless="${currentPage > 1}" title="Previous" class="glyphicon glyphicon-triangle-left"></span>
     </span>
   <span>
-      <a th:if="${currentPage < totalPages}" th:href="@{'/ownerpage/' + ${currentPage + 1}}" title="Next"
+      <a th:if="${currentPage < totalPages}" th:href="@{'/owners/?pageNo=' + ${currentPage + 1}}" title="Next"
          class="glyphicon glyphicon-triangle-right"></a>
       <span th:unless="${currentPage < totalPages}" title="Next" class="glyphicon glyphicon-triangle-right"></span>
     </span>
   <span>
-      <a th:if="${currentPage < totalPages}" th:href="@{'/ownerpage/' + ${totalPages}}" title="Last"
+      <a th:if="${currentPage < totalPages}" th:href="@{'/owners/?pageNo=' + ${totalPages}}" title="Last"
          class="glyphicon glyphicon-forward"></a>
       <span th:unless="${currentPage < totalPages}" title="Last" class="glyphicon glyphicon-forward"></span>
     </span>
