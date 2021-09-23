@@ -67,8 +67,7 @@ class OwnerController {
 	public String processCreationForm(@Valid Owner owner, BindingResult result) {
 		if (result.hasErrors()) {
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
-		}
-		else {
+		} else {
 			this.owners.save(owner);
 			return "redirect:/owners/" + owner.getId();
 		}
@@ -82,7 +81,7 @@ class OwnerController {
 
 	@GetMapping("/owners")
 	public String processFindForm(@RequestParam(value = "pageNo", defaultValue = "1") int pageNo, Owner owner,
-			BindingResult result, Map<String, Object> model, Pageable pageable, Model paginationModel) {
+								  BindingResult result, Pageable pageable, Model paginationModel) {
 
 		String lastName;
 		// allow parameterless GET request for /owners to return all records
@@ -97,23 +96,19 @@ class OwnerController {
 			// no owners found
 			result.rejectValue("lastName", "notFound", "not found");
 			return "owners/findOwners";
-		}
-		else if (ownersResults.getTotalElements() == 1) {
+		} else if (ownersResults.getTotalElements() == 1) {
 			// 1 owner found
 			owner = ownersResults.iterator().next();
 			return "redirect:/owners/" + owner.getId();
-		}
-		else {
+		} else {
 			// multiple owners found
 			lastName = owner.getLastName();
-			return findPaginated(pageNo, paginationModel, pageable, lastName);
+			return findPaginated(pageNo, paginationModel, lastName, ownersResults);
 		}
 	}
 
-	public String findPaginated(int pageNo, Model model, Pageable pageable, String lastName) {
-
-		Page<Owner> results = this.owners.findByLastName(lastName, pageable);
-		model.addAttribute("listOwners", results);
+	private String findPaginated(int pageNo, Model model, String lastName, Page<Owner> ownerResults) {
+		model.addAttribute("listOwners", ownerResults);
 		Page<Owner> page = findPaginatedForOwnersLastName(pageNo, lastName);
 		List<Owner> listOwners = page.getContent();
 		model.addAttribute("currentPage", pageNo);
@@ -123,7 +118,7 @@ class OwnerController {
 		return "owners/ownersList";
 	}
 
-	public Page<Owner> findPaginatedForOwnersLastName(int pageNo, String lastname) {
+	private Page<Owner> findPaginatedForOwnersLastName(int pageNo, String lastname) {
 
 		int pageSize = 5;
 		Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
@@ -140,11 +135,10 @@ class OwnerController {
 
 	@PostMapping("/owners/{ownerId}/edit")
 	public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result,
-			@PathVariable("ownerId") int ownerId) {
+										 @PathVariable("ownerId") int ownerId) {
 		if (result.hasErrors()) {
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
-		}
-		else {
+		} else {
 			owner.setId(ownerId);
 			this.owners.save(owner);
 			return "redirect:/owners/{ownerId}";
@@ -153,6 +147,7 @@ class OwnerController {
 
 	/**
 	 * Custom handler for displaying an owner.
+	 *
 	 * @param ownerId the ID of the owner to display
 	 * @return a ModelMap with the model attributes for the view
 	 */
