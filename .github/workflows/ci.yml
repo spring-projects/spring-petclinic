@@ -45,7 +45,7 @@ jobs:
           cache: 'maven'
       - name: Test with maven
         run: mvn -B test --file pom.xml
-  launch:
+  launch-ready:
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -58,4 +58,4 @@ jobs:
       - name: Build with maven
         run: mvn -Dmaven.test.skip=true -B package --file pom.xml
       - name: Launch java jar
-        run: java -jar target/spring-petclinic-2.5.0-SNAPSHOT.jar
+        run: test -f target/spring-petclinic-2.5.0-SNAPSHOT.jar
