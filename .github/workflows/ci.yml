@@ -16,7 +16,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  dependencies:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -31,5 +31,11 @@ jobs:
           cache: 'maven'
 
       # Runs a single command using the runners shell
+      - name: Compile with maven
+        run: mvn -B compile --file pom.xml
+  build:
+    needs: dependencies
+    runs-on: ubuntu-latest
+    steps:
       - name: Build with maven
-        run: mvn -B package --file pom.xml
+        run: mvn -Dmaven.test.skip=true -B package --file pom.xml
