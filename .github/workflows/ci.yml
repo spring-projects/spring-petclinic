@@ -58,4 +58,4 @@ jobs:
       - name: Build with maven
         run: mvn -Dmaven.test.skip=true -B package --file pom.xml
       - name: Launch java jar
-        run: test -f target/spring-petclinic-2.5.0-SNAPSHOT.jar
+        run: test -f target/spring-petclinic-2.6.0-SNAPSHOT.jar
