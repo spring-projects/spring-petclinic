@@ -16,7 +16,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  dependencies:
+  build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -31,11 +31,31 @@ jobs:
           cache: 'maven'
 
       # Runs a single command using the runners shell
-      - name: Compile with maven
-        run: mvn -B compile --file pom.xml
-  build:
-    needs: dependencies
-    runs-on: ubuntu-latest
-    steps:
       - name: Build with maven
         run: mvn -Dmaven.test.skip=true -B package --file pom.xml
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v2.3.0
+        with:
+          java-version: '16'
+          distribution: 'adopt'
+          cache: 'maven'
+      - name: Test with maven
+        run: mvn -B test --file pom.xml
+  launch:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v2.3.0
+        with:
+          java-version: '16'
+          distribution: 'adopt'
+          cache: 'maven'
+      - name: Build with maven
+        run: mvn -Dmaven.test.skip=true -B package --file pom.xml
+      - name: Launch java jar
+        run: java -jar target/spring-petclinic-2.5.0-SNAPSHOT.jar
