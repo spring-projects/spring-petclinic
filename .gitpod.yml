@@ -1,0 +1,8 @@
+# Commands to start on workspace startup
+tasks:
+  - init: ./mvnw package
+    command: java -jar target/*.jar
+# Ports to expose on workspace startup
+ports:
+  - port: 8080
+    onOpen: open-preview
