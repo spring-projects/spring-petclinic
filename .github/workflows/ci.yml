@@ -31,6 +31,7 @@ jobs:
         with:
           java-version: '16'
           distribution: 'adopt'
+          cache: 'maven'
       - name: Build with maven
         run: mvn -Dmaven.test.skip=true -DskipTests -B package --file pom.xml
       - uses: actions/upload-artifact@v2.2.4
