@@ -28,7 +28,7 @@ commands:
     exec:
       component: tools
       workingDir: ${PROJECTS_ROOT}/java-spring-petclinic
-      commandLine: mvn clean install
+      commandLine: mvn package
       group:
         kind: build
         isDefault: true
