@@ -29,9 +29,9 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: actions/checkout@v2
-      - uses: jfrog/setup-jfrog-cli@v1
+      - uses: jfrog/setup-jfrog-cli@v2
         env:
-          JF_ARTIFACTORY_1: ${{ secrets.artifactory_token }}
+          JF_ARTIFACTORY_1: ${{ secrets.ARTIFACTORY_SECRETS }}
           
       - name: Build Maven package
         run: mvn -Dmaven.test.skip=true -B package --file pom.xml
