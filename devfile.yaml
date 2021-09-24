@@ -37,19 +37,16 @@ commands:
       component: tools
       workingDir: ${PROJECTS_ROOT}/java-spring-petclinic
       commandLine: >-
-        java -jar -Xdebug
-        -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
-        target/*.jar
+        java -jar target/*.jar
       group:
         kind: run
         isDefault: true
   - id: run-debug
     exec:
       component: tools
-      workingDir: ${PROJECTS_ROOT}/target
+      workingDir: ${PROJECTS_ROOT}/java-spring-petclinic/target
       commandLine: >-
-        java -jar -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 spring-petclinic-2.4.5.jar --spring.profiles.active=mysql | tee /workspace_logs/run-debug.log
-        target/*.jar
+        java -jar -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 target/*.jar --spring.profiles.active=mysql | tee /workspace_logs/run-debug.log
       group:
         kind: run
         isDefault: true
