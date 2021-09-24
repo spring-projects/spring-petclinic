@@ -14,10 +14,10 @@ on:
   workflow_dispatch:
   
   # Run CI workflow before
-  workflow_run:
-    workflows: ["CI build"]
-    types:
-      - completed
+  #workflow_run:
+  #  workflows: ["CI build"]
+  #  types:
+  #    - completed
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -44,5 +44,4 @@ jobs:
         run: mvn -Dmaven.test.skip=true -B package --file pom.xml
       - name: Store on Artifactory
         run: |
-          jfrog rt use jphiz
           jfrog rt ping
