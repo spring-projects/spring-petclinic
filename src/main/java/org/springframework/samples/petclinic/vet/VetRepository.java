@@ -46,23 +46,23 @@ public interface VetRepository extends Repository<Vet, Integer> {
 	@Cacheable("vets")
 	Collection<Vet> findAll() throws DataAccessException;
 
-	@Query("SELECT vet FROM Vet vet WHERE vet.lastName = :lastName")
+	@Query("SELECT vet FROM Vet vet WHERE vet.lastName=:lastName")
 	@Transactional(readOnly = true)
 	List<Vet> findByLastName(@Param("lastName") String lastName);
 
-	@Query("SELECT vet from Vet vet where vet.lastName =: lastName and vet.firstName =: firstName")
+	@Query("SELECT vet from Vet vet where vet.lastName=:lastName and vet.firstName=:firstName")
 	@Transactional(readOnly = true)
 	List<Vet> findByFirstNameAndLastName(@Param("firstName") String firstName,
 										 @Param("lastName") String lastName
 										 );
 
-	@Query("SELECT vet from Vet vet where vet.lastName =: lastName or vet.firstName =: firstName")
+	@Query("SELECT vet from Vet vet where vet.lastName=:lastName or vet.firstName=:firstName")
 	@Transactional(readOnly = true)
 	List<Vet> findByFirstNameOrLastName(@Param("firstName") String firstName,
 										@Param("lastName") String lastName
 	);
 
-	@Query("SELECT distinct vet FROM Vet vet JOIN FETCH vet.specialties s WHERE s.name=:name")
+	@Query("SELECT distinct vet FROM Vet vet JOIN FETCH vet.specialties s WHERE s.name = :name")
 	@Transactional(readOnly = true)
 	List<Vet> findVetBySpecialtiesName(@Param("name") String name);
 

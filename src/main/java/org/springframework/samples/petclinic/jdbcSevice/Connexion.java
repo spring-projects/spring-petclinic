@@ -13,7 +13,7 @@ public abstract class Connexion {
 	private static final String PASS = "";
 	protected static Connection connexion = null;
 
-	protected static Connection connect() throws ClassNotFoundException, SQLException {
+	protected static Connection connect() throws SQLException {
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 
@@ -23,6 +23,15 @@ public abstract class Connexion {
 
 		connexion =  DriverManager.getConnection(DRIVER_URL, ROOT, PASS);
 		return connexion;
+	}
+
+	protected static void disconnect(){
+		try {
+			if(connexion != null)
+				connexion.close();
+		} catch (SQLException se) {
+			se.printStackTrace();
+		}
 	}
 
 }

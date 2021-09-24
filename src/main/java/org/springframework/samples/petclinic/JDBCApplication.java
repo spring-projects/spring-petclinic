@@ -6,11 +6,11 @@ import java.sql.*;
 
 public class JDBCApplication {
 
-	public static void main(String[] args) throws SQLException, ClassNotFoundException {
-		//addOwner();
-		//addPet();
-		deletePet();
-		deleteOwner();
+	public static void main(String[] args) throws ClassNotFoundException {
+		addOwner();
+		addPet();
+//		deletePet();
+//		deleteOwner();
 	}
 
 	private static void addOwner() throws ClassNotFoundException {

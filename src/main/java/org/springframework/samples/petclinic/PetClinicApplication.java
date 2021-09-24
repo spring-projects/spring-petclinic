@@ -16,8 +16,20 @@
 
 package org.springframework.samples.petclinic;
 
+
+
+
+
+
+
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.samples.petclinic.vet.SpecialityRepository;
+import org.springframework.samples.petclinic.vet.Specialty;
+import org.springframework.samples.petclinic.vet.Vet;
+import org.springframework.samples.petclinic.vet.VetRepository;
 
 /**
  * PetClinic Spring Boot Application.
@@ -30,6 +42,38 @@ public class PetClinicApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(PetClinicApplication.class, args);
+	}
+
+	@Bean
+	public CommandLineRunner demoVetRepository(VetRepository vetRepository, SpecialityRepository specialityRepository){
+		return (args) ->{
+
+			Vet vet = new Vet();
+			vet.setFirstName("Javier");
+			vet.setLastName("Polo");
+
+			vet = vetRepository.save(vet);
+
+			System.out.println(vetRepository.findVetById(vet.getId()));
+
+			Specialty speciality = specialityRepository.findSpecialtiesById(1);
+
+			vet.addSpecialty(speciality);
+
+			vetRepository.save(vet);
+
+			System.out.println("Veterinary: " + vet + "Speciality: " + vet.getSpecialties());
+
+			for (Vet vetLoop: vetRepository.findAll()){
+				System.out.println("Veterinary: " + vetLoop);
+			}
+			System.out.println("Veterinaries working on radiology \n");
+//			for (Vet vetLoop: vetRepository.findVetBySpecialtiesName("Radiology")){
+//				System.out.println("Veterinary: " + vetLoop);
+//			}
+
+			System.out.println(vetRepository.findVetBySpecialtiesName("radiology"));
+		};
 	}
 
 }
