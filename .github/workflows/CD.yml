@@ -37,5 +37,5 @@ jobs:
         run: mvn -Dmaven.test.skip=true -B package --file pom.xml
       - name: Store on Artifactory
         run: |
-          jfrog rt use jphiz
+          jfrog rt use jphiz2
           jfrog rt ping
