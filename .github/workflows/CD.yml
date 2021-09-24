@@ -28,14 +28,21 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+      - uses: actions/setup-java@v2.3.0
+        with:
+          java-version: '16'
+          distribution: 'adopt'
+          cache: 'maven'
       - uses: jfrog/setup-jfrog-cli@v2
         env:
           JF_ARTIFACTORY_1: ${{ secrets.ARTIFACTORY_TOKEN }}
-          
+
+      # Runs a single command using the runners shell
       - name: Build Maven package
         run: mvn -Dmaven.test.skip=true -B package --file pom.xml
       - name: Store on Artifactory
         run: |
-          jfrog rt use jphiz2
+          jfrog rt use jphiz
           jfrog rt ping
