@@ -63,6 +63,6 @@ jobs:
         env:
           JF_ARTIFACTORY_1: ${{ secrets.ARTIFACTORY_TOKEN }}
       - name: Upload jar to artifactory
-      - run: |
+        run: |
           jfrog rt ping
           jfrog rt u ./spring-petclinic-2.5.0-SNAPSHOT.jar "default-maven-local/petclinic/2.5.0-SNAPSHOT/petclinic-2.5.0-SNAPSHOT.jar" --flat=true
