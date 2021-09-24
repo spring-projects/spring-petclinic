@@ -78,9 +78,7 @@ public class Vet extends Person {
 
 	@Override
 	public String toString() {
-		return "Vet [specialties=" + specialties + ", getFirstName()=" + getFirstName() + ", getLastName()="
-				+ getLastName() + ", getId()=" + getId() + ", isNew()=" + isNew() + ", getClass()=" + getClass()
-				+ ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
+		return "[Especialidad: " + specialties + ", Id: " + getId() + ", Nombre: "
+				+ getFirstName() + ", Apellido: " + getLastName() + "]";
 	}
-
 }

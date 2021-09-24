@@ -16,10 +16,12 @@
 package org.springframework.samples.petclinic.owner;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -54,11 +56,19 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
 	@Query("SELECT owner FROM Owner owner left join fetch owner.pets WHERE owner.id =:id")
 	@Transactional(readOnly = true)
 	Owner findById(@Param("id") Integer id);
+	
+	// Buscar por nombre o apellidos por el total o parte del parámetro indicado
+	@Query("select owner FROM Owner owner where UPPER(owner.firstName) like UPPER(concat('%', :name, '%') ) or UPPER(owner.lastName) like UPPER(concat('%', :name, '%') )")
+	@Transactional(readOnly = true)
+	List<Owner> findByFirstNameOrLastNameOwner(@Param("name") String name);
+	
+	// Devolver una lista de propietarios ordenada por apellido
+	List<Owner> findByOrderByLastName();
 
 	/**
 	 * Save an {@link Owner} to the data store, either inserting or updating it.
 	 * @param owner the {@link Owner} to save
 	 */
-	void save(Owner owner);
+	Owner save(Owner owner);
 
 }

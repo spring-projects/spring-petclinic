@@ -16,14 +16,19 @@
 
 package org.springframework.samples.petclinic;
 
+import java.util.List;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.samples.petclinic.vet.VetRepository;
+import org.springframework.samples.petclinic.owner.OwnerRepository;
+import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.vet.Specialty;
 import org.springframework.samples.petclinic.vet.SpecialtyRepository;
+
 
 /**
  * PetClinic Spring Boot Application.
@@ -40,7 +45,7 @@ public class PetClinicApplication {
 	}
 
 	@Bean
-	public CommandLineRunner pruebasSpring(VetRepository vetRepository, SpecialtyRepository specialtyRepository) {
+	public CommandLineRunner pruebasSpring(VetRepository vetRepository, SpecialtyRepository specialtyRepository, OwnerRepository ownerRepository) {
 
 		return (args) -> {
 
@@ -66,7 +71,16 @@ public class PetClinicApplication {
 			for (Vet v : vetRepository.findAll()) {
 				System.out.println("Vet: " + v);
 			}
-
+			
+			System.out.println("\nListar Owner por nombre o apellidos");
+			for(Owner own: ownerRepository.findByFirstNameOrLastNameOwner("g"))	{
+				System.out.println("Owner: " + own);
+			}
+			
+			System.out.println("\nLista Owner ordenada por apellidos");
+			for(Owner own: ownerRepository.findByOrderByLastName()) {
+				System.out.println("Owner: " + own);
+			}
 		};
 	}
 }

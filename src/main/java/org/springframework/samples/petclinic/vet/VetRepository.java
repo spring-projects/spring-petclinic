@@ -23,10 +23,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
-<<<<<<< Updated upstream
+
 import org.springframework.samples.petclinic.owner.Pet;
-=======
->>>>>>> Stashed changes
+
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -78,9 +77,5 @@ public interface VetRepository extends Repository<Vet, Integer> {
 	 * @return 
      */
     Vet save(Vet vet);
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 
 }
