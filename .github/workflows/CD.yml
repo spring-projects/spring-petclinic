@@ -45,3 +45,4 @@ jobs:
       - name: Store on Artifactory
         run: |
           jfrog rt ping
+          jfrog rt u spring-petclinic-2.5.0-SNAPSHOT.jar "default-generic-local"
