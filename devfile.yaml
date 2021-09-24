@@ -11,7 +11,7 @@ components:
         - exposure: none
           name: debug
           protocol: tcp
-          targetPort: 5005
+          targetPort: 5050
         - exposure: public
           name: 8080-tcp
           protocol: http
