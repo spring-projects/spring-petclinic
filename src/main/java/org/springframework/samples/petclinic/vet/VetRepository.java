@@ -16,10 +16,14 @@
 package org.springframework.samples.petclinic.vet;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.query.Param;
+import org.springframework.samples.petclinic.owner.Pet;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -42,5 +46,35 @@ public interface VetRepository extends Repository<Vet, Integer> {
 	@Transactional(readOnly = true)
 	@Cacheable("vets")
 	Collection<Vet> findAll() throws DataAccessException;
+	
+	@Query("SELECT vet FROM Vet vet WHERE vet.lastName = :lastName")
+	@Transactional(readOnly = true)
+	List<Vet> findByLastName(@Param("lastName") String lastName);
+	
+	@Query("SELECT vet FROM Vet vet WHERE vet.firstName = :firstName and vet.lastName = :lastName")
+	@Transactional(readOnly = true)
+	List<Vet> findByFirstNameAndLastName(@Param("firstName") String firstName,
+										@Param("lastName") String lastName);
+	
+	@Query("SELECT vet FROM Vet vet WHERE vet.firstName = :firstName or vet.lastName = :lastName")
+	@Transactional(readOnly = true)
+	List<Vet> findByFirstNameOrLastName(@Param("firstName") String firstName,
+										@Param("lastName") String lastName);
+	
+	@Query("SELECT vet FROM Vet vet WHERE vet.id = :id")
+	@Transactional(readOnly = true)
+	Vet findOne(@Param("id") int id);
+	
+	@Query("SELECT distinct vet FROM Vet vet JOIN FETCH vet.specialties spe WHERE spe.name = :name")
+	@Transactional(readOnly = true)
+	List<Vet> findBySpecialityName(@Param("name") String name);
+	
+	/**
+     * Save a {@link Pet} to the data store, either inserting or updating it.
+     * @param vet the {@link Pet} to save
+	 * @return 
+     */
+    Vet save(Vet vet);
+
 
 }
