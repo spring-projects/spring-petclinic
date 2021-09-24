@@ -33,6 +33,12 @@ jobs:
       # Runs a single command using the runners shell
       - name: Build with maven
         run: mvn -Dmaven.test.skip=true -B package --file pom.xml
+      # Save build result
+      - uses: actions/upload-artifact@v2.2.4
+        with:
+          name: petclinic_jarfile
+          path: ./target/spring-petclinic-*.jar
+      
   test:
     needs: build
     runs-on: ubuntu-latest
@@ -45,17 +51,14 @@ jobs:
           cache: 'maven'
       - name: Test with maven
         run: mvn -B test --file pom.xml
+  
   launch-ready:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v2.3.0
+      - uses: actions/download-artifact@v2.0.10
         with:
-          java-version: '16'
-          distribution: 'adopt'
-          cache: 'maven'
-      - name: Build with maven
-        run: mvn -Dmaven.test.skip=true -B package --file pom.xml
+          name: petclinic_jarfile
+
       - name: Launch java jar
-        run: test -f target/spring-petclinic-*.jar
+        run: test -f ./spring-petclinic-*.jar
