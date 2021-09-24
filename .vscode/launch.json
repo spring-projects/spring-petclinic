@@ -6,7 +6,7 @@
             "name": "Debug (Attach) - Remote",
             "request": "attach",
             "hostName": "localhost",
-            "port": 5005
+            "port": 5050
         }
     ]
 }
