@@ -14,10 +14,10 @@ on:
   workflow_dispatch:
   
   # Run CI workflow before
-  #workflow_run:
-  #  workflows: ["CI build"]
-  #  types:
-  #    - completed
+  workflow_run:
+    workflows: ["CI build"]
+    types:
+      - completed
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -45,4 +45,4 @@ jobs:
       - name: Store on Artifactory
         run: |
           jfrog rt ping
-          jfrog rt u target/spring-petclinic-2.5.0-SNAPSHOT.jar "default-generic-local"
+          jfrog rt u target/spring-petclinic-2.5.0-SNAPSHOT.jar "default-maven-local/petclinic/petclinic-2.5.0-SNAPSHOT.jar" -- flat=true
