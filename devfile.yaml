@@ -11,7 +11,7 @@ components:
         - exposure: none
           name: debug
           protocol: tcp
-          targetPort: 5050
+          targetPort: 5005
         - exposure: public
           name: 8080-tcp
           protocol: http
@@ -28,7 +28,7 @@ commands:
     exec:
       component: tools
       workingDir: ${PROJECTS_ROOT}/java-spring-petclinic
-      commandLine: mvn package
+      commandLine: mvn clean install
       group:
         kind: build
         isDefault: true
