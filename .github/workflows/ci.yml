@@ -33,7 +33,6 @@ jobs:
           distribution: 'adopt'
       - name: Build with maven
         run: mvn -Dmaven.test.skip=true -DskipTests -B package --file pom.xml
-      - name: Upload jar file
       - uses: actions/upload-artifact@v2.2.4
         with:
           name: petclinic_jarfile
@@ -57,7 +56,6 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
-      - name: Download jar file
       - uses: actions/download-artifact@v2.0.10
         with:
           name: petclinic_jarfile
