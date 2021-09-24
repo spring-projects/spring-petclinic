@@ -29,7 +29,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: actions/checkout@v2
-      - uses: jfrog/setup-jfrog-cli@v1
+      - uses: jfrog/setup-jfrog-cli@v2
         env:
           JF_ARTIFACTORY_1: ${{ secrets.ARTIFACTORY_SECRETS }}
           
