@@ -15,7 +15,7 @@ on:
   
   # Run CI workflow before
   workflow_run:
-    workflows: ["CI build"]
+    workflows: ["CI"]
     types:
       - completed
 
@@ -45,4 +45,4 @@ jobs:
       - name: Store on Artifactory
         run: |
           jfrog rt ping
-          jfrog rt u target/spring-petclinic-2.5.0-SNAPSHOT.jar "default-maven-local/petclinic/petclinic-2.5.0-SNAPSHOT.jar" --flat=true
+          jfrog rt u target/spring-petclinic-2.5.0-SNAPSHOT.jar "default-maven-local/petclinic/2.5.0-SNAPSHOT/petclinic-2.5.0-SNAPSHOT.jar" --flat=true
