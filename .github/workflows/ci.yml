@@ -1,46 +1,46 @@
-# This is a basic workflow to help you get started with Actions
-
 name: CI
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [  ]
   pull_request:
     branches: [  ]
-
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
-jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
+jobs:
+  dependencies:
+    runs-on: ubuntu-latest
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v2.3.0
         with:
           java-version: '16'
           distribution: 'adopt'
           cache: 'maven'
-
-      # Runs a single command using the runners shell
+      - name: Download maven dependencies
+        run: mvn dependency:go-offline
+ 
+  build:
+    needs: dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v2.3.0
+        with:
+          java-version: '16'
+          distribution: 'adopt'
       - name: Build with maven
-        run: mvn -Dmaven.test.skip=true -B package --file pom.xml
-      # Save build result
+        run: mvn -Dmaven.test.skip=true -DskipTests -B package --file pom.xml
+      - name: Upload jar file
       - uses: actions/upload-artifact@v2.2.4
         with:
           name: petclinic_jarfile
           path: ./target/spring-petclinic-*.jar
       
   test:
-    needs: build
+    needs: dependencies
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -52,13 +52,19 @@ jobs:
       - name: Test with maven
         run: mvn -B test --file pom.xml
   
-  launch-ready:
-    needs: build
+  upload-artifactory:
+    needs: [ build, test ]
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
     steps:
+      - name: Download jar file
       - uses: actions/download-artifact@v2.0.10
         with:
           name: petclinic_jarfile
-
-      - name: Launch java jar
-        run: test -f ./spring-petclinic-*.jar
+      - uses: jfrog/setup-jfrog-cli@v2
+        env:
+          JF_ARTIFACTORY_1: ${{ secrets.ARTIFACTORY_TOKEN }}
+      - name: Upload jar to artifactory
+      - run: |
+          jfrog rt ping
+          jfrog rt u ./spring-petclinic-2.5.0-SNAPSHOT.jar "default-maven-local/petclinic/2.5.0-SNAPSHOT/petclinic-2.5.0-SNAPSHOT.jar" --flat=true
