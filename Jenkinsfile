@@ -3,9 +3,12 @@ pipeline {
     
     stages {
         stage("Build jartifact") {
-            echo "=============== Building starts =================="
-            sh "pwd"
-            sh "./mvnw package"
+            steps {
+                echo "=============== Building starts =================="
+                sh "pwd"
+                sh "./mvnw package"
+            }
+            
         }
         
     }
