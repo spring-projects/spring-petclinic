@@ -7,8 +7,9 @@ pipeline {
                 echo "=============== Building starts =================="
                 sh 'pwd'
                 sh './mvnw package'
-                sh 'mkdir docker'
                 echo "=============== Building is complete =================="
+                sh 'mkdir docker'
+                sh 'mv Dockerfile docker/'
                 sh 'mv target/*.jar docker/petclinic.jar'
                 sh 'echo GIT_COMMIT: $GIT_COMMIT'
                 sh 'echo BUILD_TAG: $BUILD_TAG'
