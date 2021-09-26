@@ -21,7 +21,13 @@ pipeline {
                     sh "docker build -t petclinic.$BUILD_NUMBER ."
                     sh 'docker run -d -p 8080:8080 petclinic.$BUILD_NUMBER'
                 }
-                echo "Keep going!"   
+                echo "Keep going!"
+                
+                docker.withRegistry("178258651770.dkr.ecr.eu-central-1.amazonaws.com/myrepo123", "ecr:eu-central-1:jenkins") {
+                    docker.image("petclinic.12").push()
+                }
+                    
+                    
             }
 
 	    }
