@@ -8,11 +8,8 @@ pipeline {
                 sh 'pwd'
                 sh './mvnw package'
                 sh 'mkdir docker'
-                sh 'mv target/*.jar docker/petclinic.jar'
-                dir ('target') {
-                    sh 'mv *.jar petclinic.jar'
-                }
                 echo "=============== Building is complete =================="
+                sh 'mv target/*.jar docker/petclinic.jar'
                 sh 'echo GIT_COMMIT: $GIT_COMMIT'
                 sh 'echo BUILD_TAG: $BUILD_TAG'
             }            
