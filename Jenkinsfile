@@ -18,7 +18,7 @@ pipeline {
         stage("Build_image") {
             steps {
                 dir ('docker') {
-                    sh "docker build -t $BUILD_NUMBER ."
+                    sh "docker build -t petclinic.$BUILD_NUMBER ."
                 }
                 echo "Keep going!"   
             }
