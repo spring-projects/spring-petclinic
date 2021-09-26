@@ -10,7 +10,7 @@ pipeline {
                 echo "=============== Building is complete =================="
                 sh 'mkdir docker'
                 sh 'mv Dockerfile docker/'
-                sh 'mv target/*.jar docker/petclinic.jar'
+                sh 'mv target/*.jar docker/main.jar'
                 sh 'echo GIT_COMMIT: $GIT_COMMIT'
                 sh 'echo BUILD_TAG: $BUILD_TAG'
             }            
