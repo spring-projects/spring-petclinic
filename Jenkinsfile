@@ -23,14 +23,9 @@ pipeline {
                 }
                 echo "Keep going!"
                 
-                docker.withRegistry("178258651770.dkr.ecr.eu-central-1.amazonaws.com/myrepo123", "ecr:eu-central-1:jenkins") {
-                    docker.image("petclinic.12").push()
-                }
-                    
-                    
+                docker.withRegistry("178258651770.dkr.ecr.eu-central-1.amazonaws.com/myrepo123", "ecr:eu-central-1:jenkins") {docker.image("petclinic.12").push()}
             }
-
-	    }
+        }
     }
 
 }
