@@ -17,7 +17,7 @@ pipeline {
                 sh 'echo BUILD_TAG: $BUILD_TAG'
             }            
         }
-		stage(Build_image) {
+		stage("Build_image") {
 			steps {
 				dir ('docker') {
                     sh "docker build -t $BUILD_NUMBER ."
