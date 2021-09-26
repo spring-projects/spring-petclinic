@@ -17,15 +17,15 @@ pipeline {
                 sh 'echo BUILD_TAG: $BUILD_TAG'
             }            
         }
-		stage("Build_image") {
-			steps {
-				dir ('docker') {
+        stage("Build_image") {
+            steps {
+                dir ('docker') {
                     sh "docker build -t $BUILD_NUMBER ."
                 }
                 echo "Keep going!"   
-			}
-		
-		}
+            }
+
+	    }
     }
 
 }
