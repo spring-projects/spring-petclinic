@@ -22,9 +22,10 @@ pipeline {
                     sh 'docker run -d -p 8080:8080 petclinic.$BUILD_NUMBER'
                 }
                 echo 'Keep going!'
-                
-                docker.withRegistry('https://178258651770.dkr.ecr.eu-central-1.amazonaws.com', 'ecr:eu-central-1:jenkins') {
-                    docker.image('178258651770.dkr.ecr.eu-central-1.amazonaws.com/myrepo123').push('latest')
+                script {
+                    docker.withRegistry('https://178258651770.dkr.ecr.eu-central-1.amazonaws.com', 'ecr:eu-central-1:jenkins') {
+                        docker.image('178258651770.dkr.ecr.eu-central-1.amazonaws.com/myrepo123').push('latest')
+                    }
                 }
             }
         }
