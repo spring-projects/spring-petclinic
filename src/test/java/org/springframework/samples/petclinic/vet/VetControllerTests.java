@@ -16,6 +16,7 @@
 
 package org.springframework.samples.petclinic.vet;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -27,17 +28,22 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 /**
  * Test class for the {@link VetController}
  */
-@EnableSpringDataWebSupport
+
 @WebMvcTest(VetController.class)
 class VetControllerTests {
 
@@ -47,13 +53,17 @@ class VetControllerTests {
 	@MockBean
 	private VetRepository vets;
 
+	private Vet james;
+
+	private Vet helen;
+
 	@BeforeEach
 	void setup() {
-		Vet james = new Vet();
+		james = new Vet();
 		james.setFirstName("James");
 		james.setLastName("Carter");
 		james.setId(1);
-		Vet helen = new Vet();
+		helen = new Vet();
 		helen.setFirstName("Helen");
 		helen.setLastName("Leary");
 		helen.setId(2);
@@ -62,20 +72,25 @@ class VetControllerTests {
 		radiology.setName("radiology");
 		helen.addSpecialty(radiology);
 		given(this.vets.findAll()).willReturn(Lists.newArrayList(james, helen));
+		given(this.vets.findAll(any(Pageable.class))).willReturn(new PageImpl<Vet>(Lists.newArrayList(james, helen)));
+
 	}
 
 	@Test
 	void testShowVetListHtml() throws Exception {
-		MockHttpServletRequestBuilder createMessage = get("/vets.html").param("pageNo", "1");
-		createMessage.contentType("text/html");
+
+		given(this.vets.findAll(any(Pageable.class))).willReturn(new PageImpl<Vet>(Lists.newArrayList(james, helen)));
+		mockMvc.perform(MockMvcRequestBuilders.get("/vets.html?pageNo=1")).andExpect(status().isOk())
+				.andExpect(model().attributeExists("listVets")).andExpect(view().name("vets/vetList"));
+
 	}
 
 	@Test
 	void testShowResourcesVetList() throws Exception {
 		ResultActions actions = mockMvc.perform(get("/vets").accept(MediaType.APPLICATION_JSON))
-			.andExpect(status().isOk());
+				.andExpect(status().isOk());
 		actions.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-			.andExpect(jsonPath("$.vetList[0].id").value(1));
+				.andExpect(jsonPath("$.vetList[0].id").value(1));
 	}
 
 }
