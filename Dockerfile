@@ -2,7 +2,7 @@
 #COPY . /usr/src/myapp
 #WORKDIR /usr/src/myapp
 
-FROM openjdk:8-jre-apline
+FROM openjdk:8-jre-alpine
 RUN mkdir /app && groupadd -r -s /bin/false -g webuser webuser
 WORKDIR /app
 COPY . /app
