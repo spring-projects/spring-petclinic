@@ -4,7 +4,7 @@
 
 FROM openjdk:8-jre-alpine
 RUN mkdir /app 
-RUN groupadd -r -s /bin/false -g webuser webuser
+RUN groupadd -r webuser && useradd -r -s /bin/false -g webuser webuser
 WORKDIR /app
 COPY . /app
 RUN chown -R webuser:webuser /app
