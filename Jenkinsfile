@@ -1,6 +1,11 @@
 pipeline {
     agent any
     
+    environment {
+        tag = $BRANCH_NAME+$BUILD_NUMBER
+            
+    }
+    
     stages {
         stage("Build jartifact") {
             steps {
