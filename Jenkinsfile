@@ -1,10 +1,6 @@
 pipeline {
     agent any
     
-    parameters {
-        REPOURL = '178258651770.dkr.ecr.eu-central-1.amazonaws.com/petclinic'
-    }
-    
     stages {
         stage("Build jartifact") {
             steps {
