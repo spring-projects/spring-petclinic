@@ -2,14 +2,14 @@ pipeline {
     agent any
     
     environment {
-        tag = $BRANCH_NAME+$BUILD_NUMBER
+        tag = "$BRANCH_NAME"+"$BUILD_NUMBER"
             
     }
     
     stages {
         stage("Build jartifact") {
             steps {
-                sh 'tag="$BRANCH_NAME.$BUILD_NUMBER"'
+                //sh 'tag="$BRANCH_NAME.$BUILD_NUMBER"'
                 sh 'echo $tag'
                 sh 'echo $(tag)'
                 echo "=============== Building starts =================="
