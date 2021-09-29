@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage("Build jartifact") {
             steps {
-                sh 'TAG=$BRANCH_NAME"."$BUILD_NUMBER'
+                sh 'TAG="$BRANCH_NAME.$BUILD_NUMBER"'
                 sh 'echo $TAG'
                 sh 'echo ${TAG}'
                 echo "=============== Building starts =================="
