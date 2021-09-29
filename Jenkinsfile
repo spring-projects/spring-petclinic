@@ -13,13 +13,13 @@ pipeline {
                 sh 'mv target/*.jar docker/main.jar'
                 sh 'echo GIT_COMMIT: $GIT_COMMIT'
                 sh 'echo BUILD_TAG: $BUILD_TAG'
+                sh 'echo BUILD_NUMBER: $BUILD_NUMBER'
             }            
         }
         stage("Build_image") {
             steps {
                 dir ('docker') {
                     sh 'docker build -t petclinic:$BUILD_NUMBER .'
-                    //sh 'docker run -d -p 8080:8080 petclinic:$BUILD_NUMBER'
                     sh 'docker tag petclinic:$BUILD_NUMBER 178258651770.dkr.ecr.eu-central-1.amazonaws.com/petclinic:$BUILD_NUMBER'
                 }
                 echo 'Keep going!'
