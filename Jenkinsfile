@@ -23,6 +23,7 @@ pipeline {
                     sh 'docker tag petclinic:$BUILD_NUMBER 178258651770.dkr.ecr.eu-central-1.amazonaws.com/petclinic:$BUILD_NUMBER'
                 }
                 echo 'Keep going!'
+            }
         }
         stage("Push iamge to ECR") {
             steps {
@@ -37,4 +38,4 @@ pipeline {
     }
 
 }
-}
+
