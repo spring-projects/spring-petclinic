@@ -4,6 +4,8 @@ pipeline {
     stages {
         stage("Build jartifact") {
             steps {
+                TAG=$BRANCH_NAME+$BUILD_NUMBER
+                sh 'echo TAG: $TAG'
                 echo "=============== Building starts =================="
                 sh 'pwd'
                 sh './mvnw package'
@@ -18,6 +20,7 @@ pipeline {
         }
         stage("Build_image") {
             steps {
+                
                 dir ('docker') {
                     sh 'docker build -t petclinic:$BUILD_NUMBER .'
                     sh 'docker tag petclinic:$BUILD_NUMBER 178258651770.dkr.ecr.eu-central-1.amazonaws.com/petclinic:$BUILD_NUMBER'
