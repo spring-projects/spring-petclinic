@@ -25,12 +25,12 @@ pipeline {
                 echo 'Keep going!'
             }
         }
-        stage("Push iamge to ECR") {
+        stage("Push image to ECR") {
             steps {
                 //when { tag "release-*" }  //Deploy only if tag is relese-*
                 script {
                     docker.withRegistry('https://178258651770.dkr.ecr.eu-central-1.amazonaws.com', 'ecr:eu-central-1:jenkins') {
-                        docker.image('178258651770.dkr.ecr.eu-central-1.amazonaws.com/petclinic').push('$BUILD_TAG')
+                        docker.image('178258651770.dkr.ecr.eu-central-1.amazonaws.com/petclinic').push('$BUILD_NUMBER')
                     }
                 }
             }
