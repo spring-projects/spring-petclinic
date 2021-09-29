@@ -79,7 +79,6 @@ class VetControllerTests {
 	@Test
 	void testShowVetListHtml() throws Exception {
 
-		given(this.vets.findAll(any(Pageable.class))).willReturn(new PageImpl<Vet>(Lists.newArrayList(james, helen)));
 		mockMvc.perform(MockMvcRequestBuilders.get("/vets.html?pageNo=1")).andExpect(status().isOk())
 				.andExpect(model().attributeExists("listVets")).andExpect(view().name("vets/vetList"));
 
