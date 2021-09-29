@@ -4,9 +4,9 @@ pipeline {
     stages {
         stage("Build jartifact") {
             steps {
-                sh 'TAG="$BRANCH_NAME.$BUILD_NUMBER"'
-                sh 'echo $TAG'
-                sh 'echo ${TAG}'
+                sh 'tag="$BRANCH_NAME.$BUILD_NUMBER"'
+                sh 'echo $tag'
+                sh 'echo $(tag)'
                 echo "=============== Building starts =================="
                 sh 'pwd'
                 sh './mvnw package'
