@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'ubuntu' }
     
     environment {
         TAG = "$BRANCH_NAME"+"."+"$BUILD_NUMBER"
