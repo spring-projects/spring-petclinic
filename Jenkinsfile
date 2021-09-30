@@ -39,6 +39,7 @@ pipeline {
                         docker.image('178258651770.dkr.ecr.eu-central-1.amazonaws.com/petclinic' + ':$TAG').push()
                     }
                 }
+                sh 'docker image prune -a -f'
             }
         }
     }
