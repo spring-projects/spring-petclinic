@@ -2,7 +2,7 @@ pipeline {
     agent { label 'ubuntu' }
     
     environment {
-        IMG_TAG = "178258651770.dkr.ecr.eu-central-1.amazonaws.com/petclinic:"+"$BRANCH_NAME"+"."+"$BUILD_NUMBER"
+        TAG = "$BRANCH_NAME"+"."+"$BUILD_NUMBER"
             
     }
     
@@ -26,8 +26,7 @@ pipeline {
                 
                 dir ('docker') {
                     sh 'docker build -t petclinic:$BUILD_NUMBER .'
-                    //sh 'docker tag petclinic:$BUILD_NUMBER 178258651770.dkr.ecr.eu-central-1.amazonaws.com/petclinic:$TAG'
-                    sh 'docker tag petclinic:$BUILD_NUMBER $IMG_TAG'
+                    sh 'docker tag petclinic:$BUILD_NUMBER 178258651770.dkr.ecr.eu-central-1.amazonaws.com/petclinic:$TAG'
                 }
                 echo 'Keep going!'
             }
@@ -37,12 +36,12 @@ pipeline {
                 //when { tag "release-*" }  //Deploy only if tag is relese-*
                 script {
                     docker.withRegistry('https://178258651770.dkr.ecr.eu-central-1.amazonaws.com', 'ecr:eu-central-1:jenkins') {
-                        docker.image('$IMG_TAG').push()
-                        //docker.image('178258651770.dkr.ecr.eu-central-1.amazonaws.com/petclinic' + ':$TAG').push()
+                        docker.image('178258651770.dkr.ecr.eu-central-1.amazonaws.com/petclinic' + ':$TAG').push()
                     }
                 }
             }
         }
     }
+
 }
 
