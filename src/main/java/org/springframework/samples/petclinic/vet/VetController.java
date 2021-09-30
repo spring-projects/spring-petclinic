@@ -15,7 +15,6 @@
  */
 package org.springframework.samples.petclinic.vet;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,10 +22,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Juergen Hoeller
@@ -44,18 +43,16 @@ class VetController {
 	}
 
 	@GetMapping("/vets.html")
-	public String showVetList(Map<String, Object> model, Model paginationModel) {
+	public String showVetList(@RequestParam(value = "pageNo", defaultValue = "1") int pageNo, Model paginationModel) {
 		// Here we are returning an object of type 'Vets' rather than a collection of Vet
 		// objects so it is simpler for Object-Xml mapping
 		Vets vets = new Vets();
 		vets.getVetList().addAll(this.vets.findAll());
-		model.put("vets", vets);
-		return findPaginated(1, vets, paginationModel);
+		return addPaginationModel(pageNo, vets, paginationModel);
 
 	}
 
-	@GetMapping("/vetpage/{pageNo}")
-	public String findPaginated(@PathVariable(value = "pageNo") int pageNo, Vets vets, Model model) {
+	private String addPaginationModel(@PathVariable(value = "pageNo") int pageNo, Vets vets, Model model) {
 		Page<Vet> page = findPaginated(pageNo);
 		List<Vet> listVets = page.getContent();
 		model.addAttribute("currentPage", pageNo);
@@ -65,7 +62,7 @@ class VetController {
 		return "vets/vetList";
 	}
 
-	public Page<Vet> findPaginated(int pageNo) {
+	private Page<Vet> findPaginated(int pageNo) {
 		int pageSize = 5;
 		Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
 		return vets.findAll(pageable);

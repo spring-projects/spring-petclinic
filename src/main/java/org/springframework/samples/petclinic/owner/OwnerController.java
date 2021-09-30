@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -67,7 +66,8 @@ class OwnerController {
 	public String processCreationForm(@Valid Owner owner, BindingResult result) {
 		if (result.hasErrors()) {
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
-		} else {
+		}
+		else {
 			this.owners.save(owner);
 			return "redirect:/owners/" + owner.getId();
 		}
@@ -81,7 +81,7 @@ class OwnerController {
 
 	@GetMapping("/owners")
 	public String processFindForm(@RequestParam(value = "pageNo", defaultValue = "1") int pageNo, Owner owner,
-								  BindingResult result, Pageable pageable, Model paginationModel) {
+			BindingResult result, Pageable pageable, Model paginationModel) {
 
 		String lastName;
 		// allow parameterless GET request for /owners to return all records
@@ -96,18 +96,20 @@ class OwnerController {
 			// no owners found
 			result.rejectValue("lastName", "notFound", "not found");
 			return "owners/findOwners";
-		} else if (ownersResults.getTotalElements() == 1) {
+		}
+		else if (ownersResults.getTotalElements() == 1) {
 			// 1 owner found
 			owner = ownersResults.iterator().next();
 			return "redirect:/owners/" + owner.getId();
-		} else {
+		}
+		else {
 			// multiple owners found
 			lastName = owner.getLastName();
-			return findPaginated(pageNo, paginationModel, lastName, ownersResults);
+			return addPaginationModel(pageNo, paginationModel, lastName, ownersResults);
 		}
 	}
 
-	private String findPaginated(int pageNo, Model model, String lastName, Page<Owner> ownerResults) {
+	private String addPaginationModel(int pageNo, Model model, String lastName, Page<Owner> ownerResults) {
 		model.addAttribute("listOwners", ownerResults);
 		Page<Owner> page = findPaginatedForOwnersLastName(pageNo, lastName);
 		List<Owner> listOwners = page.getContent();
@@ -135,10 +137,11 @@ class OwnerController {
 
 	@PostMapping("/owners/{ownerId}/edit")
 	public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result,
-										 @PathVariable("ownerId") int ownerId) {
+			@PathVariable("ownerId") int ownerId) {
 		if (result.hasErrors()) {
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
-		} else {
+		}
+		else {
 			owner.setId(ownerId);
 			this.owners.save(owner);
 			return "redirect:/owners/{ownerId}";
@@ -147,7 +150,6 @@ class OwnerController {
 
 	/**
 	 * Custom handler for displaying an owner.
-	 *
 	 * @param ownerId the ID of the owner to display
 	 * @return a ModelMap with the model attributes for the view
 	 */
