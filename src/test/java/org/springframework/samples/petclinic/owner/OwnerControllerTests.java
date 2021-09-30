@@ -159,7 +159,6 @@ class OwnerControllerTests {
 		int pageSize = 1, size = 0;
 		Pageable pageable = PageRequest.of(pageNumber, pageSize);
 		Page<Owner> tasks = new PageImpl<Owner>(Lists.newArrayList());
-		;
 		Mockito.when(this.owners.findByLastName(eq("Unknown Surname"), org.mockito.Matchers.isA(Pageable.class)))
 				.thenReturn(tasks);
 		mockMvc.perform(get("/owners?pageNo=1").param("lastName", "Unknown Surname")).andExpect(status().isOk())
