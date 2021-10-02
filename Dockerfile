@@ -3,9 +3,7 @@
 #WORKDIR /usr/src/myapp
 
 FROM openjdk:8-jre-alpine
-RUN mkdir /app
-RUN addgroup -S webuser
-RUN adduser -S -s /bin/false -G webuser webuser
+RUN mkdir /app && addgroup -S webuser && adduser -S -s /bin/false -G webuser webuser
 WORKDIR /app
 COPY . /app
 RUN chown -R webuser:webuser /app
