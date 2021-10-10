@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Spring-Boot-Classpath-Index: BOOT-INF/classpath.idx
+Spring-Boot-Layers-Index: BOOT-INF/layers.idx
+Start-Class: org.springframework.samples.petclinic.PetClinicApplicatio
+ n
+Spring-Boot-Classes: BOOT-INF/classes/
+Spring-Boot-Lib: BOOT-INF/lib/
+Spring-Boot-Version: 2.5.4
+Main-Class: org.springframework.boot.loader.JarLauncher
+

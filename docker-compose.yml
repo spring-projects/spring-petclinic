@@ -10,3 +10,13 @@ mysql:
     - MYSQL_DATABASE=petclinic
   volumes:
     - "./conf.d:/etc/mysql/conf.d:ro"
+version: '3.7'
+services:
+  jenkins:
+    image: jenkins/jenkins:latest-jdk8
+    privileged: true
+    user: admin
+    ports:
+      - 8081:8080
+      - 50000:50000
+    container_name: jenkins
