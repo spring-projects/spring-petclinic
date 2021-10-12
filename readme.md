@@ -11,7 +11,7 @@ Petclinic is a [Spring Boot](https://spring.io/guides/gs/spring-boot) applicatio
 
 ```
 ./gradlew bootJar
-java -jar build/lib/*.jar
+java -jar build/libs/*.jar
 ```
 
 You can then access petclinic here: http://localhost:8080/
