@@ -10,3 +10,6 @@ target/*
 .sts4-cache/
 .vscode
 _site/
+.gradle/
+build/
+bin/
