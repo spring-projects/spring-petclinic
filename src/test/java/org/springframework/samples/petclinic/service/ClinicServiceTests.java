@@ -23,8 +23,12 @@ import java.util.Collection;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.owner.OwnerRepository;
 import org.springframework.samples.petclinic.owner.Pet;
@@ -48,8 +52,7 @@ import org.springframework.transaction.annotation.Transactional;
  * time between test execution.</li>
  * <li><strong>Dependency Injection</strong> of test fixture instances, meaning that we
  * don't need to perform application context lookups. See the use of
- * {@link Autowired @Autowired} on the <code>{@link
- * ClinicServiceTests#clinicService clinicService}</code> instance variable, which uses
+ * {@link Autowired @Autowired} on the <code> </code> instance variable, which uses
  * autowiring <em>by type</em>.
  * <li><strong>Transaction management</strong>, meaning each test method is executed in
  * its own transaction, which is automatically rolled back by default. Thus, even if tests
@@ -67,6 +70,8 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Dave Syer
  */
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
+// Ensure that if the mysql profile is active we connect to the real database:
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 class ClinicServiceTests {
 
 	@Autowired
@@ -81,12 +86,14 @@ class ClinicServiceTests {
 	@Autowired
 	protected VetRepository vets;
 
+	Pageable pageable;
+
 	@Test
 	void shouldFindOwnersByLastName() {
-		Collection<Owner> owners = this.owners.findByLastName("Davis");
+		Page<Owner> owners = this.owners.findByLastName("Davis", pageable);
 		assertThat(owners).hasSize(2);
 
-		owners = this.owners.findByLastName("Daviss");
+		owners = this.owners.findByLastName("Daviss", pageable);
 		assertThat(owners).isEmpty();
 	}
 
@@ -102,8 +109,8 @@ class ClinicServiceTests {
 	@Test
 	@Transactional
 	void shouldInsertOwner() {
-		Collection<Owner> owners = this.owners.findByLastName("Schultz");
-		int found = owners.size();
+		Page<Owner> owners = this.owners.findByLastName("Schultz", pageable);
+		int found = (int) owners.getTotalElements();
 
 		Owner owner = new Owner();
 		owner.setFirstName("Sam");
@@ -114,8 +121,8 @@ class ClinicServiceTests {
 		this.owners.save(owner);
 		assertThat(owner.getId().longValue()).isNotEqualTo(0);
 
-		owners = this.owners.findByLastName("Schultz");
-		assertThat(owners.size()).isEqualTo(found + 1);
+		owners = this.owners.findByLastName("Schultz", pageable);
+		assertThat(owners.getTotalElements()).isEqualTo(found + 1);
 	}
 
 	@Test
