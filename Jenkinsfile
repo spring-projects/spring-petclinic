@@ -5,11 +5,6 @@ pipeline {
             steps {
                 sh './mvnw package'
             }
-            post {
-                success {
-                    junit 'target/*.jar' 
-                }
-            }
         }
     }
 }
