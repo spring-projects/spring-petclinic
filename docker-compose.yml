@@ -1,7 +1,7 @@
 version: "3.1"
 services:
   server:
-      image: openjdk:11
+      image: openjdk:8
       container_name: spring-pet-clinic
       volumes:
         - ./build/libs:/app
