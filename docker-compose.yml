@@ -1,12 +1,10 @@
-mysql:
-  image: mysql:5.7
-  ports:
-    - "3306:3306"
-  environment:
-    - MYSQL_ROOT_PASSWORD=
-    - MYSQL_ALLOW_EMPTY_PASSWORD=true
-    - MYSQL_USER=petclinic
-    - MYSQL_PASSWORD=petclinic
-    - MYSQL_DATABASE=petclinic
-  volumes:
-    - "./conf.d:/etc/mysql/conf.d:ro"
+version: "3.1"
+services:
+  server:
+      image: openjdk:11
+      container_name: spring-pet-clinic
+      volumes:
+        - ./build/libs:/app
+      entrypoint: ['java', '-jar', 'app/spring-petclinic-2.5.0-SNAPSHOT.jar']
+      ports:
+        - "8080:8080"
