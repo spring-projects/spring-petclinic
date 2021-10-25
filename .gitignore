@@ -1,12 +1,5 @@
-target/*
-.settings/*
-.classpath
-.project
-.factorypath
-.attach_pid*
-.idea
-*.iml
-/target
-.sts4-cache/
-.vscode
-_site/
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build

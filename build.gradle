@@ -1,0 +1,22 @@
+plugins {
+    id "com.palantir.docker" version "0.22.1"
+	id "com.palantir.docker-run" version "0.22.1"
+	 id "org.sonarqube" version "3.3"
+}
+
+version '0.1.0'
+
+docker {
+    name "${project.name}:${project.version}"
+    files 'springbootify.jar'
+    tag 'DockerHub', "tkgregory/gradle-docker-example:${project.version}"
+}
+
+ dockerRun {
+    name "${project.name}"
+    image "${project.name}:${project.version}"
+    ports '8080:8080'
+    clean true
+}
+
+
