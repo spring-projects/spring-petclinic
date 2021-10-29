@@ -30,6 +30,4 @@ services:
       - "8080:8080"
     depends_on:
       - database
-    restart:
-      - on-failure
-
+    restart: on-failure
