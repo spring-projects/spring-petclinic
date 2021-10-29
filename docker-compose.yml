@@ -1,7 +1,8 @@
 version: "3.7"
 services:
-  mysql:
+  database:
     image: mysql:5.7
+    container_name: "database"
     ports:
       - "3306:3306"
     environment:
@@ -12,8 +13,21 @@ services:
       - MYSQL_DATABASE=petclinic
     volumes:
       - type: bind
-        source: "./conf.d"
+        source: "/home/dino/.git/spring-petclinic/conf.d"
         target: "/etc/mysql/conf.d:ro"
       - type: bind
         source: "/opt/docker/mysql/data"
         target: "/var/lib/mysql"
+    restart: unless-stopped
+  
+  frontend:
+    image: localhost:5000/petclinic
+    container_name: frontend
+    environment:
+      - DATABASE=mysql
+      - "JAVA_OPTS=-Xms64M -Xmx512M"
+    ports: 
+      - "8080:8080"
+    depends_on:
+      - database
+
