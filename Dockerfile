@@ -14,7 +14,6 @@ COPY		./target /usr/src/myapp
 
 WORKDIR		/usr/src/myapp
 
-#ENTRYPOINT	["java"] 
 CMD		java $JAVA_OPTS -Dspring.profiles.active=${DATABASE} -jar /usr/src/myapp/spring-petclinic-2.5.0-SNAPSHOT.jar
 
 EXPOSE		8080
