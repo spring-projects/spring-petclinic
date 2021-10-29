@@ -13,10 +13,10 @@ services:
       - MYSQL_DATABASE=petclinic
     volumes:
       - type: bind
-        source: "/home/dino/.git/spring-petclinic/conf.d"
+        source: "./conf.d"
         target: "/etc/mysql/conf.d:ro"
       - type: bind
-        source: "/opt/docker/mysql/data"
+        source: "./mysql/data"
         target: "/var/lib/mysql"
     restart: unless-stopped
   
