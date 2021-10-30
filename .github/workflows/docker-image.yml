@@ -19,6 +19,7 @@ jobs:
     steps: 
     - name: Push to repo
       run: |
+        git remote set-url origin git@github.com:Acibeee/spring-petclinic
         git config --global user.email "acibeee@gmail.com"
         git config --global user.name "Acibeee"
         git add .
