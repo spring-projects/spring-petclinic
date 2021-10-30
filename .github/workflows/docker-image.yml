@@ -13,15 +13,8 @@ jobs:
       run: |
         ./mvnw package
         docker build . -f Dockerfile -t spring-petclinic
-  push:
-    needs: build
-    runs-on: ubuntu-latest
-    steps: 
-    - name: Push to repo
-      run: |
         git config --global user.email "67474440+Acibeee@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
         git add .
         git commit -am "Automatic commit"
         git push
-      
