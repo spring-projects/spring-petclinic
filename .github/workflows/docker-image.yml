@@ -19,7 +19,7 @@ jobs:
     steps: 
     - name: Push to repo
       run: |
-        git config --global user.email "acibeee@gmail.com
+        git config --global user.email "acibeee@gmail.com"
         git config --global user.name "Acibeee"
         git add .
         git commit -am "Automatic commit"
