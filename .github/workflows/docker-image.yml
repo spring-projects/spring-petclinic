@@ -8,16 +8,17 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
+      env:
+        TAG: ${date +%y%m%d%H%M%S}
       run: |
         ./mvnw package
-        docker build . -f Dockerfile -t spring-petclinic
-  compose:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Set up Docker environment
-      run: |
-        docker run -d -p 5000:5000 registry:2.7.1
-        docker-compose up -d
-        curl -f -I http://localhost:8080/ || exit 1
-    needs: build
-    
+        docker build . -f Dockerfile -t spring-petclinic:
+    - uses: mr-smithers-excellent/docker-build-push@v5
+      name: Build & push Docker image
+      with:
+        image: acidbees/spring-petclinic:tagname
+        tags: v1, latest
+        registry: registry-url.io
+        dockerfile: Dockerfile.ci
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
