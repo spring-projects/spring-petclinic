@@ -8,9 +8,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Create jar file
-      run: ./mvnw package
-    - uses: mr-smithers-excellent/docker-build-push@v5
+      run: ./mvnw package 
     - name: Build & push Docker image
+    - uses: mr-smithers-excellent/docker-build-push@v5
+   
       with:
         image: acidbees/spring-petclinic
         tags: v1, latest
