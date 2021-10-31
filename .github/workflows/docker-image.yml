@@ -7,16 +7,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Build the Docker image
-      env:
-        TAG: ${date +%y%m%d%H%M%S}
-      run: |
-        ./mvnw package
-        docker build . -f Dockerfile -t spring-petclinic:
+    - name: Create jar file
+      run: ./mvnw package
     - uses: mr-smithers-excellent/docker-build-push@v5
-      name: Build & push Docker image
+    - name: Build & push Docker image
       with:
-        image: acidbees/spring-petclinic:tagname
+        image: acidbees/spring-petclinic
         tags: v1, latest
         registry: registry-url.io
         dockerfile: Dockerfile.ci
