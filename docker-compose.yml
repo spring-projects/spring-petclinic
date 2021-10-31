@@ -18,6 +18,12 @@ services:
       - type: bind
         source: "./mysql/data"
         target: "/var/lib/mysql"
+    healthcheck:
+        test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+        interval: 10s
+        timeout: 5s
+        retries: 3
+        start_period: 5s    
     restart: unless-stopped
   
   frontend:
@@ -30,4 +36,10 @@ services:
       - "8080:8080"
     depends_on:
       - database
+    healthcheck:
+      test: ["CMD", "/bin/sh", "-c", "curl -f -I http://localhost:5000/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s      
     restart: on-failure
