@@ -19,4 +19,5 @@ jobs:
         docker run -d -p 5000:5000 registry:2.7.1
         docker-compose up -d
         curl -f -I http://localhost:8080/ || exit 1
+    needs: build
     
