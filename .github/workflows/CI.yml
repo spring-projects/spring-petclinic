@@ -13,7 +13,7 @@ jobs:
     - uses: mr-smithers-excellent/docker-build-push@v5
       name: Build & push Docker image
       with:
-        image: repo/image
+        image: acidbees/spring-petclinic
         tags: v1, latest
         registry: docker.io
         dockerfile: Dockerfile
