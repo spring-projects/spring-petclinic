@@ -11,3 +11,12 @@ jobs:
       run: |
         ./mvnw package
         docker build . -f Dockerfile -t spring-petclinic
+  compose:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set up Docker environment
+      run: |
+        docker run -d -p 5000:5000 registry:2.7.1
+        docker-compose up -d
+        curl -f -I http://localhost:8080/ || exit 1
+    
