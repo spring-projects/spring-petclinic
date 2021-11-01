@@ -10,7 +10,7 @@ ENV		MYSQL_USER=petclinic \
 		DATABASE=h2 \
 		JAVA_OPTS=""
 
-COPY		./target/*.jar /usr/src/myapp
+COPY		./target/spring-petclinic*.jar /usr/src/myapp
 
 WORKDIR		/usr/src/myapp
 
