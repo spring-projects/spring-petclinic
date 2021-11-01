@@ -10,10 +10,10 @@ ENV		MYSQL_USER=petclinic \
 		DATABASE=h2 \
 		JAVA_OPTS=""
 
-COPY		./target/spring-petclinic*.jar /usr/src/myapp/
+COPY		./target/spring-petclinic*.jar /usr/src/myapp/target.jar
 
 WORKDIR		/usr/src/myapp
 
-CMD		java $JAVA_OPTS -Dspring.profiles.active=${DATABASE} -jar /usr/src/myapp/spring-petclinic-2.5.0-SNAPSHOT.jar
+CMD		java $JAVA_OPTS -Dspring.profiles.active=${DATABASE} -jar /usr/src/myapp/target.jar
 
 EXPOSE		8080
