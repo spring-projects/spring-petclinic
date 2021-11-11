@@ -10,3 +10,15 @@ mysql:
     - MYSQL_DATABASE=petclinic
   volumes:
     - "./conf.d:/etc/mysql/conf.d:ro"
+jenkins:
+  image: jenkins/jenkins:latest-jdk8
+  ports:
+    - "8081:8080"
+nexus:
+  image: sonatype/nexus3
+  ports:
+    - "8082:8081"
+sonar:
+  image: sonarqube
+  ports:
+    - "9000:9000"
