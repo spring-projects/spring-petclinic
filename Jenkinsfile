@@ -1,33 +1,35 @@
 pipeline {
     agent {label 'jenkins_slave'}
 
-    tools {
-        // Install the Maven version configured as "M3" and add it to the path.
-        maven "M3"
-    }
+    environment {
+		DOCKERHUB_CREDENTIALS=credentials('dockerhub_id')
+	}
 
     stages {
         stage('Build') {
             steps {
-                // Get some code from a GitHub repository
-                git branch: 'main', url: 'https://github.com/ayeliferov/spring.git'
+				sh 'docker build -t ayeliferov/epam_lab:latest .'
+			}
+		}
+        stage('Login') {
 
-                // Run Maven on a Unix agent.
-               sh "mvn -Dmaven.test.failure.ignore=true clean package"
+			steps {
+				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+			}
+		}
 
-                // To run Maven on a Windows agent, use
-                // bat "mvn -Dmaven.test.failure.ignore=true clean package"
-            }
+        stage('Push') {
 
-            post {
-                // If Maven was able to run the tests, even if some of the test
-                // failed, record the test results and archive the jar file.
-                success {
-                    junit '**/target/surefire-reports/TEST-*.xml'
-                    archiveArtifacts 'target/*.jar'
-                }
-              
-            }
-        }
-    }
+			steps {
+				sh 'docker push ayeliferov/epam_lab:latest'
+			}
+		}
+	}
+
+	post {
+		always {
+			sh 'docker logout'
+		}
+	}
+
 }
