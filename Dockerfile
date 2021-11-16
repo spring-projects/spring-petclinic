@@ -8,14 +8,14 @@ FROM maven:3.5-jdk-8-alpine as build
 ARG project
 WORKDIR /app
 COPY . /app
-RUN mvn install
+RUN mvn clean package
 
 # Run stage
 FROM openjdk:8-jre-alpine
-ARG ARTIFACT_ID
-ARG VERSION
+ARG ARTIFACT_ID=spring-petclinic
+ARG VERSION=2.5.0-SNAPSHOT
 ARG PORT=8080
-ARG ARTIFACT=${ARTIFACT_ID}-${VERSION}.jar
+ENV ARTIFACT=${ARTIFACT_ID}-${VERSION}.jar
 WORKDIR /app
 COPY --from=build /app/target/${ARTIFACT} /app
 EXPOSE $PORT
