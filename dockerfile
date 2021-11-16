@@ -17,7 +17,7 @@ ARG VERSION
 ARG PORT=8080
 ENV ARTIFACT ${ARTIFACT_ID}-${VERSION}.jar
 WORKDIR /app
-COPY --from=build /app/target/${ARTIFACT} /app
+COPY --from=build /target/${ARTIFACT} /app
 EXPOSE $PORT
 ENTRYPOINT ["sh", "-c"]
 CMD ["java -jar ${ARTIFACT} --server.port=${PORT}"]
