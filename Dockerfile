@@ -8,7 +8,7 @@ FROM maven:3.5-jdk-8-alpine as build
 ARG project
 WORKDIR /app
 COPY . /app
-RUN mvn clean package
+RUN mvn clean package -DskipTests
 
 # Run stage
 FROM openjdk:8-jre-alpine
