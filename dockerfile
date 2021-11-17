@@ -12,12 +12,12 @@ RUN mvn install
 
 # Run stage
 FROM openjdk:8-jre-alpine
-ARG ARTIFACT_ID
-ARG VERSION
+#ARG ARTIFACT_ID
+#ARG VERSION
 ARG PORT=8080
-ENV ARTIFACT ${ARTIFACT_ID}-${VERSION}.jar
+#ENV ARTIFACT ${ARTIFACT_ID}-${VERSION}.jar
 WORKDIR /home/ec2-user/workspace/EPAM_Final_Project/pipeline_2/target/
-COPY --from=build /home/ec2-user/workspace/EPAM_Final_Project/pipeline_2/target/${ARTIFACT} /home/ec2-user/workspace/EPAM_Final_Project/pipeline_2/target/
+COPY --from=build /home/ec2-user/workspace/EPAM_Final_Project/pipeline_2/target/*.jar /home/ec2-user/workspace/EPAM_Final_Project/pipeline_2/target/
 EXPOSE $PORT
 ENTRYPOINT ["sh", "-c"]
 CMD ["java -jar ${ARTIFACT} --server.port=${PORT}"]
