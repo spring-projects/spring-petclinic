@@ -1,5 +1,5 @@
 pipeline {
-    agent {label 'jenkins_slave'}
+    agent {label 'slave-debian'}
 
     environment {
 		DOCKERHUB_CREDENTIALS=credentials('dockerhub_id')
