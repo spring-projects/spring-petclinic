@@ -6,8 +6,8 @@
 # Build stage
 FROM maven:3.5-jdk-8-alpine as build
 ARG project
-WORKDIR /home/ec2-user/workspace/EPAM_Final_Project/pipeline_2/target/
-COPY . /home/ec2-user/workspace/EPAM_Final_Project/pipeline_2/target/
+WORKDIR /home/ec2-user/workspace/EPAM_Final_Project/pipeline_2/
+COPY . /home/ec2-user/workspace/EPAM_Final_Project/pipeline_2/
 RUN mvn install
 
 # Run stage
