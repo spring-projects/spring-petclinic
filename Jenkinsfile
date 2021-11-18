@@ -43,5 +43,10 @@ pipeline {
                 }
             }
         }
+        stage('Trigger deploy job') {
+            steps {
+                build job: 'pipeline-deploy-from-scm', parameters: [string(name: 'ENV', value: '$ENV')]
+            }
+        }
     }
 }
