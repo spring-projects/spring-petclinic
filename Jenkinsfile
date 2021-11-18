@@ -33,13 +33,14 @@ pipeline {
             steps{
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                 }
-                
+				
+            steps{    
                 sh "docker push ayeliferov/epam_lab:${DOCKER_TAG} "
             }
         }
 
 	}
-
+}
 	post {
 		always {
 			sh 'docker logout'
