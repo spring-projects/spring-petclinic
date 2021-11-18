@@ -44,9 +44,8 @@ pipeline {
 		always {
 			sh 'docker logout'
 		}
-	}
-
 }
+
 
 def getVersion(){
     def commitHash = sh label: '', returnStdout: true, script: 'git rev-parse --short HEAD'
