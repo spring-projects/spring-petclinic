@@ -10,9 +10,7 @@ pipeline {
 
         stage('SCM'){
             steps{
- //               git credentialsId: 'github', 
- //                   url: 'https://github.com/ayeliferov/spring.git'
-				// Get some code from a GitHub repository
+ 				// Get some code from a GitHub repository
                 git branch: 'ansible', url: 'https://github.com/ayeliferov/spring.git'
             }
         }
@@ -29,22 +27,13 @@ pipeline {
             }
         }
 
-		stage('DockerHub Login'){
-            steps{
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-			}
-        }
-		stage('DockerHub Push'){
+			stage('DockerHub Push'){
 			steps {
+				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
 				sh "docker push ayeliferov/epam_lab:${DOCKER_TAG} "
-			}
-		}
-		stage('DockerHub Logout'){
-			steps {
 				sh 'docker logout'
 			}
 		}
-
 	}
 }
 
