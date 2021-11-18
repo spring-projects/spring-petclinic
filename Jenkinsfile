@@ -23,14 +23,14 @@ pipeline {
 
 		stage('Docker Build'){
             steps{
-                sh "docker build . -t ayeliferov/epam_lab:${DOCKER_TAG} "
+                sh "docker build . -t ayeliferov/epam_lab:FinalProject_${DOCKER_TAG} "
             }
         }
 
 			stage('DockerHub Push'){
 			steps {
 				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-				sh "docker push ayeliferov/epam_lab:${DOCKER_TAG} "
+				sh "docker push ayeliferov/epam_lab:FinalProject_${DOCKER_TAG} "
 				sh 'docker logout'
 			}
 		}
