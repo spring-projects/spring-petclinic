@@ -39,14 +39,15 @@ pipeline {
 				sh "docker push ayeliferov/epam_lab:${DOCKER_TAG} "
 			}
 		}
+		stage('DockerHub Logout'){
+			steps {
+				sh 'docker logout'
+			}
+		}
 
 	}
 }
-	post {
-		always {
-			sh 'docker logout'
-		}
-}
+
 
 
 def getVersion(){
