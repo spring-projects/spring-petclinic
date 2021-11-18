@@ -4,8 +4,8 @@ pipeline {
     stages {
         stage('Build&Test') {
             steps {
-                
+                bash '/Users/kirillkolesnikov/Documents/Универ 3 курс (5 семестр)/Администрирование информационных систем/spring-petclinic/buld.sh'
             }
         }
-	}
+    }
 }

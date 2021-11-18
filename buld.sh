@@ -1,0 +1,2 @@
+mvnw package
+pause
