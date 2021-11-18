@@ -87,7 +87,7 @@ The following items should be installed in your system:
 ## Looking for something in particular?
 
 |Spring Boot Configuration | Class or Java property files  |
-|--------------------------|---|
+|--------------------------|--|
 |The Main Class | [PetClinicApplication](https://github.com/spring-projects/spring-petclinic/blob/main/src/main/java/org/springframework/samples/petclinic/PetClinicApplication.java) |
 |Properties Files | [application.properties](https://github.com/spring-projects/spring-petclinic/blob/main/src/main/resources) |
 |Caching | [CacheConfiguration](https://github.com/spring-projects/spring-petclinic/blob/main/src/main/java/org/springframework/samples/petclinic/system/CacheConfiguration.java) |
