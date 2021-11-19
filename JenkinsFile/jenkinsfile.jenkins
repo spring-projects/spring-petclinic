@@ -15,14 +15,14 @@ pipeline {
 
         stage('Archive') {
             steps {
-                zip zipFile: '${JENKINS_HOME}/workspace/javaProject_BUILDS' + env.BUILD_NUMBER.toString() + '.zip', 
+                zip zipFile: '../javaProject_BUILDS' + env.BUILD_NUMBER.toString() + '.zip', 
                 dir: 'target'
             }
         }
         
         stage('Deploy') {
             steps {
-                unzip zipFile: '${JENKINS_HOME}/workspace/javaProject_BUILDS' + env.BUILD_NUMBER.toString() + '.zip', 
+                unzip zipFile: '../javaProject_BUILDS' + env.BUILD_NUMBER.toString() + '.zip', 
                 dir: '${JENKINS_HOME}/workspace/javaProject_BUILDS/DeployedBuilds/' + env.BUILD_NUMBER.toString()
             }
         }
