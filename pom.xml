@@ -24,9 +24,6 @@
     <!-- Web dependencies -->
     <webjars-bootstrap.version>5.1.3</webjars-bootstrap.version>
     <font-awesome.version>4.7.0</font-awesome.version>
-    <jquery.version>3.4.1</jquery.version>
-    <jquery-ui.version>1.13.0</jquery-ui.version>
-    <wro4j.version>1.8.0</wro4j.version>
 
     <jacoco.version>0.8.5</jacoco.version>
     <node.version>v8.11.1</node.version>
@@ -99,16 +96,6 @@
     <dependency>
       <groupId>org.webjars</groupId>
       <artifactId>webjars-locator-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>jquery</artifactId>
-      <version>${jquery.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>jquery-ui</artifactId>
-      <version>${jquery-ui.version}</version>
     </dependency>
     <dependency>
       <groupId>org.webjars.npm</groupId>
