@@ -8,10 +8,8 @@ pipeline {
     stages {
         stage('Build&Test') {
             steps {
-                //dir ('${JENKINS_HOME}/workspace/javaProject') {}
-                sh 'chmod +x ./build.sh'
-                //sh './build.sh'
-                sh '${JENKINS_HOME}/workspace/javaProject/build.sh'
+                sh 'mvn clean'
+                sh 'mvn package'
             }
         }
     }
