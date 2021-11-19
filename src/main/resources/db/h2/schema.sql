@@ -10,7 +10,8 @@ DROP TABLE owners IF EXISTS;
 CREATE TABLE vets (
   id         INTEGER IDENTITY PRIMARY KEY,
   first_name VARCHAR(30),
-  last_name  VARCHAR(30)
+  last_name  VARCHAR(30),
+  age INT(4)
 );
 CREATE INDEX vets_last_name ON vets (last_name);
 
@@ -37,6 +38,7 @@ CREATE TABLE owners (
   id         INTEGER IDENTITY PRIMARY KEY,
   first_name VARCHAR(30),
   last_name  VARCHAR_IGNORECASE(30),
+  age INT(4),
   address    VARCHAR(255),
   city       VARCHAR(80),
   telephone  VARCHAR(20)
