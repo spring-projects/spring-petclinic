@@ -22,9 +22,8 @@ pipeline {
         
         stage('Deploy') {
             steps {
-                sh 'cd ..'
-                unzip zipFile: 'javaProject_BUILDS' + env.BUILD_NUMBER.toString() + '.zip', 
-                dir: 'javaProject_BUILDS/DeployedBuilds/' + env.BUILD_NUMBER.toString()
+                unzip zipFile: '../javaProject_BUILDS' + env.BUILD_NUMBER.toString() + '.zip', 
+                dir: '../javaProject_BUILDS/DeployedBuilds/' + env.BUILD_NUMBER.toString()
             }
         }
     }
