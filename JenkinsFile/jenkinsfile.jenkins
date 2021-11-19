@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Build&Test') {
             steps {
-                sh '/Users/kirillkolesnikov/Documents/Универ 3 курс (5 семестр)/Администрирование информационных систем/spring-petclinic/buld.sh'
+                sh '%JENKINS_HOME%\\workspace\\javaProject\\build.sh'
             }
         }
     }
