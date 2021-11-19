@@ -28,7 +28,7 @@
   <span>Pages:</span>
   <span>[</span>
   <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-      <a th:if="${currentPage != i}" th:href="@{'/vets/' + ${i}}">[[${i}]]</a>
+      <a th:if="${currentPage != i}" th:href="@{'/vets.html/?page=' + ${i}}">[[${i}]]</a>
       <span th:unless="${currentPage != i}">[[${i}]]</span>
     </span>
   <span>]&nbsp;</span>
