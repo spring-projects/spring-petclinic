@@ -25,7 +25,7 @@ pipeline {
             steps {
                 sh 'cd ..'
                 unzip zipFile: '../javaProject_BUILDS' + env.BUILD_NUMBER.toString() + '.zip', 
-                dir: '${JENKINS_HOME}/workspace/javaProject_BUILDS/DeployedBuilds/' + env.BUILD_NUMBER.toString()
+                dir: 'javaProject_BUILDS/DeployedBuilds/' + env.BUILD_NUMBER.toString()
             }
         }
     }
