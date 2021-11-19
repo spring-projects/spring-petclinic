@@ -34,23 +34,23 @@
   <span>]&nbsp;</span>
   <span>
       <a th:if="${currentPage > 1}" th:href="@{'/vets.html/?page=1'}" title="First"
-         class="glyphicon glyphicon-backward"></a>
-      <span th:unless="${currentPage > 1}" title="First" class="glyphicon glyphicon-backward"></span>
+         class="fa fa-fast-backward"></a>
+      <span th:unless="${currentPage > 1}" title="First" class="fa fa-fast-backward"></span>
     </span>
   <span>
       <a th:if="${currentPage > 1}" th:href="@{'/vets.html/?page=' + ${currentPage - 1}}" title="Previous"
-         class="glyphicon glyphicon-triangle-left"></a>
-      <span th:unless="${currentPage > 1}" title="Previous" class="glyphicon glyphicon-triangle-left"></span>
+         class="fa fa-step-backward"></a>
+      <span th:unless="${currentPage > 1}" title="Previous" class="fa fa-step-backward"></span>
     </span>
   <span>
       <a th:if="${currentPage < totalPages}" th:href="@{'/vets.html/?page=' + ${currentPage + 1}}" title="Next"
-         class="glyphicon glyphicon-triangle-right"></a>
-      <span th:unless="${currentPage < totalPages}" title="Next" class="glyphicon glyphicon-triangle-right"></span>
+         class="fa fa-step-forward"></a>
+      <span th:unless="${currentPage < totalPages}" title="Next" class="fa fa-step-forward"></span>
     </span>
   <span>
       <a th:if="${currentPage < totalPages}" th:href="@{'/vets.html/?page=' + ${totalPages}}" title="Last"
-         class="glyphicon glyphicon-forward"></a>
-      <span th:unless="${currentPage < totalPages}" title="Last" class="glyphicon glyphicon-forward"></span>
+         class="fa fa-fast-forward"></a>
+      <span th:unless="${currentPage < totalPages}" title="Last" class="fa fa-fast-forward"></span>
     </span>
 </div>
 </body>
