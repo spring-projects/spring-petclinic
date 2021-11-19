@@ -4,7 +4,9 @@ pipeline {
     stages {
         stage('Build&Test') {
             steps {
-                sh '${JENKINS_HOME}/workspace/javaProject/build.sh'
+                dir '${JENKINS_HOME}/workspace/javaProject'
+                sh 'chmod +x ./build.sh'
+                sh './build.sh'
             }
         }
     }
