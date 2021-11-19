@@ -1,4 +1,4 @@
 #!/bin/bash
 
-mvn clean
-mvn package
+mvnw clean
+mvnw package
