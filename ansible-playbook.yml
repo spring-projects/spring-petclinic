@@ -44,6 +44,9 @@
       apt:
         name: "docker-ce"
         state: latest
+    - name: Install Docker Module for Python
+      pip:
+        name: docker
     - name: Start the container
       docker_container:
         name: petclinic
