@@ -59,6 +59,12 @@
         name: python3-docker
         state: latest
 
+    - name: Log in
+      docker_login:
+        username: ayeliferov
+        password: 00Qf1IKJvPP9
+        reauthorize: yes
+
     - name: Start the container
       docker_container:
         name: petclinic
@@ -66,3 +72,8 @@
         state: started
         published_ports:
           - 0.0.0.0:8080:8080
+    
+    - name: Log out of DockerHub
+      docker_login:
+        state: absent
+        email: ayeliferov@gmail.com
