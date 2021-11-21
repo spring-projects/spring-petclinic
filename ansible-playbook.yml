@@ -62,7 +62,7 @@
     - name: Start the container
       docker_container:
         name: petclinic
-        image: "ayeliferov/epam_lab:FinalProject_'${{DOCKER_TAG}}'"
+        image: "ayeliferov/epam_lab:FinalProject_{{DOCKER_TAG}}"
         state: started
         published_ports:
           - 0.0.0.0:8080:8080
