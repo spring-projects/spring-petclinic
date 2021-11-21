@@ -15,7 +15,7 @@ pipeline {
 
         stage('CHECKOUT'){
             steps{
- 				// Get some code from a GitHub repository
+ 			// Get some code from a GitHub repository
                 git branch: 'dev', url: 'https://github.com/ayeliferov/spring.git'
             }
         }
