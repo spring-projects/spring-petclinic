@@ -1,5 +1,5 @@
 pipeline {
-    agent {label 'master'}
+    agent {label 'slave-debian'}
 
     tools {
       maven 'M3'
