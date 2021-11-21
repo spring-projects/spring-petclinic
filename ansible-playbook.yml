@@ -62,7 +62,7 @@
     - name: Log in
       docker_login:
         username: ayeliferov
-        password: " {{DOCKERHUB_CREDENTIALS_PSW}}"
+        password: "{{DOCKERHUB_CREDENTIALS}}"
         reauthorize: yes
 
     - name: Start the container
