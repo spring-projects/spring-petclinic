@@ -1,6 +1,10 @@
 pipeline {
     agent {label 'master'}
 
+    tools {
+      maven 'M3'
+    }
+
     environment {
 		DOCKERHUB_CREDENTIALS=credentials('dockerhub_id')
 		DOCKER_TAG = getVersion()
