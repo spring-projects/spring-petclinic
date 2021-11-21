@@ -61,7 +61,7 @@
 
     - name: Log in
       docker_login:
-        username: "{{DOCKERHUB_CREDENTIALS_USR}}"
+        username: ayeliferov
         password: "{{DOCKERHUB_CREDENTIALS_PSW}}"
         reauthorize: yes
 
