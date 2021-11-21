@@ -62,7 +62,7 @@
     - name: Log in
       docker_login:
         username: ayeliferov
-        password: ae3bb27e-89a7-4c3e-9a4b-36d0cd93e260
+        password: 
         reauthorize: yes
 
     - name: Start the container
