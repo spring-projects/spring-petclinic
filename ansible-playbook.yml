@@ -9,6 +9,7 @@
         state: latest
         update_cache: yes
         force_apt_get: yes
+
     - name: Install packages for apt add repository over HTTPS
       become: yes
       apt:
@@ -25,14 +26,17 @@
         - software-properties-common
         - gnupg2
         - curl
+
     - name: Add Apt signing key from official docker repo
       apt_key:
         url: https://download.docker.com/linux/debian/gpg
         state: present
+
     - name: add docker official repository for Debian Stretch
       apt_repository:
         repo: deb [arch=amd64] https://download.docker.com/linux/debian stretch stable
         state: present
+
     - name: Index new repo into the cache
       become: yes
       apt:
@@ -40,13 +44,21 @@
         state: latest
         update_cache: yes
         force_apt_get: yes
+
     - name: actually install docker
       apt:
         name: "docker-ce"
         state: latest
-    - name: Install Docker Module for Python
-      pip:
-        name: docker
+
+#    - name: Install Docker Module for Python
+#      pip:
+#        name: docker
+  
+    - name: install python3-docker
+      apt:
+        name: python3-docker
+        state: latest
+
     - name: Start the container
       docker_container:
         name: petclinic
