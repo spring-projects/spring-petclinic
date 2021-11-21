@@ -31,23 +31,23 @@ pipeline {
                 sh "docker build . -t ayeliferov/epam_lab:FinalProject_${DOCKER_TAG} "
 				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
 				sh "docker push ayeliferov/epam_lab:FinalProject_${DOCKER_TAG} "
-//				sh 'docker logout'
+				sh 'docker logout'
             }
         }
 
-		stage('Docker Deploy'){
-			steps {
-                ansiblePlaybook(
-                    credentialsId: 'dev-server',
+//		stage('Docker Deploy'){
+//			steps {
+//                ansiblePlaybook(
+//                    credentialsId: 'dev-server',
 //                    vaultCredentialsId: 'AnsibleVault',
-                    disableHostKeyChecking: true,
-                    extras: '-e DOCKER_TAG=${DOCKER_TAG} DOCKERHUB_CREDENTIALS=${DOCKERHUB_CREDENTIALS}',
-                    installation: 'ansible',
-                    inventory: 'dev.inv',
-                    playbook: 'ansible-playbook.yml'
-                )
-			}
-		}
+//                    disableHostKeyChecking: true,
+//                    extras: '-e DOCKER_TAG=${DOCKER_TAG} DOCKERHUB_CREDENTIALS=${DOCKERHUB_CREDENTIALS}',
+//                    installation: 'ansible',
+//                    inventory: 'dev.inv',
+//                    playbook: 'ansible-playbook.yml'
+//                )
+//			}
+//		}
 	}
 }
 

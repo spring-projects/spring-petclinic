@@ -58,7 +58,13 @@
       apt:
         name: python3-docker
         state: latest
-
+      
+    - name: Adding user USER  to docker group
+      user:
+        name: "admin"
+        groups: "docker"
+        append: "yes"
+    
     - name: Log in
       docker_login:
         username: ayeliferov
