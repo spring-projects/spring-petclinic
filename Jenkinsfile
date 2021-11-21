@@ -1,5 +1,5 @@
 pipeline {
-    agent {label 'slave-debian'}
+    agent {label 'slave-centos'}
 
     environment {
 		DOCKERHUB_CREDENTIALS=credentials('dockerhub_id')
@@ -30,11 +30,11 @@ pipeline {
             }
         }
 
-		stage('Docker Deploy'){
-			steps {
-                ansiblePlaybook credentialsId: 'dev-server', disableHostKeyChecking: true, extras: "-e DOCKER_TAG=${DOCKER_TAG}", installation: 'ansible', inventory: 'dev.inv', playbook: 'ansible-playbook.yml'
-			}
-		}
+//		stage('Docker Deploy'){
+//			steps {
+//                ansiblePlaybook credentialsId: 'dev-server', disableHostKeyChecking: true, extras: "-e DOCKER_TAG=${DOCKER_TAG}", installation: 'ansible', inventory: 'dev.inv', playbook: 'ansible-playbook.yml'
+//			}
+//		}
 	}
 }
 
