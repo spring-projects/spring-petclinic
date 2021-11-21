@@ -2,23 +2,48 @@
 - hosts: dev
   become: True
   tasks:
-    - name: Install python pip
+    - name: Update the apt package index
+      become: yes
       apt:
-        name: python-pip
-        state: present
-    - name: Install docker
+        name: "*"
+        state: latest
+        update_cache: yes
+        force_apt_get: yes
+    - name: Install packages for apt add repository over HTTPS
+      become: yes
       apt:
-        name: docker
+        name: "{{ packagesdep }}"
+        force_apt_get: yes
+        state: latest
+        update_cache: yes
+      vars:
+        packagesdep:
+        - git
+        - apt-transport-https
+        - ca-certificates
+        - wget
+        - software-properties-common
+        - gnupg2
+        - curl
+    - name: Add Apt signing key from official docker repo
+      apt_key:
+        url: https://download.docker.com/linux/debian/gpg
         state: present
-    - name: start docker
-      service:
-        name: docker
-        state: started
-        enabled: yes
-    - name: Install docker-py python module
-      pip:
-        name: docker-py
+    - name: add docker official repository for Debian Stretch
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/debian stretch stable
         state: present
+    - name: Index new repo into the cache
+      become: yes
+      apt:
+        name: "*"
+        state: latest
+        update_cache: yes
+        force_apt_get: yes
+    - name: actually install docker
+      apt:
+        name: "docker-ce"
+        state: latest
     - name: Start the container
       docker_container:
         name: petclinic
