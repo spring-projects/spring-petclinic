@@ -68,7 +68,7 @@
     - name: Log in
       docker_login:
         username: ayeliferov
-        password: "{{DOCKERHUB_TOKEN}}"
+        password: "{{ DOCKERHUB_TOKEN }}"
         reauthorize: yes
 
     - name: Start the container
