@@ -65,11 +65,11 @@
         groups: "docker"
         append: "yes"
     
-    - name: Log in
-      docker_login:
-        username: ayeliferov
-        password: "{{ DOCKERHUB_TOKEN }}"
-        reauthorize: yes
+ #   - name: Log in
+ #     docker_login:
+ #       username: ayeliferov
+ #       password: "{{ DOCKERHUB_TOKEN }}"
+ #       reauthorize: yes
 
     - name: Start the container
       docker_container:
@@ -79,7 +79,7 @@
         published_ports:
           - 0.0.0.0:8080:8080
     
-    - name: Log out of DockerHub
-      docker_login:
-        state: absent
-        email: ayeliferov@gmail.com
+  #  - name: Log out of DockerHub
+  #    docker_login:
+  #      state: absent
+  #      email: ayeliferov@gmail.com
