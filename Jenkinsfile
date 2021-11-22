@@ -42,7 +42,7 @@ pipeline {
                     credentialsId: 'dev-server',
                     vaultCredentialsId: 'AnsibleVault',
                     disableHostKeyChecking: true,
-                    extras: "-e DOCKER_TAG=${DOCKER_TAG} DOCKERHUB_TOKEN=${DOCKERHUB_TOKEN}",
+                    extras: '-e DOCKER_TAG=${DOCKER_TAG} DOCKERHUB_TOKEN=${DOCKERHUB_TOKEN}',
                     installation: 'ansible',
                     inventory: 'dev.inv',
                     playbook: 'ansible-playbook.yml'
