@@ -38,10 +38,6 @@ $border-radius-base:             0;
 $border-radius-large:            0;
 $border-radius-small:            0;
 
-$btn-primary-color:              $spring-light-grey;
-$btn-primary-bg:                 $spring-brown;
-$btn-primary-border:             $spring-green;
-
 $nav-tabs-active-link-hover-color:        $spring-light-grey;
 $nav-tabs-active-link-hover-bg:           $spring-brown;
 $nav-tabs-active-link-hover-border-color: $spring-brown;
@@ -73,6 +69,9 @@ $table-border-color:                      $spring-brown;
   -moz-transition: border 0.15s;
   -o-transition: border 0.15s;
   -ms-transition: border 0.15s;
+  color: $spring-light-grey;
+  background: $spring-brown;
+  border-color: $spring-green;
 
   &:hover,
   &:focus,
