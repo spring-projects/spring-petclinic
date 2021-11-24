@@ -23,13 +23,13 @@
 
     <!-- Web dependencies -->
     <webjars-bootstrap.version>5.1.3</webjars-bootstrap.version>
-    <font-awesome.version>4.7.0</font-awesome.version>
+    <webjars-font-awesome.version>4.7.0</webjars-font-awesome.version>
 
     <jacoco.version>0.8.5</jacoco.version>
     <node.version>v8.11.1</node.version>
     <nohttp-checkstyle.version>0.0.4.RELEASE</nohttp-checkstyle.version>
-    <spring-format.version>0.0.25</spring-format.version>
-    <frontend-maven-plugin.version>1.12.0</frontend-maven-plugin.version>
+    <spring-format.version>0.0.27</spring-format.version>
+
   </properties>
 
   <dependencies>
@@ -105,7 +105,7 @@
     <dependency>
       <groupId>org.webjars.npm</groupId>
       <artifactId>font-awesome</artifactId>
-      <version>${font-awesome.version}</version>
+      <version>${webjars-font-awesome.version}</version>
     </dependency>
     <!-- end of webjars -->
 
