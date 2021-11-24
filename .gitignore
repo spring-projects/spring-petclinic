@@ -10,5 +10,5 @@ target/*
 .sts4-cache/
 .vscode
 _site/
-node/
-node_modules/
+!petclinic.css
+*.css

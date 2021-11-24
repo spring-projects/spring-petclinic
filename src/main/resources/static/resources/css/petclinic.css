@@ -7771,13 +7771,13 @@ textarea.form-control-lg {
   margin-top: 12px;
   border-width: 2px;
   transition: border 0.15s;
+  color: #f1f1f1;
+  background: #34302D;
+  border-color: #6db33f;
   -webkit-transition: border 0.15s;
   -moz-transition: border 0.15s;
   -o-transition: border 0.15s;
-  -ms-transition: border 0.15s;
-  color: #f1f1f1;
-  background: #34302D;
-  border-color: #6db33f; }
+  -ms-transition: border 0.15s; }
   .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active,
   .btn-primary .open .dropdown-toggle {
     background-color: #34302D;

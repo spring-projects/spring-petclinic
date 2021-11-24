@@ -65,13 +65,13 @@ $table-border-color:                      $spring-brown;
   margin-top: 12px;
   border-width: 2px;
   transition: border 0.15s;
+  color: $spring-light-grey;
+  background: $spring-brown;
+  border-color: $spring-green;
   -webkit-transition: border 0.15s;
   -moz-transition: border 0.15s;
   -o-transition: border 0.15s;
   -ms-transition: border 0.15s;
-  color: $spring-light-grey;
-  background: $spring-brown;
-  border-color: $spring-green;
 
   &:hover,
   &:focus,
