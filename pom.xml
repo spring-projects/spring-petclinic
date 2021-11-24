@@ -229,51 +229,6 @@
         </configuration>
       </plugin>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>unpack</id>
-            <?m2e execute onConfiguration,onIncremental?>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>unpack</goal>
-            </goals>
-            <configuration>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>org.webjars.npm</groupId>
-                  <artifactId>bootstrap</artifactId>
-                  <version>${webjars-bootstrap.version}</version>
-                </artifactItem>
-              </artifactItems>
-              <outputDirectory>${project.build.directory}/webjars</outputDirectory>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
-        <groupId>com.gitlab.haynes</groupId>
-        <artifactId>libsass-maven-plugin</artifactId>
-        <version>0.2.26</version>
-        <executions>
-           <execution>
-              <phase>generate-resources</phase>
-              <?m2e execute onConfiguration,onIncremental?>
-              <goals>
-                 <goal>compile</goal>
-              </goals>
-           </execution>
-        </executions>
-        <configuration>
-           <inputPath>${basedir}/src/main/scss/</inputPath>
-           <outputPath>${basedir}/target/classes/static/resources/css/</outputPath>
-           <includePath>${project.build.directory}/webjars/META-INF/resources/webjars/bootstrap/${webjars-bootstrap.version}/scss/</includePath>
-        </configuration>
-     </plugin>
-
     </plugins>
   </build>
 
@@ -323,6 +278,57 @@
   </pluginRepositories>
 
   <profiles>
+    <profile>
+      <id>css</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>unpack</id>
+                <?m2e execute onConfiguration,onIncremental?>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>unpack</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.webjars.npm</groupId>
+                      <artifactId>bootstrap</artifactId>
+                      <version>${webjars-bootstrap.version}</version>
+                    </artifactItem>
+                  </artifactItems>
+                  <outputDirectory>${project.build.directory}/webjars</outputDirectory>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>com.gitlab.haynes</groupId>
+            <artifactId>libsass-maven-plugin</artifactId>
+            <version>0.2.26</version>
+            <executions>
+               <execution>
+                  <phase>generate-resources</phase>
+                  <?m2e execute onConfiguration,onIncremental?>
+                  <goals>
+                     <goal>compile</goal>
+                  </goals>
+               </execution>
+            </executions>
+            <configuration>
+               <inputPath>${basedir}/src/main/scss/</inputPath>
+               <outputPath>${basedir}/src/main/resources/static/resources/css/</outputPath>
+               <includePath>${project.build.directory}/webjars/META-INF/resources/webjars/bootstrap/${webjars-bootstrap.version}/scss/</includePath>
+            </configuration>
+         </plugin>
+        </plugins>
+      </build>
+    </profile>
     <profile>
       <id>m2e</id>
       <activation>
