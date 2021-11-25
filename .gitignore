@@ -12,3 +12,4 @@ target/*
 _site/
 *.css
 !petclinic.css
+bin/*

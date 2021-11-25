@@ -1,0 +1,65 @@
+on:
+  workflow_dispatch:
+    inputs:
+      dispatch_token:
+        description: 'Token that authorize the dispatch'
+        required: true
+      head_sha:
+        description: 'Head commit SHA that dispatched the workflow'
+        required: true
+      pr_author_username:
+        description: 'Pull Request author username'
+        required: true
+      pr_number:
+        description: 'Pull Request number that dispatched the workflow'
+        required: true
+
+jobs:
+  Evaluator:
+    runs-on: self-hosted
+    name: Evaluator Job
+    steps:
+      - name: Fetch project repository
+        uses: actions/checkout@v2
+
+      - name: Fetch Blocked Files Checkout action
+        uses: actions/checkout@v2
+        with:
+          repository: betrybe/blocked-files-checkout-action
+          ref: v2
+          token: ${{ secrets.GIT_HUB_PAT }}
+          path: .github/actions/blocked-files-checkout
+
+      - name: Fetch JUnit evaluator
+        uses: actions/checkout@v2
+        with:
+          repository: betrybe/junit-evaluator
+          ref: learn-2982
+          token: ${{ secrets.GIT_HUB_PAT }}
+          path: .github/actions/junit-evaluator
+
+      - name: Fetch Store evaluation
+        uses: actions/checkout@v2
+        with:
+          repository: betrybe/store-evaluation-action
+          ref: v2
+          token: ${{ secrets.GIT_HUB_PAT }}
+          path: .github/actions/store-evaluation
+
+      - name: Restore protected files
+        uses: ./.github/actions/blocked-files-checkout
+        with:
+          restore_branch: 'main'
+
+      - name: Run JUnit evaluation
+        id: evaluator
+        uses: ./.github/actions/cypress-evaluator
+        with:
+          pr_author_username: ${{ github.event.inputs.pr_author_username }}
+
+      - name: Run Store evaluation
+        uses: ./.github/actions/store-evaluation
+        with:
+          evaluation-data: ${{ steps.evaluator.outputs.result }}
+          environment: staging
+          pr-number: ${{ github.event.inputs.pr_number }}
