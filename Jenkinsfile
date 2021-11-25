@@ -48,11 +48,12 @@ pipeline {
     //                playbook: 'ansible-playbook.yml'
     //            )
 	//		}
+            
             steps {
-                sh 'ls -la'
+                node ('master'){
+                    sh 'ls -la'
                 }
 
-            steps {
                 dir('terraform'){
                         sh 'terraform init'
                         withCredentials([usernamePassword(credentialsId: 'aws_usr_pass', passwordVariable: 'aws_secret_key', usernameVariable: 'aws_access_key')]) {
