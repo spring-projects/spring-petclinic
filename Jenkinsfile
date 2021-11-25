@@ -49,7 +49,7 @@ pipeline {
     //            )
 	//		}
             steps {
-                git branch: 'dev', url: 'https://github.com/ayeliferov/spring.git'
+                sh 'ls -la'
                 }
 
             steps {
