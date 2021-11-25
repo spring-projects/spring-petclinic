@@ -49,10 +49,8 @@ pipeline {
     //            )
 	//		}
             steps {
-                node ('master') {
                 git branch: 'dev', url: 'https://github.com/ayeliferov/spring.git'
                 }
-            }
 
             steps {
                 dir('terraform'){
