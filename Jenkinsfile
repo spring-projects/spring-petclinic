@@ -52,17 +52,15 @@ pipeline {
             steps {
                 node ('master'){
                     git branch: 'dev', url: 'https://github.com/ayeliferov/spring.git'
-                    sh 'ls -la'
-                    sh 'pwd'
-                }
 
-//                dir('terraform'){
-//                        sh 'terraform init'
-//                        withCredentials([usernamePassword(credentialsId: 'aws_usr_pass', passwordVariable: 'aws_secret_key', usernameVariable: 'aws_access_key')]) {
-//                        sh "terraform plan -var='app_docker_tag=ayeliferov/epam_lab:FinalProject_${env.BUILD_NUMBER}' -var='aws_access_key=$aws_access_key' -var='aws_secret_key=$aws_secret_key'"
-//                       sh "terraform apply -var='app_docker_tag=ayeliferov/epam_lab:FinalProject_${env.BUILD_NUMBER}' -var='aws_access_key=$aws_access_key' -var='aws_secret_key=$aws_secret_key' --auto-approve"
-//                    }
-//                }
+                    dir('terraform'){
+                        sh 'terraform init'
+                        withCredentials([usernamePassword(credentialsId: 'aws_usr_pass', passwordVariable: 'aws_secret_key', usernameVariable: 'aws_access_key')]) {
+                        sh "terraform plan -var='app_docker_tag=ayeliferov/epam_lab:FinalProject_${env.BUILD_NUMBER}' -var='aws_access_key=$aws_access_key' -var='aws_secret_key=$aws_secret_key'"
+                    //    sh "terraform apply -var='app_docker_tag=ayeliferov/epam_lab:FinalProject_${env.BUILD_NUMBER}' -var='aws_access_key=$aws_access_key' -var='aws_secret_key=$aws_secret_key' --auto-approve"
+                        }
+                    }
+                }
             }
 		}
 	}
