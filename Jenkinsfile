@@ -37,6 +37,7 @@ pipeline {
         }
 
 		stage('Docker Deploy'){
+            node ('master') {
 	//		steps {
     //          ansiblePlaybook(
     //               credentialsId: 'dev-server',
@@ -48,14 +49,19 @@ pipeline {
     //                playbook: 'ansible-playbook.yml'
     //            )
 	//		}
+            steps {
+                git branch: 'dev', url: 'https://github.com/ayeliferov/spring.git'
+            }
 
             steps {
-                 dir('terraform'){
+                dir('terraform'){
                         sh 'terraform init'
                         withCredentials([usernamePassword(credentialsId: 'aws_usr_pass', passwordVariable: 'aws_secret_key', usernameVariable: 'aws_access_key')]) {
                         sh "terraform plan -var='app_docker_tag=ayeliferov/epam_lab:FinalProject_${env.BUILD_NUMBER}' -var='aws_access_key=$aws_access_key' -var='aws_secret_key=$aws_secret_key'"
-                        sh "terraform apply -var='app_docker_tag=ayeliferov/epam_lab:FinalProject_${env.BUILD_NUMBER}' -var='aws_access_key=$aws_access_key' -var='aws_secret_key=$aws_secret_key' --auto-approve"
+//                       sh "terraform apply -var='app_docker_tag=ayeliferov/epam_lab:FinalProject_${env.BUILD_NUMBER}' -var='aws_access_key=$aws_access_key' -var='aws_secret_key=$aws_secret_key' --auto-approve"
+                        }                        
                     }
+
                 }
             }
 		}
