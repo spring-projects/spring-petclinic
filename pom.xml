@@ -121,20 +121,7 @@
     </dependency>
 
   </dependencies>
-<profiles>
-        <profile>
-            <id>sonar</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <!-- Optional URL to server. Default value is http://localhost:9000 -->
-                <sonar.host.url>
-                  http://3.128.31.166:9000
-                </sonar.host.url>
-            </properties>
-        </profile>
-     </profiles>
+
   <build>
     <plugins>
       <plugin>
@@ -330,6 +317,18 @@
   </pluginRepositories>
 
   <profiles>
+    <profile>
+            <id>sonar</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <!-- Optional URL to server. Default value is http://localhost:9000 -->
+                <sonar.host.url>
+                  http://3.128.31.166:9000
+                </sonar.host.url>
+            </properties>
+        </profile>
     <profile>
       <id>m2e</id>
       <activation>
