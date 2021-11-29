@@ -3,6 +3,10 @@ variable "app_count" {
   default = 1
 }
 
+variable "ecs_cluster" {
+  type = string
+}
+
 variable "app_docker_tag" {
   type = string
 }
