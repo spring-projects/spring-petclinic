@@ -129,7 +129,7 @@
            <artifactId>dependency-check-maven</artifactId>
            <version>6.2.2</version>
             <configuration>
-            <failBuildOnCVSS>5</failBuildOnCVSS>
+            <failBuildOnCVSS>1</failBuildOnCVSS>
              </configuration>
                 <executions>
                     <execution>
