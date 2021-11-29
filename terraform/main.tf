@@ -7,7 +7,7 @@ resource "aws_vpc" "default" {
 }
 
 resource "aws_subnet" "public" {
-  count                   = 1
+  count                   = 2
   cidr_block              = cidrsubnet(aws_vpc.default.cidr_block, 8, 2 + count.index)
   availability_zone       = data.aws_availability_zones.available_zones.names[count.index]
   vpc_id                  = aws_vpc.default.id
@@ -15,7 +15,7 @@ resource "aws_subnet" "public" {
 }
 
 resource "aws_subnet" "private" {
-  count             = 1
+  count             = 2
   cidr_block        = cidrsubnet(aws_vpc.default.cidr_block, 8, count.index)
   availability_zone = data.aws_availability_zones.available_zones.names[count.index]
   vpc_id            = aws_vpc.default.id
@@ -32,19 +32,19 @@ resource "aws_route" "internet_access" {
 }
 
 resource "aws_eip" "gateway" {
-  count      = 1
+  count      = 21
   vpc        = true
   depends_on = [aws_internet_gateway.gateway]
 }
 
 resource "aws_nat_gateway" "gateway" {
-  count         = 1
+  count         = 2
   subnet_id     = element(aws_subnet.public.*.id, count.index)
   allocation_id = element(aws_eip.gateway.*.id, count.index)
 }
 
 resource "aws_route_table" "private" {
-  count  = 1
+  count  = 2
   vpc_id = aws_vpc.default.id
 
   route {
@@ -54,7 +54,7 @@ resource "aws_route_table" "private" {
 }
 
 resource "aws_route_table_association" "private" {
-  count          = 1
+  count          = 2
   subnet_id      = element(aws_subnet.private.*.id, count.index)
   route_table_id = element(aws_route_table.private.*.id, count.index)
 }
