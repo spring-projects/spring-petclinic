@@ -29,9 +29,9 @@ pipeline {
 
 		stage('CREATE ARTIFACT'){
             steps{
-                sh "docker build . -t ayeliferov/epam_lab:FinalProject_${env.BUILD_NUMBER} "
+                sh "docker build . -t ayeliferov/epam_lab:${env.BUILD_TAG} "
 				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-				sh "docker push ayeliferov/epam_lab:FinalProject_${env.BUILD_NUMBER} "
+				sh "docker push ayeliferov/epam_lab:${env.BUILD_TAG} "
 				sh 'docker logout'
             }
         }
@@ -56,8 +56,8 @@ pipeline {
                     dir('terraform'){
                         sh 'terraform init'
                         withCredentials([usernamePassword(credentialsId: 'aws_usr_pass', passwordVariable: 'aws_secret_key', usernameVariable: 'aws_access_key')]) {
-                        sh "terraform plan -var='app_docker_tag=ayeliferov/epam_lab:FinalProject_${env.BUILD_NUMBER}' -var='aws_access_key=$aws_access_key' -var='aws_secret_key=$aws_secret_key'"
-                        sh "terraform apply -var='app_docker_tag=ayeliferov/epam_lab:FinalProject_${env.BUILD_NUMBER}' -var='aws_access_key=$aws_access_key' -var='aws_secret_key=$aws_secret_key' --auto-approve"
+                        sh "terraform plan -var='app_docker_tag=ayeliferov/epam_lab:${env.BUILD_TAG}' -var='aws_access_key=$aws_access_key' -var='aws_secret_key=$aws_secret_key'"
+                        sh "terraform apply -var='app_docker_tag=ayeliferov/epam_lab:${env.BUILD_TAG}' -var='aws_access_key=$aws_access_key' -var='aws_secret_key=$aws_secret_key' --auto-approve"
                         }
                     }
                 }
