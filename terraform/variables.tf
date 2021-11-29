@@ -5,6 +5,7 @@ variable "app_count" {
 
 variable "ecs_cluster" {
   type = string
+  default = dev_cluster
 }
 
 variable "app_docker_tag" {
