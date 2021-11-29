@@ -125,21 +125,6 @@
   <build>
     <plugins>
       <plugin>
-          <groupId>org.owasp</groupId>
-           <artifactId>dependency-check-maven</artifactId>
-           <version>6.2.2</version>
-            <configuration>
-            <failBuildOnCVSS>0</failBuildOnCVSS>
-             </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-        </plugin>
-      <plugin>
         <groupId>io.spring.javaformat</groupId>
         <artifactId>spring-javaformat-maven-plugin</artifactId>
         <version>${spring-format.version}</version>
