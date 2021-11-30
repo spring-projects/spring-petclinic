@@ -1,0 +1,51 @@
+pipeline {
+    agent {label 'slave-debian'}
+    tools {
+        maven 'M3'
+    }
+
+    environment {
+        DOCKERHUB_CREDENTIALS=credentials('dockerhub_id')
+    }
+
+    stages {
+
+        stage("Checkout Code") {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage("Check Code Health") {
+            when {
+                not {
+                    anyOf {
+                        branch 'main';
+                        branch 'dev'
+                    }
+                }
+           }
+           steps {
+               sh "mvn clean package"
+            }
+        }
+
+        stage("Run Test cases") {
+            when {
+                branch 'dev';
+            }
+           steps {
+               sh "mvn clean test"
+            }
+        }
+
+        stage("CREATE ARTIFACT") {
+            steps{
+                sh "docker build . -t ayeliferov/epam_lab:Clinic_${env.BUILD_NUMBER} "
+				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+				sh "docker push ayeliferov/epam_lab:Clinic_${env.BUILD_NUMBER} "
+				sh 'docker logout'
+            }
+        }
+    }
+}
