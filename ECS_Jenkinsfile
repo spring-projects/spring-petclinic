@@ -1,5 +1,5 @@
 pipeline {
-        agent {label 'ecs-builder'}
+        agent {label 'master'}
         
         tools {
              terraform 'Terraform'
@@ -8,7 +8,6 @@ pipeline {
         stages {
             stage('CHECKOUT'){
                steps{
- 			    // Get some code from a GitHub repository
                     git branch: 'dev', url: 'https://github.com/ayeliferov/spring.git'
                 }
             }
@@ -18,8 +17,8 @@ pipeline {
                     dir('terraform'){
                         sh 'terraform init'
                         withCredentials([usernamePassword(credentialsId: 'aws_usr_pass', passwordVariable: 'aws_secret_key', usernameVariable: 'aws_access_key')]) {
-                        sh "terraform plan -var='app_docker_tag=ayeliferov/epam_lab:FinalProject_${params.DOCKER_TAG}' -var='aws_access_key=$aws_access_key' -var='aws_secret_key=$aws_secret_key'"
-                        sh "terraform ${params.ACTION} -var='app_docker_tag=ayeliferov/epam_lab:FinalProject_${params.DOCKER_TAG}' -var='aws_access_key=$aws_access_key' -var='aws_secret_key=$aws_secret_key' --auto-approve"
+                        sh "terraform plan -var='app_docker_tag=${params.DOCKER_TAG}' -var='aws_access_key=$aws_access_key' -var='aws_secret_key=$aws_secret_key'"
+                        sh "terraform ${params.ACTION} -var='app_docker_tag=${params.DOCKER_TAG}' -var='aws_access_key=$aws_access_key' -var='aws_secret_key=$aws_secret_key' --auto-approve"
                     }
                 }
             }
