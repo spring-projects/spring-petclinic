@@ -1,0 +1,27 @@
+================================================================================
+===        Spring PetClinic sample application - PostgreSQL Configuration    ===
+================================================================================
+
+@author Vitaliy Fedoriv
+@autor Antoine Rey
+
+--------------------------------------------------------------------------------
+
+1) Download and install the PostgreSQL database,
+   which can be found here: https://www.postgresql.org/download/
+
+
+2) Open psql and create the PetClinic database:
+ 
+	CREATE DATABASE petclinic
+  	WITH OWNER = postgres
+       ENCODING = 'UTF8'
+       TABLESPACE = pg_default
+       CONNECTION LIMIT = -1;
+
+3) Create the PetClinic tables by executing the "db/postgresql/initDB.sql".
+Then execute "db/mysql/populateDB.sql" script.
+Or uncomment strings
+#spring.datasource.schema=classpath*:db/postgresql/initDB.sql
+#spring.datasource.data=classpath*:db/postgresql/populateDB.sql
+ in application-postgresql.properties file at the first time you run the app.

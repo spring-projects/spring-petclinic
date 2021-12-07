@@ -36,15 +36,30 @@ In its default configuration, Petclinic uses an in-memory database (H2) which
 gets populated at startup with data. The h2 console is automatically exposed at `http://localhost:8080/h2-console`
 and it is possible to inspect the content of the database using the `jdbc:h2:mem:testdb` url.
  
+### MySql
+
 A similar setup is provided for MySql in case a persistent database configuration is needed. Note that whenever the database type is changed, the app needs to be run with a different profile: `spring.profiles.active=mysql` for MySql.
 
 You could start MySql locally with whatever installer works for your OS, or with docker:
 
-```
+```sh
 docker run -e MYSQL_USER=petclinic -e MYSQL_PASSWORD=petclinic -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=petclinic -p 3306:3306 mysql:5.7.8
 ```
 
 Further documentation is provided [here](https://github.com/spring-projects/spring-petclinic/blob/main/src/main/resources/db/mysql/petclinic_db_setup_mysql.txt).
+
+### PostgreSQL
+
+Like MySql, you must launch the app with a different profile: `spring.profiles.active=postgresql,spring-data-jpa` for PostgreSQL.
+You could start PostgreSQL locally with whatever installer works for your OS, or with docker:
+
+```sh
+docker run -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=petclinic -e POSTGRES_DB=petclinic -p 5432:5432 -d --name postgres postgres:14-bullseye
+```
+Tested and compatible with Postgres 9.6.0, 10-stretch, 11-stretch, 11-bullseye, 12-bullseye, 13-bullseye et 14-bullseye
+
+The Postgres script is idempotent so you don't have to comment them for the second launch and the following ones. These scripts is based on work of Vitaliy Fedoriv and Antoine Rey.
+Further documentation is provided [here](https://github.com/spring-projects/spring-petclinic/blob/main/src/main/resources/db/postgresql/petclinic_db_setup_postgresql.txt).
 
 ## Compiling the CSS
 
