@@ -1,0 +1,1 @@
+1. Application spring-petclinic-github1 has been successfully deployed!!

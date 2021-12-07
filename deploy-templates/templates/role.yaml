@@ -1,0 +1,19 @@
+{{ if .Values.framework }}
+{{ if eq .Values.framework "operator-sdk" }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+    name: edp-{{ include "spring-petclinic-github1.serviceAccountName" . }}-role
+rules:
+    - apiGroups:
+          - ""
+      resources:
+          - configmaps
+          - pods
+      verbs:
+          - create
+          - get
+          - list
+          - delete
+{{ end}}
+{{ end}}
