@@ -5,7 +5,7 @@ pipeline {
 	        steps{
 
 			bat("""
-		            git clone https://github.com/midorun/spring-petclinic/tree/develop
+		            git clone https://github.com/midorun/spring-petclinic
 		            """)
 	        }
 	    }
