@@ -1,29 +1,21 @@
-buildscript {
-    dependencies {
-        classpath 'ro.isdc.wro4j.gradle:wro4j-gradle-plugin:1.8.0.Beta4'
-    }
-}
-
 plugins {
-  id 'org.springframework.boot' version '2.4.5'
+  id 'org.springframework.boot' version '2.6.1'
   id 'io.spring.dependency-management' version '1.0.11.RELEASE'
   id 'java'
 }
 
 apply plugin: 'java'
-apply plugin: 'wro4j'
 
 group = 'org.springframework.samples'
-version = '2.4.5'
+version = '2.6.0'
 sourceCompatibility = '11'
 
 repositories {
   mavenCentral()
 }
 
-ext.webjarsJqueryVersion = "2.2.4"
-ext.webjarsJqueryUiVersion = "1.11.4"
-ext.webjarsBootstrapVersion = "3.3.6"
+ext.webjarsFontawesomeVersion = "4.7.0"
+ext.webjarsBootstrapVersion = "5.1.3"
 
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-cache'
@@ -32,29 +24,17 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-web'
   implementation 'org.springframework.boot:spring-boot-starter-validation'
   implementation 'javax.cache:cache-api'
-  webjarsRuntime 'org.webjars:webjars-locator-core'
-  webjarsRuntime "org.webjars:jquery:${webjarsJqueryVersion}"
-  webjarsRuntime "org.webjars:jquery-ui:${webjarsJqueryUiVersion}"
-  webjarsRuntime "org.webjars:bootstrap:${webjarsBootstrapVersion}"
-  webjarsRuntime "org.webjars:bootstrap:${webjarsBootstrapVersion}"
+  runtimeOnly 'org.webjars:webjars-locator-core'
+  runtimeOnly "org.webjars.npm:bootstrap:${webjarsBootstrapVersion}"
+  runtimeOnly "org.webjars.npm:font-awesome:${webjarsFontawesomeVersion}"
   runtimeOnly 'org.ehcache:ehcache'
   runtimeOnly 'com.h2database:h2'
   runtimeOnly 'mysql:mysql-connector-java'
+  runtimeOnly 'org.postgresql:postgresql'
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 test {
   useJUnitPlatform()
-}
-
-webResources {
-    srcMainDir = layout.projectDirectory.dir('src/main').asFile
-    dstStaticFolder = 'static/resources/css'
-    bundle ('petclinic') {
-        css 'webjars/bootstrap/3.3.6/less/bootstrap.less'
-        css 'less/petclinic.less'
-        preProcessor 'lessCssImport'
-        postProcessor 'less4j'
-    }
 }
