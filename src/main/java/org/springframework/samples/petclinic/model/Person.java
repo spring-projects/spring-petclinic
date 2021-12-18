@@ -34,6 +34,7 @@ public class Person extends BaseEntity {
 	@Column(name = "last_name")
 	@NotEmpty
 	private String lastName;
+
 	@Column(name = "age")
 	private Integer age;
 
