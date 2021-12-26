@@ -2,7 +2,7 @@ pipeline{
     agent any
     
     tools{
-        maven 'Maven 3.8.4'
+        maven 'Apache Maven 3.8.4'
     }
     
     stages{
@@ -26,6 +26,11 @@ pipeline{
             }
         }
         
+    }
+	post{
+        always{
+            emailtext body: "${currentBuild.currentResult}: J"
+        }   
     }
     
 }
