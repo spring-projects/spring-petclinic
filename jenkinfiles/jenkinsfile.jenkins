@@ -10,20 +10,6 @@ pipeline{
             }
         }
         
-        stage('Archive'){
-            steps{
-                zip zipFile: 'C:/Users/kurga/Desktop/javaProject_BUILDS' + env.BUILD_NUMBER.toString() + '.zip',
-                dir: 'target'
-            }
-        }
-        
-        stage('Deploy'){
-            steps{
-                unzip zipFile: '../javaProject_BUILDS' + env.BUILD_NUMBER.toString() + '.zip',
-                dir: '../javaProject_BUILDS/DeployedBuilds/' + env.BUILD_NUMBER.toString()
-            }
-        }
-        
     }
 	post{
         always{
