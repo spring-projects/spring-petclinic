@@ -115,6 +115,7 @@ class ClinicServiceTests {
 		Owner owner = new Owner();
 		owner.setFirstName("Sam");
 		owner.setLastName("Schultz");
+		owner.setAge(19);
 		owner.setAddress("4, Evans Street");
 		owner.setCity("Wollongong");
 		owner.setTelephone("4444444444");

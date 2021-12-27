@@ -11,12 +11,14 @@
   <thead>
   <tr>
     <th>Name</th>
+    <th>Age</th>
     <th>Specialties</th>
   </tr>
   </thead>
   <tbody>
   <tr th:each="vet : ${listVets}">
     <td th:text="${vet.firstName + ' ' + vet.lastName}"></td>
+    <td th:text="${vet.age}"></td>
     <td><span th:each="specialty : ${vet.specialties}"
               th:text="${specialty.name + ' '}"/> <span
       th:if="${vet.nrOfSpecialties == 0}">none</span></td>
