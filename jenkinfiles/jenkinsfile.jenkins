@@ -29,7 +29,7 @@ pipeline{
     }
     post { 
 		always { 
-			emailtext body: "${currentBuild.currentResult}: J" 
+			emailext body: '', subject: 'SUCCESS!!!', to: 'kurganov.danil@yandex.ru' 
 		} 
 	}
     
