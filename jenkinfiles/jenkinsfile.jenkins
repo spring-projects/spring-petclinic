@@ -14,7 +14,7 @@ pipeline{
 	stage('Archive'){
             steps{
                 zip zipFile: 'C:/Users/kurga/Desktop/' + env.BUILD_NUMBER.toString() + '.zip', 
-		dir: 'C:\Users\kurga\IdeaProjects\spring-petclinic'
+		dir: 'target'
             }
         }
 
