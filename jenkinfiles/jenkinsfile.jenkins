@@ -13,10 +13,11 @@ pipeline{
         }
 	stage('Archive'){
             steps{
-                zip zipFile: '../javaProject_BUILDS' + env.BUILD_NUMBER.toString() + '.zip',
-                dir: 'target'
+                zip zipFile: 'C:/Users/kurga/Desktop/' + env.BUILD_NUMBER.toString() + '.zip', 
+		dir: 'C:\\Users\\kurga\\Desktop\\CloneProject\\TestProject\\UnitTestProject1\\bin\\Debug'
             }
         }
+
 
         
     }
