@@ -19,7 +19,7 @@ pipeline{
         }
 	stage('Deploy'){
             steps{
-                unzip zipFile: 'C:/Users/kurga/OneDrive/Desktop/' + env.BUILD_NUMBER.toString() + '.zip',
+                unzip zipFile: 'C:/Users/kurga/Desktop/' + env.BUILD_NUMBER.toString() + '.zip',
                 dir: 'C:/Users/kurga/Desktop/DeployedBuilds/' + env.BUILD_NUMBER.toString()
             }
         }
@@ -29,7 +29,7 @@ pipeline{
     }
     post { 
 		always { 
-			emailext body: 'A Test EMail', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Test' 
+			emailtext body: "${currentBuild.currentResult}: J" 
 		} 
 	}
     
