@@ -29,7 +29,7 @@ pipeline{
     }
     post { 
 		always { 
-			emailext body: '', subject: 'SUCCESS!!!', to: 'kurganov.danil@yandex.ru' 
+			emailext body: 'Test', subject: 'SUCCESS!!!', to: 'kurganov.danil@yandex.ru' 
 		} 
 	}
     
