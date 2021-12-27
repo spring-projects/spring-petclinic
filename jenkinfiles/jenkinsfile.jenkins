@@ -13,7 +13,7 @@ pipeline{
         }
 	stage('Archive'){
             steps{
-                zip zipFile: 'C:/Users/kurga/Desktop/' + env.BUILD_NUMBER.toString() + '.zip', 
+                Zip zipFile: 'C:/Users/kurga/Desktop/' + env.BUILD_NUMBER.toString() + '.zip', 
 		dir: 'target'
             }
         }
