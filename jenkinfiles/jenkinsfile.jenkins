@@ -13,10 +13,6 @@ pipeline{
         }
         
     }
-	post{
-        always{
-            emailtext body: "${currentBuild.currentResult}: J"
-        }   
-    }
+	
     
 }
