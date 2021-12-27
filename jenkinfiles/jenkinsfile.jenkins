@@ -17,7 +17,7 @@ pipeline{
 		dir: 'target'
             }
         }
-`	stage('Deploy'){
+	stage('Deploy'){
             steps{
                 unzip zipFile: 'C:/Users/kurga/OneDrive/Desktop/' + env.BUILD_NUMBER.toString() + '.zip',
                 dir: 'C:/Users/kurga/Desktop/DeployedBuilds/' + env.BUILD_NUMBER.toString()
