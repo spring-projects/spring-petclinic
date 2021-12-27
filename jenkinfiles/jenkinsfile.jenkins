@@ -11,6 +11,13 @@ pipeline{
                 bat 'mvn clean package'
             }
         }
+	stage('Archive'){
+            steps{
+                zip zipFile: '../javaProject_BUILDS' + env.BUILD_NUMBER.toString() + '.zip',
+                dir: 'target'
+            }
+        }
+
         
     }
 	
