@@ -48,9 +48,6 @@ class PetControllerTests {
 	private MockMvc mockMvc;
 
 	@MockBean
-	private PetRepository pets;
-
-	@MockBean
 	private OwnerRepository owners;
 
 	@BeforeEach
@@ -58,10 +55,12 @@ class PetControllerTests {
 		PetType cat = new PetType();
 		cat.setId(3);
 		cat.setName("hamster");
-		given(this.pets.findPetTypes()).willReturn(Lists.newArrayList(cat));
-		given(this.owners.findById(TEST_OWNER_ID)).willReturn(new Owner());
-		given(this.pets.findById(TEST_PET_ID)).willReturn(new Pet());
-
+		given(this.owners.findPetTypes()).willReturn(Lists.newArrayList(cat));
+		Owner owner = new Owner();
+		Pet pet = new Pet();
+		owner.addPet(pet);
+		pet.setId(TEST_PET_ID);
+		given(this.owners.findById(TEST_OWNER_ID)).willReturn(owner);
 	}
 
 	@Test

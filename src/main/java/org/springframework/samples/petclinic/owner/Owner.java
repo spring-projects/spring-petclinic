@@ -60,7 +60,7 @@ public class Owner extends Person {
 	@Digits(fraction = 0, integer = 10)
 	private String telephone;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner", fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ownerId", fetch = FetchType.EAGER)
 	private Set<Pet> pets;
 
 	public String getAddress() {
@@ -108,7 +108,7 @@ public class Owner extends Person {
 		if (pet.isNew()) {
 			getPetsInternal().add(pet);
 		}
-		pet.setOwner(this);
+		pet.setOwnerId(getId());
 	}
 
 	/**
@@ -121,6 +121,23 @@ public class Owner extends Person {
 	}
 
 	/**
+	 * Return the Pet with the given id, or null if none found for this Owner.
+	 * @param name to test
+	 * @return a pet if pet id is already in use
+	 */
+	public Pet getPet(Integer id) {
+		for (Pet pet : getPetsInternal()) {
+			if (!pet.isNew()) {
+				Integer compId = pet.getId();
+				if (compId.equals(id)) {
+					return pet;
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * Return the Pet with the given name, or null if none found for this Owner.
 	 * @param name to test
 	 * @return true if pet name is already in use
@@ -130,7 +147,7 @@ public class Owner extends Person {
 		for (Pet pet : getPetsInternal()) {
 			if (!ignoreNew || !pet.isNew()) {
 				String compName = pet.getName();
-				compName = compName.toLowerCase();
+				compName = compName == null ? "" : compName.toLowerCase();
 				if (compName.equals(name)) {
 					return pet;
 				}
@@ -141,11 +158,10 @@ public class Owner extends Person {
 
 	@Override
 	public String toString() {
-		return new ToStringCreator(this)
-
-				.append("id", this.getId()).append("new", this.isNew()).append("lastName", this.getLastName())
-				.append("firstName", this.getFirstName()).append("address", this.address).append("city", this.city)
-				.append("telephone", this.telephone).toString();
+		return new ToStringCreator(this).append("id", this.getId()).append("new", this.isNew())
+				.append("lastName", this.getLastName()).append("firstName", this.getFirstName())
+				.append("address", this.address).append("city", this.city).append("telephone", this.telephone)
+				.toString();
 	}
 
 }

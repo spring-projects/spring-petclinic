@@ -32,7 +32,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.owner.OwnerRepository;
 import org.springframework.samples.petclinic.owner.Pet;
-import org.springframework.samples.petclinic.owner.PetRepository;
 import org.springframework.samples.petclinic.owner.PetType;
 import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.samples.petclinic.vet.VetRepository;
@@ -76,9 +75,6 @@ class ClinicServiceTests {
 
 	@Autowired
 	protected OwnerRepository owners;
-
-	@Autowired
-	protected PetRepository pets;
 
 	@Autowired
 	protected VisitRepository visits;
@@ -141,16 +137,8 @@ class ClinicServiceTests {
 	}
 
 	@Test
-	void shouldFindPetWithCorrectId() {
-		Pet pet7 = this.pets.findById(7);
-		assertThat(pet7.getName()).startsWith("Samantha");
-		assertThat(pet7.getOwner().getFirstName()).isEqualTo("Jean");
-
-	}
-
-	@Test
 	void shouldFindAllPetTypes() {
-		Collection<PetType> petTypes = this.pets.findPetTypes();
+		Collection<PetType> petTypes = this.owners.findPetTypes();
 
 		PetType petType1 = EntityUtils.getById(petTypes, PetType.class, 1);
 		assertThat(petType1.getName()).isEqualTo("cat");
@@ -166,32 +154,34 @@ class ClinicServiceTests {
 
 		Pet pet = new Pet();
 		pet.setName("bowser");
-		Collection<PetType> types = this.pets.findPetTypes();
+		Collection<PetType> types = this.owners.findPetTypes();
 		pet.setType(EntityUtils.getById(types, PetType.class, 2));
 		pet.setBirthDate(LocalDate.now());
 		owner6.addPet(pet);
 		assertThat(owner6.getPets().size()).isEqualTo(found + 1);
 
-		this.pets.save(pet);
 		this.owners.save(owner6);
 
 		owner6 = this.owners.findById(6);
 		assertThat(owner6.getPets().size()).isEqualTo(found + 1);
 		// checks that id has been generated
+		pet = owner6.getPet("bowser");
 		assertThat(pet.getId()).isNotNull();
 	}
 
 	@Test
 	@Transactional
 	void shouldUpdatePetName() throws Exception {
-		Pet pet7 = this.pets.findById(7);
+		Owner owner6 = this.owners.findById(6);
+		Pet pet7 = owner6.getPet(7);
 		String oldName = pet7.getName();
 
 		String newName = oldName + "X";
 		pet7.setName(newName);
-		this.pets.save(pet7);
+		this.owners.save(owner6);
 
-		pet7 = this.pets.findById(7);
+		owner6 = this.owners.findById(6);
+		pet7 = owner6.getPet(7);
 		assertThat(pet7.getName()).isEqualTo(newName);
 	}
 
@@ -209,15 +199,16 @@ class ClinicServiceTests {
 	@Test
 	@Transactional
 	void shouldAddNewVisitForPet() {
-		Pet pet7 = this.pets.findById(7);
+		Owner owner6 = this.owners.findById(6);
+		Pet pet7 = owner6.getPet(7);
 		int found = pet7.getVisits().size();
 		Visit visit = new Visit();
 		pet7.addVisit(visit);
 		visit.setDescription("test");
 		this.visits.save(visit);
-		this.pets.save(pet7);
+		this.owners.save(owner6);
 
-		pet7 = this.pets.findById(7);
+		owner6 = this.owners.findById(6);
 		assertThat(pet7.getVisits().size()).isEqualTo(found + 1);
 		assertThat(visit.getId()).isNotNull();
 	}
