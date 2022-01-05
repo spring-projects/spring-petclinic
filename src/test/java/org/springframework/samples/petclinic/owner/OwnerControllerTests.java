@@ -47,7 +47,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.samples.petclinic.visit.Visit;
-import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.test.web.servlet.MockMvc;
 
 /**
@@ -65,9 +64,6 @@ class OwnerControllerTests {
 
 	@MockBean
 	private OwnerRepository owners;
-
-	@MockBean
-	private VisitRepository visits;
 
 	private Owner george() {
 		Owner george = new Owner();
@@ -91,15 +87,17 @@ class OwnerControllerTests {
 	@BeforeEach
 	void setup() {
 
+		Owner george = george();
 		given(this.owners.findByLastName(eq("Franklin"), any(Pageable.class)))
-				.willReturn(new PageImpl<Owner>(Lists.newArrayList(george())));
+				.willReturn(new PageImpl<Owner>(Lists.newArrayList(george)));
 
-		given(this.owners.findAll(any(Pageable.class))).willReturn(new PageImpl<Owner>(Lists.newArrayList(george())));
+		given(this.owners.findAll(any(Pageable.class))).willReturn(new PageImpl<Owner>(Lists.newArrayList(george)));
 
-		given(this.owners.findById(TEST_OWNER_ID)).willReturn(george());
+		given(this.owners.findById(TEST_OWNER_ID)).willReturn(george);
 		Visit visit = new Visit();
 		visit.setDate(LocalDate.now());
-		given(this.visits.findByPetId(george().getPet("Max").getId())).willReturn(Collections.singletonList(visit));
+		visit.setPetId(george.getPet("Max").getId());
+		george.getPet("Max").getVisits().add(visit);
 
 	}
 

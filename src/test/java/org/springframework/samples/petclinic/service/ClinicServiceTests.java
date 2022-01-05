@@ -36,7 +36,6 @@ import org.springframework.samples.petclinic.owner.PetType;
 import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.samples.petclinic.vet.VetRepository;
 import org.springframework.samples.petclinic.visit.Visit;
-import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -75,9 +74,6 @@ class ClinicServiceTests {
 
 	@Autowired
 	protected OwnerRepository owners;
-
-	@Autowired
-	protected VisitRepository visits;
 
 	@Autowired
 	protected VetRepository vets;
@@ -205,17 +201,18 @@ class ClinicServiceTests {
 		Visit visit = new Visit();
 		pet7.addVisit(visit);
 		visit.setDescription("test");
-		this.visits.save(visit);
 		this.owners.save(owner6);
 
 		owner6 = this.owners.findById(6);
 		assertThat(pet7.getVisits().size()).isEqualTo(found + 1);
-		assertThat(visit.getId()).isNotNull();
+		assertThat(pet7.getVisits()).allMatch(value -> value.getId() != null);
 	}
 
 	@Test
 	void shouldFindVisitsByPetId() throws Exception {
-		Collection<Visit> visits = this.visits.findByPetId(7);
+		Owner owner6 = this.owners.findById(6);
+		Pet pet7 = owner6.getPet(7);
+		Collection<Visit> visits = pet7.getVisits();
 		assertThat(visits).hasSize(2);
 		Visit[] visitArr = visits.toArray(new Visit[visits.size()]);
 		assertThat(visitArr[0].getDate()).isNotNull();
