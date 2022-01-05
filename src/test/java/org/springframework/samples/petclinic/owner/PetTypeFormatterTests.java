@@ -16,12 +16,8 @@
 
 package org.springframework.samples.petclinic.owner;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -29,8 +25,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 /**
  * Test class for {@link PetTypeFormatter}
@@ -41,7 +41,7 @@ import static org.mockito.BDDMockito.given;
 class PetTypeFormatterTests {
 
 	@Mock
-	private PetRepository pets;
+	private OwnerRepository pets;
 
 	private PetTypeFormatter petTypeFormatter;
 

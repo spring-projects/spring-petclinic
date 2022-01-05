@@ -69,11 +69,8 @@ class OwnerControllerTests {
 	@MockBean
 	private VisitRepository visits;
 
-	private Owner george;
-
-	@BeforeEach
-	void setup() {
-		george = new Owner();
+	private Owner george() {
+		Owner george = new Owner();
 		george.setId(TEST_OWNER_ID);
 		george.setFirstName("George");
 		george.setLastName("Franklin");
@@ -88,16 +85,21 @@ class OwnerControllerTests {
 		max.setName("Max");
 		max.setBirthDate(LocalDate.now());
 		george.setPetsInternal(Collections.singleton(max));
+		return george;
+	};
+
+	@BeforeEach
+	void setup() {
 
 		given(this.owners.findByLastName(eq("Franklin"), any(Pageable.class)))
-				.willReturn(new PageImpl<Owner>(Lists.newArrayList(george)));
+				.willReturn(new PageImpl<Owner>(Lists.newArrayList(george())));
 
-		given(this.owners.findAll(any(Pageable.class))).willReturn(new PageImpl<Owner>(Lists.newArrayList(george)));
+		given(this.owners.findAll(any(Pageable.class))).willReturn(new PageImpl<Owner>(Lists.newArrayList(george())));
 
-		given(this.owners.findById(TEST_OWNER_ID)).willReturn(george);
+		given(this.owners.findById(TEST_OWNER_ID)).willReturn(george());
 		Visit visit = new Visit();
 		visit.setDate(LocalDate.now());
-		given(this.visits.findByPetId(max.getId())).willReturn(Collections.singletonList(visit));
+		given(this.visits.findByPetId(george().getPet("Max").getId())).willReturn(Collections.singletonList(visit));
 
 	}
 
@@ -132,14 +134,14 @@ class OwnerControllerTests {
 
 	@Test
 	void testProcessFindFormSuccess() throws Exception {
-		Page<Owner> tasks = new PageImpl<Owner>(Lists.newArrayList(george, new Owner()));
+		Page<Owner> tasks = new PageImpl<Owner>(Lists.newArrayList(george(), new Owner()));
 		Mockito.when(this.owners.findByLastName(anyString(), any(Pageable.class))).thenReturn(tasks);
 		mockMvc.perform(get("/owners?page=1")).andExpect(status().isOk()).andExpect(view().name("owners/ownersList"));
 	}
 
 	@Test
 	void testProcessFindFormByLastName() throws Exception {
-		Page<Owner> tasks = new PageImpl<Owner>(Lists.newArrayList(george));
+		Page<Owner> tasks = new PageImpl<Owner>(Lists.newArrayList(george()));
 		Mockito.when(this.owners.findByLastName(eq("Franklin"), any(Pageable.class))).thenReturn(tasks);
 		mockMvc.perform(get("/owners?page=1").param("lastName", "Franklin")).andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));

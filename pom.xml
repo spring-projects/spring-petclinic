@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns="http://maven.apache.org/POM/4.0.0"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
@@ -62,12 +60,12 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
-        <exclusions>
-            <exclusion>
-                <groupId>org.junit.vintage</groupId>
-                <artifactId>junit-vintage-engine</artifactId>
-            </exclusion>
-        </exclusions>
+      <exclusions>
+        <exclusion>
+          <groupId>org.junit.vintage</groupId>
+          <artifactId>junit-vintage-engine</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <!-- Databases - Uses H2 by default -->
@@ -317,20 +315,20 @@
             <artifactId>libsass-maven-plugin</artifactId>
             <version>0.2.26</version>
             <executions>
-               <execution>
-                  <phase>generate-resources</phase>
-                  <?m2e execute onConfiguration,onIncremental?>
-                  <goals>
-                     <goal>compile</goal>
-                  </goals>
-               </execution>
+              <execution>
+                <phase>generate-resources</phase>
+                <?m2e execute onConfiguration,onIncremental?>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+              </execution>
             </executions>
             <configuration>
-               <inputPath>${basedir}/src/main/scss/</inputPath>
-               <outputPath>${basedir}/src/main/resources/static/resources/css/</outputPath>
-               <includePath>${project.build.directory}/webjars/META-INF/resources/webjars/bootstrap/${webjars-bootstrap.version}/scss/</includePath>
+              <inputPath>${basedir}/src/main/scss/</inputPath>
+              <outputPath>${basedir}/src/main/resources/static/resources/css/</outputPath>
+              <includePath>${project.build.directory}/webjars/META-INF/resources/webjars/bootstrap/${webjars-bootstrap.version}/scss/</includePath>
             </configuration>
-         </plugin>
+          </plugin>
         </plugins>
       </build>
     </profile>
@@ -363,7 +361,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore/>
+                        <ignore />
                       </action>
                     </pluginExecution>
                     <pluginExecution>
@@ -376,7 +374,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore/>
+                        <ignore />
                       </action>
                     </pluginExecution>
                     <pluginExecution>
@@ -389,7 +387,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore/>
+                        <ignore />
                       </action>
                     </pluginExecution>
                   </pluginExecutions>

@@ -37,11 +37,11 @@ class VisitController {
 
 	private final VisitRepository visits;
 
-	private final PetRepository pets;
+	private final OwnerRepository owners;
 
-	public VisitController(VisitRepository visits, PetRepository pets) {
+	public VisitController(VisitRepository visits, OwnerRepository owners) {
 		this.visits = visits;
-		this.pets = pets;
+		this.owners = owners;
 	}
 
 	@InitBinder
@@ -57,8 +57,10 @@ class VisitController {
 	 * @return Pet
 	 */
 	@ModelAttribute("visit")
-	public Visit loadPetWithVisit(@PathVariable("petId") int petId, Map<String, Object> model) {
-		Pet pet = this.pets.findById(petId);
+	public Visit loadPetWithVisit(@PathVariable("ownerId") int ownerId, @PathVariable("petId") int petId,
+			Map<String, Object> model) {
+		Owner owner = this.owners.findById(ownerId);
+		Pet pet = owner.getPet(petId);
 		pet.setVisitsInternal(this.visits.findByPetId(petId));
 		model.put("pet", pet);
 		Visit visit = new Visit();
@@ -66,13 +68,15 @@ class VisitController {
 		return visit;
 	}
 
-	// Spring MVC calls method loadPetWithVisit(...) before initNewVisitForm is called
-	@GetMapping("/owners/*/pets/{petId}/visits/new")
+	// Spring MVC calls method loadPetWithVisit(...) before initNewVisitForm is
+	// called
+	@GetMapping("/owners/{ownerId}/pets/{petId}/visits/new")
 	public String initNewVisitForm(@PathVariable("petId") int petId, Map<String, Object> model) {
 		return "pets/createOrUpdateVisitForm";
 	}
 
-	// Spring MVC calls method loadPetWithVisit(...) before processNewVisitForm is called
+	// Spring MVC calls method loadPetWithVisit(...) before processNewVisitForm is
+	// called
 	@PostMapping("/owners/{ownerId}/pets/{petId}/visits/new")
 	public String processNewVisitForm(@Valid Visit visit, BindingResult result) {
 		if (result.hasErrors()) {
