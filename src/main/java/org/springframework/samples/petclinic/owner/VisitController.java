@@ -19,7 +19,6 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
-import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -63,6 +62,7 @@ class VisitController {
 		Owner owner = this.owners.findById(ownerId);
 		Pet pet = owner.getPet(petId);
 		model.put("pet", pet);
+		model.put("owner", owner);
 		Visit visit = new Visit();
 		pet.addVisit(visit);
 		return visit;
@@ -78,12 +78,11 @@ class VisitController {
 	// Spring MVC calls method loadPetWithVisit(...) before processNewVisitForm is
 	// called
 	@PostMapping("/owners/{ownerId}/pets/{petId}/visits/new")
-	public String processNewVisitForm(@PathVariable("ownerId") int ownerId, @Valid Visit visit, BindingResult result) {
+	public String processNewVisitForm(@ModelAttribute Owner owner, @Valid Visit visit, BindingResult result) {
 		if (result.hasErrors()) {
 			return "pets/createOrUpdateVisitForm";
 		}
 		else {
-			Owner owner = this.owners.findById(ownerId);
 			owner.getPet(visit.getPetId()).addVisit(visit);
 			this.owners.save(owner);
 			return "redirect:/owners/{ownerId}";
