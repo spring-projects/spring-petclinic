@@ -23,7 +23,6 @@ import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -48,11 +47,8 @@ class OwnerController {
 
 	private final OwnerRepository owners;
 
-	private final VisitRepository visits;
-
-	public OwnerController(OwnerRepository clinicService, VisitRepository visits) {
+	public OwnerController(OwnerRepository clinicService) {
 		this.owners = clinicService;
-		this.visits = visits;
 	}
 
 	@InitBinder
@@ -161,7 +157,7 @@ class OwnerController {
 		ModelAndView mav = new ModelAndView("owners/ownerDetails");
 		Owner owner = this.owners.findById(ownerId);
 		for (Pet pet : owner.getPets()) {
-			pet.setVisitsInternal(visits.findByPetId(pet.getId()));
+			pet.getVisits();
 		}
 		mav.addObject(owner);
 		return mav;

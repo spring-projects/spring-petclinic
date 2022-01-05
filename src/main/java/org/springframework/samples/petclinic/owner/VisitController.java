@@ -15,15 +15,19 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import java.util.Map;
+
+import javax.validation.Valid;
+
 import org.springframework.samples.petclinic.visit.Visit;
-import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.Map;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 /**
  * @author Juergen Hoeller
@@ -35,12 +39,9 @@ import java.util.Map;
 @Controller
 class VisitController {
 
-	private final VisitRepository visits;
-
 	private final OwnerRepository owners;
 
-	public VisitController(VisitRepository visits, OwnerRepository owners) {
-		this.visits = visits;
+	public VisitController(OwnerRepository owners) {
 		this.owners = owners;
 	}
 
@@ -61,7 +62,6 @@ class VisitController {
 			Map<String, Object> model) {
 		Owner owner = this.owners.findById(ownerId);
 		Pet pet = owner.getPet(petId);
-		pet.setVisitsInternal(this.visits.findByPetId(petId));
 		model.put("pet", pet);
 		Visit visit = new Visit();
 		pet.addVisit(visit);
@@ -78,12 +78,14 @@ class VisitController {
 	// Spring MVC calls method loadPetWithVisit(...) before processNewVisitForm is
 	// called
 	@PostMapping("/owners/{ownerId}/pets/{petId}/visits/new")
-	public String processNewVisitForm(@Valid Visit visit, BindingResult result) {
+	public String processNewVisitForm(@PathVariable("ownerId") int ownerId, @Valid Visit visit, BindingResult result) {
 		if (result.hasErrors()) {
 			return "pets/createOrUpdateVisitForm";
 		}
 		else {
-			this.visits.save(visit);
+			Owner owner = this.owners.findById(ownerId);
+			owner.getPet(visit.getPetId()).addVisit(visit);
+			this.owners.save(owner);
 			return "redirect:/owners/{ownerId}";
 		}
 	}

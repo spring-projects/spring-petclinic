@@ -40,10 +40,10 @@ public class Visit extends BaseEntity {
 	private LocalDate date;
 
 	@NotEmpty
-	@Column(name = "description")
+	@Column
 	private String description;
 
-	@Column(name = "pet_id")
+	@Column
 	private Integer petId;
 
 	/**

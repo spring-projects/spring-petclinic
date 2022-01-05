@@ -16,23 +16,20 @@
 package org.springframework.samples.petclinic.owner;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-import org.springframework.beans.support.MutableSortDefinition;
-import org.springframework.beans.support.PropertyComparator;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.model.NamedEntity;
 import org.springframework.samples.petclinic.visit.Visit;
@@ -59,7 +56,8 @@ public class Pet extends NamedEntity {
 	@Column
 	private Integer ownerId;
 
-	@Transient
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "petId", fetch = FetchType.LAZY)
+	@OrderBy("visit_date ASC")
 	private Set<Visit> visits = new LinkedHashSet<>();
 
 	public void setOwnerId(Integer ownerId) {
@@ -82,25 +80,12 @@ public class Pet extends NamedEntity {
 		this.type = type;
 	}
 
-	protected Set<Visit> getVisitsInternal() {
-		if (this.visits == null) {
-			this.visits = new HashSet<>();
-		}
+	public Collection<Visit> getVisits() {
 		return this.visits;
 	}
 
-	protected void setVisitsInternal(Collection<Visit> visits) {
-		this.visits = new LinkedHashSet<>(visits);
-	}
-
-	public List<Visit> getVisits() {
-		List<Visit> sortedVisits = new ArrayList<>(getVisitsInternal());
-		PropertyComparator.sort(sortedVisits, new MutableSortDefinition("date", false, false));
-		return Collections.unmodifiableList(sortedVisits);
-	}
-
 	public void addVisit(Visit visit) {
-		getVisitsInternal().add(visit);
+		getVisits().add(visit);
 		visit.setPetId(this.getId());
 	}
 
