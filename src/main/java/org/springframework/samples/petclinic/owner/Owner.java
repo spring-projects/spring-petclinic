@@ -16,22 +16,19 @@
 package org.springframework.samples.petclinic.owner;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 
-import org.springframework.beans.support.MutableSortDefinition;
-import org.springframework.beans.support.PropertyComparator;
 import org.springframework.core.style.ToStringCreator;
 import org.springframework.samples.petclinic.model.Person;
 
@@ -60,8 +57,10 @@ public class Owner extends Person {
 	@Digits(fraction = 0, integer = 10)
 	private String telephone;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ownerId", fetch = FetchType.EAGER)
-	private Set<Pet> pets;
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "owner_id")
+	@OrderBy("name")
+	private List<Pet> pets = new ArrayList<>();
 
 	public String getAddress() {
 		return this.address;
@@ -87,28 +86,14 @@ public class Owner extends Person {
 		this.telephone = telephone;
 	}
 
-	protected Set<Pet> getPetsInternal() {
-		if (this.pets == null) {
-			this.pets = new HashSet<>();
-		}
-		return this.pets;
-	}
-
-	protected void setPetsInternal(Set<Pet> pets) {
-		this.pets = pets;
-	}
-
 	public List<Pet> getPets() {
-		List<Pet> sortedPets = new ArrayList<>(getPetsInternal());
-		PropertyComparator.sort(sortedPets, new MutableSortDefinition("name", true, true));
-		return Collections.unmodifiableList(sortedPets);
+		return this.pets;
 	}
 
 	public void addPet(Pet pet) {
 		if (pet.isNew()) {
-			getPetsInternal().add(pet);
+			getPets().add(pet);
 		}
-		pet.setOwnerId(getId());
 	}
 
 	/**
@@ -126,7 +111,7 @@ public class Owner extends Person {
 	 * @return a pet if pet id is already in use
 	 */
 	public Pet getPet(Integer id) {
-		for (Pet pet : getPetsInternal()) {
+		for (Pet pet : getPets()) {
 			if (!pet.isNew()) {
 				Integer compId = pet.getId();
 				if (compId.equals(id)) {
@@ -144,7 +129,7 @@ public class Owner extends Person {
 	 */
 	public Pet getPet(String name, boolean ignoreNew) {
 		name = name.toLowerCase();
-		for (Pet pet : getPetsInternal()) {
+		for (Pet pet : getPets()) {
 			if (!ignoreNew || !pet.isNew()) {
 				String compName = pet.getName();
 				compName = compName == null ? "" : compName.toLowerCase();

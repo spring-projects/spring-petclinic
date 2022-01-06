@@ -52,16 +52,10 @@ public class Pet extends NamedEntity {
 	@JoinColumn(name = "type_id")
 	private PetType type;
 
-	@Column
-	private Integer ownerId;
-
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "petId", fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pet_id")
 	@OrderBy("visit_date ASC")
 	private Set<Visit> visits = new LinkedHashSet<>();
-
-	public void setOwnerId(Integer ownerId) {
-		this.ownerId = ownerId;
-	}
 
 	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
@@ -85,7 +79,6 @@ public class Pet extends NamedEntity {
 
 	public void addVisit(Visit visit) {
 		getVisits().add(visit);
-		visit.setPetId(this.getId());
 	}
 
 }

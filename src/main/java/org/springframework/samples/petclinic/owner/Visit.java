@@ -40,11 +40,7 @@ public class Visit extends BaseEntity {
 	private LocalDate date;
 
 	@NotEmpty
-	@Column
 	private String description;
-
-	@Column
-	private Integer petId;
 
 	/**
 	 * Creates a new instance of Visit for the current date
@@ -67,14 +63,6 @@ public class Visit extends BaseEntity {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public Integer getPetId() {
-		return this.petId;
-	}
-
-	public void setPetId(Integer petId) {
-		this.petId = petId;
 	}
 
 }
