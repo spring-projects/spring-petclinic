@@ -199,13 +199,16 @@ class ClinicServiceTests {
 		Pet pet7 = owner6.getPet(7);
 		int found = pet7.getVisits().size();
 		Visit visit = new Visit();
-		pet7.addVisit(visit);
 		visit.setDescription("test");
+
+		owner6.addVisit(pet7.getId(), visit);
 		this.owners.save(owner6);
 
 		owner6 = this.owners.findById(6);
-		assertThat(pet7.getVisits().size()).isEqualTo(found + 1);
-		assertThat(pet7.getVisits()).allMatch(value -> value.getId() != null);
+
+		assertThat(pet7.getVisits()) //
+				.hasSize(found + 1) //
+				.allMatch(value -> value.getId() != null);
 	}
 
 	@Test
@@ -213,9 +216,10 @@ class ClinicServiceTests {
 		Owner owner6 = this.owners.findById(6);
 		Pet pet7 = owner6.getPet(7);
 		Collection<Visit> visits = pet7.getVisits();
-		assertThat(visits).hasSize(2);
-		Visit[] visitArr = visits.toArray(new Visit[visits.size()]);
-		assertThat(visitArr[0].getDate()).isNotNull();
+
+		assertThat(visits) //
+				.hasSize(2) //
+				.element(0).extracting(Visit::getDate).isNotNull();
 	}
 
 }
