@@ -31,6 +31,7 @@ import javax.validation.constraints.NotEmpty;
 
 import org.springframework.core.style.ToStringCreator;
 import org.springframework.samples.petclinic.model.Person;
+import org.springframework.util.Assert;
 
 /**
  * Simple JavaBean domain object representing an owner.
@@ -39,6 +40,7 @@ import org.springframework.samples.petclinic.model.Person;
  * @author Juergen Hoeller
  * @author Sam Brannen
  * @author Michael Isvy
+ * @author Oliver Drotbohm
  */
 @Entity
 @Table(name = "owners")
@@ -147,6 +149,25 @@ public class Owner extends Person {
 				.append("lastName", this.getLastName()).append("firstName", this.getFirstName())
 				.append("address", this.address).append("city", this.city).append("telephone", this.telephone)
 				.toString();
+	}
+
+	/**
+	 * Adds the given {@link Visit} to the {@link Pet} with the given identifier.
+	 * @param petId the identifier of the {@link Pet}, must not be {@literal null}.
+	 * @param visit the visit to add, must not be {@literal null}.
+	 */
+	public Owner addVisit(Integer petId, Visit visit) {
+
+		Assert.notNull(petId, "Pet identifier must not be null!");
+		Assert.notNull(visit, "Visit must not be null!");
+
+		Pet pet = getPet(petId);
+
+		Assert.notNull(pet, "Invalid Pet identifier!");
+
+		pet.addVisit(visit);
+
+		return this;
 	}
 
 }
