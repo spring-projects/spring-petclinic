@@ -16,23 +16,22 @@
 package org.springframework.samples.petclinic.owner;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 
-import org.springframework.beans.support.MutableSortDefinition;
-import org.springframework.beans.support.PropertyComparator;
 import org.springframework.core.style.ToStringCreator;
 import org.springframework.samples.petclinic.model.Person;
+import org.springframework.util.Assert;
 
 /**
  * Simple JavaBean domain object representing an owner.
@@ -41,6 +40,7 @@ import org.springframework.samples.petclinic.model.Person;
  * @author Juergen Hoeller
  * @author Sam Brannen
  * @author Michael Isvy
+ * @author Oliver Drotbohm
  */
 @Entity
 @Table(name = "owners")
@@ -59,8 +59,10 @@ public class Owner extends Person {
 	@Digits(fraction = 0, integer = 10)
 	private String telephone;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
-	private Set<Pet> pets;
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "owner_id")
+	@OrderBy("name")
+	private List<Pet> pets = new ArrayList<>();
 
 	public String getAddress() {
 		return this.address;
@@ -86,28 +88,14 @@ public class Owner extends Person {
 		this.telephone = telephone;
 	}
 
-	protected Set<Pet> getPetsInternal() {
-		if (this.pets == null) {
-			this.pets = new HashSet<>();
-		}
-		return this.pets;
-	}
-
-	protected void setPetsInternal(Set<Pet> pets) {
-		this.pets = pets;
-	}
-
 	public List<Pet> getPets() {
-		List<Pet> sortedPets = new ArrayList<>(getPetsInternal());
-		PropertyComparator.sort(sortedPets, new MutableSortDefinition("name", true, true));
-		return Collections.unmodifiableList(sortedPets);
+		return this.pets;
 	}
 
 	public void addPet(Pet pet) {
 		if (pet.isNew()) {
-			getPetsInternal().add(pet);
+			getPets().add(pet);
 		}
-		pet.setOwner(this);
 	}
 
 	/**
@@ -120,16 +108,33 @@ public class Owner extends Person {
 	}
 
 	/**
+	 * Return the Pet with the given id, or null if none found for this Owner.
+	 * @param name to test
+	 * @return a pet if pet id is already in use
+	 */
+	public Pet getPet(Integer id) {
+		for (Pet pet : getPets()) {
+			if (!pet.isNew()) {
+				Integer compId = pet.getId();
+				if (compId.equals(id)) {
+					return pet;
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * Return the Pet with the given name, or null if none found for this Owner.
 	 * @param name to test
 	 * @return true if pet name is already in use
 	 */
 	public Pet getPet(String name, boolean ignoreNew) {
 		name = name.toLowerCase();
-		for (Pet pet : getPetsInternal()) {
+		for (Pet pet : getPets()) {
 			if (!ignoreNew || !pet.isNew()) {
 				String compName = pet.getName();
-				compName = compName.toLowerCase();
+				compName = compName == null ? "" : compName.toLowerCase();
 				if (compName.equals(name)) {
 					return pet;
 				}
@@ -140,11 +145,29 @@ public class Owner extends Person {
 
 	@Override
 	public String toString() {
-		return new ToStringCreator(this)
+		return new ToStringCreator(this).append("id", this.getId()).append("new", this.isNew())
+				.append("lastName", this.getLastName()).append("firstName", this.getFirstName())
+				.append("address", this.address).append("city", this.city).append("telephone", this.telephone)
+				.toString();
+	}
 
-				.append("id", this.getId()).append("new", this.isNew()).append("lastName", this.getLastName())
-				.append("firstName", this.getFirstName()).append("address", this.address).append("city", this.city)
-				.append("telephone", this.telephone).toString();
+	/**
+	 * Adds the given {@link Visit} to the {@link Pet} with the given identifier.
+	 * @param petId the identifier of the {@link Pet}, must not be {@literal null}.
+	 * @param visit the visit to add, must not be {@literal null}.
+	 */
+	public Owner addVisit(Integer petId, Visit visit) {
+
+		Assert.notNull(petId, "Pet identifier must not be null!");
+		Assert.notNull(visit, "Visit must not be null!");
+
+		Pet pet = getPet(petId);
+
+		Assert.notNull(pet, "Invalid Pet identifier!");
+
+		pet.addVisit(visit);
+
+		return this;
 	}
 
 }

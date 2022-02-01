@@ -17,60 +17,52 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+  <link th:href="@{/webjars/font-awesome/css/font-awesome.min.css}" rel="stylesheet">
   <link rel="stylesheet" th:href="@{/resources/css/petclinic.css}" />
 
 </head>
 
 <body>
 
-  <nav class="navbar navbar-default" role="navigation">
-    <div class="container">
-      <div class="navbar-header">
-        <a class="navbar-brand" th:href="@{/}"><span></span></a>
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
-          <span class="sr-only">
-            <os-p>Toggle navigation</os-p>
-          </span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-      </div>
-      <div class="navbar-collapse collapse" id="main-navbar">
+  <nav class="navbar navbar-expand-lg navbar-dark" role="navigation">
+    <div class="container-fluid">
+      <a class="navbar-brand" th:href="@{/}"><span></span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-navbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="main-navbar" style>
 
-        <ul class="nav navbar-nav navbar-right" th:remove="all">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0" th:remove="all">
 
-          <li th:fragment="menuItem (link,active,title,glyph,text)" class="active"
-            th:class="${active==menu ? 'active' : ''}">
-            <a th:href="@{__${link}__}" th:title="${title}">
-              <span th:class="'glyphicon  glyphicon-'+${glyph}" class="glyphicon glyphicon-home"
-                aria-hidden="true"></span>
+          <li th:fragment="menuItem (link,active,title,glyph,text)" th:class="nav-item">
+            <a th:class="${active==menu ? 'nav-link active' : 'nav-link'}" th:href="@{__${link}__}" th:title="${title}">
+              <span th:class="'fa fa-'+${glyph}" class="fa fa-home"></span>
               <span th:text="${text}">Template</span>
             </a>
           </li>
 
         </ul>
 
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav me-auto">
 
           <li th:replace="::menuItem ('/','home','home page','home','Home')">
-            <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+            <span class="fa fa-home" aria-hidden="true"></span>
             <span>Home</span>
           </li>
 
           <li th:replace="::menuItem ('/owners/find','owners','find owners','search','Find owners')">
-            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            <span class="fa fa-search" aria-hidden="true"></span>
             <span>Find owners</span>
           </li>
 
           <li th:replace="::menuItem ('/vets.html','vets','veterinarians','th-list','Veterinarians')">
-            <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+            <span class="fa fa-th-list" aria-hidden="true"></span>
             <span>Veterinarians</span>
           </li>
 
           <li
-            th:replace="::menuItem ('/oups','error','trigger a RuntimeException to see how it is handled','warning-sign','Error')">
-            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+            th:replace="::menuItem ('/oups','error','trigger a RuntimeException to see how it is handled','exclamation-triangle','Error')">
+            <span class="fa exclamation-triangle" aria-hidden="true"></span>
             <span>Error</span>
           </li>
 
@@ -95,9 +87,7 @@
     </div>
   </div>
 
-  <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
-  <script th:src="@{/webjars/jquery-ui/jquery-ui.min.js}"></script>
-  <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+  <script th:src="@{/webjars/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
 
 </body>
 
