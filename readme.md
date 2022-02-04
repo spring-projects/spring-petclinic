@@ -1,3 +1,5 @@
+[![Maven Package](https://github.com/bfarhad/spring-petclinic/actions/workflows/maven-publish.yml/badge.svg?branch=master)](https://github.com/bfarhad/spring-petclinic/actions/workflows/maven-publish.yml)
+
 # Spring PetClinic Sample Application [![Build Status](https://travis-ci.org/spring-projects/spring-petclinic.png?branch=master)](https://travis-ci.org/spring-projects/spring-petclinic/)
 
 ## Understanding the Spring Petclinic application with a few diagrams
