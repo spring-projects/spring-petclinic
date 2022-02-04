@@ -1,11 +1,11 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2012-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,7 +22,8 @@ import org.springframework.validation.Validator;
 /**
  * <code>Validator</code> for <code>Pet</code> forms.
  * <p>
- * We're not using Bean Validation annotations here because it is easier to define such validation rule in Java.
+ * We're not using Bean Validation annotations here because it is easier to define such
+ * validation rule in Java.
  * </p>
  *
  * @author Ken Krebs
@@ -30,35 +31,34 @@ import org.springframework.validation.Validator;
  */
 public class PetValidator implements Validator {
 
-    private static final String REQUIRED = "required";
+	private static final String REQUIRED = "required";
 
-    @Override
-    public void validate(Object obj, Errors errors) {
-        Pet pet = (Pet) obj;
-        String name = pet.getName();
-        // name validation
-        if (!StringUtils.hasLength(name)) {
-            errors.rejectValue("name", REQUIRED, REQUIRED);
-        }
+	@Override
+	public void validate(Object obj, Errors errors) {
+		Pet pet = (Pet) obj;
+		String name = pet.getName();
+		// name validation
+		if (!StringUtils.hasLength(name)) {
+			errors.rejectValue("name", REQUIRED, REQUIRED);
+		}
 
-        // type validation
-        if (pet.isNew() && pet.getType() == null) {
-            errors.rejectValue("type", REQUIRED, REQUIRED);
-        }
+		// type validation
+		if (pet.isNew() && pet.getType() == null) {
+			errors.rejectValue("type", REQUIRED, REQUIRED);
+		}
 
-        // birth date validation
-        if (pet.getBirthDate() == null) {
-            errors.rejectValue("birthDate", REQUIRED, REQUIRED);
-        }
-    }
+		// birth date validation
+		if (pet.getBirthDate() == null) {
+			errors.rejectValue("birthDate", REQUIRED, REQUIRED);
+		}
+	}
 
-    /**
-     * This Validator validates *just* Pet instances
-     */
-    @Override
-    public boolean supports(Class<?> clazz) {
-        return Pet.class.isAssignableFrom(clazz);
-    }
-
+	/**
+	 * This Validator validates *just* Pet instances
+	 */
+	@Override
+	public boolean supports(Class<?> clazz) {
+		return Pet.class.isAssignableFrom(clazz);
+	}
 
 }
