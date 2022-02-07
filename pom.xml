@@ -254,6 +254,23 @@
       </snapshots>
     </repository>
   </repositories>
+  
+  <distributionManagement>
+	
+	    <repository>
+	      <id>nexus</id>
+	      <name>Mithun Technologies Releases Nexus Repository</name>
+	      <url>http://3.111.0.159:8081/repository/Spring_Pet_Clinc-Release/</url>
+	    </repository>
+	    
+	    <snapshotRepository>
+	      <id>nexus</id>
+	      <name>Mithun Technologies Snapshot Nexus Repository </name>
+	      <url>http://3.111.0.159:8081/repository/Spring_Pet_CLinic-Snapshot/</url>
+	    </snapshotRepository>
+	    
+	</distributionManagement>
+	
 
   <pluginRepositories>
     <pluginRepository>
