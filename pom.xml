@@ -131,6 +131,9 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
         <version>3.1.1</version>
         <dependencies>
           <dependency>
