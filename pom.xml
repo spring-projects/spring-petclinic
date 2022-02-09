@@ -26,7 +26,7 @@
     <jacoco.version>0.8.5</jacoco.version>
     <node.version>v8.11.1</node.version>
     <nohttp-checkstyle.version>0.0.10</nohttp-checkstyle.version>
-    <spring-format.version>0.0.27</spring-format.version>
+    <spring-format.version>0.0.31</spring-format.version>
 
   </properties>
 
@@ -136,7 +136,7 @@
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
             <artifactId>checkstyle</artifactId>
-            <version>8.32</version>
+            <version>8.45.1</version>
           </dependency>
           <dependency>
             <groupId>io.spring.nohttp</groupId>
