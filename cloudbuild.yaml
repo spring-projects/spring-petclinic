@@ -6,7 +6,7 @@ steps:
   args: ['mvn', 'test']
 #steps:
 - name: maven:3-jdk-8
-  args: ['mvn', 'package','-Dmaven.test.skip=true']
+  args: ['mvn', 'package', '-Dmaven.test.skip=true']
 #steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'asia-south1-docker.pkg.dev/business-transformers/my-source-repo-suchita:$SHORT_SHA', '--build-arg=JAR_FILE=target/spring-petclinic-2.4.2.jar', '.']
