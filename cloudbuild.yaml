@@ -1,0 +1,7 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/business-transformers/test-nodejs-suchita:$SHORT_SHA', '.']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/business-transformers/test-nodejs-suchita:$SHORT_SHA']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['beta', 'run', 'deploy', 'my-source-repo-suchita', '--image=gcr.io/business-transformers/test-nodejs-suchita:$SHORT_SHA', '--region=asia-south1']
