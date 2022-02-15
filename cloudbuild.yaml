@@ -1,7 +1,22 @@
 steps:
 steps:
+- name: maven:3-jdk-8
+    entrypoint: mvn
+    args: ['--version']
+
+steps:
+ - name: maven:3-jdk-8
+   entrypoint: mvn
+   args: ['test']
+
+steps:
+ - name: maven:3-jdk-8
+   entrypoint: mvn
+   args: ['package','-Dmaven.test.skip=true']
+
+steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'asia-south1-docker.pkg.dev/business-transformers/my-source-repo-suchita:$SHORT_SHA', '.']
+  args: ['build', '-t', 'asia-south1-docker.pkg.dev/business-transformers/my-source-repo-suchita:$SHORT_SHA', '--build-arg=JAR_FILE=target/spring-petclinic-2.4.2.jar', '.']
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'asia-south1-docker.pkg.dev/business-transformers/my-source-repo-suchita:$SHORT_SHA']
 #step 3
