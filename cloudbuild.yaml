@@ -1,7 +1,24 @@
 steps:
+steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/business-transformers/test-nodejs-suchita:$SHORT_SHA', '.']
+  args: ['build', '-t', 'gcr.io/business-transformers/my-source-repo-suchita:$SHORT_SHA', '.']
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/business-transformers/test-nodejs-suchita:$SHORT_SHA']
-- name: 'gcr.io/cloud-builders/gcloud'
-  args: ['beta', 'run', 'deploy', 'my-source-repo-suchita', '--image=gcr.io/business-transformers/test-nodejs-suchita:$SHORT_SHA', '--region=asia-south1']
+  args: ['push', 'gcr.io/business-transformers/my-source-repo-suchita:$SHORT_SHA']
+#step 3
+- name: 'gcr.io/cloud-builders/kubectl'
+  args: ['apply', '-f', 'k8s/']
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=asia-south1-c'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=cluster-vatan'
+#step 4
+- name: 'gcr.io/cloud-builders/kubectl'
+  args: [
+   'set', 
+   'image', 
+   'deployment', 
+   'my-source-repo-suchita', 
+   'my-source-repo-suchita=gcr.io/business-transformers/my-source-repo-suchita:$SHORT_SHA'
+  ]
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=asia-south1-c'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=cluster-vatan'
