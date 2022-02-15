@@ -1,18 +1,18 @@
 steps:
 steps:
 - name: maven:3-jdk-8
-    entrypoint: mvn
-    args: ['--version']
+    
+    args: ['mvn', '--version']
 
 steps:
  - name: maven:3-jdk-8
-   entrypoint: mvn
-   args: ['test']
+   
+   args: ['mvn', 'test']
 
 steps:
  - name: maven:3-jdk-8
-   entrypoint: mvn
-   args: ['package','-Dmaven.test.skip=true']
+   
+   args: ['mvn', 'package','-Dmaven.test.skip=true']
 
 steps:
 - name: 'gcr.io/cloud-builders/docker'
