@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: my-source-repo-suchita
+  name: my-source-repo-suchita
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: my-source-repo-suchita
+  template:
+    metadata:
+      labels:
+        run: my-source-repo-suchita
+    spec:
+      containers:
+      - image: gcr.io/business-transformers/my-source-repo-suchita:$SHORT_SHA
+        name: my-source-repo-suchita
+        ports:
+        - containerPort: 80
