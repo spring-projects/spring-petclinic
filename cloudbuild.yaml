@@ -7,26 +7,26 @@ steps:
 steps:
 - name: maven:3-jdk-8
   args: ['mvn', 'package','-Dmaven.test.skip=true']
-steps:
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'asia-south1-docker.pkg.dev/business-transformers/my-source-repo-suchita:$SHORT_SHA', '--build-arg=JAR_FILE=target/spring-petclinic-2.4.2.jar', '.']
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'asia-south1-docker.pkg.dev/business-transformers/my-source-repo-suchita:$SHORT_SHA']
+#steps:
+#- name: 'gcr.io/cloud-builders/docker'
+#  args: ['build', '-t', 'asia-south1-docker.pkg.dev/business-transformers/my-source-repo-suchita:$SHORT_SHA', '--build-arg=JAR_FILE=target/spring-petclinic-2.4.2.jar', '.']
+#- name: 'gcr.io/cloud-builders/docker'
+  #args: ['push', 'asia-south1-docker.pkg.dev/business-transformers/my-source-repo-suchita:$SHORT_SHA']
 #step 3
-- name: 'gcr.io/cloud-builders/kubectl'
-  args: ['apply', '-f', 'k8s/']
-  env:
-  - 'CLOUDSDK_COMPUTE_ZONE=asia-south1-c'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=suchita-cluster-gke'
+#- name: 'gcr.io/cloud-builders/kubectl'
+ # args: ['apply', '-f', 'k8s/']
+  #env:
+  #- 'CLOUDSDK_COMPUTE_ZONE=asia-south1-c'
+  #- 'CLOUDSDK_CONTAINER_CLUSTER=suchita-cluster-gke'
 #step 4
-- name: 'gcr.io/cloud-builders/kubectl'
-  args: [
-   'set', 
-   'image', 
-   'deployment', 
-   'my-source-repo-suchita', 
-   'my-source-repo-suchita=asia-south1-docker.pkg.dev/business-transformers/my-source-repo-suchita:$SHORT_SHA'
-  ]
-  env:
-  - 'CLOUDSDK_COMPUTE_ZONE=asia-south1-c'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=suchita-cluster-gke'
+#- name: 'gcr.io/cloud-builders/kubectl'
+ # args: [
+  # 'set', 
+   #'image', 
+   #'deployment', 
+   #'my-source-repo-suchita', 
+   #'my-source-repo-suchita=asia-south1-docker.pkg.dev/business-transformers/my-source-repo-suchita:$SHORT_SHA'
+  #]
+  #env:
+  #- 'CLOUDSDK_COMPUTE_ZONE=asia-south1-c'
+  #- 'CLOUDSDK_CONTAINER_CLUSTER=suchita-cluster-gke'
