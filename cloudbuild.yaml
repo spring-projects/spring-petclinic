@@ -1,5 +1,4 @@
 steps:
-steps:
 - name: maven:3-jdk-8
   args: ['mvn', '--version']
 steps:
