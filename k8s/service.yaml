@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: my-source-repo-suchita
+spec:
+  selector:
+     run: my-source-repo-suchita
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: LoadBalancer
