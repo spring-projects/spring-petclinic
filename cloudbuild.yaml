@@ -13,7 +13,7 @@ steps:
 #images: ['asia-south1-docker.pkg.dev/business-transformers/my-source-repo-suchita:$SHORT_SHA']
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'asia-south1-docker.pkg.dev/business-transformers/my-source-repo-suchita:$SHORT_SHA']
-#step3
+#step 3
 - name: 'gcr.io/cloud-builders/kubectl'
   args: ['apply', '-f', 'k8s/']
   env:
