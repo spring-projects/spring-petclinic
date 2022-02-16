@@ -8,9 +8,9 @@ steps:
 - name: maven:3-jdk-8
   args: ['mvn', 'package', '-Dmaven.test.skip=true']
 - name: 'gcr.io/cloud-builders/gcloud'
-  args: ['auth', 'configure-docker', 'asia-south1-docker.pkg.dev', '--quiet' ]
+  args: ['auth', 'configure-maven', 'asia-south1-maven.pkg.dev', '--quiet' ]
 - name: gcr.io/cloud-builders/mvn
-  args: ['deploy:deploy-file', '-Durl=artifactregistry://asia-south1-docker.pkg.dev/business-transformers/suchita-mavan-repo', '-Dfile=target/spring-petclinic-2.4.2.jar']
+  args: ['deploy:deploy-file', '-Durl=artifactregistry://asia-south1-maven.pkg.dev/business-transformers/suchita-mavan-repo', '-Dfile=target/spring-petclinic-2.4.2.jar']
   
 #steps:
 - name: 'gcr.io/cloud-builders/docker'
