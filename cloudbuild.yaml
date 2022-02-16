@@ -19,7 +19,7 @@ steps:
   args: ['apply', '-f', 'k8s/']
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=asia-south1-c'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=suchita-cluster-gke'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=cluster-suchita'
 #step 4
 - name: 'gcr.io/cloud-builders/kubectl'
   args: [
@@ -31,6 +31,6 @@ steps:
   ]
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=asia-south1-c'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=suchita-cluster-gke'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=cluster-suchita'
 images: 
 - 'asia-south1-docker.pkg.dev/business-transformers/my-source-repo-suchita/spring-petclinic:$SHORT_SHA'
