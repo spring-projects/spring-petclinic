@@ -13,7 +13,7 @@ steps:
 - name: 'gcr.io/cloud-builders/gcloud'
   args: ['auth', 'configure-docker', 'asia-south1-docker.pkg.dev', '--quiet' ]
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'asia-south1-docker.pkg.dev/business-transformers/my-source-repo-suchitaspring-petclinic:$SHORT_SHA']
+  args: ['push', 'asia-south1-docker.pkg.dev/business-transformers/my-source-repo-suchita/spring-petclinic:$SHORT_SHA']
 #step 3
 - name: 'gcr.io/cloud-builders/kubectl'
   args: ['apply', '-f', 'k8s/']
