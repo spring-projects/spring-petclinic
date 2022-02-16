@@ -18,4 +18,4 @@ spec:
       - image: asia-south1-docker.pkg.dev/business-transformers/my-source-repo-suchita/spring-petclinic:$SHORT_SHA
         name: my-source-repo-suchita
         ports:
-        - containerPort: 80
+        - containerPort: 8080
