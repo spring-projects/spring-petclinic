@@ -9,12 +9,11 @@ steps:
   args: ['mvn', 'package', '-Dmaven.test.skip=true']
 #steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'asia-south1-docker.pkg.dev/business-transformers/my-source-repo-suchita:$SHORT_SHA', '--build-arg=JAR_FILE=target/spring-petclinic-2.4.2.jar', '.']
-images: 
-- 'asia-south1-docker.pkg.dev/business-transformers/my-source-repo-suchita:$SHORT_SHA'
-
-#- name: 'gcr.io/cloud-builders/docker'
- # args: ['push', 'asia-south1-docker.pkg.dev/business-transformers/my-source-repo-suchita:$SHORT_SHA']
+  args: ['build', '-t', 'asia-south1-docker.pkg.dev/business-transformers/my-source-repo-suchita/spring-petclinic:$SHORT_SHA', '--build-arg=JAR_FILE=target/spring-petclinic-2.4.2.jar', '.']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['auth', 'configure-docker', 'asia-south1-docker.pkg.dev', '--quiet' ]
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'asia-south1-docker.pkg.dev/business-transformers/my-source-repo-suchitaspring-petclinic:$SHORT_SHA']
 #step 3
 - name: 'gcr.io/cloud-builders/kubectl'
   args: ['apply', '-f', 'k8s/']
@@ -28,8 +27,10 @@ images:
    'image', 
    'deployment', 
    'my-source-repo-suchita', 
-   'my-source-repo-suchita=asia-south1-docker.pkg.dev/business-transformers/my-source-repo-suchita:$SHORT_SHA'
+   'my-source-repo-suchita=asia-south1-docker.pkg.dev/business-transformers/my-source-repo-suchita/spring-petclinic:$SHORT_SHA'
   ]
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=asia-south1-c'
   - 'CLOUDSDK_CONTAINER_CLUSTER=suchita-cluster-gke'
+images: 
+- 'asia-south1-docker.pkg.dev/business-transformers/my-source-repo-suchita/spring-petclinic:$SHORT_SHA'
