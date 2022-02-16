@@ -6,7 +6,7 @@ COPY ${JAR_FILE} docker-spring-petclinic-boot.jar
 
 #ADD /workspace/target/spring-petclinic-2.4.2.jar docker-spring-petclinic-boot.jar
 
-EXPOSE 80
+EXPOSE 8080
 
 ENTRYPOINT [ "java" , "-jar",  "docker-spring-petclinic-boot.jar" ]
 
