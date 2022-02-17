@@ -42,4 +42,6 @@ steps:
   - 'CLOUDSDK_CONTAINER_CLUSTER=cluster-suchita'
 images: 
 - 'asia-south1-docker.pkg.dev/business-transformers/my-source-repo-suchita/spring-petclinic:$SHORT_SHA'
+options:
+logging: CLOUD_LOGGING_ONLY
 
