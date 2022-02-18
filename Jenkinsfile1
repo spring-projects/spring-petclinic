@@ -1,0 +1,40 @@
+pipeline {
+  agent any
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '5'))
+      }
+   stages{  
+     stage('Checkout') {
+            steps{
+                git branch: 'wavefront',
+                    url: 'https://github.com/YuriiDiduk/spring-petclinic.git'        
+                }
+             }
+     stage('Test') {
+            steps{
+                    sh "ls -la "
+                    sh "pwd"
+            }
+        }  
+     stage('OPEN_FILE') {
+            steps{
+                    sh "cat text.txt"
+            }
+        }  
+     stage('DockerLint') {
+            steps {       
+                sh 'docker run --rm -i hadolint/hadolint < Dockerfile1' 
+             }
+        }
+   
+
+     stage('NAME') {
+            steps {
+                       
+                echo "The build number is ${env.BUILD_NUMBER}"
+                echo "The BRANCH_NAME is ${env.BRANCH_NAME}"
+                     }
+              }
+               
+          }
+    }
