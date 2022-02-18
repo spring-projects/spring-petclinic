@@ -1,0 +1,16 @@
+        stage('Checkout') {
+            steps{
+                git branch: 'main',
+                    url: 'https://github.com/bakavets/docker-lessons.git'        
+                }
+        }
+        stage('Test') {
+            steps{
+                dir('lesson-1') {
+                    sh "ls -la "
+                    sh "pwd"
+                }
+                    sh "ls -la "
+                    sh "pwd"
+            }
+        }
