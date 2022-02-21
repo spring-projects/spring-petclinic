@@ -18,6 +18,8 @@ package org.springframework.samples.petclinic;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * PetClinic Spring Boot Application.
@@ -28,7 +30,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication(proxyBeanMethods = false)
 public class PetClinicApplication {
 
+	private static final Logger logger = LogManager.getLogger(PetClinicApplication.class);
+
 	public static void main(String[] args) {
+		logger.info("starting petclinic application");
 		SpringApplication.run(PetClinicApplication.class, args);
 	}
 

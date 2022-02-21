@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: petclinic-service
+spec:
+  selector:
+    app: petclinic
+  ports:
+    - protocol: "TCP"
+      port: 3000
+      targetPort: 8080
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: petclinic
+spec:
+  selector:
+    matchLabels:
+      app: petclinic
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: petclinic
+        app.kubernetes.io/name: petclinic
+        app.kubernetes.io/instance: petclinic-prod
+        app.kubernetes.io/component: app
+        app.kubernetes.io/part-of: petclinic
+        app.kubernetes.io/version: 2.6.1
+    spec:
+      containers:
+        - name: petclinic
+          image: robinwyss/petclinic-l4j:2.6.1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DT_RELEASE_VERSION
+              value: 2.6.1
+            - name: DT_RELEASE_PRODUCT
+              value: petclinic
+            - name: DT_RELEASE_STAGE
+              value: "prod"

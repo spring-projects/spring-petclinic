@@ -26,6 +26,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.validation.Valid;
 import java.util.Collection;
 import java.util.Map;
@@ -38,6 +41,8 @@ import java.util.Map;
  */
 @Controller
 class OwnerController {
+
+	private static final Logger logger = LogManager.getLogger(OwnerController.class);
 
 	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
 
@@ -86,6 +91,7 @@ class OwnerController {
 		if (owner.getLastName() == null) {
 			owner.setLastName(""); // empty string signifies broadest possible search
 		}
+		logger.info(owner.getLastName());
 
 		// find owners by last name
 		Collection<Owner> results = this.owners.findByLastName(owner.getLastName());
