@@ -27,7 +27,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 public class PetClinicApplication {
-
+	System.out.println("Starting the main application code now...");
 	public static void main(String[] args) {
 		SpringApplication.run(PetClinicApplication.class, args);
 	}
