@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\main",
+    "\\src\\main\\java",
+    "\\src\\main\\java\\org",
+    "\\src\\main\\java\\org\\springframework",
+    "\\src\\main\\java\\org\\springframework\\samples",
+    "\\src\\main\\java\\org\\springframework\\samples\\petclinic",
+    "\\src\\main\\java\\org\\springframework\\samples\\petclinic\\vet",
+    "\\src\\test"
+  ],
+  "SelectedNode": "\\src\\main\\java\\org\\springframework\\samples\\petclinic\\PetClinicApplication.java",
+  "PreviewInSolutionExplorer": false
+}
