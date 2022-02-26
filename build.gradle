@@ -4,7 +4,7 @@ plugins {
   id 'java'
 }
 
-apply plugin: 'java'
+apply plugin: 'java:8'
 
 group = 'org.springframework.samples'
 version = '3.1.0'
