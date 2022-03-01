@@ -32,3 +32,4 @@ stages:
         tags: |
           $(tag)
         containerRegistry: docker-robinwyss
+        repository: petclinic-l4j
