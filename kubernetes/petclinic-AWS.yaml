@@ -64,3 +64,4 @@ spec:
                 name: petclinic-service
                 port:
                   number: 80
+
