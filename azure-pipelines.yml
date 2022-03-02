@@ -9,17 +9,20 @@ resources:
 - repo: self
 
 variables:
-  tag: '$(Build.BuildId)'
+  tag: '$(Build.SourceBranchName)'
 
 stages:
-- stage: Build
-  displayName: Build image
+- stage: BuildAndPush
+  displayName: 'Build container image and push to docker hub'
   jobs:
   - job: Build
     displayName: Build
     pool:
       vmImage: ubuntu-latest
     steps:
+    - task: CmdLine@2
+      inputs:
+        script: 'echo $(Build.SourceBranchName)' 
     - task: Maven@3
       inputs:
         mavenPomFile: 'pom.xml'
