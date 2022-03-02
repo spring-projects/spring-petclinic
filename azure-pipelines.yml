@@ -12,8 +12,8 @@ variables:
   tag: '$(Build.SourceBranchName)'
 
 stages:
-- stage: Build and pufh
-  displayName: Build container image and push to docker hub
+- stage: BuildAndPush
+  displayName: 'Build container image and push to docker hub'
   jobs:
   - job: Build
     displayName: Build
