@@ -20,16 +20,6 @@ stages:
     pool:
       vmImage: ubuntu-latest
     steps:
-    - task: Maven@3
+    - task: CmdLine@2
       inputs:
-        mavenPomFile: 'pom.xml'
-        goals: 'package'
-    - task: Docker@2
-      displayName: Build an image
-      inputs:
-        command: buildAndPush
-        dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
-        tags: |
-          $(tag)
-        containerRegistry: docker-robinwyss
-        repository: robinwyss/petclinic-l4j
+        script: 'echo $(Build.SourceBranchName)' 
