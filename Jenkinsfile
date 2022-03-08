@@ -3,7 +3,7 @@ pipeline {
  stages{
    stage('git clone'){
      steps{
-       git url:'https://github.com/praveenkumar57/spring-petclinic.git'
+       git branch:'main',url:'https://github.com/praveenkumar57/spring-petclinic.git'
       }
     }
    stage('build activities'){
@@ -17,3 +17,5 @@ pipeline {
 }
 
 }
+
+
