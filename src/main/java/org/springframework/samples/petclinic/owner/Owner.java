@@ -59,10 +59,22 @@ public class Owner extends Person {
 	@Digits(fraction = 0, integer = 10)
 	private String telephone;
 
+	@Column(name = "zipcode")
+	@NotEmpty
+	private String zipcode;
+
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "owner_id")
 	@OrderBy("name")
 	private List<Pet> pets = new ArrayList<>();
+
+	public String getZipcode() {
+		return zipcode;
+	}
+
+	public void setZipcode(String zipcode) {
+		this.zipcode = zipcode;
+	}
 
 	public String getAddress() {
 		return this.address;
@@ -148,7 +160,7 @@ public class Owner extends Person {
 		return new ToStringCreator(this).append("id", this.getId()).append("new", this.isNew())
 				.append("lastName", this.getLastName()).append("firstName", this.getFirstName())
 				.append("address", this.address).append("city", this.city).append("telephone", this.telephone)
-				.toString();
+				.append("zipcode", this.zipcode).toString();
 	}
 
 	/**
