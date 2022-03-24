@@ -45,4 +45,4 @@ phases:
       - echo Build  completed on `date`
 artifacts:
   files:
-    - target/spring-petclinic-2.3.0.BUILD-SNAPSHOT.jar
+    - */Spring-Petclinic/sp-snapshot.jar
