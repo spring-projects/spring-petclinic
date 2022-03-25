@@ -1,48 +1,33 @@
-# version: 0.2
+version: 0.2
 
-# phases:
-#   install:
-#     runtime-versions:
-#       java: openjdk11
-#   pre_build:
-#     commands:
-#       - AWS_ACC=$(echo $CODEBUILD_BUILD_ARN | cut -d':' -f5)
-#       - REPOSITORY_URI=$AWS_ACC.dkr.ecr.$AWS_REGION.amazonaws.com
-#       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-#       - IMAGE_TAG=${COMMIT_HASH:=latest}
-#       - ECR_REPOSITORY_URI=$REPOSITORY_URI/${REPO}
-#   build:
-#     commands:
-#       - echo Build started on `date`
-#       - mvn package
-#       - docker build . -t $ECR_REPOSITORY_URI:latest
-#       - docker tag $ECR_REPOSITORY_URI:latest $ECR_REPOSITORY_URI:$IMAGE_TAG
-#       - echo Build completed on `date`
-#   post_build:
-#     commands:
-#       - $(aws ecr get-login --region $AWS_REGION --no-include-email)
-#       - aws ecr describe-repositories --registry-id ${AWS_ACC} --repository-name ${REPO}
-#       - docker push $ECR_REPOSITORY_URI:latest
-#       - docker push $ECR_REPOSITORY_URI:$IMAGE_TAG
-#       - echo {\"repo\":\"${REPO}\"} > repo.json
-#       - printf '[{"name":"petclinic", "imageUri":"%s:%s"}]' $ECR_REPOSITORY_URI $IMAGE_TAG > imagedefinitions.json
-# artifacts:
-#   files:
-#     - target/spring-petclinic-2.2.0.BUILD-SNAPSHOT.jar
-#     - repo.json
-#     - imagedefinitions.json
-
-version: "0.2"
 phases:
   install:
     runtime-versions:
-      java: corretto11
+      java: openjdk11
+  pre_build:
+    commands:
+      - AWS_ACC=$(echo $CODEBUILD_BUILD_ARN | cut -d':' -f5)
+      - REPOSITORY_URI=$AWS_ACC.dkr.ecr.$AWS_REGION.amazonaws.com
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:=latest}
+      - ECR_REPOSITORY_URI=$REPOSITORY_URI/${REPO}
   build:
     commands:
-      - echo Build started pm `date`
-      - mvn test
+      - echo Build started on `date`
       - mvn package
-      - echo Build  completed on `date`
+      - docker build . -t $ECR_REPOSITORY_URI:latest
+      - docker tag $ECR_REPOSITORY_URI:latest $ECR_REPOSITORY_URI:$IMAGE_TAG
+      - echo Build completed on `date`
+  post_build:
+    commands:
+      - $(aws ecr get-login --region $AWS_REGION --no-include-email)
+      - aws ecr describe-repositories --registry-id ${AWS_ACC} --repository-name ${REPO}
+      - docker push $ECR_REPOSITORY_URI:latest
+      - docker push $ECR_REPOSITORY_URI:$IMAGE_TAG
+      - echo {\"repo\":\"${REPO}\"} > repo.json
+      - printf '[{"name":"petclinic", "imageUri":"%s:%s"}]' $ECR_REPOSITORY_URI $IMAGE_TAG > imagedefinitions.json
 artifacts:
   files:
-    - */Spring-Petclinic/sp-snapshot.jar
+    - target/spring-petclinic-2.2.0.BUILD-SNAPSHOT.jar
+    - repo.json
+    - imagedefinitions.json
