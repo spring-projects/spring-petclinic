@@ -381,6 +381,7 @@ Resources:
                   - logs:CreateLogStream
                   - logs:PutLogEvents
                   - ecr:GetAuthorizationToken
+                  - codebuild:CreateReportGroup
         - PolicyName: ecr
           PolicyDocument:
             Version: 2012-10-17
