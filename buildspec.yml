@@ -14,6 +14,7 @@ phases:
   build:
     commands:
       - echo Build started on `date`
+      - mvn surefire-report:report
       - mvn package
       - docker build . -t $ECR_REPOSITORY_URI:latest
       - docker tag $ECR_REPOSITORY_URI:latest $ECR_REPOSITORY_URI:$IMAGE_TAG
@@ -33,6 +34,6 @@ reports:
     base-directory: 'target/surefire-reports'
 artifacts:
   files:
-    - target/spring-petclinic-2.2.0.BUILD-SNAPSHOT.jar
+    - target/spring-petclinic-2.3.0.BUILD-SNAPSHOT.jar
     - repo.json
     - imagedefinitions.json
