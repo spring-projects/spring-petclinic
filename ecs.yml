@@ -48,11 +48,13 @@ Resources:
         CidrBlock: 10.0.0.0/16
         Tags:
           - Key: Application
-            Value: !Ref 'AWS::StackId'
+            Value: 
+              Ref: 'AWS::StackId'
   SubnetA:
     Type: AWS::EC2::Subnet
     Properties:
-      VpcId: !Ref 'VPC'
+      VpcId: 
+        Ref: 'VPC'
       CidrBlock: 10.0.0.0/24
       MapPublicIpOnLaunch: True
       AvailabilityZone:
@@ -61,11 +63,13 @@ Resources:
           - Fn::GetAZs: ""
       Tags:
         - Key: Application
-          Value: !Ref 'AWS::StackId'
+          Value: 
+            Ref: 'AWS::StackId'
   SubnetB:
     Type: AWS::EC2::Subnet
     Properties:
-      VpcId: !Ref 'VPC'
+      VpcId: 
+        Ref: 'VPC'
       CidrBlock: 10.0.1.0/24
       MapPublicIpOnLaunch: True
       AvailabilityZone:
@@ -74,67 +78,211 @@ Resources:
           - Fn::GetAZs: ""
       Tags:
         - Key: Application
-          Value: !Ref 'AWS::StackId'
+          Value: 
+            Ref: 'AWS::StackId'
+  SubnetC:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: 
+        Ref: 'VPC'
+      CidrBlock: 10.0.2.0/24
+      MapPublicIpOnLaunch: True
+      AvailabilityZone:
+        Fn::Select:
+          - 2
+          - Fn::GetAZs: ""
+      Tags:
+        - Key: Application
+          Value: 
+            Ref: 'AWS::StackId'
+  SubnetD:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: 
+        Ref: 'VPC'
+      CidrBlock: 10.0.3.0/24
+      MapPublicIpOnLaunch: True
+      AvailabilityZone:
+        Fn::Select:
+          - 3
+          - Fn::GetAZs: ""
+      Tags:
+        - Key: Private
+          Value: 
+            Ref: 'AWS::StackId'
+  
   InternetGateway:
     Type: AWS::EC2::InternetGateway
     Properties:
       Tags:
         - Key: Application
-          Value: !Ref 'AWS::StackId'
+          Value: 
+            Ref: 'AWS::StackId'
   AttachGateway:
     Type: AWS::EC2::VPCGatewayAttachment
     Properties:
-      VpcId: !Ref 'VPC'
-      InternetGatewayId: !Ref 'InternetGateway'
-  RouteTable:
+      VpcId: 
+        Ref: 'VPC'
+      InternetGatewayId: 
+        Ref: 'InternetGateway'
+
+  NatGateway:
+   Type: AWS::EC2::NatGateway
+   Properties:
+      AllocationId:
+         Fn::GetAtt:
+         - EIP
+         - AllocationId
+      SubnetId: [!Ref SubnetA, !Ref SubnetB]
+      Tags:
+        - Key: NAT
+          Value: 
+            Ref: 'AWS::StackId'
+  EIP:
+   DependsOn: AttachGateway
+   Type: AWS::EC2::EIP
+   Properties:
+      Domain: vpc
+  Route:
+   Type: AWS::EC2::Route
+   Properties:
+      RouteTableId:
+         Ref: RouteTable1
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+         Ref: NatGateway
+
+  RouteTable1:
     Type: AWS::EC2::RouteTable
     Properties:
-      VpcId: !Ref 'VPC'
+      VpcId: 
+        Ref: 'VPC'
       Tags:
         - Key: Application
-          Value: !Ref 'AWS::StackId'
-  Route:
+          Value: 
+            Ref: 'AWS::StackId'
+  Route1:
     Type: AWS::EC2::Route
     DependsOn: AttachGateway
     Properties:
-      RouteTableId: !Ref 'RouteTable'
+      RouteTableId: 
+        Ref: 'RouteTable1'
       DestinationCidrBlock: '0.0.0.0/0'
-      GatewayId: !Ref 'InternetGateway'
+      GatewayId: 
+        Ref: 'InternetGateway'
   SubnetRouteTableAssociationA:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref 'SubnetA'
-      RouteTableId: !Ref 'RouteTable'
+      SubnetId: 
+        Ref: 'SubnetA'
+      RouteTableId: 
+        Ref: 'RouteTable1'
   SubnetRouteTableAssociationB:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref 'SubnetB'
-      RouteTableId: !Ref 'RouteTable'
+      SubnetId: 
+        Ref: 'SubnetB'
+      RouteTableId: 
+        Ref: 'RouteTable1'
+  RouteTable2:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: 
+        Ref: 'VPC'
+      Tags:
+        - Key: Private
+          Value: 
+            Ref: 'AWS::StackId'
+  Route2:
+    Type: AWS::EC2::Route
+    DependsOn: AttachGateway
+    Properties:
+      RouteTableId: 
+        Ref: 'RouteTable2'
+      DestinationCidrBlock: '0.0.0.0/0'
+      GatewayId: 
+        Ref: 'NatGateway'
+  SubnetRouteTableAssociationC:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: 
+        Ref: 'SubnetC'
+      RouteTableId: 
+        Ref: 'RouteTable2'
+  SubnetRouteTableAssociationD:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: 
+        Ref: 'SubnetD'
+      RouteTableId: 
+        Ref: 'RouteTable2'
+
   ECSCluster:
     Type: AWS::ECS::Cluster
     Properties:
       ClusterName: spring-petclinic
-  EcsSecurityGroup:
+  EcsSecurityGroup1:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: ECS Security Group
-      VpcId: !Ref 'VPC'
+      VpcId: 
+        Ref: 'VPC'
   EcsSecurityGroupHTTPinbound:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
-      GroupId: !Ref 'EcsSecurityGroup'
+      GroupId: 
+        Ref: 'EcsSecurityGroup1'
       IpProtocol: tcp
       FromPort: 8080
       ToPort: 8080
       CidrIp: 0.0.0.0/0
-  EcsSecurityGroupALBports:
+  EcsSecurityGroupHTTPSinbound:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
-      GroupId: !Ref 'EcsSecurityGroup'
+      GroupId: 
+        Ref: 'EcsSecurityGroup1'
+      IpProtocol: tcp
+      FromPort: 443
+      ToPort: 443
+      CidrIp: 0.0.0.0/0
+
+  EcsSecurityGroup2:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: ECS Security Group
+      VpcId: 
+        Ref: 'VPC'
+  EcsSGHTTPinbound:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: 
+        Ref: 'EcsSecurityGroup2'
+      IpProtocol: tcp
+      FromPort: 8080
+      ToPort: 8080
+      SourceSecurityGroupId: 
+        Ref: 'EcsSecurityGroup1'
+  EcsSGHTTPSinbound:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: 
+        Ref: 'EcsSecurityGroup2'
+      IpProtocol: tcp
+      FromPort: 443
+      ToPort: 443
+      SourceSecurityGroupId: 
+        Ref: 'EcsSecurityGroup1'
+  EcsSecurityGroupASGports:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: 
+        Ref: 'EcsSecurityGroup2'
       IpProtocol: tcp
       FromPort: 31000
       ToPort: 61000
-      SourceSecurityGroupId: !Ref 'EcsSecurityGroup'
+      SourceSecurityGroupId: 
+        Ref: 'EcsSecurityGroup1'
+
   CloudwatchLogsGroup:
     Type: AWS::Logs::LogGroup
     Properties:
@@ -172,7 +320,7 @@ Resources:
       - Key: idle_timeout.timeout_seconds
         Value: '30'
       Subnets: [!Ref SubnetA, !Ref SubnetB]
-      SecurityGroups: [!Ref 'EcsSecurityGroup']
+      SecurityGroups: [!Ref 'EcsSecurityGroup1']
   ALBListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     DependsOn: ECSServiceRole
@@ -211,7 +359,7 @@ Resources:
   ECSAutoScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
-      VPCZoneIdentifier: [!Ref SubnetA, !Ref SubnetB]
+      VPCZoneIdentifier: [!Ref SubnetC, !Ref SubnetD]
       LaunchConfigurationName: !Ref 'ContainerInstances'
       MinSize: '1'
       MaxSize: !Ref 'MaxSize'
@@ -226,7 +374,7 @@ Resources:
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
       ImageId: !FindInMap [AWSRegionToAMI, !Ref 'AWS::Region', AMIID]
-      SecurityGroups: [!Ref 'EcsSecurityGroup']
+      SecurityGroups: [!Ref 'EcsSecurityGroup2']
       InstanceType: !Ref 'InstanceType'
       IamInstanceProfile: !Ref 'EC2InstanceProfile'
       UserData:
