@@ -142,7 +142,7 @@ Resources:
       RouteTableId: 
         Ref: 'RouteTable1'
       DestinationCidrBlock: '0.0.0.0/0'
-      GatewayId: 
+      InternetGatewayId: 
         Ref: 'InternetGateway'
   SubnetRouteTableAssociationA:
     Type: AWS::EC2::SubnetRouteTableAssociation
