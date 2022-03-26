@@ -172,7 +172,7 @@ Resources:
           Value: 
             Ref: 'AWS::StackId'
   EIP:
-   DependsOn: VPCGatewayAttach
+   DependsOn: AttachGateway
    Type: AWS::EC2::EIP
    Properties:
       Domain: VPC
