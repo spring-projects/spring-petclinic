@@ -126,32 +126,6 @@ Resources:
       InternetGatewayId: 
         Ref: 'InternetGateway'
 
-  NatGateway:
-   Type: AWS::EC2::NatGateway
-   Properties:
-      AllocationId:
-         Fn::GetAtt:
-         - EIP
-         - AllocationId
-      SubnetId: !Ref 'SubnetA'
-      Tags:
-        - Key: NAT
-          Value: 
-            Ref: 'AWS::StackId'
-  EIP:
-   DependsOn: AttachGateway
-   Type: AWS::EC2::EIP
-   Properties:
-      Domain: vpc
-  Route:
-   Type: AWS::EC2::Route
-   Properties:
-      RouteTableId:
-         Ref: 'RouteTable1'
-      DestinationCidrBlock: 0.0.0.0/0
-      NatGatewayId:
-         Ref: 'NatGateway'
-
   RouteTable1:
     Type: AWS::EC2::RouteTable
     Properties:
@@ -163,7 +137,7 @@ Resources:
             Ref: 'AWS::StackId'
   Route:
     Type: AWS::EC2::Route
-    DependsOn: 'AttachGateway'
+    DependsOn: AttachGateway
     Properties:
       RouteTableId: 
         Ref: 'RouteTable1'
@@ -184,6 +158,32 @@ Resources:
         Ref: 'SubnetB'
       RouteTableId: 
         Ref: 'RouteTable1'
+
+  NatGateway:
+   Type: AWS::EC2::NatGateway
+   Properties:
+      AllocationId:
+         Fn::GetAtt:
+         - EIP
+         - AllocationId
+      SubnetId: !Ref 'SubnetA'
+      Tags:
+        - Key: NAT
+          Value: 
+            Ref: 'AWS::StackId'
+  EIP:
+   DependsOn: VPCGatewayAttach
+   Type: AWS::EC2::EIP
+   Properties:
+      Domain: VPC
+  Route:
+   Type: AWS::EC2::Route
+   Properties:
+      RouteTableId:
+         Ref: 'RouteTable1'
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+         Ref: 'NatGateway'
   
   RouteTable2:
     Type: AWS::EC2::RouteTable
