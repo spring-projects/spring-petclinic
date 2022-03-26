@@ -94,7 +94,7 @@ Resources:
                     - "-"
                     - Ref: AWS::Region
                     - "-"
-                    - Ref: AWS::ACC
+                    - Ref: AWS::AccountId
                     - ""
                 TemplatePath: Source::ecs.yml
                 ParameterOverrides: |
