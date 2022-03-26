@@ -133,7 +133,7 @@ Resources:
          Fn::GetAtt:
          - EIP
          - AllocationId
-      SubnetId: [!Ref SubnetA, !Ref SubnetB]
+      SubnetId: !Ref 'SubnetA'
       Tags:
         - Key: NAT
           Value: 
@@ -147,10 +147,10 @@ Resources:
    Type: AWS::EC2::Route
    Properties:
       RouteTableId:
-         Ref: RouteTable1
+         Ref: 'RouteTable1'
       DestinationCidrBlock: 0.0.0.0/0
       NatGatewayId:
-         Ref: NatGateway
+         Ref: 'NatGateway'
 
   RouteTable1:
     Type: AWS::EC2::RouteTable
@@ -161,9 +161,9 @@ Resources:
         - Key: Application
           Value: 
             Ref: 'AWS::StackId'
-  Route1:
+  Route:
     Type: AWS::EC2::Route
-    DependsOn: AttachGateway
+    DependsOn: 'AttachGateway'
     Properties:
       RouteTableId: 
         Ref: 'RouteTable1'
@@ -184,6 +184,7 @@ Resources:
         Ref: 'SubnetB'
       RouteTableId: 
         Ref: 'RouteTable1'
+  
   RouteTable2:
     Type: AWS::EC2::RouteTable
     Properties:
@@ -193,14 +194,14 @@ Resources:
         - Key: Private
           Value: 
             Ref: 'AWS::StackId'
-  Route2:
+  Route:
     Type: AWS::EC2::Route
-    DependsOn: AttachGateway
+    DependsOn: 'AttachGateway'
     Properties:
       RouteTableId: 
         Ref: 'RouteTable2'
       DestinationCidrBlock: '0.0.0.0/0'
-      GatewayId: 
+      NatGatewayId: 
         Ref: 'NatGateway'
   SubnetRouteTableAssociationC:
     Type: AWS::EC2::SubnetRouteTableAssociation

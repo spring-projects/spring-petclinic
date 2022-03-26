@@ -67,39 +67,39 @@ Resources:
                 OutputArtifacts:
                   - Name: BuildArtifact
                 RunOrder: 2
-          # - Name: Deploy
-          #   Actions:
-          #   - InputArtifacts:
-          #     - Name: BuildArtifact
-          #     - Name: Source
-          #     Name: CreateEnv
-          #     ActionTypeId:
-          #       Category: Deploy
-          #       Owner: AWS
-          #       Version: '1'
-          #       Provider: CloudFormation
-          #     OutputArtifacts: []
-          #     Configuration:
-          #       ActionMode: REPLACE_ON_FAILURE
-          #       RoleArn:
-          #         Fn::GetAtt:
-          #         - CloudFormationTrustRole
-          #         - Arn
-          #       Capabilities: CAPABILITY_IAM
-          #       StackName:
-          #         Fn::Join:
-          #         - ''
-          #         - - ""
-          #           - Ref: AWS::StackName
-          #           - "-"
-          #           - Ref: AWS::Region
-          #           - ""
-          #       TemplatePath: Source::ecs.yml
-          #       ParameterOverrides: |
-          #         {
-          #           "Repo" : { "Fn::GetParam" : [ "BuildArtifact", "repo.json", "repo" ] }
-          #         }
-          #     RunOrder: 1
+          - Name: Deploy
+            Actions:
+            - InputArtifacts:
+              - Name: BuildArtifact
+              - Name: Source
+              Name: CreateEnv
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: '1'
+                Provider: CloudFormation
+              OutputArtifacts: []
+              Configuration:
+                ActionMode: REPLACE_ON_FAILURE
+                RoleArn:
+                  Fn::GetAtt:
+                  - CloudFormationTrustRole
+                  - Arn
+                Capabilities: CAPABILITY_IAM
+                StackName:
+                  Fn::Join:
+                  - ''
+                  - - ""
+                    - Ref: AWS::StackName
+                    - "-"
+                    - Ref: AWS::Region
+                    - ""
+                TemplatePath: Source::ecs.yml
+                ParameterOverrides: |
+                  {
+                    "Repo" : { "Fn::GetParam" : [ "BuildArtifact", "repo.json", "repo" ] }
+                  }
+              RunOrder: 1
           - Name: DeployApp
             Actions:
             - InputArtifacts:
@@ -241,6 +241,9 @@ Resources:
               - ec2:DescribeAccountAttributes
               - ec2:AttachVolume
               - ec2:DeleteSubnet
+              - ec2:AllocateAddress
+              - ec2:describeAddresses
+              - ec2:*
               - ec2:DescribeInstances
               - ec2:DeleteTags
               - ec2:DescribeRegions
