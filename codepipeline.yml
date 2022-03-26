@@ -381,7 +381,7 @@ Resources:
                   - logs:CreateLogStream
                   - logs:PutLogEvents
                   - ecr:GetAuthorizationToken
-                  - codebuild:CreateReportGroup
+            
         - PolicyName: ecr
           PolicyDocument:
             Version: 2012-10-17
@@ -403,3 +403,15 @@ Resources:
                   - s3:GetObject
                   - s3:GetObjectVersion
                 Resource: "*"
+        - PolicyName: buildreport
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - codebuild:CreateReportGroup
+                  - codebuild:CreateReport
+                  - codebuild:UpdateReport
+                  - codebuild:BatchPutTestCases
+                  - codebuild:BatchPutCodeCoverages
+                Resource: !Sub 'arn:aws:codebuild:${AWS::Region}:${AWS_ACC}:report-group/${AWS::StackName}-*'
