@@ -414,4 +414,4 @@ Resources:
                   - codebuild:UpdateReport
                   - codebuild:BatchPutTestCases
                   - codebuild:BatchPutCodeCoverages
-                Resource: !Sub 'arn:aws:codebuild:${AWS::Region}:${AWS_ACC}:report-group/${AWS::StackName}-*'
+                Resource: !Sub 'arn:aws:codebuild:${AWS::Region}:::report-group/${AWS::StackName}-*'
