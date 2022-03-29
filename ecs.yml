@@ -365,6 +365,7 @@ Resources:
       SecurityGroups: [!Ref 'EcsSecurityGroup']
       InstanceType: !Ref 'InstanceType'
       IamInstanceProfile: !Ref 'EC2InstanceProfile'
+      KeyName: 'dansweet'
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash -xe
