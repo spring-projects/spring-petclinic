@@ -92,6 +92,8 @@ public class Owner extends Person {
 		return this.pets;
 	}
 
+	public void setPets(List<Pet> pets) { this.pets = pets;	}
+
 	public void addPet(Pet pet) {
 		if (pet.isNew()) {
 			getPets().add(pet);
