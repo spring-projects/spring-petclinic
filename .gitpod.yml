@@ -1,0 +1,15 @@
+tasks:
+- init: ./gradlew bootJar
+  command: ./gradlew bootRun
+
+# exposed ports
+ports:
+- port: 8080
+  onOpen: open-preview
+
+vscode:
+  extensions:
+    - redhat.java
+    - vscjava.vscode-java-debug
+    - vscjava.vscode-java-test
+    - pivotal.vscode-spring-boot
