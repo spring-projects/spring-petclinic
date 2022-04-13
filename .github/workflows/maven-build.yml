@@ -24,3 +24,8 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: ./mvnw -B package 
+    
+    - name: Test with Maven
+      run: mvn test
+      
+    
