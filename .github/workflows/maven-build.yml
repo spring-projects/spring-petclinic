@@ -27,6 +27,10 @@ jobs:
 
     - name: Setup JFrog CLI
       uses: jfrog/setup-jfrog-cli@v1
-    - run: jfrog --version
+    - run: |
+          jfrog rt dl artifacts/
+          jfrog rt u aether artifacts/
+          jfrog rt bp
+          jfrog rt c export
 
     
