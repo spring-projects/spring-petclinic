@@ -33,6 +33,7 @@ jobs:
       run: |
         # Ping the server
         jfrog rt ping
+        run: jfrog rt u "target/*.jar" "pet-clinic-libs-snapshot-local/" 
         
     - name: jFrog CLI for Artifactory
       uses: advancedcsg-open/action-jfrog-cli@v1.2.0
@@ -41,6 +42,3 @@ jobs:
            credentials type: 'apikey'
            apikey: ${{ secrets.JF_TOKEN }}
            args: u "/home/runner/work/spring-petclinic/spring-petclinic/target/*.jar" "pet-clinic-libs-snapshot-local/" --recursive=true --build-name=pet-clinic
-
-    - name: Upload artifact
-      run: jfrog rt u "target/*.jar" "pet-clinic-libs-snapshot-local/" 
