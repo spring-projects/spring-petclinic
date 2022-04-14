@@ -26,11 +26,11 @@ jobs:
       run: ./mvnw -B package 
 
     - name: Setup JFrog CLI
-      uses: jfrog/setup-jfrog-cli@v1
+      uses: jfrog/setup-jfrog-cli@v2
 
     - name: Run JFrog CLI
       run: |
         # Ping the server
         jfrog rt ping
-        jf rt u "target/*.jar" "pet-clinic-libs-snapshot-local/" --url="https://wmguamantest.jfrog.io/" --access-token=${{ secrets.ACCESS_TOKEN }}
+        jfrog rt u "target/*.jar" "pet-clinic-libs-snapshot-local/" --url=https://wmguamantest.jfrog.io/ --access-token=${{ secrets.ACCESS_TOKEN }}
         
