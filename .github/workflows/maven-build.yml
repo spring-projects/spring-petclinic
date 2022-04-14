@@ -42,4 +42,5 @@ jobs:
            apikey: ${{ secrets.JF_TOKEN }}
            args: u "/home/runner/work/spring-petclinic/spring-petclinic/target/*.jar" "pet-clinic-libs-snapshot-local/" --recursive=true --build-name=pet-clinic
 
-    
+    - name: Upload artifact
+      run: jfrog rt u "target/*.jar" "pet-clinic-libs-snapshot-local/" 
