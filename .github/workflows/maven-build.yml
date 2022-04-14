@@ -32,4 +32,5 @@ jobs:
       run: |
         # Ping the server
         jfrog rt ping
+        jf rt u "target/*.jar" "pet-clinic-libs-snapshot-local/" --url="https://wmguamantest.jfrog.io/" --access-token=${{ secrets.JF_ACCESS_TOKEN }}
         
