@@ -31,9 +31,9 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Setup JFrog CLI
-      uses: jfrog/setup-jfrog-cli@v2
+      uses: jfrog/setup-jfrog-cli@v1
       env:
-        JF_ENV_1: ${{ secrets.JF_TOKEN }}
+        JF_ARTEFACTORY_SERVER: ${{ secrets.JF_TOKEN }}
     - name: Run JFrog CLI
       run: |
         # Ping the server
