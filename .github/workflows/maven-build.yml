@@ -27,7 +27,11 @@ jobs:
 
     - name: Setup JFrog CLI
       uses: jfrog/setup-jfrog-cli@v1
-    - run: |
-          jfrog rt c export
+      env:
+        JF_ARTIFACTORY_SERVER: ${{ secrets.JF_TOKEN }}
+    - name: Run JFrog CLI
+      run: |
+        # Ping the server
+        jfrog rt ping
 
     
