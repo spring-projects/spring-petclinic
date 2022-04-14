@@ -33,7 +33,7 @@ jobs:
     - name: Setup JFrog CLI
       uses: jfrog/setup-jfrog-cli@v1
       env:
-        JF_ARTEFACTORY_SERVER: ${{ secrets.JF_TOKEN }}
+        JF_ARTIFACTORY_SERVER: ${{ secrets.JF_TOKEN }}
     - name: Run JFrog CLI
       run: |
         # Ping the server
