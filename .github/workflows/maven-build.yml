@@ -24,18 +24,9 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: ./mvnw -B package 
-    
-    - name: Test with Maven
-      run: mvn test
-    
-    - name: Checkout
-      uses: actions/checkout@v2
+
     - name: Setup JFrog CLI
       uses: jfrog/setup-jfrog-cli@v1
-      env:
-        JF_ARTIFACTORY_SERVER: ${{ secrets.JF_TOKEN }}
-    - name: Run JFrog CLI
-      run: |
-        # Ping the server
-        jfrog rt ping
+    - run: jfrog --version
+
     
