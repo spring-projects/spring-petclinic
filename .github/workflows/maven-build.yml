@@ -27,15 +27,9 @@ jobs:
 
     - name: Setup JFrog CLI
       uses: jfrog/setup-jfrog-cli@v1
-      env:
-        JF_ARTIFACTORY_SERVER: ${{ secrets.JF_TOKEN }}
+
     - name: Run JFrog CLI
       run: |
         # Ping the server
         jfrog rt ping
         
-        
-    - name: jFrog CLI for Artifactory
-      run: |
-        jfrog config add --interactive=false --enc-password=true --artifactory-url="https://wmguamantest.jfrog.io/" --access-token=${{ secrets.JF_ACCESS_TOKEN }}
-        jfrog rt u "target/*.jar" "pet-clinic-libs-snapshot-local/" 
