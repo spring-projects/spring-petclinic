@@ -37,5 +37,5 @@ jobs:
         
     - name: jFrog CLI for Artifactory
       run: |
-        jfrog rt config --interactive=false --enc-password=true --url="https://wmguamantest.jfrog.io/" --access-token= ${{ secrets.JF_TOKEN }}
+        jfrog config add --interactive=false --enc-password=true --artifactory-url="https://wmguamantest.jfrog.io/" --access-token= ${{ secrets.JF_TOKEN }}
         jfrog rt u "target/*.jar" "pet-clinic-libs-snapshot-local/" 
