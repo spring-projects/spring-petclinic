@@ -40,6 +40,6 @@ jobs:
            url: 'https://wmguamantest.jfrog.io/'
            credentials type: 'apikey'
            apikey: ${{ secrets.JF_TOKEN }}
-           args: u "taget/*.jar" "pet-clinic-libs-snapshot-local/" --recursive=true --build-name=pet-clinic 
+           args: u "/home/runner/work/spring-petclinic/spring-petclinic/target/*.jar" "pet-clinic-libs-snapshot-local/" --recursive=true --build-name=pet-clinic
 
     
