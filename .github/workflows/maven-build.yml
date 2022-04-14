@@ -36,5 +36,7 @@ jobs:
         
         
     - name: jFrog CLI for Artifactory
+      env:
+        JF_ARTIFACTORY_SERVER: ${{ secrets.JF_TOKEN }}
       run: |
         jfrog rt u "target/*.jar" "pet-clinic-libs-snapshot-local/" 
