@@ -33,5 +33,13 @@ jobs:
       run: |
         # Ping the server
         jfrog rt ping
+        
+    - name: jFrog CLI for Artifactory
+      uses: advancedcsg-open/action-jfrog-cli@v1.2.0
+      with:
+           url: 'https://wmguamantest.jfrog.io/'
+           credentials type: 'apikey'
+           apikey: ${{ secrets.JF_TOKEN }}
+           args: u "dist/*" "/mu/repo/path/" --recursive=true --build-name=pet-clinic   
 
     
