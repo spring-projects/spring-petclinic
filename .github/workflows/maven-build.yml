@@ -27,5 +27,13 @@ jobs:
     
     - name: Test with Maven
       run: mvn test
-      
+    
+    - uses: jfrog/setup-jfrog-cli@v1
+      env:
+        JF_ARTIFACTORY_1: ${{ secrets.JF_TOKEN }}
+    - name: checkout 
+      uses: actions/checkout@v1
+    - run: |
+        # Ping the server
+        jfrog rt ping
     
