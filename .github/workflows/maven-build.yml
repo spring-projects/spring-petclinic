@@ -28,12 +28,14 @@ jobs:
     - name: Test with Maven
       run: mvn test
     
-    - uses: jfrog/setup-jfrog-cli@v1
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Setup JFrog CLI
+      uses: jfrog/setup-jfrog-cli@v2
       env:
-        JF_ARTIFACTORY_1: ${{ secrets.JF_TOKEN }}
-    - name: checkout 
-      uses: actions/checkout@v1
-    - run: |
+        JF_ENV_1: ${{ secrets.JF_TOKEN }}
+    - name: Run JFrog CLI
+      run: |
         # Ping the server
         jfrog rt ping
     
