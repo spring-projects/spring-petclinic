@@ -20,7 +20,7 @@
 name: Build and deploy JAR app to Azure Web App
 
 env:
-  AZURE_WEBAPP_NAME: java-springboot-apt    # set this to the name of your Azure Web App
+  AZURE_WEBAPP_NAME: spboot-app-service    # set this to the name of your Azure Web App
   JAVA_VERSION: '11'                  # set this to the Java version to use
   DISTRIBUTION: zulu                  # set this to the Java distribution
 
