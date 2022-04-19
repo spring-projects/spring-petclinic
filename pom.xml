@@ -11,6 +11,7 @@
     <version>2.6.6</version>
   </parent>
   <name>petclinic</name>
+  <packaging>war</packaging>
 
   <properties>
 
