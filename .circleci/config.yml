@@ -29,8 +29,8 @@ jobs:
           command: mvn test
       # Adding steps to store artifacts
       - run:
-        name: Creating Dummy Artifacts
-        command: |
+         name: Creating Dummy Artifacts
+         command: |
           echo "my artifact file" > /tmp/art-1;
           mkdir /tmp/artifacts;
           echo "my artifact files in a dir" > /tmp/artifacts/art-2;
