@@ -21,13 +21,21 @@ pipeline {
         stage('Build the Code') {
             steps {
                 sh script: "mvn ${params.GOAL}"
+                stash name: 'spc-build-jar', includes: 'target/*.jar'
             }
         }
         stage('reporting') {
             steps {
                 junit testResults: 'target/surefire-reports/*.xml'
             }
-            
+        }
+        stage('deployment') {
+            agent { label 'JDK8' }
+            steps {
+                unstash name: 'spc-build-jar'
+                echo "clone the latest playbook"
+                sh 'ansible --version'
+            }
         }
     }
     post {
