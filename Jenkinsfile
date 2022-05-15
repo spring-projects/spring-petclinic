@@ -7,6 +7,9 @@ pipeline {
     triggers {
         cron('0 * * * *')
     }
+    parameters {
+        choice(name: 'GOAL', choices: ['compile', 'package', 'clean package'])
+    }
     stages {
         stage('Source Code') {
             steps {
@@ -17,7 +20,7 @@ pipeline {
         }
         stage('Build the Code') {
             steps {
-                sh script: 'mvn clean package'
+                sh script: "mvn ${params.GOAL}"
             }
         }
         stage('reporting') {
@@ -36,7 +39,8 @@ pipeline {
         }
         unsuccessful {
             //send the unsuccess email
-            echo "failure"
+            mail bcc: '', body: "BUILD URL: ${BUILD_URL} TEST RESULTS ${RUN_TESTS_DISPLAY_URL} ", cc: '', from: 'devops@qtdevops.com', replyTo: '', 
+                subject: "${JOB_BASE_NAME}: Build ${BUILD_ID} Failed", to: 'qtdevops@gmail.com'
         }
     }
 }
