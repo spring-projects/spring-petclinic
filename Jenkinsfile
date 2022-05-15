@@ -31,6 +31,7 @@ pipeline {
         success {
             // send the success email
             echo "Success"
+            mail bcc: '', body: 'Build Success', cc: '', from: 'devops@qtdevops.com', replyTo: '', subject: 'Build Succeded', to: 'qtdevops@gmail.com'
         }
         unsuccessful {
             //send the unsuccess email
