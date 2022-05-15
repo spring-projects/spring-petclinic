@@ -9,14 +9,22 @@ pipeline {
     }
     stages {
         stage('Source Code') {
-            git url: 'https://github.com/GitPracticeRepo/spring-petclinic.git', 
+            steps {
+                git url: 'https://github.com/GitPracticeRepo/spring-petclinic.git', 
                 branch: 'main'
+            }
+            
         }
         stage('Build the Code') {
-            sh script: 'mvn clean package'
+            steps {
+                sh script: 'mvn clean package'
+            }
         }
         stage('reporting') {
-            junit testResults: 'target/surefire-reports/*.xml'
+            steps {
+                junit testResults: 'target/surefire-reports/*.xml'
+            }
+            
         }
     }
     post {
