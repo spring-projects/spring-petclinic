@@ -7,7 +7,7 @@ on:
     branches: [ main ]
     
 env:
-  TAG: yusmadi/spring-petclinic:0.1
+  TAG: yusmadi/spring-petclinic:0.2
   DOCKER_USER: yusmadi
 
 jobs:

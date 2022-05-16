@@ -6,7 +6,9 @@ WORKDIR /app
 
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
-RUN ./mvnw dependency:go-offline
+RUN addgroup -g 1000 -S cat && \
+    adduser -u 1000 -G cat -S cat && \
+    ./mvnw dependency:go-offline
 
 COPY src ./src
 
