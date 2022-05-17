@@ -21,7 +21,7 @@ pipeline {
             sh '$HOSTNAME'
             sh 'cat /etc/*-release'
 
-                            }
+            }
         }
         stage('Stage 2'){
         agent {
@@ -38,7 +38,8 @@ pipeline {
         sh 'cat /etc/*-release'
             }
         }
-        stage(post){
+    }
+        post{
                 // If Maven was able to run the tests, even if some of the test
                 // failed, record the test results and archive the jar file.
                 success {
@@ -46,5 +47,4 @@ pipeline {
                     archiveArtifacts 'target/*.jar'
                 }
             }
-        }
 }
