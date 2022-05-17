@@ -17,10 +17,6 @@ pipeline {
             // Run Maven on a Unix agent.
             sh "mvn clean package"
 
-            // get the host information
-            sh '$HOSTNAME'
-            sh 'cat /etc/*-release'
-
             }
         }
         
