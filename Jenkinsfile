@@ -6,39 +6,39 @@ pipeline {
     }
    
     stages {
+        stage('Stage 1'){
         agent {
             label 'JDK11'
         }
-        stage('Build 1') {
-            steps {
-                // Get some code from a GitHub repository
-                git branch: 'main', credentialsId: 'nrajulearning', url: 'https://github.com/nrajulearning/spring-petclinic.git'
+        steps {
+            // Get some code from a GitHub repository
+            git branch: 'main', credentialsId: 'nrajulearning', url: 'https://github.com/nrajulearning/spring-petclinic.git'
 
-                // Run Maven on a Unix agent.
-                sh "mvn clean package"
+            // Run Maven on a Unix agent.
+            sh "mvn clean package"
 
-                // get the host information
-                sh '$HOSTNAME'
-                sh 'cat /etc/*-release'
+            // get the host information
+            sh '$HOSTNAME'
+            sh 'cat /etc/*-release'
 
                             }
         }
+        stage('Stage 2'){
         agent {
             label 'JDK1.8'
         }
-        stage('Build 2'){
-            steps{
-                // get the code from github
-                git branch: 'main',credentialsId: 'nrajulearning', url: 'https://github.com/nrajulearning/spring-petclinic.git'
+        steps{
+        // get the code from github
+        git branch: 'main',credentialsId: 'nrajulearning', url: 'https://github.com/nrajulearning/spring-petclinic.git'
 
-                // Run the Maven build
-                sh "mvn clean package"
-                // get the host information
-                sh '$HOSTNAME'
-                sh 'cat /etc/*-release'
+        // Run the Maven build
+        sh "mvn clean package"
+        // get the host information
+        sh '$HOSTNAME'
+        sh 'cat /etc/*-release'
             }
         }
-            post {
+        stage(post){
                 // If Maven was able to run the tests, even if some of the test
                 // failed, record the test results and archive the jar file.
                 success {
