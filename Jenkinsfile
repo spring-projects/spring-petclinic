@@ -23,21 +23,7 @@ pipeline {
 
             }
         }
-        stage('Stage 2'){
-        agent {
-            label 'JDK1.8'
-        }
-        steps{
-        // get the code from github
-        git branch: 'main',credentialsId: 'nrajulearning', url: 'https://github.com/nrajulearning/spring-petclinic.git'
-
-        // Run the Maven build
-        sh "mvn clean package"
-        // get the host information
-        sh '$HOSTNAME'
-        sh 'cat /etc/*-release'
-            }
-        }
+        
     }
         post{
                 // If Maven was able to run the tests, even if some of the test
