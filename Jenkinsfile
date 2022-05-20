@@ -6,7 +6,7 @@ node('JDK11') {
          sh 'mvn package'
     }
     stage('Junit Test') {
-         junit 'target/surefire-reports/*.jar'
+         junit '**/surefire-reports/*.jar'
     }
     stage('Archive artifact'){
         archiveArtifacts artifacts: '**/*.jar', followSymlinks: false
