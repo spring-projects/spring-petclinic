@@ -14,20 +14,28 @@
 // }
 
 pipeline {
- agent { label 'JDK11' }
+ agent{ label 'JDK11' }
+ triggers {
+        cron('0 * * * *')
+    }
  stages{
     stage('Source Code') {
-       step {
+       steps{
            git branch: 'declerative', url: 'https://github.com/pixelswapnil13/spring-petclinic.git' 
         }
     }
     stage('Build the code'){
-        step {
+        steps{
             sh 'mvn package'
         }
     }
+    stage('Junit Test'){
+        steps{
+            junit '**/surefire-reports/*.xml'
+        }
+    }
     stage('Archive artifact'){
-        step{
+        steps{
            archiveArtifacts artifacts: '**/*.jar', followSymlinks: false
         }
     }
