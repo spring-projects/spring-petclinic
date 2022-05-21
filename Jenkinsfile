@@ -18,9 +18,12 @@ pipeline {
             }
             
         }
-        stage('Build the Code') {
+        stage('Build the Code and sonarqube-analysis') {
             steps {
-                sh script: "mvn ${params.GOAL}"
+                withSonarQubeEnv('SONAR_LATEST') {
+                    sh script: "mvn ${params.GOAL}"
+                }
+                
                 stash name: 'spc-build-jar', includes: 'target/*.jar'
             }
         }
@@ -29,26 +32,19 @@ pipeline {
                 junit testResults: 'target/surefire-reports/*.xml'
             }
         }
-        stage('deployment') {
-            agent { label 'JDK8' }
-            steps {
-                unstash name: 'spc-build-jar'
-                echo "clone the latest playbook"
-                sh 'ansible --version'
-            }
-        }
+        
     }
-    post {
-        success {
-            // send the success email
-            echo "Success"
-            mail bcc: '', body: "BUILD URL: ${BUILD_URL} TEST RESULTS ${RUN_TESTS_DISPLAY_URL} ", cc: '', from: 'devops@qtdevops.com', replyTo: '', 
-                subject: "${JOB_BASE_NAME}: Build ${BUILD_ID} Succeded", to: 'qtdevops@gmail.com'
-        }
-        unsuccessful {
-            //send the unsuccess email
-            mail bcc: '', body: "BUILD URL: ${BUILD_URL} TEST RESULTS ${RUN_TESTS_DISPLAY_URL} ", cc: '', from: 'devops@qtdevops.com', replyTo: '', 
-                subject: "${JOB_BASE_NAME}: Build ${BUILD_ID} Failed", to: 'qtdevops@gmail.com'
-        }
-    }
+    // post {
+    //     success {
+    //         // send the success email
+    //         echo "Success"
+    //         mail bcc: '', body: "BUILD URL: ${BUILD_URL} TEST RESULTS ${RUN_TESTS_DISPLAY_URL} ", cc: '', from: 'devops@qtdevops.com', replyTo: '', 
+    //             subject: "${JOB_BASE_NAME}: Build ${BUILD_ID} Succeded", to: 'qtdevops@gmail.com'
+    //     }
+    //     unsuccessful {
+    //         //send the unsuccess email
+    //         mail bcc: '', body: "BUILD URL: ${BUILD_URL} TEST RESULTS ${RUN_TESTS_DISPLAY_URL} ", cc: '', from: 'devops@qtdevops.com', replyTo: '', 
+    //             subject: "${JOB_BASE_NAME}: Build ${BUILD_ID} Failed", to: 'qtdevops@gmail.com'
+    //     }
+    // }
 }
