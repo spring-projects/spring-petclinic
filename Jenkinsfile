@@ -26,7 +26,7 @@ pipeline {
     }
     stage('Build the code'){
         steps{
-            sh 'mvn package'
+            sh 'mvn clean package'
         }
     }
     stage('Junit Test'){
