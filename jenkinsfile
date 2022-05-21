@@ -1,0 +1,8 @@
+node('node1-label') {
+    stage('Source') { //Get the code
+        git 'https://github.com/bhargavi-vaduguri/spring-petclinic.git'
+    }
+    stage('Build') {//Compile the code and run unit tests and create package
+        sh 'mvn clean package'
+    }
+}
