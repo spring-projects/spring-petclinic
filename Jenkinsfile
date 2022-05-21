@@ -21,7 +21,7 @@ pipeline {
  stages{
     stage('Source Code') {
        steps{
-           git branch: 'declerative', url: 'https://github.com/pixelswapnil13/spring-petclinic.git' 
+           git branch: 'declarative', url: 'https://github.com/pixelswapnil13/spring-petclinic.git' 
         }
     }
     stage('Build the code'){
