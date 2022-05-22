@@ -1,4 +1,5 @@
 node('jdk11-mvn3.8.4') {
+    properties([pipelineTriggers([cron(' * */1 * * ')])])
     stage('git') 
         git 'https://github.com/bhargavi-vaduguri/spring-petclinic.git'
     }
