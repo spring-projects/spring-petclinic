@@ -2,13 +2,9 @@ pipeline {
     agent { label 'JDK11' }
     options { 
         timeout(time: 1, unit: 'HOURS')
-        retry(2) 
     }
     triggers {
         cron('0 * * * *')
-    }
-    parameters {
-        choice(name: 'GOAL', choices: ['compile', 'package', 'clean package'])
     }
     stages {
         stage('Source Code') {
@@ -23,12 +19,9 @@ pipeline {
                 rtMavenDeployer (
                     id: 'spc-deployer',
                     serverId: 'JFROG_INSTANCE',
-                    releaseRepo: 'libs-release-local',
-                    snapshotRepo: 'libs-snapshot-local',
-                    // By default, 3 threads are used to upload the artifacts to Artifactory. You can override this default by setting:
-                    threads: 6,
-                    // Attach custom properties to the published artifacts:
-                    properties: ['key1=value1', 'key2=value2']
+                    releaseRepo: 'qtecomm-libs-release-local',
+                    snapshotRepo: 'qtecomm-libs-snapshot-local',
+                    
                 )
             }
         }
