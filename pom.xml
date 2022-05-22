@@ -26,6 +26,9 @@
     <jacoco.version>0.8.7</jacoco.version>
     <nohttp-checkstyle.version>0.0.10</nohttp-checkstyle.version>
     <spring-format.version>0.0.31</spring-format.version>
+    
+    <sonar.organization>mrtarantoga</sonar.organization>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 
   </properties>
 
