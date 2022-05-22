@@ -1,0 +1,11 @@
+node ('jdk11-mvn3.8.5'){
+    stage ('git'){
+        git 'https://github.com/SriSuryaTej/spring-petclinic.git'
+    }
+    stage ('build'){
+        sh 'mvn clean package'
+    }
+    stage ('execute'){
+        sh 'java -jar ~/jenkins/workspace/target/*.jar &'
+    }
+}
