@@ -6,7 +6,4 @@ node ('jdk11-mvn3.8.5'){
     stage ('build'){
         sh 'mvn clean package'
     }
-    stage ('execute'){
-        sh 'java -jar ~/jenkins/workspace/target/*.jar &'
-    }
 }
