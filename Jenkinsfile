@@ -18,11 +18,34 @@ pipeline {
             }
             
         }
+        stage('Artifactory-Configuration') {
+            steps {
+                rtMavenDeployer (
+                    id: 'spc-deployer',
+                    serverId: 'JFROG_INSTANCE',
+                    releaseRepo: 'libs-release-local',
+                    snapshotRepo: 'libs-snapshot-local',
+                    // By default, 3 threads are used to upload the artifacts to Artifactory. You can override this default by setting:
+                    threads: 6,
+                    // Attach custom properties to the published artifacts:
+                    properties: ['key1=value1', 'key2=value2']
+                )
+            }
+        }
         stage('Build the Code and sonarqube-analysis') {
             steps {
                 withSonarQubeEnv('SONAR_LATEST') {
                     sh script: "mvn ${params.GOAL} sonar:sonar"
                 }
+
+                rtMavenRun (
+                    // Tool name from Jenkins configuration.
+                    tool: 'MVN_DEFAULT',
+                    pom: 'pom.xml',
+                    goals: 'clean install',
+                    // Maven options.
+                    deployerId: 'spc-deployer',
+                )
                 
                 // stash name: 'spc-build-jar', includes: 'target/*.jar'
             }
