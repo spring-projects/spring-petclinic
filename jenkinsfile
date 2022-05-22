@@ -1,6 +1,6 @@
 node ('jdk11-mvn3.8.5'){
     stage ('git'){
-        git credentialsId: 'JENKINS_BUILD_USER', url:'https://github.com/SriSuryaTej/spring-petclinic.git'
+        url:'https://github.com/SriSuryaTej/spring-petclinic.git'
     }
     stage ('build'){
         sh 'mvn clean package'
