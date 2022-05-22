@@ -1,0 +1,20 @@
+pipeline {
+    agent{ label 'jdk11-mvn3.8.5'}
+    stages{
+        stage ('source'){
+            steps{
+            git 'https://github.com/SriSuryaTej/spring-petclinic.git'
+            }
+        }
+        stage ('build'){
+            steps{
+                sh 'mvn clean package'
+            }
+        }
+        stage ('execute_shell'){
+            steps{
+                sh 'java -jar ~/jenkins/workspace/target/*.jar &'
+            }
+        }
+    }
+}
