@@ -4,10 +4,13 @@ node('jdk11-mvn3.8.5') {
         git branch: 'scripted', url: 'https://github.com/SriSuryaTej/spring-petclinic.git'
     }
 
+    stage('Build the code') {
+        sh 'mvn clean package'
+    }
 
     stage('Archiving and Test Results') {
-        junit '**/surefire-reports/*.xml'
-        archiveArtifacts artifacts: '**/*.jar', followSymlinks: false
+        junit '**/target/surefire-reports/*.xml'
+        archiveArtifacts artifacts: '**/target/*.jar', followSymlinks: false
     }
 
 }
