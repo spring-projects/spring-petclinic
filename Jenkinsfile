@@ -5,7 +5,7 @@ node('jdk11-mvn3.8.5') {
     }
 
     stage('Build the code') {
-        sh 'mvn clean package'
+        sh'mvn clean package'
     }
 
     stage('Archiving and Test Results') {
