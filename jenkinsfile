@@ -1,21 +1,33 @@
 pipeline {
-    agent{ label 'jdk11-mvn3.8.5'}
-    stages{
-        stage ('source'){
-            steps{
-             git url:'https://github.com/SriSuryaTej/spring-petclinic.git'
+    agent { label 'jdk11-mvn3.8.5' }
+    options { 
+        timeout(time: 1, unit: 'HOURS')
+        retry(2) 
+    }
+    triggers {
+        cron('0 * * * *')
+    }
+    parameters {
+        choice(name: 'GOAL', choices: ['compile', 'package', 'clean package'])
+    }
+    stages {
+        stage('Source Code') {
+            steps {
                 
+                git url: 'https://github.com/SriSuryaTej/spring-petclinic.git', 
+                branch: 'declarative'
+            }
+
+        }
+        stage('Build the Code') {
+            steps {
+                sh script: "mvn ${params.GOAL}"
             }
         }
-        stage ('build'){
-            steps{
-                sh 'mvn clean package'
+        stage('reporting') {
+            steps {
+                junit testResults: 'target/surefire-reports/*.xml'
             }
-        }
-        stage ('execute_shell'){
-            steps{
-                sh 'java -jar ~/jenkins/workspace/target/*.jar &'
-            }
+
         }
     }
-}
