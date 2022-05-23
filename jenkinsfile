@@ -5,7 +5,7 @@ pipeline {
         retry(2) 
     }
     triggers {
-        cron('0 * * * *')
+        cron('* * * * *')
     }
     parameters {
         choice(name: 'GOAL', choices: ['compile', 'package', 'clean package'])
