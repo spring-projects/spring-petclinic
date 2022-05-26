@@ -3,7 +3,8 @@ name: spring-petclinic
 
 on:
   push:
-    [ main ]
+    branches:
+      [ main ]
   pull_request_target:
     types:
       - opened
