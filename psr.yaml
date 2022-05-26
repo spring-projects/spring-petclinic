@@ -21,6 +21,7 @@ step-runner-config:
   - implementer: Skopeo
     config:
       destination-url: quay.io
+      container-image-push-repository: aagreen/spring-petclinic
 
   deploy:
   - implementer: ArgoCDDeploy
