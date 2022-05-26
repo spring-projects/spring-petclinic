@@ -23,7 +23,7 @@ step-runner-config:
       destination-url: quay.io
 
   deploy:
-  - implementer: ArgoCD
+  - implementer: ArgoCDDeploy
     config:
       argocd-api: openshift-gitops-server-openshift-gitops.apps.swfocp.sandbox204.opentlc.com
       argocd-username: admin
