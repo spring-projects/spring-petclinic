@@ -3,8 +3,8 @@ step-runner-config:
 
   global-defaults:
     organization: ploigos
-    service-name: spring-petclinic
-    application-name: spring-petclinic
+    service-name: petclinic
+    application-name: petclinic
 
   generate-metadata:
   - implementer: Maven
