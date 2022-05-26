@@ -1,3 +1,4 @@
+---
 # This Github workflow will run jobs to build java-app.
 name: spring-petclinic
 
