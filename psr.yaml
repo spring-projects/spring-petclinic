@@ -1,0 +1,42 @@
+---
+step-runner-config:
+
+  global-defaults:
+    organization: ploigos
+    service-name: petclinic
+    application-name: petclinic
+
+  generate-metadata:
+  - implementer: Maven
+  - implementer: Git
+  - implementer: SemanticVersion
+
+  package:
+  - implementer: MavenPackage
+
+  create-container-image:
+  - implementer: Buildah
+
+  push-container-image:
+  - implementer: Skopeo
+    config:
+      destination-url: quay.io
+      container-image-push-repository: aagreen/spring-petclinic
+
+  deploy:
+  - implementer: ArgoCDDeploy
+    config:
+      argocd-api: openshift-gitops-server-openshift-gitops.apps.swfocp.sandbox204.opentlc.com
+      argocd-username: admin
+      argocd-skip-tls: True
+      deployment-config-repo: https://github.com/ploigos/spring-petclinic-ops.git
+      deployment-config-helm-chart-path: charts/spring-petclinic-deploy
+      deployment-config-helm-chart-values-file-image-tag-yq-path: 'image.tag'
+      git-email: 'ploigos+it@redhat.com'
+      argocd-sync-timeout-seconds: 130
+      force-push-tags: true
+    environment-config:
+      DEV:
+        deployment-config-helm-chart-environment-values-file: values-DEV.yaml
+      TEST:
+        deployment-config-helm-chart-environment-values-file: values-TEST.yaml
