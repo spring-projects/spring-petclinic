@@ -1,8 +1,9 @@
 # This Github workflow will run jobs to build java-app.
-name: java-github-example
+name: spring-petclinic
 
 on:
   push:
+    [ main ]
   pull_request_target:
     types:
       - opened
