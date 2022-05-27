@@ -52,6 +52,12 @@ class PetController {
 		return this.owners.findById(ownerId);
 	}
 
+	@ModelAttribute("pet")
+	public Pet findPet(@PathVariable("ownerId") int ownerId,
+			@PathVariable(name = "petId", required = false) Integer petId) {
+		return petId == null ? new Pet() : this.owners.findById(ownerId).getPet(petId);
+	}
+
 	@InitBinder("owner")
 	public void initOwnerBinder(WebDataBinder dataBinder) {
 		dataBinder.setDisallowedFields("id");
