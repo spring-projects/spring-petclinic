@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'jdk11-mvn3.8.4' }
+    agent { label 'JDK11_MVN_SONAR_JFROG' }
     triggers { 
         cron('45 23 * * 1-5')
         pollSCM('*/5 * * * *')
