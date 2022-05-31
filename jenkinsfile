@@ -1,0 +1,34 @@
+pipeline {
+    agent { label 'jdk11-mvn3.8.5' }
+    options { 
+        timeout(time: 1, unit: 'HOURS')
+        retry(2) 
+    }
+    triggers {
+        cron('* * * * *')
+    }
+    parameters {
+        choice(name: 'GOAL', choices: ['compile', 'package', 'clean package'])
+    }
+    stages {
+        stage('Source Code') {
+            steps {
+                
+                git url: 'https://github.com/SriSuryaTej/spring-petclinic.git', 
+                branch: 'declarative'
+            }
+
+        }
+        stage('Build the Code') {
+            steps {
+                sh script: "mvn ${params.GOAL}"
+            }
+        }
+        stage('reporting') {
+            steps {
+                junit testResults: 'target/surefire-reports/*.xml'
+            }
+
+        }
+    }
+}
