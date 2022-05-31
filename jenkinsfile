@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'jdk11-mvn3.8.5' }
+    agent { label 'JDK11_MVN_SONAR_JFROG' }
     options { 
         timeout(time: 1, unit: 'HOURS')
         retry(2) 
