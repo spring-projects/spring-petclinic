@@ -5,7 +5,7 @@ pipeline {
         pollSCM('*/5 * * * *')
     }
 	tools {
-		maven 'MVN_3.8.4'
+		maven 'MVN_3.8.5'
 	}
     stages {
         stage('scm') {
@@ -16,7 +16,7 @@ pipeline {
         }
         stage('build') {
             steps {
-                withSonarQubeEnv(installationName: 'SONAR_9.2.1') {
+                withSonarQubeEnv(installationName: 'SONAR_9.4.0') {
                     sh "mvn clean package sonar:sonar"                                  
                 }
             }
