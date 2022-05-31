@@ -1,16 +1,34 @@
-node('jdk11_mvn3.8.5') {
-    stage('SourceCode') {
-        // get the code from git repo on the branch sprint1_develop
-        git branch: 'scripted', url: 'https://github.com/SriSuryaTej/spring-petclinic.git'
+pipeline {
+    agent { label 'jdk11-mvn3.8.4' }
+    triggers { 
+        cron('45 23 * * 1-5')
+        pollSCM('*/5 * * * *')
     }
-
-    stage('Build the code') {
-        sh'mvn clean package'
+	tools {
+		maven 'MVN_3.8.4'
+	}
+    stages {
+        stage('scm') {
+            steps {
+               
+                git url: 'https://github.com/GitPracticeRepo/spring-petclinic.git', branch: 'main'
+            }
+        }
+        stage('build') {
+            steps {
+                withSonarQubeEnv(installationName: 'SONAR_9.2.1') {
+                    sh "mvn clean package sonar:sonar"                                  
+                }
+            }
+        }
+		stage("Quality Gate") {
+            steps {
+                timeout(time: 1, unit: 'HOURS') {
+                    // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
+                    // true = set pipeline to UNSTABLE, false = don't
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
     }
-
-    stage('Archiving and Test Results') {
-        junit '**/target/surefire-reports/*.xml'
-        archiveArtifacts artifacts: '**/target/*.jar', followSymlinks: false
-    }
-
 }
