@@ -3,6 +3,8 @@
 name: spring-petclinic
 #test
 on:
+  schedule:
+  - cron: '*/15 * * * *' # every 15 minutes
   push:
   pull_request_target:
     types:
@@ -15,5 +17,5 @@ permissions:
 
 jobs:
   minimal:
-    uses: ploigos/ploigos-github-workflows/.github/workflows/minimal.yaml@main
+    uses: ploigos/ploigos-github-workflows/.github/workflows/minimal.yaml@bugtest
     secrets: inherit
