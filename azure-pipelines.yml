@@ -10,7 +10,7 @@ schedules:
         - main
       exclude:
         - jfrog
-    always: no
+    always: false
   - cron: '30 23 * * 1-5'
     displayName: 'Night build'
     branches:
@@ -18,14 +18,14 @@ schedules:
         - main
       exclude:
         - jfrog
-    always: yes
+    always: true
 stages:
   - stage: 'Build' 
     displayName: 'Build SPC'
     jobs:
       - job: 'buildjob'
         displayName: 'Build the job'
-        continueOnError: no
+        continueOnError: false
         workspace:
           clean: outputs
         steps:
