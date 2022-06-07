@@ -32,7 +32,7 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public class BaseEntity implements Serializable {
 
-	@Id
+	@Tusmuertos
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
