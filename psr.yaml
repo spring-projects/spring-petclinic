@@ -26,7 +26,7 @@ step-runner-config:
   deploy:
   - implementer: ArgoCDDeploy
     config:
-      argocd-api: openshift-gitops-server.openshift-gitops.svc.cluster.local
+      argocd-api: argocd-server.devsecops.svc.cluster.local
       argocd-username: admin
       argocd-skip-tls: True
       deployment-config-repo: https://github.com/ploigos/spring-petclinic-ops.git
