@@ -1,0 +1,25 @@
+{
+	"name": "Petclinic",
+	"dockerFile": "Dockerfile",
+
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"vscjava.vscode-java-pack",
+				"redhat.vscode-xml"
+			]
+		}
+	},
+    "runArgs": [
+        "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined",
+        "--mount", "type=bind,source=${env:HOME}/.m2,target=/home/vscode/.m2",
+        "--mount", "type=bind,source=${env:HOME}/.gradle,target=/home/vscode/.gradle"
+    ],
+
+    "initializeCommand": "mkdir -p ${env:HOME}/.m2 ${env:HOME}/.gradle",
+    "onCreateCommand": "sudo chown vscode:vscode /home/vscode/.m2 /home/vscode/.gradle",
+	"remoteUser": "vscode",
+	"features": {
+		"docker-in-docker": "latest"
+	}
+}
