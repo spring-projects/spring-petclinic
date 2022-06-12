@@ -96,8 +96,7 @@ class OwnerController {
 		}
 
 		// find owners by last name
-		String lastName = owner.getLastName();
-		Page<Owner> ownersResults = findPaginatedForOwnersLastName(page, lastName);
+		Page<Owner> ownersResults = findPaginatedForOwnersLastName(page, owner.getLastName());
 		if (ownersResults.isEmpty()) {
 			// no owners found
 			result.rejectValue("lastName", "notFound", "not found");
@@ -110,12 +109,11 @@ class OwnerController {
 		}
 		else {
 			// multiple owners found
-			lastName = owner.getLastName();
-			return addPaginationModel(page, model, lastName, ownersResults);
+			return addPaginationModel(page, model, ownersResults);
 		}
 	}
 
-	private String addPaginationModel(int page, Model model, String lastName, Page<Owner> paginated) {
+	private String addPaginationModel(int page, Model model, Page<Owner> paginated) {
 		model.addAttribute("listOwners", paginated);
 		List<Owner> listOwners = paginated.getContent();
 		model.addAttribute("currentPage", page);
