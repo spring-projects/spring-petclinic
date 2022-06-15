@@ -12,16 +12,16 @@
 	],
 	"initializeCommand": "mkdir -p ${env:HOME}/.m2 ${env:HOME}/.gradle",
 	"onCreateCommand": "sudo chown vscode:vscode /home/vscode/.m2 /home/vscode/.gradle",
+	"postCreateCommand": "./mvwn package",
 	"remoteUser": "vscode",
 	"features": {
-		"docker-in-docker": "latest",
-		"customizations": {
-			"vscode": {
-				"extensions": [
-					"vscjava.vscode-java-pack",
-					"redhat.vscode-xml"
-				]
-			}
+		"docker-in-docker": "latest"
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"vscjava.vscode-java-pack"
+			]
 		}
 	}
 }
