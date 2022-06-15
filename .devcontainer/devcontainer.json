@@ -15,13 +15,12 @@
 	"remoteUser": "vscode",
 	"features": {
 		"docker-in-docker": "latest",
-		"customizations": {
-			"vscode": {
-				"extensions": [
-					"vscjava.vscode-java-pack",
-					"redhat.vscode-xml"
-				]
-			}
-		}
+	},
+	"extensions": [
+		"vscjava.vscode-java-pack",
+		"redhat.vscode-xml"
+	],
+	"settings": {
+		"java.import.gradle.enabled": false
 	}
 }
