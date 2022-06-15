@@ -4,7 +4,7 @@ name: spring-petclinic
 #test
 on:
   schedule:
-  - cron: '*/15 * * * *' # every 15 minutes
+  - cron: '0 0 * * *' # every night at 12:00AM UTC
   push:
   pull_request_target:
     types:
