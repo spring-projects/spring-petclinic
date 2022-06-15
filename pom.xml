@@ -229,7 +229,7 @@
         <artifactId>cyclonedx-maven-plugin</artifactId>
         <version>2.7.0</version>
     </plugin>
-
+// just added something
     </plugins>
   </build>
 
