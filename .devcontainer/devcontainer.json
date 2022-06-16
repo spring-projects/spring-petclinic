@@ -20,6 +20,7 @@
 		"vscjava.vscode-java-pack",
 		"redhat.vscode-xml"
 	],
+	"forwardPorts": [8080],
 	"settings": {
 		"java.import.gradle.enabled": false
 	}
