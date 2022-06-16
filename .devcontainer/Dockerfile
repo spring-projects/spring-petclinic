@@ -1,4 +1,4 @@
-ARG VARIANT=11-bullseye
+ARG VARIANT=17-bullseye
 FROM mcr.microsoft.com/vscode/devcontainers/java:0-${VARIANT}
 
 ARG NODE_VERSION="none"
