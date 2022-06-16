@@ -14,12 +14,14 @@
 	"onCreateCommand": "sudo chown vscode:vscode /home/vscode/.m2 /home/vscode/.gradle",
 	"remoteUser": "vscode",
 	"features": {
-		"docker-in-docker": "latest",
+		"docker-in-docker": "latest"
 	},
 	"extensions": [
 		"vscjava.vscode-java-pack",
-		"redhat.vscode-xml"
+		"redhat.vscode-xml",
+		"pivotal.vscode-boot-dev-pack"
 	],
+	"forwardPorts": [8080],
 	"settings": {
 		"java.import.gradle.enabled": false
 	}
