@@ -14,7 +14,7 @@
 	"onCreateCommand": "sudo chown vscode:vscode /home/vscode/.m2 /home/vscode/.gradle",
 	"remoteUser": "vscode",
 	"features": {
-		"docker-in-docker": "latest",
+		"docker-in-docker": "latest"
 	},
 	"extensions": [
 		"vscjava.vscode-java-pack",
