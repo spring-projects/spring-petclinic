@@ -62,7 +62,8 @@ class VetController {
 	public String processCreationForm(@Valid Vet vet, BindingResult result) {
 		if (result.hasErrors()) {
 			return VIEWS_VET_CREATE_OR_UPDATE_FORM;
-		} else {
+		}
+		else {
 			this.vets.save(vet);
 			return "redirect:/vets/" + vet.getId();
 		}
@@ -76,7 +77,7 @@ class VetController {
 
 	@PostMapping("/findVets")
 	public String processFindForm(@RequestParam(defaultValue = "1") int page, Vet vet, BindingResult result,
-								  Model model) {
+			Model model) {
 
 		// allow parameterless GET request for /owners to return all records
 		if (vet.getLastName() == null) {
@@ -89,16 +90,17 @@ class VetController {
 			// no vets found
 			result.rejectValue("lastName", "notFound", "not found");
 			return "vets/findVets";
-		} else if (vetsResults.getTotalElements() == 1) {
+		}
+		else if (vetsResults.getTotalElements() == 1) {
 			// 1 vet found
 			vet = vetsResults.iterator().next();
 			return "redirect:/vets/" + vet.getId();
-		} else {
+		}
+		else {
 			// multiple vets found
 			return addPaginationModel(page, vetsResults, model);
 		}
 	}
-
 
 	private Page<Vet> findPaginatedForOwnersLastName(int page, String lastname) {
 
@@ -144,11 +146,11 @@ class VetController {
 	}
 
 	@PostMapping("/vets/{vetId}/edit")
-	public String processUpdateOwnerForm(@Valid Vet vet, BindingResult result,
-										 @PathVariable("vetId") int vetId) {
+	public String processUpdateOwnerForm(@Valid Vet vet, BindingResult result, @PathVariable("vetId") int vetId) {
 		if (result.hasErrors()) {
 			return VIEWS_VET_CREATE_OR_UPDATE_FORM;
-		} else {
+		}
+		else {
 			vet.setId(vetId);
 			this.vets.save(vet);
 			return "redirect:/vets/{vetId}";
@@ -161,16 +163,14 @@ class VetController {
 		return vets.findAll(pageable);
 	}
 
-	@GetMapping({"/vets"})
-	public @ResponseBody
-	Vets showResourcesVetList() {
+	@GetMapping({ "/vets" })
+	public @ResponseBody Vets showResourcesVetList() {
 		// Here we are returning an object of type 'Vets' rather than a collection of Vet
 		// objects so it is simpler for JSon/Object mapping
 		Vets vets = new Vets();
 		vets.getVetList().addAll(this.vets.findAll());
 		return vets;
 	}
-
 
 	@GetMapping("/vets/{vetId}")
 	public ModelAndView showVet(@PathVariable("vetId") int vetId) {

@@ -13,18 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.vet;
+package org.springframework.samples.petclinic.visit;
 
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collection;
 
 /**
  * Repository class for <code>Vet</code> domain objects All method names are compliant
@@ -37,35 +32,17 @@ import java.util.Collection;
  * @author Sam Brannen
  * @author Michael Isvy
  */
-public interface VetRepository extends Repository<Vet, Integer> {
-
-	/**
-	 * Retrieve all <code>Vet</code>s from the data store.
-	 * @return a <code>Collection</code> of <code>Vet</code>s
-	 */
-	@Transactional(readOnly = true)
-	@Cacheable("vets")
-	Collection<Vet> findAll() throws DataAccessException;
+public interface VisitRepository extends Repository<Visit, Integer> {
 
 	/**
 	 * Retrieve all <code>Vet</code>s from data store in Pages
+	 *
 	 * @param pageable
 	 * @return
 	 * @throws DataAccessException
 	 */
-	// @Query("SELECT vet FROM Vet vet")
 	@Transactional(readOnly = true)
-	@Cacheable("vets")
-	Page<Vet> findAll(Pageable pageable) throws DataAccessException;
+	Page<Visit> findAll(Pageable pageable) throws DataAccessException;
 
-	@Query("SELECT DISTINCT vet FROM Vet vet WHERE vet.lastName LIKE :lastName% ")
-	@Transactional(readOnly = true)
-	Page<Vet> findByLastName(@Param("lastName") String lastName, Pageable pageable);
-
-	void save(Vet vet);
-
-	@Query("SELECT vet FROM Vet vet WHERE vet.id =:id")
-	@Transactional(readOnly = true)
-	Vet findById(@Param("id") Integer id);
 
 }

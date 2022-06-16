@@ -60,6 +60,11 @@
             <span>Find vets</span>
           </li>
 
+          <li th:replace="::menuItem ('/visits','vets','find vets','search','Visits')">
+            <span class="fa fa-search" aria-hidden="true"></span>
+            <span>Visits</span>
+          </li>
+
           <li th:replace="::menuItem ('/vets.html','vets','veterinarians','th-list','Veterinarians')">
             <span class="fa fa-th-list" aria-hidden="true"></span>
             <span>Veterinarians</span>
