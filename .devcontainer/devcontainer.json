@@ -18,7 +18,8 @@
 	},
 	"extensions": [
 		"vscjava.vscode-java-pack",
-		"redhat.vscode-xml"
+		"redhat.vscode-xml",
+		"pivotal.vscode-boot-dev-pack"
 	],
 	"forwardPorts": [8080],
 	"settings": {
