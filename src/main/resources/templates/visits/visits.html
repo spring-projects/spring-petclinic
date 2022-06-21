@@ -13,7 +13,8 @@
     <th>Date</th>
     <th>id</th>
     <th>description</th>
-  
+    <th>pet id</th>
+    <th>pet name</th>
   </tr>
   </thead>
   <tbody>
@@ -21,7 +22,8 @@
     <td th:text="${visit.date}"></td>
     <td th:text="${visit.id}"></td>
     <td th:text="${visit.description}"></td>   
-    
+    <td th:text="${visit.pet.id}"></td>
+    <td th:text="${visit.pet.name}"></td>
   </tr>
   </tbody>
 </table>
