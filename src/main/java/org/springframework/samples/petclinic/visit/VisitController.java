@@ -15,6 +15,9 @@
  */
 package org.springframework.samples.petclinic.visit;
 
+import java.util.List;
+import java.util.Map;
+import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,10 +30,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Juergen Hoeller
@@ -57,49 +56,43 @@ class VisitController {
 		dataBinder.setDisallowedFields("id");
 	}
 
-	/**
-	 * Called before each and every @RequestMapping annotated method. 2 goals: - Make sure
-	 * we always have fresh data - Since we do not use the session scope, make sure that
-	 * Pet object always has an id (Even though id is not part of the form fields)
-	 *
-	 * @param petId
-	 * @return Pet
-	 */
-
-	public Owner loadPetWithVisit(int ownerId, int petId, Map<String, Object> model) {
-		Owner owner = this.owners.findById(ownerId);
-		Pet pet = owner.getPet(petId);
-		model.put("pet", pet);
-		model.put("owner", owner);
-		Visit visit = new Visit();
-		pet.addVisit(visit);
-		return owner;
-	}
-
 	// Spring MVC calls method loadPetWithVisit(...) before initNewVisitForm is
 	// called
 
 	@GetMapping("/owners/{ownerId}/pets/{petId}/visits/new")
-	public String initNewVisitForm(@PathVariable("petId") int petId,
-								   @PathVariable("ownerId") int ownerId, Map<String, Object> model) {
-		loadPetWithVisit(ownerId, petId, model);
-		return "pets/createOrUpdateVisitForm";
+	public String initNewVisitForm(
+		@PathVariable("petId") int petId,
+		@PathVariable("ownerId") int ownerId, Map<String, Object> model
+	) {
+		Owner owner = this.owners.findById(ownerId);
+		return loadModelAndReturnTemplate(owner, model, petId);
 	}
 
 	// Spring MVC calls method loadPetWithVisit(...) before processNewVisitForm is
 	// called
 	@PostMapping("/owners/{ownerId}/pets/{petId}/visits/new")
-	public String processNewVisitForm(@PathVariable("ownerId") int ownerId, @PathVariable int petId, @Valid Visit visit,
-									  BindingResult result, Map<String, Object> model) {
-		Owner owner = loadPetWithVisit(ownerId, petId, model);
-
+	public String processNewVisitForm(
+		@PathVariable("ownerId") int ownerId, @PathVariable int petId, @Valid Visit visit, BindingResult result,
+		Map<String, Object> model
+	) {
+		Owner owner = this.owners.findById(ownerId);
 		if (result.hasErrors()) {
-			return "pets/createOrUpdateVisitForm";
+			return loadModelAndReturnTemplate(owner, model, petId);
 		} else {
 			owner.addVisit(petId, visit);
 			this.owners.save(owner);
 			return "redirect:/owners/{ownerId}";
 		}
+	}
+
+	private String loadModelAndReturnTemplate(Owner owner, Map<String, Object> model, int petId) {
+		Pet pet = owner.getPet(petId);
+		model.put("pet", pet);
+		model.put("owner", owner);
+		Visit visit = new Visit();
+		model.put("visit", visit);
+		pet.addVisit(visit);
+		return "pets/createOrUpdateVisitForm";
 	}
 
 
