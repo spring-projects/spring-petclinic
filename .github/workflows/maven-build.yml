@@ -22,5 +22,6 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
           cache: maven
+      # Uses maven build wrapper script
       - name: Build with Maven Wrapper
         run: ./mvnw -B package
