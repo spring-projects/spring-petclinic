@@ -27,7 +27,6 @@ step-runner-config:
   - implementer: ArgoCDDeploy
     config:
       argocd-api: argocd-server.devsecops.svc.cluster.local
-      argocd-username: admin
       argocd-skip-tls: True
       deployment-config-repo: https://github.com/ploigos/spring-petclinic-ops.git
       deployment-config-helm-chart-path: charts/spring-petclinic-deploy
