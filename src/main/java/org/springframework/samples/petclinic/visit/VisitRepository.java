@@ -18,7 +18,10 @@ package org.springframework.samples.petclinic.visit;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.Repository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -32,7 +35,8 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Sam Brannen
  * @author Michael Isvy
  */
-public interface VisitRepository extends Repository<Visit, Integer> {
+@Repository
+public interface VisitRepository extends CrudRepository<Visit, Integer> {
 
 	/**
 	 * Retrieve all <code>Vet</code>s from data store in Pages
@@ -43,6 +47,10 @@ public interface VisitRepository extends Repository<Visit, Integer> {
 	 */
 	@Transactional(readOnly = true)
 	Page<Visit> findAll(Pageable pageable) throws DataAccessException;
+
+	@Modifying
+	@Query("delete from Visit v where v.id=:id")
+	void deleteById(Integer id);
 
 
 }

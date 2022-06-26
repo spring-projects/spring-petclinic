@@ -15,6 +15,10 @@
     <th>description</th>
     <th>pet id</th>
     <th>pet name</th>
+    <th>Owner name</th>
+    <th>Vet Name</th>
+
+    <th>delete</th>
   </tr>
   </thead>
   <tbody>
@@ -24,6 +28,11 @@
     <td th:text="${visit.description}"></td>   
     <td th:text="${visit.pet.id}"></td>
     <td th:text="${visit.pet.name}"></td>
+    <td th:text="${visit.pet.owner.firstName + ' ' + visit.pet.owner.lastName}"></td>
+    <td th:text="${visit.vet.firstName + ' ' + visit.vet.lastName}"></td>
+    <td><form action="#" th:action="@{'/visit/' + ${visit.id}}" th:method="delete" >
+        <button type="submit" id="submitButton">Delete</button>
+      </form></td>
   </tr>
   </tbody>
 </table>

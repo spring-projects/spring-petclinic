@@ -15,9 +15,6 @@
  */
 package org.springframework.samples.petclinic.visit;
 
-import java.util.List;
-import java.util.Map;
-import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,11 +22,18 @@ import org.springframework.data.domain.Sort;
 import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.owner.OwnerRepository;
 import org.springframework.samples.petclinic.owner.Pet;
+import org.springframework.samples.petclinic.vet.Vet;
+import org.springframework.samples.petclinic.vet.VetRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Juergen Hoeller
@@ -46,9 +50,12 @@ class VisitController {
 
 	private final VisitRepository visit;
 
-	public VisitController(OwnerRepository owners, VisitRepository visit) {
+	private final VetRepository vetRepository;
+
+	public VisitController(OwnerRepository owners, VisitRepository visit, VetRepository vetRepository) {
 		this.owners = owners;
 		this.visit = visit;
+		this.vetRepository = vetRepository;
 	}
 
 	@InitBinder
@@ -56,8 +63,17 @@ class VisitController {
 		dataBinder.setDisallowedFields("id");
 	}
 
-	// Spring MVC calls method loadPetWithVisit(...) before initNewVisitForm is
-	// called
+
+	// TODO: 25.06.2022
+
+
+	@DeleteMapping("/visit/{id}")
+	public String deleteVisit(@PathVariable(value = "id") Integer visitId){
+
+		visit.deleteById(visitId);
+		return "redirect:/visits";
+	}
+
 
 	@GetMapping("/owners/{ownerId}/pets/{petId}/visits/new")
 	public String initNewVisitForm(
@@ -86,12 +102,17 @@ class VisitController {
 	}
 
 	private String loadModelAndReturnTemplate(Owner owner, Map<String, Object> model, int petId) {
+
+		Vet vet = new Vet();
 		Pet pet = owner.getPet(petId);
 		model.put("pet", pet);
 		model.put("owner", owner);
 		Visit visit = new Visit();
 		model.put("visit", visit);
+		visit.setVet(vet);
 		pet.addVisit(visit);
+		model.put("vets", vetRepository.findAll());
+
 		return "pets/createOrUpdateVisitForm";
 	}
 
