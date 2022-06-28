@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent oci
 
     stages {
         stage('Build') {
