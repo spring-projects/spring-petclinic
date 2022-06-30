@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi8/openjdk-11
+FROM ploigos2.jfrog.io/ploigos/openjdk-11
 
 USER 0
 
