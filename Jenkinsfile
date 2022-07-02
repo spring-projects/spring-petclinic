@@ -1,11 +1,12 @@
 pipeline {
-    agent none
-
+    agent {
+      label 'oci'
+    }
     stages {
         stage('Build') {
 	    agent {
-	    	label 'oci'
-	    }
+                docker { image 'hashicorp/terraform:latest' }
+            }
             steps { //init
                 echo 'initialize terraform'
 		sh 'cd terraform'
