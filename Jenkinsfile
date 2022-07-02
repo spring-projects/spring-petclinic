@@ -4,12 +4,10 @@ pipeline {
     }
     stages {
         stage('Build') {
-            steps { //init
-                echo 'initialize terraform'
-		        sh 'env'
-                sh 'docker version'
-		        //sh 'cd terraform'
-         		//sh 'terraform init'
+            steps { //
+                echo 'start build by mvn'
+		        sh './mvnw package'
+                sh 'ls target/*.jar'
             }
         }
         stage('Test') {
