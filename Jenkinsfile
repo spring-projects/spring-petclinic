@@ -1,8 +1,11 @@
 pipeline {
-    agent oci
+    agent none
 
     stages {
         stage('Build') {
+	    agent {
+	    	label 'oci'
+	    }
             steps {
                 echo 'Building..'
             }
