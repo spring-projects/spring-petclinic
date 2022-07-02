@@ -6,8 +6,7 @@ pipeline {
         stage('Build') {
             steps { //
                 echo 'start build by mvn'
-		        sh './mvnw package'
-                sh 'ls target/*.jar'
+		        sh '/usr/bin/terraform version'
             }
         }
         stage('Test') {
