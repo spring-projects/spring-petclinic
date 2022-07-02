@@ -6,7 +6,6 @@ pipeline {
         stage('Build') {
             steps { //
                 echo 'start build by mvn'
-		        sh '/usr/bin/terraform version'
             }
         }
         stage('Test') {
