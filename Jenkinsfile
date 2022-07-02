@@ -1,5 +1,7 @@
 pipeline {
-    agent none
+    agent {
+    	label 'oci'
+    }
     stages {
         stage('Build') {
 	    agent {
