@@ -6,8 +6,10 @@ pipeline {
 	    agent {
 	    	label 'oci'
 	    }
-            steps {
-                echo 'Building..'
+            steps { //init
+                echo 'initialize terraform'
+		sh 'cd terraform'
+		terraform init
             }
         }
         stage('Test') {
