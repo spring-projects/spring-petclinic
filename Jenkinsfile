@@ -4,8 +4,16 @@ pipeline {
     }
     stages {
         stage('Build') {
-            steps { //
-                echo 'start build by mvn'
+            steps {
+                sh 'cd terraform'
+                terraform_formation = true
+                if (terraform_formation) { 
+                    //If the condition is true print the following statement 
+                    sh 'terraform init'
+                    sh 'terraform apply -auto-approve'
+                } else {
+                    sh 'terraform destroy'
+                }
             }
         }
         stage('Test') {
@@ -16,6 +24,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
+                sh 'terraform destroy'
             }
         }
     }
