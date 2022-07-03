@@ -6,14 +6,16 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'cd terraform'
-                terraform_formation = true
-                if (terraform_formation) { 
-                    //If the condition is true print the following statement 
-                    sh 'terraform init'
-                    sh 'terraform apply -auto-approve'
-                } else {
-                    sh 'terraform destroy'
-                }
+                    script {
+                        terraform_formation = true
+                        if (terraform_formation) { 
+                            //If the condition is true print the following statement 
+                            sh 'terraform init'
+                            sh 'terraform apply -auto-approve'
+                        } else {
+                            sh 'terraform destroy'
+                        }
+                    }
             }
         }
         stage('Test') {
