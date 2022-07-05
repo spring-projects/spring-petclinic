@@ -39,3 +39,8 @@ step-runner-config:
         deployment-config-helm-chart-environment-values-file: values-DEV.yaml
       TEST:
         deployment-config-helm-chart-environment-values-file: values-TEST.yaml
+
+  report:
+  - implementer: ResultArtifactsArchive
+    config:
+      results-archive-destination-url: https://ploigos2.jfrog.io/artifactory/results/
