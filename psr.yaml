@@ -20,7 +20,7 @@ step-runner-config:
   push-container-image:
   - implementer: Skopeo
     config:
-      destination-url: ploigos2.junk.io
+      destination-url: ploigos2.jfrog.io
       container-image-push-repository: ploigos/spring-petclinic
 
   deploy:
