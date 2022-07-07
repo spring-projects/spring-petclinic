@@ -1,7 +1,7 @@
 ---
 # This Github workflow will run jobs to build java-app.
 name: spring-petclinic
-#test
+
 on:
   schedule:
   - cron: '0 0 * * *' # every night at 12:00AM UTC
