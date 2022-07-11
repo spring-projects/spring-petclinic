@@ -13,10 +13,10 @@ pipeline {
        }
      }
        stage('Docker Build') {
-      agent any
-      steps {
-        sh 'docker build -t shanem/spring-petclinic:latest .'
-      }
+      agent {
+    docker {
+      image 'aos-bint.corp.apple.com/base/ol-jdk11-all'
+    }
     }
    }
  }
