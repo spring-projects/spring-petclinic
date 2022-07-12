@@ -6,7 +6,7 @@ pipeline {
  
      stage("Git Clone"){
        steps{
-        git credentialsId: '', url: 'https://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@github.com/stefanmucha/spring-petclinic.git'
+        git credentialsId: '', url: 'https://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@github.com/stefanmucha/spring-petclinic/main'
        }
     }
 
