@@ -12,7 +12,8 @@ pipeline {
 
      stage('Gradle Build') {
       steps{
-       sh './gradlew build .'
+        sh 'cd ../test_1/'
+       sh './gradlew build'
         }
     }
 
