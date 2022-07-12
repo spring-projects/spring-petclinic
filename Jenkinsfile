@@ -17,12 +17,14 @@ pipeline {
       agent any
       steps {
         sh 'docker build -t muchast2/spring-petclinic:latest .'
+        #sh 'docker run -p 8081:8080 muchast2/spring-petclinic'
       }
     }
     stage('Docker run')
       agent any
       steps {
-        sh 'docker run -p 8081:8080 muchast2/spring-petclinic:'
+        sh 'docker run -p 8081:8080 muchast2/spring-petclinic'
     }
   }
+}
 }
