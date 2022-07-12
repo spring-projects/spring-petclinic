@@ -2,9 +2,10 @@ name: Build
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
+    types: [opened, synchronize, reopened]
 
 jobs:
   build-and-analyze:
@@ -13,27 +14,14 @@ jobs:
     permissions:
       security-events: write
     steps:
+      - uses: actions/checkout@v3
+
       - name: Setup Java
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           java-version: 11
           distribution: temurin
-
-      - name: Cache Maven Repository
-        uses: actions/cache@v2
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-m2-repository-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2-repository
-
-      - name: Cache Maven Wrapper (spring-petclinic)
-        uses: actions/cache@v2
-        with:
-          path: ./spring-petclinic/.mvn/wrapper/maven-wrapper.jar
-          key: ${{ runner.os }}-maven-wrapper-${{ hashFiles('./spring-petclinic/.mvn/wrapper/maven-wrapper.properties') }}
-          restore-keys: ${{ runner.os }}-spring-petclinic-maven-wrapper
-
-      - uses: actions/checkout@v2
+          cache: 'maven'
 
       - name: Build and Run Contrast Scan
         run: ./mvnw --batch-mode verify
@@ -45,6 +33,6 @@ jobs:
           CONTRAST__API__SERVICE_KEY: ${{ secrets.CONTRAST__API__SERVICE_KEY }}
 
       - name: Upload Contrast Scan Results
-        uses: github/codeql-action/upload-sarif@v1
+        uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: target/contrast-scan-reports/contrast-scan-results.sarif.json
