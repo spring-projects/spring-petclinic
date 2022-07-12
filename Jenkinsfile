@@ -13,6 +13,19 @@ pipeline {
         sh 'mvn clean install'
       }
     } */
+     stage("Git Clone"){
+
+        git credentialsId: '', url: 'https://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@github.com/stefanmucha/spring-petclinic'
+    }
+
+     stage('Gradle Build') {
+
+       sh './gradlew build'
+
+    }
+
+    
+    
     stage('Docker Build') {
       agent any
       steps {
