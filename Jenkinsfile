@@ -13,8 +13,8 @@ pipeline {
      stage('Gradle Build') {
       steps{
          sh 'cd ../'
-         sh 'cd /test_1'
-         sh './gradlew build'
+       //  sh 'cd /test_1'
+       //  sh './gradlew build'
           
         }
     }
@@ -24,6 +24,7 @@ pipeline {
     stage('Docker Build') {
       agent any
       steps {
+        sh './gradlew build'
         sh 'docker build --no-cache -t muchast2/spring-petclinic:latest .'
        // sh 'docker stop muchast2/spring-petclinic:latest'
         sh 'docker run -p 8081:8080 muchast2/spring-petclinic:latest &'
