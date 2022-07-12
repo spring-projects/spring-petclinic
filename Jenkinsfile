@@ -14,14 +14,15 @@ pipeline {
       }
     } */
      stage("Git Clone"){
-
+       steps{
         git credentialsId: '', url: 'https://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@github.com/stefanmucha/spring-petclinic'
+       }
     }
 
      stage('Gradle Build') {
-
+      steps{
        sh './gradlew build'
-
+        }
     }
 
     
