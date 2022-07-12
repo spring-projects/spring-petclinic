@@ -317,38 +317,6 @@
 
   <profiles>
     <profile>
-      <id>contrast-scan</id>
-      <activation>
-        <property>
-          <name>env.CI</name>
-          <value>true</value>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>com.contrastsecurity</groupId>
-            <artifactId>contrast-maven-plugin</artifactId>
-            <version>2.13.0</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>scan</goal>
-                </goals>
-              </execution>
-            </executions>
-            <configuration>
-              <apiUrl>${env.CONTRAST__API__URL}</apiUrl>
-              <username>${env.CONTRAST__API__USER_NAME}</username>
-              <apiKey>${env.CONTRAST__API__API_KEY}</apiKey>
-              <serviceKey>${env.CONTRAST__API__SERVICE_KEY}</serviceKey>
-              <orgUuid>${env.CONTRAST__API__ORGANIZATION_ID}</orgUuid>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
       <id>m2e</id>
       <activation>
         <property>

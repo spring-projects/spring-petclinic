@@ -23,16 +23,5 @@ jobs:
           distribution: temurin
           cache: 'maven'
 
-      - name: Build and Run Contrast Scan
+      - name: Build and Test
         run: ./mvnw --batch-mode verify
-        env:
-          CONTRAST__API__URL: https://teamserver-staging.contsec.com/Contrast
-          CONTRAST__API__ORGANIZATION_ID: 6fb73b19-37de-44e2-8ac8-0a8de2707048
-          CONTRAST__API__USER_NAME: ${{ secrets.CONTRAST__API__USER_NAME }}
-          CONTRAST__API__API_KEY: ${{ secrets.CONTRAST__API__API_KEY }}
-          CONTRAST__API__SERVICE_KEY: ${{ secrets.CONTRAST__API__SERVICE_KEY }}
-
-      - name: Upload Contrast Scan Results
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: target/contrast-scan-reports/contrast-scan-results.sarif.json
