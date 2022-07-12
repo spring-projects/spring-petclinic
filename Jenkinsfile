@@ -12,8 +12,13 @@ pipeline {
 
      stage('Gradle Build') {
       steps{
-        sh 'cd ../test_1/'
-       sh './gradlew build'
+        sshagent(['git'])
+        script{
+          try{
+          sh './gradlew build'
+          }finally
+          {}
+        }
         }
     }
 
