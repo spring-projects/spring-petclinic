@@ -11,6 +11,7 @@ jobs:
   build-and-analyze:
     name: Test and Analyze
     runs-on: ubuntu-latest
+    environment: CodeSec
     permissions:
       security-events: write
     steps:
@@ -25,3 +26,15 @@ jobs:
 
       - name: Build and Test
         run: ./mvnw --batch-mode verify
+
+      - name: Contrast Scan Analyze
+        uses: Contrast-Security-OSS/contrastscan-action@v2
+        with:
+          artifact: ./target/spring-petclinic-2.5.0-SNAPSHOT.jar
+          apiKey: ${{ secrets.CONTRAST_API_KEY }}
+          orgId: ${{ secrets.CONTRAST_ORGANIZATION_ID }}
+          authHeader: ${{ secrets.CONTRAST_AUTH_HEADER }}
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: results.sarif
