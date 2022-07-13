@@ -1,6 +1,6 @@
 on:
   push:
-    branches: [ pet_clinic ]
+    branches: [ main ]
 
 jobs:
   build:
