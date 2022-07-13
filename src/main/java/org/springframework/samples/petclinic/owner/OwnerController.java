@@ -15,20 +15,26 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Collection;
+import java.util.Map;
+import javax.sql.DataSource;
+import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.validation.Valid;
-import java.util.Collection;
-import java.util.Map;
 
 /**
  * @author Juergen Hoeller
@@ -43,11 +49,14 @@ class OwnerController {
 
 	private final OwnerRepository owners;
 
-	private VisitRepository visits;
+	private final VisitRepository visits;
 
-	public OwnerController(OwnerRepository clinicService, VisitRepository visits) {
-		this.owners = clinicService;
+	private final DataSource dataSource;
+
+	public OwnerController(OwnerRepository owners, VisitRepository visits, DataSource dataSource) {
+		this.owners = owners;
 		this.visits = visits;
+		this.dataSource = dataSource;
 	}
 
 	@InitBinder
@@ -140,6 +149,20 @@ class OwnerController {
 		}
 		mav.addObject(owner);
 		return mav;
+	}
+
+	/**
+	 * Deletes an owner by ID.
+	 * <p>
+	 * This endpoint is intentionally vulnerable to SQLi attacks to demonstrate Contrast
+	 * Security analysis.
+	 * @param ownerId the ID of the owner to delete
+	 */
+	@DeleteMapping("/owners/{ownerId}")
+	public void deleteOwner(@PathVariable("ownerId") String ownerId) throws SQLException {
+		try (Connection connection = dataSource.getConnection(); Statement statement = connection.createStatement()) {
+			statement.execute("DELETE FROM owners WHERE id = " + ownerId);
+		}
 	}
 
 }

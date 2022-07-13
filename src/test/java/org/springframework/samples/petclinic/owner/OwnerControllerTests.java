@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
+import javax.sql.DataSource;
 import org.assertj.core.util.Lists;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
@@ -61,6 +62,9 @@ class OwnerControllerTests {
 
 	@MockBean
 	private VisitRepository visits;
+
+	@MockBean
+	private DataSource dataSource;
 
 	private Owner george;
 
