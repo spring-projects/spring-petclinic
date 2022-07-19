@@ -17,5 +17,5 @@ permissions:
 
 jobs:
   full:
-    uses: ploigos/ploigos-github-workflows/.github/workflows/full.yaml@44-add-push-application-artifacts-to-repository-step-to-full-pipeline
+    uses: ploigos/ploigos-github-workflows/.github/workflows/full.yaml@main
     secrets: inherit
