@@ -11,8 +11,17 @@ step-runner-config:
   - implementer: Git
   - implementer: SemanticVersion
 
+  unit-test:
+    - implementer: MavenTest
+
   package:
   - implementer: MavenPackage
+
+  push-artifacts:
+  - implementer: MavenDeploy
+    config:
+      maven-push-artifact-repo-id: ploigos2.jfrog.io
+      maven-push-artifact-repo-url: https://ploigos2.jfrog.io/artifactory/swf-apps/
 
   create-container-image:
   - implementer: Buildah
