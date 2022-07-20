@@ -32,10 +32,18 @@ dependencies {
   runtimeOnly 'com.h2database:h2'
   runtimeOnly 'mysql:mysql-connector-java'
   runtimeOnly 'org.postgresql:postgresql'
+  implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+  implementation 'com.newrelic.agent.java:newrelic-api:7.8.0'
+
+//  developmentOnly 'com.newrelic.agent.java:newrelic-java:7.8.0'
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {
   useJUnitPlatform()
+}
+
+bootRun {
+    jvmArgs = ["-javaagent:${projectDir}/newrelic/newrelic.jar" ]
 }
