@@ -44,6 +44,7 @@ public class ClmController {
 	public String annotation(Model model) {
 		setMessage(model, "Java/org.springframework.samples.petclinic.clm.ClmController/annotation");
 		annotatedMethod();
+		doWait();
 		return "welcome";
 	}
 
@@ -60,6 +61,7 @@ public class ClmController {
 	public String api(Model model) {
 		setMessage(model, "Java/org.springframework.samples.petclinic.clm.ClmController/api");
 		apiMethod();
+		doWait();
 		return "welcome";
 	}
 
@@ -77,6 +79,7 @@ public class ClmController {
 	public String xml(Model model) {
 		setMessage(model, "Java/org.springframework.samples.petclinic.clm.ClmController/xml");
 		xmlMethod();
+		doWait();
 		return "welcome";
 	}
 
@@ -92,6 +95,7 @@ public class ClmController {
 	public String staticRequest(Model model) {
 		setMessage(model, "Java/org.springframework.samples.petclinic.clm.ClmController/static");
 		staticMethod();
+		doWait();
 		return "welcome";
 	}
 
@@ -108,6 +112,7 @@ public class ClmController {
 	public String http(Model model) {
 		setMessage(model, "Java/org.springframework.samples.petclinic.clm.ClmController/http");
 		httpMethod();
+		doWait();
 		return "welcome";
 	}
 
@@ -132,6 +137,7 @@ public class ClmController {
 	public String db(Model model) {
 		setMessage(model, "Java/org.springframework.samples.petclinic.clm.ClmController/db");
 		dbMethod();
+		doWait();
 		return "welcome";
 	}
 
@@ -144,7 +150,6 @@ public class ClmController {
 	private void setMessage(Model model, String spanName) {
 		model.addAttribute("message",
 			new Date() + ": Look for a span named \"" + spanName+ "\" and its children.");
-
 	}
 
 	/**
