@@ -32,8 +32,7 @@ public class ClmController {
 	@GetMapping("/clm/auto-only")
 	public String autoOnly(Model model) {
 		setMessage(model, "Java/org.springframework.samples.petclinic.clm.ClmController/auto-only");
-		model.addAttribute("message",
-			new Date() + ": Look for a span named \"Java/org.springframework.samples.petclinic.clm.ClmController/autoOnly\" and its children.");
+		doWait();
 		return "welcome";
 	}
 
