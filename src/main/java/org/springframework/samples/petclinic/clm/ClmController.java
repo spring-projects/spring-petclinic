@@ -31,7 +31,7 @@ public class ClmController {
 	 */
 	@GetMapping("/clm/auto-only")
 	public String autoOnly(Model model) {
-		setMessage(model, "Java/org.springframework.samples.petclinic.clm.ClmController/auto-only");
+		setMessage(model, "Java/org.springframework.samples.petclinic.clm.ClmController/autoOnly");
 		doWait();
 		return "welcome";
 	}
