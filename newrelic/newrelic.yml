@@ -54,7 +54,7 @@ common: &default_settings
   # The levels in increasing order of verboseness are:
   #   off, severe, warning, info, fine, finer, finest
   # Default is info.
-  log_level: finest
+  log_level: info
 
   # Log all data sent to and from New Relic in plain text.
   # This setting is dynamic, so changes do not require restarting your application.
@@ -76,11 +76,11 @@ common: &default_settings
 
   # The name of the log file.
   # Default is newrelic_agent.log.
-  log_file_name: newrelic_agent.log
+  # log_file_name: newrelic_agent.log
 
   # The log file directory.
   # Default is the logs directory in the newrelic.jar parent directory.
-  #log_file_path:
+  log_file_path: /app/logs
 
   # Proxy settings for connecting to the New Relic server:
   # If a proxy is used, the host setting is required.  Other settings
