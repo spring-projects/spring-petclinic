@@ -1,4 +1,4 @@
-FROM azul/zulu-openjdk:11 as base
+FROM azul/zulu-openjdk:17 as base
 
 # Install OS packages
 RUN apt-get update && \
@@ -7,12 +7,12 @@ RUN apt-get update && \
 WORKDIR /app
 expose 8080
 
-FROM azul/zulu-openjdk:11 as build
+FROM azul/zulu-openjdk:17 as build
 WORKDIR /src
 COPY src ./src 
 COPY gradle ./gradle
 COPY build.gradle gradlew settings.gradle ./
-RUN ./gradlew build
+RUN ./gradlew build --console=plain --info --no-daemon
 
 FROM base AS final
 WORKDIR /app
