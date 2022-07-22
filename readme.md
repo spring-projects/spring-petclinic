@@ -1,6 +1,18 @@
 # Modified Spring Pet Clinic for testing NR's CLM
 
-## Getting the code and running
+## Getting the app running with docker
+
+```
+git clone https://github.com/meiao/spring-petclinic.git
+cd spring-petclinic
+NEW_RELIC_LICENSE_KEY=12345 docker-compose up -d --build
+```
+
+Agent, tester, and app logs can be found mounted in ./logs
+
+The docker app will generate some traffic that should be visible in NR1 under "CLM Test App"
+
+## Getting the code and running without docker
 
 ```
 git clone https://github.com/meiao/spring-petclinic.git

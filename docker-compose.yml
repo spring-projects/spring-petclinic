@@ -1,23 +1,18 @@
-version: "2.2"
+version: '3.9'
 
-services:
-  mysql:
-    image: mysql:5.7
-    ports:
-      - "3306:3306"
+services: 
+  app:
+    image: java-clm-app:latest
+    build:
+      context: .
     environment:
-      - MYSQL_ROOT_PASSWORD=
-      - MYSQL_ALLOW_EMPTY_PASSWORD=true
-      - MYSQL_USER=petclinic
-      - MYSQL_PASSWORD=petclinic
-      - MYSQL_DATABASE=petclinic
+      # required
+      NEW_RELIC_LICENSE_KEY: $NEW_RELIC_LICENSE_KEY
+      # optional
+      NEW_RELIC_HOST: ${NEW_RELIC_HOST:-}
+    ports:
+      - 127.0.0.1:8080:8080
+    # stdin_open: true
+    # tty: true
     volumes:
-      - "./conf.d:/etc/mysql/conf.d:ro"
-  postgres:
-    image: postgres:14.1
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_PASSWORD=petclinic
-      - POSTGRES_USER=petclinic
-      - POSTGRES_DB=petclinic
+      - "./logs:/app/logs"
