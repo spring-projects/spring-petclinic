@@ -13,15 +13,11 @@ pipeline {
       }
     }
 
-    stage('SonarQube analysis') {
-      environment {
-        SCANNER_HOME = 'Sonar-scanner'
-      }
+stage('Scan') {
       steps {
-        withSonarQubeEnv(credentialsId: 'sonar-credentialsId', installationName: 'Sonar') {
-          sh '$SCANNER_HOME/bin/sonar-scanner          -Dsonar.projectKey=projectKey          -Dsonar.projectName=projectName          -Dsonar.sources=src/          -Dsonar.java.binaries=target/classes/          -Dsonar.exclusions=src/test/java/****/*.java          -Dsonar.java.libraries=/var/lib/jenkins/.m2/**/*.jar          -Dsonar.projectVersion=${BUILD_NUMBER}-${GIT_COMMIT_SHORT}'
+        withSonarQubeEnv(installationName: 'sq1') { 
+          sh './mvnw clean org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar'
         }
-
       }
     }
 
