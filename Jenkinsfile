@@ -6,6 +6,11 @@ pipeline {
         checkout scm
       }
     }
+    stage('Build project') {
+      steps {
+        sh 'mvn install'
+      }
+    }
 
 
 stage('Scan') {
@@ -29,10 +34,5 @@ stage('Scan') {
     maven 'maven'
     jdk 'java11'
   }
-  environment {
-    GIT_COMMIT_SHORT = sh(
-                                   script: "printf \$(git rev-parse --short ${GIT_COMMIT})",
-                                   returnStdout: true
-                                  )
-    }
+
   }
