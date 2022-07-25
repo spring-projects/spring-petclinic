@@ -20,8 +20,8 @@ step-runner-config:
   push-artifacts:
   - implementer: MavenDeploy
     config:
-      maven-push-artifact-repo-id: ploigos2.jfrog.io
-      maven-push-artifact-repo-url: https://ploigos2.jfrog.io/artifactory/swf-apps/
+      maven-push-artifact-repo-id: maven-releases
+      maven-push-artifact-repo-url: https://nexus-devsecops.apps.n7qzypo3.eastus.aroapp.io/repository/maven-releases
 
   create-container-image:
   - implementer: Buildah
@@ -29,15 +29,15 @@ step-runner-config:
   push-container-image:
   - implementer: Skopeo
     config:
-      destination-url: ploigos2.jfrog.io
+      destination-url: nexus-docker-devsecops.apps.n7qzypo3.eastus.aroapp.io
       container-image-push-repository: ploigos/spring-petclinic
 
   sign-container-image:
   - implementer: PodmanSign
     config:
-      container-image-registry: ploigos2.jfrog.io
+      container-image-registry: nexus-docker-devsecops.apps.n7qzypo3.eastus.aroapp.io
       container-image-repository: ploigos/spring-petclinic
-      container-image-signature-destination-url: https://ploigos2.jfrog.io/artifactory/container-signatures
+      container-image-signature-destination-url: https://nexus-devsecops.apps.n7qzypo3.eastus.aroapp.io/repository/container-image-signatures
 
   deploy:
   - implementer: ArgoCDDeploy
@@ -59,4 +59,4 @@ step-runner-config:
   report:
   - implementer: ResultArtifactsArchive
     config:
-      results-archive-destination-url: https://ploigos2.jfrog.io/artifactory/results/
+      results-archive-destination-url: https://nexus-devsecops.apps.n7qzypo3.eastus.aroapp.io/repository/result-artifacts-archive

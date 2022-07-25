@@ -1,4 +1,4 @@
-FROM ploigos2.jfrog.io/ploigos/openjdk-11
+FROM nexus-docker-devsecops.apps.n7qzypo3.eastus.aroapp.io/ploigos/openjdk-11
 
 USER 0
 
