@@ -32,6 +32,13 @@ step-runner-config:
       destination-url: ploigos2.jfrog.io
       container-image-push-repository: ploigos/spring-petclinic
 
+  sign-container-image:
+  - implementer: PodmanSign
+    config:
+      container-image-registry: ploigos2.jfrog.io
+      container-image-repository: ploigos/spring-petclinic
+      container-image-signature-destination-url: https://ploigos2.jfrog.io/artifactory/container-signatures
+
   deploy:
   - implementer: ArgoCDDeploy
     config:
