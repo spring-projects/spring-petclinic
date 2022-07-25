@@ -1,6 +1,12 @@
 pipeline {
   agent any
   stages {
+    stage('init') {
+      steps {
+        checkout scm
+      }
+    }
+
     stage('Build project') {
       steps {
         sh 'mvn install'
@@ -35,8 +41,8 @@ pipeline {
   }
   environment {
     GIT_COMMIT_SHORT = sh(
-           script: "printf \$(git rev-parse --short ${GIT_COMMIT})",
-           returnStdout: true
-          )
+                       script: "printf \$(git rev-parse --short ${GIT_COMMIT})",
+                       returnStdout: true
+                      )
     }
   }
