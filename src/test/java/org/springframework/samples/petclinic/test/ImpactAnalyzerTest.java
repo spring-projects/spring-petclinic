@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.test;
+package org.springframework.samples.petclinic;
 
 import java.io.File;
 import java.io.FileNotFoundException;
