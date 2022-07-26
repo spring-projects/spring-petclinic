@@ -14,4 +14,4 @@ jobs:
           distribution: 'adopt'
           cache: maven
       - name: Build with Maven Wrapper
-        run: ./mvnw spring-boot:run
+        run: ./mvnw spring-boot:run -Dcheckstyle.skip
