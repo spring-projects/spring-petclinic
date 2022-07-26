@@ -36,10 +36,16 @@ pipeline {
         sh 'mvn package'
       }
     }
+    
+    stage('Move JAR file') {
+      steps {
+        sh 'cp target/spring-petclinic-2.7.0-SNAPSHOT.jar /home/ubuntu/petclinic-deploy/'
+      }
+    }
 
     stage('Deploy') {
       steps {
-        sh 'java -jar -Dserver.port=8083 target/spring-petclinic-2.7.0-SNAPSHOT.jar'
+        sh 'java -jar -Dserver.port=8083 /home/ubuntu/petclinic-deploy/spring-petclinic-2.7.0-SNAPSHOT.jar'
       }
     }
 
