@@ -1,5 +1,11 @@
 pipeline {
   agent any
+    environment {
+    HEROKU_API_KEY = credentials('brobert-heroku-api-key')
+  }
+  parameters { 
+    string(name: 'APP_NAME', defaultValue: 'pet-clinic-devops-brobert', description: 'What is the Heroku app name?') 
+  }
   stages {
     stage('init') {
       steps {
@@ -36,19 +42,41 @@ pipeline {
         sh 'mvn package'
       }
     }
-
-    stage('Move JAR file') {
+    
+        stage('Build') {
       steps {
-        sh 'sudo mkdir -p /home/ubuntu/petclinic-deploy/'
-        sh 'sudo cp target/spring-petclinic-2.7.0-SNAPSHOT.jar /home/ubuntu/petclinic-deploy/'
+        sh 'docker build -t brobert/devops-pet-clinic:latest .'
+      }
+    }
+    stage('Login') {
+      steps {
+        sh 'echo $HEROKU_API_KEY | docker login --username=_ --password-stdin registry.heroku.com'
+      }
+    }
+    stage('Push to Heroku registry') {
+      steps {
+        sh '''
+          docker tag brobert/devops-pet-clinic:latest registry.heroku.com/$APP_NAME/web
+          docker push registry.heroku.com/$APP_NAME/web
+        '''
+      }
+    }
+    stage('Release the image') {
+      steps {
+        sh '''
+          heroku container:release web --app=$APP_NAME
+        '''
       }
     }
 
-    stage('Deploy') {
-      steps {
-        sh 'java -jar -Dserver.port=8083 /home/ubuntu/petclinic-deploy/spring-petclinic-2.7.0-SNAPSHOT.jar'
-      }
-    }
+//     stage('Move JAR file') {
+//       steps {
+//         sh 'sudo mkdir -p /home/ubuntu/petclinic-deploy/'
+//         sh 'sudo cp target/spring-petclinic-2.7.0-SNAPSHOT.jar /home/ubuntu/petclinic-deploy/'
+//       }
+//     }
+
+
 
   }
   tools {
