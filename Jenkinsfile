@@ -9,7 +9,7 @@ pipeline {
 
     stage('Build project') {
       steps {
-        sh 'mvn clean install'
+        sh 'mvn clean'
       }
     }
 
@@ -39,7 +39,8 @@ pipeline {
 
     stage('Move JAR file') {
       steps {
-        sh 'cp target/spring-petclinic-2.7.0-SNAPSHOT.jar /home/ubuntu/petclinic-deploy/'
+        sh 'sudo mkdir -p /home/ubuntu/petclinic-deploy/'
+        sh 'sudo cp target/spring-petclinic-2.7.0-SNAPSHOT.jar /home/ubuntu/petclinic-deploy/'
       }
     }
 
