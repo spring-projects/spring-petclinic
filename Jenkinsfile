@@ -1,11 +1,5 @@
 pipeline {
   agent any
-    environment {
-    HEROKU_API_KEY = credentials('brobert-heroku-api-key')
-  }
-  parameters { 
-    string(name: 'APP_NAME', defaultValue: 'pet-clinic-devops-brobert', description: 'What is the Heroku app name?') 
-  }
   stages {
     stage('init') {
       steps {
@@ -42,17 +36,19 @@ pipeline {
         sh 'mvn package'
       }
     }
-    
-        stage('Build') {
+
+    stage('Build') {
       steps {
         sh 'docker build -t brobert/devops-pet-clinic:latest .'
       }
     }
+
     stage('Login') {
       steps {
         sh 'echo $HEROKU_API_KEY | docker login --username=_ --password-stdin registry.heroku.com'
       }
     }
+
     stage('Push to Heroku registry') {
       steps {
         sh '''
@@ -61,6 +57,7 @@ pipeline {
         '''
       }
     }
+
     stage('Release the image') {
       steps {
         sh '''
@@ -69,18 +66,15 @@ pipeline {
       }
     }
 
-//     stage('Move JAR file') {
-//       steps {
-//         sh 'sudo mkdir -p /home/ubuntu/petclinic-deploy/'
-//         sh 'sudo cp target/spring-petclinic-2.7.0-SNAPSHOT.jar /home/ubuntu/petclinic-deploy/'
-//       }
-//     }
-
-
-
   }
   tools {
     maven 'maven'
     jdk 'java11'
+  }
+  environment {
+    HEROKU_API_KEY = credentials('brobert-heroku-api-key')
+  }
+  parameters {
+    string(name: 'APP_NAME', defaultValue: 'pet-clinic-devops-brobert', description: 'What is the Heroku app name?')
   }
 }
