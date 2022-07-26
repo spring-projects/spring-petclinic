@@ -28,6 +28,18 @@ stage('Scan') {
         }
       }
     }
+    
+   stage('Package') {
+      steps {
+        sh 'mvn package'
+      }
+    }
+    
+   stage('Deploy') {
+      steps {
+        sh 'java -jar -Dserver.port=8083 target/spring-petclinic-2.7.0-SNAPSHOT.jar'
+      }
+    }
 
   }
   tools {
