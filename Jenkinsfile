@@ -6,36 +6,38 @@ pipeline {
         checkout scm
       }
     }
+
     stage('Build project') {
       steps {
         sh 'mvn clean install'
       }
     }
 
-
-stage('Scan') {
+    stage('Scan') {
       steps {
-        withSonarQubeEnv(installationName: 'sq') { 
+        withSonarQubeEnv('sq') {
           sh './mvnw clean install org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar'
         }
+
       }
     }
- 
+
     stage('SQuality Gate') {
       steps {
         timeout(time: 1, unit: 'MINUTES') {
-          waitForQualityGate abortPipeline: true
+          waitForQualityGate true
         }
+
       }
     }
-    
-   stage('Package') {
+
+    stage('Package') {
       steps {
         sh 'mvn package'
       }
     }
-    
-   stage('Deploy') {
+
+    stage('Deploy') {
       steps {
         sh 'java -jar -Dserver.port=8083 target/spring-petclinic-2.7.0-SNAPSHOT.jar'
       }
@@ -46,5 +48,4 @@ stage('Scan') {
     maven 'maven'
     jdk 'java11'
   }
-
-  }
+}
