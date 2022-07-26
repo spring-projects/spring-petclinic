@@ -13,5 +13,11 @@ jobs:
           java-version: '18'
           distribution: 'adopt'
           cache: maven
+      - name: Sleep for 30 seconds
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '60s'
       - name: Run Test
-        run: mvn test
+        run: mvn test -Dtest=SeleniumTest#test
+      - name: Run ImpactAnalyzer
+        run: mvn test -Dtest=ImpactAnalyzerTest#Test

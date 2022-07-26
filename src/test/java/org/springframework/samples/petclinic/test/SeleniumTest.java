@@ -1,3 +1,5 @@
+package org.springframework.samples.petclinic.test;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -8,21 +10,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 // This is a comment
-import io.github.bonigarcia.wdm.WebDriverManager;
 
-	import org.openqa.selenium.By;
-	import org.openqa.selenium.WebDriver;
-	import org.openqa.selenium.chrome.ChromeDriver;
-	import org.openqa.selenium.chrome.ChromeOptions;
-import org.springframework.samples.petclinic.ImpactAnalyzer.connect.Connect;
 import org.springframework.samples.petclinic.ImpactAnalyzer.models.PageSource;
-
-import java.io.File;
-	import java.io.FileWriter;
-	import java.io.IOException;
-	import java.io.UnsupportedEncodingException;
-	import java.util.ArrayList;
-
 
 
 public class SeleniumTest {
