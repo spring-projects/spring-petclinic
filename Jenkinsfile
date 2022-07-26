@@ -24,7 +24,7 @@ stage('Scan') {
     stage('SQuality Gate') {
       steps {
         timeout(time: 1, unit: 'MINUTES') {
-          waitForQualityGate true
+          waitForQualityGate abortPipeline: true
         }
       }
     }
