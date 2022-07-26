@@ -1,10 +1,9 @@
 pipeline {
     agent any
    stages {     
-    stage('Maven Install') {
-             
+    stage('Maven Install') {          
   steps {
-       sh 'sudo mvn clean install'
+       sh 'mvn clean install'
        }
      }
    }
