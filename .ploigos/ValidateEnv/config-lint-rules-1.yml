@@ -1,0 +1,17 @@
+version: 1
+description: Rules for Kubernetes spec files
+type: Kubernetes
+files:
+  - "*.yml"
+
+rules:
+
+  # Rule to check for sidecar annotation in Deployment
+  - id: TSSC_TEST_EXAMPLE_LABEL
+    severity: FAILURE
+    message: Deployment example for a label
+    resource: Deployment
+    assertions:
+      - key: spec.template.metadata.labels.app
+        op: contains
+        value: 'spring-petclinic-deploy'

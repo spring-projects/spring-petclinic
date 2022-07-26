@@ -58,6 +58,9 @@ step-runner-config:
 
   validate-environment-configuration:
   - implementer: ConfiglintFromArgocd
+  - implementer: Configlint
+    config:
+      rules: .ploigos/ValidateEnv/
 
   report:
   - implementer: ResultArtifactsArchive
