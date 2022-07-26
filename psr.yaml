@@ -56,6 +56,9 @@ step-runner-config:
       TEST:
         deployment-config-helm-chart-environment-values-file: values-TEST.yaml
 
+  validate-environment-configuration:
+  - implementer: ConfiglintFromArgocd
+
   report:
   - implementer: ResultArtifactsArchive
     config:
