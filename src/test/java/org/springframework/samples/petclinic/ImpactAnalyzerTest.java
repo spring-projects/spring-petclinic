@@ -11,7 +11,7 @@ import org.springframework.samples.petclinic.ImpactAnalyzer.models.HTMLJSONFileP
 import org.springframework.samples.petclinic.ImpactAnalyzer.models.TestFileParser;
 
 public class ImpactAnalyzerTest {
-	private static final String FILE_PATH = "./src/test/java/SeleniumTest.java";
+	private static final String FILE_PATH = "C:\\ozu_school\\spring-petclinic\\src\\test\\java\\SeleniumTest.java";
 	private static final String JSON_PATH = "./json/aHR0cDovL2xvY2FsaG9zdDo4MDgwL293bmVycy8xL3BldHMvbmV3.json";
 
 	@org.junit.Test
@@ -22,8 +22,8 @@ public class ImpactAnalyzerTest {
 			htmlJsonFileParser.setElements();
 			var htmlElements = htmlJsonFileParser.getHTMLElements();
 
-			CompilationUnit testCompUnit = StaticJavaParser.parse(new File(FILE_PATH));
 
+			CompilationUnit testCompUnit = StaticJavaParser.parse(new File(FILE_PATH));
 			var testElements = TestFileParser.parse(FILE_PATH);
 
 
