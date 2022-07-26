@@ -36,7 +36,7 @@ pipeline {
         sh 'mvn package'
       }
     }
-    
+
     stage('Move JAR file') {
       steps {
         sh 'cp target/spring-petclinic-2.7.0-SNAPSHOT.jar /home/ubuntu/petclinic-deploy/'
