@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
-import org.springframework.samples.petclinic.model.Person;
+import org.springframework.samples.petclinic.test.Person;
 
 /**
  * Simple JavaBean domain object representing a veterinarian.
