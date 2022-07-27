@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('SCM') {
             steps {
-                git branch: 'main', url: 'https://github.com/Shri-1991/spring-petclinic.git'
+                git branch: 'prod', url: 'https://github.com/Shri-1991/spring-petclinic.git'
             }
         }
         stage('k8s_deploy') {
