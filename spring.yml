@@ -12,20 +12,25 @@ spec:
     metadata:
       labels:
         app: spc
-    spc:
+    spec:
       containers:
         - name: spc
           image: shri1991/spring
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PORT
+              value: "8080"
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: replicaset
+  name: replicaset-svc
 spec:
+  type: NodePort
   ports:
-    - name: http
-      port: 80
-      targetport: 80
+    - port: 80
+      targetPort: 8080
   selector:
     app: spc
