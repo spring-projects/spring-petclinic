@@ -1,0 +1,18 @@
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: repicaset
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: spc
+  template:
+    metadata:
+      labels:
+        app: spc
+    spc:
+      containers:
+      - name: nginx
+        image: shri1991/spring:latest
