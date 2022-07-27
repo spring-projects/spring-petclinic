@@ -56,6 +56,12 @@ step-runner-config:
       TEST:
         deployment-config-helm-chart-environment-values-file: values-TEST.yaml
 
+  validate-environment-configuration:
+  - implementer: ConfiglintFromArgocd
+  - implementer: Configlint
+    config:
+      rules: .ploigos/ValidateEnv/
+
   report:
   - implementer: ResultArtifactsArchive
     config:
