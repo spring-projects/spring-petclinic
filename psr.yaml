@@ -11,6 +11,9 @@ step-runner-config:
   - implementer: Git
   - implementer: SemanticVersion
 
+  tag-source:
+  - implementer: Git
+
   unit-test:
     - implementer: MavenTest
 
