@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
-  name: replicaset
+  name: repicaset
 spec:
   replicas: 2
   selector:
@@ -12,7 +12,20 @@ spec:
     metadata:
       labels:
         app: spc
-    spec:
+    spc:
       containers:
         - name: spc
           image: shri1991/spring
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-example
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetport: 80
+  selector:
+    app: spc
