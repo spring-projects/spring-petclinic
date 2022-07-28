@@ -1,3 +1,4 @@
+package org.springframework.samples.petclinic.test;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
@@ -32,6 +33,8 @@ public class SeleniumTest {
 
 	@org.junit.Test
 	public void test() throws InterruptedException, UnsupportedEncodingException {
+
+		String currentUrl;
 
 		ArrayList<String> urls = new ArrayList<String>();
 		WebDriverManager.chromedriver().setup();
@@ -73,59 +76,73 @@ public class SeleniumTest {
 //
 //        Thread.sleep(1000);
 
-//        //new user
-//        driver.get("http://localhost:8080/owners/new");
-//
-//        String url1 = driver.getCurrentUrl();
-//        System.out.println(url1);
-//        driver.findElement(By.xpath("/html/body/div/div/form/div[1]/div[1]/div/div/input")).sendKeys("Başak");
-//        urls.add(driver.getCurrentUrl());
-//
-//        driver.findElement(By.xpath("/html/body/div/div/form/div[1]/div[2]/div/div/input")).sendKeys("Balcı");
-//        urls.add(driver.getCurrentUrl());
-//
-//        driver.findElement(By.xpath("/html/body/div/div/form/div[1]/div[3]/div/div/input")).sendKeys("B");
-//        urls.add(driver.getCurrentUrl());
-//
-//        driver.findElement(By.xpath("/html/body/div/div/form/div[1]/div[4]/div/div/input")).sendKeys("İST");
-//        urls.add(driver.getCurrentUrl());
-//
-//        driver.findElement(By.xpath("/html/body/div/div/form/div[1]/div[5]/div/div/input")).sendKeys("0531031343");
-//        urls.add(driver.getCurrentUrl());
+         /*
+        @Page new_user
+        @URL http://localhost:8080/owners/new
+         */
+		driver.get("http://localhost:8080/owners/new");
 
-//        driver.findElement(By.xpath("/html/body/div/div/form/div[2]/div/button")).click();
-//        urls.add(driver.getCurrentUrl());
-//
-//        Thread.sleep(1000);
+		currentUrl = driver.getCurrentUrl();
+		PageSource.pageSource(driver,currentUrl);
+
+		driver.findElement(By.xpath("/html/body/div/div/form/div[1]/div[1]/div/div/input")).sendKeys("Başak");
+		urls.add(driver.getCurrentUrl());
+
+		driver.findElement(By.xpath("/html/body/div/div/form/div[1]/div[2]/div/div/input")).sendKeys("Balcı");
+		urls.add(driver.getCurrentUrl());
+
+		driver.findElement(By.xpath("/html/body/div/div/form/div[1]/div[3]/div/div/input")).sendKeys("B");
+		urls.add(driver.getCurrentUrl());
+
+		driver.findElement(By.xpath("/html/body/div/div/form/div[1]/div[4]/div/div/input")).sendKeys("İST");
+		urls.add(driver.getCurrentUrl());
+
+		driver.findElement(By.xpath("/html/body/div/div/form/div[1]/div[5]/div/div/input")).sendKeys("0531031343");
+		urls.add(driver.getCurrentUrl());
+
+		driver.findElement(By.xpath("/html/body/div/div/form/div[2]/div/button")).click();
+		urls.add(driver.getCurrentUrl());
+
+		Thread.sleep(1000);
 		//Edit
-//        driver.findElement(By.xpath("/html/body/div/div/a[1]")).click();
-//        urls.add(driver.getCurrentUrl());
-//
-//        driver.findElement(By.xpath("/html/body/div/div/form/div[1]/div[1]/div/div/input")).clear();
-//        urls.add(driver.getCurrentUrl());
-//
-//        driver.findElement(By.xpath("/html/body/div/div/form/div[1]/div[2]/div/div/input")).clear();
-//        urls.add(driver.getCurrentUrl());
-//
-//        driver.findElement(By.xpath("/html/body/div/div/form/div[1]/div[1]/div/div/input")).sendKeys("Ekin");
-//        urls.add(driver.getCurrentUrl());
-//
-//        driver.findElement(By.xpath("/html/body/div/div/form/div[1]/div[2]/div/div/input")).sendKeys("Şahinkaya");
-//        urls.add(driver.getCurrentUrl());
-//
-//        Thread.sleep(1000);
-//        driver.findElement(By.xpath("/html/body/div/div/form/div[2]/div/button")).click();
-//        urls.add(driver.getCurrentUrl());
-//
-		//add new pet
-//        Thread.sleep(1000);
-//        driver.findElement(By.xpath("/html/body/div/div/a[2]")).click();
-//        urls.add(driver.getCurrentUrl());
+          /*
+        @Page edit
+        @URL http://localhost:8080/owners/13/edit
+         */
+		currentUrl = driver.getCurrentUrl();
+		PageSource.pageSource(driver,currentUrl);
 
-		driver.get("http://localhost:8080/owners/1/pets/new");
+		driver.findElement(By.xpath("/html/body/div/div/a[1]")).click();
+		urls.add(driver.getCurrentUrl());
 
-		PageSource.pageSource(driver,"http://localhost:8080/owners/1/pets/new");
+		driver.findElement(By.xpath("/html/body/div/div/form/div[1]/div[1]/div/div/input")).clear();
+		urls.add(driver.getCurrentUrl());
 
+		driver.findElement(By.xpath("/html/body/div/div/form/div[1]/div[2]/div/div/input")).clear();
+		urls.add(driver.getCurrentUrl());
+
+		driver.findElement(By.xpath("/html/body/div/div/form/div[1]/div[1]/div/div/input")).sendKeys("Ekin");
+		urls.add(driver.getCurrentUrl());
+
+		driver.findElement(By.xpath("/html/body/div/div/form/div[1]/div[2]/div/div/input")).sendKeys("Şahinkaya");
+		urls.add(driver.getCurrentUrl());
+
+		Thread.sleep(1000);
+		driver.findElement(By.xpath("/html/body/div/div/form/div[2]/div/button")).click();
+		urls.add(driver.getCurrentUrl());
+
+		Thread.sleep(1000);
+		driver.findElement(By.xpath("/html/body/div/div/a[2]")).click();
+		urls.add(driver.getCurrentUrl());
+
+        /*
+        @Page add_new_pet
+        @URL http://localhost:8080/owners/1/pets/new
+         */
+
+
+		currentUrl = driver.getCurrentUrl();
+		PageSource.pageSource(driver,currentUrl);
 
 
 
@@ -148,7 +165,6 @@ public class SeleniumTest {
 		Thread.sleep(4000);
 		driver.findElement(By.xpath("/html/body/div/div/form/div[2]/div/button")).click();
 		urls.add(driver.getCurrentUrl());
-
 
 //
 //        //add visit
@@ -185,6 +201,7 @@ public class SeleniumTest {
 //        for (int i = 0; i <urls.size() ; i++) {
 //            outputFile= outputFile + "\n" + urls.get(i);
 //        }
+
 
 
 	}

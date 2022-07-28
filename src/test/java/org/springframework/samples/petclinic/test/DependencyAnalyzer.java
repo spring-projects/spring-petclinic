@@ -14,8 +14,9 @@ public class DependencyAnalyzer {
 	public void dependencyAnalyzer(List<HTMLElement> htmlList, List<TestElement> testList)
 	{
 
-		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-		Connect.addVersion(timestamp);
+
+
+
 		for (HTMLElement htmlElement : htmlList) {
 			int vid = Connect.getMaxVid();
 			Connect.addHTMLElement(htmlElement.getUrl(), htmlElement.getId(), htmlElement.getValue(), htmlElement.getXpath(), "TypeNotDone", htmlElement.getName(), htmlElement.getClassName(), htmlElement.getTag(), "cssSelectorNotDone",vid);
@@ -29,6 +30,9 @@ public class DependencyAnalyzer {
 			int existTest= Connect.getIdOfAllJavaTestElementWithAccessMethodAndValue(testElement.getAccessMethod(),testElement.getAccessMethodValue());
 			if(existTest == 0){
 				Connect.addTestElement(testElement.getAccessMethod(), testElement.getAccessMethodValue(), testElement.getActionMethod(), testElement.getActionMethodValue());
+				int pageNameId = Connect.getPageId(testElement.getUrl());
+				int testId = Connect.getIdOfAllJavaTestElementWithAccessMethodAndValue(testElement.getAccessMethod(),testElement.getAccessMethodValue());
+				Connect.addTestElementPageRelation(pageNameId, testId);
 			}
 			if(Connect.getDependenciesIdFromTestMethod(existTest,testElement.getTestClassName(),testElement.getTestName(),testElement.getStartingPosition().getLine())== 0){
 				Connect.addElementDependencies(Connect.getMaxTid(), h_id, testElement.getTestClassName(), testElement.getTestName(), testElement.getStartingPosition().getLine());

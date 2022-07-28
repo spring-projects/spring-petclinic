@@ -19,7 +19,22 @@ public class HTMLJSONFileParser {
     private List<HTMLElement> htmlElements;
 	private String pageUrl;
 
-    public HTMLJSONFileParser(String HTMLJSONFilePath) throws UnsupportedEncodingException {
+
+
+//    public HTMLJSONFileParser(String HTMLJSONFilePath) throws UnsupportedEncodingException {
+//
+//        this.HTML_JSON_FILE_PATH = HTMLJSONFilePath;
+//        this.htmlElements = new ArrayList<HTMLElement>();
+//		File file = new File(this.HTML_JSON_FILE_PATH);
+//		String fileName = file.getName();
+//		String fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+//		byte[] base64decodedBytes = Base64.getDecoder().decode(fileNameWithoutExtension);
+//
+//		String url = new String(base64decodedBytes, "utf-8");
+//
+//		this.pageUrl = url;
+//	}
+	public HTMLJSONFileParser(String HTMLJSONFilePath) throws UnsupportedEncodingException {
 
         this.HTML_JSON_FILE_PATH = HTMLJSONFilePath;
         this.htmlElements = new ArrayList<HTMLElement>();

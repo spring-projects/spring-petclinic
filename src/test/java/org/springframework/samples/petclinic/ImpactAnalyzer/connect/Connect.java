@@ -24,7 +24,8 @@ public class Connect {
             Statement stmt = conn.createStatement();
 
             if(RESET_TABLES) {
-                String DropTableQuery = "DROP TABLE IF EXISTS JavaTestElements;"+
+                String DropTableQuery = "DROP TABLE IF EXISTS TestElementPageRelation;"
+						+"DROP TABLE IF EXISTS JavaTestElements;"+
                         "DROP TABLE IF EXISTS Page;"+
                         "DROP TABLE IF EXISTS Version;"+
                         "DROP TABLE IF EXISTS Commits;"+
@@ -42,6 +43,8 @@ public class Connect {
 
             stmt.executeUpdate(sql_version);
 
+
+
             String sql_page = "CREATE TABLE IF NOT EXISTS Page " +
 
                     "(p_id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -50,7 +53,7 @@ public class Connect {
 
                     "p_version_id int," +
 
-                    "UNIQUE(p_version_id),"+
+                    "UNIQUE(p_page_name,p_version_id),"+
 
                     "FOREIGN KEY (p_version_id) REFERENCES Version(v_id))";
 
@@ -131,6 +134,22 @@ public class Connect {
                     "FOREIGN KEY (t_action_method_id) REFERENCES ActionMethods(ac_id))";
 
             stmt.executeUpdate(sql2);
+
+			String sql_testElementPageRelation = "CREATE TABLE IF NOT EXISTS TestElementPageRelation " +
+
+				"(pr_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+
+				" pr_java_test_elements_id int, "+
+
+				"pr_page_id TEXT," +
+
+				"UNIQUE(pr_id),"+
+
+				"FOREIGN KEY (pr_page_id) REFERENCES Page(p_id)"+
+
+				"FOREIGN KEY (pr_java_test_elements_id) REFERENCES JavaTestElements(t_id))";
+
+			stmt.executeUpdate(sql_testElementPageRelation);
 
             String sql_elementDependencies = "CREATE TABLE IF NOT EXISTS ElementDependencies " +
 
@@ -222,6 +241,22 @@ public class Connect {
         }
         return tid;
     }
+//	public static int getTid() {
+//		int tid = 0;
+//		try {
+//
+//			PreparedStatement stmt = conn.prepareStatement("SELECT t_id FROM JavaTestElements join AccessMethods AM on JavaTestElements.t_access_method_id = AM.a_id\n" +
+//				"where AM.a_access_method_name == ? AND t_access_method_value == ?;");
+//			ResultSet rs = stmt.executeQuery();
+//			while (rs.next()) {
+//				tid = rs.getInt(1);
+//			}
+//			rs.close();
+//		} catch (SQLException ex) {
+//			ex.printStackTrace();
+//		}
+//		return tid;
+//	}
     public static void insert(String query){
         try{
             Statement stmt = conn.createStatement();
@@ -397,6 +432,18 @@ public class Connect {
                     .prepareStatement("INSERT OR IGNORE INTO Page (p_page_name,p_version_id) VALUES (?, ?);");
             stmt.setString(1, pageName);
             stmt.setInt(2, versionId);
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+	public static void addTestElementPageRelation(int pageId,int testId) {
+
+        try {
+            PreparedStatement stmt = conn
+                    .prepareStatement("INSERT OR IGNORE INTO TestElementPageRelation (pr_java_test_elements_id,pr_page_id) VALUES (?, ?);");
+            stmt.setInt(1, testId);
+            stmt.setInt(2, pageId);
             stmt.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
