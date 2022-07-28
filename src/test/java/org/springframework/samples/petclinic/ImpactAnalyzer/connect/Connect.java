@@ -327,8 +327,8 @@ public class Connect {
     }
 
     public static void addHTMLElement(String pageName, String elementId, String value, String xpath, String type, String name, String className, String tag, String cssSelector, int versionId) {
-        addPage("resources\\index.html",versionId);
-        int pageNameId = getPageId("resources\\index.html");
+        addPage(pageName,versionId);
+        int pageNameId = getPageId(pageName);
         try {
             PreparedStatement stmt = conn
                     .prepareStatement("INSERT INTO HtmlElements (h_page_name_id, h_element_id, h_value, h_xpath, h_type, h_name, h_class_name, h_tag,  h_css_selector) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");

@@ -5,20 +5,33 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
 
 public class HTMLJSONFileParser {
     private String HTML_JSON_FILE_PATH;
     private List<HTMLElement> htmlElements;
+	private String pageUrl;
 
-    public HTMLJSONFileParser(String HTMLJSONFilePath){
+    public HTMLJSONFileParser(String HTMLJSONFilePath) throws UnsupportedEncodingException {
+
         this.HTML_JSON_FILE_PATH = HTMLJSONFilePath;
         this.htmlElements = new ArrayList<HTMLElement>();
-    }
+		File file = new File(this.HTML_JSON_FILE_PATH);
+		String fileName = file.getName();
+		String fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+		byte[] base64decodedBytes = Base64.getDecoder().decode(fileNameWithoutExtension);
+
+		String url = new String(base64decodedBytes, "utf-8");
+
+		this.pageUrl = url;
+	}
     public List<HTMLElement> getHTMLElements() {
         return htmlElements;
     }
@@ -57,9 +70,7 @@ public class HTMLJSONFileParser {
 //                String name = (String) jsonObject.get("name");
 //                if(!name.equals(""))
 //                    htmlElement.setName(name);
-
-                counter++;
-
+				htmlElement.setUrl(this.pageUrl);
 
                     htmlElements.add(htmlElement);
 

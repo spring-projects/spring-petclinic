@@ -10,18 +10,18 @@ import java.util.ArrayList;
 // This is a comment
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-	import org.openqa.selenium.By;
-	import org.openqa.selenium.WebDriver;
-	import org.openqa.selenium.chrome.ChromeDriver;
-	import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.samples.petclinic.ImpactAnalyzer.connect.Connect;
 import org.springframework.samples.petclinic.ImpactAnalyzer.models.PageSource;
 
 import java.io.File;
-	import java.io.FileWriter;
-	import java.io.IOException;
-	import java.io.UnsupportedEncodingException;
-	import java.util.ArrayList;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 
 
@@ -146,9 +146,8 @@ public class SeleniumTest {
 
 		Thread.sleep(4000);
 		driver.findElement(By.xpath("/html/body/div/div/form/div[2]/div/button")).click();
-		String text = driver.findElement(By.xpath("/html/body/div/div/table[2]/tbody/tr[2]/td[1]/dl/dd[1]")).getText();
-		System.out.println(text);
 		urls.add(driver.getCurrentUrl());
+
 
 //
 //        //add visit

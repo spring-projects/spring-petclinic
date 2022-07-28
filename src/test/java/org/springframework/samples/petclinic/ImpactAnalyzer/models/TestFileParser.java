@@ -114,7 +114,7 @@ public final class TestFileParser {
                                 var href = (String) jsonObject.get("href");
                                 if (href.startsWith("/"))
                                     currentUrl = host + href;
-                                else {
+                                else if( !(href.equals(""))) {
                                     currentUrl = href;
                                     host = new URI(currentUrl).getHost();
                                 }
