@@ -23,14 +23,14 @@
       <input
         th:replace="~{fragments/selectField :: select ('Type', 'type', ${types})}" />
     </div>
-    <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-10">
-        <button
-          th:with="text=${pet['new']} ? 'Add Pet' : 'Update Pet'"
-          class="btn btn-primary" type="submit" th:text="${text}">Add
-          Pet</button>
-      </div>
-    </div>
+<!--    <div class="form-group">-->
+<!--      <div class="col-sm-offset-2 col-sm-10">-->
+<!--        <button-->
+<!--          th:with="text=${pet['new']} ? 'Add Pet' : 'Update Pet'"-->
+<!--          class="btn btn-primary" type="submit" th:text="${text}">Add-->
+<!--          Pet</button>-->
+<!--      </div>-->
+<!--    </div>-->
   </form>
 
 </body>

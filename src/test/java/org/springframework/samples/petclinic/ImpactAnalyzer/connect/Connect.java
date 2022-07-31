@@ -141,9 +141,11 @@ public class Connect {
 
 				" pr_java_test_elements_id int, "+
 
-				"pr_page_id TEXT," +
+				"pr_page_id TEXT,"+
 
-				"UNIQUE(pr_id),"+
+				"pr_positon int,"+
+
+				"UNIQUE(pr_java_test_elements_id, pr_page_id, pr_positon),"+
 
 				"FOREIGN KEY (pr_page_id) REFERENCES Page(p_id)"+
 
@@ -361,9 +363,26 @@ public class Connect {
         return info;
     }
 
+	public static  ArrayList<Integer> getIdOfAllJavaTestElement(String accessMethodName, String accessMethodValue) {
+        ArrayList<Integer> info = new ArrayList<Integer>();
+		try {
+			PreparedStatement stmt = conn.prepareStatement("SELECT t1.t_id FROM JavaTestElements t1 LEFT OUTER JOIN AccessMethods t2 ON t1.t_access_method_id == t2.a_id WHERE t2.a_access_method_name == ? AND t1.t_access_method_value == ?;");
+			stmt.setString(1, accessMethodName);
+			stmt.setString(2, accessMethodValue);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+                info.add(rs.getInt("t_id"));
+			}
+			rs.close();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return info;
+	}
+
     public static void addHTMLElement(String pageName, String elementId, String value, String xpath, String type, String name, String className, String tag, String cssSelector, int versionId) {
         addPage(pageName,versionId);
-        int pageNameId = getPageId(pageName);
+        int pageNameId = getPageId(pageName,versionId);
         try {
             PreparedStatement stmt = conn
                     .prepareStatement("INSERT INTO HtmlElements (h_page_name_id, h_element_id, h_value, h_xpath, h_type, h_name, h_class_name, h_tag,  h_css_selector) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
@@ -437,13 +456,14 @@ public class Connect {
             ex.printStackTrace();
         }
     }
-	public static void addTestElementPageRelation(int pageId,int testId) {
+	public static void addTestElementPageRelation(int pageId,int testId,int position) {
 
         try {
             PreparedStatement stmt = conn
-                    .prepareStatement("INSERT OR IGNORE INTO TestElementPageRelation (pr_java_test_elements_id,pr_page_id) VALUES (?, ?);");
+                    .prepareStatement("INSERT OR IGNORE INTO TestElementPageRelation (pr_java_test_elements_id,pr_page_id,pr_positon) VALUES (?, ?,?);");
             stmt.setInt(1, testId);
             stmt.setInt(2, pageId);
+            stmt.setInt(3, position);
             stmt.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -485,7 +505,7 @@ public class Connect {
 //    }
 //    return result;
 //}
-    public static int getIdOfHtmlElementByTestElement(TestElement testElement, int versionId1, int versionId2, boolean notExist, boolean getFirst) {
+    public static int getIdOfHtmlElementByTestElement(TestElement testElement, int versionId1, int versionId2, boolean notExist, boolean getFirst, int pageId) {
         int result = 0;
         try {
             String accessMethodName = testElement.getAccessMethod();
@@ -493,19 +513,19 @@ public class Connect {
             switch (accessMethodName){
                 case "tag":
                     stmt = conn
-                            .prepareStatement(" SELECT * FROM HtmlElements JOIN Page On p_id == h_page_name_id JOIN Version On p_version_id = v_id  where h_id IN (SELECT Table1.h_id FROM (HtmlElements t1 LEFT OUTER JOIN Page t2 ON t1.h_page_name_id == t2.p_id LEFT OUTER JOIN Version t3 ON t2.p_version_id== t3.v_id) Table1 WHERE Table1.v_id == ? OR Table1.v_id == ? GROUP BY Table1.p_page_name, Table1.h_element_id, Table1.h_value, Table1.h_xpath, Table1.h_type, Table1.h_name, Table1.h_class_name, Table1.h_css_selector, Table1.h_tag HAVING COUNT(*) = ?) and p_version_id == ? and h_tag == ?;");
+                            .prepareStatement(" SELECT * FROM HtmlElements JOIN Page On p_id == h_page_name_id JOIN Version On p_version_id = v_id  where h_id IN (SELECT Table1.h_id FROM (HtmlElements t1 LEFT OUTER JOIN Page t2 ON t1.h_page_name_id == t2.p_id LEFT OUTER JOIN Version t3 ON t2.p_version_id== t3.v_id) Table1 WHERE Table1.v_id == ? OR Table1.v_id == ? GROUP BY Table1.p_page_name, Table1.h_element_id, Table1.h_value, Table1.h_xpath, Table1.h_type, Table1.h_name, Table1.h_class_name, Table1.h_css_selector, Table1.h_tag HAVING COUNT(*) = ?) and p_version_id == ? and h_tag == ? and p_id == ?;");
                     break;
                 case "className":
                     stmt = conn
-                            .prepareStatement(" SELECT * FROM HtmlElements JOIN Page On p_id == h_page_name_id JOIN Version On p_version_id = v_id  where h_id IN (SELECT Table1.h_id FROM (HtmlElements t1 LEFT OUTER JOIN Page t2 ON t1.h_page_name_id == t2.p_id LEFT OUTER JOIN Version t3 ON t2.p_version_id== t3.v_id) Table1 WHERE Table1.v_id == ? OR Table1.v_id == ? GROUP BY Table1.p_page_name, Table1.h_element_id, Table1.h_value, Table1.h_xpath, Table1.h_type, Table1.h_name, Table1.h_class_name, Table1.h_css_selector, Table1.h_tag HAVING COUNT(*) = ?) and p_version_id == ? and h_class_name == ?;");
+                            .prepareStatement(" SELECT * FROM HtmlElements JOIN Page On p_id == h_page_name_id JOIN Version On p_version_id = v_id  where h_id IN (SELECT Table1.h_id FROM (HtmlElements t1 LEFT OUTER JOIN Page t2 ON t1.h_page_name_id == t2.p_id LEFT OUTER JOIN Version t3 ON t2.p_version_id== t3.v_id) Table1 WHERE Table1.v_id == ? OR Table1.v_id == ? GROUP BY Table1.p_page_name, Table1.h_element_id, Table1.h_value, Table1.h_xpath, Table1.h_type, Table1.h_name, Table1.h_class_name, Table1.h_css_selector, Table1.h_tag HAVING COUNT(*) = ?) and p_version_id == ? and h_class_name == ? and p_id == ?;");
                     break;
                 case "name":
                     stmt = conn
-                            .prepareStatement(" SELECT * FROM HtmlElements JOIN Page On p_id == h_page_name_id JOIN Version On p_version_id = v_id  where h_id IN (SELECT Table1.h_id FROM (HtmlElements t1 LEFT OUTER JOIN Page t2 ON t1.h_page_name_id == t2.p_id LEFT OUTER JOIN Version t3 ON t2.p_version_id== t3.v_id) Table1 WHERE Table1.v_id == ? OR Table1.v_id == ? GROUP BY Table1.p_page_name, Table1.h_element_id, Table1.h_value, Table1.h_xpath, Table1.h_type, Table1.h_name, Table1.h_class_name, Table1.h_css_selector, Table1.h_tag HAVING COUNT(*) = ?) and p_version_id == ? and h_name == ?;");
+                            .prepareStatement(" SELECT * FROM HtmlElements JOIN Page On p_id == h_page_name_id JOIN Version On p_version_id = v_id  where h_id IN (SELECT Table1.h_id FROM (HtmlElements t1 LEFT OUTER JOIN Page t2 ON t1.h_page_name_id == t2.p_id LEFT OUTER JOIN Version t3 ON t2.p_version_id== t3.v_id) Table1 WHERE Table1.v_id == ? OR Table1.v_id == ? GROUP BY Table1.p_page_name, Table1.h_element_id, Table1.h_value, Table1.h_xpath, Table1.h_type, Table1.h_name, Table1.h_class_name, Table1.h_css_selector, Table1.h_tag HAVING COUNT(*) = ?) and p_version_id == ? and h_name == ? and p_id == ?;");
                     break;
                 default:
                     stmt = conn
-                            .prepareStatement(" SELECT * FROM HtmlElements JOIN Page On p_id == h_page_name_id JOIN Version On p_version_id = v_id  where h_id IN (SELECT Table1.h_id FROM (HtmlElements t1 LEFT OUTER JOIN Page t2 ON t1.h_page_name_id == t2.p_id LEFT OUTER JOIN Version t3 ON t2.p_version_id== t3.v_id) Table1 WHERE Table1.v_id == ? OR Table1.v_id == ? GROUP BY Table1.p_page_name, Table1.h_element_id, Table1.h_value, Table1.h_xpath, Table1.h_type, Table1.h_name, Table1.h_class_name, Table1.h_css_selector, Table1.h_tag HAVING COUNT(*) = ?) and p_version_id == ? and h_xpath == ?;");
+                            .prepareStatement(" SELECT * FROM HtmlElements JOIN Page On p_id == h_page_name_id JOIN Version On p_version_id = v_id  where h_id IN (SELECT Table1.h_id FROM (HtmlElements t1 LEFT OUTER JOIN Page t2 ON t1.h_page_name_id == t2.p_id LEFT OUTER JOIN Version t3 ON t2.p_version_id== t3.v_id) Table1 WHERE Table1.v_id == ? OR Table1.v_id == ? GROUP BY Table1.p_page_name, Table1.h_element_id, Table1.h_value, Table1.h_xpath, Table1.h_type, Table1.h_name, Table1.h_class_name, Table1.h_css_selector, Table1.h_tag HAVING COUNT(*) = ?) and p_version_id == ? and h_xpath == ? and p_id == ?;");
                     break;
             }
             stmt.setInt(1, versionId1);
@@ -523,7 +543,10 @@ public class Connect {
                 stmt.setInt(4, versionId2);
             }
             stmt.setString(5, testElement.getAccessMethodValue());
-            ResultSet rs = stmt.executeQuery();
+
+			stmt.setInt(6, pageId);
+
+			ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 result = rs.getInt("h_id");
             }
@@ -535,12 +558,13 @@ public class Connect {
     }
 
 
-    public static int getPageId(String pageName) {
+    public static int getPageId(String pageName, int versionId) {
         int result = 0;
         try {
             PreparedStatement stmt = conn
-                    .prepareStatement("SELECT p_id FROM Page WHERE p_page_name = ?;");
+                    .prepareStatement("SELECT p_id FROM Page WHERE p_page_name = ? and p_version_id = ?;");
             stmt.setString(1, pageName);
+            stmt.setInt(2, versionId);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 result = rs.getInt(1);
@@ -630,7 +654,7 @@ public class Connect {
         ArrayList<TestElement> result = new ArrayList<TestElement>();
         try {
             PreparedStatement stmt = conn
-                    .prepareStatement("SELECT * FROM HtmlElements JOIN Page On p_id == h_page_name_id JOIN Version On p_version_id = v_id JOIN ElementDependencies ED on HtmlElements.h_id = ED.d_html_elements_id JOIN JavaTestElements t1 ON ED.d_java_test_elements_id == t1.t_id LEFT OUTER JOIN AccessMethods t2 ON t1.t_access_method_id == t2.a_id LEFT OUTER JOIN ActionMethods t3 ON t1.t_action_method_id == t3.ac_id where h_id IN (SELECT Table1.h_id FROM (HtmlElements t1 LEFT OUTER JOIN Page t2 ON t1.h_page_name_id == t2.p_id LEFT OUTER JOIN Version t3 ON t2.p_version_id== t3.v_id) Table1 WHERE Table1.v_id == ? OR Table1.v_id == ? GROUP BY Table1.p_page_name, Table1.h_element_id, Table1.h_value, Table1.h_xpath, Table1.h_type, Table1.h_name, Table1.h_class_name, Table1.h_css_selector, Table1.h_tag HAVING COUNT(*) = ?) and p_version_id == ? and p_page_name == ?;");
+                    .prepareStatement("SELECT * FROM HtmlElements JOIN Page On p_id == h_page_name_id JOIN Version On p_version_id = v_id JOIN ElementDependencies ED on HtmlElements.h_id = ED.d_html_elements_id JOIN  TestElementPageRelation TEPR ON ED.d_position == TEPR.pr_positon and ED.d_java_test_elements_id = TEPR.pr_java_test_elements_id AND p_id == TEPR.pr_page_id JOIN JavaTestElements t1 ON TEPR.pr_java_test_elements_id == t1.t_id LEFT OUTER JOIN AccessMethods t2 ON t1.t_access_method_id == t2.a_id LEFT OUTER JOIN ActionMethods t3 ON t1.t_action_method_id == t3.ac_id where h_id IN (SELECT Table1.h_id FROM (HtmlElements t1 LEFT OUTER JOIN Page t2 ON t1.h_page_name_id == t2.p_id LEFT OUTER JOIN Version t3 ON t2.p_version_id== t3.v_id) Table1 WHERE Table1.v_id == ? OR Table1.v_id == ? GROUP BY Table1.p_page_name, Table1.h_element_id, Table1.h_value, Table1.h_xpath, Table1.h_type, Table1.h_name, Table1.h_class_name, Table1.h_css_selector, Table1.h_tag HAVING COUNT(*) = ?) and p_version_id == ? and p_page_name=?;");
             stmt.setInt(1, versionId1);
             stmt.setInt(2, versionId2);
             if(notExist){

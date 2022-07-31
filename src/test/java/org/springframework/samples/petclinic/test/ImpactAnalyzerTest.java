@@ -3,12 +3,15 @@ package org.springframework.samples.petclinic.test;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 
 
 import org.springframework.samples.petclinic.ImpactAnalyzer.connect.Connect;
+import org.springframework.samples.petclinic.ImpactAnalyzer.models.HTMLElement;
 import org.springframework.samples.petclinic.ImpactAnalyzer.models.HTMLJSONFileParser;
 import org.springframework.samples.petclinic.ImpactAnalyzer.models.TestFileParser;
 import org.springframework.samples.petclinic.test.DependencyAnalyzer;
@@ -33,17 +36,21 @@ public class ImpactAnalyzerTest {
 			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 			Connect.addVersion(timestamp);
 
+			List<HTMLElement> htmlElements = new ArrayList<>();
+
 
 
 			for (int i = 0; i < listOfFiles.length ; i++) {
 				String currentPage = listOfFiles[i].toString();
 				HTMLJSONFileParser htmlJsonFileParser = new HTMLJSONFileParser(currentPage);
 				htmlJsonFileParser.setElements();
-				var htmlElements = htmlJsonFileParser.getHTMLElements();
-				dependencyAnalyzer.dependencyAnalyzer(htmlElements, testElements);
+				htmlElements.addAll(htmlJsonFileParser.getHTMLElements());
+
+
 
 
 			}
+			dependencyAnalyzer.dependencyAnalyzer(htmlElements, testElements);
 
 
 
