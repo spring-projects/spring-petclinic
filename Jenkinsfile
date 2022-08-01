@@ -7,7 +7,7 @@ podTemplate(label: label, containers: [
   node(label) {
     container('maven') {
         stage("build") {
-            sh "mvn --version"
+            sh "./mvnw -B package"
         }
     }
   }
