@@ -9,15 +9,9 @@ pipeline {
         maven 'Maven 3.8.6'
   }
   stages {
-    stage("Initialize") {
+    stage("Build") {
       steps {
-          sh "mvn clean initialize"
-      }
-    }
-
-    stage("Compile") {
-      steps {
-          sh "mvn compile"
+          sh "mvn clean package -DskipTests"
       }
     }
 
@@ -32,16 +26,10 @@ pipeline {
       }
     }
 
-    stage("Package") {
-      steps {
-          sh "mvn package -Dmaven.test.skip=true"
-      }
-    }
-
     stage("SonarQube") {
       steps {
           withCredentials([string(credentialsId: 'sonar', variable: 'SONAR')]) {
-            sh "mvn sonar:sonar -Dsonar.login=${SONAR}"
+            sh "mvn sonar:sonar -Dsonar.login=${SONAR} -Dsonar.host.url=https://sonarcloud.io"
           }
       }
     }
