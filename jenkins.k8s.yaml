@@ -7,7 +7,9 @@ spec:
   - name: maven
     image: maven:3.8.1-jdk-8
     command:
-    - cat
+    - sleep
+    args:
+    - 1d
     env:
     - name: CONTAINER_ENV_VAR
       value: maven
