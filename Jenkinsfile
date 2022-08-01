@@ -8,15 +8,7 @@ pipeline {
     stage('Compile') {
       steps {
         container('maven') {
-          sh './mvnw -B validate compile'
-        }
-      }
-    }
-
-    stage('Test') {
-      steps {
-        container('maven') {
-          sh './mvnw -B test'
+          sh './mvnw -B package'
         }
       }
     }
