@@ -5,13 +5,13 @@ pipeline {
     }
   }
   stages {
-    container('maven') {
-        stage('Run maven') {
-            steps {
-                sh 'mvn -version'
-                sh "./mvnw -B package"
-            }
+    stage('Run maven') {
+      steps {
+        container('maven') {
+          sh 'mvn -version'
+          sh './mvnw -B package'
         }
+      }
     }
   }
 }
