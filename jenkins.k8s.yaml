@@ -5,7 +5,7 @@ spec:
   containers:
   - name: jnlp
   - name: maven
-    image: maven:3.8.3-adoptopenjdk-11
+    image: maven:3.8.6-openjdk-11
     command:
     - sleep
     args:
