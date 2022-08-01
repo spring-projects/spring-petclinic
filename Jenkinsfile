@@ -1,15 +1,14 @@
 pipeline {
   agent {
     kubernetes {
+      defaultContauner "maven"
       yamlFile 'jenkins.k8s.yaml'
     }
   }
   stages {
     stage('Compile') {
       steps {
-        container('maven') {
-          sh './mvnw -B package'
-        }
+          shell './mvnw -B package'
       }
     }
   }
