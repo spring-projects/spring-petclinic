@@ -26,7 +26,7 @@ pipeline {
 
     stage("Package") {
       steps {
-          sh "mvn dependency:copy-dependencies package"
+          sh "mvn dependency:copy-dependencies package -Dmaven.test.skip=true"
       }
     }
   }
