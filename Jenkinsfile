@@ -34,7 +34,7 @@ pipeline {
         steps {
             withSonarQubeEnv(installationName: 'sonar') {
                 withCredentials([string(credentialsId: 'sonar', variable: 'SONAR_TOKEN')]) {
-                    sh 'mvn sonar:sonar -Dsonar.organization=sergeydz -Dsonar.projectKey=spring-petclinic -Dsonar.projectName=spring-petclinic'
+                    sh 'mvn sonar:sonar -Dsonar.organization=sergeydz -Dsonar.projectKey=SergeyDz_spring-petclinic'
                 }
             }
         }
