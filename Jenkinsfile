@@ -17,7 +17,7 @@ pipeline {
 
     stage("Compile") {
       steps {
-          sh "mvn compile"
+          sh "mvn compile:compile"
       }
     }
 
@@ -37,5 +37,14 @@ pipeline {
           sh "mvn package -Dmaven.test.skip=true"
       }
     }
+
+    stage("SonarQube") {
+      steps {
+          withCredentials([string(credentialsId: 'sonar', variable: 'SONAR')]) {
+            sh "mvn sonar:sonar -Dsonar.login=${SONAR}"
+          }
+      }
+    }
+
   }
 }
