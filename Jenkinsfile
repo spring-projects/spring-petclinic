@@ -5,18 +5,18 @@ pipeline {
     }
   }
   stages {
-    stage('Restore') {
+    stage('Compile') {
       steps {
         container('maven') {
-          sh 'mvn validate'
+          sh './mvnw -B compile'
         }
       }
     }
 
-     stage('Assemble') {
+    stage('Test') {
       steps {
         container('maven') {
-          sh 'mvn clean dependency:copy-dependencies package'
+          sh './mvnw -B test'
         }
       }
     }
