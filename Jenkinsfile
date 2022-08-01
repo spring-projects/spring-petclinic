@@ -8,7 +8,7 @@ pipeline {
     stage('Compile') {
       steps {
         container('maven') {
-          sh 'mvnw -B package'
+          sh './mvnw -B package'
         }
       }
     }
