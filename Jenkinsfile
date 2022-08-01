@@ -16,7 +16,7 @@ pipeline {
      stage('Assemble') {
       steps {
         container('maven') {
-          sh 'mvn assemble'
+          sh 'mvn clean dependency:copy-dependencies package'
         }
       }
     }
