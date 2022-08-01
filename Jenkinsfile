@@ -28,11 +28,14 @@ pipeline {
     }
 
     stage("SonarQube") {
-      steps {
-          withCredentials([string(credentialsId: 'sonar', variable: 'SONAR')]) {
-            sh "mvn sonar:sonar -Dsonar.login=${SONAR} -Dsonar.host.url=https://sonarcloud.io"
-          }
-      }
+      environment {
+            scannerHome = tool 'sonar'
+        }
+        steps {
+            withSonarQubeEnv(installationName: 'sonar') {
+                sh 'mvn sonar:sonar'
+            }
+        }
     }
 
   }
