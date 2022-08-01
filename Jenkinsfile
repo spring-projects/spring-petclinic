@@ -33,7 +33,7 @@ pipeline {
         }
         steps {
             withSonarQubeEnv(installationName: 'sonar') {
-                sh 'mvn sonar:sonar'
+                sh 'mvn sonar:sonar -Dsonar.organization=sergeydz -Dsonar.projectKey=spring-petclinic -Dsonar.projectName=spring-petclinic'
             }
         }
     }
