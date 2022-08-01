@@ -14,19 +14,19 @@ pipeline {
 
     stage("Compile") {
       steps {
-          sh "mvn compile"
+          sh "mvn dependency:copy-dependencies compile"
       }
     }
 
     stage("Test") {
       steps {
-          sh "mvn test"
+          sh "mvn dependency:copy-dependencies test"
       }
     }
 
     stage("Package") {
       steps {
-          sh "mvn package"
+          sh "mvn dependency:copy-dependencies package"
       }
     }
   }
