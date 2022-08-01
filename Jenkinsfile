@@ -6,7 +6,7 @@ pipeline {
     }
   }
   tools { 
-        maven 'Maven 3.8.3'
+        maven 'Maven 3.8.6'
   }
   stages {
     stage("Initialize") {
