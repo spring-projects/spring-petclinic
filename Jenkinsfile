@@ -1,7 +1,7 @@
 pipeline {
   agent {
     kubernetes {
-      defaultContauner "maven"
+      defaultContainer "maven"
       yamlFile 'jenkins.k8s.yaml'
     }
   }
