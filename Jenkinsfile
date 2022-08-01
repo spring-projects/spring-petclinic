@@ -5,6 +5,9 @@ pipeline {
       yamlFile "jenkins.k8s.yaml"
     }
   }
+  tools { 
+        maven 'Maven 3.8.3'
+  }
   stages {
     stage("Initialize") {
       steps {
