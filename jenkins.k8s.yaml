@@ -1,0 +1,13 @@
+metadata:
+  labels:
+    some-label: jfrog-jenkins-ci
+spec:
+  containers:
+  - name: jnlp
+  - name: maven
+    image: maven:3.8.1-jdk-8
+    command:
+    - cat
+    env:
+    - name: CONTAINER_ENV_VAR
+      value: maven
