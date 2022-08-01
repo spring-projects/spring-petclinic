@@ -11,5 +11,5 @@ spec:
     args:
     - 1d
     env:
-    - name: CONTAINER_ENV_VAR
-      value: maven
+    - name: MAVEN_OPTS
+      value: -Xmx512m
