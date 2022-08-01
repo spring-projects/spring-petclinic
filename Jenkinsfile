@@ -9,7 +9,7 @@ pipeline {
       steps {
         container('maven') {
           sh 'mvn -version'
-          sh 'mvn clean install'
+          sh 'mvn -T 10 clean install'
         }
       }
     }
