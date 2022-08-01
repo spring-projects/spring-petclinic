@@ -5,11 +5,18 @@ pipeline {
     }
   }
   stages {
-    stage('Run maven') {
+    stage('Restore') {
       steps {
         container('maven') {
-          sh 'mvn -version'
-          sh 'mvn -T 10 clean install'
+          sh 'mvn validate'
+        }
+      }
+    }
+
+     stage('Assemble') {
+      steps {
+        container('maven') {
+          sh 'mvn assemble'
         }
       }
     }
