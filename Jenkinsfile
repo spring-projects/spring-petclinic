@@ -56,7 +56,7 @@ pipeline {
         stage("Docker.Build") {
             steps {
                 container("docker") {
-                    sh "docker build -t sergeydz/spring-petclinic:${env.GitVersion_FullSemVer} ."
+                    sh "docker build -t sergeydz/spring-petclinic:${env.version} ."
                 }
             }
         }
@@ -79,8 +79,8 @@ def checkoutSCM(scm) {
 def version() {
     def gitversion = sh(script: "/tools/dotnet-gitversion", returnStdout: true)
     echo "====++++${gitversion}++++===="
-    def version = readJSON(text: gitversion)?.FullSemVer
+    env.version = readJSON(text: gitversion)?.FullSemVer
     sh "git config --global --add safe.directory ${workspace}"
     def author = sh(script: """git show -s --format=\"%ae\"""", returnStdout: true)
-    currentBuild.description = "${version} by ${author}"
+    currentBuild.description = "${env.version} by ${author}"
 }
