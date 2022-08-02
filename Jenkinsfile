@@ -30,35 +30,41 @@ pipeline {
             }
         }
 
-        // stage("Test") {
-        //   steps {
-        //       sh "mvn test"
-        //   }
-        //   post {
-        //     always {
-        //         junit "target/surefire-reports/*.xml" 
-        //     }
-        //   }
-        // }
-
-        // stage("SonarQube") {
-        //     environment {
-        //         scannerHome = tool "sonar"
-        //     }
-        //     steps {
-        //         withSonarQubeEnv(installationName: "sonar") {
-        //             sh "mvn sonar:sonar -Dsonar.organization=sergeydz -Dsonar.projectKey=SergeyDz_spring-petclinic"
-        //         }
-        //     }
-        // }
-
-        stage("Docker.Build") {
+        stage("Test") {
             steps {
-                container("docker") {
-                    sh "docker build -t sergeydz/spring-petclinic:${env.version} --build-arg VERSION=${env.version} ."
+                sh "mvn test"
+            }
+            post {
+                always {
+                    junit "target/surefire-reports/*.xml" 
                 }
             }
         }
+
+        parallel(
+            "Sonar Qube": {
+                stage("SonarQube") {
+                    environment {
+                        scannerHome = tool "sonar"
+                    }
+                    steps {
+                        withSonarQubeEnv(installationName: "sonar") {
+                            sh "mvn sonar:sonar -Dsonar.organization=sergeydz -Dsonar.projectKey=SergeyDz_spring-petclinic"
+                        }
+                    }
+                }
+            }, 
+
+            "Docker": {
+                stage("Docker.Build") {
+                    steps {
+                        container("docker") {
+                            sh "docker build -t sergeydz/spring-petclinic:${env.version} --build-arg VERSION=${env.version} ."
+                        }
+                    }
+                }
+            }
+        )
     }
 }
 
