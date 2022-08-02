@@ -80,8 +80,7 @@ pipeline {
                         rtDockerPush(
                             serverId: "jfrog",
                             image: "docker-dev.sergeydzyuban.jfrog.io/jfrog/spring-petclinic:${vars.version}",
-                            targetRepo: 'docker-dev',
-                            buildInfo: vars.buildInfo
+                            targetRepo: 'docker-dev'
                         )
                     }
                 }
