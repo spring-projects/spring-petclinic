@@ -95,6 +95,6 @@ def version() {
 def configureMavenSettings() {
     withCredentials([string(credentialsId: 'jfrog-token', variable: 'JFROG_TOKEN')]) {
         def settings = readFile file: "settings.xml"
-        saveFile file: "settings.xml", text: settings.replace("${JFROG_TOKEN}", env.JFROG_TOKEN)
+        writeFile file: "settings.xml", text: settings.replace("${JFROG_TOKEN}", env.JFROG_TOKEN)
     }
 }
