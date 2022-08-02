@@ -16,8 +16,8 @@ pipeline {
             steps {
                 container("gitversion") {
                     script {
-                        this.checkoutSCM(scm)
-                        this.version()
+                        checkoutSCM(scm)
+                        version()
                     }
                 }
             }
