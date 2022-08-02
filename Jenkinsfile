@@ -10,9 +10,6 @@ pipeline {
     }
     options { 
         skipDefaultCheckout() 
-    }  
-    environment {
-        GitVersion_FullSemVer = "0.1.0"
     }
     stages {
         stage("Checkout") {
@@ -78,9 +75,10 @@ def checkoutSCM(scm) {
 
 def version() {
     def gitversion = sh(script: "/tools/dotnet-gitversion", returnStdout: true)
-    echo "====++++${gitversion}++++===="
     env.version = readJSON(text: gitversion)?.FullSemVer
+
     sh "git config --global --add safe.directory ${workspace}"
     def author = sh(script: """git show -s --format=\"%ae\"""", returnStdout: true)
+
     currentBuild.description = "${env.version} by ${author}"
 }
