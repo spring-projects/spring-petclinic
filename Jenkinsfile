@@ -75,11 +75,13 @@ pipeline {
 
                 stage("Docker.Push") {
                     steps {
-                        rtDockerPush(
-                            serverId: "jfrog",
-                            image: "docker-dev.sergeydzyuban.jfrog.io/jfrog/spring-petclinic:${env.version}",
-                            targetRepo: 'docker-dev'
-                        )
+                        container("docker") {
+                            rtDockerPush(
+                                serverId: "jfrog",
+                                image: "docker-dev.sergeydzyuban.jfrog.io/jfrog/spring-petclinic:${env.version}",
+                                targetRepo: 'docker-dev'
+                            )
+                        }
                     }
                 }
             }
