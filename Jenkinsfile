@@ -10,6 +10,8 @@ pipeline {
     }
     options { 
         skipDefaultCheckout() 
+        buildDiscarder(logRotator(numToKeepStr: "10"))
+        disableConcurrentBuilds()
     }
     stages {
         stage("Checkout") {
@@ -93,8 +95,8 @@ def version() {
 }
 
 def configureMavenSettings() {
-    withCredentials([string(credentialsId: 'jfrog-token', variable: 'JFROG_TOKEN')]) {
+    withCredentials([string(credentialsId: "jfrog-token", variable: "JFROG_TOKEN")]) {
         def settings = readFile file: "settings.xml"
-        writeFile file: "settings.xml", text: settings.replace("${JFROG_TOKEN}", env.JFROG_TOKEN)
+        writeFile file: "settings.xml", text: settings.replace("JFROG_TOKEN", env.JFROG_TOKEN)
     }
 }
