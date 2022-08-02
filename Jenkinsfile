@@ -15,18 +15,20 @@ pipeline {
         stage('Version') {
             steps {
                 container("gitversion") {
-                    Map cloneOptions = [noTags: false, shallow: false, depth: 0]
-                    def extensions = [
-                        [$class: 'CloneOption', reference: '', noTags: false, shallow: false, depth: 0],
-                        [$class: 'RelativeTargetDirectory', relativeTargetDir: targetDirectory]
-                    ]
-                    checkout([
-                        $class: 'GitSCM',
-                        branches: scm.branches,
-                        doGenerateSubmoduleConfigurations: scm.doGenerateSubmoduleConfigurations,
-                        extensions: extensions,
-                        userRemoteConfigs: scm.userRemoteConfigs
-                    ])
+                    script {
+                        Map cloneOptions = [noTags: false, shallow: false, depth: 0]
+                        def extensions = [
+                            [$class: 'CloneOption', reference: '', noTags: false, shallow: false, depth: 0],
+                            [$class: 'RelativeTargetDirectory', relativeTargetDir: targetDirectory]
+                        ]
+                        checkout([
+                            $class: 'GitSCM',
+                            branches: scm.branches,
+                            doGenerateSubmoduleConfigurations: scm.doGenerateSubmoduleConfigurations,
+                            extensions: extensions,
+                            userRemoteConfigs: scm.userRemoteConfigs
+                        ])
+                    }
 
                     sh "/tools/dotnet-gitversion"
                 }
