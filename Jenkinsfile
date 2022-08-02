@@ -40,9 +40,8 @@ pipeline {
                 }
             }
         }
-
-        parallel(
-            
+        
+        parallel {
             stage("SonarQube") {
                 environment {
                     scannerHome = tool "sonar"
@@ -61,7 +60,7 @@ pipeline {
                     }
                 }
             }
-        )
+        }
     }
 }
 
