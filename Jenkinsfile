@@ -18,7 +18,7 @@ pipeline {
                     script {
                         Map cloneOptions = [noTags: false, shallow: false, depth: 0]
                         def extensions = [
-                            [$class: "CloneOption", reference: ", noTags: false, shallow: false, depth: 0],
+                            [$class: "CloneOption", reference: "", noTags: false, shallow: false, depth: 0],
                             [$class: "RelativeTargetDirectory", relativeTargetDir: ""]
                         ]
                         checkout([
