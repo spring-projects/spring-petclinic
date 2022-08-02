@@ -28,14 +28,14 @@ pipeline {
             steps {
                 sh """
                     mvn versions:set -DnewVersion=${env.version}
-                    mvn clean package -DskipTests=true
+                    mvn clean package -DskipTests=true -s settings.xml
                 """
             }
         }
 
         stage("Test") {
             steps {
-                sh "mvn test"
+                sh "mvn test -s settings.xml"
             }
             post {
                 always {
