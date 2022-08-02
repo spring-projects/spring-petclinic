@@ -22,9 +22,15 @@ pipeline {
                     script {
                         checkoutSCM(scm)
                         version()
-                        configureMavenSettings()
                     }
                 }
+            }
+        }
+
+        stage("Init"){
+            script {
+                init()
+                configureMavenSettings()
             }
         }
         
@@ -47,6 +53,14 @@ pipeline {
                 }
             }
         }
+
+        stage("Docker.Build") {
+            steps {
+                container("docker") {
+                    sh "docker build -t docker-dev.sergeydzyuban.jfrog.io/jfrog/spring-petclinic:${vars.version} --build-arg VERSION=${vars.version} . >> $WORKSPACE/docker.build.log 2>&1"
+                }
+            }
+        }
         
         stage("Parallel") {
             parallel {
@@ -61,11 +75,14 @@ pipeline {
                     }
                 }
 
-                stage("Docker.Build") {
-                    steps {
-                        container("docker") {
-                            sh "docker build -t sergeydz/spring-petclinic:${vars.version} --build-arg VERSION=${vars.version} . >> $WORKSPACE/docker.build.log 2>&1"
-                        }
+                stage("Docker.Push") {
+                    script {
+                        rtDockerPush(
+                            serverId: "jfrog",
+                            image: "docker-dev.sergeydzyuban.jfrog.io/jfrog/spring-petclinic:${vars.version}",
+                            targetRepo: 'docker-dev',
+                            buildInfo: vars.buildInfo
+                        )
                     }
                 }
             }
@@ -100,6 +117,20 @@ def version() {
     def author = sh(script: """git show -s --format=\"%ae\"""", returnStdout: true)
 
     currentBuild.description = "${vars.version} by ${author}"
+}
+
+def init() {
+    vars.artifactory = Artifactory.newServer(url: "https://sergeydzyuban.jfrog.io/", credentialsId: "jfrog-token")
+    vars.buildInfo = Artifactory.newBuildInfo()
+
+    vars.buildInfo.name = "spring-petclinic"
+    vars.buildInfo.description = "Spring Pet Clinic"
+    vars.buildInfo.scmRevision = vars.version
+    vars.buildInfo.scmUrl = scm.url
+    vars.buildInfo.scmName = scm.scmName
+    vars.buildInfo.scmBranch = scm.branches.first().name
+
+    vars.buildInfo.retention maxBuilds: 10, maxDays: 30, deleteBuildArtifacts: true
 }
 
 def configureMavenSettings() {
