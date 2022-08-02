@@ -15,7 +15,7 @@ pipeline {
         GitVersion_FullSemVer = "0.1.0"
     }
     stages {
-        stage("Version") {
+        stage("Checkout") {
             steps {
                 container("gitversion") {
                     script {
@@ -78,9 +78,7 @@ def checkoutSCM(scm) {
 
 def version() {
     sh "/tools/dotnet-gitversion"
-    def author = sh """
-        git config --global --add safe.directory ${workspace}
-        git show -s --format=\"%ae\"
-    """
+    sh "git config --global --add safe.directory ${workspace}"
+    def author = sh(script: """git show -s --format=\"%ae\"""", stdOut: true)
     currentBuild.description = "${GitVersion_FullSemVer} ${author}"
 }
