@@ -1,5 +1,3 @@
-vars = [:]
-
 pipeline {
     agent {
         kubernetes {
@@ -37,7 +35,7 @@ pipeline {
         stage("Build") {
             steps {
                 sh """
-                    mvn versions:set -DnewVersion=${vars.version} -s settings.xml >> $WORKSPACE/mvn.log 2>&1
+                    mvn versions:set -DnewVersion=${env.version} -s settings.xml >> $WORKSPACE/mvn.log 2>&1
                     mvn clean package -DskipTests=true -s settings.xml >> $WORKSPACE/mvn.log 2>&1
                 """
             }
@@ -57,7 +55,7 @@ pipeline {
         stage("Docker.Build") {
             steps {
                 container("docker") {
-                    sh "docker build -t docker-dev.sergeydzyuban.jfrog.io/jfrog/spring-petclinic:${vars.version} --build-arg VERSION=${vars.version} . >> $WORKSPACE/docker.build.log 2>&1"
+                    sh "docker build -t docker-dev.sergeydzyuban.jfrog.io/jfrog/spring-petclinic:${env.version} --build-arg VERSION=${env.version} . >> $WORKSPACE/docker.build.log 2>&1"
                 }
             }
         }
@@ -79,7 +77,7 @@ pipeline {
                     steps {
                         rtDockerPush(
                             serverId: "jfrog",
-                            image: "docker-dev.sergeydzyuban.jfrog.io/jfrog/spring-petclinic:${vars.version}",
+                            image: "docker-dev.sergeydzyuban.jfrog.io/jfrog/spring-petclinic:${env.version}",
                             targetRepo: 'docker-dev'
                         )
                     }
@@ -110,12 +108,12 @@ def checkoutSCM(scm) {
 
 def version() {
     def gitversion = sh(script: "/tools/dotnet-gitversion", returnStdout: true)
-    vars.version = readJSON(text: gitversion)?.FullSemVer
+    env.version = readJSON(text: gitversion)?.FullSemVer
 
     sh "git config --global --add safe.directory ${workspace}"
     def author = sh(script: """git show -s --format=\"%ae\"""", returnStdout: true)
 
-    currentBuild.description = "${vars.version} by ${author}"
+    currentBuild.description = "${env.version} by ${author}"
 }
 
 def init() {
