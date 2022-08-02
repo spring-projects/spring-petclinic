@@ -20,6 +20,12 @@ spec:
     volumeMounts:
     - name: dockersock
       mountPath: /var/run/docker.sock
+  - name: gitversion
+    image: gittools/gitversion:5.10.3-alpine.3.13-6.0
+    command:
+    - sleep
+    args:
+    - 1d
   volumes:
   - name: dockersock
     hostPath:
