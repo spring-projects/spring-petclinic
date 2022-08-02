@@ -12,7 +12,7 @@ pipeline {
     stage('Version') {
         steps {
             container("gitversion") {
-                sh "gitversion"
+                sh "dotnet tool gitversion"
             }
         }
     }
