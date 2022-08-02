@@ -6,23 +6,23 @@ pipeline {
         }
     }
     tools { 
-        maven 'Maven 3.8.6'
+        maven "Maven 3.8.6"
     }
     options { 
         skipDefaultCheckout() 
     }  
     stages {
-        stage('Version') {
+        stage("Version") {
             steps {
                 container("gitversion") {
                     script {
                         Map cloneOptions = [noTags: false, shallow: false, depth: 0]
                         def extensions = [
-                            [$class: 'CloneOption', reference: '', noTags: false, shallow: false, depth: 0],
-                            [$class: 'RelativeTargetDirectory', relativeTargetDir: targetDirectory]
+                            [$class: "CloneOption", reference: ", noTags: false, shallow: false, depth: 0],
+                            [$class: "RelativeTargetDirectory", relativeTargetDir: ""]
                         ]
                         checkout([
-                            $class: 'GitSCM',
+                            $class: "GitSCM",
                             branches: scm.branches,
                             doGenerateSubmoduleConfigurations: scm.doGenerateSubmoduleConfigurations,
                             extensions: extensions,
@@ -46,18 +46,18 @@ pipeline {
         //   }
         //   post {
         //     always {
-        //         junit 'target/surefire-reports/*.xml' 
+        //         junit "target/surefire-reports/*.xml" 
         //     }
         //   }
         // }
 
         // stage("SonarQube") {
         //     environment {
-        //         scannerHome = tool 'sonar'
+        //         scannerHome = tool "sonar"
         //     }
         //     steps {
-        //         withSonarQubeEnv(installationName: 'sonar') {
-        //             sh 'mvn sonar:sonar -Dsonar.organization=sergeydz -Dsonar.projectKey=SergeyDz_spring-petclinic'
+        //         withSonarQubeEnv(installationName: "sonar") {
+        //             sh "mvn sonar:sonar -Dsonar.organization=sergeydz -Dsonar.projectKey=SergeyDz_spring-petclinic"
         //         }
         //     }
         // }
