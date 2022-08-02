@@ -36,6 +36,8 @@ class PetController {
 
 	private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = "pets/createOrUpdatePetForm";
 
+	private static final String VIEWS_PETS_REMOVE_FORM = "pets/removePetForm";
+
 	private final OwnerRepository owners;
 
 	public PetController(OwnerRepository owners) {
@@ -110,6 +112,26 @@ class PetController {
 			this.owners.save(owner);
 			return "redirect:/owners/{ownerId}";
 		}
+	}
+
+	@GetMapping("/pets/{petId}/remove")
+	public String initRemovePetForm(Owner owner, @PathVariable("petId") int petId, ModelMap model) {
+		Pet pet = owner.getPet(petId);
+		model.put("pet", pet);
+		return VIEWS_PETS_REMOVE_FORM;
+	}
+
+	@PostMapping("/pets/{petId}/remove")
+	public String removePet(@Valid Pet pet, BindingResult result, Owner owner, ModelMap model) {
+		if (result.hasErrors()) {
+			model.put("pet", pet);
+			return VIEWS_PETS_REMOVE_FORM;
+		}
+
+		// No error. Remove pet from owner.
+		owner.removePet(pet);
+		this.owners.save(owner);
+		return "redirect:/owners/{ownerId}";
 	}
 
 }

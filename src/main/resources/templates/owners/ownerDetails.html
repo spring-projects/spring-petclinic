@@ -71,6 +71,9 @@
               <td><a
                 th:href="@{{ownerId}/pets/{petId}/visits/new(ownerId=${owner.id},petId=${pet.id})}">Add
                   Visit</a></td>
+              <td><a
+                th:href="@{{ownerId}/pets/{petId}/remove(ownerId=${owner.id},petId=${pet.id})}">Remove
+                Pet</a></td>
             </tr>
           </table>
         </td>
