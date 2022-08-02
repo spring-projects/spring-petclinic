@@ -1,0 +1,70 @@
+# GitFlow model!
+mode: Mainline
+tag-prefix: '[vV]'
+increment: None
+patch-version-bump-message: "Merge branch 'hotfix(es)?[/-]"
+branches:
+  # Stable branch
+  # Pre-Prod and Production artifacts comes from commits of this branch
+  master:
+    tag: ''
+    increment: Patch
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+    regex: ^master$|^main$
+    tracks-release-branches: false
+    is-release-branch: false
+    is-mainline: true
+
+  # Continuous Integration Branch
+  # Doesn't need to have stable commits!
+  develop:
+    tag: dev
+    increment: Patch
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+    regex: ^dev(elop)?(ment)?$
+    source-branches:
+      - master
+    tracks-release-branches: false
+    is-release-branch: false
+    is-mainline: false
+
+  # Release candidate commits!
+  release:
+    tag: rc # short for release-candidate
+    increment: None
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+    regex: ^release[/-]|stage # Existing legacy branch named "stage" must not be used to avoid versioning inconsistency
+    source-branches:
+    - develop
+    tracks-release-branches: false
+    is-release-branch: true
+    is-mainline: true
+
+  feature:
+    increment: Patch
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+    regex: ^feature?[/-]
+    source-branches:
+    - master # master branch MUST be removed from here as all feature development should happen from develop branch
+    - develop
+    tracks-release-branches: false
+    is-release-branch: false
+    is-mainline: false
+
+  hotfix:
+    tag: fix
+    increment: None
+    prevent-increment-of-merged-branch-version: false
+    track-merge-target: false
+    regex: ^hotfix(es)?[/-]
+    source-branches:
+    - develop
+    - release
+    - master
+    tracks-release-branches: false
+    is-release-branch: false
+    is-mainline: false

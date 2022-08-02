@@ -9,7 +9,13 @@ pipeline {
         maven 'Maven 3.8.6'
   }
   stages {
-    
+    stage('Version') {
+        steps {
+            container("gitversion") {
+                sh "gitversion"
+            }
+        }
+    }
     // stage("Build") {
     //   steps {
     //       sh "mvn clean package -DskipTests=true"
