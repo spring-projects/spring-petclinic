@@ -27,7 +27,7 @@ pipeline {
         stage("Build") {
             steps {
                 sh """
-                    mvn versions:set -DnewVersion=${env.version}
+                    mvn versions:set -DnewVersion=${env.version} -s settings.xml
                     mvn clean package -DskipTests=true -s settings.xml
                 """
             }
