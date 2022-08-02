@@ -76,6 +76,7 @@ pipeline {
                 stage("Docker.Push") {
                     steps {
                         container("maven") {
+                            sh "java --version"
                             rtDockerPush(
                                 serverId: "jfrog",
                                 image: "docker-dev.sergeydzyuban.jfrog.io/jfrog/spring-petclinic:${env.version}",
