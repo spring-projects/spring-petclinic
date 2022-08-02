@@ -76,7 +76,7 @@ pipeline {
                 }
 
                 stage("Docker.Push") {
-                    script {
+                    steps {
                         rtDockerPush(
                             serverId: "jfrog",
                             image: "docker-dev.sergeydzyuban.jfrog.io/jfrog/spring-petclinic:${vars.version}",
