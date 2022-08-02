@@ -17,9 +17,8 @@ pipeline {
                 container("gitversion") {
                     script {
                         this.checkoutSCM(scm)
+                        this.version()
                     }
-
-                    sh "/tools/dotnet-gitversion"
                 }
             }
         }
@@ -72,4 +71,10 @@ def checkoutSCM(scm) {
         ],
         userRemoteConfigs: scm.userRemoteConfigs
     ])
+}
+
+def version() {
+    sh "/tools/dotnet-gitversion"
+    def author = sh """git show -s --format=\"%ae\""""
+    currentBuild.description = "<b>${env.GitVersion_FullSemVer}</b> ${author}"
 }
