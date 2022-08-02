@@ -28,7 +28,7 @@ pipeline {
         }
 
         stage("Init"){
-            script {
+            steps {
                 init()
                 configureMavenSettings()
             }
