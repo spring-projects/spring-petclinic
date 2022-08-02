@@ -119,17 +119,11 @@ def version() {
 }
 
 def init() {
-    vars.artifactory = Artifactory.newServer(url: "https://sergeydzyuban.jfrog.io/", credentialsId: "jfrog-token")
-    vars.buildInfo = Artifactory.newBuildInfo()
-
-    vars.buildInfo.name = "spring-petclinic"
-    vars.buildInfo.description = "Spring Pet Clinic"
-    vars.buildInfo.scmRevision = vars.version
-    vars.buildInfo.scmUrl = scm.url
-    vars.buildInfo.scmName = scm.scmName
-    vars.buildInfo.scmBranch = scm.branches.first().name
-
-    vars.buildInfo.retention maxBuilds: 10, maxDays: 30, deleteBuildArtifacts: true
+    rtServer (
+        id: "jfrog",
+        url: "https://sergeydzyuban.jfrog.io/",
+        credentialsId: "jfrog-token"
+    )
 }
 
 def configureMavenSettings() {
