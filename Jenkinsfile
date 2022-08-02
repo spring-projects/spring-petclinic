@@ -86,11 +86,10 @@ pipeline {
                 }
             }
         }
-
-        stage("Logs") {
-            steps {
-                archiveArtifacts(artifacts: '*.log', allowEmptyArchive: true)
-            }
+    }
+    post {
+        always {
+            archiveArtifacts(artifacts: '*.log', allowEmptyArchive: true)
         }
     }
 }
