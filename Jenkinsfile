@@ -77,8 +77,11 @@ def checkoutSCM(scm) {
 }
 
 def version() {
-    sh "/tools/dotnet-gitversion"
+    sh """
+        /tools/dotnet-gitversion
+        printenv
+    """
     sh "git config --global --add safe.directory ${workspace}"
     def author = sh(script: """git show -s --format=\"%ae\"""", returnStdout: true)
-    currentBuild.description = "${GitVersion_FullSemVer} ${author}"
+    currentBuild.description = "${GitVersion_FullSemVer} by ${author}"
 }
