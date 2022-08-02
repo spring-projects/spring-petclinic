@@ -16,18 +16,7 @@ pipeline {
             steps {
                 container("gitversion") {
                     script {
-                        Map cloneOptions = [noTags: false, shallow: false, depth: 0]
-                        def extensions = [
-                            [$class: "CloneOption", reference: "", noTags: false, shallow: false, depth: 0],
-                            [$class: "RelativeTargetDirectory", relativeTargetDir: ""]
-                        ]
-                        checkout([
-                            $class: "GitSCM",
-                            branches: scm.branches,
-                            doGenerateSubmoduleConfigurations: scm.doGenerateSubmoduleConfigurations,
-                            extensions: extensions,
-                            userRemoteConfigs: scm.userRemoteConfigs
-                        ])
+                        this.checkout(scm)
                     }
 
                     sh "/tools/dotnet-gitversion"
@@ -70,4 +59,17 @@ pipeline {
             }
         }
     }
+}
+
+def checkout(scm) {
+    checkout([
+        $class: "GitSCM",
+        branches: scm.branches,
+        doGenerateSubmoduleConfigurations: scm.doGenerateSubmoduleConfigurations,
+        extensions: [
+            [$class: "CloneOption", reference: "", noTags: false, shallow: false, depth: 0],
+            [$class: "RelativeTargetDirectory", relativeTargetDir: ""]
+        ],
+        userRemoteConfigs: scm.userRemoteConfigs
+    ])
 }
