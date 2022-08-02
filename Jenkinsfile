@@ -75,7 +75,7 @@ pipeline {
 
                 stage("Docker.Push") {
                     steps {
-                        container("maven") {
+                        container("jnlp") {
                             sh "java --version"
                             rtDockerPush(
                                 serverId: "jfrog",
