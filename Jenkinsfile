@@ -77,11 +77,9 @@ def checkoutSCM(scm) {
 }
 
 def version() {
-    sh """
-        /tools/dotnet-gitversion
-        printenv
-    """
+    def gitversion = sh(script: "/tools/dotnet-gitversion", returnStdout: true)
+    env.GitVersion_FullSemVer = readJSON(text: json)?.FullSemVer
     sh "git config --global --add safe.directory ${workspace}"
     def author = sh(script: """git show -s --format=\"%ae\"""", returnStdout: true)
-    currentBuild.description = "${GitVersion_FullSemVer} by ${author}"
+    currentBuild.description = "${env.GitVersion_FullSemVer} by ${author}"
 }
