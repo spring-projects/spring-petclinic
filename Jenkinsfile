@@ -12,6 +12,7 @@ pipeline {
     stage('Version') {
         steps {
             container("gitversion") {
+                checkout(scm)
                 sh "/tools/dotnet-gitversion"
             }
         }
