@@ -13,13 +13,19 @@ spec:
     env:
     - name: MAVEN_OPTS
       value: -Xmx512m
-  - name: nerdctl
-    image: bensonyanger/nerdctl:0.16
-    command: ['cat']
-    tty: true
   - name: gitversion
     image: gittools/gitversion:5.10.3-alpine.3.13-6.0
     command:
     - sleep
     args:
     - 1d
+  - name: dind
+    image: docker:18.05-dind
+    securityContext:
+      privileged: true
+    volumeMounts:
+      - name: dind-storage
+        mountPath: /var/lib/docker
+  volumes:
+    - name: dind-storage
+      emptyDir: {}

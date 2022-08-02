@@ -10,11 +10,11 @@ pipeline {
   }
   stages {
     
-    stage("Build") {
-      steps {
-          sh "mvn clean package -DskipTests=true"
-      }
-    }
+    // stage("Build") {
+    //   steps {
+    //       sh "mvn clean package -DskipTests=true"
+    //   }
+    // }
 
     // stage("Test") {
     //   steps {
@@ -41,7 +41,7 @@ pipeline {
     stage("Docker.Build") {
         steps {
             container("docker") {
-                sh "nerdctl build -t sergeydz/spring-petclinic:latest ."
+                sh "docker build -t sergeydz/spring-petclinic:latest ."
             }
         }
     }
