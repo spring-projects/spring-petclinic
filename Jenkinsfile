@@ -11,6 +11,9 @@ pipeline {
     options { 
         skipDefaultCheckout() 
     }  
+    environment {
+        GitVersion_FullSemVer = "0.1.0"
+    }
     stages {
         stage("Version") {
             steps {
@@ -79,5 +82,5 @@ def version() {
         git config --global --add safe.directory ${workspace}
         git show -s --format=\"%ae\"
     """
-    currentBuild.description = "<b>${env.GitVersion_FullSemVer}</b> ${author}"
+    currentBuild.description = "${GitVersion_FullSemVer} ${author}"
 }
