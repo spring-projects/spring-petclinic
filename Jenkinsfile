@@ -16,7 +16,7 @@ pipeline {
             steps {
                 container("gitversion") {
                     script {
-                        this.checkout(scm)
+                        this.checkoutSCM(scm)
                     }
 
                     sh "/tools/dotnet-gitversion"
@@ -61,7 +61,7 @@ pipeline {
     }
 }
 
-def checkout(scm) {
+def checkoutSCM(scm) {
     checkout([
         $class: "GitSCM",
         branches: scm.branches,
