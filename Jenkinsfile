@@ -1,8 +1,8 @@
 pipeline {
   agent {
     kubernetes {
-      defaultContainer "maven"
-      yamlFile "jenkins.k8s.yaml"
+        defaultContainer "maven"
+        yamlFile "jenkins.k8s.yaml"
     }
   }
   tools { 
@@ -28,7 +28,7 @@ pipeline {
     }
 
     stage("SonarQube") {
-      environment {
+        environment {
             scannerHome = tool 'sonar'
         }
         steps {
