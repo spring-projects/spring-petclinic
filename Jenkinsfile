@@ -120,7 +120,7 @@ def init() {
     rtServer (
         id: "jfrog",
         url: "https://sergeydzyuban.jfrog.io/",
-        credentialsId: "jfrog-token"
+        credentialsId: "jfrog-user-password"
     )
 }
 
