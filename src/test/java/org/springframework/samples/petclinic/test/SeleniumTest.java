@@ -2,6 +2,8 @@ package org.springframework.samples.petclinic.test;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -11,29 +13,71 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 // This is a comment
-import io.github.bonigarcia.wdm.WebDriverManager;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.samples.petclinic.ImpactAnalyzer.connect.Connect;
 import org.springframework.samples.petclinic.ImpactAnalyzer.models.PageSource;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-
+import static org.junit.Assert.fail;
 
 
 public class SeleniumTest {
+
+
 	WebDriver driver;
+	ArrayList<PageSource> pageSourceList;
+	ArrayList<String> pageNames;
+
+	int getMaxVid;
+
+	ArrayList<String> allPageNames ;
 
 
-	@org.junit.Test
-	public void test() throws InterruptedException, UnsupportedEncodingException {
+	@Before
+	public final void before() {
+
+		pageSourceList = new ArrayList<PageSource>();
+
+	}
+
+	boolean testFailed = false;
+	@Test
+	public void test(){
+		try {
+			bora();
+		}
+		catch (Exception e){
+			testFailed = true;
+
+		}
+	}
+	@After
+	public final void after() throws UnsupportedEncodingException, InterruptedException {
+		Connect.connect();
+
+		getMaxVid = Connect.getMaxVid();
+		allPageNames = Connect.getPageNames(getMaxVid);
+		for(PageSource pageSource: pageSourceList){
+			pageSource.addJSON();
+				while (allPageNames.contains(pageSource.getPageUrl())){
+					allPageNames.remove(pageSource.getPageUrl());
+				}
+		}
+		for(String pageUrl : allPageNames){
+			PageSource.addExtraJSONPage(pageUrl,driver);
+		}
+
+	if(testFailed){
+		fail("Test failed");
+
+	}
+
+		Connect.close();
+
+	}
+
+
+
+	public void bora() throws InterruptedException, UnsupportedEncodingException {
 
 		String currentUrl;
 
@@ -84,7 +128,9 @@ public class SeleniumTest {
 		driver.get("http://localhost:8080/owners/new");
 
 		currentUrl = driver.getCurrentUrl();
-		PageSource.pageSource(driver,currentUrl);
+//		PageSource.pageSource(driver,currentUrl);
+
+		pageSourceList.add(new PageSource("newUser", driver.getPageSource(), driver.getCurrentUrl()));
 
 		driver.findElement(By.xpath("/html/body/div/div/form/div[1]/div[1]/div/div/input")).sendKeys("Başak");
 		urls.add(driver.getCurrentUrl());
@@ -107,13 +153,15 @@ public class SeleniumTest {
 		Thread.sleep(1000);
 		//Edit
           /*
-        @Page edit
+        @Page edit user
         @URL http://localhost:8080/owners/13/edit
          */
 
-		driver.get("http://localhost:8080/owners/11/edit");
+		driver.get("http://localhost:8080/owners/10/edit");
 		currentUrl = driver.getCurrentUrl();
-		PageSource.pageSource(driver,currentUrl);
+//		PageSource.pageSource(driver,currentUrl);
+		pageSourceList.add(new PageSource("editUser", driver.getPageSource(), driver.getCurrentUrl()));
+
 
 //		driver.findElement(By.xpath("/html/body/div/div/a[1]")).click();
 //		urls.add(driver.getCurrentUrl());
@@ -141,15 +189,18 @@ public class SeleniumTest {
         /*
         @Page add_new_pet
         @URL http://localhost:8080/owners/1/pets/new
-         */
+//         */
 
-		driver.get("http://localhost:8080/owners/11/pets/new");
+		driver.get("http://localhost:8080/owners/10/pets/new");
 		currentUrl = driver.getCurrentUrl();
-		PageSource.pageSource(driver,currentUrl);
+//		PageSource.pageSource(driver,currentUrl);
+
+		pageSourceList.add(new PageSource("addNewPet", driver.getPageSource(), driver.getCurrentUrl()));
+
 
 
 		currentUrl = driver.getCurrentUrl();
-		PageSource.pageSource(driver,currentUrl);
+//		PageSource.pageSource(driver,currentUrl);
 
 
 
@@ -212,6 +263,8 @@ public class SeleniumTest {
 
 
 	}
+
+
 
 }
 

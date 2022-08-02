@@ -54,7 +54,9 @@ public class ImpactAnalyzerTest {
 
 
 
-		}catch(Exception e) {}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		Connect.close();
 	}
 }

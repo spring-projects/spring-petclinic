@@ -1,0 +1,695 @@
+[
+  {
+    "xpath": "/html",
+    "name": "",
+    "tag": "html",
+    "id": "",
+    "href": "",
+    "class": "",
+    "cssSelector": "html"
+  },
+  {
+    "xpath": "/html/head",
+    "name": "",
+    "tag": "head",
+    "id": "",
+    "href": "",
+    "class": "",
+    "cssSelector": "html \u003e head"
+  },
+  {
+    "xpath": "/html/head/meta[1]",
+    "name": "",
+    "tag": "meta",
+    "id": "",
+    "href": "",
+    "class": "",
+    "cssSelector": "html \u003e head \u003e meta:nth-child(1)"
+  },
+  {
+    "xpath": "/html/head/meta[2]",
+    "name": "",
+    "tag": "meta",
+    "id": "",
+    "href": "",
+    "class": "",
+    "cssSelector": "html \u003e head \u003e meta:nth-child(2)"
+  },
+  {
+    "xpath": "/html/head/meta[3]",
+    "name": "",
+    "tag": "meta",
+    "id": "",
+    "href": "",
+    "class": "",
+    "cssSelector": "html \u003e head \u003e meta:nth-child(3)"
+  },
+  {
+    "xpath": "/html/head/meta[4]",
+    "name": "viewport",
+    "tag": "meta",
+    "id": "",
+    "href": "",
+    "class": "",
+    "cssSelector": "html \u003e head \u003e meta:nth-child(4)"
+  },
+  {
+    "xpath": "/html/head/link[1]",
+    "name": "",
+    "tag": "link",
+    "id": "",
+    "href": "/resources/images/favicon.png",
+    "class": "",
+    "cssSelector": "html \u003e head \u003e link:nth-child(5)"
+  },
+  {
+    "xpath": "/html/head/title",
+    "name": "",
+    "tag": "title",
+    "id": "",
+    "href": "",
+    "class": "",
+    "cssSelector": "html \u003e head \u003e title"
+  },
+  {
+    "xpath": "/html/head/link[2]",
+    "name": "",
+    "tag": "link",
+    "id": "",
+    "href": "/webjars/font-awesome/4.7.0/css/font-awesome.min.css",
+    "class": "",
+    "cssSelector": "html \u003e head \u003e link:nth-child(7)"
+  },
+  {
+    "xpath": "/html/head/link[3]",
+    "name": "",
+    "tag": "link",
+    "id": "",
+    "href": "/resources/css/petclinic.css",
+    "class": "",
+    "cssSelector": "html \u003e head \u003e link:nth-child(8)"
+  },
+  {
+    "xpath": "/html/body",
+    "name": "",
+    "tag": "body",
+    "id": "",
+    "href": "",
+    "class": "",
+    "cssSelector": "html \u003e body"
+  },
+  {
+    "xpath": "/html/body/nav",
+    "name": "",
+    "tag": "nav",
+    "id": "",
+    "href": "",
+    "class": "navbar navbar-expand-lg navbar-dark",
+    "cssSelector": "html \u003e body \u003e nav.navbar.navbar-expand-lg.navbar-dark"
+  },
+  {
+    "xpath": "/html/body/nav/div",
+    "name": "",
+    "tag": "div",
+    "id": "",
+    "href": "",
+    "class": "container-fluid",
+    "cssSelector": "html \u003e body \u003e nav.navbar.navbar-expand-lg.navbar-dark \u003e div.container-fluid"
+  },
+  {
+    "xpath": "/html/body/nav/div/a",
+    "name": "",
+    "tag": "a",
+    "id": "",
+    "href": "/",
+    "class": "navbar-brand",
+    "cssSelector": "html \u003e body \u003e nav.navbar.navbar-expand-lg.navbar-dark \u003e div.container-fluid \u003e a.navbar-brand"
+  },
+  {
+    "xpath": "/html/body/nav/div/a/span",
+    "name": "",
+    "tag": "span",
+    "id": "",
+    "href": "",
+    "class": "",
+    "cssSelector": "html \u003e body \u003e nav.navbar.navbar-expand-lg.navbar-dark \u003e div.container-fluid \u003e a.navbar-brand \u003e span"
+  },
+  {
+    "xpath": "/html/body/nav/div/button",
+    "name": "",
+    "tag": "button",
+    "id": "",
+    "href": "",
+    "class": "navbar-toggler",
+    "cssSelector": "html \u003e body \u003e nav.navbar.navbar-expand-lg.navbar-dark \u003e div.container-fluid \u003e button.navbar-toggler"
+  },
+  {
+    "xpath": "/html/body/nav/div/button/span",
+    "name": "",
+    "tag": "span",
+    "id": "",
+    "href": "",
+    "class": "navbar-toggler-icon",
+    "cssSelector": "html \u003e body \u003e nav.navbar.navbar-expand-lg.navbar-dark \u003e div.container-fluid \u003e button.navbar-toggler \u003e span.navbar-toggler-icon"
+  },
+  {
+    "xpath": "/html/body/nav/div/div",
+    "name": "",
+    "tag": "div",
+    "id": "main-navbar",
+    "href": "",
+    "class": "collapse navbar-collapse",
+    "cssSelector": "#main-navbar"
+  },
+  {
+    "xpath": "/html/body/nav/div/div/ul",
+    "name": "",
+    "tag": "ul",
+    "id": "",
+    "href": "",
+    "class": "nav navbar-nav me-auto",
+    "cssSelector": "#main-navbar \u003e ul.nav.navbar-nav.me-auto"
+  },
+  {
+    "xpath": "/html/body/nav/div/div/ul/li[1]",
+    "name": "",
+    "tag": "li",
+    "id": "",
+    "href": "",
+    "class": "nav-item",
+    "cssSelector": "#main-navbar \u003e ul.nav.navbar-nav.me-auto \u003e li.nav-item:nth-child(1)"
+  },
+  {
+    "xpath": "/html/body/nav/div/div/ul/li[1]/a",
+    "name": "",
+    "tag": "a",
+    "id": "",
+    "href": "/",
+    "class": "nav-link",
+    "cssSelector": "#main-navbar \u003e ul.nav.navbar-nav.me-auto \u003e li.nav-item:nth-child(1) \u003e a.nav-link"
+  },
+  {
+    "xpath": "/html/body/nav/div/div/ul/li[1]/a/span[1]",
+    "name": "",
+    "tag": "span",
+    "id": "",
+    "href": "",
+    "class": "fa fa-home",
+    "cssSelector": "#main-navbar \u003e ul.nav.navbar-nav.me-auto \u003e li.nav-item:nth-child(1) \u003e a.nav-link \u003e span.fa.fa-home"
+  },
+  {
+    "xpath": "/html/body/nav/div/div/ul/li[1]/a/span[2]",
+    "name": "",
+    "tag": "span",
+    "id": "",
+    "href": "",
+    "class": "",
+    "cssSelector": "#main-navbar \u003e ul.nav.navbar-nav.me-auto \u003e li.nav-item:nth-child(1) \u003e a.nav-link \u003e span:nth-child(2)"
+  },
+  {
+    "xpath": "/html/body/nav/div/div/ul/li[2]",
+    "name": "",
+    "tag": "li",
+    "id": "",
+    "href": "",
+    "class": "nav-item",
+    "cssSelector": "#main-navbar \u003e ul.nav.navbar-nav.me-auto \u003e li.nav-item:nth-child(2)"
+  },
+  {
+    "xpath": "/html/body/nav/div/div/ul/li[2]/a",
+    "name": "",
+    "tag": "a",
+    "id": "",
+    "href": "/owners/find",
+    "class": "nav-link active",
+    "cssSelector": "#main-navbar \u003e ul.nav.navbar-nav.me-auto \u003e li.nav-item:nth-child(2) \u003e a.nav-link.active"
+  },
+  {
+    "xpath": "/html/body/nav/div/div/ul/li[2]/a/span[1]",
+    "name": "",
+    "tag": "span",
+    "id": "",
+    "href": "",
+    "class": "fa fa-search",
+    "cssSelector": "#main-navbar \u003e ul.nav.navbar-nav.me-auto \u003e li.nav-item:nth-child(2) \u003e a.nav-link.active \u003e span.fa.fa-search"
+  },
+  {
+    "xpath": "/html/body/nav/div/div/ul/li[2]/a/span[2]",
+    "name": "",
+    "tag": "span",
+    "id": "",
+    "href": "",
+    "class": "",
+    "cssSelector": "#main-navbar \u003e ul.nav.navbar-nav.me-auto \u003e li.nav-item:nth-child(2) \u003e a.nav-link.active \u003e span:nth-child(2)"
+  },
+  {
+    "xpath": "/html/body/nav/div/div/ul/li[3]",
+    "name": "",
+    "tag": "li",
+    "id": "",
+    "href": "",
+    "class": "nav-item",
+    "cssSelector": "#main-navbar \u003e ul.nav.navbar-nav.me-auto \u003e li.nav-item:nth-child(3)"
+  },
+  {
+    "xpath": "/html/body/nav/div/div/ul/li[3]/a",
+    "name": "",
+    "tag": "a",
+    "id": "",
+    "href": "/vets.html",
+    "class": "nav-link",
+    "cssSelector": "#main-navbar \u003e ul.nav.navbar-nav.me-auto \u003e li.nav-item:nth-child(3) \u003e a.nav-link"
+  },
+  {
+    "xpath": "/html/body/nav/div/div/ul/li[3]/a/span[1]",
+    "name": "",
+    "tag": "span",
+    "id": "",
+    "href": "",
+    "class": "fa fa-th-list",
+    "cssSelector": "#main-navbar \u003e ul.nav.navbar-nav.me-auto \u003e li.nav-item:nth-child(3) \u003e a.nav-link \u003e span.fa.fa-th-list"
+  },
+  {
+    "xpath": "/html/body/nav/div/div/ul/li[3]/a/span[2]",
+    "name": "",
+    "tag": "span",
+    "id": "",
+    "href": "",
+    "class": "",
+    "cssSelector": "#main-navbar \u003e ul.nav.navbar-nav.me-auto \u003e li.nav-item:nth-child(3) \u003e a.nav-link \u003e span:nth-child(2)"
+  },
+  {
+    "xpath": "/html/body/nav/div/div/ul/li[4]",
+    "name": "",
+    "tag": "li",
+    "id": "",
+    "href": "",
+    "class": "nav-item",
+    "cssSelector": "#main-navbar \u003e ul.nav.navbar-nav.me-auto \u003e li.nav-item:nth-child(4)"
+  },
+  {
+    "xpath": "/html/body/nav/div/div/ul/li[4]/a",
+    "name": "",
+    "tag": "a",
+    "id": "",
+    "href": "/oups",
+    "class": "nav-link",
+    "cssSelector": "#main-navbar \u003e ul.nav.navbar-nav.me-auto \u003e li.nav-item:nth-child(4) \u003e a.nav-link"
+  },
+  {
+    "xpath": "/html/body/nav/div/div/ul/li[4]/a/span[1]",
+    "name": "",
+    "tag": "span",
+    "id": "",
+    "href": "",
+    "class": "fa fa-exclamation-triangle",
+    "cssSelector": "#main-navbar \u003e ul.nav.navbar-nav.me-auto \u003e li.nav-item:nth-child(4) \u003e a.nav-link \u003e span.fa.fa-exclamation-triangle"
+  },
+  {
+    "xpath": "/html/body/nav/div/div/ul/li[4]/a/span[2]",
+    "name": "",
+    "tag": "span",
+    "id": "",
+    "href": "",
+    "class": "",
+    "cssSelector": "#main-navbar \u003e ul.nav.navbar-nav.me-auto \u003e li.nav-item:nth-child(4) \u003e a.nav-link \u003e span:nth-child(2)"
+  },
+  {
+    "xpath": "/html/body/div",
+    "name": "",
+    "tag": "div",
+    "id": "",
+    "href": "",
+    "class": "container-fluid",
+    "cssSelector": "html \u003e body \u003e div.container-fluid"
+  },
+  {
+    "xpath": "/html/body/div/div",
+    "name": "",
+    "tag": "div",
+    "id": "",
+    "href": "",
+    "class": "container xd-container",
+    "cssSelector": "html \u003e body \u003e div.container-fluid \u003e div.container.xd-container"
+  },
+  {
+    "xpath": "/html/body/div/div/h2",
+    "name": "",
+    "tag": "h2",
+    "id": "",
+    "href": "",
+    "class": "",
+    "cssSelector": "html \u003e body \u003e div.container-fluid \u003e div.container.xd-container \u003e h2"
+  },
+  {
+    "xpath": "/html/body/div/div/form",
+    "name": "",
+    "tag": "form",
+    "id": "add-owner-form",
+    "href": "",
+    "class": "form-horizontal",
+    "cssSelector": "#add-owner-form"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div",
+    "name": "",
+    "tag": "div",
+    "id": "",
+    "href": "",
+    "class": "form-group has-feedback",
+    "cssSelector": "#add-owner-form \u003e div.form-group.has-feedback"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div/div[1]",
+    "name": "",
+    "tag": "div",
+    "id": "",
+    "href": "",
+    "class": "form-group",
+    "cssSelector": "#add-owner-form \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(1)"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div/div[1]/label",
+    "name": "",
+    "tag": "label",
+    "id": "",
+    "href": "",
+    "class": "col-sm-2 control-label",
+    "cssSelector": "#add-owner-form \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(1) \u003e label.col-sm-2.control-label"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div/div[1]/div",
+    "name": "",
+    "tag": "div",
+    "id": "",
+    "href": "",
+    "class": "col-sm-10",
+    "cssSelector": "#add-owner-form \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(1) \u003e div.col-sm-10"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div/div[1]/div/div",
+    "name": "",
+    "tag": "div",
+    "id": "",
+    "href": "",
+    "class": "",
+    "cssSelector": "#add-owner-form \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(1) \u003e div.col-sm-10 \u003e div"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div/div[1]/div/div/input",
+    "name": "firstName",
+    "tag": "input",
+    "id": "firstName",
+    "href": "",
+    "class": "form-control",
+    "cssSelector": "#firstName"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div/div[1]/div/span",
+    "name": "",
+    "tag": "span",
+    "id": "",
+    "href": "",
+    "class": "fa fa-ok form-control-feedback",
+    "cssSelector": "#add-owner-form \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(1) \u003e div.col-sm-10 \u003e span.fa.fa-ok.form-control-feedback"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div/div[2]",
+    "name": "",
+    "tag": "div",
+    "id": "",
+    "href": "",
+    "class": "form-group",
+    "cssSelector": "#add-owner-form \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(2)"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div/div[2]/label",
+    "name": "",
+    "tag": "label",
+    "id": "",
+    "href": "",
+    "class": "col-sm-2 control-label",
+    "cssSelector": "#add-owner-form \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(2) \u003e label.col-sm-2.control-label"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div/div[2]/div",
+    "name": "",
+    "tag": "div",
+    "id": "",
+    "href": "",
+    "class": "col-sm-10",
+    "cssSelector": "#add-owner-form \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(2) \u003e div.col-sm-10"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div/div[2]/div/div",
+    "name": "",
+    "tag": "div",
+    "id": "",
+    "href": "",
+    "class": "",
+    "cssSelector": "#add-owner-form \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(2) \u003e div.col-sm-10 \u003e div"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div/div[2]/div/div/input",
+    "name": "lastName",
+    "tag": "input",
+    "id": "lastName",
+    "href": "",
+    "class": "form-control",
+    "cssSelector": "#lastName"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div/div[2]/div/span",
+    "name": "",
+    "tag": "span",
+    "id": "",
+    "href": "",
+    "class": "fa fa-ok form-control-feedback",
+    "cssSelector": "#add-owner-form \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(2) \u003e div.col-sm-10 \u003e span.fa.fa-ok.form-control-feedback"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div/div[3]",
+    "name": "",
+    "tag": "div",
+    "id": "",
+    "href": "",
+    "class": "form-group",
+    "cssSelector": "#add-owner-form \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(3)"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div/div[3]/label",
+    "name": "",
+    "tag": "label",
+    "id": "",
+    "href": "",
+    "class": "col-sm-2 control-label",
+    "cssSelector": "#add-owner-form \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(3) \u003e label.col-sm-2.control-label"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div/div[3]/div",
+    "name": "",
+    "tag": "div",
+    "id": "",
+    "href": "",
+    "class": "col-sm-10",
+    "cssSelector": "#add-owner-form \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(3) \u003e div.col-sm-10"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div/div[3]/div/div",
+    "name": "",
+    "tag": "div",
+    "id": "",
+    "href": "",
+    "class": "",
+    "cssSelector": "#add-owner-form \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(3) \u003e div.col-sm-10 \u003e div"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div/div[3]/div/div/input",
+    "name": "address",
+    "tag": "input",
+    "id": "address",
+    "href": "",
+    "class": "form-control",
+    "cssSelector": "#address"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div/div[3]/div/span",
+    "name": "",
+    "tag": "span",
+    "id": "",
+    "href": "",
+    "class": "fa fa-ok form-control-feedback",
+    "cssSelector": "#add-owner-form \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(3) \u003e div.col-sm-10 \u003e span.fa.fa-ok.form-control-feedback"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div/div[4]",
+    "name": "",
+    "tag": "div",
+    "id": "",
+    "href": "",
+    "class": "form-group",
+    "cssSelector": "#add-owner-form \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(4)"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div/div[4]/label",
+    "name": "",
+    "tag": "label",
+    "id": "",
+    "href": "",
+    "class": "col-sm-2 control-label",
+    "cssSelector": "#add-owner-form \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(4) \u003e label.col-sm-2.control-label"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div/div[4]/div",
+    "name": "",
+    "tag": "div",
+    "id": "",
+    "href": "",
+    "class": "col-sm-10",
+    "cssSelector": "#add-owner-form \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(4) \u003e div.col-sm-10"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div/div[4]/div/div",
+    "name": "",
+    "tag": "div",
+    "id": "",
+    "href": "",
+    "class": "",
+    "cssSelector": "#add-owner-form \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(4) \u003e div.col-sm-10 \u003e div"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div/div[4]/div/div/input",
+    "name": "city",
+    "tag": "input",
+    "id": "city",
+    "href": "",
+    "class": "form-control",
+    "cssSelector": "#city"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div/div[4]/div/span",
+    "name": "",
+    "tag": "span",
+    "id": "",
+    "href": "",
+    "class": "fa fa-ok form-control-feedback",
+    "cssSelector": "#add-owner-form \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(4) \u003e div.col-sm-10 \u003e span.fa.fa-ok.form-control-feedback"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div/div[5]",
+    "name": "",
+    "tag": "div",
+    "id": "",
+    "href": "",
+    "class": "form-group",
+    "cssSelector": "#add-owner-form \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(5)"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div/div[5]/label",
+    "name": "",
+    "tag": "label",
+    "id": "",
+    "href": "",
+    "class": "col-sm-2 control-label",
+    "cssSelector": "#add-owner-form \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(5) \u003e label.col-sm-2.control-label"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div/div[5]/div",
+    "name": "",
+    "tag": "div",
+    "id": "",
+    "href": "",
+    "class": "col-sm-10",
+    "cssSelector": "#add-owner-form \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(5) \u003e div.col-sm-10"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div/div[5]/div/div",
+    "name": "",
+    "tag": "div",
+    "id": "",
+    "href": "",
+    "class": "",
+    "cssSelector": "#add-owner-form \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(5) \u003e div.col-sm-10 \u003e div"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div/div[5]/div/div/input",
+    "name": "telephone",
+    "tag": "input",
+    "id": "telephone",
+    "href": "",
+    "class": "form-control",
+    "cssSelector": "#telephone"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div/div[5]/div/span",
+    "name": "",
+    "tag": "span",
+    "id": "",
+    "href": "",
+    "class": "fa fa-ok form-control-feedback",
+    "cssSelector": "#add-owner-form \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(5) \u003e div.col-sm-10 \u003e span.fa.fa-ok.form-control-feedback"
+  },
+  {
+    "xpath": "/html/body/div/div/br[1]",
+    "name": "",
+    "tag": "br",
+    "id": "",
+    "href": "",
+    "class": "",
+    "cssSelector": "html \u003e body \u003e div.container-fluid \u003e div.container.xd-container \u003e br:nth-child(3)"
+  },
+  {
+    "xpath": "/html/body/div/div/br[2]",
+    "name": "",
+    "tag": "br",
+    "id": "",
+    "href": "",
+    "class": "",
+    "cssSelector": "html \u003e body \u003e div.container-fluid \u003e div.container.xd-container \u003e br:nth-child(4)"
+  },
+  {
+    "xpath": "/html/body/div/div/div",
+    "name": "",
+    "tag": "div",
+    "id": "",
+    "href": "",
+    "class": "container",
+    "cssSelector": "html \u003e body \u003e div.container-fluid \u003e div.container.xd-container \u003e div.container"
+  },
+  {
+    "xpath": "/html/body/div/div/div/div",
+    "name": "",
+    "tag": "div",
+    "id": "",
+    "href": "",
+    "class": "row",
+    "cssSelector": "html \u003e body \u003e div.container-fluid \u003e div.container.xd-container \u003e div.container \u003e div.row"
+  },
+  {
+    "xpath": "/html/body/div/div/div/div/div",
+    "name": "",
+    "tag": "div",
+    "id": "",
+    "href": "",
+    "class": "col-12 text-center",
+    "cssSelector": "html \u003e body \u003e div.container-fluid \u003e div.container.xd-container \u003e div.container \u003e div.row \u003e div.col-12.text-center"
+  },
+  {
+    "xpath": "/html/body/div/div/div/div/div/img",
+    "name": "",
+    "tag": "img",
+    "id": "",
+    "href": "",
+    "class": "",
+    "cssSelector": "html \u003e body \u003e div.container-fluid \u003e div.container.xd-container \u003e div.container \u003e div.row \u003e div.col-12.text-center \u003e img"
+  },
+  {
+    "xpath": "/html/body/script",
+    "name": "",
+    "tag": "script",
+    "id": "",
+    "href": "",
+    "class": "",
+    "cssSelector": "html \u003e body \u003e script"
+  }
+]
