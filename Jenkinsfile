@@ -1,3 +1,5 @@
+vars = [:]
+
 pipeline {
     agent {
         kubernetes {
