@@ -56,7 +56,7 @@ pipeline {
         stage("Docker.Build") {
             steps {
                 container("docker") {
-                    sh "docker build -t sergeydz/spring-petclinic:latest ."
+                    sh "docker build -t sergeydz/spring-petclinic:${env.GitVersion_FullSemVer} ."
                 }
             }
         }
