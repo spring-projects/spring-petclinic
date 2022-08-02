@@ -54,7 +54,7 @@ pipeline {
                     }
                     steps {
                         withSonarQubeEnv(installationName: "sonar") {
-                            sh "mvn sonar:sonar -Dsonar.organization=sergeydz -Dsonar.projectKey=SergeyDz_spring-petclinic >> $WORKSPACE/sonar.log 2>&1"
+                            sh "mvn sonar:sonar -Dsonar.organization=sergeydz -Dsonar.projectKey=SergeyDz_spring-petclinic -s settings.xml >> $WORKSPACE/sonar.log 2>&1"
                         }
                     }
                 }
