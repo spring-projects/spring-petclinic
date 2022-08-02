@@ -13,20 +13,13 @@ spec:
     env:
     - name: MAVEN_OPTS
       value: -Xmx512m
-  - name: docker
-    image: docker:1.11
+  - name: nerdctl
+    image: bensonyanger/nerdctl:0.16
     command: ['cat']
     tty: true
-    volumeMounts:
-    - name: dockersock
-      mountPath: /var/run/docker.sock
   - name: gitversion
     image: gittools/gitversion:5.10.3-alpine.3.13-6.0
     command:
     - sleep
     args:
     - 1d
-  volumes:
-  - name: dockersock
-    hostPath:
-      path: /var/run/docker.sock

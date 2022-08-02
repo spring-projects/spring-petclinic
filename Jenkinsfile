@@ -16,32 +16,32 @@ pipeline {
       }
     }
 
-    stage("Test") {
-      steps {
-          sh "mvn test"
-      }
-      post {
-        always {
-            junit 'target/surefire-reports/*.xml' 
-        }
-      }
-    }
+    // stage("Test") {
+    //   steps {
+    //       sh "mvn test"
+    //   }
+    //   post {
+    //     always {
+    //         junit 'target/surefire-reports/*.xml' 
+    //     }
+    //   }
+    // }
 
-    stage("SonarQube") {
-        environment {
-            scannerHome = tool 'sonar'
-        }
-        steps {
-            withSonarQubeEnv(installationName: 'sonar') {
-                sh 'mvn sonar:sonar -Dsonar.organization=sergeydz -Dsonar.projectKey=SergeyDz_spring-petclinic'
-            }
-        }
-    }
+    // stage("SonarQube") {
+    //     environment {
+    //         scannerHome = tool 'sonar'
+    //     }
+    //     steps {
+    //         withSonarQubeEnv(installationName: 'sonar') {
+    //             sh 'mvn sonar:sonar -Dsonar.organization=sergeydz -Dsonar.projectKey=SergeyDz_spring-petclinic'
+    //         }
+    //     }
+    // }
 
     stage("Docker.Build") {
         steps {
             container("docker") {
-                sh "docker build -t sergeydz/spring-petclinic:latest ."
+                sh "nerdctl build -t sergeydz/spring-petclinic:latest ."
             }
         }
     }
