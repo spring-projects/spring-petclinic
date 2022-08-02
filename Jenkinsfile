@@ -41,22 +41,24 @@ pipeline {
             }
         }
         
-        parallel {
-            stage("SonarQube") {
-                environment {
-                    scannerHome = tool "sonar"
-                }
-                steps {
-                    withSonarQubeEnv(installationName: "sonar") {
-                        sh "mvn sonar:sonar -Dsonar.organization=sergeydz -Dsonar.projectKey=SergeyDz_spring-petclinic"
+        stage("Parallel") {
+            parallel {
+                stage("SonarQube") {
+                    environment {
+                        scannerHome = tool "sonar"
+                    }
+                    steps {
+                        withSonarQubeEnv(installationName: "sonar") {
+                            sh "mvn sonar:sonar -Dsonar.organization=sergeydz -Dsonar.projectKey=SergeyDz_spring-petclinic"
+                        }
                     }
                 }
-            }
 
-            stage("Docker.Build") {
-                steps {
-                    container("docker") {
-                        sh "docker build -t sergeydz/spring-petclinic:${env.version} --build-arg VERSION=${env.version} ."
+                stage("Docker.Build") {
+                    steps {
+                        container("docker") {
+                            sh "docker build -t sergeydz/spring-petclinic:${env.version} --build-arg VERSION=${env.version} ."
+                        }
                     }
                 }
             }
