@@ -18,6 +18,7 @@ pipeline {
                     script {
                         checkoutSCM(scm)
                         version()
+                        configureMavenSettings()
                     }
                 }
             }
@@ -25,8 +26,10 @@ pipeline {
         
         stage("Build") {
             steps {
-                sh "mvn versions:set -DnewVersion=${env.version}"
-                sh "mvn clean package -DskipTests=true"
+                sh """
+                    mvn versions:set -DnewVersion=${env.version}
+                    mvn clean package -DskipTests=true
+                """
             }
         }
 
@@ -87,4 +90,11 @@ def version() {
     def author = sh(script: """git show -s --format=\"%ae\"""", returnStdout: true)
 
     currentBuild.description = "${env.version} by ${author}"
+}
+
+def configureMavenSettings() {
+    withCredentials([string(credentialsId: 'jfrog-token', variable: 'JFROG_TOKEN')]) {
+        def settings = readFile file: "settings.xml"
+        saveFile file: "settings.xml", text: settings.replace("${JFROG_TOKEN}", env.JFROG_TOKEN)
+    }
 }

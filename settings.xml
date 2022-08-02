@@ -1,0 +1,36 @@
+<settings>
+  <mirrors>
+    <mirror>
+      <id>artifactory</id>
+      <mirrorOf>*</mirrorOf>
+      <url>https://sergeydzyuban.jfrog.io/artifactory/maven-virtual</url>
+      <name>Artifactory</name>
+    </mirror>
+  </mirrors>
+  <servers>
+    <server>
+      <id>artifactory</id>
+      <configuration>
+        <httpConfiguration>
+          <get>
+            <usePreemptive>true</usePreemptive>
+          </get>
+          <head>
+            <usePreemptive>true</usePreemptive>
+          </head>
+          <put>
+            <params>
+              <property>
+                <name>http.protocol.expect-continue</name>
+                <value>false</value>
+              </property>
+            </params>
+          </put>
+        </httpConfiguration>
+      </configuration>
+      <username>sergeydzyuban@hotmail.com</username>
+      <password>JFROG_TOKEN</password>
+    </server>
+  </servers>
+</settings>
+
