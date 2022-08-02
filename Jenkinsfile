@@ -74,8 +74,11 @@ pipeline {
                 }
 
                 stage("Docker.Push") {
+                    tools {
+                        jdk: "jdk8"
+                    }
                     steps {
-                        container("jnlp") {
+                        container("docker") {
                             sh "java --version"
                             rtDockerPush(
                                 serverId: "jfrog",
