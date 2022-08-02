@@ -22,11 +22,13 @@ pipeline {
                 }
             }
         }
-        // stage("Build") {
-        //   steps {
-        //       sh "mvn clean package -DskipTests=true"
-        //   }
-        // }
+        
+        stage("Build") {
+            steps {
+                sh "mvn versions:set -DnewVersion=${env.version}"
+                sh "mvn clean package -DskipTests=true"
+            }
+        }
 
         // stage("Test") {
         //   steps {
@@ -53,7 +55,7 @@ pipeline {
         stage("Docker.Build") {
             steps {
                 container("docker") {
-                    sh "docker build -t sergeydz/spring-petclinic:${env.version} ."
+                    sh "docker build -t sergeydz/spring-petclinic:${env.version} --build-arg VERSION=${env.version} ."
                 }
             }
         }
