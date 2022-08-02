@@ -29,15 +29,15 @@ pipeline {
         stage("Build") {
             steps {
                 sh """
-                    mvn versions:set -DnewVersion=${env.version} -s settings.xml
-                    mvn clean package -DskipTests=true -s settings.xml
+                    mvn versions:set -DnewVersion=${env.version} -s settings.xml >> $WORKSPACE/mvn.log 2>&1
+                    mvn clean package -DskipTests=true -s settings.xml >> $WORKSPACE/mvn.log 2>&1
                 """
             }
         }
 
         stage("Test") {
             steps {
-                sh "mvn test -s settings.xml"
+                sh "mvn test -s settings.xml >> $WORKSPACE/mvn.test.log 2>&1"
             }
             post {
                 always {
@@ -54,7 +54,7 @@ pipeline {
                     }
                     steps {
                         withSonarQubeEnv(installationName: "sonar") {
-                            sh "mvn sonar:sonar -Dsonar.organization=sergeydz -Dsonar.projectKey=SergeyDz_spring-petclinic"
+                            sh "mvn sonar:sonar -Dsonar.organization=sergeydz -Dsonar.projectKey=SergeyDz_spring-petclinic >> $WORKSPACE/sonar.log 2>&1"
                         }
                     }
                 }
@@ -62,10 +62,16 @@ pipeline {
                 stage("Docker.Build") {
                     steps {
                         container("docker") {
-                            sh "docker build -t sergeydz/spring-petclinic:${env.version} --build-arg VERSION=${env.version} ."
+                            sh "docker build -t sergeydz/spring-petclinic:${env.version} --build-arg VERSION=${env.version} . >> $WORKSPACE/docker.build.log 2>&1"
                         }
                     }
                 }
+            }
+        }
+
+        stage("Logs") {
+            steps {
+                archiveArtifacts(artifacts: '*.log', allowEmptyArchive: true)
             }
         }
     }
