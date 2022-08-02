@@ -39,8 +39,10 @@ pipeline {
     }
 
     stage("Docker.Build") {
-        container("docker") {
-            sh "docker build -t sergeydz/spring-petclinic:latest ."
+        steps {
+            container("docker") {
+                sh "docker build -t sergeydz/spring-petclinic:latest ."
+            }
         }
     }
 
