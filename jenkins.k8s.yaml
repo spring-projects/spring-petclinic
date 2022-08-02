@@ -19,7 +19,7 @@ spec:
     - sleep
     args:
     - 1d
-  - name: dind
+  - name: docker
     image: docker:18.05-dind
     securityContext:
       privileged: true
