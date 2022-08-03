@@ -14,51 +14,51 @@ pipeline {
         disableConcurrentBuilds()
     }
     stages {
-        stage("Checkout") {
-            steps {
-                container("gitversion") {
-                    script {
-                        checkoutSCM(scm)
-                        version()
-                    }
-                }
-            }
-        }
+        // stage("Checkout") {
+        //     steps {
+        //         container("gitversion") {
+        //             script {
+        //                 checkoutSCM(scm)
+        //                 version()
+        //             }
+        //         }
+        //     }
+        // }
 
-        stage("Init"){
-            steps {
-                init()
-                configureMavenSettings()
-            }
-        }
+        // stage("Init"){
+        //     steps {
+        //         init()
+        //         configureMavenSettings()
+        //     }
+        // }
         
-        stage("Build") {
-            steps {
-                sh """
-                    mvn versions:set -DnewVersion=${env.version} -s settings.xml >> $WORKSPACE/mvn.log 2>&1
-                    mvn clean package -DskipTests=true -s settings.xml >> $WORKSPACE/mvn.log 2>&1
-                """
-            }
-        }
+        // stage("Build") {
+        //     steps {
+        //         sh """
+        //             mvn versions:set -DnewVersion=${env.version} -s settings.xml >> $WORKSPACE/mvn.log 2>&1
+        //             mvn clean package -DskipTests=true -s settings.xml >> $WORKSPACE/mvn.log 2>&1
+        //         """
+        //     }
+        // }
 
-        stage("Test") {
-            steps {
-                sh "mvn test -s settings.xml >> $WORKSPACE/mvn.test.log 2>&1"
-            }
-            post {
-                always {
-                    junit "target/surefire-reports/*.xml" 
-                }
-            }
-        }
+        // stage("Test") {
+        //     steps {
+        //         sh "mvn test -s settings.xml >> $WORKSPACE/mvn.test.log 2>&1"
+        //     }
+        //     post {
+        //         always {
+        //             junit "target/surefire-reports/*.xml" 
+        //         }
+        //     }
+        // }
 
-        stage("Docker.Build") {
-            steps {
-                container("docker") {
-                    sh "docker build -t docker-dev.sergeydzyuban.jfrog.io/jfrog/spring-petclinic:${env.version} --build-arg VERSION=${env.version} . >> $WORKSPACE/docker.build.log 2>&1"
-                }
-            }
-        }
+        // stage("Docker.Build") {
+        //     steps {
+        //         container("docker") {
+        //             sh "docker build -t docker-dev.sergeydzyuban.jfrog.io/jfrog/spring-petclinic:${env.version} --build-arg VERSION=${env.version} . >> $WORKSPACE/docker.build.log 2>&1"
+        //         }
+        //     }
+        // }
         
         stage("Parallel") {
             parallel {
@@ -76,6 +76,7 @@ pipeline {
                 stage("Docker.Push") {
                     steps {
                         container("docker") {
+                            sh "printenv"
                             sh "java --version"
                             rtDockerPush(
                                 serverId: "jfrog",
