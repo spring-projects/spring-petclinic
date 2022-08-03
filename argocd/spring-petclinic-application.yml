@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: spring-petclinic-application
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: dev
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: helm/spring-petclinic
+    repoURL: https://github.com/SergeyDz/spring-petclinic.git
+    targetRevision: feature/jenkins-build
+  syncPolicy:
+    # automated: {}
+    syncOptions: 
+      - CreateNamespace=true
