@@ -10,6 +10,11 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: "10"))
         disableConcurrentBuilds()
     }
+    environment {
+        ARTIFACTORY = "${env.ARTIFACTORY}"
+        DOCKER_REGISTRY = "${env.DOCKER_REGISTRY}"
+        APP_NAME = "${APP_NAME}"
+    }
     stages {
         stage("Checkout") {
             steps {
@@ -52,7 +57,7 @@ pipeline {
         stage("Docker.Build") {
             steps {
                 container("docker") {
-                    sh "docker build -t sergeydzyuban.jfrog.io/docker-dev/jfrog/spring-petclinic:${env.version} --build-arg VERSION=${env.version} . >> $WORKSPACE/docker.build.log 2>&1"
+                    sh "docker build -t ${env.ARTIFACTORY}/${env.DOCKER_REGISTRY}/${APP_NAME}:${env.version} --build-arg VERSION=${env.version} . >> $WORKSPACE/docker.build.log 2>&1"
                 }
             }
         }
@@ -75,8 +80,8 @@ pipeline {
                         container("docker") {
                             rtDockerPush(
                                 serverId: "jfrog",
-                                image: "sergeydzyuban.jfrog.io/docker-dev/jfrog/spring-petclinic:${env.version}",
-                                targetRepo: 'docker-dev'
+                                image: "${env.ARTIFACTORY}/${env.DOCKER_REGISTRY}/${APP_NAME}:${env.version}",
+                                targetRepo: '${env.DOCKER_REGISTRY}'
                             )
                         }
                     }
@@ -117,7 +122,7 @@ def version() {
 def init() {
     rtServer (
         id: "jfrog",
-        url: "https://sergeydzyuban.jfrog.io/",
+        url: "https://${env.ARTIFACTORY}/",
         credentialsId: "jfrog-user-password"
     )
 }
