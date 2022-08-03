@@ -58,6 +58,14 @@ pipeline {
                 }
             }
         }
+
+        stage("Docker.Build") {
+            steps {
+                container("docker") {
+                    sh "docker build -t ${env.ARTIFACTORY}/${env.DOCKER_REGISTRY}/${env.APP_NAME}:${env.version} --build-arg VERSION=${env.version} . >> $WORKSPACE/docker.build.log 2>&1"
+                }
+            }
+        }
         
         stage("Parallel") {
             parallel {
@@ -68,29 +76,20 @@ pipeline {
                     steps {
                         withSonarQubeEnv(installationName: "sonar") {
                             sh "mvn sonar:sonar -Dsonar.organization=sergeydz -Dsonar.projectKey=SergeyDz_spring-petclinic -s settings.xml >> $WORKSPACE/sonar.log 2>&1"
+                            waitForQualityGate abortPipeline: true
                         }
                     }
                 }
                 
-                stage("Docker") {
-                    steps {
-                        container("docker") { 
-                            
-                            stage("Docker.Build") {
-                                steps {
-                                   sh "docker build -t ${env.ARTIFACTORY}/${env.DOCKER_REGISTRY}/${env.APP_NAME}:${env.version} --build-arg VERSION=${env.version} . >> $WORKSPACE/docker.build.log 2>&1"
-                                }
-                            }
 
-                            stage("Docker.Push") {
-                                steps {
-                                    rtDockerPush(
-                                        serverId: "${env.ARTIFACTORY_SERVER}",
-                                        image: "${env.ARTIFACTORY}/${env.DOCKER_REGISTRY}/${env.APP_NAME}:${env.version}",
-                                        targetRepo: "${env.DOCKER_REGISTRY}"
-                                    )
-                                }
-                            }
+                stage("Docker.Push") {
+                    steps {
+                        container("docker") {
+                            rtDockerPush(
+                                serverId: "${env.ARTIFACTORY_SERVER}",
+                                image: "${env.ARTIFACTORY}/${env.DOCKER_REGISTRY}/${env.APP_NAME}:${env.version}",
+                                targetRepo: "${env.DOCKER_REGISTRY}"
+                            )
                         }
                     }
                 }
