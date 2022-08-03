@@ -11,6 +11,7 @@ pipeline {
         disableConcurrentBuilds()
     }
     environment {
+        ARTIFACTORY_SERVER = "jfrog"
         ARTIFACTORY = "sergeydzyuban.jfrog.io"
         DOCKER_REGISTRY = "docker-dev"
         APP_NAME = "jfrog/spring-petclinic"
@@ -30,7 +31,7 @@ pipeline {
         stage("Init"){
             steps {
                 rtServer (
-                    id: "jfrog",
+                    id: "${env.ARTIFACTORY_SERVER}",
                     url: "https://${env.ARTIFACTORY}/",
                     credentialsId: "jfrog-user-password"
                 )
@@ -61,7 +62,7 @@ pipeline {
         stage("Docker.Build") {
             steps {
                 container("docker") {
-                    sh "docker build -t ${env.ARTIFACTORY}/${env.DOCKER_REGISTRY}/${APP_NAME}:${env.version} --build-arg VERSION=${env.version} . >> $WORKSPACE/docker.build.log 2>&1"
+                    sh "docker build -t ${env.ARTIFACTORY}/${env.DOCKER_REGISTRY}/${env.APP_NAME}:${env.version} --build-arg VERSION=${env.version} . >> $WORKSPACE/docker.build.log 2>&1"
                 }
             }
         }
@@ -83,8 +84,8 @@ pipeline {
                     steps {
                         container("docker") {
                             rtDockerPush(
-                                serverId: "jfrog",
-                                image: "${env.ARTIFACTORY}/${env.DOCKER_REGISTRY}/${APP_NAME}:${env.version}",
+                                serverId: "${env.ARTIFACTORY_SERVER}",
+                                image: "${env.ARTIFACTORY}/${env.DOCKER_REGISTRY}/${env.APP_NAME}:${env.version}",
                                 targetRepo: "${env.DOCKER_REGISTRY}"
                             )
                         }
