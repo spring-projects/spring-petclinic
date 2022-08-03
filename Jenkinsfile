@@ -81,7 +81,7 @@ pipeline {
                             rtDockerPush(
                                 serverId: "jfrog",
                                 image: "${env.ARTIFACTORY}/${env.DOCKER_REGISTRY}/${APP_NAME}:${env.version}",
-                                targetRepo: '${env.DOCKER_REGISTRY}'
+                                targetRepo: "${env.DOCKER_REGISTRY}"
                             )
                         }
                     }
@@ -99,7 +99,7 @@ pipeline {
     }
     post {
         always {
-            archiveArtifacts(artifacts: '*.log', allowEmptyArchive: true)
+            archiveArtifacts(artifacts: "*.log", allowEmptyArchive: true)
         }
     }
 }
