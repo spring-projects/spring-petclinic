@@ -10,7 +10,9 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: "2.7.1-jenkins-build.118"
 
-imagePullSecrets: []
+imagePullSecrets: 
+ - name: jfrog
+
 nameOverride: ""
 fullnameOverride: ""
 
@@ -37,7 +39,7 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: ClusterIP
+  type: LoadBalancer
   port: 80
 
 ingress:
