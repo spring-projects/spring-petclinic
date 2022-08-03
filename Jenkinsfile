@@ -7,7 +7,6 @@ pipeline {
     }
     tools { 
         maven "Maven 3.8.6"
-        jdk "jdk8"
     }
     options { 
         skipDefaultCheckout() 
@@ -77,8 +76,6 @@ pipeline {
                 stage("Docker.Push") {
                     steps {
                         container("docker") {
-                            tool "jdk"
-
                             sh "java --version"
                             rtDockerPush(
                                 serverId: "jfrog",

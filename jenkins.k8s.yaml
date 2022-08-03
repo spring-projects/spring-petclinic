@@ -20,7 +20,7 @@ spec:
     args:
     - 1d
   - name: docker
-    image: docker:18.05-dind
+    image: sergeydz/docker-dind-java:0.1.0
     securityContext:
       privileged: true
     volumeMounts:
