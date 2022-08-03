@@ -58,14 +58,6 @@ pipeline {
                 }
             }
         }
-
-        stage("Docker.Build") {
-            steps {
-                container("docker") {
-                    sh "docker build -t ${env.ARTIFACTORY}/${env.DOCKER_REGISTRY}/${env.APP_NAME}:${env.version} --build-arg VERSION=${env.version} . >> $WORKSPACE/docker.build.log 2>&1"
-                }
-            }
-        }
         
         stage("Parallel") {
             parallel {
@@ -80,15 +72,25 @@ pipeline {
                     }
                 }
                 
-
-                stage("Docker.Push") {
+                stage("Docker") {
                     steps {
-                        container("docker") {
-                            rtDockerPush(
-                                serverId: "${env.ARTIFACTORY_SERVER}",
-                                image: "${env.ARTIFACTORY}/${env.DOCKER_REGISTRY}/${env.APP_NAME}:${env.version}",
-                                targetRepo: "${env.DOCKER_REGISTRY}"
-                            )
+                        container("docker") { 
+                            
+                            stage("Docker.Build") {
+                                steps {
+                                   sh "docker build -t ${env.ARTIFACTORY}/${env.DOCKER_REGISTRY}/${env.APP_NAME}:${env.version} --build-arg VERSION=${env.version} . >> $WORKSPACE/docker.build.log 2>&1"
+                                }
+                            }
+
+                            stage("Docker.Push") {
+                                steps {
+                                    rtDockerPush(
+                                        serverId: "${env.ARTIFACTORY_SERVER}",
+                                        image: "${env.ARTIFACTORY}/${env.DOCKER_REGISTRY}/${env.APP_NAME}:${env.version}",
+                                        targetRepo: "${env.DOCKER_REGISTRY}"
+                                    )
+                                }
+                            }
                         }
                     }
                 }
