@@ -88,6 +88,14 @@ pipeline {
                 }
             }
         }
+
+        stage("Publish") {
+            steps {
+                rtPublishBuildInfo (
+                    serverId: "jfrog"
+                )
+            }
+        }
     }
     post {
         always {
