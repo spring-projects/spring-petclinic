@@ -11,9 +11,9 @@ pipeline {
         disableConcurrentBuilds()
     }
     environment {
-        ARTIFACTORY = "${env.ARTIFACTORY}"
-        DOCKER_REGISTRY = "${env.DOCKER_REGISTRY}"
-        APP_NAME = "${APP_NAME}"
+        ARTIFACTORY = "sergeydzyuban.jfrog.io"
+        DOCKER_REGISTRY = "docker-dev"
+        APP_NAME = "jfrog/spring-petclinic"
     }
     stages {
         stage("Checkout") {
