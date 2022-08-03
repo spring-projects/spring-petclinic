@@ -32,7 +32,7 @@ pipeline {
             steps {
                 rtServer (
                     id: "${env.ARTIFACTORY_SERVER}",
-                    url: "https://${env.ARTIFACTORY}/",
+                    url: "https://${env.ARTIFACTORY}/artifactory",
                     credentialsId: "jfrog-user-password"
                 )
                 configureMavenSettings()
@@ -79,6 +79,7 @@ pipeline {
                         }
                     }
                 }
+                
 
                 stage("Docker.Push") {
                     steps {
@@ -97,7 +98,7 @@ pipeline {
         stage("Publish") {
             steps {
                 rtPublishBuildInfo (
-                    serverId: "jfrog"
+                    serverId: "${env.ARTIFACTORY_SERVER}"
                 )
             }
         }
