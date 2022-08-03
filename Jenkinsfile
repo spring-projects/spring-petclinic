@@ -29,7 +29,11 @@ pipeline {
 
         stage("Init"){
             steps {
-                init()
+                rtServer (
+                    id: "jfrog",
+                    url: "https://${env.ARTIFACTORY}/",
+                    credentialsId: "jfrog-user-password"
+                )
                 configureMavenSettings()
             }
         }
@@ -125,14 +129,6 @@ def version() {
     def author = sh(script: """git show -s --format=\"%ae\"""", returnStdout: true)
 
     currentBuild.description = "${env.version} by ${author}"
-}
-
-def init() {
-    rtServer (
-        id: "jfrog",
-        url: "https://${env.ARTIFACTORY}/",
-        credentialsId: "jfrog-user-password"
-    )
 }
 
 def configureMavenSettings() {
