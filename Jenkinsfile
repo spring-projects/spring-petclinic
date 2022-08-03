@@ -52,7 +52,7 @@ pipeline {
         stage("Docker.Build") {
             steps {
                 container("docker") {
-                    sh "docker build -t docker-dev.sergeydzyuban.jfrog.io/jfrog/spring-petclinic:${env.version} --build-arg VERSION=${env.version} . >> $WORKSPACE/docker.build.log 2>&1"
+                    sh "docker build -t sergeydzyuban.jfrog.io/docker-dev/jfrog/spring-petclinic:${env.version} --build-arg VERSION=${env.version} . >> $WORKSPACE/docker.build.log 2>&1"
                 }
             }
         }
@@ -75,7 +75,7 @@ pipeline {
                         container("docker") {
                             rtDockerPush(
                                 serverId: "jfrog",
-                                image: "docker-dev.sergeydzyuban.jfrog.io/jfrog/spring-petclinic:${env.version}",
+                                image: "sergeydzyuban.jfrog.io/docker-dev/jfrog/spring-petclinic:${env.version}",
                                 targetRepo: 'docker-dev'
                             )
                         }
