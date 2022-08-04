@@ -28,8 +28,12 @@ pipeline {
         }
 
         stage('Dockerfiles lint') {
+            agent {
+                docker { image 'hadolint:latest-debian' }
+            }
             steps {
-                echo "In progress..."
+                sh 'hadolint --version'
+                echo "Hadolint in progress..."
             }
         }
     }
