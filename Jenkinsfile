@@ -22,6 +22,7 @@ pipeline {
                     else
                         echo "Commit message doesnt complies with best practices. See: https://robertcooper.me/post/git-commit-messages"
                         exit 1
+                    fi
                 '''
             }
         }
