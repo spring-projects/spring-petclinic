@@ -17,13 +17,13 @@ pipeline {
                 }
                 echo "Checking commit message format:\n${GIT_COMMIT_MSG}"
                 sh '''#!/bin/bash
-                    if [[ $(echo -e "${GIT_COMMIT_MSG}" | grep -qP "^[A-Z]+-[0-9]+[0-9a-zA-z ,.:\"\']{1,72}\n*([0-9a-zA-Z ,.:\"\']{1,80}\n)*" ; echo $?) == 0 ]]; then
-                        echo 'Message checkout passed.'
-                    else
-                        echo 'Message does not complies with best practices. See: https://robertcooper.me/post/git-commit-messages'
-                        exit 1
-                    fi
-                '''
+if [[ $(echo ${GIT_COMMIT_MSG} | grep -qP "^[A-Z]+-[0-9]+[0-9a-zA-z ,.:\"\']{1,72}\n*([0-9a-zA-Z ,.:\"\']{1,80}\n)*" ; echo $?) == 0 ]]; then
+    echo 'Message checkout passed.'
+else
+    echo 'Message does not complies with best practices. See: https://robertcooper.me/post/git-commit-messages'
+    exit 1
+fi
+'''
             }
         }
 
