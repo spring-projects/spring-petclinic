@@ -29,7 +29,7 @@ pipeline {
 
         stage('Dockerfiles lint') {
             agent {
-                docker { image 'hadolint:latest-debian' }
+                docker { image 'hadolint/hadolint:latest-debian' }
             }
             steps {
                 sh 'hadolint --version'
