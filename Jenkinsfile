@@ -16,11 +16,12 @@ pipeline {
                     env.GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B ${GIT_COMMIT}', returnStdout: true).trim()
                 }
                 echo "Checking commit message format:\n${GIT_COMMIT_MSG}"
-                sh "if [[ $(echo ${GIT_COMMIT_MSG} | grep -qP \"^[A-Z]+-[0-9]+[\w ,.:-\"\']{,72}\n+([\w ,.:-\"\']{,80}\n)*\" ; echo $?) == 0 ]]; then
-                        echo \"Commit message checkout passed!\"
+                sh'
+                    if [[ $(echo ${GIT_COMMIT_MSG} | grep -qP "^[A-Z]+-[0-9]+[\w ,.:-\"\']{,72}\n+([\w ,.:-\"\']{,80}\n)*" ; echo $?) == 0 ]]; then
+                        echo "Commit message checkout passed!"
                     else
-                        echo \"Commit message doesn't complies with best practices. See: https://robertcooper.me/post/git-commit-messages\"
-                        exit 1"
+                        echo "Commit message doesnt complies with best practices. See: https://robertcooper.me/post/git-commit-messages"
+                        exit 1'
             }
         }
 
