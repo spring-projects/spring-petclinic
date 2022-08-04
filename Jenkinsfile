@@ -33,7 +33,7 @@ pipeline {
             }
             steps {
                 sh 'hadolint --version'
-                echo "Hadolint in progress.."
+                echo "Hadolint in progress."
             }
         }
     }
