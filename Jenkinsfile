@@ -31,11 +31,12 @@ pipeline {
             agent {
                 docker {
                     image 'hadolint/hadolint:latest-debian'
-                    args '-v ./:~/'
+                    args '-v ./:/mnt/'
                 }
             }
             steps {
-                sh 'hadolint Dockerfile'
+                echo "${WORKSPACE}"
+                sh 'hadolint /mnt/Dockerfile'
                 echo "Hadolint in progress.."
             }
         }
