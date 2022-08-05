@@ -35,9 +35,8 @@ pipeline {
                 }
             }
             steps {
-                echo "${WORKSPACE}"
                 sh 'hadolint /mnt/Dockerfile'
-                echo "Hadolint in progress.."
+                sh 'echo $?'
             }
         }
     }
