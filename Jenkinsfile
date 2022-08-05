@@ -31,7 +31,7 @@ pipeline {
             agent {
                 docker {
                     image 'hadolint/hadolint:latest-debian'
-                    args '-v ./:/mnt/'
+                    args '-v ${WORKSPACE}/:/mnt/'
                 }
             }
             steps {
