@@ -1,15 +1,39 @@
-pipeline {
+pipeline{
     agent any
-   tools{
-        maven "maven3"
+    /*
+    tools{
+        maven "Maven3"
     }
-   stages {  
+    triggers{
+        cron("* * * * *")
+    }
+    */
+    stages{
+        stage("Checkout"){
+            steps{
+                echo "========executing checkout========"
+                git url:"https://github.com/A-hash-bit/spring-petclinic.git", branch:"main"
+            }
+                       
+        }
+    
+        stage("Build"){
+            steps{
+                sh "'mvn clean install'"
+            }
+        }
+        
        
-       
-    stage('Maven Install') {       
-      steps {
-       sh 'mvn clean install'
-       }
-     }
-   }
- }
+    }
+    post{
+        always{
+            echo "========always========"
+        }
+        success{
+            echo "========pipeline executed successfully ========"
+        }
+        failure{
+            echo "========pipeline execution failed========"
+        }
+    }
+}
