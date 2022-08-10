@@ -1,9 +1,10 @@
 pipeline{
     agent any
-    /*
+    
     tools{
-        maven "Maven3"
+        maven "maven3"
     }
+    /*
     triggers{
         cron("* * * * *")
     }
