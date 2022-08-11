@@ -6,6 +6,7 @@ try{
      stage('Clone Repo') {
         // for display purposes
         // Get some code from a GitHub repository
+         echo "========executing checkout========"
         git url:"https://github.com/A-hash-bit/spring-petclinic.git", branch:"main"
      }
       stage('Build docker') {
