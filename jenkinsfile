@@ -5,7 +5,16 @@ pipeline {
             stage('build'){
                steps{
                     echo 'building'
-                    sh './gradlew build'
+               }
+            }
+             stage('test'){
+               steps{
+                    echo 'testing'
+               }
+            }
+             stage('deploy'){
+               steps{
+                    echo 'deploying'
                }
             }
         }
