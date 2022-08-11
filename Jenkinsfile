@@ -21,7 +21,7 @@ try{
     currentBuild.result = "FAILED"
     throw e
 }finally{
-    notifyBuild(currentBuild.result)
+    
  }
 }
 
