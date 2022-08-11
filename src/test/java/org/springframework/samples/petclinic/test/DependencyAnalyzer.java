@@ -49,8 +49,7 @@ public class DependencyAnalyzer {
 			if (potentialChanges.size()>0) {
 				System.out.println("- Change of web elements in " + pageName);
 				for (TestElement potentialChange : potentialChanges) {
-//					System.out.println("   -Potential change impact on "+potentialChange.getAccessMethodValue() +" line " + potentialChange.getStartingPosition().getLine()+ ", in test class "+ potentialChange.getTestClassName()+", in test "+potentialChange.getTestName() );
-					System.out.println("   -Potential change impact on "+potentialChange.getAccessMethodValue() +" line " + potentialChange.getStartingPosition().getLine() );
+					System.out.println("   -Potential change impact on "+potentialChange.getAccessMethod()+" " +potentialChange.getAccessMethodValue() +" line " + potentialChange.getStartingPosition().getLine()+ ", in test class "+ potentialChange.getTestClassName()+", in test "+potentialChange.getTestName() );
 				}
 			}
 		}

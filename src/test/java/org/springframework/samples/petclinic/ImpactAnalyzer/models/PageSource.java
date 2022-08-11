@@ -8,6 +8,8 @@ import java.util.Base64;
 import java.io.UnsupportedEncodingException;
 import org.openqa.selenium.WebDriver;
 
+import static org.junit.Assert.assertEquals;
+
 
 public class PageSource {
 
@@ -28,6 +30,8 @@ public class PageSource {
 
 
 	}
+
+
 
 	public String getPageUrl() {
 		return pageUrl;

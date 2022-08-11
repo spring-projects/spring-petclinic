@@ -13,6 +13,7 @@ import com.github.javaparser.ast.CompilationUnit;
 import org.springframework.samples.petclinic.ImpactAnalyzer.connect.Connect;
 import org.springframework.samples.petclinic.ImpactAnalyzer.models.HTMLElement;
 import org.springframework.samples.petclinic.ImpactAnalyzer.models.HTMLJSONFileParser;
+import org.springframework.samples.petclinic.ImpactAnalyzer.models.TestElement;
 import org.springframework.samples.petclinic.ImpactAnalyzer.models.TestFileParser;
 import org.springframework.samples.petclinic.test.DependencyAnalyzer;
 
@@ -27,16 +28,24 @@ public class ImpactAnalyzerTest {
 		Connect.connect();
 		try {
 			 File folder = new File("C:\\ozu_school\\spring-petclinic\\json");
+			File testFolder = new File("C:\\ozu_school\\spring-petclinic\\src\\test\\java\\org\\springframework\\samples\\petclinic\\test\\clinicTests");
+			File[] listOfTestFiles = testFolder.listFiles();
 			 File[] listOfFiles = folder.listFiles();
 
-			DependencyAnalyzer dependencyAnalyzer = new DependencyAnalyzer();
 
-			CompilationUnit testCompUnit = StaticJavaParser.parse(new File(FILE_PATH));
-			var testElements = TestFileParser.parse(FILE_PATH);
-			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-			Connect.addVersion(timestamp);
+
+			List<TestElement> testElements = new ArrayList<>();
+
+			for (int i = 0; i <listOfTestFiles.length ; i++) {
+				String currentTest = listOfTestFiles[i].toString();
+//				CompilationUnit testCompUnit = StaticJavaParser.parse(new File(currentTest));
+				ArrayList<TestElement> currentTestElement = TestFileParser.parse(currentTest);
+				testElements.addAll(currentTestElement);
+
+			}
 
 			List<HTMLElement> htmlElements = new ArrayList<>();
+
 
 
 
@@ -46,10 +55,10 @@ public class ImpactAnalyzerTest {
 				htmlJsonFileParser.setElements();
 				htmlElements.addAll(htmlJsonFileParser.getHTMLElements());
 
-
-
-
 			}
+			DependencyAnalyzer dependencyAnalyzer = new DependencyAnalyzer();
+			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+			Connect.addVersion(timestamp);
 			dependencyAnalyzer.dependencyAnalyzer(htmlElements, testElements);
 
 

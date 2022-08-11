@@ -89,8 +89,8 @@ public final class TestFileParser {
                             url = previousUrl;
                             hrefElement = false;
                         }
-                        testElements.add(new TestElement(testClass.toString(), test.toString(), url, callerName,
-                                startingPosition, accessMethod, accessValue));
+						testElements.add(new TestElement(testClass.getNameAsString(), test.getNameAsString(), url, callerName,
+							startingPosition, accessMethod, accessValue));
                     } else if (methodName.equals("get") && testDriverNames.contains(callerName)) {
                         previousUrl = currentUrl;
                         currentUrl = deleteStrtEndQuotes(methodCallExpr.getArgument(0).toString());

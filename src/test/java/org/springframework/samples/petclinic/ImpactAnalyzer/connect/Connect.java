@@ -523,6 +523,11 @@ public class Connect {
                     stmt = conn
                             .prepareStatement(" SELECT * FROM HtmlElements JOIN Page On p_id == h_page_name_id JOIN Version On p_version_id = v_id  where h_id IN (SELECT Table1.h_id FROM (HtmlElements t1 LEFT OUTER JOIN Page t2 ON t1.h_page_name_id == t2.p_id LEFT OUTER JOIN Version t3 ON t2.p_version_id== t3.v_id) Table1 WHERE Table1.v_id == ? OR Table1.v_id == ? GROUP BY Table1.p_page_name, Table1.h_element_id, Table1.h_value, Table1.h_xpath, Table1.h_type, Table1.h_name, Table1.h_class_name, Table1.h_css_selector, Table1.h_tag HAVING COUNT(*) = ?) and p_version_id == ? and h_name == ? and p_id == ?;");
                     break;
+				case "id":
+					stmt = conn
+						.prepareStatement(" SELECT * FROM HtmlElements JOIN Page On p_id == h_page_name_id JOIN Version On p_version_id = v_id  where h_id IN (SELECT Table1.h_id FROM (HtmlElements t1 LEFT OUTER JOIN Page t2 ON t1.h_page_name_id == t2.p_id LEFT OUTER JOIN Version t3 ON t2.p_version_id== t3.v_id) Table1 WHERE Table1.v_id == ? OR Table1.v_id == ? GROUP BY Table1.p_page_name, Table1.h_element_id, Table1.h_value, Table1.h_xpath, Table1.h_type, Table1.h_name, Table1.h_class_name, Table1.h_css_selector, Table1.h_tag HAVING COUNT(*) = ?) and p_version_id == ? and h_element_id == ? and p_id == ?;");
+					break;
+
                 default:
                     stmt = conn
                             .prepareStatement(" SELECT * FROM HtmlElements JOIN Page On p_id == h_page_name_id JOIN Version On p_version_id = v_id  where h_id IN (SELECT Table1.h_id FROM (HtmlElements t1 LEFT OUTER JOIN Page t2 ON t1.h_page_name_id == t2.p_id LEFT OUTER JOIN Version t3 ON t2.p_version_id== t3.v_id) Table1 WHERE Table1.v_id == ? OR Table1.v_id == ? GROUP BY Table1.p_page_name, Table1.h_element_id, Table1.h_value, Table1.h_xpath, Table1.h_type, Table1.h_name, Table1.h_class_name, Table1.h_css_selector, Table1.h_tag HAVING COUNT(*) = ?) and p_version_id == ? and h_xpath == ? and p_id == ?;");
@@ -592,6 +597,25 @@ public class Connect {
         }
         return result;
     }
+
+	public static ArrayList<String> getPageNamesOfTests(int versionId, String className, String testName) {
+		ArrayList<String> result = new ArrayList<String>();
+		try {
+			PreparedStatement stmt = conn
+				.prepareStatement("SELECT p_page_name from Page where p_id IN(SELECT p_id FROM HtmlElements JOIN Page On p_id == h_page_name_id JOIN Version On p_version_id = v_id JOIN ElementDependencies ED on HtmlElements.h_id = ED.d_html_elements_id where  v_id = ? and d_class_name = ? and d_test_name = ?);");
+			stmt.setInt(1, versionId);
+			stmt.setString(2, className);
+			stmt.setString(3, testName);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				result.add(rs.getString(1));
+			}
+			rs.close();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return result;
+	}
 
     public static int getIdOfHtmlElement(HTMLElement htmlElement) {
         int result = 0;

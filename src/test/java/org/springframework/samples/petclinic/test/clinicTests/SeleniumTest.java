@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.test;
+package org.springframework.samples.petclinic.test.clinicTests;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
@@ -22,7 +22,9 @@ import static org.junit.Assert.fail;
 
 public class SeleniumTest {
 
+	String methodName;
 
+	String className;
 	WebDriver driver;
 	ArrayList<PageSource> pageSourceList;
 	ArrayList<String> pageNames;
@@ -30,11 +32,13 @@ public class SeleniumTest {
 	int getMaxVid;
 
 	ArrayList<String> allPageNames ;
+	ArrayList<String> myallPageNames ;
 
 
 	@Before
 	public final void before() {
 
+		className = this.getClass().getSimpleName();
 		pageSourceList = new ArrayList<PageSource>();
 
 	}
@@ -55,7 +59,8 @@ public class SeleniumTest {
 		Connect.connect();
 
 		getMaxVid = Connect.getMaxVid();
-		allPageNames = Connect.getPageNames(getMaxVid);
+//		allPageNames = Connect.getPageNames(getMaxVid);
+		allPageNames = Connect.getPageNamesOfTests(getMaxVid,className,methodName);
 		for(PageSource pageSource: pageSourceList){
 			pageSource.addJSON();
 				while (allPageNames.contains(pageSource.getPageUrl())){
@@ -78,6 +83,13 @@ public class SeleniumTest {
 
 
 	public void bora() throws InterruptedException, UnsupportedEncodingException {
+
+
+		 methodName = new Object() {}
+			.getClass()
+			.getEnclosingMethod()
+			.getName();
+
 
 		String currentUrl;
 
@@ -207,13 +219,17 @@ public class SeleniumTest {
 		driver.findElement(By.xpath("/html/body/div/div/form/div[1]/div[2]/div/div/input")).sendKeys("çiko");
 		urls.add(driver.getCurrentUrl());
 
-		driver.findElement(By.xpath("/html/body/div/div/form/div[1]/div[3]/div/div/input")).sendKeys("04.03.2021");
+
+		driver.findElement(By.id("birthDate")).sendKeys("04.05.2022");
+
 
 		urls.add(driver.getCurrentUrl());
 
-		driver.findElement(By.xpath("/html/body/div/div/form/div[1]/div[3]/div/div/input")).clear();
+		driver.findElement(By.id("birthDate")).clear();
 
-		driver.findElement(By.xpath("/html/body/div/div/form/div[1]/div[3]/div/div/input")).sendKeys("06.05.2022");
+//		driver.findElement(By.xpath("/html/body/div/div/form/div[1]/div[3]/div/div/input")).sendKeys("06.05.2022");
+
+		driver.findElement(By.id("birthDate")).sendKeys("06.05.2022");
 		Thread.sleep(4000);
 
 
