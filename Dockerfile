@@ -7,7 +7,7 @@ FROM maven:3-jdk-8-alpine AS build
 WORKDIR /opt/app
 
 COPY ./ /opt/app
-RUN mvn clean install 
+RUN mvn package 
 
 
 # Run spring boot in Docker
