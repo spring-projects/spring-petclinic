@@ -1,6 +1,6 @@
 
 # Docker Build Stage
-FROM anapsix/alpine-java
+FROM maven:3-jdk-8-alpine AS build
 
 
 # Copy folder in docker
