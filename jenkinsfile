@@ -5,7 +5,7 @@ pipeline {
             stage('build'){
                steps{
                     echo 'building'
-                    sh 'mvnw -B -DskipTests clean package'
+                    sh './gradlew assemble'
                }
             }
         }
