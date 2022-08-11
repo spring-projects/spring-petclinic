@@ -8,8 +8,10 @@ try{
         // Get some code from a GitHub repository
          echo "========executing checkout========"
         git url:"https://github.com/A-hash-bit/spring-petclinic.git", branch:"main"
+         echo "========checkout done========"
      }
       stage('Build docker') {
+          echo "========executing docker build========"
              dockerImage = docker.build("petclinic:${env.BUILD_NUMBER}")
       }
 
