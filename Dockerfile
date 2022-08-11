@@ -7,7 +7,7 @@ FROM anapsix/alpine-java
 WORKDIR /opt/app
 
 COPY ./ /opt/app
-RUN mvn clean install -DskipTests
+RUN mvn clean install 
 
 
 # Run spring boot in Docker
