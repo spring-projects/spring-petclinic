@@ -47,6 +47,7 @@ public class SeleniumTest {
 	@Test
 	public void test(){
 		try {
+			Thread.sleep(20000);
 			bora();
 		}
 		catch (Exception e){
