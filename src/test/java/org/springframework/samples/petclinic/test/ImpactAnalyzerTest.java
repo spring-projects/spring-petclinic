@@ -18,19 +18,15 @@ import org.springframework.samples.petclinic.ImpactAnalyzer.models.TestFileParse
 import org.springframework.samples.petclinic.test.DependencyAnalyzer;
 
 public class ImpactAnalyzerTest {
-	private static final String FILE_PATH = "C:\\ozu_school\\spring-petclinic\\src\\test\\java\\org\\springframework\\samples\\petclinic\\test\\SeleniumTest.java";
-	private static final String JSON_PATH = "./json/aHR0cDovL2xvY2FsaG9zdDo4MDgwL293bmVycy8xL3BldHMvbmV3.json";
-
-
 
 	@org.junit.Test
 	public void Test() throws FileNotFoundException {
 		Connect.connect();
 		try {
-			 File folder = new File("C:\\ozu_school\\spring-petclinic\\json");
-			File testFolder = new File("C:\\ozu_school\\spring-petclinic\\src\\test\\java\\org\\springframework\\samples\\petclinic\\test\\clinicTests");
+			File folder = new File("./json");
+			File testFolder = new File("./src/test/java/org/springframework/samples/petclinic/test/clinicTests");
 			File[] listOfTestFiles = testFolder.listFiles();
-			 File[] listOfFiles = folder.listFiles();
+			File[] listOfFiles = folder.listFiles();
 
 
 
