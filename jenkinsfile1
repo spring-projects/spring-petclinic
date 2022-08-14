@@ -1,0 +1,12 @@
+pipeline {
+    agent none
+    stages {
+        stage('Source Code') {
+            agent { label 'docker' && 'kubeclust' }
+            steps {
+                git url: 'https://github.com/shaikSajidas/spring-petclinic.git', 
+                branch: 'main'
+            }
+        }
+    }
+}
