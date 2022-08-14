@@ -1,0 +1,39 @@
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spc-deployment
+  labels:
+    app: spcapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spcapp
+  template:
+    metadata:
+      labels:
+        app: spcapp 
+    spec:
+      containers:
+      - name: spcserver
+        image: nikhatsultana/spc:1.0
+        ports:
+        - containerPort: 8080
+        
+        
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: spcapp-service
+spec:
+  selector:
+    app: spcapp 
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
