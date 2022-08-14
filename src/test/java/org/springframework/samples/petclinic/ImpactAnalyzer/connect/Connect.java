@@ -14,7 +14,7 @@ public class Connect {
      * connect.Connect to a sample database
      */
 
-    public static boolean RESET_TABLES = false;
+    public static boolean RESET_TABLES = true;
     public static void connect() {
         try {
             // db parameters

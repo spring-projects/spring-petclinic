@@ -20,7 +20,7 @@ import org.springframework.samples.petclinic.ImpactAnalyzer.models.PageSource;
 import static org.junit.Assert.fail;
 
 
-public class AdıFeriha {
+public class AdiFeriha {
 
 	String className;
 
