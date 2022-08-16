@@ -1,5 +1,5 @@
 
 FROM anapsix/alpine-java
 LABEL maintainer="amar@gmail.com"
-COPY /target/spring-petclinic-1.5.1.jar spring-petclinic-1.5.1.jar
-CMD ["java","-jar","/usr/share/spring-petclinic-1.5.1.jarspring-petclinic-1.5.1.jar"]
+COPY /target/spring-petclinic-2.7.0-SNAPSHOT.jar /home/spring-petclinic-2.7.0-SNAPSHOT.jar
+CMD ["java","-jar","/home/spring-petclinic-2.7.0-SNAPSHOT.jar"]
