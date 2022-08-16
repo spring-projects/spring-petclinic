@@ -23,13 +23,7 @@ pipeline{
                 sh "mvn clean package"
             }
         }
-        stage('Docker Build') {
-         agent any
-          steps {
-              echo "========executing docker build========"
-           sh 'docker build -t amar1doc/petclinic:latest .'
-            }
-    }
+       
        
     }
     post{
