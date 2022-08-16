@@ -27,7 +27,7 @@ pipeline{
          agent any
           steps {
               echo "========executing docker build========"
-           sh 'docker build -t amar/petclinic:latest .'
+           sh 'docker build -t amar1doc/petclinic:latest .'
             }
     }
        
