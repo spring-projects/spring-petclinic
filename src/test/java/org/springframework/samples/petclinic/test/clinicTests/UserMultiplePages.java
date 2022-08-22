@@ -21,7 +21,7 @@ import static org.junit.Assert.fail;
 
 
 
-public class SeleniumTest {
+public class UserMultiplePages {
 
 	String methodName;
 
@@ -49,7 +49,7 @@ public class SeleniumTest {
 	public void test(){
 		try {
 			Thread.sleep(20000);
-			bora();
+			UserPagesTest();
 		}
 		catch (Exception e){
 			testFailed = true;
@@ -84,7 +84,7 @@ public class SeleniumTest {
 
 
 
-	public void bora() throws InterruptedException, UnsupportedEncodingException {
+	public void UserPagesTest() throws InterruptedException, UnsupportedEncodingException {
 
 
 		 methodName = new Object() {}

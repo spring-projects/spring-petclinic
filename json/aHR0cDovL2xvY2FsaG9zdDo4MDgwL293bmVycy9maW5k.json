@@ -351,16 +351,16 @@
     "cssSelector": "#search-owner-form"
   },
   {
-    "xpath": "/html/body/div/div/form/div[1]",
+    "xpath": "/html/body/div/div/form/div",
     "name": "",
     "tag": "div",
     "id": "",
     "href": "",
     "class": "form-group",
-    "cssSelector": "#search-owner-form \u003e div.form-group:nth-child(1)"
+    "cssSelector": "#search-owner-form \u003e div.form-group"
   },
   {
-    "xpath": "/html/body/div/div/form/div[1]/div",
+    "xpath": "/html/body/div/div/form/div/div",
     "name": "",
     "tag": "div",
     "id": "lastNameGroup",
@@ -369,7 +369,7 @@
     "cssSelector": "#lastNameGroup"
   },
   {
-    "xpath": "/html/body/div/div/form/div[1]/div/label",
+    "xpath": "/html/body/div/div/form/div/div/label",
     "name": "",
     "tag": "label",
     "id": "",
@@ -378,7 +378,7 @@
     "cssSelector": "#lastNameGroup \u003e label.col-sm-2.control-label"
   },
   {
-    "xpath": "/html/body/div/div/form/div[1]/div/div",
+    "xpath": "/html/body/div/div/form/div/div/div",
     "name": "",
     "tag": "div",
     "id": "",
@@ -387,7 +387,7 @@
     "cssSelector": "#lastNameGroup \u003e div.col-sm-10"
   },
   {
-    "xpath": "/html/body/div/div/form/div[1]/div/div/input",
+    "xpath": "/html/body/div/div/form/div/div/div/input",
     "name": "lastName",
     "tag": "input",
     "id": "lastName",
@@ -396,40 +396,13 @@
     "cssSelector": "#lastName"
   },
   {
-    "xpath": "/html/body/div/div/form/div[1]/div/div/span",
+    "xpath": "/html/body/div/div/form/div/div/div/span",
     "name": "",
     "tag": "span",
     "id": "",
     "href": "",
     "class": "help-inline",
     "cssSelector": "#lastNameGroup \u003e div.col-sm-10 \u003e span.help-inline"
-  },
-  {
-    "xpath": "/html/body/div/div/form/div[2]",
-    "name": "",
-    "tag": "div",
-    "id": "",
-    "href": "",
-    "class": "form-group",
-    "cssSelector": "#search-owner-form \u003e div.form-group:nth-child(2)"
-  },
-  {
-    "xpath": "/html/body/div/div/form/div[2]/div",
-    "name": "",
-    "tag": "div",
-    "id": "",
-    "href": "",
-    "class": "col-sm-offset-2 col-sm-10",
-    "cssSelector": "#search-owner-form \u003e div.form-group:nth-child(2) \u003e div.col-sm-offset-2.col-sm-10"
-  },
-  {
-    "xpath": "/html/body/div/div/form/div[2]/div/button",
-    "name": "",
-    "tag": "button",
-    "id": "",
-    "href": "",
-    "class": "btn btn-primary",
-    "cssSelector": "#search-owner-form \u003e div.form-group:nth-child(2) \u003e div.col-sm-offset-2.col-sm-10 \u003e button.btn.btn-primary"
   },
   {
     "xpath": "/html/body/div/div/form/a",

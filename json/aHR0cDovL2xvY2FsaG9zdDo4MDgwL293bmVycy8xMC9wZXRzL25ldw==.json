@@ -486,22 +486,67 @@
     "cssSelector": "html \u003e body \u003e div.container-fluid \u003e div.container.xd-container \u003e form.form-horizontal \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(3) \u003e div.col-sm-10"
   },
   {
-    "xpath": "/html/body/div/div/form/div[1]/div[3]/div/div",
+    "xpath": "/html/body/div/div/form/div[1]/div[3]/div/select",
+    "name": "type",
+    "tag": "select",
+    "id": "type",
+    "href": "",
+    "class": "",
+    "cssSelector": "#type"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div[1]/div[3]/div/select/option[1]",
     "name": "",
-    "tag": "div",
+    "tag": "option",
     "id": "",
     "href": "",
     "class": "",
-    "cssSelector": "html \u003e body \u003e div.container-fluid \u003e div.container.xd-container \u003e form.form-horizontal \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(3) \u003e div.col-sm-10 \u003e div"
+    "cssSelector": "#type \u003e option:nth-child(1)"
   },
   {
-    "xpath": "/html/body/div/div/form/div[1]/div[3]/div/div/input",
-    "name": "birthDate",
-    "tag": "input",
-    "id": "birthDate",
+    "xpath": "/html/body/div/div/form/div[1]/div[3]/div/select/option[2]",
+    "name": "",
+    "tag": "option",
+    "id": "",
     "href": "",
-    "class": "form-control",
-    "cssSelector": "#birthDate"
+    "class": "",
+    "cssSelector": "#type \u003e option:nth-child(2)"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div[1]/div[3]/div/select/option[3]",
+    "name": "",
+    "tag": "option",
+    "id": "",
+    "href": "",
+    "class": "",
+    "cssSelector": "#type \u003e option:nth-child(3)"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div[1]/div[3]/div/select/option[4]",
+    "name": "",
+    "tag": "option",
+    "id": "",
+    "href": "",
+    "class": "",
+    "cssSelector": "#type \u003e option:nth-child(4)"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div[1]/div[3]/div/select/option[5]",
+    "name": "",
+    "tag": "option",
+    "id": "",
+    "href": "",
+    "class": "",
+    "cssSelector": "#type \u003e option:nth-child(5)"
+  },
+  {
+    "xpath": "/html/body/div/div/form/div[1]/div[3]/div/select/option[6]",
+    "name": "",
+    "tag": "option",
+    "id": "",
+    "href": "",
+    "class": "",
+    "cssSelector": "#type \u003e option:nth-child(6)"
   },
   {
     "xpath": "/html/body/div/div/form/div[1]/div[3]/div/span",
@@ -511,105 +556,6 @@
     "href": "",
     "class": "fa fa-ok form-control-feedback",
     "cssSelector": "html \u003e body \u003e div.container-fluid \u003e div.container.xd-container \u003e form.form-horizontal \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(3) \u003e div.col-sm-10 \u003e span.fa.fa-ok.form-control-feedback"
-  },
-  {
-    "xpath": "/html/body/div/div/form/div[1]/div[4]",
-    "name": "",
-    "tag": "div",
-    "id": "",
-    "href": "",
-    "class": "form-group",
-    "cssSelector": "html \u003e body \u003e div.container-fluid \u003e div.container.xd-container \u003e form.form-horizontal \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(4)"
-  },
-  {
-    "xpath": "/html/body/div/div/form/div[1]/div[4]/label",
-    "name": "",
-    "tag": "label",
-    "id": "",
-    "href": "",
-    "class": "col-sm-2 control-label",
-    "cssSelector": "html \u003e body \u003e div.container-fluid \u003e div.container.xd-container \u003e form.form-horizontal \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(4) \u003e label.col-sm-2.control-label"
-  },
-  {
-    "xpath": "/html/body/div/div/form/div[1]/div[4]/div",
-    "name": "",
-    "tag": "div",
-    "id": "",
-    "href": "",
-    "class": "col-sm-10",
-    "cssSelector": "html \u003e body \u003e div.container-fluid \u003e div.container.xd-container \u003e form.form-horizontal \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(4) \u003e div.col-sm-10"
-  },
-  {
-    "xpath": "/html/body/div/div/form/div[1]/div[4]/div/select",
-    "name": "type",
-    "tag": "select",
-    "id": "type",
-    "href": "",
-    "class": "",
-    "cssSelector": "#type"
-  },
-  {
-    "xpath": "/html/body/div/div/form/div[1]/div[4]/div/select/option[1]",
-    "name": "",
-    "tag": "option",
-    "id": "",
-    "href": "",
-    "class": "",
-    "cssSelector": "#type \u003e option:nth-child(1)"
-  },
-  {
-    "xpath": "/html/body/div/div/form/div[1]/div[4]/div/select/option[2]",
-    "name": "",
-    "tag": "option",
-    "id": "",
-    "href": "",
-    "class": "",
-    "cssSelector": "#type \u003e option:nth-child(2)"
-  },
-  {
-    "xpath": "/html/body/div/div/form/div[1]/div[4]/div/select/option[3]",
-    "name": "",
-    "tag": "option",
-    "id": "",
-    "href": "",
-    "class": "",
-    "cssSelector": "#type \u003e option:nth-child(3)"
-  },
-  {
-    "xpath": "/html/body/div/div/form/div[1]/div[4]/div/select/option[4]",
-    "name": "",
-    "tag": "option",
-    "id": "",
-    "href": "",
-    "class": "",
-    "cssSelector": "#type \u003e option:nth-child(4)"
-  },
-  {
-    "xpath": "/html/body/div/div/form/div[1]/div[4]/div/select/option[5]",
-    "name": "",
-    "tag": "option",
-    "id": "",
-    "href": "",
-    "class": "",
-    "cssSelector": "#type \u003e option:nth-child(5)"
-  },
-  {
-    "xpath": "/html/body/div/div/form/div[1]/div[4]/div/select/option[6]",
-    "name": "",
-    "tag": "option",
-    "id": "",
-    "href": "",
-    "class": "",
-    "cssSelector": "#type \u003e option:nth-child(6)"
-  },
-  {
-    "xpath": "/html/body/div/div/form/div[1]/div[4]/div/span",
-    "name": "",
-    "tag": "span",
-    "id": "",
-    "href": "",
-    "class": "fa fa-ok form-control-feedback",
-    "cssSelector": "html \u003e body \u003e div.container-fluid \u003e div.container.xd-container \u003e form.form-horizontal \u003e div.form-group.has-feedback \u003e div.form-group:nth-child(4) \u003e div.col-sm-10 \u003e span.fa.fa-ok.form-control-feedback"
   },
   {
     "xpath": "/html/body/div/div/form/div[2]",

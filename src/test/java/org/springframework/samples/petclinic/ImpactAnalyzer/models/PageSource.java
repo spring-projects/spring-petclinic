@@ -49,7 +49,7 @@ public class PageSource {
 		String base64encodedString = Base64.getEncoder().encodeToString(
                pageUrl.getBytes("utf-8"));
 //        String pageSource = driver.getPageSource();
-        System.out.println(pageSource);
+//        System.out.println(pageSource);
         Thread.sleep(8000);
 
         File out = new File("json/"+base64encodedString+".json");

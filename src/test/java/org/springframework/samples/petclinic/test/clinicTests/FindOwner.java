@@ -20,7 +20,7 @@ import org.springframework.samples.petclinic.ImpactAnalyzer.models.PageSource;
 import static org.junit.Assert.fail;
 
 
-public class AdiFeriha {
+public class FindOwner {
 
 	String className;
 
@@ -47,7 +47,7 @@ public class AdiFeriha {
 	@Test
 	public void test(){
 		try {
-			emirinYolu();
+			findOwnerTest();
 		}
 		catch (Exception e){
 			testFailed = true;
@@ -81,7 +81,7 @@ public class AdiFeriha {
 
 
 
-	public void emirinYolu() throws InterruptedException, UnsupportedEncodingException {
+	public void findOwnerTest() throws InterruptedException, UnsupportedEncodingException {
 
 		String currentUrl;
 
