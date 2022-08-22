@@ -7,6 +7,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.NoSuchElementException;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -64,7 +66,15 @@ public final class TestFileParser {
                 }, null);
                 for (var methodCallExpr : methodCallExprs) {
                     var methodName = methodCallExpr.getNameAsString();
-                    var callerName = methodCallExpr.getScope().get().toString();
+					String callerName;
+					try{
+						 callerName = methodCallExpr.getScope().get().toString();
+					}
+					catch (Exception e){
+						continue;
+					}
+
+
                     if (methodName.equals("findElement")) {
                         var arg = methodCallExpr.getArgument(0).asMethodCallExpr();
                         var accessMethod = arg.getNameAsString();
@@ -79,8 +89,8 @@ public final class TestFileParser {
                             url = previousUrl;
                             hrefElement = false;
                         }
-                        testElements.add(new TestElement(testClass.toString(), test.toString(), url, callerName,
-                                startingPosition, accessMethod, accessValue));
+						testElements.add(new TestElement(testClass.getNameAsString(), test.getNameAsString(), url, callerName,
+							startingPosition, accessMethod, accessValue));
                     } else if (methodName.equals("get") && testDriverNames.contains(callerName)) {
                         previousUrl = currentUrl;
                         currentUrl = deleteStrtEndQuotes(methodCallExpr.getArgument(0).toString());

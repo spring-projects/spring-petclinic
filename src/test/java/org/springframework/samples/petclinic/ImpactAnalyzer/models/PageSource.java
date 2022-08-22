@@ -1,23 +1,54 @@
 package org.springframework.samples.petclinic.ImpactAnalyzer.models;
 
 
-import org.openqa.selenium.WebDriver;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Base64;
 import java.io.UnsupportedEncodingException;
+import org.openqa.selenium.WebDriver;
+
+import static org.junit.Assert.assertEquals;
 
 
 public class PageSource {
 
-    public static void pageSource(WebDriver driver, String url) throws InterruptedException, UnsupportedEncodingException {
+
+	private String pageName;
+
+	private String pageSource;
+
+	private String pageUrl;
+
+	public PageSource(String pageName, String pageSource,String pageUrl){
+
+		this.pageName = pageName;
+
+		this.pageSource = pageSource;
+
+		this.pageUrl = pageUrl;
 
 
-        String base64encodedString = Base64.getEncoder().encodeToString(
-                url.getBytes("utf-8"));
-        String pageSource = driver.getPageSource();
+	}
+
+
+
+	public String getPageUrl() {
+		return pageUrl;
+	}
+
+	public static void addExtraJSONPage(String pageUrl, WebDriver driver) throws UnsupportedEncodingException, InterruptedException {
+			driver.get(pageUrl);
+		Thread.sleep(8000);
+		new PageSource(pageUrl,driver.getPageSource(),pageUrl).addJSON();
+	}
+
+	public void addJSON() throws InterruptedException, UnsupportedEncodingException {
+
+
+		String base64encodedString = Base64.getEncoder().encodeToString(
+               pageUrl.getBytes("utf-8"));
+//        String pageSource = driver.getPageSource();
         System.out.println(pageSource);
         Thread.sleep(8000);
 

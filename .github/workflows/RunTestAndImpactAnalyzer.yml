@@ -1,4 +1,4 @@
-name: test
+name: Tests
 on: [push]
 
 jobs:
@@ -14,11 +14,11 @@ jobs:
           java-version: '18'
           distribution: 'adopt'
           cache: maven
-      - name: Sleep for 30 seconds
-        uses: jakejarvis/wait-action@master
-        with:
-          time: '60s'
+      - name: Clean Install
+        run: mvn clean install -DskipTests
       - name: Run Test
-        run: mvn test -Dtest=SeleniumTest#test
+        run: mvn -Dtest=SeleniumTest test
+      - name: Run Test
+        run: mvn -Dtest=AdiFeriha test
       - name: Run ImpactAnalyzer
         run: mvn test -Dtest=ImpactAnalyzerTest#Test
