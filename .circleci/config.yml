@@ -1,42 +1,32 @@
-version: 2.1
+version: 2.0
+
 jobs:
-  # running commands on a basic image
-  Hello-World:
+  build:
     docker:
-      - image: cimg/base:2021.04
-    steps:
-      - run:
-          name: Saying Hello
-          command: |
-            echo 'Hello World!'
-            echo 'This is the delivery pipeline'
-  # fetching code from the repo
-  Fetch-Code:
-    docker:
-      - image: cimg/base:2021.04
+      - image: cimg/openjdk:17.0.1
     steps:
       - checkout
-      - run:
-          name: Getting the Code
-          command: |
-            ls -al
-            echo '^^^Your repo files^^^'
-  # running a node container
-  Using-Node:
+      - run: ./mvnw -Dmaven.test.skip=true package
+      - persist_to_workspace:
+         root: ./
+         paths:
+           - target/
+
+  test:
     docker:
-      - image: cimg/node:17.2
+      - image: cimg/openjdk:17.0.1
     steps:
-      - run:
-          name: Running the Node Container
-          command: |
-            node -v
+      - checkout
+      - attach_workspace:
+          at: ./target
+      - run: ./mvnw test
+
 workflows:
-  Example-Workflow:
+  version: 2
+
+  build-then-test:
     jobs:
-      - Hello-World
-      - Fetch-Code:
+      - build
+      - test:
           requires:
-            - Hello-World
-      - Using-Node:
-          requires:
-            - Fetch-Code
+            - build
