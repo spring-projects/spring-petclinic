@@ -11,7 +11,7 @@ jobs:
             - v1-dependencies-{{ checksum "pom.xml" }} # appends cache key with a hash of pom.xml file
             - v1-dependencies- # fallback in case previous cache key is not found
 
-      - run: ./mvnw -Dmaven.test.skip=true package
+      - run: ./mvnw package
       - run: pwd; ls
 
       - save_cache:
@@ -19,11 +19,19 @@ jobs:
             - ~/.m2
           key: v1-dependencies-{{ checksum "pom.xml" }}
 
-      - store_artifacts:
-          path: /home/circleci/project/target/*.jar
+      # - store_artifacts:
+      #     path: /home/circleci/project/target/*.jar
         
       - run: ls /home/circleci/project/target/
 
+      - run:
+          name: Save test results
+          command: |
+            mkdir -p ~/test-results/junit/
+            find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/test-results/junit/ \;
+          when: always
+      - store_test_results:
+          path: ~/test-results
       # - persist_to_workspace:
       #    root: ./
       #    paths:
