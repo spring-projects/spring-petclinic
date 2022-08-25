@@ -24,14 +24,20 @@ jobs:
         
       - run: ls /home/circleci/project/target/
 
-      - run:
-          name: Save test results
-          command: |
-            mkdir -p ~/test-results/junit/
-            find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/test-results/junit/ \;
-          when: always
-      - store_test_results:
-          path: ~/test-results
+      # - run:
+      #     name: Save test results
+      #     command: |
+      #       mkdir -p ~/test-results/junit/
+      #       find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/test-results/junit/ \;
+      #     when: always
+      # - store_test_results:
+      #     path: ~/test-results
+
+      - store_test_results:  
+          path: target/surefire-reports
+
+      - store_artifacts:
+          path: target/spring-petclinic-v1.jar      
       # - persist_to_workspace:
       #    root: ./
       #    paths:
