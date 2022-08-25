@@ -21,6 +21,8 @@ jobs:
 
       - store_artifacts:
           path: /home/circleci/project/target/*.jar
+        
+      - run: ls /home/circleci/project/target/
 
       # - persist_to_workspace:
       #    root: ./
