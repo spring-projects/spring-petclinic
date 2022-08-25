@@ -1,21 +1,42 @@
-version: 2.1
+version: 2.0
+
 jobs:
   build:
     docker:
-      - image: python:3.6.3-jessie
-
-    working_directory: /tmp
+      - image: cimg/openjdk:17.0.1
+        auth:
     steps:
-      - run:
-          name: Creating Dummy Artifacts
-          command: |
-            echo "my artifact file" > /tmp/artifact-1;
-            mkdir /tmp/artifacts;
-            echo "my artifact files in a dir" > /tmp/artifacts/artifact-2;
+      - checkout
+      - run: ./mvnw -Dmaven.test.skip=true package
 
       - store_artifacts:
-          path: /tmp/artifact-1
-          destination: artifact-file
+          path: target/*.jar
+        
 
-      - store_artifacts:
-          path: /tmp/artifacts
+
+      - persist_to_workspace:
+         root: ./
+         paths:
+           - target/
+
+  test:
+    docker:
+      - image: cimg/openjdk:17.0.1
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ./target
+      - run: ./mvnw test
+
+workflows:
+  version: 2
+
+  build-then-test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
