@@ -40,6 +40,11 @@ class ValidatorTests {
 	}
 
 	@Test
+	public void incompleteTest() {
+		fail("Not yet implemented");
+	}
+
+	@Test
 	void shouldNotValidateWhenFirstNameEmpty() {
 
 		LocaleContextHolder.setLocale(Locale.ENGLISH);
