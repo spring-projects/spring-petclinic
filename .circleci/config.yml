@@ -4,7 +4,6 @@ jobs:
   build:
     docker:
       - image: cimg/openjdk:17.0.1
-        auth:
     steps:
       - checkout
       - run: ./mvnw -Dmaven.test.skip=true package
