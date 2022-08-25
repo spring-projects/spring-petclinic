@@ -1,18 +1,18 @@
-FROM azul/zulu-openjdk:17 as base
+# syntax=docker/dockerfile:1
+FROM amazoncorretto:17 as base
 
 # Install OS packages
-RUN apt-get update && \
-    apt-get -y install curl && \
-    rm -rf /var/lib/apt/lists/*
+#RUN apk --no-cache add curl
 WORKDIR /app
 expose 8080
 
-FROM azul/zulu-openjdk:17 as build
+FROM amazoncorretto:17 as build
 WORKDIR /src
 COPY src ./src 
 COPY gradle ./gradle
 COPY build.gradle gradlew settings.gradle ./
-RUN ./gradlew build --console=plain --info --no-daemon
+RUN --mount=type=cache,target=/root/.gradle \
+      ./gradlew build --console=plain --info --no-daemon --no-watch-fs
 
 FROM base AS final
 WORKDIR /app
