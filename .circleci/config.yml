@@ -1,19 +1,21 @@
-
-version: 2
+version: 2.1
 jobs:
-build:
-  working_directory: /tmp
-  steps:
-    - run:
-        name: Creating Dummy Artifacts
-        command: |
-          echo "my artifact file" > /tmp/art-1;
-          mkdir /tmp/artifacts;
-          echo "my artifact files in a dir" > /tmp/artifacts/art-2;
+  build:
+    docker:
+      - image: python:3.6.3-jessie
 
-    - store_artifacts:
-        path: /tmp/art-1
-        destination: artifact-file
+    working_directory: /tmp
+    steps:
+      - run:
+          name: Creating Dummy Artifacts
+          command: |
+            echo "my artifact file" > /tmp/artifact-1;
+            mkdir /tmp/artifacts;
+            echo "my artifact files in a dir" > /tmp/artifacts/artifact-2;
 
-    - store_artifacts:
-        path: /tmp/artifacts
+      - store_artifacts:
+          path: /tmp/artifact-1
+          destination: artifact-file
+
+      - store_artifacts:
+          path: /tmp/artifacts
