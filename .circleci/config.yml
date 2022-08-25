@@ -6,13 +6,21 @@ jobs:
       - image: cimg/openjdk:17.0.1
     steps:
       - checkout
-    #  - run: ./mvnw -Dmaven.test.skip=true package
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "pom.xml" }} # appends cache key with a hash of pom.xml file
+            - v1-dependencies- # fallback in case previous cache key is not found
+
+      - run: ./mvnw -Dmaven.test.skip=true package
       - run: pwd; ls
 
-      # - store_artifacts:
-      #     path: target/*.jar
-        
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: v1-dependencies-{{ checksum "pom.xml" }}
 
+      - store_artifacts:
+          path: /home/circleci/project/target/*.jar
 
       # - persist_to_workspace:
       #    root: ./
@@ -24,7 +32,7 @@ jobs:
       - image: cimg/openjdk:17.0.1
         auth:
           username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+          password: $DOCKERHUB_PASSWORD # context / project UI env-var reference
     steps:
       - checkout
       - attach_workspace:
