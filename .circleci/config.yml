@@ -1,17 +1,42 @@
 version: 2.1
 jobs:
-  build:
+  # running commands on a basic image
+  Hello-World:
+    docker:
+      - image: cimg/base:2021.04
+    steps:
+      - run:
+          name: Saying Hello
+          command: |
+            echo 'Hello World!'
+            echo 'This is the delivery pipeline'
+  # fetching code from the repo
+  Fetch-Code:
     docker:
       - image: cimg/base:2021.04
     steps:
       - checkout
       - run:
-          name: The First Step
-          command: |
-            echo 'Hello World!'
-            echo 'This is the delivery pipeline'
-      - run:
-          name: The Second Step
+          name: Getting the Code
           command: |
             ls -al
-            echo '^^^The files in your repo^^^'
+            echo '^^^Your repo files^^^'
+  # running a node container
+  Using-Node:
+    docker:
+      - image: cimg/node:17.2
+    steps:
+      - run:
+          name: Running the Node Container
+          command: |
+            node -v
+workflows:
+  Example-Workflow:
+    jobs:
+      - Hello-World
+      - Fetch-Code:
+          requires:
+            - Hello-World
+      - Using-Node:
+          requires:
+            - Fetch-Code
