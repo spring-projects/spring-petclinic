@@ -2,10 +2,16 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: alpine:3.15
+      - image: cimg/base:2021.04
     steps:
+      - checkout
       - run:
           name: The First Step
           command: |
             echo 'Hello World!'
             echo 'This is the delivery pipeline'
+      - run:
+          name: The Second Step
+          command: |
+            ls -al
+            echo '^^^The files in your repo^^^'
