@@ -6,17 +6,18 @@ jobs:
       - image: cimg/openjdk:17.0.1
     steps:
       - checkout
-      - run: ./mvnw -Dmaven.test.skip=true package
+    #  - run: ./mvnw -Dmaven.test.skip=true package
+      - run: pwd
 
-      - store_artifacts:
-          path: target/*.jar
+      # - store_artifacts:
+      #     path: target/*.jar
         
 
 
-      - persist_to_workspace:
-         root: ./
-         paths:
-           - target/
+      # - persist_to_workspace:
+      #    root: ./
+      #    paths:
+      #      - target/
 
   test:
     docker:
@@ -36,6 +37,6 @@ workflows:
   build-then-test:
     jobs:
       - build
-      - test:
-          requires:
-            - build
+      # - test:
+      #     requires:
+      #       - build
