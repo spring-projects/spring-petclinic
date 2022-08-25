@@ -7,7 +7,7 @@ jobs:
     steps:
       - checkout
     #  - run: ./mvnw -Dmaven.test.skip=true package
-      - run: pwd
+      - run: pwd; ls
 
       # - store_artifacts:
       #     path: target/*.jar
