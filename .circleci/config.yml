@@ -49,7 +49,7 @@ jobs:
       - run:
          name: Deploy Over SSH
          command: | 
-            scp -r -o StrictHostKeyChecking=no target/spring-petclinic-v1.jar "azureuser@20.199.44.139:/opt"
+            scp -r -o StrictHostKeyChecking=no target/spring-petclinic-v1.jar "azureuser@20.199.44.139:/home/azureuser"
 
   test:
     docker:
