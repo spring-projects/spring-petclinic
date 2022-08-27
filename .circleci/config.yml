@@ -42,6 +42,10 @@ jobs:
       #    root: ./
       #    paths:
       #      - target/
+      - add_ssh_keys:
+          fingerprints:
+            - "a3:72:52:7d:19:e4:41:16:f1:87:ed:84:01:f9:d8:c0" # finger print ID
+            
       - run:
          name: Deploy Over SSH
          command: | 
