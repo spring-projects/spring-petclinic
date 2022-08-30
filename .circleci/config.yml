@@ -108,7 +108,7 @@ jobs:
       - run:
          name: Deploy Over SSH
          command: | 
-            scp -r -o StrictHostKeyChecking=no target/spring-petclinic-v1.jar "azureuser@40.67.214.38:/home/azureuser/circleci"
+            scp -r -o StrictHostKeyChecking=no build/libs/spring-petclinic-2.6.0.jar "azureuser@40.67.214.38:/home/azureuser/circleci"
 
 workflows:
   version: 2
