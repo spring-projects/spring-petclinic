@@ -66,6 +66,7 @@ jobs:
 
       - run: pwd
       - run: ls
+      - run: ls target/
 
       - run:
          name: Deploy Over SSH
