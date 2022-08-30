@@ -1,7 +1,7 @@
 version: 2.0
 
 jobs:
-  build:
+  build-and-deploy:
     docker:
       - image: cimg/openjdk:17.0.1
     steps:
@@ -42,14 +42,14 @@ jobs:
       #    root: ./
       #    paths:
       #      - target/
-      # - add_ssh_keys:
-      #     fingerprints:
-      #       - "	a5:7e:33:78:ca:91:1c:94:3c:ea:b0:90:87:c3:1e:c7" # finger print ID
+      - add_ssh_keys:
+          fingerprints:
+            - "	a5:7e:33:78:ca:91:1c:94:3c:ea:b0:90:87:c3:1e:c7" # finger print ID
 
-      # - run:
-      #    name: Deploy Over SSH
-      #    command: | 
-      #       scp -r -o StrictHostKeyChecking=no target/spring-petclinic-v1.jar "azureuser@40.67.214.38:/home/azureuser/circleci"
+      - run:
+         name: Deploy Over SSH
+         command: | 
+            scp -r -o StrictHostKeyChecking=no target/spring-petclinic-v1.jar "azureuser@40.67.214.38:/home/azureuser/circleci"
 
   deploy:
     docker:
@@ -76,9 +76,9 @@ jobs:
 workflows:
   version: 2
 
-  build-then-test:
+  build-then-deploy:
     jobs:
-      - build
-      - deploy:
-          requires:
-            - build
+      - build-and-deploy
+      # - deploy:
+      #     requires:
+      #       - build
