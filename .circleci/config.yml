@@ -113,9 +113,9 @@ jobs:
 workflows:
   version: 2
 
-  build-then-deploy-gradle:
+  build-then-deploy:
     jobs:
-      - build-and-deploy
+      - build-and-deploy-gradle
       # - deploy:
       #     requires:
       #       - build
