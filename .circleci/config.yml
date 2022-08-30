@@ -44,7 +44,7 @@ jobs:
       #      - target/
       - add_ssh_keys:
           fingerprints:
-            - "	be:28:23:61:f1:01:02:de:ce:56:c0:ed:b8:81:8a:37" # finger print ID
+            - "	a5:7e:33:78:ca:91:1c:94:3c:ea:b0:90:87:c3:1e:c7" # finger print ID
 
       - run:
          name: Deploy Over SSH
