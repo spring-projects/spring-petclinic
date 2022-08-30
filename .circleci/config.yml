@@ -11,8 +11,7 @@ jobs:
             - v1-dependencies-{{ checksum "pom.xml" }} # appends cache key with a hash of pom.xml file
             - v1-dependencies- # fallback in case previous cache key is not found
 
-      - run: ./mvnw package
-      - run: pwd; ls
+      - run: time ./mvnw package
 
       - save_cache:
           paths:
@@ -22,7 +21,7 @@ jobs:
       # - store_artifacts:
       #     path: /home/circleci/project/target/*.jar
         
-      - run: ls /home/circleci/project/target/
+      # - run: ls /home/circleci/project/target/
 
       # - run:
       #     name: Save test results
@@ -51,27 +50,27 @@ jobs:
          command: | 
             scp -r -o StrictHostKeyChecking=no target/spring-petclinic-v1.jar "azureuser@40.67.214.38:/home/azureuser/circleci"
 
-  deploy:
-    docker:
-      - image: cimg/openjdk:17.0.1
+  # deploy:
+  #   docker:
+  #     - image: cimg/openjdk:17.0.1
 
-    steps:
-      - checkout
-      - attach_workspace:
-          at: ./target
+  #   steps:
+  #     - checkout
+  #     - attach_workspace:
+  #         at: ./target
 
-      - add_ssh_keys:
-          fingerprints:
-            - "	a5:7e:33:78:ca:91:1c:94:3c:ea:b0:90:87:c3:1e:c7" # finger print ID
+  #     - add_ssh_keys:
+  #         fingerprints:
+  #           - "	a5:7e:33:78:ca:91:1c:94:3c:ea:b0:90:87:c3:1e:c7" # finger print ID
 
-      - run: pwd
-      - run: ls
-      - run: ls target/
+  #     - run: pwd
+  #     - run: ls
+  #     - run: ls target/
 
-      - run:
-         name: Deploy Over SSH
-         command: | 
-            scp -r -o StrictHostKeyChecking=no target/spring-petclinic-v1.jar "azureuser@40.67.214.38:/home/azureuser/circleci"
+  #     - run:
+  #        name: Deploy Over SSH
+  #        command: | 
+  #           scp -r -o StrictHostKeyChecking=no target/spring-petclinic-v1.jar "azureuser@40.67.214.38:/home/azureuser/circleci"
 
 workflows:
   version: 2
