@@ -115,7 +115,8 @@ workflows:
 
   build-then-deploy:
     jobs:
-      - build-and-deploy-gradle
+      # - build-and-deploy-gradle
+      - build-and-deploy-maven
       # - deploy:
       #     requires:
       #       - build
