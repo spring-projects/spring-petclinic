@@ -63,7 +63,7 @@ jobs:
   #         fingerprints:
   #           - "	a5:7e:33:78:ca:91:1c:94:3c:ea:b0:90:87:c3:1e:c7" # finger print ID
 
-  #     - run: pwd
+  ##     - run: pwd
   #     - run: ls
   #     - run: ls target/
 
