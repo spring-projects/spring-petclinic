@@ -32,6 +32,7 @@ public class PetClinicApplication {
 		System.out.println("Test");
 		System.out.println("Test-2");
 		System.out.println("Test-3");
+		System.out.println("Test-4");
 		SpringApplication.run(PetClinicApplication.class, args);
 	}
 
