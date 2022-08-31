@@ -35,8 +35,8 @@ jobs:
       - store_test_results:  
           path: target/surefire-reports
 
-      - store_artifacts:
-          path: target/spring-petclinic-v1.jar      
+      # - store_artifacts:
+      #     path: target/spring-petclinic-v1.jar      
       # - persist_to_workspace:
       #    root: ./
       #    paths:
