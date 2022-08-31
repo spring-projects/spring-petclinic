@@ -98,8 +98,8 @@ jobs:
       - store_test_results:  
           path: build/test-results/test
 
-      - store_artifacts:
-          path: build/libs/spring-petclinic-2.6.0.jar      
+      # - store_artifacts:
+      #     path: build/libs/spring-petclinic-2.6.0.jar      
 
       - add_ssh_keys:
           fingerprints:
