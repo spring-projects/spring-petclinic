@@ -1,13 +1,13 @@
 plugins {
-  id 'org.springframework.boot' version '2.7.1'
-  id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+  id 'org.springframework.boot' version '2.7.3'
+  id 'io.spring.dependency-management' version '1.0.13.RELEASE'
   id 'java'
 }
 
 apply plugin: 'java'
 
 group = 'org.springframework.samples'
-version = '2.6.0'
+version = '2.7.3'
 sourceCompatibility = '11'
 
 repositories {
@@ -36,6 +36,6 @@ dependencies {
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-test {
+tasks.named('test') {
   useJUnitPlatform()
 }
