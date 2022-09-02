@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "petclinic_chart.fullname" . }}
+  name: {{ include "petclinic-chart.fullname" . }}
   labels:
-    {{- include "petclinic_chart.labels" . | nindent 4 }}
+    {{- include "petclinic-chart.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "petclinic_chart.selectorLabels" . | nindent 6 }}
+      {{- include "petclinic-chart.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,7 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "petclinic_chart.selectorLabels" . | nindent 8 }}
+        {{- include "petclinic-chart.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:

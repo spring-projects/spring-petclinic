@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "petclinic_chart.fullname" . }}
+  name: {{ include "petclinic-chart.fullname" . }}
   labels:
-    {{- include "petclinic_chart.labels" . | nindent 4 }}
+    {{- include "petclinic-chart.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -12,4 +12,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "petclinic_chart.selectorLabels" . | nindent 4 }}
+    {{- include "petclinic-chart.selectorLabels" . | nindent 4 }}
