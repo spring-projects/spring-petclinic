@@ -32,7 +32,8 @@ while true; do
     curl -s -o /dev/null http://localhost:8080/oups
     sleep 1
 
-    echo "Completed a full set of operations." >> $logfile
+    timestamp=$(date +"%F %T,%3N")
+    echo "$timestamp Completed a full set of operations." >> $logfile
 
     # go too fast and the agent starts sampling
     sleep 5

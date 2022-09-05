@@ -9,14 +9,10 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.MediaType;
-import org.springframework.samples.petclinic.api.CatFact;
-import org.springframework.samples.petclinic.api.CatFactClient;
 import org.springframework.samples.petclinic.owner.OwnerRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -26,11 +22,9 @@ import java.util.Date;
 public class ClmController {
 
 	private final OwnerRepository ownerRepository;
-	private final CatFactClient catFactClient;
 
-	public ClmController(OwnerRepository ownerRepository, CatFactClient catFactClient) {
+	public ClmController(OwnerRepository ownerRepository) {
 		this.ownerRepository = ownerRepository;
-		this.catFactClient = catFactClient;
 	}
 
 	/**
@@ -78,7 +72,6 @@ public class ClmController {
 		segment.end();
 	}
 
-
 	/**
 	 * Besides the auto instrumentation, this also demonstrates a trace created by XML instrumentation.
 	 */
@@ -121,12 +114,6 @@ public class ClmController {
 		httpMethod();
 		doWait();
 		return "welcome";
-	}
-
-	@GetMapping(value = "/clm/cat", produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public CatFact http() {
-		return catFactClient.fetchFact();
 	}
 
 	@Trace
