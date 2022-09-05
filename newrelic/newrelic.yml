@@ -28,7 +28,7 @@ common: &default_settings
   # Default is true.
   agent_enabled: true
 
-  app_name: CLM Test App
+  app_name: Java CLM Test App
 
   # To enable high security, set this property to true. When in high
   # security mode, the agent will use SSL and obfuscated SQL. Additionally,
