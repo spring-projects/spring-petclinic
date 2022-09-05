@@ -3,18 +3,20 @@ package org.springframework.samples.petclinic.clm;
 import com.newrelic.api.agent.NewRelic;
 import com.newrelic.api.agent.Segment;
 import com.newrelic.api.agent.Trace;
-import com.newrelic.api.agent.TransactionNamePriority;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
+import org.springframework.samples.petclinic.api.CatFact;
+import org.springframework.samples.petclinic.api.CatFactClient;
 import org.springframework.samples.petclinic.owner.OwnerRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -23,8 +25,13 @@ import java.util.Date;
 @Controller
 public class ClmController {
 
-	@Autowired
-	private OwnerRepository ownerRepository;
+	private final OwnerRepository ownerRepository;
+	private final CatFactClient catFactClient;
+
+	public ClmController(OwnerRepository ownerRepository, CatFactClient catFactClient) {
+		this.ownerRepository = ownerRepository;
+		this.catFactClient = catFactClient;
+	}
 
 	/**
 	 * This method demonstrates an auto instrumented method.
@@ -116,6 +123,12 @@ public class ClmController {
 		return "welcome";
 	}
 
+	@GetMapping(value = "/clm/cat", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public CatFact http() {
+		return catFactClient.fetchFact();
+	}
+
 	@Trace
 	private void httpMethod() {
 		try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
@@ -149,7 +162,7 @@ public class ClmController {
 
 	private void setMessage(Model model, String spanName) {
 		model.addAttribute("message",
-			new Date() + ": Look for a span named \"" + spanName+ "\" and its children.");
+			new Date() + ": Look for a span named \"" + spanName + "\" and its children.");
 	}
 
 	/**

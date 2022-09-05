@@ -16,7 +16,7 @@ RUN --mount=type=cache,target=/root/.gradle \
 
 FROM base AS final
 WORKDIR /app
-COPY --from=build /src/build/libs/spring-petclinic-2.6.0.jar .
+COPY --from=build /src/build/libs/spring-petclinic-2.7.3.jar .
 COPY ["newrelic/", "./newrelic"]
 
 COPY --chmod=0755 entrypoint.sh /
