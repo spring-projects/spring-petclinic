@@ -8,7 +8,9 @@
 		"--mount",
 		"type=bind,source=${env:HOME}/.m2,target=/home/vscode/.m2",
 		"--mount",
-		"type=bind,source=${env:HOME}/.gradle,target=/home/vscode/.gradle"
+		"type=bind,source=${env:HOME}/.gradle,target=/home/vscode/.gradle",
+		"--env",
+		"GRADLE_USER_HOME=/home/vscode/.gradle"
 	],
 	"initializeCommand": "mkdir -p ${env:HOME}/.m2 ${env:HOME}/.gradle",
 	"onCreateCommand": "sudo chown vscode:vscode /home/vscode/.m2 /home/vscode/.gradle",
