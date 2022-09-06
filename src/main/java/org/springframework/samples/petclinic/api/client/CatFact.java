@@ -1,9 +1,9 @@
-package org.springframework.samples.petclinic.api;
+package org.springframework.samples.petclinic.api.client;
 
 
 public class CatFact {
-	String fact;
-	Integer length;
+	private String fact;
+	private Integer length;
 
 	public CatFact(String fact, Integer length) {
 		this.fact = fact;

@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.api;
+package org.springframework.samples.petclinic.api.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.newrelic.api.agent.Trace;
@@ -12,7 +12,7 @@ import java.io.IOException;
 
 @Component
 public class CatFactClient {
-	final ObjectMapper objectMapper;
+	private final ObjectMapper objectMapper;
 
 	public CatFactClient(ObjectMapper objectMapper) {
 		this.objectMapper = objectMapper;
