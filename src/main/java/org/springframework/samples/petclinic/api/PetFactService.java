@@ -15,8 +15,8 @@ public class PetFactService {
 	}
 
 	public PetFactResponse getPetFacts() {
-		final var catFact = catFactClient.fetchFact();
-		final var dogFact = dogFactClient.fetchFact();
+		final var catFact = catFactClient.fetchCatFact();
+		final var dogFact = dogFactClient.fetchDogFact();
 		return new PetFactResponse(catFact.getFact(), dogFact.getFacts().get(0));
 	}
 

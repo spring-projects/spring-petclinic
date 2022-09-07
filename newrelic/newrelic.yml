@@ -347,6 +347,9 @@ common: &default_settings
 # NOTE if your application has other named environments, you should
 # provide configuration settings for these environments here.
 
+  code_level_metrics:
+    enabled: true
+
 development:
   <<: *default_settings
   app_name: My Application (Development)

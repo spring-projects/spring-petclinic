@@ -19,7 +19,7 @@ public class DogFactClient {
 	}
 
 	@Trace
-	public DogFact fetchFact() {
+	public DogFact fetchDogFact() {
 		try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 			HttpGet get = new HttpGet("https://www.dogfactsapi.ducnguyen.dev/api/v1/facts/?number=1");
 			try (CloseableHttpResponse response = httpClient.execute(get)) {

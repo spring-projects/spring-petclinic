@@ -19,7 +19,7 @@ public class CatFactClient {
 	}
 
 	@Trace
-	public CatFact fetchFact() {
+	public CatFact fetchCatFact() {
 		try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 			HttpGet get = new HttpGet("https://catfact.ninja/fact");
 			try (CloseableHttpResponse response = httpClient.execute(get)) {
