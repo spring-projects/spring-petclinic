@@ -13,7 +13,7 @@
 		"GRADLE_USER_HOME=/home/vscode/.gradle"
 	],
 	"initializeCommand": "mkdir -p ${env:HOME}/.m2 ${env:HOME}/.gradle",
-	"onCreateCommand": "sudo chown vscode:vscode /home/vscode/.m2 /home/vscode/.gradle",
+	"postCreateCommand": "sudo chown vscode:vscode /home/vscode/.m2 /home/vscode/.gradle",
 	"remoteUser": "vscode",
 	"features": {
 		"docker-in-docker": "latest"
