@@ -21,10 +21,11 @@
 	"extensions": [
 		"vscjava.vscode-java-pack",
 		"redhat.vscode-xml",
-		"pivotal.vscode-boot-dev-pack"
+		"Pivotal.vscode-boot-dev-pack"
 	],
 	"forwardPorts": [8080],
 	"settings": {
-		"java.import.gradle.enabled": false
+		"java.import.gradle.enabled": false,
+		"java.server.launchMode": "Standard"
 	}
 }
