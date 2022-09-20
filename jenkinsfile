@@ -1,0 +1,8 @@
+node("JDK11_MVN") {
+stage("get-code") {
+git url: "https://github.com/spring-projects/spring-petclinic.git", branch: "main"
+}
+stage("buld"){
+sh "mvn package"
+}
+}
