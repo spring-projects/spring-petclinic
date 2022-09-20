@@ -1,6 +1,6 @@
 node("JDK11_MVN") {
 stage("get-code") {
-git "https://github.com/spring-projects/spring-petclinic.git"
+sh "git clone https://github.com/spring-projects/spring-petclinic.git && spring-petclinic"
 }
 stage("buld"){
 sh "mvn package"
