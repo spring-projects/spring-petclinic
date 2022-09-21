@@ -29,6 +29,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 
+import org.hibernate.validator.constraints.Range;
 import org.springframework.core.style.ToStringCreator;
 import org.springframework.samples.petclinic.model.Person;
 import org.springframework.util.Assert;
@@ -59,10 +60,22 @@ public class Owner extends Person {
 	@Digits(fraction = 0, integer = 10)
 	private String telephone;
 
+	@Column(name = "age")
+	@NotEmpty
+	private Long age;
+
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "owner_id")
 	@OrderBy("name")
 	private List<Pet> pets = new ArrayList<>();
+
+	public Long getAge() {
+		return this.age;
+	}
+
+	public void setAge(Long age) {
+		this.age = age;
+	}
 
 	public String getAddress() {
 		return this.address;
@@ -148,6 +161,7 @@ public class Owner extends Person {
 		return new ToStringCreator(this).append("id", this.getId()).append("new", this.isNew())
 				.append("lastName", this.getLastName()).append("firstName", this.getFirstName())
 				.append("address", this.address).append("city", this.city).append("telephone", this.telephone)
+				.append("age", this.getAge())
 				.toString();
 	}
 
