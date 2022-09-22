@@ -1,0 +1,29 @@
+name: Test and Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  Test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Initialize
+        uses: actions/checkout@v3
+      - run: |
+          mvn dependency:go-offline
+      - name: Unit Tests
+        run: |
+          mvn test
+#      - name: Pushing coverage reports to Codacy
+#        run: |
+#          export CODACY_PROJECT_TOKEN=${{ secrets.CODACY_PROJECT_TOKEN }}
+#          export CODACY_API_BASE_URL=https://codacy.devops.va.gov
+#          export CODACY_ORGANIZATION_PROVIDER=gh
+#          export CODACY_USERNAME=${{ secrets.GHCRIO_REGISTRY_USERNAME }}
+#          export CODACY_PROJECT_NAME=${{ env.DOCKER_IMAGE_NAME }}
+#          bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r target/test-results/jacoco/jacoco.xml
