@@ -53,7 +53,7 @@ class VetControllerTests {
 		james.setLastName("Carter");
 		james.setId(1);
 		return james;
-	};
+	}
 
 	private Vet helen() {
 		Vet helen = new Vet();
@@ -65,7 +65,7 @@ class VetControllerTests {
 		radiology.setName("radiology");
 		helen.addSpecialty(radiology);
 		return helen;
-	};
+	}
 
 	@BeforeEach
 	void setup() {
