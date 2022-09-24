@@ -60,9 +60,11 @@ class VisitController {
 	public Visit loadPetWithVisit(@PathVariable("ownerId") int ownerId, @PathVariable("petId") int petId,
 			Map<String, Object> model) {
 		Owner owner = this.owners.findById(ownerId);
+
 		Pet pet = owner.getPet(petId);
 		model.put("pet", pet);
 		model.put("owner", owner);
+
 		Visit visit = new Visit();
 		pet.addVisit(visit);
 		return visit;
@@ -71,7 +73,7 @@ class VisitController {
 	// Spring MVC calls method loadPetWithVisit(...) before initNewVisitForm is
 	// called
 	@GetMapping("/owners/{ownerId}/pets/{petId}/visits/new")
-	public String initNewVisitForm(@PathVariable("petId") int petId, Map<String, Object> model) {
+	public String initNewVisitForm() {
 		return "pets/createOrUpdateVisitForm";
 	}
 
@@ -83,11 +85,10 @@ class VisitController {
 		if (result.hasErrors()) {
 			return "pets/createOrUpdateVisitForm";
 		}
-		else {
-			owner.addVisit(petId, visit);
-			this.owners.save(owner);
-			return "redirect:/owners/{ownerId}";
-		}
+
+		owner.addVisit(petId, visit);
+		this.owners.save(owner);
+		return "redirect:/owners/{ownerId}";
 	}
 
 }
