@@ -1,8 +1,11 @@
-node("JDK11_MVN") {
-stage("get-code") {
-sh "git clone https://github.com/spring-projects/spring-petclinic.git && spring-petclinic"
-}
-stage("buld"){
-sh "mvn package"
-}
+node('labnode1') {
+    stage('vcs') {
+        git branch: 'jenkins_0_1', url: 'https://github.com/devopssatheeh/spring-petclinic.git'
+    }
+    stage("build"){
+        sh 'mvn package'
+    }
+    stage("archive results"){
+        junit '**/surefire-reports/*.xml'
+    }
 }
