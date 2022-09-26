@@ -1,7 +1,7 @@
 pipeline {
     agent any
     stages {
-        stage('build') {
+        stage('get') {
             steps {
                 git branch: 'REL_INT_2.0', url: 'https://github.com/usorama/spring-petclinic.git'
             }
