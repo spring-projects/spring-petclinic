@@ -16,7 +16,7 @@ pipeline{
         }
         
         stage('post') {
-        always {
+            steps {
             archiveArtifacts artifacts: 'target/spring-petclinic-*.jar'
             junit '**/surefire-reports/*.xml'
              }
