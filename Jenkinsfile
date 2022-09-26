@@ -10,11 +10,12 @@ pipeline{
         
         stage('build'){
             steps{
-                agent { label: 'jdk-11-mvn' }
+                agent { label 'jdk-11-mvn' }
                 sh 'mvn package'
                  }
         }
-        post {
+        
+        stage('post') {
         always {
             archiveArtifacts artifacts: 'target/spring-petclinic-*.jar'
             junit '**/surefire-reports/*.xml'
