@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+    stages {
+        stage('get') {
+            steps {
+                git branch: url: 'https://github.com/usorama/spring-petclinic.git'
+            }
+        }
+        stage('build') {
+            steps {
+                sh 'mvn package'
+            }
+        }
+        stage('Archive JUnit formatted test results') {
+            steps {
+                junit '**/surefire-reports/*.xml'
+            }
+        }
+        stage('Archive artifacts') {
+            steps {
+            archive '**/target/*.jar'
+            }
+        }
+    }    
+}
