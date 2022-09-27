@@ -1,0 +1,16 @@
+pipeline 
+    agent any
+    stages {
+        stage('test') {
+            steps {
+                sh 'echo hi all'
+            }
+        }
+        stage('learning') {
+            steps {
+                git url: 'https://github.com/Tajdarhussain110/spring-petclinic.git', 
+                    branch: 'main'
+            }
+        }
+    }
+}
