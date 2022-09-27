@@ -1,0 +1,9 @@
+node {
+    stage('test') {
+        sh 'echo hello'
+    }
+    stage('learning') {
+        git url: 'https://github.com/Tajdarhussain110/spring-petclinic.git' ,
+            branch: 'main'
+    }
+}
