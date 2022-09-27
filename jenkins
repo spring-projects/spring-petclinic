@@ -4,7 +4,7 @@ node {
     
   }
   stage('build'){
-      sh '/opt/apache-maven/bin/mvn package'
+      sh '/usr/share/maven/bin/mvn package'
   }
   
    stage("archive results") {
