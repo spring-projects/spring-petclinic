@@ -1,18 +1,18 @@
-pipeline{
+pipeline {
     agent any
-    stages{
-        stage{
-            steps('clone'){
+    stages {
+        stage('clone') {
+            steps {
              git url: 'https://github.com/nagarjunaduggireddy/spring-petclinicmain.git'
             }
         }
-        stage('Test'){
-            steps{
+        stage('Test') {
+            steps {
                 sh 'echo test'
             }
         }
-        stage('Deploy'){
-            steps{
+        stage('Deploy') {
+            steps {
                 sh 'mvn package'
             }
         }
