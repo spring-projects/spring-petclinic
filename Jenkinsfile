@@ -2,7 +2,7 @@ pipeline {
     agent {label 'JDK-11-MVN'}
     parameters {
         choice(name: 'BRANCH_TO_BUILD', choices: ['REL_INT_3.0', 'main'], description: 'Branch to build')
-        string(name: 'MAVEN_GOAL', defaultValue: 'package', description: 'Maven Goal')
+        string(name: 'MAVEN_GOAL', defaultValue: 'mvn package', description: 'Maven Goal')
     }
     stages {
         stage('get') {
