@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('get') {
             steps {
-                git branch: url: 'https://github.com/usorama/spring-petclinic.git'
+                git branch: url: ' https://github.com/ashokmaddula/spring-petclinic.git'
             }
         }
         stage('build') {
