@@ -1,0 +1,16 @@
+pipeline {
+    agent UBUNTU
+    stages {
+        stage('test') {
+            steps {
+                sh 'echo hello'
+            }
+        }
+        stage('learning') {
+            steps {
+                git url: 'https://github.com/nagarjunaduggireddy/spring-petclinicmain.git', 
+                    branch: 'master'
+            }
+        }
+    }
+}
