@@ -5,7 +5,7 @@ pipeline script :
          stage('spring1') {
          steps{
          git url:'https://github.com/spring-petclinic spring-framework-petclinic.git',
-          branch: 'master'
+          branch: 'main'
         }
         }
  stage('bulid'){
