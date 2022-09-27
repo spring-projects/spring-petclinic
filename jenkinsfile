@@ -1,0 +1,11 @@
+node('JAVA-8-MVN') {
+    stage('vcs') {
+        git branch: 'REAL_1.0.1', url: 'https://github.com/Giridevops-Git/spring-petclinic.git'
+   }
+   stage ('build'){
+   sh '/usr/share/maven/bin/mvn package'
+   }
+   stage ('archive artifacts'){
+   junit '**/surefire-reports/*.xml'
+   }
+}
