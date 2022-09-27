@@ -13,7 +13,7 @@ pipeline{
      stage('build'){
             steps{
                 agent { label 'jdk-11-mvn' }
-                sh "${params.MAVEN_GOAL}"
+                sh "/usr/share/maven/bin/mvn ${params.MAVEN_GOAL}"
                  }
         }
         stage('post') {
