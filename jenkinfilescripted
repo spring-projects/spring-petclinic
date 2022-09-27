@@ -5,4 +5,7 @@ node('JDK-11') {
     stage('build') {
         sh 'mvn package'
     }
+    stage('junit') {
+        junit '**/target/surefire-reports/*.xml'
+    }
 }
