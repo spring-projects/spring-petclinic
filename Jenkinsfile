@@ -1,17 +1,21 @@
 pipeline {
-    agent any
+    agent {label 'JDK-11-MVN'}
+    parameters {
+        choice(name: 'BRANCH_TO_BUILD', choices: ['REL_INT_3.0', 'main'], description: 'Branch to build')
+        string(name: 'MAVEN_GOAL', defaultValue: 'package', description: 'Maven Goal')
+    }
     stages {
         stage('get') {
             steps {
-                git branch: 'REL_INT_2.0', url: 'https://github.com/usorama/spring-petclinic.git'
+                git branch: "${params.BRANCH_TO_BUILD}", url: 'https://github.com/usorama/spring-petclinic.git'
             }
         }
         stage('build') {
             steps {
-                sh 'mvn package'
+                sh "${params.MAVEN_GOAL}"
             }
         }
-        stage('Archive JUnit formatted test results') {
+        stage('Archive test results') {
             steps {
                 junit '**/surefire-reports/*.xml'
             }
