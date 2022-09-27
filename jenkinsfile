@@ -1,25 +1,17 @@
-pipeline {
-    agent any
-stages {
-    stage('get') {
-       steps {
-          git branch: 'relese1.0', url: 'https://github.com/akhilbabu459/spring-petclinic.git'
-  }
-}
-stage('build') {
-    steps {
-        steps {
-            sh 'mvn package'
-        }
-    }
-}
-stage('Junit archive Junit-formated Testresults')
-(
-  steps(
-    junit '**/surefire-reports/*.xml' 
-  )
-  
-)
+pipeline{
+   anent any
+      stages{
+          stage('test'){
+              steps{
+                sh 'echo hello'
+          }
+                  
+          }
+        
+
+
+
+      }
 
 
 
