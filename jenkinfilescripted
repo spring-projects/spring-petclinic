@@ -1,0 +1,8 @@
+node('JDK-11') {
+    stage('scm') {
+        git branch: 'main', url: 'https://github.com/GUDAPATIVENKATESH/spring-petclinic.git'
+    }
+    stage('build') {
+        sh 'mvn package'
+    }
+}
