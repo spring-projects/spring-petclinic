@@ -6,9 +6,9 @@ pipeline {
              git url: 'https://github.com/nagarjunaduggireddy/spring-petclinicmain.git'
             }
         }
-        stage('Test') {
+        stage('JTest') {
             steps {
-                sh 'echo test'
+                JUnit testResults: '**/surefire-reports/*.xml'
             }
         }
         stage('Deploy') {
