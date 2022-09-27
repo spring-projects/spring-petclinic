@@ -8,7 +8,7 @@ pipeline {
         }
         stage('JTest') {
             steps {
-                JUnit testResults: '**/surefire-reports/*.xml'
+                junit testResults: '**/surefire-reports/*.xml'
             }
         }
         stage('Deploy') {
