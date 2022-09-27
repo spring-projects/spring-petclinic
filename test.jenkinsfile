@@ -1,5 +1,5 @@
 pipeline{
-    agent{UBUNTU}
+    agent any
     stages{
         stage{
             steps('clone'){
