@@ -1,4 +1,4 @@
-node {
+node(UBUNTU) {
     stage('vcs') {
         git branch: 'main', url: 'https://github.com/nagarjunaduggireddy/spring-petclinicmain.git'
     }
