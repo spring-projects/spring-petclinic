@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('get') {
             steps {
-                git branch: 'REL_INT_2.0', url: 'https://github.com/akhilbabu459/spring-petclinic.git'
+                git branch: 'relese1.0', url: 'https://github.com/akhilbabu459/spring-petclinic.gitgit '
             }
         }
         stage('build') {
