@@ -1,0 +1,25 @@
+pipeline{
+    agent any
+    stages{
+        stage('get'){
+            steps{
+                git branch: 'REL_1.0', 'https://github.com/iftikarchowdhury/spring-petclinic.git'
+            }
+        }
+        stage('build'){
+            steps{
+                sh 'mvn package'
+            }
+ } 
+        stage('archive jnuit formatted test results'){
+          steps{
+        junit '**/surefire-reports/*.xml'
+     }
+        }
+         stage('archave artifacts'){
+            steps{
+                archive '**/target/*.jar'
+            }
+                     }
+    }
+}
