@@ -3,7 +3,7 @@ pipeline{
     stages{
         stage('get'){
             steps{
-                git branch: 'REL_1.0', 'https://github.com/iftikarchowdhury/spring-petclinic.git'
+                git branch:'REL_1.0', 'https://github.com/iftikarchowdhury/spring-petclinic.git'
             }
         }
         stage('build'){
