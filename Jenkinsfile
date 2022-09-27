@@ -1,9 +1,13 @@
 pipeline{
     agent any
+    parameters{
+        choice(name: 'BRANCH_TO_BUILD', choices: ['google', 'amazon'], description: 'branches to be build')
+        string(name: 'MAVEN_GOAL', defaultValue: 'package', description: 'maven goal')    
+    }
     stages{
         stage('vcs'){
             steps{
-               git url: 'https://github.com/vikasvarmadunna/spring-petclinic.git', branch: 'google'
+               git url: 'https://github.com/vikasvarmadunna/spring-petclinic.git', branch: ${params.BRANCH_TO_BUILD}
                  }
         }
     
@@ -11,7 +15,7 @@ pipeline{
         stage('build'){
             steps{
                 agent { label 'jdk-11-mvn' }
-                sh 'mvn package'
+                sh "${params.MAVEN_GOAL}"
                  }
         }
         
