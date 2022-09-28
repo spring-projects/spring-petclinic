@@ -1,7 +1,7 @@
 node {
    agent { label 'UBUNTU' }
     stage('git clone') {
-        git url: 'https://github.com/neelamkannan/spring-petclinic.git'
+        git url: 'https://github.com/neelamkannan/spring-petclinic.git',
         branch 'new'
     }
     stage('build') {
