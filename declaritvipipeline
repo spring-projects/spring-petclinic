@@ -1,0 +1,30 @@
+pipeline {
+    agent any
+    tools { 
+        maven 'Maven 3.6.3' 
+        jdk 'jdk8' 
+    }
+    stages {
+        stage('testing') {
+            steps {
+                sh 'echo Hii 
+            }
+        }
+        stage('clone') {
+            steps {
+                git url: 'https://github.com/ashokmaddula/spring-petclinic.git', 
+                    branch: 'main'
+            }
+        }
+        stage('building') {
+            steps {
+                sh 'mvn package'
+            }
+        }
+        stage('archiving') {
+            steps {
+                archiveArtifacts 'target/*.jar'
+            }
+        }
+    }
+}

@@ -2,8 +2,8 @@ node{
   stage ('cloning') {
     git url: 'https://github.com/ashokmaddula/spring-petclinic.git'
  
-    withMaven() {
-      bat "mvn clean install"
+    stage ('install') {
+      sh "mvn clean install"
       
       stage ('building') {
         sh 'cd spring-petclinic/ && mvn package'
