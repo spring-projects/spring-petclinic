@@ -5,12 +5,12 @@ pipeline {
     stages {
         stage('clone') {
             steps {
-             git url: 'https://github.com/nagarjunaduggireddy/spring-petclinicmain.git', branch: "${params.MYBRANCH)"
+             git url: 'https://github.com/nagarjunaduggireddy/spring-petclinicmain.git', branch: "${params.MYBRANCH}"
             }
         }
          stage('Deploy') {
             steps {
-                sh "mvn ${params.MVNPACK)"
+                sh "mvn ${params.MVNPACK}"
             }
         }
         stage('JTest') {
