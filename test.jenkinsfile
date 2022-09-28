@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('clone') {
             steps {
-             git url: 'https://github.com/nagarjunaduggireddy/spring-petclinicmain.git'
+             git url: 'https://github.com/nagarjunaduggireddy/spring-petclinicmain.git', branch: '$MYBRANCH'
             }
         }
          stage('Deploy') {
