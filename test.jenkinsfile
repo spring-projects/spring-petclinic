@@ -4,7 +4,9 @@ pipeline {
                  choice(name: 'MYBRANCH', choices: ['main', 'master'], description: 'maintain multiple branches')
                  string(name: 'MVNPACK', defaultValue: 'package', description: 'USER MAVEN') 
     }
-    triggers { pollSCM('*****') }
+    triggers { 
+               pollSCM('*****') 
+    }
     stages {
         stage('clone') {
             steps {
