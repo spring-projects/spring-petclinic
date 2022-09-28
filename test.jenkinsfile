@@ -6,15 +6,16 @@ pipeline {
              git url: 'https://github.com/nagarjunaduggireddy/spring-petclinicmain.git'
             }
         }
+         stage('Deploy') {
+            steps {
+                sh 'mvn package'
+            }
+        }
         stage('JTest') {
             steps {
                 junit testResults: '**/surefire-reports/*.xml'
             }
         }
-        stage('Deploy') {
-            steps {
-                sh 'mvn package'
-            }
-        }
+
     }
 }
