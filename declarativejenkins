@@ -3,7 +3,7 @@ node {
         sh 'echo Hello World'
     }
     stage ('cloning') {
-        sh 'git clone https://github.com/Pravin-Kumar-GitHub/spring-petclinic.git'
+        sh 'git clone https://github.com/ashokmaddula/spring-petclinic.git'
     }
     stage ('building') {
         sh 'cd spring-petclinic/ && mvn package'
