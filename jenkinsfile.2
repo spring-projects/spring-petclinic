@@ -1,0 +1,11 @@
+node('node-1') {
+    stage('git') {
+        git branch: 'spring_master', url: 'https://github.com/gopivurata/spring-petclinic.git'
+    }
+    stage("build") {
+        sh '/usr/share/maven/bin/mvn package'
+    }
+    stage("archive results") {
+        junit '**/surefire-reports/*.xml'
+    }
+}
