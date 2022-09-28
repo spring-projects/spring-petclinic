@@ -21,7 +21,8 @@
 	"extensions": [
 		"vscjava.vscode-java-pack",
 		"redhat.vscode-xml",
-		"Pivotal.vscode-boot-dev-pack"
+		"Pivotal.vscode-boot-dev-pack",
+		"mhutchie.git-graph"
 	],
 	"forwardPorts": [8080],
 	"settings": {
