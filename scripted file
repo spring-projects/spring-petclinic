@@ -1,0 +1,17 @@
+node {
+   agent { label 'ubuntu node' }
+    stage('git clone') {
+        git url: 'https://github.com/neelamkannan/spring-petclinic.git'
+        branch 'new'
+    }
+    stage('build') {
+        sh: '/usr/share/maven/bin/mvn package'
+    }
+    stage('junit') {
+        junit: '**/surefire-reports/*.xml'
+    }
+     stage('artifactory') {
+        archiveArtifacts artifacts: 'target/*.jar'
+    }
+
+}
