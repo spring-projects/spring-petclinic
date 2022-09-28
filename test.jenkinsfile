@@ -5,7 +5,7 @@ pipeline {
                  string(name: 'MVNPACK', defaultValue: 'package', description: 'USER MAVEN') 
     }
     triggers { 
-               pollSCM('*****') 
+               pollSCM ('*****') 
     }
     stages {
         stage('clone') {
