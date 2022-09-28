@@ -1,5 +1,5 @@
 pipeline {
-    agent  { label 'ubuntu node' }
+    agent  { label 'ubuntu' }
     stages {
         stage('git cloning') {
             steps {
