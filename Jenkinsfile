@@ -11,8 +11,8 @@ pipeline {
         stage('get code') {
             steps {
 //              Adding email jobs with triggers
-                mail subject: 'Build Started for Jenkins JOB $env.JOB_NAME',
-                        body: 'Building $env.JOB_NAME',
+                mail subject: "Build Started for Jenkins JOB $env.JOB_NAME",
+                        body: "Building $env.JOB_NAME",
                         to: 'qtuudhya@gmail.com'
                 git branch: "${params.BRANCH_TO_BUILD}", url: 'https://github.com/usorama/spring-petclinic.git'
             }
@@ -37,18 +37,18 @@ pipeline {
     post {
         always {
 //          echo "Job $env.JOB_NAME completed"
-            mail subject: 'Build Completed $env.JOB_NAME'
-                    body: 'Build Completed for $env.JOB_NAME \n Click here: $env.JOB_URL'
+            mail subject: "Build Completed $env.JOB_NAME",
+                    body: "Build Completed for $env.JOB_NAME \n Click here: $env.JOB_URL",
                     to: 'qtuudhya@gmail.com'                 
         }
         failure {
-            mail subject: 'Build Failed $env.JOB_NAME'
-                    body: 'Build Failed for $env.JOB_NAME \n Click here: $env.JOB_URL'
+            mail subject: 'Build Failed $env.JOB_NAME',
+                    body: 'Build Failed for $env.JOB_NAME \n Click here: $env.JOB_URL',
                     to: 'qtuudhya@gmail.com'            
         }
         success {
-            mail subject: 'Build Completed Successfully for $env.JOB_NAME'
-                    body: 'Build Completed Successfully for $env.JOB_NAME \n Click here: $env.JOB_URL'
+            mail subject: 'Build Completed Successfully for $env.JOB_NAME',
+                    body: 'Build Completed Successfully for $env.JOB_NAME \n Click here: $env.JOB_URL',
                     to: 'qtuudhya@gmail.com'
             junit '**/surefire-reports/*.xml'        
         }
