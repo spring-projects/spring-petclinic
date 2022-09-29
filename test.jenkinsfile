@@ -10,6 +10,7 @@ pipeline {
             steps {
                 mail subject: 'ready to clone', 
                      body: 'ready to clone'
+                     to: 'nagarjuna33@gmail.com'
             }
         }
         stage('clone') {
@@ -26,6 +27,7 @@ pipeline {
             steps{
                 mail subject: 'package completed', 
                      body: 'package completed'
+                     to: 'nagarjuna33@gmail.com'
             }
         }
         stage('JTest') {
@@ -37,6 +39,7 @@ pipeline {
             steps{
                 mail subject: 'package completed', 
                      body: 'package completed'
+                     to: 'nagarjuna33@gmail.com'
 
            }
        }
