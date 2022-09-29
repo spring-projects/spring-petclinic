@@ -25,10 +25,11 @@ pipeline {
 //     )
 //   }
   stages {
-    stage('Some step') {
+    stage('build step') {
       steps {
         sh "echo $review_state"
       }
     }
   }
 }
+
