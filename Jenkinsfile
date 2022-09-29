@@ -1,25 +1,13 @@
-pipeline{
-    agent any
-    stages{
-        stage('vcs'){
-            steps{
-               git url: 'https://github.com/vikasvarmadunna/spring-petclinic.git', branch: 'google'
-                 }
-        }
+node('jdk-11-mvn') {
+    stage('vcs') {
+    git branch: 'google', credentialsId: 'saiteja', url: 'https://github.com/vikasvarmadunna/spring-petclinic.git'
+}
+    stage('build') {
+    sh 'mvn package'
+}
+       stage('archive') {
+    archive 'target/spring-petclinic-*.jar'
+    junit '**/surefire-reports/*.xml'
+}
 
-
-        stage('build'){
-            steps{
-                agent { label: 'jdk-11-mvn' }
-                sh 'mvn package'
-                 }
-        }
-        post {
-        always {
-            archiveArtifacts artifacts: 'target/spring-petclinic-*.jar'
-            junit '**/surefire-reports/*.xml'
-             }
-
-        }
-    }     
 }
