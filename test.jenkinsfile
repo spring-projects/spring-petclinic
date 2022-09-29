@@ -22,7 +22,7 @@ pipeline {
                 sh "mvn ${params.MVNPACK}"
             }
         }
-                stage{
+        stage('package status') {
             steps{
                 mail subject: 'package completed', 
                      body: 'package completed'
