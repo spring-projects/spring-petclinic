@@ -42,13 +42,13 @@ pipeline {
                     to: 'qtuudhya@gmail.com'                 
         }
         failure {
-            mail subject: 'Build Failed $env.JOB_NAME',
-                    body: 'Build Failed for $env.JOB_NAME \n Click here: $env.JOB_URL',
+            mail subject: "Build Failed $env.JOB_NAME",
+                    body: "Build Failed for $env.JOB_NAME \n Click here: $env.JOB_URL",
                     to: 'qtuudhya@gmail.com'            
         }
         success {
-            mail subject: 'Build Completed Successfully for $env.JOB_NAME',
-                    body: 'Build Completed Successfully for $env.JOB_NAME \n Click here: $env.JOB_URL',
+            mail subject: "Build Completed Successfully for $env.JOB_NAME",
+                    body: "Build Completed Successfully for $env.JOB_NAME \n Click here: $env.JOB_URL",
                     to: 'qtuudhya@gmail.com'
             junit '**/surefire-reports/*.xml'        
         }
