@@ -25,7 +25,7 @@ pipeline {
 
         
     
-    @@ -21,10 +24,22 @@ pipeline {
+    
   
         }
         stage('build') {
