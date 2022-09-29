@@ -1,11 +1,23 @@
-node('labnode1') {
-    stage('vcs') {
-        git branch: 'jenkins_0_1', url: 'https://github.com/devopssatheeh/spring-petclinic.git'
+node {
+    try {
+        stage('test') {
+            sh 'echo hello'
+        }
+        stage('learning') {
+            git url: 'https://github.com/devopssatheeh/spring-petclinic.git',
+                branch: 'master'
+        }
     }
-    stage("build"){
-        sh 'mvn package'
+    catch(err) {
+        mail subject: "Build Failed for Jenkins JOB $env.JOB_NAME with Build ID $env.BUILD_ID", 
+                  body: "Build Failed for Jenkins JOB $env.JOB_NAME", 
+                  to: 'satheeshkumaraswamy@gmail.com'
     }
-    stage("archive results"){
-        junit '**/surefire-reports/*.xml'
+    finally {
+        mail subject: "Build Completed for Jenkins JOB $env.JOB_NAME", 
+                  body: "Build Completed for Jenkins JOB $env.JOB_NAME \n Click Here: $env.JOB_URL", 
+                  to: 'satheeshkumaraswamy@gmail.com'
+
     }
+
 }
