@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'jdk-11' }
+    agent { label 'JDK-11' }
     stages {
         stage('pull from vcs') { 
         
