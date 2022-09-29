@@ -1,5 +1,5 @@
 pipeline {
-    agent  { label 'OPENJDK-11-MAVEN' }
+    agent  { label 'jdk-11-mvn' }
     parameters {
         choice(name: 'BRANCH_TO_BUILD', choices: ['REL_INT_1.0', 'main'], description: 'Branch to build')
         string(name: 'MAVEN_GOAL', defaultValue: 'package', description: 'maven goal')
