@@ -8,8 +8,8 @@ pipeline {
     stages {
         stage('start status') {
             steps {
-                mail subject: 'ready to clone', 
-                     body: 'ready to clone'
+                mail subject: "ready to clone", 
+                     body: "ready to clone",
                      to: 'nagarjuna33@gmail.com'
             }
         }
@@ -25,8 +25,8 @@ pipeline {
         }
         stage('package status') {
             steps{
-                mail subject: 'package completed', 
-                     body: 'package completed'
+                mail subject: "package completed", 
+                     body: "package completed",
                      to: 'nagarjuna33@gmail.com'
             }
         }
@@ -37,8 +37,8 @@ pipeline {
         }
         stage('test status') {
             steps{
-                mail subject: 'package completed', 
-                     body: 'package completed'
+                mail subject: "package completed", 
+                     body: "package completed",
                      to: 'nagarjuna33@gmail.com'
 
            }
