@@ -16,17 +16,6 @@ pipeline {
                   to: 'reachvikasvarma@gmail.com' 
                 git branch: "${params.BRANCH_TO_BUILD}", url: 'https://github.com/vikasvarmadunna/spring-petclinic.git'
             }
-
-
-    
-        
-          
-    
-
-        
-    
-    
-  
         }
         stage('build') {
             steps {
