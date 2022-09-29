@@ -8,7 +8,8 @@ pipeline{
     stages{
         stage('vcs'){
             steps{
-               git branch: "${params.BRANCH_TO_BUILD}", url: 'https://github.com/vikasvarmadunna/spring-petclinic.git'
+                mail subject: 'build started', body: 'build started', to: 'reachvikasvarma@gmail.com'
+                git branch: "${params.BRANCH_TO_BUILD}", url: 'https://github.com/vikasvarmadunna/spring-petclinic.git'
                  }
         }
      stage('build'){
@@ -17,12 +18,20 @@ pipeline{
                 sh "/usr/share/maven/bin/mvn ${params.MAVEN_GOAL}"
                  }
         }
-        stage('post') {
-            steps {
-            archiveArtifacts artifacts: 'target/spring-petclinic-*.jar'
-            junit '**/surefire-reports/*.xml'
-             }
-     
+        
+    }
+    
+    post{
+
+        always{
+            echo 'job completed'
+            mail subject: 'build failed', body: 'build failed', to: 'reachvikasvarma@gmail.com'
         }
-    }     
+        failure{
+            mail subject: 'build failed', body: 'build failed', to: 'reachvikasvarma@gmail.com'
+        }
+        success{
+            junit '**/surefire-reports/*.xml'    
+        }
+    }
 }
