@@ -11,8 +11,8 @@ pipeline {
         stage('get code') {
             steps {
 //              Adding email jobs with triggers
-                mail subject: "Build Started for Jenkins JOB $env.JOB_NAME",
-                        body: "Building $env.JOB_NAME",
+                mail subject: 'Build Started for Jenkins JOB $env.JOB_NAME',
+                        body: 'Building $env.JOB_NAME',
                         to: 'qtuudhya@gmail.com'
                 git branch: "${params.BRANCH_TO_BUILD}", url: 'https://github.com/usorama/spring-petclinic.git'
             }
