@@ -1,7 +1,7 @@
 pipeline {
     agent  { label 'jdk-11-mvn' }
     parameters {
-        choice(name: 'BRANCH_TO_BUILD', choices: ['REL_INT_1.0', 'main'], description: 'Branch to build')
+        choice(name: 'BRANCH_TO_BUILD', choices: ['google', 'main'], description: 'Branch to build')
         string(name: 'MAVEN_GOAL', defaultValue: 'package', description: 'maven goal')
     }
     triggers {
@@ -13,8 +13,8 @@ pipeline {
             steps {
                 mail subject: 'Build Started', 
                   body: 'Build Started', 
-                  to: 'qtdevops@gmail.com' 
-                git branch: "${params.BRANCH_TO_BUILD}", url: 'https://github.com/GitPracticeRepo/spring-petclinic.git'
+                  to: 'reachvikasvarma@gmail.com' 
+                git branch: "${params.BRANCH_TO_BUILD}", url: 'https://github.com/vikasvarmadunna/spring-petclinic.git'
             }
 
 
@@ -30,7 +30,7 @@ pipeline {
         }
         stage('build') {
             steps {
-                sh "/opt/apache-maven-3.8.6/bin/mvn ${params.MAVEN_GOAL}"
+                sh "/usr/share/maven ${params.MAVEN_GOAL}"
             }
         }
 
@@ -40,12 +40,12 @@ pipeline {
             echo 'Job completed'
             mail subject: 'Build Completed', 
                   body: 'Build Completed', 
-                  to: 'qtdevops@gmail.com'
+                  to: 'reachvikasvarma@gmail.com'
         }
         failure {
             mail subject: 'Build Failed', 
                   body: 'Build Failed', 
-                  to: 'qtdevops@gmail.com' 
+                  to: 'reachvikasvarma@gmail.com' 
         }
         success {
             junit '**/surefire-reports/*.xml'
