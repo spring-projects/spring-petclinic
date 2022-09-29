@@ -1,7 +1,7 @@
 pipeline {
     agent { label 'jdk-11' }
     stages {
-        stage ('pull from vcs' ) { 
+        stage('pull from vcs') { 
         
            steps {
             git url: 'https://github.com/Qtalha/spring-petclinic.git',
