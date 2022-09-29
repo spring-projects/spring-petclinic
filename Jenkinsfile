@@ -13,7 +13,7 @@ pipeline {
      causeString: 'Triggered on $repo_name $pr_url',
 
      token: 'opa-test',
-     tokenCredentialId: '',
+     tokenCredentialId: 'opa-test',
 
      printContributedVariables: true,
      printPostContent: true,
@@ -32,4 +32,6 @@ pipeline {
     }
   }
 }
+
+
 
