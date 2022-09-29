@@ -13,7 +13,7 @@ pipeline {
      causeString: 'Triggered on $repo_name $pr_url',
 
      token: 'opa-test',
-     tokenCredentialId: 'http://178.128.149.213:8080/generic-webhook-trigger/invoke?token=opa-test',
+     tokenCredentialId: '',
 
      printContributedVariables: true,
      printPostContent: true,
