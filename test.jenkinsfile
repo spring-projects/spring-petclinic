@@ -6,6 +6,12 @@ pipeline {
                  string(name: 'MVNPACK', defaultValue: 'package', description: 'USER MAVEN') 
     }
     stages {
+        stage('start status') {
+            steps {
+                mail subject: 'ready to clone', 
+                     body: 'ready to clone'
+            }
+        }
         stage('clone') {
             steps {
              git url: 'https://github.com/nagarjunaduggireddy/spring-petclinicmain.git', branch: "${params.MYBRANCH}"
@@ -16,13 +22,24 @@ pipeline {
                 sh "mvn ${params.MVNPACK}"
             }
         }
+                stage{
+            steps{
+                mail subject: 'package completed', 
+                     body: 'package completed'
+            }
+        }
         stage('JTest') {
             steps {
                 junit testResults: '**/surefire-reports/*.xml'
             }
         }
+        stage('test status') {
+            steps{
+                mail subject: 'package completed', 
+                     body: 'package completed'
 
+           }
+       }
     }
 }
-
 
