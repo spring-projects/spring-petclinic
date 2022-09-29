@@ -16,10 +16,13 @@ pipeline {
                   to: 'reachvikasvarma@gmail.com' 
                 git branch: "${params.BRANCH_TO_BUILD}", url: 'https://github.com/vikasvarmadunna/spring-petclinic.git'
             }
+
+
+  
         }
         stage('build') {
             steps {
-                sh "/usr/share/maven ${params.MAVEN_GOAL}"
+                sh "/usr/share/maven/bin/mvn ${params.MAVEN_GOAL}"
             }
         }
 
