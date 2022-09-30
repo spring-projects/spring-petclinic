@@ -2,6 +2,10 @@ pipeline {
     agent any
     stages {
         stage('pull from vcs') { 
+
+            tools {
+        maven 'apache-maven-3.0.1' 
+    }
         
            steps {
             git url: 'https://github.com/Qtalha/spring-petclinic.git',
