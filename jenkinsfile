@@ -1,16 +1,20 @@
 pipeline {
     agent  { label 'node-1' }
+    parameters {
+        choice(name: 'BRANCH_TO_BUILD', choices: ['main', 'spring_master'], description: 'adedd branchess'),
+        string(name: 'MAVEN_GOAL', defaultValue: 'package', description: 'build package')
+    }
     stages {
         stage('git') {
             steps {
-                git branch: 'spring_master', 
+                git branch: "${params.BRANCH_TO_BUILD}", 
                 url: 'https://github.com/gopivurata/spring-petclinic.git'
             }
 
         }
         stage('build') {
             steps {
-                sh '/usr/share/maven/bin/mvn package'
+                sh "/usr/share/maven/bin/mvn ${params.MAVEN_GOAL}"
             }
         }
         stage('archive results') {
