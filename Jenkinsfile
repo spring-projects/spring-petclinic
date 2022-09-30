@@ -11,6 +11,7 @@ pipeline {
         }
         stage("build") {
             steps {
+                sh "export PATH=/usr/share/maven:$PATH"
                 sh 'mvn pacakge'
             }
         }
