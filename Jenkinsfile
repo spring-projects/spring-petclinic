@@ -28,7 +28,7 @@ pipeline {
             //         setBuildStatus('OPA Check Approved', 'PENDING', 'params.GIT_COMMIT')
             //     }
                
-                sh "echo ${all} ............."
+//                 sh "echo ${all} ............."
                 sh "echo watching."
                 // sh "echo ${review_state}"
                 // sh "echo ${REPO_NAME}"
