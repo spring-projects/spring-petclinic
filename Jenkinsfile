@@ -4,7 +4,7 @@ pipeline {
         stage('pull from vcs') { 
 
             tools {
-        maven 'apache-maven-3.0.1' 
+              maven 'mvn_3.6.0' 
     }
         
            steps {
@@ -15,7 +15,7 @@ pipeline {
         }
         stage("build") {
             steps {
-                maven 'apache-maven-3.0.1'
+                maven 'apache-maven-3.6.0'
                 sh 'mvn_3.6'
             }
         }
