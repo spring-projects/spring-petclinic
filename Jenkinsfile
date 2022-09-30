@@ -27,7 +27,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'compiling...'
-                echo $.review.state
+              echo "{$.review.state}"
             }
         }
         stage('Test') {
