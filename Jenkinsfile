@@ -8,14 +8,15 @@ pipeline {
   
   stages {
         stage('PR Approval') {
-        if(${PR_STATE} == "open" && ${REVIEW_STATE} == "approved"){
-            echo "${PR_STATE}"
-        }
-        else {
-            echo "Approved......"
-        }  
+          
         steps {
             script {
+              if(${PR_STATE} == "open" && ${REVIEW_STATE} == "approved"){
+              echo "${PR_STATE}"
+                }
+                else {
+                    echo "Approved......"
+                }
                 sh "echo ${REVIEW_STATE}"
                 sh "echo ${REPO_NAME}"
                 sh "echo ${PR_STATE}"
