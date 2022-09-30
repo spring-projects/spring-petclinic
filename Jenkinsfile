@@ -60,7 +60,7 @@ def setBuildStatus(String message, String state, String sha){
     step([$class: 'GitHubCommitStatusSetter',
     contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'OPA test'],
     commitShaSource: [$class: 'ManuallyEnteredShaSource', sha: sha],
-    statusResultSource: [$class: 'ConditionalStatusResultSource', result: [$class: 'AnyBuildResult', message: message, state : String: state]]
+    statusResultSource: [$class: 'ConditionalStatusResultSource', result: [$class: 'AnyBuildResult', message: message, state: state]]
 
     ])
 }
