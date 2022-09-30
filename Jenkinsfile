@@ -9,11 +9,11 @@ pipeline {
       [key: 'repo_name', value: '$.repository.full_name'],
       [key: 'pr_url', value: '$.pull_request.html_url']
      ],
-      
-      causeString: 'Triggered on $repo_name $pr_url',
+
+     causeString: 'Triggered on $repo_name $pr_url',
 
      token: 'opa-test',
-     tokenCredentialId: '',
+     tokenCredentialId: 'opa-test',
 
      printContributedVariables: true,
      printPostContent: true,
@@ -21,17 +21,16 @@ pipeline {
      silentResponse: false,
 
      regexpFilterText: '$ref',
-     regexpFilterExpression: 'refs/heads/' + env.BRANCH_NAME
+     regexpFilterExpression: 'refs/heads/' + BRANCH_NAME
     )
   }
-  
- 
   stages {
-    stage('build step...') {
+    stage('build step....') {
       steps {
-        sh "echo $review_state"
+        sh "echo 'starting' "
       }
     }
   }
 }
+
 
