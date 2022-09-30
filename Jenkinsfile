@@ -10,7 +10,7 @@ pipeline {
         stage('PR Approval') {
         when {
             expression{
-                return("${PR_STATE}" != "open" && "${REVIEW_STATE}" == "approved")
+                return("${PR_STATE}" != "open" && "${REVIEW_STATE}" != "approved")
             }
         }
         steps {
