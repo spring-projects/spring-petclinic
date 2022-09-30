@@ -37,7 +37,7 @@ pipeline {
         }
         }
         stage('Build') {
-            // setRunContext()
+            setRunContext()
             steps {
                 echo 'compiling...'
             }
@@ -73,6 +73,14 @@ def setBuildStatus(String message, String state, String sha){
     statusResultSource: [$class: 'ConditionalStatusResultSource', result: [$class: 'AnyBuildResult', message: message, state: state]]
 
     ])
+}
+
+def setRunContext(){
+    if ($."$review_state"[?(@.state)]){
+        return true
+    } else {
+        return false
+    }
 }
 
 // def setRunContext(){
