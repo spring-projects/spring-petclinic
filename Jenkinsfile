@@ -28,7 +28,7 @@ pipeline {
   stages {
     stage('build step..') {
       steps {
-        sh "echo 'starting' "
+        sh "echo '$review_state' "
       }
     }
   }
