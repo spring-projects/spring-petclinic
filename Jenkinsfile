@@ -17,12 +17,12 @@ pipeline {
   }
   
   stages {
-    when {
-      expression{
-          "${review_state_path_exists}" != null
-      }
-    }
         stage('PR Approval') {
+        when {
+            expression{
+                "${review_state_path_exists}" != null
+            }
+          }
          
         steps {
             script {
