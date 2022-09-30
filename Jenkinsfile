@@ -11,7 +11,7 @@ pipeline {
           
         steps {
             script {
-              if(${PR_STATE} == "open" && ${REVIEW_STATE} == "approved"){
+              if("${PR_STATE}" == "open" && "${REVIEW_STATE}" == "approved"){
               echo "${PR_STATE}"
                 }
                 else {
