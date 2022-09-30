@@ -76,7 +76,7 @@ def setBuildStatus(String message, String state, String sha){
 }
 
 def setRunContext(){
-    if ($."$review_state"[?(@.state)]){
+  if ("${review_state_path_exists}"){
         return true
     } else {
         return false
