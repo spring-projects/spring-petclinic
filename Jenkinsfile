@@ -3,7 +3,7 @@ pipeline {
   agent any
   
   stages {
-    stage('build step....') {
+    stage('build step...') {
       steps {
         sh "echo 'starting' "
       }
