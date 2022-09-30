@@ -1,19 +1,15 @@
 pipeline {
-  
   agent any
-  
-    triggers {
+  triggers {
     GenericTrigger(
      genericVariables: [
-      [key: 'review_state', value: '$.review_state'],
-      [key: 'repo_name', value: '$.repository.full_name'],
-      [key: 'pr_url', value: '$.pull_request.html_url']
+      [key: 'ref', value: '$.ref']
      ],
 
-     causeString: 'Triggered on $repo_name $pr_url',
+     causeString: 'Triggered on $ref',
 
-     token: 'opa-test',
-     tokenCredentialId: 'opa-test',
+     token: 'abc123',
+     tokenCredentialId: '',
 
      printContributedVariables: true,
      printPostContent: true,
@@ -21,17 +17,15 @@ pipeline {
      silentResponse: false,
 
      regexpFilterText: '$ref',
-    //  regexpFilterExpression: 'refs/heads/' + BRANCH_NAME
+     regexpFilterExpression: 'refs/heads/' + BRANCH_NAME
     )
   }
-  
   stages {
-    stage('build step..') {
+    stage('Some step') {
       steps {
-        sh "echo '$review_state' "
+        sh "echo $ref"
       }
     }
   }
 }
-
 
