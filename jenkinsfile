@@ -1,7 +1,7 @@
 pipeline {
     agent  { label 'node-1' }
     parameters {
-        choice(name: 'BRANCH_TO_BUILD', choices: ['main', 'spring_master'], description: 'adedd branchess'),
+        choice(name: 'BRANCH_TO_BUILD', choices: ['main', 'spring_master'], description: 'adedd branchess')
         string(name: 'MAVEN_GOAL', defaultValue: 'package', description: 'build package')
     }
     stages {
