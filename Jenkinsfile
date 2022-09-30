@@ -49,7 +49,7 @@ pipeline {
   ])
   
   stages {
-    stage('build step...') {
+    stage('build step..') {
       steps {
         sh "echo $review_state"
       }
