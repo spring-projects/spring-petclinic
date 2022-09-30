@@ -5,7 +5,7 @@ pipeline {
   triggers {
     GenericTrigger(
      genericVariables: [
-      [key: 'all', value: '$']
+      [key: 'all', value: '$.review.state']
     //   [key: 'review_state', value: '$.review.state'],
     //   [key: 'pull_request_state', value: '$.pull_request.state']
      ]
