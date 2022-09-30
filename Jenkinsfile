@@ -1,22 +1,22 @@
 pipeline {
   agent any
-  triggers {
-    GenericTrigger(
-     genericVariables: [
-      [key: 'ref', value: '$.ref']
-     ],
+//   triggers {
+//     GenericTrigger(
+//      genericVariables: [
+//       [key: 'ref', value: '$.ref']
+//      ],
 
-     causeString: 'Triggered on $ref',
+//      causeString: 'Triggered on $ref',
 
-     printContributedVariables: false,
-     printPostContent: false,
+//      printContributedVariables: false,
+//      printPostContent: true,
 
-     silentResponse: false,
+//      silentResponse: false,
 
-     regexpFilterText: '$ref',
-     regexpFilterExpression: 'refs/heads/' + env.BRANCH_NAME
-    )
-  }
+//      regexpFilterText: '$ref',
+//      regexpFilterExpression: 'refs/heads/' + env.BRANCH_NAME
+//     )
+//   }
   stages {
     stage('Some step..') {
       steps {
