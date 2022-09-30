@@ -8,9 +8,6 @@ pipeline {
 
      causeString: 'Triggered on $ref',
 
-//      token: 'abc123',
-     tokenCredentialId: '',
-
      printContributedVariables: false,
      printPostContent: false,
 
