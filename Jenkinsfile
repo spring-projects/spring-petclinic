@@ -12,8 +12,8 @@ pipeline {
 
      causeString: 'Triggered on $repo_name $pr_url',
 
-     token: 'opa-test',
-     tokenCredentialId: 'opa-test',
+     token: '',
+     tokenCredentialId: '',
 
      printContributedVariables: true,
      printPostContent: true,
