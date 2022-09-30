@@ -27,8 +27,9 @@ pipeline {
             //     else if("${pull_request_state}" == "open" && "${review_state}" == "commented") {
             //         setBuildStatus('OPA Check Approved', 'PENDING', 'params.GIT_COMMIT')
             //     }
+                set +x
                 sh "echo ${all} ............."
-              sh "echo watching."
+                sh "echo watching."
                 // sh "echo ${review_state}"
                 // sh "echo ${REPO_NAME}"
                 // sh "echo ${pull_request_state}"
