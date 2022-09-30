@@ -17,6 +17,11 @@ pipeline {
   }
   
   stages {
+    when {
+      expression{
+          "${review_state_path_exists}" != null
+      }
+    }
         stage('PR Approval') {
          
         steps {
@@ -37,12 +42,23 @@ pipeline {
         }
         }
         stage('Build') {
-            setRunContext()
+          when {
+            expression{
+              "${review_state_path_exists}" == null
+      }
+    }
+//             setRunContext()
             steps {
                 echo 'compiling...'
             }
         }
         stage('Test') {
+          when {
+              expression{
+                  "${review_state_path_exists}" == null
+              }
+            }
+          
             steps {
                 echo 'testing...'
             }
@@ -75,13 +91,13 @@ def setBuildStatus(String message, String state, String sha){
     ])
 }
 
-def setRunContext(){
-  if ("${review_state_path_exists}"){
-        return true
-    } else {
-        return false
-    }
-}
+// def setRunContext(){
+//   if ("${review_state_path_exists}"){
+//         return true
+//     } else {
+//         return false
+//     }
+// }
 
 // def setRunContext(){
 //     def jsonSlurper = new JsonSlurper()
