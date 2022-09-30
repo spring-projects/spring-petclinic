@@ -11,8 +11,8 @@ pipeline {
         }
         stage("build") {
             steps {
-                sh 'export PATH=/usr/share/maven:$PATH'
-                sh 'mvn pacakge'
+                maven 'apache-maven-3.0.1'
+                sh 'mvn_3.6'
             }
         }
     }
