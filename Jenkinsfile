@@ -25,6 +25,7 @@ pipeline {
         }
         }
         stage('Build') {
+          setRunContext()
             steps {
                 echo 'compiling...'
               echo '$'
@@ -62,7 +63,11 @@ def setBuildStatus(String message, String state, String sha){
     ])
 }
 
-
+def setRunContext(){
+    if ("${REVIEW_STATE}" && "${PR_STATE}"){
+        echo "Present"
+    }
+}
 
 
 
