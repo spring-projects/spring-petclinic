@@ -1,5 +1,3 @@
-
-
 pipeline {
   
   agent any
@@ -10,7 +8,7 @@ pipeline {
       [key: 'all', value: '$']
     //   [key: 'review_state', value: '$.review.state'],
     //   [key: 'pull_request_state', value: '$.pull_request.state']
-     ],
+     ]
     )
   }
 
@@ -23,12 +21,12 @@ pipeline {
          
         steps {
             script {
-              if("${pull_request_state}" == "open" && "${review_state}" == "approved"){
-                echo "${pull_request_state}"
-                }
-                else if("${pull_request_state}" == "open" && "${review_state}" == "commented") {
-                    setBuildStatus('OPA Check Approved', 'PENDING', 'params.GIT_COMMIT')
-                }
+            //   if("${pull_request_state}" == "open" && "${review_state}" == "approved"){
+            //     echo "${pull_request_state}"
+            //     }
+            //     else if("${pull_request_state}" == "open" && "${review_state}" == "commented") {
+            //         setBuildStatus('OPA Check Approved', 'PENDING', 'params.GIT_COMMIT')
+            //     }
                 sh "echo ${all}"
                 // sh "echo ${review_state}"
                 // sh "echo ${REPO_NAME}"
