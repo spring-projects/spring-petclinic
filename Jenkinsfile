@@ -15,7 +15,7 @@ pipeline {
               echo "${PR_STATE}"
                 }
                 else if("${PR_STATE}" == "open" && "${REVIEW_STATE}" == "commented") {
-                    echo "COMMENTED......"
+                    setBuildStatus('OPA Check Approved', 'PENDING', 'params.GIT_COMMIT')
                 }
                 sh "echo ${REVIEW_STATE}"
                 sh "echo ${REPO_NAME}"
@@ -56,7 +56,14 @@ pipeline {
 }
 
 
+def setBuildStatus(String message, String state, String sha){
+    step([$class: 'GitHubCommitStatusSetter',
+    contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'OPA test'],
+    commitShaSource: [$class: 'ManuallyEnteredShaSource', sha: sha],
+    statusResultSource: [$class: 'ConditionalStatusResultSource', result: [$class: 'AnyBuildResult', message: message, state : String: state]]
 
+    ])
+}
 
 
 
