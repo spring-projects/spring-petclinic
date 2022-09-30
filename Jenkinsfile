@@ -20,7 +20,7 @@ pipeline {
                 sh "echo ${REVIEW_STATE}"
                 sh "echo ${REPO_NAME}"
                 sh "echo ${PR_STATE}"
-                setBuildStatus('OPA Check Approved', 'SUCCESS', 'params.GIT_COMMIT')
+//                 setBuildStatus('OPA Check Approved', 'SUCCESS', 'params.GIT_COMMIT')
             }
         }
         }
