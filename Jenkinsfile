@@ -14,8 +14,8 @@ pipeline {
               if("${PR_STATE}" == "open" && "${REVIEW_STATE}" == "approved"){
               echo "${PR_STATE}"
                 }
-                else {
-                    echo "Approved......"
+                else if("${PR_STATE}" == "open" && "${REVIEW_STATE}" == "commented") {
+                    echo "COMMENTED......"
                 }
                 sh "echo ${REVIEW_STATE}"
                 sh "echo ${REPO_NAME}"
