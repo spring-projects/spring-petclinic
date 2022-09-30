@@ -3,7 +3,7 @@ pipeline {
   agent any
   
   stages {
-    stage('build step....') {
+    stage('build step...') {
       steps {
         sh "echo $REVIEW_STATE"
         sh "echo $REPO_NAME"
