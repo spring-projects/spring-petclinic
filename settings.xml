@@ -21,14 +21,14 @@
             <enabled>false</enabled>
           </snapshots>
           <id>central</id>
-          <name>qtuudhyamaven-libs-release</name>
-          <url>https://qtdevopstrain.jfrog.io/artifactory/qtuudhyamaven-libs-release</url>
+          <name>qtusorama-libs-release</name>
+          <url>https://qtusorama.jfrog.io/artifactory/qtusorama-libs-release</url>
         </repository>
         <repository>
           <snapshots />
           <id>snapshots</id>
-          <name>qtuudhyamaven-libs-snapshot</name>
-          <url>https://qtdevopstrain.jfrog.io/artifactory/qtuudhyamaven-libs-snapshot</url>
+          <name>qtusorama-libs-snapshot</name>
+          <url>https://qtusorama.jfrog.io/artifactory/qtusorama-libs-snapshot</url>
         </repository>
       </repositories>
       <pluginRepositories>
@@ -37,14 +37,14 @@
             <enabled>false</enabled>
           </snapshots>
           <id>central</id>
-          <name>qtuudhyamaven-libs-release</name>
-          <url>https://qtdevopstrain.jfrog.io/artifactory/qtuudhyamaven-libs-release</url>
+          <name>qtusorama-libs-release</name>
+          <url>https://qtusorama.jfrog.io/artifactory/qtusorama-libs-release</url>
         </pluginRepository>
         <pluginRepository>
           <snapshots />
           <id>snapshots</id>
-          <name>qtuudhyamaven-libs-snapshot</name>
-          <url>https://qtdevopstrain.jfrog.io/artifactory/qtuudhyamaven-libs-snapshot</url>
+          <name>qtusorama-libs-snapshot</name>
+          <url>https://qtusorama.jfrog.io/artifactory/qtusorama-libs-snapshot</url>
         </pluginRepository>
       </pluginRepositories>
       <id>artifactory</id>
