@@ -1,7 +1,7 @@
 // Pipeline Code for SpringPetClinic using Java11 and Maven
 // Exercise part of Jenkins Declarative Pipeline Learning
 pipeline {
-    agent {label 'JDK-11-MVN'}
+    agent {label '2ND-NODE'}
     parameters {
         choice(name: 'BRANCH_TO_BUILD', choices: ['REL_INT_3.0', 'main'], description: 'Branch to build')
         string(name: 'MAVEN_GOAL', defaultValue: 'package', description: 'Maven Goal')
