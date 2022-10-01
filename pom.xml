@@ -237,6 +237,11 @@
 
   <repositories>
     <repository>
+      <id>central</id>
+      <name>a0meek0ykwj2j-artifactory-primary-1-releases</name>
+      <url>https://qtdevopstrain.jfrog.io/artifactory/qtspringpetclinic-libs-release-local</url>
+    </repository>
+    <repository>
       <id>spring-snapshots</id>
       <name>Spring Snapshots</name>
       <url>https://repo.spring.io/snapshot</url>
