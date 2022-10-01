@@ -19,7 +19,7 @@ pipeline {
         }
         stage('build') {
             steps {
-                sh "mvn ${params.MAVEN_GOAL}"
+                sh "mvn clean ${params.MAVEN_GOAL}"
             }
         }
         stage('Archive test results') {
