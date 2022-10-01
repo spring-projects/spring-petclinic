@@ -20,7 +20,7 @@ pipeline {
         stage('PR Approval') {
         when {
             expression{
-                "${review_state_path_exists}" != null
+                "${review_state}" != null
             }
           }
          
