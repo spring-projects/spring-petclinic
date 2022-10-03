@@ -4,7 +4,7 @@ pipeline {
     agent {label 'UBUNTU-JDK11-MVN'}
     parameters {
         choice(name: 'BRANCH_TO_BUILD', choices: ['REL_INT_3.0', 'main'], description: 'Branch to build')        
-        choice(name: 'GOAL', choices: ['compile', 'package', 'clean package'])
+//      choice(name: 'GOAL', choices: ['compile', 'package', 'clean package'])
     }
 //  Section defining different stages of build and actions if any       
     
