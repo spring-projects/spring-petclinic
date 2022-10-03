@@ -17,9 +17,7 @@ pipeline {
                     releaseRepo: 'qtusorama-libs-release-local',
                     snapshotRepo: 'qtusorama-libs-snapshot-local',
                     threads: 6,
-                    properties: ['BinaryPurpose=Technical-BlogPost', 'Team=DevOps-Acceleration']
-                    releaseRepo: 'qtusorama-libs-release-local',
-                    snapshotRepo: 'qtusorama-libs-snapshot-local'
+                    properties: ['BinaryPurpose=Technical-BlogPost', 'Team=DevOps-Acceleration']                    
                 )
             }
         }        
