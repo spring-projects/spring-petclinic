@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage (vcs){
             git branch: 'new',
-             url: 'https://github.com/neelamkannan/spring-petclinic.git'
+             url:'https://github.com/neelamkannan/spring-petclinic.git'
             }
             stage (build) {
                 sh '/usr/share/maven/bin/mvn package'
