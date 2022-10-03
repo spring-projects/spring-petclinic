@@ -1,27 +1,15 @@
 pipeline {
-    agent  { label 'ubuntu' }
+    agent {'openjdk-11-maven'}
     stages {
-        stage('git cloning') {
-            steps {
-                git branch: 'new', url: 'https://github.com/neelamkannan/spring-petclinic.git'
+        stage (vcs){
+            git branch: 'new',
+             url: 'https://github.com/neelamkannan/spring-petclinic.git'
             }
-
-        }
-        stage('build packages') {
-            steps {
+            stage (build) {
                 sh '/usr/share/maven/bin/mvn package'
             }
-        }
-        stage('archive results') {
+            stage ('archive results') {
             steps {
                 junit '**/surefire-reports/*.xml'
-            }
         }
-         stage('artifactory') {
-            steps {
-                archiveArtifacts artifacts: 'target/*.jar'
-            }
-         }   
     }
-
-} 
