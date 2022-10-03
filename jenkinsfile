@@ -1,23 +1,51 @@
-node {
-    try {
-        stage('test') {
-            sh 'echo hello'
-        }
-        stage('learning') {
-            git url: 'https://github.com/devopssatheeh/spring-petclinic.git',
-                branch: 'master'
-        }
-    }
-    catch(err) {
-        mail subject: "Build Failed for Jenkins JOB $env.JOB_NAME with Build ID $env.BUILD_ID", 
-                  body: "Build Failed for Jenkins JOB $env.JOB_NAME", 
-                  to: 'satheeshkumaraswamy@gmail.com'
-    }
-    finally {
-        mail subject: "Build Completed for Jenkins JOB $env.JOB_NAME", 
-                  body: "Build Completed for Jenkins JOB $env.JOB_NAME \n Click Here: $env.JOB_URL", 
-                  to: 'satheeshkumaraswamy@gmail.com'
+pipeline {
+    agent {*label* 'labnode1'}
+    parameters {
+        string(name: 'MAVEN_GOAL', defaultValue: 'clean install', description: 'maven goal')
 
+    }
+    stages {
+        stage('vcs') {
+            steps {
+                git branch: "Jenkins_0_1", url: 'https://github.com/devopssatheeh/spring-petclinic.git'
+            }
+            
+        }
+         stage ('Artifactory configuration') {
+            steps {
+                rtServer (
+                    id: "JFROG_CONNECTION"
+                    url: "https://satheeshdevops.jfrog.io"
+                    credentialsID: "JFROG_JENKINS"
+                )
+                
+                rtMavenDeployer (
+                    id: "MAVEN_DEPLOYER",
+                    serverId: "JFROG_CONNECTION",
+                    releaseRepo: 'satheeshdevops-libs-release-local',
+                    snapshotRepo: 'satheeshdevops-snapshot-local'
+                )
+            }
+        }
+
+          stage ('Exec Maven') {
+            steps {
+                rtMavenRun (
+                    tool: 'MVN_DEFAULT', // Tool name from Jenkins configuration
+                    pom: 'pom.xml',
+                    goals: 'clean install',
+                    deployerId: "MAVEN_DEPLOYER"
+                )
+            }
+        }
+
+        stage ('Publish build info'){
+            steps{
+                rtPublishBuldInfo (
+                    serverId: "JFROG_CONNECTION"
+                )
+            }
+        }
     }
 
 }
