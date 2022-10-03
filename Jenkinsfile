@@ -8,19 +8,7 @@ pipeline {
     }
 //  Section defining different stages of build and actions if any       
     
-    stages {
-        stage ('Artifactory Configuration') {
-            steps {           
-                rtMavenDeployer (
-                    id: 'JFROG_USORAMA',
-                    serverId: 'artifactory-server-id',
-                    releaseRepo: 'qtusorama-libs-release-local',
-                    snapshotRepo: 'qtusorama-libs-snapshot-local',
-                    threads: 6,
-                    properties: ['BinaryPurpose=Technical-BlogPost', 'Team=DevOps-Acceleration']                    
-                )
-            }
-        }        
+    stages {            
         stage('get code') {
             steps {
                 git branch: "REL_INT_3.0", url: 'https://github.com/usorama/spring-petclinic.git'
@@ -34,10 +22,22 @@ pipeline {
                     pom: 'pom.xml',
                     goals: 'clean install',
                     // Maven options.
-                    deployerId: 'spc-deployer',
+                    deployerId: 'JFROG_USORAMA',
                 )                
             }
         }
+        stage ('Artifactory Configuration') {
+            steps {           
+                rtMavenDeployer (
+                    id: 'JFROG_USORAMA',
+                    serverId: 'artifactory-server-id',
+                    releaseRepo: 'qtusorama-libs-release-local',
+                    snapshotRepo: 'qtusorama-libs-snapshot-local',
+                    threads: 6,
+                    properties: ['BinaryPurpose=Technical-BlogPost', 'Team=DevOps-Acceleration']                    
+                )
+            }
+        }    
         stage('Archive test results') {
             steps {
                 junit testResults: '**/surefire-reports/*.xml'
