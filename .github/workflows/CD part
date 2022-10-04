@@ -1,0 +1,22 @@
+name: CD part
+
+on: 
+  push: 
+    branches:
+      - matz
+    
+jobs: 
+  build: 
+    runs-on: ubuntu-latest
+    
+    steps: 
+    -uses: actions/checkout@v3
+    
+    -name: setup java version
+     uses: actions/setup-java@v3
+     with:
+        java-version: '11'
+        cache: 'maven'
+    -name: build with maven
+     run: mvn clear install
+     
