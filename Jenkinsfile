@@ -1,57 +1,57 @@
 pipeline {
-    agent  { label 'jdk-11-mvn' }
+    agent any
     parameters {
-        choice(name: 'BRANCH_TO_BUILD', choices: ['google', 'main'], description: 'Branch to build')
-        string(name: 'MAVEN_GOAL', defaultValue: 'package', description: 'maven goal')
+        string(name: 'MAVEN_GOAL', defaultValue: 'clean install', description: 'maven goal')
+
     }
-    triggers {
-        
-        pollSCM('* * * * *')
-    }
+    triggers { pollSCM('* * * * *') }
+	
     stages {
         stage('vcs') {
             steps {
-                mail subject: 'Build Started', 
-                  body: 'Build Started', 
-                  to: 'reachvikasvarma@gmail.com' 
-                git branch: "${params.BRANCH_TO_BUILD}", url: 'https://github.com/vikasvarmadunna/spring-petclinic.git'
+                git branch: "google", url: 'https://github.com/vikasvarmadunna/spring-petclinic.git'
             }
 
-
-  
         }
-        stage('build') {
+         stage ('Artifactory configuration') {
             steps {
-                sh "/usr/share/maven/bin/mvn ${params.MAVEN_GOAL}"
+                rtServer (
+                    id: "jfrog",
+                    url: "https://hellohivikas.jfrog.io",
+                    credentialsId: "defrog"
+                )
+
+                rtMavenDeployer (
+                    id: "MAVEN_DEPLOYER",
+                    serverId: "jfrog",
+                    releaseRepo: 'success-libs-release-local',
+                    snapshotRepo: 'success-libs-snapshot-local'
+                )
+
+
             }
         }
 
+        stage ('Exec Maven') {
+            steps {
+                rtMavenRun (
+                    tool: 'MAVEN_DEFAULT', // Tool name from Jenkins configuration
+                    pom: 'pom.xml',
+                    goals: 'clean install',
+                    deployerId: "MAVEN_DEPLOYER"
+                )
+            }
+        }
+
+        stage ('Publish build info') {
+            steps {
+                rtPublishBuildInfo (
+                    serverId: "jfrog"
+                )
+            }
+        }
+
+
     }
-    post {
-        always {
-            echo 'Job completed'
-            mail subject: 'Build Completed', 
-                  body: 'Build Completed', 
-                  to: 'reachvikasvarma@gmail.com'
-        }
-        failure {
-            mail subject: 'Build Failed', 
-                  body: 'Build Failed', 
-                  to: 'reachvikasvarma@gmail.com' 
-        }
-        success {
-            junit '**/surefire-reports/*.xml'
-        }
-    }
 
-
-    
-          
-            
-    
-
-          
-    
-    
-  
 }
