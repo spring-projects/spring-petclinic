@@ -1,57 +1,72 @@
 pipeline {
-    agent any
-    parameters {
-        string(name: 'MAVEN_GOAL', defaultValue: 'clean install', description: 'maven goal')
-
+    agent { label 'jdk-11-mvn' }
+    options { 
+        timeout(time: 1, unit: 'HOURS')
     }
-    triggers { pollSCM('* * * * *') }
-	
-    stages {
-        stage('vcs') {
+    triggers {
+        cron('0 * * * *')
+    }
+     stages {
+        stage('Source Code') {
             steps {
-                git branch: "google", url: 'https://github.com/vikasvarmadunna/spring-petclinic.git'
+                git url: 'https://github.com/vikasvarmadunna/spring-petclinic.git', 
+                branch: 'google'
             }
-
+            
         }
-         stage ('Artifactory configuration') {
+        stage('Artifactory-Configuration') {
             steps {
-                rtServer (
-                    id: "jfrog",
-                    url: "https://hellohivikas.jfrog.io",
-                    credentialsId: "defrog"
-                )
-
                 rtMavenDeployer (
-                    id: "MAVEN_DEPLOYER",
-                    serverId: "jfrog",
+                    id: 'spc-deployer',
+                    serverId: 'jfrog',
                     releaseRepo: 'success-libs-release-local',
-                    snapshotRepo: 'success-libs-snapshot-local'
+                    snapshotRepo: 'success-libs-snapshot-local',
+
                 )
-
-
             }
         }
-
-        stage ('Exec Maven') {
+        stage('Build the Code and sonarqube-analysis') {
             steps {
+                // withSonarQubeEnv('SONAR_LATEST') {
+                //     sh script: "mvn ${params.GOAL} sonar:sonar"
+                // }
                 rtMavenRun (
-                    tool: 'mvn-3.6.3', // Tool name from Jenkins configuration
+                    // Tool name from Jenkins configuration.
+                    tool: 'mvn-3.6.3',
                     pom: 'pom.xml',
                     goals: 'clean install',
-                    deployerId: "MAVEN_DEPLOYER"
+                    // Maven options.
+                    deployerId: 'spc-deployer',
                 )
+                
+                // stash name: 'spc-build-jar', includes: 'target/*.jar'
             }
         }
-
-        stage ('Publish build info') {
+        stage('reporting') {
             steps {
-                rtPublishBuildInfo (
-                    serverId: "jfrog"
-                )
+                junit testResults: 'target/surefire-reports/*.xml'
             }
         }
-
-
+        // stage("Quality Gate") {
+        //     steps {
+        //       timeout(time: 1, unit: 'HOURS') {
+        //         waitForQualityGate abortPipeline: true
+        //       }
+        //     }
+        //   }
+        
     }
-
+    // post {
+    //     success {
+    //         // send the success email
+    //         echo "Success"
+    //         mail bcc: '', body: "BUILD URL: ${BUILD_URL} TEST RESULTS ${RUN_TESTS_DISPLAY_URL} ", cc: '', from: 'devops@qtdevops.com', replyTo: '', 
+    //             subject: "${JOB_BASE_NAME}: Build ${BUILD_ID} Succeded", to: 'qtdevops@gmail.com'
+    //     }
+    //     unsuccessful {
+    //         //send the unsuccess email
+    //         mail bcc: '', body: "BUILD URL: ${BUILD_URL} TEST RESULTS ${RUN_TESTS_DISPLAY_URL} ", cc: '', from: 'devops@qtdevops.com', replyTo: '', 
+    //             subject: "${JOB_BASE_NAME}: Build ${BUILD_ID} Failed", to: 'qtdevops@gmail.com'
+    //     }
+    // }
 }
