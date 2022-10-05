@@ -9,11 +9,6 @@ pipeline {
 
         stage ('Artifactory configuration') {
             steps {
-                rtServer (
-                    id: "jfrog_123",
-                    url: "https://kanna07.jfrog.io",
-                    credentialsId: "jfrog_cred"
-                )
 
                 rtMavenDeployer (
                     id: "MAVEN_DEPLOYER",
@@ -36,12 +31,5 @@ pipeline {
             }
         }
 
-        stage ('Publish build info') {
-            steps {
-                rtPublishBuildInfo (
-                    serverId: "jfrog_123"
-                )
-            }
-        }
     }
 }
