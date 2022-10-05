@@ -1,27 +1,47 @@
 pipeline {
-    agent  { label 'openjdk-11-maven' }
+    agent any
     stages {
-        stage('git cloning') {
+        stage ('Clone') {
             steps {
-                git branch: 'new', url: 'https://github.com/neelamkannan/spring-petclinic.git'
+                git branch: 'new', url: "https://github.com/neelamkannan/spring-petclinic.git"
             }
+        }
 
-        }
-        stage('build packages') {
+        stage ('Artifactory configuration') {
             steps {
-                sh '/usr/share/maven/bin/mvn package'
+                rtServer (
+                    id: "jfrog_123",
+                    url: https://kanna07.jfrog.io,
+                    credentialsId: "jfrog_cred"
+                )
+
+                rtMavenDeployer (
+                    id: "MAVEN_DEPLOYER",
+                    serverId: "jfrog_123",
+                    releaseRepo: kanna-libs-release-local,
+                    snapshotRepo: kanna-libs-snapshot-local
+                )
+
             }
         }
-        stage('archive results') {
+
+        stage ('Exec Maven') {
             steps {
-                junit '**/surefire-reports/*.xml'
+                rtMavenRun (
+                    tool: mvn_123, // Tool name from Jenkins configuration
+                    pom: 'pom.xml',
+                    goals: 'clean install',
+                    deployerId: "MAVEN_DEPLOYER"
+                )
             }
         }
-         stage('artifactory') {
+
+        stage ('Publish build info') {
             steps {
-                archiveArtifacts artifacts: 'target/*.jar'
+                rtPublishBuildInfo (
+                    serverId: "jfrog_123"
+                )
             }
-         }   
+        }
     }
-
-} 
+}
