@@ -11,7 +11,7 @@ pipeline {
             steps {
                 rtServer (
                     id: "jfrog_123",
-                    url: https://kanna07.jfrog.io,
+                    url: "https://kanna07.jfrog.io",
                     credentialsId: "jfrog_cred"
                 )
 
