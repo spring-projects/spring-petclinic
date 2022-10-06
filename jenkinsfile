@@ -1,10 +1,11 @@
 pipeline {
     agent { label 'JAVA-11' }
     triggers { pollSCM( '* * * * *' ) }
+    parameters { choice(name: 'BRANCH', choices: ['main', 'master', 'three'], description: 'Choose the branch') }
     stages {
         stage('clone') {
             steps { 
-                git branch: 'main', url: 'https://github.com/GUDAPATIVENKATESH/spring-petclinic.git'
+                git branch: '${params.BRANCH}', url: 'https://github.com/GUDAPATIVENKATESH/spring-petclinic.git'
             }
         }
         stage('Build') {
