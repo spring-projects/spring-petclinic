@@ -16,6 +16,7 @@
 
 package org.springframework.samples.petclinic.system;
 
+import io.opentelemetry.instrumentation.spring.autoconfigure.EnableOpenTelemetry;
 import org.springframework.boot.autoconfigure.cache.JCacheManagerCustomizer;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -30,6 +31,7 @@ import javax.cache.configuration.MutableConfiguration;
  */
 @Configuration(proxyBeanMethods = false)
 @EnableCaching
+@EnableOpenTelemetry
 class CacheConfiguration {
 
 	@Bean

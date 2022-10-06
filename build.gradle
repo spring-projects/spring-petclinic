@@ -10,6 +10,10 @@ group = 'org.springframework.samples'
 version = '2.7.3'
 sourceCompatibility = '11'
 
+def OPENTELEMETRY_VERSION = '1.18.0'
+def OPENTELEMETRY_SPRING_BOOT_STARTER_VERSION = '1.18.0-alpha'
+def SPRING_VERSION = '5.3.23'
+
 repositories {
   mavenCentral()
 }
@@ -34,6 +38,25 @@ dependencies {
   runtimeOnly 'org.postgresql:postgresql'
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // OpenTelemetry Spring Starter
+    implementation("io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter:${OPENTELEMETRY_SPRING_BOOT_STARTER_VERSION}")
+
+    // OTEL exporter
+    implementation("io.opentelemetry:opentelemetry-exporter-otlp:${OPENTELEMETRY_VERSION}")
+
+    //Used to autoconfigure spring-web
+    implementation("org.springframework:spring-web:${SPRING_VERSION}")
+
+    //Used to autoconfigure spring-webmvc
+    implementation("org.springframework:spring-webmvc:${SPRING_VERSION}")
+
+    //Used to autoconfigure spring-webflux
+    implementation("org.springframework:spring-webflux:${SPRING_VERSION}")
+
+    //Enables instrumentation using @WithSpan
+    implementation("org.springframework:spring-aop:${SPRING_VERSION}")
+    implementation("io.opentelemetry:opentelemetry-extension-annotations:${OPENTELEMETRY_VERSION}")
 }
 
 tasks.named('test') {
