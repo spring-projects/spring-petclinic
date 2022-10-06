@@ -1,22 +1,42 @@
 pipeline {
     agent { label 'JAVA-11' }
     triggers { pollSCM( '* * * * *' ) }
-    parameters { choice(name: 'BRANCH', choices: ['main', 'master', 'three'], description: 'Choose the branch') }
+    parameters { 
+        string(name: 'MAVEN_TARGET', defaultValue: 'mvn package', description: 'describe maven targets')
+        choice(name: 'BRANCH', choices: ['main', 'master', 'three'], description: 'Choose the branch') 
+        }
     stages {
         stage('clone') {
-            steps { 
-                git branch: '${params.BRANCH}', url: 'https://github.com/GUDAPATIVENKATESH/spring-petclinic.git'
+            steps {
+                mail subject: "Build Started for jenkins job $env.JOB_NAME", 
+                  body: "Build Started for jenkins job $env.JOB_NAME", 
+                  to: "qtdevops@gmail.com" 
+                git branch: "${params.BRANCH}", url: 'https://github.com/GUDAPATIVENKATESH/spring-petclinic.git'
             }
         }
         stage('Build') {
             steps {
-                sh 'mvn package'
+                sh "${params.MAVEN_TARGET}"
             }
         }
-        stage('results') {
-            steps {
-                junit '**/surefire-reports/*.xml'
+        
+    }
+    post {
+            always {
+                mail subject: "build completed for jenkins job $env.JOB_NAME",
+                    body: "build completed for jenkins job $env.JOB_NAME \n click here: $env.JOB_URL",
+                    to: "qtdevops@gmail.com"
             }
-        }
+            failure {
+                mail subject: "build failed for jenkins job $env.JOB_NAME",
+                     body: "build failed for jenkins job $env.JOB_NAME" ,
+                     to: "qtdevops@gmail.com"
+            }
+            success {
+                mail subject: "build success for jenkins job $env.JOB_NAME",
+                     body: "build success for jenkins job $env.JOB_NAME" ,
+                     to: "qtdevops@gmail.com"
+                junit '**/surefire-reports/*.xml'     
+            }
     }
 }
