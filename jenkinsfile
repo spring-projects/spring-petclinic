@@ -1,13 +1,11 @@
 pipeline {
     agent { label 'JDK-11' }
-    stages {
-        triggers { 
-            pollSCM('* * * * *') 
-            }
-        parameters {
+    triggers { pollSCM('* * * * *') }
+    parameters {
             string(name: 'MAVEN_GOAL', defaultValue: 'mvn package', description: 'enter maven goal') 
             choice(name: 'BRANCH', choices: ['master', 'main', 'three'], description: 'select one') 
             }
+    stages {
         stage('clone') {     
             steps {
                 git url: 'https://github.com/GUDAPATIVENKATESH/spring-petclinic.git',
@@ -17,6 +15,11 @@ pipeline {
         stage('build') { 
             steps {
                 sh '${params.MAVEN_GOAL}'
+            }
+        }
+        stage('archive results') {
+            steps {
+                junit '**/surefire-reports/*.xml'
             }
         }
     }
