@@ -1,6 +1,6 @@
 pipeline {
     agent { label 'JAVA-11' }
-    triggers { pollSCM('* * * * *') }
+    triggers { pollSCM( '* * * * *' ) }
     stages {
         stage('clone') {
             steps { 
