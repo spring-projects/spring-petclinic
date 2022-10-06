@@ -1,15 +1,19 @@
 pipeline {
     agent { label 'JDK-11' }
     stages {
+        parameters {
+            string(name: 'MAVEN_GOAL', defaultValue: 'mvn package', description: 'enter maven goal') 
+            choice(name: 'BRANCH', choices: ['master', 'main', 'three'], description: 'select one') 
+            }
         stage('clone') {     
             steps {
                 git url: 'https://github.com/GUDAPATIVENKATESH/spring-petclinic.git',
-                    branch: 'main'
+                    branch: '${params.BRANCH}'
             }
         }
         stage('build') { 
             steps {
-                sh 'mvn package'
+                sh '${params.MAVEN_GOAL}'
             }
         }
     }
