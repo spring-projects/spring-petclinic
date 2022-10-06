@@ -19,8 +19,8 @@ pipeline {
                 rtMavenDeployer (
                     id: 'spc-deployer',
                     serverId: 'jfrog',
-                    releaseRepo: 'success-libs-release-local',
-                    snapshotRepo: 'success-libs-snapshot-local',
+                    releaseRepo: 'nevergiverup-libs-release-local',
+                    snapshotRepo: 'nevergiveup-libs-snapshot-local',
 
                 )
             }
