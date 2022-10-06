@@ -1,15 +1,20 @@
 pipeline {
-    agent any
+    agent { label 'OPENJDK-11-MAVEN'}
     stages {
-        stage('test') {
+        stage('vcs') {
             steps {
-                sh 'echo hello'
+                git branch: 'REL_INT_1.0', url: 'https://github.com/Bharathpola/spring-petclinic.git'
             }
         }
-        stage('learning') {
+        stage('build') {
             steps {
-                git url: 'https://github.com/Bharathpola/game-of-life.git', 
-                    branch: 'master'
+                sh '/opt/apache-maven-3.8.6/bin/mvn package'
+                    
+            }
+        }
+        stage('archive results'){
+            steps{
+                junit '**/surefire-reports/*.xml'
             }
         }
     }
