@@ -8,7 +8,7 @@ node('JDK-11-MVN') {
            echo "M2_HOME=${M2_HOME}" 
  
         '''
-        sh '/usr/local/apache-maven-3.8.6/bin/ mvn clean package '
+        sh '/usr/local/apache-maven-3.8.6/bin/mvn clean package '
     }
     stage('archive'){
         archiveArtifacts artifacts: 'target/*.jar', followSymlinks: false
