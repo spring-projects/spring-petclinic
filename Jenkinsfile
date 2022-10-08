@@ -12,6 +12,6 @@ node('JDK-11-MVN') {
         archiveArtifacts artifacts: 'target/*.jar', followSymlinks: false
     }
     stage('publish test results'){
-        junit 'target/surefire-reports/*.xml'
+        junit '**/TEST-*.xml'
     }
 }
