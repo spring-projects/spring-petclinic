@@ -8,10 +8,5 @@ node('JDK-11-MVN') {
            echo "M2_HOME=${M2_HOME}"  
         '''
     }
-    stage('Archive artifacts'){
-        archiveArtifacts artifacts: 'target/*.jar', followSymlinks: false
-    }
-    stage('publish test results'){
-        junit '**/TEST-*.xml'
-    }
+    
 }
