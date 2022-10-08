@@ -1,5 +1,5 @@
 pipeline{
-    agent{'JDK-11-MVN'}
+    agent{label'JDK-11-MVN'}
     stages{
         stage('source code management'){
             steps{
