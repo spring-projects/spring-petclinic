@@ -1,7 +1,7 @@
 node('JDK-11-MVN') {
     stage('Git'){
         git 'https://github.com/ShaikNasee/spring-petclinic.git'
-        branch 'main'
+        branch:'main'
     }
     stage('build'){
         sh 'mvn clean package'
