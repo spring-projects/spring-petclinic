@@ -1,0 +1,59 @@
+pipeline {
+    agent any
+    parameters {
+        string(name: 'MAVEN_GOAL', defaultValue: 'clean install', description: 'maven goal')
+
+    }
+    triggers {
+        
+        pollSCM('* * * * *')
+    }
+    stages {
+        stage('vcs') {
+            steps {
+                git branch: "REL_INT_1.0", url: 'https://github.com/GitPracticeRepo/spring-petclinic.git'
+            }
+            
+        }
+         stage ('Artifactory configuration') {
+            steps {
+                rtServer (
+                    id: "jfrog_cluod",
+                    url: "https://devcluod.jfrog.io",
+                    credentialsId: "jfrog_admin_id"
+                )
+
+                rtMavenDeployer (
+                    id: "MAVEN_DEPLOYER",
+                    serverId: "jfrog_cluod",
+                    releaseRepo: 'dev-libs-release-local',
+                    snapshotRepo: 'dev-libs-snapshot-local'
+                )
+
+               
+            }
+        }
+
+        stage ('Exec Maven') {
+            steps {
+                rtMavenRun (
+                    tool: 'maven_default', // Tool name from Jenkins configuration
+                    pom: 'pom.xml',
+                    goals: 'clean install',
+                    deployerId: "MAVEN_DEPLOYER"
+                )
+            }
+        }
+
+        stage ('Publish build info') {
+            steps {
+                rtPublishBuildInfo (
+                    serverId: "jfrog_cluod"
+                )
+            }
+        }
+        
+        
+    }
+
+}
