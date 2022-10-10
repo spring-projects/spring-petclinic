@@ -1,5 +1,6 @@
 pipeline{
     agent{label'JDK-11-MVN'}
+    triggers{triggers { upstream(upstreamProjects: 'starter-project', threshold: hudson.model.Result.SUCCESS) }}
     stages{
         stage('source code management'){
             steps{
