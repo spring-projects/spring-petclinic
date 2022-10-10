@@ -1,5 +1,6 @@
 pipeline {
     agent any
+    
 	parameters {
 		choice(name: 'BRANCH_TO_BUILD', choices: ['main', 'INT_REL_1.0'], description: 'BUILDING_BRANCHES')
 		string(name: 'MAVEN_GOAL', defaultValue: 'mvn package', description: 'maven goals')
