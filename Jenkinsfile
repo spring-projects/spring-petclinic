@@ -1,6 +1,6 @@
 node('JDK-11-MVN3.8.6'){
     stage('source code '){
-        git url: 'https://github.com/ShaikNasee/spring-petclinic.git' branch: 'scripted'
+        git branch: 'scripted', url: 'https://github.com/ShaikNasee/spring-petclinic.git'
     }
     stage('mvn build'){
         sh '/usr/local/apache-maven-3.8.6/bin/mvn clean packaage'
