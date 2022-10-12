@@ -7,7 +7,7 @@ node('JDK-11-MVN3.8.6'){
 
     }
     stage('archive Artifacts'){
-        rchiveArtifacts artifacts: 'target/*.jar', followSymlinks: false
+        archiveArtifacts artifacts: 'target/*.jar', followSymlinks: false
     }
     stage('pushing unit test reports'){
          junit '**/TEST-*.xml'
