@@ -1,11 +1,23 @@
-node('OPENJDK11-MVN') {
-    stage('vcs') {
-    git branch: 'REL_INT_1.0', url: 'https://github.com/Moez786/spring-petclinic.git'
+pipeline {
+    agent any
+    stages {
+        stage('source code'){
+            steps {
+               git url: 'https://github.com/Moez786/spring-petclinic.git',
+               branch: 'main'
+            }
+        }
+        stage('build'){
+            steps {
+                sh 'mvn package'
+            }
+        }
+        stage('Junit Results'){
+            steps {
+                junit '**/surefire-reports/*.xml'
+                } 
+            }   
+    
+        }
+
     }
-    stage("build"){
-        sh '/opt/apache-maven-3.8.6/bin/mvn package'
-    }
-    stage("Junit"){
-        junit '**/surefire-reports/*.xml'
-    }
-}
