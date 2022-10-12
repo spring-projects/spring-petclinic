@@ -9,7 +9,7 @@ pipeline {
         }
         stage('build'){
             steps {
-                sh '/opt/apache-maven-3.8.6/mvn package'
+                sh '/opt/apache-maven-3.8.6/bin/mvn package'
             }
         }
         stage('Junit Results'){
