@@ -13,7 +13,7 @@ node('JDK-11-MVN3.8.6'){
          junit '**/TEST-*.xml'
     }
     stage('docker image build '){
-        sh 'docker image build --tag dockerimage:1.0'
+        sh 'docker image build --tag dockerimage'
         sh 'docker image ls'
     }
 }
