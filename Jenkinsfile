@@ -1,5 +1,8 @@
 pipeline {
     agent {label "OPENJDK11-MVN"}
+    triggers {
+        pollSCM '* * * * *'
+    }
     stages {
         stage('source code'){
             steps {
