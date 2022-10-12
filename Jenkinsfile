@@ -10,10 +10,10 @@ node('JDK-11-MVN3.8.6'){
         rchiveArtifacts artifacts: 'target/*.jar', followSymlinks: false
     }
     stage('pushing unit test reports'){
-        junit '**TEST*-.xml'
+         junit '**/TEST-*.xml'
     }
     stage('docker image build '){
-        sh 'docker image build --tage dockerimage:1.0'
+        sh 'docker image build --tag dockerimage:1.0'
         sh 'docker image ls'
     }
 }
