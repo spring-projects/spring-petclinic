@@ -1,4 +1,5 @@
 node('JDK-11-MVN3.8.6'){
+    properties([pipelineTriggers([upstream('init-project, ')])])
     stage('source code '){
         git branch: 'scripted', url: 'https://github.com/ShaikNasee/spring-petclinic.git'
     }
