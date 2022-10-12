@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent {label "OPENJDK11-MVN"}
     stages {
         stage('source code'){
             steps {
