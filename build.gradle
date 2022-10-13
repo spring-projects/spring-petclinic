@@ -13,6 +13,7 @@ sourceCompatibility = '11'
 def OPENTELEMETRY_VERSION = '1.18.0'
 def OPENTELEMETRY_SPRING_BOOT_STARTER_VERSION = '1.18.0-alpha'
 def SPRING_VERSION = '5.3.23'
+def DIGMA_INSTR_VERSION = '0.0.6'
 
 repositories {
   mavenLocal()
@@ -39,6 +40,9 @@ dependencies {
   runtimeOnly 'org.postgresql:postgresql'
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // Digma instrumentation - using the file as temp solution
+    implementation(files("lib/com/digma/digma-otel-instr-spring-boot/${DIGMA_INSTR_VERSION}/digma-otel-instr-spring-boot-${DIGMA_INSTR_VERSION}.jar"))
 
     // OpenTelemetry Spring Starter
     implementation("io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter:${OPENTELEMETRY_SPRING_BOOT_STARTER_VERSION}")
