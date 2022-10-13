@@ -15,6 +15,7 @@ def OPENTELEMETRY_SPRING_BOOT_STARTER_VERSION = '1.18.0-alpha'
 def SPRING_VERSION = '5.3.23'
 
 repositories {
+  mavenLocal()
   mavenCentral()
 }
 
