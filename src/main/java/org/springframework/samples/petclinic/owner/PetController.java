@@ -17,6 +17,8 @@ package org.springframework.samples.petclinic.owner;
 
 import java.util.Collection;
 import javax.validation.Valid;
+
+import io.opentelemetry.instrumentation.annotations.WithSpan;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -47,16 +49,19 @@ class PetController {
 	}
 
 	@ModelAttribute("types")
+	@WithSpan
 	public Collection<PetType> populatePetTypes() {
 		return this.owners.findPetTypes();
 	}
 
 	@ModelAttribute("owner")
+	@WithSpan
 	public Owner findOwner(@PathVariable("ownerId") int ownerId) {
 		return this.owners.findById(ownerId);
 	}
 
 	@ModelAttribute("pet")
+	@WithSpan
 	public Pet findPet(@PathVariable("ownerId") int ownerId,
 			@PathVariable(name = "petId", required = false) Integer petId) {
 		return petId == null ? new Pet() : this.owners.findById(ownerId).getPet(petId);

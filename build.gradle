@@ -1,5 +1,5 @@
 plugins {
-  id 'org.springframework.boot' version '2.7.3'
+  id 'org.springframework.boot' version '2.7.4'
   id 'io.spring.dependency-management' version '1.0.13.RELEASE'
   id 'java'
 }
@@ -7,14 +7,15 @@ plugins {
 apply plugin: 'java'
 
 group = 'org.springframework.samples'
-version = '2.7.3'
+version = '2.7.4-digma'
 sourceCompatibility = '11'
 
 def OPENTELEMETRY_VERSION = '1.18.0'
-def OPENTELEMETRY_SPRING_BOOT_STARTER_VERSION = '1.18.0-alpha'
-def SPRING_VERSION = '5.3.23'
+def OPENTELEMETRY_ALPHA_VERSION = '1.18.0-alpha'
+def DIGMA_INSTR_VERSION = '0.0.6'
 
 repositories {
+  mavenLocal()
   mavenCentral()
 }
 
@@ -39,24 +40,26 @@ dependencies {
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+    // Digma instrumentation - using the file as temp solution
+    implementation(files("lib/com/digma/digma-otel-instr-spring-boot/${DIGMA_INSTR_VERSION}/digma-otel-instr-spring-boot-${DIGMA_INSTR_VERSION}.jar"))
+
     // OpenTelemetry Spring Starter
-    implementation("io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter:${OPENTELEMETRY_SPRING_BOOT_STARTER_VERSION}")
+    implementation("io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter:${OPENTELEMETRY_ALPHA_VERSION}")
 
     // OTEL exporter
     implementation("io.opentelemetry:opentelemetry-exporter-otlp:${OPENTELEMETRY_VERSION}")
 
-    //Used to autoconfigure spring-web
-    implementation("org.springframework:spring-web:${SPRING_VERSION}")
-
-    //Used to autoconfigure spring-webmvc
-    implementation("org.springframework:spring-webmvc:${SPRING_VERSION}")
-
-    //Used to autoconfigure spring-webflux
-    implementation("org.springframework:spring-webflux:${SPRING_VERSION}")
+//    //Used to autoconfigure spring-web
+//    implementation("org.springframework:spring-web:${SPRING_VERSION}")
+//
+//    //Used to autoconfigure spring-webmvc
+//    implementation("org.springframework:spring-webmvc:${SPRING_VERSION}")
+//
+//    //Used to autoconfigure spring-webflux
+//    implementation("org.springframework:spring-webflux:${SPRING_VERSION}")
 
     //Enables instrumentation using @WithSpan
-    implementation("org.springframework:spring-aop:${SPRING_VERSION}")
-    implementation("io.opentelemetry:opentelemetry-extension-annotations:${OPENTELEMETRY_VERSION}")
+    implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations:${OPENTELEMETRY_ALPHA_VERSION}")
 }
 
 tasks.named('test') {

@@ -18,6 +18,8 @@ package org.springframework.samples.petclinic.owner;
 import java.util.List;
 import java.util.Map;
 import javax.validation.Valid;
+
+import io.opentelemetry.instrumentation.annotations.WithSpan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -56,6 +58,7 @@ class OwnerController {
 	}
 
 	@ModelAttribute("owner")
+	@WithSpan
 	public Owner findOwner(@PathVariable(name = "ownerId", required = false) Integer ownerId) {
 		return ownerId == null ? new Owner() : this.owners.findById(ownerId);
 	}
