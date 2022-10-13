@@ -1,5 +1,5 @@
 plugins {
-  id 'org.springframework.boot' version '2.7.3'
+  id 'org.springframework.boot' version '2.7.4'
   id 'io.spring.dependency-management' version '1.0.13.RELEASE'
   id 'java'
 }
@@ -7,7 +7,7 @@ plugins {
 apply plugin: 'java'
 
 group = 'org.springframework.samples'
-version = '2.7.3'
+version = '2.7.4-digma'
 sourceCompatibility = '11'
 
 def OPENTELEMETRY_VERSION = '1.18.0'
