@@ -20,6 +20,6 @@ node('JDK-11-MVN3.8.6'){
     stage('running the java appcation on docker '){
               sh 'scp deploy.sh ubuntu@35.90.160.204:~/'
               sh 'ssh ubuntu@35.90.160.204 "chmod +x deploy.sh"'
-              sh 'ssh ubuntu@35.90.160.204 ./deploy.ssh'
+              sh 'ssh ubuntu@35.90.160.204 ./deploy.sh'
     }
 }
