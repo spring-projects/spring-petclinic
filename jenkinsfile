@@ -1,0 +1,26 @@
+pipeline
+{
+    agent
+    {
+        label 'ubuntu-node'
+
+    }
+    stages
+    {
+        stage ('git clone')
+        {
+            steps
+            {
+                git url:'https://github.com/peddiraju3122b/spring-petclinic.git'
+
+            }
+        }
+        stage ('mvn package')
+        {
+            steps
+            {
+                sh 'mvn package'
+            }
+        }
+    }
+}
