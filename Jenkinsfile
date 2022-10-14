@@ -18,7 +18,8 @@ node('JDK-11-MVN3.8.6'){
         sh 'docker image ls'
     }
     stage('running the java appcation on docker '){
-               sh 'docker container run -d -p 8000:8080 dockerimages:1.0'
-               sh 'docker container ls -l'
+              sh 'scp deploy.sh ubuntu@35.90.160.204:~/'
+              sh 'ssh ubuntu@35.90.160.204 "chmod +x deploy.sh"'
+              sh 'ssh ubuntu@35.90.160.204 ./deploy.ssh'
     }
 }
