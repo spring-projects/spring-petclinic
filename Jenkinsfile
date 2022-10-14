@@ -5,7 +5,7 @@ node('JDK-11-MVN3.8.6'){
         AWS_REGION="us-west-2"
         IMAGE_REPO_NAME="dockerimages"
         MAGE_TAG="1.0"
-        REPOSITORY_URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
+        REPOSITORY_URI="172455797459.dkr.ecr.us-west-2.amazonaws.com/dockerimages"
     }
     stage('source code '){
         git branch: "scripted", url: "https://github.com/ShaikNasee/spring-petclinic.git"
@@ -22,7 +22,7 @@ node('JDK-11-MVN3.8.6'){
     }
     stage('Authenticationg Aws ECR '){
         sh "aws --version"
-        sh "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+        sh "aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 172455797459.dkr.ecr.us-west-2.amazonaws.com"
     }
     stage('running the java appcation on docker '){
               sh "scp deploy.sh ubuntu@35.90.160.204:~/"
