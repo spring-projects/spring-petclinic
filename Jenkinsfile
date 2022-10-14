@@ -1,12 +1,5 @@
 node('JDK-11-MVN3.8.6'){
     properties([pipelineTriggers([upstream('init-project, ')])])
-    environment{
-        AWS_ACCOUNT_ID="172455797459"
-        AWS_REGION="us-west-2"
-        IMAGE_REPO_NAME="dockerimages"
-        MAGE_TAG="1.0"
-        REPOSITORY_URI="172455797459.dkr.ecr.us-west-2.amazonaws.com/dockerimages"
-    }
     stage('source code '){
         git branch: "scripted", url: "https://github.com/ShaikNasee/spring-petclinic.git"
     }
