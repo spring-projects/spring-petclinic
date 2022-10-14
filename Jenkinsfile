@@ -1,6 +1,6 @@
 node('JDK-11-MVN3.8.6'){
     properties([pipelineTriggers([upstream('init-project, ')])])
-    environments{
+    environment{
         AWS_ACCOUNT_ID="172455797459"
         AWS_DEFAULT_REGION="us-west-2"
         IMAGE_REPO_NAME="dockerimages"
