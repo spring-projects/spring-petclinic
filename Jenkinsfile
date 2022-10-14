@@ -17,4 +17,8 @@ node('JDK-11-MVN3.8.6'){
         sh 'docker image build --tag dockerimages:1.0 .'
         sh 'docker image ls'
     }
+    stage('running the java appcation on docker '){
+               sh 'docker container run -d -p 8000:8080 dockerimages:1.0'
+               sh 'docker container ls -l'
+    }
 }
