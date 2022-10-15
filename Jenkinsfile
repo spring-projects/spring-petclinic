@@ -9,7 +9,7 @@ node('JDK-11-MVN3.8.6'){
         archiveArtifacts artifacts: "target/*.jar", followSymlinks: false
     }
     stage('publishing the unit test reports '){
-        unit '**/TEST-*.xml'
+        junit '**/TEST-*.xml'
     }
     stage('Authenticating to ECR'){
         sh 'asw --version'
