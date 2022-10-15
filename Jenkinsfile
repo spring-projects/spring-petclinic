@@ -12,7 +12,7 @@ node('JDK-11-MVN3.8.6'){
         junit '**/TEST-*.xml'
     }
     stage('Authenticating to ECR'){
-        sh 'asw --version'
+        sh 'aws --version'
         sh 'aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 172455797459.dkr.ecr.us-west-2.amazonaws.com'
     }
     stage('running the java application on container '){
