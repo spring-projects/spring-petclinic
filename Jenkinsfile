@@ -16,9 +16,9 @@ node('JDK-11-MVN3.8.6'){
         sh 'aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 172455797459.dkr.ecr.us-west-2.amazonaws.com'
     }
     stage('running the java application on container '){
-              sh "scp deploy.sh ubuntu@52.25.30.209:~/"
-              sh "ssh ubuntu@52.25.30.209 "chmod +x deploy.sh""
-              sh "ssh ubuntu@52.25.30.209 ./deploy.sh"
+              sh "scp deploy.sh ubuntu@35.90.142.28:~/"
+              sh "ssh ubuntu@35.90.142.28 "chmod +x deploy.sh""
+              sh "ssh ubuntu@35.90.142.28 ./deploy.sh"
 
     }
 }
