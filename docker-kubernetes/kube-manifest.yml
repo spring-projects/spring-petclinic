@@ -39,6 +39,3 @@ spec:
   ports:
     - port: 8080
   type: LoadBalancer
-
-
-#https://raw.githubusercontent.com/i386kernel/tanzu-SE-spring-petclinic/main/docker-kubernetes/kubemanifest.yml
