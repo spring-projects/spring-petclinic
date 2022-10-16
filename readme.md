@@ -43,8 +43,7 @@ docker run -p 8080:8080 -d spring-petclinic:2.7.3
 # Run in Kubernetes
 
 ```
-
-
+kubectl apply -f https://raw.githubusercontent.com/i386kernel/tanzu-SE-spring-petclinic/main/docker-kubernetes/kube-manifest.yml
 ```
 
 ## Database configuration
