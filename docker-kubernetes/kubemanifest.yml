@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: se-spring-boot
+  labels:
+    app: se-spring-boot
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: se-spring-boot
+      labels:
+        app: se-spring-boot
+    spec:
+      containers:
+        - name: se-spring-boot
+          image: lnanjangud653/se-spring-boot:1.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: se-spring-boot
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: se-spring-boot
+spec:
+  selector:
+    app: se-spring-boot
+  ports:
+    - port: 8080
+  type: LoadBalancer
