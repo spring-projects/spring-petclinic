@@ -7,7 +7,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: se-spring-boot
-  namespace: se-spring-boot-app
+  namespace: tanzu-se-spring-boot-app
   labels:
     app: se-spring-boot
 spec:
@@ -40,3 +40,5 @@ spec:
     - port: 8080
   type: LoadBalancer
 
+
+#https://raw.githubusercontent.com/i386kernel/tanzu-SE-spring-petclinic/main/docker-kubernetes/kubemanifest.yml
