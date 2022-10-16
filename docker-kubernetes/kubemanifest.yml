@@ -1,7 +1,13 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: tanzu-se-spring-boot-app
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: se-spring-boot
+  namespace: se-spring-boot-app
   labels:
     app: se-spring-boot
 spec:
@@ -14,7 +20,7 @@ spec:
     spec:
       containers:
         - name: se-spring-boot
-          image: lnanjangud653/se-spring-boot:1.0.0
+          image: lnanjangud653/tanzu-se-spring-boot-app:1.0.0
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
@@ -33,3 +39,4 @@ spec:
   ports:
     - port: 8080
   type: LoadBalancer
+
