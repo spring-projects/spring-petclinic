@@ -16,22 +16,15 @@
 
 package org.springframework.samples.petclinic;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ImportRuntimeHints;
+import org.springframework.aot.hint.RuntimeHints;
+import org.springframework.aot.hint.RuntimeHintsRegistrar;
 
-/**
- * PetClinic Spring Boot Application.
- *
- * @author Dave Syer
- *
- */
-@SpringBootApplication
-@ImportRuntimeHints(PetClinicRuntimeHints.class)
-public class PetClinicApplication {
+public class PetClinicRuntimeHints implements RuntimeHintsRegistrar {
 
-	public static void main(String[] args) {
-		SpringApplication.run(PetClinicApplication.class, args);
+	@Override
+	public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
+		hints.resources().registerPattern("db/*"); // https://github.com/spring-projects/spring-boot/issues/32654
+		hints.resources().registerPattern("META-INF/resources/webjars/*");
 	}
 
 }
