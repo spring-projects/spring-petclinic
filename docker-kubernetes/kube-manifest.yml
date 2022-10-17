@@ -22,6 +22,13 @@ spec:
         - name: se-spring-boot
           image: lnanjangud653/tanzu-se-spring-boot-app:1.0.0
           imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "512m"
+            limits:
+              memory: "256Mi"
+              cpu: "1G"
           ports:
             - containerPort: 8080
       restartPolicy: Always
