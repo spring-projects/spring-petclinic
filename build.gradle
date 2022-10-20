@@ -12,7 +12,7 @@ sourceCompatibility = '11'
 
 def OPENTELEMETRY_VERSION = '1.18.0'
 def OPENTELEMETRY_ALPHA_VERSION = '1.18.0-alpha'
-def DIGMA_INSTR_VERSION = '0.0.6'
+def DIGMA_INSTR_VERSION = '0.0.8'
 
 repositories {
   mavenLocal()
@@ -41,10 +41,13 @@ dependencies {
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     // Digma instrumentation - using the file as temp solution
+    implementation(files("lib/com/digma/digma-otel-instr-common/${DIGMA_INSTR_VERSION}/digma-otel-instr-common-${DIGMA_INSTR_VERSION}.jar"))
     implementation(files("lib/com/digma/digma-otel-instr-spring-boot/${DIGMA_INSTR_VERSION}/digma-otel-instr-spring-boot-${DIGMA_INSTR_VERSION}.jar"))
 
     // OpenTelemetry Spring Starter
     implementation("io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter:${OPENTELEMETRY_ALPHA_VERSION}")
+
+    implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv:${OPENTELEMETRY_ALPHA_VERSION}")
 
     // OTEL exporter
     implementation("io.opentelemetry:opentelemetry-exporter-otlp:${OPENTELEMETRY_VERSION}")

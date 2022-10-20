@@ -8,8 +8,8 @@
   <!-- do_not_remove: published-with-gradle-metadata -->
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.digma</groupId>
-  <artifactId>digma-otel-instr-spring-boot</artifactId>
-  <version>0.0.6</version>
-  <name>Digma OpenTelemetry Instrumentation</name>
-  <description>Digma Instrumentation of Java libraries using OpenTelemetry.</description>
+  <artifactId>digma-otel-instr-common</artifactId>
+  <version>0.0.8</version>
+  <name>Common Digma OpenTelemetry Instrumentation</name>
+  <description>Common Digma Instrumentation of Java libraries using OpenTelemetry.</description>
 </project>
