@@ -1,6 +1,6 @@
 def call(){
     pipeline {
-    agent  { label 'node-1' }
+    agent  { label 'NODE' }
     stages {
         stage('git') {
             steps {
