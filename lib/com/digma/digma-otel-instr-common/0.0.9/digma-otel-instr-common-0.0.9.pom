@@ -9,7 +9,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.digma</groupId>
   <artifactId>digma-otel-instr-common</artifactId>
-  <version>0.0.8</version>
+  <version>0.0.9</version>
   <name>Common Digma OpenTelemetry Instrumentation</name>
   <description>Common Digma Instrumentation of Java libraries using OpenTelemetry.</description>
 </project>

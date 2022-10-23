@@ -9,7 +9,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.digma</groupId>
   <artifactId>digma-otel-instr-spring-boot</artifactId>
-  <version>0.0.8</version>
+  <version>0.0.9</version>
   <name>Digma OpenTelemetry Instrumentation for Spring Boot</name>
   <description>Digma Instrumentation of Spring Boot using OpenTelemetry.</description>
 </project>
