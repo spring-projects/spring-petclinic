@@ -109,6 +109,7 @@
   </dependencies>
 
   <build>
+  <defaultGoal>install</defaultGoal>
     <plugins>
       <plugin>
         <groupId>io.spring.javaformat</groupId>
