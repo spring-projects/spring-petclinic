@@ -12,7 +12,7 @@ sourceCompatibility = '11'
 
 def OPENTELEMETRY_VERSION = '1.18.0'
 def OPENTELEMETRY_ALPHA_VERSION = '1.18.0-alpha'
-def DIGMA_INSTR_VERSION = '0.0.15-SNAPSHOT'
+def DIGMA_INSTR_VERSION = '0.1.1'
 
 repositories {
   mavenLocal()
