@@ -87,17 +87,16 @@ class OwnerController {
 	public String processFindForm(@RequestParam(defaultValue = "1") int page, Owner owner, BindingResult result,
 			Model model) {
 		// allow parameterless GET request for /owners to return all records
-		/*if (owner.getLastName() == null) {
-			owner.setLastName(""); // empty string signifies broadest possible search
-		}
-		
-		Page<Owner> ownersResults = findPaginatedForOwnersLastName(page, owner.getLastName());
-		if (ownersResults.isEmpty()) {
-			// no owners found
-			result.rejectValue("lastName", "notFound", "not found");
-			return "owners/findOwners";
-		}*/
-		
+		/*
+		 * if (owner.getLastName() == null) { owner.setLastName(""); // empty string
+		 * signifies broadest possible search }
+		 *
+		 * Page<Owner> ownersResults = findPaginatedForOwnersLastName(page,
+		 * owner.getLastName()); if (ownersResults.isEmpty()) { // no owners found
+		 * result.rejectValue("lastName", "notFound", "not found"); return
+		 * "owners/findOwners"; }
+		 */
+
 		if (owner.getFirstName() == null) {
 			owner.setFirstName(""); // empty string signifies broadest possible search
 		}
@@ -135,12 +134,12 @@ class OwnerController {
 		Pageable pageable = PageRequest.of(page - 1, pageSize);
 		return owners.findByLastName(lastname, pageable);
 	}
-	
+
 	private Page<Owner> findPaginatedForOwnersFirstName(int page, String firstname) {
 		int pageSize = 5;
 		Pageable pageable = PageRequest.of(page - 1, pageSize);
 		return owners.findByFirstName(firstname, pageable);
-	} //이름으로 찾기 추가
+	} // 이름으로 찾기 추가
 
 	@GetMapping("/owners/{ownerId}/edit")
 	public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {

@@ -63,9 +63,9 @@ public class Owner extends Person {
 	@JoinColumn(name = "owner_id")
 	@OrderBy("name")
 	private List<Pet> pets = new ArrayList<>();
-	
+
 	@Column(name = "age")
-	private Integer age; //나이추가
+	private Integer age; // 나이추가
 
 	public String getAddress() {
 		return this.address;
@@ -94,8 +94,6 @@ public class Owner extends Person {
 	public List<Pet> getPets() {
 		return this.pets;
 	}
-	
-	
 
 	public Integer getAge() {
 		return age;
