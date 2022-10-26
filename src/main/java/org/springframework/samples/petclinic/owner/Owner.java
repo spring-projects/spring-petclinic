@@ -64,6 +64,9 @@ public class Owner extends Person {
 	@OrderBy("name")
 	private List<Pet> pets = new ArrayList<>();
 
+	@Column(name = "age")
+	private Integer age; // 나이추가
+
 	public String getAddress() {
 		return this.address;
 	}
@@ -90,6 +93,14 @@ public class Owner extends Person {
 
 	public List<Pet> getPets() {
 		return this.pets;
+	}
+
+	public Integer getAge() {
+		return age;
+	}
+
+	public void setAge(Integer age) {
+		this.age = age;
 	}
 
 	public void addPet(Pet pet) {

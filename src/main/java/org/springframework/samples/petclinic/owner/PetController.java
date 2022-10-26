@@ -45,6 +45,20 @@ class PetController {
 	public PetController(OwnerRepository owners) {
 		this.owners = owners;
 	}
+	
+	/*
+	 IoC(Inversion Of Control) : 의존성을 자기 자신이 아닌 누군가가 만들어주는 것(제어권 역전) 
+	  - 사용할 의존성의 타입(또는 인터페이스)만 맞으면 상관이 없다
+	  - 코드를 테스트 하기도 편하다
+	  - 객체를 사용은 하지만 직접 만들지는 않는다
+	  - 생성자를 통해서 주입을 받는다
+	  
+	 IoC(Inversion of Control)컨테이너
+	  - ApplicaionContext (BeanFactory)
+	  - 빈(bean)을 만들고 의존성을 엮어주며 제공해준다 
+	  - 빈(bean)으로 등록된 객체들끼리만 의존성 주입이 가능하다
+	  - IoC 컨테이너에 등록된 빈(bean)을 가져다 씀으로써 singleton scope을 달성할 수 있다
+	 */
 
 	@ModelAttribute("types")
 	public Collection<PetType> populatePetTypes() {
