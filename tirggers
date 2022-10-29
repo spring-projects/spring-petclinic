@@ -1,0 +1,17 @@
+pipeline {
+    agent any 
+            parameters {
+                    choice(Name: 'BRANCH_TO_BUILD', choices: ['main','rel'], description: 'Choose the branch')
+          
+            }
+        }
+        stages {
+            stage ('clone') {
+              steps {
+                git url : 'https://github.com/Tajdarhussain110/spring-petclinic.git',
+                branch :"${params.BRANCH_TO_BUILD}"
+               
+            }           
+        }
+        
+    }
