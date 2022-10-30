@@ -18,6 +18,8 @@ package org.springframework.samples.petclinic.system;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.security.SecureRandom;
+
 /**
  * Controller used to showcase what happens when an exception is thrown
  *
@@ -28,10 +30,60 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 class CrashController {
 
+	private final SecureRandom rand = new SecureRandom();
+	private final ExceptionFlavor exceptionFlavor = new ExceptionFlavor();
+
 	@GetMapping("/oups")
 	public String triggerException() {
 		throw new RuntimeException(
-				"Expected: controller used to showcase what " + "happens when an exception is thrown");
+			"Expected: controller used to showcase what " + "happens when an exception is thrown");
+	}
+
+	@GetMapping("/appErr1")
+	public String triggerAppException1() {
+		triggerSomeError();
+		return "appErr1";
+	}
+
+	@GetMapping("/appErr2")
+	public String triggerAppException2() {
+		triggerSomeError();
+		return "appErr2";
+	}
+
+	protected void triggerSomeError() {
+		int randVal = 1 + rand.nextInt(4);
+		switch (randVal) {
+			case 1:
+				throw new AppException("type1: throwing app exception");
+				//break;
+			case 2:
+				throw new AppInnerException("type2: throwing app inner exception");
+				//break;
+			case 3:
+				exceptionFlavor.type3();
+				break;
+			case 4:
+				exceptionFlavor.type4();
+				break;
+		}
+	}
+
+	protected static class ExceptionFlavor {
+
+		protected void type3() {
+			throw new AppException("type3: inner class throwing app exception");
+		}
+
+		protected void type4() {
+			throw new AppInnerException("type4: inner class throwing inner exception");
+		}
+	}
+
+	protected static class AppInnerException extends RuntimeException {
+		public AppInnerException(String message) {
+			super(message);
+		}
 	}
 
 }

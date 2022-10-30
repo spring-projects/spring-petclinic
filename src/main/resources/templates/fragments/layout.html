@@ -66,6 +66,18 @@
             <span>Error</span>
           </li>
 
+          <li
+            th:replace="~{::menuItem ('/appErr1','error','trigger a AppException to see how it is handled','exclamation-triangle','AppError1')}">
+            <span class="fa exclamation-triangle" aria-hidden="true"></span>
+            <span>AppError1</span>
+          </li>
+
+          <li
+            th:replace="~{::menuItem ('/appErr2','error','trigger a AppException to see how it is handled','exclamation-triangle','AppError2')}">
+            <span class="fa exclamation-triangle" aria-hidden="true"></span>
+            <span>AppError2</span>
+          </li>
+
         </ul>
       </div>
     </div>
