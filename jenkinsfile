@@ -1,18 +1,26 @@
 pipeline {
-    agent {label 'java11'}
+    agent  { label 'java11' }
+    parameters {
+        choice(name: 'BRANCH_TO_BUILD', choices: ['new', 'main'], description: 'Branch to build')
+        string(name: 'MAVEN_GOAL', defaultValue: 'package', description: 'maven goal')
+
+    }
     stages {
         stage('vcs') {
-          steps {
-            git branch: 'main', url :'https://github.com/spring-projects/spring-petclinic.git'
-          }  
-        }
-        stage ('build') {
             steps {
-                sh '/usr/share/maven/bin/mvn package'
+                git branch: "${params.BRANCH_TO_BUILD}", url: 'https://github.com/neelamkannan/spring-petclinic.git'
+            }
+
+        }
+        stage('build') {
+            steps {
+                sh "/usr/share/maven/bin/mvn ${params.MAVEN_GOAL}"
             }
         }
-        stage ('archieve results') {
-            steps 'junit **/surefire-reports/*.xml'
+        stage('archive results') {
+            steps {
+                junit '**/surefire-reports/*.xml'
+            }
         }
     }
 }
