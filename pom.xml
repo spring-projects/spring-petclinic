@@ -111,6 +111,21 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>com.contrastsecurity</groupId>
+        <artifactId>contrast-maven-plugin</artifactId>
+        <version>2.13.2</version>
+        <configuration>
+          <username>${env.CONTRAST_USERNAME}</username>
+          <apiKey>${env.CONTRAST_API_KEY}</apiKey>
+          <serviceKey>${env.CONTRAST_SERVICE_KEY}</serviceKey>
+          <url>${env.CONTRAST_URL}</url>
+          <orgUuid>${env.CONTRAST_ORG_ID}</orgUuid>
+          <appName>${env.CONTRAST_APP_NAME}</appName>
+          <applicationSessionMetadata>commitHash=${env.CONTRAST_COMMIT_HASH},repository=${env.CONTRAST_REPOSITORY}</applicationSessionMetadata>
+          <minSeverity>${env.CONTRAST_MIN_SEVERITY}</minSeverity>
+      </configuration>       
+      </plugin>
+      <plugin>
         <groupId>io.spring.javaformat</groupId>
         <artifactId>spring-javaformat-maven-plugin</artifactId>
         <version>${spring-format.version}</version>
@@ -270,6 +285,31 @@
   </pluginRepositories>
 
   <profiles>
+    <profile>
+      <id>assess</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.contrastsecurity</groupId>
+            <artifactId>contrast-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>install</id>
+                <goals>
+                  <goal>install</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>verify</id>
+                <goals>
+                  <goal>verify</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>  
     <profile>
       <id>css</id>
       <build>

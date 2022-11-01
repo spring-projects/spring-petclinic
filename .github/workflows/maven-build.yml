@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ '8', '11', '17' ]
+        java: [ '11']
 
     steps:
       - uses: actions/checkout@v2
@@ -25,5 +25,17 @@ jobs:
           java-version: ${{matrix.java}}
           distribution: 'adopt'
           cache: maven
+      - name: Verify with Contrast
+        run: ./mvnw verify -Passess
+        env:
+          CONTRAST_USERNAME: ${{ secrets.CONTRAST_USERNAME }}
+          CONTRAST_API_KEY: ${{ secrets.CONTRAST_API_KEY }}
+          CONTRAST_SERVICE_KEY: ${{ secrets.CONTRAST_SERVICE_KEY }}
+          CONTRAST_URL: ${{ secrets.CONTRAST_URL }}
+          CONTRAST_ORG_ID: ${{ secrets.CONTRAST_ORG_ID }}
+          CONTRAST_APP_NAME: ${{ env.GITHUB_REPOSITORY }} # repo_owner/repo_name
+          CONTRAST_COMMIT_HASH: ${{ env.GITHUB_SHA }}
+          CONTRAST_REPOSITORY: "${{ env.GITHUB_SERVER_URL }}/${{ env.GITHUB_REPOSITORY }}"
+          CONTRAST_MIN_SEVERITY: Critical
       - name: Build with Maven Wrapper
         run: ./mvnw -B package
