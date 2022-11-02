@@ -15,6 +15,10 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import io.opentelemetry.api.OpenTelemetry;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.Tracer;
+import io.opentelemetry.context.Scope;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -33,8 +37,31 @@ public class PetValidator implements Validator {
 
 	private static final String REQUIRED = "required";
 
+	private final OpenTelemetry openTelemetry;
+	private final Tracer otelTracer;
+
+	public PetValidator(OpenTelemetry openTelemetry) {
+		this.openTelemetry = openTelemetry;
+
+		this.otelTracer = openTelemetry.getTracer("PetValidatorTracer");
+		//this.otelTracer = openTelemetry.getTracer(getClass().getSimpleName());
+	}
+
 	@Override
 	public void validate(Object obj, Errors errors) {
+		Span span = otelTracer.spanBuilder("pet validate").startSpan();
+
+		// Make the span the current span
+		try (Scope ss = span.makeCurrent()) {
+			innerValidate(obj, errors);
+		} catch (Exception e) {
+			span.recordException(e);
+		} finally {
+			span.end();
+		}
+	}
+
+	private void innerValidate(Object obj, Errors errors) {
 		Pet pet = (Pet) obj;
 		String name = pet.getName();
 		// name validation
