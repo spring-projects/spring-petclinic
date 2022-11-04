@@ -1,3 +1,9 @@
+keys/*
+/keys
+
+/terraform/.terraform
+/terraform/.terraform.*
+
 target/*
 bin/*
 build/*
