@@ -1,0 +1,1 @@
+# Empty cluster with two slave nodes and one master node, maybe as instance-small or instance-medium ones
