@@ -3,6 +3,8 @@ keys/*
 
 /terraform/.terraform
 /terraform/.terraform.*
+/terraform/*.tfstate
+/terraform/*.tfstate.*
 
 target/*
 bin/*
