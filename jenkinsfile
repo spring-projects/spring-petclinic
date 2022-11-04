@@ -1,1 +1,32 @@
-this is for practice
+pipeline {
+    agent any
+    stages{
+        stage ('vcs'){
+            steps{
+                git url: 'https://github.com/spring-projects/spring-petclinic.git',
+               branch: 'main'
+               }
+            }
+            stage ('build'){
+                steps {
+                    sh 'mvn package'
+                }
+            }
+            stage("sonarqube test") {
+            
+            steps {
+              withSonarQubeEnv('sonarqube') {
+                sh 'mvn package sonar:sonar'
+              }
+            }
+          }
+        stage ('artifacts'){
+            steps{
+                archive includes: '**/tagret/*.jar'
+            }
+        }
+    }
+}   
+    
+    
+
