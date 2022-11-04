@@ -1,5 +1,5 @@
 resource "google_compute_global_address" "private_ip_address" {
-  depends_on = [google_project_service.api_2_cloudsql_admin]
+  depends_on = [google_project_service.api_7_cloudsql_admin]
 
   # address       = var.sql_private_ip
   name          = "terr-sql-private-ip-address"
@@ -9,7 +9,7 @@ resource "google_compute_global_address" "private_ip_address" {
   network       = google_compute_network.terr_vpc_1.id
 }
 resource "google_service_networking_connection" "private_vpc_connection" {
-  depends_on = [google_project_service.api_2_cloudsql_admin]
+  depends_on = [google_project_service.api_7_cloudsql_admin]
 
   network                 = google_compute_network.terr_vpc_1.id
   service                 = "servicenetworking.googleapis.com"

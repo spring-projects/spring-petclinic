@@ -45,4 +45,10 @@ resource "google_project_service" "api_7_cloudsql_admin" {
   disable_dependent_services = true
 } 
 
+resource "google_project_service" "api_8_container" {
+  depends_on = [google_project_service.api_7_cloudsql_admin]
+
+  service = "container.googleapis.com"
+  disable_dependent_services = true
+} 
 
