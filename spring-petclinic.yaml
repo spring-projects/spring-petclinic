@@ -1,0 +1,25 @@
+---
+- name: deploy the spring pet clinic
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install latest version of "openjdk-11-jdk" 
+      ansible.builtin.apt:
+        name: openjdk-11-jdk
+        update_cache: yes
+        state: latest
+    - name: jar file download from JFrog
+      ansible.builtin.get_url:
+        url: https://artirepo.jfrog.io/artifactory/myproject-libs-release-local/org/springframework/samples/spring-petclinic/2.7.3/spring-petclinic-2.7.3.jar
+        dest: /home/dev
+        url_username: gopivurata1992@gmail.com
+        url_password: AKCp8nH4iG96jfNJPHkx3tVxSbdceU4t1WCyupSG9Acdp2uBvPaZw8gStuFvPv34nAxT5rvFL
+    - name: Copy the service file 
+      ansible.builtin.copy:
+        src: /home/dev/root/workspace/ansible-playbook-spc/spring-petclinic.service
+        dest: /etc/systemd/system/spring-petclinic.service
+    - name: Restart spc service file
+      ansible.builtin.systemd:
+        state: restarted
+        daemon_reload: yes
+        name: spring-petclinic.service  
