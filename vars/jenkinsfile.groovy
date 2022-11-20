@@ -1,22 +1,49 @@
 def call(){
     pipeline {
-    agent  { label 'NODE' }
+    agent  { label 'node' }
+    parameters { choice(name: 'CHOICES', choices: ['main', 'new_branch', 'spring_master'], description: 'using parameters') }
+    triggers { pollSCM('* * * * *') }
     stages {
         stage('git') {
             steps {
-                git branch: "main", 
+                git branch: "${params.CHOICES}", 
                 url: 'https://github.com/gopivurata/spring-petclinic.git'
             }
 
         }
-        stage('build') {
+        stage('JFROG configuration') {
             steps {
-                sh "/usr/share/maven/bin/mvn package"
+                rtMavenDeployer (
+                    id: 'MAVEN_DEPLOYER',
+                    serverId: 'JFROG_ID',
+                    releaseRepo: 'jfrog-libs-release',
+                    snapshotRepo: 'jfrog-libs-snapshot'
+                )
             }
         }
-        stage('archive results') {
+        stage('maven build') {
             steps {
-                junit '**/surefire-reports/*.xml'
+                rtMavenRun (
+                    tool: 'MVN', // Tool name from Jenkins configuration
+                    pom: 'pom.xml',
+                    goals: 'clean install',
+                    deployerId: "MAVEN_DEPLOYER"
+                    
+                )
+            }
+        }
+         stage('SonarQube') {
+            steps {
+                withSonarQubeEnv('SONAR_Q') {
+                    sh script: 'mvn clean package sonar:sonar'
+                }
+            }
+        }
+        stage ('publish build info') {
+            steps {
+                rtPublishBuildInfo (
+                    serverId: "JFROG_ID"
+                )
             }
         }
     }
