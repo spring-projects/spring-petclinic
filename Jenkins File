@@ -1,0 +1,33 @@
+pipeline {
+    agent { label 'LinuxAgent' }
+    environment {
+        dockerhub_credentials = credentials('dockerhub')
+        version = '2.7.3'
+    }
+
+    stages {
+        stage('Get Git source code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/smaguilarcx/spring-petclinic'
+            }
+        }
+         stage('Building image') {
+              steps{
+                script {
+                    sh 'mvn -N wrapper:wrapper'
+                    sh './mvnw spring-boot:build-image'
+                    sh 'docker tag  spring-petclinic:$version smaguilar/spring-petclinic:$version'
+                }
+              }
+            }        
+        stage('upload DockerHub ') {
+            steps {
+                script{
+                    sh 'echo $dockerhub_credentials_PSW | docker login -u $dockerhub_credentials_USR --password-stdin'
+                    sh 'docker push smaguilar/spring-petclinic:$version'
+                   
+                }
+            }
+        }
+    }
+}
