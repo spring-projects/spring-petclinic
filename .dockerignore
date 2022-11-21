@@ -1,0 +1,6 @@
+Dockerfile
+.git*
+.gitignore
+.devcontainer
+mvnw*
+.mvn
