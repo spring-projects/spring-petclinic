@@ -107,5 +107,3 @@ def setBuildStatus(String message, String state, String sha){
 //     }
 // }
 
-
-
