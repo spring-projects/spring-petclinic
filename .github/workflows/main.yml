@@ -4,6 +4,8 @@ on:
   push:
     tags:
       ['QA','PR']
+    branches:
+      - master
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
