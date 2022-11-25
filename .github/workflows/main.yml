@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - '**'
+      - 'spring-petclinic/Jenkinsfile_main'
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
