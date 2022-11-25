@@ -4,8 +4,8 @@ on:
   push:
     branches: 
       - 'master'
-    paths:
-      - 'spring-petclinic/Jenkinsfile'
+    #paths:
+      #- 'spring-petclinic/Jenkinsfile'
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
