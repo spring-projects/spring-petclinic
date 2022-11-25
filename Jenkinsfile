@@ -1,17 +1,16 @@
 pipeline {
   
-  
   agent any
 
-//   triggers {
-//     GenericTrigger(
-//      genericVariables: [
-//       [key: 'all', value: '$..*']
-//     //   [key: 'review_state', value: '$.review.state'],
-//     //   [key: 'pull_request_state', value: '$.pull_request.state']
-//      ]
-//     )
-//   }
+  triggers {
+    GenericTrigger(
+     genericVariables: [
+      [key: 'all', value: '$..*']
+    //   [key: 'review_state', value: '$.review.state'],
+    //   [key: 'pull_request_state', value: '$.pull_request.state']
+     ]
+    )
+  }
 
   parameters{
     string(defaultValue: '', description: '', name: 'GIT_COMMIT')
