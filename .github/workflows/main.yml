@@ -5,7 +5,7 @@ on:
     branches: 
       - 'master'
     paths:
-      - 'spring-petclinic/Jenkinsfile_main'
+      - 'spring-petclinic/Jenkinsfile'
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
