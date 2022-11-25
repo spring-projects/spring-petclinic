@@ -6,7 +6,7 @@ on:
     #tags:
       #- '**'
     paths:
-      - 'spring-petclinic/Jenkinsfile_main'
+      - '**/Jenkinsfile_main'
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
