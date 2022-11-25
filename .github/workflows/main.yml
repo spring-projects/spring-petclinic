@@ -5,7 +5,7 @@ on:
     branches: 
       - 'master'
     paths:
-      - '**/Jenkinsfile_main'
+      - 'Jenkinsfile_main'
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
