@@ -2,10 +2,12 @@ name: GitHub Actions Demo
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on:
   push:
+    tags:
+      - '**'
     #branches: 
       #- 'master'
-    paths:
-      - 'spring-petclinic/Jenkinsfile'
+    #paths:
+      #- 'spring-petclinic/Jenkinsfile'
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
