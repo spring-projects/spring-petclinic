@@ -4,7 +4,8 @@ on:
   push:
     tags:
       - '**'
-    paths: ['spring-petclinic/Jenkinsfile_main']
+    paths:
+      - 'spring-petclinic/Jenkinsfile_main'
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
