@@ -5,7 +5,7 @@ on:
     branches: 
       - 'master'
     tags:
-      - '**'
+      - '*'
     #paths:
       #- 'spring-petclinic/Jenkinsfile'
 jobs:
