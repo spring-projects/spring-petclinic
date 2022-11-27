@@ -1,5 +1,5 @@
 plugins {
-  id 'org.springframework.boot' version '2.7.5'
+  id 'org.springframework.boot' version '2.7.6'
   id 'io.spring.dependency-management' version '1.1.0'
   id 'java'
 }
@@ -7,12 +7,12 @@ plugins {
 apply plugin: 'java'
 
 group = 'org.springframework.samples'
-version = '2.7.5-digma'
+version = '2.7.6-digma'
 sourceCompatibility = '11'
 
-def OPENTELEMETRY_VERSION = '1.19.0'
-def OPENTELEMETRY_ALPHA_VERSION = '1.19.2-alpha'
-def DIGMA_INSTR_VERSION = '0.2.16'
+def OPENTELEMETRY_VERSION = '1.20.1'
+def OPENTELEMETRY_ALPHA_VERSION = '1.20.1-alpha'
+def DIGMA_INSTR_VERSION = '0.4.22'
 
 repositories {
   mavenLocal()
@@ -64,7 +64,7 @@ dependencies {
 //    implementation("org.springframework:spring-webflux:${SPRING_VERSION}")
 
     //Enables instrumentation using @WithSpan
-    implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations:${OPENTELEMETRY_ALPHA_VERSION}")
+    implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations:${OPENTELEMETRY_VERSION}")
 }
 
 tasks.named('test') {
