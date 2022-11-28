@@ -16,8 +16,8 @@ jobs:
           git config user.email "stanleyikegwuonu@gmail.com"
           git status
           git pull
-          #echo $(git show HEAD)
-          #echo $(git show 'QA')
+          git show HEAD
+          git show QA
           echo -e "\n Deleting previous QA tag"
           git log --pretty=online QA...HEAD > log.txt
           git tag -d QA
