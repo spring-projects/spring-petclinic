@@ -23,3 +23,17 @@ jobs:
         git status
         git tag
         git describe
+        echo -e "\n Deleting previous QA tag"
+        git log --pretty=online QA...HEAD > log.txt
+        git tag -d QA
+        echo -e "\n DONE"
+        echo -e "\n Push tags to master"
+        git push origin :refs/tags/QA
+        echo -e "\n DONE"
+        echo -e "\n Creating new QA tag to HEAD"
+        git tag -a QA -F log.txt
+        echo -e "\n DONE"
+        echo -e "\n Push tags to master"
+        git rev-list -n 1 QA
+        echo -e "\n DONE"
+        echo -e "\n Job Completed"
