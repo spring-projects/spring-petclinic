@@ -20,8 +20,6 @@ jobs:
         git --version
         git config user.name "jstan-isch"
         git config user.email "stanleyikegwuonu@gmail.com"
-        git pull
-        git status
         git tag
         git describe
         echo -e "\n Deleting previous QA tag"
