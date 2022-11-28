@@ -2,7 +2,7 @@ name: trigger the next pipeline
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   Tag-commit:
