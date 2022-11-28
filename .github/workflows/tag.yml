@@ -11,6 +11,10 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
       - run: |
+          git --version
+          git config user.name "jstan-isch"
+          git config user.email "stanleyikegwuonu@gmail.com"
+          git status
           git pull
           #echo $(git show HEAD)
           #echo $(git show 'QA')
