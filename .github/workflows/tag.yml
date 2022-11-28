@@ -13,7 +13,7 @@ jobs:
       - run: |
           git pull
           echo $(git show HEAD)
-          echo $(git show QA)
+          echo $(git show 'QA')
           echo -e "\n Deleting previous QA tag"
           git log --pretty=online QA...HEAD > log.txt
           git tag -d QA
