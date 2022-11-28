@@ -22,8 +22,8 @@ jobs:
         git config user.email "stanleyikegwuonu@gmail.com"
         git status
         git tag
-        #git describe
-        #echo -e "\n Deleting previous QA tag"
+        git describe
+        echo -e "\n Deleting previous QA tag"
         #git log QA...HEAD > log.txt
         #git tag -d QA
         #echo -e "\n DONE"
