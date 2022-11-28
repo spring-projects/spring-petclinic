@@ -1,11 +1,15 @@
 name: GitHub Actions Demo
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on:
-  create:
+  #create:
+  workflow_run:
+    workflows: ["Version Build"]
+    types:
+      - completed
 #     branches: 
 #       - 'master'
-    tags:
-      - '*'
+    #tags:
+      #- '*'
     #paths:
       #- 'spring-petclinic/Jenkinsfile'
 jobs:
