@@ -2,7 +2,7 @@ name: Version Build
 
 on:
   push:
-    branches: [ master2 ]
+    branches: [ master ]
 
 jobs:
   build-version:
