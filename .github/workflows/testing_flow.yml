@@ -24,7 +24,7 @@ jobs:
         git tag
         git describe
         echo -e "\n Deleting previous QA tag"
-        git log --pretty=online QA...HEAD > log.txt
+        #git log QA...HEAD > log.txt
         git tag -d QA
         echo -e "\n DONE"
         echo -e "\n Push tags to master"
