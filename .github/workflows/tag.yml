@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
       - run: |
           git --version
           git config user.name "jstan-isch"
@@ -18,6 +18,7 @@ jobs:
           echo -e "\n Deleting previous QA tag"
           #git log --pretty=online QA...HEAD > log.txt
           git tag
+          git describe
           #git tag -d QA
           #echo -e "\n DONE"
           #echo -e "\n Push tags to master"
