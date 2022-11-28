@@ -87,19 +87,5 @@ def setBuildStatus(String message, String state, String sha){
     ])
 }
 
-// def setRunContext(){
-//   if ("${review_state_path_exists}"){
-//         return true
-//     } else {
-//         return false
-//     }
-// }
 
-// def setRunContext(){
-//     def jsonSlurper = new JsonSlurper()
-//     json = jsonSlurper.parse(new File('data to pass in'))
-//     if (json.has("${pull_request_state}" && "${review_state}")){
-//         String get_state = json.getString("${pull_request_state}" && "${review_state}")
-//     }
-// }
 
