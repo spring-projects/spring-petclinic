@@ -65,6 +65,9 @@ dependencies {
 
     //Enables instrumentation using @WithSpan
     implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations:${OPENTELEMETRY_VERSION}")
+
+    // used for client
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
 }
 
 tasks.named('test') {
