@@ -27,12 +27,16 @@ public class ClientTester {
 			myClient.execute("/appErr2", false);
 		}
 
-		for (int ix = 1; ix <= 6; ix++) {
+		for (int ix = 1; ix <= 2; ix++) {
 			myClient.execute("/");
 		}
 
 		for (int ix = 1; ix <= 7; ix++) {
 			myClient.execute("/owners/find");
+		}
+		// few of those might return error, since not all ids exists
+		for (int ownerId = 1; ownerId <= 20; ownerId++) {
+			myClient.execute("/owners/" + ownerId, false);
 		}
 		for (int ix = 1; ix <= 6; ix++) {
 			myClient.execute("/owners?lastName=Davis");
@@ -40,6 +44,14 @@ public class ClientTester {
 		for (int ix = 1; ix <= 6; ix++) {
 			myClient.execute("/owners?lastName=Spring");
 		}
+		// using existing owners
+		for (int ownerId = 2; ownerId <= 6; ownerId++) {
+			// calling edit (getting the form)
+			myClient.execute(String.format("owners/%d/edit", ownerId));
+			// calling add new pet (getting the form)
+			myClient.execute(String.format("owners/%d/pets/new", ownerId));
+		}
+
 
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 			try {
