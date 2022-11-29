@@ -14,7 +14,41 @@ public class ClientTester {
 	public static void main(String[] args) {
 		MyClient myClient = new MyClient(BASE_APP_URL);
 
-		myClient.execute("/vets.html");
+		for (int ix = 1; ix <= 5; ix++) {
+			myClient.execute("/vets.html");
+		}
+		for (int ix = 1; ix <= 2; ix++) {
+			myClient.execute("/oups", false);
+		}
+		for (int ix = 1; ix <= 3; ix++) {
+			myClient.execute("/appErr1", false);
+		}
+		for (int ix = 1; ix <= 4; ix++) {
+			myClient.execute("/appErr2", false);
+		}
+
+		for (int ix = 1; ix <= 6; ix++) {
+			myClient.execute("/");
+		}
+
+		for (int ix = 1; ix <= 7; ix++) {
+			myClient.execute("/owners/find");
+		}
+		for (int ix = 1; ix <= 6; ix++) {
+			myClient.execute("/owners?lastName=Davis");
+		}
+		for (int ix = 1; ix <= 6; ix++) {
+			myClient.execute("/owners?lastName=Spring");
+		}
+
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+			try {
+				System.out.println("Shutting down...");
+				Thread.sleep(567);
+			} catch (InterruptedException e) {
+				Thread.interrupted();
+			}
+		}));
 	}
 
 	static class MyClient {
