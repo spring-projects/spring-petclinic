@@ -65,8 +65,18 @@ dependencies {
 
     //Enables instrumentation using @WithSpan
     implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations:${OPENTELEMETRY_VERSION}")
+
+    // used for ClientTester
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
 }
 
 tasks.named('test') {
   useJUnitPlatform()
+}
+
+task runClientTester(type: JavaExec) {
+    group = "Execution"
+    description = "Run Client Tester"
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'petclinic.client.ClientTester'
 }
