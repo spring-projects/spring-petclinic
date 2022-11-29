@@ -15,10 +15,6 @@
  */
 package org.springframework.samples.petclinic.owner;
 
-import java.util.List;
-import java.util.Map;
-import javax.validation.Valid;
-
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,6 +30,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Juergen Hoeller
@@ -65,6 +65,8 @@ class OwnerController {
 
 	@GetMapping("/owners/new")
 	public String initCreationForm(Map<String, Object> model) {
+		doSomeWork(222); // add delay on purpose
+		lessWork();
 		Owner owner = new Owner();
 		model.put("owner", owner);
 		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
@@ -158,6 +160,19 @@ class OwnerController {
 		Owner owner = this.owners.findById(ownerId);
 		mav.addObject(owner);
 		return mav;
+	}
+
+	@WithSpan
+	private void doSomeWork(long millis) {
+		try {
+			Thread.sleep(millis);
+		} catch (InterruptedException e) {
+			Thread.interrupted();
+		}
+	}
+
+	@WithSpan
+	private void lessWork() {
 	}
 
 }

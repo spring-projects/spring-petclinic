@@ -48,6 +48,12 @@ public class ClientTester {
 		for (int ix = 1; ix <= 6; ix++) {
 			myClient.execute("/owners?lastName=Spring");
 		}
+
+		// calling new owner (getting the form) - which has a delay
+		for (int ix = 1; ix <= 9; ix++) {
+			myClient.execute("/owners/new");
+		}
+
 		// using existing owners
 		for (int ownerId = 2; ownerId <= 6; ownerId++) {
 			// calling edit (getting the form)
