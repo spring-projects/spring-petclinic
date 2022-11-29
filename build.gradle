@@ -73,3 +73,10 @@ dependencies {
 tasks.named('test') {
   useJUnitPlatform()
 }
+
+task runClientTester(type: JavaExec) {
+    group = "Execution"
+    description = "Run Client Tester"
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'petclinic.client.ClientTester'
+}

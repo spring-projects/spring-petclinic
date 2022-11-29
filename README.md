@@ -29,7 +29,15 @@ After cloning this project to your machine, the following command will build and
 ./gradlew bootRun
 ```
 
-### Use the application
+### Use the application automatically with ClientTester
+
+Run the following command in order to run ClientTester, which will access the application in various ways
+
+```shell
+./gradlew runClientTester
+```
+
+### Use the application Manually
 
 Browse to [Local PetClinic](http://localhost:9876/) and use the application freely.
 
