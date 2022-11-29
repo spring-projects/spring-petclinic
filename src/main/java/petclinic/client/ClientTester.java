@@ -4,14 +4,18 @@ import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
 public class ClientTester {
 
+	private static final Logger logger = LoggerFactory.getLogger(ClientTester.class);
 	private static final String BASE_APP_URL = "http://localhost:9876";
 
 	public static void main(String[] args) {
+		logger.info("Starting...");
 		MyClient myClient = new MyClient(BASE_APP_URL);
 
 		for (int ix = 1; ix <= 5; ix++) {
@@ -55,7 +59,7 @@ public class ClientTester {
 
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 			try {
-				System.out.println("Shutting down...");
+				logger.info("Shutting down...");
 				Thread.sleep(567);
 			} catch (InterruptedException e) {
 				Thread.interrupted();
