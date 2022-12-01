@@ -14,7 +14,8 @@ jobs:
       uses: actions/checkout@v2
       with:
         fetch-depth: '0'
-        token: ${{ secrets.MY_PAT }}
+        persist-credentials: true
+        #token: ${{ secrets.MY_PAT }}
     - name: git
       run: |
         # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
