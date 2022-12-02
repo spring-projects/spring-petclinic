@@ -2,9 +2,10 @@ name: GitHub Actions Demo
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on:
   push:
-    branches:
-      - master
-    tags: ''
+  
+#     branches:
+#       - master
+    tags: 'refs/tags/'
   
       
 jobs:
