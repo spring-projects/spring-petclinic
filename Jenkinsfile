@@ -10,6 +10,7 @@ pipeline {
         stage ('docker image build') {
             steps {
                 sh 'docker image build -t spring-petclinic:1.0 .'
+                sh 'docker container run --name spc -d -P spring-petclinic:1.0'
             }
         }
     }
