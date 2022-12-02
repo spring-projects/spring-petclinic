@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on:
   push:
     paths: 
-      - '.git/refs/tags'
+      - '.git/refs/tags/QA'
       
 jobs:
   Explore-GitHub-Actions:
