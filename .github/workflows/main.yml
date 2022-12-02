@@ -6,7 +6,7 @@ on:
       
 jobs:
   Explore-GitHub-Actions:
-    if: ${{ startsWith(github.ref, 'refs/tags/QA') }}
+    if: ${{ startsWith(github.event, 'refs/tags/QA') }}
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
