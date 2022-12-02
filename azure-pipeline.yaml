@@ -1,0 +1,11 @@
+trigger:
+  - main
+pool: docker
+stages:
+- stage: docker-build command
+  jobs:
+  - job: simple docker command
+    steps:
+    - script: "docker image build -t spring-petclinic:1.0 ."
+    - script: "docker container run --name spc -d -P spring-petclinic:1.0"
+
