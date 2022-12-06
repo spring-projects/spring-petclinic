@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v3  
       - name: Build
         run: echo "Building..."
-             echo ::set-outputname=exit_code::$?
+             echo ::set-output name=exit_code::$?
              echo "Exited with $?"
   
   Test:
