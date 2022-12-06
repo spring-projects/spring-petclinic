@@ -19,7 +19,7 @@ jobs:
   Test:
     runs-on: ubuntu_latest
     environment:
-      name: Build
+      name: Test
     steps:
       - name: Test
         run: echo "Testing..."
@@ -27,7 +27,7 @@ jobs:
   Deploy:
     runs-on: ubuntu_latest
     environment:
-      name: Build
+      name: Deploy
 
     steps:  
       - name: Deploy
