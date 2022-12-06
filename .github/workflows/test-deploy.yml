@@ -7,7 +7,7 @@ on:
       
 jobs:
   Build:
-    runs-on: ubuntu_latest
+    runs-on: ubuntu-latest
     environment:
       name: Build
     steps:
@@ -17,7 +17,7 @@ jobs:
         run: echo "Building..."
   
   Test:
-    runs-on: ubuntu_latest
+    runs-on: ubuntu-latest
     environment:
       name: Test
     steps:
@@ -25,7 +25,7 @@ jobs:
         run: echo "Testing..."
   
   Deploy:
-    runs-on: ubuntu_latest
+    runs-on: ubuntu-latest
     environment:
       name: Deploy
 
