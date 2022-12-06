@@ -30,6 +30,7 @@ jobs:
     needs: [Test]
     environment:
       name: Deploy
+      url: https://github.com/jstan-isch/spring-petclinic
     steps:  
       - name: Deploy
         run: echo "Deploying..."
