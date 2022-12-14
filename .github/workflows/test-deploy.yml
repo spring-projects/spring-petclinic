@@ -12,5 +12,5 @@ jobs:
       - name: github-context
         run: echo '${{ toJSON(github) }}'
       - name: get-the-previous-commit
-        run: echo $(git rev-list -n 1)
+        run: echo $(git rev-list -n 1 master)
     
