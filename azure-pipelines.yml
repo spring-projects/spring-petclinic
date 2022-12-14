@@ -6,14 +6,29 @@
 trigger:
 - main
 
-pool:
-  name: myagentpool
+variables:
+  imageRepo: pet
+  tag: '$(Build.BuildId)'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run simple script'
+- stage: Build
+  displayName: Build image
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      name: myagentpool
+    steps:
+    - task: Docker@2
+      displayName: Build an image
+      inputs:
+        containerRegistry: 'viktorponomarov'
+        repository: '$(imageRepo)'
+        command: 'buildAndPush'
+        Dockerfile: 'Docker/Dockerfile'
+        tags: |
+          $(tag)
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a simple multi-line script'
+
+
+
