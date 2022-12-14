@@ -14,7 +14,7 @@ jobs:
       - name: github-context
         run: echo '${{ toJSON(github) }}'
       - name: get-the-current-commit
-        run: echo {{ toJSON(github.event.after) }}
+        run: echo ${{ github.event.after }}
       - name: get-the-previous-commit
-        run: echo {{ toJSON(github.event.before) }}
+        run: echo '${{ toJSON(github.event.before) }}'
     
