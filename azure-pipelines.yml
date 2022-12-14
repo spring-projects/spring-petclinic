@@ -10,7 +10,7 @@ variables:
   imageRepo: pet
   tag: '$(Build.BuildId)'
 
-steps:
+stages:
 - stage: Build
   displayName: Build image
   jobs:
