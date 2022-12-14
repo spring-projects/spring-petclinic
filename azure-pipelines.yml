@@ -34,7 +34,7 @@ stages:
       displayName: Build an image
       inputs:
         containerRegistry: 'Cred to Docker Hub'
-        repository: 'pet'
+        repository: 'viktorponomarov/pet'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
         tags: '$(Build.BuildId)'
