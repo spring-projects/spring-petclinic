@@ -23,7 +23,7 @@ stages:
       - script: |
           pwd
           w   
-          ll
+          ls -l
 - stage: Build
   displayName: Build image
   jobs:
