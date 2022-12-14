@@ -1,2 +1,2 @@
-FROM busybox:latest
+FROM viktorponomarov/pett:latest
 RUN echo Hello
