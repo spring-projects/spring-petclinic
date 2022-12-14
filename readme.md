@@ -1,3 +1,9 @@
+# OSS on Azure using Java + Spring
+
+This is used for the OSS on Azure using Java + Spring / App Modernisation sprint.
+
+Original README below:
+
 # Spring PetClinic Sample Application [![Build Status](https://github.com/spring-projects/spring-petclinic/actions/workflows/maven-build.yml/badge.svg)](https://github.com/spring-projects/spring-petclinic/actions/workflows/maven-build.yml)
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/spring-projects/spring-petclinic)
