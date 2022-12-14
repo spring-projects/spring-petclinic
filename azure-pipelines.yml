@@ -10,7 +10,7 @@ pool:
   name: myagentpool
       
 variables:
-  imageRepo: pet
+  imageRepo: 'viktorponomarov/pet'
   tag: '$(Build.BuildId)'
 
 stages:
