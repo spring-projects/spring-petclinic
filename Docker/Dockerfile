@@ -1,2 +1,2 @@
-FROM viktorponomarov/pett:latest
+FROM viktorponomarov/pet:latest
 RUN echo Hello
