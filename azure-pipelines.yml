@@ -21,9 +21,9 @@ stages:
     displayName: Get info about system
     steps:
       - script: |
-          whoami
-          w
-          users                    
+          pwd
+          w   
+          ll
 - stage: Build
   displayName: Build image
   jobs:
@@ -33,7 +33,7 @@ stages:
     - task: Docker@2
       displayName: Build an image
       inputs:
-        containerRegistry: 'viktorponomarov'
+        containerRegistry: 'Cred to Docker Hub'
         repository: '$(imageRepo)'
         command: 'buildAndPush'
         Dockerfile: 'Docker/Dockerfile'
