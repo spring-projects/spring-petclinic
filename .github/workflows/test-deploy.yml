@@ -14,7 +14,7 @@ jobs:
       - name: github-context
         run: echo '${{ toJSON(github) }}'
       - name: get-the-current-commit
-        run: "echo previous commit: $(git rev-list -n2 master | tail -n1)"
+        run: "echo previous commit: $(git rev-list -n2 master)"
       - name: get-the-previous-commit
         run: "echo current commit: $(git rev-list -n1 master)"
     
