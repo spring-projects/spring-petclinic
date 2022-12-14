@@ -6,33 +6,9 @@ on:
       - master
       
 jobs:
-  Build:
+  see-the-contexts:
     runs-on: ubuntu-latest
-    environment:
-      name: Build
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3  
-      - name: Build
-        run: echo "Building..."
-             echo ::set-output name=exit_code::$?
-             echo "Exited with $?"
-  
-  Test:
-    runs-on: ubuntu-latest
-    needs: [Build]
-    environment:
-      name: Test
-    steps:
-      - name: Test
-        run: echo "Testing..."
-  
-  Deploy:
-    runs-on: ubuntu-latest
-    needs: [Test]
-    environment:
-      name: Deploy
-      url: https://github.com/jstan-isch/spring-petclinic
-    steps:  
-      - name: Deploy
-        run: echo "Deploying..."
+      - name: github-context
+        run: echo '${{ toJSON(github) }}'
+    
