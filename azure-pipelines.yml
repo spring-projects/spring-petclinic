@@ -19,6 +19,9 @@ stages:
     - script: |
         set -x
         echo First line
+        echo Message: $(Build.SourceVersionMessage)
+        echo BOOL: contains(variables['Build.SourceVersionMessage'], 'ready to build')
+        echo BOOL: $(contains(variables['Build.SourceVersionMessage'], 'ready to build'))
 - stage: Info
   displayName: Collect information
   jobs:
