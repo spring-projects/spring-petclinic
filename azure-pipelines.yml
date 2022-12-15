@@ -38,6 +38,12 @@ stages:
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
         tags: '$(tag)'
+    - task: Bash@3
+      displayName: Save Docker Image
+      inputs:
+        targetType: 'inline'
+        script: |
+          docker save $(imageRepo):$(tag) -o $(Build.ArtifactStagingDirectory)/image:$(tag).tar
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Artifact: drop'
       condition: succeeded()       
