@@ -15,6 +15,9 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Collection;
 import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -37,6 +40,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/owners/{ownerId}")
 class PetController {
+
+	static Logger LOGGER = LoggerFactory.getLogger(PetController.class);
 
 	private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = "pets/createOrUpdatePetForm";
 
@@ -77,6 +82,7 @@ class PetController {
 		Pet pet = new Pet();
 		owner.addPet(pet);
 		model.put("pet", pet);
+		LOGGER.info("creating a new pet");
 		return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 	}
 
@@ -93,6 +99,7 @@ class PetController {
 		}
 
 		this.owners.save(owner);
+		LOGGER.info("new pet created {}", pet);
 		return "redirect:/owners/{ownerId}";
 	}
 
