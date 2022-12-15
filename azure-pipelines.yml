@@ -14,12 +14,14 @@ variables:
 
 stages:
 - stage: Info
+  condition: contains(variables['Build.SourceVersionMessage'], 'ready to build')
   displayName: Collect information
   jobs:
   - job: GetInfo
     displayName: Get info about system
     steps:
       - script: |
+          echo VAR: variables['Build.SourceVersionMessage']
           pwd
           w   
           ls -l
