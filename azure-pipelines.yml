@@ -52,4 +52,5 @@ stages:
 #           docker save $(imageRepo):$(tag) -o $(Build.ArtifactStagingDirectory)/petclinic$(tag).tar
 #     - task: PublishBuildArtifacts@1
 #       displayName: 'Publish Artifact'
-#       condition: succeeded()       
+#       condition: succeeded()      
+
