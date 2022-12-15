@@ -27,6 +27,7 @@ stages:
     displayName: Get info about system
     steps:
       - script: |
+          echo start script
           pwd
           w   
           ls -l
