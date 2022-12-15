@@ -1,0 +1,60 @@
+trigger: 
+  branches:
+    include: 
+    - main*
+pool:
+  name: myagentpool
+      
+variables:
+  imageRepo: 'viktorponomarov/pet'
+  tag: '$(Build.BuildId)'
+
+stages:
+- stage: Test
+  displayName: Display test messages
+  jobs:
+  - job: Test
+    displayName: Test
+    steps:
+    - script: |
+        set -x
+        echo First line
+        echo Message: $(Build.SourceVersionMessage)
+        echo BOOL: contains(variables['Build.SourceVersionMessage'], 'ready to build')
+        echo BOOL: $(contains(variables['Build.SourceVersionMessage'], 'ready to build'))
+- stage: Info
+  displayName: Collect information
+  jobs:
+  - job: GetInfo
+    condition: contains(variables['Build.SourceVersionMessage'], 'ready to build')
+    displayName: Get info about system
+    steps:
+      - script: |
+          echo start script
+          pwd
+          w   
+          ls -l
+# - stage: Build
+#   displayName: Build image
+#   jobs:
+#   - job: Build
+#     displayName: Build
+#     steps:
+#     - task: Docker@2
+#       displayName: Build an image
+#       inputs:
+#         containerRegistry: 'Cred to Docker Hub'
+#         repository: '$(imageRepo)'
+#         command: 'buildAndPush'
+#         Dockerfile: '**/Dockerfile'
+#         tags: '$(tag)'
+#     - task: Bash@3
+#       displayName: Save Docker Image
+#       inputs:
+#         targetType: 'inline'
+#         script: |
+#           docker save $(imageRepo):$(tag) -o $(Build.ArtifactStagingDirectory)/petclinic$(tag).tar
+#     - task: PublishBuildArtifacts@1
+#       displayName: 'Publish Artifact'
+#       condition: succeeded()      
+

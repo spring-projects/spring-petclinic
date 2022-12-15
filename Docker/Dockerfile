@@ -1,0 +1,2 @@
+FROM viktorponomarov/pet:latest
+
