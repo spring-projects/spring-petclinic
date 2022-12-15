@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+    <file>logs/petclinic.log</file>
+    <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+  </appender>
+
+  <root level="INFO">
+    <appender-ref ref="FILE"/>
+  </root>
+</configuration>

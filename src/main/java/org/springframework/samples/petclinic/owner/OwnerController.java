@@ -15,6 +15,9 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 import java.util.Map;
 import javax.validation.Valid;
@@ -42,6 +45,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 class OwnerController {
 
+	static Logger LOGGER = LoggerFactory.getLogger(OwnerController.class);
+
 	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
 
 	private final OwnerRepository owners;
@@ -64,6 +69,7 @@ class OwnerController {
 	public String initCreationForm(Map<String, Object> model) {
 		Owner owner = new Owner();
 		model.put("owner", owner);
+		LOGGER.info("creating a new owner");
 		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 	}
 
@@ -74,12 +80,14 @@ class OwnerController {
 		}
 
 		this.owners.save(owner);
+		LOGGER.info("new owner created {}", owner);
 		return "redirect:/owners/" + owner.getId();
 	}
 
 	@GetMapping("/owners/find")
 	public String initFindForm(Map<String, Object> model) {
 		model.put("owner", new Owner());
+		LOGGER.info("find owner");
 		return "owners/findOwners";
 	}
 
