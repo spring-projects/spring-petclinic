@@ -43,7 +43,7 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
-          docker save $(imageRepo):$(tag) -o $(Build.ArtifactStagingDirectory)/petclinic:$(tag).tar
+          docker save $(imageRepo):$(tag) -o $(Build.ArtifactStagingDirectory)/petclinic$(tag).tar
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Artifact'
       condition: succeeded()       
