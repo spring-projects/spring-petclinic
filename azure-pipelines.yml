@@ -1,6 +1,3 @@
-# trigger:
-# - main
-#   condition: contains(variables['Build.SourceVersionMessage'], 'ready to build')
 trigger: 
   branches:
     include: 
@@ -13,15 +10,23 @@ variables:
   tag: '$(Build.BuildId)'
 
 stages:
+- stage: Test
+  displayName: Display test messages
+  jobs:
+  - job: Test
+    displayName: Test
+    steps:
+    - script: |
+        set -x
+        echo First line
 - stage: Info
-  condition: contains(variables['Build.SourceVersionMessage'], 'ready to build')
   displayName: Collect information
   jobs:
   - job: GetInfo
+    condition: contains(variables['Build.SourceVersionMessage'], 'ready to build')
     displayName: Get info about system
     steps:
       - script: |
-          echo VAR: variables['Build.SourceVersionMessage']
           pwd
           w   
           ls -l
@@ -48,7 +53,3 @@ stages:
 #     - task: PublishBuildArtifacts@1
 #       displayName: 'Publish Artifact'
 #       condition: succeeded()       
-
-
-
-
