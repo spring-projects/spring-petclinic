@@ -1,6 +1,10 @@
-trigger:
-- main
-  condition: contains(variables['Build.SourceVersionMessage'], 'ready to build')
+# trigger:
+# - main
+#   condition: contains(variables['Build.SourceVersionMessage'], 'ready to build')
+trigger: 
+  branches:
+    include: 
+    - main*
 pool:
   name: myagentpool
       
