@@ -1,11 +1,6 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - main
-
+  condition: contains(variables['Build.SourceVersionMessage'], 'ready to build')
 pool:
   name: myagentpool
       
@@ -24,29 +19,29 @@ stages:
           pwd
           w   
           ls -l
-- stage: Build
-  displayName: Build image
-  jobs:
-  - job: Build
-    displayName: Build
-    steps:
-    - task: Docker@2
-      displayName: Build an image
-      inputs:
-        containerRegistry: 'Cred to Docker Hub'
-        repository: '$(imageRepo)'
-        command: 'buildAndPush'
-        Dockerfile: '**/Dockerfile'
-        tags: '$(tag)'
-    - task: Bash@3
-      displayName: Save Docker Image
-      inputs:
-        targetType: 'inline'
-        script: |
-          docker save $(imageRepo):$(tag) -o $(Build.ArtifactStagingDirectory)/petclinic$(tag).tar
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish Artifact'
-      condition: succeeded()       
+# - stage: Build
+#   displayName: Build image
+#   jobs:
+#   - job: Build
+#     displayName: Build
+#     steps:
+#     - task: Docker@2
+#       displayName: Build an image
+#       inputs:
+#         containerRegistry: 'Cred to Docker Hub'
+#         repository: '$(imageRepo)'
+#         command: 'buildAndPush'
+#         Dockerfile: '**/Dockerfile'
+#         tags: '$(tag)'
+#     - task: Bash@3
+#       displayName: Save Docker Image
+#       inputs:
+#         targetType: 'inline'
+#         script: |
+#           docker save $(imageRepo):$(tag) -o $(Build.ArtifactStagingDirectory)/petclinic$(tag).tar
+#     - task: PublishBuildArtifacts@1
+#       displayName: 'Publish Artifact'
+#       condition: succeeded()       
 
 
 
