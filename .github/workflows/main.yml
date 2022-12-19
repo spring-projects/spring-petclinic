@@ -100,7 +100,7 @@ jobs:
           package: ${{ github.workspace }}/*.jar
           #jvm-options: -Dspring.profiles.active=postgres
           # Removed POSTGRES_URL
-          environment-variables: -POSTGRES_USER=${{ env.POSTGRES_USER }} -POSTGRES_PASS=${{ env.POSTGRES_PASS }} -SPRING_PROFILES_ACTIVE=postgres
+          environment-variables: -POSTGRES_USER ${{ env.POSTGRES_USER }} -POSTGRES_PASS ${{ env.POSTGRES_PASS }} -POSTGRES_URL ${{ env.POSTGRES_URL }} -SPRING_PROFILES_ACTIVE postgres
           # Added single quotes attempt
           #environment-variables: -POSTGRES_USER='${{ env.POSTGRES_USER }}' -POSTGRES_PASS='${{ env.POSTGRES_PASS }}' -POSTGRES_URL='${{ env.POSTGRES_URL }}' -SPRING_PROFILES_ACTIVE=postgres
           # Original
