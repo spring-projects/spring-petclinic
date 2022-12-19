@@ -4,6 +4,8 @@ This is used for the OSS on Azure using Java + Spring / App Modernisation sprint
 
 **Note:** Instead of using `java -jar target/*.jar` to run the application locally, you should use `./mvnw spring-boot:run` as the former doesn't seem to work very well.
 
+speling izzue
+
 Original README below:
 
 # Spring PetClinic Sample Application [![Build Status](https://github.com/spring-projects/spring-petclinic/actions/workflows/maven-build.yml/badge.svg)](https://github.com/spring-projects/spring-petclinic/actions/workflows/maven-build.yml)
