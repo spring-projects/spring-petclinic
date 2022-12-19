@@ -8,7 +8,7 @@ on:
     
 env:
   ASC_PACKAGE_PATH: ${{ github.workspace }}
-  AZURE_SUBSCRIPTION: 'Azure-Sprint-Prod'
+  AZURE_SUBSCRIPTION_ID: 'cfe96ac1-4cd0-40ad-9751-b18802bf8822'
   DEV_APP_NAME: 'pet-clinic-1'
   DEV_APP_SERVICE: 'ossonazure-javaspring-host-dev'
 
@@ -72,7 +72,7 @@ jobs:
       - name: deploy to production with artifact
         uses: azure/spring-cloud-deploy@v1
         with:
-          azure-subscription: ${{ env.AZURE_SUBSCRIPTION }}
+          azure-subscription: ${{ env.AZURE_SUBSCRIPTION_ID }}
           action: Deploy
           service-name: <service instance name>
           app-name: <app name>
@@ -80,9 +80,9 @@ jobs:
           package: ${{ env.ASC_PACKAGE_PATH }}/**/*.jar
       
       - name: Azure Spring Cloud
-        uses: Azure/spring-cloud-deploy@v1
+        uses: Azure/spring-apps-deploy@v1
         with:
-          azure-subscription: ${{ env.AZURE_SUBSCRIPTION }}
+          azure-subscription: ${{ env.AZURE_SUBSCRIPTION_ID }}
           action: deploy
           service-name: ${{ env.DEV_APP_SERVICE }}
           app-name: ${{ env.DEV_APP_NAME }}
