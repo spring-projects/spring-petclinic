@@ -19,6 +19,8 @@ jobs:
 
     - name: Perform spell check
       uses: sobolevn/misspell-fixer-action@0.1.0
+      with:
+        options: -rsvn .
 
     - name: Create a PR for any issues that are identified
       uses: peter-evans/create-pull-request@v3
