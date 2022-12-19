@@ -98,4 +98,5 @@ jobs:
           app-name: ${{ env.DEV_APP_NAME }}
           use-staging-deployment: false
           package: ${{ github.workspace }}/*.jar
-          environment-variables: -POSTGRES_USER="${{ env.POSTGRES_USER }}" -POSTGRES_PASS="${{ env.POSTGRES_PASS }}" -POSTGRES_URL="${{ env.POSTGRES_URL }}" -spring.profiles.active="postgres"
+          jvm-options: -Dspring.profiles.active=postgres
+          environment-variables: -POSTGRES_USER=${{ env.POSTGRES_USER }} -POSTGRES_PASS=${{ env.POSTGRES_PASS }} -POSTGRES_URL=${{ env.POSTGRES_URL }}
