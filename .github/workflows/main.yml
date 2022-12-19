@@ -85,7 +85,7 @@ jobs:
           
       - name: Test env vars
         run: |
-          echo "POSTGRES_USER: ${{ env.POSTGRES_URL }}"
+          echo "POSTGRES_URL: ${{ env.POSTGRES_URL }}"
           echo "POSTGRES_PASS: ${{ env.POSTGRES_PASS }}"
           echo "POSTGRES_USER: ${{ env.POSTGRES_USER }}"
           
@@ -98,4 +98,4 @@ jobs:
           app-name: ${{ env.DEV_APP_NAME }}
           use-staging-deployment: false
           package: ${{ github.workspace }}/*.jar
-          #environment-variables: # optional
+          environment-variables: -POSTGRES_USER="${{ env.POSTGRES_USER }}" -POSTGRES_PASS="${{ env.POSTGRES_PASS }}" -POSTGRES_URL="${{ env.POSTGRES_URL }}" -spring.profiles.active="postgres"
