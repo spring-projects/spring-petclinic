@@ -1,0 +1,24 @@
+name: Linter
+
+on:
+  pull_request:
+    branches: [ main ]
+  # Allow manual triggering, refs https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
+  workflow_dispatch:
+
+jobs:
+  checkstyle_job:
+    runs-on: ubuntu-latest
+    
+    name: Checkstyle job
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      
+    - name: Run check style
+      uses: nikitasavinov/checkstyle-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        reporter: 'github-pr-check'
+        tool_name: 'testtool'
