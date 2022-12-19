@@ -1,0 +1,28 @@
+name: Spell Checker
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  # Allow manual triggering, refs https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Perform spell check
+      uses: sobolevn/misspell-fixer-action@0.1.0
+
+    - name: Create a PR for any issues that are identified
+      uses: peter-evans/create-pull-request@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: 'Fixes by misspell-fixer'
+        title: 'Typos fix by misspell-fixer'
