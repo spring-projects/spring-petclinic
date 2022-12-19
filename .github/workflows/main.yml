@@ -68,18 +68,8 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.SP_GITHUBACTIONS_WORKFLOW_PETCLINIC_APP_DEV_RESOURCE_GROUP }}
-
-      - name: deploy to production with artifact
-        uses: azure/spring-cloud-deploy@v1
-        with:
-          azure-subscription: ${{ env.AZURE_SUBSCRIPTION_ID }}
-          action: Deploy
-          service-name: <service instance name>
-          app-name: <app name>
-          use-staging-deployment: false
-          package: ${{ env.ASC_PACKAGE_PATH }}/**/*.jar
       
-      - name: Azure Spring Cloud
+      - name: Deploy artifact to the Dev environment
         uses: Azure/spring-apps-deploy@v1
         with:
           azure-subscription: ${{ env.AZURE_SUBSCRIPTION_ID }}
