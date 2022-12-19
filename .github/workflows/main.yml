@@ -9,6 +9,8 @@ on:
 env:
   ASC_PACKAGE_PATH: ${{ github.workspace }}
   AZURE_SUBSCRIPTION_ID: 'cfe96ac1-4cd0-40ad-9751-b18802bf8822'
+  
+  DEV_KEY_VAULT_NAME: 'kvossonazurejavaspringde'
   DEV_APP_NAME: 'pet-clinic-1'
   DEV_APP_SERVICE: 'ossonazure-javaspring-host-dev'
 
@@ -68,7 +70,25 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.SP_GITHUBACTIONS_WORKFLOW_PETCLINIC_APP_DEV_RESOURCE_GROUP }}
-      
+          
+      - name: Retrive values from Azure Key Vault
+        run: |
+          # Get the values from Azure Key Vault and store in environment variables
+          export POSTGRES_URL=(az keyvault secret show --name "POSTGRESQL-PetClinic-ConnectionString" --vault-name ${{ env.DEV_KEY_VAULT_NAME }} --query "value")
+          export POSTGRES_PASS=(az keyvault secret show --name "POSTGRESQL-PetClinic-Password" --vault-name ${{ env.DEV_KEY_VAULT_NAME }} --query "value")
+          export POSTGRES_USER=(az keyvault secret show --name "POSTGRESQL-PetClinic-Username" --vault-name ${{ env.DEV_KEY_VAULT_NAME }} --query "value")
+          
+          # Set env vars for subsequent steps as per https://docs.github.com/en/github-ae@latest/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable
+          echo "POSTGRES_URL=$POSTGRES_URL" >> $GITHUB_ENV
+          echo "POSTGRES_PASS=$POSTGRES_PASS" >> $GITHUB_ENV
+          echo "POSTGRES_USER=$POSTGRES_USER" >> $GITHUB_ENV
+          
+      - name: Test env vars
+        run: |
+          echo "POSTGRES_USER: $POSTGRES_URL"
+          echo "POSTGRES_PASS: $POSTGRES_PASS"
+          echo "POSTGRES_USER: $POSTGRES_USER"
+          
       - name: Deploy artifact to the Dev environment
         uses: Azure/spring-apps-deploy@v1
         with:
