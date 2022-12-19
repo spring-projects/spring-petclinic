@@ -26,9 +26,13 @@ jobs:
           distribution: 'microsoft'
           java-version: '17'
           
-      - name: maven build, clean
+      - name: Run Maven clean and package (build)
         run: |
-          mvn clean package
+          mvn clean package -DskipTests
+          
+      - name: Run the tests via Maven
+        run: |
+          mvn test
           
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.1
