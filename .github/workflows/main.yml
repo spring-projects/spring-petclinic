@@ -82,12 +82,6 @@ jobs:
           echo "POSTGRES_PASS=$POSTGRES_PASS" >> $GITHUB_ENV
           echo "POSTGRES_USER=$POSTGRES_USER" >> $GITHUB_ENV
           
-      - name: Test env vars
-        run: |
-          echo "POSTGRES_URL: ${{ env.POSTGRES_URL }}"
-          echo "POSTGRES_PASS: ${{ env.POSTGRES_PASS }}"
-          echo "POSTGRES_USER: ${{ env.POSTGRES_USER }}"
-          
       - name: Deploy artifact to the Dev environment
         uses: Azure/spring-apps-deploy@v1
         with:
@@ -97,11 +91,5 @@ jobs:
           app-name: ${{ env.DEV_APP_NAME }}
           use-staging-deployment: false
           package: ${{ github.workspace }}/*.jar
-          #jvm-options: -Dspring.profiles.active=postgres
-          # Removed POSTGRES_URL
           environment-variables: -POSTGRES_USER ${{ env.POSTGRES_USER }} -POSTGRES_PASS ${{ env.POSTGRES_PASS }} -POSTGRES_URL ${{ env.POSTGRES_URL }} -SPRING_PROFILES_ACTIVE postgres
-          # Added single quotes attempt
-          #environment-variables: -POSTGRES_USER='${{ env.POSTGRES_USER }}' -POSTGRES_PASS='${{ env.POSTGRES_PASS }}' -POSTGRES_URL='${{ env.POSTGRES_URL }}' -SPRING_PROFILES_ACTIVE=postgres
-          # Original
-          #environment-variables: -POSTGRES_USER=${{ env.POSTGRES_USER }} -POSTGRES_PASS=${{ env.POSTGRES_PASS }} -POSTGRES_URL=${{ env.POSTGRES_URL }} -SPRING_PROFILES_ACTIVE=postgres
           
