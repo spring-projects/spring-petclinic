@@ -1,8 +1,6 @@
 name: Spell Checker
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
     branches: [ main ]
   # Allow manual triggering, refs https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
