@@ -85,9 +85,9 @@ jobs:
           
       - name: Test env vars
         run: |
-          echo "POSTGRES_USER: $POSTGRES_URL"
-          echo "POSTGRES_PASS: $POSTGRES_PASS"
-          echo "POSTGRES_USER: $POSTGRES_USER"
+          echo "POSTGRES_USER: ${{ env.POSTGRES_URL }}"
+          echo "POSTGRES_PASS: ${{ env.POSTGRES_PASS }}"
+          echo "POSTGRES_USER: ${{ env.POSTGRES_USER }}"
           
       - name: Deploy artifact to the Dev environment
         uses: Azure/spring-apps-deploy@v1
