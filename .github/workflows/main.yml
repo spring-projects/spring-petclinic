@@ -5,6 +5,8 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  # Allow manual triggering, refs https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
+  workflow_dispatch:
     
 env:
   AZURE_SUBSCRIPTION_ID: 'cfe96ac1-4cd0-40ad-9751-b18802bf8822'
