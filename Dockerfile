@@ -1,5 +1,5 @@
 # Dockerfile
-FROM docker.io/library/gradle:7.5.1-jdk11 AS build
+FROM docker.io/library/gradle:7.6.0-jdk11 AS build
 
 WORKDIR /app
 
