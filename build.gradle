@@ -1,5 +1,5 @@
 plugins {
-  id 'org.springframework.boot' version '3.0.0'
+  id 'org.springframework.boot' version '2.7.4'
   id 'io.spring.dependency-management' version '1.0.13.RELEASE'
   id 'java'
 }
@@ -8,7 +8,7 @@ apply plugin: 'java'
 
 group = 'org.springframework.samples'
 version = '3.0.0'
-sourceCompatibility = '11'
+sourceCompatibility = '17'
 
 repositories {
   mavenCentral()
