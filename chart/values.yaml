@@ -1,0 +1,9 @@
+app:
+  name: petclinic-k8s
+  profile:
+  replicaCount: 1
+  hostAliases: []
+  image: sweep.kr-central-1.kcr.dev/geunho/test-img:latest
+  resources: {}
+  service:
+    type: LoadBalancer

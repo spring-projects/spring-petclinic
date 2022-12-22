@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: {{ .Values.app.name }}
+  name: {{ .Values.app.name }}-svc
+spec:
+  ports:
+    - name: petclinic
+      port: 80
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: {{ .Values.app.name }}
+  type: {{ .Values.app.service.type }}
