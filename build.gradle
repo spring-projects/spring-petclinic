@@ -8,7 +8,7 @@ apply plugin: 'java'
 
 group = 'org.springframework.samples'
 version = '3.0.0'
-sourceCompatibility = '17'
+sourceCompatibility = '11'
 
 repositories {
   mavenCentral()
