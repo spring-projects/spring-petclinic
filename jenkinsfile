@@ -1,25 +1,18 @@
-pipeline
-{
-    agent
-    {
-        label 'ubuntu-node'
-
-    }
-    stages
-    {
-        stage ('git clone')
-        {
-            steps
-            {
-                git url:'https://github.com/peddiraju3122b/spring-petclinic.git'
-
+pipeline{
+    agent{ label 'node4'}
+    stages{
+        stage('clone'){
+            steps{
+                git url: 'https://github.com/peddiraju3122b/spring-petclinic.git',
+                branch: 'main'
             }
         }
-        stage ('mvn package')
-        {
-            steps
-            {
-                sh 'mvn package'
+        stage('image'){
+            steps{
+                sh """
+                      docker image build -t spc:1.0 .
+                      docker image tag spc:1.0 peddiraju3122b/spc:1.0
+                      docker image push peddiraju3122b/spc:1.0 ""
             }
         }
     }
