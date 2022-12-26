@@ -13,35 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.MappedSuperclass;
+package org.springframework.samples.petclinic;
 
-/**
- * Simple JavaBean domain object adds a name property to <code>BaseEntity</code>. Used as
- * a base class for objects needing these properties.
- *
- * @author Ken Krebs
- * @author Juergen Hoeller
- */
-@MappedSuperclass
-public class NamedEntity extends BaseEntity {
+import org.springframework.aot.hint.RuntimeHints;
+import org.springframework.aot.hint.RuntimeHintsRegistrar;
 
-	@Column(name = "name")
-	private String name;
-
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
+public class PetClinicRuntimeHints implements RuntimeHintsRegistrar {
 
 	@Override
-	public String toString() {
-		return this.getName();
+	public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
+		hints.resources().registerPattern("db/*"); // https://github.com/spring-projects/spring-boot/issues/32654
+		hints.resources().registerPattern("META-INF/resources/webjars/*");
 	}
 
 }
