@@ -11,7 +11,7 @@ RUN gradle clean bootJar
 FROM docker.io/library/eclipse-temurin:11-jre-focal AS app
 
 WORKDIR /app
-COPY --from=build /app/build/libs/spring-petclinic-2.7.3.jar .
+COPY --from=build /app/build/libs/spring-petclinic-*.jar spring.petclinic.jar
 
 EXPOSE 8080
 
