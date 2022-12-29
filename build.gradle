@@ -1,5 +1,5 @@
 plugins {
-  id 'org.springframework.boot' version '3.0.0'
+  id 'org.springframework.boot' version '2.7.1'
   id 'io.spring.dependency-management' version '1.0.13.RELEASE'
   id 'java'
 }
@@ -7,7 +7,7 @@ plugins {
 apply plugin: 'java'
 
 group = 'org.springframework.samples'
-version = '3.0.0'
+version = '2.7.1'
 sourceCompatibility = '17'
 
 repositories {
