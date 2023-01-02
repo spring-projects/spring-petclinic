@@ -113,15 +113,10 @@ public class Owner extends Person {
 	 * @return a pet if pet id is already in use
 	 */
 	public Pet getPet(Integer id) {
-		for (Pet pet : getPets()) {
-			if (!pet.isNew()) {
-				Integer compId = pet.getId();
-				if (compId.equals(id)) {
-					return pet;
-				}
-			}
-		}
-		return null;
+		return getPets().stream()
+				.filter(pet -> !pet.isNew() && pet.getId().equals(id))
+				.findFirst()
+				.orElse(null);
 	}
 
 	/**
