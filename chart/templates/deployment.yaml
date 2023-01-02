@@ -34,7 +34,7 @@ spec:
           command: [ "java" ]
           args:
             - "-jar"
-            - "spring-petclinic-2.7.3.jar"
+            - "spring-petclinic-3.0.0.jar"
           {{- with .Values.app.env }}
           env:
             {{- toYaml . | nindent 12 }}

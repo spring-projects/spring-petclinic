@@ -3,7 +3,7 @@ app:
   profile:
   replicaCount: 1
   hostAliases: []
-  image: doubles.kr-central-1.kcr.dev/bella-test/nginx:latest
+  image: doubles.kr-central-1.kcr.dev/bella-test/test-img:latest
   resources: {}
   service:
     type: LoadBalancer
