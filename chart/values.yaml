@@ -1,0 +1,9 @@
+app:
+  name: petclinic-k8s
+  profile:
+  replicaCount: 1
+  hostAliases: []
+  image: doubles.kr-central-1.kcr.dev/bella-test/test-img:latest
+  resources: {}
+  service:
+    type: LoadBalancer
