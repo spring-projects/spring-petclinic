@@ -125,17 +125,12 @@ public class Owner extends Person {
 	 * @return a pet if pet name is already in use
 	 */
 	public Pet getPet(String name, boolean ignoreNew) {
-		name = name.toLowerCase();
-		for (Pet pet : getPets()) {
-			if (!ignoreNew || !pet.isNew()) {
-				String compName = pet.getName();
-				compName = compName == null ? "" : compName.toLowerCase();
-				if (compName.equals(name)) {
-					return pet;
-				}
-			}
-		}
-		return null;
+		final String tempName = name.toLowerCase();
+		return getPets().stream()
+				.filter(pet -> !ignoreNew || !pet.isNew())
+				.filter(pet -> pet.getName() != null && pet.getName().toLowerCase().equals(tempName))
+				.findFirst()
+				.orElse(null);
 	}
 
 	@Override
