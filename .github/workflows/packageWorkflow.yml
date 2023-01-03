@@ -1,7 +1,8 @@
 name: Package Pet Clinic
 
-on: [push]
-  branches: [main]
+on:
+  push:
+    branches: [main]
 
 jobs:
   build:
