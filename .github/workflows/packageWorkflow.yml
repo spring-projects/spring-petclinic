@@ -10,10 +10,10 @@ jobs:
       steps:
       - uses: actions/checkout@v3
       - name: Build
-        run: npm install && npm run build
+        run: mvn package
       - name: Test
-        run: npm test
+        run: mvn test
       - name: Create Package
-        run: npm pack
+        run: mvn pack
       - name: Publish Package
-        run: npm publish --registry https://npm.pkg.github.com/
+        run: mvn deploy --registry https://npm.pkg.github.com/
