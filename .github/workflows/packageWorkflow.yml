@@ -6,14 +6,14 @@ on:
 
 jobs:
   build:
-      runs-on: windows-latest
-      steps:
-      - uses: actions/checkout@v3
-      - name: Build
-        run: mvn package
-      - name: Test
-        run: mvn test
-      - name: Create Package
-        run: mvn pack
-      - name: Publish Package
-        run: mvn deploy --registry https://npm.pkg.github.com/
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build
+      run: mvn package
+    - name: Test
+      run: mvn test
+    - name: Create Package
+      run: mvn pack
+    - name: Publish Package
+      run: mvn deploy --registry https://npm.pkg.github.com/
