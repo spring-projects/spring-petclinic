@@ -47,7 +47,7 @@ dependencies {
 
 tasks.named('test') {
   useJUnitPlatform()
-  println("Tests is executed")
+  println("Tests is executed!")
 }
 
 tasks.build.doLast(){
