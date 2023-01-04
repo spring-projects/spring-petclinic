@@ -7,8 +7,13 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    env:
+      PROJECT_NAME: ${{github.repository}}
+      VERSION: ${{github.ref}}
     steps:
     - uses: actions/checkout@v3
+    - name: Install Dependencies
+      run: mvn install
     - name: Build
       run: mvn package
     - name: Test
@@ -17,3 +22,7 @@ jobs:
       run: mvn pack
     - name: Publish Package
       run: mvn deploy --registry https://npm.pkg.github.com/
+    - name: Configure Repository
+      run: mvn configure-repository --repository-url=https://github.com/${{github.repository}}
+    - name: Run CI/CD Pipeline
+      run: mvn ci-cd-pipeline
