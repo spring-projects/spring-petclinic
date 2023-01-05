@@ -1,17 +1,69 @@
 pipeline {
-    agent {label 'node'}
+    agent  { label 'node' }
+    parameters { choice(name: 'CHOICES', choices: ['main', 'new_branch', 'spring_master'], description: 'using parameters') }
+    triggers { pollSCM('* * * * *') }
     stages {
-        stage ('git clone') {
+        stage('git') {
             steps {
-                git branch: 'main', 
-                    url: 'https://github.com/gopivurata/spring-petclinic.git'
+                git branch: "${params.CHOICES}", 
+                url: 'https://github.com/gopivurata/spring-petclinic.git'
+            }
+
+        }
+        stage('JFROG configuration') {
+            steps {
+                rtMavenDeployer (
+                    id: 'MAVEN_DEPLOYER',
+                    serverId: 'MY_JFROG',
+                    releaseRepo: 'java-maven-libs-release',
+                    snapshotRepo: 'java-maven-libs-snapshot'
+                )
             }
         }
-        stage ('docker image build') {
+        stage('maven build') {
             steps {
-                sh 'docker image build -t spring-petclinic:1.0 .'
-                sh 'docker container run --name spc -d -P spring-petclinic:1.0'
+                rtMavenRun (
+                    tool: 'MVN', // Tool name from Jenkins configuration
+                    pom: 'pom.xml',
+                    goals: 'clean install',
+                    deployerId: "MAVEN_DEPLOYER"
+                    
+                )
+            }
+        }
+         stage('SonarQube') {
+            steps {
+                withSonarQubeEnv('MY_SONARQ') {
+                    sh script: 'mvn clean package sonar:sonar'
+                }
+            }
+        }
+        stage ('publish build info') {
+            steps {
+                rtPublishBuildInfo (
+                    serverId: "MY_JFROG"
+                )
             }
         }
     }
+    post {
+        always {
+            echo 'completed job'
+            mail subject: "Build completed for Jenkins JOB $env.JOB_NAME",
+                 body: "Build completed for Jenkins JOB $env.JOB_NAME \n Click Here: $env.JOB_URL",
+                 to: 'gopivurata1992@gmail.com'
+        }
+        failure {
+            mail subject: "Build Faild for Jenkins JOB $env.JOB_NAME with Build ID $env.BUILD_ID",
+                 body: "Build Failed for Jenkins JOB $env.JOB_NAME",
+                 to: 'gopivurata1992@gmail.com'
+
+        }
+        success {
+            junit '**/surefire-reports/*.xml'
+        }
+
+
+    }
+
 }
