@@ -1,39 +1,49 @@
 pipeline {
-    agent {label 'java-11'}
-    stages{
-        stage ('git') {
+    agent { label 'jenkins123' }
+    triggers { pollSCM(* * * * *) }
+    stages {
+        stage('git') {
             steps {
-                git branch: 'main',
-                url: 'https://github.com/Srikanthreddy1000/spring-petclinic.git'
+                git branch: "main",
+                url: "https://github.com/Srikanthreddy1000/spring-petclinic.git"
             }
-        stage('jfrog deployment') {
+        }
+        stage('Mvn Build') {
             steps {
-                rtMavenDeployer (
-                    id: "jfrog-artifact",
+                sh "mvn package"
+            }
+        }
+        stage('sonarqube analysis') {
+            steps {
+              withSonarQubeEnv('My SonarQube Server') {
+                sh 'mvn clean package sonar:sonar'
+              }
+            }
+        }
+        stage('qualitygate') {
+            steps {
+              timeout(time: 1, unit: 'HOURS') {
+                waitForQualityGate abortPipeline: true
+              }
+            }
+        }
+        stage('Jfrog') {
+            steps {
+              rtMavenDeployer (
+                    id: "Jfrog-id-deployer",
                     serverId: "srikanthjfrog",
-                    releaseRepo: default-libs-release-local,
-                    snapshotRepo: default-libs-snapshot-local
+                    releaseRepo: libs-release-local,
+                    snapshotRepo: libs-snapshot-local
                 )
+              rtMavenResolver (
+                    id: "Jfrog-id-resolver",
+                    serverId: "srikanthjfrog",
+                    releaseRepo: libs-release-local,
+                    snapshotRepo: libs-snapshot-local
+              )  
             }
-        }
-        stage ('Maven') {
-            steps {
-                rtMavenRun (
-                    tool: maven-build
-                    pom: 'pom.xml',
-                    goals: 'clean install',
-                    deployerId: "srikanthjfrog"
-                )
-            }
-        }
-        stage ('Publish build info') {
-            steps {
-                rtPublishBuildInfo (
-                    serverId: "srikanthjfrog"
-                )
-            }
-            
+
+          }
         }
     }
- }
 }
