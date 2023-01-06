@@ -1,6 +1,6 @@
 pipeline {
     agent  { label 'node' }
-    parameters { choice(name: 'CHOICES', choices: ['main', 'new_branch', 'spring_master'], description: 'using parameters') }
+    parameters { choice(name: 'CHOICES', choices: ['main', 'new_branch', 'spring_master', ], description: 'using parameters') }
     triggers { pollSCM('* * * * *') }
     stages {
         stage('git') {
