@@ -38,13 +38,13 @@ pipeline {
                 }
             }
         }
-        stage("Quality Gate") {
-            steps {
-              timeout(time: 1, unit: 'HOURS') {
-                waitForQualityGate abortPipeline: false
-              }
-            }
-          }
+       // stage("Quality Gate") {
+        //    steps {
+         //     timeout(time: 1, unit: 'HOURS') {
+         //       waitForQualityGate abortPipeline: false
+         //     }
+         //   }
+         // }
         stage ('publish build info') {
             steps {
                 rtPublishBuildInfo (
