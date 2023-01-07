@@ -1,6 +1,6 @@
 pipeline {
     agent  { label 'node' }
-    parameters { choice(name: 'CHOICES', choices: ['main', 'new_branch', 'spring_master', ], description: 'using parameters') }
+    parameters { choice(name: 'CHOICES', choices: ['main', 'new_branch', 'spring_master','gopi' ], description: 'using parameters') }
     triggers { pollSCM('* * * * *') }
     stages {
         stage('git') {
@@ -38,6 +38,13 @@ pipeline {
                 }
             }
         }
+        stage("Quality Gate") {
+            steps {
+              timeout(time: 1, unit: 'HOURS') {
+                waitForQualityGate abortPipeline: false
+              }
+            }
+          }
         stage ('publish build info') {
             steps {
                 rtPublishBuildInfo (
