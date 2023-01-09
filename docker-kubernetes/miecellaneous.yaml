@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: centos
+  labels:
+    app: centos
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: centos
+      labels:
+        app: centos
+    spec:
+      containers:
+        - name: centos
+          image: centos:8
+          imagePullPolicy: IfNotPresent
+          command: [ "/bin/bash", "-c", "--" ]
+          args: [ "while true; do sleep 365d; done;" ]
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: centos

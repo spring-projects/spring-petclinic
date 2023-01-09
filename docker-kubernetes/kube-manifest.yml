@@ -29,6 +29,8 @@ spec:
             limits:
               memory: "1Gi"
               cpu: "500m"
+          securityContext:
+            runAsUser: 0
           ports:
             - containerPort: 8080
       restartPolicy: Always
@@ -47,3 +49,4 @@ spec:
   ports:
     - port: 8080
   type: LoadBalancer
+
