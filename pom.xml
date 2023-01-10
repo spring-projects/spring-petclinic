@@ -3,10 +3,10 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
-  <version>4.2.8-SNAPSHOT</version>
+  <version>4.2.8</version>
     <scm>
        <connection>scm:git:https://github.com/RolandBakunts/spring-petclinic.git</connection>
-      <tag>spring-petclinic</tag>
+      <tag>spring-petclinic-4.2.8</tag>
   </scm>
   <parent> 
     <groupId>org.springframework.boot</groupId>
