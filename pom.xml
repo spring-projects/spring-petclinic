@@ -117,6 +117,18 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+            <configuration>
+              <image>
+                 <env>
+                    <BP_JVM_VERSION>17</BP_JVM_VERSION>
+                    <BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
+                 </env>
+              </image>
+            </configuration>
+      </plugin>
+      <plugin>
         <groupId>io.spring.javaformat</groupId>
         <artifactId>spring-javaformat-maven-plugin</artifactId>
         <version>${spring-format.version}</version>
