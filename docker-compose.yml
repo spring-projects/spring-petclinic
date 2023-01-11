@@ -1,23 +1,38 @@
 version: "2.2"
-
 services:
-  mysql:
-    image: mysql:5.7
-    ports:
-      - "3306:3306"
+  db:
+    image: postgres:9.4
     environment:
-      - MYSQL_ROOT_PASSWORD=
-      - MYSQL_ALLOW_EMPTY_PASSWORD=true
-      - MYSQL_USER=petclinic
-      - MYSQL_PASSWORD=petclinic
-      - MYSQL_DATABASE=petclinic
-    volumes:
-      - "./conf.d:/etc/mysql/conf.d:ro"
-  postgres:
-    image: postgres:14.1
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+  spring:
+    image: rolandgryddynamics/myapp
     ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_PASSWORD=petclinic
-      - POSTGRES_USER=petclinic
-      - POSTGRES_DB=petclinic
+      - 8080:8080
+    depends_on:
+      - db
+
+
+# version: "2.2"
+
+# services:
+#   mysql:
+#     image: mysql:5.7
+#     ports:
+#       - "3306:3306"
+#     environment:
+#       - MYSQL_ROOT_PASSWORD=
+#       - MYSQL_ALLOW_EMPTY_PASSWORD=true
+#       - MYSQL_USER=petclinic
+#       - MYSQL_PASSWORD=petclinic
+#       - MYSQL_DATABASE=petclinic
+#     volumes:
+#       - "./conf.d:/etc/mysql/conf.d:ro"
+#   postgres:
+#     image: postgres:14.1
+#     ports:
+#       - "5432:5432"
+#     environment:
+#       - POSTGRES_PASSWORD=petclinic
+#       - POSTGRES_USER=petclinic
+#       - POSTGRES_DB=petclinic
