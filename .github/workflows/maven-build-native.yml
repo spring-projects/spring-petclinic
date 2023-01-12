@@ -1,0 +1,30 @@
+name: Native CI with Maven and GraalVM Native Image
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ '17' ]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up GraalVM JDK ${{matrix.java}}
+        uses: graalvm/setup-graalvm@v1
+        with:
+          version: 'latest'
+          java-version: ${{matrix.java}}
+          components: 'native-image'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          cache: maven
+          native-image-job-reports: 'true'
+          native-image-pr-reports: 'true'
+      - name: Build with Maven Wrapper
+        run: ./mvnw -B -ntp -Pnative native:compile
