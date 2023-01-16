@@ -11,7 +11,7 @@ pipeline {
                 withGradle(){
                 sh './gradlew -version' 
                 sh './gradlew clean build --no-daemon'
-                archiveArtifacts: 'build/libs/reports/checkstyle/main.html'
+                archiveArtifacts: './build/libs/reports/checkstyle/main.html'
                 }
             }
         }
