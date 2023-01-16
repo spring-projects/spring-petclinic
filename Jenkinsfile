@@ -18,7 +18,8 @@ pipeline {
         // }
         stage('Build') {
             steps {
-                echo 'Hello hgfds world!' 
+                echo 'java -version' 
+                echo './gradlew -version' 
                 sh './gradlew build'
                 sh 'cat ./build/libs/spring-petclinic-changed-0.1.1-SNAPSHOT-plain.jar'
                 // archiveArtifacts: './build/libs/spring-petclinic-changed-0.1.1-SNAPSHOT-plain.jar'
