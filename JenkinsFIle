@@ -8,6 +8,9 @@ pipeline {
         stage('Stage 1') {
             steps {
                 echo 'Hello xzxxzx world!' 
+                withGradle(){
+                    sh './gradlew -v'
+                }
             }
         }
     }
