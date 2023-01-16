@@ -1,9 +1,8 @@
 pipeline {
-    agent {
-        label 'linux-agent'
-    } 
+    agent none
     stages {
         stage('Stage 1') {
+            agent { label linux-agent }
             steps {
                 echo 'Hello xzxxzx world!' 
             }
