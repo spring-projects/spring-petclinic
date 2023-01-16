@@ -7,8 +7,8 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh './gradlew build --no-daemon'
-                archiveArtifacts artifacts: './build/libs/reports/checkstyle/main.html'
+                sh './gradlew build'
+                // archiveArtifacts artifacts: './build/libs/reports/checkstyle/main.html'
             }
         }
     }
