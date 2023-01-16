@@ -7,7 +7,8 @@ pipeline {
     stages {
         stage('Clone') {
             steps {
-                echo 'Cloningf' 
+                echo 'cfscfs cfscfs csfc!' 
+                sh 'rm -rf .git' 
                 sh "git clone https://github.com/RolandBakunts/spring-petclinic.git"
                 sh "ls -a"
                 sh "./gradlew clean build"
