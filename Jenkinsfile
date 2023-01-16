@@ -21,7 +21,7 @@ pipeline {
                 // echo 'java -version' 
                 withGradle(){
                 sh './gradlew -version' 
-                sh './gradlew build --no-daemon' 
+                sh './gradlew clean build' 
                 }
                 // sh 'cat ./build/libs/spring-petclinic-changed-0.1.1-SNAPSHOT-plain.jar'
                 // archiveArtifacts: './build/libs/spring-petclinic-changed-0.1.1-SNAPSHOT-plain.jar'
