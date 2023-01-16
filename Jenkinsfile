@@ -19,7 +19,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Hello hgfds world!' 
-                sh './gradlew build --no-daemon'
+                sh './gradlew build'
                 sh 'cat ./build/libs/spring-petclinic-changed-0.1.1-SNAPSHOT-plain.jar'
                 // archiveArtifacts: './build/libs/spring-petclinic-changed-0.1.1-SNAPSHOT-plain.jar'
                 // withGradle(){
