@@ -21,7 +21,7 @@ pipeline {
                 echo 'Hello hgfds world!' 
                 sh './gradlew build --no-daemon'
                 sh 'cat ./build/libs/spring-petclinic-changed-0.1.1-SNAPSHOT-plain.jar'
-                archiveArtifacts: './build/libs/spring-petclinic-changed-0.1.1-SNAPSHOT-plain.jar'
+                // archiveArtifacts: './build/libs/spring-petclinic-changed-0.1.1-SNAPSHOT-plain.jar'
                 // withGradle(){
                 // }
             }
