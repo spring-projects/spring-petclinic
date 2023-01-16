@@ -9,9 +9,10 @@ pipeline {
             steps {
                 echo 'Hello xzxxzx world!' 
                 sh 'ls -a'
-                withGradle(){
-                    sh './gradlew test'
-                }
+                sh './gradlew test'
+
+                // withGradle(){
+                // }
             }
         }
     }
