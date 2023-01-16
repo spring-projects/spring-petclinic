@@ -1,7 +1,7 @@
 pipeline {
     agent {
         node {
-            label 'linux-agent'
+            label 'ubuntu-master'
         }
     }
     stages {
