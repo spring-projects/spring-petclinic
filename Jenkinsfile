@@ -9,8 +9,10 @@ pipeline {
             steps {
                 // sh 'chmod +x gradlew'
                 // sh './gradlew build'
-                sh 'pwd'
-                archiveArtifacts artifacts: '/var/lib/jenkins/workspace/pipeline/build/libs/reports/checkstyle/main.html', fingerprint: true
+                sh 'cd build/reports/checkstyle'
+                sh 'ls -a'
+                
+                archiveArtifacts artifacts: 'build/reports/checkstyle/main.html'
             }
         }
     }
