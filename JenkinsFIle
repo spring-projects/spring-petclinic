@@ -9,6 +9,7 @@ pipeline {
             steps {
                 echo 'Cloning' 
                 sh "git clone https://github.com/RolandBakunts/spring-petclinic.git"
+                sh "ls -a"
                 sh "./gradlew clean build"
                 // withGradle(){
                 // }
