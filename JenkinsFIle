@@ -1,5 +1,9 @@
 pipeline {
-    agent { label 'linux-agent' }
+    agent {
+        node {
+            label 'linux-agent'
+        }
+    }
     stages {
         stage('Stage 1') {
             steps {
