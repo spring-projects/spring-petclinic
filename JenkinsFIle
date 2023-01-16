@@ -9,7 +9,7 @@ pipeline {
             steps {
                 echo 'Hello xzxxzx world!' 
                 sh 'ls -a'
-                sh './gradlew test'
+                sh './gradlew -version'
 
                 // withGradle(){
                 // }
