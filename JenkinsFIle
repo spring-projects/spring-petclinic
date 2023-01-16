@@ -5,12 +5,18 @@ pipeline {
         }
     }
     stages {
-        stage('Stage 1') {
+        stage('Clone') {
             steps {
-                echo 'Hello xzxxzx world!' 
-                sh 'ls -a'
-                sh './gradlew -version'
-
+                echo 'Cloning' 
+                git url: 'https://github.com/RolandBakunts/spring-petclinic.git'
+                // withGradle(){
+                // }
+            }
+        }
+        stage('Build') {
+            steps {
+                echo 'Hello hgfds world!' 
+                sh './gradlew task --all'
                 // withGradle(){
                 // }
             }
