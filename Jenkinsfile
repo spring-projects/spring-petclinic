@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                // echo 'java -version' 
+                sh 'java -version' 
                 withGradle(){
                 sh './gradlew -version' 
                 sh './gradlew clean test --no-daemon'
