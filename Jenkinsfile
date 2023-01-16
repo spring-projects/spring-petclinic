@@ -9,6 +9,7 @@ pipeline {
             steps {
                 // sh 'chmod +x gradlew'
                 // sh './gradlew build'
+                sh 'ls -a'
                 sh 'cd ./build/reports/checkstyle'
                 sh 'ls -a'
                 
