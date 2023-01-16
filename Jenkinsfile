@@ -7,11 +7,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'java -version' 
-                withGradle(){
-                sh './gradlew -version' 
-                sh './gradlew clean build --no-daemon'
-                }
+                sh './gradlew build --no-daemon'
                 archiveArtifacts artifacts: './build/libs/reports/checkstyle/main.html'
             }
         }
