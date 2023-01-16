@@ -10,7 +10,7 @@ pipeline {
                 // sh 'chmod +x gradlew'
                 // sh './gradlew build'
                 sh 'pwd'
-                archiveArtifacts artifacts: 'build/libs/reports/checkstyle/main.html', fingerprint: true
+                archiveArtifacts artifacts: '/var/lib/jenkins/workspace/pipeline/build/libs/reports/checkstyle/main.html', fingerprint: true
             }
         }
     }
