@@ -7,9 +7,9 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'chmod +x gradlew'
-                sh './gradlew build'
-                // archiveArtifacts artifacts: './build/libs/reports/checkstyle/main.html'
+                // sh 'chmod +x gradlew'
+                // sh './gradlew build'
+                archiveArtifacts artifacts: './build/libs/reports/checkstyle/main.html'
             }
         }
     }
