@@ -53,10 +53,10 @@ tasks.named('test') {
   println("Tests is executed!")
 }
 
-tasks.build.doLast(){
-      test
-      java.awt.Desktop.desktop.browse "http://127.0.0.1:5500/build/reports/tests/test/index.html".toURI()
-}
+// tasks.build.doLast(){
+//       test
+//       java.awt.Desktop.desktop.browse "http://127.0.0.1:5500/build/reports/tests/test/index.html".toURI()
+// }
 
 checkstyle {
     configFile = file("${rootDir}/config/checkstyle/checkstyle.xml") 
