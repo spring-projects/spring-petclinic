@@ -3,9 +3,12 @@ plugins {
   id 'io.spring.dependency-management' version '1.0.13.RELEASE'
   id 'java'
   id 'pl.allegro.tech.build.axion-release' version '1.14.0'
+  id 'java-library'
+  id 'checkstyle'
 }
 
 apply plugin: 'java'
+apply plugin: 'checkstyle'
 
 group = 'org.springframework.samples'
 version = scmVersion.version
@@ -53,4 +56,12 @@ tasks.named('test') {
 tasks.build.doLast(){
       test
       java.awt.Desktop.desktop.browse "http://127.0.0.1:5500/build/reports/tests/test/index.html".toURI()
+}
+
+checkstyle {
+    configFile = file("${rootDir}/config/checkstyle/checkstyle.xml") 
+}
+
+checkstyleMain {
+    source ='src/main/java'
 }
