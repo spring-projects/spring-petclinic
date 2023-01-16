@@ -10,12 +10,9 @@ pipeline {
                 sh 'java -version' 
                 withGradle(){
                 sh './gradlew -version' 
-                sh './gradlew clean test --no-daemon'
+                sh './gradlew clean build --no-daemon'
+                archiveArtifacts: 'build/libs/reports/checkstyle/main.html'
                 }
-                // sh 'cat ./build/libs/spring-petclinic-changed-0.1.1-SNAPSHOT-plain.jar'
-                // archiveArtifacts: './build/libs/spring-petclinic-changed-0.1.1-SNAPSHOT-plain.jar'
-                // withGradle(){
-                // }
             }
         }
     }
