@@ -9,7 +9,7 @@ pipeline {
             steps {
                 // sh 'chmod +x gradlew'
                 // sh './gradlew build'
-                sh 'cd build/reports/checkstyle'
+                sh 'cd /build/reports/checkstyle'
                 sh 'ls -a'
                 
                 archiveArtifacts artifacts: 'build/reports/checkstyle/main.html'
