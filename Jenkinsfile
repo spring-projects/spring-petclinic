@@ -23,22 +23,14 @@ pipeline {
         // }
         stage('docker') {
             steps {
-                script {
-                    app = docker.build("rolandgryddynamics/mr")
-                    // sh 'docker build -t my/app .'
-                    sh 'ls -a'
-                    sh 'docker version'
-                    // sh 'docker tag my/app rolandgryddynamics/mr'
-                    // sh 'docker tag push rolandgryddynamics/mr'
-                }
+                    // app = docker.build("rolandgryddynamics/mr")
+                sh 'docker build -t my/app .'
+                sh 'docker tag my/app rolandgryddynamics/mr'
             }
         }
         stage('deploy to dockerhub') {
             steps {
-                script {
-                    docker.withRegistry("https://registry.hub.docker.com", "webserver_login")
-                    app.push("latest")
-                }
+                sh 'docker tag push rolandgryddynamics/mr'
             }
         }
     }
