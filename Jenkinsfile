@@ -24,8 +24,9 @@ pipeline {
         stage('docker') {
             steps {
                 // sh 'docker build -t my/app .'
-                sh 'docker tag my/app rolandgryddynamics/mr'
-                sh 'docker tag push rolandgryddynamics/mr'
+                sh 'docker version'
+                // sh 'docker tag my/app rolandgryddynamics/mr'
+                // sh 'docker tag push rolandgryddynamics/mr'
             }
         }
     }
