@@ -1,9 +1,7 @@
 pipeline {
 
     environment { 
-        registry = "rolandgryddynamics/mr" 
-        registryCredential = 'dockerhub_id' 
-        dockerImage = '' 
+        DOCKERHUB_CREDENTIALS=credentials('rolandgryddynamics-dockerhub')
     }
 
     agent {
@@ -29,21 +27,29 @@ pipeline {
         //     }
         // }
  
-       stage('Building docker image') { 
-            steps { 
-                script { 
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER" 
-                }
-            } 
-        }
-        stage('Deploy our image') { 
-                steps { 
-                    script { 
-                        docker.withRegistry( '', registryCredential ) { 
-                            dockerImage.push() 
-                    }
-                } 
+        stage('docker') {
+            steps {
+                    // sh 'docker version'
+                    // app = docker.build("rolandgryddynamics/mr")
+                    sh 'docker build -t rolandgryddynamics/mr:latest .'
+                    
+                    // sh 'docker tag my/app rolandgryddynamics/mr'
+                    // sh 'docker tag push rolandgryddynamics/mr'
             }
-        } 
+        }
+        stage('login') {
+            steps {
+                    sh 'echo DOCKERHUB_CREDENTIALS_PSW | docker login $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+            }
+        }
+        stage('deploy to dockerhub') {
+            steps {
+                sh 'docker tag push rolandgryddynamics/mr:latest'
+                // script {
+                //     docker.withRegistry('https://registry.hub.docker.com', 'webserver_login' )
+                //     app.push("latest")
+                // }
+            }
+        }
     }
 }
