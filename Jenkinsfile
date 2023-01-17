@@ -37,6 +37,7 @@ pipeline {
         stage('deploy to dockerhub') {
             steps {
                 script {
+                    echo 'jelllkdskdks'
                     docker.withRegistry("https://registry.hub.docker.com", "webserver_login")
                     app.push("${env.BUILD_NUMBER}")
                     app.push("latest")
