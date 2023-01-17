@@ -21,6 +21,7 @@ pipeline {
         //         sh './gradlew build -x test'
         //     }
         // }
+ 
         stage('docker') {
             steps {
                 script {
@@ -37,6 +38,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry("https://registry.hub.docker.com", "webserver_login")
+                    app.push("${env.BUILD_NUMBER}")
                     app.push("latest")
                 }
             }
