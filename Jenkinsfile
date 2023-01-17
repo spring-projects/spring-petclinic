@@ -14,13 +14,14 @@ pipeline {
     stages {
         stage('pull request') {
             steps {
-                if(env.CHANGE_ID) {
-                    sh "echo 'pull request"
-                } else {
-                    sh "echo 'pull no no no"
-                }
+                script {
+                    if(env.CHANGE_ID) {
+                        sh "echo 'pull request"
+                    } else {
+                        sh "echo 'pull no no no"
+                    }
+                 }
             }
-        
             // steps {
             //     script {
             //         if (BRANCH_NAME != 'main' && env.CHANGE_ID){
