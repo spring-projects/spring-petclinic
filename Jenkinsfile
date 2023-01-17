@@ -2,7 +2,8 @@ pipeline {
 
     environment { 
         DOCKERHUB_CREDENTIALS=credentials('rolandgryddynamics-dockerhub')
-        MERGE_REPOSITORY_NAME='mr'
+        MERGE_REPOSITORY='mr'
+        MAIN_REPOSITORY='main'
     }
 
     agent {
@@ -11,6 +12,20 @@ pipeline {
         }
     }
     stages {
+        stage('pull request') {
+            steps {
+                script {
+                    if (env.BRANCH_NAME != 'master' && env.CHANGE_ID){
+                        sh "echo 'ndsakmmkdsa'"
+                        sh "echo 'hfiejrfrei'"
+                    } else if (env.BRANCH_NAME == 'master') {
+                        sh "echo 'master branch'"
+                    } else {
+                        sh "echo 'cap cap cap'"
+                    }
+                }
+            }       
+        }
         // stage('checkstyle') {
         //     steps {
         //         sh './gradlew checkstyleMain'
@@ -28,25 +43,37 @@ pipeline {
         //     }
         // }
  
-        stage('Build Docker image') {
-            steps {
-                sh 'docker build -t $DOCKERHUB_CREDENTIALS_USR/$MERGE_REPOSITORY_NAME:$BUILD_NUMBER .'
-            }
-        }
-        stage('Login DockerHub') {
-            steps {
-                sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW'
-            }
-        }
-        stage('Deploy Docker image to DockerHub') {
-            steps {
-                sh 'docker push $DOCKERHUB_CREDENTIALS_USR/$MERGE_REPOSITORY_NAME:$BUILD_NUMBER'
-            }
-        }
-    }
-    post {
-        always {
-            sh 'docker logout'
-        }
-    }
+    //     stage('Build Docker image') {
+    //         steps {
+    //             script{
+    //                 if (env.BRANCH_NAME == 'main') {
+    //                    sh 'docker build -t $DOCKERHUB_CREDENTIALS_USR/$MAIN_REPOSITORY:$BUILD_NUMBER .'
+    //                 } else {
+    //                     sh 'docker build -t $DOCKERHUB_CREDENTIALS_USR/$MERGE_REPOSITORY:$BUILD_NUMBER .'
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     stage('Login DockerHub') {
+    //         steps {
+    //             sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW'
+    //         }
+    //     }
+    //     stage('Deploy Docker image to DockerHub') {
+    //         steps {
+    //             script{
+    //                 if (env.BRANCH_NAME == 'main') {
+    //                     sh 'docker push $DOCKERHUB_CREDENTIALS_USR/$MAIN_REPOSITORY:$BUILD_NUMBER'
+    //                 } else {
+    //                     sh 'docker push $DOCKERHUB_CREDENTIALS_USR/$MERGE_REPOSITORY:$BUILD_NUMBER'
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+    // post {
+    //     always {
+    //         sh 'docker logout'
+    //     }
+    // }
 }
