@@ -5,20 +5,27 @@ pipeline {
         }
     }
     stages {
-        stage('checkstyle') {
+        // stage('checkstyle') {
+        //     steps {
+        //         sh './gradlew checkstyleMain'
+        //         archiveArtifacts artifacts: 'build/reports/checkstyle/main.html'
+        //     }
+        // }
+        // stage('test') {
+        //     steps {
+        //         sh './gradlew compileJava'
+        //     }
+        // }
+        // stage('build') {
+        //     steps {
+        //         sh './gradlew build -x test'
+        //     }
+        // }
+        stage('docker') {
             steps {
-                sh './gradlew checkstyleMain'
-                archiveArtifacts artifacts: 'build/reports/checkstyle/main.html'
-            }
-        }
-        stage('test') {
-            steps {
-                sh './gradlew test'
-            }
-        }
-        stage('build') {
-            steps {
-                sh './gradlew build -x test'
+                // sh 'docker build -t my/app .'
+                sh 'docker tag my/app rolandgryddynamics/mr'
+                sh 'docker tag push rolandgryddynamics/mr'
             }
         }
     }
