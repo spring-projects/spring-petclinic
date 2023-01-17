@@ -37,22 +37,18 @@ pipeline {
         //             // sh 'docker tag push rolandgryddynamics/mr'
         //     }
         // }
-        // stage('login') {
-        //     steps {
-        //         sh 'echo DOCKERHUB_CREDENTIALS_PSW | docker login $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-        //     }
-        // }
+        stage('login') {
+            steps {
+                sh 'docker login --username $DOCKERHUB_CREDENTIALS_USR --password-stdin $DOCKERHUB_CREDENTIALS_PSW'
+            }
+        }
         stage('deploy to dockerhub') {
             steps {
-                sh 'echo $DOCKERHUB_CREDENTIALS_USR'
-                sh 'echo $DOCKERHUB_CREDENTIALS'
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW'
-
-                // sh 'docker tag push rolandgryddynamics/mr:latest'
-                script {
-                    dockerImage = docker.withRegistry('https://registry.hub.docker.com', 'rolandgryddynamics-dockerhub' )
-                    dockerImage.push()
-                }
+                sh 'docker push rolandgryddynamics/mr:latest'
+                // script {
+                //     dockerImage = docker.withRegistry('https://registry.hub.docker.com', 'rolandgryddynamics-dockerhub' )
+                //     dockerImage.push()
+                // }
             }
         }
     }
