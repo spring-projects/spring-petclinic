@@ -1,4 +1,11 @@
 pipeline {
+
+    environment { 
+        registry = "rolandgryddynamics/mr" 
+        registryCredential = 'dockerhub_id' 
+        dockerImage = '' 
+    }
+
     agent {
         node {
             label 'ubuntu-master'
@@ -22,27 +29,21 @@ pipeline {
         //     }
         // }
  
-        stage('docker') {
-            steps {
-                script {
-                    sh 'docker version'
-                    app = docker.build("rolandgryddynamics/mr")
-                    // sh 'docker build -t my/app .'
-                    
-                    // sh 'docker tag my/app rolandgryddynamics/mr'
-                    // sh 'docker tag push rolandgryddynamics/mr'
+       stage('Building docker image') { 
+            steps { 
+                script { 
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER" 
                 }
-            }
+            } 
         }
-        stage('deploy to dockerhub') {
-            steps {
-                script {
-                    echo 'jelllkdskdks'
-                    docker.withRegistry("https://registry.hub.docker.com", "webserver_login")
-                    app.push("${env.BUILD_NUMBER}")
-                    app.push("latest")
-                }
+        stage('Deploy our image') { 
+                steps { 
+                    script { 
+                        docker.withRegistry( '', registryCredential ) { 
+                            dockerImage.push() 
+                    }
+                } 
             }
-        }
+        } 
     }
 }
