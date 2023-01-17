@@ -20,6 +20,7 @@ pipeline {
                     sh "echo 'pull no no no"
                 }
             }
+        }
             // steps {
             //     script {
             //         if (BRANCH_NAME != 'main' && env.CHANGE_ID){
