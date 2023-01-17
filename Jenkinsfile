@@ -27,28 +27,28 @@ pipeline {
         //     }
         // }
  
-        stage('docker') {
-            steps {
-                    // sh 'docker version'
-                    // app = docker.build("rolandgryddynamics/mr")
-                    sh 'docker build -t rolandgryddynamics/mr:latest .'
+        // stage('docker') {
+        //     steps {
+        //             // sh 'docker version'
+        //             // app = docker.build("rolandgryddynamics/mr")
+        //             sh 'docker build -t rolandgryddynamics/mr:latest .'
                     
-                    // sh 'docker tag my/app rolandgryddynamics/mr'
-                    // sh 'docker tag push rolandgryddynamics/mr'
-            }
-        }
-        stage('login') {
-            steps {
-                    sh 'echo DOCKERHUB_CREDENTIALS_PSW | docker login $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-            }
-        }
+        //             // sh 'docker tag my/app rolandgryddynamics/mr'
+        //             // sh 'docker tag push rolandgryddynamics/mr'
+        //     }
+        // }
+        // stage('login') {
+        //     steps {
+        //         sh 'echo DOCKERHUB_CREDENTIALS_PSW | docker login $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+        //     }
+        // }
         stage('deploy to dockerhub') {
             steps {
-                sh 'docker tag push rolandgryddynamics/mr:latest'
-                // script {
-                //     docker.withRegistry('https://registry.hub.docker.com', 'webserver_login' )
-                //     app.push("latest")
-                // }
+                // sh 'docker tag push rolandgryddynamics/mr:latest'
+                script {
+                    dockerImage = docker.withRegistry('https://registry.hub.docker.com', $DOCKERHUB_CREDENTIALS )
+                    dockerImage.push()
+                }
             }
         }
     }
