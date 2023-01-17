@@ -2,6 +2,7 @@ pipeline {
 
     environment { 
         DOCKERHUB_CREDENTIALS=credentials('rolandgryddynamics-dockerhub')
+        MERGE_REPOSITORY_NAME='mr'
     }
 
     agent {
@@ -27,29 +28,25 @@ pipeline {
         //     }
         // }
  
-        // stage('docker') {
-        //     steps {
-        //             // sh 'docker version'
-        //             // app = docker.build("rolandgryddynamics/mr")
-        //             sh 'docker build -t rolandgryddynamics/mr:latest .'
-                    
-        //             // sh 'docker tag my/app rolandgryddynamics/mr'
-        //             // sh 'docker tag push rolandgryddynamics/mr'
-        //     }
-        // }
-        stage('login') {
+        stage('Build Docker image') {
+            steps {
+                sh 'docker build -t $DOCKERHUB_CREDENTIALS_USR/$MERGE_REPOSITORY_NAME:$BUILD_NUMBER .'
+            }
+        }
+        stage('Login DockerHub') {
             steps {
                 sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW'
             }
         }
-        stage('deploy to dockerhub') {
+        stage('Deploy Docker image to DockerHub') {
             steps {
-                sh 'docker push rolandgryddynamics/mr:latest'
-                // script {
-                //     dockerImage = docker.withRegistry('https://registry.hub.docker.com', 'rolandgryddynamics-dockerhub' )
-                //     dockerImage.push()
-                // }
+                sh 'docker push $DOCKERHUB_CREDENTIALS_USR/$MERGE_REPOSITORY_NAME:$BUILD_NUMBER'
             }
+        }
+    }
+    post {
+        always {
+            sh 'docker logout'
         }
     }
 }
