@@ -13,11 +13,12 @@ pipeline {
     }
     stages {
         stage('pull request') {
-            when {
-                branch 'main'
-            }
             steps {
-                sh "echo 'hello worlsdds'"
+                if(env.CHANGE_ID) {
+                    sh "echo 'pull request"
+                } else {
+                    sh "echo 'pull request"
+                }
             }
             // steps {
             //     script {
