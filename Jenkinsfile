@@ -18,7 +18,7 @@ pipeline {
                     if (env.BRANCH_NAME != 'master' && env.CHANGE_ID){
                         sh "echo 'ndsakmmkdsa'"
                         sh "echo 'hfiejrfrei'"
-                    } else if (env.BRANCH_NAME == 'master') {
+                    } else if (env.BRANCH_NAME == 'main') {
                         sh "echo 'master branch'"
                     } else {
                         sh "echo 'cap cap cap'"
