@@ -15,7 +15,7 @@ pipeline {
         stage('pull request') {
             steps {
                 script {
-                    if(env.CHANGE_ID != null & env.BRANCH_NAME != 'main') {
+                    if(env.CHANGE_ID != null && env.BRANCH_NAME != 'main') {
                         sh "echo $env.BRANCH_NAME"
                         sh "echo 'pull request jk'"
                     } else if (env.BRANCH_NAME == 'main') {
