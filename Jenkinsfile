@@ -13,19 +13,25 @@ pipeline {
     }
     stages {
         stage('pull request') {
+            when {
+                branch 'main'
+            }
             steps {
-                script {
-                    if (BRANCH_NAME != 'main' && env.CHANGE_ID){
-                        sh "echo 'ndsakmmkdsa'"
-                        sh "echo 'hfiejrfrei'"
-                    } else if (BRANCH_NAME == 'main') {
-                        sh "echo main"
-                    } else {
-                        sh "echo $BRANCH_NAME"
-                        sh "echo $env.BRANCH_NAME"
-                    }
-                }
-            }       
+                sh "echo 'hello worlsdds'"
+            }
+            // steps {
+            //     script {
+            //         if (BRANCH_NAME != 'main' && env.CHANGE_ID){
+            //             sh "echo 'ndsakmmkdsa'"
+            //             sh "echo 'hfiejrfrei'"
+            //         } else if (BRANCH_NAME == 'main') {
+            //             sh "echo main"
+            //         } else {
+            //             sh "echo $BRANCH_NAME"
+            //             sh "echo $env.BRANCH_NAME"
+            //         }
+            //     }
+            // }       
         }
     }
         // stage('checkstyle') {
