@@ -15,13 +15,13 @@ pipeline {
         stage('pull request') {
             steps {
                 script {
-                    if (env.BRANCH_NAME != 'master' && env.CHANGE_ID){
+                    if (env.BRANCH_NAME != 'main' && env.CHANGE_ID){
                         sh "echo 'ndsakmmkdsa'"
                         sh "echo 'hfiejrfrei'"
                     } else if (env.BRANCH_NAME == 'main') {
-                        sh "echo 'master branch'"
+                        sh "echo main"
                     } else {
-                        sh "echo 'cap cap cap'"
+                        sh "echo $env.BRANCH_NAM"
                     }
                 }
             }       
