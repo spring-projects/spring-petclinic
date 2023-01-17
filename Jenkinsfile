@@ -22,8 +22,8 @@ pipeline {
         //     }
         // }
         stage('docker') {
-            script {
-                steps {
+            steps {
+                script {
                     app = docker.build("rolandgryddynamics/mr")
                     // sh 'docker build -t my/app .'
                     sh 'ls -a'
@@ -34,8 +34,8 @@ pipeline {
             }
         }
         stage('deploy to dockerhub') {
-            script {
-                steps {
+            steps {
+                script {
                     docker.withRegistry("https://registry.hub.docker.com", "webserver_login")
                     app.push("latest")
                 }
