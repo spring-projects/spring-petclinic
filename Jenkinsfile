@@ -46,7 +46,11 @@ pipeline {
             steps {
                 // sh 'docker tag push rolandgryddynamics/mr:latest'
                 script {
-                    dockerImage = docker.withRegistry('https://registry.hub.docker.com', $DOCKERHUB_CREDENTIALS )
+                    echo $DOCKERHUB_CREDENTIALS_USR
+                    echo DOCKERHUB_CREDENTIALS_PSW
+                    echo $DOCKERHUB_CREDENTIALS
+                    echo rolandgryddynamics-dockerhub
+                    dockerImage = docker.withRegistry('https://registry.hub.docker.com', 'rolandgryddynamics-dockerhub' )
                     dockerImage.push()
                 }
             }
