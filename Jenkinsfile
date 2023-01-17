@@ -16,9 +16,9 @@ pipeline {
             steps {
                 script {
                     if(env.CHANGE_ID) {
-                        sh "echo 'pull request"
+                        sh "echo 'pull request'"
                     } else {
-                        sh "echo 'pull no no no"
+                        sh "echo 'pull no no no'"
                     }
                  }
             }
