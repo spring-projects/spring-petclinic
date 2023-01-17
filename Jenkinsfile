@@ -39,7 +39,7 @@ pipeline {
         // }
         stage('login') {
             steps {
-                sh 'docker login --username $DOCKERHUB_CREDENTIALS_USR --password-stdin $DOCKERHUB_CREDENTIALS_PSW'
+                sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW'
             }
         }
         stage('deploy to dockerhub') {
