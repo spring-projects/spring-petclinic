@@ -26,6 +26,7 @@ pipeline {
                 }
             }       
         }
+    }
         // stage('checkstyle') {
         //     steps {
         //         sh './gradlew checkstyleMain'
