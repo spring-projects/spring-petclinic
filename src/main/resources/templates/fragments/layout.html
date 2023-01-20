@@ -26,8 +26,8 @@
 
   <nav class="navbar navbar-expand-lg navbar-dark" role="navigation">
     <div class="container-fluid">
-      <a class="navbar-brand" th:href="@{/}"><span></span></a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-navbar">
+      <a data-cy="navbar-brand" class="navbar-brand" th:href="@{/}"><span></span></a>
+      <button data-cy="navbar-toggler" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-navbar">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="main-navbar" style>
@@ -35,7 +35,7 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0" th:remove="all">
 
           <li th:fragment="menuItem (link,active,title,glyph,text)" th:class="nav-item">
-            <a th:class="${active==menu ? 'nav-link active' : 'nav-link'}" th:href="@{__${link}__}" th:title="${title}">
+            <a th:data-cy="${title}" th:class="${active==menu ? 'nav-link active' : 'nav-link'}" th:href="@{__${link}__}" th:title="${title}">
               <span th:class="'fa fa-'+${glyph}" class="fa fa-home"></span>
               <span th:text="${text}">Template</span>
             </a>
@@ -45,17 +45,17 @@
 
         <ul class="nav navbar-nav me-auto">
 
-          <li th:replace="~{::menuItem ('/','home','home page','home','Home')}">
+          <li data-cy="home" th:replace="~{::menuItem ('/','home','home page','home','Home')}">
             <span class="fa fa-home" aria-hidden="true"></span>
             <span>Home</span>
           </li>
 
-          <li th:replace="~{::menuItem ('/owners/find','owners','find owners','search','Find owners')}">
+          <li data-cy="find-owners" th:replace="~{::menuItem ('/owners/find','owners','find owners','search','Find owners')}">
             <span class="fa fa-search" aria-hidden="true"></span>
             <span>Find owners</span>
           </li>
 
-          <li th:replace="~{::menuItem ('/vets.html','vets','veterinarians','th-list','Veterinarians')}">
+          <li data-cy="veterinarians" th:replace="~{::menuItem ('/vets.html','vets','veterinarians','th-list','Veterinarians')}">
             <span class="fa fa-th-list" aria-hidden="true"></span>
             <span>Veterinarians</span>
           </li>

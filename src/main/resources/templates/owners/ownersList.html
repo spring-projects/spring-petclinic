@@ -19,7 +19,7 @@
   <tbody>
   <tr th:each="owner : ${listOwners}">
     <td>
-      <a th:href="@{/owners/__${owner.id}__}" th:text="${owner.firstName + ' ' + owner.lastName}"/></a>
+      <a data-cy="owner-link" th:href="@{/owners/__${owner.id}__}" th:text="${owner.firstName + ' ' + owner.lastName}"/></a>
     </td>
     <td th:text="${owner.address}"/>
     <td th:text="${owner.city}"/>
@@ -32,27 +32,27 @@
   <span>Pages:</span>
   <span>[</span>
   <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-      <a th:if="${currentPage != i}" th:href="@{'/owners?page=' + ${i}}">[[${i}]]</a>
+      <a data-cy="pagination-button" th:if="${currentPage != i}" th:href="@{'/owners?page=' + ${i}}">[[${i}]]</a>
       <span th:unless="${currentPage != i}">[[${i}]]</span>
     </span>
   <span>]&nbsp;</span>
   <span>
-      <a th:if="${currentPage > 1}" th:href="@{'/owners?page=1'}" title="First"
+      <a data-cy="first-button" th:if="${currentPage > 1}" th:href="@{'/owners?page=1'}" title="First"
          class="fa fa-fast-backward"></a>
       <span th:unless="${currentPage > 1}" title="First" class="fa fa-fast-backward"></span>
     </span>
   <span>
-      <a th:if="${currentPage > 1}" th:href="@{'/owners?page=__${currentPage - 1}__'}" title="Previous"
+      <a data-cy="previous-button" th:if="${currentPage > 1}" th:href="@{'/owners?page=__${currentPage - 1}__'}" title="Previous"
          class="fa fa-step-backward"></a>
       <span th:unless="${currentPage > 1}" title="Previous" class="fa fa-step-backward"></span>
     </span>
   <span>
-      <a th:if="${currentPage < totalPages}" th:href="@{'/owners?page=__${currentPage + 1}__'}" title="Next"
+      <a data-cy="next-button" th:if="${currentPage < totalPages}" th:href="@{'/owners?page=__${currentPage + 1}__'}" title="Next"
          class="fa fa-step-forward"></a>
       <span th:unless="${currentPage < totalPages}" title="Next" class="fa fa-step-forward"></span>
     </span>
   <span>
-      <a th:if="${currentPage < totalPages}" th:href="@{'/owners?page=__${totalPages}__'}" title="Last"
+      <a data-cy="last-button" th:if="${currentPage < totalPages}" th:href="@{'/owners?page=__${totalPages}__'}" title="Last"
          class="fa fa-fast-forward"></a>
       <span th:unless="${currentPage < totalPages}" title="Last" class="fa fa-step-forward"></span>
     </span>

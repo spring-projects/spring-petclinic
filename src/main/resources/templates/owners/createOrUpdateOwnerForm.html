@@ -20,6 +20,7 @@
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
         <button
+          data-cy="add-owner"
           th:with="text=${owner['new']} ? 'Add Owner' : 'Update Owner'"
           class="btn btn-primary" type="submit" th:text="${text}">Add
           Owner</button>
