@@ -1,45 +1,30 @@
-name: Version Build
+name: Test Deploy
 
 on:
-  workflow_dispatch:
-  #push:
-    #branches: master
-
+  pull_request:
+    branches:
+      - master
+      
 jobs:
-  build-version:
-
+  see-the-contexts:
     runs-on: ubuntu-latest
-
+    
     steps:
-    - name: Git checkout
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: '0'
-        persist-credentials: true
-        #token: ${{ secrets.MY_PAT }}
-    - name: git
-      run: |
-        ${{ github.workspace }}/CI/scripts/validate_yaml
-        echo "::error ${{ github.workspace }}/CI/scripts/validate_yaml::Missing Value"
-        # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
-        git --version
-        git config user.name "jstan-isch"
-        git config user.email "stanleyikegwuonu@gmail.com"
-        git status
-        git tag
-        git describe
-        echo -e "\n Deleting previous QA tag"
-        git log QA...HEAD > log.txt
-        git tag -d QA
-        echo -e "\n DONE"
-        echo -e "\n Push tags to master"
-        git push origin :refs/tags/QA
-        echo -e "\n DONE"
-        echo -e "\n Creating new QA tag to HEAD"
-        git tag -a QA -F log.txt
-        echo -e "\n DONE"
-        echo -e "\n Push tags to master"
-        git rev-list -n 1 QA
-        git push origin QA
-        echo -e "\n DONE"
-        echo -e "\n Job Completed"
+      - name: Checkout pull request HEAD
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.MY_PAT }}
+          
+      - name: Create a file
+        run: |
+          touch file8.txt
+          echo "added dummy file 1" > file8.txt
+          
+      - name: commit and push
+        run: |
+          git config user.name jstan-isch
+          git config user.email stanleyikegwuonu@gmail.com
+          git add .
+          git commit -m "generated"
+          git push
