@@ -1,0 +1,15 @@
+name: pusher
+
+on:
+  workflow_run:
+    workflows: ["Test Deploy"]
+    types: 
+      - completed
+      
+jobs:
+  on-push:
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success'
+    steps:
+      - run: echo 'job completed'
+      
