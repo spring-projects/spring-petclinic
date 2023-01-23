@@ -1,10 +1,11 @@
 name: pusher
 
 on:
-  workflow_run:
-    workflows: ["Test Deploy"]
-    types: 
-      - completed
+  push:
+  #workflow_run:
+    #workflows: ["Test Deploy"]
+    #types: 
+      #- completed
       
 jobs:
   on-push:
