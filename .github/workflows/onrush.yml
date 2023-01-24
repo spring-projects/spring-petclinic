@@ -12,5 +12,5 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.workflow_run.conclusion == 'success'
     steps:
-      - run: echo 'job completed'
+      - run: git commit --allow-empty -m "Empty commit"
       
