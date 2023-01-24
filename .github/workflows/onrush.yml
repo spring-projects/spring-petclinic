@@ -1,16 +1,35 @@
 name: pusher
 
 on:
-  push:
-  #workflow_run:
-    #workflows: ["Test Deploy"]
-    #types: 
-      #- completed
+#   push:
+#     branches:
+#       - master
+#     paths: 
+#       - file28.txt
+  workflow_run:
+    workflows: ["Test Deploy"]
+    types: 
+      - completed
       
 jobs:
   on-push:
     runs-on: ubuntu-latest
     if: github.event.workflow_run.conclusion == 'success'
     steps:
-      - run: git commit --allow-empty -m "Empty commit"
+      - run: echo "completed"
+      
+  post-test-success:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: haya14busa/action-workflow_run-status@v1
+      - uses: actions/checkout@v2
+      - run: exit 0
+
+  post-test-failure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: haya14busa/action-workflow_run-status@v1
+      - uses: actions/checkout@v2
+      - run: exit 1
+      
       
