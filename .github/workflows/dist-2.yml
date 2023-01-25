@@ -9,6 +9,9 @@ jobs:
       - uses: actions/checkout@v2
         with:
           ref: ${{ github.event.client_payload.ref }}
-          
+      
+      - run: echo "This is second sha ${{ github.sha }}"  
+      - run: echo "This is second sha ${{ github.event.client_payload.sha }}"
+      - run: echo ${{ github.event.client_payload.test }}
       - run: echo ${{ github.event.client_payload.sha }}
       - run: echo ${{ github.event.client_payload.test }}
