@@ -1,11 +1,12 @@
 name: pusher
 
 on:
-  push:
-    branches:
-      - master
-    paths: 
-      - file28.txt
+  workflow_call:
+#   push:
+#     branches:
+#       - master
+#     paths: 
+#       - file28.txt
 #   workflow_run:
 #     workflows: ["Test Deploy"]
 #     types: 
