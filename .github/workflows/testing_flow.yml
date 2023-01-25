@@ -19,7 +19,7 @@ jobs:
       - name: Create a file
         run: |
           touch file8.txt
-          echo "added dummy file 1" > file8.txt
+          echo "added dummy file 2" > file8.txt
           
       - name: commit and push
         run: |
@@ -28,3 +28,10 @@ jobs:
           git add .
           git commit -m "generated"
           git push
+          
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.MY_PAT }}
+          event-type: my-event
+          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}", "test": "test message"}'   
