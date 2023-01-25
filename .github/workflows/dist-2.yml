@@ -13,6 +13,7 @@ jobs:
       - name: Dump Context
         env: 
           GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CONTEXT"
       
       - run: echo "This is the payload ref ${{ github.event.client_payload.ref }}"
       - run: echo "sha from first run sha ${{ github.sha }}"  
