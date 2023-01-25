@@ -6,6 +6,9 @@ jobs:
   myEvent:
     runs-on: ubuntu-latest
     steps:
+      - name: Dump Context
+        env: 
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
       - uses: actions/checkout@v2
         with:
           ref: ${{ github.event.client_payload.ref }}
