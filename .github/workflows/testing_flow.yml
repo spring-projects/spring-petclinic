@@ -8,18 +8,25 @@ on:
 jobs:
   see-the-contexts:
     runs-on: ubuntu-latest
+    container:
+      image: alpine:latest
+      credentials: 
+        username: ${{ DOCKERHUB_USERNAME }}
+        password: ${{ DOCKERHUB_TOKEN }}
     
     steps:
-      - name: Checkout pull request HEAD
+      - name: Checkout PR HEAD
         uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.ref }}
-          token: ${{ secrets.MY_PAT }}
-          
+#           token: ${{ secrets.MY_PAT }}
+     
+      - name: install curl
+        run: apk --no-cache add curl
+        
       - name: Create a file
         run: |
-          touch file8.txt
-          echo "added dummy file 6" > file8.txt
+          echo "added dummy file 6" > file28.txt
           
       - name: commit and push
         run: |
@@ -28,7 +35,39 @@ jobs:
           git add .
           git commit -m "generated"
           git push
-      
+          
+          
+  tee-the-contexts:
+    runs-on: ubuntu-latest
+    container:
+      image: alpine:latest
+      credentials: 
+        username: ${{ DOCKERHUB_USERNAME }}
+        password: ${{ DOCKERHUB_TOKEN }}
+    
+    steps:
+      - name: Checkout PR HEAD
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+#           token: ${{ secrets.MY_PAT }}
+          
+      - name: Create a file
+        run: |
+          echo "added dummy file 6" > Jenkinsfile_main
+          
+      - name: commit and push
+        run: |
+          git config user.name jstan-isch
+          git config user.email stanleyikegwuonu@gmail.com
+          git add .
+          git commit -m "generated"
+          git push
+     
+  vee-the-contexts:
+    needs: [see-the-contexts, tee-the-contexts]
+    runs-on: ubuntu-latest
+    steps:
       - name: Repository Dispatch
         run: |
           curl \
