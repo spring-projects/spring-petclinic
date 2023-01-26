@@ -2,6 +2,8 @@ name: Repository Dispatch
 on:
   repository_dispatch:
     types: [my-event]
+  pull_request:
+
 jobs:
   myEvent:
     runs-on: ubuntu-latest
