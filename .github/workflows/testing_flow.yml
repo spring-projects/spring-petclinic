@@ -24,17 +24,22 @@ jobs:
       - name: install curl
         run: apk --no-cache add curl
         
-      - name: Create a file
+      - name: Update file
         run: |
-          echo "added dummy file 6" > file28.txt
+          echo "added dummy file 6" >> file28.txt
           
-      - name: commit and push
+      - name: commit and push 1
         run: |
-          git config user.name jstan-isch
-          git config user.email stanleyikegwuonu@gmail.com
-          git add .
-          git commit -m "generated"
-          git push
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "Changes found"
+            git config user.name jstan-isch
+            git config user.email stanleyikegwuonu@gmail.com
+            git add .
+            git commit -m "generated"
+            git push
+          else
+            echo "No changes found, exiting."
+            echo "Job Completed!"
           
           
   tee-the-contexts:
@@ -52,17 +57,23 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
 #           token: ${{ secrets.MY_PAT }}
           
-      - name: Create a file
+      - name: Update file
         run: |
-          echo "added dummy file 6" > Jenkinsfile_main
+          echo "added dummy file 6" >> Jenkinsfile_main
           
-      - name: commit and push
+      - name: commit and push 2
         run: |
-          git config user.name jstan-isch
-          git config user.email stanleyikegwuonu@gmail.com
-          git add .
-          git commit -m "generated"
-          git push
+          run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "Changes found"
+            git config user.name jstan-isch
+            git config user.email stanleyikegwuonu@gmail.com
+            git add .
+            git commit -m "generated"
+            git push
+          else
+            echo "No changes found, exiting."
+            echo "Job Completed!"
      
   vee-the-contexts:
     needs: [see-the-contexts, tee-the-contexts]
