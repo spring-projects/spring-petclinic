@@ -46,9 +46,4 @@ jobs:
             "name": "myEvent",
             "head_sha": "${{ github.sha }}",
             "status": "completed",
-            "conclusion": "success",
-            "output": {
-              "title": null,
-              "summary": null,
-              "text": null 
-              }}'
+            "conclusion": "success"}'
