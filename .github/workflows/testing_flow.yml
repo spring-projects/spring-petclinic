@@ -11,8 +11,8 @@ jobs:
     container:
       image: alpine:latest
       credentials: 
-        username: ${{ DOCKERHUB_USERNAME }}
-        password: ${{ DOCKERHUB_TOKEN }}
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
     
     steps:
       - name: Checkout PR HEAD
