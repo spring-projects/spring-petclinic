@@ -2,7 +2,7 @@ name: Repository Dispatch
 on:
   repository_dispatch:
     types: [my-event]
-#  pull_request:
+  pull_request:
 
 jobs:
   myEvent:
