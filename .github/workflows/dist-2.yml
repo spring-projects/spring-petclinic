@@ -41,16 +41,14 @@ jobs:
           -X POST \
           -H "Accept: application/vnd.github+json" \
           -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-          -H "X-GitHub-Api-Version: 2022-11-28" \
           https://api.github.com/repos/jstan-isch/spring-petclinic/check-runs \
           -d '{
-            "name":"mighty_readme",
-            "head_sha":"3b1822e5b0ee11bdc944e71392bd8b7006401c26",
-            "status":"completed",
+            "name": "myEvent",
+            "head_sha": "${{ github.sha }}",
+            "status": "completed",
             "conclusion": "success",
             "output": {
               "title": null,
               "summary": null,
-              "text": null, 
-              }
-            }'
+              "text": null 
+              }}'
