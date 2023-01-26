@@ -1,7 +1,7 @@
 name: Repository Dispatch
 on:
   repository_dispatch:
-    types: [my-event]
+    types: [success]
   #pull_request: 
     #branches: [master]
 
