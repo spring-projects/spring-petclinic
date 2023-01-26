@@ -2,8 +2,8 @@ name: Repository Dispatch
 on:
   repository_dispatch:
     types: [my-event]
-  pull_request: 
-    branches: [master]
+  #pull_request: 
+    #branches: [master]
 
 jobs:
   myEvent:
