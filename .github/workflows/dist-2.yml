@@ -44,6 +44,6 @@ jobs:
           https://api.github.com/repos/jstan-isch/spring-petclinic/check-runs \
           -d '{
             "name": "myEvent",
-            "head_sha": "${{ github.sha }}",
+            "head_sha": "${{ github.event.client_payload.sha }}",
             "status": "completed",
             "conclusion": "success"}'
