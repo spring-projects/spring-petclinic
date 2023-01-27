@@ -14,11 +14,11 @@ RUN \
   apt-get -y upgrade && \
   apt-get install -y build-essential && \
   apt-get install -y software-properties-common && \
-  apt-get install -y byobu curl git htop man unzip vim wget && \
+  apt-get install -y curl git htop man unzip vim wget && \
   rm -rf /var/lib/apt/lists/*
 
 # Add files.
-ADD root/.bashrc /root/.bashrc
+# ADD root/.bashrc /root/.bashrc
 ADD root/.gitconfig /root/.gitconfig
 ADD root/.scripts /root/.scripts
 
