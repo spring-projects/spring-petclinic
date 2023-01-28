@@ -1,8 +1,8 @@
 name: Repository Dispatch
 
 on:
-  check_run:
-    types: [created, completed, requested_action]
+  check_suite:
+    types: [completed]
 #   repository_dispatch:
 #     types: [my-event]
   #pull_request: 
