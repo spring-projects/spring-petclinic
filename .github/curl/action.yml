@@ -1,0 +1,25 @@
+name: curl
+
+on:
+  workflow_call:
+    inputs:
+      env:
+        description: 'sha'
+        required: true
+        type: string
+    secrets:
+      env:
+        description: 'secret'
+        required: true
+        
+jobs:
+  curl:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+            curl \
+            -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ input.secrets }}" \
+            https://api.github.com/repos/jstan-isch/spring-petclinic/check-runs \
+            -d '{"name":"myEvent","head_sha":"${{ input.sha }}","status":"completed", "conclusion":"success"}'
