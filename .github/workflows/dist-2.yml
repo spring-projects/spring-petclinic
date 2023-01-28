@@ -25,12 +25,11 @@ jobs:
       
       - name: check-run-flow
         uses: ./.github/curl@master
-        with:
-          env: 
-            NAME: "myEvent"
-            STATUS: "success"
-            SHA: ${{ github.event.client_payload.sha }}
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        env: 
+          NAME: "myEvent"
+          STATUS: "success"
+          SHA: ${{ github.event.client_payload.sha }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 #         env:
 #           envPAT: ${{ secrets.MY_PAT }}
           
