@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 
-RUN pt-get -y update && apt-get -y install curl
+RUN apt-get -y update && apt-get -y install curl
 
 ENTRYPOINT []
 
