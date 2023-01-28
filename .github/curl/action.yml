@@ -1,20 +1,20 @@
 name: curl
 
-on:
-  workflow_call:
-    inputs:
-      sha:
-        required: true
-#     secrets:
-#       envPAT:
+# on:
+#   workflow_call:
+#     inputs:
+#       sha:
 #         required: true
+# #     secrets:
+# #       envPAT:
+# #         required: true
         
-jobs:
-  curl:
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
-              echo "${{ inputs.sha }}"
+# jobs:
+#   curl:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - run: |
+#               echo "${{ inputs.sha }}"
 #             curl \
 #             -X POST \
 #             -H "Accept: application/vnd.github+json" \
