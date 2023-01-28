@@ -6,7 +6,7 @@ on:
       sha:
         required: true
     secrets:
-      secret:
+      github_token:
         required: true
         
 jobs:
@@ -17,6 +17,6 @@ jobs:
             curl \
             -X POST \
             -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${{ secrets.secret }}" \
+            -H "Authorization: Bearer ${{ secrets.github_token }}" \
             https://api.github.com/repos/jstan-isch/spring-petclinic/check-runs \
             -d '{"name":"myEvent","head_sha":"${{ inputs.sha }}","status":"completed", "conclusion":"success"}'
