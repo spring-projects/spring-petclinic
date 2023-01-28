@@ -15,7 +15,7 @@
 
 curl \
   -X POST \
-  -H "Accept: application/vnd.github+json" \
+  -H "Accept: application/vnd.github.everest-preview+json" \
   -H "Authorization: Bearer $GITHUB_TOKEN" \
   https://api.github.com/repos/jstan-isch/spring-petclinic/check-runs \
- -d '{"name":"testing", "head_sha": "deba2a5e6dc64f31ae40715c6dac4a1909974a83", "status":"completed", "conclusion": "success"}'
+ -d '{"name":"$CONTEXT", "head_sha": "$SHA", "status":"completed", "conclusion": "$STATUS"}'
