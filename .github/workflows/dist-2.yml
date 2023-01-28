@@ -30,7 +30,7 @@ jobs:
           -H "Accept: application/vnd.github+json" \
           -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
           https://api.github.com/repos/jstan-isch/spring-petclinic/check-runs \
-          -d '{"name":"myEvent","head_sha":"${{ github.event.client_payload.sha }}","status":"completed", "conclusion":"success"}'
+          -d '{"name":"myEvent","head_sha":"${{ github.event.client_payload.sha }}","status":"completed", "conclusion":"success", "details_url":"https://github.com/jstan-isch/spring-petclinic/runs/{id}"}'
       
        #-d '{"name":"myEvent","head_sha":"${{ github.event.client_payload.sha }}","status":"completed", "conclusion":"success", "details_url":"https://github.com/jstan-isch/spring-petclinic/runs/{id}"}'
       
