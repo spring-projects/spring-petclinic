@@ -1,11 +1,5 @@
-FROM ubuntu:latest
+FROM alpine:latest
 
-RUN apt-get -y update && apt-get -y install curl
+RUN apk update && apk add bash curl
 
 ENTRYPOINT []
-
-# FROM alpine:latest
-
-# RUN apk update && apk add bash curl
-
-# ENTRYPOINT []
