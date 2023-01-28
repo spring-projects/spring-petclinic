@@ -26,8 +26,9 @@ jobs:
       - name: check-run-flow
         uses: ./.github/curl
         with:
-          sha: ${{ github.event.client_payload.sha }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+            sha: ${{ github.event.client_payload.sha }}
+        secrets:
+            token: ${{ secrets.GITHUB_TOKEN }}
           
           
 #         run: |
