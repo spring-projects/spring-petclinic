@@ -27,8 +27,8 @@ jobs:
         uses: ./.github/curl
         with:
             sha: ${{ github.event.client_payload.sha }}
-        env:
-          envPAT: ${{ secrets.MY_PAT }}
+#         env:
+#           envPAT: ${{ secrets.MY_PAT }}
           
           
 #         run: |
