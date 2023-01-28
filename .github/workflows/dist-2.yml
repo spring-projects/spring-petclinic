@@ -26,7 +26,7 @@ jobs:
       - name: check-run-flow
         uses: ./.github/curl
         env: 
-          NAME: "myEvent"
+          CONTEXT: "myEvent"
           STATUS: "success"
           SHA: ${{ github.event.client_payload.sha }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
