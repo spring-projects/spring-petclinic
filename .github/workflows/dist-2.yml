@@ -9,9 +9,10 @@ jobs:
   myEvent:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{ github.event.client_payload.ref }}
+          fetch-depth: '0'
           
       - name: Dump Context
         env: 
@@ -21,7 +22,9 @@ jobs:
       - run: echo "This is the payload ref ${{ github.event.client_payload.ref }}"
       - run: echo "sha from first run sha ${{ github.sha }}"  
       - run: echo "client payload sha ${{ github.event.client_payload.sha }}"
-      - run: |
+      
+      - name: check-run-flow
+        run: |
           curl \
           -X POST \
           -H "Accept: application/vnd.github+json" \
