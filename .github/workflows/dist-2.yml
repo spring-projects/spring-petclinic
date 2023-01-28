@@ -27,8 +27,7 @@ jobs:
         uses: ./.github/curl
         with:
             sha: ${{ github.event.client_payload.sha }}
-        secrets:
-            token: ${{ secrets.GITHUB_TOKEN }}
+            github_token: ${{ secrets.GITHUB_TOKEN }}
           
           
 #         run: |
