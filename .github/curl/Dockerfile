@@ -1,5 +1,5 @@
 FROM alpine:latest
 
-RUN app update && apk add curl
+RUN apk update && apk add curl
 
 ENTRYPOINT []
