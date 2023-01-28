@@ -3,7 +3,7 @@ description: 'curl action'
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  entrypoint: './curl.sh'
+  entrypoint: "./curl.sh"
   
 
 # on:
