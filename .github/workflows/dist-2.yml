@@ -24,9 +24,13 @@ jobs:
       - run: echo "client payload sha ${{ github.event.client_payload.sha }}"
       
       - name: check-run-flow
-        uses: ./.github/curl
+        uses: ./.github/curl@master
         with:
-            sha: ${{ github.event.client_payload.sha }}
+          env: 
+            NAME: "myEvent"
+            STATUS: "success"
+            SHA: ${{ github.event.client_payload.sha }}
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 #         env:
 #           envPAT: ${{ secrets.MY_PAT }}
           
