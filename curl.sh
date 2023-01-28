@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Github app uses this script to create check runs
 # for a commit sha
