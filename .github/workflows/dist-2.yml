@@ -24,7 +24,7 @@ jobs:
       - run: echo "client payload sha ${{ github.event.client_payload.sha }}"
       
       - name: check-run-flow
-        uses: ./.github/workflows/curl.yml
+        uses: ./.github/curl
         with:
           secret: ${{ secrets.GITHUB_TOKEN }}
           sha: ${{ github.event.client_payload.sha }}
