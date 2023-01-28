@@ -18,4 +18,4 @@ curl \
   -H "Accept: application/vnd.github+json" \
   -H "Authorization: Bearer ${TOKEN}" \
   https://api.github.com/repos/jstan-isch/spring-petclinic/check-runs \
- -d '{"name":"${PR_CONTEXT}", "head_sha":"${COMMIT_SHA}", "status":"completed", "conclusion":"${PR_STATUS}"}'
+ -d '{"name":"$PR_CONTEXT, "head_sha":$COMMIT_SHA, "status":"completed", "conclusion":$PR_STATUS}'
