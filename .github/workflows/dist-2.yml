@@ -27,7 +27,7 @@ jobs:
         uses: ./.github/curl
         env: 
           NAME: "myEvent"
-          STATUS: \"success\"
+          STATUS: "success"
           SHA: ${{ github.event.client_payload.sha }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 #         env:
