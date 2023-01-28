@@ -1,13 +1,9 @@
 name: Repository Dispatch
-
 on:
-  check_suite:
-    types: [completed]
-#   repository_dispatch:
-#     types: [my-event]
+  repository_dispatch:
+    types: [my-event]
   #pull_request: 
     #branches: [master]
-
 
 jobs:
   myEvent:
@@ -40,7 +36,6 @@ jobs:
             "description": "Staging tests passed",
             "target_url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           }'
-
           curl \
           -X POST \
           -H "Accept: application/vnd.github+json" \
