@@ -23,15 +23,23 @@ jobs:
       - run: echo "sha from first run sha ${{ github.sha }}"  
       - run: echo "client payload sha ${{ github.event.client_payload.sha }}"
       
-      - name: check-run-flow
+      - name: Success
+        if: success()
         uses: ./.github/curl
         env: 
           CONTEXT: "myEvent"
           STATUS: "success"
           SHA: ${{ github.event.client_payload.sha }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#         env:
-#           envPAT: ${{ secrets.MY_PAT }}
+
+      - name: Failure
+        if: success()
+        uses: ./.github/curl
+        env: 
+          CONTEXT: "myEvent"
+          STATUS: "success"
+          SHA: ${{ github.event.client_payload.sha }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
           
 #         run: |
