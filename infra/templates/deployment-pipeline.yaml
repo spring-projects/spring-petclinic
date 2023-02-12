@@ -222,13 +222,12 @@ Resources:
                 - echo -n "$CODEBUILD_LOG_PATH" > /tmp/build_id.out
                 - printf "%s:%s" "$REPOSITORY_URI" "$(cat /tmp/build_id.out)" > /tmp/build_tag.out
                 - printf '{"tag":"%s"}' "$(cat /tmp/build_id.out)" > /tmp/build.json
-                # - $(aws ecr get-login-password)
+                - echo Logging in to Amazon ECR...
+                - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin "$(aws sts get-caller-identity --query \"Account\" --output text)".dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
             build:
               commands:
-                - ./mvnw package
+                - ./mvnw package -DskipTests
                 - docker build --tag "$(cat /tmp/build_tag.out)" .
-                # - ./mvnw spring-boot:build-image
-                - docker image tag spring-petclinic:3.0.0-SNAPSHOT "$(cat /tmp/build_tag.out)"
             post_build:
               commands:
                 - docker push "$(cat /tmp/build_tag.out)"
@@ -239,13 +238,12 @@ Resources:
         ComputeType: "BUILD_GENERAL1_SMALL"
         Image: "aws/codebuild/standard:6.0"
         Type: "LINUX_CONTAINER"
+        PrivilegedMode: true
         EnvironmentVariables:
           - Name: AWS_DEFAULT_REGION
             Value: !Ref AWS::Region
           - Name: REPOSITORY_URI
             Value: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${Repository}
-          - Name: DOCKER_HOST
-            Value: unix:///var/run/docker.sock
       Name: !Sub ${AWS::StackName}-codebuildproject
       ServiceRole: !Ref CodeBuildServiceRole
 
@@ -259,11 +257,11 @@ Resources:
         BuildSpec: |
           version: 0.1
           phases:
-            install:
-              commands:
-                - pip install --upgrade python
-                - pip install --upgrade awscli
-                - pip install --upgrade boto3
+            # install:
+            #   commands:
+                # - pip install --upgrade python
+                # - pip install --upgrade awscli
+                # - pip install --upgrade boto3
             pre_build:
               commands:
                 - printenv
@@ -274,7 +272,7 @@ Resources:
             discard-paths: yes
       Environment:
         ComputeType: "BUILD_GENERAL1_SMALL"
-        Image: aws/codebuild/python:2.7.12
+        Image: "aws/codebuild/standard:6.0"
         Type: "LINUX_CONTAINER"
         EnvironmentVariables:
           - Name: AWS_DEFAULT_REGION

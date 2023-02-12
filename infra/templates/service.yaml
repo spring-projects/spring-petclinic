@@ -31,9 +31,7 @@ Parameters:
   IsProduction:
     Type: String
 
-
 Resources:
-
   LoadBalancerListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
@@ -77,7 +75,7 @@ Resources:
       Conditions:
         - Field: path-pattern
           Values:
-          - "*"
+            - "*"
       ListenerArn: !Ref LoadBalancerListener
       Priority: 1
 
@@ -104,15 +102,37 @@ Resources:
       Role: !Ref ECSServiceRole
       DesiredCount: !Ref DesiredCount
       TaskDefinition: !Ref TaskDefinition
+      # CapacityProviderStrategy:
+      #   - CapacityProvider: FARGATE
+      #   - Base: 0
+      #   - Weight: 1
       LoadBalancers:
         - ContainerName: simple-app
           ContainerPort: 80
           TargetGroupArn: !Ref TargetGroup
+      # NetworkConfiguration:
+      #   - AwsvpcConfiguration:
+      #     - AssignPublicIp: ENABLED
+      #     - SecurityGroups:
+      #       - Ref: SecurityGroupIDs
+      #     - Subnets: !!omap
+      #       - Ref: SubnetIDs
+      PlatformVersion: LATEST
+      # DeploymentConfiguration:
+      #   - MaximumPercent: 200
+      #   - MinimumHealthyPercent: 100
+      #   - DeploymentCircuitBreaker:
+      #     - Enable: true
+      #     - Rollback: true
+      # DeploymentController:
+      #   - Type: ECS
+      # ServiceConnectConfiguration:
+      #   - Enabled: false
 
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
-      #Family: !Sub ${AWS::StackName}-simple-app
+      Family: !Sub ${AWS::StackName}-simple-app
       ContainerDefinitions:
         - Name: simple-app
           Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${Repository}:${Tag}
