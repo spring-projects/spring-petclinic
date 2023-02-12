@@ -1,0 +1,145 @@
+Description: >
+  Create ECS Service for Blue/Green Deployment on ECS. For further reference, please review BluegreenRepo ==> https://github.com/awslabs/ecs-blue-green-deployment
+
+Parameters:
+  DesiredCount:
+    Type: Number
+    Default: 0
+
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+
+  Cluster:
+    Type: String
+
+  LoadBalancer:
+    Type: String
+
+  Repository:
+    Type: String
+
+  Tag:
+    Type: String
+    Default: latest
+
+  Port:
+    Type: Number
+
+  Identifier:
+    Type: String
+
+  IsProduction:
+    Type: String
+
+
+Resources:
+
+  LoadBalancerListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      LoadBalancerArn: !Ref LoadBalancer
+      Port: !Ref Port
+      Protocol: HTTP
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref TargetGroup
+
+  TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      VpcId: !Ref VpcId
+      Port: !Ref Port
+      Protocol: HTTP
+      Matcher:
+        HttpCode: 200-299
+      HealthCheckIntervalSeconds: 10
+      HealthCheckPath: /
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 2
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: 30
+      Tags:
+        - Key: Identifier
+          Value: !Ref Identifier
+        - Key: Image
+          Value: !Ref Tag
+        - Key: IsProduction
+          Value: !Ref IsProduction
+
+  ListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      Actions:
+        - Type: forward
+          TargetGroupArn: !Ref TargetGroup
+      Conditions:
+        - Field: path-pattern
+          Values:
+          - "*"
+      ListenerArn: !Ref LoadBalancerListener
+      Priority: 1
+
+  ECSServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      #RoleName: !Sub ecs-service-${AWS::StackName}
+      Path: /
+      AssumeRolePolicyDocument: |
+        {
+            "Statement": [{
+                "Effect": "Allow",
+                "Principal": { "Service": [ "ecs.amazonaws.com" ]},
+                "Action": [ "sts:AssumeRole" ]
+            }]
+        }
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceRole
+
+  Service:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster: !Ref Cluster
+      Role: !Ref ECSServiceRole
+      DesiredCount: !Ref DesiredCount
+      TaskDefinition: !Ref TaskDefinition
+      LoadBalancers:
+        - ContainerName: simple-app
+          ContainerPort: 80
+          TargetGroupArn: !Ref TargetGroup
+
+  TaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      #Family: !Sub ${AWS::StackName}-simple-app
+      ContainerDefinitions:
+        - Name: simple-app
+          Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${Repository}:${Tag}
+          EntryPoint:
+            - /usr/sbin/apache2
+            - -D
+            - FOREGROUND
+          Essential: true
+          Memory: 128
+          MountPoints:
+            - SourceVolume: my-vol
+              ContainerPath: /var/www/my-vol
+          PortMappings:
+            - ContainerPort: 80
+          Environment:
+            - Name: Tag
+              Value: !Ref Tag
+        - Name: busybox
+          Image: busybox
+          EntryPoint:
+            - sh
+            - -c
+          Essential: false
+          Memory: 128
+          VolumesFrom:
+            - SourceContainer: simple-app
+          Command:
+            - /bin/sh -c "while true; do /bin/date > /var/www/my-vol/date; sleep 1; done"
+      Volumes:
+        - Name: my-vol

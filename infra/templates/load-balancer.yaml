@@ -1,0 +1,56 @@
+Description: >
+  Create Application Load Balancer resources for Blue/Green Deployment on ECS. For further reference, please review BluegreenRepo ==> https://github.com/awslabs/ecs-blue-green-deployment
+
+Parameters:
+  VpcId:
+    Type: String
+
+  VpcCIDR:
+    Type: String
+
+  Subnet1:
+    Type: AWS::EC2::Subnet::Id
+  Subnet2:
+    Type: AWS::EC2::Subnet::Id
+
+  Name:
+    Type: String
+
+
+Resources:
+  SecurityGroup:
+    Type: "AWS::EC2::SecurityGroup"
+    Properties:
+      GroupDescription: !Sub ${AWS::StackName}-alb
+      SecurityGroupIngress:
+        - CidrIp: "0.0.0.0/0"
+          IpProtocol: "TCP"
+          FromPort: 80
+          ToPort: 80
+        - CidrIp: "0.0.0.0/0"
+        # Change above to !Ref VpcCIDR, if you want to restrict the beta version of the traffic to VPC CIDRs only
+          IpProtocol: "TCP"
+          FromPort: 8080
+          ToPort: 8080
+      VpcId: !Ref VpcId
+
+  LoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: !Ref Name
+      Subnets:
+        - !Ref Subnet1
+        - !Ref Subnet2
+      SecurityGroups:
+        - !Ref SecurityGroup
+        
+Outputs:
+  ServiceUrl:
+    Description: URL of the load balancer for the sample service.
+    Value: !Sub http://${LoadBalancer.DNSName}
+
+  SecurityGroup:
+    Value: !Ref SecurityGroup
+
+  LoadBalancerArn:
+    Value: !Ref LoadBalancer

@@ -1,0 +1,23 @@
+#!/bin/bash
+
+set -o errexit -o xtrace
+echo -n "Enter S3 Bucket to host the templates and scripts > "
+read bucket
+echo -n "Enter stackname to create or update the stack > "
+read stackname
+echo -n "Enter GitHub User > "
+read GitHubUser
+echo -n "Enter GitHubToken > "
+read GitHubToken
+
+zip deploy/templates.zip ecs-blue-green-deployment.yaml templates/*
+cd scripts && zip scripts.zip * && cd ..
+mv scripts/scripts.zip deploy/scripts.zip
+
+aws s3 cp deploy/templates.zip "s3://${bucket}" --acl public-read
+aws s3 cp deploy/scripts.zip "s3://${bucket}" --acl public-read
+aws s3 cp ecs-blue-green-deployment.yaml "s3://${bucket}" --acl public-read
+aws s3 cp --recursive templates/ "s3://${bucket}/templates" --acl public-read
+aws s3 cp --recursive scripts/ "s3://${bucket}/scripts" --acl public-read
+aws s3api put-bucket-versioning --bucket "${bucket}" --versioning-configuration Status=Enabled
+aws cloudformation deploy --stack-name $stackname --template-file ecs-blue-green-deployment.yaml --capabilities CAPABILITY_NAMED_IAM --parameter-overrides GitHubUser=$GitHubUser GitHubToken=$GitHubToken TemplateBucket=$bucket

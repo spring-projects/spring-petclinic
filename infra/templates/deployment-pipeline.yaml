@@ -1,0 +1,420 @@
+Description: >
+  Create CodePipeline and CodeBuild resources for Blue/Green Deployment on ECS. For further reference, please review BluegreenRepo ==> https://github.com/awslabs/ecs-blue-green-deployment
+
+Parameters:
+  GitHubRepo:
+    Type: String
+
+  GitHubBranch:
+    Type: String
+
+  GitHubToken:
+    Type: String
+
+  GitHubUser:
+    Type: String
+
+  TemplateBucket:
+    Type: String
+
+  Subnet1:
+    Type: AWS::EC2::Subnet::Id
+  Subnet2:
+    Type: AWS::EC2::Subnet::Id
+
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+
+  VpcCIDR:
+    Type: String
+
+Resources:
+  BlueGreenFlipLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub lambda-${GitHubRepo}-blue-green-swap
+      Handler: blue_green_flip.handler
+      Runtime: python3.7
+      Description: !Sub lambda-${GitHubRepo}-blue-green-swap
+      Code:
+        S3Bucket: !Ref TemplateBucket
+        S3Key: scripts.zip
+      MemorySize: 128
+      Timeout: 60
+      Role: !GetAtt BlueGreenFlipLambdaRole.Arn
+
+  BlueGreenFlipLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      #RoleName: !Sub lambda-${GitHubRepo}-blue-green-swap-role
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: /
+
+  BlueGreenFlipLambdaPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: !Sub lambda-${GitHubRepo}-blue-green-swap-policy
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - elasticloadbalancing:*
+              - codepipeline:PutJobFailureResult
+              - codepipeline:PutJobSuccessResult
+            Resource: "*"
+          - Effect: Allow
+            Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Resource: arn:aws:logs:*:*:*
+      Roles:
+        - !Ref BlueGreenFlipLambdaRole
+
+  Repository:
+    Type: AWS::ECR::Repository
+    DeletionPolicy: Retain
+
+  CloudFormationExecutionRole:
+    Type: AWS::IAM::Role
+    DeletionPolicy: Retain
+    Properties:
+      #RoleName: !Sub cfn-${AWS::StackName}
+      Path: /
+      AssumeRolePolicyDocument: |
+        {
+            "Statement": [{
+                "Effect": "Allow",
+                "Principal": { "Service": [ "cloudformation.amazonaws.com" ]},
+                "Action": [ "sts:AssumeRole" ]
+            }]
+        }
+      Policies:
+        - PolicyName: root
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Resource: "*"
+                Effect: Allow
+                Action:
+                  - ecs:*
+                  - ecr:*
+                  - iam:*
+                  - ec2:*
+                  - elasticloadbalancing:*
+                  - autoscaling:*
+
+  CodeBuildServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      #RoleName: !Sub cb-${AWS::StackName}
+      Path: /
+      AssumeRolePolicyDocument: |
+        {
+            "Statement": [{
+                "Effect": "Allow",
+                "Principal": { "Service": [ "codebuild.amazonaws.com" ]},
+                "Action": [ "sts:AssumeRole" ]
+            }]
+        }
+      Policies:
+        - PolicyName: root
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Resource: "*"
+                Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                  - ecr:GetAuthorizationToken
+                  - cloudformation:Describe*
+                  - elasticloadbalancing:Describe*
+                  - codepipeline:Get*
+                  - codebuild:BatchGetBuilds
+              - Resource: !Sub arn:aws:s3:::${ArtifactBucket}/*
+                Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:PutObject
+                  - s3:GetObjectVersion
+              - Resource: !Sub arn:aws:ecr:${AWS::Region}:${AWS::AccountId}:repository/${Repository}
+                Effect: Allow
+                Action:
+                  - ecr:GetDownloadUrlForLayer
+                  - ecr:BatchGetImage
+                  - ecr:BatchCheckLayerAvailability
+                  - ecr:PutImage
+                  - ecr:InitiateLayerUpload
+                  - ecr:UploadLayerPart
+                  - ecr:CompleteLayerUpload
+
+  CodePipelineServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      #RoleName: !Sub cp-${AWS::StackName}
+      Path: /
+      AssumeRolePolicyDocument: |
+        {
+            "Statement": [{
+                "Effect": "Allow",
+                "Principal": { "Service": [ "codepipeline.amazonaws.com" ]},
+                "Action": [ "sts:AssumeRole" ]
+            }]
+        }
+      Policies:
+        - PolicyName: root
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Resource:
+                  - !Sub arn:aws:s3:::${ArtifactBucket}/*
+                  - !Sub arn:aws:s3:::${TemplateBucket}
+                  - !Sub arn:aws:s3:::${TemplateBucket}/*
+                Effect: Allow
+                Action:
+                  - s3:PutObject
+                  - s3:GetObject
+                  - s3:GetObjectVersion
+                  - s3:GetBucketVersioning
+              - Resource: "*"
+                Effect: Allow
+                Action:
+                  - codebuild:StartBuild
+                  - codebuild:BatchGetBuilds
+                  - cloudformation:*
+                  - lambda:*
+                  - iam:PassRole
+
+  ArtifactBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+
+  CodeBuildProject:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Artifacts:
+        Type: CODEPIPELINE
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: |
+          version: 0.1
+          phases:
+            # install:
+            #   commands:
+                # - apt-get update -y
+                # - apt-get -y install python-pip
+                # - pip install --upgrade python
+                # - pip install --upgrade awscli
+            pre_build:
+              commands:
+                - printenv
+                - echo -n "$CODEBUILD_LOG_PATH" > /tmp/build_id.out
+                - printf "%s:%s" "$REPOSITORY_URI" "$(cat /tmp/build_id.out)" > /tmp/build_tag.out
+                - printf '{"tag":"%s"}' "$(cat /tmp/build_id.out)" > /tmp/build.json
+                # - $(aws ecr get-login-password)
+            build:
+              commands:
+                - ./mvnw package
+                - docker build --tag "$(cat /tmp/build_tag.out)" .
+                # - ./mvnw spring-boot:build-image
+                - docker image tag spring-petclinic:3.0.0-SNAPSHOT "$(cat /tmp/build_tag.out)"
+            post_build:
+              commands:
+                - docker push "$(cat /tmp/build_tag.out)"
+          artifacts:
+            files: /tmp/build.json
+            discard-paths: yes
+      Environment:
+        ComputeType: "BUILD_GENERAL1_SMALL"
+        Image: "aws/codebuild/standard:6.0"
+        Type: "LINUX_CONTAINER"
+        EnvironmentVariables:
+          - Name: AWS_DEFAULT_REGION
+            Value: !Ref AWS::Region
+          - Name: REPOSITORY_URI
+            Value: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${Repository}
+          - Name: DOCKER_HOST
+            Value: unix:///var/run/docker.sock
+      Name: !Sub ${AWS::StackName}-codebuildproject
+      ServiceRole: !Ref CodeBuildServiceRole
+
+  BlueGreenElbDiscovery:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Artifacts:
+        Type: CODEPIPELINE
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: |
+          version: 0.1
+          phases:
+            install:
+              commands:
+                - pip install --upgrade python
+                - pip install --upgrade awscli
+                - pip install --upgrade boto3
+            pre_build:
+              commands:
+                - printenv
+                - ls -ld $(find .)
+                - python deployer.py
+          artifacts:
+            files: cf_inputs.json
+            discard-paths: yes
+      Environment:
+        ComputeType: "BUILD_GENERAL1_SMALL"
+        Image: aws/codebuild/python:2.7.12
+        Type: "LINUX_CONTAINER"
+        EnvironmentVariables:
+          - Name: AWS_DEFAULT_REGION
+            Value: !Ref AWS::Region
+          - Name: ELB_NAME
+            Value: !Ref GitHubRepo
+      Name: !Sub ${AWS::StackName}-discoveryproject
+      ServiceRole: !Ref CodeBuildServiceRole
+
+  Pipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      RoleArn: !GetAtt CodePipelineServiceRole.Arn
+      ArtifactStore:
+        Type: S3
+        Location: !Ref ArtifactBucket
+      Stages:
+        - Name: Source
+          Actions:
+            - Name: App
+              ActionTypeId:
+                Category: Source
+                Owner: ThirdParty
+                Version: 1
+                Provider: GitHub
+              Configuration:
+                Owner: !Ref GitHubUser
+                Repo: !Ref GitHubRepo
+                Branch: !Ref GitHubBranch
+                OAuthToken: !Ref GitHubToken
+              OutputArtifacts:
+                - Name: App
+              RunOrder: 1
+            - Name: Template
+              ActionTypeId:
+                Category: Source
+                Owner: AWS
+                Version: 1
+                Provider: S3
+              OutputArtifacts:
+                - Name: Template
+              RunOrder: 1
+              Configuration:
+                S3Bucket: !Ref TemplateBucket
+                S3ObjectKey: templates.zip
+            - Name: Scripts
+              ActionTypeId:
+                Category: Source
+                Owner: AWS
+                Version: 1
+                Provider: S3
+              OutputArtifacts:
+                - Name: Scripts
+              RunOrder: 1
+              Configuration:
+                S3Bucket: !Ref TemplateBucket
+                S3ObjectKey: scripts.zip
+        - Name: Build
+          Actions:
+            - Name: Build
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Version: 1
+                Provider: CodeBuild
+              Configuration:
+                ProjectName: !Ref CodeBuildProject
+              InputArtifacts:
+                - Name: App
+              OutputArtifacts:
+                - Name: BuildOutput
+              RunOrder: 1
+            - Name: Discover
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Version: 1
+                Provider: CodeBuild
+              Configuration:
+                ProjectName: !Ref BlueGreenElbDiscovery
+              InputArtifacts:
+                - Name: Scripts
+              OutputArtifacts:
+                - Name: DiscoveryOutput
+              RunOrder: 2
+        - Name: Deploy-Approve-Swap
+          Actions:
+            - Name: Deploy
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: 1
+                Provider: CloudFormation
+              Configuration:
+                ChangeSetName: Deploy
+                ActionMode: CREATE_UPDATE
+                StackName: !Sub "${AWS::StackName}-ecs-cluster"
+                Capabilities: CAPABILITY_NAMED_IAM
+                TemplatePath: Template::templates/ecs-cluster.yaml
+                RoleArn: !GetAtt CloudFormationExecutionRole.Arn
+                ParameterOverrides: !Sub |
+                  {
+                      "Subnet1": "${Subnet1}",
+                      "Subnet2": "${Subnet2}",
+                      "VpcId": "${VpcId}",
+                      "VpcCIDR": "${VpcCIDR}",
+                      "Code1" : { "Fn::GetParam" : [ "DiscoveryOutput", "cf_inputs.json", "Code1" ] },
+                      "Code2" : { "Fn::GetParam" : [ "DiscoveryOutput", "cf_inputs.json", "Code2" ] },
+                      "Repository": "${Repository}",
+                      "GitHubRepo": "${GitHubRepo}",
+                      "TemplateBucket": "${TemplateBucket}"
+
+                  }
+              InputArtifacts:
+                - Name: Template
+                - Name: DiscoveryOutput
+              RunOrder: 1
+            - Name: approve-blue-green-swap
+              ActionTypeId:
+                Category: Approval
+                Owner: AWS
+                Version: 1
+                Provider: Manual
+              Configuration:
+                CustomData: "Continue with blue-green swap ?"
+              RunOrder: 2
+            - Name: swap-target-group
+              ActionTypeId:
+                Category: Invoke
+                Owner: AWS
+                Version: 1
+                Provider: Lambda
+              Configuration:
+                FunctionName: !Ref BlueGreenFlipLambda
+                UserParameters: !Sub |
+                  {
+                    "ElbName": "${GitHubRepo}"
+                  }
+              RunOrder: 3
+
+Outputs:
+  PipelineUrl:
+    Value: !Sub https://console.aws.amazon.com/codepipeline/home?region=${AWS::Region}#/view/${Pipeline}

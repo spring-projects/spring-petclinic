@@ -15,3 +15,6 @@ build/*
 _site/
 *.css
 !petclinic.css
+
+*_override.tf
+tmp/
