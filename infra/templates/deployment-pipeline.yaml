@@ -29,6 +29,7 @@ Parameters:
     Type: String
 
 Resources:
+
   BlueGreenFlipLambda:
     Type: AWS::Lambda::Function
     Properties:
@@ -44,19 +45,20 @@ Resources:
       Role: !GetAtt BlueGreenFlipLambdaRole.Arn
 
   BlueGreenFlipLambdaRole:
-    Type: AWS::IAM::Role
-    Properties:
-      #RoleName: !Sub lambda-${GitHubRepo}-blue-green-swap-role
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service:
-                - lambda.amazonaws.com
-            Action:
-              - sts:AssumeRole
-      Path: /
+      Type: AWS::IAM::Role
+      Properties:
+        #RoleName: !Sub lambda-${GitHubRepo}-blue-green-swap-role
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            -
+              Effect: Allow
+              Principal:
+                Service:
+                  - lambda.amazonaws.com
+              Action:
+                - sts:AssumeRole
+        Path: /
 
   BlueGreenFlipLambdaPolicy:
     Type: AWS::IAM::Policy
@@ -65,20 +67,23 @@ Resources:
       PolicyDocument:
         Version: "2012-10-17"
         Statement:
-          - Effect: Allow
+          -
+            Effect: Allow
             Action:
               - elasticloadbalancing:*
               - codepipeline:PutJobFailureResult
               - codepipeline:PutJobSuccessResult
             Resource: "*"
-          - Effect: Allow
+          -
+            Effect: Allow
             Action:
               - logs:CreateLogGroup
               - logs:CreateLogStream
               - logs:PutLogEvents
             Resource: arn:aws:logs:*:*:*
       Roles:
-        - !Ref BlueGreenFlipLambdaRole
+        -
+          !Ref BlueGreenFlipLambdaRole
 
   Repository:
     Type: AWS::ECR::Repository
@@ -212,10 +217,9 @@ Resources:
           phases:
             # install:
             #   commands:
-                # - apt-get update -y
-                # - apt-get -y install python-pip
-                # - pip install --upgrade python
-                # - pip install --upgrade awscli
+            #     - apt-get update && apt-get -y install python-pip
+            #     - pip install --upgrade python
+            #     - pip install --upgrade awscli
             pre_build:
               commands:
                 - printenv
@@ -259,9 +263,9 @@ Resources:
           phases:
             # install:
             #   commands:
-                # - pip install --upgrade python
-                # - pip install --upgrade awscli
-                # - pip install --upgrade boto3
+            #     - pip install --upgrade python
+            #     - pip install --upgrade awscli
+            #     - pip install --upgrade boto3
             pre_build:
               commands:
                 - printenv
@@ -412,6 +416,8 @@ Resources:
                     "ElbName": "${GitHubRepo}"
                   }
               RunOrder: 3
+
+
 
 Outputs:
   PipelineUrl:
