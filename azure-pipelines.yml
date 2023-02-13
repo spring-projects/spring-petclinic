@@ -2,7 +2,7 @@
 pool: default
 name: springpet
 trigger:
-  - main
+  - practiceagent
 stages:
   - stage: stage1
     displayName: spring-stage1
