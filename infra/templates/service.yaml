@@ -31,9 +31,16 @@ Parameters:
   IsProduction:
     Type: String
 
+  Subnet1:
+    Type: String
+
+  Subnet2:
+    Type: String
+
+  ALBSg:
+    Type: String
 
 Resources:
-
   LoadBalancerListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
@@ -48,6 +55,7 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
       VpcId: !Ref VpcId
+      TargetType: ip
       Port: !Ref Port
       Protocol: HTTP
       Matcher:
@@ -77,69 +85,74 @@ Resources:
       Conditions:
         - Field: path-pattern
           Values:
-          - "*"
+            - "*"
       ListenerArn: !Ref LoadBalancerListener
       Priority: 1
 
-  ECSServiceRole:
+  TaskIamRole:
     Type: AWS::IAM::Role
     Properties:
-      #RoleName: !Sub ecs-service-${AWS::StackName}
       Path: /
       AssumeRolePolicyDocument: |
         {
             "Statement": [{
                 "Effect": "Allow",
-                "Principal": { "Service": [ "ecs.amazonaws.com" ]},
+                "Principal": { "Service": [ "ecs-tasks.amazonaws.com" ]},
                 "Action": [ "sts:AssumeRole" ]
             }]
         }
       ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceRole
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+        - arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
 
+  SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: !Sub ${AWS::StackName}
+      SecurityGroupIngress:
+        - SourceSecurityGroupId: !Ref ALBSg
+          IpProtocol: -1
+      VpcId: !Ref VpcId
   Service:
     Type: AWS::ECS::Service
     Properties:
       Cluster: !Ref Cluster
-      Role: !Ref ECSServiceRole
       DesiredCount: !Ref DesiredCount
+      LaunchType: FARGATE
       TaskDefinition: !Ref TaskDefinition
       LoadBalancers:
         - ContainerName: simple-app
-          ContainerPort: 80
+          ContainerPort: 8080
           TargetGroupArn: !Ref TargetGroup
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED #MENTION DISABLED if in private subnet with NAT gateway
+          SecurityGroups:
+            - !GetAtt SecurityGroup.GroupId
+          Subnets:
+            - !Ref Subnet1
+            - !Ref Subnet2
 
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
-      #Family: !Sub ${AWS::StackName}-simple-app
+      Cpu: 512
+      Memory: 512
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      ExecutionRoleArn: !GetAtt TaskIamRole.Arn
       ContainerDefinitions:
         - Name: simple-app
           Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${Repository}:${Tag}
-          EntryPoint:
-            - /usr/sbin/apache2
-            - -D
-            - FOREGROUND
+          # EntryPoint:
+          #   - /usr/sbin/apache2
+          #   - -D
+          #   - FOREGROUND
           Essential: true
-          Memory: 128
-          MountPoints:
-            - SourceVolume: my-vol
-              ContainerPath: /var/www/my-vol
+          Memory: 512
           PortMappings:
-            - ContainerPort: 80
+            - ContainerPort: 8080
           Environment:
             - Name: Tag
               Value: !Ref Tag
-        - Name: busybox
-          Image: busybox
-          EntryPoint:
-            - sh
-            - -c
-          Essential: false
-          Memory: 128
-          VolumesFrom:
-            - SourceContainer: simple-app
-          Command:
-            - /bin/sh -c "while true; do /bin/date > /var/www/my-vol/date; sleep 1; done"
-      Volumes:
-        - Name: my-vol
