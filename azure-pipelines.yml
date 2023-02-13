@@ -1,7 +1,5 @@
 ---
-pool:
-  name: "Azure Pipelines"
-  vmImage: ubuntu-latest
+pool: default
 name: springpet
 trigger:
   - main
