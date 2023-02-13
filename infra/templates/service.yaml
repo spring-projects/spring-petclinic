@@ -145,14 +145,12 @@ Resources:
       ContainerDefinitions:
         - Name: simple-app
           Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${Repository}:${Tag}
-          # EntryPoint:
-          #   - /usr/sbin/apache2
-          #   - -D
-          #   - FOREGROUND
           Essential: true
           Memory: 512
           PortMappings:
             - ContainerPort: 8080
+          LogConfiguration:
+            - LogDriver: awslogs
           Environment:
             - Name: Tag
               Value: !Ref Tag
