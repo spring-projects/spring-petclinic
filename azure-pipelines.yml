@@ -16,5 +16,5 @@ stages:
               goals: 'package'
               publishJUnitResults: true
               testResultsFiles: '**/surefire-reports/TEST-*.xml'
-              jdkDirectory:: '/usr/lib/jvm/java-11-openjdk-amd64
+              jdkDirectory: '/usr/lib/jvm/java-11-openjdk-amd64
               
