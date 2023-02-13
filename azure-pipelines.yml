@@ -16,6 +16,6 @@ stages:
               goals: 'package'
               publishJUnitResults: true
               testResultsFiles: '**/surefire-reports/TEST-*.xml'
-              javaHomeOption: 'JDKVersion'
+              javaHomeOption: '/usr/lib/jvm/java-11-openjdk-amd64'
               jdkVersionOption: 1.11
               
