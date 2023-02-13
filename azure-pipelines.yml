@@ -1,5 +1,5 @@
 ---
-pool: practiceagent
+pool: default
 name: springpet
 trigger:
   - main
