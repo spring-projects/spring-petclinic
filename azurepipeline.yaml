@@ -1,0 +1,15 @@
+--- 
+pool:
+  name: Default
+trigger: 
+  - main
+steps:
+  task: Maven@3
+  inputs:
+    mavenPOMFile: 'pom.xml'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    JDKVersion: '1.17'
+    goals: 'package'
+    mavenVersionOption: 'Default'
+    mavenAuthenticateFeed: false
