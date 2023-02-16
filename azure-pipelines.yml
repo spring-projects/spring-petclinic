@@ -14,4 +14,4 @@ jobs:
           testResultsFiles: '**/surefire-reports/TEST-*.xml'
           JDKVersion: '1.17'
           javaHomeOption: 'Path'
-          jdkDirectory: /usr/java
+          jdkDirectory: /usr/lib/jvm/openjdk-17
