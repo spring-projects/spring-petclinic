@@ -1,6 +1,5 @@
 --- 
-pool:
-  name: "Default"
+pool: Default
 trigger: 
   - main
 steps:
