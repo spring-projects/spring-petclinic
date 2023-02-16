@@ -1,6 +1,6 @@
 --- 
 pool:
-  name: "ubuntu"
+  name: "Default"
 trigger: 
   - main
 steps:
