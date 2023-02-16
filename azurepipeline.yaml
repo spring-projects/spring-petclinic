@@ -1,8 +1,8 @@
 --- 
 pool:
-  name: "ubuntu"
+  name: "Default"
 trigger: 
-  - main
+  - master
 steps:
   - task: Maven@3
     inputs:
