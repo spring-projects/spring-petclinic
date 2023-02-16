@@ -4,6 +4,14 @@ pool:
 trigger:
   - main
 jobs:
+  - job:
+      steps:
+        - step:
+            script: 
+              - sudo apt update
+              - sudo apt install maven -y
+              - sudo apt install git -y
+
   - job: package
     displayName: build the package
     steps:
