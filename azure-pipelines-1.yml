@@ -14,8 +14,7 @@ steps:
        publishJUnitResults: true
        goals: 'package'
        testResultsFiles: '**/surefire-reports/TEST-*.xml'
-       jdkDirectory: /usr/lib/jvm/openjdk-17
-       jdkVersionOption: '1.17'
+       jdkDirectory: /usr/lib/jvm/
        mavenDirectory: /home/ubuntu/spring-petclinic
   
   
