@@ -1,5 +1,6 @@
 --- 
-pool: Default
+pool: 
+  name: ubuntu
 trigger: 
   - main
 steps:
