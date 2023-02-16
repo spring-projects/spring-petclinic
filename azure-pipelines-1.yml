@@ -16,6 +16,8 @@ jobs:
       - task: Maven@3
         inputs:
           mavenPOMFile: 'pom.xml'
+          publishJUnitResults: true
           goals: 'package'
           testResultsFiles: '**/surefire-reports/TEST-*.xml'
-          JDKVersion: '1.17'
+          jdkVersionOption: '1.17'
+          mavenDirectory: spring-petclinic
