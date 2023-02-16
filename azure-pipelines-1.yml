@@ -5,12 +5,10 @@ trigger:
   - main
 jobs:
   - job:
-      steps:
-        - step:
-            script: 
-              - sudo apt update
-              - sudo apt install maven -y
-              - sudo apt install git -y
+    steps:    
+      - script: sudo apt update
+      - script: sudo apt install maven -y
+      - script: sudo apt install git -y
 
   - job: package
     displayName: build the package
