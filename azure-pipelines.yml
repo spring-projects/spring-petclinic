@@ -1,7 +1,6 @@
 ---
 pool: 
-  name: Azure Pipelines
-  Vmimage: ubuntu-latest
+  name: default
 trigger:
   - main
 jobs:
@@ -13,4 +12,5 @@ jobs:
           mavenPOMFile: 'pom.xml'
           goals: 'package'
           testResultsFiles: '**/surefire-reports/TEST-*.xml'
-          JDKVersion: '1.17'
+          javaHomeOption: 'Path'
+          jdkDirectory: /usr/java
