@@ -2,7 +2,7 @@
 pool:
   name: "ubuntu"
 trigger: 
-  - master
+  - main
 steps:
   - task: Maven@3
     inputs:
