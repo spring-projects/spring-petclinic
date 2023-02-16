@@ -5,13 +5,16 @@ trigger:
   - main
 jobs:
   - job:
+    displayName: installrequred
     steps:    
       - script: sudo apt update
       - script: sudo apt install maven -y
       - script: sudo apt install git -y
+      - script: sudo apt install openjdk-17-jdk -y
 
   - job: package
     displayName: build the package
+    dependsOn: installrequred
     steps:
       - task: Maven@3
         inputs:
@@ -19,5 +22,6 @@ jobs:
           publishJUnitResults: true
           goals: 'package'
           testResultsFiles: '**/surefire-reports/TEST-*.xml'
+          jdkDirectory: /usr/lib/jvm/openjdk-17
           jdkVersionOption: '1.17'
           mavenDirectory: spring-petclinic
