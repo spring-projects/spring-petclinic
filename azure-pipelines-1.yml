@@ -1,13 +1,15 @@
 ---
-pool:
+pool: 
   name: Default
 trigger:
   - main
-steps:
-  - task: Maven@3
-    inputs:
-      mavenPOMFile: 'pom.xml'
-      publishJUnitResults: true
-      testResultsFiles: '**/surefire-reports/TEST-*.xml'
-      JDKVersion: '1.17'
-      goals: 'package'
+jobs:
+  - job: package
+    displayName: build the package
+    steps:
+      - task: Maven@3
+        inputs:
+          mavenPOMFile: 'pom.xml'
+          goals: 'package'
+          testResultsFiles: '**/surefire-reports/TEST-*.xml'
+          JDKVersion: '1.17'
