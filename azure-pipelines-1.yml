@@ -4,20 +4,8 @@ pool:
 trigger:
   - main
 steps:
-  - script: sudo apt update
-  - script: sudo apt install openjdk-17-jdk -y
-  - script: sudo apt install maven -y
-  - script: sudo apt install git -y
-  - task: Maven@3
-    inputs:
-       mavenPOMFile: 'pom.xml'
-       publishJUnitResults: true
-       goals: 'package'
-       testResultsFiles: '**/surefire-reports/TEST-*.xml'
-       javaHomeOption: 'Path'
-       jdkDirectory: /usr/lib/jvm/java-17-openjdk-amd64
-       mavenVersionOption: 'path'
-       mavenDirectory: /home/ubuntu/spring-petclinic
+  - script: echo ${ Build.ArtifactStagingDirectory }
+  
 
   
   
