@@ -3,7 +3,7 @@ name: Test Deploy
 on:
   pull_request:
     branches:
-      - master
+      - master-2
       
 jobs:
   see-the-contexts:
