@@ -15,6 +15,6 @@ steps:
        goals: 'package'
        testResultsFiles: '**/surefire-reports/TEST-*.xml'
        javaHomeOption: 'Path'
-       jdkDirectory: /usr/lib/jvm/java-1.17.0-openjdk-amd64
+       jdkDirectory: /home/ubuntu/usr/lib/jvm/java-17-openjdk-amd64
   
   
