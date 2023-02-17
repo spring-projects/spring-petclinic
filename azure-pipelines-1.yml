@@ -4,7 +4,7 @@ pool:
 trigger:
   - main
 steps:
-  - script: echo $(Build.ArtifactStagingDirectory)
+  - script: echo $(Build.Repository.LocalPath)
   
 
   
