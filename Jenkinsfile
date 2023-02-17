@@ -15,7 +15,7 @@ pipeline{
     stages{
         stage('docker image build'){
             steps{
-                sh 'docker image build -t spc:1.0 .' 
+                sh 'docker image build -t $env.image_name:${BUILD_NUMBER}-${NODE_NAME} .' 
             }
         }
     }
