@@ -16,6 +16,8 @@ steps:
        testResultsFiles: '**/surefire-reports/TEST-*.xml'
        javaHomeOption: 'Path'
        jdkDirectory: /usr/lib/jvm/java-17-openjdk-amd64
-       mavenDirectory: /home/ubuntu/spring-petclinic
+       mavenVersionOption: 'path'
+       mavenDirectory: /home/ubuntu/Kiranteja623/spring-petclinic
+
   
   
