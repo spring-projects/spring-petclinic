@@ -1,10 +1,13 @@
 --- 
-pool: ubuntu
+pool: Default
 trigger: 
   - main
 steps:
-  - task: Maven@3
-    inputs:
+   - script: sudo apt update 
+   - script: sudo apt install openjdk-17-jdk -y 
+   - script: sudo apt install maven -y
+   - task: Maven@3
+     inputs:
       mavenPOMFile: 'pom.xml'
       publishJUnitResults: true
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
