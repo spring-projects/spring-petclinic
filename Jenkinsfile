@@ -15,7 +15,7 @@ pipeline{
     stages{
         stage('docker image build'){
             steps{
-                sh 'docker image build -t $env.image_name:${BUILD_NUMBER}-${NODE_NAME} .' 
+                sh 'docker image build -t ${image_name}:${BUILD_NUMBER}-${NODE_NAME} .' 
             }
         }
     }
