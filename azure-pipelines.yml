@@ -3,19 +3,24 @@ pool:
   name: Default
 trigger:
   - main
-steps:
-  - script: sudo apt update
-  - script: sudo apt install openjdk-17-jdk -y
-  - script: sudo apt install maven -y
-  - script: sudo apt install git -y
-  - script: aws s3 cp $(Agent.WorkFolder)/2/s/target/spring-petclinic-3.0.0-SNAPSHOT.jar s3://spcfeb18 --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers --recursive
-  - task: Maven@3
-    inputs:
-       mavenPOMFile: 'pom.xml'
-       publishJUnitResults: true
-       goals: 'package'
-       testResultsFiles: '**/surefire-reports/TEST-*.xml'
-       javaHomeOption: 'Path'
-       jdkDirectory: /usr/lib/jvm/java-17-openjdk-amd64
-       mavenVersionOption: 'path'
-       mavenDirectory: /home/ubuntu/spring-petclinic
+jobs:
+  - job: myjob
+    steps:
+     - script: sudo apt update
+     - script: sudo apt install openjdk-17-jdk -y
+     - script: sudo apt install maven -y
+     - script: sudo apt install git -y
+     - task: Maven@3
+       inputs:
+         mavenPOMFile: 'pom.xml'
+         publishJUnitResults: true
+         goals: 'package'
+         testResultsFiles: '**/surefire-reports/TEST-*.xml'
+         javaHomeOption: 'Path'
+         jdkDirectory: /usr/lib/jvm/java-17-openjdk-amd64
+         mavenVersionOption: 'path'
+         mavenDirectory: /home/ubuntu/spring-petclinic
+  - job: script
+    steps: 
+      - script: aws s3 cp $(Agent.WorkFolder)/3/s/target/spring-petclinic-3.0.0-SNAPSHOT.jar s3://spcfeb18 --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers --recursive
+  
