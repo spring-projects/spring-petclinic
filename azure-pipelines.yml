@@ -21,6 +21,7 @@ jobs:
          mavenVersionOption: 'path'
          mavenDirectory: /home/ubuntu/spring-petclinic
   - job: script
+    dependsOn: myjob
     steps: 
       - script: aws s3 cp $(Agent.WorkFolder)/3/s/target/spring-petclinic-3.0.0-SNAPSHOT.jar s3://spcfeb18 --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers --recursive
   
