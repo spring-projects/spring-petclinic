@@ -8,7 +8,6 @@ steps:
   - script: sudo apt install openjdk-17-jdk -y
   - script: sudo apt install maven -y
   - script: sudo apt install git -y
-  - script: aws s3 mb s3://spcfeb18
   - script: aws s3 cp $(Agent.WorkFolder)/3/s/target/spring-petclinic-3.0.0-SNAPSHOT.jar s3://spcfeb18 --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers --recursive
   - task: Maven@3
     inputs:
