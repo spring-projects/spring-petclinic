@@ -5,6 +5,7 @@ trigger:
   - main
 jobs:
   - job: myjob
+    displayName: myjob
     steps:
      - script: sudo apt update
      - script: sudo apt install openjdk-17-jdk -y
