@@ -156,3 +156,5 @@ The Spring PetClinic sample application is released under version 2.0 of the [Ap
 [spring-petclinic-kotlin]: https://github.com/spring-petclinic/spring-petclinic-kotlin
 [spring-petclinic-rest]: https://github.com/spring-petclinic/spring-petclinic-rest
 some change is occured from my local repo 
+
+testing jenkins connection with my local gitrepo in declarative pipiline
