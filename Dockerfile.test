@@ -9,7 +9,5 @@ COPY . /app
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
 
-RUN ./mvnw package
-
-CMD ["java", "-jar", "target/spring-petclinic-3.0.0-SNAPSHOT.jar"]
-
+ENTRYPOINT [ "./mvnw" ]
+CMD [ "test" ]
