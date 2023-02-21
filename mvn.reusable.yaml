@@ -25,3 +25,13 @@ steps:
       publishJUnitResults: yes
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
       jdkVersionOption: "${{ parameters.jdkVersion }}"
+
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Build.ArtifactStagingDirectory)' 
+      artifactName: 'maven-package'
+
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      artifactName: 'maven-package'
+      downloadPath: '$(System.ArtifactsDirectory)/maven-package'
