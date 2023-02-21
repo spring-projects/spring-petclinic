@@ -25,4 +25,4 @@ jobs:
     displayName: script
     dependsOn: myjob
     steps:
-      - script: aws s3 cp $(Build.SourcesDirectory)/target s3://spcfeb18 --grants read=uri=https://acs.amazonaws.com/groups/global/AllUsers --recursive
+      - script: aws s3 cp $(Build.StagingDirectory)/s/target s3://spcfeb18 --grants read=uri=https://acs.amazonaws.com/groups/global/AllUsers --recursive
