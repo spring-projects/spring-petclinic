@@ -9,12 +9,12 @@ parameters:
       
  
 steps:
-  task: Maven@3
-  inputs:
-    mavenPOMFile: 'pom.xml'
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    JDKVersion: '${{ parameters.name }}'
-    goals: 'package'
-    mavenVersionOption: 'Default'
-    mavenAuthenticateFeed: false    
+  - task: Maven@3
+    inputs:
+      mavenPOMFile: 'pom.xml'
+      publishJUnitResults: true
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      JDKVersion: '${{ parameters.name }}'
+      goals: 'package'
+      mavenVersionOption: 'Default'
+      mavenAuthenticateFeed: false    
