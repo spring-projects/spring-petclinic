@@ -6,4 +6,4 @@ trigger:
 extends:
   template: ./parameter1.yaml 
   parameters:
-    JDKVersion: 1.17
+    JDKVersion: '1.17'
