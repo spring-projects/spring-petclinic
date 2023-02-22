@@ -19,6 +19,6 @@ steps:
       jdkVersionOption: 'path'
       jdkDirectory: /usr/lib/jvm/java-17-openjdk-amd64
       goals: 'package'
-      mavenVersionOption: 'Default'
-      mavenAuthenticateFeed: false    
+      mavenVersionOption: 'path'
+      mavenDirectory: /opt/maven
       
