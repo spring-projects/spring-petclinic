@@ -1,0 +1,9 @@
+---
+pool:
+  name: 'ubuntu'
+trigger: 
+  - main
+extends:
+  template: ./parameter1.yaml 
+  parameters:
+    JDKVersion: 1.17
