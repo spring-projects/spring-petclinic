@@ -14,7 +14,7 @@ steps:
     mavenPOMFile: 'pom.xml'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    JDKVersion: '1.17'
+    JDKVersion: '${{ parameters.name }}'
     goals: 'package'
     mavenVersionOption: 'Default'
     mavenAuthenticateFeed: false    
