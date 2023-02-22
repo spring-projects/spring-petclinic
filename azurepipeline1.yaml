@@ -7,3 +7,4 @@ extends:
   template: ./parameter1.yaml 
   parameters:
     JDKVersion: '1.17'
+ 
