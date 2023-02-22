@@ -14,11 +14,11 @@ steps:
     inputs:
       mavenPOMFile: 'pom.xml'
       publishJUnitResults: true
+      goals: 'package'
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
-      JDKVersion: '${{ parameters.JDKVersion }}'
+      JDKVersion: "${{ parameters.JDKVersion }}"
       jdkVersionOption: 'path'
       jdkDirectory: /usr/lib/jvm/java-17-openjdk-amd64
-      goals: 'package'
       mavenVersionOption: 'path'
       mavenDirectory: /opt/maven
       
