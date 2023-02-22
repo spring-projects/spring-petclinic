@@ -3,7 +3,7 @@ parameters:
   - name: JDKVersion
     displayName: parameters for jdkversiions
     type: string
-    default: '1.17'
+    default: 1.17
       
  
 steps:
