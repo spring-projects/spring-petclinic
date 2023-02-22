@@ -4,9 +4,6 @@ parameters:
     displayName: parameters for jdkversiions
     type: string
     default: '1.17'
-    values:
-      - '1.17'
-      - '1.8'
       
  
 steps:
