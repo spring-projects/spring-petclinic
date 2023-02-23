@@ -25,5 +25,6 @@ jobs:
          PathtoPublish: '$(Build.Repository.LocalPath)'
          ArtifactName: 'drop' 
          publishLocation: 'Container'
+     - script: ansible-playbook -i host ansibleplaybook.yaml  --extra-vars "{"Build.ContainerId"}" 
      
 
