@@ -13,7 +13,7 @@ steps:
       javaHomeOption: 'Path'
       jdkDirectory: /usr/lib/jvm/java-17-openjdk-amd64
       mavenVersionOption: 'path'
-      mavenDirectory: /home/ubuntu/spring-petclinic
+      mavenDirectory: /opt/maven
 
   - task: PublishBuildArtifacts@1
     inputs:
