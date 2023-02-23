@@ -1,29 +1,23 @@
 ---
 pool:
-  name: Default
+  name: default
 trigger:
   - main
-jobs:
-  - job: myjob
-    displayName: myjob
-    steps:
-     - task: Maven@3
-       inputs:
-         mavenPOMFile: 'pom.xml'
-         publishJUnitResults: true
-         goals: 'package'
-         testResultsFiles: '**/surefire-reports/TEST-*.xml'
-         javaHomeOption: 'Path'
-         jdkDirectory: /usr/lib/jvm/java-17-openjdk-amd64
-         mavenVersionOption: 'path'
-         mavenDirectory: /home/ubuntu/spring-petclinic
-  - job: job2 
-    displayName: job2
-    dependsOn: myjob
-    steps:
-      - task: PublishBuildArtifacts@1
-        inputs:
-          PathtoPublish: '$(Build.Repository.localPath)'
-          ArtifactName: 'drop'
-          publishLocation: 'Container'
-      
+steps:
+  - task: Maven@3
+    inputs:
+      mavenPOMFile: 'pom.xml'
+      publishJUnitResults: true
+      goals: 'package'
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      javaHomeOption: 'Path'
+      jdkDirectory: /usr/lib/jvm/java-17-openjdk-amd64
+      mavenVersionOption: 'path'
+      mavenDirectory: /home/ubuntu/spring-petclinic
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.Repository.localPath)'
+      ArtifactName: 'drop'
+      publishLocation: 'Container'
+    
