@@ -22,7 +22,7 @@ jobs:
          mavenDirectory: /home/ubuntu/spring-petclinic
      - task: PublishBuildArtifacts@1
        inputs:
-         PathtoPublish: '$(Build.ArtifactStagingDirectory)' 
+         PathtoPublish: '$(Build.Repository.LocalPath)'
          ArtifactName: 'drop' 
          publishLocation: 'Container'
      
