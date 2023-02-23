@@ -23,6 +23,7 @@ jobs:
          mavenDirectory: /home/ubuntu/spring-petclinic
   - job: job2 
     displayName: job2
+    dependsOn: myjob
     steps:
       - task: PublishBuildArtifacts@1
         inputs:
