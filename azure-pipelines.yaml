@@ -26,8 +26,7 @@ jobs:
     steps:
       - task: PublishBuildArtifacts@1
         inputs:
-          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          PathtoPublish: '$(Build.Repository.localPath)'
           ArtifactName: 'drop'
-          publishLocation: 'FilePath'
-          TargetPath: '$(Build.StagingDirectory)'
+          publishLocation: 'Container'
           
