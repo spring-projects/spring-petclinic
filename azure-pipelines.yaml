@@ -21,8 +21,13 @@ jobs:
          jdkDirectory: /usr/lib/jvm/java-17-openjdk-amd64
          mavenVersionOption: 'path'
          mavenDirectory: /home/ubuntu/spring-petclinic
-  - job: script
-    displayName: script
-    dependsOn: myjob
+  - job: job2 
+    displayName: job2
     steps:
-      - script: aws s3 cp $(Build.StagingDirectory)/s/target s3://spcfeb18 --grants read=uri=https://acs.amazonaws.com/groups/global/AllUsers --recursive
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          ArtifactName: 'drop'
+          publishLocation: 'FilePath'
+          TargetPath: '$(Build.StagingDirectory)'
+          
