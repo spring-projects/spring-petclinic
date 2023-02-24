@@ -9,11 +9,6 @@
         name: openjdk-17-jdk
         state: present
         update_cache: true
-    - name: get url
-      ansible.builtin.get_url:
-        dest: /tmp
-        url: https://dev.azure.com/bujji1011bujji0481/_apis/resources/Containers/{{Build.ContainerId}}/drop?itemPath=drop%2Ftarget%2Fspring-petclinic-3.0.0-SNAPSHOT.jar
-        mode: '777'
     - name: edit the service file
       ansible.builtin.copy:
         dest: /etc/systemd/system/spc.service
@@ -21,7 +16,7 @@
          [Unit]
          Description=Manage Java service
          [Service]
-         WorkingDirectory=/home/ubuntu
+         WorkingDirectory=/home/ubuntu/build/
          ExecStart=java -jar spring-petclinic-3.0.0-SNAPSHOT.jar
          Type=simple
          Restart=on-failure
