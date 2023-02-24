@@ -19,4 +19,4 @@ steps:
       PathtoPublish: '$(Build.Repository.LocalPath)'
       ArtifactName: 'drop'
       publishLocation: 'FilePath'
-      TargetPath: '$(Build.ArtifactStagingDirectory)'
+      TargetPath: '$(Agent.WorkFolder)'
