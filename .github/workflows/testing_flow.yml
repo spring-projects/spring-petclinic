@@ -2,8 +2,8 @@ name: Test Deploy
 
 on:
   pull_request:
-    branches:
-      - master-2
+    paths:
+      - 'sre-spec.y*ml'
       
 jobs:
   see-the-contexts:
