@@ -24,4 +24,4 @@ steps:
       buildType: 'current'
       artifactName: 'drop'
       targetPath: '/home/ubuntu/spc'
-  - script: ansible-playbook -i host spc.yaml
+  - script: ansible-playbook -i host spc1.yaml
