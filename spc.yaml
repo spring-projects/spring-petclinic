@@ -1,0 +1,48 @@
+---
+- name: spc deployment
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: install java
+      ansible.builtin.apt:
+        name: openjdk-17-jdk
+        state: present
+        update_cache: true
+    - name: make a directory
+      ansible.builtin.file:
+        path: spc/
+        state: "directory"
+        mode: '777'
+    - name: get url
+      ansible.builtin.get_url:
+        dest: /tmp/
+        url: https://springpetclinic16feb.s3.ap-northeast-1.amazonaws.com/spring-petclinic-3.0.0-SNAPSHOT.jar
+        mode: '777'
+    - name: copy the content
+      ansible.builtin.copy:
+        src: /tmp/spring-petclinic-3.0.0-SNAPSHOT.jar
+        dest: spc/
+        mode: '777'
+    - name: edit the service file
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/spc.service
+        content: |
+         [Unit]
+         Description=Manage Java service
+         
+         [Service]
+         WorkingDirectory=/home/ubuntu/spc
+         ExecStart=java -jar spring-petclinic-3.0.0-SNAPSHOT.jar
+         Type=simple
+         Restart=on-failure
+         RestartSec=10
+
+         [Install]
+         WantedBy=multi-user.target
+        mode: '777'
+    - name: reload the systemd state
+      ansible.builtin.systemd:
+        name: spc.service
+        daemon_reload: true
+        enabled: true
+        state: "restarted"
