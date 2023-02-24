@@ -2,6 +2,8 @@ name: Test Deploy
 
 on:
   pull_request:
+    branches: 
+      - master
     paths:
       - 'sre-spec.y*ml'
       
