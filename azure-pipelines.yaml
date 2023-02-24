@@ -14,10 +14,9 @@ steps:
       jdkDirectory: /usr/lib/jvm/java-17-openjdk-amd64
       mavenVersionOption: 'path'
       mavenDirectory: /home/ubuntu/spring-petclinic
-
   - task: PublishBuildArtifacts@1
     inputs:
-      PathtoPublish: '$(Build.Repository.localPath)'
+      PathtoPublish: '$(Build.Repository.LocalPath)'
       ArtifactName: 'drop'
-      publishLocation: 'Container'
-    
+      publishLocation: 'FilePath'
+      TargetPath: '$(ArtifactStagingDirectory)'
