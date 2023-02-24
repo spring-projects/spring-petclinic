@@ -14,9 +14,4 @@ steps:
       jdkDirectory: /usr/lib/jvm/java-17-openjdk-amd64
       mavenVersionOption: 'path'
       mavenDirectory: /home/ubuntu/spring-petclinic
-  - task: PublishBuildArtifacts@1
-    inputs:
-      PathtoPublish: '$(Build.Repository.LocalPath)'
-      ArtifactName: 'drop'
-      publishLocation: 'FilePath'
-      TargetPath: '$(Agent.WorkFolder)'
+  - script: aws s3 cp '$(Build.Repository.localPath)' s3://spcfeb18 --grants read=uri=https://acs.amazonaws.com/groups/global/AllUsers --recursive
