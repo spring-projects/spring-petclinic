@@ -23,4 +23,4 @@ steps:
     inputs:
       buildType: 'current'
       artifactName: 'drop'
-      targetPath: 'spc/'
+      targetPath: '/home/ubuntu/spc'
