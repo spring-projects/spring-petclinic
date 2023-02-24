@@ -1,15 +1,11 @@
 pool:
-  name: "Azure Pipelines"
+  name: "Default"
 trigger:
   - main
 jobs:
   - job: myjob
     displayName: myjob
     steps:
-     - script: sudo apt update
-     - script: sudo apt install openjdk-17-jdk -y
-     - script: sudo apt install maven -y
-     - script: sudo apt install git -y
      - task: Maven@3
        inputs:
          mavenPOMFile: 'pom.xml'
@@ -22,9 +18,14 @@ jobs:
          mavenDirectory: /home/ubuntu/spring-petclinic
      - task: PublishBuildArtifacts@1
        inputs:
-         PathtoPublish: '$(Build.Repository.LocalPath)'
+         PathtoPublish: '$(Build.Repository.LocalPath)' 
          ArtifactName: 'drop' 
-         publishLocation: 'Container'
-     - script: ansible-playbook -i host ansibleplaybook.yaml  --extra-vars {"$(Build.ContainerId)"} 
-     
+         publishLocation: 'Container'    
+     - task: DownloadPipelineArtifact@2
+       inputs:
+         buildType: 'current'
+         downloadType: 'single'
+         artifactName: 'drop'
+         targetPath: '/home/ubuntu/build'
+     - script: ansible-playbook -i host ansibleplaybook.yaml    
 
