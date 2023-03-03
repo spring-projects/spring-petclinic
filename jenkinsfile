@@ -14,8 +14,10 @@ pipeline {
         }
         stage('post build') {
             steps {
-                archiveArtifacts artifacts: '**/target/springpetclinic.war',
-                                 onlyIfSuccessful: true
+                archiveArtifacts artifacts: '**/*.txt',
+                   allowEmptyArchive: true,
+                   fingerprint: true,
+                   onlyIfSuccessful: true
                 junit testResults: '**/surefire-reports/TEST-*.xml'
             }
         }
