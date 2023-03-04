@@ -7,7 +7,6 @@ jobs:
   - job: "gradle"
     displayName: "gradle job"
     steps:
-      - script: sudo apt update && sudo apt install openjdk-11-jdk -y
       - task: "Gradle@3"
         inputs:
           gradleWrapperFile: 'gradlew'
