@@ -10,7 +10,7 @@ jobs:
      - task: Gradle@3
        inputs:
          gradleWrapperFile: 'gradlew'
-         workingDirectory: '$(workingDirectory)'
+         workingDirectory: '$(Build.Repository.LocalPath)'
          tasks: 'build'
          publishJUnitResults: true
          testResultsFiles: '**/TEST-*.xml'
