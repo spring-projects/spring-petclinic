@@ -10,7 +10,7 @@ jobs:
      - task: Gradle@3
        inputs:
          gradleWrapperFile: 'gradlew'
-         workingDirectory: '$(Build.ArtifactStagingDirectory)'
+         workingDirectory: '$(Build.ArtifactStagingDirectory)/spring-petclinic'
          tasks: 'build'
          publishJUnitResults: true
          testResultsFiles: '**/TEST-*.xml'
