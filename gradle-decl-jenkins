@@ -1,0 +1,20 @@
+pipeline{
+   agent any
+   
+     stages{
+	   stage ('build') {
+	     steps {
+		      git branch: 'main',
+            url: 'https://github.com/shaiksohail11/spring-petclinic.git'
+			      sh './gradlew build'
+		 }
+	      post {
+	 
+	             success {
+                junit '**/test-results/test/TEST-*.xml'
+                 archiveArtifacts '**/libs/spring-petclinic-3.0.0.jar'
+}
+} 
+} 
+}
+}
