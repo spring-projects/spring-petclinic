@@ -10,8 +10,7 @@ jobs:
       - script: sudo apt update && sudo apt install openjdk-11-jdk -y
       - task: "Gradle@3"
         inputs:
-          workingDirectory: spring-petclinic/
-          gradleWrapperFile: './gradlew'
+          gradleWrapperFile: 'gradlew'
           tasks: 'build'
           publishJUnitResults: true
           testResultsFiles: '**/TEST-*.xml'
