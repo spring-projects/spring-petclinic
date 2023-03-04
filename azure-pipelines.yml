@@ -12,6 +12,8 @@ jobs:
           gradleWrapperFile: 'gradlew'
           tasks: 'gradlew'
           gradleOptions: '-Xmx1024m'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.11'
 
   
         
