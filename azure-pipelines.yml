@@ -13,5 +13,5 @@ jobs:
           gradleWrapperFile: 'gradlew'
           tasks: 'build'
           publishJUnitResults: true
-          testResultsFiles: '**/TEST-*.xml'
+  
         
