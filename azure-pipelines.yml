@@ -7,7 +7,16 @@ jobs:
   - job: "gradle"
     displayName: "gradle job"
     steps:
-      - script: './gradlew build'
+     - task: Gradle@3
+       inputs:
+         gradleWrapperFile: 'gradlew'
+         workingDirectory: 'springpetclinic/'
+         tasks: 'build'
+         publishJUnitResults: true
+         testResultsFiles: '**/TEST-*.xml'
+         javaHomeOption: 'JDKVersion'
+         sonarQubeRunAnalysis: false
+         spotBugsAnalysis: false
 
   
         
