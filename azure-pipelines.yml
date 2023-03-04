@@ -7,13 +7,7 @@ jobs:
   - job: "gradle"
     displayName: "gradle job"
     steps:
-      - task: "Gradle@3"
-        inputs:
-          gradleWrapperFile: 'gradlew'
-          tasks: 'gradlew'
-          gradleOptions: '-Xmx1024m'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
+      - script: './gradlew build'
 
   
         
