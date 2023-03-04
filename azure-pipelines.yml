@@ -1,14 +1,17 @@
-pool: "Azure Pipelines"
+pool: 
+ name: "Azure Pipelines"
+ vmImage: "ubuntu-22.04"
 trigger:
   - main
 jobs:
   - job: "gradle"
     displayName: "gradle job"
     steps:
+      - script: sudo apt update && sudo apt install openjdk-11-jdk -y
       - task: "Gradle@3"
         inputs:
-          
-          gradleWrapperFile: 'gradlew'
+          workingDirectory: spring-petclinic/
+          gradleWrapperFile: './gradlew'
           tasks: 'build'
           publishJUnitResults: true
           testResultsFiles: '**/TEST-*.xml'
