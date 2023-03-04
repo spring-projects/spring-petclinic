@@ -11,6 +11,5 @@ jobs:
         inputs:
           gradleWrapperFile: 'gradlew'
           tasks: 'build'
-          publishJUnitResults: true
   
         
