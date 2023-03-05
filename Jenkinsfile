@@ -1,4 +1,4 @@
-#!groovy
+
 node('maven_ubuntu')
 {
     stage('vcs')
