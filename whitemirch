@@ -1,0 +1,16 @@
+pipeline{
+	agent{label 'MAVEN_JDK17'}
+	stages{
+		stage('vcs'){
+		    steps{
+			git branch:'main' ,
+			url: 'https://github.com/spring-projects/spring-petclinic.git'
+		}
+		}
+		stage('package') {
+            steps {
+                 sh './gradlew build'
+            }
+        }
+	}
+}
