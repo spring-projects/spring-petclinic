@@ -12,4 +12,13 @@ pipeline{
           }
        }
     }
+    post{
+      success{
+         
+         archiveArtifacts artifacts: '**/target/spring-petclinic-*.jar'
+         junit testResults: '**/surefire-reports/TEST-*.xml'
+         
+
+      }
+    }
 }
