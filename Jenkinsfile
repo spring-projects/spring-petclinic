@@ -6,8 +6,8 @@ pipeline{
       stages {
          stage ('vcs') {
             steps {
-                git branch: 'main',
-                  url: 'https://github.com/shaiksohail11/spring-petclinic.git',
+                git url: 'https://github.com/shaiksohail11/spring-petclinic.git',
+                  branch: 'main',
                     sh 'mvn package'
 
 
