@@ -12,7 +12,8 @@ pipeliene {
             steps {
                 archiveArtifacts artifacts: '**/libs/spring-petclinic-3.0.0/jar'
                                  onlyIfSuccesful: true
-                junit testresults: '**/test-results/test/TEST-*.xml'                 
+                junit testResults: '**/test-results/test/TEST-*.xml'                 
             }
         }
-}
+    }
+}    
