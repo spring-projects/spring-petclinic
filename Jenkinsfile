@@ -1,5 +1,6 @@
 pipeliene {
-    agent { label 'MAVEN_JDK17' } 
+    agent { label 'JDK_17' }
+    triggers { pollSCM '* * * * *' }
     stages {
         stage( 'version control sysytem') {
             steps {
