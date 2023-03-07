@@ -13,10 +13,16 @@ pipeline {
                 sh 'mvn package'
             }
         }
-        stage( 'post build' ) {
+        stage('build') {
             steps {
-                archiveArtifacts artifacts: '**/spring-petclinic-3.0.0.jar',
-                junit testResults: '**/test-results/test/TEST-*.xml'                 
+                sh 'export PATH="/usr/lib/jvm/java-1.17.0-openjdk-amd64/bin:$PATH" && mvn package'
+            }
+        }
+        stage('postbuild')
+    {
+        archiveArtifacts artifacts: '**/target/spring-petclinic.war', 
+        followSymlinks: false
+        junit '**/surefire-reports/TEST-*.xml'                 
             }
         }
     }
