@@ -8,11 +8,6 @@ pipeliene {
                 branch: 'main'
             }
         }
-        stage( 'package' ) {
-            steps {
-                sh: 'export PATH="/usr/lib/jvm/java-17-openjdk-amd64/bin:$PATH" && ./gradlew build',
-            }
-        }
         stage( 'post build' ) {
             steps {
                 archiveArtifacts artifacts: '**/libs/spring-petclinic-3.0.0/jar'
