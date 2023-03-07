@@ -20,4 +20,5 @@ pipeliene {
                 junit testresults: '**/test-results/test/TEST-*.xml'                 
             }
         }
-}
+    }
+}    
