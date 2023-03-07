@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'MAVEN_JDK8' }
+    agent { label 'AAA' }
     triggers: { pollSCM ('* 21 * * 1-5') }
     stages {
         stage('vcs') {
