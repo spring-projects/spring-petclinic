@@ -1,5 +1,5 @@
 pipeliene {
-    agent { label 'any' }
+    agent any
     triggers { pollSCM '* * * * *' }
     stages {
         stage( 'version control sysytem') {
