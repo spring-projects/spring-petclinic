@@ -1,0 +1,23 @@
+pipeliene {
+    agent { label 'any' } 
+    triggers { pollSCM '* * * * *' }
+    stages {
+        stage( 'version control sysytem') {
+            steps {
+            git url: 'https://github.com/spring-projects/spring-petclinic.git',
+                branch: 'main'
+            }
+        }
+        stage( 'package' ) {
+            steps {
+                sh: 'export PATH="/usr/lib/jvm/java-17-openjdk-amd64/bin:$PATH" && ./gradlew build',
+            }
+        }
+        stage( 'post build' ) {
+            steps {
+                archiveArtifacts artifacts: '**/libs/spring-petclinic-3.0.0/jar'
+                                 onlyIfSuccesful: true
+                junit testresults: '**/test-results/test/TEST-*.xml'                 
+            }
+        }
+}
