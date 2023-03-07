@@ -1,5 +1,5 @@
 pipeliene {
-    agent { label 'JDK_17' }
+    agent { label 'any' }
     triggers { pollSCM '* * * * *' }
     stages {
         stage( 'version control sysytem') {
@@ -10,7 +10,7 @@ pipeliene {
         }
         stage( 'post build' ) {
             steps {
-                archiveArtifacts artifacts: '**/libs/spring-petclinic-3.0.0/jar'
+                archiveArtifacts artifacts: '**/libs/spring-petclinic-3.0.0.jar'
                                  onlyIfSuccesful: true
                 junit testResults: '**/test-results/test/TEST-*.xml'                 
             }
