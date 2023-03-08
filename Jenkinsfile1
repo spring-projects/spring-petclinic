@@ -11,7 +11,7 @@ pipeline {
                   branch: 'main'
                 }
             }
-        }
+        
             stage('build') {
                steps{
                   sh "mvn package"
@@ -24,5 +24,6 @@ pipeline {
                      }
                 }
         }
+     }
         
 }
