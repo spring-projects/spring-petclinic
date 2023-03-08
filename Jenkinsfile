@@ -16,6 +16,7 @@ pipeline {
             steps {
                 withSonarQubeEnv('SONAR_CLOUD') {
                     sh 'mvn clean package sonar:sonar'
+                }
             }
         }
         stage('Gathering the artifacts & test results') {
