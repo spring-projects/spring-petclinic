@@ -12,7 +12,13 @@ pipeline {
                 sh 'mvn package'
             }
         }
-        stage('test code by using sonarqube') {
+        stage('Test the code by using sonarqube') {
+            steps {
+                withSonarQubeEnv('SONAR_CLOUD') {
+                    sh 'mvn clean package sonar:sonar'
+            }
+        }
+        stage('Gathering the artifacts & test results') {
             steps {
                 archiveArtifacts artifacts: '**/target/*.jar',
                                     onlyIfSuccessful: true,
