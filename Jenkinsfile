@@ -14,7 +14,7 @@ pipeline {
         }
         stage('test code by using sonarqube') {
             steps {
-                archiveArtifacts artifacts: '**/target/gameoflife.war',
+                archiveArtifacts artifacts: '**/target/*.jar',
                                     onlyIfSuccessful: true,
                                     allowEmptyArchive: true
                 junit testResults: '**/surefire-reports/TEST-*.xml'
