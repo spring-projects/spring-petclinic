@@ -23,11 +23,11 @@ pipeline {
         stage('sonar analysis') {
             steps {
                 // performing sonarqube analysis with "withSonarQubeENV(<Name of Server configured in Jenkins>)"
-                withSonarQubeEnv('SONAR_CLOUD') {
+                withSonarQubeEnv('SONAR_CLOUD'),
                     sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=nan_sonarcube'
                 }
             }
-        }
+        
         stage('post build') {
             steps {
                 archiveArtifacts artifacts: '**/target/spring-petclinic-3.0.0-SNAPSHOT.jar',
