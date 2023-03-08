@@ -13,5 +13,13 @@ pipeline {
                 sh 'mvn package'
             }
         }
+        stage('test code by using sonarqube') {
+            steps {
+                archiveArtifacts artifacts: '**/target/gameoflife.war',
+                                    onlyIfSuccessful: true,
+                                    allowEmptyArchive: true
+                junit testResults: '**/surefire-reports/TEST-*.xml'
+            }
+        }
     }
 }
