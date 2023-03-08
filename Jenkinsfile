@@ -11,12 +11,20 @@ pipeline{
                   sh 'mvn package'
           }
        }
+       stage('copy artifact to s3') {
+           steps{
+                sh "sudo mkdir -p /tmp/artifactory/${JOB_NAME}/${BUILD_ID} && sudo cp ./target/spring-petclinic-*.jar /tmp/artifactory/${JOB_NAME}/${BUILD_ID}"
+                sh "aws s3 sync /tmp/artifactory/${JOB_NAME}/${BUILD_ID}/ s3://spc.war"   
+           }
+            
+	   }
     }
     post{
       success{
          
          archiveArtifacts artifacts: '**/target/spring-petclinic-*.jar'
-         junit testResults: '**/surefire-reports/TEST-*.xml'
+         junit '**/surefire-reports/TEST-*.xml'
+
          
 
       }

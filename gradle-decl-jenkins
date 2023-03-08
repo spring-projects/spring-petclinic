@@ -1,20 +1,34 @@
-pipeline{
-   agent any
-   
-     stages{
-	   stage ('build') {
-	     steps {
-		      git branch: 'main',
-            url: 'https://github.com/shaiksohail11/spring-petclinic.git'
-			      sh './gradlew build'
-		 }
-	      post {
-	 
-	             success {
-                junit '**/test-results/test/TEST-*.xml'
-                 archiveArtifacts '**/libs/spring-petclinic-3.0.0.jar'
-}
-} 
-} 
-}
+pipeline{ 
+    agent { label 's3'}
+    triggers {
+        pollSCM('* * * * *')
+    }
+    stages {
+       stage ('vcs') {
+          steps {
+              git url: 'https://github.com/shaiksohail11/spring-petclinic.git',
+                  branch: 'main'
+                  sh 'mvn package'
+          }
+		  	   stage('copy artifact to s3') {
+
+         sh "sudo mkdir -p /artifactory/${JOB_NAME}/${BUILD_ID}"
+         sh "aws s3 cp ./target/spring-petclinic-3.0.0-SNAPSHOT.jar s3://spc.war"
+		 
+	   }
+       }
+
+
+    }
+    post{
+      success{
+         
+         archiveArtifacts artifacts: '**/target/spring-petclinic-*.jar'
+         junit '**/surefire-reports/TEST-*.xml'
+
+         
+         
+
+      }
+    }
 }

@@ -1,0 +1,31 @@
+pipeline {
+    agent{ label 'node1'}
+      triggers{
+      pollSCM('* * * * *')
+      }
+
+        stages {
+            stage('vcs') {
+                steps {
+                    git url: 'https://github.com/shaiksohail11/spring-petclinic.git',
+                        branch: 'main'
+
+                }
+            }
+        }
+
+            stage('build') {
+                steps {
+                    sh 'mvn package'
+                }
+            }
+            
+            stage('sonar analysis') {
+                steps {
+                    withSonarQubeEnv('SONAR_CLOUD') {
+                    sh 'mvn clean package sonar:sonar -Dsonar.organization=jenkins12'
+                }
+                }
+            }
+        
+}
