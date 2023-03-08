@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('vcs') {
             steps {
-                git url: 'https://github.com/khajadevopsmarch23/spring-petclinic.git',
+                git url: 'https://github.com/Nanditha54/spring-petclinic.git',
                     branch: 'declarative'
             }
         }
@@ -15,7 +15,9 @@ pipeline {
             tools {
                 jdk 'JDK_17'
             }
-             sh "mvn ${params.MAVEN_GOAL}"
+            steps {
+                sh 'mvn package'
+                sh "mvn ${params.MAVEN_GOAL}"
             }
         }
         stage('sonar analysis') {
