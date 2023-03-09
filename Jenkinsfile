@@ -31,7 +31,7 @@ pipeline {
                 )
             }
         }
-        stage ('package') {
+        stage('package') {
             tools {
                 jdk 'JDK_17'
                 maven 'MAVEN'
