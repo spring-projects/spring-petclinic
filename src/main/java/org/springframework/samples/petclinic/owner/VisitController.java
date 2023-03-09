@@ -77,11 +77,6 @@ class VisitController {
 		return "pets/createOrUpdateVisitForm";
 	}
 
-	@GetMapping("/owners/{ownerId}/pets/{petId}/visits")
-	public String initNewVisitFormVisit() {
-		return "pets/createOrUpdateVisitForm";
-	}
-
 	// Spring MVC calls method loadPetWithVisit(...) before processNewVisitForm is
 	// called
 	@PostMapping("/owners/{ownerId}/pets/{petId}/visits/new")
