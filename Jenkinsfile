@@ -4,7 +4,6 @@ pipeline {
             jdk 'JDK_17'
             maven 'MAVEN'
         }
-    triggers { pollSCM ('* * * * *') }
     stages{
         stage('vcs') {
             steps {
