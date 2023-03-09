@@ -9,6 +9,7 @@ pipeline {
             steps {
                 git branch: 'declarative',
                     url: 'https://github.com/Bharatkumar5690/spring-petclinic.git'
+                sh printenv
             }
         }
         stage('Artifactory configuration') {
