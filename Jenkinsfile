@@ -34,7 +34,7 @@ pipeline {
             }
         }
         stage('package') {
-            sh "mvn ${params.MAVEN_GOAL}"
+            sh 'mvn package'
         }
         stage('Test the code by using sonarqube') {
             steps {
