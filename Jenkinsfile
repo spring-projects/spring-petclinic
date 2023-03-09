@@ -1,8 +1,4 @@
 pipeline {
-     tools {
-            maven 'MAVEN'
-            jdk 'JDK-17'
-        }
     agent { label 'Master'}
     triggers { pollSCM ('* * * * *') }
     stages{
@@ -36,6 +32,10 @@ pipeline {
             }
         }
         stage ('package') {
+            tools {
+                jdk 'JDK_17'
+                maven 'MAVEN'
+            }
             steps {
                 rtMavenRun (
                     tool: 'MAVEN_DEFAULT',
