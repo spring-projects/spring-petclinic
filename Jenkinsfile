@@ -9,7 +9,6 @@ pipeline {
             steps {
                 git branch: 'declarative',
                     url: 'https://github.com/Bharatkumar5690/spring-petclinic.git'
-                sh printenv
             }
         }
         stage('Artifactory configuration') {
@@ -34,20 +33,21 @@ pipeline {
             }
         }
         stage('package') {
-            tools {
-                jdk 'JDK_17'
-            }
             steps {
                 rtMavenRun (
                     tool: 'MAVEN_DEFAULT',
                     pom: 'pom.xml',
                     goals: 'clean install',
-                    deployerId: "MAVEN_DEPLOYER"
+                    deployerId: "MAVEN_DEPLOYER",
+                    resolverId: "MAVEN_RESOLVER"
                 )
+            }
+        }
+        stage ('Publish build info') {
+            steps {
                 rtPublishBuildInfo (
                     serverId: "ARTIFACTORY_SERVER"
                 )
-                //sh "mvn ${params.MAVEN_GOAL}"
             }
         }
         stage('Test the code by using sonarqube') {
