@@ -48,6 +48,10 @@ public class Pet extends NamedEntity {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate birthDate;
 
+	@Column(name = "birth_date")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate startDate;
+
 	@ManyToOne
 	@JoinColumn(name = "type_id")
 	private PetType type;
