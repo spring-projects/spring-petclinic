@@ -77,11 +77,6 @@ class VisitController {
 		return "pets/createOrUpdateVisitForm";
 	}
 
-	@GetMapping("/owners/{ownerId}/pets/{petId}/visits/new")
-	public String initNewVisitFormPet() {
-		return "pets/createOrUpdateVisitForm";
-	}
-
 	@GetMapping("/owners/{ownerId}/pets/{petId}/visits")
 	public String initNewVisitFormVisit() {
 		return "pets/createOrUpdateVisitForm";
