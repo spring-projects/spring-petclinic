@@ -34,7 +34,21 @@ pipeline {
             }
         }
         stage('package') {
-            sh 'mvn package'
+            tools {
+                jdk 'JDK_17'
+            }
+            steps {
+                rtMavenRun (
+                    tool: 'MAVEN_DEFAULT',
+                    pom: 'pom.xml',
+                    goals: 'clean install',
+                    deployerId: "MAVEN_DEPLOYER"
+                )
+                rtPublishBuildInfo (
+                    serverId: "ARTIFACTORY_SERVER"
+                )
+                //sh "mvn ${params.MAVEN_GOAL}"
+            }
         }
         stage('Test the code by using sonarqube') {
             steps {
