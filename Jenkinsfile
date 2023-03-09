@@ -12,7 +12,7 @@ pipeline {
                     url: 'https://github.com/Bharatkumar5690/spring-petclinic.git'
             }
         }
-        stage ('Artifactory configuration') {
+        stage('Artifactory configuration') {
             steps {
                 rtServer (
                     id: "ARTIFACTORY_SERVER",
