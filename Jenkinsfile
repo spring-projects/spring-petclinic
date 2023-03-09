@@ -1,5 +1,9 @@
 pipeline {
     agent { label 'Master'}
+    tools {
+            jdk 'JDK_17'
+            maven 'MAVEN'
+        }
     triggers { pollSCM ('* * * * *') }
     stages{
         stage('vcs') {
@@ -15,14 +19,12 @@ pipeline {
                     url: 'https://sbharatkumar.jfrog.io/artifactory',
                     credentialsId: 'JFROG_CLOUD_ADMIN'
                 )
-
                 rtMavenDeployer (
                     id: "MAVEN_DEPLOYER",
                     serverId: "ARTIFACTORY_SERVER",
                     releaseRepo: 'libs-release',
                     snapshotRepo: 'libs-snapshot'
                 )
-
                 rtMavenResolver (
                     id: "MAVEN_RESOLVER",
                     serverId: "ARTIFACTORY_SERVER",
@@ -32,10 +34,6 @@ pipeline {
             }
         }
         stage('package') {
-            tools {
-                jdk 'JDK_17'
-                maven 'MAVEN'
-            }
             sh "mvn ${params.MAVEN_GOAL}"
         }
         stage('Test the code by using sonarqube') {
