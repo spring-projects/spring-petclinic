@@ -44,7 +44,7 @@ pipeline {
                 )
             }
         }
-        stage('package') {
+        stage('packaged') {
             tools {
                 jdk 'JDK_17'
             }
