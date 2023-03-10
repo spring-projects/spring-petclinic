@@ -4,11 +4,11 @@ pipeline {
     stages {
         stage( 'version control sysytem') {
             steps {
-            git url: 'https://github.com/spring-projects/spring-petclinic.git',
-                branch: 'main'
+                git url: 'https://github.com/spring-projects/spring-petclinic.git',
+                    branch: 'main'
             }
         }
-        stage ('package') {
+        stage('package') {
             steps {
                 sh 'mvn package'
             }
@@ -18,7 +18,7 @@ pipeline {
                 sh 'export PATH="/usr/lib/jvm/java-1.17.0-openjdk-amd64/bin:$PATH" && mvn package'
             }
         }
-        stage ('Artifactory configuration') {
+        stage('Artifactory configuration') {
             steps {
                 rtServer (
                     id: "ARTIFACTORY_SERVER",
