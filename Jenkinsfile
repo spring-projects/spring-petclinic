@@ -22,8 +22,9 @@ pipeline {
             steps {
                 withSonarQubeEnv('SONAR_TOKEN') {
                     sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=qtsonarqube_qtsonarqube-token -Dsonar.organization=qtsonarqube'
+                }
             }
-        }
+        }    
         stage('postbuild') {
             steps {
                 archiveArtifacts artifacts: '**/target/spring-petclinic-3.0.0-SNAPSHOT.jar', 
