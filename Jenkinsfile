@@ -18,6 +18,47 @@ pipeline {
                 sh 'export PATH="/usr/lib/jvm/java-1.17.0-openjdk-amd64/bin:$PATH" && mvn package'
             }
         }
+        stage ('Artifactory configuration') {
+            steps {
+                rtServer (
+                    id: "ARTIFACTORY_SERVER",
+                    url: 'https://qtsivajijfrog.jfrog.io/artifactory',
+                    credentialsId: 'JFROG_TOKEN'
+                )
+
+                rtMavenDeployer (
+                    id: "MAVEN_DEPLOYER",
+                    serverId: "ARTIFACTORY_SERVER",
+                    releaseRepo: 'libs-release',
+                    snapshotRepo: 'libs-snapshot'
+                )
+
+                rtMavenResolver (
+                    id: "MAVEN_RESOLVER",
+                    serverId: "ARTIFACTORY_SERVER",
+                    releaseRepo: 'libs-release',
+                    snapshotRepo: 'libs-snapshot'
+                )
+            }
+        }
+        stage('package') {
+            tools {
+                jdk 'JDK_17'
+            }
+            steps {
+                rtMavenRun (
+                    tool: 'MAVEN_DEFAULT',
+                    pom: 'pom.xml',
+                    goals: 'clean install',
+                    deployerId: "MAVEN_DEPLOYER"
+                    
+                )
+                rtPublishBuildInfo (
+                    serverId: "ARTIFACTORY_SERVER"
+                )
+                //sh "mvn ${params.MAVEN_GOAL}"
+            }
+        }
         stage('sonar analysis') {
             steps {
                 withSonarQubeEnv('SONAR_TOKEN') {
