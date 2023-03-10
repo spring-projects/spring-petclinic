@@ -2,7 +2,7 @@ version: "2.2"
 
 services:
   mysql:
-    image: mysql:5.7
+    image: mysql:8.0
     ports:
       - "3306:3306"
     environment:
@@ -14,7 +14,7 @@ services:
     volumes:
       - "./conf.d:/etc/mysql/conf.d:ro"
   postgres:
-    image: postgres:14.1
+    image: postgres:15.2
     ports:
       - "5432:5432"
     environment:

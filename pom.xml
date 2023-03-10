@@ -25,7 +25,7 @@
 
     <jacoco.version>0.8.8</jacoco.version>
     <nohttp-checkstyle.version>0.0.11</nohttp-checkstyle.version>
-    <spring-format.version>0.0.35</spring-format.version>
+    <spring-format.version>0.0.38</spring-format.version>
 
   </properties>
 
@@ -132,12 +132,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.1.2</version>
+        <version>3.2.1</version>
         <dependencies>
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
             <artifactId>checkstyle</artifactId>
-            <version>8.45.1</version>
+            <version>10.8.1</version>
           </dependency>
           <dependency>
             <groupId>io.spring.nohttp</groupId>
@@ -300,7 +300,7 @@
           <plugin>
             <groupId>com.gitlab.haynes</groupId>
             <artifactId>libsass-maven-plugin</artifactId>
-            <version>0.2.26</version>
+            <version>0.2.29</version>
             <executions>
               <execution>
                 <phase>generate-resources</phase>
