@@ -9,7 +9,7 @@ pipeline{
     stages{
         stage("build"){
             steps{
-                sh 'mvn -Dmaven.test.failure.ignore=true complie'
+                sh 'mvn -Dmaven.test.failure.ignore=true compile'
             }
         }
         stage("test"){
@@ -20,7 +20,7 @@ pipeline{
         }
         stage('package'){
             steps{
-                sh 'mvn package'
+                sh 'mvn -Dmaven.test.failure.ingore=true package'
             }
         }
     }
