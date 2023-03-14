@@ -19,7 +19,35 @@ pipeline {
                     sh 'mvn clean package sonar:sonar'
               }
             }
-        }   
+        }
+        stage('artifactory') {
+            steps {
+                rtMavenDeployer (
+                    id: "jfrog",
+                    serverId: "madhuri",
+                    releaseRepo: "madhuri",
+                    snapshotRepo: "madhuri"
+                )
+            }
+        }
+        stage ('Exec Maven') {
+            steps {
+                rtMavenRun (
+                    tool: "MAVEN_GOAL", // Tool name from Jenkins configuration
+                    pom: 'pom.xml',
+                    goals: 'clean install',
+                    deployerId: "jfrog"
+                )
+            }
+        }
+
+        stage ('Publish build info') {
+            steps {
+                rtPublishBuildInfo (
+                    serverId: "madhuri"
+                )
+            }
+        }
         }          
     }    
 
