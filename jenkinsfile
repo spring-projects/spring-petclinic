@@ -10,6 +10,7 @@ pipeline {
         stage('build') {
             steps {
                 sh 'export PATH="/usr/lib/jvm/java-1.17.0-openjdk-amd64/bin:$PATH" && mvn clean package'
+            }
         }
         stage('post build') {
             steps {
