@@ -54,6 +54,11 @@ pipeline {
                                  onlyIfSuccessful: true
                 junit testResults: '**/surefire-reports/TEST-*.xml'
             }
+        }
+        stage('deploy') {
+            steps {
+                sh ansible
+            }
         }          
     } 
 }      
