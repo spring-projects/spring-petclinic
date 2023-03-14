@@ -1,0 +1,22 @@
+pipeline {
+    agent { label 'maven' }
+    stages {
+        stage('vcs') {
+            steps {
+                git url: 'https://github.com/naresh010203/spring-petclinic.git'
+                branch: 'develop'
+            }
+        }
+        stage('build') {
+            steps {
+                sh 'export PATH="/usr/lib/jvm/java-1.17.0-openjdk-amd64/bin:$PATH" && mvn clean package sonar:sonar -Dsonar.organization=nagendra4aa5 -Dsonar.projectKey=nag4a5'
+            }
+        }
+        stage('post build') {
+            steps {
+                archiveArtifacts artifacts: '**/target/*.war',
+                onlyIfSuccessful: true
+            }
+        }
+    }
+}
