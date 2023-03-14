@@ -8,18 +8,18 @@ pipeline{
     stages{
         stage("build"){
             steps{
-                sh 'mvn -Dmaven.test.failure.ignore=true compile'
+                sh 'java mvn -Dmaven.test.failure.ignore=true compile'
             }
         }
         stage("test"){
             steps{
-                sh 'mvn -Dmaven.test.failure.ingore=true test'
+                sh 'java mvn -Dmaven.test.failure.ingore=true test'
                 junit 'target/surefire-reports/**/*.xml'
             }
         }
         stage('package'){
             steps{
-                sh 'mvn -Dmaven.test.failure.ingore=true package'
+                sh 'java mvn -Dmaven.test.failure.ingore=true package'
             }
         }
     }
