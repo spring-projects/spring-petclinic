@@ -1,9 +1,30 @@
 pipeline{
     agent any
+
+    tools{
+        maven 'maven'
+        jdk 'Java 17'
+    }
+
     stages{
         stage("build"){
             steps{
-                echo "hello"
+                sh 'mvn -Dmaven.test.failure.ignore=true complie'
+            }
+        }
+        stage("test"){
+            steps{
+                sh 'mvn -Dmaven.test.failure.ingore=true test'
+            }
+        }
+        post{
+            success{
+                junit 'target/surefire-reports/**/*.xml'
+            }
+        }
+        stage('package'){
+            steps{
+                sh 'mvn package'
             }
         }
     }
