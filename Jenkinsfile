@@ -1,17 +1,18 @@
 pipeline {
     agent { label 'UBUNTU_NODE1' }
-    trigger {
-        pollSCM('* * * * *') }
+    trigger { pollSCM('* * * * *') }
     stages {
-        stage('get url')
+        stage('get url') {
             steps {
                 git branch: 'sweety',
                     url: 'https://github.com/Madhuri-chinta/spring-petclinic.git'     
             }
-        stage('package')
+        }    
+        stage('package') {
             steps {
                 sh './mvnw package'
-            }        
+            } 
+        }           
     }    
 
     }
