@@ -12,7 +12,7 @@
         update_cache: yes  
     - name: get url from s3 bucket
       ansible.builtin.get_url:
-        url: https://neelu-madhu.s3.ap-south-1.amazonaws.com/spring-petclinic-3.0.0-SNAPSHOT.jar
+        url: https://akshara1413.s3.ap-south-1.amazonaws.com/spring-petclinic-3.0.0-20230314.161709-3.jar
         dest: /tmp
     - name: copy service file
       ansible.builtin.copy:
