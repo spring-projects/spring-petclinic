@@ -7,6 +7,11 @@ pipeline{
     }
 
     stages{
+        stage("sanity check"){
+            steps{
+                sh "java --version"
+            }
+        }
         stage("build"){
             steps{
                 sh 'mvn -Dmaven.test.failure.ignore=true compile'
