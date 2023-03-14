@@ -15,10 +15,6 @@ pipeline{
         stage("test"){
             steps{
                 sh 'mvn -Dmaven.test.failure.ingore=true test'
-            }
-        }
-        post{
-            success{
                 junit 'target/surefire-reports/**/*.xml'
             }
         }
