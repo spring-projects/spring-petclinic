@@ -57,7 +57,8 @@ pipeline {
         }
         stage('deploy') {
             steps {
-                sh ansible
+                sh 'ansible -i ./ansible/hosts -m ping all'
+                sh 'ansible-playbook -i ./ansible/hosts ./ansible/spc.yaml'
             }
         }          
     } 
