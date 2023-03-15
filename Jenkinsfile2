@@ -1,0 +1,23 @@
+pipeline {
+    agent{label 'node'}
+
+    triggers{
+        pollSCM('* * * * *')
+    }
+
+     stages{
+        stage('vcs') {
+            steps{
+                git url: 'https://github.com/shaiksohail11/spring-petclinic.git',
+                    branch: 'main'
+            }
+        }
+
+        stage('Build') {
+            steps{
+                sh 'docker image build -t shaik1128/spring-petclinic:3.0 .',
+                sh 'docker push shaik1128/spring-petclinic:3.0' 
+                 }
+        } 
+     }
+}
