@@ -1,0 +1,52 @@
+pipeline {
+    agent { label 'jfrog'}
+         stages {
+            stage('build') {
+               steps {
+                      git url: 'https://github.com/Mekalaabhiramreddy/spring-petclinic.git',
+                      branch: 'main'
+                             }
+                       } 
+                    
+                 stage ('Artifactory configuration') {
+            steps {
+                rtServer (
+                    id: "ARTIFACTORY_SERVER",
+                    url: 'https://abhiram13.jfrog.io/artifactory',
+                    credentialsId: 'jfrog1'
+                )
+
+                rtMavenDeployer (
+                    id: "MAVEN_DEPLOYER",
+                    serverId: "ARTIFACTORY_SERVER",
+                    releaseRepo: 'jfrog',
+                    snapshotRepo: 'jfrog'
+                )
+
+                rtMavenResolver (
+                    id: "MAVEN_RESOLVER",
+                    serverId: "ARTIFACTORY_SERVER",
+                    releaseRepo: 'libs-release',
+                    snapshotRepo: 'libs-snapshot'
+                )
+            }
+        }
+           stage('package') {
+            steps {
+                sh "mvn ${params.MAVEN_GOAL}"
+                rtMavenRun (
+                    tool: 'maven',
+                    pom: 'pom.xml',
+                    goals: 'clean install',
+                    deployerId: "MAVEN_DEPLOYER"
+
+                )
+                rtPublishBuildInfo (
+                    serverId: "ARTIFACTORY_SERVER"
+                )
+                //sh "mvn ${params.MAVEN_GOAL}"
+            }
+        }
+         }
+}
+
