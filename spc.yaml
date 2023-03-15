@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spc
+  labels:
+    app: spring
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: spring
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 1
+  template:
+    metadata:
+      name: spc-pod
+      labels:
+        app: spring
+    spec:
+      containers:
+        - name: spring-petclinic
+          image: shaik1128/spring-petclinic:3.0
+          ports:
+            - containerPort: 8080
+              name: spc-port
+              protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spc-svc
+  labels:
+    app: spring
+spec:
+  type: LoadBalancer
+  selector:
+    app: spring
+  ports:
+    - port: 8080
+      protocol: TCP
