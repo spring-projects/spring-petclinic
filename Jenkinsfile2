@@ -19,5 +19,10 @@ pipeline {
                 sh 'docker push shaik1128/spring-petclinic:3.0' 
                  }
         } 
+        stage('deploy') {
+           steps {
+              sh 'kubectl apply -f spc.yaml'
+           }
+        }
      }
 }
