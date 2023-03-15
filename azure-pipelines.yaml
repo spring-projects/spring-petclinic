@@ -1,0 +1,27 @@
+---
+pool:
+  name: default
+trigger:
+  - main
+steps:
+  - task: Maven@3
+    inputs:
+      mavenPOMFile: 'pom.xml'
+      publishJUnitResults: true
+      goals: 'package'
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      javaHomeOption: 'Path'
+      jdkDirectory: /usr/lib/jvm/java-17-openjdk-amd64
+      mavenVersionOption: 'path'
+      mavenDirectory: /home/ubuntu/spring-petclinic
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.Repository.LocalPath)'
+      ArtifactName: 'drop'
+      publishLocation: 'Container'
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      buildType: 'current'
+      artifactName: 'drop'
+      targetPath: '/home/ubuntu/spc'
+  - script: ansible-playbook -i host spc1.yaml

@@ -1,0 +1,22 @@
+pool: 
+ name: "Azure Pipelines"
+ vmImage: "ubuntu-22.04"
+trigger:
+  - main
+jobs:
+  - job: "gradle"
+    displayName: "gradle job"
+    steps:
+     - task: Gradle@3
+       inputs:
+         gradleWrapperFile: 'gradlew'
+         workingDirectory: '$(Build.Repository.LocalPath)'
+         tasks: 'build'
+         publishJUnitResults: true
+         testResultsFiles: '**/TEST-*.xml'
+         javaHomeOption: 'JDKVersion'
+         sonarQubeRunAnalysis: false
+         spotBugsAnalysis: false
+
+  
+        

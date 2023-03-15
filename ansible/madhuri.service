@@ -1,0 +1,11 @@
+[Unit]
+Description=my springpetclinic application
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu
+ExecStart=/usr/lib/jvm/java-17-openjdk-amd64/bin/java -jar /home/ubuntu/spring-petclinic-3.0.0-20230314.161709-3.jar
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

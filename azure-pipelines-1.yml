@@ -1,0 +1,11 @@
+---
+pool:
+  name: Default
+trigger:
+  - main
+steps:
+  - script: echo $(Build.ArtifactStagingDirectory)
+  
+
+  
+  

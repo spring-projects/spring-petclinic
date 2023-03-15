@@ -1,0 +1,28 @@
+---
+- name: install springpetclinic
+  hosts: all
+  become: yes
+  tasks:
+    - name: install java17 and maven
+      ansible.builtin.apt:
+        name:
+          - openjdk-17-jdk
+          - maven
+        state: present
+        update_cache: yes  
+    - name: get url from s3 bucket
+      ansible.builtin.get_url:
+        url: https://akshara1413.s3.ap-south-1.amazonaws.com/spring-petclinic-3.0.0-20230314.161709-3.jar
+        dest: /home/ubuntu
+    - name: copy service file
+      ansible.builtin.copy:
+        src: ./madhuri.service
+        dest: /etc/systemd/system/spring.service  
+    - name: deamon-reload service
+      ansible.builtin.systemd:
+        state: started
+        daemon_reload: true
+        enabled: true
+        name: spring.service
+
+         
