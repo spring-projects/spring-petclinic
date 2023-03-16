@@ -18,6 +18,5 @@ pipeline {
                     -Dsonar.projectKey=nareshspc'
             }
         }
-
     }
 }
