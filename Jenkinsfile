@@ -15,7 +15,7 @@ pipeline {
             steps {
                 rtServer (
                     id: "JFROG_CLOUD",
-                    url: 'https://gaseerwadham.jfrog.io/artifactory',
+                    url: 'https://aseerwadham.jfrog.io/artifactory',
                     credentialsId: 'JFROG_CLOUD_ADMIN'
                 )
 
