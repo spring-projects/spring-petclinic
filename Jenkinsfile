@@ -15,3 +15,13 @@ pipeline{
             steps {
                 sh 'mvn package'
 }
+   }
+       stage ('deployment') {
+            
+            steps {
+                sh 'ansible-playbook -i /home/ansible/inventory.yml '
+}
+   }
+    }
+}
+        
