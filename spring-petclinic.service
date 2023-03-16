@@ -1,0 +1,20 @@
+[Unit]
+Description=springpetclinic java application
+[Service]
+User=ansible
+# The configuration file application.properties should be here:
+
+#change this to your workspace
+WorkingDirectory=/home/ansible/
+
+#path to executable.
+#executable is a bash script which calls jar file
+ExecStart=/usr/bin/java -jar spring-petclinic-2.7.3.jar
+
+SuccessExitStatus=143
+TimeoutStopSec=10
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
