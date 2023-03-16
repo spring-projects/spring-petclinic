@@ -1,10 +1,13 @@
 pipeline {
     agent { label 'JDK_17' }
     triggers { pollSCM ('* * * * *') }
+    parameters {
+        choice(name: 'MAVEN_GOAL', choices: ['package', 'install', 'clean'], description: 'Maven Goal')
+    }
     stages {
         stage('vcs') {
             steps {
-                git url: 'https://github.com/Aseerwadham/spring-petclinic.git',
+                git url: 'https://github.com/khajadevopsmarch23/spring-petclinic.git',
                     branch: 'main'
             }
         }
@@ -13,7 +16,14 @@ pipeline {
                 jdk 'JDK_17'
             }
             steps {
-                sh "./mvnw package"
+                sh "mvn ${params.MAVEN_GOAL}"
+            }
+        }
+        stage('sonar analysis') {
+            steps {
+                withSonarQubeEnv('SONAR_CLOUD') {
+                    sh 'mvn clean package sonar:sonar -Dsonar.organization=springpetclinic143'
+                }
             }
         }
         stage('post build') {
@@ -24,6 +34,4 @@ pipeline {
             }
         }
     }
-}
-
-
+}    
