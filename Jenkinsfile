@@ -14,21 +14,21 @@ pipeline {
         stage ('Artifactory configuration') {
             steps {
                 rtServer (
-                    id: "ARTIFACTORY_SERVER",
+                    id: "JFROG_CLOUD",
                     url: 'https://gaseerwadham.jfrog.io/artifactory',
                     credentialsId: 'JFROG_CLOUD_ADMIN'
                 )
 
                 rtMavenDeployer (
                     id: "MAVEN_DEPLOYER",
-                    serverId: "ARTIFACTORY_SERVER",
+                    serverId: "JFROG_CLOUD",
                     releaseRepo: 'libs-release',
                     snapshotRepo: 'libs-snapshot'
                 )
 
                 rtMavenResolver (
                     id: "MAVEN_RESOLVER",
-                    serverId: "ARTIFACTORY_SERVER",
+                    serverId: "JFROG_CLOUD",
                     releaseRepo: 'libs-release',
                     snapshotRepo: 'libs-snapshot'
                 )
@@ -47,7 +47,7 @@ pipeline {
 
                 )
                 rtPublishBuildInfo (
-                    serverId: "ARTIFACTORY_SERVER"
+                    serverId: "JFROG_CLOUD"
                 )
             }
         }
