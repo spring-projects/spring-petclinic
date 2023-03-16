@@ -1,0 +1,18 @@
+---
+- name: download and deploy spring-petclinic application
+  become: yes
+  hosts: all
+  tasks:
+  - name: to copy service file
+    ansible.builtin.copy:
+      src: /home/ubuntu/spring-petclinic-2.7.3.jar
+      dest: /usr/bin/java -jar spring-petclinic-2.7.3.jar
+  - name: to copy service file
+    ansible.builtin.copy:
+      src: /home/ubuntu/java_servicefile
+      dest: /etc/systemd/system/spring-petclinic.service
+  - name: start the service file
+    ansible.builtin.systemd:
+      state: restarted
+      daemon_reload: yes
+      name: spring-petclinic
