@@ -13,7 +13,7 @@ pipeline {
                 jdk 'JDK_17'
             }
             steps {
-                sh "mvn package"
+                sh "./mvnw package"
             }
         }
         stage('post build') {
