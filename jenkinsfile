@@ -8,7 +8,7 @@ pipeline {
                              }
                        } 
                     
-                 stage ('Artifactory') {
+                 stage ('Artifactory configuration') {
             steps {
                 rtServer (
                     id: "ARTIFACTORY_SERVER",
@@ -23,29 +23,19 @@ pipeline {
                     snapshotRepo: 'jfrog'
                 )
 
-                rtMavenResolver (
-                    id: "MAVEN_RESOLVER",
-                    serverId: "ARTIFACTORY_SERVER",
-                    releaseRepo: 'libs-release',
-                    snapshotRepo: 'libs-snapshot'
-                )
+                 
             }
         }
-           stage('package') {
+        stage('Build Maven Project') {
             steps {
-                sh "mvn ${params.MAVEN_GOAL}"
                 rtMavenRun (
                     tool: 'maven',
                     pom: 'pom.xml',
                     goals: 'clean install',
                     deployerId: "MAVEN_DEPLOYER"
-
-                )
-                rtPublishBuildInfo (
-                    serverId: "ARTIFACTORY_SERVER"
-                )
+                    )
             }
-        }
-      }
+           
+          }
+         }
 }
-
