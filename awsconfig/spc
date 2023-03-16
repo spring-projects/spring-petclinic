@@ -1,17 +1,23 @@
 pipeline {
-    agent { label 'MAVEN_JDK8' }
-        
+    agent { label 'MAVEN_8' }
+    triggers { pollSCM ('* * * * *') }
+    parameters {
+        choice(name: 'MAVEN_GOAL', choices: ['package', 'install', 'clean'], description: 'Maven Goal')
+    }
     stages {
         stage('vcs') {
             steps {
-                git url: 'https://github.com/Nanditha54/spring-petclinic.git',
-                    branch: 'develop'
+                git url: 'https://github.com/Learningjenkinsqt/spring-petclinic.git',
+                    branch: 'declarative'
             }
         }
         stage('package') {
+            tools {
+                jdk 'JDK_17'
+            }
             steps {
                 sh 'mvn package'
-                
+                sh "mvn ${params.MAVEN_GOAL}"
             }
         }
         stage('post build') {
@@ -25,8 +31,83 @@ pipeline {
             steps {
                 sh "mkdir -p /tmp/${JOB_NAME}/${BUILD_ID}"
                 sh "cp -r **/spring-petclinic-*.jar /tmp/${JOB_NAME}/${BUILD_ID}"
-                sh "aws s3 sync /tmp/${JOB_NAME}/${BUILD_ID} s3://rajurani123 --acl public-read-write"
+                sh "aws s3 sync /tmp/${JOB_NAME}/${BUILD_ID} s3://reddyspcbucket --acl public-read-write"
             }
-    } 
-    }
-}
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

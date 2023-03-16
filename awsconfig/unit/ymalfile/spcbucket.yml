@@ -1,0 +1,20 @@
+---
+ - name: Download jar file
+   hosts: all
+   become: yes
+   tasks:
+    - name: install spc
+      get_url:
+        url: 'https://reddyspcbucket.s3.ap-south-1.amazonaws.com/spring-petclinic-3.0.0-SNAPSHOT.jar'
+        dest: /home/ubuntu
+    - name: copy the service the file
+      copy:
+        src: springpetclinic.service
+        dest: /etc/systemd/system/
+        mode: "777"
+    - name: daemon reload
+      systemd:
+        name: springpetclinic.service
+        daemon_reload: yes
+        state: started
+        enabled: yes

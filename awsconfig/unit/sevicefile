@@ -1,0 +1,11 @@
+[Unit]
+Description=Mangae Java Service SPC
+[Service]
+Environment="JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64"
+WorkingDirectory=/home/ubuntu
+ExecStart=java -jar spring-petclinic-3.0.0-SNAPSHOT.jar
+Type=simple
+Restart=on-failure
+RestartSec=10
+[Install]
+WantedBy=multi-user.target
