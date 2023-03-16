@@ -55,11 +55,5 @@ pipeline {
                 )
             }
         }
-        stage{
-            steps{
-                archiveArtifacts artifacts: '**target/*.jar',
-                onlyIfSuccessful: true
-            }
-        }
     }
 }
