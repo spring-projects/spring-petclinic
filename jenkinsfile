@@ -9,7 +9,8 @@ pipeline {
         }
         stage('build') {
             steps {
-                sh 'export PATH="/usr/lib/jvm/java-1.17.0-openjdk-amd64/bin:$PATH" && ./mvnw package'
+                sh 'export PATH="/usr/lib/jvm/java-1.17.0-openjdk-amd64/bin:$PATH"'
+                sh './mvnw package'
             }
         }
     }
