@@ -1,5 +1,6 @@
 pipeline {
     agent { label 'maven' }
+    triggers { pollSCM ('* * * * *') }
     stages {
         stage('vcs') {
             steps {
@@ -10,8 +11,13 @@ pipeline {
         stage('build') {
             steps {
                 sh 'export PATH="/usr/lib/jvm/java-1.17.0-openjdk-amd64/bin:$PATH"'
-                sh './mvnw package'
+                sh 'mvn clean verify sonar:sonar \
+                    -Dsonar.login=e92ab05da9b0de80f186bffebe352e5c2cfd4b4b \
+                    -Dsonar.host.url=https://sonarcloud.io \
+                    -Dsonar.organization=Chinthalwar Naresh \
+                    -Dsonar.projectKey=nareshspc'
             }
         }
+
     }
 }
