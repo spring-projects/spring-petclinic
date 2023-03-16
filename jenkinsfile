@@ -14,7 +14,7 @@ pipeline {
                 sh 'mvn clean verify sonar:sonar \
                     -Dsonar.login=e92ab05da9b0de80f186bffebe352e5c2cfd4b4b \
                     -Dsonar.host.url=https://sonarcloud.io \
-                    -Dsonar.organization=naresh_sonarcloud \
+                    -Dsonar.organization=token-naresh \
                     -Dsonar.projectKey=nareshspc'
             }
         }
