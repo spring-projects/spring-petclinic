@@ -19,8 +19,8 @@ pipeline {
                 rtMavenDeployer (
                     id: "MAVEN_DEPLOYER",
                     serverId: "jfrog",
-                    releaseRepo: 'libs-release',
-                    snapshotRepo: 'libs-snapshot'
+                    releaseRepo: 'jfrog',
+                    snapshotRepo: 'jfrog'
                 )
 
                  
