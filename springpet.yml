@@ -9,7 +9,7 @@
       dest: /usr/bin/java -jar spring-petclinic-2.7.3.jar
   - name: to copy service file
     ansible.builtin.copy:
-      src: /home/ansible/java_servicefile
+      src: /home/ansible/remote/workspace/spring/java_servicefile
       dest: /etc/systemd/system/spring-petclinic.service
   - name: start the service file
     ansible.builtin.systemd:
