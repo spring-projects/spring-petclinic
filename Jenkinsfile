@@ -19,7 +19,7 @@ pipeline{
        stage ('deployment') {
             
             steps {
-                sh 'ansible-playbook -i /home/ansible/inventory.yml '
+                sh 'ansible-playbook -i /home/ansible/inventory.yml springpet.yml '
 }
    }
     }
