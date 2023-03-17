@@ -1,0 +1,12 @@
+[Unit]
+Description=for running spring service
+[Service]
+user=devops 
+Environment="JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64/bin"
+WorkingDirectory=/home/devops/
+ExecStart=/tmp/ java -jar spring-petclinic-3.0.0-SNAPSHOT.jar
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

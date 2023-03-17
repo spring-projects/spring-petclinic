@@ -1,0 +1,29 @@
+--- 
+- name: spring
+  become: all 
+  hosts: yes
+  tasks:
+    - name: installing openjdk-17-jdk 
+      ansible.builtin.apt: 
+        name: openjdk-17-jdk
+        state: present
+    - name: creating directory
+      ansible.builtin.file:
+        path: /home/devops/
+        state: directory
+        mode: "777"
+    - name: download package 
+      ansible.builtin.get_url:
+        url: "https://abhiram13.jfrog.io/artifactory/jfrog/org/springframework/samples/spring-petclinic/3.0.0-SNAPSHOT/spring-petclinic-3.0.0-SNAPSHOT.jar"
+        dest: /home/devops/
+        mode: "777"
+   - name: copy servicefile     
+     ansible.builtin.copy:         
+       src: spring.service         
+       dest: /etc/systemd/system/spring.service    
+   - name: service file       
+     ansible.builtin.systemd:         
+       name: spring         
+       state: started            
+       enabled: yes
+
