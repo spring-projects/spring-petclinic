@@ -13,17 +13,14 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        java: [ '8', '11', '17' ]
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK ${{matrix.java}}
+      - uses: actions/checkout@v3
+      - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          java-version: ${{matrix.java}}
-          distribution: 'adopt'
+          java-version: 11
+          distribution: 'temurin'
           cache: maven
       - name: Build with Maven Wrapper
-        run: ./mvnw -B package
+        run: ./mvnw --batch-mode verify
