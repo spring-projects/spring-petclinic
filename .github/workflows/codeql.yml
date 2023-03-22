@@ -30,7 +30,7 @@ jobs:
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v2
       with:
-        queries: security-extended
+        queries: security-and-quality
 
     - run: |
         ./mvnw --batch-mode verify -DskipTests
