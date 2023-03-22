@@ -4,7 +4,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.UUID;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,10 +44,10 @@ class RecordsTransferController {
 	 * @throws IllegalArgumentException when the patient does not exist
 	 */
 	private void validatePatientId(final String patientId) throws SQLException {
-		final var connection = dataSource.getConnection();
-		final var statement = connection.prepareStatement("SELECT * FROM patients WHERE id = ?");
+		final Connection connection = dataSource.getConnection();
+		final PreparedStatement statement = connection.prepareStatement("SELECT * FROM patients WHERE id = ?");
 		statement.setString(1, patientId);
-		final var rs = statement.executeQuery();
+		final ResultSet rs = statement.executeQuery();
 		if (!rs.next()) {
 			throw new IllegalArgumentException("Patient with id " + patientId + " does not exist");
 		}
