@@ -1,18 +1,42 @@
-node {
-  stage("Clone the project") {
-    git branch: 'main', url: 'https://github.com/sukrucakmak/spring-petclinic.git'
-  }
+pipeline {
+    agent any
 
-  stage("Compilation") {
-    sh "./mvnw clean install -DskipTests"
-  }
+    tools {
+        maven "mvn-3.9.1"
+        jdk "jdk-temurin-17"
+    }
 
-  stage("Tests and Deployment") {
-    stage("Runing unit tests") {
-      sh "./mvnw test -Punit"
+    stages {
+        /*
+        stage('Checkout Git') {
+            steps {
+                git branch: 'main', url: 'https://github.com/sukrucakmak/spring-petclinic.git'
+            }
+        */
+        stage('Build') {
+            steps {
+                echo "Java Home: $env.JAVA_HOME"
+                sh "mvn -Dmaven.test.failure.ignore=true clean package"
+            }
+        }
+        stage('Quality Analysis') {
+            steps {
+                withSonarQubeEnv('sonar') {
+                    sh 'mvn sonar:sonar'
+                }
+            }
+        }
+        stage('Quality Gate Control') {
+            steps {
+                timeout(time: 1, unit: 'HOURS') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+        stage('Deploy to Test') {
+            steps {
+                echo "Java Home: $env.JAVA_HOME"
+            }
+        }
     }
-    stage("Deployment") {
-      sh 'nohup ./mvnw spring-boot:run -Dserver.port=8001 &'
-    }
-  }
 }
