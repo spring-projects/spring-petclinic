@@ -208,8 +208,8 @@ class ClinicServiceTests {
 		owner6 = this.owners.findById(6);
 
 		assertThat(pet7.getVisits()) //
-				.hasSize(found + 1) //
-				.allMatch(value -> value.getId() != null);
+			.hasSize(found + 1) //
+			.allMatch(value -> value.getId() != null);
 	}
 
 	@Test
@@ -219,8 +219,10 @@ class ClinicServiceTests {
 		Collection<Visit> visits = pet7.getVisits();
 
 		assertThat(visits) //
-				.hasSize(2) //
-				.element(0).extracting(Visit::getDate).isNotNull();
+			.hasSize(2) //
+			.element(0)
+			.extracting(Visit::getDate)
+			.isNotNull();
 	}
 
 }
