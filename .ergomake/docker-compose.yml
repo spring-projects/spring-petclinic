@@ -1,14 +1,6 @@
 version: '3.8'
 
 services:
-  h2-app:
-    build:
-      context: ..
-      dockerfile: .ergomake/Dockerfile
-      args:
-        - DATABASE=h2
-    ports:
-      - "8080:8080"
   postgres-app:
     build:
       context: ..
