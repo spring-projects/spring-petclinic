@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  postgres-app:
+    build:
+      context: ..
+      dockerfile: .ergomake/Dockerfile
+      args:
+        - DATABASE=postgres
+    ports:
+      - "8081:8080"
+    environment:
+      - POSTGRES_URL=jdbc:postgresql://postgres/petclinic
+      - POSTGRES_USER=petclinic
+      - POSTGRES_PASS=petclinic
+  mysql-app:
+    build:
+      context: ..
+      dockerfile: .ergomake/Dockerfile
+      args:
+        - DATABASE=mysql
+    ports:
+      - "8082:8080"
+    environment:
+      - MYSQL_URL=jdbc:mysql://mysql/petclinic
+      - MYSQL_USER=petclinic
+      - MYSQL_PASS=petclinic
+  mysql:
+    image: mysql
+    ports:
+      - "3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_USER=petclinic
+      - MYSQL_PASSWORD=petclinic
+      - MYSQL_DATABASE=petclinic
+  postgres:
+    image: postgres
+    ports:
+      - "5432"
+    environment:
+      - POSTGRES_PASSWORD=petclinic
+      - POSTGRES_USER=petclinic
+      - POSTGRES_DB=petclinic
