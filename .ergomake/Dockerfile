@@ -2,6 +2,7 @@ FROM openjdk:18
 ARG DATABASE
 WORKDIR app
 COPY . .
+RUN /app/mvnw package -DskipTests
 EXPOSE 8080
 ENV DATABASE ${DATABASE}
-CMD sh -c '/app/mvnw spring-boot:run -Dspring-boot.run.profiles=$DATABASE'
+CMD sh -c 'java -jar /app/target/*.jar -Dspring-boot.run.profiles=$DATABASE'
