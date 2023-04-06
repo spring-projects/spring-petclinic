@@ -16,7 +16,7 @@ stages {
         stage ('sonarqube') {
             steps{
                 withSonarQubeEnv('sonarqube') {
-                    sh 'mvn clean package sonar:sonar'
+                    sh 'mvn clean package sonar:sonar -Dsonar.organization=sonartoken'
             }
             }
         }
