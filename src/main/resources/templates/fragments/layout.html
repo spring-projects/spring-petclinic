@@ -49,7 +49,7 @@
             <span class="fa fa-home" aria-hidden="true"></span>
             <span>Home</span>
           </li>
-
+          
           <li th:replace="~{::menuItem ('/owners/find','owners','find owners','search','Find owners')}">
             <span class="fa fa-search" aria-hidden="true"></span>
             <span>Find owners</span>
@@ -60,6 +60,11 @@
             <span>Veterinarians</span>
           </li>
 
+          <li th:replace="~{::menuItem ('/dashboard/dashboard.html','dashboard','dashboard','dashboard','DashBoard')}">
+            <span aria-hidden="true"></span>
+            <span>Dashboard</span>
+           
+          </li>
           <li
             th:replace="~{::menuItem ('/oups','error','trigger a RuntimeException to see how it is handled','exclamation-triangle','Error')}">
             <span class="fa exclamation-triangle" aria-hidden="true"></span>

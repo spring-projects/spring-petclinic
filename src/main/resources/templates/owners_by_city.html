@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Owners in [[${city}]]</title>
+</head>
+<body>
+    <h1>Owners in [[${city}]]</h1>
+    <p>Number of owners: <b th:text="${numOwners}"></b></p>
+    <h2>Owners:</h2>
+    <ul>
+        <li th:each="owner : ${owners}">
+            <p th:text="${owner.firstName} + ' ' + ${owner.lastName}"></p>
+        </li>
+    </ul>
+</body>
+</html>

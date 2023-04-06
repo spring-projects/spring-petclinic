@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'dashboard')}">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+</head>
+<body>
+    <h1>Dashboard</h1>
+    <p>Number of cities in the database: <b th:text="${numCities}"></b></p>
+    <h2>Cities:</h2>
+    <ul>
+        <li th:each="city : ${cities}">
+            <a th:href="@{/dashboard/owners(city=${city.name})}" th:text="${city.name}"></a>
+        </li>
+    </ul>
+</body>
+</html>
+
