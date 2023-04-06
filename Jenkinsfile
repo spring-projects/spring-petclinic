@@ -1,27 +1,33 @@
 pipeline{
-    agent{
-        label 'springpet'
-    }
-    stages {
-        stage ('scm'){
-            steps {
-                    
-                git url: "https://github.com/nagarjuna33/spring-petclinicnew.git",
-                    branch: 'main'
+agent { label 'node' }
+// triggers { pollSCM ('H * * * 1-5') }
+parameters {
+    choice (name: 'BRANCH_TO_BUILD', choices: ['main'], description: 'Branch to build')
+    string (name: 'MAVEN_GOAL', defaultValue: 'clean install', description: 'maven goal')
+}
+stages {
+     stage('scm') {
+        steps {
+               git: "url: https://github.com/nagarjuna33/spring-petclinicnew.git", 
+                     branch:"${params.BRANCH_TO_BUILD}"
+               }
+     }
+
+        stage ('sonarqube') {
+            steps{
+                withSonarQubeEnv('sonarqube') {
+                    sh 'mvn clean package sonar:sonar'
+            }
             }
         }
-        stage ('build package') {
-            
+        stage('Quality Gate') {
             steps {
-                sh 'mvn package'
-}
-   }
-       stage ('deployment') {
-            
-            steps {
-                sh 'ansible-playbook -i /home/ansible/inventory.yml springpet.yml '
-}
-   }
+                timeout(time: 20, unit: 'MINUTES'){
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
     }
 }
-        
+
+
