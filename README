@@ -1,0 +1,24 @@
+setup instructions to run the code on your machine:
+1. Clone the repository using git clone.
+2. Make sure you have already installed and configured the following on your machine:
+  Java 
+  MySQL
+  Redis
+  Maven
+3. Create a new MySQL database for the project using CREATE DATABASE petclinic;
+4. Update the database configuration in the application.properties file located at src/main/resources with your MySQL database details:
+    spring.datasource.url=jdbc:mysql://localhost:3306/petclinic?useSSL=false&serverTimezone=UTC
+    spring.datasource.username=your_username
+    spring.datasource.password=your_password
+5. Update the Redis configuration in the same application.properties file:
+    spring.redis.host=localhost
+    spring.redis.port=6379
+6. Build the project: run the following command from the project root directory:
+    mvn clean install 
+7. Run the project:
+    mvn spring-boot:run
+8. Open http://localhost:8080 to access the Pet Clinic application.
+9. To view the dashboard showing the number of owners in a selected city and the number of cities in the database, navigate to http://localhost:8080/dashboard.
+
+
+Now you should be able to run the Pet Clinic application on your machine.
