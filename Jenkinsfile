@@ -4,7 +4,8 @@ pipeline {
     stage('build') {
       steps {
         echo 'build'
-        sh './mvnw spring-boot:build-image'
+        sh '''mvn clean install
+'''
       }
     }
 
