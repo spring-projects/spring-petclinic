@@ -13,7 +13,7 @@
   <name>petclinic</name>
 
   <scm>
-    <developerConnection>scm:git@github.com:GasparAM/spring-petclinic.git</developerConnection>
+    <developerConnection>scm:git:git@github.com:GasparAM/spring-petclinic.git</developerConnection>
   </scm>
 
   <properties>
