@@ -60,6 +60,11 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
+     <!-- adding redis client library -->
+    <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-redis</artifactId>
+    </dependency>
 
     <!-- Databases - Uses H2 by default -->
     <dependency>
