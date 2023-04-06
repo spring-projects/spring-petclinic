@@ -4,8 +4,7 @@ pipeline {
     stage('build') {
       steps {
         echo 'build'
-        sh '''cd spring-petclinic
-./mvnw spring-boot:build-image'''
+        sh './mvnw spring-boot:build-image'
       }
     }
 
