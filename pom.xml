@@ -366,9 +366,6 @@
                     </pluginExecution>
                     <pluginExecution>
                       <pluginExecutionFilter>
-                        <groupId>io.spring.javaformat</groupId>
-                        <artifactId>spring-javaformat-maven-plugin</artifactId>
-                        <versionRange>[0,)</versionRange>
                         <goals>
                           <goal>validate</goal>
                         </goals>
@@ -381,6 +378,9 @@
                 </lifecycleMappingMetadata>
               </configuration>
             </plugin>
+            <groupId>io.spring.javaformat</groupId>
+                        <artifactId>spring-javaformat-maven-plugin</artifactId>
+                        <versionRange>[0,)</versionRange>
           </plugins>
         </pluginManagement>
       </build>
