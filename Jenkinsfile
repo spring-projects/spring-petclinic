@@ -3,8 +3,7 @@ pipeline {
   stages {
     stage('build') {
       steps {
-        sh '''mvn package -Dmaven.test.skip
-'''
+        sh './mvnw package  -Dmaven.test.skip'
       }
     }
 
