@@ -3,8 +3,7 @@ pipeline {
   stages {
     stage('build') {
       steps {
-        sh '''mvn clean install spring-boot:repackage
-'''
+        sh './mvnw clean package -Dmaven.test.skip=true '
       }
     }
 
