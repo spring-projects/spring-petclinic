@@ -378,6 +378,10 @@
                       </action>
                     </pluginExecution>
                   </pluginExecutions>
+                   <groupId>io.spring.javaformat</groupId>
+                        <artifactId>spring-javaformat-maven-plugin</artifactId>
+                        <versionRange> 3.6.3</versionRange>
+                   
                 </lifecycleMappingMetadata>
               </configuration>
             </plugin>
