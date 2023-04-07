@@ -6,6 +6,7 @@ pipeline {
         echo 'build'
         sh '''mvn package
 '''
+        sh 'ls'
       }
     }
 
