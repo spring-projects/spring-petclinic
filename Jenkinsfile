@@ -18,7 +18,7 @@ pipeline {
 
     stage('run') {
       steps {
-        sh './mvnw spring-boot:run'
+        sh 'nohup ./mvnw spring-boot:run > logs.log 2>&1 &'
       }
     }
 
