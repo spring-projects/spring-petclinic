@@ -7,9 +7,9 @@ pipeline {
       }
     }
 
-    stage('test') {
+    stage('sonar') {
       steps {
-        echo 'test'
+        sh './mvnw sonar:sonar'
       }
     }
 
