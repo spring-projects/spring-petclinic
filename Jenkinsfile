@@ -18,7 +18,7 @@ pipeline {
 
     stage('run') {
       steps {
-        sh 'java -jar target/*.jar'
+        sh 'nohup java -jar target/*.jar > petclinic.log 2>&1 &'
       }
     }
 
