@@ -11,7 +11,7 @@ pipeline {
       steps {
         withSonarQubeEnv(installationName:'sonar-1')
         {
-        sh './mvnw clean sonar:sonar'
+        sh './mvnw sonar:sonar -Dsonar.java.binaries=target/classes'
         }
       }
     }
