@@ -3,9 +3,9 @@ pipeline {
   stages {
     stage('build') {
       steps {
-//         sh './mvnw clean package -Dmaven.test.skip=true '
-        sh 'docker --version'
-        sh 'docker build -f . --tag pet .'
+        sh './mvnw clean package -Dmaven.test.skip=true '
+//         sh 'docker --version'
+//         sh 'docker build -f . --tag pet .'
       }
     }
 
@@ -20,7 +20,7 @@ pipeline {
 
     stage('run') {
       steps {
-        sh 'cp -r target/spring-petclinic-3.0.0-SNAPSHOT.jar bin/spring-petclinic-3.0.0-SNAPSHOT.jar'
+        sh 'cp -r target/ /shared/target'
       }
     }
 
