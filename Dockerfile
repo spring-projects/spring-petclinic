@@ -5,7 +5,8 @@ ARG uid=1000
 ARG gid=1000
 LABEL author="Arjun"
 LABEL project="test"
-ADD https://arjunaartifact.jfrog.io/ui/native/libs-release-local/spring-petclinic-2.7.3.jar
+ADD https://arjunaartifact.jfrog.io/ui/native/libs-release-local/spring-petclinic-2.7.3.jar 
+COPY spring-petclinic-2.7.3.jar spring-petclinic-2.7.3.jar
 EXPOSE 8080
 RUN useradd springpet
 USER ${user}
