@@ -3,7 +3,8 @@ pipeline {
   stages {
     stage('build') {
       steps {
-        sh './mvnw clean package -Dmaven.test.skip=true '
+//         sh './mvnw clean package -Dmaven.test.skip=true '
+        sh 'docker build -f . --tag pet .'
       }
     }
 
