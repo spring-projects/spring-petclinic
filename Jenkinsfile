@@ -21,6 +21,8 @@ pipeline {
     stage('run') {
       steps {
         sh 'cp -r target/ /shared/target'
+        sh 'nohup java -jar /shared/target/*.jar &
+
       }
     }
 
