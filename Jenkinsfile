@@ -18,8 +18,8 @@ pipeline {
 
     stage('run') {
       steps {
-        sh 'cp -r target/petclinic.jar bin/petclinic.jar'
-        sh 'java -jar bin/target_jar/petclinic.jar'
+        sh 'cp -r target/petclinic.jar bin/*.jar'
+        sh 'java -jar bin/target_jar/*.jar'
 //         sh 'nohup java -jar target/*.jar > petclinic.log 2>&1 &'
       }
     }
