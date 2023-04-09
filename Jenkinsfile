@@ -4,8 +4,8 @@ pipeline {
     stage('build') {
       steps {
 //         sh './mvnw clean package -Dmaven.test.skip=true '
-//         sh 'docker build -f . --tag pet .'
         sh 'docker --version'
+        sh 'docker build -f . --tag pet .'
       }
     }
 
