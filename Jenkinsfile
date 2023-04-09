@@ -21,7 +21,7 @@ pipeline {
     stage('run') {
       steps {
         sh 'cp -r target/ /shared/target'
-        sh 'nohup java -jar /shared/target/*.jar &'
+        sh 'JENKINS_NODE_COOKIE=dontKillMe nohup java -jar /shared/target/*.jar &'
 
       }
     }
