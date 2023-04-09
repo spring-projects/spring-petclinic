@@ -1,5 +1,5 @@
 pipeline {
-  agent any
+  agent { docker { image 'maven:3.3.3' } }
   stages {
     stage('build') {
       steps {
@@ -19,10 +19,12 @@ pipeline {
     stage('run') {
       steps {
         sh 'cp -r target/spring-petclinic-3.0.0-SNAPSHOT.jar bin/spring-petclinic-3.0.0-SNAPSHOT.jar'
-//         sh 'java -jar bin/target_jar/*.jar'
-//         sh 'nohup java -jar target/*.jar > petclinic.log 2>&1 &'
       }
     }
 
   }
 }
+
+
+
+
