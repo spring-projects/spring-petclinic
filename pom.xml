@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
-  <version>3.0.1-SNAPSHOT</version>
+  <version>3.0.1</version>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -14,7 +14,7 @@
 
   <scm>
     <developerConnection>scm:git:git@github.com:GasparAM/spring-petclinic.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>SNAPSHOT</tag>
   </scm>
 
   <properties>
