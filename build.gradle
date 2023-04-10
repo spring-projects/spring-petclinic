@@ -82,7 +82,7 @@ publishing {
         maven {
             // def releasesRepoUrl = layout.buildDirectory.dir("http://localhost:8079/repository/maven-releases/")
             // def snapshotsRepoUrl = layout.buildDirectory.dir("http://localhost:8079/repository/maven-snapshots/")
-            url = "http://localhost:8079/repository/maven-snapshots/"
+            url = "http://localhost:8079/repository/maven-releases/"
             allowInsecureProtocol=true
             credentials {
               username 'admin'
