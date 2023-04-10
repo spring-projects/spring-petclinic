@@ -8,8 +8,8 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
-      - MYSQL_USER=Nicolae
-      - MYSQL_PASSWORD=12345678
+      - MYSQL_USER=devopstopsecret
+      - MYSQL_PASSWORD=qwerty1235456
       - MYSQL_DATABASE=petclinic
     volumes:
       - "./conf.d:/etc/mysql/conf.d:ro"
