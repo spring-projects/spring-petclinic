@@ -11,7 +11,7 @@ pipeline {
 
     stage('sonar') {
       steps {
-        sh "./mvnw sonar:sonar -Dsonar.host.url=http://devops1-sonarqube-1:9000 -Dsonar.login=admin-Dsonar.password=password"
+        sh "./mvnw sonar:sonar -Dsonar.host.url=http://devops1-sonarqube-1:9000 -Dsonar.login=admin -Dsonar.password=password"
       }
     }
 
