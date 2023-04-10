@@ -11,10 +11,7 @@ pipeline {
 
     stage('sonar') {
       steps {
-        withSonarQubeEnv(installationName:'sonar-1')
-        {
         sh './mvnw sonar:sonar -Dsonar.java.binaries=target/classes  -Dsonar.host-url=http://devops1-sonarqube-1:9000/ -Dsonar.login=admin -Dsonar.password=password'
-        }
       }
     }
 
