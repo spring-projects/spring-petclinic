@@ -42,10 +42,6 @@ scmVersion {
     tag {
         prefix.set(rootProject.name)
     }
-    repository {
-        customKeyFile.set(project.file('.key'))
-        customKeyPassword.set("")
-    }
 }
 
 project.version = scmVersion.version
