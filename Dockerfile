@@ -16,9 +16,9 @@ COPY ./ ./
 RUN ./mvnw clean ; ./mvnw package
 
 FROM alpine:latest
-ENV JAR=spring-petclinic-3.0.3.jar
+ENV DB=
 RUN apk --no-cache add openjdk17-jre-headless
 WORKDIR /home
 COPY --from=builder /tmp/target/spring-*.jar  ./
 EXPOSE 8080
-CMD ["/bin/sh", "-c", "/usr/bin/java -jar /home/spring-*.jar"]
+CMD ["/bin/sh", "-c", "/usr/bin/java -jar /home/spring-*.jar ${DB}"]
