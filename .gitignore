@@ -16,3 +16,4 @@ _site/
 *.css
 !petclinic.css
 .key
+.env
