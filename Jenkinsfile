@@ -1,9 +1,9 @@
 pipeline{
-agent { label 'node' }
+agent { label 'node1' }
 // triggers { pollSCM ('H * * * 1-5') }
 parameters {
-    choice (name: 'BRANCH_TO_BUILD', choices: ['main'], description: 'Branch to build')
-    string (name: 'MAVEN_GOAL', defaultValue: 'clean install', description: 'maven goal')
+    choice (name: 'BRANCH_TO_BUILD', choices: ['main', 'Dev', 'Test'], description: 'Branch to build')
+    string (name: 'MAVEN_GOAL', defaultValue: 'clean package', description: 'maven goal')
 }
 stages {
      stage('scm') {
@@ -13,14 +13,45 @@ stages {
                }
      }
 
-        stage ('sonarqube') {
+        stage ('SONAR QUBE SCAN') {
             steps{
-                withSonarQubeEnv('sonarqube') {
-                    sh 'mvn clean package sonar:sonar -Dsonar.login=sonartoken'
+                withSonarQubeEnv('SONAR_SCAN') {
+                    sh 'mvn clean package sonar:sonar'
             }
             }
         }
-    }
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 20, unit: 'MINUTES'){
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+        stage('upload package to the jfrog ') {
+            steps {
+                rtUpload (
+                serverId: 'JFROG_ID',
+                spec: '''{
+                    "files": [
+                    {
+                        "pattern": "./target/*.jar",
+                        "target": "libs-release-local/"
+                    }
+                    ]
+        }''',
+        buildName: "$env.JOB_NAME",
+        buildNumber: "$env.BUILD_NUMBER",
+        project: 'springpet'
+        )
+        }
+        }
+        stage ('Publish build info') {
+            steps {
+                rtPublishBuildInfo (
+                    serverId: "JFROG_ID"
+                )
+            }
+        }
 }
-
-
+}
+    
