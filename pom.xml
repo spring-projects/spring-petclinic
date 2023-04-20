@@ -78,8 +78,6 @@
       <scope>runtime</scope>
     </dependency>
    
-  
-</project>
     <!-- caching -->
     <dependency>
       <groupId>javax.cache</groupId>
