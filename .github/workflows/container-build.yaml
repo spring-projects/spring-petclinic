@@ -1,0 +1,24 @@
+name: Push to GCR GitHub Action
+on: [push]
+jobs:
+  build-and-push-to-gcr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    steps:      
+      - uses: actions/checkout@v3
+      - name: 'Authenticate to Google Cloud'
+        id: auth
+        uses: 'google-github-actions/auth@v1.0.0'
+        with:
+          workload_identity_provider: 'projects/871215665939/locations/global/workloadIdentityPools/github/providers/github'
+          service_account: push-to-gcr@github-actions-gcp.iam.gserviceaccount.com
+      - uses: RafikFarhad/push-to-gcr-github-action@v5-beta
+        with:
+          registry: gcr.io
+          project_id: github-actions-gcp
+          image_name: spring-petclinic-test
+          image_tag: latest,v1
+          dockerfile: ./docker/Dockerfile
+          context: ./docker
