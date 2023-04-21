@@ -21,4 +21,3 @@ jobs:
           image_name: spring-petclinic-test
           image_tag: latest,v1
           dockerfile: ./docker/Dockerfile
-          context: ./docker
