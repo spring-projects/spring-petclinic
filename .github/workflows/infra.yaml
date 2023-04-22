@@ -26,16 +26,16 @@ jobs:
         name: 'Authenticate to Google Cloud'
         uses: 'google-github-actions/auth@v1.0.0'
         with:
-          workload_identity_provider: 'projects/871215665939/locations/global/workloadIdentityPools/github/providers/github'
-          service_account: 'tf-plan@github-actions-gcp.iam.gserviceaccount.com'
+          workload_identity_provider: 'projects/$GCP_PROJECT_NUMBER/locations/global/workloadIdentityPools/github/providers/github'
+          service_account: 'tf-plan@$GCP_PROJECT_ID.iam.gserviceaccount.com'
 
       - id: 'applierAuth'
         if: github.ref == 'refs/heads/main'
         name: 'Authenticate to Google Cloud'
         uses: 'google-github-actions/auth@v1.0.0'
         with:
-          workload_identity_provider: 'projects/871215665939/locations/global/workloadIdentityPools/github/providers/github'
-          service_account: 'tf-apply@github-actions-gcp.iam.gserviceaccount.com'
+          workload_identity_provider: 'projects/$GCP_PROJECT_NUMBER/locations/global/workloadIdentityPools/github/providers/github'
+          service_account: 'tf-apply@$GCP_PROJECT_ID.iam.gserviceaccount.com'
 
       - uses: hashicorp/setup-terraform@v2
         with:
@@ -49,7 +49,7 @@ jobs:
       - id: init
         name: Terraform Init
         working-directory: terraform
-        run: terraform init -input=false -backend-config="prefix=terraform-demo" -backend-config="bucket=tf_state_prod_bucket"
+        run: terraform init -input=false -backend-config="prefix=terraform-infra" -backend-config="bucket=$TF_STATE_BUCKET"
 
       - id: validate
         name: Terraform Validate
@@ -58,7 +58,7 @@ jobs:
       - id: plan
         name: Terraform Plan
         working-directory: terraform
-        run: terraform plan -no-color
+        run: terraform plan -no-color -var 'project_id=$GCP_PROJECT_ID'
         continue-on-error: true
 
       - uses: actions/github-script@v6
@@ -96,12 +96,12 @@ jobs:
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         working-directory: terraform
-        run: terraform apply -auto-approve -input=false
+        run: terraform apply -auto-approve -input=false -var 'project_id=$GCP_PROJECT_ID'
 
       - id: 'get-credentials'
         uses: 'google-github-actions/get-gke-credentials@v1'
         with:
-          cluster_name: 'gke0-test'
+          cluster_name: 'gke0-prod'
           location: 'europe-west1'
       
       - id: 'get-pods'

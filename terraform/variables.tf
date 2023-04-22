@@ -1,14 +1,10 @@
-variable "project_id" {
-  description = "The project ID to host the cluster in"
-  default     = "github-actions-gcp"
-}
 variable "cluster_name" {
   description = "The name for the GKE cluster"
   default     = "gke0"
 }
 variable "env_name" {
   description = "The environment for the GKE cluster"
-  default     = "test"
+  default     = "prod"
 }
 variable "region" {
   description = "The region to host the cluster in"

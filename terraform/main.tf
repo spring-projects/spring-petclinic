@@ -20,10 +20,6 @@ module "gke_auth" {
   cluster_name = module.gke.name
 }
 
-resource "local_file" "kubeconfig" {
-  content  = module.gke_auth.kubeconfig_raw
-  filename = "kubeconfig-${var.env_name}"
-}
 
 module "gcp-network" {
   source       = "terraform-google-modules/network/google"
