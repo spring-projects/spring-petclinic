@@ -15,7 +15,7 @@
   <properties>
     <sonar.host.url>http://3.125.122.254:9000</sonar.host.url>
     <sonar.login>admin</sonar.login>
-    <sonar.password>sqp_0678f5dcdcc240c24ebd7f96258df795504b7435</sonar.password>
+    <sonar.password>squ_1ec92d940907a1f0d6bfcb2ac5f604f0ae0cf3a9</sonar.password>
     
     <!-- Generic properties -->
     <java.version>17</java.version>
