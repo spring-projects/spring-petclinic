@@ -5,6 +5,13 @@
   <artifactId>spring-petclinic</artifactId>
   <version>3.0.0-SNAPSHOT</version>
 
+  
+  <properties>
+    <sonar.host.url>http://3.125.122.254:9000</sonar.host.url>
+    <sonar.login>admin</sonar.login>
+    <sonar.password>sonar</sonar.password>
+  </properties>
+
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
