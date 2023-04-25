@@ -17,7 +17,6 @@
 package org.springframework.samples.petclinic.system;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 import java.util.List;
@@ -84,7 +83,7 @@ class CrashControllerIntegrationTests {
 				new HttpEntity<>(headers), String.class);
 		assertThat(resp).isNotNull();
 		assertThat(resp.getStatusCode().is5xxServerError());
-		assertNotNull(resp.getBody());
+		assertThat(resp.getBody()).isNotNull();
 		// html:
 		assertThat(resp.getBody()).containsSubsequence("<body>", "<h2>Something happened...</h2>",
 				"<p>Expected: controller used to showcase what happens when an exception is thrown</p>", "</body>");
