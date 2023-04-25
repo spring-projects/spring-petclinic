@@ -43,11 +43,14 @@ import org.springframework.http.ResponseEntity;
 // NOT Waiting https://github.com/spring-projects/spring-boot/issues/5574, int
 // test!!!
 @SuppressWarnings("java:S2970") // contradicts "java:S5838"
-@SpringBootTest(webEnvironment = RANDOM_PORT, properties = { "server.error.include-message=ALWAYS" })
+@SpringBootTest(webEnvironment = RANDOM_PORT,
+		// this ("somehow", significantly) "differs" from "non-test":
+		properties = { "server.error.include-message=ALWAYS" })
 class CrashControllerIntegrationTests {
 
-	// i think this is the "lightest" (and quickest context), that we can bootstrap,
-	// see: https://spring.io/guides/gs/multi-module/
+	// i think this is the "lightest" (sub package) and quickest (who wants to
+	// exclude auto config: welcome!) context, that we
+	// can bootstrap, see: https://spring.io/guides/gs/multi-module/
 	@SpringBootApplication
 	static class TestConfiguration {
 
