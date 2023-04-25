@@ -26,6 +26,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
@@ -44,13 +47,21 @@ import org.springframework.http.ResponseEntity;
 @SuppressWarnings("java:S2970") // contradicts "java:S5838"
 @SpringBootTest(webEnvironment = RANDOM_PORT,
 		// this ("somehow", significantly) "differs" from "non-test":
-		properties = { "server.error.include-message=ALWAYS" })
+		properties = { "server.error.include-message=ALWAYS",
+				/* don't need these: */
+				"management.endpoints.enabled-by-default=false" })
 class CrashControllerIntegrationTests {
 
 	// i think this is the "lightest" (sub package) and quickest (who wants to
 	// exclude auto config: welcome!) context, that we
 	// can bootstrap, see: https://spring.io/guides/gs/multi-module/
-	@SpringBootApplication
+	@SpringBootApplication(exclude = {
+			/*
+			 * thx: https://www.baeldung.com/spring-data-disable-auto-config,
+			 * alternatively "by name":
+			 */
+			DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class,
+			HibernateJpaAutoConfiguration.class })
 	static class TestConfiguration {
 
 	}
@@ -85,8 +96,12 @@ class CrashControllerIntegrationTests {
 		assertThat(resp.getStatusCode().is5xxServerError());
 		assertThat(resp.getBody()).isNotNull();
 		// html:
-		assertThat(resp.getBody()).containsSubsequence("<body>", "<h2>Something happened...</h2>",
-				"<p>Expected: controller used to showcase what happens when an exception is thrown</p>", "</body>");
+		assertThat(resp.getBody()).containsSubsequence("<body>", "<h2>", "Something happened...", "</h2>", "<p>",
+				"Expected:", "controller", "used", "to", "showcase", "what", "happens", "when", "an", "exception", "is",
+				"thrown", "</p>", "</body>");
+		// Haha:
+		assertThat(resp.getBody()).doesNotContain("Whitelabel Error Page",
+				"This application has no explicit mapping for");
 	}
 
 }
