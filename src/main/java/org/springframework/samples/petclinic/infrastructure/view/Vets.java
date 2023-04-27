@@ -20,7 +20,7 @@ import java.util.List;
 
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
-import org.springframework.samples.petclinic.vet.Vet;
+import org.springframework.samples.petclinic.infrastructure.persistence.vet.Vet;
 
 /**
  * Simple domain object representing a list of veterinarians. Mostly here to be used for
