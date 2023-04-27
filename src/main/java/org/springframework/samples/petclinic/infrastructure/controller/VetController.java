@@ -15,13 +15,12 @@
  */
 package org.springframework.samples.petclinic.infrastructure.controller;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.samples.petclinic.application.VetService;
 import org.springframework.samples.petclinic.infrastructure.persistence.vet.Vet;
-import org.springframework.samples.petclinic.infrastructure.persistence.vet.VetRepository;
 import org.springframework.samples.petclinic.infrastructure.view.Vets;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,10 +37,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 class VetController {
 
-	private final VetRepository vetRepository;
+	private final VetService vetService;
 
-	public VetController(VetRepository clinicService) {
-		this.vetRepository = clinicService;
+	public VetController(VetService vetService) {
+		this.vetService = vetService;
 	}
 
 	@GetMapping("/vets.html")
@@ -66,8 +65,7 @@ class VetController {
 
 	private Page<Vet> findPaginated(int page) {
 		int pageSize = 5;
-		Pageable pageable = PageRequest.of(page - 1, pageSize);
-		return vetRepository.findAll(pageable);
+		return vetService.getVetPage(page, pageSize);
 	}
 
 	@GetMapping({ "/vets" })
@@ -75,7 +73,7 @@ class VetController {
 		// Here we are returning an object of type 'Vets' rather than a collection of Vet
 		// objects so it is simpler for JSon/Object mapping
 		Vets vets = new Vets();
-		vets.getVetList().addAll(this.vetRepository.findAll());
+		vets.getVetList().addAll(vetService.getVets());
 		return vets;
 	}
 
