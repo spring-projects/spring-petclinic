@@ -77,8 +77,7 @@ class VetControllerTests {
 
 		given(this.vetService.getVets()).willReturn(vetsList);
 
-		given(this.vetService.getVetPage(1, 5))
-			.willReturn(new PageImpl<>(vetsList));
+		given(this.vetService.getVetPage(1, 5)).willReturn(new PageImpl<>(vetsList));
 
 	}
 

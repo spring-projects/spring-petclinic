@@ -2,10 +2,8 @@ package org.springframework.samples.petclinic.application;
 
 import java.util.Collection;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.samples.petclinic.domain.VetRepository;
 import org.springframework.samples.petclinic.infrastructure.persistence.vet.Vet;
-import org.springframework.samples.petclinic.infrastructure.persistence.vet.VetRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,12 +16,11 @@ public class VetService {
 	}
 
 	public Page<Vet> getVetPage(int page, int pageSize) {
-		Pageable pageable = PageRequest.of(page - 1, pageSize);
-		return this.vetRepository.findAll(pageable);
+		return this.vetRepository.getVetPage(page, pageSize);
 	}
 
 	public Collection<Vet> getVets() {
-		return this.vetRepository.findAll();
+		return this.vetRepository.getVets();
 	}
 
 }

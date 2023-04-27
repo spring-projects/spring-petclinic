@@ -35,7 +35,7 @@ import org.springframework.samples.petclinic.owner.Pet;
 import org.springframework.samples.petclinic.owner.PetType;
 import org.springframework.samples.petclinic.owner.Visit;
 import org.springframework.samples.petclinic.infrastructure.persistence.vet.Vet;
-import org.springframework.samples.petclinic.infrastructure.persistence.vet.VetRepository;
+import org.springframework.samples.petclinic.infrastructure.persistence.vet.VetDataRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,7 +67,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Michael Isvy
  * @author Dave Syer
  */
-@DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
+@DataJpaTest
 // Ensure that if the mysql profile is active we connect to the real database:
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 // @TestPropertySource("/application-postgres.properties")
@@ -77,7 +77,7 @@ class ClinicServiceTests {
 	protected OwnerRepository owners;
 
 	@Autowired
-	protected VetRepository vets;
+	protected VetDataRepository vets;
 
 	Pageable pageable;
 
