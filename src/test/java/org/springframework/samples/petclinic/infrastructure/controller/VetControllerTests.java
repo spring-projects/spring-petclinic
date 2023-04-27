@@ -24,11 +24,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.samples.petclinic.application.VetService;
-import org.springframework.samples.petclinic.infrastructure.persistence.vet.Specialty;
-import org.springframework.samples.petclinic.infrastructure.persistence.vet.Vet;
+import org.springframework.samples.petclinic.infrastructure.persistence.vet.SpecialtyEntity;
+import org.springframework.samples.petclinic.infrastructure.persistence.vet.VetEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -51,20 +50,20 @@ class VetControllerTests {
 	@MockBean
 	private VetService vetService;
 
-	private Vet james() {
-		Vet james = new Vet();
+	private VetEntity james() {
+		VetEntity james = new VetEntity();
 		james.setFirstName("James");
 		james.setLastName("Carter");
 		james.setId(1);
 		return james;
 	}
 
-	private Vet helen() {
-		Vet helen = new Vet();
+	private VetEntity helen() {
+		VetEntity helen = new VetEntity();
 		helen.setFirstName("Helen");
 		helen.setLastName("Leary");
 		helen.setId(2);
-		Specialty radiology = new Specialty();
+		SpecialtyEntity radiology = new SpecialtyEntity();
 		radiology.setId(1);
 		radiology.setName("radiology");
 		helen.addSpecialty(radiology);
@@ -73,7 +72,7 @@ class VetControllerTests {
 
 	@BeforeEach
 	void setup() {
-		ArrayList<Vet> vetsList = Lists.newArrayList(james(), helen());
+		ArrayList<VetEntity> vetsList = Lists.newArrayList(james(), helen());
 
 		given(this.vetService.getVets()).willReturn(vetsList);
 

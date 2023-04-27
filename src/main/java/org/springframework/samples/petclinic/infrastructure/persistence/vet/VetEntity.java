@@ -23,7 +23,7 @@ import java.util.Set;
 
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
-import org.springframework.samples.petclinic.infrastructure.persistence.model.Person;
+import org.springframework.samples.petclinic.infrastructure.persistence.model.PersonEntity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -43,27 +43,27 @@ import jakarta.xml.bind.annotation.XmlElement;
  */
 @Entity
 @Table(name = "vets")
-public class Vet extends Person {
+public class VetEntity extends PersonEntity {
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "vet_specialties", joinColumns = @JoinColumn(name = "vet_id"),
 			inverseJoinColumns = @JoinColumn(name = "specialty_id"))
-	private Set<Specialty> specialties;
+	private Set<SpecialtyEntity> specialties;
 
-	protected Set<Specialty> getSpecialtiesInternal() {
+	protected Set<SpecialtyEntity> getSpecialtiesInternal() {
 		if (this.specialties == null) {
 			this.specialties = new HashSet<>();
 		}
 		return this.specialties;
 	}
 
-	protected void setSpecialtiesInternal(Set<Specialty> specialties) {
+	protected void setSpecialtiesInternal(Set<SpecialtyEntity> specialties) {
 		this.specialties = specialties;
 	}
 
 	@XmlElement
-	public List<Specialty> getSpecialties() {
-		List<Specialty> sortedSpecs = new ArrayList<>(getSpecialtiesInternal());
+	public List<SpecialtyEntity> getSpecialties() {
+		List<SpecialtyEntity> sortedSpecs = new ArrayList<>(getSpecialtiesInternal());
 		PropertyComparator.sort(sortedSpecs, new MutableSortDefinition("name", true, true));
 		return Collections.unmodifiableList(sortedSpecs);
 	}
@@ -72,7 +72,7 @@ public class Vet extends Person {
 		return getSpecialtiesInternal().size();
 	}
 
-	public void addSpecialty(Specialty specialty) {
+	public void addSpecialty(SpecialtyEntity specialty) {
 		getSpecialtiesInternal().add(specialty);
 	}
 

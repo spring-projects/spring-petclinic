@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.core.style.ToStringCreator;
-import org.springframework.samples.petclinic.infrastructure.persistence.model.Person;
+import org.springframework.samples.petclinic.infrastructure.persistence.model.PersonEntity;
 import org.springframework.util.Assert;
 
 import jakarta.persistence.CascadeType;
@@ -44,7 +44,7 @@ import jakarta.validation.constraints.NotEmpty;
  */
 @Entity
 @Table(name = "owners")
-public class Owner extends Person {
+public class Owner extends PersonEntity {
 
 	@Column(name = "address")
 	@NotEmpty

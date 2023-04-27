@@ -35,7 +35,7 @@ import java.util.Collection;
  * @author Sam Brannen
  * @author Michael Isvy
  */
-public interface VetDataRepository extends Repository<Vet, Integer> {
+public interface VetDataRepository extends Repository<VetEntity, Integer> {
 
 	/**
 	 * Retrieve all <code>Vet</code>s from the data store.
@@ -43,7 +43,7 @@ public interface VetDataRepository extends Repository<Vet, Integer> {
 	 */
 	@Transactional(readOnly = true)
 	@Cacheable("vets")
-	Collection<Vet> findAll() throws DataAccessException;
+	Collection<VetEntity> findAll() throws DataAccessException;
 
 	/**
 	 * Retrieve all <code>Vet</code>s from data store in Pages
@@ -53,6 +53,6 @@ public interface VetDataRepository extends Repository<Vet, Integer> {
 	 */
 	@Transactional(readOnly = true)
 	@Cacheable("vets")
-	Page<Vet> findAll(Pageable pageable) throws DataAccessException;
+	Page<VetEntity> findAll(Pageable pageable) throws DataAccessException;
 
 }

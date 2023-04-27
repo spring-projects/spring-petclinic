@@ -20,7 +20,7 @@ import java.util.List;
 
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
-import org.springframework.samples.petclinic.infrastructure.persistence.vet.Vet;
+import org.springframework.samples.petclinic.infrastructure.persistence.vet.VetEntity;
 
 /**
  * Simple domain object representing a list of veterinarians. Mostly here to be used for
@@ -31,10 +31,10 @@ import org.springframework.samples.petclinic.infrastructure.persistence.vet.Vet;
 @XmlRootElement
 public class Vets {
 
-	private List<Vet> vets;
+	private List<VetEntity> vets;
 
 	@XmlElement
-	public List<Vet> getVetList() {
+	public List<VetEntity> getVetList() {
 		if (vets == null) {
 			vets = new ArrayList<>();
 		}

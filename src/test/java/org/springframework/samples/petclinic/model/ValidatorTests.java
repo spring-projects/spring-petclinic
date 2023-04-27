@@ -23,7 +23,7 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.samples.petclinic.infrastructure.persistence.model.Person;
+import org.springframework.samples.petclinic.infrastructure.persistence.model.PersonEntity;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import jakarta.validation.ConstraintViolation;
@@ -45,15 +45,15 @@ class ValidatorTests {
 	void shouldNotValidateWhenFirstNameEmpty() {
 
 		LocaleContextHolder.setLocale(Locale.ENGLISH);
-		Person person = new Person();
+		PersonEntity person = new PersonEntity();
 		person.setFirstName("");
 		person.setLastName("smith");
 
 		Validator validator = createValidator();
-		Set<ConstraintViolation<Person>> constraintViolations = validator.validate(person);
+		Set<ConstraintViolation<PersonEntity>> constraintViolations = validator.validate(person);
 
 		assertThat(constraintViolations).hasSize(1);
-		ConstraintViolation<Person> violation = constraintViolations.iterator().next();
+		ConstraintViolation<PersonEntity> violation = constraintViolations.iterator().next();
 		assertThat(violation.getPropertyPath().toString()).isEqualTo("firstName");
 		assertThat(violation.getMessage()).isEqualTo("must not be empty");
 	}
