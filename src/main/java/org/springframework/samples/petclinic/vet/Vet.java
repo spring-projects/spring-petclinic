@@ -23,7 +23,7 @@ import java.util.Set;
 
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
-import org.springframework.samples.petclinic.model.Person;
+import org.springframework.samples.petclinic.infrastructure.persistence.model.Person;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

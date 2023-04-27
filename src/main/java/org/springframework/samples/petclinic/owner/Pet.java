@@ -21,7 +21,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.samples.petclinic.model.NamedEntity;
+import org.springframework.samples.petclinic.infrastructure.persistence.model.NamedEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
