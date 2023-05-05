@@ -3,12 +3,13 @@ plugins {
   id 'org.springframework.boot' version '3.0.4'
   id 'io.spring.dependency-management' version '1.1.0'
   id 'org.graalvm.buildtools.native' version '0.9.20'
+  id 'pl.allegro.tech.build.axion-release' version '1.15.0'
 }
 
 apply plugin: 'java'
 
 group = 'org.springframework.samples'
-version = '3.0.0'
+version = scmVersion.version
 sourceCompatibility = '17'
 
 repositories {
@@ -39,4 +40,13 @@ dependencies {
 
 tasks.named('test') {
   useJUnitPlatform()
+}
+
+task customTask() {
+  group 'Test report'
+  dependsOn 'build'
+  doLast {
+    def testReporFile = new File("${project.buildDir}/reports/tests/test", 'index.html')
+    java.awt.Desktop.desktop.browse(testReporFile.toURI())
+  }
 }
