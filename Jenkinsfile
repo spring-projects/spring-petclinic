@@ -3,3 +3,4 @@ agent{
     node 'jdk17'
 }
 pipelineMaven()
+cleanWs()
