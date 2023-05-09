@@ -1,3 +1,3 @@
-@library('shared-library')
+library('shared-library')
 
 pipelineMaven()
