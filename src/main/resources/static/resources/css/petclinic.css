@@ -8483,12 +8483,6 @@ table td.action-column {
 .logo {
   width: 200px; }
 
-.logo .st0, .logo .st1 {
-  fill: #6db33f; }
-
-.logo .st3 {
-  fill: #fff; }
-
 .myspinner {
   animation-name: spinner;
   animation-duration: 2s;
