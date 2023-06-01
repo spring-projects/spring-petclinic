@@ -27,7 +27,6 @@
     <nohttp-checkstyle.version>0.0.10</nohttp-checkstyle.version>
     <spring-format.version>0.0.31</spring-format.version>
     
-  <sonar.buildString>*</sonar.buildString>
   </properties>
 
   <dependencies>
