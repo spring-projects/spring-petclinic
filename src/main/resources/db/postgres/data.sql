@@ -48,6 +48,6 @@ INSERT INTO pets (name, birth_date, type_id, owner_id) SELECT 'Lucky', '2000-06-
 INSERT INTO pets (name, birth_date, type_id, owner_id) SELECT 'Sly', '2002-06-08', (select id from types where name='cat'), (select id from owners where first_name='Carlos')  WHERE NOT EXISTS (SELECT * FROM pets WHERE name='Sly''');
 
 INSERT INTO visits (pet_id, visit_date, description) SELECT (select id from pets where name='Samantha'), '2010-03-04', 'rabies shot' WHERE NOT EXISTS (SELECT * FROM visits WHERE visit_date='2010-03-04');
-INSERT INTO visits (pet_id, visit_date, description) SELECT  (select id from pets where name='Max'), '2011-03-04', 'rabies shot' WHERE NOT EXISTS (SELECT * FROM visits WHERE visit_date='2011-03-04');
-INSERT INTO visits (pet_id, visit_date, description) SELECT  (select id from pets where name='Max'), '2009-06-04', 'neutered' WHERE NOT EXISTS (SELECT * FROM visits WHERE visit_date='2009-06-04');
-INSERT INTO visits (pet_id, visit_date, description) SELECT  (select id from pets where name='Samantha'), '2008-09-04', 'spayed' WHERE NOT EXISTS (SELECT * FROM visits WHERE visit_date='2008-09-04');
+INSERT INTO visits (pet_id, visit_date, description) SELECT (select id from pets where name='Max'), '2011-03-04', 'rabies shot' WHERE NOT EXISTS (SELECT * FROM visits WHERE visit_date='2011-03-04');
+INSERT INTO visits (pet_id, visit_date, description) SELECT (select id from pets where name='Max'), '2009-06-04', 'neutered' WHERE NOT EXISTS (SELECT * FROM visits WHERE visit_date='2009-06-04');
+INSERT INTO visits (pet_id, visit_date, description) SELECT (select id from pets where name='Samantha'), '2008-09-04', 'spayed' WHERE NOT EXISTS (SELECT * FROM visits WHERE visit_date='2008-09-04');
