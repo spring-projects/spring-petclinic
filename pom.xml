@@ -10,7 +10,8 @@
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>3.1.0</version>
   </parent>
-  <name>petclinic</name>
+  <name>liberty-spring-petclinic</name>
+  <packaging>war</packaging>
 
   <properties>
 
@@ -121,6 +122,7 @@
   </dependencies>
 
   <build>
+    <finalName>liberty-${project.artifactId}</finalName>
     <plugins>
       <plugin>
         <groupId>io.spring.javaformat</groupId>
@@ -243,6 +245,19 @@
           <failOnUnableToExtractRepoInfo>false</failOnUnableToExtractRepoInfo>
         </configuration>
       </plugin>
+      <plugin>
+    <groupId>io.openliberty.tools</groupId>
+    <artifactId>liberty-maven-plugin</artifactId>
+    <version>3.8.1</version>
+    <configuration>
+        <runtimeArtifact>
+            <groupId>io.openliberty</groupId>
+            <artifactId>openliberty-webProfile10</artifactId>
+            <version>23.0.0.5</version>
+            <type>zip</type>
+        </runtimeArtifact>
+    </configuration>
+</plugin>
 
     </plugins>
   </build>
