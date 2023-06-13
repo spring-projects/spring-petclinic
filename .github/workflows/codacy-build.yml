@@ -1,10 +1,7 @@
 name: SonarCloud
-#on:
-#  push:
-#    branches:
-#      - main
-#  pull_request:
-#    types: [opened, synchronize, reopened]
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
 jobs:
   build:
     name: Build and analyze
@@ -18,20 +15,18 @@ jobs:
         with:
           java-version: 17
           distribution: 'zulu' # Alternative distribution options are available.
-      - name: Cache SonarCloud packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
       - name: Cache Maven packages
         uses: actions/cache@v3
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-      - name: Build and analyze
+      - name: Build and run tests
+        run: mvn -B verify
+      - name: Generate JaCoCo XML report
+        run: mvn jacoco:report -Djacoco.report.failureOnViolation=false
+      - name: Upload JaCoCo XML report to Codacy
+        run: |
+          bash <(curl -Ls https://coverage.codacy.com/get.sh)
         env:
-          GITHUB_TOKEN: ${{ github.token }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=andrii-hryniv_spring-petclinic
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
