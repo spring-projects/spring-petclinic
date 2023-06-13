@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: 17
-          distribution: 'openjdk'
+          distribution: 'zulu' # Alternative distribution options are available.
       - name: Cache SonarCloud packages
         uses: actions/cache@v3
         with:
