@@ -66,6 +66,12 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/io.micrometer/micrometer-registry-prometheus -->
+<dependency>
+    <groupId>io.micrometer</groupId>
+    <artifactId>micrometer-registry-prometheus</artifactId>
+    <version>1.11.1</version>
+</dependency>
 
     <!-- Databases - Uses H2 by default -->
     <dependency>
