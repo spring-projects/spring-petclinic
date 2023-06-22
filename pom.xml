@@ -155,19 +155,6 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>io.spring.javaformat</groupId>
-        <artifactId>spring-javaformat-maven-plugin</artifactId>
-        <version>${spring-format.version}</version>
-        <executions>
-          <execution>
-            <phase>validate</phase>
-            <goals>
-              <goal>validate</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <executions>
@@ -184,6 +171,19 @@
                 </requireJavaVersion>
               </rules>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>io.spring.javaformat</groupId>
+        <artifactId>spring-javaformat-maven-plugin</artifactId>
+        <version>${spring-format.version}</version>
+        <executions>
+          <execution>
+            <phase>validate</phase>
+            <goals>
+              <goal>validate</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
