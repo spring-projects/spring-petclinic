@@ -43,8 +43,14 @@ spec:
               value: "petclinic_$RANDOM_PART"
             - name: CONTRAST__APPLICATION__LANGUAGE
               value: "java"
-            # - name: CONTRAST__API__USER_API_KEY
-            #   value: ""
+            - name: CONTRAST__API__URL
+              value: "https://intuit.contrastsecurity.com/Contrast"
+            - name: CONTRAST__API__API_KEY
+              value: "$CONTRAST__API__API_KEY"
+            - name: CONTRAST__API__SERVICE_KEY
+              value: "$CONTRAST__API__SERVICE_KEY"
+            - name: CONTRAST__API__USER_NAME
+              value: "$CONTRAST__API__USER_NAME"
             - name: POSTGRES_URL
               value: "jdbc:postgresql://postgresql/petclinic"
             - name: POSTGRES_USER
@@ -52,4 +58,3 @@ spec:
             - name: POSTGRES_PASSWORD
               value: "petclinic"
           imagePullPolicy: IfNotPresent
-
