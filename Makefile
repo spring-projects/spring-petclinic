@@ -38,5 +38,8 @@ build: cluster
 
 deploy: build
 	export RANDOM_PART=$$(hostname | md5sum | cut -c1-30) && \
-	envsubst < kube/petclinic.yaml.tmpl > kube/petclinic.yaml 
-	minikube kubectl apply -f kube
+	minikube kubectl -- apply -f kube/postgresql.yaml && \
+	envsubst < kube/petclinic.yaml | minikube kubectl -- apply -f -
+
+undeploy:
+	minikube kubectl -- delete -f kube/
