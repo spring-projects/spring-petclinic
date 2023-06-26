@@ -112,16 +112,13 @@ public class Owner extends Person {
 	 * @param id to test
 	 * @return a pet if pet id is already in use
 	 */
-	public Pet getPet(Integer id) {
-		for (Pet pet : getPets()) {
-			if (!pet.isNew()) {
-				Integer compId = pet.getId();
-				if (compId.equals(id)) {
-					return pet;
-				}
-			}
-		}
-		return null;
+	public Pet getPet(final Integer id) {
+		return getPets().stream()
+			.filter(pet -> !pet.isNew())
+			.filter(pet -> pet.getId().equals(id))
+			.findFirst()
+			.orElse(null);
+
 	}
 
 	/**
@@ -129,18 +126,13 @@ public class Owner extends Person {
 	 * @param name to test
 	 * @return a pet if pet name is already in use
 	 */
-	public Pet getPet(String name, boolean ignoreNew) {
-		name = name.toLowerCase();
-		for (Pet pet : getPets()) {
-			if (!ignoreNew || !pet.isNew()) {
-				String compName = pet.getName();
-				compName = compName == null ? "" : compName.toLowerCase();
-				if (compName.equals(name)) {
-					return pet;
-				}
-			}
-		}
-		return null;
+	public Pet getPet(final String name, final boolean ignoreNew) {
+		return getPets().stream()
+			.filter(pet -> !ignoreNew && !pet.isNew())
+			.filter(pet -> pet.getName().equals(name.toLowerCase()))
+			.findFirst()
+			.orElse(null);
+
 	}
 
 	@Override
