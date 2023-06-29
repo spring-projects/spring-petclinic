@@ -24,7 +24,7 @@
         th:text="${#temporals.format(pet.birthDate, 'yyyy-MM-dd')}"></td>
       <td th:text="${pet.type}"></td>
       <td
-        th:text="${pet.owner?.firstName + ' ' + pet.owner?.lastName}"></td>
+        th:text="${owner?.firstName + ' ' + owner?.lastName}"></td>
     </tr>
   </table>
 
@@ -39,7 +39,7 @@
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
         <input type="hidden" name="petId" th:value="${pet.id}" />
-        <button class="btn btn-default" type="submit">Add Visit</button>
+        <button class="btn btn-primary" type="submit">Add Visit</button>
       </div>
     </div>
   </form>

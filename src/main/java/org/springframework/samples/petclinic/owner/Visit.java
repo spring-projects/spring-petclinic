@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.visit;
+package org.springframework.samples.petclinic.owner;
 
 import java.time.LocalDate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
-
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.model.BaseEntity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
 
 /**
  * Simple JavaBean domain object representing a visit.
@@ -40,11 +40,7 @@ public class Visit extends BaseEntity {
 	private LocalDate date;
 
 	@NotEmpty
-	@Column(name = "description")
 	private String description;
-
-	@Column(name = "pet_id")
-	private Integer petId;
 
 	/**
 	 * Creates a new instance of Visit for the current date
@@ -67,14 +63,6 @@ public class Visit extends BaseEntity {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public Integer getPetId() {
-		return this.petId;
-	}
-
-	public void setPetId(Integer petId) {
-		this.petId = petId;
 	}
 
 }

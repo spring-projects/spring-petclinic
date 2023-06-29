@@ -1,4 +1,7 @@
 target/*
+bin/*
+build/*
+.gradle/*
 .settings/*
 .classpath
 .project
@@ -11,3 +14,5 @@ target/*
 .vscode
 _site/
 .github/.DS_Store
+*.css
+!petclinic.css
