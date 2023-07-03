@@ -4,7 +4,7 @@ pipeline {
      stages {
          stage('Build'){
              steps {
-                 git url: 'https://github.com/saisrinisrinivas/spring-petclinic.git'
+                 git 'https://github.com/saisrinisrinivas/spring-petclinic.git'
              }
 
          }
