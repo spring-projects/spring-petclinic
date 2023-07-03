@@ -2,7 +2,7 @@ pipeline {
     agent any
     
      stages {
-         stage('Build'){
+         stage('GitCheckout'){
              steps {
                  git 'https://github.com/saisrinisrinivas/spring-petclinic.git'
              }
