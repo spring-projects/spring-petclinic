@@ -13,15 +13,12 @@ pipeline {
 
                 script {
                     def downloadedJenkinsfile = readFile('/tmp/Jenkinsfile')
-                   
+                    node {
                         deleteDir() // Clean workspace before executing downloaded Jenkinsfile
-                        writeFile(file: 'downloadedJenkinsfile', text: downloadedJenkinsfile)
+                        writeFile(file: 'Jenkinsfile', text: downloadedJenkinsfile)
+                        load 'Jenkinsfile'
+                    }
                 }
-            }
-        }
-        stage('Execute Downloaded Jenkinsfile') {
-            steps {
-                load 'downloadedJenkinsfile'
             }
         }
     }
