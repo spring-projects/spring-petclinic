@@ -7,13 +7,13 @@ pipeline {
                 withAWS(region: 'ap-south-1', credentials: 'iamuser1') {
                     script {
                         // Download the shell script from S3
-                        sh 'aws s3 cp s3://myjenkinsbucket001/checkout/checkout.sh /tmp/script.sh'
+                        sh 'aws s3 cp s3://myjenkinsbucket001/checkout/checkout.sh $WORKSPACE/script.sh'
                     }
                 }
 
                 script {
                     // Make the downloaded script executable
-                    sh 'chmod +x /tmp/script.sh'
+                    sh 'chmod +x $WORKSPACE/script.sh'
                 }
             }
         }
@@ -21,9 +21,8 @@ pipeline {
         stage('Execute Downloaded Shell Script') {
             steps {
                 // Execute the downloaded shell script
-                sh '/tmp/script.sh'
+                sh '$WORKSPACE/script.sh'
             }
         }
     }
 }
-
