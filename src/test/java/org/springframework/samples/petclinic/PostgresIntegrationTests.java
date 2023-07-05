@@ -17,6 +17,7 @@
 package org.springframework.samples.petclinic;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -24,6 +25,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -42,6 +44,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.samples.petclinic.vet.VetRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
+import org.testcontainers.DockerClientFactory;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, properties = { "spring.docker.compose.skip.in-tests=false", //
 		"spring.docker.compose.profiles.active=postgres" })
@@ -56,6 +59,11 @@ public class PostgresIntegrationTests {
 
 	@Autowired
 	private RestTemplateBuilder builder;
+
+	@BeforeAll
+	static void available() {
+		assumeTrue(DockerClientFactory.instance().isDockerAvailable(), "Docker not available");
+	}
 
 	public static void main(String[] args) {
 		new SpringApplicationBuilder(PetClinicApplication.class) //
