@@ -11,10 +11,10 @@ permission:
     group: ubuntu
 hooks:
   ApplicationStop:
-    - location: kill_process.sh
+    - location: scripts/kill_process.sh
       timeout: 100
       runas: ubuntu
   ApplicationStart:
-    - location: run_process.sh
+    - location: scripts/run_process.sh
       timeout: 3600
       runas: ubuntu
