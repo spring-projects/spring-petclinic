@@ -1,0 +1,20 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ubuntu
+    overwrite: yes
+permission:
+  - object: /home/ubuntu
+    pattern: "**"
+    owner: ubuntu
+    group: ubuntu
+hooks:
+  ApplicationStop:
+    - location: kill_process.sh
+      timeout: 100
+      runas: ubuntu
+  ApplicationStart:
+    - location: run_process.sh
+      timeout: 3600
+      runas: ubuntu
