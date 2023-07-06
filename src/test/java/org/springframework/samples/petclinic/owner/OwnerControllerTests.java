@@ -113,7 +113,7 @@ class OwnerControllerTests {
 				.param("lastName", "Bloggs")
 				.param("address", "123 Caramel Street")
 				.param("city", "London")
-				.param("telephone", "01316761638"))
+				.param("telephone", "0131676163"))
 			.andExpect(status().is3xxRedirection());
 	}
 
@@ -184,7 +184,7 @@ class OwnerControllerTests {
 				.param("lastName", "Bloggs")
 				.param("address", "123 Caramel Street")
 				.param("city", "London")
-				.param("telephone", "01616291589"))
+				.param("telephone", "0161629158"))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(view().name("redirect:/owners/{ownerId}"));
 	}
