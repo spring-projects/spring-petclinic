@@ -22,14 +22,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author Juergen Hoeller
@@ -52,16 +48,41 @@ class PetController {
 	public Collection<PetType> populatePetTypes() {
 		return this.owners.findPetTypes();
 	}
-
 	@ModelAttribute("owner")
 	public Owner findOwner(@PathVariable("ownerId") int ownerId) {
-		return this.owners.findById(ownerId);
+		Owner owner = this.owners.findById(ownerId);
+		if (owner == null) {
+			throw new OwnerNotFoundException("Owner not found for ID: " + ownerId);
+		}
+		return owner;
+	}
+
+	@ExceptionHandler(OwnerNotFoundException.class)
+	public ModelAndView handleOwnerNotFoundException(OwnerNotFoundException ex) {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("error"); // Set your custom error view name
+		modelAndView.addObject("errorMessage", ex.getMessage()); // Pass the error message to the view
+		return modelAndView;
 	}
 
 	@ModelAttribute("pet")
 	public Pet findPet(@PathVariable("ownerId") int ownerId,
-			@PathVariable(name = "petId", required = false) Integer petId) {
-		return petId == null ? new Pet() : this.owners.findById(ownerId).getPet(petId);
+					   @PathVariable(name = "petId", required = false) Integer petId) {
+		Owner owner = this.owners.findById(ownerId);
+		if (owner == null) {
+			throw new OwnerNotFoundException("Owner not found with ID: " + ownerId);
+		}
+
+		if (petId == null) {
+			return new Pet();
+		}
+
+		Pet pet = owner.getPet(petId);
+		if (pet == null) {
+			throw new PetNotFoundException("Pet not found with ID: " + petId);
+		}
+
+		return pet;
 	}
 
 	@InitBinder("owner")
@@ -116,5 +137,8 @@ class PetController {
 		this.owners.save(owner);
 		return "redirect:/owners/{ownerId}";
 	}
+
+
+
 
 }
