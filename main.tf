@@ -209,7 +209,7 @@ resource "google_compute_instance_group_manager" "app_managed_group" {
     name = "http"
     port = 8080
   }
-  target_size = 2
+  target_size = 1
 
   auto_healing_policies {
     health_check = google_compute_health_check.app_healthcheck.id
