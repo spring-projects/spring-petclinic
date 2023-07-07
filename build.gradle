@@ -8,6 +8,13 @@ plugins {
 
 apply plugin: 'java'
 
+scmVersion {
+        versionIncrementer('incrementMinor')
+        tag {
+                prefix.set("")
+        }
+}
+
 group = 'org.springframework.samples'
 project.version = scmVersion.version
 sourceCompatibility = '17'
@@ -44,11 +51,4 @@ dependencies {
 
 tasks.named('test') {
   useJUnitPlatform()
-}
-
-scmVersion {
-        versionIncrementer('incrementMinor')
-        tag {
-                prefix.set("")
-        }
 }
