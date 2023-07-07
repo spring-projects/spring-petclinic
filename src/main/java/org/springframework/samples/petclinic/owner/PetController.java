@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import java.time.LocalDate;
 import java.util.Collection;
 
 import org.springframework.stereotype.Controller;
@@ -87,6 +88,10 @@ class PetController {
 		if (StringUtils.hasLength(pet.getName()) && pet.isNew() && owner.getPet(pet.getName(), true) != null) {
 			result.rejectValue("name", "duplicate", "already exists");
 		}
+		LocalDate currentDate = LocalDate.now();
+		if (pet.getBirthDate() != null && pet.getBirthDate().isAfter(currentDate)) {
+			result.rejectValue("birthDate", "invalid", "Invalid birth date. Please select a valid date.");
+		}
 
 		owner.addPet(pet);
 		if (result.hasErrors()) {
@@ -107,6 +112,12 @@ class PetController {
 
 	@PostMapping("/pets/{petId}/edit")
 	public String processUpdateForm(@Valid Pet pet, BindingResult result, Owner owner, ModelMap model) {
+
+		LocalDate currentDate = LocalDate.now();
+		if (pet.getBirthDate() != null && pet.getBirthDate().isAfter(currentDate)) {
+			result.rejectValue("birthDate", "invalid", "Invalid birth date. Please select a valid date.");
+		}
+
 		if (result.hasErrors()) {
 			model.put("pet", pet);
 			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
