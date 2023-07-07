@@ -23,26 +23,26 @@ pipeline {
         stage('PR - Push') {
             when { branch 'PR-*' }
             steps { 
-                sh 'echo <PLACEHOLDER>'
+                sh 'echo "<PLACEHOLDER>"'
             }
         }
         
         stage('Main - create tag') {
             when { branch 'main' }
             steps { 
-                sh 'echo <create tag>'
+                sh 'echo "<create tag>"'
             }
         }
         stage('Main - tag the artifact') {
             when { branch 'main' }
             steps { 
-                sh 'echo <tag artifact>'
+                sh 'echo "<tag artifact>"'
             }
         }
         stage('Main - push to repo') {
             when { branch 'main' }
             steps {
-                sh 'echo <push>'
+                sh 'echo "<push>"'
             }
         }
     }
