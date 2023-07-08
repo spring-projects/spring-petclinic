@@ -115,7 +115,7 @@ class PetController {
 
 		LocalDate currentDate = LocalDate.now();
 		if (pet.getBirthDate() != null && pet.getBirthDate().isAfter(currentDate)) {
-			result.rejectValue("birthDate", "invalid", "Invalid birth date. Please select a valid date.");
+			result.rejectValue("birthDate", "invalid.date");
 		}
 
 		if (result.hasErrors()) {
