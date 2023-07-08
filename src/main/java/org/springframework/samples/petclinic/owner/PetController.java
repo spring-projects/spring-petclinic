@@ -90,7 +90,7 @@ class PetController {
 		}
 		LocalDate currentDate = LocalDate.now();
 		if (pet.getBirthDate() != null && pet.getBirthDate().isAfter(currentDate)) {
-			result.rejectValue("birthDate", "invalid", "Invalid birth date. Please select a valid date.");
+			result.rejectValue("birthDate", "invalid.date");
 		}
 
 		owner.addPet(pet);
@@ -112,6 +112,12 @@ class PetController {
 
 	@PostMapping("/pets/{petId}/edit")
 	public String processUpdateForm(@Valid Pet pet, BindingResult result, Owner owner, ModelMap model) {
+
+		if (StringUtils.hasLength(pet.getName()) && pet.isNew() && owner.getPet(pet.getName(), true) != null) {
+			result.rejectValue("name", "duplicate", "already exists");
+		}
+
+
 
 		LocalDate currentDate = LocalDate.now();
 		if (pet.getBirthDate() != null && pet.getBirthDate().isAfter(currentDate)) {
