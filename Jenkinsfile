@@ -18,6 +18,7 @@ pipeline {
                 }
             }
         }
+    }
         
         stage ('mvn Build') {
             steps {
