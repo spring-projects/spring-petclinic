@@ -31,7 +31,7 @@ pipeline {
         stage ('Docker Build') {
             steps {
                 dir("${env.WORKSPACE}") {
-                    sh 'docker build -t spring-perclinic:1.0 .'
+                    sh 'docker build -t spring-petclinic:1.0 .'
                 }
             }
         }
