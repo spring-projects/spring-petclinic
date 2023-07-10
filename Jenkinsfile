@@ -31,7 +31,7 @@ pipeline {
         stage ('Docker Build') {
             steps {
                 dir("${env.WORKSPACE}") {
-                    sh 'docker build -t spring-petclinic:1.0 .'
+                    sh 'docker build -t aws00-spring-petclinic:1.0 .'
                 }
             }
         }
@@ -43,7 +43,7 @@ pipeline {
                     sh 'rm -f ~/.dockercfg || true'
                     sh 'rm -f ~/.docker/config.json || true' 
                     docker.withRegistry("https://257307634175.dkr.ecr.ap-northeast-2.amazonaws.com/aws00-spring-petclinic", "ecr:ap-northeast-2:AWSCredentials") {
-                        docker.image("spring-petclinic:1.0").push()
+                        docker.image("aws00-spring-petclinic:1.0").push()
                     }
                 }
             }
