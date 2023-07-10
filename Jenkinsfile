@@ -42,7 +42,7 @@ pipeline {
                     // cleanup current user docker credentials
                     sh 'rm -f ~/.dockercfg ~/.docker/config.json || true' 
                     docker.withRegistry("https://257307634175.dkr.ecr.ap-northeast-2.amazonaws.com", "ecr:ap-northeast-2:AWSCredentials") {
-                        docker.image("aws00-spring-petclonic:latest").push()
+                        docker.image("spring-petclonic:latest").push()
                     }
                 }
             }
