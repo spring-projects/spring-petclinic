@@ -71,7 +71,27 @@ pipeline {
         
         stage('Codedeploy Workload') {
             steps {
-                echo "create application"                
+                echo "create application"
+                sh 'aws deploy create-application --application-name aws00-spring-petclinic'
+               
+                echo "create Codedeploy group"   
+                sh '''
+                    aws deploy create-deployment-group \
+                    --application-name aws00-spring-petclinic \
+                    --auto-scaling-groups aws00-spring-petclinic \
+                    --deployment-group-name aws00-spring-petclinic \
+                    --deployment-config-name CodeDeployDefault.OneAtATime \
+                    --service-role-arn arn:aws:iam::257307634175:role/aws00-code-deploy-service-role
+                    '''
+                echo "Codedeploy Workload"   
+                sh '''
+                    aws deploy create-deployment --application-name project00 \
+                    --deployment-config-name CodeDeployDefault.OneAtATime \
+                    --deployment-group-name aws00-spring-petclinic \
+                    --s3-location bucket=aws00-codedeploy,bundleType=zip,key=deploy-1.0.zip
+                    '''
+                    sleep(10) // sleep 10s
+            }
             }
         } 
     }
