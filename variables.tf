@@ -1,11 +1,11 @@
 variable "google_project" {
   type = string
-  default = "playground-s-11-d59ca2db"
+  default = "playground-s-11-5cd45b0d"
 }
 
 variable "service_account_email" {
   type = string
-  default = "cli-service-account-1@playground-s-11-d59ca2db.iam.gserviceaccount.com"
+  default = "cli-service-account-1@playground-s-11-5cd45b0d.iam.gserviceaccount.com"
 }
 
 variable "google_region" {
