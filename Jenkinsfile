@@ -41,7 +41,7 @@ pipeline {
         stage ('Docker Build') {
             steps {
                 dir("${env.WORKSPACE}") {
-                    sh 'docker build -t aws00-spring-petclinic:1.0 .'
+                    sh 'docker build -t ${ECR_DOCKER_IMAGE}:${ECR_DOCKER_TAG} .'
                 }
             }
         }
