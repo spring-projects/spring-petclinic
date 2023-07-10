@@ -9,7 +9,7 @@ pipeline {
         REGION = "ap-northeast-2"
         DOCKER_IMAGE_NAME="spring-petclinic"
         DOCKER_TAG="1.0"
-        ECR_REPOSITORY = "25730763417.dkr.ecr.ap-northeast-2.amazonaws.com"
+        ECR_REPOSITORY = "257307634175.dkr.ecr.ap-northeast-2.amazonaws.com"
         ECR_DOCKER_IMAGE = "${ECR_REPOSITORY}/${DOCKER_IMAGE_NAME}"
         ECR_DOCKER_TAG = "${DOCKER_TAG}"
     }
