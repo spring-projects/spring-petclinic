@@ -17,9 +17,7 @@ pipeline {
                     error 'fail clone project' // exit pipeline
                 }
             }
-        }
-    }
-        
+        }        
         stage ('mvn Build') {
             steps {
                 sh 'mvn -Dmaven.test.failure.ignore=true install' 
@@ -29,16 +27,14 @@ pipeline {
                     junit '**/target/surefire-reports/TEST-*.xml' 
                 }
             }
-        }
-        
+        }        
         stage ('Docker Build') {
             steps {
                 dir("${env.WORKSPACE}") {
                     sh 'docker build -t spring-perclinic:1.0 .'
                 }
             }
-        }       
-
+        }
         stage('Push Docker Image') {
             steps {
                 echo "Push Docker Image to ECR"
@@ -47,7 +43,6 @@ pipeline {
         stage('Upload to S3') {
             steps {
                 echo "Upload to S3"                
-                }
             }
         }
         
@@ -55,6 +50,6 @@ pipeline {
             steps {
                 echo "create application"                
             }
-        }        
+        } 
     }
 }
