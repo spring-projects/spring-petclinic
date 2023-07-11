@@ -114,6 +114,16 @@ class PetController {
 	@PostMapping("/pets/{petId}/edit")
 	public String processUpdateForm(@Valid Pet pet, BindingResult result, Owner owner, ModelMap model) {
 
+		String petName = pet.getName();
+
+		// checking if the pet name already exist for the owner
+		if (StringUtils.hasLength(petName)) {
+			Pet existingPet = owner.getPet(petName.toLowerCase(), false);
+			if (existingPet != null && existingPet.getId() != pet.getId()) {
+				result.rejectValue("name", "duplicate", "already exists");
+			}
+		}
+
 		LocalDate currentDate = LocalDate.now();
 		if (pet.getBirthDate() != null && pet.getBirthDate().isAfter(currentDate)) {
 			result.rejectValue("birthDate", "typeMismatch.birthDate");
