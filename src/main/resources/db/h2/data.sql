@@ -34,6 +34,18 @@ INSERT INTO owners VALUES (default, 'David', 'Schroeder', '2749 Blackhawk Trail'
 INSERT INTO owners VALUES (default, 'Carlos', 'Estaban', '2335 Independence La.', 'Waunakee', '6085555487');
 
 INSERT INTO pets VALUES (default, 'Leo', '2010-09-07', 1, 1);
+INSERT INTO pets VALUES (default, 'Mocka', '2010-09-07', 1, 1);
+INSERT INTO pets VALUES (default, 'Abby', '2010-09-07', 1, 1);
+INSERT INTO pets VALUES (default, 'Tesla', '2010-09-07', 1, 1);
+INSERT INTO pets VALUES (default, 'Freer', '2010-09-07', 1, 1);
+INSERT INTO pets VALUES (default, 'Castro', '2010-09-07', 1, 1);
+INSERT INTO pets VALUES (default, 'Mohawk', '2010-09-07', 1, 1);
+INSERT INTO pets VALUES (default, 'Jerome', '2010-09-07', 1, 1);
+INSERT INTO pets VALUES (default, 'Niley', '2010-09-07', 1, 1);
+INSERT INTO pets VALUES (default, 'Timmy', '2010-09-07', 1, 1);
+INSERT INTO pets VALUES (default, 'Bob', '2010-09-07', 1, 1);
+
+
 INSERT INTO pets VALUES (default, 'Basil', '2012-08-06', 6, 2);
 INSERT INTO pets VALUES (default, 'Rosy', '2011-04-17', 2, 3);
 INSERT INTO pets VALUES (default, 'Jewel', '2010-03-07', 2, 3);

@@ -15,9 +15,17 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import io.opentelemetry.instrumentation.annotations.WithSpan;
+import okhttp3.*;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+
+import java.io.IOException;
 
 /**
  * <code>Validator</code> for <code>Pet</code> forms.
@@ -51,6 +59,35 @@ public class PetValidator implements Validator {
 		if (pet.getBirthDate() == null) {
 			errors.rejectValue("birthDate", REQUIRED, REQUIRED);
 		}
+
+		try {
+			updateVaccinationStatus(pet);
+		}
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@WithSpan
+	private boolean updateVaccinationStatus(Pet pet) throws IOException {
+		// OkHttpClient client = new OkHttpClient();
+		//
+		// Request request = new
+		// Request.Builder().url("https://647f4bb4c246f166da9084c7.mockapi.io/api/vetcheck/vaccines")
+		// .build();
+		//
+		// String responseText = "";
+		// try (Response response = client.newCall(request).execute()) {
+		// responseText = response.body().string();
+		// JSONObject Jobject = new JSONObject(responseText);
+		// JSONArray Jarray = Jobject.getJSONArray("employees");
+		//
+		// }
+		// catch (JSONException e) {
+		// throw new RuntimeException(e);
+		// }
+		return true;
+
 	}
 
 	/**

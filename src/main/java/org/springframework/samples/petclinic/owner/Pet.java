@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import io.opentelemetry.instrumentation.annotations.WithSpan;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.model.NamedEntity;
 
@@ -57,6 +58,11 @@ public class Pet extends NamedEntity {
 	@OrderBy("visit_date ASC")
 	private Set<Visit> visits = new LinkedHashSet<>();
 
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "pet_id")
+	@OrderBy("vaccine_date ASC")
+	private Set<PetVaccine> pet_vaccines = new LinkedHashSet<>();
+
 	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
 	}
@@ -77,8 +83,16 @@ public class Pet extends NamedEntity {
 		return this.visits;
 	}
 
+	public Collection<PetVaccine> getPetVaccines() {
+		return this.pet_vaccines;
+	}
+
 	public void addVisit(Visit visit) {
 		getVisits().add(visit);
+	}
+
+	public void addVaccine(PetVaccine vaccine) {
+		getPetVaccines().add(vaccine);
 	}
 
 }

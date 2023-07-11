@@ -15,7 +15,11 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.core.style.ToStringCreator;
@@ -122,6 +126,27 @@ public class Owner extends Person {
 			}
 		}
 		return null;
+	}
+
+	public boolean isVaccineExpired() {
+
+		for (Pet pet : getPets()) {
+
+			if (!pet.isNew()) {
+
+				for (PetVaccine vaccine : pet.getPetVaccines()) {
+
+					Duration duration = Duration.between(LocalDateTime.now(), vaccine.getDate());
+					if (duration.toDays() > 360) {
+						return true;
+					}
+
+				}
+
+			}
+
+		}
+		return false;
 	}
 
 	/**

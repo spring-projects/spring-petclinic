@@ -1,6 +1,18 @@
-version: "2.2"
+version: '3'
 
 services:
+  pet-clinic:
+    build: ./
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8082/" ]
+      interval: 20s
+      timeout: 10s
+      retries: 4
+      start_period: 5s
+    ports:
+      - "8082:8082"
+    entrypoint: java -jar app.jar
+
   mysql:
     image: mysql:8.0
     ports:

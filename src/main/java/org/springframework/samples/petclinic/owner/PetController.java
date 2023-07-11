@@ -17,6 +17,8 @@ package org.springframework.samples.petclinic.owner;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.domain.PetVaccinationStatusService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -43,6 +45,9 @@ class PetController {
 	private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = "pets/createOrUpdatePetForm";
 
 	private final OwnerRepository owners;
+
+	@Autowired
+	private PetVaccinationStatusService petVaccinationStatus;
 
 	public PetController(OwnerRepository owners) {
 		this.owners = owners;
@@ -82,9 +87,20 @@ class PetController {
 		return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 	}
 
+
+
+
+
+
+
+
+
+
+
+
 	@PostMapping("/pets/new")
 	public String processCreationForm(Owner owner, @Valid Pet pet, BindingResult result, ModelMap model) {
-		if (StringUtils.hasLength(pet.getName()) && pet.isNew() && owner.getPet(pet.getName(), true) != null) {
+		if (StringUtils.hasLength(pet.getName()) && pet.isNew() && owner.getPet(pet.getName(), 	true) != null) {
 			result.rejectValue("name", "duplicate", "already exists");
 		}
 
@@ -95,8 +111,17 @@ class PetController {
 		}
 
 		this.owners.save(owner);
+		petVaccinationStatus.UpdateVaccinationStatus(owner.getPets().toArray(Pet[]::new));
+
 		return "redirect:/owners/{ownerId}";
 	}
+
+
+
+
+
+
+
 
 	@GetMapping("/pets/{petId}/edit")
 	public String initUpdateForm(Owner owner, @PathVariable("petId") int petId, ModelMap model) {

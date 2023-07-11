@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "petshop-chart.fullname" . }}
+  labels:
+    {{- include "petshop-chart.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: 8082
+      protocol: TCP
+      name: api
+  selector:
+    {{- include "petshop-chart.selectorLabels" . | nindent 4 }}

@@ -18,9 +18,11 @@ package org.springframework.samples.petclinic.owner;
 import java.util.List;
 import java.util.Map;
 
+import io.opentelemetry.instrumentation.annotations.WithSpan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.samples.petclinic.domain.OwnerValidation;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,6 +37,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import jakarta.validation.Valid;
 
+import static io.opentelemetry.api.GlobalOpenTelemetry.getTracer;
+
 /**
  * @author Juergen Hoeller
  * @author Ken Krebs
@@ -48,8 +52,14 @@ class OwnerController {
 
 	private final OwnerRepository owners;
 
+	private OwnerValidation validator;
+
 	public OwnerController(OwnerRepository clinicService) {
 		this.owners = clinicService;
+		var otelTracer = getTracer("OwnerController");
+
+		validator = new OwnerValidation(otelTracer);
+
 	}
 
 	@InitBinder
@@ -64,7 +74,10 @@ class OwnerController {
 
 	@GetMapping("/owners/new")
 	public String initCreationForm(Map<String, Object> model) {
+
 		Owner owner = new Owner();
+		validator.ValidateOwnerWithExternalService(owner);
+
 		model.put("owner", owner);
 		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 	}
@@ -74,8 +87,12 @@ class OwnerController {
 		if (result.hasErrors()) {
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 		}
+		validator.ValidateOwnerWithExternalService(owner);
+		validator.PerformValidationFlow(owner);
 
+		validator.checkOwnerValidity(owner);
 		this.owners.save(owner);
+		validator.ValidateUserAccess("admin", "pwd", "fullaccess");
 		return "redirect:/owners/" + owner.getId();
 	}
 
@@ -87,6 +104,8 @@ class OwnerController {
 	@GetMapping("/owners")
 	public String processFindForm(@RequestParam(defaultValue = "1") int page, Owner owner, BindingResult result,
 			Model model) {
+		validator.ValidateUserAccess("admin", "pwd", "fullaccess");
+
 		// allow parameterless GET request for /owners to return all records
 		if (owner.getLastName() == null) {
 			owner.setLastName(""); // empty string signifies broadest possible search
@@ -110,6 +129,11 @@ class OwnerController {
 		return addPaginationModel(page, model, ownersResults);
 	}
 
+
+
+
+
+
 	private String addPaginationModel(int page, Model model, Page<Owner> paginated) {
 		model.addAttribute("listOwners", paginated);
 		List<Owner> listOwners = paginated.getContent();
@@ -120,11 +144,17 @@ class OwnerController {
 		return "owners/ownersList";
 	}
 
+	@WithSpan
 	private Page<Owner> findPaginatedForOwnersLastName(int page, String lastname) {
-		int pageSize = 5;
+		int pageSize = 25;
 		Pageable pageable = PageRequest.of(page - 1, pageSize);
 		return owners.findByLastName(lastname, pageable);
 	}
+
+
+
+
+
 
 	@GetMapping("/owners/{ownerId}/edit")
 	public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
@@ -132,6 +162,24 @@ class OwnerController {
 		model.addAttribute(owner);
 		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	@PostMapping("/owners/{ownerId}/edit")
 	public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result,
@@ -151,8 +199,10 @@ class OwnerController {
 	 * @return a ModelMap with the model attributes for the view
 	 */
 	@GetMapping("/owners/{ownerId}")
-	public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
-		ModelAndView mav = new ModelAndView("owners/ownerDetails");
+	public ModelAndView showOwner(@PathVariable("ownerId")
+									  int ownerId) {
+		ModelAndView mav =
+			new ModelAndView("owners/ownerDetails");
 		Owner owner = this.owners.findById(ownerId);
 		mav.addObject(owner);
 		return mav;
