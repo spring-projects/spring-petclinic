@@ -1,0 +1,10 @@
+global:
+  scrape_interval: 15s # Default is every 1 minute.
+
+scrape_configs:
+  - job_name: 'collector'
+    metrics_path: '/actuator/prometheus'
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+    static_configs:
+      - targets: ['host.docker.internal:8082']
