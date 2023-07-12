@@ -9,14 +9,14 @@ pipeline {
     }
     stage('Docker Build') {
       steps {
-      	sh 'docker build -t registry.hub.docker.com/hybrid2k3/petclinic:1 .'
+      	sh 'docker build -t hybrid2k3/petclinic:2 .'
       }
     }
     stage('Docker Push') {
       steps {
       	withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
         	sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
-          sh 'docker push registry.hub.docker.com/hybrid2k3/petclinic:1'
+          sh 'docker push hybrid2k3/petclinic:2'
         }
       }
     }
