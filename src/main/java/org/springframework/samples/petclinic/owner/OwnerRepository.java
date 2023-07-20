@@ -58,6 +58,16 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
 	Page<Owner> findByLastName(@Param("lastName") String lastName, Pageable pageable);
 
 	/**
+	 * Retrieve {@link Owner}s all owners including their pets and visitations
+	 * @return a Collection of {@link Owner}s
+	 */
+	/*@Query("SELECT DISTINCT owner FROM Owner owner LEFT JOIN FETCH owner.pets pet LEFT JOIN FETCH visits WHERE pet.id = visits.petId")
+	List<Owner> findAllWithPetsAndVisits();*/
+	@Query("SELECT DISTINCT owner FROM Owner owner LEFT JOIN FETCH owner.pets LEFT JOIN FETCH pets.visits")
+	List<Owner> findAllWithPetsAndVisits();
+
+
+	/**
 	 * Retrieve an {@link Owner} from the data store by id.
 	 * @param id the id to search for
 	 * @return the {@link Owner} if found

@@ -11,6 +11,8 @@ group = 'org.springframework.samples'
 version = '3.1.0'
 sourceCompatibility = '17'
 
+def OPENTELEMETRY_VERSION = '1.22.1'
+
 repositories {
   mavenCentral()
 }
@@ -19,6 +21,7 @@ ext.webjarsFontawesomeVersion = "4.7.0"
 ext.webjarsBootstrapVersion = "5.2.3"
 
 dependencies {
+    implementation 'org.hibernate:hibernate-core:6.2.1.Final'
   implementation 'org.springframework.boot:spring-boot-starter-cache'
   implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
   implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
@@ -30,16 +33,19 @@ dependencies {
   runtimeOnly "org.webjars.npm:bootstrap:${webjarsBootstrapVersion}"
   runtimeOnly "org.webjars.npm:font-awesome:${webjarsFontawesomeVersion}"
   runtimeOnly 'com.github.ben-manes.caffeine:caffeine'
-  runtimeOnly 'com.h2database:h2'
-  runtimeOnly 'com.mysql:mysql-connector-j'
   runtimeOnly 'org.postgresql:postgresql'
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'org.springframework.boot:spring-boot-testcontainers'
   testImplementation 'org.springframework.boot:spring-boot-docker-compose'
   testImplementation 'org.testcontainers:junit-jupiter'
-  testImplementation 'org.testcontainers:mysql'
+
+    implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations:${OPENTELEMETRY_VERSION}")
+    implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api:${OPENTELEMETRY_VERSION}")
+
 }
+
+
 
 tasks.named('test') {
   useJUnitPlatform()
