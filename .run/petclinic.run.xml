@@ -9,6 +9,11 @@
     <module name="spring-petclinic.main" />
     <option name="PROGRAM_PARAMETERS" value="--warning-mode all" />
     <option name="VM_PARAMETERS" value="-Dotel.instrumentation.jdbc-datasource.enabled=true" />
+    <extension name="software.aws.toolkits.jetbrains.core.execution.JavaAwsConnectionExtension">
+      <option name="credential" />
+      <option name="region" />
+      <option name="useCurrentConnection" value="false" />
+    </extension>
     <method v="2">
       <option name="Gradle.BeforeRunTask" enabled="true" tasks="bootJar" externalProjectPath="$PROJECT_DIR$" vmOptions="" scriptParameters="" />
     </method>

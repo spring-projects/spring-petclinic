@@ -20,6 +20,7 @@ import java.util.Map;
 
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -104,9 +105,8 @@ class OwnerController {
 		// empty owner search for all records without n+1 queries
 		if (StringUtils.isEmpty(owner.getLastName())){
 			List<Owner> ownerList = owners.findAllWithPetsAndVisits();
-			//model.addAttribute("owners", ownerList);
-			//need to figure out displaying owners without n+1.
-			return "owners/ownersList";
+			Page<Owner> ownerPageNP1 = new PageImpl<>(ownerList);
+			return addPaginationModel(0, model, ownerPageNP1);
 		}
 
 		// find owners by last name
@@ -139,7 +139,7 @@ class OwnerController {
 	}
 
 	private Page<Owner> findPaginatedForOwnersLastName(int page, String lastname) {
-		int pageSize = 12;
+		int pageSize = 5;
 		Pageable pageable = PageRequest.of(page - 1, pageSize);
 		return owners.findByLastName(lastname, pageable);
 	}
