@@ -1,4 +1,7 @@
 node {
+    stage('checkout') {
+      checkout scm
+    }
     stage('compile') {
          sh '''#!/bin/bash -x
                  source "$HOME/.sdkman/bin/sdkman-init.sh"
