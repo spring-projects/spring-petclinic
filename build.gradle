@@ -33,12 +33,15 @@ dependencies {
   runtimeOnly "org.webjars.npm:bootstrap:${webjarsBootstrapVersion}"
   runtimeOnly "org.webjars.npm:font-awesome:${webjarsFontawesomeVersion}"
   runtimeOnly 'com.github.ben-manes.caffeine:caffeine'
+  runtimeOnly 'com.h2database:h2'
+  runtimeOnly 'com.mysql:mysql-connector-j'
   runtimeOnly 'org.postgresql:postgresql'
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'org.springframework.boot:spring-boot-testcontainers'
   testImplementation 'org.springframework.boot:spring-boot-docker-compose'
   testImplementation 'org.testcontainers:junit-jupiter'
+  testImplementation 'org.testcontainers:mysql'
 
     implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations:${OPENTELEMETRY_VERSION}")
     implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api:${OPENTELEMETRY_VERSION}")
