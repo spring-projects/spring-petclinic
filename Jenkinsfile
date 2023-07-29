@@ -19,7 +19,8 @@ pipeline {
     }
     stage('build and packaging') {
          steps {
-            sh : 'mvn package'
+            
+            sh : "mvn package"
         
       }
 
