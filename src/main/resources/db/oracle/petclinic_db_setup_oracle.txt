@@ -1,0 +1,38 @@
+================================================================================
+===        Spring PetClinic sample application - Oracle Configuration         ===
+================================================================================
+
+@author Sam Brannen
+@author Costin Leau
+@author Dave Syer
+@author Guto Leão
+--------------------------------------------------------------------------------
+
+1) Download and install the Oracle Database 21c Express Edition,
+   which can be found here: https://www.oracle.com/database/technologies/xe-downloads.html. Or 
+   edit "docker-compose.yml" from the root of the project (if you have docker installed
+   locally) folowing instructions in file coments:
+
+        $ docker-compose up
+        ...
+         oracle  | #########################
+         oracle  | DATABASE IS READY TO USE!
+         oracle  | #########################
+        ...
+
+2) (Once only) create the PetClinic database and user by executing the "db/oracle/user.sql"
+   scripts. You can connect to the database running in the docker container using 
+   `sqlplus petclinic/petclinic@//localhost:1521/petclinic`, but you don't need to run the script there
+   because the petclinic user is already set up if you use the provided `docker-compose.yml`.
+
+3) Run the app with `spring.profiles.active=oracle` (e.g. as a System property via the command
+   line, but any way that sets that property in a Spring Boot app should work). For example use
+   
+   mvn spring-boot:run -Dspring-boot.run.profiles=oracle
+
+   To activate the profile on the command line.
+
+N.B. the "petclinic" database has to exist for the app to work with the JDBC URL value
+as it is configured by default. This condition is taken care of automatically by the 
+docker-compose configuration provided, or by the `user.sql` script if you run that as
+system user.

@@ -1,27 +1,69 @@
+# must edit apprication-<database>.properties too
 version: "2.2"
 
 services:
-  mysql:
-    image: mysql:8.0
+
+  app:
+    build: .
+    container_name: spring-petclinic
     ports:
-      - "3306:3306"
-    environment:
-      - MYSQL_ROOT_PASSWORD=
-      - MYSQL_ALLOW_EMPTY_PASSWORD=true
-      - MYSQL_USER=petclinic
-      - MYSQL_PASSWORD=petclinic
-      - MYSQL_DATABASE=petclinic
+      - "8080:8080"
+    environment: 
+      # uncomment one of folowing lines to run app with database of our choice 
+      # (all commented, by default, uses h2 in memory)
+      - spring.profiles.active=
+      # - spring.profiles.active=mysql
+      # - spring.profiles.active=postgres
+      # - spring.profiles.active=oracle
     volumes:
-      - "./conf.d:/etc/mysql/conf.d:ro"
-    profiles:
-    - mysql
-  postgres:
-    image: postgres:15.3
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_PASSWORD=petclinic
-      - POSTGRES_USER=petclinic
-      - POSTGRES_DB=petclinic
-    profiles:
-    - postgres
+      - .:/workspace:cached
+      - ./.m2:/home/vscode/.m2
+      - ./.gradle:/home/vscode/.gradle
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    # uncomment depends_on and one of the folow services to run app with database of your choice
+    # and garant load app only after database is ready
+    # depends_on:
+      # - mysql
+      # - postgres
+      # - oracle
+
+  # uncomment folowing service to run app with mysql
+  # mysql:
+  #   image: mysql:8.0
+  #   ports:
+  #     - "3306:3306"
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=
+  #     - MYSQL_ALLOW_EMPTY_PASSWORD=true
+  #     - MYSQL_USER=petclinic
+  #     - MYSQL_PASSWORD=petclinic
+  #     - MYSQL_DATABASE=petclinic
+  #   volumes:
+  #     - "./conf.d:/etc/mysql/conf.d:ro"
+
+  # uncomment folowing service to run app with postgres
+  # postgres:
+  #   image: postgres:15.3
+  #   ports:
+  #     - "5432:5432"
+  #   environment:
+  #     - POSTGRES_PASSWORD=petclinic
+  #     - POSTGRES_USER=petclinic
+  #     - POSTGRES_DB=petclinic
+
+  # uncomment folowing service to run app with oracle
+  # oracle:
+  #   image: gvenzl/oracle-xe:18.4.0-slim-faststart
+  #   container_name: oracle
+  #   environment:
+  #     - ORACLE_PASSWORD=oracle
+  #     - ORACLE_DATABASE=petclinic
+  #     - APP_USER=petclinic
+  #     - APP_USER_PASSWORD=petclinic
+  #   ports:
+  #     - "1521:1521"
+  #     - "8081:8081"
+  #   volumes:
+  #     - ./src/main/resources/db/oracle/1_schema.sql:/db/oracle/scripts/1_schema.sql
+  #     - ./src/main/resources/db/oracle/2_data.sql:/db/oracle/scripts/2_data.sql
+  #     - .src/main/resources/db/oracle/initdb.sh:/container-entrypoint-initdb.d/initdb.sh
