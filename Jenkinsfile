@@ -4,7 +4,7 @@ pipeline {
      timeout(time: 30, unit: 'MINUTES')
    }
    triggers {
-     pollSCM(* * * * *)
+     pollSCM('* * * * *')
    }
    tools {
     jdk 'JDK_17'
