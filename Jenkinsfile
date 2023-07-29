@@ -1,38 +1,32 @@
 pipeline {
-   agent any
-   options {
-     timeout(time: 30, unit: 'MINUTES')
-   }
-   triggers {
-     pollSCM('* * * * *')
-   }
-   tools {
-    jdk 'java-17'
-   }
-   stages {
-    stage('vcs') {
-      steps {
-        git url: 'https://github.com/shaifalikhan5/spring-petclinic.git',
-         branch: 'developer'
-
-      }
+    agent any
+    options {
+        timeout(time: 30, unit: 'MINUTES')
     }
-    stage('build and packaging') {
-         steps {
-            
-            sh : "mvn package"
-        
-      }
-
+    triggers {
+        pollSCM('* * * * *')
     }
-    stage('reporting') {
-         steps {
-            archiveArtifacts artifacts : '**/target/sprigpetclinic-*.jar'
-            junit testResults : '**/surefire-reports/**.xml'
-        
-      }
-
+    tools {
+        jdk 'JDK_17'
     }
-   }
+    stages {
+        stage('vcs') {
+            steps {
+                git url: 'https://github.com/shaifalikhan5/spring-petclinic.git',
+                    branch: 'developer'
+            }
+        }
+        stage('build and package') {
+            steps {
+                sh script: 'mvn package'
+            }
+        }
+        stage('reporting') {
+            steps {
+                archiveArtifacts artifacts: '**/target/springpetclinic-*.jar'
+                junit testResults: '**/target/surefire-reports/TEST-*.xml'
+            }
+        }
+    }
 
 }
