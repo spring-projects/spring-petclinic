@@ -33,7 +33,7 @@ Or you can run it from Maven directly using the Spring Boot Maven plugin. If you
 
 ## Building a Container
 
-There is no `Dockerfile` in this project. You can build a container image (if you have a docker daemon) using the Spring Boot build plugin:
+There is no `Dockerfile` in this project1. You can build a container image (if you have a docker daemon) using the Spring Boot build plugin:
 
 ```
 ./mvnw spring-boot:build-image
