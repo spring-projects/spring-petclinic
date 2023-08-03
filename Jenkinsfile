@@ -31,13 +31,13 @@ pipeline {
     }
     post {
         success {
-            mail subject: 'your project is effective'
-                 body: 'your project is effective'
+            mail subject: 'your project is effective',
+                 body: 'your project is effective',
                  to: 'vinod@gmail.com'
         }
         failure {
-            mail subject: 'your project is failure'
-                 body: 'your project is defective'
+            mail subject: 'your project is failure',
+                 body: 'your project is defective',
                  to: 'vinod@gmail.com'
         }
     }
