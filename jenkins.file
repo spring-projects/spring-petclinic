@@ -14,7 +14,7 @@ pipeline {
         stage('code') {
             steps {
                 git url: 'https://github.com/KVKR31/dummy.git' ,
-                branch : 'master'
+                branch : 'main'
             }
         }
         stage('package') {
