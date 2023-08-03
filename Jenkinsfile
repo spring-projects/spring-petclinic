@@ -29,7 +29,7 @@ pipeline {
             }
         }
     }
-    pool {
+    post {
         success {
             mail subject: 'your project is effective'
                  body: 'your project is effective'
