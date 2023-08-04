@@ -24,8 +24,8 @@ pipeline {
         }
         stage('build') {
             steps {
-                junit testResults: '**/surefire-reports/TEST-*.xml'
-                archiveArtifacts artifacts: '**/target/gameoflife.war'
+                junit testResults: '**/target/spring-petclinic-*.jar'
+                archiveArtifacts artifacts: '**/target/surefire-reports/TEST-*.xml'
             }
         }
     }
