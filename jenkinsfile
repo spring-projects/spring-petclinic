@@ -1,5 +1,5 @@
 pipeline {
-    agent{label 'jdk_17'} 
+    agent{label 'JDK_17'} 
     options {
         timeout(time: 30, unit: 'MINUTES') 
     } 
@@ -20,11 +20,11 @@ pipeline {
             steps {
                 sh script: 'mvn package'
             }
-
+       
         } 
         stage('reporting') {
             steps {
-                junits: '**/target/surefire-reports/TEST-*.xml'
+                junit testResults: '**/target/surefire-reports/TEST-*.xml'
                 archiveArtifacts artifacts: '**/target/spring-petclinic-*.jar'
             }
         }
