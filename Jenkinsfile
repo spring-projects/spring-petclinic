@@ -25,7 +25,7 @@ pipeline {
         stage('build') {
             steps {
 <<<<<<< HEAD
-                archiveArtifacts artifacts: '**/target/surefire-reports/TEST-*.xml'
+                archiveArtifacts artifacts: '**/target/surefire-reports/TEST-*.xml',
                 junit testResults : '**/target/surefire-reports/TEST-*.jar'
 =======
                 archiveArtifacts artifacts: '**/target/surefire-reports/TEST-*.xml',
