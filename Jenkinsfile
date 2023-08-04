@@ -32,13 +32,13 @@ pipeline {
     }
     post {
         success {
-            mail subject: 'your project is effective',
-                 body: 'your project is effective',
+            mail subject: '${JOB_NAME}:: has completed with success',
+                 body: 'your project is effective \n Build Url ${BUILD_URL',
                  to: 'vinod@gmail.com'
         }
         failure {
-            mail subject: 'your project is failure',
-                 body: 'your project is defective',
+            mail subject: '${JOB_NAME}:: has completed with failed',
+                 body: 'your project is defective \n Build Url ${BUILD_URL',
                  to: 'vinod@gmail.com'
         }
     }
