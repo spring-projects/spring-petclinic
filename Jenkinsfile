@@ -1,5 +1,5 @@
 pipeline {
-    agent {label 'node1'}
+    agent {label 'JDK_17'}
     options {
         retry(3)
         timeout(time: 30, unit: 'MINUTES')
@@ -24,8 +24,8 @@ pipeline {
         }
         stage('build') {
             steps {
-                junit testResults: '**/target/spring-petclinic-*.jar'
                 archiveArtifacts artifacts: '**/target/surefire-reports/TEST-*.xml'
+                junit testResults: '**/target/surefire-reports/TEST-*.xml'
             }
         }
     }
