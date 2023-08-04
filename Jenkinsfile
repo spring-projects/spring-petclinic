@@ -25,10 +25,10 @@ pipeline {
         stage('build') {
             steps {
 <<<<<<< HEAD
-                archiveArtifacts artifacts: '**/target/spring-petclinic-*.jar',
+                archiveArtifacts artifacts: '**/target/spring-petclinic-*.jar'
                 junit testResults : '**/target/surefire-reports/TEST-*.xml'
 =======
-                archiveArtifacts artifacts: '**/target/surefire-reports/TEST-*.xml',
+                archiveArtifacts artifacts: '**/target/spring-petclinic-*.jar'
                 junit testResults: '**/target/surefire-reports/TEST-*.xml'
 >>>>>>> f531905a03ca63a789b989629593531fb3c7ab7c
             }
