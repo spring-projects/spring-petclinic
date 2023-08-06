@@ -7,4 +7,5 @@ ENV POSTGRES_URL jdbc:postgresql://postgres/petclinic
 ENV JAVA_OPTS "-Dspring.profiles.active=postgres -Xmx2g"
 EXPOSE 8080
 COPY target/*.jar /opt/app.jar
+ENV JAVA_TOOL_OPTIONS $CONTRAST_OPTS -Dcontrast.application.group=craft.petclinic
 ENTRYPOINT exec java $JAVA_OPTS -jar app.jar
