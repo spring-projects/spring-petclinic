@@ -1,5 +1,6 @@
-api: 
-  url: https://intuit.contrastsecurity.com/Contrast
-  api_key: 
-  service_key: 
-  user_name: 
+agent:
+  java:
+    scan_all_classes: false
+    scan_all_code_sources: false
+  logger:
+    stdout: true

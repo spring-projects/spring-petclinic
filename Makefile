@@ -20,6 +20,10 @@ validate:
 		echo "md5sum is not installed. Please install it first."; \
 		exit 1; \
 	fi
+	if ! command which mvn &> /dev/null; then \
+		echo "maven is not installed. Please install it first."; \
+		exit 1; \
+	fi
 
 docker: validate
 	if ! command docker info &> /dev/null; then \
@@ -34,6 +38,7 @@ cluster: docker
 	fi \
 
 build: cluster
+	mvn install
 	minikube image build -t petclinic:latest .
 
 deploy: build
