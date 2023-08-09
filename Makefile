@@ -1,5 +1,6 @@
 .SILENT: validate docker cluster
 validate:
+	test -n "$$EMAIL" || (echo "EMAIL is not set. Please set it first."; exit 1)
 	if ! command which envsubst &> /dev/null; then \
 		echo "gettext is not installed. Please install it first."; \
 		exit 1; \
@@ -42,7 +43,7 @@ build: cluster
 	minikube image build -t petclinic:latest .
 
 deploy: build
-	export RANDOM_PART=$$(hostname | md5sum | cut -c1-30) && \
+	export RANDOM_PART=${EMAIL}_$$(hostname | md5sum | cut -c1-30) && \
 	minikube kubectl -- apply -f kube/postgresql.yaml && \
 	envsubst < kube/petclinic.yaml | minikube kubectl -- apply -f -
 
