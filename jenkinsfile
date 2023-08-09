@@ -21,8 +21,8 @@ pipeline {
                  rtMavenDeployer (
                     id: "SPC_DEPLOYER",
                     serverId: "JFROG_CLOUD",
-                    releaseRepo: 'qt-app-libs-release-local',
-                    snapshotRepo: 'qt-app-libs-snapshot-local'
+                    releaseRepo: 'yadu-app-libs-release-local',
+                    snapshotRepo: 'yadu-app-libs-snapshot-local'
                 )
                 rtMavenRun (
                     tool: 'maven 3.9', // Tool name from Jenkins configuration
