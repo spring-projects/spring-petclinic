@@ -18,7 +18,7 @@ pipeline {
         }
         stage('build and package') {
             steps {
-                 rtMavenDeployer (
+                rtMavenDeployer (
                     id: "SPC_DEPLOYER",
                     serverId: "JFROG_CLOUD",
                     releaseRepo: 'yadu-app-libs-release-local',
