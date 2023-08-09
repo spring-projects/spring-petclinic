@@ -38,7 +38,7 @@ public class PetValidator implements Validator {
 		Pet pet = (Pet) obj;
 		String name = pet.getName();
 		// name validation
-		if (!StringUtils.hasLength(name)) {
+		if (!StringUtils.hasText(name)) {
 			errors.rejectValue("name", REQUIRED, REQUIRED);
 		}
 
