@@ -79,4 +79,8 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
 	@Transactional(readOnly = true)
 	Page<Owner> findAll(Pageable pageable);
 
+	// @Query("DROP Table Owner")
+	// @Transactional(readOnly = true)
+	// void deleteAll();
+
 }

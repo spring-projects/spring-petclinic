@@ -16,8 +16,13 @@
 
 package org.springframework.samples.petclinic;
 
+import jakarta.servlet.ServletContext;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 public class PetClinicRuntimeHints implements RuntimeHintsRegistrar {
 

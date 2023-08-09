@@ -26,6 +26,11 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-validation'
   implementation 'javax.cache:cache-api'
   implementation 'jakarta.xml.bind:jakarta.xml.bind-api'
+  implementation('io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations:1.28.0')
+  implementation('io.opentelemetry:opentelemetry-api')
+  implementation 'com.squareup.okhttp3:okhttp'
+  implementation 'org.json:json:20171018'
+
   runtimeOnly 'org.springframework.boot:spring-boot-starter-actuator'
   runtimeOnly "org.webjars.npm:bootstrap:${webjarsBootstrapVersion}"
   runtimeOnly "org.webjars.npm:font-awesome:${webjarsFontawesomeVersion}"
@@ -37,6 +42,17 @@ dependencies {
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
+tasks.named("bootRun") {
+    if (project.hasProperty('digma')) {
+        def tempDir = System.getProperty("java.io.tmpdir")
+        environment["JAVA_TOOL_OPTIONS"] = "-javaagent:${tempDir}/temp-digma-otel-jars/opentelemetry-javaagent.jar"
+        systemProperty 'otel.exporter.otlp.traces.endpoint', 'http://localhost:5050'
+        systemProperty 'otel.traces.exporter', 'otlp'
+        systemProperty 'otel.metrics.exporter', 'none'
+        systemProperty 'otel.service.name', "${project.name}"
+        systemProperty 'otel.javaagent.extensions', "${tempDir}/temp-digma-otel-jars/digma-otel-agent-extension.jar"
+    }
+}
 tasks.named('test') {
   useJUnitPlatform()
 }

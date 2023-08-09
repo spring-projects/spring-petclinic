@@ -129,11 +129,6 @@ class OwnerController {
 		return addPaginationModel(page, model, ownersResults);
 	}
 
-
-
-
-
-
 	private String addPaginationModel(int page, Model model, Page<Owner> paginated) {
 		model.addAttribute("listOwners", paginated);
 		List<Owner> listOwners = paginated.getContent();
@@ -151,35 +146,12 @@ class OwnerController {
 		return owners.findByLastName(lastname, pageable);
 	}
 
-
-
-
-
-
 	@GetMapping("/owners/{ownerId}/edit")
 	public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
 		Owner owner = this.owners.findById(ownerId);
 		model.addAttribute(owner);
 		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	@PostMapping("/owners/{ownerId}/edit")
 	public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result,
@@ -199,10 +171,8 @@ class OwnerController {
 	 * @return a ModelMap with the model attributes for the view
 	 */
 	@GetMapping("/owners/{ownerId}")
-	public ModelAndView showOwner(@PathVariable("ownerId")
-									  int ownerId) {
-		ModelAndView mav =
-			new ModelAndView("owners/ownerDetails");
+	public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
+		ModelAndView mav = new ModelAndView("owners/ownerDetails");
 		Owner owner = this.owners.findById(ownerId);
 		mav.addObject(owner);
 		return mav;

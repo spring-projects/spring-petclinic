@@ -20,7 +20,7 @@ public class PetVaccinationServiceFacade implements PetVaccinationService {
 
 	public static final String VACCINES_RECORDS_URL = "https://647f4bb4c246f166da9084c7.mockapi.io/api/vetcheck/vaccines";
 
-	private String MakeHttpCall(String url) throws IOException{
+	private String MakeHttpCall(String url) throws IOException {
 
 		Request getAllVaccinesRequest = new Request.Builder().url(url).build();
 		OkHttpClient client = new OkHttpClient();
@@ -34,8 +34,7 @@ public class PetVaccinationServiceFacade implements PetVaccinationService {
 
 		var vaccineListString = MakeHttpCall(VACCINES_RECORDS_URL);
 		JSONArray jArr = new JSONArray(vaccineListString);
-		var vaccinnationRecords =
-			new ArrayList<VaccinnationRecord>();
+		var vaccinnationRecords = new ArrayList<VaccinnationRecord>();
 
 		for (int i = 0; i < jArr.length(); i++) {
 
@@ -68,7 +67,5 @@ public class PetVaccinationServiceFacade implements PetVaccinationService {
 		var vaccineDate = Instant.parse(vaccineDateString);
 		return new VaccinnationRecord(id, petId, vaccineDate);
 	}
-
-
 
 }

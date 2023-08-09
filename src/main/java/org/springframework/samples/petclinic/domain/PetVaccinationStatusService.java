@@ -1,6 +1,7 @@
 package org.springframework.samples.petclinic.domain;
 
 import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.instrumentation.annotations.WithSpan;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.adapters.PetVaccinationService;
@@ -20,15 +21,16 @@ public class PetVaccinationStatusService {
 	@Autowired
 	private PetVaccinationService adapter;
 
-	public void UpdateVaccinationStatus(Pet[] pets){
+	@WithSpan
+	public void UpdateVaccinationStatus(Pet[] pets) {
 
-		for (Pet pet: pets){
+		for (Pet pet : pets) {
 			try {
 				var vaccinationRecords = this.adapter.AllVaccines();
-				for (VaccinnationRecord record : vaccinationRecords){
+				for (VaccinnationRecord record : vaccinationRecords) {
 
 					var recordInfo = this.adapter.VaccineRecord(record.recordId());
-					if (recordInfo.petId()==pet.getId()){
+					if (recordInfo.petId() == pet.getId()) {
 						var date = LocalDateTime.ofInstant(recordInfo.vaccineDate(), ZoneId.systemDefault());
 						PetVaccine petVaccine = new PetVaccine();
 						petVaccine.setDate(date.toLocalDate());
@@ -36,13 +38,14 @@ public class PetVaccinationStatusService {
 					}
 				}
 
-			} catch (JSONException |IOException e) {
-				//Fail silently
+			}
+			catch (JSONException | IOException e) {
+				// Fail silently
 				Span.current().recordException(e);
 			}
 
 		}
 
-
 	}
+
 }
