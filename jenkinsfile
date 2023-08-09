@@ -25,7 +25,7 @@ pipeline {
                     snapshotRepo: 'qt-app-libs-snapshot-local'
                 )
                 rtMavenRun (
-                    tool: 'MAVEN 3.9', // Tool name from Jenkins configuration
+                    tool: 'maven 3.9', // Tool name from Jenkins configuration
                     pom: 'pom.xml',
                     goals: 'clean install',
                     deployerId: "SPC_DEPLOYER"
