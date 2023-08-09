@@ -1,7 +1,6 @@
 pipeline {
-    agent {label 'JDK_17'}
+    agent any
     options {
-        retry(3)
         timeout(time: 30, unit: 'MINUTES')
     }
     triggers {
@@ -9,37 +8,33 @@ pipeline {
     }
     tools {
         jdk 'JDK_17'
-        maven 'maven 3.9.4'
+        maven 'MAVEN_HOME'
     }
     stages {
-        stage('code') {
+        stage ('vcs') {
             steps {
-                git url: 'https://github.com/KVKR31/dummy.git' ,
-                branch : 'main'
+                git url: 'https://github.com/spring-projects/spring-petclinic.git',
+                branch: 'main'   
             }
         }
-        stage('package') {
+        stage ('SonarQube analysis') {
             steps {
-                sh 'mvn package'
+                // performing sonarqube analysis with "withSonarQubeENV(<Name of Server configured in Jenkins>)"
+                withSonarQubeEnv ('SONAR_CLOUD') {
+                // requires SonarQube Scanner for Maven 3.2+
+                    sh 'mvn clean package sonar:sonar \
+                       -Dsonar.organization=vinodreddy \
+                       -Dsonar.token=8c25ce4838b681386906760fda5459c4f80eedf6 \
+                       -Dsonar.projectKey=vinodreddy_spc'
+                }
             }
         }
         stage('build') {
             steps {
-                archiveArtifacts artifacts: '**/target/spring-petclinic-*.jar'
-                junit testResults : '**/target/surefire-reports/TEST-*.xml'
+                junit testResults: '**/target/surefire-reports/TEST-*.xml'
             }
         }
     }
-    post {
-        success {
-            mail subject: '${JOB_NAME}:: has completed with success',
-                 body: 'your project is effective \n Build Url ${BUILD_URL',
-                 to: 'vinod@gmail.com'
-        }
-        failure {
-            mail subject: '${JOB_NAME}:: has completed with failed',
-                 body: 'your project is defective \n Build Url ${BUILD_URL',
-                 to: 'vinod@gmail.com'
-        }
-    }
 }
+    
+        
