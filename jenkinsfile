@@ -1,4 +1,3 @@
-
 pipeline {
     agent { label 'JDK-17' }
     options {
