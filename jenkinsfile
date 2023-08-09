@@ -6,6 +6,9 @@ pipeline {
     triggers {
         pollSCM('* * * * *')
     }
+    tool {
+        jdk 'JDK-17'
+    }
     stages {
         stage('vcs') {
             steps {
@@ -18,18 +21,14 @@ pipeline {
                 rtMavenDeployer (
                     id: "SPC_DEPLOYER",
                     serverId: "JFROG_CLOUD",
-                    releaseRepo: 'yadu-libs-release-local',
-                    snapshotRepo: 'yadu-libs-snapshot-local'
+                    releaseRepo: 'uday-libs-release-local',
+                    snapshotRepo: 'uday-libs-snapshot-local'
                 )
                 rtMavenRun (
-                    tool: {" maven 3.9"
-                             'JDK-17'}                  
+                    tool: 'maven 3.9',                 
                     pom: 'pom.xml',
                     goals: 'clean install',
-                    deployerId: "SPC_DEPLOYER"
-                    //,
-                    //buildName: "${JOB_NAME}",
-                    //buildNumber: "${BUILD_ID}"
+                    deployerId: "SPC_DEPLOYER
                 )
                 rtPublishBuildInfo (
                     serverId: "JFROG_CLOUD"
