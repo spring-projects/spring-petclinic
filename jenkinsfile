@@ -28,7 +28,7 @@ pipeline {
                     tool: 'maven 3.9',                 
                     pom: 'pom.xml',
                     goals: 'clean install',
-                    deployerId: "SPC_DEPLOYER
+                    deployerId: "SPC_DEPLOYER"
                 )
                 rtPublishBuildInfo (
                     serverId: "JFROG_CLOUD"
