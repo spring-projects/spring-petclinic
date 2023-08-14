@@ -1,9 +1,8 @@
+---
 version: 0.2
-
 phases:
   install:
-    runtimeversion:
-      java:openjdk8
+    runtimeversion: java:openjdk8
   prebuild:
     commands:
       - echo Nothing to do in prebuild
@@ -17,3 +16,4 @@ phases:
 artifacts:
   files:
     - target/spring-petckinic-2.2.0.BUILD-SNAPSHOT.jar
+...
