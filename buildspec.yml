@@ -2,13 +2,15 @@
 version: 0.2
 phases:
   install:
-    runtimeversion: java:openjdk8
+    runtime-versions: 
+      java: corretto17
   pre_build:
     commands:
-      - echo Nothing to do in prebuil
+      - echo Nothing to do in prebuild
   build:
     commands:
       - echo Build Started on `date`
+      - mvn install
       - mvn package
   post_build:
     commands:
