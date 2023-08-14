@@ -2,7 +2,7 @@
 version: 0.2
 phases:
   install:
-    runtimeversion: java:openjdk
+    runtimeversion: java:corretto17
   pre_build:
     commands:
       - echo Nothing to do in prebuild
