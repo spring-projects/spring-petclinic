@@ -2,7 +2,7 @@
 version: 0.2
 phases:
   install:
-    runtimeversion: java:openjdk17
+    runtimeversion: java:openjdk
   pre_build:
     commands:
       - echo Nothing to do in prebuild
