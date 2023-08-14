@@ -3,7 +3,7 @@ version: 0.2
 phases:
   install:
     runtimeversion: java:openjdk8
-  prebuild:
+  pre_build:
     commands:
       - echo Nothing to do in prebuild
   build:
