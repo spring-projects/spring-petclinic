@@ -31,6 +31,11 @@
   <dependencies>
     <!-- Spring and Spring Boot dependencies -->
     <dependency>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.9.4</version> <!-- Eklentinin istediğiniz sürümünü buraya yazın -->
+    </dependency>
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
