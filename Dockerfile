@@ -11,3 +11,4 @@ COPY --from=contrast/agent-java:latest /contrast/contrast-agent.jar /opt/contras
 COPY config/contrast_security.yaml /opt/contrast/contrast_security.yaml
 ENV JAVA_TOOL_OPTIONS "-javaagent:/opt/contrast/contrast.jar -Dcontrast.config.path=/opt/contrast/contrast_security.yaml"
 ENTRYPOINT exec java ${JAVA_OPTS} -jar app.jar
+
