@@ -6,7 +6,7 @@ phases:
       java: corretto17
   pre_build:
     commands:
-      - echo Nothing to do in prebuild
+      - echo Nothing to do in prebuil
   build:
     commands:
       - echo Build Started on `date`
