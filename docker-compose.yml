@@ -25,3 +25,19 @@ services:
       - POSTGRES_DB=petclinic
     profiles:
     - postgres
+  petclinic:
+    # image: spring-petclinic:3.1.0-SNAPSHOT
+    image: mypetclinic
+    ports:
+      - "8080:8080"
+    environment:
+      - CONTRAST__API__API_KEY=${CONTRAST__API__API_KEY}
+      - CONTRAST__API__SERVICE_KEY=${CONTRAST__API__SERVICE_KEY}
+      - CONTRAST__API__USER_NAME=${CONTRAST__API__USER_NAME}
+      - CONTRAST__API__URL=https://intuit.contrastsecurity.com/Contrast
+    depends_on:
+      - mysql
+      - postgres
+    profiles:
+      - mysql
+      - postgres
