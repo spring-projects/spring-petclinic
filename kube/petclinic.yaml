@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: petclinic
+spec:
+  selector:
+    app: petclinic
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: petclinic
+  labels:
+    app: petclinic
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: petclinic
+  template:
+    metadata:
+      labels:
+        app: petclinic
+    spec:
+      containers:
+        - name: app
+          image: docker.io/library/petclinic:latest
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8080
+          env:
+            - name: CONTRAST__APPLICATION__NAME
+              value: "petclinic_$RANDOM_PART"
+            - name: CONTRAST__APPLICATION__LANGUAGE
+              value: "java"
+            - name: CONTRAST__API__URL
+              value: "https://intuit.contrastsecurity.com/Contrast"
+            - name: CONTRAST__API__API_KEY
+              value: "$CONTRAST__API__API_KEY"
+            - name: CONTRAST__API__SERVICE_KEY
+              value: "$CONTRAST__API__SERVICE_KEY"
+            - name: CONTRAST__API__USER_NAME
+              value: "$CONTRAST__API__USER_NAME"
+            - name: POSTGRES_URL
+              value: "jdbc:postgresql://postgresql/petclinic"
+            - name: POSTGRES_USER
+              value: "petclinic"
+            - name: POSTGRES_PASSWORD
+              value: "petclinic"
+          imagePullPolicy: IfNotPresent
