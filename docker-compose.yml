@@ -35,6 +35,7 @@ services:
       - CONTRAST__API__SERVICE_KEY=${CONTRAST__API__SERVICE_KEY}
       - CONTRAST__API__USER_NAME=${CONTRAST__API__USER_NAME}
       - CONTRAST__API__URL=https://intuit.contrastsecurity.com/Contrast
+      - CONTRAST__APPLICATION__NAME="petclinic_${EMAIL}"
     depends_on:
       - mysql
       - postgres
