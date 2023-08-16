@@ -8,6 +8,9 @@ phases:
     commands:
       - AWS_ACC=$(echo $CODEBUILD_BUILD_ARN | cut -d':' -f5)
       - REPOSITORY_URI=$AWS_ACC.dkr.ecr.$AWS_REGION.amazonaws.com
+      -  wget -O- https://apt.corretto.aws/corretto.key | sudo apt-key add - 
+      -  sudo add-apt-repository 'deb https://apt.corretto.aws stable main'
+      -  sudo apt-get update; sudo apt-get install -y java-17-amazon-corretto-jdk
   build:
     commands:
       - echo Build started on `date`
