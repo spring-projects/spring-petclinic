@@ -3,7 +3,7 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      java: corretto11
+      java: openjdk11
   pre_build:
     commands:
       - AWS_ACC=$(echo $CODEBUILD_BUILD_ARN | cut -d':' -f5)
@@ -11,6 +11,7 @@ phases:
   build:
     commands:
       - echo Build started on `date`
+      - mvn install
       - mvn package
       - docker build . -t $REPOSITORY_URI/${REPO}:latest
       - echo Build completed on `date`
