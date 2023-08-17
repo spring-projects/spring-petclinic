@@ -12,7 +12,7 @@ pipeline {
         }
          stage('build and package') {
             steps {
-                sh 'clean package'
+                sh 'mvn package'
             }
          }
           stage('archive results') {
