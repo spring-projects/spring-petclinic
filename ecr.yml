@@ -5,7 +5,3 @@ Parameters:
       Type: String
       AllowedPattern: (?:[a-z0-9]+(?:[._-][a-z0-9]+)*/)*[a-z0-9]+(?:[._-][a-z0-9]+)*
 Resources:
-    ECRRepository:
-        Type: AWS::ECR::Repository
-        Properties: 
-            RepositoryName: !Ref RepoName
