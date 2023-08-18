@@ -8,6 +8,7 @@ phases:
     commands:
       - echo Nothing to do in prebuil
       - uname -a
+      - wget --version
   build:
     commands:
       - echo Build started on `date`
