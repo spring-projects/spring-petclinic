@@ -6,7 +6,7 @@ phases:
       java: corretto17
   pre_build:
     commands:
-      - echo Nothing to do in prebuil
+      - echo Nothing to do in prebuild
       - uname -a
       - yum install maven -y
   build:
