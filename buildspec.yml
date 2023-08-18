@@ -3,23 +3,17 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      java: openjdk11
+      java: openjdk8
   pre_build:
     commands:
-      - AWS_ACC=$(echo $CODEBUILD_BUILD_ARN | cut -d':' -f5)
-      - REPOSITORY_URI=$AWS_ACC.dkr.ecr.$AWS_REGION.amazonaws.com
+      - echo Nothing to do in prebuild
   build:
     commands:
       - echo Build started on `date`
-      - mvn install
       - mvn package
-      - docker build . -t $REPOSITORY_URI/${REPO}:latest
-      - echo Build completed on `date`
   post_build:
     commands:
-      - $(aws ecr get-login --region $AWS_REGION --no-include-email)
-      - aws ecr describe-repositories --registry-id ${AWS_ACC} --repository-name ${REPO}
-      - docker push $REPOSITORY_URI/${REPO}:latest
+      - echo Build completed on `date`
 artifacts:
   files:
     - target/spring-petclinic-2.2.0.BUILD-SNAPSHOT.jar
