@@ -4,12 +4,10 @@ phases:
   install:
     runtime-versions:
       java: corretto17
-    commands:
-      - apt-get update -y
-      - apt-get install -y maven
   pre_build:
     commands:
       - echo Nothing to do in prebuil
+      - uname -a
   build:
     commands:
       - echo Build started on `date`
