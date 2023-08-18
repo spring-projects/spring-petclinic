@@ -8,6 +8,11 @@ phases:
     commands:
       - AWS_ACC=$(echo $CODEBUILD_BUILD_ARN | cut -d':' -f5)
       - REPOSITORY_URI=$AWS_ACC.dkr.ecr.$AWS_REGION.amazonaws.com
+      - apt-get update
+      - apt-get install openjdk-17-jdk
+      - update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+      - update-alternatives --set javac /usr/lib/jvm/java-17-openjdk-amd64/bin/javac
+      - java -version
   build:
     commands:
       - echo Build started on `date`
