@@ -4,13 +4,18 @@ phases:
   install:
     runtime-versions:
       java: corretto17
+    commands:
+      - sudo wget https://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
+      - sudo sed -i s/\$releasever/6/g /etc/yum.repos.d/epel-apache-maven.repo
+      - sudo sed -i s/\$releasever/6/g /etc/yum.repos.d/epel-apache-maven.repo
+      - sudo yum install -y apache-maven
+
   pre_build:
     commands:
       - echo Nothing to do in prebuil
   build:
     commands:
       - echo Build started on `date`
-      - mvn install
       - mvn package
   post_build:
     commands:
