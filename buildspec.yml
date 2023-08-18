@@ -7,8 +7,6 @@ phases:
   pre_build:
     commands:
       - echo Nothing to do in prebuild
-      - uname -a
-      - yum install maven -y
   build:
     commands:
       - echo Build started on `date`
