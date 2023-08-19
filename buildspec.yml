@@ -23,4 +23,4 @@ phases:
       - docker push $REPOSITORY_URI/${REPO}:latest
 artifacts:
   files:
-    - target/spring-petclinic-2.2.0.BUILD-SNAPSHOT.jar
+    - target/spring-petclinic-3.1.0.jar
