@@ -10,8 +10,8 @@ phases:
       - REPOSITORY_URI=$AWS_ACC.dkr.ecr.$AWS_REGION.amazonaws.com
       - uname -a
       - java -version
-      - sudo dnf update -y
-      - sudo dnf install java-17-amazon-corretto-devel
+      - dnf update -y
+      - dnf install java-17-amazon-corretto-devel
       - java -version
   build:
     commands:
