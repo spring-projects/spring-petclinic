@@ -12,7 +12,7 @@ phases:
       - java -version
   build:
     commands:
-      - echo Build started on `date`
+      - echo Build startedd on `date`
       - mvn package
       - docker build . -t $REPOSITORY_URI/${REPO}:latest
       - echo Build completed on `date`
