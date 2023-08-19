@@ -10,6 +10,11 @@ phases:
       - REPOSITORY_URI=$AWS_ACC.dkr.ecr.$AWS_REGION.amazonaws.com
       - uname -a
       - java -version
+      - yum install openjdk-17-jdk -y
+      - update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+      - update-alternatives --set javac /usr/lib/jvm/java-17-openjdk-amd64/bin/javac
+      - java -version
+      - javac -version
   build:
     commands:
       - echo Build started on `date`
