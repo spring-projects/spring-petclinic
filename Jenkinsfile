@@ -1,4 +1,4 @@
-\pipeline {
+pipeline {
     agent { label 'kmaster' }
     stages {
 	    stage('SCM') {
