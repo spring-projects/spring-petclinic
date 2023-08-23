@@ -20,6 +20,14 @@ pipeline {
 				'''
             }
         }
+        stage('Docker Image Creation') {
+            steps {
+                // Run the tests
+                sh '''
+		echo "Create a image"
+		'''
+            }
+        
         stage('Deployment on UT') {
             steps {
                 // Run the tests
