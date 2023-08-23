@@ -27,6 +27,7 @@ pipeline {
 		echo "Create a image"
 		'''
             }
+        }
         
         stage('Deployment on UT') {
             steps {
