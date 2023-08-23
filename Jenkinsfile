@@ -1,5 +1,8 @@
 pipeline {
     agent { label 'kmaster' }
+    triggers {
+        pollSCM '* * * * *'
+    }
     stages {
 	    stage('SCM') {
             steps {
