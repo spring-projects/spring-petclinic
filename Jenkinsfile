@@ -1,22 +1,39 @@
-pipeline {
-  agent {
-    kubernetes {
-      label 'promo-app'  // all your pods will be named with this prefix, followed by a unique id
-      idleMinutes 5  // how long the pod will live after no jobs have run on it
-      yamlFile 'build-pod.yaml'  // path to the pod definition relative to the root of our project 
-      defaultContainer 'maven'  // define a default container if more than a few stages use it, will default to jnlp container
+\pipeline {
+    agent { label 'kmaster' }
+    stages {
+	    stage('SCM') {
+            steps {
+                // Build the application
+                sh 'cd /apps/build'
+                git 'https://github.com/ametgud4u/spring-petclinic.git'
+            }
+        }
+        stage('Build') {
+            steps {
+                // Build the application
+                sh '''
+				export JAVA_HOME=/opt/jdk-17
+                export PATH=$PATH:$JAVA_HOME/bin
+                java -version
+                cd /apps/build/
+                ./mvnw package -DskipTests=true
+				'''
+            }
+        }
+        stage('Deployment on UT') {
+            steps {
+                // Run the tests
+                sh '''
+				echo "deploing to UT"
+				echo " deploying to REG"
+				'''
+            }
+        }
+        stage('Deployment on REG') {
+            steps {
+                // Deploy the application
+                sh 'echo copying to REG'
+            }
+        }
     }
-  }
-  stages {
-    stage('scm'){
-      steps {
-        git 'https://github.com/spring-projects/spring-petclinic.git'
-    }
-    }
-    stage('Build'){
-      steps {
-        sh  'mvn clean package -DskipTests=true'
-    }
-    }
-}
 }
