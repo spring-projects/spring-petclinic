@@ -17,6 +17,8 @@ package org.springframework.samples.petclinic.owner;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 import org.springframework.data.domain.Page;
@@ -54,13 +56,14 @@ class OwnerController {
 
 	private OwnerValidation validator;
 
+
 	public OwnerController(OwnerRepository clinicService) {
 		this.owners = clinicService;
 		var otelTracer = getTracer("OwnerController");
-
 		validator = new OwnerValidation(otelTracer);
 
 	}
+
 
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
@@ -71,6 +74,7 @@ class OwnerController {
 	public Owner findOwner(@PathVariable(name = "ownerId", required = false) Integer ownerId) {
 		return ownerId == null ? new Owner() : this.owners.findById(ownerId);
 	}
+
 
 	@GetMapping("/owners/new")
 	public String initCreationForm(Map<String, Object> model) {
@@ -106,7 +110,7 @@ class OwnerController {
 			Model model) {
 		validator.ValidateUserAccess("admin", "pwd", "fullaccess");
 
-		// allow parameterless GET request for /owners to return all records
+		// allow parameterless GET request	 for /owners to return all records
 		if (owner.getLastName() == null) {
 			owner.setLastName(""); // empty string signifies broadest possible search
 		}

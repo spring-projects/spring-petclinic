@@ -73,32 +73,24 @@ public class OwnerControllerTests {
 
 		Owner owner = CreateOwner();
 
-		for (int i = 0; i < 3; i++) {
 
-			String newPetName = faker.dog().name();
-			given().contentType("multipart/form-data")
-				.multiPart("id", "")
-				.multiPart("birthDate", "0222-02-02")
-				.multiPart("name", newPetName)
-				.multiPart("type", "dog")
-				.when()
-				.post(String.format("/owners/%s/pets/new", owner.getId()))
-				.then()
-				.statusCode(Matchers.not(Matchers.greaterThan(499)));
-			try {
-				Thread.sleep(800);
-			}
-			catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
+		String newPetName = faker.dog().name();
+		given().contentType("multipart/form-data")
+			.multiPart("id", "")
+			.multiPart("birthDate", "0222-02-02")
+			.multiPart("name", newPetName)
+			.multiPart("type", "dog")
+			.when()
+			.post(String.format("/owners/%s/pets/new", owner.getId()))
+			.then()
+			.statusCode(Matchers.not(Matchers.greaterThan(499)));
 
-		}
 
-		// var updatedOwner = ownerRepository.findById(owner.getId());
-		// assertThat(updatedOwner.getPets())
-		// .hasSize(2)
-		// .extracting(Pet::getName)
-		// .contains(newPetName);
+		 var updatedOwner = ownerRepository.findById(owner.getId());
+		 assertThat(updatedOwner.getPets())
+		 .hasSize(2)
+		 .extracting(Pet::getName)
+		 .contains(newPetName);
 
 	}
 

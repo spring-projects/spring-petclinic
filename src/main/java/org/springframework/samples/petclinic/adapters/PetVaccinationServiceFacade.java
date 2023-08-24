@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 @Component
@@ -20,7 +19,7 @@ public class PetVaccinationServiceFacade implements PetVaccinationService {
 
 	public static final String VACCINES_RECORDS_URL = "https://647f4bb4c246f166da9084c7.mockapi.io/api/vetcheck/vaccines";
 
-	private String MakeHttpCall(String url) throws IOException {
+	private String makeHttpCall(String url) throws IOException {
 
 		Request getAllVaccinesRequest = new Request.Builder().url(url).build();
 		OkHttpClient client = new OkHttpClient();
@@ -30,9 +29,9 @@ public class PetVaccinationServiceFacade implements PetVaccinationService {
 
 	@Override
 	@WithSpan
-	public VaccinnationRecord[] AllVaccines() throws JSONException, IOException {
+	public VaccinnationRecord[] allVaccines() throws JSONException, IOException {
 
-		var vaccineListString = MakeHttpCall(VACCINES_RECORDS_URL);
+		var vaccineListString = makeHttpCall(VACCINES_RECORDS_URL);
 		JSONArray jArr = new JSONArray(vaccineListString);
 		var vaccinnationRecords = new ArrayList<VaccinnationRecord>();
 
@@ -52,7 +51,7 @@ public class PetVaccinationServiceFacade implements PetVaccinationService {
 
 		var idUrl = VACCINES_RECORDS_URL + "/" + vaccinationRecordId;
 
-		var vaccineListString = MakeHttpCall(idUrl);
+		var vaccineListString = makeHttpCall(idUrl);
 
 		JSONObject vaccineJson = new JSONObject(vaccineListString);
 		return parseVaccinationRecord(vaccineJson);

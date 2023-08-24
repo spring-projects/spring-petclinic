@@ -8,7 +8,7 @@ import java.io.IOException;
 public interface PetVaccinationService {
 
 	@WithSpan
-	VaccinnationRecord[] AllVaccines() throws JSONException, IOException;
+	VaccinnationRecord[] allVaccines() throws JSONException, IOException;
 
 	@WithSpan
 	VaccinnationRecord VaccineRecord(int vaccinationRecordId) throws JSONException, IOException;

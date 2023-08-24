@@ -16,7 +16,10 @@
 package org.springframework.samples.petclinic.owner;
 
 import java.util.Collection;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.domain.PetVaccinationStatusService;
 import org.springframework.stereotype.Controller;
@@ -40,7 +43,7 @@ import jakarta.validation.Valid;
  */
 @Controller
 @RequestMapping("/owners/{ownerId}")
-class PetController {
+class PetController implements InitializingBean {
 
 	private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = "pets/createOrUpdatePetForm";
 
@@ -49,9 +52,13 @@ class PetController {
 	@Autowired
 	private PetVaccinationStatusService petVaccinationStatus;
 
+	private ExecutorService executorService;
+
+
 	public PetController(OwnerRepository owners) {
 		this.owners = owners;
 	}
+
 
 	@ModelAttribute("types")
 	public Collection<PetType> populatePetTypes() {
@@ -80,7 +87,7 @@ class PetController {
 	}
 
 	@GetMapping("/pets/new")
-	public String initCreationForm(Owner owner, ModelMap model) {
+	public String	initCreationForm(Owner owner, ModelMap model) {
 		Pet pet = new Pet();
 		owner.addPet(pet);
 		model.put("pet", pet);
@@ -101,7 +108,9 @@ class PetController {
 
 
 		this.owners.save(owner);
-		petVaccinationStatus.UpdateVaccinationStatus(owner.getPets().toArray(Pet[]::new));
+		this.executorService.submit(() -> {
+			petVaccinationStatus.UpdateVaccinationStatus(owner.getPets().toArray(Pet[]::new));
+		});
 
 		return "redirect:/owners/{ownerId}";
 	}
@@ -125,4 +134,9 @@ class PetController {
 		return "redirect:/owners/{ownerId}";
 	}
 
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		this.executorService = Executors.newFixedThreadPool(5);
+
+	}
 }
