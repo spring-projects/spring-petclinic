@@ -29,10 +29,12 @@ jobs:
           additional_packages: |
             [
               "@semantic-release/changelog",
+              "@semantic-release/git"
             ]
           plugins: |
             [
               "@semantic-release/commit-analyzer",
+              "@semantic-release/changelog",
               "@semantic-release/git",
               "@semantic-release/github",
               "@semantic-release/release-notes-generator"
