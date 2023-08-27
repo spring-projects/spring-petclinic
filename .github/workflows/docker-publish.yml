@@ -47,30 +47,24 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
+        uses: docker/login-action@465a07811f14bebb1938fbed4728c6a1ff8901fc
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
-        with:
-          images: ghcr.io/${{ env.IMAGE_NAME }}
-
       - name: Build and push Docker image
-        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        uses: docker/build-push-action@2eb1c1961a95fc15694676618e422e8ba1d63825
         with:
           context: .
           push: true
           tags: ghcr.io/${{ env.IMAGE_NAME }}:${{ steps.semantic.outputs.release-version }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args:
-            - VERSION: ${{ steps.semantic.outputs.release-version }}
+          build-args: |
+            VERSION=${{ steps.semantic.outputs.release-version }}
 
       - name: Publish tag
-        uses: actions-ecosystem/action-push-tag@v1
+        uses: actions-ecosystem/action-push-tag@6e82caefe706f5a729e354df7443dc82f98a414f
         with:
           tag: ${{ steps.semantic.outputs.release-version }}
 
