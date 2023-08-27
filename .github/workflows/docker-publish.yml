@@ -64,9 +64,10 @@ jobs:
             VERSION=${{ steps.semantic.outputs.release-version }}
 
       - name: Publish tag
-        uses: actions-ecosystem/action-push-tag@6e82caefe706f5a729e354df7443dc82f98a414f
+        uses: rickstaa/action-create-tag@07b918ecbf94359b859f25f7a70553a84e804923
         with:
           tag: ${{ steps.semantic.outputs.release-version }}
+          message: ${{ steps.semantic.outputs.release-notes }}
 
     outputs:
       version: ${{ steps.semantic.outputs.release-version }}
