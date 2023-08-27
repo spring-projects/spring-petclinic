@@ -42,7 +42,7 @@ jobs:
               "@semantic-release/github",
               "@semantic-release/release-notes-generator"
             ]
-          dry_run: true
+          dry_run: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -63,16 +63,16 @@ jobs:
             #    build-args: |
             #      VERSION=${{ steps.semantic.outputs.release-version }}
 
-      - name: Publish tag
-        uses: rickstaa/action-create-tag@07b918ecbf94359b859f25f7a70553a84e804923
-        with:
-          tag: ${{ steps.semantic.outputs.release-version }}
-          message: |
-            ${{ steps.semantic.outputs.name }}
+            #- name: Publish tag
+            #  uses: rickstaa/action-create-tag@07b918ecbf94359b859f25f7a70553a84e804923
+            #  with:
+            #    tag: ${{ steps.semantic.outputs.release-version }}
+            #    message: |
+            #      ${{ steps.semantic.outputs.name }}
 
-            ${{ steps.semantic.outputs.release-notes }}
-          #TODO: force_push_tag is true for debug purpose only
-          force_push_tag: true
+            #      ${{ steps.semantic.outputs.release-notes }}
+            #    #TODO: force_push_tag is true for debug purpose only
+            #    force_push_tag: true
 
     outputs:
       version: ${{ steps.semantic.outputs.release-version }}
