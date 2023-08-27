@@ -9,3 +9,4 @@ FROM eclipse-temurin@sha256:e90e0d654765ab3ae33f5c5155daafa4a907d0d738ce98c3be8f
 ENV PORT 8080
 WORKDIR /app
 COPY --from=builder /app/build/libs/*jar .
+
