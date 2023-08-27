@@ -54,14 +54,14 @@ jobs:
         id: meta
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
-          images: ghcr.io/${{ env.IMAGE_NAME }}
+          images: ghcr.io/${{ vars.GITHUB_REPOSITORY }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ env.IMAGE_NAME }}:${{ steps.semantic.outputs.release-version }}
+          tags: ghcr.io/${{ vars.GITHUB_REPOSITORY }}:${{ steps.semantic.outputs.release-version }}
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Publish tag
