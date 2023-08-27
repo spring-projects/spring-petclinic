@@ -1,0 +1,61 @@
+name: Publish docker image
+
+on:
+  push:
+    branches: [ development, release-* ]
+
+jobs:
+  build_and_publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - uses: docker://ghcr.io/codfish/semantic-release-action@sha256:4675eae74abbabc869298ca798833fef291ce30fb9edfac76787746e7d9d3904
+        id: semantic
+        with:
+          branches: |
+            [
+              'release-*',
+              {
+                name: 'development',
+                prerelease: true
+              }
+            ]
+          #dry_run: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          context: .
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.semantic.outputs.release-version }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Publish tag
+        uses: actions-ecosystem/action-push-tag@v1
+        with:
+          tag: ${{ steps.semantic.outputs.release-version }}
+
+    outputs:
+      version: ${{ steps.semantic.outputs.release-version }}
+

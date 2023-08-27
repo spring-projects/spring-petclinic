@@ -1,10 +1,8 @@
-name: Java build
+name: Java test build
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
-    branches: [ main ]
+    branches: [ development, release/** ]
 
 jobs:
   build:
