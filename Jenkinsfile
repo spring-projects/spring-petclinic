@@ -25,11 +25,11 @@ pipeline{
                 archiveArtifacts artifacts: '**/target/*.jar'
             }
         }
-        stage('junit_reports'){
-            steps{
-                junit '**/surefire-reports/*.xml'
-            }
-        }
+        // stage('junit_reports'){
+        //     steps{
+        //         junit '**/surefire-reports/*.xml'
+        //     }
+        // }
     }
     post{
         always{
@@ -56,6 +56,7 @@ pipeline{
                           and jenkins url is $env.JENKINS_URL"""
         }
         success{
+            junit '**/surefire-reports/*.xml'
             echo 'Pipeline is success'
             mail to: 'goruputivenkatalahari@gmail.com',
                  subject: 'The pipeline is success',
