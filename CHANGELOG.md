@@ -3,6 +3,7 @@
 
 ### Bug Fixes
 
+
 * another thing ([8061166](https://github.com/justrp/spring-petclinic/commit/8061166c2b1978f115c857643ac0e2a0d43205d4))
 
 
@@ -17,6 +18,7 @@
 ### Bug Fixes
 
 * something ([8431f2d](https://github.com/justrp/spring-petclinic/commit/8431f2d9bde201486db4152561344e63a5ec2643))
+
 
 # 1.0.0-development.1 (2023-08-27)
 
