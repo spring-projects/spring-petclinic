@@ -46,28 +46,30 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@465a07811f14bebb1938fbed4728c6a1ff8901fc
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+            #- name: Login to GitHub Container Registry
+            #  uses: docker/login-action@465a07811f14bebb1938fbed4728c6a1ff8901fc
+            #  with:
+            #    registry: ghcr.io
+            #    username: ${{ github.actor }}
+            #    password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@2eb1c1961a95fc15694676618e422e8ba1d63825
-        with:
-          context: .
-          push: true
-          tags: ghcr.io/${{ env.IMAGE_NAME }}:${{ steps.semantic.outputs.release-version }}
-          labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            VERSION=${{ steps.semantic.outputs.release-version }}
+            #- name: Build and push Docker image
+            #  uses: docker/build-push-action@2eb1c1961a95fc15694676618e422e8ba1d63825
+            #  with:
+            #    context: .
+            #    push: true
+            #    tags: ghcr.io/${{ env.IMAGE_NAME }}:${{ steps.semantic.outputs.release-version }}
+            #    labels: ${{ steps.meta.outputs.labels }}
+            #    build-args: |
+            #      VERSION=${{ steps.semantic.outputs.release-version }}
 
       - name: Publish tag
         uses: rickstaa/action-create-tag@07b918ecbf94359b859f25f7a70553a84e804923
         with:
           tag: ${{ steps.semantic.outputs.release-version }}
           message: ${{ steps.semantic.outputs.name }}\n${{ steps.semantic.outputs.release-notes }}
+          #TODO: force_push_tag is true for debug purpose only
+          force_push_tag: true
 
     outputs:
       version: ${{ steps.semantic.outputs.release-version }}
