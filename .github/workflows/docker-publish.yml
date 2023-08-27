@@ -26,13 +26,15 @@ jobs:
                 prerelease: true
               }
             ]
-          plugins: |
+          additional_packages: |
             [
               "@semantic-release/changelog",
+            ]
+          plugins: |
+            [
               "@semantic-release/commit-analyzer",
-              "@semantic-release/exec",
               "@semantic-release/git",
-              "@semantic-release/gitlab",
+              "@semantic-release/github",
               "@semantic-release/release-notes-generator"
             ]
           #dry_run: true
