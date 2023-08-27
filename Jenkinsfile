@@ -1,25 +1,66 @@
 pipeline{
     agent{
-        label 'docker'
+        label 'lahari'
     }
     triggers{
         pollSCM('* * * * *')
     }
     parameters{
-        choice(name: 'branch_name', choices: ['main', 'two', 'three'], description: 'selecting branch')
-    }
-    environment{
-        dockerhub_registry_name = "lahari104"
-        image_name = "spc" 
+        choice(name: 'Branch_Name', choices: ['develop', 'main', 'lahari'], description: 'selecting branch')
     }
     stages{
-        stage('docker image build'){
+        stage('clone'){
             steps{
-                sh """
-                      docker image build -t ${image_name}:${BUILD_NUMBER}-${NODE_NAME} . 
-                      docker image ls
-                    """  
+                git url: 'https://github.com/lahari104/spring-petclinic.git',
+                    branch: "${params.Branch_Name}"
             }
+        }
+        stage('build'){
+            steps{
+                sh "./mvnw clean package"
+            }
+        }
+        stage('archive_artifacts'){
+            steps{
+                archiveArtifacts artifacts: '**/target/*.jar'
+            }
+        }
+        stage('junit_reports'){
+            steps{
+                junit '**/surefire-reports/*.xml'
+            }
+        }
+    }
+    post{
+        always{
+            echo 'Pipeline is triggered'
+            mail to: 'goruputivenkatalahari@gmail.com',
+                 subject: 'The pipeline is started',
+                 body: """pipeline is started for $env.BUILD_URL
+                          and the build number is $env.BUILD_NUMBER"""
+        }
+        aborted{
+            echo 'Pipeline is aborted'
+            mail to: 'goruputivenkatalahari@gmail.com',
+                 subject: 'The pipeline is aborted',
+                 body: """pipeline is aborted for $env.BUILD_URL
+                          and the build number is $env.BUILD_NUMBER
+                          and jenkins url is $env.JENKINS_URL"""
+        }
+        failure{
+            echo 'Pipeline is falied'
+            mail to: 'goruputivenkatalahari@gmail.com',
+                 subject: 'The pipeline is failed',
+                 body: """pipeline is falied for $env.BUILD_URL
+                          and the build number is $env.BUILD_NUMBER
+                          and jenkins url is $env.JENKINS_URL"""
+        }
+        success{
+            echo 'Pipeline is success'
+            mail to: 'goruputivenkatalahari@gmail.com',
+                 subject: 'The pipeline is success',
+                 body: """pipeline is success for $env.BUILD_URL
+                          and the build number is $env.BUILD_NUMBER"""
         }
     }
 }

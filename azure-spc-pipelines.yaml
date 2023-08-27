@@ -1,0 +1,17 @@
+pool: 'Default'
+trigger: 
+  - main
+stages:
+  - stage: 'build'
+    displayName: 'build stage'
+    jobs: 
+      - job: 'build'
+        displayName: 'build job'
+        steps:
+          - task: Docker@2
+            inputs:
+              containerRegistry: Docker_hub
+              repository: lahari23/springpetclinic
+              command: 'buildAndPush'
+              Dockerfile: '**/Dockerfile'
+            
