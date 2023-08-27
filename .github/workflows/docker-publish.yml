@@ -67,7 +67,10 @@ jobs:
         uses: rickstaa/action-create-tag@07b918ecbf94359b859f25f7a70553a84e804923
         with:
           tag: ${{ steps.semantic.outputs.release-version }}
-          message: ${{ steps.semantic.outputs.name }}\n${{ steps.semantic.outputs.release-notes }}
+          message: |
+            ${{ steps.semantic.outputs.name }}
+
+            ${{ steps.semantic.outputs.release-notes }}
           #TODO: force_push_tag is true for debug purpose only
           force_push_tag: true
 
