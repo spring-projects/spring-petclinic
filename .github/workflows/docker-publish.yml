@@ -26,13 +26,15 @@ jobs:
                 prerelease: true
               }
             ]
-          plugins:
-            - "@semantic-release/changelog"
-            - "@semantic-release/commit-analyzer"
-            - "@semantic-release/exec"
-            - "@semantic-release/git"
-            - "@semantic-release/gitlab"
-            - "@semantic-release/release-notes-generator"
+          plugins: |
+            [
+              "@semantic-release/changelog",
+              "@semantic-release/commit-analyzer",
+              "@semantic-release/exec",
+              "@semantic-release/git",
+              "@semantic-release/gitlab",
+              "@semantic-release/release-notes-generator"
+            ]
           #dry_run: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
