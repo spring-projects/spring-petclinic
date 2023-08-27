@@ -1,3 +1,16 @@
+# [1.0.0-development.3](https://github.com/justrp/spring-petclinic/compare/v1.0.0-development.2...v1.0.0-development.3) (2023-08-27)
+
+
+### Bug Fixes
+
+* another thing ([8061166](https://github.com/justrp/spring-petclinic/commit/8061166c2b1978f115c857643ac0e2a0d43205d4))
+
+
+### Features
+
+* blah blah ([b2c05a2](https://github.com/justrp/spring-petclinic/commit/b2c05a271e98e7f25fdf71dc7a25d466b2c9f627))
+* super cool ([c00f6de](https://github.com/justrp/spring-petclinic/commit/c00f6ded0b4c5f2ecb44be103b7b78760b29fe59))
+
 # [1.0.0-development.2](https://github.com/justrp/spring-petclinic/compare/v1.0.0-development.1...v1.0.0-development.2) (2023-08-27)
 
 
