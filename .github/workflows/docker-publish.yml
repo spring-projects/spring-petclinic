@@ -177,6 +177,9 @@ jobs:
       packages: write
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       - name: debug
         run: |
           echo ${{ needs.build_and_publish.outputs.next_version }}
