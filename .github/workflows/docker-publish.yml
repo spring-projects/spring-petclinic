@@ -61,16 +61,15 @@ jobs:
           else
             # Tags found
             if [[ "$CURRENT_BRANCH" == "development" ]]; then
-              CURRENT_VERSION=$(git describe --tags --abbrev=0)
+              CURRENT_VERSION=$(git tag | sort -V | tail -1)
               NEXT_VERSION=$(bump_version "${CURRENT_VERSION}" "${CURRENT_BRANCH}")
             elif [[ "${CURRENT_BRANCH}" == release-* ]]; then
               # For release branch with tags, bump patch version, e.g. v2.3.4 -> v2.3.5
-              CURRENT_VERSION=$(git describe --tags --abbrev=0 --match "v${CURRENT_BRANCH#"release-"}.*" 2>/dev/null)
+              CURRENT_VERSION=$(git tag | grep "^v${CURRENT_BRANCH#'release-'}.*" | sort -V | tail -1)
               if [[ -n "$CURRENT_VERSION" ]]; then
                 NEXT_VERSION=$(bump_version "${CURRENT_VERSION}" "${CURRENT_BRANCH}")
               else
                 # If no tags match the release branch, set the next version to release number with 0 patch version, e.g. v-0.1.0
-                BRANCH_VERSION=${CURRENT_BRANCH#"release-"}
                 NEXT_VERSION="v${BRANCH_VERSION}.0"
               fi
             else
