@@ -10,6 +10,9 @@ env:
 jobs:
   build_and_publish:
     runs-on: ubuntu-latest
+    outputs:
+      new_version: ${{ steps.semantic.outputs.next_version }}
+      changelog: ${{ steps.build_changelog.outputs.changelog }}
     permissions:
       contents: write
       packages: write
@@ -18,7 +21,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Codestyle
+      - name: Code style check
+        run: echo "NIY"
+
+      - name: Calculate version
         id: semantic
         run: |
           set -x
@@ -126,14 +132,34 @@ jobs:
             #    build-args: |
             #      VERSION=${{ steps.semantic.outputs.release-version }}
 
-            #- name: Publish tag
-            #  uses: rickstaa/action-create-tag@07b918ecbf94359b859f25f7a70553a84e804923
-            #  with:
-            #    tag: ${{ steps.semantic.outputs.release-version }}
-            #    message: |
-            #      ${{ steps.semantic.outputs.name }}
+      - name: "Build Changelog"
+        id: build_changelog
+        uses: mikepenz/release-changelog-builder-action@ac1ce19a7c79f7da8b31252ef575de5912804f86
 
-            #      ${{ steps.semantic.outputs.release-notes }}
-            #    #TODO: force_push_tag is true for debug purpose only
-            #    force_push_tag: true
+  release:
+    needs: build_and_publish
+    runs-on: ubuntu-latest
+    environment:
+      name: release
+    permissions:
+      contents: write
+      packages: write
 
+    steps:
+      - name: debug
+        run: |
+          echo ${{ needs.build_and_publish.outputs.next_version }}
+          echo
+          echo
+          echo ${{ needs.build_and_publish.outputs.changelog }}
+
+      #- name: Publish tag
+      #  uses: rickstaa/action-create-tag@07b918ecbf94359b859f25f7a70553a84e804923
+      #  with:
+      #    tag: ${{ needs.build_and_publish.outputs.next_version }}
+      #    message: |
+      #      ${{ needs.build_and_publish.outputs.next_version }}
+
+      #      tbd blah
+      #    #TODO: force_push_tag is true for debug purpose only
+      #    force_push_tag: true
