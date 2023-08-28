@@ -71,7 +71,7 @@ jobs:
                 NEXT_VERSION=$(bump_version "${CURRENT_VERSION}" "${CURRENT_BRANCH}")
               else
                 # If no tags match the release branch, set the next version to release number with 0 patch version, e.g. v-0.1.0
-                NEXT_VERSION="v${BRANCH_VERSION}.0"
+                NEXT_VERSION="v${CURRENT_BRANCH#'release-'}.0"
               fi
             else
               exit 2
