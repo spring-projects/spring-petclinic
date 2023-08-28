@@ -24,7 +24,8 @@ jobs:
           set -x
           function bump_version {
             # Split the version string into Major, Minor and Patch numbers
-            local VERSION=(${1//"v"})
+            local VERSION
+            IFS='.' read -r -a VERSION <<< $(echo ${1//"v"})
             local BRANCH_NAME="$2"
             local MAJOR=${VERSION[0]}
             local MINOR=${VERSION[1]}
@@ -41,7 +42,7 @@ jobs:
             fi
 
             # Build the new version string
-            NEXT_VERSION="v${MAJOR}.${MINOR}.${PATCH}${rc}"
+            echo "v${MAJOR}.${MINOR}.${PATCH}${rc}"
           }
 
           CURRENT_BRANCH=$(git symbolic-ref -q HEAD)
@@ -77,8 +78,8 @@ jobs:
             fi
           fi
 
-          echo "::set-output name=current_version::${CURRENT_VERSION}"
-          echo "::set-output name=next_version::${NEXT_VERSION}"
+          echo "current_version=${CURRENT_VERSION}" >> $GITHUB_OUTPUT
+          echo "next_version=${NEXT_VERSION}" >> $GITHUB_OUTPUT
 
           #- uses: docker://ghcr.io/codfish/semantic-release-action@sha256:4675eae74abbabc869298ca798833fef291ce30fb9edfac76787746e7d9d3904
           #  id: semantic
