@@ -215,7 +215,7 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          tag: ${{ needs.build_and_publish.outputs.next_version }}
+          tag_name: ${{ needs.build_and_publish.outputs.next_version }}
           body: |
             ${{ needs.build_and_publish.outputs.next_version }}
 
