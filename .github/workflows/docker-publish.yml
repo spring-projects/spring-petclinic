@@ -87,33 +87,6 @@ jobs:
           echo "current_version=${CURRENT_VERSION}" >> $GITHUB_OUTPUT
           echo "next_version=${NEXT_VERSION}" >> $GITHUB_OUTPUT
 
-          #- uses: docker://ghcr.io/codfish/semantic-release-action@sha256:4675eae74abbabc869298ca798833fef291ce30fb9edfac76787746e7d9d3904
-          #  id: semantic
-          #  with:
-          #    branches: |
-          #      [
-          #        'release-*',
-          #        {
-          #          name: 'development',
-          #          prerelease: true
-          #        }
-          #      ]
-          #    additional_packages: |
-          #      [
-          #        "@semantic-release/changelog",
-          #        "@semantic-release/git"
-          #      ]
-          #    plugins: |
-          #      [
-          #        "@semantic-release/commit-analyzer",
-          #        "@semantic-release/changelog",
-          #        "@semantic-release/git",
-          #        "@semantic-release/github",
-          #        "@semantic-release/release-notes-generator"
-          #      ]
-          #    dry_run: false
-          #  env:
-          #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
             #- name: Login to GitHub Container Registry
             #  uses: docker/login-action@465a07811f14bebb1938fbed4728c6a1ff8901fc
@@ -134,7 +107,65 @@ jobs:
 
       - name: "Build Changelog"
         id: build_changelog
-        uses: mikepenz/release-changelog-builder-action@ac1ce19a7c79f7da8b31252ef575de5912804f86
+        run: |
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null|| echo NO ) 
+
+          if [[ "${LAST_TAG}" == "NO" ]]; then
+              git log  --pretty=format:"%s" > /tmp/my_commits_log_all
+          else
+              git log "${LAST_TAG}"..HEAD --pretty=format:"%s" > /tmp/my_commits_log_all
+          fi
+
+          cat /tmp/my_commits_log_all | sort > /tmp/my_commits_log
+
+          echo -n '' > /tmp/my_changelog_features
+          echo -n '' > /tmp/my_changelog_fixes
+          echo -n '' > /tmp/my_changelog_other
+          echo -n '' > /tmp/my_changelog
+
+          FEATURES_REGEX="^feat:|^feature:"
+          FIXES_REGEX="^fix:|^hotfix:"
+
+          egrep "${FEATURES_REGEX}" /tmp/my_commits_log | while read l; do
+              DESCRIPTION=$(echo "${l}" | sed "s/^feat://;s/^feature://")
+              echo "* ${DESCRIPTION}" >> /tmp/my_changelog_features
+              export FEATURES_ENABLED=1
+          done
+
+          egrep "${FIXES_REGEX}" /tmp/my_commits_log | while read l; do
+              DESCRIPTION=$(echo "${l}" | sed "s/^fix://;s/^hotfix://")
+              echo "* ${DESCRIPTION}" >> /tmp/my_changelog_fixes
+              export FIXES_ENABLED=1
+          done
+
+          egrep -v "${FEATURES_REGEX}|${FIXES_REGEX}" /tmp/my_commits_log | while read l; do
+              echo "* ${l}" >> /tmp/my_changelog_other
+              export OTHER_ENABLED=1
+          done
+
+          if [[ "$(wc -l /tmp/my_changelog_features | awk '{print $1}')" -gt 0 ]] ; then
+              echo "# Features:" >> /tmp/my_changelog
+              cat /tmp/my_changelog_features >> /tmp/my_changelog
+              echo "" >> /tmp/my_changelog
+          fi
+
+          if [[ "$(wc -l /tmp/my_changelog_fixes | awk '{print $1}')" -gt 0 ]] ; then
+              echo "# Fixes:" >> /tmp/my_changelog
+              cat /tmp/my_changelog_fixes >> /tmp/my_changelog
+              echo "" >> /tmp/my_changelog
+          fi
+
+          if [[ "$(wc -l /tmp/my_changelog_other | awk '{print $1}')" -gt 0 ]] ; then
+              echo "# Other:" >> /tmp/my_changelog
+              cat /tmp/my_changelog_other >> /tmp/my_changelog
+              echo "" >> /tmp/my_changelog
+          fi
+
+          MY_CHANGELOG=$(cat /tmp/my_changelog)
+          MY_CHANGELOG="${MY_CHANGELOG//'%'/'%25'}"
+          MY_CHANGELOG="${MY_CHANGELOG//$'\n'/'%0A'}"
+          MY_CHANGELOG="${MY_CHANGELOG//$'\r'/'%0D'}"
+          echo "changelog=${MY_CHANGELOG}" >> $GITHUB_OUTPUT
 
   release:
     needs: build_and_publish
@@ -151,15 +182,15 @@ jobs:
           echo ${{ needs.build_and_publish.outputs.next_version }}
           echo
           echo
-          echo ${{ needs.build_and_publish.outputs.changelog }}
+          echo -e ${{ needs.build_and_publish.outputs.changelog }}
 
-      #- name: Publish tag
-      #  uses: rickstaa/action-create-tag@07b918ecbf94359b859f25f7a70553a84e804923
-      #  with:
-      #    tag: ${{ needs.build_and_publish.outputs.next_version }}
-      #    message: |
-      #      ${{ needs.build_and_publish.outputs.next_version }}
+      - name: Publish tag
+        uses: rickstaa/action-create-tag@07b918ecbf94359b859f25f7a70553a84e804923
+        with:
+          tag: ${{ needs.build_and_publish.outputs.next_version }}
+          message: |
+            ${{ needs.build_and_publish.outputs.next_version }}
 
-      #      tbd blah
-      #    #TODO: force_push_tag is true for debug purpose only
-      #    force_push_tag: true
+            tbd blah
+          #TODO: force_push_tag is true for debug purpose only
+          force_push_tag: true
