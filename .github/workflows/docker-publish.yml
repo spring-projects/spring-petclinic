@@ -172,7 +172,7 @@ jobs:
           echo ${{ needs.build_and_publish.outputs.next_version }}
           echo
           echo
-          echo -e ${{ needs.build_and_publish.outputs.changelog }}
+          echo -e "${{ needs.build_and_publish.outputs.changelog }}"
 
       #- name: Login to GitHub Container Registry
       #  uses: docker/login-action@465a07811f14bebb1938fbed4728c6a1ff8901fc
@@ -198,6 +198,6 @@ jobs:
           message: |
             ${{ needs.build_and_publish.outputs.next_version }}
 
-            tbd blah
+            ${{ needs.build_and_publish.outputs.changelog }}
           #TODO: force_push_tag is true for debug purpose only
           force_push_tag: true
