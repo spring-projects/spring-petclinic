@@ -1,4 +1,4 @@
-name: Publish docker image
+name: Release version
 
 on:
   push:
@@ -18,33 +18,51 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - uses: docker://ghcr.io/codfish/semantic-release-action@sha256:4675eae74abbabc869298ca798833fef291ce30fb9edfac76787746e7d9d3904
+      - name: Codestyle
         id: semantic
-        with:
-          branches: |
-            [
-              'release-*',
-              {
-                name: 'development',
-                prerelease: true
-              }
-            ]
-          additional_packages: |
-            [
-              "@semantic-release/changelog",
-              "@semantic-release/git"
-            ]
-          plugins: |
-            [
-              "@semantic-release/commit-analyzer",
-              "@semantic-release/changelog",
-              "@semantic-release/git",
-              "@semantic-release/github",
-              "@semantic-release/release-notes-generator"
-            ]
-          dry_run: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Get the current branch name
+          CURRENT_BRANCH=$(git symbolic-ref -q HEAD)
+          CURRENT_BRANCH=${CURRENT_BRANCH##refs/heads/}
+          CURRENT_BRANCH=${CURRENT_BRANCH:-HEAD}
+          echo "Current branch: $CURRENT_BRANCH"
+
+          # Get a list of all tags in the repository
+          git fetch --prune --unshallow --tags
+          TAG_LIST=$(git tag)
+          echo "Available tags: $TAG_LIST"
+
+          # Get the messages of the last three commits on the current branch
+          COMMIT_MESSAGES=$(git log --pretty=format:%s -n 1)
+          echo "Last commit message:"
+          echo "$COMMIT_MESSAGES"
+          #- uses: docker://ghcr.io/codfish/semantic-release-action@sha256:4675eae74abbabc869298ca798833fef291ce30fb9edfac76787746e7d9d3904
+          #  id: semantic
+          #  with:
+          #    branches: |
+          #      [
+          #        'release-*',
+          #        {
+          #          name: 'development',
+          #          prerelease: true
+          #        }
+          #      ]
+          #    additional_packages: |
+          #      [
+          #        "@semantic-release/changelog",
+          #        "@semantic-release/git"
+          #      ]
+          #    plugins: |
+          #      [
+          #        "@semantic-release/commit-analyzer",
+          #        "@semantic-release/changelog",
+          #        "@semantic-release/git",
+          #        "@semantic-release/github",
+          #        "@semantic-release/release-notes-generator"
+          #      ]
+          #    dry_run: false
+          #  env:
+          #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
             #- name: Login to GitHub Container Registry
             #  uses: docker/login-action@465a07811f14bebb1938fbed4728c6a1ff8901fc
@@ -73,7 +91,4 @@ jobs:
             #      ${{ steps.semantic.outputs.release-notes }}
             #    #TODO: force_push_tag is true for debug purpose only
             #    force_push_tag: true
-
-    outputs:
-      version: ${{ steps.semantic.outputs.release-version }}
 

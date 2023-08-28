@@ -8,7 +8,17 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  java_build:
+  style_checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: PR title check
+        run: echo "NIY"
+      - name: Codestyle
+        run: echo "NIY"
+
+  code_checks:
     runs-on: ubuntu-latest
 
     steps:
@@ -28,10 +38,25 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
       - name: Build  Docker image
         uses: docker/build-push-action@2eb1c1961a95fc15694676618e422e8ba1d63825
         with:
           context: .
           push: false
           tags: ghcr.io/${{ env.IMAGE_NAME }}:test
+
+  ort:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Use HTTPS instead of SSH for Git cloning
+        run: git config --global url.https://github.com/.insteadOf ssh://git@github.com/
+      - name: Checkout project
+        uses: actions/checkout@v3
+        with:
+          repository: 'jshttp/mime-types'
+      - name: Run GitHub Action for ORT
+        uses: oss-review-toolkit/ort-ci-github-action@v1
+        with:
+          allow-dynamic-versions: 'true'
+          fail-on: 'violations'
