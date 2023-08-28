@@ -147,19 +147,19 @@ jobs:
           done
 
           if [[ "$(wc -l /tmp/my_changelog_features | awk '{print $1}')" -gt 0 ]] ; then
-              echo "### Features:" >> /tmp/my_changelog
+              echo "\#\#\# Features:" >> /tmp/my_changelog
               cat /tmp/my_changelog_features >> /tmp/my_changelog
               echo "" >> /tmp/my_changelog
           fi
 
           if [[ "$(wc -l /tmp/my_changelog_fixes | awk '{print $1}')" -gt 0 ]] ; then
-              echo "### Fixes:" >> /tmp/my_changelog
+              echo "\#\#\# Fixes:" >> /tmp/my_changelog
               cat /tmp/my_changelog_fixes >> /tmp/my_changelog
               echo "" >> /tmp/my_changelog
           fi
 
           if [[ "$(wc -l /tmp/my_changelog_other | awk '{print $1}')" -gt 0 ]] ; then
-              echo "### Other:" >> /tmp/my_changelog
+              echo "\#\#\# Other:" >> /tmp/my_changelog
               cat /tmp/my_changelog_other >> /tmp/my_changelog
               echo "" >> /tmp/my_changelog
           fi
