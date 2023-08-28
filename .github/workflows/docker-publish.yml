@@ -169,7 +169,7 @@ jobs:
           MY_CHANGELOG="${MY_CHANGELOG//$'\n'/'%0A'}"
           MY_CHANGELOG="${MY_CHANGELOG//$'\r'/'%0D'}"
           {
-            echo "changelog<<EOF"
+            echo "CHANGELOG<<EOF"
             cat /tmp/my_changelog
             echo "EOF"
           } >> "$GITHUB_ENV"
@@ -182,7 +182,7 @@ jobs:
           echo ${{ needs.build_and_publish.outputs.next_version }}
           echo
           echo
-          echo "${{ env.changelog }}"
+          echo $CHANGELOG
 
       #- name: Login to GitHub Container Registry
       #  uses: docker/login-action@465a07811f14bebb1938fbed4728c6a1ff8901fc
@@ -208,6 +208,6 @@ jobs:
           message: |
             ${{ needs.build_and_publish.outputs.next_version }}
 
-            ${{ env.changelog }}
+            ${{ env.CHANGELOG }}
           #TODO: force_push_tag is true for debug purpose only
           force_push_tag: true
