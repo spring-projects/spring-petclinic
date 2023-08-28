@@ -12,7 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       next_version: ${{ steps.semantic.outputs.next_version }}
-      changelog: ${{ steps.build_changelog.outputs.changelog }}
     permissions:
       contents: write
       packages: write
@@ -87,11 +86,23 @@ jobs:
           echo "current_version=${CURRENT_VERSION}" >> $GITHUB_OUTPUT
           echo "next_version=${NEXT_VERSION}" >> $GITHUB_OUTPUT
 
+  release:
+    needs: build_and_publish
+    runs-on: ubuntu-latest
+    environment:
+      name: release
+    permissions:
+      contents: write
+      packages: write
 
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: "Build Changelog"
         id: build_changelog
         run: |
+          set -x
           LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null|| echo NO ) 
 
           if [[ "${LAST_TAG}" == "NO" ]]; then
@@ -149,30 +160,21 @@ jobs:
           MY_CHANGELOG="${MY_CHANGELOG//'%'/'%25'}"
           MY_CHANGELOG="${MY_CHANGELOG//$'\n'/'%0A'}"
           MY_CHANGELOG="${MY_CHANGELOG//$'\r'/'%0D'}"
-          echo "changelog=${MY_CHANGELOG}" >> $GITHUB_OUTPUT
+          {
+            echo "changelog<<EOF"
+            cat /tmp/my_changelog
+            echo "EOF"
+          } >> "$GITHUB_ENV"
 
           echo "For debug purposes:"
           cat /tmp/my_changelog
-
-  release:
-    needs: build_and_publish
-    runs-on: ubuntu-latest
-    environment:
-      name: release
-    permissions:
-      contents: write
-      packages: write
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
 
       - name: debug
         run: |
           echo ${{ needs.build_and_publish.outputs.next_version }}
           echo
           echo
-          echo -e "${{ needs.build_and_publish.outputs.changelog }}"
+          echo -e "${{ env.changelog }}"
 
       #- name: Login to GitHub Container Registry
       #  uses: docker/login-action@465a07811f14bebb1938fbed4728c6a1ff8901fc
@@ -198,6 +200,6 @@ jobs:
           message: |
             ${{ needs.build_and_publish.outputs.next_version }}
 
-            ${{ needs.build_and_publish.outputs.changelog }}
+            ${{ env.changelog }}
           #TODO: force_push_tag is true for debug purpose only
           force_push_tag: true
