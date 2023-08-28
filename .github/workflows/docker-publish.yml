@@ -182,7 +182,7 @@ jobs:
           echo ${{ needs.build_and_publish.outputs.next_version }}
           echo
           echo
-          echo -e "${{ env.changelog }}"
+          echo "${{ env.changelog }}"
 
       #- name: Login to GitHub Container Registry
       #  uses: docker/login-action@465a07811f14bebb1938fbed4728c6a1ff8901fc
