@@ -216,6 +216,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ needs.build_and_publish.outputs.next_version }}
+          target_commitish: ${{ env.GITHUB_REF_NAME }}
           body: |
             ${{ needs.build_and_publish.outputs.next_version }}
 
