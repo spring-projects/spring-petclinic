@@ -215,7 +215,7 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          target_commitish: ${{ env.GITHUB_SHA }}
+          target_commitish: ${{ github.sha }}
           tag_name: ${{ needs.build_and_publish.outputs.next_version }}
           body: |
             # ${{ needs.build_and_publish.outputs.next_version }}
