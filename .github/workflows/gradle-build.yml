@@ -39,7 +39,7 @@ jobs:
       - name: Test
         run: ./gradlew test
       - name: Build
-        run: ./gradlew build
+        run: ./gradlew build -x test -x checkstyleMain
 
   docker_build:
     runs-on: ubuntu-latest

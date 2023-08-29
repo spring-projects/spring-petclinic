@@ -1,4 +1,8 @@
 {
+  "LABEL": {
+    "name": "",
+    "color": "EEEEEE"
+  },
   "CHECKS": {
     "prefixes": ["fix: ", "feat: ", "feature: ", "chore: ", "hotfix: "]
   },
