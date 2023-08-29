@@ -13,8 +13,3 @@ COPY --from=builder /app/build/libs/*jar .
 
 
 
-
-
-
-
-
