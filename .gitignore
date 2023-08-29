@@ -7,7 +7,8 @@ build/*
 .project
 .factorypath
 .attach_pid*
-.idea
+.idea/*
+!.idea/icon.png
 *.iml
 /target
 .sts4-cache/
