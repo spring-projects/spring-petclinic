@@ -8,6 +8,36 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
+  style_checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK ${{matrix.java}}
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Codestyle
+        continue-on-error: true #TODO: make false
+        run: ./gradlew checkstyleMain
+
+  code_checks:
+    runs-on: ubuntu-latest
+
+    #TODO: cache for libs
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK ${{matrix.java}}
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Test
+        run: ./gradlew test
+      - name: Build
+        run: ./gradlew build
+
   build_and_publish:
     runs-on: ubuntu-latest
     outputs:
@@ -21,9 +51,6 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-
-      - name: Code style check
-        run: echo "NIY"
 
       - name: Calculate version
         id: semantic
@@ -91,8 +118,8 @@ jobs:
   release:
     needs: build_and_publish
     runs-on: ubuntu-latest
-      #environment:
-      #  name: release
+    environment:
+      name: release
     permissions:
       contents: write
       packages: write
@@ -137,10 +164,6 @@ jobs:
               export FIXES_ENABLED=1
           done
 
-          echo "debugdebug"
-          wc -l /tmp/my_commits_log
-          echo 'debugdebug'
-
           egrep -v "${FEATURES_REGEX}|${FIXES_REGEX}" /tmp/my_commits_log | while read l; do
               echo "* ${l}" >> /tmp/my_changelog_other
               export OTHER_ENABLED=1
@@ -174,43 +197,23 @@ jobs:
             echo "EOF"
           } >> "$GITHUB_ENV"
 
-          echo "For debug purposes:"
-          cat /tmp/my_changelog
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@465a07811f14bebb1938fbed4728c6a1ff8901fc
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: debug
-        run: |
-          echo ${{ needs.build_and_publish.outputs.next_version }}
-          echo
-          echo
-          echo $CHANGELOG
+      - name: Build and push Docker image
+        uses: docker/build-push-action@2eb1c1961a95fc15694676618e422e8ba1d63825
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ env.IMAGE_NAME }}:${{ steps.semantic.outputs.release-version }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            VERSION=${{ steps.semantic.outputs.release-version }}
 
-      #- name: Login to GitHub Container Registry
-      #  uses: docker/login-action@465a07811f14bebb1938fbed4728c6a1ff8901fc
-      #  with:
-      #    registry: ghcr.io
-      #    username: ${{ github.actor }}
-      #    password: ${{ secrets.GITHUB_TOKEN }}
-
-      #- name: Build and push Docker image
-      #  uses: docker/build-push-action@2eb1c1961a95fc15694676618e422e8ba1d63825
-      #  with:
-      #    context: .
-      #    push: true
-      #    tags: ghcr.io/${{ env.IMAGE_NAME }}:${{ steps.semantic.outputs.release-version }}
-      #    labels: ${{ steps.meta.outputs.labels }}
-      #    build-args: |
-      #      VERSION=${{ steps.semantic.outputs.release-version }}
-
-      #- name: Publish tag
-      #  uses: rickstaa/action-create-tag@07b918ecbf94359b859f25f7a70553a84e804923
-      #  with:
-      #    tag: ${{ needs.build_and_publish.outputs.next_version }}
-      #    message: |
-      #      ${{ needs.build_and_publish.outputs.next_version }}
-
-      #      ${{ env.CHANGELOG }}
-      #    #TODO: force_push_tag is true for debug purpose only
-      #    force_push_tag: true
 
       - name: Release
         uses: softprops/action-gh-release@v1
