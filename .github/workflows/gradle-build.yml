@@ -40,7 +40,7 @@ jobs:
       - name: Test
         run: ./gradlew test
       - name: Build
-        run: ./gradlew build -x test -x processTestAot -x checkstyleMain -x checkstyleTest -x checkstyleAot
+        run: ./gradlew build -x test -x processTestAot -x checkstyleMain -x checkstyleTest -x checkstyleAot -x checkstyleAotTest
 
   docker_build:
     runs-on: ubuntu-latest
