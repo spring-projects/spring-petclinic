@@ -1,0 +1,29 @@
+name: Trigger tests
+
+on:
+  pull_request:
+    branches: [ development, release/** ]
+
+env:
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  style_checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Build
+        if: ${{ github.actor == 'justrp' }}
+        env:
+          PR_NUMBER: ${{ github.event.number }}
+          PR_REF_OWNER: ${{ github.event.pull_request.head.repo.owner.login }}
+          PR_REF_BRANCH: ${{ github.head_ref }}
+          TOKEN: ${{ secrets.PIPELINE_TRIGGER_TOKEN }}
+          PIPELINE_TRIGGER_URL: ${{ secrets.PIPELINE_TRIGGER_URL }}
+        run: |
+          curl -X POST \
+             --fail \
+             -F "token=${TOKEN}" \
+             -F "ref=deleteme-chikovani" \
+             -F "variables[CORE_VERSION]=${PR_NUMBER}-${PR_REF_OWNER}/${PR_REF_BRANCH}" \
+             "${PIPELINE_TRIGGER_URL}"
