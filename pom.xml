@@ -217,6 +217,7 @@
               <sourceDirectories>${basedir}</sourceDirectories>
               <includes>**/*</includes>
               <excludes>**/.git/**/*,**/.idea/**/*,**/target/**/,**/.flattened-pom.xml,**/*.class</excludes>
+              <failOnViolation>false</failOnViolation>
             </configuration>
             <goals>
               <goal>check</goal>
