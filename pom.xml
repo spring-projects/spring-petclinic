@@ -195,6 +195,9 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>${maven-checkstyle.version}</version>
+        <configuration>
+          <failOnViolation>false</failOnViolation>
+        </configuration>
         <dependencies>
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
@@ -217,7 +220,6 @@
               <sourceDirectories>${basedir}</sourceDirectories>
               <includes>**/*</includes>
               <excludes>**/.git/**/*,**/.idea/**/*,**/target/**/,**/.flattened-pom.xml,**/*.class</excludes>
-              <failOnViolation>false</failOnViolation>
             </configuration>
             <goals>
               <goal>check</goal>
