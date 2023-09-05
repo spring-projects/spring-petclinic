@@ -41,6 +41,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            target/*
+            target/*ß
+          tag_name: ${{ steps.get_tag.outputs.TAG }}
+          title: Release ${{ steps.get_tag.outputs.TAG }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
