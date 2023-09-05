@@ -2,7 +2,8 @@ name: Build and Test
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   build:
@@ -16,10 +17,44 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: '17'
-        distribution: 'adopt'
 
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      run: mvn clean package
 
     - name: Run tests with Maven
-      run: mvn -B test --file pom.xml
+      run: mvn test
+
+    # Store build artifacts for history
+    - name: Archive Build Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-artifacts
+        path: target/
+
+    # Static Code Analysis with Checkstyle (Replace with your preferred tool)
+    - name: Static Code Analysis
+      run: |
+        # Install and run Checkstyle (replace with your tool)
+        # Example: mvn checkstyle:check
+        echo "Run your static code analysis tool here"
+
+    # Store static code analysis reports
+    - name: Archive Static Code Analysis Reports
+      uses: actions/upload-artifact@v2
+      with:
+        name: static-code-analysis-reports
+        path: path/to/static/code/analysis/reports
+
+    # Code Coverage (Replace with your preferred tool)
+    - name: Code Coverage
+      run: |
+        # Run your code coverage tool here
+        # Example: mvn jacoco:report
+        echo "Run your code coverage tool here"
+
+    # Store code coverage reports
+    - name: Archive Code Coverage Reports
+      uses: actions/upload-artifact@v2
+      with:
+        name: code-coverage-reports
+        path: path/to/code/coverage/reports
