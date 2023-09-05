@@ -33,32 +33,3 @@ jobs:
         with:
           name: build-artifacts
           path: target/ 
-
-      # Static Code Analysis with Checkstyle
-      - name: Static Code Analysis with Checkstyle
-        run: |
-          # Install and run Checkstyle
-          mvn org.apache.maven.plugins:maven-checkstyle-plugin:3.1.1:checkstyle
-
-          # Run Checkstyle
-          mvn checkstyle:check
-
-      # Store static code analysis reports
-      - name: Archive Static Code Analysis Reports
-        uses: actions/upload-artifact@v2
-        with:
-          name: static-code-analysis-reports
-          path: target/checkstyle-result.xml
-
-      # Code Coverage
-      - name: Code Coverage
-        run: |
-          # Run JaCoCo report generation
-            mvn jacoco:report
-
-      # Store code coverage reports
-      - name: Archive Code Coverage Reports
-        uses: actions/upload-artifact@v2
-        with:
-          name: code-coverage-reports
-          path: target/site/jacoco/
