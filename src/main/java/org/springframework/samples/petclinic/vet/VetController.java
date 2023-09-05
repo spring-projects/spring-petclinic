@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author Arjen Poutsma
  */
 @Controller
-class VetController {
+class VetControlle {
 
 	private final VetRepository vetRepository;
 
