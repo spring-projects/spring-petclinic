@@ -3,7 +3,9 @@ name: Build and Test
 on:
   push:
     branches:
-      - '*'
+      - 'kq'
+  pull_request:
+    branches: [ main ]
 
 jobs:
   build:
