@@ -35,9 +35,6 @@
     <nohttp-checkstyle.version>0.0.11</nohttp-checkstyle.version>
     <spring-format.version>0.0.39</spring-format.version>
 
-    <!-- ... other properties ... -->
-    <testcontainers.version>1.16.3</testcontainers.version>
-
 
   </properties>
 
