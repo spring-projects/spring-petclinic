@@ -32,7 +32,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: build-artifacts
-          path: .github/workflows/reports/history/
+          path: /spring-petclinic/reports/history/
 
       # Static Code Analysis with Checkstyle
       - name: Static Code Analysis with Checkstyle
@@ -48,7 +48,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: static-code-analysis-reports
-          path: .github/workflows/reports/checkstyle/
+          path: /spring-petclinic/reports/checkstyle/
 
       # Code Coverage
       - name: Code Coverage
@@ -61,4 +61,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: code-coverage-reports
-          path: .github/workflows/reports/jacoco/
+          path: /spring-petclinic/reports/jacoco/
