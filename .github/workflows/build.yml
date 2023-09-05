@@ -30,7 +30,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: build-artifacts
-          path: target/
+          path: .github/workflows/reports/history/
 
       # Static Code Analysis with Checkstyle
       - name: Static Code Analysis with Checkstyle
