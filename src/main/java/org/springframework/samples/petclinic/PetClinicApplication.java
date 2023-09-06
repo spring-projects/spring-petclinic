@@ -42,4 +42,5 @@ public class PetClinicApplication {
 			System.out.println("Vic lalala untested " + x);
 		}
 	}
+
 }
