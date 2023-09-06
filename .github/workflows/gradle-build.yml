@@ -72,11 +72,17 @@ jobs:
       - name: Checkout project
         uses: actions/checkout@v3
       - name: Run GitHub Action for ORT
+        id: ort_scan
         uses: oss-review-toolkit/ort-ci-github-action@v1
         continue-on-error: true
         with:
           allow-dynamic-versions: 'true'
           fail-on: 'violations'
+      - name: Show status of ORT
+        if: ${{ steps.ort_scan.outcome == 'failure' }}
+        run: |
+          echo "status_color=yellow" >> $GITHUB_ENV
+          echo "::error::ORT Scan failed, see logs and artifacts"
 
 
   codeql:
