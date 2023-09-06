@@ -1,0 +1,46 @@
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nop
+  labels:
+    app: nop
+spec:
+  minReadySeconds: 5
+  replicas: 4
+  selector:
+    matchLabels:
+      app: nop
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      labels:
+        app: nop
+      name: nop
+    spec:
+      containers:
+        - name: nop
+          image: sridhar006/nopaugest:26
+          ports:
+            - containerPort: 5000 
+                 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nop
+spec:
+  selector:
+    app: nop
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      name: nop
+      port: 80
+      targetPort: 5000  
+  type: LoadBalancer     
