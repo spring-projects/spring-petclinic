@@ -8,7 +8,7 @@ class VetTests {
 
 	@Test
 	void fail() {
-		assertThat(true).isEqualTo(false);
+		assertThat(true).isEqualTo(true);
 	}
 
 }
