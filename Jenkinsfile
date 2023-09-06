@@ -12,7 +12,7 @@ pipeline{
         }
         stage('artifact build'){
           steps{
-            sh 'docker build . -t sridhar006/spc-jenkins:${BUILD_ID}'
+            sh 'docker image build -t sridhar006 .'
             sh 'docker image list'
           } 
         } 
