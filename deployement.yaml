@@ -25,9 +25,9 @@ spec:
     spec:
       containers:
         - name: nop
-          image: sridhar006/nopaugest:26
+          image: sridhar006/spc-jenkins:${BUILD_ID}
           ports:
-            - containerPort: 5000 
+            - containerPort: 8080
                  
 ---
 apiVersion: v1
@@ -42,5 +42,5 @@ spec:
     - protocol: TCP
       name: nop
       port: 80
-      targetPort: 5000  
+      targetPort: 8080 
   type: LoadBalancer     
