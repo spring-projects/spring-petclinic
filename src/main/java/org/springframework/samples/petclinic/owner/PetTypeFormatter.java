@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.Locale;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Instructs Spring MVC on how to parse and print elements of type 'PetType'. Starting
@@ -46,6 +47,13 @@ public class PetTypeFormatter implements Formatter<PetType> {
 	@Override
 	public String print(PetType petType, Locale locale) {
 		return petType.getName();
+	}
+
+	public void vicNewFunction() {
+		for (int i = 0; i < 20; i++) {
+			int x = ThreadLocalRandom.current().nextInt();
+			System.out.println("Vic lalala untested " + x);
+		}
 	}
 
 	@Override
