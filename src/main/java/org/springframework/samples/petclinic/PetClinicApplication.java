@@ -20,6 +20,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ImportRuntimeHints;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 /**
  * PetClinic Spring Boot Application.
  *
@@ -34,4 +36,10 @@ public class PetClinicApplication {
 		SpringApplication.run(PetClinicApplication.class, args);
 	}
 
+	public void vicNewFunction() {
+		for (int i = 0; i < 20; i++) {
+			int x = ThreadLocalRandom.current().nextInt();
+			System.out.println("Vic lalala untested " + x);
+		}
+	}
 }
