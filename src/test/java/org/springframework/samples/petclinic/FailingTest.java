@@ -1,19 +1,14 @@
 package org.springframework.samples.petclinic;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.fail;
 
-import org.junit.Test;
-import org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
 
-public class FailingTest {
+class VetTests {
 
-    @Test
-    public void checkValues(){
-        assertThat(true).isEqualTo(false);
-    }
+	@Test
+	void fail() {
+		assertThat(true).isEqualTo(false);
+	}
 
 }
-
-    
-    
