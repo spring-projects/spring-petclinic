@@ -209,10 +209,10 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ env.IMAGE_NAME }}:${{ steps.semantic.outputs.release-version }}
+          tags: ghcr.io/${{ env.IMAGE_NAME }}:${{ needs.calculate_version.outputs.next_version }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            VERSION=${{ steps.semantic.outputs.release-version }}
+            VERSION=${{ needs.calculate_version.outputs.next_version }}
 
 
       - name: Release
