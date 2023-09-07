@@ -1,8 +1,8 @@
 name: Trigger tests
 
 on:
-  pull_request:
-    branches: [ development, release/** ]
+  #pull_request:
+  #  branches: [ development, release/** ]
   issue_comment:
     types: [created]
 
@@ -10,7 +10,7 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  style_checks:
+  Integration_tests:
     runs-on: ubuntu-latest
 
     steps:
