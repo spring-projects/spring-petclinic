@@ -18,7 +18,7 @@ jobs:
       - name: Set up JDK 17
         uses: actions/setup-java@v2 # Set up Java Development Kit (JDK) version 17
         with:
-          java-version: "17"
+          java-version: 
           distribution: "adopt"
 
 
