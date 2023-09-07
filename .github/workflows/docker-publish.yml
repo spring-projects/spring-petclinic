@@ -1,226 +1,226 @@
-name: Release version
-
-on:
-  push:
-    branches: [ development, release-* ]
-
-env:
-  IMAGE_NAME: ${{ github.repository }}
-
-jobs:
-  style_checks:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up JDK ${{matrix.java}}
-        uses: actions/setup-java@v2
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-      - name: Codestyle
-        continue-on-error: true #TODO: make false
-        run: ./gradlew checkstyleMain
-
-  code_checks:
-    runs-on: ubuntu-latest
-
-    #TODO: cache for libs
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up JDK ${{matrix.java}}
-        uses: actions/setup-java@v2
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-      - name: Test
-        run: ./gradlew test
-      - name: Build
-        run: ./gradlew build
-
-  build_and_publish:
-    runs-on: ubuntu-latest
-    outputs:
-      next_version: ${{ steps.semantic.outputs.next_version }}
-    permissions:
-      contents: write
-      packages: write
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Calculate version
-        id: semantic
-        run: |
-          set -x
-          function bump_version {
-            # Split the version string into Major, Minor and Patch numbers
-            local VERSION
-            IFS='.' read -r -a VERSION <<< $(echo ${1//"v"})
-            local BRANCH_NAME="$2"
-            local MAJOR=${VERSION[0]}
-            local MINOR=${VERSION[1]}
-            local PATCH=${VERSION[2]}
-
-            # Increment the version number
-            if [[ "$BRANCH_NAME" == "development" ]]; then
-              MINOR=$((MINOR + 1))
-              PATCH=0
-              rc="-rc"
-            elif [[ "$BRANCH_NAME" == release-* ]]; then
-              PATCH=$((PATCH + 1))
-              rc=""
-            fi
-
-            # Build the new version string
-            echo "v${MAJOR}.${MINOR}.${PATCH}${rc}"
-          }
-
-          CURRENT_BRANCH=$(git symbolic-ref -q HEAD)
-          CURRENT_BRANCH=${CURRENT_BRANCH##refs/heads/}
-          CURRENT_BRANCH=${CURRENT_BRANCH:-HEAD}
-          git fetch --tags
-
-          TAGS=$(git tag)
-          HAS_TAGS=$(echo "$TAGS" | wc -l | tr -d ' ')
-
-          if [[ "$HAS_TAGS" -eq 0 ]]; then
-            # No tags found
-            if [[ "$CURRENT_BRANCH" == "development" ]]; then
-              # For development branch with no tags, set the next version to 0.1.0-rc
-              NEXT_VERSION="v0.1.0-rc"
-            fi
-          else
-            # Tags found
-            if [[ "$CURRENT_BRANCH" == "development" ]]; then
-              CURRENT_VERSION=$(git tag | sort -V | tail -1)
-              NEXT_VERSION=$(bump_version "${CURRENT_VERSION}" "${CURRENT_BRANCH}")
-            elif [[ "${CURRENT_BRANCH}" == release-* ]]; then
-              # For release branch with tags, bump patch version, e.g. v2.3.4 -> v2.3.5
-              CURRENT_VERSION=$(git tag | grep "^v${CURRENT_BRANCH#'release-'}.*" | sort -V | tail -1)
-              if [[ -n "$CURRENT_VERSION" ]]; then
-                NEXT_VERSION=$(bump_version "${CURRENT_VERSION}" "${CURRENT_BRANCH}")
-              else
-                # If no tags match the release branch, set the next version to release number with 0 patch version, e.g. v-0.1.0
-                NEXT_VERSION="v${CURRENT_BRANCH#'release-'}.0"
-              fi
-            else
-              exit 2
-            fi
-          fi
-
-          echo "current_version=${CURRENT_VERSION}" >> $GITHUB_OUTPUT
-          echo "next_version=${NEXT_VERSION}" >> $GITHUB_OUTPUT
-
-  release:
-    needs: build_and_publish
-    runs-on: ubuntu-latest
-    environment:
-      name: release
-    permissions:
-      contents: write
-      packages: write
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: "Build Changelog"
-        id: build_changelog
-        run: |
-          set -x
-          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null|| echo NO ) 
-
-          if [[ "${LAST_TAG}" == "NO" ]]; then
-              git log  --pretty=format:"%s" > /tmp/my_commits_log_all
-          else
-              git log "${LAST_TAG}"..HEAD --pretty=format:"%s" > /tmp/my_commits_log_all
-          fi
-
-          cat /tmp/my_commits_log_all | sort > /tmp/my_commits_log
-
-          echo -n '' > /tmp/my_changelog_features
-          echo -n '' > /tmp/my_changelog_fixes
-          echo -n '' > /tmp/my_changelog_other
-          echo -n '' > /tmp/my_changelog
-
-          FEATURES_REGEX="^feat:|^feature:"
-          FIXES_REGEX="^fix:|^hotfix:"
-
-          egrep "${FEATURES_REGEX}" /tmp/my_commits_log | while read l; do
-              DESCRIPTION=$(echo "${l}" | sed "s/^feat://;s/^feature://")
-              echo "* ${DESCRIPTION}" >> /tmp/my_changelog_features
-              export FEATURES_ENABLED=1
-          done
-
-          egrep "${FIXES_REGEX}" /tmp/my_commits_log | while read l; do
-              DESCRIPTION=$(echo "${l}" | sed "s/^fix://;s/^hotfix://")
-              echo "* ${DESCRIPTION}" >> /tmp/my_changelog_fixes
-              export FIXES_ENABLED=1
-          done
-
-          egrep -v "${FEATURES_REGEX}|${FIXES_REGEX}" /tmp/my_commits_log | while read l; do
-              echo "* ${l}" >> /tmp/my_changelog_other
-              export OTHER_ENABLED=1
-          done
-
-          if [[ "$(wc -l /tmp/my_changelog_features | awk '{print $1}')" -gt 0 ]] ; then
-              echo "### Features:" >> /tmp/my_changelog
-              cat /tmp/my_changelog_features >> /tmp/my_changelog
-              echo "" >> /tmp/my_changelog
-          fi
-
-          if [[ "$(wc -l /tmp/my_changelog_fixes | awk '{print $1}')" -gt 0 ]] ; then
-              echo "### Fixes:" >> /tmp/my_changelog
-              cat /tmp/my_changelog_fixes >> /tmp/my_changelog
-              echo "" >> /tmp/my_changelog
-          fi
-
-          if [[ "$(wc -l /tmp/my_changelog_other | awk '{print $1}')" -gt 0 ]] ; then
-              echo "### Other:" >> /tmp/my_changelog
-              cat /tmp/my_changelog_other >> /tmp/my_changelog
-              echo "" >> /tmp/my_changelog
-          fi
-
-          MY_CHANGELOG=$(cat /tmp/my_changelog)
-          MY_CHANGELOG="${MY_CHANGELOG//'%'/'%25'}"
-          MY_CHANGELOG="${MY_CHANGELOG//$'\n'/'%0A'}"
-          MY_CHANGELOG="${MY_CHANGELOG//$'\r'/'%0D'}"
-          {
-            echo "CHANGELOG<<EOF"
-            cat /tmp/my_changelog
-            echo "EOF"
-          } >> "$GITHUB_ENV"
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@465a07811f14bebb1938fbed4728c6a1ff8901fc
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@2eb1c1961a95fc15694676618e422e8ba1d63825
-        with:
-          context: .
-          push: true
-          tags: ghcr.io/${{ env.IMAGE_NAME }}:${{ steps.semantic.outputs.release-version }}
-          labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            VERSION=${{ steps.semantic.outputs.release-version }}
-
-
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          target_commitish: ${{ github.sha }}
-          tag_name: ${{ needs.build_and_publish.outputs.next_version }}
-          body: |
-            # ${{ needs.build_and_publish.outputs.next_version }}
-
-            ${{ env.CHANGELOG }}
+#name: Release version
+#
+#on:
+#  push:
+#    branches: [ development, release-* ]
+#
+#env:
+#  IMAGE_NAME: ${{ github.repository }}
+#
+#jobs:
+#  style_checks:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - uses: actions/checkout@v3
+#      - name: Set up JDK ${{matrix.java}}
+#        uses: actions/setup-java@v2
+#        with:
+#          java-version: '17'
+#          distribution: 'temurin'
+#      - name: Codestyle
+#        continue-on-error: true #TODO: make false
+#        run: ./gradlew checkstyleMain
+#
+#  code_checks:
+#    runs-on: ubuntu-latest
+#
+#    #TODO: cache for libs
+#    steps:
+#      - uses: actions/checkout@v3
+#      - name: Set up JDK ${{matrix.java}}
+#        uses: actions/setup-java@v2
+#        with:
+#          java-version: '17'
+#          distribution: 'temurin'
+#      - name: Test
+#        run: ./gradlew test
+#      - name: Build
+#        run: ./gradlew build
+#
+#  build_and_publish:
+#    runs-on: ubuntu-latest
+#    outputs:
+#      next_version: ${{ steps.semantic.outputs.next_version }}
+#    permissions:
+#      contents: write
+#      packages: write
+#
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v3
+#        with:
+#          fetch-depth: 0
+#
+#      - name: Calculate version
+#        id: semantic
+#        run: |
+#          set -x
+#          function bump_version {
+#            # Split the version string into Major, Minor and Patch numbers
+#            local VERSION
+#            IFS='.' read -r -a VERSION <<< $(echo ${1//"v"})
+#            local BRANCH_NAME="$2"
+#            local MAJOR=${VERSION[0]}
+#            local MINOR=${VERSION[1]}
+#            local PATCH=${VERSION[2]}
+#
+#            # Increment the version number
+#            if [[ "$BRANCH_NAME" == "development" ]]; then
+#              MINOR=$((MINOR + 1))
+#              PATCH=0
+#              rc="-rc"
+#            elif [[ "$BRANCH_NAME" == release-* ]]; then
+#              PATCH=$((PATCH + 1))
+#              rc=""
+#            fi
+#
+#            # Build the new version string
+#            echo "v${MAJOR}.${MINOR}.${PATCH}${rc}"
+#          }
+#
+#          CURRENT_BRANCH=$(git symbolic-ref -q HEAD)
+#          CURRENT_BRANCH=${CURRENT_BRANCH##refs/heads/}
+#          CURRENT_BRANCH=${CURRENT_BRANCH:-HEAD}
+#          git fetch --tags
+#
+#          TAGS=$(git tag)
+#          HAS_TAGS=$(echo "$TAGS" | wc -l | tr -d ' ')
+#
+#          if [[ "$HAS_TAGS" -eq 0 ]]; then
+#            # No tags found
+#            if [[ "$CURRENT_BRANCH" == "development" ]]; then
+#              # For development branch with no tags, set the next version to 0.1.0-rc
+#              NEXT_VERSION="v0.1.0-rc"
+#            fi
+#          else
+#            # Tags found
+#            if [[ "$CURRENT_BRANCH" == "development" ]]; then
+#              CURRENT_VERSION=$(git tag | sort -V | tail -1)
+#              NEXT_VERSION=$(bump_version "${CURRENT_VERSION}" "${CURRENT_BRANCH}")
+#            elif [[ "${CURRENT_BRANCH}" == release-* ]]; then
+#              # For release branch with tags, bump patch version, e.g. v2.3.4 -> v2.3.5
+#              CURRENT_VERSION=$(git tag | grep "^v${CURRENT_BRANCH#'release-'}.*" | sort -V | tail -1)
+#              if [[ -n "$CURRENT_VERSION" ]]; then
+#                NEXT_VERSION=$(bump_version "${CURRENT_VERSION}" "${CURRENT_BRANCH}")
+#              else
+#                # If no tags match the release branch, set the next version to release number with 0 patch version, e.g. v-0.1.0
+#                NEXT_VERSION="v${CURRENT_BRANCH#'release-'}.0"
+#              fi
+#            else
+#              exit 2
+#            fi
+#          fi
+#
+#          echo "current_version=${CURRENT_VERSION}" >> $GITHUB_OUTPUT
+#          echo "next_version=${NEXT_VERSION}" >> $GITHUB_OUTPUT
+#
+#  release:
+#    needs: build_and_publish
+#    runs-on: ubuntu-latest
+#    environment:
+#      name: release
+#    permissions:
+#      contents: write
+#      packages: write
+#
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v3
+#        with:
+#          fetch-depth: 0
+#
+#      - name: "Build Changelog"
+#        id: build_changelog
+#        run: |
+#          set -x
+#          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null|| echo NO ) 
+#
+#          if [[ "${LAST_TAG}" == "NO" ]]; then
+#              git log  --pretty=format:"%s" > /tmp/my_commits_log_all
+#          else
+#              git log "${LAST_TAG}"..HEAD --pretty=format:"%s" > /tmp/my_commits_log_all
+#          fi
+#
+#          cat /tmp/my_commits_log_all | sort > /tmp/my_commits_log
+#
+#          echo -n '' > /tmp/my_changelog_features
+#          echo -n '' > /tmp/my_changelog_fixes
+#          echo -n '' > /tmp/my_changelog_other
+#          echo -n '' > /tmp/my_changelog
+#
+#          FEATURES_REGEX="^feat:|^feature:"
+#          FIXES_REGEX="^fix:|^hotfix:"
+#
+#          egrep "${FEATURES_REGEX}" /tmp/my_commits_log | while read l; do
+#              DESCRIPTION=$(echo "${l}" | sed "s/^feat://;s/^feature://")
+#              echo "* ${DESCRIPTION}" >> /tmp/my_changelog_features
+#              export FEATURES_ENABLED=1
+#          done
+#
+#          egrep "${FIXES_REGEX}" /tmp/my_commits_log | while read l; do
+#              DESCRIPTION=$(echo "${l}" | sed "s/^fix://;s/^hotfix://")
+#              echo "* ${DESCRIPTION}" >> /tmp/my_changelog_fixes
+#              export FIXES_ENABLED=1
+#          done
+#
+#          egrep -v "${FEATURES_REGEX}|${FIXES_REGEX}" /tmp/my_commits_log | while read l; do
+#              echo "* ${l}" >> /tmp/my_changelog_other
+#              export OTHER_ENABLED=1
+#          done
+#
+#          if [[ "$(wc -l /tmp/my_changelog_features | awk '{print $1}')" -gt 0 ]] ; then
+#              echo "### Features:" >> /tmp/my_changelog
+#              cat /tmp/my_changelog_features >> /tmp/my_changelog
+#              echo "" >> /tmp/my_changelog
+#          fi
+#
+#          if [[ "$(wc -l /tmp/my_changelog_fixes | awk '{print $1}')" -gt 0 ]] ; then
+#              echo "### Fixes:" >> /tmp/my_changelog
+#              cat /tmp/my_changelog_fixes >> /tmp/my_changelog
+#              echo "" >> /tmp/my_changelog
+#          fi
+#
+#          if [[ "$(wc -l /tmp/my_changelog_other | awk '{print $1}')" -gt 0 ]] ; then
+#              echo "### Other:" >> /tmp/my_changelog
+#              cat /tmp/my_changelog_other >> /tmp/my_changelog
+#              echo "" >> /tmp/my_changelog
+#          fi
+#
+#          MY_CHANGELOG=$(cat /tmp/my_changelog)
+#          MY_CHANGELOG="${MY_CHANGELOG//'%'/'%25'}"
+#          MY_CHANGELOG="${MY_CHANGELOG//$'\n'/'%0A'}"
+#          MY_CHANGELOG="${MY_CHANGELOG//$'\r'/'%0D'}"
+#          {
+#            echo "CHANGELOG<<EOF"
+#            cat /tmp/my_changelog
+#            echo "EOF"
+#          } >> "$GITHUB_ENV"
+#
+#      - name: Login to GitHub Container Registry
+#        uses: docker/login-action@465a07811f14bebb1938fbed4728c6a1ff8901fc
+#        with:
+#          registry: ghcr.io
+#          username: ${{ github.actor }}
+#          password: ${{ secrets.GITHUB_TOKEN }}
+#
+#      - name: Build and push Docker image
+#        uses: docker/build-push-action@2eb1c1961a95fc15694676618e422e8ba1d63825
+#        with:
+#          context: .
+#          push: true
+#          tags: ghcr.io/${{ env.IMAGE_NAME }}:${{ steps.semantic.outputs.release-version }}
+#          labels: ${{ steps.meta.outputs.labels }}
+#          build-args: |
+#            VERSION=${{ steps.semantic.outputs.release-version }}
+#
+#
+#      - name: Release
+#        uses: softprops/action-gh-release@v1
+#        with:
+#          target_commitish: ${{ github.sha }}
+#          tag_name: ${{ needs.build_and_publish.outputs.next_version }}
+#          body: |
+#            # ${{ needs.build_and_publish.outputs.next_version }}
+#
+#            ${{ env.CHANGELOG }}

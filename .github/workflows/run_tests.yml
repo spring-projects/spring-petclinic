@@ -3,6 +3,8 @@ name: Trigger tests
 on:
   pull_request:
     branches: [ development, release/** ]
+  issue_comment:
+    types: [created]
 
 env:
   IMAGE_NAME: ${{ github.repository }}
@@ -13,7 +15,7 @@ jobs:
 
     steps:
       - name: Build
-        if: ${{ github.actor == 'justrp' }}
+        if: github.event.issue.pull_request && github.actor == 'justrp'
         env:
           PR_NUMBER: ${{ github.event.number }}
           PR_REF_OWNER: ${{ github.event.pull_request.head.repo.owner.login }}
