@@ -21,26 +21,28 @@ jobs:
           java-version: "17"
           distribution: "adopt"
 
+
       - name: Build with Maven
-        run: mvn clean package # Clean and package your Maven project
+        run: mvn -B package --file pom.xml
+        # Build your project using Maven in non-interactive mode and specify the POM file.
 
       - name: Run tests with Maven
-        run: mvn test # Run tests using Maven
+        run: mvn -B test --file pom.xml
+        # Run tests using Maven in non-interactive mode and specify the POM file.
 
       # Store build artifacts for history
       - name: Archive Build Artifacts
         uses: actions/upload-artifact@v2 # Upload build artifacts to the workflow
         with:
           name: build-artifacts # Name for the uploaded artifacts
-          path:
-            target/ # Path to the build artifacts (typically 'target/' for Maven)
+          path: target/ # Path to the build artifacts (typically 'target/' for Maven)
 
       # Static Code Analysis with Checkstyle
       - name: Static Code Analysis with Checkstyle
         run: |
           # Install and run Checkstyle
           mvn org.apache.maven.plugins:maven-checkstyle-plugin:3.1.1:checkstyle
-          # Run Checkstyle
+          # Run Checkstyle using Maven.
           mvn checkstyle:check
 
       # Store static code analysis reports
@@ -48,7 +50,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: static-code-analysis-reports
-          path: target/checkstyle-result.xml
+          path: target/checkstyle-result.xml # Path to the Checkstyle report.
 
       # Code Coverage
       - name: Code Coverage
@@ -61,4 +63,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: code-coverage-reports
-          path: target/site/jacoco/
+          path: target/site/jacoco/ # Path to the code coverage report.
