@@ -31,7 +31,8 @@ jobs:
 
     steps:
       - name: Build
-        if: github.event.issue.pull_request && github.event.user.login == 'justrp'
+        if: github.event.issue.pull_request && github.actor == 'justrp'
+        #if: github.event.issue.pull_request && contains(github.event.comment.body, 'test') && github.actor == 'justrp'
         env:
           PR_NUMBER: ${{ github.event.number }}
           PR_REF_OWNER: ${{ github.event.pull_request.head.repo.owner.login }}
