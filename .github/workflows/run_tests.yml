@@ -10,8 +10,10 @@ jobs:
     if: github.event.issue.pull_request && contains(github.event.comment.body, '/deploy')
     steps:
       - name: Deploy
+        env:
+          JSON_DOC: ${{ toJSON(github.event) }}
         run: |
-          echo "Deploying..."
+          echo $JSON_DOC | jq
 #name: Trigger tests
 #
 #on:
