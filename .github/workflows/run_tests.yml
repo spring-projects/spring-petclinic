@@ -1,47 +1,47 @@
-name: "Deploy on Comment"
-
-on:
-  issue_comment:
-    types: [created]
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    if: github.event.issue.pull_request && contains(github.event.comment.body, '/deploy')
-    steps:
-      - name: Deploy
-        env:
-          JSON_DOC: ${{ toJSON(github.event) }}
-        run: |
-          echo $JSON_DOC | jq
-#name: Trigger tests
+#name: "Deploy on Comment"
 #
 #on:
-#  #pull_request:
-#  #  branches: [ development, release/** ]
 #  issue_comment:
 #    types: [created]
 #
-#env:
-#  IMAGE_NAME: ${{ github.repository }}
-#
 #jobs:
-#  Integration_tests:
+#  deploy:
 #    runs-on: ubuntu-latest
-#
+#    if: github.event.issue.pull_request && contains(github.event.comment.body, '/deploy')
 #    steps:
-#      - name: Build
-#        if: github.event.issue.pull_request && github.actor == 'justrp'
+#      - name: Deploy
 #        env:
-#          PR_NUMBER: ${{ github.event.number }}
-#          PR_REF_OWNER: ${{ github.event.pull_request.head.repo.owner.login }}
-#          PR_REF_BRANCH: ${{ github.head_ref }}
-#          TOKEN: ${{ secrets.PIPELINE_TRIGGER_TOKEN }}
-#          PIPELINE_TRIGGER_URL: ${{ secrets.PIPELINE_TRIGGER_URL }}
+#          JSON_DOC: ${{ toJSON(github.event) }}
 #        run: |
-#          curl -X POST \
-#             --fail \
-#             -F "token=${TOKEN}" \
-#             -F "ref=deleteme-chikovani" \
-#             -F "variables[CORE_VERSION]=${PR_NUMBER}-${PR_REF_OWNER}/${PR_REF_BRANCH}" \
-#             "${PIPELINE_TRIGGER_URL}"
+#          echo $JSON_DOC | jq
+name: Integration tests
+
+on:
+  pull_request:
+    branches: [ development, release/** ]
+  issue_comment:
+    types: [created]
+
+env:
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  Integration_tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Build
+        if: github.event.issue.pull_request && github.event.user.login == 'justrp'
+        env:
+          PR_NUMBER: ${{ github.event.number }}
+          PR_REF_OWNER: ${{ github.event.pull_request.head.repo.owner.login }}
+          PR_REF_BRANCH: ${{ github.head_ref }}
+          TOKEN: ${{ secrets.PIPELINE_TRIGGER_TOKEN }}
+          PIPELINE_TRIGGER_URL: ${{ secrets.PIPELINE_TRIGGER_URL }}
+        run: |
+          curl -X POST \
+             --fail \
+             -F "token=${TOKEN}" \
+             -F "ref=deleteme-chikovani" \
+             -F "variables[CORE_VERSION]=${PR_NUMBER}-${PR_REF_OWNER}/${PR_REF_BRANCH}" \
+             "${PIPELINE_TRIGGER_URL}"
