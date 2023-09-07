@@ -1,103 +1,98 @@
-#name: Java test build
-#
-#on:
-#  pull_request:
-#    branches: [ development, release/** ]
-#
-#env:
-#  IMAGE_NAME: ${{ github.repository }}
-#
-#jobs:
-#  style_checks:
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - name: PR title check
-#        uses: thehanimo/pr-title-checker@v1.4.0
-#        with:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#      - uses: actions/checkout@v3
-#      - name: Set up JDK ${{matrix.java}}
-#        uses: actions/setup-java@v2
-#        with:
-#          java-version: '17'
-#          distribution: 'temurin'
-#      - name: Codestyle
-#        continue-on-error: true #TODO: make false
-#        run: ./gradlew checkstyleMain
-#
-#  code_checks:
-#    runs-on: ubuntu-latest
-#
-#    #TODO: cache for libs
-#    steps:
-#      - uses: actions/checkout@v3
-#      - name: Set up JDK ${{matrix.java}}
-#        uses: actions/setup-java@v2
-#        with:
-#          java-version: '17'
-#          distribution: 'temurin'
-#      - name: Test
-#        run: ./gradlew test
-#      - name: Build
-#        run: ./gradlew build -x test -x processTestAot -x checkstyleMain -x checkstyleTest -x checkstyleAot -x checkstyleAotTest
-#
-#  docker_build:
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - uses: actions/checkout@v3
-#      - name: Build  Docker image
-#        uses: docker/build-push-action@2eb1c1961a95fc15694676618e422e8ba1d63825
-#        with:
-#          context: .
-#          push: false
-#          tags: ghcr.io/${{ env.IMAGE_NAME }}:test
-#      - name: Run Trivy vulnerability scanner
-#        uses: aquasecurity/trivy-action@master
-#        with:
-#          image-ref: 'ghcr.io/${{ env.IMAGE_NAME }}:test'
-#          format: 'table'
-#          exit-code: '1'
-#          ignore-unfixed: true
-#          vuln-type: 'os,library'
-#          severity: 'CRITICAL,HIGH'
-#
-#  ort:
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - name: Use HTTPS instead of SSH for Git cloning
-#        run: git config --global url.https://github.com/.insteadOf ssh://git@github.com/
-#      - name: Checkout project
-#        uses: actions/checkout@v3
-#      - name: Run GitHub Action for ORT
-#        id: ort_scan
-#        uses: oss-review-toolkit/ort-ci-github-action@v1
-#        continue-on-error: true
-#        with:
-#          allow-dynamic-versions: 'true'
-#          fail-on: 'violations'
-#      - name: Show status of ORT
-#        if: ${{ steps.ort_scan.outcome == 'failure' }}
-#        run: |
-#          echo "status_color=yellow" >> $GITHUB_ENV
-#          echo "::error::ORT Scan failed, see logs and artifacts"
-#
-#
-#  codeql:
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v3
-#      - name: Initialize CodeQL
-#        uses: github/codeql-action/init@v2
-#        with:
-#          languages: 'java'
-#      - name: Autobuild
-#        uses: github/codeql-action/autobuild@v2
-#      - name: Perform CodeQL Analysis
-#        uses: github/codeql-action/analyze@v2
-#        with:
-#          category: '/language:java'
+name: Java test build
+
+on:
+  pull_request:
+    branches: [ development, release-* ]
+
+env:
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  style_checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: PR title check
+        uses: thehanimo/pr-title-checker@v1.4.0
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Codestyle
+        #continue-on-error: true
+        run: |
+          ./gradlew checkstyleMain || ( echo "::error::Checkstyle failed" && exit 1)
+
+  code_checks:
+    runs-on: ubuntu-latest
+    #TODO: cache for libs
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Test
+        run: ./gradlew test
+      - name: Build
+        run: ./gradlew build -x test -x processTestAot -x checkstyleMain -x checkstyleTest -x checkstyleAot -x checkstyleAotTest
+
+  docker_build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build  Docker image
+        uses: docker/build-push-action@2eb1c1961a95fc15694676618e422e8ba1d63825
+        with:
+          context: .
+          push: false
+          tags: ghcr.io/${{ env.IMAGE_NAME }}:test
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'ghcr.io/${{ env.IMAGE_NAME }}:test'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+
+  ort_scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Use HTTPS instead of SSH for Git cloning
+        run: git config --global url.https://github.com/.insteadOf ssh://git@github.com/
+      - name: Checkout project
+        uses: actions/checkout@v3
+      - name: Run GitHub Action for ORT
+        id: ort_scan
+        uses: oss-review-toolkit/ort-ci-github-action@v1
+        #continue-on-error: true
+        with:
+          allow-dynamic-versions: 'true'
+          fail-on: 'violations'
+
+
+  codeql:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: 'java'
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+          category: '/language:java'
