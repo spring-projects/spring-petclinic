@@ -35,7 +35,6 @@ jobs:
           path:
             target/ # Path to the build artifacts (typically 'target/' for Maven)
 
-
       # Static Code Analysis with Checkstyle
       - name: Static Code Analysis with Checkstyle
         run: |
@@ -56,7 +55,7 @@ jobs:
         run: |
           # Run JaCoCo report generation
             mvn jacoco:report
-            
+
       # Store code coverage reports
       - name: Archive Code Coverage Reports
         uses: actions/upload-artifact@v2
