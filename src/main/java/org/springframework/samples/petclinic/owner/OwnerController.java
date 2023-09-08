@@ -18,7 +18,6 @@ package org.springframework.samples.petclinic.owner;
 import java.util.List;
 import java.util.Map;
 
-import io.opentelemetry.instrumentation.annotations.WithSpan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -65,7 +64,6 @@ class OwnerController {
 		return ownerId == null ? new Owner() : this.owners.findById(ownerId);
 	}
 
-	@WithSpan
 	@GetMapping("/owners/new")
 	public String initCreationForm(Map<String, Object> model) {
 		Owner owner = new Owner();
@@ -83,14 +81,12 @@ class OwnerController {
 		return "redirect:/owners/" + owner.getId();
 	}
 
-	@WithSpan
 	@GetMapping("/owners/find")
 	public String initFindForm() {
 		return "owners/findOwners";
 	}
 
 
-	@WithSpan
 	@GetMapping("/owners")
 	public String processFindForm(@RequestParam(defaultValue = "1") int page, Owner owner, BindingResult result,
 			Model model) {
@@ -129,11 +125,9 @@ class OwnerController {
 
 	private String addPaginationModel(int page, Model model, Page<Owner> paginated) {
 		model.addAttribute("listOwners", paginated);
-		//List<Owner> listOwners = paginated.getContent();
 		model.addAttribute("currentPage", page);
 		model.addAttribute("totalPages", paginated.getTotalPages());
 		model.addAttribute("totalItems", paginated.getTotalElements());
-		//model.addAttribute("listOwners", listOwners);
 		model.addAttribute("listOwners",paginated);
 		return "owners/ownersList";
 	}
