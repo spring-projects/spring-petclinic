@@ -3,9 +3,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nop
+  name: springpet-clinic
   labels:
-    app: nop
+    app: springpet-clinic
 spec:
   minReadySeconds: 5
   replicas: 4
@@ -20,12 +20,12 @@ spec:
   template:
     metadata:
       labels:
-        app: nop
-      name: nop
+        app: springpet-clinic
+      name: springpet-clinic
     spec:
       containers:
-        - name: nop
-          image: spc-mvn-3.9.4:${BUILD_ID}
+        - name: springpet-clinic
+          image: spc-mvn-3.9.4:4
           ports:
             - containerPort: 8080
                  
@@ -33,14 +33,14 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: nop
+  name: springpet-clinic
 spec:
   selector:
-    app: nop
+    app: springpet-clinic
   type: ClusterIP
   ports:
     - protocol: TCP
-      name: nop
+      name: springpet-clinic
       port: 80
       targetPort: 8080 
   type: LoadBalancer     
