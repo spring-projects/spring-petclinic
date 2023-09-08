@@ -11,7 +11,7 @@ spec:
   replicas: 4
   selector:
     matchLabels:
-      app: nop
+      app: springpet-clinic
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: springpet-clinic
-          image: spc-mvn-3.9.4:4
+          image: spc-mvn-3.9.4:5
           ports:
             - containerPort: 8080
                  
