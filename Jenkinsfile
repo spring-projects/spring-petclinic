@@ -10,12 +10,12 @@ pipeline{
 
             }
         }
-        stage('artifact build'){
-          steps{
-            sh 'docker image build -t spc-mvn-3.9.4 .'
-            sh 'docker image list'
-          } 
-        } 
+        // stage('artifact build'){
+        //   steps{
+        //     sh 'docker image build -t spc-mvn-3.9.4 .'
+        //     sh 'docker image list'
+        //   } 
+        // } 
         
         stage('docker login'){
             steps{   
@@ -26,8 +26,8 @@ pipeline{
         }
         stage('docker push image '){
             steps{
-                // sh 'docker image build -t spc123 .'
-                sh 'docker image tag spc123 spc-mvn-3.9.4:${BUILD_ID}'
+                sh 'docker image build -t spc-mvn-3.9.4 .'
+                sh 'docker image tag spc-mvn-3.9.4:${BUILD_ID}'
                 sh 'docker push sridhar006/spc-mvn-3.9.4:${BUILD_ID}' 
                 
     }
