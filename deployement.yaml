@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: nop
-          image: spc-mvn:3.9.4:${BUILD_ID}
+          image: spc-mvn-3.9.4:${BUILD_ID}
           ports:
             - containerPort: 8080
                  
