@@ -10,12 +10,12 @@ pipeline{
 
             }
         }
-        // stage('artifact build'){
-        //   steps{
-        //     sh 'docker image build -t spc-3.9.4 .'
-        //     sh 'docker image list'
-        //   } 
-        // } 
+        stage('artifact build'){
+          steps{
+            sh 'docker image build -t spc-3.9.4 .'
+            sh 'docker image list'
+          } 
+        } 
         
         stage('docker login'){
             steps{   
@@ -26,8 +26,8 @@ pipeline{
         }
         stage('docker push image '){
             steps{
-                sh 'docker image build -t spc-3.9.4 .'
-                sh 'docker image tag spc-3.9.4 spc-3.9.4:${BUILD_ID}'
+                sh 'docker image build -t spc-1234.'
+                sh 'docker image tag spc-1234 spc-3.9.4:${BUILD_ID}'
                 sh 'docker push sridhar006/spc-3.9.4:${BUILD_ID}' 
                 
     }
