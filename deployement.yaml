@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: springpet-clinic
-          image: sridhar006/spc-3.9.4:14
+          image: sridhar006/spc-3.9.4:${BUILD_ID}
           ports:
             - containerPort: 8080
                  
