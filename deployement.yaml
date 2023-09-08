@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: nop
-          image: sridhar006/nginx
+          image: spc-jenkins
           ports:
             - containerPort: 8080
                  
