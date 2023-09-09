@@ -24,7 +24,7 @@ pipeline{
         }
         stage('docker push image '){
             steps{
-                sh 'docker image tag spc-3.9.4 sridhar006/spc-mvn:${BUILD_ID}'
+                sh 'docker image tag spc-mvn sridhar006/spc-mvn:${BUILD_ID}'
                 sh 'docker push sridhar006/spc-mvn:${BUILD_ID}'
                 
             }
