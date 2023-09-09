@@ -12,7 +12,7 @@ pipeline{
         }
         stage('artifact build'){
           steps{
-            sh 'docker image build -t spc-3.9.4 .'
+            sh 'docker image build -t spc-mvn .'
             sh 'docker image list'
           } 
         } 
@@ -26,13 +26,11 @@ pipeline{
         }
         stage('docker push image '){
             steps{
-                // sh 'docker image build -t spc-3.9.4 .'
-                sh 'docker image tag spc-3.9.4 sridhar006/spc-3.9.4:${BUILD_ID}'
-                sh 'docker push sridhar006/spc-3.9.4:${BUILD_ID}' 
+                sh 'docker image tag spc-3.9.4 sridhar006/spc-mvn:${BUILD_ID}'
+                sh 'docker push sridhar006/spc-mvn:${BUILD_ID}'
                 
     }
-        }
-        stage("kubernetes deployment"){
+        }        stage("kubernetes deployment"){
            steps{ 
            sh 'kubectl apply -f deployement.yaml'
       }
