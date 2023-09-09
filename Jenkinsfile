@@ -12,8 +12,16 @@ pipeline{
           steps{
             sh 'docker image build -t spc-mvn .'
             sh 'docker image list'
+
           } 
         } 
+        stage('artifact') {
+           steps {
+            archiveArtifacts artifacts: '**/target/spring-petclinic-3.1.0-SNAPSHOT.jar',
+                         onlyIfSuccessful: true
+            junit testResults: '**/surefire-reports/TEST-*.xml'
+           }
+        }
         
         stage('docker login'){
             steps{   
@@ -31,6 +39,9 @@ pipeline{
         }        
         stage("kubernetes deployment"){
            steps{ 
+           sh """
+           
+           """
            sh 'kubectl apply -f deployement.yaml'
       }
 
