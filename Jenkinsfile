@@ -17,6 +17,7 @@ pipeline{
         // }    
         stage('Build & SonarQube Scan') {
             steps {
+                sh 'ls'
                 sh 'cd spring-petclinic-jenkins'
                 sh 'mvn --version'
                 sh 'mvn package'
