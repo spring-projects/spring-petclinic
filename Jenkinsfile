@@ -10,21 +10,31 @@ pipeline{
                        branch: 'spcbranch'
             }
         }
-        // stage('nexus'){
-        //     steps{
-        //         nexusArtifactUploader artifacts: [[artifactId: 'spring-petclinic', classifier: '', file: '/home/ubuntu/spring-petclinic/target/spring-petclinic-3.1.0-SNAPSHOT.jar', type: 'jar']], credentialsId: 'nexus', groupId: 'org.springframework.samples', nexusUrl: '54.237.114.152:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-snapshots', version: '3.1.0-SNAPSHOT'
-        //     }
-        // }    
         stage('Build & SonarQube Scan') {
             steps {
                 sh 'ls'
                 // sh 'cd spring-petclinic-jenkins'
                 sh 'mvn --version'
                 sh 'mvn package'
-            //   withSonarQubeEnv('SONAR_CLOUD') {
-            //         sh 'mvn clean install sonar:sonar -Dsonar.organization=qtdevopssohail123 -Dsonar.token=8c15adacf466a5ccd721f4f7cdb2c4bf17df84ab -Dsonar.projectKey=qtdevopssohail123'
-               }
             }
+        }
+        stage('nexus'){
+            steps{
+                // nexusArtifactUploader artifacts: [[artifactId: 'spring-petclinic', classifier: '', file: '/home/ubuntu/spring-petclinic/target/spring-petclinic-3.1.0-SNAPSHOT.jar', type: 'jar']], credentialsId: 'nexus', groupId: 'org.springframework.samples', nexusUrl: '54.237.114.152:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-snapshots', version: '3.1.0-SNAPSHOT'
+                nexusArtifactUploader credentialsId: 'nexus', groupId: 'org.springframework.samples', nexusUrl: '100.26.252.177:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-snapshots', version: '3.1.0-SNAPSHOT'
+            }
+
+        }    
+        // stage('Build & SonarQube Scan') {
+        //     steps {
+        //         sh 'ls'
+        //         // sh 'cd spring-petclinic-jenkins'
+        //         sh 'mvn --version'
+        //         sh 'mvn package'
+        //     //   withSonarQubeEnv('SONAR_CLOUD') {
+        //     //         sh 'mvn clean install sonar:sonar -Dsonar.organization=qtdevopssohail123 -Dsonar.token=8c15adacf466a5ccd721f4f7cdb2c4bf17df84ab -Dsonar.projectKey=qtdevopssohail123'
+        //        }
+        //     }
         }
     }
 
