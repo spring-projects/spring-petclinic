@@ -21,7 +21,6 @@ pipeline{
         stage('SonarQube Scan') {
             steps {
                 withSonarQubeEnv('SONAR_CLOUD') {
-                // sh 'mvn clean package sonar:sonar -Dsonar.organization=springpetclinic -Dsonar.token=94fa8a4b44707c54a1aae9c4894e0cd8bf0d18d6 -Dsonar.projectKey=sridhardevops006'
             sh 'mvn clean package sonar:sonar -Dsonar.organization=sridhardevops    -Dsonar.token=94fa8a4b44707c54a1aae9c4894e0cd8bf0d18d6 -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectKey=sridhardevops006'
 
             }
@@ -35,7 +34,14 @@ pipeline{
                                                     
             }
 
-        }    
+        }  
+        stage('artifact') {
+           steps {
+            archiveArtifacts artifacts: '**/target/spring-petclinic-3.1.0-SNAPSHOT.jar',
+                         onlyIfSuccessful: true
+            junit testResults: '**/surefire-reports/TEST-*.xml'
+           }
+        }  
         
         }
     }
