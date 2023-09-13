@@ -6,8 +6,7 @@ pipeline{
     stages{
         stage('VCS'){
             steps{
-                   git credentialsId: 'GIT_HUB_CREDENTIALS',
-                       url: 'https://github.com/Cloud-and-devops-notes/spring-petclinic-jenkins.git',
+                   git url: 'https://github.com/Cloud-and-devops-notes/spring-petclinic-jenkins.git',
                        branch: 'spcbranch'
             }
         }
