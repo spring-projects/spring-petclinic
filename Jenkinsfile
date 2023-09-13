@@ -22,7 +22,7 @@ pipeline{
             steps {
                 withSonarQubeEnv('SONAR_CLOUD') {
                 // sh 'mvn clean package sonar:sonar -Dsonar.organization=springpetclinic -Dsonar.token=94fa8a4b44707c54a1aae9c4894e0cd8bf0d18d6 -Dsonar.projectKey=sridhardevops006'
-            sh 'mvn clean package sonar:sonar -Dsonar.organization=springpetclinic     -Dsonar.token=94fa8a4b44707c54a1aae9c4894e0cd8bf0d18d6 -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectKey=springpetclinic_sridhardevops006'
+            sh 'mvn clean package sonar:sonar -Dsonar.organization=sridhardevops    -Dsonar.token=94fa8a4b44707c54a1aae9c4894e0cd8bf0d18d6 -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectKey=sridhardevops006'
 
             }
 
