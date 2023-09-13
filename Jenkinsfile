@@ -20,8 +20,8 @@ pipeline{
         }
         stage('nexus'){
             steps{
-                // nexusArtifactUploader artifacts: [[artifactId: 'spring-petclinic', classifier: '', file: '/home/ubuntu/spring-petclinic/target/spring-petclinic-3.1.0-SNAPSHOT.jar', type: 'jar']], credentialsId: 'nexus', groupId: 'org.springframework.samples', nexusUrl: '54.237.114.152:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-snapshots', version: '3.1.0-SNAPSHOT'
-                nexusArtifactUploader credentialsId: 'nexus', groupId: 'org.springframework.samples', nexusUrl: '100.26.252.177:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-snapshots', version: '3.1.0-SNAPSHOT'
+                nexusArtifactUploader artifacts: [[artifactId: 'spring-petclinic', classifier: '', file: '/home/ubuntu/spring-petclinic/target/spring-petclinic-3.1.0-SNAPSHOT.jar', type: 'jar']], credentialsId: 'nexus', groupId: 'org.springframework.samples', nexusUrl: '100.26.252.177:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-snapshots', version: '3.1.0-SNAPSHOT'
+                                                    // nexusArtifactUploader credentialsId: 'nexus', groupId: 'org.springframework.samples', nexusUrl: '100.26.252.177:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-snapshots', version: '3.1.0-SNAPSHOT'
             }
 
         }    
