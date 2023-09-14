@@ -13,7 +13,6 @@ pipeline{
         stage('Build ') {
             steps {
                 sh 'ls'
-                // sh 'cd spring-petclinic-jenkins'
                 sh 'mvn --version'
                 sh 'mvn package'
             }
@@ -24,10 +23,8 @@ pipeline{
             sh 'mvn clean package sonar:sonar -Dsonar.organization=sridhardevops    -Dsonar.token=94fa8a4b44707c54a1aae9c4894e0cd8bf0d18d6 -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectKey=sridhardevops006'
 
             }
-
         }
         }
-
         stage('nexus'){
             steps{
                 nexusArtifactUploader artifacts: [[artifactId: 'spring-petclinic', classifier: '', file: '/home/ubuntu/workspace/spc-nexus/target/spring-petclinic-3.1.0-SNAPSHOT.jar', type: 'jar']], credentialsId: 'nexus', groupId: 'org.springframework.samples', nexusUrl: '100.24.206.104:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-snapshots', version: '3.1.0-SNAPSHOT'
@@ -49,10 +46,9 @@ pipeline{
 
           } 
         } 
-            
         stage('docker login'){
             steps{   
-        withCredentials([string(credentialsId: 'DOCKER_HUB_PASSWORD',variable: 'PASSWORD')]) {
+        withCredentials([string(credentialsId: 'DOCKER_HUB_PASSWORD1',variable: 'PASSWORD')]) {
          sh 'docker login -u sridhar006 -p $PASSWORD'  
          }
             }
