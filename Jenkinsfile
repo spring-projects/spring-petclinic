@@ -30,7 +30,7 @@ pipeline{
 
         stage('nexus'){
             steps{
-                nexusArtifactUploader artifacts: [[artifactId: 'spring-petclinic', classifier: '', file: '/home/ubuntu/workspace/spc-nexus/target/spring-petclinic-3.1.0-SNAPSHOT.jar', type: 'jar']], credentialsId: 'nexus', groupId: 'org.springframework.samples', nexusUrl: '100.25.204.191:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-snapshots', version: '3.1.0-SNAPSHOT'
+                nexusArtifactUploader artifacts: [[artifactId: 'spring-petclinic', classifier: '', file: '/home/ubuntu/workspace/spc-nexus/target/spring-petclinic-3.1.0-SNAPSHOT.jar', type: 'jar']], credentialsId: 'nexus', groupId: 'org.springframework.samples', nexusUrl: '100.24.206.104:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-snapshots', version: '3.1.0-SNAPSHOT'
                                                     
             }
 
@@ -41,10 +41,39 @@ pipeline{
                          onlyIfSuccessful: true
             junit testResults: '**/surefire-reports/TEST-*.xml'
            }
-        }  
-        
+        } 
+        stage('artifact build'){
+          steps{
+            sh 'docker image build -t spc-mvn .'
+            sh 'docker image list'
+
+          } 
+        } 
+            
+        stage('docker login'){
+            steps{   
+        withCredentials([string(credentialsId: 'DOCKER_HUB_PASSWORD',variable: 'PASSWORD')]) {
+         sh 'docker login -u sridhar006 -p $PASSWORD'  
+         }
+            }
         }
-    }
+        stage('docker push image '){
+            steps{
+                sh 'docker image tag spc-mvn sridhar006/spc-mvn:${BUILD_ID}'
+                sh 'docker push sridhar006/spc-mvn:${BUILD_ID}'
+                
+            }
+        }        
+        // stage("kubernetes deployment"){
+        //    steps{ 
+        //   sh 'kubectl apply -f deployement.yaml'
+      }
+
+      }  
+ 
+        
+    
+    
 
 
 
