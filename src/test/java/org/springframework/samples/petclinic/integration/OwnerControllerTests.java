@@ -73,7 +73,6 @@ public class OwnerControllerTests {
 
 		Owner owner = CreateOwner();
 
-
 		String newPetName = faker.dog().name();
 		given().contentType("multipart/form-data")
 			.multiPart("id", "")
@@ -85,12 +84,8 @@ public class OwnerControllerTests {
 			.then()
 			.statusCode(Matchers.not(Matchers.greaterThan(499)));
 
-
-		 var updatedOwner = ownerRepository.findById(owner.getId());
-		 assertThat(updatedOwner.getPets())
-		 .hasSize(2)
-		 .extracting(Pet::getName)
-		 .contains(newPetName);
+		var updatedOwner = ownerRepository.findById(owner.getId());
+		assertThat(updatedOwner.getPets()).hasSize(2).extracting(Pet::getName).contains(newPetName);
 
 	}
 
@@ -99,18 +94,15 @@ public class OwnerControllerTests {
 
 		Owner owner = CreateOwner();
 
-		 var ownerLinkMatcher =
-		 String.format("**.findAll { node -> node.@href=='/owners/%s'}",
-		 owner.getId());
+		var ownerLinkMatcher = String.format("**.findAll { node -> node.@href=='/owners/%s'}", owner.getId());
 
-		 given()
-		 .contentType(ContentType.JSON)
-		 .when()
-		 .get("/owners")
-		 .then()
-		 .contentType(ContentType.HTML)
-		 .statusCode(200)
-		 .body(ownerLinkMatcher,Matchers.notNullValue());
+		given().contentType(ContentType.JSON)
+			.when()
+			.get("/owners")
+			.then()
+			.contentType(ContentType.HTML)
+			.statusCode(200)
+			.body(ownerLinkMatcher, Matchers.notNullValue());
 
 	}
 

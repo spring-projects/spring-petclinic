@@ -15,29 +15,24 @@
  */
 package org.springframework.samples.petclinic.owner;
 
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import io.opentelemetry.instrumentation.annotations.WithSpan;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.samples.petclinic.domain.OwnerValidation;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import jakarta.validation.Valid;
+import java.net.URI;
+import java.util.List;
+import java.util.Map;
 
 import static io.opentelemetry.api.GlobalOpenTelemetry.getTracer;
 
@@ -56,7 +51,6 @@ class OwnerController {
 
 	private OwnerValidation validator;
 
-
 	public OwnerController(OwnerRepository clinicService) {
 		this.owners = clinicService;
 		var otelTracer = getTracer("OwnerController");
@@ -64,17 +58,26 @@ class OwnerController {
 
 	}
 
-
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
 		dataBinder.setDisallowedFields("id");
 	}
 
+	
 	@ModelAttribute("owner")
 	public Owner findOwner(@PathVariable(name = "ownerId", required = false) Integer ownerId) {
 		return ownerId == null ? new Owner() : this.owners.findById(ownerId);
 	}
 
+//	@ExceptionHandler(NullPointerException.class)
+//	@ResponseStatus(HttpStatus.BAD_REQUEST)
+//	public ErrorResponse onIllegaArgumentException(RuntimeException npe){
+//		return ErrorResponse.builder(npe,HttpStatus.NOT_FOUND, npe.getMessage())
+//			.title("Not found")
+//			.type(URI.create("https://api.bookmarks.com/errors/not-found"))
+//			.build();
+//
+//	}
 
 	@GetMapping("/owners/new")
 	public String initCreationForm(Map<String, Object> model) {
@@ -85,6 +88,8 @@ class OwnerController {
 		model.put("owner", owner);
 		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 	}
+
+
 
 	@PostMapping("/owners/new")
 	public String processCreationForm(@Valid Owner owner, BindingResult result) {
@@ -105,12 +110,14 @@ class OwnerController {
 		return "owners/findOwners";
 	}
 
+
+
 	@GetMapping("/owners")
 	public String processFindForm(@RequestParam(defaultValue = "1") int page, Owner owner, BindingResult result,
 			Model model) {
 		validator.ValidateUserAccess("admin", "pwd", "fullaccess");
 
-		// allow parameterless GET request	 for /owners to return all records
+		// allow parameterless GET request for /owners to return all records
 		if (owner.getLastName() == null) {
 			owner.setLastName(""); // empty string signifies broadest possible search
 		}

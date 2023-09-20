@@ -4,28 +4,32 @@ receivers:
       grpc:
       http:
 
+extensions:
+  basicauth/client:
+    client_auth: 
+      username: 738734
+      password: glc_eyJvIjoiOTQzMDk3IiwibiI6Im90bHAtb3RscCIsImsiOiJEWnhpNTFsZVZWMHJYcTg5MTVqODJOOEgiLCJtIjp7InIiOiJ1cyJ9fQ==
+
 exporters:
-  jaeger:
-    endpoint: "jaeger:14250"
+  otlphttp/grafana:
+    endpoint: https://otlp-gateway-prod-us-east-0.grafana.net/otlp
+    auth:
+      authenticator: basicauth/client
     tls:
-      insecure: true
+      insecure: false
+
   otlp/digma:
     endpoint: ${OTLP_EXPORTER_DIGMA_COLLECTOR_API}
     tls:
       insecure: true
-  prometheus:
-    endpoint: "0.0.0.0:8889"
-    
+
 processors:
   batch:
 
 service:
+  extensions: [basicauth/client]
   pipelines:
     traces:
       receivers: [otlp]
-      exporters: [otlp/digma, jaeger]
-      processors: [batch]
-    metrics:
-      receivers: [otlp]
-      exporters: [prometheus]
+      exporters: [otlphttp/grafana,otlp/digma]
       processors: [batch]

@@ -15,10 +15,13 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import java.time.Instant;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.jobrunr.scheduling.BackgroundJob;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.domain.PetVaccinationStatusService;
@@ -47,6 +50,7 @@ class PetController implements InitializingBean {
 
 	private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = "pets/createOrUpdatePetForm";
 
+
 	private final OwnerRepository owners;
 
 	@Autowired
@@ -54,11 +58,9 @@ class PetController implements InitializingBean {
 
 	private ExecutorService executorService;
 
-
 	public PetController(OwnerRepository owners) {
 		this.owners = owners;
 	}
-
 
 	@ModelAttribute("types")
 	public Collection<PetType> populatePetTypes() {
@@ -87,7 +89,7 @@ class PetController implements InitializingBean {
 	}
 
 	@GetMapping("/pets/new")
-	public String	initCreationForm(Owner owner, ModelMap model) {
+	public String initCreationForm(Owner owner, ModelMap model) {
 		Pet pet = new Pet();
 		owner.addPet(pet);
 		model.put("pet", pet);
@@ -106,12 +108,13 @@ class PetController implements InitializingBean {
 			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 		}
 
-
 		this.owners.save(owner);
-		this.executorService.submit(() -> {
-			petVaccinationStatus.UpdateVaccinationStatus(owner.getPets().toArray(Pet[]::new));
-		});
+		var pets = owner.getPets().toArray(Pet[]::new);
+//		executorService.submit(
+//				() -> petVaccinationStatus.updateVaccinationStatus(pets));
 
+		var petIds = owner.getPets().stream().map(Pet::getId).toList();
+		BackgroundJob.enqueue(() -> petVaccinationStatus.updateVaccinationStatus(petIds) );
 		return "redirect:/owners/{ownerId}";
 	}
 
@@ -139,4 +142,5 @@ class PetController implements InitializingBean {
 		this.executorService = Executors.newFixedThreadPool(5);
 
 	}
+
 }
