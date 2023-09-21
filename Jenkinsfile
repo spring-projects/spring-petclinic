@@ -27,7 +27,15 @@ pipeline{
          agent any
           steps {
               echo "========executing docker build========"
-           sh 'docker build -t amar1doc/petclinic:latest .'
+              sh 'docker build -t amar1doc/petclinic:latest .'
+
+              // with dockerhub creds to push to registory
+              //  script{
+              //     withDockerRegistry(credentialsId: 'dockerhub') {
+              //       sh 'docker build -t amar1doc/petclinic:${BUILD_NUMBER} .'
+              //       sh 'docker push amar1doc/petclinic:${BUILD_NUMBER}'
+              //    }
+              // }
             }
     }
     }
