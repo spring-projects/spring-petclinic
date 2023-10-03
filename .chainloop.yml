@@ -1,0 +1,3 @@
+attestation:
+  - name: binary
+    path: artifacts/spring-petclinic-*.jar

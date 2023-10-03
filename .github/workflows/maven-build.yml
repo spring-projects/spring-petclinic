@@ -20,10 +20,26 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK ${{matrix.java}}
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           java-version: ${{matrix.java}}
           distribution: 'adopt'
           cache: maven
       - name: Build with Maven Wrapper
         run: ./mvnw -B package
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: artifacts
+          path: target/*.jar
+
+  chainloop:
+    name: Chainloop
+    uses: chainloop-dev/labs/.github/workflows/chainloop.yml@a75dff2ef342a1e5c5e1ec5c42fb99f3d1bc03cb
+    needs: build
+    # with:
+    #   contract_revision: 3
+    secrets:
+      api_token: ${{ secrets.CHAINLOOP_ROBOT_ACCOUNT }}
+      signing_key: ${{ secrets.PRIVATE_KEY }}
+      signing_key_password: ${{ secrets.PRIVATE_KEY_PASSWORD }}
