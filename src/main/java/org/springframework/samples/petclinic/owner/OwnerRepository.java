@@ -64,7 +64,6 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
 	@Query("SELECT DISTINCT owner FROM Owner owner LEFT JOIN FETCH owner.pets LEFT JOIN FETCH pets.visits")
 	List<Owner> findAllWithPetsAndVisits();
 
-
 	/**
 	 * Retrieve an {@link Owner} from the data store by id.
 	 * @param id the id to search for

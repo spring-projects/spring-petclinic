@@ -86,7 +86,6 @@ class OwnerController {
 		return "owners/findOwners";
 	}
 
-
 	@GetMapping("/owners")
 	public String processFindForm(@RequestParam(defaultValue = "1") int page, Owner owner, BindingResult result,
 			Model model) {
@@ -99,7 +98,7 @@ class OwnerController {
 		}
 
 		// empty owner search for all records without n+1 queries
-		if (StringUtils.isEmpty(owner.getLastName())){
+		if (StringUtils.isEmpty(owner.getLastName())) {
 			List<Owner> ownerList = owners.findAllWithPetsAndVisits();
 			Page<Owner> ownerPageNP1 = new PageImpl<>(ownerList);
 			return addPaginationModel(0, model, ownerPageNP1);
@@ -128,7 +127,7 @@ class OwnerController {
 		model.addAttribute("currentPage", page);
 		model.addAttribute("totalPages", paginated.getTotalPages());
 		model.addAttribute("totalItems", paginated.getTotalElements());
-		model.addAttribute("listOwners",paginated);
+		model.addAttribute("listOwners", paginated);
 		return "owners/ownersList";
 	}
 
