@@ -27,3 +27,14 @@ jobs:
           cache: maven
       - name: Build with Maven Wrapper
         run: ./mvnw -B package
+
+  chainloop:
+    name: Chainloop
+    uses: chainloop-dev/labs/.github/workflows/chainloop.yml@dev
+    needs: build
+    # with:
+    #   contract_revision: 3
+    secrets:
+      api_token: ${{ secrets.CHAINLOOP_ROBOT_ACCOUNT }}
+      signing_key: ${{ secrets.PRIVATE_KEY }}
+      signing_key_password: ${{ secrets.PRIVATE_KEY_PASSWORD }}
