@@ -12,9 +12,13 @@ extensions:
 
 exporters:
   otlp/jaeger:
-    endpoint: "jaeger:4320"
+    endpoint: "jaeger:4317"
     tls:
       insecure: true
+
+  prometheus:
+    endpoint: "0.0.0.0:8889"
+
   otlphttp/grafana:
     endpoint: https://otlp-gateway-prod-us-east-0.grafana.net/otlp
     auth:
@@ -35,5 +39,9 @@ service:
   pipelines:
     traces:
       receivers: [otlp]
-      exporters: [otlphttp/grafana,otlp/digma,otlp/jaeger]
+      exporters: [otlphttp/grafana,otlp/jaeger]
+      processors: [batch]
+    metrics:
+      receivers: [otlp]
+      exporters: [prometheus]
       processors: [batch]

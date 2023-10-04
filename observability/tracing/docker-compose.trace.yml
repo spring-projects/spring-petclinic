@@ -6,6 +6,8 @@ services:
     container_name: jaeger
     volumes:
       - badger_data:/badger
+    expose:
+      - "4317"
     ports:
       - "16686:16686"
       - "14250"
@@ -17,13 +19,35 @@ services:
       - BADGER_DIRECTORY_VALUE=/badger/data
       - BADGER_DIRECTORY_KEY=/badger/key
 
+  grafana:
+    container_name: grafana
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    image: grafana/grafana-oss:latest
+    ports:
+      - 3000:3000
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus.yaml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      
   collector:
     image: otel/opentelemetry-collector-contrib
     command: ["--config=/otel-local-config.yaml"]
     volumes:
       - ./collector-config.yaml:/otel-local-config.yaml
     ports:
-      - "0.0.0.0:4318:4318" # HTTP OTLP receiver
+      - "0.0.0.0:4317:4317" # GRPC OTLP receiver
       - "0.0.0.0:8889:8889" # METRICS
     extra_hosts:
       - "host.docker.internal:host-gateway"
