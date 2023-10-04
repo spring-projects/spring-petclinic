@@ -38,24 +38,12 @@ public class OwnerControllerTests {
 	@LocalServerPort
 	private Integer port;
 
-	@BeforeAll
-	static void beforeAll() {
-		postgres.start();
-	}
-
-	@AfterAll
-	static void afterAll() {
-		postgres.stop();
-	}
-
 	@Container
 	@ServiceConnection
 	static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15-alpine");
 
 	@BeforeEach
 	void setUp() {
-		// ownerRepository.deleteAll();
-
 		RestAssured.baseURI = "http://localhost:" + port;
 	}
 

@@ -11,6 +11,10 @@ extensions:
       password: glc_eyJvIjoiOTQzMDk3IiwibiI6Im90bHAtb3RscCIsImsiOiJEWnhpNTFsZVZWMHJYcTg5MTVqODJOOEgiLCJtIjp7InIiOiJ1cyJ9fQ==
 
 exporters:
+  otlp/jaeger:
+    endpoint: "jaeger:4320"
+    tls:
+      insecure: true
   otlphttp/grafana:
     endpoint: https://otlp-gateway-prod-us-east-0.grafana.net/otlp
     auth:
@@ -31,5 +35,5 @@ service:
   pipelines:
     traces:
       receivers: [otlp]
-      exporters: [otlphttp/grafana,otlp/digma]
+      exporters: [otlphttp/grafana,otlp/digma,otlp/jaeger]
       processors: [batch]

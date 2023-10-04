@@ -63,21 +63,20 @@ class OwnerController {
 		dataBinder.setDisallowedFields("id");
 	}
 
-	
 	@ModelAttribute("owner")
 	public Owner findOwner(@PathVariable(name = "ownerId", required = false) Integer ownerId) {
 		return ownerId == null ? new Owner() : this.owners.findById(ownerId);
 	}
 
-//	@ExceptionHandler(NullPointerException.class)
-//	@ResponseStatus(HttpStatus.BAD_REQUEST)
-//	public ErrorResponse onIllegaArgumentException(RuntimeException npe){
-//		return ErrorResponse.builder(npe,HttpStatus.NOT_FOUND, npe.getMessage())
-//			.title("Not found")
-//			.type(URI.create("https://api.bookmarks.com/errors/not-found"))
-//			.build();
-//
-//	}
+	// @ExceptionHandler(NullPointerException.class)
+	// @ResponseStatus(HttpStatus.BAD_REQUEST)
+	// public ErrorResponse onIllegaArgumentException(RuntimeException npe){
+	// return ErrorResponse.builder(npe,HttpStatus.NOT_FOUND, npe.getMessage())
+	// .title("Not found")
+	// .type(URI.create("https://api.bookmarks.com/errors/not-found"))
+	// .build();
+	//
+	// }
 
 	@GetMapping("/owners/new")
 	public String initCreationForm(Map<String, Object> model) {
@@ -89,15 +88,13 @@ class OwnerController {
 		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 	}
 
-
-
 	@PostMapping("/owners/new")
 	public String processCreationForm(@Valid Owner owner, BindingResult result) {
 		if (result.hasErrors()) {
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 		}
 		validator.ValidateOwnerWithExternalService(owner);
-		validator.PerformValidationFlow(owner);
+		// validator.PerformValidationFlow(owner);
 
 		validator.checkOwnerValidity(owner);
 		this.owners.save(owner);
@@ -109,8 +106,6 @@ class OwnerController {
 	public String initFindForm() {
 		return "owners/findOwners";
 	}
-
-
 
 	@GetMapping("/owners")
 	public String processFindForm(@RequestParam(defaultValue = "1") int page, Owner owner, BindingResult result,

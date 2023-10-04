@@ -1,6 +1,7 @@
 package org.springframework.samples.petclinic.domain;
 
 import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,19 +20,24 @@ import java.util.List;
 @Component
 public class PetVaccinationStatusService {
 
+	public record UpdateVaccineStatusRequest(int ownerId, int petId) {
+
+	}
+
 	@Autowired
 	private OwnerRepository ownerRepositorys;
 
 	@Autowired
 	private PetVaccinationService adapter;
 
-
 	@WithSpan
-	public void updateVaccinationStatus(List<Integer> petIds) {
+	public void updateVaccinationStatus(List<UpdateVaccineStatusRequest> updateVaccineStatusRequests) {
 
 
-		for (Integer petId : petIds) {
-			var pet = ownerRepositorys.findById(petId).getPet(petId);
+		for (UpdateVaccineStatusRequest request : updateVaccineStatusRequests) {
+			var owner = ownerRepositorys.findById(request.ownerId);
+
+			var pet = owner.getPet(request.petId);
 
 			try {
 				var vaccinationRecords = this.adapter.allVaccines();

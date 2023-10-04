@@ -15,15 +15,10 @@ public class PasswordUtils {
 		return true;
 	}
 
-	@WithSpan
 	public String encPswd(String pswd) {
-		try {
-			Thread.sleep(300);
-		}
-		catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		}
+
 		return "";
+
 	}
 
 }

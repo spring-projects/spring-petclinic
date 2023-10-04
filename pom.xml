@@ -40,14 +40,10 @@
   <dependencies>
     <dependency>
       <groupId>org.jobrunr</groupId>
-      <artifactId>jobrunr-spring-boot-3-starter</artifactId>
-      <version>6.3.0</version>
+      <artifactId>jobrunr-pro-spring-boot-3-starter</artifactId>
+      <version>6.3.1</version>
     </dependency>
     <!-- Spring and Spring Boot dependencies -->
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-actuator</artifactId>
-    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-cache</artifactId>
@@ -111,11 +107,6 @@
       <artifactId>postgresql</artifactId>
       <scope>runtime</scope>
     </dependency>
-    <dependency>
-      <groupId>io.micrometer</groupId>
-      <artifactId>micrometer-registry-prometheus</artifactId>
-      <scope>runtime</scope>
-    </dependency>
     <!-- caching -->
     <dependency>
       <groupId>javax.cache</groupId>
@@ -168,6 +159,22 @@
       <artifactId>android-json</artifactId>
       <version>0.0.20131108.vaadin1</version>
     </dependency>
+      <dependency>
+          <groupId>io.opentelemetry</groupId>
+          <artifactId>opentelemetry-exporter-otlp</artifactId>
+          <version>1.26.0</version>
+      </dependency>
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-tracing-bridge-otel</artifactId>
+      <version>1.1.2</version>
+    </dependency>
+    <dependency>
+      <groupId>io.github.digma-ai</groupId>
+      <artifactId>digma-spring-boot-micrometer-tracing-autoconf</artifactId>
+      <version>0.7.4</version>
+    </dependency>
+
   </dependencies>
 
   <dependencyManagement>
@@ -312,6 +319,10 @@
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
+    </repository>
+    <repository>
+      <id>JobRunrPro</id>
+      <url>https://repo.jobrunr.io/private-trials-202310/</url>
     </repository>
   </repositories>
 

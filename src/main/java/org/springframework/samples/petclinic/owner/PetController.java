@@ -18,6 +18,7 @@ package org.springframework.samples.petclinic.owner;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -49,7 +50,6 @@ import jakarta.validation.Valid;
 class PetController implements InitializingBean {
 
 	private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = "pets/createOrUpdatePetForm";
-
 
 	private final OwnerRepository owners;
 
@@ -97,7 +97,8 @@ class PetController implements InitializingBean {
 	}
 
 	@PostMapping("/pets/new")
-	public String processCreationForm(Owner owner, @Valid Pet pet, BindingResult result, ModelMap model) {
+	public String processCreationForm(Owner owner, @Valid Pet pet, BindingResult result, ModelMap model)
+			throws ExecutionException, InterruptedException {
 		if (StringUtils.hasLength(pet.getName()) && pet.isNew() && owner.getPet(pet.getName(), true) != null) {
 			result.rejectValue("name", "duplicate", "already exists");
 		}
@@ -109,12 +110,18 @@ class PetController implements InitializingBean {
 		}
 
 		this.owners.save(owner);
-		var pets = owner.getPets().toArray(Pet[]::new);
-//		executorService.submit(
-//				() -> petVaccinationStatus.updateVaccinationStatus(pets));
+		// var pets = owner.getPets().toArray(Pet[]::new);
 
-		var petIds = owner.getPets().stream().map(Pet::getId).toList();
-		BackgroundJob.enqueue(() -> petVaccinationStatus.updateVaccinationStatus(petIds) );
+		var petRequests = owner.getPets()
+			.stream()
+			.map(x -> new PetVaccinationStatusService.UpdateVaccineStatusRequest(owner.getId(), x.getId()))
+			.toList();
+//		 executorService.submit(() ->
+//		 petVaccinationStatus.updateVaccinationStatus(petRequests)).get();
+		executorService.submit(() -> petVaccinationStatus.updateVaccinationStatus(petRequests));
+//
+//		BackgroundJob.enqueue(() ->
+//		    petVaccinationStatus.updateVaccinationStatus(petRequests));
 		return "redirect:/owners/{ownerId}";
 	}
 
