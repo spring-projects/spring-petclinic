@@ -1,3 +1,4 @@
+# defines files to be added to the attestation
 attestation:
   - name: binary
     path: artifacts/spring-petclinic-*.jar
