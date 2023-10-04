@@ -34,12 +34,36 @@ jobs:
           name: artifacts
           path: target/*.jar
 
+  collect-metadata:
+    runs-on: ubuntu-latest
+    name: "Security and Compliance Checks"
+    needs: build
+    steps:
+      - name: Download all workflow run artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Generate metadata
+        run: |
+          mkdir -p metadata
+
+      - uses: anchore/sbom-action@v0
+        with:
+          file: artifacts/*.jar
+          format: cyclonedx-json
+          output-file: ./metadata/sbom.cyclonedx.json
+          upload-artifact: false
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: metadata
+          path: metadata/*
+
   # Chainloop integration
   # will run only if the build job is successful
   chainloop:
     name: Chainloop
     uses: chainloop-dev/labs/.github/workflows/chainloop.yml@a75dff2ef342a1e5c5e1ec5c42fb99f3d1bc03cb
-    needs: build
+    needs: collect-metadata
     # with:
     #   contract_revision: 3
     secrets:

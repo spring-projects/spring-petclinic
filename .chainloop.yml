@@ -2,3 +2,5 @@
 attestation:
   - name: binary
     path: artifacts/spring-petclinic-*.jar
+  - name: sbom
+    path: metadata/sbom.cyclonedx.json
