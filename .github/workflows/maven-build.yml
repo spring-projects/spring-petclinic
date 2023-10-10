@@ -36,7 +36,7 @@ jobs:
 
   collect-metadata:
     runs-on: ubuntu-latest
-    name: "Security and Compliance Checks"
+    name: Generate metadata
     needs: build
     steps:
       - name: Download all workflow run artifacts
