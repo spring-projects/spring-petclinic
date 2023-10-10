@@ -57,3 +57,15 @@ jobs:
         with:
           name: metadata
           path: metadata/*
+
+  # Send metadata to Chainloop
+  chainloop:
+    name: Chainloop
+    uses: chainloop-dev/labs/.github/workflows/chainloop.yml@a75dff2ef342a1e5c5e1ec5c42fb99f3d1bc03cb
+    needs: collect-metadata
+    with:
+      contract_revision: 2
+    secrets:
+      api_token: ${{ secrets.CHAINLOOP_ROBOT_ACCOUNT }}
+      signing_key: ${{ secrets.PRIVATE_KEY }}
+      signing_key_password: ${{ secrets.PRIVATE_KEY_PASSWORD }}
