@@ -23,5 +23,19 @@ pipeline {
                       allowEmptyResults: false
             }
         }
+        
+        stage('Stash') {
+            steps {
+                stash name: 'artifact',
+                      includes: '**/target/*.jar'
+            }
+        }
+        
+        stage('Unstash') {
+            agent { label 'JDK8' }
+            steps {
+                unstash name: 'artifact'
+            }
+        }
     }
 }
