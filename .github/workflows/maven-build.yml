@@ -73,7 +73,7 @@ jobs:
 
       - name: Scan for vulnerabilities
         run:
-          jf scan
+          jf scan *
           
       - name: Publish Build info With JFrog CLI
         env:
