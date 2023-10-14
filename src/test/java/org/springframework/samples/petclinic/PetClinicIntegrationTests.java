@@ -56,6 +56,10 @@ public class PetClinicIntegrationTests {
 		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
 
+	@Test
+	void testNewIssue() {
+		assertThat(1).isLessThan(2);
+	}
 	public static void main(String[] args) {
 		SpringApplication.run(PetClinicApplication.class, args);
 	}
