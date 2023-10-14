@@ -33,3 +33,8 @@ jobs:
 
       - name: Build the Maven container image
         run: ./mvnw spring-boot:build-image
+
+      # I add this step for debug. 
+      # My local Linux laptop uses podman rather than docker, so this is a useful debug step.
+      - name: List all the container images on the runner 
+        run: docker image list
