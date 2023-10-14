@@ -35,6 +35,9 @@ jobs:
       - name: Build with Maven Wrapper
         run: ./mvnw -B package
 
+      - name: Validate Maven dependencies
+        run: mvn dependency:analyze
+
       - name: Run Maven tests
         run: mvn test
 
@@ -67,6 +70,10 @@ jobs:
           IMAGE_NAME: my0373.jfrog.io/my0373-docker/spring-petclinic:3.1.0-SNAPSHOT
         run:
           jf docker push $IMAGE_NAME
+
+      - name: Scan for vulnerabilities
+        run:
+          jf scan
           
       - name: Publish Build info With JFrog CLI
         env:
