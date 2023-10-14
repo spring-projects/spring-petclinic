@@ -27,3 +27,6 @@ jobs:
           cache: maven
       - name: Build with Maven Wrapper
         run: ./mvnw -B package
+
+      - name: Run Maven tests
+        run: mvn test
