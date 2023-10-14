@@ -30,3 +30,6 @@ jobs:
 
       - name: Run Maven tests
         run: mvn test
+
+      - name: Build the Maven container image
+        run: ./mvnw spring-boot:build-image
