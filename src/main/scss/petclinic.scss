@@ -47,6 +47,14 @@ $pagination-active-bg:                    $spring-brown;
 $pagination-active-border:                $spring-green;
 $table-border-color:                      $spring-brown;
 
+$asterisk: "\f069";
+
+.asterisk{
+  &:after {
+    content: "*";
+  }
+}
+
 .table > thead > tr > th {
   background-color: lighten($spring-brown, 3%);
   color: $spring-light-grey;
@@ -75,10 +83,10 @@ $table-border-color:                      $spring-brown;
 
   &:hover,
   &:focus,
-  &:active,
   &.active,
   .open .dropdown-toggle {
-    background-color: $spring-brown;
+    background-color: transparent;
+    color: $spring-green;
     border-color: $spring-brown;
   }
 }

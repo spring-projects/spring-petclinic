@@ -18,6 +18,12 @@ package org.springframework.samples.petclinic.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
+import java.util.Objects;
 
 /**
  * Simple JavaBean domain object representing an person.
@@ -25,6 +31,9 @@ import jakarta.validation.constraints.NotBlank;
  * @author Ken Krebs
  */
 @MappedSuperclass
+@Getter
+@Setter
+@ToString
 public class Person extends BaseEntity {
 
 	@Column(name = "first_name")
@@ -35,20 +44,24 @@ public class Person extends BaseEntity {
 	@NotBlank
 	private String lastName;
 
-	public String getFirstName() {
-		return this.firstName;
+	@Override
+	public boolean equals(Object object) {
+
+		if (this == object)
+			return true;
+		if (object == null || getClass() != object.getClass())
+			return false;
+		Person person = (Person) object;
+
+		return new EqualsBuilder().append(firstName, person.firstName)
+			.append(lastName, person.lastName)
+			.append(super.getId(), person.getId())
+			.isEquals();
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return this.lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	@Override
+	public int hashCode() {
+		return Objects.hash(firstName, lastName);
 	}
 
 }

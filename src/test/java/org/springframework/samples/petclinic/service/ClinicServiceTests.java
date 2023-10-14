@@ -29,10 +29,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.samples.petclinic.Pet.Pet;
+import org.springframework.samples.petclinic.Pet.PetType;
+import org.springframework.samples.petclinic.Pet.PetTypes;
 import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.owner.OwnerRepository;
-import org.springframework.samples.petclinic.owner.Pet;
-import org.springframework.samples.petclinic.owner.PetType;
 import org.springframework.samples.petclinic.owner.Visit;
 import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.samples.petclinic.vet.VetRepository;
@@ -96,7 +97,7 @@ class ClinicServiceTests {
 		assertThat(owner.getLastName()).startsWith("Franklin");
 		assertThat(owner.getPets()).hasSize(1);
 		assertThat(owner.getPets().get(0).getType()).isNotNull();
-		assertThat(owner.getPets().get(0).getType().getName()).isEqualTo("cat");
+		assertThat(owner.getPets().get(0).getType().getName()).isEqualTo(PetTypes.CAT.getValue());
 	}
 
 	@Test
@@ -111,6 +112,7 @@ class ClinicServiceTests {
 		owner.setAddress("4, Evans Street");
 		owner.setCity("Wollongong");
 		owner.setTelephone("4444444444");
+
 		this.owners.save(owner);
 		assertThat(owner.getId().longValue()).isNotEqualTo(0);
 
@@ -138,9 +140,9 @@ class ClinicServiceTests {
 		Collection<PetType> petTypes = this.owners.findPetTypes();
 
 		PetType petType1 = EntityUtils.getById(petTypes, PetType.class, 1);
-		assertThat(petType1.getName()).isEqualTo("cat");
+		assertThat(petType1.getName()).isEqualTo(PetTypes.CAT.getValue());
 		PetType petType4 = EntityUtils.getById(petTypes, PetType.class, 4);
-		assertThat(petType4.getName()).isEqualTo("snake");
+		assertThat(petType4.getName()).isEqualTo(PetTypes.SNAKE.getValue());
 	}
 
 	@Test
@@ -201,6 +203,7 @@ class ClinicServiceTests {
 		int found = pet7.getVisits().size();
 		Visit visit = new Visit();
 		visit.setDescription("test");
+		;
 
 		owner6.addVisit(pet7.getId(), visit);
 		this.owners.save(owner6);

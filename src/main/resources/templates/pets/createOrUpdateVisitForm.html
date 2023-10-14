@@ -4,7 +4,7 @@
 <body>
 
   <h2>
-    <th:block th:if="${visit['new']}">New </th:block>
+    <th:block th:if="${visit['newEntry']}">New </th:block>
     Visit
   </h2>
 
@@ -51,7 +51,7 @@
       <th>Date</th>
       <th>Description</th>
     </tr>
-    <tr th:if="${!visit['new']}" th:each="visit : ${pet.visits}">
+    <tr th:if="${!visit['newEntry']}" th:each="visit : ${pet.visits}">
       <td th:text="${#temporals.format(visit.date, 'yyyy-MM-dd')}"></td>
       <td th:text=" ${visit.description}"></td>
     </tr>

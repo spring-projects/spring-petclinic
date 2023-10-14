@@ -17,6 +17,8 @@
 package org.springframework.samples.petclinic.owner;
 
 import static org.mockito.BDDMockito.given;
+import static org.springframework.samples.petclinic.TestUtils.OwnerTestUtil.createOwner;
+import static org.springframework.samples.petclinic.TestUtils.PetTestUtil.createPet;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -29,7 +31,12 @@ import org.junit.jupiter.api.condition.DisabledInNativeImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.samples.petclinic.Validation.InputValidator;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Test class for {@link VisitController}
@@ -50,12 +57,12 @@ class VisitControllerTests {
 	@MockBean
 	private OwnerRepository owners;
 
+	@SpyBean
+	private InputValidator inputValidator;
+
 	@BeforeEach
 	void init() {
-		Owner owner = new Owner();
-		Pet pet = new Pet();
-		owner.addPet(pet);
-		pet.setId(TEST_PET_ID);
+		var owner = createOwner(createPet(TEST_PET_ID));
 		given(this.owners.findById(TEST_OWNER_ID)).willReturn(owner);
 	}
 
@@ -82,6 +89,44 @@ class VisitControllerTests {
 			.perform(post("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, TEST_PET_ID).param("name",
 					"George"))
 			.andExpect(model().attributeHasErrors("visit"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("pets/createOrUpdateVisitForm"));
+	}
+
+	@Test
+	void testProcessUpdateFormHasError_For_EmptyDescription() throws Exception {
+		mockMvc
+			.perform(post("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, TEST_PET_ID)
+				.param("description", "")
+				.param("date", "2015-02-12"))
+			.andExpect(model().attributeHasErrors("visit"))
+			.andExpect(model().attributeHasFieldErrorCode("visit", "description", "required"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("pets/createOrUpdateVisitForm"));
+	}
+
+	@Test
+	void testProcessUpdateFormHasErrors_For_FutureDate() throws Exception {
+
+		var dateInFuture = LocalDate.now().plusYears(1);
+		mockMvc
+			.perform(post("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, TEST_PET_ID)
+				.param("description", "hi")
+				.param("date", String.valueOf(dateInFuture)))
+			.andExpect(model().attributeHasErrors("visit"))
+			.andExpect(model().attributeHasFieldErrorCode("visit", "date", "typeMismatch.birthDate.future"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("pets/createOrUpdateVisitForm"));
+	}
+
+	@Test
+	void testProcessUpdateFormHasErrors_For_EmptyDate() throws Exception {
+		mockMvc
+			.perform(post("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, TEST_PET_ID)
+				.param("description", "hi")
+				.param("date", (String) null))
+			.andExpect(model().attributeHasErrors("visit"))
+			.andExpect(model().attributeHasFieldErrorCode("visit", "date", "typeMismatch.birthDate"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("pets/createOrUpdateVisitForm"));
 	}

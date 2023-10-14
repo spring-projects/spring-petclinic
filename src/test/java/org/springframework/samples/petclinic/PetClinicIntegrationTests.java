@@ -52,7 +52,9 @@ public class PetClinicIntegrationTests {
 	@Test
 	void testOwnerDetails() {
 		RestTemplate template = builder.rootUri("http://localhost:" + port).build();
-		ResponseEntity<String> result = template.exchange(RequestEntity.get("/owners/1").build(), String.class);
+		var request = RequestEntity.get("/owners/1").build();
+
+		ResponseEntity<String> result = template.exchange(request, String.class);
 		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
 

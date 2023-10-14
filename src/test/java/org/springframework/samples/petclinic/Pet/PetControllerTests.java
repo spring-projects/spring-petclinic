@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.samples.petclinic.owner;
+package org.springframework.samples.petclinic.Pet;
 
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,6 +25,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.samples.petclinic.Validation.InputValidator;
+import org.springframework.samples.petclinic.owner.Owner;
+import org.springframework.samples.petclinic.owner.OwnerRepository;
+import org.springframework.samples.petclinic.owner.OwnerService;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.BDDMockito.given;
@@ -54,6 +58,12 @@ class PetControllerTests {
 	@MockBean
 	private OwnerRepository owners;
 
+	@MockBean
+	private InputValidator inputValidator;
+
+	@MockBean
+	private OwnerService ownerService;
+
 	@BeforeEach
 	void setup() {
 		PetType cat = new PetType();
@@ -64,7 +74,8 @@ class PetControllerTests {
 		Pet pet = new Pet();
 		owner.addPet(pet);
 		pet.setId(TEST_PET_ID);
-		given(this.owners.findById(TEST_OWNER_ID)).willReturn(owner);
+
+		given(ownerService.findOwner(TEST_OWNER_ID)).willReturn(owner);
 	}
 
 	@Test

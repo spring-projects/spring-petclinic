@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package org.springframework.samples.petclinic.owner;
+package org.springframework.samples.petclinic.Pet;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
@@ -32,6 +30,8 @@ import org.junit.jupiter.api.condition.DisabledInNativeImage;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.samples.petclinic.TestUtils.PetTypeTestUtil;
+import org.springframework.samples.petclinic.owner.OwnerRepository;
 
 /**
  * Test class for {@link PetTypeFormatter}
@@ -54,44 +54,31 @@ class PetTypeFormatterTests {
 
 	@Test
 	void testPrint() {
-		PetType petType = new PetType();
-		petType.setName("Hamster");
+		var hamster = PetTypes.HAMSTER.getValue();
+		var petType = PetTypeTestUtil.createPetType(hamster);
 		String petTypeName = this.petTypeFormatter.print(petType, Locale.ENGLISH);
-		assertThat(petTypeName).isEqualTo("Hamster");
+		assertThat(petTypeName).isEqualTo(hamster);
 	}
 
 	@Test
 	void shouldParse() throws ParseException {
-		given(this.pets.findPetTypes()).willReturn(makePetTypes());
-		PetType petType = petTypeFormatter.parse("Bird", Locale.ENGLISH);
-		assertThat(petType.getName()).isEqualTo("Bird");
+		mockFindPetTypes();
+		var bird = PetTypes.BIRD.getValue();
+		PetType petType = petTypeFormatter.parse(bird, Locale.ENGLISH);
+		assertThat(petType.getName()).isEqualTo(bird);
 	}
 
 	@Test
 	void shouldThrowParseException() throws ParseException {
-		given(this.pets.findPetTypes()).willReturn(makePetTypes());
+		mockFindPetTypes();
 		Assertions.assertThrows(ParseException.class, () -> {
 			petTypeFormatter.parse("Fish", Locale.ENGLISH);
 		});
 	}
 
-	/**
-	 * Helper method to produce some sample pet types just for test purpose
-	 * @return {@link Collection} of {@link PetType}
-	 */
-	private List<PetType> makePetTypes() {
-		List<PetType> petTypes = new ArrayList<>();
-		petTypes.add(new PetType() {
-			{
-				setName("Dog");
-			}
-		});
-		petTypes.add(new PetType() {
-			{
-				setName("Bird");
-			}
-		});
-		return petTypes;
+	private void mockFindPetTypes() {
+		List<PetType> petTypes = PetTypeTestUtil.createPetTypes(PetTypes.BIRD, PetTypes.DOG);
+		given(this.pets.findPetTypes()).willReturn(petTypes);
 	}
 
 }

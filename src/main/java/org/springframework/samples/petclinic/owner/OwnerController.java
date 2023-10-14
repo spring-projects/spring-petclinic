@@ -18,6 +18,7 @@ package org.springframework.samples.petclinic.owner;
 import java.util.List;
 import java.util.Map;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -42,15 +43,16 @@ import jakarta.validation.Valid;
  * @author Michael Isvy
  */
 @Controller
+@RequiredArgsConstructor
 class OwnerController {
 
 	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
 
-	private final OwnerRepository owners;
+	private static final int PAGE_SIZE = 5;
 
-	public OwnerController(OwnerRepository clinicService) {
-		this.owners = clinicService;
-	}
+	private final OwnerService ownerService;
+
+	private final OwnerRepository owners;
 
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
@@ -59,7 +61,7 @@ class OwnerController {
 
 	@ModelAttribute("owner")
 	public Owner findOwner(@PathVariable(name = "ownerId", required = false) Integer ownerId) {
-		return ownerId == null ? new Owner() : this.owners.findById(ownerId);
+		return ownerId == null ? new Owner() : ownerService.findOwner(ownerId);
 	}
 
 	@GetMapping("/owners/new")
@@ -120,14 +122,13 @@ class OwnerController {
 	}
 
 	private Page<Owner> findPaginatedForOwnersLastName(int page, String lastname) {
-		int pageSize = 5;
-		Pageable pageable = PageRequest.of(page - 1, pageSize);
+		Pageable pageable = PageRequest.of(page - 1, PAGE_SIZE);
 		return owners.findByLastName(lastname, pageable);
 	}
 
 	@GetMapping("/owners/{ownerId}/edit")
 	public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
-		Owner owner = this.owners.findById(ownerId);
+		Owner owner = ownerService.findOwner(ownerId);
 		model.addAttribute(owner);
 		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 	}
@@ -152,7 +153,7 @@ class OwnerController {
 	@GetMapping("/owners/{ownerId}")
 	public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
 		ModelAndView mav = new ModelAndView("owners/ownerDetails");
-		Owner owner = this.owners.findById(ownerId);
+		Owner owner = ownerService.findOwner(ownerId);
 		mav.addObject(owner);
 		return mav;
 	}

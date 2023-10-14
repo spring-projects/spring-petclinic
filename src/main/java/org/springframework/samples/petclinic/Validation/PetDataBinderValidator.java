@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.owner;
+package org.springframework.samples.petclinic.Validation;
 
+import org.springframework.samples.petclinic.Pet.Pet;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -29,7 +30,7 @@ import org.springframework.validation.Validator;
  * @author Ken Krebs
  * @author Juergen Hoeller
  */
-public class PetValidator implements Validator {
+public class PetDataBinderValidator implements Validator {
 
 	private static final String REQUIRED = "required";
 
@@ -42,12 +43,10 @@ public class PetValidator implements Validator {
 			errors.rejectValue("name", REQUIRED, REQUIRED);
 		}
 
-		// type validation
-		if (pet.isNew() && pet.getType() == null) {
+		if (pet.isNewEntry() && pet.getType() == null) {
 			errors.rejectValue("type", REQUIRED, REQUIRED);
 		}
 
-		// birth date validation
 		if (pet.getBirthDate() == null) {
 			errors.rejectValue("birthDate", REQUIRED, REQUIRED);
 		}

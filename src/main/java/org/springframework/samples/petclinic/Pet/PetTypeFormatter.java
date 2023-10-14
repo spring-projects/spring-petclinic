@@ -13,14 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.owner;
+package org.springframework.samples.petclinic.Pet;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.format.Formatter;
+import org.springframework.samples.petclinic.owner.OwnerRepository;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
-import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -34,29 +36,25 @@ import java.util.Locale;
  * @author Michael Isvy
  */
 @Component
+@RequiredArgsConstructor
 public class PetTypeFormatter implements Formatter<PetType> {
 
 	private final OwnerRepository owners;
-
-	@Autowired
-	public PetTypeFormatter(OwnerRepository owners) {
-		this.owners = owners;
-	}
 
 	@Override
 	public String print(PetType petType, Locale locale) {
 		return petType.getName();
 	}
 
+	// text = toString of PetType
 	@Override
 	public PetType parse(String text, Locale locale) throws ParseException {
-		Collection<PetType> findPetTypes = this.owners.findPetTypes();
-		for (PetType type : findPetTypes) {
-			if (type.getName().equals(text)) {
-				return type;
-			}
-		}
-		throw new ParseException("type not found: " + text, 0);
+		List<PetType> petTypes = this.owners.findPetTypes();
+
+		return petTypes.stream()
+			.filter(petType -> StringUtils.containsIgnoreCase(text, petType.getName()))
+			.findFirst()
+			.orElseThrow(() -> new ParseException("type not found: " + text, 0));
 	}
 
 }

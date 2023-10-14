@@ -13,13 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.owner;
+package org.springframework.samples.petclinic.Pet;
 
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.model.NamedEntity;
 
@@ -32,6 +35,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
+import org.springframework.samples.petclinic.owner.Visit;
 
 /**
  * Simple business object representing a pet.
@@ -41,6 +45,8 @@ import jakarta.persistence.Table;
  * @author Sam Brannen
  */
 @Entity
+@Getter
+@Setter
 @Table(name = "pets")
 public class Pet extends NamedEntity {
 
@@ -52,33 +58,14 @@ public class Pet extends NamedEntity {
 	@JoinColumn(name = "type_id")
 	private PetType type;
 
+	@Setter(AccessLevel.NONE)
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "pet_id")
 	@OrderBy("visit_date ASC")
 	private Set<Visit> visits = new LinkedHashSet<>();
 
-	public void setBirthDate(LocalDate birthDate) {
-		this.birthDate = birthDate;
-	}
-
-	public LocalDate getBirthDate() {
-		return this.birthDate;
-	}
-
-	public PetType getType() {
-		return this.type;
-	}
-
-	public void setType(PetType type) {
-		this.type = type;
-	}
-
-	public Collection<Visit> getVisits() {
-		return this.visits;
-	}
-
 	public void addVisit(Visit visit) {
-		getVisits().add(visit);
+		this.visits.add(visit);
 	}
 
 }

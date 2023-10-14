@@ -24,13 +24,14 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.samples.petclinic.TestUtils.OwnerTestUtil.createOwner;
+import static org.springframework.samples.petclinic.TestUtils.PetTestUtil.createPet;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.assertj.core.util.Lists;
@@ -46,6 +47,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.samples.petclinic.Pet.Pet;
+import org.springframework.samples.petclinic.Pet.PetType;
+import org.springframework.samples.petclinic.Pet.PetTypes;
+import org.springframework.samples.petclinic.TestUtils.PetTypeTestUtil;
 import org.springframework.test.web.servlet.MockMvc;
 
 /**
@@ -57,47 +62,36 @@ import org.springframework.test.web.servlet.MockMvc;
 @DisabledInNativeImage
 class OwnerControllerTests {
 
-	private static final int TEST_OWNER_ID = 1;
-
 	@Autowired
 	private MockMvc mockMvc;
 
 	@MockBean
 	private OwnerRepository owners;
 
+	@MockBean
+	private OwnerService ownerService;
+
+	private record TestData(int ownerId, String ownerFirstname, String ownerLastname, String petName, PetType petType) {
+	}
+
+	private final TestData testData = new TestData(1, "George", "Franklin", "Max",
+			PetTypeTestUtil.createPetType(PetTypes.DOG.getValue()));
+
 	private Owner george() {
-		Owner george = new Owner();
-		george.setId(TEST_OWNER_ID);
-		george.setFirstName("George");
-		george.setLastName("Franklin");
-		george.setAddress("110 W. Liberty St.");
-		george.setCity("Madison");
-		george.setTelephone("6085551023");
-		Pet max = new Pet();
-		PetType dog = new PetType();
-		dog.setName("dog");
-		max.setType(dog);
-		max.setName("Max");
-		max.setBirthDate(LocalDate.now());
-		george.addPet(max);
-		max.setId(1);
-		return george;
+		var pet = createPet(testData.petName, testData.petType);
+		var owner = createOwner(testData.ownerId, testData.ownerFirstname, testData.ownerLastname, pet);
+		return owner;
 	};
 
 	@BeforeEach
 	void setup() {
 
 		Owner george = george();
-		given(this.owners.findByLastName(eq("Franklin"), any(Pageable.class)))
+		given(this.owners.findByLastName(eq(testData.ownerLastname), any(Pageable.class)))
 			.willReturn(new PageImpl<Owner>(Lists.newArrayList(george)));
 
 		given(this.owners.findAll(any(Pageable.class))).willReturn(new PageImpl<Owner>(Lists.newArrayList(george)));
-
-		given(this.owners.findById(TEST_OWNER_ID)).willReturn(george);
-		Visit visit = new Visit();
-		visit.setDate(LocalDate.now());
-		george.getPet("Max").getVisits().add(visit);
-
+		given(ownerService.findOwner(testData.ownerId)).willReturn(george);
 	}
 
 	@Test
@@ -148,10 +142,10 @@ class OwnerControllerTests {
 	@Test
 	void testProcessFindFormByLastName() throws Exception {
 		Page<Owner> tasks = new PageImpl<Owner>(Lists.newArrayList(george()));
-		Mockito.when(this.owners.findByLastName(eq("Franklin"), any(Pageable.class))).thenReturn(tasks);
-		mockMvc.perform(get("/owners?page=1").param("lastName", "Franklin"))
+		Mockito.when(this.owners.findByLastName(eq(testData.ownerLastname), any(Pageable.class))).thenReturn(tasks);
+		mockMvc.perform(get("/owners?page=1").param("lastName", testData.ownerLastname))
 			.andExpect(status().is3xxRedirection())
-			.andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
+			.andExpect(view().name("redirect:/owners/" + testData.ownerId));
 	}
 
 	@Test
@@ -168,11 +162,11 @@ class OwnerControllerTests {
 
 	@Test
 	void testInitUpdateOwnerForm() throws Exception {
-		mockMvc.perform(get("/owners/{ownerId}/edit", TEST_OWNER_ID))
+		mockMvc.perform(get("/owners/{ownerId}/edit", testData.ownerId))
 			.andExpect(status().isOk())
 			.andExpect(model().attributeExists("owner"))
-			.andExpect(model().attribute("owner", hasProperty("lastName", is("Franklin"))))
-			.andExpect(model().attribute("owner", hasProperty("firstName", is("George"))))
+			.andExpect(model().attribute("owner", hasProperty("lastName", is(testData.ownerLastname))))
+			.andExpect(model().attribute("owner", hasProperty("firstName", is(testData.ownerFirstname))))
 			.andExpect(model().attribute("owner", hasProperty("address", is("110 W. Liberty St."))))
 			.andExpect(model().attribute("owner", hasProperty("city", is("Madison"))))
 			.andExpect(model().attribute("owner", hasProperty("telephone", is("6085551023"))))
@@ -182,7 +176,7 @@ class OwnerControllerTests {
 	@Test
 	void testProcessUpdateOwnerFormSuccess() throws Exception {
 		mockMvc
-			.perform(post("/owners/{ownerId}/edit", TEST_OWNER_ID).param("firstName", "Joe")
+			.perform(post("/owners/{ownerId}/edit", testData.ownerId).param("firstName", "Joe")
 				.param("lastName", "Bloggs")
 				.param("address", "123 Caramel Street")
 				.param("city", "London")
@@ -193,7 +187,7 @@ class OwnerControllerTests {
 
 	@Test
 	void testProcessUpdateOwnerFormUnchangedSuccess() throws Exception {
-		mockMvc.perform(post("/owners/{ownerId}/edit", TEST_OWNER_ID))
+		mockMvc.perform(post("/owners/{ownerId}/edit", testData.ownerId))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(view().name("redirect:/owners/{ownerId}"));
 	}
@@ -201,7 +195,7 @@ class OwnerControllerTests {
 	@Test
 	void testProcessUpdateOwnerFormHasErrors() throws Exception {
 		mockMvc
-			.perform(post("/owners/{ownerId}/edit", TEST_OWNER_ID).param("firstName", "Joe")
+			.perform(post("/owners/{ownerId}/edit", testData.ownerId).param("firstName", "Joe")
 				.param("lastName", "Bloggs")
 				.param("address", "")
 				.param("telephone", ""))
@@ -214,10 +208,10 @@ class OwnerControllerTests {
 
 	@Test
 	void testShowOwner() throws Exception {
-		mockMvc.perform(get("/owners/{ownerId}", TEST_OWNER_ID))
+		mockMvc.perform(get("/owners/{ownerId}", testData.ownerId))
 			.andExpect(status().isOk())
-			.andExpect(model().attribute("owner", hasProperty("lastName", is("Franklin"))))
-			.andExpect(model().attribute("owner", hasProperty("firstName", is("George"))))
+			.andExpect(model().attribute("owner", hasProperty("lastName", is(testData.ownerLastname))))
+			.andExpect(model().attribute("owner", hasProperty("firstName", is(testData.ownerFirstname))))
 			.andExpect(model().attribute("owner", hasProperty("address", is("110 W. Liberty St."))))
 			.andExpect(model().attribute("owner", hasProperty("city", is("Madison"))))
 			.andExpect(model().attribute("owner", hasProperty("telephone", is("6085551023"))))
@@ -237,7 +231,7 @@ class OwnerControllerTests {
 
 				@Override
 				public void describeTo(Description description) {
-					description.appendText("Max did not have any visits");
+					description.appendText(testData.petName + " did not have any visits");
 				}
 			})))
 			.andExpect(view().name("owners/ownerDetails"));

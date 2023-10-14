@@ -17,6 +17,9 @@ git clone https://github.com/spring-projects/spring-petclinic.git
 cd spring-petclinic
 ./mvnw package
 java -jar target/*.jar
+
+Extras:
+Also ,,enable annotation processing" in `Compiler > Annotation Processors` so that you can work with lombok properly 
 ```
 
 You can then access petclinic at http://localhost:8080/
@@ -84,7 +87,12 @@ At development time we recommend you use the test applications set up as `main()
 
 ## Compiling the CSS
 
-There is a `petclinic.css` in `src/main/resources/static/resources/css`. It was generated from the `petclinic.scss` source, combined with the [Bootstrap](https://getbootstrap.com/) library. If you make changes to the `scss`, or upgrade Bootstrap, you will need to re-compile the CSS resources using the Maven profile "css", i.e. `./mvnw package -P css`. There is no build profile for Gradle to compile the CSS.
+There is a `petclinic.css` in `src/main/resources/static/resources/css`. 
+It was generated from the `petclinic.scss` source, combined with the [Bootstrap](https://getbootstrap.com/) library. 
+If you make changes to the `scss`, or upgrade Bootstrap, you will need to re-compile the CSS resources using the Maven profile "css", i.e. `./mvnw package -P css`. 
+There is no build profile for Gradle to compile the CSS.
+
+In case you have changes that are already inside `petclinic.scss` e.g use of bootstrap classes that are already included, there is no need to do the steps.
 
 ## Working with Petclinic in your IDE
 

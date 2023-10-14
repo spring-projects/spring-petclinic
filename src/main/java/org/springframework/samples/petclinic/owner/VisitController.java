@@ -17,14 +17,14 @@ package org.springframework.samples.petclinic.owner;
 
 import java.util.Map;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.samples.petclinic.Pet.Pet;
+import org.springframework.samples.petclinic.Validation.InputValidator;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
@@ -36,13 +36,12 @@ import jakarta.validation.Valid;
  * @author Dave Syer
  */
 @Controller
+@RequiredArgsConstructor
 class VisitController {
 
 	private final OwnerRepository owners;
 
-	public VisitController(OwnerRepository owners) {
-		this.owners = owners;
-	}
+	private final InputValidator inputValidator;
 
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
@@ -82,12 +81,19 @@ class VisitController {
 	@PostMapping("/owners/{ownerId}/pets/{petId}/visits/new")
 	public String processNewVisitForm(@ModelAttribute Owner owner, @PathVariable int petId, @Valid Visit visit,
 			BindingResult result) {
+		Assert.notNull(petId, "Pet identifier must not be null!");
+		Assert.notNull(visit, "Visit must not be null!");
+
+		this.inputValidator.validateDate(result, visit, "date");
+		this.inputValidator.validateString(result, visit, "description");
+
 		if (result.hasErrors()) {
 			return "pets/createOrUpdateVisitForm";
 		}
 
 		owner.addVisit(petId, visit);
 		this.owners.save(owner);
+
 		return "redirect:/owners/{ownerId}";
 	}
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
@@ -32,6 +33,8 @@
     <maven-checkstyle.version>3.2.2</maven-checkstyle.version>
     <nohttp-checkstyle.version>0.0.11</nohttp-checkstyle.version>
     <spring-format.version>0.0.39</spring-format.version>
+    <lombok.version>1.18.20</lombok.version>
+    <apache-lang3.version>3.12.0</apache-lang3.version>
 
   </properties>
 
@@ -138,6 +141,19 @@
       <artifactId>jakarta.xml.bind-api</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>${apache-lang3.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${lombok.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
   </dependencies>
 
   <dependencyManagement>
@@ -166,7 +182,8 @@
             <configuration>
               <rules>
                 <requireJavaVersion>
-                  <message>This build requires at least Java ${java.version}, update your JVM, and run the build again</message>
+                  <message>This build requires at least Java ${java.version}, update your JVM, and run the build again
+                  </message>
                   <version>${java.version}</version>
                 </requireJavaVersion>
               </rules>
@@ -370,7 +387,9 @@
             <configuration>
               <inputPath>${basedir}/src/main/scss/</inputPath>
               <outputPath>${basedir}/src/main/resources/static/resources/css/</outputPath>
-              <includePath>${project.build.directory}/webjars/META-INF/resources/webjars/bootstrap/${webjars-bootstrap.version}/scss/</includePath>
+              <includePath>
+                ${project.build.directory}/webjars/META-INF/resources/webjars/bootstrap/${webjars-bootstrap.version}/scss/
+              </includePath>
             </configuration>
           </plugin>
         </plugins>
@@ -405,7 +424,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore />
+                        <ignore/>
                       </action>
                     </pluginExecution>
                     <pluginExecution>
@@ -418,7 +437,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore />
+                        <ignore/>
                       </action>
                     </pluginExecution>
                     <pluginExecution>
@@ -431,7 +450,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore />
+                        <ignore/>
                       </action>
                     </pluginExecution>
                   </pluginExecutions>

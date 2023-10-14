@@ -47,8 +47,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
 import org.testcontainers.DockerClientFactory;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, properties = { "spring.docker.compose.skip.in-tests=false", //
-		"spring.docker.compose.profiles.active=postgres" })
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT,
+		properties = { "spring.docker.compose.skip.in-tests=false", "spring.docker.compose.profiles.active=postgres" })
 @ActiveProfiles("postgres")
 @DisabledInNativeImage
 public class PostgresIntegrationTests {
@@ -68,12 +68,9 @@ public class PostgresIntegrationTests {
 	}
 
 	public static void main(String[] args) {
-		new SpringApplicationBuilder(PetClinicApplication.class) //
-			.profiles("postgres") //
-			.properties( //
-					"spring.docker.compose.profiles.active=postgres" //
-			) //
-			.listeners(new PropertiesLogger()) //
+		new SpringApplicationBuilder(PetClinicApplication.class).profiles("postgres")
+			.properties("spring.docker.compose.profiles.active=postgres")
+			.listeners(new PropertiesLogger())
 			.run(args);
 	}
 
@@ -86,7 +83,9 @@ public class PostgresIntegrationTests {
 	@Test
 	void testOwnerDetails() {
 		RestTemplate template = builder.rootUri("http://localhost:" + port).build();
-		ResponseEntity<String> result = template.exchange(RequestEntity.get("/owners/1").build(), String.class);
+		var request = RequestEntity.get("/owners/1").build();
+
+		ResponseEntity<String> result = template.exchange(request, String.class);
 		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
 

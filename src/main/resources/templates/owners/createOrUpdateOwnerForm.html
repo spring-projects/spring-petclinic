@@ -20,7 +20,7 @@
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
         <button
-          th:with="text=${owner['new']} ? 'Add Owner' : 'Update Owner'"
+          th:with="text=${owner['newEntry']} ? 'Add Owner' : 'Update Owner'"
           class="btn btn-primary" type="submit" th:text="${text}">Add
           Owner</button>
       </div>

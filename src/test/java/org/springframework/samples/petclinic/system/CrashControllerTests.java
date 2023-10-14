@@ -16,6 +16,7 @@
 
 package org.springframework.samples.petclinic.system;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -31,16 +32,12 @@ import org.junit.jupiter.api.Test;
 // luck ((plain(st) UNIT test)! :)
 class CrashControllerTests {
 
-	CrashController testee = new CrashController();
+	CrashController crashController = new CrashController();
 
 	@Test
 	void testTriggerException() throws Exception {
-		RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
-			testee.triggerException();
-		});
-
-		assertEquals("Expected: controller used to showcase what happens when an exception is thrown",
-				thrown.getMessage());
+		assertThatThrownBy(() -> crashController.triggerException()).isInstanceOf(RuntimeException.class)
+			.hasMessage("Expected: controller used to showcase what happens when an exception is thrown");
 	}
 
 }

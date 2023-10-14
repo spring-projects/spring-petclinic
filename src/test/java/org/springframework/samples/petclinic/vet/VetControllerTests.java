@@ -32,6 +32,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.samples.petclinic.TestUtils.VetTestUtil.createVet;
+import static org.springframework.samples.petclinic.TestUtils.VetTestUtil.createVetWithSpecialty;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -49,31 +51,13 @@ class VetControllerTests {
 	@MockBean
 	private VetRepository vets;
 
-	private Vet james() {
-		Vet james = new Vet();
-		james.setFirstName("James");
-		james.setLastName("Carter");
-		james.setId(1);
-		return james;
-	}
-
-	private Vet helen() {
-		Vet helen = new Vet();
-		helen.setFirstName("Helen");
-		helen.setLastName("Leary");
-		helen.setId(2);
-		Specialty radiology = new Specialty();
-		radiology.setId(1);
-		radiology.setName("radiology");
-		helen.addSpecialty(radiology);
-		return helen;
-	}
-
 	@BeforeEach
 	void setup() {
-		given(this.vets.findAll()).willReturn(Lists.newArrayList(james(), helen()));
+		var vet = createVet();
+		var vetWithSpecialty = createVetWithSpecialty();
+		given(this.vets.findAll()).willReturn(Lists.newArrayList(vet, vetWithSpecialty));
 		given(this.vets.findAll(any(Pageable.class)))
-			.willReturn(new PageImpl<Vet>(Lists.newArrayList(james(), helen())));
+			.willReturn(new PageImpl<Vet>(Lists.newArrayList(vet, vetWithSpecialty)));
 
 	}
 

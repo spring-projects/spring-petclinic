@@ -30,6 +30,7 @@ public class PetClinicRuntimeHints implements RuntimeHintsRegistrar {
 		hints.resources().registerPattern("messages/*");
 		hints.resources().registerPattern("META-INF/resources/webjars/*");
 		hints.resources().registerPattern("mysql-default-conf");
+
 		hints.serialization().registerType(BaseEntity.class);
 		hints.serialization().registerType(Person.class);
 		hints.serialization().registerType(Vet.class);
