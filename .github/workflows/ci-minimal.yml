@@ -1,0 +1,91 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Minimal build requirements for the petclinic application.
+
+# The workflow will execute on Push / PR as well as manually running.
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+# The actual workflow jobs. I've split some of these up to 
+# allow more flexibility in future.
+jobs:
+
+  # The source build job is designed to ensure that the source...
+  # * builds
+  # * 
+  source-build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ '17' ]
+
+    steps:
+      # Checkout the current repository
+      - uses: actions/checkout@v3
+
+      # Set up Java 17 on the runner
+      - name: Set up JDK ${{matrix.java}}
+        uses: actions/setup-java@v2
+        with:
+          java-version: ${{matrix.java}}
+          distribution: 'adopt'
+          cache: maven
+
+      # Configure the JFrog CLI with the secrets we've saved. 
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v3
+        env:
+          JF_URL: ${{ secrets.JF_URL }}
+          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+            
+      # Use the Maven wrapper to build the code. 
+      - name: Build the Petclinic Package
+        run: ./mvnw -B package
+
+      # Run the maven dependency analyzer
+      - name: Validate Maven dependencies
+        run: mvn dependency:analyze
+
+      # Run the maven tests
+      - name: Run Maven tests
+        run: mvn test
+
+      # Build the container image
+      - name: Build the Maven container image
+        run: ./mvnw spring-boot:build-image
+      
+      # In order to upload the image to Artifactory, we'll retag the image.
+      - name: Retag image with jfrog repo
+        run: docker tag spring-petclinic:3.1.0-SNAPSHOT my0373.jfrog.io/my0373-docker/spring-petclinic:3.1.0-SNAPSHOT
+  
+      # We push the image into artifactory
+      - name: Push Docker Image to Artifactory
+        env:
+          IMAGE_NAME: my0373.jfrog.io/my0373-docker/spring-petclinic:3.1.0-SNAPSHOT
+        run:
+          jf docker push $IMAGE_NAME
+
+      # - name: Scan for vulnerabilities
+      #   run:
+      #     jf scan *
+          
+      # - name: Publish Build info With JFrog CLI
+      #   env:
+      #     # Generated and maintained by GitHub
+      #     JFROG_CLI_BUILD_NAME: spring-petclinic
+      #     # JFrog organization secret
+      #     JFROG_CLI_BUILD_NUMBER : ${{ github.run_number }}
+      #   run: |
+      #     # Export the build name and build nuber
+      #     # Collect environment variables for the build
+      #     jf rt build-collect-env
+      #     # Collect VCS details from git and add them to the build
+      #     jf rt build-add-git
+      #     # Publish build info
+      #     jf rt build-publish
