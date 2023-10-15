@@ -110,18 +110,15 @@ jobs:
           JF_URL: ${{ secrets.JF_URL }}
           JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
 
-      - name: Retag image with jfrog repo
-        run: docker tag spring-petclinic:3.1.0-SNAPSHOT my0373.jfrog.io/my0373-docker/spring-petclinic:3.1.0-SNAPSHOT
-
       - name: Build Tag and push Docker Image
         env:
           IMAGE_NAME: my0373.jfrog.io/my0373-docker/spring-petclinic:3.1.0-SNAPSHOT
         run:
           jf docker push $IMAGE_NAME
 
-      - name: Scan for vulnerabilities
+      - name: Scan Image for vulnerabilities
         run:
-          jf scan *
+          jf docker scan my0373.jfrog.io/my0373-docker/spring-petclinic:3.1.0-SNAPSHOT   
           
       - name: Publish Build info With JFrog CLI
         env:
