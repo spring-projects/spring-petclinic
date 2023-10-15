@@ -6,9 +6,17 @@ name: Minimal build requirements for the petclinic application.
 # The workflow will execute on Push / PR as well as manually running.
 on:
   push:
-    branches: [ main ]
+    branches: 
+      - main
+    branches-ignore:
+      - test
+  
   pull_request:
-    branches: [ main ]
+    branches: 
+      - main
+    branches-ignore:
+      - test
+
 
 # The actual workflow jobs. I've split some of these up to 
 # allow more flexibility in future.
