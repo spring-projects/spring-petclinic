@@ -45,11 +45,6 @@ jobs:
       - name: Run Maven tests
         run: mvn test
 
-     
-
-
-
-##############################
 
   container-build:
 
@@ -96,6 +91,10 @@ jobs:
     steps:
       - name: Download artifacts (Docker images) from previous workflows
         uses: actions/download-artifact@v2
+        with:
+          name: app
+          path: /tmp/petclinic.tar
+          
 
       - name: Load Docker images from previous workflows
         run: |
