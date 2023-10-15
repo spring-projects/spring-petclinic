@@ -93,12 +93,12 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: app
-          path: /tmp/petclinic.tar
-          
+          path: /tmp/petclinic/
+
 
       - name: Load Docker images from previous workflows
         run: |
-          docker load --input /tmp/petclinic.tar 
+          docker load --input /tmp/petclinic/petclinic.tar 
 
       - name: List all the container images on the runner 
         run: docker image ls
