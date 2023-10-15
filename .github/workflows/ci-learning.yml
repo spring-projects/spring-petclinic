@@ -1,7 +1,7 @@
 # This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 
-name: Java CI with Maven
+name: Java CI with Maven (more complex)
 
 on:
   push:
@@ -121,6 +121,71 @@ jobs:
 
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v3
+        env:
+          JF_URL: ${{ secrets.JF_URL }}
+          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+
+      - name: Retag image with jfrog repo
+        run: docker tag spring-petclinic:3.1.0-SNAPSHOT my0373.jfrog.io/my0373-docker/spring-petclinic:3.1.0-SNAPSHOT
+
+      - name: Build Tag and push Docker Image
+        env:
+          IMAGE_NAME: my0373.jfrog.io/my0373-docker/spring-petclinic:3.1.0-SNAPSHOT
+        run:
+          jf docker push $IMAGE_NAME
+
+      - name: Scan for vulnerabilities
+        run:
+          jf scan *
+          
+      - name: Publish Build info With JFrog CLI
+        env:
+          # Generated and maintained by GitHub
+          JFROG_CLI_BUILD_NAME: spring-petclinic
+          # JFrog organization secret
+          JFROG_CLI_BUILD_NUMBER : ${{ github.run_number }}
+        run: |
+          # Export the build name and build nuber
+          # Collect environment variables for the build
+          jf rt build-collect-env
+          # Collect VCS details from git and add them to the build
+          jf rt build-add-git
+          # Publish build info
+          jf rt build-publish
+      - name: Export the built image to a tar file  
+        env:
+          IMAGE_NAME: my0373.jfrog.io/my0373-docker/spring-petclinic:3.1.0-SNAPSHOT
+        run: docker save $IMAGE_NAME > /tmp/petclinic.tar
+             
+      - name: Upload Image as an artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: app
+          path: /tmp/petclinic.tar
+
+
+  publish-build:
+    needs: [source-build, container-build]
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ '17' ]
+
+    steps:
+      - name: Download artifacts (Docker images) from previous workflows
+        uses: actions/download-artifact@v2
+
+      - name: Load Docker images from previous workflows
+        run: |
+          docker load --input /tmp/petclinic.tar 
+
+      - name: List all the container images on the runner 
+        run: docker image ls
+        
 
       - name: Setup JFrog CLI
         uses: jfrog/setup-jfrog-cli@v3
