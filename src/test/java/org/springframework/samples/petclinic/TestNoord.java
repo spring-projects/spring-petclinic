@@ -1,17 +1,17 @@
 package org.springframework.samples.petclinic;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest
 public class TestNoord {
 	@Test
-	public void simpleTest() {
-		assertTrue(true);
+	public void simpleTestTrue() {
+		assertThat(true).isTrue();
+	}
+
+	@Test
+	public void simpleTestFalse() {
+		assertThat(false).isFalse();
 	}
 }
