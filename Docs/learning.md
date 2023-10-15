@@ -1,6 +1,8 @@
-# The "Simple" GitHub Actions pipeline
+# The "more complex" GitHub Actions pipeline
 
-This repository makes use of a GitHub actions pipeline. We'll be using a workflow to achieve this. 
+This repository makes use of multiple jobs withing a GitHub actions pipeline. We'll be using a workflow to achieve this.
+
+This workflow runs the source build, test and dependency validation job. It then runs the container build jobs in parallel. 
 
 ## The trigger
 The workflow is configured to run when the "main" branch is pushed, or when a PR for the "main" branch is raised.
@@ -8,14 +10,29 @@ The workflow is configured to run when the "main" branch is pushed, or when a PR
 ## The steps
 In order to successfully build, our workflow must 
 
+### "source-build" job
+
 1. Pull the code from the main branch of the git repo [here](https://github.com/spring-projects/spring-petclinic).
 1. Ensure that Java 17 is installed on the GitHub runner.
 1. Use the Maven wrapper to build the source.
 1. Run the Maven tests for the source
 1. Use Maven to check dependencies
+
+### "container-build" job
+1. Pull the code from the main branch of the git repo [here](https://github.com/spring-projects/spring-petclinic).
+1. Ensure that Java 17 is installed on the GitHub runner.
 1. Package the code into a docker container
 1. Tag the container with the required name
-1. Push the container into the Artifactory Repository
+1. Store the container as a binary artifact in the GitHub action.
+
+### "publish-build" job
+
+1. Retrieve the container as a binary artifact from GitHub.
+1. Restore the container from a tarfile.
+1. Setup the JFrog CLI tool
+1. Use the jfrog scanner to scan the image for known vulnerabilities.
+1. Push the tested, scanned image to the Artifactory repository.
+
 
 
 
