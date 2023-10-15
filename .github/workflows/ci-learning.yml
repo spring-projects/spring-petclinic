@@ -29,13 +29,7 @@ jobs:
           java-version: ${{matrix.java}}
           distribution: 'adopt'
           cache: maven
-
-      - name: Setup JFrog CLI
-        uses: jfrog/setup-jfrog-cli@v3
-        env:
-          JF_URL: ${{ secrets.JF_URL }}
-          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
-            
+          
       - name: Build with Maven Wrapper
         run: ./mvnw -B package
 
@@ -100,9 +94,6 @@ jobs:
         run: |
           docker load --input /tmp/petclinic/petclinic.tar 
 
-      - name: List all the container images on the runner 
-        run: docker image ls
-        
 
       - name: Setup JFrog CLI
         uses: jfrog/setup-jfrog-cli@v3
@@ -115,24 +106,24 @@ jobs:
           jf docker scan my0373.jfrog.io/my0373-docker/spring-petclinic:3.1.0-SNAPSHOT   
             
 
-      - name: Build Tag and push Docker Image
+      - name: Push Docker Image to the Artifactory repository
         env:
           IMAGE_NAME: my0373.jfrog.io/my0373-docker/spring-petclinic:3.1.0-SNAPSHOT
         run:
           jf docker push $IMAGE_NAME
 
 
-      - name: Publish Build info With JFrog CLI
-        env:
-          # Generated and maintained by GitHub
-          JFROG_CLI_BUILD_NAME: spring-petclinic
-          # JFrog organization secret
-          JFROG_CLI_BUILD_NUMBER : ${{ github.run_number }}
-        run: |
-          # Export the build name and build nuber
-          # Collect environment variables for the build
-          # jf rt build-collect-env
-          # Collect VCS details from git and add them to the build
-          # jf rt build-add-git
-          # Publish build info
-          # jf rt build-publish
+      # - name: Publish Build info With JFrog CLI
+      #   env:
+      #     # Generated and maintained by GitHub
+      #     JFROG_CLI_BUILD_NAME: spring-petclinic
+      #     # JFrog organization secret
+      #     JFROG_CLI_BUILD_NUMBER : ${{ github.run_number }}
+      #   run: |
+      #     # Export the build name and build nuber
+      #     # Collect environment variables for the build
+      #     # jf rt build-collect-env
+      #     # Collect VCS details from git and add them to the build
+      #     # jf rt build-add-git
+      #     # Publish build info
+      #     # jf rt build-publish
