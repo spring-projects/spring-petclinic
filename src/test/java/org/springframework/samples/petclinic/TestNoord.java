@@ -18,6 +18,6 @@ public class TestNoord {
 
 	@Test
 	public void simpleTestEquals() {
-		assertEquals(2,2);
+		assertEquals(3,3);
 	}
 }
