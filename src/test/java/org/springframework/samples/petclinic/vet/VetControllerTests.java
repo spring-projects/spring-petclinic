@@ -72,6 +72,7 @@ class VetControllerTests {
 	@BeforeEach
 	void setup() {
 		given(this.vets.findAll()).willReturn(Lists.newArrayList(james(), helen()));
+		given(this.vets.findById(1)).willReturn(james());
 		given(this.vets.findAll(any(Pageable.class)))
 			.willReturn(new PageImpl<Vet>(Lists.newArrayList(james(), helen())));
 
@@ -93,6 +94,13 @@ class VetControllerTests {
 			.andExpect(status().isOk());
 		actions.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 			.andExpect(jsonPath("$.vetList[0].id").value(1));
+	}
+
+	@Test
+	void testShowResourcesVet() throws Exception {
+		ResultActions actions = mockMvc.perform(get("/vets/1").accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk());
+		actions.andExpect(jsonPath("$.id").value(1));
 	}
 
 }
