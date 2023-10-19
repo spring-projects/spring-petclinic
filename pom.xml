@@ -283,7 +283,7 @@
                 <schemaVersion>v2</schemaVersion>
                 <resourceGroup>spring-petclinic-1697657442566-rg</resourceGroup>
                 <appName>spring-petclinic-1697657442566</appName>
-                <pricingTier>F1</pricingTier>
+                <pricingTier>P1v2</pricingTier>
                 <region>centralus</region>
                 <runtime>
                     <os>Linux</os>
