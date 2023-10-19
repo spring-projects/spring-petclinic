@@ -1,6 +1,7 @@
 name: AI Code Reviewer
 
 on:
+  workflow_dispatch:
   pull_request:
     types:
       - opened
