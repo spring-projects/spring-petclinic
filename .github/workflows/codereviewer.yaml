@@ -1,0 +1,22 @@
+name: AI Code Reviewer
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+permissions: write-all
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: AI Code Reviewer
+        uses: david@thank-the-maker.org/ai-code-reviewer@main
+        with:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_API_MODEL: "gpt-3" # Optional: defaults to "gpt-4"
+          exclude: "**/*.json, **/*.md" # Optional: exclude patterns separated by commas
