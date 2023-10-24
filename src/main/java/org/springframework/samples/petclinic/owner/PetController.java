@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.validation.Valid;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * @author Juergen Hoeller
@@ -98,7 +99,7 @@ class PetController {
 	}
 
 	@PostMapping("/pets/new")
-	public String processCreationForm(Owner owner, @Valid Pet pet, BindingResult result, ModelMap model) {
+	public String processCreationForm(Owner owner, @Valid Pet pet, BindingResult result, ModelMap model, RedirectAttributes redirectAttributes) {
 		if (StringUtils.hasText(pet.getName()) && pet.isNew() && owner.getPet(pet.getName(), true) != null) {
 			result.rejectValue("name", "duplicate", "already exists");
 		}
@@ -115,18 +116,19 @@ class PetController {
 		}
 
 		this.owners.save(owner);
+		redirectAttributes.addFlashAttribute("message", "New Pet has been Added");
 		return "redirect:/owners/{ownerId}";
 	}
 
 	@GetMapping("/pets/{petId}/edit")
-	public String initUpdateForm(Owner owner, @PathVariable("petId") int petId, ModelMap model) {
+	public String initUpdateForm(Owner owner, @PathVariable("petId") int petId, ModelMap model,RedirectAttributes redirectAttributes) {
 		Pet pet = owner.getPet(petId);
 		model.put("pet", pet);
 		return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping("/pets/{petId}/edit")
-	public String processUpdateForm(@Valid Pet pet, BindingResult result, Owner owner, ModelMap model) {
+	public String processUpdateForm(@Valid Pet pet, BindingResult result, Owner owner, ModelMap model,RedirectAttributes redirectAttributes) {
 
 		String petName = pet.getName();
 
@@ -150,6 +152,7 @@ class PetController {
 
 		owner.addPet(pet);
 		this.owners.save(owner);
+		redirectAttributes.addFlashAttribute("message", "Pet details has been edited");
 		return "redirect:/owners/{ownerId}";
 	}
 
