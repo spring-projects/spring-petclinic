@@ -465,8 +465,8 @@
     </profile>
   </profiles>
   <scm>
-      <connection>scm:git:http://localhost:8080/repository/maven-snapshots</connection>
-      <developerConnection>scm:git:http://localhost:8080/repository/maven-snapshots</developerConnection>
+      <connection>scm:git:https://github.com/surtexx/spring-petclinic.git</connection>
+      <developerConnection>scm:git:https://github.com/surtexx/spring-petclinic.git</developerConnection>
       <url>https://github.com/surtexx/spring-petclinic.git</url>
     <tag>spring-petclinic-3.1.4</tag>
   </scm>
