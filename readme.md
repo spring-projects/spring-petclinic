@@ -19,7 +19,7 @@ cd spring-petclinic
 java -jar target/*.jar
 
 Extras:
-Also ,,enable annotation processing" in `Compiler > Annotation Processors` so that you can work with lombok properly 
+Also ,"enable annotation processing" in `Compiler > Annotation Processors` so that you can work with lombok properly 
 ```
 
 You can then access petclinic at http://localhost:8080/
