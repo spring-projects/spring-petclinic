@@ -13,5 +13,11 @@ pipeline{
                 sh 'mvn package'
             }
         }
+        stage('Sonar Cloud Analysis'){
+            steps{
+                withSonarQubeEnv('SONAR_CLOUD')
+                sh 'mvn clean verify sonar:sonar -Dsonar.organization=springgit -Dsonar.projectKey=springgit'
+            }
+        }
     }
 }
