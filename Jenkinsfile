@@ -8,7 +8,7 @@ pipeline{
                     branch : 'main'
             }
         }
-        stage('Build'){
+        stage('Build'){ 
             steps{
                 sh 'mvn package'
             }
@@ -36,3 +36,4 @@ pipeline{
         }
     }
 }
+//this file is for jenkins
