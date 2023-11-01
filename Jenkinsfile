@@ -25,13 +25,13 @@ pipeline{
         success{
             mail subject : 'Jenkins job of ${JOB_NAME} of build numer ${BUILD_ID} is passed',
                  body : 'Click Here to see more details ${BUILD_URL}',
-                 from : 'jenkins@outlook.com'
+                 from : 'jenkins@outlook.com',
                  to : 'abhishek16tiwary@gmail.com'
         }
         failure{
             mail subject : 'Jenkins job of ${JOB_NAME} of build numer ${BUILD_ID} is Failed',
                  body : 'Click Here to see more details ${BUILD_URL}',
-                 from : 'jenkins@outlook.com'
+                 from : 'jenkins@outlook.com',
                  to : 'abhishek16tiwary@gmail.com'
         }
     }
