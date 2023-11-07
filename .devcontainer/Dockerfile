@@ -8,6 +8,6 @@ ARG USER=vscode
 VOLUME /home/$USER/.m2
 VOLUME /home/$USER/.gradle
 
-ARG JAVA_VERSION=17.0.4.1-ms
+ARG JAVA_VERSION=17.0.7-ms
 RUN sudo mkdir /home/$USER/.m2 /home/$USER/.gradle && sudo chown $USER:$USER /home/$USER/.m2 /home/$USER/.gradle
 RUN bash -lc '. /usr/local/sdkman/bin/sdkman-init.sh && sdk install java $JAVA_VERSION && sdk use java $JAVA_VERSION'

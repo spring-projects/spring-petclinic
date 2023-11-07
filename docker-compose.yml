@@ -13,11 +13,15 @@ services:
       - MYSQL_DATABASE=petclinic
     volumes:
       - "./conf.d:/etc/mysql/conf.d:ro"
+    profiles:
+    - mysql
   postgres:
-    image: postgres:15.2
+    image: postgres:15.3
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_PASSWORD=petclinic
       - POSTGRES_USER=petclinic
       - POSTGRES_DB=petclinic
+    profiles:
+    - postgres
