@@ -38,7 +38,9 @@ jobs:
           rm -f "diffblue-cover-cli.zip"
           echo "$RUNNER_TEMP/dcover" >> "$GITHUB_PATH"
       - name: Create unit tests on each module
-        run: dcover create --batch --coverage-reports
+        run: |
+          dcover activate "${{ secrets.COVER_LICENSE }}"
+          dcover create --batch --coverage-reports
       - name: Setup Git Credentials
         uses: fregante/setup-git-user@v2
       - name: Stage, commit and push unit tests
