@@ -1,0 +1,46 @@
+name: Diffblue write incremental tests for a Java PR
+on:
+  pull_request:
+    types:
+      - opened
+    paths:
+      - '**.java'
+concurrency:
+  # Only allow one run of the workflow per branch to run at a time
+  group: $
+  cancel-in-progress: true
+jobs:
+  Test:
+    runs-on: ubuntu-22.04
+    env:
+      JVM_ARGS: -Xmx8192m
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3.5.3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - name: Setup Git Credentials
+        uses: fregante/setup-git-user@v2
+      - name: Generate patch file from latest changes
+        run: |
+          git diff ${{ github.event.pull_request.base.sha }}...HEAD > "$GITHUB_WORKSPACE/changes.patch"
+          cat "$GITHUB_WORKSPACE/changes.patch"
+      - name: Download Diffblue Cover
+        run: |
+          mkdir -p "$RUNNER_TEMP/dcover"
+          cd "$RUNNER_TEMP/dcover"
+          curl --silent --show-error --location --output "diffblue-cover-cli.zip" "${{ secrets.DIFFBLUE_COVER_URL }}"
+          unzip -q "diffblue-cover-cli.zip"
+          rm -f "diffblue-cover-cli.zip"
+          echo "$RUNNER_TEMP/dcover" >> "$GITHUB_PATH"
+      - name: Compile project
+        run: mvn --batch-mode --no-transfer-progress clean compile
+      - name: Create unit tests based on diff
+        run: dcover create --batch --patch-only "$GITHUB_WORKSPACE/changes.patch"
+      - name: Add the new tests
+        run: |
+          git add "**/*DiffblueTest.java"
+          git status
+          git commit -m "Incremental Diffblue Tests"
+          git push origin HEAD:${{ github.head_ref }}
