@@ -1,9 +1,9 @@
 name: Diffblue write all unit tests
 on:
   workflow_dispatch:
-  # Trigger the workflow automatically on pushes to master
+  # Trigger the workflow automatically on pushes to main
   push:
-    branches: [master]
+    branches: [main]
 concurrency:
   # Only allow one run of the workflow per branch to run at a time
   group: $
