@@ -12,8 +12,8 @@ jobs:
   Test:
     runs-on: ubuntu-22.04
     strategy:
-    matrix:
-    java: [ '17' ]
+      matrix:
+        java: [ '17' ]
     env:
       JVM_ARGS: -Xmx8192m
     steps:
