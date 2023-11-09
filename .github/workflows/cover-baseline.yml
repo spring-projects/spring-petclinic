@@ -1,0 +1,45 @@
+name: Diffblue write all unit tests
+on:
+  workflow_dispatch:
+  # Trigger the workflow automatically on pushes to master
+  push:
+    branches: [master]
+concurrency:
+  # Only allow one run of the workflow per branch to run at a time
+  group: $
+  cancel-in-progress: true
+jobs:
+  Test:
+    runs-on: ubuntu-22.04
+    env:
+      JVM_ARGS: -Xmx8192m
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Compile project
+        run: mvn --batch-mode --no-transfer-progress clean compile
+      - name: Download Diffblue Cover
+        run: |
+          mkdir -p "$RUNNER_TEMP/dcover"
+          cd "$RUNNER_TEMP/dcover"
+          curl --silent --show-error --location --output "diffblue-cover-cli.zip" "${{ secrets.DIFFBLUE_COVER_URL }}"
+          unzip -q "diffblue-cover-cli.zip"
+          rm -f "diffblue-cover-cli.zip"
+          echo "$RUNNER_TEMP/dcover" >> "$GITHUB_PATH"
+      - name: Create unit tests on each module
+        run: dcover create --batch --coverage-reports
+      - name: Setup Git Credentials
+        uses: fregante/setup-git-user@v2
+      - name: Stage, commit and push unit tests
+        run: |
+          if [ -n "$(git status --short **/*DiffblueTest.java)" ]; then 
+            git add **/*DiffblueTest.java
+            git commit --message "Update Unit Tests for $GITHUB_SHA"
+            git push --set-upstream origin
+          else
+            echo "Nothing to commit"
+          fi
+#      - name: Upload Cover Reports
+#        run: dcover upload https://ab9f-86-5-222-185.ngrok-free.app --project "CoreBanking" --name "$GITHUB_SHA" 
