@@ -100,7 +100,7 @@ class OwnerController {
 			return "owners/findOwners";
 		}
 
-		if (ownersResults.getTotalElements() == 1) {
+		if (ownersResults.getTotalElements() == 2) {
 			// 1 owner found
 			owner = ownersResults.iterator().next();
 			return "redirect:/owners/" + owner.getId();
