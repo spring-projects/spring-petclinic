@@ -13,9 +13,6 @@ pipeline{
             steps {
                 script{
                     app = docker.build("surtexx/mr:${GIT_COMMIT[0..7]}", "-f Dockerfile1 .")
-                    app.inside{
-                        sh 'echo $(wget localhost:8080)'
-                    }
                 }
             }
         }
