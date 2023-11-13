@@ -12,7 +12,7 @@ pipeline{
         stage ("Build Docker Image") {
             steps {
                 script{
-                    app = docker.build("surtexx/mr:${GIT_COMMIT}", "-f Dockerfile1 .")
+                    app = docker.build("surtexx/mr:${GIT_COMMIT[0..7]}", "-f Dockerfile1 .")
                     app.inside{
                         sh 'echo $(wget localhost:8080)'
                     }
@@ -23,7 +23,7 @@ pipeline{
             steps {
                 script{
                     docker.withRegistry('https://registry.hub.docker.com', 'docker_hub_login') {
-                        app.push(${GIT_COMMIT})
+                        app.push("${GIT_COMMIT[0..7]})
                         app.push("latest")
                     }
                 }
