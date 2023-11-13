@@ -1,3 +1,5 @@
-@Library('pipeline_lib') _
-
-pipeline_lib.run_pipelines()
+node {
+    def rootDir = pwd()
+    def pipeline_lib = load "${rootDir}/vars/pipeline_lib.groovy "
+    pipeline_lib.run_pipelines()
+}
