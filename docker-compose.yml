@@ -1,20 +1,14 @@
-version: "2.2"
-
+version: "3"
 services:
-  mysql:
-    image: mysql:8.0
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile2
     ports:
-      - "3306:3306"
-    environment:
-      - MYSQL_ROOT_PASSWORD=
-      - MYSQL_ALLOW_EMPTY_PASSWORD=true
-      - MYSQL_USER=petclinic
-      - MYSQL_PASSWORD=petclinic
-      - MYSQL_DATABASE=petclinic
-    volumes:
-      - "./conf.d:/etc/mysql/conf.d:ro"
-    profiles:
-    - mysql
+      - "8080:8080"
+    links:
+      - postgres
+      
   postgres:
     image: postgres:15.3
     ports:
@@ -23,5 +17,5 @@ services:
       - POSTGRES_PASSWORD=petclinic
       - POSTGRES_USER=petclinic
       - POSTGRES_DB=petclinic
-    profiles:
-    - postgres
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data

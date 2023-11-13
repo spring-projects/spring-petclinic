@@ -1,0 +1,9 @@
+FROM eclipse-temurin:17-jre-alpine
+
+WORKDIR /app
+
+COPY target/spring-petclinic-3.1.5-SNAPSHOT.jar app.jar
+
+RUN apk update && apk add openssl
+
+CMD ["java", "-jar", "app.jar"]

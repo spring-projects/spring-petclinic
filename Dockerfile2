@@ -1,0 +1,21 @@
+FROM eclipse-temurin:17-jdk-alpine as build1
+
+WORKDIR /app
+
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+RUN ./mvnw dependency:resolve
+
+COPY src ./src
+
+RUN ["./mvnw", "package"]
+
+FROM eclipse-temurin:17-jre-alpine as build2
+
+FROM alpine
+
+RUN apk update && apk add openssl
+COPY --from=build2 /opt/java/openjdk /opt/java/openjdk
+COPY --from=build1 /app/target/*.jar /app.jar
+CMD ["/opt/java/openjdk/bin/java", "-jar", "/app.jar"]
+
