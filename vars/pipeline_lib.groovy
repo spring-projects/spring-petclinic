@@ -1,4 +1,4 @@
-def run(){
+def run_pipelines(){
     if(env.CHANGE_ID != null){
         pipeline{
             agent any
