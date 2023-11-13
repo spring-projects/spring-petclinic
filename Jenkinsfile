@@ -6,7 +6,7 @@ pipeline{
                 echo "Running build automation..."
                 sh './mvnw checkstyle:checkstyle'
                 sh './mvnw verify'
-                sh './mvnw clean package'
+                sh './mvnw clean package -DskipTests=true'
             }
         }
         stage ("Build Docker Image") {
