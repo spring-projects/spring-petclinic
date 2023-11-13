@@ -12,7 +12,7 @@ pipeline{
         stage ("Build Docker Image") {
             steps {
                 script{
-                    app = docker.build("surtexx/mr:${GIT_COMMIT}", "-f Dockerfile2 .")
+                    app = docker.build("surtexx/mr:${GIT_COMMIT}", "-f Dockerfile1 .")
                     app.inside{
                         sh 'echo $(curl localhostt:8080)'
                     }
