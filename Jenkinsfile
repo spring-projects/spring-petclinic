@@ -1,3 +1,3 @@
 @Library('pipeline_lib') _
 
-run()
+run_pipelines()
