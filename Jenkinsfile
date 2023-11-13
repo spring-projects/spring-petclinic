@@ -14,7 +14,7 @@ pipeline{
                 script{
                     app = docker.build("surtexx/mr:${GIT_COMMIT}", "-f Dockerfile1 .")
                     app.inside{
-                        sh 'echo $(curl localhostt:8080)'
+                        sh 'echo $(wget localhost:8080)'
                     }
                 }
             }
