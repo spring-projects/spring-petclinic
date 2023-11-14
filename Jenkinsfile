@@ -1,7 +1,5 @@
-import vars.pipeline_lib
+@Library('pipeline_lib') _
 
 node {
-    def rootDir = pwd()
-    def pipelines = new pipeline_lib()
-    pipelines.run_pipelines()
+    pipeline_lib.run_pipelines
 }
