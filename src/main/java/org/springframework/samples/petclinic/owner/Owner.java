@@ -150,6 +150,8 @@ public class Owner extends Person {
 	 * @param petId the identifier of the {@link Pet}, must not be {@literal null}.
 	 * @param visit the visit to add, must not be {@literal null}.
 	 */
+
+	// test
 	public void addVisit(Integer petId, Visit visit) {
 
 		Assert.notNull(petId, "Pet identifier must not be null!");
@@ -163,4 +165,3 @@ public class Owner extends Person {
 	}
 
 }
-
