@@ -42,6 +42,7 @@ import jakarta.validation.constraints.NotBlank;
  * @author Michael Isvy
  * @author Oliver Drotbohm
  */
+
 @Entity
 @Table(name = "owners")
 public class Owner extends Person {
