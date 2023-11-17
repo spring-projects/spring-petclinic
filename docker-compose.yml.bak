@@ -19,3 +19,4 @@ services:
       - POSTGRES_DB=petclinic
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
+
