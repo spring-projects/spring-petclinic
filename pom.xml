@@ -38,11 +38,7 @@
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>org.jobrunr</groupId>
-      <artifactId>jobrunr-pro-spring-boot-3-starter</artifactId>
-      <version>6.3.1</version>
-    </dependency>
+
     <!-- Spring and Spring Boot dependencies -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -316,10 +312,6 @@
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
-    </repository>
-    <repository>
-      <id>JobRunrPro</id>
-      <url>https://repo.jobrunr.io/private-trials-202310/</url>
     </repository>
   </repositories>
 

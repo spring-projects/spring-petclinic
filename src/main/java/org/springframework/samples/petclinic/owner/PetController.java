@@ -22,7 +22,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.jobrunr.scheduling.BackgroundJob;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.domain.PetVaccinationStatusService;
@@ -116,12 +115,12 @@ class PetController implements InitializingBean {
 			.stream()
 			.map(x -> new PetVaccinationStatusService.UpdateVaccineStatusRequest(owner.getId(), x.getId()))
 			.toList();
-//		 executorService.submit(() ->
-//		 petVaccinationStatus.updateVaccinationStatus(petRequests)).get();
+		// executorService.submit(() ->
+		// petVaccinationStatus.updateVaccinationStatus(petRequests)).get();
 		executorService.submit(() -> petVaccinationStatus.updateVaccinationStatus(petRequests));
-//
-//		BackgroundJob.enqueue(() ->
-//		    petVaccinationStatus.updateVaccinationStatus(petRequests));
+		//
+		// BackgroundJob.enqueue(() ->
+		// petVaccinationStatus.updateVaccinationStatus(petRequests));
 		return "redirect:/owners/{ownerId}";
 	}
 

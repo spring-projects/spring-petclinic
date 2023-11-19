@@ -33,7 +33,6 @@ public class PetVaccinationStatusService {
 	@WithSpan
 	public void updateVaccinationStatus(List<UpdateVaccineStatusRequest> updateVaccineStatusRequests) {
 
-
 		for (UpdateVaccineStatusRequest request : updateVaccineStatusRequests) {
 			var owner = ownerRepositorys.findById(request.ownerId);
 
