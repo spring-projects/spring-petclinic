@@ -54,6 +54,11 @@ public class Owner extends Person {
 	@NotBlank
 	private String city;
 
+	@Column(name = "zip_code")
+	@NotBlank
+	@Digits(fraction = 0, integer = 10)
+	private String zipCode;
+
 	@Column(name = "telephone")
 	@NotBlank
 	@Digits(fraction = 0, integer = 10)
@@ -79,6 +84,10 @@ public class Owner extends Person {
 	public void setCity(String city) {
 		this.city = city;
 	}
+
+	public String getZipCode() { return this.zipCode; }
+
+	public void setZipCode(String zipCode) { this.zipCode = zipCode;  }
 
 	public String getTelephone() {
 		return this.telephone;
@@ -150,6 +159,7 @@ public class Owner extends Person {
 			.append("firstName", this.getFirstName())
 			.append("address", this.address)
 			.append("city", this.city)
+			.append("zipCode", this.getZipCode())
 			.append("telephone", this.telephone)
 			.toString();
 	}
