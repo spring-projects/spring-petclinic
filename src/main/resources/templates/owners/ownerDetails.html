@@ -34,6 +34,12 @@
   
     <a th:href="@{__${owner.id}__/edit}" class="btn btn-primary">Edit
       Owner</a>
+    <a th:href="@{__${owner.id}__/delete}" class="btn btn-primary" th:method="delete">Delete
+      Owner</a>
+
+
+
+
     <a th:href="@{__${owner.id}__/pets/new}" class="btn btn-primary">Add
       New Pet</a>
   
