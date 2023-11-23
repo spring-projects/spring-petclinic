@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS pets (
   type_id INT(4) UNSIGNED NOT NULL,
   owner_id INT(4) UNSIGNED,
   INDEX(name),
-  FOREIGN KEY (owner_id) REFERENCES owners(id),
+  FOREIGN KEY (owner_id) REFERENCES owners (id) ON DELETE CASCADE,
   FOREIGN KEY (type_id) REFERENCES types(id)
 ) engine=InnoDB;
 
