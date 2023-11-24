@@ -2,7 +2,7 @@ version: "2.2"
 
 services:
   mysql:
-    image: mysql:8.0
+    image: mysql:8.2
     ports:
       - "3306:3306"
     environment:
@@ -14,9 +14,9 @@ services:
     volumes:
       - "./conf.d:/etc/mysql/conf.d:ro"
     profiles:
-    - mysql
+      - mysql
   postgres:
-    image: postgres:15.3
+    image: postgres:16.1
     ports:
       - "5432:5432"
     environment:
@@ -24,4 +24,4 @@ services:
       - POSTGRES_USER=petclinic
       - POSTGRES_DB=petclinic
     profiles:
-    - postgres
+      - postgres

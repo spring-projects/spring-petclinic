@@ -1,7 +1,7 @@
 plugins {
   id 'java'
   id 'org.springframework.boot' version '3.2.0'
-  id 'io.spring.dependency-management' version '1.1.0'
+  id 'io.spring.dependency-management' version '1.1.4'
   id 'org.graalvm.buildtools.native' version '0.9.28'
 }
 
@@ -16,7 +16,7 @@ repositories {
 }
 
 ext.webjarsFontawesomeVersion = "4.7.0"
-ext.webjarsBootstrapVersion = "5.2.3"
+ext.webjarsBootstrapVersion = "5.3.2"
 
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-cache'
