@@ -37,7 +37,7 @@ pipeline {
                 echo "this is the start of the new stage with the main branch"
             }
         }
-        stage('Create docker image') {
+        stage('Create docker image for main branch') {
             steps {
                 echo "now we will create the docker image for the main branch"
             }
