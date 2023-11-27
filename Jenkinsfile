@@ -22,6 +22,7 @@ pipeline {
         stage('Create docker image') {
             steps {
                 echo "now we will begin the creation of the docker image"
+                sh "docker build -t imagine_spring_petclinic:0.1 ."
             }
         }
         stage('Tag the docker image') {
