@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+            DOCKERHUB_CREDENTIALS = credentials('mihaivalentingeorgescu-dockerhub')
+    }
     stages {
         stage('Checkstyle') {
             steps {
