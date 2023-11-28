@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Checkstyle') {
             steps {
-                sh 'mvn checkstyle:checkstyle'
+                sh 'export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64'
                 archiveArtifacts artifacts: 'checkstyle-result.html', onlyIfSuccessful: true
             }
         }
