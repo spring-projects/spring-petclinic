@@ -50,9 +50,16 @@ pipeline {
                 }
             }
         }
+        stage('Login to Dockerhub') {
+            steps {
+                echo "now we will login to dockerhub"
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+            }
+        }
         stage('Push to DockerHub') {
             steps {
                 echo "now we will push to the docker file"
+                sh 'docker push mihaivalentingeorgescu/imagine_spring_petclinic:0.1'
             }
         }
         stage('Change stages') {
