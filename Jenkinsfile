@@ -19,7 +19,7 @@ pipeline {
             steps {
                 echo "now we will begin the build"
                 script {
-                    def appBuildoutPut = sh (script: 'mvn clean package -Dskiptests')
+                    def appBuildoutPut = sh (script: 'mvn clean package -Dskiptests', returnStatus: true)
                     if (appBuildoutPut == 0) {
                         echo "build SUCCESSFUL"
                     } else {
