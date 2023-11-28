@@ -69,14 +69,16 @@ pipeline {
                 echo "this is the start of the new stage with the main branch"
             }
         }
-        stage('Create docker image for main branch') {
+        stage('Tag docker image again for the main repo') {
             steps {
-                echo "now we will create the docker image for the main branch"
+                echo "now we will tag the docker image for the main branch"
+                sh "docker tag imagine_spring_petclinic:0.1 mihaivalentingeorgescu/main:0.1"
             }
         }
         stage('Push docker image to main repository') {
             steps {
                 echo "now we will push the image to the docker main repository"
+                sh 'docker push mihaivalentingeorgescu/main:0.1'
             }
         }
     }
