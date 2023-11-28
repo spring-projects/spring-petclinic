@@ -41,9 +41,11 @@ pipeline {
         }
         stage('Tag the docker image') {
             steps {
-                echo "now we will tag the docker image"
-                def dockerTag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
-                echo "The tag used for Docker image: ${dockerTag}"
+                script {
+                    echo "now we will tag the docker image"
+                    def dockerTag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+                    echo "The tag used for Docker image: ${dockerTag}"
+                }
             }
         }
         stage('Push to DockerHub') {
