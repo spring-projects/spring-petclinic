@@ -48,8 +48,7 @@ pipeline {
             steps {
                 script {
                     echo "now we will tag the docker image"
-                    def dockerTag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
-                    echo "The tag used for Docker image: ${dockerTag}"
+                    sh "docker tag imagine_spring_petclinic:0.1 mihaivalentingeorgescu/mr:0.1"
                 }
             }
         }
@@ -62,7 +61,7 @@ pipeline {
         stage('Push to DockerHub') {
             steps {
                 echo "now we will push to the docker file"
-                sh 'docker push mihaivalentingeorgescu/imagine_spring_petclinic:0.1'
+                sh 'docker push mihaivalentingeorgescu/mr:0.1'
             }
         }
         stage('Change stages') {
