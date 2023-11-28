@@ -4,7 +4,7 @@ pipeline {
         stage('Checkstyle') {
             steps {
                 sh 'mvn checkstyle:checkstyle'
-                archiveArtifacts artifacts: 'target/checkstyle-result.html', onlyIfSuccessful: true
+                archiveArtifacts artifacts: 'checkstyle-result.html', onlyIfSuccessful: true
             }
         }
         stage('Tests') {
