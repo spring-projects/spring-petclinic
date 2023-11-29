@@ -92,7 +92,7 @@ pipeline {
                 echo "now we will tag the docker image for the main branch"
                 script {
                     def tagDockerImage = sh(script: 'docker tag imagine_spring_petclinic:0.1 mihaivalentingeorgescu/main:0.1', returnStatus: true)
-                    if (tagDockerImager == 0) {
+                    if (tagDockerImage == 0) {
                         echo "Docke tag ended successfully"
                     } else {
                         error "Docker tag FAILED" 
