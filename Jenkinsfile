@@ -7,7 +7,6 @@ pipeline {
         stage('Checkstyle') {
             steps {
                 sh 'export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64'
-                sh 'echo $JAVA_HOME'
                 sh 'mvn checkstyle:checkstyle'
                 archiveArtifacts artifacts: 'checkstyle-result.html', onlyIfSuccessful: true
             }
@@ -36,32 +35,52 @@ pipeline {
                 echo "now we will begin the creation of the docker image"
                 script {
                     def dockerBuildOutput = sh(script: 'docker build -t imagine_spring_petclinic:0.1 .', returnStatus: true)
+                    app = docker.build
                     if (dockerBuildOutput == 0) {
-                        echo "Build successful"
+                        echo "Docker image creation successful"
                     } else {
-                        error "Build failed" // Optional: Terminate the pipeline with an error message if the build fails
+                        error "Docker image creation FAILED" // Optional: Terminate the pipeline with an error message if the build fails
                     }
                 }
             }
         }
         stage('Tag the docker image') {
             steps {
+                echo "now we will tag the docker image"
                 script {
-                    echo "now we will tag the docker image"
-                    sh "docker tag imagine_spring_petclinic:0.1 mihaivalentingeorgescu/mr:0.1"
+                    def imageTag = sh(script: 'docker tag imagine_spring_petclinic:0.1 mihaivalentingeorgescu/mr:0.1', returnStatus: true)
+                    if (imageTag == 0) {
+                        echo "Image tagged successfully"
+                    } else {
+                        error "Image tagging FAILED" 
+                    }
                 }
             }
         }
         stage('Login to Dockerhub') {
             steps {
                 echo "now we will login to dockerhub"
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                script {
+                    def loginDocker = sh(script: 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR -p ', returnStatus: true)
+                    if (loginDocker == 0) {
+                        echo "Login ended successfully"
+                    } else {
+                        error "Login FAILED" 
+                    }
+                }
             }
         }
         stage('Push to DockerHub') {
             steps {
                 echo "now we will push to the docker file"
-                sh 'docker push mihaivalentingeorgescu/mr:0.1'
+                script {
+                    def pushToDocker = sh(script: 'docker push mihaivalentingeorgescu/mr:0.1', returnStatus: true)
+                    if (pushToDocker == 0) {
+                        echo "Push made successfully"
+                    } else {
+                        error "Docker push FAILED" 
+                    }
+                }
             }
         }
         stage('Change stages') {
@@ -72,13 +91,27 @@ pipeline {
         stage('Tag docker image again for the main repo') {
             steps {
                 echo "now we will tag the docker image for the main branch"
-                sh "docker tag imagine_spring_petclinic:0.1 mihaivalentingeorgescu/main:0.1"
+                script {
+                    def tagDockerImage = sh(script: 'docker tag imagine_spring_petclinic:0.1 mihaivalentingeorgescu/main:0.1', returnStatus: true)
+                    if (tagDockerImager == 0) {
+                        echo "Docke tag ended successfully"
+                    } else {
+                        error "Docker tag FAILED" 
+                    }
+                }
             }
         }
         stage('Push docker image to main repository') {
             steps {
                 echo "now we will push the image to the docker main repository"
-                sh 'docker push mihaivalentingeorgescu/main:0.1'
+                script {
+                    def pushDockerImageToMain = sh(script: 'docker push mihaivalentingeorgescu/main:0.1', returnStatus: true)
+                    if (pushDockerImageToMain == 0) {
+                        echo "Docke tag ended successfully"
+                    } else {
+                        error "Docker tag FAILED" 
+                    }
+                }
             }
         }
     }
