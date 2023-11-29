@@ -60,7 +60,7 @@ pipeline {
             steps {
                 echo "now we will login to dockerhub"
                 script {
-                    def loginDocker = sh(script: 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR -p ', returnStatus: true)
+                    def loginDocker = sh(script: 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin', returnStatus: true)
                     if (loginDocker == 0) {
                         echo "Login ended successfully"
                     } else {
