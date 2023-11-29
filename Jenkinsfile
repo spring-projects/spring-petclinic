@@ -99,11 +99,9 @@ pipeline {
         }
         stage('Tag docker image again for the main repo') {
             when {
-                // Condition to execute the stage on a pull request event
-                expression {
-                    return env.CHANGE_ID != null
+                // Condition to execute the stage when the branch is main
+                    changeRequest()
                 }
-            }
             steps {
                 echo "now we will tag the docker image for the main branch"
                 script {
@@ -118,11 +116,9 @@ pipeline {
         }
         stage('Push docker image to main repository') {
             when {
-                // Condition to execute the stage on a pull request event
-                expression {
-                        return (env.CHANGE_ID == null && env.BRANCH_NAME == 'main')
-                    }
-            }
+                // Condition to execute the stage when the branch is main
+                    changeRequest()
+                }
             steps {
                 echo "now we will push the image to the docker main repository"
                 script {
