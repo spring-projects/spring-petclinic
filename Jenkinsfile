@@ -35,7 +35,6 @@ pipeline {
                 echo "now we will begin the creation of the docker image"
                 script {
                     def dockerBuildOutput = sh(script: 'docker build -t imagine_spring_petclinic:0.1 .', returnStatus: true)
-                    app = docker.build
                     if (dockerBuildOutput == 0) {
                         echo "Docker image creation successful"
                     } else {
