@@ -105,6 +105,7 @@ pipeline {
                 expression {
                     return env.CHANGE_ID != null
                 }
+            }
             steps {
                 echo "now we will tag the docker image for the main branch"
                 script {
@@ -123,6 +124,7 @@ pipeline {
                 expression {
                     return env.CHANGE_ID != null
                 }
+            }
             steps {
                 echo "now we will push the image to the docker main repository"
                 script {
