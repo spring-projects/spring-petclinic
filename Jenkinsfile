@@ -43,15 +43,15 @@ pipeline {
                 }
             }
         }
-        stage('Tag the docker image for merge request repo - mr') {
-            steps {
-                echo "now we will tag the docker image"
-                when {
+        stage('Tag the docker image') {
+            when {
                 // Condition to execute the stage when the branch is main
                     expression {
                         return (env.CHANGE_ID == null && env.BRANCH_NAME == 'main')
                     }
                 }
+            steps {
+                echo "now we will tag the docker image"
                 script {
                     def imageTag = sh(script: 'docker tag imagine_spring_petclinic:0.1 mihaivalentingeorgescu/mr:0.1', returnStatus: true)
                     if (imageTag == 0) {
@@ -66,7 +66,7 @@ pipeline {
             steps {
                 echo "now we will login to dockerhub"
                 script {
-                    def loginDocker = sh(script: 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR -p ', returnStatus: true)
+                    def loginDocker = sh(script: 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin', returnStatus: true)
                     if (loginDocker == 0) {
                         echo "Login ended successfully"
                     } else {
@@ -75,13 +75,13 @@ pipeline {
                 }
             }
         }
-        stage('Push to DockerHub to merge rewuest repo - mr') {
+        stage('Push to DockerHub') {
             when {
                 // Condition to execute the stage when the branch is main
-                expression {
-                    return (env.CHANGE_ID == null && env.BRANCH_NAME == 'main')
+                    expression {
+                        return (env.CHANGE_ID == null && env.BRANCH_NAME == 'main')
+                    }
                 }
-            }
             steps {
                 echo "now we will push to the docker file"
                 script {
@@ -105,7 +105,6 @@ pipeline {
                 expression {
                     return env.CHANGE_ID != null
                 }
-            }
             steps {
                 echo "now we will tag the docker image for the main branch"
                 script {
@@ -119,13 +118,13 @@ pipeline {
             }
         }
         stage('Push docker image to main repository') {
-            steps {
-                echo "now we will push the image to the docker main repository"
-                when {
+            when {
                 // Condition to execute the stage on a pull request event
                 expression {
                     return env.CHANGE_ID != null
                 }
+            steps {
+                echo "now we will push the image to the docker main repository"
                 script {
                     def pushDockerImageToMain = sh(script: 'docker push mihaivalentingeorgescu/main:0.1', returnStatus: true)
                     if (pushDockerImageToMain == 0) {
