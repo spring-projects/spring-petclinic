@@ -124,6 +124,7 @@ pipeline {
                 expression {
                     return env.CHANGE_ID != null
                 }
+            }
             steps {
                 echo "now we will push the image to the docker main repository"
                 script {
@@ -138,4 +139,4 @@ pipeline {
         }
     }
 }
-}
+
