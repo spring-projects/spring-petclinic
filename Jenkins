@@ -1,0 +1,22 @@
+pipeline{
+    agent{label "MAVEN"}
+    options{
+        timeout (time: 30,unit:'MINUTES')
+    }
+    tiggers{
+        pollSCM('* * * * *')
+    }
+    stages{
+        stage ('git') {
+            step {
+                git url :'https://github.com/dhille98/spring-petclinic.git'
+                     branch:'dev'
+            }
+        }
+        stage('bulid') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+    }
+}
