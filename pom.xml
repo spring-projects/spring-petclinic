@@ -3,11 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
-  <version>3.0.1-SNAPSHOT</version>
+  <version>3.0.1</version>
   <scm>
     <developerConnection>scm:git:https://github.com/omarxgrid/spring-petclinic.git</developerConnection>
     <url>https://github.com/omarxgrid/spring-petclinic.git</url>
-    <tag>HEAD</tag>
+    <tag>spring-petclinic-3.0.1</tag>
   </scm>
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -23,7 +23,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <!-- Important for reproducible builds. Update using e.g. ./mvnw versions:set -DnewVersion=... -->
-    <project.build.outputTimestamp>2023-11-30T04:42:49Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2023-11-30T04:49:49Z</project.build.outputTimestamp>
 
     <!-- Web dependencies -->
     <webjars-bootstrap.version>5.3.2</webjars-bootstrap.version>
