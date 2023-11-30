@@ -1,23 +1,23 @@
-pipeline{
-    agent{label "MAVEN"}
-    options{
-        timeout(time: 30, unit: 'MINUTES')
+pipeline {
+    agent { label 'MAVEN' }
+    options { 
+        timeout(time: 30, unit: 'MINUTES') 
     }
     triggers {
-         pollSCM('* * * * *')
-          }
+        pollSCM('* * * * *')
+    }
     stages {
         stage('git') {
             steps {
-                git url :'https://github.com/dhille98/spring-petclinic.git' 
-                branch : 'dev'
-                
+                git url: 'https://github.com/dhille98/spring-petclinic.git' , 
+                    branch: 'dev'
             }
         }
-        stage('bulid') {
+        stage('build') {
             steps {
                 sh 'mvn clean package'
             }
         }
     }
+
 }
