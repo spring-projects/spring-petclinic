@@ -1,13 +1,13 @@
 pipeline{
     agent{label "MAVEN"}
     options{
-        timeout (time: 30,unit:'MINUTES')
+        timeout(time: 30, unit: 'MINUTES')
     }
-    tiggers{
-        pollSCM('* * * * *')
-    }
+    triggers {
+         pollSCM('* * * * *')
+          }
     stages{
-        stage ('git') {
+        stage('git') {
             step {
                 git url :'https://github.com/dhille98/spring-petclinic.git'
                      branch:'dev'
