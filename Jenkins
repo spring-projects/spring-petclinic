@@ -9,8 +9,9 @@ pipeline{
     stages {
         stage('git') {
             steps {
-                git url :'https://github.com/dhille98/spring-petclinic.git'
-                     branch:'dev'
+                git url :'https://github.com/dhille98/spring-petclinic.git' 
+                    branch: 'dev'
+                
             }
         }
         stage('bulid') {
