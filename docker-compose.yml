@@ -25,3 +25,14 @@ services:
       - POSTGRES_DB=petclinic
     profiles:
       - postgres
+  oracle:
+    image: gvenzl/oracle-free:slim-faststart
+    ports:
+      - "1521:1521"
+    environment:
+      - APP_USER=petclinic
+      - APP_USER_PASSWORD=petclinic
+      - ORACLE_RANDOM_PASSWORD=yes
+      - ORACLE_DATABASE=petclinic
+    profiles:
+      - oracle

@@ -1,0 +1,19 @@
+===============================================================================
+===     Spring PetClinic sample application - OracleSQL Configuration     ===
+===============================================================================
+
+1) Run the "docker-compose.yml" from the root of the project:
+
+        $ docker-compose up oracle
+        ...
+        spring-petclinit-oracle-1  | #########################
+        spring-petclinit-oracle-1  | DATABASE IS READY TO USE!
+        spring-petclinit-oracle-1  | #########################
+        ...
+
+2) Run the app with `spring.profiles.active=oracle` (e.g. as a System property via the command
+   line, but any way that sets that property in a Spring Boot app should work). For example use
+
+   mvn spring-boot:run -Dspring-boot.run.profiles=oracle
+
+   To activate the profile on the command line.
