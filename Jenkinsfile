@@ -49,7 +49,7 @@ pipeline {
                     changeRequest()
                 }
             steps {
-                echo "now we will tag the docker image"
+                echo "now we will tag the docker image "
                 script {
                     def imageTag = sh(script: 'docker tag imagine_spring_petclinic:0.1 mihaivalentingeorgescu/mr:0.1', returnStatus: true)
                     if (imageTag == 0) {
