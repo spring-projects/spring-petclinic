@@ -1,4 +1,4 @@
-sa speram ca a mers pipeline-u:P
+gvsa speram ca a mers pipeline-u:P
 pipelineu merge sa vedem daca merge merge requestu
 
 
