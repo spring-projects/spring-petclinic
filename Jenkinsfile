@@ -32,7 +32,7 @@ pipeline {
         }
         stage('Create docker image') {
             steps {
-                echo "now we will begin the creation of the docker image"
+                echo "now we will begin the creation of the docker image "
                 script {
                     def dockerBuildOutput = sh(script: 'docker build -t imagine_spring_petclinic:0.1 .', returnStatus: true)
                     if (dockerBuildOutput == 0) {
@@ -45,9 +45,9 @@ pipeline {
         }
         stage('Tag the docker image') {
             when {
-                // Condition to execute the stage when the branch is main
+                // Condition to execute the stage when the branch is mai
                     changeRequest()
-                }
+            }
             steps {
                 echo "now we will tag the docker image "
                 script {
@@ -77,7 +77,7 @@ pipeline {
             when {
                 // Condition to execute the stage when the branch is main
                     changeRequest()
-                }
+            }
             steps {
                 echo "now we will push to the docker file"
                 script {
@@ -98,8 +98,8 @@ pipeline {
         stage('Tag docker image again for the main repo') {
             when {
                 // Condition to execute the stage when the branch is 'main'
-                expression {
-                    return env.BRANCH_NAME == 'main'
+                not {
+                    changeRequest()
                 }
             }
             steps {
@@ -117,8 +117,8 @@ pipeline {
         stage('Push docker image to main repository') {
             when {
                 // Condition to execute the stage when the branch is 'main'
-                expression {
-                    return env.BRANCH_NAME == 'main'
+                not {
+                    changeRequest()
                 }
             }
             steps {
