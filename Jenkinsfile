@@ -4,6 +4,7 @@ pipeline {
             DOCKERHUB_CREDENTIALS = credentials('mihaivalentingeorgescu-dockerhub')
     }
     stages {
+
         stage('Checkstyle') {
             steps {
                 sh 'export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64'
@@ -32,7 +33,7 @@ pipeline {
         }
         stage('Create docker image') {
             steps {
-                echo "now we will begin the creation of the docker image "
+                echo " now we will begin the creation of the docker image "
                 script {
                     def dockerBuildOutput = sh(script: 'docker build -t imagine_spring_petclinic:0.1 .', returnStatus: true)
                     if (dockerBuildOutput == 0) {
@@ -45,8 +46,7 @@ pipeline {
         }
         stage('Tag the docker image') {
             when {
-                // Condition to execute the stage when the branch is mai
-                    changeRequest()
+                expression { currentBuild.changeSets == null }
             }
             steps {
                 echo "now we will tag the docker image "
@@ -75,8 +75,7 @@ pipeline {
         }
         stage('Push to DockerHub') {
             when {
-                // Condition to execute the stage when the branch is main
-                    changeRequest()
+                expression { currentBuild.changeSets == null }
             }
             steps {
                 echo "now we will push to the docker file"
@@ -97,10 +96,7 @@ pipeline {
         }
         stage('Tag docker image again for the main repo') {
             when {
-                // Condition to execute the stage when the branch is 'main'
-                not {
-                    changeRequest()
-                }
+                expression { currentBuild.changeSets != null }
             }
             steps {
                 echo "now we will tag the docker image for the main branch"
@@ -117,9 +113,7 @@ pipeline {
         stage('Push docker image to main repository') {
             when {
                 // Condition to execute the stage when the branch is 'main'
-                not {
-                    changeRequest()
-                }
+                expression { currentBuild.changeSets != null }
             }
             steps {
                 echo "now we will push the image to the docker main repository"
