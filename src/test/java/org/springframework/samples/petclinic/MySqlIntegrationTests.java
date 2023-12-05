@@ -31,6 +31,7 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.samples.petclinic.vet.VetRepository;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.aot.DisabledInAotMode;
 import org.springframework.web.client.RestTemplate;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -40,6 +41,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @ActiveProfiles("mysql")
 @Testcontainers(disabledWithoutDocker = true)
 @DisabledInNativeImage
+@DisabledInAotMode
 class MySqlIntegrationTests {
 
 	@ServiceConnection
