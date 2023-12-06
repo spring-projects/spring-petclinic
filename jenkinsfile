@@ -28,7 +28,7 @@ pipeline {
 
         }
 
-        stage('validate') {
+        stage('build') {
 
             steps {
 
