@@ -32,7 +32,7 @@ pipeline {
 
             steps {
 
-                sh 'mvn validate'
+                sh 'mvn --validate'
 
             }
 
