@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Checkstyle') {
             steps {
-                sh 'mvn checkstyle:checkstyle'
+                sh './mvnw checkstyle:checkstyle'
             }
             post {
                 always {
@@ -13,20 +13,20 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh 'mvn test'
+                sh './mvnw test'
             }
         }
         stage('Build Without Tests') {
             steps {
-                sh 'mvn clean package -DskipTests'
+                sh './mvnw clean package -DskipTests'
             }
         }
         stage('Create Docker Image and Push') {
             steps {
                 script {
                     def commitId = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                    sh "docker build -t your-docker-hub-username/spring-petclinic:${commitId} ."
-                    sh "docker push your-docker-hub-username/spring-petclinic:${commitId}"
+                    sh "docker build -t mivancevic/spring-petclinic:${commitId} ."
+                    sh "docker push mivancevic/spring-petclinic:${commitId}"
                 }
             }
         }
