@@ -7,10 +7,10 @@ pipeline {
       }
     }
     stage ('Build') {
-      steps {
-        tools {
+       tools {
             maven 'Maven-3.9.5'
         }
+      steps {
         sh "mvn clean install"
       }
     }
