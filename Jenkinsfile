@@ -14,5 +14,15 @@ pipeline {
         sh "mvn clean install"
       }
     }
+    stage ('artifact') {
+      steps {
+        archiveArtifacts artifacts: '**/*.jar', followSymlinks: false
+      }
+    }
+    stage ('unit test') {
+      steps {
+        junit '**/TEST*.xml'
+      }
+    }
   }
 }
