@@ -1,0 +1,120 @@
+Resources:
+  SecurityGroupPetClinic:
+    Type: "AWS::EC2::SecurityGroup"
+    Properties:
+      GroupName: "SecurityGroupPetClinic"
+      GroupDescription: "Security group to allow SSH and HTTP over 8080"
+      VpcId: "vpc-fe0d6d84"
+      SecurityGroupEgress:
+        - IpProtocol: "-1"
+          CidrIp: 0.0.0.0/0
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 8080
+          ToPort: 8080
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+
+  LaunchConfigurationPetClinic2:
+    Type: "AWS::AutoScaling::LaunchConfiguration"
+    Properties:
+      ImageId: "ami-04c97e62cb19d53f1"
+      InstanceType: "t4g.small"
+      KeyName: "devops-keypair"
+      LaunchConfigurationName: "LaunchConfigurationPetClinic2"
+      SecurityGroups:
+        - !GetAtt SecurityGroupPetClinic.GroupId
+      UserData:
+        Fn::Base64:
+          !Sub |
+          #!/bin/bash
+          sudo yum update -y
+          sudo yum install docker -y
+          sudo service docker start
+          sudo docker pull bryanvalencia94/petclinic:1.0.0-mac-arm
+          sudo docker run -p 8080:8080 bryanvalencia94/petclinic:1.0.0-mac-arm
+
+  AutoScalingGroupPetClinic:
+    Type: "AWS::AutoScaling::AutoScalingGroup"
+    Properties:
+      MaxSize: 2
+      MinSize: 1
+      LaunchConfigurationName:
+        !Ref LaunchConfigurationPetClinic2
+      VPCZoneIdentifier:
+        - subnet-3da0f161
+        - subnet-3304e07e
+      TargetGroupARNs:
+        - Ref: TargetGroupPetClinic
+
+  AutoScalingPolicyPetClinic:
+    Type: AWS::AutoScaling::ScalingPolicy
+    Properties:
+      AdjustmentType: "ChangeInCapacity"
+      AutoScalingGroupName:
+        !Ref AutoScalingGroupPetClinic
+      Cooldown: "300"
+      ScalingAdjustment: "1"
+
+  LoadBalancerPetClinic:
+    Type: "AWS::ElasticLoadBalancingV2::LoadBalancer"
+    Properties:
+      Name: LoadBalancerPetClinic
+      Subnets:
+        - subnet-3da0f161
+        - subnet-3304e07e
+      SecurityGroups:
+        - !Ref SecurityGroupPetClinic
+      Type: application
+
+  TargetGroupPetClinic:
+    Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
+    Properties:
+      Name: TargetGroupPetClinic
+      Port: 8080
+      Protocol: HTTP
+      VpcId: "vpc-fe0d6d84"
+      TargetType: instance
+
+  ListenerPetClinic:
+    Type: "AWS::ElasticLoadBalancingV2::Listener"
+    Properties:
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn:
+            Ref: TargetGroupPetClinic
+      LoadBalancerArn:
+        Ref: LoadBalancerPetClinic
+      Port: 80
+      Protocol: HTTP
+
+  CloudFrontDistributionPetClinic:
+    Type: "AWS::CloudFront::Distribution"
+    Properties:
+      DistributionConfig:
+        DefaultCacheBehavior:
+          TargetOriginId: LoadBalancerOrigin
+          ViewerProtocolPolicy: allow-all
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6 # This is the AWS Managed CacheOptimized CachePolicyId
+        Enabled: true
+        Origins:
+          - CustomOriginConfig:
+              HTTPPort: 80
+              OriginProtocolPolicy: http-only
+            DomainName: !GetAtt LoadBalancerPetClinic.DNSName
+            Id: LoadBalancerOrigin
+  
+Outputs:
+  LoadBalancerDNSName:
+    Description: The DNS name of the load balancer.
+    Value:
+      Fn::GetAtt:
+        - LoadBalancerPetClinic
+        - DNSName

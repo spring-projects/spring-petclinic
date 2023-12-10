@@ -1,0 +1,27 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto11
+  pre_build:
+    commands:
+      - echo Pre-build phase...
+      - echo Compile and running tests using Gradle Wrapper...
+      - chmod +x gradlew
+      - ./gradlew build
+  build:
+    commands:
+      - echo Build phase...
+      - echo Build Docker image and tag it...
+      - docker build -t bryanvalencia94/petclinic:$CODEBUILD_BUILD_NUMBER .
+  post_build:
+    commands:
+      - echo Post-build phase...
+      - echo Push Docker image to repository...
+      - docker push bryanvalencia94/petclinic:$CODEBUILD_BUILD_NUMBER
+
+#artifacts:
+#  files:
+#    - '**/*'
+#  name: DevOpsAppArtifacts
