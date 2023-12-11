@@ -37,9 +37,6 @@ pipeline {
             }
         }
         stage('Build Without Tests') {
-            when {
-                expression { env.CHANGE_ID != null } // Run only for merge requests
-            }
             steps {
                 sh './mvnw clean package -DskipTests'
             }
