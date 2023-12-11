@@ -17,11 +17,11 @@ pipeline {
                         }
                     }
                 }
-            }
+        }
         stage('Checkstyle') {
             steps {
                 sh './mvnw checkstyle:checkstyle'
-            }s
+            }
             post {
                 always {
                     archiveArtifacts artifacts: '**/target/checkstyle-result.xml', allowEmptyArchive: true
