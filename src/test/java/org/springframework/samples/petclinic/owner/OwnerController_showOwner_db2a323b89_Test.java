@@ -78,30 +78,31 @@ import org.springframework.web.servlet.ModelAndView;
 @ExtendWith(MockitoExtension.class)
 public class OwnerController_showOwner_db2a323b89_Test {
 
-    private OwnerRepository owners;
-    private OwnerController ownerController;
+	private OwnerRepository owners;
 
-    @BeforeEach
-    public void setUp() {
-        owners = mock(OwnerRepository.class);
-        ownerController = new OwnerController(owners);
-    }
+	private OwnerController ownerController;
 
-    @Test
-    public void testShowOwner_ValidOwnerId() {
-        Owner mockOwner = new Owner();
-        mockOwner.setId(1);
+	@BeforeEach
+	public void setUp() {
+		owners = mock(OwnerRepository.class);
+		ownerController = new OwnerController(owners);
+	}
 
-        when(owners.findById(anyInt())).thenReturn(mockOwner);
+	@Test
+	public void testShowOwner_ValidOwnerId() {
+		Owner mockOwner = new Owner();
+		mockOwner.setId(1);
 
-        ModelAndView mav = ownerController.showOwner(1);
-        
-        assertNotNull(mav, "ModelAndView should not be null");
-        assertEquals("owners/ownerDetails", mav.getViewName(), "View name should match");
-        assertEquals(mockOwner, mav.getModel().get("owner"), "Model should contain the owner");
-    }
+		when(owners.findById(anyInt())).thenReturn(mockOwner);
 
-    @Test
+		ModelAndView mav = ownerController.showOwner(1);
+
+		assertNotNull(mav, "ModelAndView should not be null");
+		assertEquals("owners/ownerDetails", mav.getViewName(), "View name should match");
+		assertEquals(mockOwner, mav.getModel().get("owner"), "Model should contain the owner");
+	}
+
+	@Test
     public void testShowOwner_InvalidOwnerId() {
         when(owners.findById(anyInt())).thenReturn(null);
 
@@ -112,5 +113,6 @@ public class OwnerController_showOwner_db2a323b89_Test {
         assertEquals(null, mav.getModel().get("owner"), "Model should not contain an owner");
     }
 
-    // TODO: Add more tests for other scenarios as per the test case scenarios provided
+	// TODO: Add more tests for other scenarios as per the test case scenarios provided
+
 }

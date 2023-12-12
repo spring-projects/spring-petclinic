@@ -65,46 +65,49 @@ import org.springframework.validation.BindingResult;
 @ExtendWith(MockitoExtension.class)
 public class OwnerController_processUpdateOwnerForm_a228651f5b_Test {
 
-    private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
+	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
 
-    @Mock
-    private OwnerRepository owners;
+	@Mock
+	private OwnerRepository owners;
 
-    @InjectMocks
-    private OwnerController ownerController;
+	@InjectMocks
+	private OwnerController ownerController;
 
-    private Owner owner;
-    private BindingResult bindingResult;
+	private Owner owner;
 
-    @BeforeEach
-    void setup() {
-        owner = new Owner();
-        owner.setId(1);
-        owner.setAddress("123 My Street");
-        owner.setCity("My City");
-        owner.setTelephone("1234567890");
-        bindingResult = new BeanPropertyBindingResult(owner, "owner");
-    }
+	private BindingResult bindingResult;
 
-    @Test
-    public void testProcessUpdateOwnerFormSuccess() {
-        when(owners.save(any(Owner.class))).thenReturn(null);
+	@BeforeEach
+	void setup() {
+		owner = new Owner();
+		owner.setId(1);
+		owner.setAddress("123 My Street");
+		owner.setCity("My City");
+		owner.setTelephone("1234567890");
+		bindingResult = new BeanPropertyBindingResult(owner, "owner");
+	}
 
-        String viewName = ownerController.processUpdateOwnerForm(owner, bindingResult, owner.getId());
+	@Test
+	public void testProcessUpdateOwnerFormSuccess() {
+		// when(owners.save(any(Owner.class))).thenReturn(null);
 
-        assertEquals("redirect:/owners/" + owner.getId(), viewName);
-        verify(owners, times(1)).save(owner);
-    }
+		String viewName = ownerController.processUpdateOwnerForm(owner, bindingResult, owner.getId());
 
-    @Test
-    public void testProcessUpdateOwnerFormHasErrors() {
-        bindingResult.reject("error");
+		assertEquals("redirect:/owners/" + owner.getId(), viewName);
+		verify(owners, times(1)).save(owner);
+	}
 
-        String viewName = ownerController.processUpdateOwnerForm(owner, bindingResult, owner.getId());
+	@Test
+	public void testProcessUpdateOwnerFormHasErrors() {
+		bindingResult.reject("error");
 
-        assertEquals(VIEWS_OWNER_CREATE_OR_UPDATE_FORM, viewName);
-        verify(owners, times(0)).save(any(Owner.class));
-    }
+		String viewName = ownerController.processUpdateOwnerForm(owner, bindingResult, owner.getId());
 
-    // TODO: Add more test cases for different scenarios mentioned in the table-driven test context
+		assertEquals(VIEWS_OWNER_CREATE_OR_UPDATE_FORM, viewName);
+		verify(owners, times(0)).save(any(Owner.class));
+	}
+
+	// TODO: Add more test cases for different scenarios mentioned in the table-driven
+	// test context
+
 }

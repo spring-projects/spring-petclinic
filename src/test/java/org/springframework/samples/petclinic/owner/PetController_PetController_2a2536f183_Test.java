@@ -62,26 +62,29 @@ import org.junit.jupiter.api.Test;
 
 public class PetController_PetController_2a2536f183_Test {
 
-    private OwnerRepository owners;
-    private PetController petController;
+	private OwnerRepository owners;
 
-    @BeforeEach
-    public void setUp() {
-        owners = mock(OwnerRepository.class);
-        petController = new PetController(owners);
-    }
+	private PetController petController;
 
-    @Test
-    public void testPetControllerConstructorWithValidOwnerRepository() {
-        assertNotNull(petController, "PetController should be instantiated with a non-null OwnerRepository.");
-    }
+	@BeforeEach
+	public void setUp() {
+		owners = mock(OwnerRepository.class);
+		petController = new PetController(owners);
+	}
 
-    @Test
-    public void testPetControllerConstructorWithNullOwnerRepository() {
-        try {
-            new PetController(null);
-        } catch (IllegalArgumentException e) {
-            assertNotNull(e, "Constructor should throw an IllegalArgumentException when OwnerRepository is null.");
-        }
-    }
+	@Test
+	public void testPetControllerConstructorWithValidOwnerRepository() {
+		assertNotNull(petController, "PetController should be instantiated with a non-null OwnerRepository.");
+	}
+
+	@Test
+	public void testPetControllerConstructorWithNullOwnerRepository() {
+		try {
+			new PetController(null);
+		}
+		catch (IllegalArgumentException e) {
+			assertNotNull(e, "Constructor should throw an IllegalArgumentException when OwnerRepository is null.");
+		}
+	}
+
 }

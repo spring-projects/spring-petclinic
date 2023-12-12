@@ -55,48 +55,50 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class BaseEntity_setId_fdd9d7675d_Test {
 
-    private BaseEntity entity;
+	private BaseEntity entity;
 
-    @BeforeEach
-    public void setUp() {
-        entity = new BaseEntity();
-    }
+	@BeforeEach
+	public void setUp() {
+		entity = new BaseEntity();
+	}
 
-    @Test
-    public void testSetValidId() {
-        Integer validId = 5;
-        entity.setId(validId);
-        assertEquals(validId, entity.getId(), "The ID should be set to the provided value.");
-    }
+	@Test
+	public void testSetValidId() {
+		Integer validId = 5;
+		entity.setId(validId);
+		assertEquals(validId, entity.getId(), "The ID should be set to the provided value.");
+	}
 
-    @Test
-    public void testSetNullId() {
-        entity.setId(null);
-        assertNull(entity.getId(), "The ID should be null.");
-    }
+	@Test
+	public void testSetNullId() {
+		entity.setId(null);
+		assertNull(entity.getId(), "The ID should be null.");
+	}
 
-    @Test
-    public void testSetNegativeId() {
-        Integer negativeId = -1;
-        entity.setId(negativeId);
-        assertEquals(negativeId, entity.getId(), "The ID should be set to the provided negative value.");
-    }
+	@Test
+	public void testSetNegativeId() {
+		Integer negativeId = -1;
+		entity.setId(negativeId);
+		assertEquals(negativeId, entity.getId(), "The ID should be set to the provided negative value.");
+	}
 
-    @Test
-    public void testSetIdToZero() {
-        Integer zeroId = 0;
-        entity.setId(zeroId);
-        assertEquals(zeroId, entity.getId(), "The ID should be set to zero if it is a valid value.");
-    }
+	@Test
+	public void testSetIdToZero() {
+		Integer zeroId = 0;
+		entity.setId(zeroId);
+		assertEquals(zeroId, entity.getId(), "The ID should be set to zero if it is a valid value.");
+	}
 
-    @Test
-    public void testUpdateExistingId() {
-        Integer initialId = 1;
-        Integer newId = 2;
-        entity.setId(initialId);
-        entity.setId(newId);
-        assertEquals(newId, entity.getId(), "The ID should be updated to the new value.");
-    }
+	@Test
+	public void testUpdateExistingId() {
+		Integer initialId = 1;
+		Integer newId = 2;
+		entity.setId(initialId);
+		entity.setId(newId);
+		assertEquals(newId, entity.getId(), "The ID should be updated to the new value.");
+	}
 
-    // Additional test cases related to concurrency, JPA behavior, and database constraints would require integration testing or mocking frameworks.
+	// Additional test cases related to concurrency, JPA behavior, and database
+	// constraints would require integration testing or mocking frameworks.
+
 }

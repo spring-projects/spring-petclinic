@@ -49,45 +49,46 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class OwnerController_initUpdateOwnerForm_5166028c6b_Test {
 
-    @Mock
-    private OwnerRepository ownerRepository;
+	@Mock
+	private OwnerRepository ownerRepository;
 
-    @Mock
-    private Model model;
+	@Mock
+	private Model model;
 
-    @InjectMocks
-    private OwnerController ownerController;
+	@InjectMocks
+	private OwnerController ownerController;
 
-    private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
+	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
 
-    @BeforeEach
-    void setup() {
-        MockitoAnnotations.openMocks(this);
-    }
+	@BeforeEach
+	void setup() {
+		MockitoAnnotations.openMocks(this);
+	}
 
-    @Test
-    void testInitUpdateOwnerFormExistingOwnerId() {
-        int ownerId = 1;
-        Owner existingOwner = new Owner();
-        existingOwner.setId(ownerId);
-        when(ownerRepository.findById(ownerId)).thenReturn(existingOwner);
+	@Test
+	void testInitUpdateOwnerFormExistingOwnerId() {
+		int ownerId = 1;
+		Owner existingOwner = new Owner();
+		existingOwner.setId(ownerId);
+		when(ownerRepository.findById(ownerId)).thenReturn(existingOwner);
 
-        String viewName = ownerController.initUpdateOwnerForm(ownerId, model);
+		String viewName = ownerController.initUpdateOwnerForm(ownerId, model);
 
-        verify(ownerRepository, times(1)).findById(ownerId);
-        verify(model, times(1)).addAttribute(existingOwner);
-        assertEquals(VIEWS_OWNER_CREATE_OR_UPDATE_FORM, viewName);
-    }
+		verify(ownerRepository, times(1)).findById(ownerId);
+		verify(model, times(1)).addAttribute(existingOwner);
+		assertEquals(VIEWS_OWNER_CREATE_OR_UPDATE_FORM, viewName);
+	}
 
-    @Test
-    void testInitUpdateOwnerFormNonExistingOwnerId() {
-        int ownerId = 2;
-        when(ownerRepository.findById(ownerId)).thenReturn(null);
+	@Test
+	void testInitUpdateOwnerFormNonExistingOwnerId() {
+		int ownerId = 2;
+		when(ownerRepository.findById(ownerId)).thenReturn(null);
 
-        String viewName = ownerController.initUpdateOwnerForm(ownerId, model);
+		String viewName = ownerController.initUpdateOwnerForm(ownerId, model);
 
-        verify(ownerRepository, times(1)).findById(ownerId);
-        verify(model, times(0)).addAttribute(any(Owner.class));
-        assertEquals(VIEWS_OWNER_CREATE_OR_UPDATE_FORM, viewName);
-    }
+		verify(ownerRepository, times(1)).findById(ownerId);
+		verify(model, times(0)).addAttribute(any(Owner.class));
+		assertEquals(VIEWS_OWNER_CREATE_OR_UPDATE_FORM, viewName);
+	}
+
 }

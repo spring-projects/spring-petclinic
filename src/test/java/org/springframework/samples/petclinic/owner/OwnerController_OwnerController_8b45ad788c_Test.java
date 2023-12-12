@@ -62,37 +62,38 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 public class OwnerController_OwnerController_8b45ad788c_Test {
 
-    @Mock
-    private OwnerRepository ownerRepository;
+	@Mock
+	private OwnerRepository ownerRepository;
 
-    @InjectMocks
-    private OwnerController ownerController;
+	@InjectMocks
+	private OwnerController ownerController;
 
-    @BeforeEach
-    void setup() {
-        ownerController = new OwnerController(ownerRepository);
-    }
+	@BeforeEach
+	void setup() {
+		ownerController = new OwnerController(ownerRepository);
+	}
 
-    @Test
-    void testOwnerControllerConstructor_Success() {
-        Owner owner = new Owner();
-        when(ownerRepository.findById(anyInt())).thenReturn(owner);
+	@Test
+	void testOwnerControllerConstructor_Success() {
+		Owner owner = new Owner();
+		when(ownerRepository.findById(anyInt())).thenReturn(owner);
 
-        Owner result = ownerController.findOwner(1);
+		Owner result = ownerController.findOwner(1);
 
-        assertNotNull(result);
-        assertEquals(owner, result);
-    }
+		assertNotNull(result);
+		assertEquals(owner, result);
+	}
 
-    @Test
-    void testOwnerControllerConstructor_NullOwnerRepository() {
-        Exception exception = assertThrows(NullPointerException.class, () -> {
-            new OwnerController(null);
-        });
+	@Test
+	void testOwnerControllerConstructor_NullOwnerRepository() {
+		Exception exception = assertThrows(NullPointerException.class, () -> {
+			new OwnerController(null);
+		});
 
-        String expectedMessage = "clinicService";
-        String actualMessage = exception.getMessage();
+		String expectedMessage = "clinicService";
+		String actualMessage = exception.getMessage();
 
-        assertTrue(actualMessage.contains(expectedMessage));
-    }
+		assertTrue(actualMessage.contains(expectedMessage));
+	}
+
 }

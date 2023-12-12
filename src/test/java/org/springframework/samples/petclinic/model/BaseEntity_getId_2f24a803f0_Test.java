@@ -46,60 +46,62 @@ These scenarios will help ensure that the `getId` method behaves correctly acros
 package org.springframework.samples.petclinic.model;
 
 import org.junit.jupiter.api.BeforeEach;
+import javax.persistence.*;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 @MappedSuperclass
 public class BaseEntity_getId_2f24a803f0_Test {
 
-    private BaseEntity entity;
+	private BaseEntity entity;
 
-    @BeforeEach
-    public void setUp() {
-        entity = new BaseEntity() {
-            @Id
-            @GeneratedValue(strategy = GenerationType.IDENTITY)
-            private Integer id;
+	@BeforeEach
+	public void setUp() {
+		entity = new BaseEntity() {
+			@Id
+			@GeneratedValue(strategy = GenerationType.IDENTITY)
+			private Integer id;
 
-            @Override
-            public Integer getId() {
-                return id;
-            }
+			@Override
+			public Integer getId() {
+				return id;
+			}
 
-            @Override
-            public void setId(Integer id) {
-                this.id = id;
-            }
+			@Override
+			public void setId(Integer id) {
+				this.id = id;
+			}
 
-            @Override
-            public boolean isNew() {
-                return this.id == null;
-            }
-        };
-    }
+			@Override
+			public boolean isNew() {
+				return this.id == null;
+			}
+		};
+	}
 
-    @Test
-    public void testGetId_WithSetId_ShouldReturnCorrectId() {
-        // Arrange
-        Integer expectedId = 10; // TODO: Change the expectedId to match test case
-        entity.setId(expectedId);
+	@Test
+	public void testGetId_WithSetId_ShouldReturnCorrectId() {
+		// Arrange
+		Integer expectedId = 10; // TODO: Change the expectedId to match test case
+		entity.setId(expectedId);
 
-        // Act
-        Integer actualId = entity.getId();
+		// Act
+		Integer actualId = entity.getId();
 
-        // Assert
-        assertEquals(expectedId, actualId);
-    }
+		// Assert
+		assertEquals(expectedId, actualId);
+	}
 
-    @Test
-    public void testGetId_WithUnsetId_ShouldReturnNull() {
-        // Arrange
-        // No ID is set for the entity
+	@Test
+	public void testGetId_WithUnsetId_ShouldReturnNull() {
+		// Arrange
+		// No ID is set for the entity
 
-        // Act
-        Integer actualId = entity.getId();
+		// Act
+		Integer actualId = entity.getId();
 
-        // Assert
-        assertNull(actualId);
-    }
+		// Assert
+		assertNull(actualId);
+	}
+
 }

@@ -35,26 +35,29 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class OwnerController_initFindForm_d49390f8bd_Test {
 
-    private OwnerController ownerController;
+	private OwnerController ownerController;
 
-    @BeforeEach
-    public void setup() {
-        OwnerRepository ownerRepository = mock(OwnerRepository.class);
-        ownerController = new OwnerController(ownerRepository);
-    }
+	@BeforeEach
+	public void setup() {
+		OwnerRepository ownerRepository = mock(OwnerRepository.class);
+		ownerController = new OwnerController(ownerRepository);
+	}
 
-    @Test
-    public void testInitFindForm_ShouldReturnFindOwnersView() {
-        // Arrange
-        // No arrangement needed for this test case
+	@Test
+	public void testInitFindForm_ShouldReturnFindOwnersView() {
+		// Arrange
+		// No arrangement needed for this test case
 
-        // Act
-        String viewName = ownerController.initFindForm();
+		// Act
+		String viewName = ownerController.initFindForm();
 
-        // Assert
-        assertEquals("owners/findOwners", viewName, "The initFindForm should return the correct view name.");
-    }
+		// Assert
+		assertEquals("owners/findOwners", viewName, "The initFindForm should return the correct view name.");
+	}
 
-    // No further tests are necessary for this method, as it only returns a constant string.
-    // Additional scenarios would involve testing the Spring MVC framework rather than the method itself.
+	// No further tests are necessary for this method, as it only returns a constant
+	// string.
+	// Additional scenarios would involve testing the Spring MVC framework rather than the
+	// method itself.
+
 }

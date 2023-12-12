@@ -68,79 +68,86 @@ import org.mockito.Mockito;
 
 public class PetController_findOwner_0895b41fd2_Test {
 
-    private OwnerRepository owners;
-    private PetController petController;
+	private OwnerRepository owners;
 
-    @BeforeEach
-    public void setup() {
-        owners = Mockito.mock(OwnerRepository.class);
-        petController = new PetController(owners);
-    }
+	private PetController petController;
 
-    @Test
-    public void testFindOwner_ValidOwnerId() {
-        int ownerId = 1; // TODO: Replace with valid owner ID
-        Owner expectedOwner = new Owner();
-        Mockito.when(owners.findById(ownerId)).thenReturn(expectedOwner);
+	@BeforeEach
+	public void setup() {
+		owners = Mockito.mock(OwnerRepository.class);
+		petController = new PetController(owners);
+	}
 
-        Owner actualOwner = petController.findOwner(ownerId);
+	@Test
+	public void testFindOwner_ValidOwnerId() {
+		int ownerId = 1; // TODO: Replace with valid owner ID
+		Owner expectedOwner = new Owner();
+		Mockito.when(owners.findById(ownerId)).thenReturn(expectedOwner);
 
-        assertEquals(expectedOwner, actualOwner, "The returned owner should match the expected owner.");
-    }
+		Owner actualOwner = petController.findOwner(ownerId);
 
-    @Test
-    public void testFindOwner_OwnerIdNotFound() {
-        int ownerId = 2; // TODO: Replace with non-existing owner ID
-        Mockito.when(owners.findById(ownerId)).thenReturn(null);
+		assertEquals(expectedOwner, actualOwner, "The returned owner should match the expected owner.");
+	}
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            petController.findOwner(ownerId);
-        });
+	@Test
+	public void testFindOwner_OwnerIdNotFound() {
+		int ownerId = 2; // TODO: Replace with non-existing owner ID
+		Mockito.when(owners.findById(ownerId)).thenReturn(null);
 
-        assertEquals("Owner ID not found: " + ownerId, exception.getMessage(), "Expected exception message did not match.");
-    }
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+			petController.findOwner(ownerId);
+		});
 
-    @Test
-    public void testFindOwner_NegativeOwnerId() {
-        int ownerId = -1; // Negative owner ID
+		assertEquals("Owner ID not found: " + ownerId, exception.getMessage(),
+				"Expected exception message did not match.");
+	}
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            petController.findOwner(ownerId);
-        });
+	@Test
+	public void testFindOwner_NegativeOwnerId() {
+		int ownerId = -1; // Negative owner ID
 
-        assertEquals("Owner ID not found: " + ownerId, exception.getMessage(), "Expected exception message did not match.");
-    }
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+			petController.findOwner(ownerId);
+		});
 
-    @Test
-    public void testFindOwner_ZeroOwnerId() {
-        int ownerId = 0; // Zero owner ID
+		assertEquals("Owner ID not found: " + ownerId, exception.getMessage(),
+				"Expected exception message did not match.");
+	}
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            petController.findOwner(ownerId);
-        });
+	@Test
+	public void testFindOwner_ZeroOwnerId() {
+		int ownerId = 0; // Zero owner ID
 
-        assertEquals("Owner ID not found: " + ownerId, exception.getMessage(), "Expected exception message did not match.");
-    }
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+			petController.findOwner(ownerId);
+		});
 
-    @Test
-    public void testFindOwner_IntegerMaxValueOwnerId() {
-        int ownerId = Integer.MAX_VALUE;
+		assertEquals("Owner ID not found: " + ownerId, exception.getMessage(),
+				"Expected exception message did not match.");
+	}
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            petController.findOwner(ownerId);
-        });
+	@Test
+	public void testFindOwner_IntegerMaxValueOwnerId() {
+		int ownerId = Integer.MAX_VALUE;
 
-        assertEquals("Owner ID not found: " + ownerId, exception.getMessage(), "Expected exception message did not match.");
-    }
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+			petController.findOwner(ownerId);
+		});
 
-    @Test
-    public void testFindOwner_IntegerMinValueOwnerId() {
-        int ownerId = Integer.MIN_VALUE;
+		assertEquals("Owner ID not found: " + ownerId, exception.getMessage(),
+				"Expected exception message did not match.");
+	}
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            petController.findOwner(ownerId);
-        });
+	@Test
+	public void testFindOwner_IntegerMinValueOwnerId() {
+		int ownerId = Integer.MIN_VALUE;
 
-        assertEquals("Owner ID not found: " + ownerId, exception.getMessage(), "Expected exception message did not match.");
-    }
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+			petController.findOwner(ownerId);
+		});
+
+		assertEquals("Owner ID not found: " + ownerId, exception.getMessage(),
+				"Expected exception message did not match.");
+	}
+
 }

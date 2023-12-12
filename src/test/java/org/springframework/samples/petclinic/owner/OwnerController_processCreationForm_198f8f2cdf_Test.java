@@ -67,73 +67,78 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class OwnerController_processCreationForm_198f8f2cdf_Test {
 
-    @Mock
-    private OwnerRepository owners;
+	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
 
-    @Mock
-    private BindingResult bindingResult;
+	@Mock
+	private OwnerRepository owners;
 
-    private OwnerController ownerController;
+	@Mock
+	private BindingResult bindingResult;
 
-    @BeforeEach
-    void setup() {
-        MockitoAnnotations.openMocks(this);
-        ownerController = new OwnerController(owners);
-    }
+	private OwnerController ownerController;
 
-    @Test
-    void testProcessCreationFormSuccess() {
-        Owner owner = new Owner();
-        owner.setId(1);
-        when(bindingResult.hasErrors()).thenReturn(false);
+	@BeforeEach
+	void setup() {
+		MockitoAnnotations.openMocks(this);
+		ownerController = new OwnerController(owners);
+	}
 
-        String viewName = ownerController.processCreationForm(owner, bindingResult);
+	@Test
+	void testProcessCreationFormSuccess() {
+		Owner owner = new Owner();
+		owner.setId(1);
+		when(bindingResult.hasErrors()).thenReturn(false);
 
-        verify(owners, times(1)).save(owner);
-        assertEquals("redirect:/owners/1", viewName);
-    }
+		String viewName = ownerController.processCreationForm(owner, bindingResult);
 
-    @Test
-    void testProcessCreationFormHasErrors() {
-        Owner owner = new Owner();
-        when(bindingResult.hasErrors()).thenReturn(true);
+		verify(owners, times(1)).save(owner);
+		assertEquals("redirect:/owners/1", viewName);
+	}
 
-        String viewName = ownerController.processCreationForm(owner, bindingResult);
+	@Test
+	void testProcessCreationFormHasErrors() {
+		Owner owner = new Owner();
+		when(bindingResult.hasErrors()).thenReturn(true);
 
-        verify(owners, never()).save(any(Owner.class));
-        assertEquals(OwnerController.VIEWS_OWNER_CREATE_OR_UPDATE_FORM, viewName);
-    }
+		String viewName = ownerController.processCreationForm(owner, bindingResult);
 
-    @Test
-    void testProcessCreationFormHandleException() {
-        Owner owner = new Owner();
-        when(bindingResult.hasErrors()).thenReturn(false);
-        doThrow(new RuntimeException("Database Error")).when(owners).save(owner);
+		verify(owners, never()).save(any(Owner.class));
+		assertEquals(VIEWS_OWNER_CREATE_OR_UPDATE_FORM, viewName);
+	}
 
-        Exception exception = assertThrows(RuntimeException.class, () -> {
-            ownerController.processCreationForm(owner, bindingResult);
-        });
+	@Test
+	void testProcessCreationFormHandleException() {
+		Owner owner = new Owner();
+		when(bindingResult.hasErrors()).thenReturn(false);
+		doThrow(new RuntimeException("Database Error")).when(owners).save(owner);
 
-        assertEquals("Database Error", exception.getMessage());
-    }
+		Exception exception = assertThrows(RuntimeException.class, () -> {
+			ownerController.processCreationForm(owner, bindingResult);
+		});
 
-    @Test
-    void testProcessCreationFormConcurrentSave() {
-        Owner owner = new Owner();
-        owner.setId(1);
-        when(bindingResult.hasErrors()).thenReturn(false);
+		assertEquals("Database Error", exception.getMessage());
+	}
 
-        // Simulate concurrent calls to the save method
-        Thread thread1 = new Thread(() -> ownerController.processCreationForm(owner, bindingResult));
-        Thread thread2 = new Thread(() -> ownerController.processCreationForm(owner, bindingResult));
+	@Test
+	void testProcessCreationFormConcurrentSave() {
+		Owner owner = new Owner();
+		owner.setId(1);
+		when(bindingResult.hasErrors()).thenReturn(false);
 
-        thread1.start();
-        thread2.start();
+		// Simulate concurrent calls to the save method
+		Thread thread1 = new Thread(() -> ownerController.processCreationForm(owner, bindingResult));
+		Thread thread2 = new Thread(() -> ownerController.processCreationForm(owner, bindingResult));
 
-        // Assuming the repository has proper synchronization, there should be no exceptions
+		thread1.start();
+		thread2.start();
 
-        verify(owners, atLeast(1)).save(owner);
-    }
+		// Assuming the repository has proper synchronization, there should be no
+		// exceptions
 
-    // TODO: Additional test cases for performance testing, edge cases, etc. can be added here.
+		verify(owners, atLeast(1)).save(owner);
+	}
+
+	// TODO: Additional test cases for performance testing, edge cases, etc. can be added
+	// here.
+
 }

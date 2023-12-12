@@ -55,29 +55,29 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @ExtendWith(MockitoExtension.class)
 public class OwnerController_findOwner_66dfd5ad88_Test {
 
-    @Mock
-    private OwnerRepository owners;
+	@Mock
+	private OwnerRepository owners;
 
-    @InjectMocks
-    private OwnerController ownerController;
+	@InjectMocks
+	private OwnerController ownerController;
 
-    @BeforeEach
-    void setup() {
-        ownerController = new OwnerController(owners);
-    }
+	@BeforeEach
+	void setup() {
+		ownerController = new OwnerController(owners);
+	}
 
-    @Test
-    public void testFindOwner_WithExistingOwnerId() {
-        Owner expectedOwner = new Owner();
-        when(owners.findById(anyInt())).thenReturn(expectedOwner);
+	@Test
+	public void testFindOwner_WithExistingOwnerId() {
+		Owner expectedOwner = new Owner();
+		when(owners.findById(anyInt())).thenReturn(expectedOwner);
 
-        Owner actualOwner = ownerController.findOwner(1);
+		Owner actualOwner = ownerController.findOwner(1);
 
-        assertNotNull(actualOwner);
-        assertEquals(expectedOwner, actualOwner);
-    }
+		assertNotNull(actualOwner);
+		assertEquals(expectedOwner, actualOwner);
+	}
 
-    @Test
+	@Test
     public void testFindOwner_WithNonExistingOwnerId() {
         when(owners.findById(anyInt())).thenReturn(null);
 
@@ -86,14 +86,14 @@ public class OwnerController_findOwner_66dfd5ad88_Test {
         assertNull(actualOwner);
     }
 
-    @Test
-    public void testFindOwner_WithNullOwnerId() {
-        Owner actualOwner = ownerController.findOwner(null);
+	@Test
+	public void testFindOwner_WithNullOwnerId() {
+		Owner actualOwner = ownerController.findOwner(null);
 
-        assertNotNull(actualOwner);
-    }
+		assertNotNull(actualOwner);
+	}
 
-    @Test
+	@Test
     public void testFindOwner_WithNegativeOwnerId() {
         when(owners.findById(anyInt())).thenReturn(null);
 
@@ -102,7 +102,7 @@ public class OwnerController_findOwner_66dfd5ad88_Test {
         assertNull(actualOwner);
     }
 
-    @Test
+	@Test
     public void testFindOwner_WithZeroOwnerId() {
         when(owners.findById(anyInt())).thenReturn(null);
 
@@ -111,25 +111,25 @@ public class OwnerController_findOwner_66dfd5ad88_Test {
         assertNull(actualOwner);
     }
 
-    @Test
+	@Test
     public void testFindOwner_DataSourceThrowsException() {
         when(owners.findById(anyInt())).thenThrow(new RuntimeException("Database connectivity issue"));
 
         assertThrows(RuntimeException.class, () -> ownerController.findOwner(1));
     }
 
-    @Test
-    public void testFindOwner_WithMaxIntegerOwnerId() {
-        Owner expectedOwner = new Owner();
-        when(owners.findById(Integer.MAX_VALUE)).thenReturn(expectedOwner);
+	@Test
+	public void testFindOwner_WithMaxIntegerOwnerId() {
+		Owner expectedOwner = new Owner();
+		when(owners.findById(Integer.MAX_VALUE)).thenReturn(expectedOwner);
 
-        Owner actualOwner = ownerController.findOwner(Integer.MAX_VALUE);
+		Owner actualOwner = ownerController.findOwner(Integer.MAX_VALUE);
 
-        assertNotNull(actualOwner);
-        assertEquals(expectedOwner, actualOwner);
-    }
+		assertNotNull(actualOwner);
+		assertEquals(expectedOwner, actualOwner);
+	}
 
-    @Test
+	@Test
     public void testFindOwner_WithMinIntegerOwnerId() {
         when(owners.findById(Integer.MIN_VALUE)).thenReturn(null);
 
@@ -137,4 +137,5 @@ public class OwnerController_findOwner_66dfd5ad88_Test {
 
         assertNull(actualOwner);
     }
+
 }

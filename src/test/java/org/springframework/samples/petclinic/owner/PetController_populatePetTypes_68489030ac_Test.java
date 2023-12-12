@@ -5,7 +5,7 @@ To validate the business logic of the `populatePetTypes` method, we need to cons
 
 Here are some test scenarios for the `populatePetTypes` method:
 
-1. **Standard Behavior**: 
+1. **Standard Behavior**:
    - **Scenario**: The `findPetTypes` method returns a non-empty collection of `PetType` objects.
    - **Expected Result**: `populatePetTypes` should return the same collection of `PetType` objects without modification.
 
@@ -65,30 +65,31 @@ import org.junit.jupiter.api.Test;
 
 public class PetController_populatePetTypes_68489030ac_Test {
 
-    private OwnerRepository owners;
-    private PetController petController;
+	private OwnerRepository owners;
 
-    @BeforeEach
-    public void setup() {
-        owners = mock(OwnerRepository.class);
-        petController = new PetController(owners);
-    }
+	private PetController petController;
 
-    @Test
-    public void testPopulatePetTypes_StandardBehavior() {
-        // Arrange
-        List<PetType> expectedPetTypes = Arrays.asList(new PetType(), new PetType());
-        when(owners.findPetTypes()).thenReturn(expectedPetTypes);
+	@BeforeEach
+	public void setup() {
+		owners = mock(OwnerRepository.class);
+		petController = new PetController(owners);
+	}
 
-        // Act
-        Collection<PetType> actualPetTypes = petController.populatePetTypes();
+	@Test
+	public void testPopulatePetTypes_StandardBehavior() {
+		// Arrange
+		List<PetType> expectedPetTypes = Arrays.asList(new PetType(), new PetType());
+		when(owners.findPetTypes()).thenReturn(expectedPetTypes);
 
-        // Assert
-        assertNotNull(actualPetTypes, "Pet types should not be null");
-        assertEquals(expectedPetTypes, actualPetTypes, "Should return the expected pet types");
-    }
+		// Act
+		Collection<PetType> actualPetTypes = petController.populatePetTypes();
 
-    @Test
+		// Assert
+		assertNotNull(actualPetTypes, "Pet types should not be null");
+		assertEquals(expectedPetTypes, actualPetTypes, "Should return the expected pet types");
+	}
+
+	@Test
     public void testPopulatePetTypes_EmptyCollection() {
         // Arrange
         when(owners.findPetTypes()).thenReturn(Collections.emptyList());
@@ -101,7 +102,7 @@ public class PetController_populatePetTypes_68489030ac_Test {
         assertTrue(actualPetTypes.isEmpty(), "Should return an empty collection");
     }
 
-    @Test
+	@Test
     public void testPopulatePetTypes_NullCollection() {
         // Arrange
         when(owners.findPetTypes()).thenReturn(null);
@@ -113,7 +114,7 @@ public class PetController_populatePetTypes_68489030ac_Test {
         assertEquals(Collections.emptyList(), actualPetTypes, "Should handle null gracefully and return empty collection");
     }
 
-    @Test
+	@Test
     public void testPopulatePetTypes_ExceptionThrown() {
         // Arrange
         when(owners.findPetTypes()).thenThrow(new RuntimeException("Database error"));
@@ -126,5 +127,6 @@ public class PetController_populatePetTypes_68489030ac_Test {
         }
     }
 
-    // Additional test cases for scenarios 5-10 can be added here...
+	// Additional test cases for scenarios 5-10 can be added here...
+
 }
