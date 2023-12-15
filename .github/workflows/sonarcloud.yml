@@ -3,6 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 # YES
+# Test now
 
 # This workflow helps you trigger a SonarCloud analysis of your code and populates
 # GitHub Code Scanning alerts with the vulnerabilities found.
