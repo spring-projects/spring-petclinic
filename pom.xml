@@ -15,6 +15,10 @@
   <name>petclinic</name>
 
   <properties>
+    
+    <sonar.organization>jenkins-project-dec2023</sonar.organization>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+
 
     <!-- Generic properties -->
     <java.version>17</java.version>
