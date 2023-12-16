@@ -4,10 +4,6 @@ pipeline {
         timeout(time: 1, unit: 'HOURS')
         retry(2)
     }
-    triggers {
-        cron('* * * * *') 
-    }
-
     stages {
         stage ('SourceCode') {
             steps {
