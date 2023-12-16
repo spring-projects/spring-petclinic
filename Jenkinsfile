@@ -22,9 +22,8 @@ pipeline {
         stage ('Build a Docker Image') {
             steps {
                 // Build a Docker image
-                script {
-                    def customImage = docker.build('petclinic:auto')
-                }
+                sh 'docker build -t petclinic:auto .'
+            
             }
         }
         stage ('Archive test results') {
