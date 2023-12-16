@@ -19,6 +19,14 @@ pipeline {
             }
 
         }
+        stage('Build a Docker Image') {
+            steps {
+                // Build a Docker image
+                script {
+                    docker.build('petclinic:auto')
+                }
+            }
+        }
         stage ('Archive test results') {
             steps {
                 //Archive the test results
