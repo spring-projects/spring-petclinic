@@ -19,11 +19,11 @@ pipeline {
             }
 
         }
-        stage('Build a Docker Image') {
+        stage ('Build a Docker Image') {
             steps {
                 // Build a Docker image
                 script {
-                    docker.build('petclinic:auto')
+                    def customImage = docker.build('petclinic:auto')
                 }
             }
         }
