@@ -7,8 +7,9 @@
             //building using maven and install
             sh 'mvn clean package'
         }
-        stage('Archive  test results'){
-            //archive  test reuslts
+        stage('Install & Archive  test results'){
+            //insteall & archive  test reuslts
+            shh 'mvn clean install'
             junit '**/surefire-reports/*xml'
             archiveArtifacts artifacts: '**/*.war', followSymlinks: false
         }
