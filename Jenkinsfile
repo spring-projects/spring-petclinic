@@ -1,7 +1,5 @@
 pipeline {
     agent any
-    options { 
-    }
     stages {
         stage ('SourceCode') {
             steps {
