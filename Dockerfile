@@ -1,11 +1,18 @@
-# Use an official Maven runtime as a parent image
-FROM maven:3.8.4-openjdk-17-slim AS build
+# Use an official OpenJDK runtime as a parent image
+FROM eclipse-temurin:17-jdk-jammy
 
 # Set the working directory in the container
 WORKDIR /app
 
 # Copy the compiled JAR file from the build stage
-COPY target/*.jar /app/petclinic.jar
+#COPY --from=build /home/azureuser/petclinic/target/*.jar /app/petclinic.jar
+COPY .mvn/ .mvn/
+COPY mvnw pom.xml ./
+#Run the dependecies on the image
+RUN ./mvnw dependency:resolve
+
+#COPY soruce code from local to the image
+COPY src ./src
 
 # Specify the command to run on container start
-CMD ["java", "-jar", "petclinic.jar"]
+CMD ["mvnw", "spring-boot:run"]
