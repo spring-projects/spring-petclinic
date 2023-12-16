@@ -1,8 +1,6 @@
 pipeline {
     agent any
     options { 
-        timeout(time: 1, unit: 'HOURS')
-        retry(2)
     }
     stages {
         stage ('SourceCode') {
