@@ -41,9 +41,11 @@ import jakarta.validation.Valid;
 @RequestMapping("/owners/{ownerId}")
 class PetController {
 
-	private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = "pets/createOrUpdatePetForm";
+	@Value("${views.pets.createOrUpdateForm}")
+	private String VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 
-	private final OwnerRepository owners;
+	@Autowired
+	private OwnerRepository owners;
 
 	public PetController(OwnerRepository owners) {
 		this.owners = owners;

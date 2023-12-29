@@ -44,9 +44,11 @@ import jakarta.validation.Valid;
 @Controller
 class OwnerController {
 
-	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
+	@Value("${views.owner.createOrUpdateForm}")
+	private String VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 
-	private final OwnerRepository owners;
+	@Autowired
+	private OwnerRepository owners;
 
 	public OwnerController(OwnerRepository clinicService) {
 		this.owners = clinicService;
