@@ -60,15 +60,10 @@ jobs:
           jf rt build-publish
 
       - name: Scan the project with your preferred SCA tool
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: 'danvid.jfrog.io/assignment-docker/spring-petclinic:${{ github.sha }}'
-          format: 'sarif'
-          output: 'trivy-results.sarif'
-          ignore-unfixed: true
-          vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: 'trivy-results.sarif'
+        uses: jfrog/setup-jfrog-cli@v3
+        env:
+          JF_URL: ${{ secrets.JF_URL }}
+          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+      - run: |
+          jf scan danvid.jfrog.io/assignment-docker/spring-petclinic:${{ github.sha }}
+    
