@@ -17,7 +17,7 @@ jobs:
     - name: Setup Java and Maven
       uses: actions/setup-java@v4
       with:
-        distribution: 'temurin' # See 'Supported distributions' for available options
+        distribution: 'temurin'
         java-version: '11'
     - name: Check java and mvn version
       run: |
