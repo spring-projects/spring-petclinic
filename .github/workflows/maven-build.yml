@@ -26,24 +26,49 @@ jobs:
           distribution: 'corretto'
           cache: maven
 
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v3
+        env:
+          JF_URL: ${{ secrets.JF_URL }}
+          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+
       - name: Compile the code
         run: ./mvnw -B package -D skipTests
       - name: Run the tests
         run: ./mvnw test
 
       - name: Package the project as a runnable Docker image
-        run: docker build -t my_repo/jfrog_assignment:${{ github.sha }} .
+        env:
+          IMAGE_NAME: danvid.jfrog.io/assignment-docker/spring-petclinic:${{ github.sha }}
+        run: |
+          jf docker build -t $IMAGE_NAME .
+          jf docker push $IMAGE_NAME
+
+      - name: Publish Build info With JFrog CLI
+        env:
+          # Generated and maintained by GitHub
+          JFROG_CLI_BUILD_NAME: spring-petclinic
+          # JFrog organization secret
+          JFROG_CLI_BUILD_NUMBER : ${{ github.run_number }}
+        run: |
+          # Export the build name and build nuber
+          # Collect environment variables for the build
+          jf rt build-collect-env
+          # Collect VCS details from git and add them to the build
+          jf rt build-add-git
+          # Publish build info
+          jf rt build-publish
+
       - name: Scan the project with your preferred SCA tool
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'my_repo/jfrog_assignment:${{ github.sha }}'
+          image-ref: 'danvid.jfrog.io/assignment-docker/spring-petclinic:${{ github.sha }}'
           format: 'sarif'
           output: 'trivy-results.sarif'
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
-      - uses: actions/upload-artifact@v4
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
         with:
-          name: trivy-results.sarif
-          path: trivy-results.sarif
-      
+          sarif_file: 'trivy-results.sarif'
