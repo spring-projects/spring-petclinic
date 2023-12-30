@@ -44,6 +44,10 @@ jobs:
           jf docker build -t $IMAGE_NAME .
           jf docker push $IMAGE_NAME
 
+      - name: Scan the project with your preferred SCA tool
+        run: |
+          jf docker scan danvid.jfrog.io/assignment-docker/spring-petclinic:${{ github.sha }}
+  
       - name: Publish Build info With JFrog CLI
         env:
           # Generated and maintained by GitHub
@@ -59,11 +63,4 @@ jobs:
           # Publish build info
           jf rt build-publish
 
-      - name: Scan the project with your preferred SCA tool
-        uses: jfrog/setup-jfrog-cli@v3
-        env:
-          JF_URL: ${{ secrets.JF_URL }}
-          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
-      - run: |
-          jf scan danvid.jfrog.io/assignment-docker/spring-petclinic:${{ github.sha }}
     
