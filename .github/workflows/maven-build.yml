@@ -40,4 +40,14 @@ jobs:
       - name: Set up JFrog CLI
         uses: jfrog/setup-jfrog-cli@v3
       - name: Scan the project with your preferred SCA tool
-        run: jf --version
+        run: jf docker scan docker.io/library/spring-petclinic:3.2.0-SNAPSHOT
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: user/app:latest
