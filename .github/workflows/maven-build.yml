@@ -30,24 +30,16 @@ jobs:
       - name: Run the tests
         run: ./mvnw test
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
       - name: Package the project as a runnable Docker image
         run: ./mvnw spring-boot:build-image
       - name: Set up JFrog CLI
         uses: jfrog/setup-jfrog-cli@v3
       - name: Scan the project with your preferred SCA tool
-        run: jf docker scan docker.io/library/spring-petclinic:3.2.0-SNAPSHOT
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
+        uses: aquasecurity/trivy-action@master
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push
-        uses: docker/build-push-action@v5
-        with:
-          push: true
-          tags: user/app:latest
+          image-ref: 'docker.io/library/spring-petclinic:3.2.0-SNAPSHOT'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
