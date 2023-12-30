@@ -25,5 +25,7 @@ jobs:
           java-version: ${{matrix.java}}
           distribution: 'adopt'
           cache: maven
-      - name: Build with Maven Wrapper
+      - name: Compile the code
         run: ./mvnw -B package
+      - name: Run the tests
+        run: ./mvnw test
