@@ -6,7 +6,7 @@ on:
     branches: [ "main" ]
 env:
   IMAGE_NAME: "test-maven-app"
-  DOCKERHUB_USERNAME: "kunchalavikram"
+  DOCKERHUB_USERNAME: "kunchalavikram"	  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,17 +18,27 @@ jobs:
     - name: Setup Java and Maven
       uses: actions/setup-java@v4
       with:
-        distribution: 'temurin' # See 'Supported distributions' for available options
+        distribution: 'temurin' 
         java-version: '11'
-    - name: Check java and mvn version
-      run: |
-        java -version
-        mvn --version
-    - name: Run Tests
-      run: mvn test
     - name: Package the Application
       run: |
         mvn -B package
         ls -al ${{ github.workspace }}/target
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: war-file
+          path: target/*.war
+		  if-no-files-found: 'error'
+		  retention-days: 1 day
+
+  dockerize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: war-file
+          path: target/*.war   
     - name: Dockerize the Application
       run: docker build -t ${{ env.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME}}:${{ github.run_number }} .
