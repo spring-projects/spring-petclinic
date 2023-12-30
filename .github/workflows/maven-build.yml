@@ -23,28 +23,32 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: ${{matrix.java}}
-          distribution: 'adopt'
+          distribution: 'amazoncorretto'
           cache: maven
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Compile the code
-        run: ./mvnw -B package
+        run: ./mvnw -B package -D skipTests
       - name: Run the tests
         run: ./mvnw test
 
       - name: Package the project as a runnable Docker image
-        run: ./mvnw spring-boot:build-image
+        run: docker buildx build --platform linux/arm64,linux/amd64 --load -t my_repo/jfrog_assignment:${{ github.sha }} .
       - name: Scan the project with your preferred SCA tool
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'docker.io/library/spring-petclinic:3.2.0-JFrog_Assignment'
+          image-ref: 'my_repo/jfrog_assignment:${{ github.sha }}'
           format: 'sarif'
           output: 'trivy-results.sarif'
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
+      - uses: actions/upload-artifact@v4
         with:
-          sarif_file: 'trivy-results.sarif'
-
-      - name: Tag Docker image
-        run: docker tag docker.io/library/spring-petclinic:3.2.0-JFrog_Assignment my_repo/spring-petclinic:3.2.0-JFrog_Assignment
+          name: trivy-results.sarif
+          path: trivy-results.sarif
+      

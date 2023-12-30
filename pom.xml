@@ -281,7 +281,7 @@
       <name>Maven Repository Switchboard</name>
       <url>https://repo1.maven.org/maven2</url>
       <snapshots>
-        <enabled>true</enabled>
+        <enabled>false</enabled>
       </snapshots>
     </repository>
   </repositories>
@@ -292,7 +292,7 @@
       <name>Maven Plugin Repository</name>
       <url>https://repo1.maven.org/maven2</url>
       <snapshots>
-        <enabled>true</enabled>
+        <enabled>false</enabled>
       </snapshots>
     </pluginRepository>
   </pluginRepositories>
