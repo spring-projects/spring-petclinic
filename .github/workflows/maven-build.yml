@@ -6,6 +6,7 @@ on:
     branches: [ "main" ]
 env:
   IMAGE_NAME: "test-maven-app"
+  DOCKERHUB_USERNAME: "kunchalavikram"
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,7 +18,7 @@ jobs:
     - name: Setup Java and Maven
       uses: actions/setup-java@v4
       with:
-        distribution: 'temurin'
+        distribution: 'temurin' # See 'Supported distributions' for available options
         java-version: '11'
     - name: Check java and mvn version
       run: |
@@ -29,3 +30,5 @@ jobs:
       run: |
         mvn -B package
         ls -al ${{ github.workspace }}/target
+    - name: Dockerize the Application
+      run: docker build -t ${{ env.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME}}:${{ github.run_number }} .
