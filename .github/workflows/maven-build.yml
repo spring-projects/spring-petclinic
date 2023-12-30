@@ -24,13 +24,13 @@ jobs:
       run: |
         mvn -B package
         ls -al ${{ github.workspace }}/target
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: war-file
-          path: target/*.war
-		  if-no-files-found: 'error'
-		  retention-days: 1 day
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: war-file
+        path: target/*.war
+        if-no-files-found: 'error'
+        retention-days: 1 day
 
   dockerize:
     runs-on: ubuntu-latest
@@ -40,5 +40,5 @@ jobs:
         with:
           name: war-file
           path: target/*.war   
-    - name: Dockerize the Application
-      run: docker build -t ${{ env.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME}}:${{ github.run_number }} .
+      - name: Dockerize the Application
+        run: docker build -t ${{ env.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME}}:${{ github.run_number }} .
