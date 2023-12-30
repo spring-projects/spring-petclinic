@@ -37,7 +37,7 @@ jobs:
         run: ./mvnw test
 
       - name: Package the project as a runnable Docker image
-        run: docker buildx build --platform linux/arm64,linux/amd64 --load -t my_repo/jfrog_assignment:${{ github.sha }} .
+        run: docker buildx build --platform linux/arm64,linux/amd64 -t my_repo/jfrog_assignment:${{ github.sha }} .
       - name: Scan the project with your preferred SCA tool
         uses: aquasecurity/trivy-action@master
         with:
