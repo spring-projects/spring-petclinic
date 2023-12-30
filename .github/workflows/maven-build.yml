@@ -29,3 +29,15 @@ jobs:
         run: ./mvnw -B package
       - name: Run the tests
         run: ./mvnw test
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Package the project as a runnable Docker image
+        run: ./mvnw spring-boot:build-image
+      - name: Set up JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v3
+      - name: Scan the project with your preferred SCA tool
+        run: jf --version
