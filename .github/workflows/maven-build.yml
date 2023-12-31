@@ -1,7 +1,7 @@
 # This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 
-name: Java CI with Maven
+name: JFrog - Home Assignment
 
 on:
   push:
@@ -42,12 +42,16 @@ jobs:
           IMAGE_NAME: danvid.jfrog.io/assignment-docker/spring-petclinic:${{ github.sha }}
         run: |
           jf docker build -t $IMAGE_NAME .
-          jf docker push $IMAGE_NAME
 
       - name: Scan the project with your preferred SCA tool
         run: |
           jf docker scan danvid.jfrog.io/assignment-docker/spring-petclinic:${{ github.sha }}
   
+      - uses: actions/upload-artifact@v4
+        with:
+          name: my-artifact
+          path: /tmp/jfrog.cli.temp*
+
       - name: Publish Build info With JFrog CLI
         env:
           # Generated and maintained by GitHub
@@ -55,6 +59,8 @@ jobs:
           # JFrog organization secret
           JFROG_CLI_BUILD_NUMBER : ${{ github.run_number }}
         run: |
+          # Bonus part: Publish the image to JFrog Artifactory in your pipeline (using the SaaS trial)
+          jf docker push $IMAGE_NAME
           # Export the build name and build nuber
           # Collect environment variables for the build
           jf rt build-collect-env
