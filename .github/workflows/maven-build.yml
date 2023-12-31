@@ -45,28 +45,10 @@ jobs:
 
       - name: Scan the project with your preferred SCA tool
         run: |
-          jf docker scan danvid.jfrog.io/assignment-docker/spring-petclinic:${{ github.sha }}
+          jf docker scan --format json danvid.jfrog.io/assignment-docker/spring-petclinic:${{ github.sha }} > jfrog_sca_report.json
   
       - uses: actions/upload-artifact@v4
         with:
-          name: my-artifact
-          path: /tmp/jfrog.cli.temp*
+          name: jfrog_sca_report
+          path: jfrog_sca_report.json
 
-      - name: Publish Build info With JFrog CLI
-        env:
-          # Generated and maintained by GitHub
-          JFROG_CLI_BUILD_NAME: spring-petclinic
-          # JFrog organization secret
-          JFROG_CLI_BUILD_NUMBER : ${{ github.run_number }}
-        run: |
-          # Bonus part: Publish the image to JFrog Artifactory in your pipeline (using the SaaS trial)
-          jf docker push $IMAGE_NAME
-          # Export the build name and build nuber
-          # Collect environment variables for the build
-          jf rt build-collect-env
-          # Collect VCS details from git and add them to the build
-          jf rt build-add-git
-          # Publish build info
-          jf rt build-publish
-
-    
