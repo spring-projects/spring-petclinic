@@ -9,8 +9,7 @@ on:
 jobs:
   build:
     env:
-      IMAGE_NAME: danvid.jfrog.io/spring-petclinic-docker/spring-petclinic:${{ github.sha }}
-      IMAGE_NAME_LATEST: danvid.jfrog.io/spring-petclinic-docker/spring-petclinic:latest
+      IMAGE_NAME: danvid.jfrog.io/spring-petclinic-docker/spring-petclinic
       SCA_REPORT_FILE: jfrog_sca_report.json
 
     runs-on: ubuntu-latest
@@ -38,11 +37,11 @@ jobs:
         run: ./mvnw test
       - name: Package the project as a runnable Docker image
         run: |
-          jf docker build -t ${{ env.IMAGE_NAME }} -t ${{ env.IMAGE_NAME_LATEST }} .
+          jf docker build -t ${{ env.IMAGE_NAME }}:${{ github.sha }} -t ${{ env.IMAGE_NAME }}:latest .
 
       - name: Scan the project with your preferred SCA tool
         run: |
-          jf docker scan --format json ${{ env.IMAGE_NAME }} > ${{ env.SCA_REPORT_FILE }}
+          jf docker scan --format json ${{ env.IMAGE_NAME }}:${{ github.sha }} > ${{ env.SCA_REPORT_FILE }}
       - uses: actions/upload-artifact@v4
         with:
           name: sca_report
@@ -56,7 +55,7 @@ jobs:
           JFROG_CLI_BUILD_NUMBER : ${{ github.run_number }}
         run: |
           # Push Docker Image to Artifactory
-          jf docker push ${{ env.IMAGE_NAME }}
+          jf docker push ${{ env.IMAGE_NAME }} --all-tags
           # Export the build name and build nuber
           # Collect environment variables for the build
           jf rt build-collect-env
