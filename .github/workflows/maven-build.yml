@@ -11,6 +11,8 @@ on:
 
 jobs:
   build:
+    env:
+      IMAGE_NAME: danvid.jfrog.io/assignment-docker/spring-petclinic:${{ github.sha }}
 
     runs-on: ubuntu-latest
     strategy:
@@ -38,8 +40,6 @@ jobs:
         run: ./mvnw test
 
       - name: Package the project as a runnable Docker image
-        env:
-          IMAGE_NAME: danvid.jfrog.io/assignment-docker/spring-petclinic:${{ github.sha }}
         run: |
           jf docker build -t $IMAGE_NAME .
 
