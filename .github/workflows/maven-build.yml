@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     env:
-      IMAGE_NAME: danvid.jfrog.io/spring-petclinic-docker/jfrog-docker-example-image:${{ github.sha }}
+      IMAGE_NAME: danvid.jfrog.io/spring-petclinic-docker/spring-petclinic:${{ github.sha }}
       SCA_REPORT_FILE: jfrog_sca_report.json
 
     runs-on: ubuntu-latest
@@ -35,7 +35,6 @@ jobs:
         run: ./mvnw -B package -D skipTests
       - name: Run the tests
         run: ./mvnw test
-
       - name: Package the project as a runnable Docker image
         run: |
           jf docker build -t ${{ env.IMAGE_NAME }} .
@@ -43,7 +42,6 @@ jobs:
       - name: Scan the project with your preferred SCA tool
         run: |
           jf docker scan --format json ${{ env.IMAGE_NAME }} > ${{ env.SCA_REPORT_FILE }}
-  
       - uses: actions/upload-artifact@v4
         with:
           name: sca_report
