@@ -1,3 +1,521 @@
+
+-----------
+👉 Backlog
+-----------
+
+Integrate: trivy, kubesec, sonarqube
+
+Installed Software: https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2004-Readme.md
+
+
+
+
+
+
+-----------
+👉 External Links
+-----------
+https://fireship.io/lessons/five-useful-github-actions-examples/
+https://codefresh.io/learn/github-actions/github-actions-tutorial-and-examples/
+https://blog.mergify.com/running-github-actions-only-on-certain-pull-requests/
+https://hydraulic.dev/blog/12-github-action.html
+https://medium.com/nimbella/ci-cd-pipeline-with-github-actions-71abd144ddb4
+https://dev.to/techschoolguru/how-to-setup-github-actions-for-go-postgres-to-run-automated-tests-81o
+https://dzone.com/refcardz/getting-started-with-github-actions
+https://www.linkedin.com/posts/eniolaamiola_cicd-github-kubernetes-activity-7131189791106236417-gAHG/?utm_source=share&utm_medium=member_ios
+
+
+
+name: GitHub Actions Demo
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [push]
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+      - run: echo "🍏 This job's status is ${{ job.status }}."
+
+
+-----------
+👉 Events
+-----------
+
+on: push
+
+on: [push, fork]
+
+on:
+  push:
+    branches:
+      - main
+      - 'releases/**'
+	  
+on:
+  pull_request:
+    types: [opened, reopened]
+	
+on:
+  pull_request:
+    branches:
+      - main
+
+on:
+  label:
+    types:
+      - created
+	  
+on:
+  push:
+    branches-ignore:
+      - notest
+
+on: workflow_dispatch
+
+on:
+  schedule:
+    - cron:  '30 5 * * *'
+
+on: repository_dispatch
+
+> demo
+
+name: GitHub Actions Events Demo
+run-name: GitHub Actions Events
+on: [push]
+jobs:
+  Get-Environment-Variables:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Read environment variables
+      run: |
+        echo "GITHUB_EVENT_NAME: ${{ github.event_name }}"
+        echo "GITHUB_SHA: ${{ github.sha }}"
+        echo "GITHUB_REF: ${{ github.ref }}"
+        echo "GITHUB_REF_NAME: ${{ github.ref_name }}"
+        echo "GITHUB_BASE_REF: ${{ github.base_ref }}"
+        echo "GITHUB_HEAD_REF: ${{ github.head_ref }}"
+
+
+
+Tests:
+
+on: push
+
+on: 
+  push:
+  workflow_dispatch:
+
+* show inputs to the manual flow
+
+
+* show PR event
+
+name: GitHub Actions Events Demo
+run-name: GitHub Actions Events
+on:
+  push:
+    branches:
+      - 'main'
+      - 'master'
+  pull_request:
+    types: [opened, closed]
+jobs:
+  Get-Environment-Variables:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Read environment variables
+      run: |
+        echo "GITHUB_EVENT_NAME: ${{ github.event_name }}"
+        echo "GITHUB_SHA: ${{ github.sha }}"
+        echo "GITHUB_REF: ${{ github.ref }}"
+        echo "GITHUB_REF_NAME: ${{ github.ref_name }}"
+    - name: Display base_ref and head_ref
+      if: ${{ github.event_name == 'pull_request' && github.event.action == 'opened' }}
+      run: |
+        echo "This event is a pull request"
+        echo "GITHUB_BASE_REF: ${{ github.base_ref }}"
+        echo "GITHUB_HEAD_REF: ${{ github.head_ref }}"
+		
+
+		
+
+> workflow_dispatch event
+
+on:
+  repository_dispatch:
+    types: [test_result]
+
+
+
+name: GitHub Actions Events Demo
+run-name: GitHub Actions Events
+on:
+  repository_dispatch:
+    types: [test_result]
+jobs:
+  Get-Environment-Variables:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Read environment variables
+      run: |
+        echo "GITHUB_EVENT_NAME: ${{ github.event_name }}"
+        echo "GITHUB_SHA: ${{ github.sha }}"
+        echo "GITHUB_REF: ${{ github.ref }}"
+        echo "GITHUB_REF_NAME: ${{ github.ref_name }}"
+    - name: Parsing client payload message
+      run: |
+        echo $MESSAGE
+      env:
+        MESSAGE: ${{ github.event.client_payload.message }}
+
+
+
+{"event_type":"test_result","client_payload":{"unit":false,"integration":true, "message":"testing github actions"}}
+
+
+-----------
+👉 Jobs
+-----------	
+✅ Defaults
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./scripts
+
+
+	
+name: Greeting from Mona
+on: push
+defaults:
+  run:
+	shell: bash
+	working-directory: ./scripts		
+		
+
+
+✅ Environment Variables
+https://docs.github.com/en/actions/learn-github-actions/variables#default-environment-variables
+https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions
+
+
+name: GitHub Actions Variables Demo
+run-name: ${{ github.actor }} is testing out GitHub Actions Variables
+on: [push]
+jobs:
+  Explore-GitHub-Actions-Variables:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Print all environment variables
+      run: printenv
+    - name: Access individual environment variable
+      run: |
+        echo "Name of the workflow ${{ github.workflow }}"
+        echo "Name of the branch ${{ github.ref_name }} "	
+        echo "Event that triggered the workflow ${{ github.event_name }}"
+        echo "User that triggered the workflow ${{ github.actor	}}"
+
+
+
+
+name: GitHub Actions Custom Variables Demo
+run-name: GitHub Actions Custom Variables
+on: [push]
+env:
+  DB_HOST: "mypostgres.com"
+  DB_USERNAME: "postgres"
+jobs:
+  job-01:
+    env:
+      IMAGE_NAME: "weather-app"
+      IMAGE_TAG: "2.0"
+    runs-on: ubuntu-latest
+    steps:
+    - name: Print image name
+      run: echo $IMAGE_NAME
+    - name: Print db hostname
+      run: echo $DB_HOST
+  job-02:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Print db hostname
+      run: echo ${{env.DB_HOST}}
+      env:
+        DB_HOST: "localhost"
+
+		  
+
+
+import os
+
+# Get a specific environment variable
+api_key = os.environ.get("API_KEY")
+
+# Print the value or handle if it's not set
+if api_key:
+    print(f"API Key: {api_key}")
+else:
+    print("API Key not set.")
+	
+	
+	
+
+name: GitHub Actions Custom Variables Demo
+run-name: GitHub Actions Custom Variables
+on: [push]
+env:
+  API_KEY: "123456_set_at_workflow_level"
+jobs:
+  Run-python-script:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v4
+    - name: Get Python version
+      run: python --version
+    - name: Run script
+      run: python test.py
+	  
+
+
+name: GitHub Actions Custom Variables Demo
+run-name: GitHub Actions Custom Variables
+on: [push]
+env:
+  API_KEY: ${{vars.API_KEY}}
+jobs:
+  Run-python-script:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v4
+    - name: Get custom variable
+      run: |
+          echo "Env var: ${{env.API_KEY}}"
+          echo "Custom var: ${{vars.API_KEY}}"
+    - name: Get Python version
+      run: python --version
+    - name: Run script
+      run: python test.py
+	  
+
+
+name: GitHub Actions Secrets Demo
+run-name: GitHub Actions Secrets
+on: [push]
+jobs:
+  Run-python-script:
+    runs-on: ubuntu-latest
+	env:
+	  API_KEY: ${{secrets.API_KEY}}
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v4
+    - name: Get custom variable
+      run: |
+          echo "Secret data: ${{env.API_KEY}}"
+    - name: Get Python version
+      run: python --version
+    - name: Run script
+      run: python test.py
+	  
+	  
+-----------
+👉 Workflows
+-----------	
+✅ Example	  
+	  
+name: GitHub Actions Demo
+run-name: Run number: ${{ github.run_number }} triggered by ${{ github.event_name }} event
+# run-name: ${{ github.actor }} is testing out GitHub Actions
+on: [push]
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+		  
+		  
+		  
+# Cancelling jobs
+
+name: Cancelling a workflow
+run-name: Cancelling a workflow
+on: [push]
+jobs:
+  job-01:
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: print job id
+        run: |
+          echo ${{ github.job }}
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+  job-02:
+    runs-on: ubuntu-latest
+    steps:
+      - name: print job id
+        run: |
+          echo ${{ github.job }}
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+		  
+		  
+-----------
+👉 Actions
+-----------	
+✅ Checkout
+
+
+name: Java CI with Maven
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+env:
+  IMAGE_NAME: "test-maven-app"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout SCM
+      uses: actions/checkout@v3
+    - name: list workspace contents
+      run: ls -al ${{ github.workspace }}
+    - name: Setup Java and Maven
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin' # See 'Supported distributions' for available options
+        java-version: '8'
+    - name: Check java and mvn version
+      run: |
+        java -version
+        mvn --version
+    - name: Run Tests
+      run: mvn test
+    - name: Package the Application
+      run: |
+        mvn -B package
+        ls -al ${{ github.workspace }}/target
+    - name: Run the Application
+      run: java -jar ${{ github.workspace }}/target/gs-maven-0.1.0.jar
+    - name: Dockerize the Application
+      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME}}:${{ github.run_number }} .
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Push the image
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME}}:${{ github.run_number }}
+    - name: Run as container
+      run: docker run --rm --name test ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME}}:${{ github.run_number }}
+	  
+	  
+	  
+-----------
+👉 Jobs
+-----------	
+  
+name: GitHub Actions Multi Jobs Demo
+run-name: GitHub Actions Multi Jobs Demo
+on: [push]
+jobs:
+  job-01:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout SCM
+      uses: actions/checkout@v3
+    - name: list workspace contents
+      run: ls -al ${{ github.workspace }}  
+  job-02:
+    runs-on: ubuntu-latest
+    steps:
+    - name: list workspace contents
+      run: ls -al ${{ github.workspace }}  	  
+	  
+	  
+	  
+on:
+  workflow_dispatch:
+    inputs:
+      chosen-os:
+        required: true
+        type: choice
+        options:
+        - Ubuntu
+        - macOS
+
+jobs:
+  test:
+    runs-on: [self-hosted, "${{ inputs.chosen-os }}"]
+    steps:
+    - run: echo Hello world!
+	
+	
+-----------
+👉 Artifacts and cache
+-----------	
+✅ Artifacts
+
+name: Java CI with Maven
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+env:
+  IMAGE_NAME: "test-maven-app"
+  DOCKERHUB_USERNAME: "kunchalavikram"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout SCM
+      uses: actions/checkout@v3
+    - name: list workspace contents
+      run: ls -al ${{ github.workspace }}
+    - name: Setup Java and Maven
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'  
+        java-version: '11'
+    - name: Package the Application
+      run: |
+        mvn -B package
+        ls -al ${{ github.workspace }}/target
+    - name: Dockerize the Application
+      run: docker build -t ${{ env.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME}}:${{ github.run_number }} .
+	  
+	  
+	  
+---------------
+https://github.com/actions/download-artifact
+https://github.com/actions/upload-artifact
+
+
+	  
 name: Java CI with Maven
 on:
   push:
@@ -42,6 +560,8 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: war-file
-          path: target/*.war   
+          path: target/*.war
+      - name: Check the WAR file
+        run: ls -al ${{ github.workspace }}/target		  
       - name: Dockerize the Application
         run: docker build -t ${{ env.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME}}:${{ github.run_number }} .
