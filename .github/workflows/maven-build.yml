@@ -9,9 +9,7 @@ on:
 jobs:
   build:
     env:
-      JF_REPO_NAME: danvid.jfrog.io
-      JF_REPO_PATH: spring-petclinic-docker
-      IMAGE_NAME: "spring-petclinic"
+      IMAGE_NAME: danvid.jfrog.io/spring-petclinic-docker/spring-petclinic
       SCA_REPORT_FILE: jfrog_sca_report.json
 
     runs-on: ubuntu-latest
@@ -39,11 +37,11 @@ jobs:
         run: ./mvnw test
       - name: Package the project as a runnable Docker image
         run: |
-          jf docker build -t ${{ env.JF_REPO_NAME }}/${{ env.JF_REPO_PATH }}/${{ env.IMAGE_NAME }}:${{ github.sha }} -t ${{ env.JF_REPO_NAME }}/${{ env.JF_REPO_PATH }}/${{ env.IMAGE_NAME }}:latest .
+          jf docker build -t ${{ env.IMAGE_NAME }}:${{ github.sha }} -t ${{ env.IMAGE_NAME }}:latest .
 
       - name: Scan the project with your preferred SCA tool
         run: |
-          jf docker scan --format json ${{ env.JF_REPO_NAME }}/${{ env.JF_REPO_PATH }}/${{ env.IMAGE_NAME }}:${{ github.sha }} > ${{ env.SCA_REPORT_FILE }}
+          jf docker scan --format json ${{ env.IMAGE_NAME }}:${{ github.sha }} > ${{ env.SCA_REPORT_FILE }}
       - name: Assign the SCA report to this Github Action workflow as an artifact
         uses: actions/upload-artifact@v4
         with:
@@ -58,7 +56,7 @@ jobs:
           JFROG_CLI_BUILD_NUMBER : ${{ github.run_number }}
         run: |
           # Push Docker Image to Artifactory
-          jf docker push ${{ env.JF_REPO_NAME }}/${{ env.JF_REPO_PATH }}/${{ env.IMAGE_NAME }} --all-tags
+          jf docker push ${{ env.IMAGE_NAME }} --all-tags
           # Export the build name and build nuber
           # Collect environment variables for the build
           jf rt build-collect-env
@@ -66,7 +64,5 @@ jobs:
           jf rt build-add-git
           # Publish build info
           jf rt build-publish
-          # Publish the local SCA scan report
-          jf rt upload ${{ env.SCA_REPORT_FILE }} ${{ env.JF_REPO_NAME }}/${{ env.JF_REPO_PATH }}/${{ env.SCA_REPORT_FILE }}_${{ env.IMAGE_NAME }}:${{ github.sha }}
 
     
