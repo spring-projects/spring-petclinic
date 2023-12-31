@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     env:
-      IMAGE_NAME: danvid.jfrog.io/assignment-docker/spring-petclinic:${{ github.sha }}
+      IMAGE_NAME: danvid.jfrog.io/spring-petclinic-docker/jfrog-docker-example-image:${{ github.sha }}
       SCA_REPORT_FILE: jfrog_sca_report.json
 
     runs-on: ubuntu-latest
