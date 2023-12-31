@@ -56,6 +56,14 @@ jobs:
           # JFrog organization secret
           JFROG_CLI_BUILD_NUMBER : ${{ github.run_number }}
         run: |
+          # Push Docker Image to Artifactory
           jf docker push ${{ env.IMAGE_NAME }}
+          # Export the build name and build nuber
+          # Collect environment variables for the build
+          jf rt build-collect-env
+          # Collect VCS details from git and add them to the build
+          jf rt build-add-git
+          # Publish build info
+          jf rt build-publish
 
     
