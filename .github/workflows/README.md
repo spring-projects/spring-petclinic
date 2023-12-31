@@ -26,7 +26,7 @@ The pipeline publishes the Docker image to JFrog Artifactory using JFrog CLI com
 2. Run the following command to build and run the Docker image:
 
     ```bash
-    docker run -p 8080:8080 danvid.jfrog.io/spring-petclinic-docker-local/spring-petclinic:d21a8c454126fe435287cb448a555e9d213c6cbe
+    docker run -p 8080:8080 danvid.jfrog.io/spring-petclinic-docker-local/spring-petclinic
     ```
 
 3. Access the Spring Pet Clinic application at [http://localhost:8080/](http://localhost:8080/).
