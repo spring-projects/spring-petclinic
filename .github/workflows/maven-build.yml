@@ -2,7 +2,7 @@ name: JFrog - Home Assignment
 
 on:
   push:
-    branches: [ main, jfrog_assignment ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
