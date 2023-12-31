@@ -42,7 +42,7 @@ jobs:
 
       - name: Scan the project with your preferred SCA tool
         run: |
-          jf docker scan --format json danvid.jfrog.io/assignment-docker/spring-petclinic:${{ github.sha }} > ${{ env.SCA_REPORT_FILE }}
+          jf docker scan --format json ${{ env.IMAGE_NAME }} > ${{ env.SCA_REPORT_FILE }}
   
       - uses: actions/upload-artifact@v4
         with:
