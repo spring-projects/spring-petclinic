@@ -13,6 +13,7 @@ jobs:
   build:
     env:
       IMAGE_NAME: danvid.jfrog.io/assignment-docker/spring-petclinic:${{ github.sha }}
+      SCA_REPORT_FILE: jfrog_sca_report.json
 
     runs-on: ubuntu-latest
     strategy:
@@ -45,10 +46,12 @@ jobs:
 
       - name: Scan the project with your preferred SCA tool
         run: |
-          jf docker scan --format json danvid.jfrog.io/assignment-docker/spring-petclinic:${{ github.sha }} > jfrog_sca_report.json
+          jf docker scan --format json danvid.jfrog.io/assignment-docker/spring-petclinic:${{ github.sha }} > $SCA_REPORT_FILE
   
       - uses: actions/upload-artifact@v4
         with:
-          name: jfrog_sca_report
-          path: jfrog_sca_report.json
+          name: sca_report
+          path: $SCA_REPORT_FILE
 
+
+    
