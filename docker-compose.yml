@@ -25,3 +25,13 @@ services:
       - POSTGRES_DB=petclinic
     profiles:
       - postgres
+
+  mongodb:
+    image: mongo:7.0.4
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: petclinic
+      MONGO_INITDB_ROOT_PASSWORD: petclinic
+    ports:
+      - "27017:27017"
+    profiles:
+      - mongodb
