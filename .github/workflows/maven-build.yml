@@ -27,3 +27,15 @@ jobs:
           cache: maven
       - name: Build with Maven Wrapper
         run: ./mvnw -B package
+
+# Added
+
+      - name: Run Tests
+        run: mvn test --file pom.xml
+
+      - name: Build Docker Image
+        run: docker build -t bengold7/spring-petclinic:latest .
+
+      - name: Scan Docker Image
+        run: |
+          docker scan --file=Dockerfile --severity=high bengold7/spring-petclinic:latest
