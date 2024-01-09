@@ -3,9 +3,12 @@ plugins {
   id 'org.springframework.boot' version '3.2.0'
   id 'io.spring.dependency-management' version '1.1.4'
   id 'org.graalvm.buildtools.native' version '0.9.28'
+  id 'io.spring.javaformat' version '0.0.40'
 }
 
 apply plugin: 'java'
+apply plugin: 'checkstyle'
+apply plugin: 'io.spring.javaformat'
 
 group = 'org.springframework.samples'
 version = '3.2.0'
@@ -39,6 +42,9 @@ dependencies {
   testImplementation 'org.springframework.boot:spring-boot-docker-compose'
   testImplementation 'org.testcontainers:junit-jupiter'
   testImplementation 'org.testcontainers:mysql'
+  
+  checkstyle 'io.spring.javaformat:spring-javaformat-checkstyle'
+  checkstyle 'io.spring.javaformat:spring-javaformat-gradle-plugin'
 }
 
 tasks.named('test') {
