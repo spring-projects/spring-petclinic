@@ -68,11 +68,15 @@ class PetController {
 	public Pet findPet(@PathVariable("ownerId") int ownerId,
 			@PathVariable(name = "petId", required = false) Integer petId) {
 
+		if (petId == null) {
+			return new Pet();
+		}
+
 		Owner owner = this.owners.findById(ownerId);
 		if (owner == null) {
 			throw new IllegalArgumentException("Owner ID not found: " + ownerId);
 		}
-		return petId == null ? new Pet() : owner.getPet(petId);
+		return owner.getPet(petId);
 	}
 
 	@InitBinder("owner")
