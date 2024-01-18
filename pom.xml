@@ -144,6 +144,13 @@
     <tag>HEAD</tag>
   </scm>
 
+  <distributionManagement>
+    <repository>
+        <id>github</id>
+        <url>https://github.com/iancumatei67/spring-petclinic</url>
+    </repository>
+  </distributionManagement>
+
   <build>
     <plugins>
       <plugin>
