@@ -143,14 +143,12 @@
     <developerConnection>scm:git:https://github.com/iancumatei67/spring-petclinic.git</developerConnection>
   </scm>
 
-
-
   <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
-        <version>3.0.1</version>
+        <version>3.0.0</version>
       </plugin>      
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
