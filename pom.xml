@@ -143,6 +143,8 @@
     <developerConnection>scm:git:https://github.com/iancumatei67/spring-petclinic.git</developerConnection>
   </scm>
 
+
+
   <build>
     <plugins>
       <plugin>
