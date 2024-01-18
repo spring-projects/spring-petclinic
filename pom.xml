@@ -147,7 +147,7 @@
   <distributionManagement>
     <repository>
         <id>github</id>
-        <url>https://github.com/iancumatei67/spring-petclinic.git</url>
+        <url>https://mvn.pkg.github.com/iancumatei67/spring-petclinic</url>
     </repository>
   </distributionManagement>
 
