@@ -145,9 +145,13 @@
   </scm>
 
   <distributionManagement>
+    <snapshotRepository>
+      <id>nexus-snapshot</id>
+      <url>http://localhost:8686/repository/maven-snapshot/</url>
+    </snapshotRepository>
     <repository>
-        <id>github</id>
-        <url>https://github.com/iancumatei67/spring-petclinic.git</url>
+      <id>nexus-release</id>
+      <url>http://localhost:8686/repository/maven-release/</url>
     </repository>
   </distributionManagement>
 
@@ -291,6 +295,10 @@
   </licenses>
 
   <repositories>
+    <repository>
+      <id>maven-group</id>
+      <url>http://localhost:8686/repository/maven-group/</url>
+    </repository>
     <repository>
       <id>spring-snapshots</id>
       <name>Spring Snapshots</name>
