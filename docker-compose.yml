@@ -26,10 +26,19 @@ services:
     volumes:
       - "./conf.d:/etc/mysql/conf.d:ro"
   postgres:
-    image: postgres:15.3
+    image: postgres:16.1
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_PASSWORD=petclinic
       - POSTGRES_USER=petclinic
       - POSTGRES_DB=petclinic
+
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "8083:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=SuperSecret
+

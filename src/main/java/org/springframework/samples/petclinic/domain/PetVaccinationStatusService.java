@@ -55,6 +55,7 @@ public class PetVaccinationStatusService {
 			catch (JSONException | IOException e) {
 				// Fail silently
 				Span.current().recordException(e);
+
 			}
 
 		}

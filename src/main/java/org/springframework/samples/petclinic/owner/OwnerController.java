@@ -111,10 +111,17 @@ class OwnerController {
 	public String processFindForm(@RequestParam(defaultValue = "1") int page, Owner owner, BindingResult result,
 			Model model) {
 		validator.ValidateUserAccess("admin", "pwd", "fullaccess");
-
+		// if (owner.getLastName()!=null){
+		// throw new RuntimeException();
+		//
+		// }
 		// allow parameterless GET request for /owners to return all records
 		if (owner.getLastName() == null) {
 			owner.setLastName(""); // empty string signifies broadest possible search
+		}
+
+		for (int i = 0; i < 100; i++) {
+			Page<Owner> ownersResults = findPaginatedForOwnersLastName(page, owner.getLastName());
 		}
 
 		// find owners by last name
@@ -147,6 +154,12 @@ class OwnerController {
 
 	@WithSpan
 	private Page<Owner> findPaginatedForOwnersLastName(int page, String lastname) {
+		int pageSize = 25;
+		Pageable pageable = PageRequest.of(page - 1, pageSize);
+		return owners.findByLastName(lastname, pageable);
+	}
+
+	private Page<Owner> findPaginatedForOwnersLastNameTwo(int page, String lastname) {
 		int pageSize = 25;
 		Pageable pageable = PageRequest.of(page - 1, pageSize);
 		return owners.findByLastName(lastname, pageable);

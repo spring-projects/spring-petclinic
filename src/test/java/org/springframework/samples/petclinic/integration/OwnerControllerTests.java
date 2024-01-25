@@ -8,8 +8,6 @@ import io.restassured.http.ContentType;
 import jakarta.persistence.EntityManagerFactory;
 import org.hamcrest.Matchers;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,16 +22,14 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.ZoneId;
 import java.util.concurrent.TimeUnit;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThat;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.hasSize;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
 @ActiveProfiles(value = "postgres")
-public class OwnerControllerTests {
+class OwnerControllerTests {
 
 	@LocalServerPort
 	private Integer port;
@@ -56,7 +52,6 @@ public class OwnerControllerTests {
 	OwnerRepository ownerRepository;
 
 	@Test
-	@WithSpan(kind = SpanKind.SERVER)
 	void shouldSaveNewOwnerPet() {
 
 		Owner owner = CreateOwner();
@@ -91,6 +86,25 @@ public class OwnerControllerTests {
 			.contentType(ContentType.HTML)
 			.statusCode(200)
 			.body(ownerLinkMatcher, Matchers.notNullValue());
+
+	}
+
+	@Test
+	void shouldProvideOwnerVaccinationDate() {
+
+		Owner owner = CreateOwner();
+
+		var ownerLinkMatcher = String.format("**.findAll { node -> node.@href=='/owners/%s'}", owner.getId());
+
+		given().contentType(ContentType.JSON)
+			.when()
+			.get("/owners")
+			.then()
+			.contentType(ContentType.HTML)
+			.statusCode(200)
+			.body(ownerLinkMatcher, Matchers.notNullValue());
+
+		assertThat(false).isTrue();
 
 	}
 
