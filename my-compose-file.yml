@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: petclinic
+      MYSQL_USER: petclinic_user
+      MYSQL_PASSWORD: petclinic_password
+      MYSQL_ROOT_PASSWORD: root_password
+  app:
+    image: iancumatei67/spring-petclinic:v2
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/petclinic
+      SPRING_DATASOURCE_USERNAME: petclinic_user
+      SPRING_DATASOURCE_PASSWORD: petclinic_password
+    depends_on:
+      - db
