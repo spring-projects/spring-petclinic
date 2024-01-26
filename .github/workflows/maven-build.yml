@@ -5,14 +5,14 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   build:
 
-    runs-on: self-hosted # GitHub-hosted runners are not yet supported with self-hosted runners
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         java: [ '17' ]
