@@ -12,7 +12,7 @@ on:
 jobs:
   build:
 
-    runs-on: self-hosted
+    runs-on: self-hosted # GitHub-hosted runners are not yet supported with self-hosted runners
     strategy:
       matrix:
         java: [ '17' ]
