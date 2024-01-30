@@ -15,6 +15,14 @@
     <developerConnection>scm:git:https://github.com/MihailInternul/spring-petclinic.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
+
+  <distributionManagement>
+    <repository>
+        <id>spring-petclinic</id>
+        <url>https://github.com/MihailInternul/spring-petclinic.git</url>
+    </repository>
+  </distributionManagement>
+
   <properties>
 
     <!-- Generic properties -->
