@@ -13,7 +13,9 @@
     <version>3.2.1</version>
   </parent>
   <name>petclinic</name>
-
+  <scm>
+    <developerConnection>scm:git:https://github.com/MihailInternul/spring-petclinic.git</developerConnection>
+  </scm>
   <properties>
 
     <!-- Generic properties -->
@@ -143,6 +145,11 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>3.0.0</version>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
