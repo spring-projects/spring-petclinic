@@ -7,17 +7,9 @@ plugins {
 }
 
 apply plugin: 'java'
-// apply plugin: 'checkstyle'
-// apply plugin: 'io.spring.javaformat'
+apply plugin: 'io.spring.javaformat'
 
-import io.spring.javaformat.gradle.SpringJavaFormatPlugin
-
-project.getPlugins()
-            .withType(SpringJavaFormatPlugin.class,
-                    (javaFormat) -> project.getGradle()
-                        .getStartParameter()
-                        .getExcludedTaskNames()
-                        .addAll(Set.of("checkFormatAot", "checkFormatAotTest")));
+gradle.startParameter.excludedTaskNames += [ "checkFormatAot", "checkFormatAotTest" ]
 
 group = 'org.springframework.samples'
 version = '3.2.0'
@@ -51,8 +43,6 @@ dependencies {
   testImplementation 'org.springframework.boot:spring-boot-docker-compose'
   testImplementation 'org.testcontainers:junit-jupiter'
   testImplementation 'org.testcontainers:mysql'
-
-//  checkstyle 'io.spring.javaformat:spring-javaformat-checkstyle:0.0.40'
 }
 
 tasks.named('test') {
