@@ -19,3 +19,6 @@ indent_style = space
 
 [*.{html,sql,less}]
 indent_size = 2
+
+[*.gradle]
+indent_size = 2
