@@ -2,9 +2,9 @@ pipeline {
     agent any
     
     environment {
-        MAVEN_HOME = tool 'M3' // Assuming your Maven tool in Jenkins is named "M3"
-        DOCKER_REPO_MR = "iancumatei67/mr" // Change to your Docker registry/repository for merge requests
-        DOCKER_REPO_MAIN = "iancumatei67/main" // Change to your Docker registry/repository for main branch
+        MAVEN_HOME = tool 'M3' //
+        DOCKER_REPO_MR = "iancumatei67/mr" // 
+        DOCKER_REPO_MAIN = "iancumatei67/main" // 
     }
     
     stages {
