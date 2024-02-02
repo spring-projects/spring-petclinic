@@ -36,44 +36,32 @@ pipeline {
             }
         }
         
-        stage('Create Docker Image (MR)') {
+        stage('Build Docker Image') {
             when {
-                expression {
-                    // Execute this stage only for merge requests
-                    return env.CHANGE_ID != null
-                }
+                branch 'main'
             }
             steps {
                 script {
-                    // Assuming Dockerfile is at the root of the spring-petclinic repo
-                    def gitCommitShort = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                    def dockerImageTag = "${DOCKER_REPO_MR}:${gitCommitShort}"
-
-                    sh "docker build -t ${dockerImageTag} ."
-                    sh "docker push ${dockerImageTag}"
+                    app = docker.build("iancumatei67/main")
+                    app.inside {
+                        sh 'echo $(curl localhost:8080)'
+                    }
                 }
             }
         }
-        
-        stage('Create Docker Image (Main)') {
+        stage('Push Docker Image') {
             when {
-                expression {
-                    // Execute this stage only for the main branch
-                    return env.BRANCH_NAME == 'main'
-                }
+                branch 'main'
             }
             steps {
                 script {
-                    // Assuming Dockerfile is at the root of the spring-petclinic repo
-                    def gitCommitShort = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                    def dockerImageTag = "${DOCKER_REPO_MAIN}:${gitCommitShort}"
-
-                    sh "docker build -t ${dockerImageTag} ."
-                    sh "docker push ${dockerImageTag}"
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker_hub_login') {
+                        app.push("${env.BUILD_NUMBER}")
+                        app.push("latest")
+                    }
                 }
             }
         }
-    }
     
     post {
         always {
