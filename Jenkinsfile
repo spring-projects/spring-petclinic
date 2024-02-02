@@ -36,7 +36,7 @@ pipeline {
             }
         }
         
-        stage('Build Docker Image') {
+        stage('Build Docker Image (Main)') {
             when {
                 branch 'main'
             }
@@ -49,7 +49,8 @@ pipeline {
                 }
             }
         }
-        stage('Push Docker Image') {
+        
+        stage('Push Docker Image (Main)') {
             when {
                 branch 'main'
             }
@@ -62,8 +63,47 @@ pipeline {
                 }
             }
         }
-    
-    
-  }
-}
 
+        stage('Build Docker Image (MR)') {
+            when {
+                expression {
+                    // Execute this stage only for merge requests
+                    return env.CHANGE_ID != null
+                }
+            }
+            steps {
+                script {
+                    def gitCommitShort = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+                    appMR = docker.build("${DOCKER_REPO_MR}:${gitCommitShort}")
+                    appMR.inside {
+                        sh 'echo $(curl localhost:8080)'
+                    }
+                }
+            }
+        }
+        
+        stage('Push Docker Image (MR)') {
+            when {
+                expression {
+                    // Execute this stage only for merge requests
+                    return env.CHANGE_ID != null
+                }
+            }
+            steps {
+                script {
+                    def gitCommitShort = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker_hub_login') {
+                        appMR.push("${DOCKER_REPO_MR}:${gitCommitShort}")
+                        appMR.push("latest")
+                    }
+                }
+            }
+        }
+    }
+    
+    post {
+        always {
+            cleanWs() // Clean workspace after the pipeline execution
+        }
+    }
+}
