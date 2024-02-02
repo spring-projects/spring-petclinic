@@ -64,37 +64,22 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image (MR)') {
+        stage('Build and Push Docker Image (MR)') {
             when {
                 expression {
                     // Execute this stage only for merge requests
                     return env.CHANGE_ID != null
                 }
             }
-            steps {
+           steps {
                 script {
-                    def gitCommitShort = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                    appMR = docker.build("${DOCKER_REPO_MR}:${gitCommitShort}")
-                    appMR.inside {
-                        sh 'echo $(curl localhost:8080)'
-                    }
-                }
-            }
-        }
-        
-        stage('Push Docker Image (MR)') {
-            when {
-                expression {
-                    // Execute this stage only for merge requests
-                    return env.CHANGE_ID != null
-                }
-            }
-            steps {
-                script {
-                    def gitCommitShort = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+                    // Build Docker image
+                    def dockerImage = docker.build("${DOCKER_REPO_MR}:${env.CHANGE_ID}", '.')
+
+                    // Push Docker image
                     docker.withRegistry('https://registry.hub.docker.com', 'docker_hub_login') {
-                        appMR.push("${DOCKER_REPO_MR}:${gitCommitShort}")
-                        appMR.push("latest")
+                        dockerImage.push("${env.CHANGE_ID}")
+                        dockerImage.push("latest")
                     }
                 }
             }
