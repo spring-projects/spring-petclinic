@@ -3,15 +3,18 @@
 
 name: Java CI with Maven (minimal)
 
-# The workflow will execute on Push / PR as well as manually running.
 on:
-  push:
-    branches: 
-     - 'main'
+  workflow_dispatch:
     
-  pull_request:
-    branches: 
-      - 'main'
+# # The workflow will execute on Push / PR as well as manually running.
+# on:
+#   push:
+#     branches: 
+#      - 'main'
+    
+#   pull_request:
+#     branches: 
+#       - 'main'
     
 
 # The actual workflow jobs. I've split some of these up to 
