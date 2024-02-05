@@ -18,6 +18,7 @@ package org.springframework.samples.petclinic.owner;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.validation.constraints.Pattern;
 import org.springframework.core.style.ToStringCreator;
 import org.springframework.samples.petclinic.model.Person;
 import org.springframework.util.Assert;
@@ -47,16 +48,16 @@ import jakarta.validation.constraints.NotBlank;
 public class Owner extends Person {
 
 	@Column(name = "address")
-	@NotBlank
+	@NotBlank(message = "Address cannot be blank")
 	private String address;
 
 	@Column(name = "city")
-	@NotBlank
+	@NotBlank(message = "City cannot be blank")
 	private String city;
 
 	@Column(name = "telephone")
-	@NotBlank
-	@Digits(fraction = 0, integer = 10)
+	@NotBlank(message = "Telephone cannot be blank")
+	@Pattern(regexp = "\\d{10}", message = "Telephone must be a 10-digit number")
 	private String telephone;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
