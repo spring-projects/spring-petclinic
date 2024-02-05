@@ -2,9 +2,9 @@ pipeline {
     agent any
     
     environment {
-        MAVEN_HOME = tool 'M3' //
-        DOCKER_REPO_MR = "iancumatei67/mr" // 
-        DOCKER_REPO_MAIN = "iancumatei67/main" // 
+        MAVEN_HOME = tool 'M3' // Assuming your Maven tool in Jenkins is named "M3"
+        DOCKER_REPO_MR = "iancumatei67/mr" // Change to your Docker registry/repository for merge requests
+        DOCKER_REPO_MAIN = "iancumatei67/main" // Change to your Docker registry/repository for main branch
     }
     
     stages {
@@ -44,7 +44,7 @@ pipeline {
                 script {
                     app = docker.build("iancumatei67/main")
                     app.inside {
-                        sh 'echo $(curl https://7bf7-85-204-75-2.ngrok-free.app)'
+                        sh 'echo $(curl localhost:8080)'
                     }
                 }
             }
@@ -64,22 +64,37 @@ pipeline {
             }
         }
 
-        stage('Build and Push Docker Image (MR)') {
+        stage('Build Docker Image (MR)') {
             when {
                 expression {
                     // Execute this stage only for merge requests
                     return env.CHANGE_ID != null
                 }
             }
-           steps {
+            steps {
                 script {
-                    // Build Docker image
-                    def dockerImage = docker.build("${DOCKER_REPO_MR}:${env.CHANGE_ID}", '.')
-
-                    // Push Docker image
+                    def gitCommitShort = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+                    appMR = docker.build("${DOCKER_REPO_MR}:${gitCommitShort}")
+                    appMR.inside {
+                        sh 'echo $(curl localhost:8080)'
+                    }
+                }
+            }
+        }
+        
+        stage('Push Docker Image (MR)') {
+            when {
+                expression {
+                    // Execute this stage only for merge requests
+                    return env.CHANGE_ID != null
+                }
+            }
+            steps {
+                script {
+                    def gitCommitShort = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
                     docker.withRegistry('https://registry.hub.docker.com', 'docker_hub_login') {
-                        dockerImage.push("${env.CHANGE_ID}")
-                        dockerImage.push("latest")
+                        appMR.push("${DOCKER_REPO_MR}:${gitCommitShort}")
+                        appMR.push("latest")
                     }
                 }
             }
