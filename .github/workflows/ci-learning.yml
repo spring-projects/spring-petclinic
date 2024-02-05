@@ -4,10 +4,13 @@
 name: Java CI with Maven (more complex)
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  workflow_dispatch:
+
+# on:
+#   push:
+#     branches: [ main ]
+#   pull_request:
+#     branches: [ main ]
 
 jobs:
 
@@ -60,11 +63,11 @@ jobs:
         run: ./mvnw spring-boot:build-image
 
       - name: Retag image with jfrog repo
-        run: docker tag spring-petclinic:3.1.0-SNAPSHOT my0373.jfrog.io/my0373-docker/spring-petclinic:3.1.0-SNAPSHOT
+        run: docker tag spring-petclinic:3.1.0-SNAPSHOT matthewy.jfrog.io/petclinic-docker/spring-petclinic:3.1.0-SNAPSHOT
 
       - name: Export the built image to a tar file  
         env:
-          IMAGE_NAME: my0373.jfrog.io/my0373-docker/spring-petclinic:3.1.0-SNAPSHOT
+          IMAGE_NAME: matthewy.jfrog.io/petclinic-docker/spring-petclinic:3.1.0-SNAPSHOT
         run: docker save $IMAGE_NAME > /tmp/petclinic.tar
              
       - name: Upload Image as an artifact
@@ -103,12 +106,12 @@ jobs:
 
       - name: Scan Image for vulnerabilities
         run:
-          jf docker scan my0373.jfrog.io/my0373-docker/spring-petclinic:3.1.0-SNAPSHOT   
+          jf docker scan matthewy.jfrog.io/petclinic-docker/spring-petclinic:3.1.0-SNAPSHOT   
             
 
       - name: Push Docker Image to the Artifactory repository
         env:
-          IMAGE_NAME: my0373.jfrog.io/my0373-docker/spring-petclinic:3.1.0-SNAPSHOT
+          IMAGE_NAME: matthewy.jfrog.io/petclinic-docker/spring-petclinic:3.1.0-SNAPSHOT
         run:
           jf docker push $IMAGE_NAME
 
