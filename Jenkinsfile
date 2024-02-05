@@ -44,7 +44,7 @@ pipeline {
                 script {
                     app = docker.build("iancumatei67/main")
                     app.inside {
-                        sh 'echo $(curl localhost:8080)'
+                        sh 'echo $(curl https://7bf7-85-204-75-2.ngrok-free.app)'
                     }
                 }
             }
