@@ -16,7 +16,6 @@
 
   <properties>
     <!-- Demo: Custom properties -->
-    <runtime-agent.version>1.0.7</runtime-agent.version>
     <clm.maven.plugin.version>2.45.0-01</clm.maven.plugin.version>
     <clm.serverUrl>http://ec2-107-23-150-171.compute-1.amazonaws.com:8070/</clm.serverUrl>
     <clm.serverId>ec2-107-23-150-171.compute-1.amazonaws.com</clm.serverId>
@@ -45,14 +44,6 @@
   </properties>
 
   <dependencies>
-    <!-- Demo: Add dependency to runtime-agent -->
-    <dependency>
-      <groupId>com.sonatype.data</groupId>
-      <artifactId>runtime-agent</artifactId>
-      <version>${runtime-agent.version}</version>
-    </dependency>
-
-
     <!-- Spring and Spring Boot dependencies -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -173,7 +164,7 @@
             </goals>
             <configuration>
               <outputDirectory>${project.build.directory}/lib</outputDirectory>
-              <stripVersion>true</stripVersion>
+              <stripVersion>false</stripVersion>
               <includeScope>compile</includeScope>
             </configuration>
           </execution>
@@ -188,7 +179,7 @@
         <configuration>
           <applicationId>${artifactId}</applicationId>
           <stage>stage-release</stage>
-          <skip>${clm.skip}</skip>
+          <skip>true</skip>
         </configuration>
         <executions>
           <execution>
@@ -205,8 +196,31 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test</goal>
+            </goals>
+          </execution>
+        </executions>
         <configuration>
-          <argLine>-javaagent:${project.build.directory}/lib/runtime-agent.jar -Djdk.attach.allowAttachSelf=true -Dsonatype.runtime.agent.enabled=true -Dsonatype.runtime.agent.debugMode=false -Dsonatype.runtime.agent.iq.protocol=http -Dsonatype.runtime.agent.iq.host=ec2-107-23-150-171.compute-1.amazonaws.com -Dsonatype.runtime.agent.iq.port=8070 -Dsonatype.runtime.agent.iq.user=1hPhFMQ2 -Dsonatype.runtime.agent.iq.password=EBuCs4fMF3M81UNrJEZqKPK6wgn41JjC6AMvXBlzngZ5 -Dsonatype.runtime.agent.iq.applicationId=spring-petclinic-runtime-agent -Dsonatype.runtime.agent.isIqApplicationIdPublic=true -Dsonatype.runtime.agent.blockedRunOnStartup=true -Dsonatype.runtime.agent.scanClasspath=false -Dsonatype.runtime.agent.fetchVulnerableClassesFromIQ=true -Dsonatype.runtime.agent.vulnerableMethodDetectionEnabled=true</argLine>
+          <argLine>
+            -javaagent:../runtime-agent-1.0.7.jar
+            -Djdk.attach.allowAttachSelf=true
+            -Dsonatype.runtime.agent.enabled=true
+            -Dsonatype.runtime.agent.debugMode=false
+            -Dsonatype.runtime.agent.iq.protocol=http
+            -Dsonatype.runtime.agent.iq.host=ec2-107-23-150-171.compute-1.amazonaws.com
+            -Dsonatype.runtime.agent.iq.port=8070
+            -Dsonatype.runtime.agent.iq.user=1hPhFMQ2
+            -Dsonatype.runtime.agent.iq.password=EBuCs4fMF3M81UNrJEZqKPK6wgn41JjC6AMvXBlzngZ5
+            -Dsonatype.runtime.agent.iq.applicationId=spring-petclinic-runtime-agent
+            -Dsonatype.runtime.agent.isIqApplicationIdPublic=true
+            -Dsonatype.runtime.agent.blockedRunOnStartup=true
+            -Dsonatype.runtime.agent.scanClasspath=false
+            -Dsonatype.runtime.agent.fetchVulnerableClassesFromIQ=true
+            -Dsonatype.runtime.agent.vulnerableMethodDetectionEnabled=true
+          </argLine>
         </configuration>
       </plugin>
 
