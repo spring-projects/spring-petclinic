@@ -4,17 +4,24 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.springframework.samples</groupId>
-  <artifactId>spring-petclinic</artifactId>
+  <artifactId>spring-petclinic-runtime-agent</artifactId>
   <version>3.2.0-SNAPSHOT</version>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.2.1</version>
+    <version>3.2.0</version>
   </parent>
-  <name>petclinic</name>
+  <name>petclinic-runtime-agent</name>
 
   <properties>
+    <!-- Demo: Custom properties -->
+    <runtime-agent.version>1.0.8-SNAPSHOT</runtime-agent.version>
+    <clm.maven.plugin.version>2.45.0-01</clm.maven.plugin.version>
+    <clm.serverUrl>http://ec2-107-23-150-171.compute-1.amazonaws.com:8070/</clm.serverUrl>
+    <clm.serverId>ec2-107-23-150-171.compute-1.amazonaws.com</clm.serverId>
+    <clm.stage>stage-release</clm.stage>
+    <clm.skip>false</clm.skip>
 
     <!-- Generic properties -->
     <java.version>17</java.version>
@@ -38,6 +45,14 @@
   </properties>
 
   <dependencies>
+    <!-- Demo: Add dependency to runtime-agent -->
+    <dependency>
+      <groupId>com.sonatype.data</groupId>
+      <artifactId>runtime-agent</artifactId>
+      <version>${runtime-agent.version}</version>
+    </dependency>
+
+
     <!-- Spring and Spring Boot dependencies -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -143,6 +158,59 @@
 
   <build>
     <plugins>
+      <!--
+      Demo: Copy dependencies so runtime-agent.jar location is know for -javaagent and also helps with iq-cli scans.
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>dependency-copy-dependencies</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/lib</outputDirectory>
+              <stripVersion>true</stripVersion>
+              <includeScope>compile</includeScope>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Demo: CLM plugin -->
+      <plugin>
+        <groupId>com.sonatype.clm</groupId>
+        <artifactId>clm-maven-plugin</artifactId>
+        <version>${clm.maven.plugin.version}</version>
+        <configuration>
+          <applicationId>${artifactId}</applicationId>
+          <stage>stage-release</stage>
+          <skip>${clm.skip}</skip>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>index</goal>
+              <goal>evaluate</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Demo: runtime-agent with tests -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <argLine>-javaagent:${project.build.directory}/lib/runtime-agent.jar -Djdk.attach.allowAttachSelf=true -Dsonatype.runtime.agent.enabled=true -Dsonatype.runtime.agent.debugMode=false -Dsonatype.runtime.agent.iq.protocol=http -Dsonatype.runtime.agent.iq.host=ec2-107-23-150-171.compute-1.amazonaws.com -Dsonatype.runtime.agent.iq.port=8070 -Dsonatype.runtime.agent.iq.user=1hPhFMQ2 -Dsonatype.runtime.agent.iq.password=EBuCs4fMF3M81UNrJEZqKPK6wgn41JjC6AMvXBlzngZ5 -Dsonatype.runtime.agent.iq.applicationId=spring-petclinic-runtime-agent -Dsonatype.runtime.agent.isIqApplicationIdPublic=true -Dsonatype.runtime.agent.blockedRunOnStartup=true -Dsonatype.runtime.agent.scanClasspath=false -Dsonatype.runtime.agent.fetchVulnerableClassesFromIQ=true -Dsonatype.runtime.agent.vulnerableMethodDetectionEnabled=true</argLine>
+        </configuration>
+      </plugin>
+
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
@@ -201,7 +269,8 @@
               <suppressionsLocation>src/checkstyle/nohttp-checkstyle-suppressions.xml</suppressionsLocation>
               <sourceDirectories>${basedir}</sourceDirectories>
               <includes>**/*</includes>
-              <excludes>**/.git/**/*,**/.idea/**/*,**/target/**/,**/.flattened-pom.xml,**/*.class</excludes>
+              <!-- Demo: The IQ server we use for the demo uses http, so ignore from pom.xml -->
+              <excludes>pom.xml,**/.git/**/*,**/.idea/**/*,**/target/**/,**/.flattened-pom.xml,**/*.class</excludes>
             </configuration>
             <goals>
               <goal>check</goal>
@@ -218,7 +287,7 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
         <executions>
           <execution>
-            <!-- Spring Boot Actuator displays build-related information 
+            <!-- Spring Boot Actuator displays build-related information
               if a META-INF/build-info.properties file is present -->
             <goals>
               <goal>build-info</goal>
@@ -376,7 +445,7 @@
       <build>
         <pluginManagement>
           <plugins>
-            <!-- This plugin's configuration is used to store Eclipse m2e settings 
+            <!-- This plugin's configuration is used to store Eclipse m2e settings
               only. It has no influence on the Maven build itself. -->
             <plugin>
               <groupId>org.eclipse.m2e</groupId>
