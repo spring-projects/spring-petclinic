@@ -16,7 +16,7 @@
 
   <properties>
     <!-- Demo: Custom properties -->
-    <runtime-agent.version>1.0.8-SNAPSHOT</runtime-agent.version>
+    <runtime-agent.version>1.0.7</runtime-agent.version>
     <clm.maven.plugin.version>2.45.0-01</clm.maven.plugin.version>
     <clm.serverUrl>http://ec2-107-23-150-171.compute-1.amazonaws.com:8070/</clm.serverUrl>
     <clm.serverId>ec2-107-23-150-171.compute-1.amazonaws.com</clm.serverId>
