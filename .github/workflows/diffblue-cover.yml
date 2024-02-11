@@ -1,0 +1,52 @@
+# This template is provided and maintained by Diffblue.
+# You can copy and paste this template into a new `diffblue-cover.yml` file.
+# This template is designed to be used with the Cover Pipeline for Github integration from Diffblue.
+# It will download the latest version of Diffblue Cover, build the associated project, and
+# automatically write Java unit tests for the project.
+
+name: Automated Test Creation with Diffblue Cover
+
+# Diffblue Cover runs on pull_request events for now.
+on: pull_request
+
+jobs:
+  RunDiffblueCoverAutomatedTestCreation:
+    runs-on: ubuntu-latest
+
+    # Select the Cover CLI docker image to use with your CI tool.
+    # Tag variations are produced for each supported JDK version.
+    # Go to https://hub.docker.com/r/diffblue/cover-cli for details.
+    # Note: To use the latest version of Diffblue Cover, use one of the latest-jdk<nn> tags.
+    # To use a specific release version, use one of the yyyy.mm.dd-jdk<nn> tags
+    container: diffblue/cover-cli:latest-jdk17
+
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+        with:
+          set-safe-directory: true
+          fetch-depth: 0
+      # Diffblue Cover requires the project to be built before creating any tests.
+      # Either specify the build command here (one of the following), or provide
+      # prebuilt artifacts via a job dependency.
+      - name: Build Project
+        run: mvn test-compile --batch-mode --no-transfer-progress
+
+      # Diffblue Cover commands and options to run.
+      #   dcover – the core Diffblue Cover command
+      #   ci – enable CI/CD integration via environment variables
+      #   activate - activate the license key
+      #   validate - remove non-compiling and failing tests
+      #   create - create new tests for your project
+      #   --maven – use the maven build tool
+      # For detailed information on Cover CLI commands and options, see
+      # https://docs.diffblue.com/features/cover-cli/commands-and-arguments
+      - name: Run Diffblue Cover
+        env:
+          DIFFBLUE_ACCESS_TOKEN: ${{ secrets.DIFFBLUE_ACCESS_TOKEN }}
+          GITHUB_PR_NUMBER: ${{ github.event.number }}
+          GITHUB_REPO_NAME: spring-petclinic-GitHub-demo-1
+          JVM_ARGS: -Xmx4g
+        run: |
+          git config --global --add safe.directory /__w/$GITHUB_REPO_NAME/$GITHUB_REPO_NAME
+          dcover ci activate ${{ secrets.DIFFBLUE_LICENSE }} validate create
