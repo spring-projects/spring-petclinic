@@ -31,8 +31,8 @@ java -javaagent:../runtime-agent-1.0.7.jar \
   -Dsonatype.runtime.agent.iq.protocol=http \
   -Dsonatype.runtime.agent.iq.host=ec2-107-23-150-171.compute-1.amazonaws.com \
   -Dsonatype.runtime.agent.iq.port=8070 \
-  -Dsonatype.runtime.agent.iq.user=1hPhFMQ2 \
-  -Dsonatype.runtime.agent.iq.password=EBuCs4fMF3M81UNrJEZqKPK6wgn41JjC6AMvXBlzngZ5 \
+  -Dsonatype.runtime.agent.iq.user=IQ_USER \
+  -Dsonatype.runtime.agent.iq.password=IQ_PASSWORD \
   -Dsonatype.runtime.agent.iq.applicationId=spring-petclinic-runtime-agent \
   -Dsonatype.runtime.agent.isIqApplicationIdPublic=true \
   -Dsonatype.runtime.agent.blockedRunOnStartup=true \
