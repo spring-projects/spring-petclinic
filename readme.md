@@ -13,9 +13,18 @@ Spring Petclinic is a [Spring Boot](https://spring.io/guides/gs/spring-boot) app
 ```bash
 git clone https://github.com/spring-projects/spring-petclinic.git
 cd spring-petclinic
+
+# This runs the integration tests which invoke vulnerable methods and the runtime labels set in IQ on:
+# - ch.qos.logback : logback-core : 1.4.11
+# - ch.qos.logback : logback-classic : 1.4.11
+# - org.springframework : spring-core : 6.1.1
 ./mvnw package
 
 # Note: Change the path the runtime-agent-1.0.7.jar as necessary
+# After starting the app, by navigating to http://localhost:8080/vets.html invokes vulnerable method call.
+# This will log the method call and set the runtime labels in IQ. 
+# If the label is already set due to integration tests, it will log as such. 
+# If needed, the labels can be deleted manually in IQ before starting the app.
 java -javaagent:../runtime-agent-1.0.7.jar \
   -Dsonatype.runtime.agent.enabled=true \
   -Dsonatype.runtime.agent.debugMode=false \
