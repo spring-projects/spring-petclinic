@@ -6,7 +6,7 @@
 
 [See the presentation here](https://speakerdeck.com/michaelisvy/spring-petclinic-sample-application)
 
-## Run Petclinic locally
+## Run Petclinic with the runtime agent locally
 
 Spring Petclinic is a [Spring Boot](https://spring.io/guides/gs/spring-boot) application built using [Maven](https://spring.io/guides/gs/maven/) or [Gradle](https://spring.io/guides/gs/gradle/). You can build a jar file and run it from the command line (it should work just as well with Java 17 or newer):
 
@@ -14,7 +14,23 @@ Spring Petclinic is a [Spring Boot](https://spring.io/guides/gs/spring-boot) app
 git clone https://github.com/spring-projects/spring-petclinic.git
 cd spring-petclinic
 ./mvnw package
-java -jar target/*.jar
+
+# Note: Change the path the runtime-agent-1.0.7.jar as necessary
+java -javaagent:../runtime-agent-1.0.7.jar \
+  -Dsonatype.runtime.agent.enabled=true \
+  -Dsonatype.runtime.agent.debugMode=false \
+  -Dsonatype.runtime.agent.iq.protocol=http \
+  -Dsonatype.runtime.agent.iq.host=ec2-107-23-150-171.compute-1.amazonaws.com \
+  -Dsonatype.runtime.agent.iq.port=8070 \
+  -Dsonatype.runtime.agent.iq.user=1hPhFMQ2 \
+  -Dsonatype.runtime.agent.iq.password=EBuCs4fMF3M81UNrJEZqKPK6wgn41JjC6AMvXBlzngZ5 \
+  -Dsonatype.runtime.agent.iq.applicationId=spring-petclinic-runtime-agent \
+  -Dsonatype.runtime.agent.isIqApplicationIdPublic=true \
+  -Dsonatype.runtime.agent.blockedRunOnStartup=true \
+  -Dsonatype.runtime.agent.scanClasspath=false \
+  -Dsonatype.runtime.agent.fetchVulnerableClassesFromIQ=true \
+  -Dsonatype.runtime.agent.vulnerableMethodDetectionEnabled=true \
+  -jar target/*.jar
 ```
 
 You can then access the Petclinic at <http://localhost:8080/>.

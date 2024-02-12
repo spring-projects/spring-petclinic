@@ -206,7 +206,6 @@
         <configuration>
           <argLine>
             -javaagent:../runtime-agent-1.0.7.jar
-            -Djdk.attach.allowAttachSelf=true
             -Dsonatype.runtime.agent.enabled=true
             -Dsonatype.runtime.agent.debugMode=false
             -Dsonatype.runtime.agent.iq.protocol=http

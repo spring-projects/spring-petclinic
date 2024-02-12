@@ -59,17 +59,39 @@ class MySqlIntegrationTests {
 	@Autowired
 	private RestTemplateBuilder builder;
 
-	void simulateVulnerableMethodCall() throws Exception {
+	void simulateVulnerableMethodCall() {
 		/*
-		Sonatype Runtime Agent - [TIME]: *** Vulnerable CLASS LOADED [className=org/springframework/core/io/buffer/DefaultDataBuffer] by the JVM
-		Sonatype Runtime Agent - [TIME]: Assigning label 'Runtime-Class-Loaded' to component 22d73bef97aff8a74a99 in application: a50576c3cd894d20b24dc0d98eea084b
-		Sonatype Runtime Agent - [TIME]: Component evaluation for [ComponentEvaluation{hash='22d73bef97aff8a74a99'}] in application a50576c3cd894d20b24dc0d98eea084b successful. Result URL=api/v2/evaluation/applications/a50576c3cd894d20b24dc0d98eea084b/results/3d62858ec88e49e0afd552066cb160ad
-		Sonatype Runtime Agent - [TIME]: *** Class with vulnerable METHOD LOADED [className=org/springframework/core/io/buffer/DefaultDataBuffer, methodName=split, methodDescriptor=(I)Lorg/springframework/core/io/buffer/DataBuffer;] by the JVM
-		Sonatype Runtime Agent - [TIME]: Assigning label 'Runtime-Method-Loaded' to component 22d73bef97aff8a74a99 in application: a50576c3cd894d20b24dc0d98eea084b
-		Sonatype Runtime Agent - [TIME]: Component evaluation for [ComponentEvaluation{hash='22d73bef97aff8a74a99'}] in application a50576c3cd894d20b24dc0d98eea084b successful. Result URL=api/v2/evaluation/applications/a50576c3cd894d20b24dc0d98eea084b/results/47fa37da85d8447f8c101d4db35ec797
-		Sonatype Runtime Agent - [TIME]: *** Vulnerable METHOD CALLED [className=org/springframework/core/io/buffer/DefaultDataBuffer, methodName=split, methodDescriptor=(I)Lorg/springframework/core/io/buffer/DataBuffer;]
-		Sonatype Runtime Agent - [TIME]: Assigning label 'Runtime-Method-Called' to component 22d73bef97aff8a74a99 in application: a50576c3cd894d20b24dc0d98eea084b
-		Sonatype Runtime Agent - [TIME]: Component evaluation for [ComponentEvaluation{hash='22d73bef97aff8a74a99'}] in application a50576c3cd894d20b24dc0d98eea084b successful. Result URL=api/v2/evaluation/applications/a50576c3cd894d20b24dc0d98eea084b/results/6a969f11748f45abba95870fcd7747bb
+		 * Sonatype Runtime Agent - [TIME]: *** Vulnerable CLASS LOADED
+		 * [className=org/springframework/core/io/buffer/DefaultDataBuffer] by the JVM
+		 * Sonatype Runtime Agent - [TIME]: Assigning label 'Runtime-Class-Loaded' to
+		 * component 22d73bef97aff8a74a99 in application: a50576c3cd894d20b24dc0d98eea084b
+		 * Sonatype Runtime Agent - [TIME]: Component evaluation for
+		 * [ComponentEvaluation{hash='22d73bef97aff8a74a99'}] in application
+		 * a50576c3cd894d20b24dc0d98eea084b successful. Result
+		 * URL=api/v2/evaluation/applications/a50576c3cd894d20b24dc0d98eea084b/results/
+		 * 3d62858ec88e49e0afd552066cb160ad Sonatype Runtime Agent - [TIME]: *** Class
+		 * with vulnerable METHOD LOADED
+		 * [className=org/springframework/core/io/buffer/DefaultDataBuffer,
+		 * methodName=split,
+		 * methodDescriptor=(I)Lorg/springframework/core/io/buffer/DataBuffer;] by the JVM
+		 * Sonatype Runtime Agent - [TIME]: Assigning label 'Runtime-Method-Loaded' to
+		 * component 22d73bef97aff8a74a99 in application: a50576c3cd894d20b24dc0d98eea084b
+		 * Sonatype Runtime Agent - [TIME]: Component evaluation for
+		 * [ComponentEvaluation{hash='22d73bef97aff8a74a99'}] in application
+		 * a50576c3cd894d20b24dc0d98eea084b successful. Result
+		 * URL=api/v2/evaluation/applications/a50576c3cd894d20b24dc0d98eea084b/results/
+		 * 47fa37da85d8447f8c101d4db35ec797 Sonatype Runtime Agent - [TIME]: ***
+		 * Vulnerable METHOD CALLED
+		 * [className=org/springframework/core/io/buffer/DefaultDataBuffer,
+		 * methodName=split,
+		 * methodDescriptor=(I)Lorg/springframework/core/io/buffer/DataBuffer;] Sonatype
+		 * Runtime Agent - [TIME]: Assigning label 'Runtime-Method-Called' to component
+		 * 22d73bef97aff8a74a99 in application: a50576c3cd894d20b24dc0d98eea084b Sonatype
+		 * Runtime Agent - [TIME]: Component evaluation for
+		 * [ComponentEvaluation{hash='22d73bef97aff8a74a99'}] in application
+		 * a50576c3cd894d20b24dc0d98eea084b successful. Result
+		 * URL=api/v2/evaluation/applications/a50576c3cd894d20b24dc0d98eea084b/results/
+		 * 6a969f11748f45abba95870fcd7747bb
 		 */
 		DefaultDataBufferFactory defaultDataBufferFactory = new DefaultDataBufferFactory();
 		DefaultDataBuffer defaultDataBuffer = defaultDataBufferFactory.allocateBuffer(1024);
