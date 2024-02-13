@@ -20,7 +20,6 @@
     <clm.serverUrl>http://ec2-107-23-150-171.compute-1.amazonaws.com:8070/</clm.serverUrl>
     <clm.serverId>ec2-107-23-150-171.compute-1.amazonaws.com</clm.serverId>
     <clm.stage>stage-release</clm.stage>
-    <clm.skip>false</clm.skip>
 
     <!-- Generic properties -->
     <java.version>17</java.version>
@@ -149,28 +148,6 @@
 
   <build>
     <plugins>
-      <!--
-      Demo: Copy dependencies so runtime-agent.jar location is know for -javaagent and also helps with iq-cli scans.
-      -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>dependency-copy-dependencies</id>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>copy-dependencies</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.directory}/lib</outputDirectory>
-              <stripVersion>false</stripVersion>
-              <includeScope>compile</includeScope>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
       <!-- Demo: CLM plugin -->
       <plugin>
         <groupId>com.sonatype.clm</groupId>
@@ -179,13 +156,19 @@
         <configuration>
           <applicationId>${artifactId}</applicationId>
           <stage>stage-release</stage>
-          <skip>true</skip>
         </configuration>
         <executions>
           <execution>
-            <phase>package</phase>
+            <id>sonatype-prepare</id>
+            <phase>test-compile</phase>
             <goals>
-              <goal>index</goal>
+              <goal>evaluate</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>sonatype-reevaluate-after-run</id>
+            <phase>prepare-package</phase>
+            <goals>
               <goal>evaluate</goal>
             </goals>
           </execution>
@@ -211,8 +194,8 @@
             -Dsonatype.runtime.agent.iq.protocol=http
             -Dsonatype.runtime.agent.iq.host=ec2-107-23-150-171.compute-1.amazonaws.com
             -Dsonatype.runtime.agent.iq.port=8070
-            -Dsonatype.runtime.agent.iq.user=IQ_USER
-            -Dsonatype.runtime.agent.iq.password=IQ_PASSWORD
+            -Dsonatype.runtime.agent.iq.user=${env.IQ_USER}
+            -Dsonatype.runtime.agent.iq.password=${env.IQ_PASSWORD}
             -Dsonatype.runtime.agent.iq.applicationId=spring-petclinic-runtime-agent
             -Dsonatype.runtime.agent.isIqApplicationIdPublic=true
             -Dsonatype.runtime.agent.blockedRunOnStartup=true
