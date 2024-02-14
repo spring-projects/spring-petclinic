@@ -54,7 +54,13 @@ tasks.named('test') {
 }
 
 checkstyle {
-  configFile file("${project.rootDir}/src/checkstyle/nohttp-checkstyle.xml")
+  configDirectory = project.file('src/checkstyle')
+  configFile = file('src/checkstyle/nohttp-checkstyle.xml')
+}
+
+checkstyleNohttp {
+  configDirectory = project.file('src/checkstyle')
+  configFile = file('src/checkstyle/nohttp-checkstyle.xml')
 }
 
 tasks.named("formatMain").configure { dependsOn("checkstyleMain") }
