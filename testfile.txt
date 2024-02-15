@@ -1,2 +1,3 @@
 install jenkins plugin
 configure with jenkins
+create commit, branch & pull-request in github
