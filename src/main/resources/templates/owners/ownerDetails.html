@@ -7,8 +7,18 @@
   
   
     <h2>Owner Information</h2>
-  
-  
+
+    <div th:if="${message}" class="alert alert-success" id="success-message">
+      <span th:text="${message}"></span>
+    </div>
+
+    <div th:if="${error}" class="alert alert-danger" id="error-message">
+      <span th:text="${error}"></span>
+    </div>
+
+
+
+
     <table class="table table-striped" th:object="${owner}">
       <tr>
         <th>Name</th>
@@ -73,7 +83,20 @@
       </tr>
   
     </table>
-  
+    <script>
+    // Function to hide the success and error messages after 3 seconds
+    function hideMessages() {
+        setTimeout(function() {
+            document.getElementById("success-message").style.display = "none";
+            document.getElementById("error-message").style.display = "none";
+        }, 3000); // 3000 milliseconds (3 seconds)
+    }
+
+    // Call the function to hide messages
+    hideMessages();
+</script>
+
   </body>
+
 
 </html>
