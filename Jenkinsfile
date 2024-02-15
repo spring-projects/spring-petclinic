@@ -8,7 +8,9 @@ pipeline {
             }
             steps {
                 // Use Maven checkstyle plugin to generate a code style report
-                sh 'mvn checkstyle:checkstyle'
+                script {
+                    sh 'M3/bin/mvn checkstyle:checkstyle'
+                }
                 archiveArtifacts artifacts: '**/target/checkstyle-result.xml', fingerprint: true
             }
         }
@@ -18,7 +20,9 @@ pipeline {
             }
             steps {
                 // Run tests with Maven
-                sh 'mvn test'
+                script {
+                    sh 'M3/bin/mvn test'
+                }
             }
         }
         stage('Build') {
@@ -27,7 +31,9 @@ pipeline {
             }
             steps {
                 // Build without tests with Maven
-                sh 'mvn clean package -DskipTests'
+                script {
+                    sh 'M3/bin/mvn clean package -DskipTests'
+                }
             }
         }
         stage('Create Docker Image MR') {
