@@ -1,1 +1,2 @@
 install jenkins plugin
+configure with jenkins
