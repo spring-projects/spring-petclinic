@@ -148,13 +148,6 @@
 
   <build>
     <plugins>
-  <groupId>org.apache.maven.plugins</groupId>
-  <artifactId>maven-compiler-plugin</artifactId>
-  <configuration>
-    <source>17</source>
-    <target>17</target>
-  </configuration>
-</plugin>
       <plugin>
         <groupId>io.spring.javaformat</groupId>
         <artifactId>spring-javaformat-maven-plugin</artifactId>
