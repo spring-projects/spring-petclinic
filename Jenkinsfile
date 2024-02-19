@@ -1,68 +1,106 @@
 pipeline {
     agent any
     
+    environment {
+        MAVEN_HOME = tool 'M3'
+        DOCKER_REPO_MR = "mihailinternul/mr"
+        DOCKER_REPO_MAIN = "mihailinternul/main"
+    }
+    
     stages {
         stage('Checkstyle') {
-            when {
-                expression { env.CHANGE_TARGET ==~ /^merge$/ }
-            }
             steps {
-                // Use Maven checkstyle plugin to generate a code style report
                 script {
-                    sh 'M3/bin/mvn checkstyle:checkstyle'
+                    // Use Maven for Checkstyle
+                    sh "${MAVEN_HOME}/bin/mvn checkstyle:checkstyle"
+                    archiveArtifacts 'target/checkstyle-result.xml'
                 }
-                archiveArtifacts artifacts: '**/target/checkstyle-result.xml', fingerprint: true
             }
         }
+        
         stage('Test') {
-            when {
-                expression { env.CHANGE_TARGET ==~ /^merge$/ }
-            }
             steps {
-                // Run tests with Maven
                 script {
-                    sh 'M3/bin/mvn test'
+                    // Use Maven for testing
+                    sh "${MAVEN_HOME}/bin/mvn test"
                 }
             }
         }
+        
         stage('Build') {
-            when {
-                expression { env.CHANGE_TARGET ==~ /^merge$/ }
-            }
             steps {
-                // Build without tests with Maven
                 script {
-                    sh 'M3/bin/mvn clean package -DskipTests'
+                    // Use Maven for building without tests
+                    sh "${MAVEN_HOME}/bin/mvn package -DskipTests"
                 }
             }
         }
-        stage('Create Docker Image MR') {
+        
+        stage('Build Docker Image (Main)') {
             when {
-                expression { env.CHANGE_TARGET ==~ /^merge$/ }
+                branch 'main'
             }
             steps {
-                // Build Docker image from Dockerfile
                 script {
-                    def gitCommitShort = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                    def dockerImage = "mihailinternul/mr:${gitCommitShort}"
-                    sh "docker build -t ${dockerImage} ."
-                    sh "docker push ${dockerImage}"
+                    app = docker.build("${DOCKER_REPO_MAIN}")
+                    app.inside {
+                        sh 'echo $(curl localhost:8080)'
+                    }
                 }
             }
         }
-        stage('Create Docker Image Main') {
+        
+        stage('Push Docker Image (Main)') {
             when {
-                expression { env.CHANGE_TARGET ==~ /^main$/ }
+                branch 'main'
             }
             steps {
-                // Build Docker image from Dockerfile
                 script {
-                    def gitCommitShort = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                    def dockerImage = "mihailinternul/main:${gitCommitShort}"
-                    sh "docker build -t ${dockerImage} ."
-                    sh "docker push ${dockerImage}"
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker_hub_login') {
+                        app.push("${env.BUILD_NUMBER}")
+                        app.push("latest")
+                    }
                 }
             }
+        }
+        
+        stage('Build Docker Image (MR)') {
+            when {
+                expression {
+                    return env.BRANCH_NAME == 'mr'
+                }
+            }
+            steps {
+                script {
+                    def gitCommitShort = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+                    appMR = docker.build("${DOCKER_REPO_MR}:${gitCommitShort}")
+                    appMR.inside {
+                        sh 'echo $(curl localhost:8080)'
+                    }
+                }
+            }
+        }
+        
+        stage('Push Docker Image (MR)') {
+            when {
+                expression {
+                    return env.BRANCH_NAME == 'mr'
+                }
+            }
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker_hub_login') {
+                        appMR.push("${env.BUILD_NUMBER}")
+                        appMR.push("latest")
+                    }
+                }
+            }
+        }
+    }
+    
+    post {
+        always {
+            cleanWs() // Clean workspace after the pipeline execution
         }
     }
 }
