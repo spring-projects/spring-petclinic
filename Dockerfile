@@ -9,11 +9,9 @@ ENV OTEL_METRICS_EXPORTER=none
 ENV CODE_PACKAGE_PREFIXES="org.springframework.samples.petclinic"
 ENV DEPLOYMENT_ENV="SAMPLE_ENV"
 
-ADD target/spring-petclinic-*.jar /app.jar
-ADD build/otel/opentelemetry-javaagent.jar /opentelemetry-javaagent.jar
-ADD build/otel/digma-otel-agent-extension.jar /digma-otel-agent-extension.jar
+ADD target/spring-petclinic-3.1.0-SNAPSHOT-new.jar /app.jar
 
 HEALTHCHECK --interval=20s --timeout=3s --start-period=10s --retries=4 \
   CMD curl -f http://localhost:8082/ || exit 1
 
-ENTRYPOINT java -jar -javaagent:/opentelemetry-javaagent.jar -Dotel.javaagent.extensions=/digma-otel-agent-extension.jar app.jar
+ENTRYPOINT java -jar app.jar

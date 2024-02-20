@@ -81,6 +81,10 @@ class OwnerController {
 	@GetMapping("/owners/new")
 	public String initCreationForm(Map<String, Object> model) {
 
+//		if (model!=null){
+//			throw new RuntimeException();
+//
+//		}
 		Owner owner = new Owner();
 		validator.ValidateOwnerWithExternalService(owner);
 
@@ -140,6 +144,11 @@ class OwnerController {
 
 		// multiple owners found
 		return addPaginationModel(page, model, ownersResults);
+	}
+
+	@WithSpan
+	private String test() {
+		return "";
 	}
 
 	private String addPaginationModel(int page, Model model, Page<Owner> paginated) {

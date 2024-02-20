@@ -10,6 +10,6 @@ services:
     environment:
       - JAVA_TOOL_OPTIONS=-javaagent:/otel/opentelemetry-javaagent.jar -Dotel.exporter.otlp.endpoint=http://host.docker.internal:5050 -Dotel.javaagent.extensions=/otel/digma-otel-agent-extension.jar
       - OTEL_SERVICE_NAME=pet-clinic
-      - DEPLOYMENT_ENV=LOCAL_DOCKER
+      - DEPLOYMENT_ENV=${MY_DOCKER_HOST}.LOCAL[local]
     extra_hosts:
       - "host.docker.internal:host-gateway"
