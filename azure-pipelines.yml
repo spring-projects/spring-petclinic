@@ -1,14 +1,4 @@
 # Starter pipeline
-- task: GitHubRelease@1
-  inputs:
-    gitHubConnection: 'github.com_MaruthiShankarG'
-    repositoryName: 'MaruthiShankarG/spring-petclinic'
-    action: 'create'
-    target: '$(Build.SourceVersion)'
-    tagSource: 'gitTag'
-    title: 'Sample'
-    changeLogCompareToRelease: 'lastFullRelease'
-    changeLogType: 'commitBased'
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
@@ -27,3 +17,13 @@ steps:
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
   displayName: 'Run a multi-line script'
+- task: Maven@4
+  inputs:
+    mavenPomFile: 'pom.xml'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    javaHomeOption: 'JDKVersion'
+    mavenVersionOption: 'Default'
+    mavenAuthenticateFeed: false
+    effectivePomSkip: false
+    sonarQubeRunAnalysis: false
