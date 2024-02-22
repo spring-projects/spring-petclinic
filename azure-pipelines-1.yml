@@ -10,11 +10,11 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- task: JavaToolInstaller@0
+- task: UseJavaVersion@0
   inputs:
-    versionSpec: '17'
-    jdkArchitectureOption: 'x64'
-    jdkSourceOption: 'PreInstalled'
+    version: '17'  # Specify the Java version you need
+    addToPath: true
+    
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
