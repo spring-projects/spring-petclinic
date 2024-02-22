@@ -143,9 +143,9 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <groupId>org.apache.maven.plugins</groupId>
+        <groupId>org.apache.maven.plugins</groupId
         <artifactId>maven-enforcer-plugin</artifactId>
+        <artifactId>maven-compiler-plugin</artifactId>
         <executions>
           <execution>
             <id>enforce-java</id>
