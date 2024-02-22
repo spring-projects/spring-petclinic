@@ -6,15 +6,41 @@
 
 [See the presentation here](https://speakerdeck.com/michaelisvy/spring-petclinic-sample-application)
 
-## Run Petclinic locally
+## Run Petclinic with the runtime agent locally
 
 Spring Petclinic is a [Spring Boot](https://spring.io/guides/gs/spring-boot) application built using [Maven](https://spring.io/guides/gs/maven/) or [Gradle](https://spring.io/guides/gs/gradle/). You can build a jar file and run it from the command line (it should work just as well with Java 17 or newer):
 
 ```bash
 git clone https://github.com/spring-projects/spring-petclinic.git
 cd spring-petclinic
+
+# This runs the integration tests which will invoke some vulnerable methods as part of tests coverage and the
+# runtime labels set in IQ on:
+# - ch.qos.logback : logback-core : 1.4.11
+# - ch.qos.logback : logback-classic : 1.4.11
+# - org.springframework : spring-core : 6.1.1
 ./mvnw package
-java -jar target/*.jar
+
+# Note: Change the path the runtime-agent-1.0.7.jar as necessary
+# After starting the app, by navigating to http://localhost:8080/vets.html invokes vulnerable method call.
+# This will log additional vulnerable method calls that were not covered by unit tests and sets the runtime labels in IQ.
+# If the label is already set due to integration tests, it will log as such. 
+# If needed, the labels can be deleted manually in IQ before starting the app.
+java -javaagent:../runtime-agent-1.0.7.jar \
+  -Dsonatype.runtime.agent.enabled=true \
+  -Dsonatype.runtime.agent.debugMode=false \
+  -Dsonatype.runtime.agent.iq.protocol=http \
+  -Dsonatype.runtime.agent.iq.host=ec2-107-23-150-171.compute-1.amazonaws.com \
+  -Dsonatype.runtime.agent.iq.port=8070 \
+  -Dsonatype.runtime.agent.iq.user=${IQ_USER} \
+  -Dsonatype.runtime.agent.iq.password=${IQ_PASSWORD} \
+  -Dsonatype.runtime.agent.iq.applicationId=spring-petclinic-runtime-agent \
+  -Dsonatype.runtime.agent.isIqApplicationIdPublic=true \
+  -Dsonatype.runtime.agent.blockedRunOnStartup=true \
+  -Dsonatype.runtime.agent.scanClasspath=false \
+  -Dsonatype.runtime.agent.fetchVulnerableClassesFromIQ=true \
+  -Dsonatype.runtime.agent.vulnerableMethodDetectionEnabled=true \
+  -jar target/*.jar
 ```
 
 You can then access the Petclinic at <http://localhost:8080/>.

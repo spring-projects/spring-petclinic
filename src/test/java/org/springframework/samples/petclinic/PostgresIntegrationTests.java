@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import ch.qos.logback.core.net.HardenedObjectInputStream;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.BeforeAll;
@@ -77,8 +78,39 @@ public class PostgresIntegrationTests {
 			.run(args);
 	}
 
+	void simulateVulnerableClassWithMethodLoaded() {
+		/*
+		 * Sonatype Runtime Agent - [TIME]: *** Vulnerable CLASS LOADED
+		 * [className=ch/qos/logback/core/net/HardenedObjectInputStream] by the JVM
+		 * Sonatype Runtime Agent - [TIME]: Assigning label 'Runtime-Class-Loaded' to
+		 * component 2f9f280219a9922a7420 in application: a50576c3cd894d20b24dc0d98eea084b
+		 * Sonatype Runtime Agent - [TIME]: Component evaluation for
+		 * [ComponentEvaluation{hash='2f9f280219a9922a7420'}] in application
+		 * a50576c3cd894d20b24dc0d98eea084b successful. Result
+		 * URL=api/v2/evaluation/applications/a50576c3cd894d20b24dc0d98eea084b/results/
+		 * 74387681c75446a5924812d032c77cad Sonatype Runtime Agent - [TIME]: *** Class
+		 * with vulnerable METHOD LOADED
+		 * [className=ch/qos/logback/core/net/HardenedObjectInputStream,
+		 * methodName=<init>,
+		 * methodDescriptor=(Ljava/io/InputStream;[Ljava/lang/String;)V] by the JVM
+		 * Sonatype Runtime Agent - [TIME]: Assigning label 'Runtime-Method-Loaded' to
+		 * component 2f9f280219a9922a7420 in application: a50576c3cd894d20b24dc0d98eea084b
+		 * Sonatype Runtime Agent - [TIME]: Component evaluation for
+		 * [ComponentEvaluation{hash='2f9f280219a9922a7420'}] in application
+		 * a50576c3cd894d20b24dc0d98eea084b successful. Result
+		 * URL=api/v2/evaluation/applications/a50576c3cd894d20b24dc0d98eea084b/results/
+		 * 488f999c6730499a8cd454b37d3201b2 >>
+		 * org.springframework.samples.petclinic.PostgresIntegrationTests loaded
+		 * ch.qos.logback.core.net.HardenedObjectInputStream
+		 */
+		System.out.println(">> " + getClass().getName() + " loaded " + HardenedObjectInputStream.class.getName());
+	}
+
 	@Test
 	void testFindAll() throws Exception {
+		// Demo: Simulate Runtime-Class-Loaded and Runtime-Method-Loaded
+		simulateVulnerableClassWithMethodLoaded();
+
 		vets.findAll();
 		vets.findAll(); // served from cache
 	}
