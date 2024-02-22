@@ -175,6 +175,17 @@
         </executions>
       </plugin>
       <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
+				<configuration>
+					<source>11</source>
+					<target>11</target>
+					<fork>true</fork>
+					<maxmem>1024m</maxmem>
+				</configuration>
+			</plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>${maven-checkstyle.version}</version>
