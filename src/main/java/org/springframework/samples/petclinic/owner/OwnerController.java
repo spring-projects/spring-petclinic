@@ -124,9 +124,6 @@ class OwnerController {
 			owner.setLastName(""); // empty string signifies broadest possible search
 		}
 
-		for (int i = 0; i < 100; i++) {
-			Page<Owner> ownersResults = findPaginatedForOwnersLastName(page, owner.getLastName());
-		}
 
 		// find owners by last name
 		Page<Owner> ownersResults = findPaginatedForOwnersLastName(page, owner.getLastName());
@@ -163,6 +160,13 @@ class OwnerController {
 
 	@WithSpan
 	private Page<Owner> findPaginatedForOwnersLastName(int page, String lastname) {
+		int pageSize = 25;
+		Pageable pageable = PageRequest.of(page - 1, pageSize);
+		return owners.findByLastName(lastname, pageable);
+	}
+
+	@WithSpan
+	private Page<Owner> findPaginatedForOwnersLastNameThree(int page, String lastname) {
 		int pageSize = 25;
 		Pageable pageable = PageRequest.of(page - 1, pageSize);
 		return owners.findByLastName(lastname, pageable);
