@@ -18,7 +18,7 @@ variables:
   environmentName: 'appjava-wa'
 
   # Agent VM image name
-  vmImageName: 'ubuntu-latest'
+  vmImageName: 'windows-latest'
 
 stages:
 - stage: Build
