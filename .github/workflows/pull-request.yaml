@@ -1,0 +1,29 @@
+name: Pull Request Build
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-image:
+    environment: default
+    runs-on: ubuntu-latest
+    steps:
+      -   name: Checkout
+          uses: actions/checkout@v3
+      -   uses: actions/setup-java@v3
+          with:
+            distribution: 'temurin' # See 'Supported distributions' for available options
+            java-version: '17'
+      -   name: Build and export
+          run: |
+            #!/bin/bash
+            mvn clean install -s settings.xml -B -Dmaven.repo.local=repo
+            docker run -v `pwd`/repo:/repo -v `pwd`/target:/target quay.io/mk-ci-cd/apheleia-processor:57570450fc78697661497b1b604d1bd2253be2fa /opt/jboss/container/java/run/run-java.sh analyse --maven-repo=/repo /target/hacbs-test.jar --sbom-path /target/sbom.json --build-sbom-path /target/build-sbom.json || true
+      -   uses: actions/upload-artifact@v3
+          with:
+            name: sbom.json
+            path: target/sbom.json
+      -   uses: actions/upload-artifact@v3
+          with:
+            name: build-sbom.json
+            path: target/build-sbom.json

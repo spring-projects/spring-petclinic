@@ -1,0 +1,37 @@
+<settings>
+
+    <mirrors>
+        <mirror>
+        <id>maven-default-http-blocker</id>
+        <mirrorOf>external:http:*</mirrorOf>
+        <name>Pseudo repository to mirror external repositories initially using HTTP.</name>
+        <url>http://nexus3-nexus.apps.sdouglas2.clusters.stonesoupengineering.com/repository/rebuilt-downloads/</url>
+        <blocked>false</blocked>
+        </mirror>
+        <mirror>
+        <id>others</id>
+        <mirrorOf>*</mirrorOf>
+        <name>Pseudo repository to mirror external repositories initially using HTTP.</name>
+        <url>http://nexus3-nexus.apps.sdouglas2.clusters.stonesoupengineering.com/repository/rebuilt-downloads/</url>
+        <blocked>false</blocked>
+        </mirror>
+    </mirrors>
+    <profiles>
+        <profile>
+            <id>demo</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>demo-demo_repo</id>
+                    <url>http://nexus3-nexus.apps.sdouglas2.clusters.stonesoupengineering.com/repository/rebuilt-downloads/</url>
+                </repository>
+            </repositories>
+        </profile>
+    </profiles>
+    <activeProfiles>
+        <activeProfile>demo</activeProfile>
+    </activeProfiles>
+
+</settings>
