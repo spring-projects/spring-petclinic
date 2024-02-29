@@ -1,2 +1,5 @@
-mvnw    text eol=lf
-*.java  text eol=lf
+mvnw            text eol=lf
+*.java          text eol=lf
+
+/gradlew        text eol=lf
+*.bat           text eol=crlf
