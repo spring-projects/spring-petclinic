@@ -15,7 +15,10 @@ gradle.startParameter.excludedTaskNames += [ "checkFormatAot", "checkFormatAotTe
 
 group = 'org.springframework.samples'
 version = '3.2.0'
-sourceCompatibility = '17'
+
+java {
+  sourceCompatibility = JavaVersion.VERSION_17
+}
 
 repositories {
   mavenCentral()
