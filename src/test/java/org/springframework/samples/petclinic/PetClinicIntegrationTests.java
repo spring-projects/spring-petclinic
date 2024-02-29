@@ -50,6 +50,11 @@ public class PetClinicIntegrationTests {
 	}
 
 	@Test
+	void contextLoads() {
+		assertEquals(2, 1);
+	}
+
+	@Test
 	void testOwnerDetails() {
 		RestTemplate template = builder.rootUri("http://localhost:" + port).build();
 		ResponseEntity<String> result = template.exchange(RequestEntity.get("/owners/1").build(), String.class);
