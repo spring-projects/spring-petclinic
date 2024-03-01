@@ -50,6 +50,14 @@ dependencies {
   testImplementation 'org.testcontainers:mysql'
   checkstyle 'io.spring.javaformat:spring-javaformat-checkstyle:0.0.41'
   checkstyle 'com.puppycrawl.tools:checkstyle:10.12.5'
+
+  implementation platform('io.awspring.cloud:spring-cloud-aws-dependencies:3.1.0')
+  implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3'
+
+  implementation platform("software.amazon.awssdk:bom:2.24.13")
+  implementation 'software.amazon.awssdk:kms'
+  implementation 'software.amazon.awssdk:sso'
+  implementation 'software.amazon.awssdk:ssooidc'
 }
 
 tasks.named('test') {
