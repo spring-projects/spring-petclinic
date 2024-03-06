@@ -1,0 +1,21 @@
+name: Upload and Deploy Artifact from build pipeline
+
+on:
+  workflow_call
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v3
+        with:
+          name: java-app
+          path: '${{ github.workspace }}/target/*.jar'
+
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v3
+        with:
+          name: java-app
