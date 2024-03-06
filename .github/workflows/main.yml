@@ -22,16 +22,6 @@ jobs:
       - uses: actions/checkout@v4
         name: Checkout repository
 
-        # If success
-        if: ${{ success() }}
-      - run: echo "Job succeeded"
-        shell: bash
-
-        # If failed 
-        if: ${{ !success() }}
-      - run: echo "Job failed"
-        shell: bash
-
   # This job calls the build pipeline from local workflows directory
   my_second_job:
     name: "Call build workflow" 
