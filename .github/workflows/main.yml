@@ -17,5 +17,6 @@ jobs:
       name: Build call
       runs-on: ubuntu-latest
       steps:
+      - uses: actions/checkout@v4
       # if: ${{ success() }}
       - uses: ./.github/workflows/build.yml
