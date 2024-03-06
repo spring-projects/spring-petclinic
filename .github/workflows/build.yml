@@ -87,3 +87,5 @@ jobs:
   
         - name: Download artifact from build job
           uses: actions/download-artifact@v4
+          with:
+              path: ./.github/artifacts
