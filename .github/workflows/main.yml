@@ -34,5 +34,5 @@ jobs:
 
   # This job calls the build pipeline from local workflows directory
   my_second_job:
-    uses: ./.github/workflows/build.yml
     name: "Call build workflow" 
+    uses: ./.github/workflows/build.yml
