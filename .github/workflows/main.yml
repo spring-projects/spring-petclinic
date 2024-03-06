@@ -27,6 +27,6 @@ jobs:
     name: "Call build workflow" 
     uses: ./.github/workflows/build.yml
 
-  my_third_job:
-    name: "Upload and Download artifact file"
-    uses: ./.github/workflows/deploy.yml
+  # my_third_job:
+  #   name: "Upload and Download artifact file"
+  #   uses: ./.github/workflows/deploy.yml

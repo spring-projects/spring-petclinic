@@ -64,7 +64,7 @@ jobs:
       uses: gradle/actions/dependency-submission@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
 
   publish-artifact:
-    
+
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v4
@@ -85,3 +85,14 @@ jobs:
             name: Package
             path: build/libs
       
+
+        - name: Upload artifact for deployment job
+          uses: actions/upload-artifact@v3
+          with:
+            name: java-app
+            path: '${{ github.workspace }}/target/*.jar'
+  
+        - name: Download artifact from build job
+          uses: actions/download-artifact@v3
+          with:
+            name: java-app
