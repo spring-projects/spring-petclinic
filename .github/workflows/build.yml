@@ -84,15 +84,8 @@ jobs:
           with:
             name: Package
             path: build/libs
-      
-
-        - name: Upload artifact for deployment job
-          uses: actions/upload-artifact@v3
-          with:
-            name: java-app
-            path: '${{ github.workspace }}/target/*.jar'
   
         - name: Download artifact from build job
-          uses: actions/download-artifact@v3
+          uses: actions/download-artifact@v4
           with:
-            name: java-app
+            path: ./github/artifacts
