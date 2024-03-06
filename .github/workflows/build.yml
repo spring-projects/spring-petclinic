@@ -8,8 +8,7 @@
 name: Java Gradle Build
 
 on:
-  push:
-    branches: [ "develop" ]
+  workflow_call
 
 jobs:
   build:
