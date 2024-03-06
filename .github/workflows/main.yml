@@ -22,9 +22,13 @@ jobs:
       - uses: actions/checkout@v4
         name: Checkout repository
       # This job calls the build pipeline from local workflows directory
-        if: ${{ success() }}
       - uses: ./.github/workflows/build.yml
         name: 'Call build workflow'
+
+        if: ${{ success() }}
+      - run: echo "Job succeeded"
+        shell: bash
+
         if: ${{ !success() }}
       - run: echo "Job failed"
         shell: bash
