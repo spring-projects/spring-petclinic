@@ -33,12 +33,6 @@ jobs:
         shell: bash
 
   # This job calls the build pipeline from local workflows directory
-  my_second_job: 
-    name: Call build workflow
-    runs-on: Ubuntu-latest
-
-    steps: 
-      - uses: actions/checkout@v4
-        name: Checkout repository
-      - uses: ./.github/workflows/build.yml
-        name: 'Call build workflow'
+  my_second_job:
+    uses: ./.github/workflows/build.yml
+    name: "Call build workflow" 
