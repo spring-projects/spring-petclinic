@@ -21,15 +21,24 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
         name: Checkout repository
-        
-      # This job calls the build pipeline from local workflows directory
+
+        # If success
         if: ${{ success() }}
       - run: echo "Job succeeded"
         shell: bash
-      - uses: ./.github/workflows/build.yml
-        name: 'Call build workflow'
 
         # If failed 
         if: ${{ !success() }}
       - run: echo "Job failed"
         shell: bash
+
+  # This job calls the build pipeline from local workflows directory
+  my_second_job: 
+    name: Call build workflow
+    runs-on: Ubuntu-latest
+
+    steps: 
+      - uses: actions/checkout@v4
+        name: Checkout repository
+      - uses: ./.github/workflows/build.yml
+        name: 'Call build workflow'
