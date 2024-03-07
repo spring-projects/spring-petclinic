@@ -11,7 +11,6 @@ pipeline {
         stage('Checkstyle') {
             steps {
                 script {
-                    // Use Maven for Checkstyle
                     sh "${MAVEN_HOME}/bin/mvn checkstyle:checkstyle"
                     archiveArtifacts 'target/checkstyle-result.xml'
                 }
@@ -21,7 +20,6 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    // Use Maven for testing
                     sh "${MAVEN_HOME}/bin/mvn test"
                 }
             }
@@ -30,7 +28,6 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Use Maven for building without tests
                     sh "${MAVEN_HOME}/bin/mvn package -DskipTests"
                 }
             }
