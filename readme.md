@@ -125,7 +125,7 @@ docker ps --filter name=mypetclinic --filter status=running -aq | xargs docker s
 #### error
 The Jenkins pipeline stage docker/build throws an error when it tries to make mypetclinic image as below.
 `````
-ERROR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/_ping": dial unix /var/run/docker.sock: connect: permission denied
+ERROR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "%2Fvar%2Frun%2Fdocker.sock/_ping": dial unix /var/run/docker.sock: connect: permission denied
 `````
 #### solution
 My device is running with user 'krishna' and Jenkins service is running with the user 'jenkins'. Therefore, I need to grant the user 'jenkins' access to docker.sock and command follows
