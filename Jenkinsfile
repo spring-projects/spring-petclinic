@@ -92,13 +92,14 @@ node {
             } // withCredentials: dockerhub
         } // stage: push
         stage('clean') {
-            sh """ #!/bin/bash
-                docker image ls
-                echo 'Deleting local images...'
-                docker rmi -f $(docker images -aq)
+            sh """ #!/bin/bash 
+                docker images ls 
+                echo 'Deleting local images...' 
 
-                docker image ls
-            """
+                docker rmi -f \$(docker images -aq)
+
+                docker images ls 
+            """ 
         } // stage: clean
     } // stage: docker
 }
