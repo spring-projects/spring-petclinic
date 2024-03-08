@@ -41,7 +41,7 @@ pipeline {
                 execCommand: '''
                 fuser -k 8080/tcp
                 export BUILD_ID=Pipeline-Test
-                nohup java -jar /home/ubuntu/deploy/spring-petclinic-2.4.0.BUILD-SNAPSHOT.jar >> nohup.out 2>&1 &''', 
+                nohup java -jar /home/ubuntu/deploy/spring-petclinic-2.7.3.jar >> nohup.out 2>&1 &''', 
                 execTimeout: 120000, 
                 flatten: false, 
                 makeEmptyDirs: false, 
