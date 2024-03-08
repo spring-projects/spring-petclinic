@@ -80,7 +80,7 @@ docker rmi -f mypetclinic
 - The container images from the Jenkin pipeline was uploaded to the [Docker repository](https://hub.docker.com/orgs/krishnamanchikalapudi/repositories)
 
 ## Docker image execution
-A few options are available to execute the Docker image [krishnamanchikalapudi/mypetclinic:latest](https://hub.docker.com/repository/docker/krishnamanchikalapudi/mypetclinic)
+A few options are available to execute the Docker image [krishnamanchikalapudi/mypetclinic:latest](https://hub.docker.com/r/krishnamanchikalapudi/mypetclinic/tags)
 ### Option 1
 - Prerequisite
     - Device operating system: Mac or Linux
@@ -135,3 +135,9 @@ sudo setfacl -R -m user:jenkins:rwx /var/run/docker.sock
 
 ## License
 The Spring PetClinic sample application is released under version 2.0 of the [Apache License](https://www.apache.org/licenses/LICENSE-2.0).
+
+
+## References
+- [Dockerfile reference](https://docs.docker.com/reference/dockerfile/)
+- [Docker CLI reference](https://docs.docker.com/reference/cli/docker/)
+- [Jenkins Docs](https://www.jenkins.io/doc/)

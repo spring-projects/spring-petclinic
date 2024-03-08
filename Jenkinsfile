@@ -25,6 +25,8 @@ node {
                 timeout(time: 10, unit: 'MINUTES') {
                     sh """ #!/bin/bash
                         mvn test surefire-report:report
+
+                        echo 'surefire report generated in /target/site/surefire-report.html'
                     """
                 } // timeout
             } // stage: unittest
@@ -32,7 +34,9 @@ node {
             stage ("checkStyle") {
                 timeout(time: 2, unit: 'MINUTES') {
                     sh """ #!/bin/bash
-                        mvn validate
+                        mvn checkstyle:checkstyle
+
+                        echo 'checkstyle report generated in /target/site/checkstyle.html'
                     """
                 } // timeout
             } // stage: validate
@@ -41,6 +45,8 @@ node {
                 timeout(time: 2, unit: 'MINUTES') {
                     sh """ #!/bin/bash
                         mvn jacoco:report
+                                    
+                        echo 'Jacoco report generated in /target/site/jacoco/index.html'
                     """
                 } // timeout
             } // stage: Jacoo
@@ -49,8 +55,6 @@ node {
     stage ("Docker") {
         stage('build') {
             sh """ #!/bin/bash
-                # docker login
-                # docker image build -f Dockerfile -t petclinic:cli .
                 docker image build -f Dockerfile -t ${projectName}:${env.BUILD_ID} .
             """
         } // stage: build
@@ -77,7 +81,7 @@ node {
             withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKER_REGISTRY_PWD', usernameVariable: 'DOCKER_REGISTRY_USER')]) {
                 sh """ #!/bin/bash
                     docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PWD
-                    echo 'Login success'
+                    echo 'Login success...'
 
                     docker push krishnamanchikalapudi/${projectName}:${env.BUILD_ID}
                     docker push krishnamanchikalapudi/${projectName}:latest
@@ -88,23 +92,13 @@ node {
             } // withCredentials: dockerhub
         } // stage: push
         stage('clean') {
-            parallel pruneImage: {
-                sh """ #!/bin/bash
-                    docker image prune -f --filter until=1h
-                """
-            }, pruneContainer: {
-                sh """ #!/bin/bash
-                    docker container prune -f --filter until=1h
-                """
-            }, pruneSystem: {
-                sh """ #!/bin/bash
-                    docker system prune -f --filter until=1h
-                """
-            }, rmiImages: {
-                sh """ #!/bin/bash
-                    docker rmi -f ${projectName}
-                """
-            }
+            sh """ #!/bin/bash
+                docker image ls
+                echo 'Deleting local images...'
+                docker rmi -f $(docker images -aq)
+
+                docker image ls
+            """
         } // stage: clean
     } // stage: docker
 }

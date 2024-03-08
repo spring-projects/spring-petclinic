@@ -23,6 +23,7 @@ clean() {
     docker image prune -a -f --filter "until=1h"
     docker container prune -f --filter "until=1h"
     docker system prune -f --filter "until=1h"
+    docker rmi -f $(docker images -aq)
 }
 startContainer() {
     printf "\n -------- Downloading container: ${containerName} -------- \n "
@@ -32,16 +33,18 @@ startContainer() {
     docker run -d --name ${containerName} -p ${exposePort}:8080 ${orgName}/${imageName}:latest
 
     sleep 5
-    open -a 'Google Chrome' $WEB_ADDR
+    docker logs -f ${containerName} &
 
-    sleep 2
-    docker logs -f $containerId &
-
+    # xdg-open $WEB_ADDR  # ubuntu
+    # open 'Google Chrome' $WEB_ADDR # mac 
+    printf "\n ----------------------------------------------------------------  "
+    printf "\n ---------- In Web Browser, open http://localhost:7080 ----------  "
+    printf "\n ----------------------------------------------------------------  "
 }
 stopContainer() {
      printf "\n -------- Stop container: ${containerName} -------- \n "
      # docker container stop ${docker container ls -a | grep postgres | awk '{print $1}'}
-     docker container stop $containerId -t 0
+     docker stop $containerName -t 0
      docker rm -f $containerName
 }
 
