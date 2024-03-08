@@ -8,8 +8,8 @@ Develop a DevOps pipeline to automate tasks such as code compile, unit testing, 
 
 Note: This process with not deploy to the envionrmnet platform. 
 
-### Change log
-- Original readme.md renamed as readme-orignial.md
+### Changelog
+- The original 'readme.md' file has been renamed to 'readme-orignial.md'.
 - Add new files
     - readme.md
     - Dockerfile
@@ -57,7 +57,7 @@ This sub-stage generates Jacoco code coverage reports using Apache Maven command
 `````
 mvn jacoco:report
 `````
-#### Stage: Docker
+#### Stage: Container
 The stage 'Docker' contains the following sub-stages:
 ##### build
 This sub-stage builds the Docker image using the Dockerfile. The image is tagged with the project name and the Jenkins build ID.

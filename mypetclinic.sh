@@ -23,6 +23,7 @@ clean() {
     docker image prune -a -f --filter "until=1h"
     docker container prune -f --filter "until=1h"
     docker system prune -f --filter "until=1h"
+    sleep 3
     docker rmi -f $(docker images -aq)
 }
 startContainer() {
@@ -45,6 +46,7 @@ stopContainer() {
      printf "\n -------- Stop container: ${containerName} -------- \n "
      # docker container stop ${docker container ls -a | grep postgres | awk '{print $1}'}
      docker stop $containerName -t 0
+     sleep 5
      docker rm -f $containerName
 }
 

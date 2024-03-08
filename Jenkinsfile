@@ -50,7 +50,7 @@ node {
             } // stage: Jacoo
         } // parallel
     } // stage: tests
-    stage ("Docker") {
+    stage ("Container") {
         stage('build') {
             sh """ #!/bin/bash
                 docker image build -f Dockerfile -t ${projectName}:${env.BUILD_ID} .
