@@ -26,7 +26,7 @@ node {
                     sh """ #!/bin/bash
                         mvn test surefire-report:report
 
-                        echo 'surefire report generated in /target/site/surefire-report.html'
+                        echo 'surefire report generated in http://localhost:8080/job/${projectName}/${env.BUILD_ID}/execution/node/3/ws/target/site/surefire-report.html'
                     """
                 } // timeout
             } // stage: unittest
@@ -34,9 +34,7 @@ node {
             stage ("checkStyle") {
                 timeout(time: 2, unit: 'MINUTES') {
                     sh """ #!/bin/bash
-                        mvn checkstyle:checkstyle
-
-                        echo 'checkstyle report generated in /target/site/checkstyle.html'
+                        mvn validate
                     """
                 } // timeout
             } // stage: validate
@@ -46,7 +44,7 @@ node {
                     sh """ #!/bin/bash
                         mvn jacoco:report
                                     
-                        echo 'Jacoco report generated in /target/site/jacoco/index.html'
+                        echo 'Jacoco report generated in http://localhost:8080/job/${projectName}/${env.BUILD_ID}/execution/node/3/ws/target/site/jacoco/index.html'
                     """
                 } // timeout
             } // stage: Jacoo

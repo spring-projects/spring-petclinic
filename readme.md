@@ -135,9 +135,3 @@ sudo setfacl -R -m user:jenkins:rwx /var/run/docker.sock
 
 ## License
 The Spring PetClinic sample application is released under version 2.0 of the [Apache License](https://www.apache.org/licenses/LICENSE-2.0).
-
-
-## References
-- [Dockerfile reference](https://docs.docker.com/reference/dockerfile/)
-- [Docker CLI reference](https://docs.docker.com/reference/cli/docker/)
-- [Jenkins Docs](https://www.jenkins.io/doc/)
