@@ -25,8 +25,6 @@ node {
                 timeout(time: 10, unit: 'MINUTES') {
                     sh """ #!/bin/bash
                         mvn test surefire-report:report
-
-                        echo 'surefire report generated in /target/site/surefire-report.html'
                     """
                 } // timeout
             } // stage: unittest
@@ -34,9 +32,7 @@ node {
             stage ("checkStyle") {
                 timeout(time: 2, unit: 'MINUTES') {
                     sh """ #!/bin/bash
-                        mvn checkstyle:checkstyle
-
-                        echo 'checkstyle report generated in /target/site/checkstyle.html'
+                        mvn validate
                     """
                 } // timeout
             } // stage: validate
@@ -45,8 +41,6 @@ node {
                 timeout(time: 2, unit: 'MINUTES') {
                     sh """ #!/bin/bash
                         mvn jacoco:report
-                                    
-                        echo 'Jacoco report generated in /target/site/jacoco/index.html'
                     """
                 } // timeout
             } // stage: Jacoo
