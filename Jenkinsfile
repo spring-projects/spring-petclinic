@@ -10,7 +10,7 @@ pipeline {
       steps {
         echo 'Git clone'
         git url: 'https://github.com/lwj9812/spring-petclinic.git',
-          branch: 'efficien-webjars'
+          branch: 'efficient-webjars'
       }
     }
   }
