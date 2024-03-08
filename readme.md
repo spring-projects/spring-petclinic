@@ -8,6 +8,13 @@ Develop a DevOps pipeline to automate tasks such as code compile, unit testing, 
 
 Note: This process with not deploy to the envionrmnet platform. 
 
+### Change log
+- Original readme.md renamed as readme-orignial.md
+- Add new files
+    - readme.md
+    - Dockerfile
+    - Jenkinsfile
+
 ## DevOps steps
 ### Assumption
 My assumption is that the user has the necessary infrastucture in place, including Java v17+, Maven v3.8+, Docker v25+, and a Jenkins v2.445+ server, to implement an automated pipeline for the PetClinic application.
