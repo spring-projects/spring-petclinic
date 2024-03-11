@@ -16,6 +16,8 @@ Note: This process with not deploy to the envionrmnet platform.
     - Jenkinsfile
 
 ## DevOps steps
+### Video walkthrough
+[![Walk through demo](https://img.youtube.com/vi/zgiaPIp-ZZA/0.jpg)](https://www.youtube.com/watch?v=zgiaPIp-ZZA)
 ### Assumption
 My assumption is that the user has the necessary infrastucture in place, including Java v17+, Maven v3.8+, Docker v25+, and a Jenkins v2.445+ server, to implement an automated pipeline for the PetClinic application.
 
