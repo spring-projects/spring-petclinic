@@ -43,7 +43,7 @@ pipeline {
 
     stage ('Docker Image Build'){
       steps {
-        echo Docker Image Build'
+        echo 'Docker Image Build'
         dir("${env.WORKSPACE}") {
           sh """
               docker build -t $ECR_DOCKER_IMAGE:$BUILD_NUMBER .
