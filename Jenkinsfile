@@ -7,7 +7,7 @@ pipeline {
  
   environment {
     AWS_CREDENTIAL_NAME = "AWSCredentials"
-    REGION = "ap-northest-2"
+    REGION = "ap-northeast-2"
     DOCKER_IMAGE_NAME = "std01-spring-petclinic"
     ECR_REPOSITORY = "257307634175.dkr.ecr.ap-northeast-2.amazonaws.com"
     ECR_DOCKER_IMAGE = "${ECR_REPOSITORY}/${DOCKER_IMAGE_NAME}"
@@ -20,62 +20,67 @@ pipeline {
         git url: 'https://github.com/lwj9812/spring-petclinic.git',
         branch: 'efficient-webjars'
       } 
-    post {
-      success {
+      post {
+        success {
           echo 'Git Clone Success!!'
-      }
-      failure {
+        }
+        failure {
           echo 'Git Clone Fail'
+        }
       }
     }
-  }
-   stage('Mvnen Build') {
-     steps {
-       echo 'Maven Build'
-       sh 'mvn -Dmaven.test.failure.igmore=ture clean package'
-        }
-    post {
+    
+    stage('Maven Build') {
+      steps {
+        echo 'Maven Build'
+        sh 'mvn -Dmaven.test.failure.ignore=true clean package'
+      }
+      post {
         success {
           junit 'target/surefire-reports/**/*.xml'
         }
-     }
-   }
+      }
+    }
 
-    stage ('Docker Image Build'){
+    stage ('Docker Image Build') {
       steps {
         echo 'Docker Image Build'
         dir("${env.WORKSPACE}") {
           sh """
-              docker build -t $ECR_DOCKER_IMAGE:$BUILD_NUMBER .
-              docker tag $ECR_DOCKER_IMAGE:$BUILD_NUMBER $ECR_DOCKER_IMAGE:latest
+            docker build -t $ECR_DOCKER_IMAGE:$BUILD_NUMBER .
+            docker tag $ECR_DOCKER_IMAGE:$BUILD_NUMBER $ECR_DOCKER_IMAGE:latest
           """
         }
       }
-      
     }
     
-     stage ('Docker Image Build'){
+    stage ('Push Docker Image to ECR') {
       steps {
         echo "Push Docker Image to ECR"
         script {
           sh 'rm -f ~/.dockercfg~/.docker/config.json || true'
-          docker.withRegistry("http://${ECR_REPOSITORY}", "ecr"${REGION}:${AWS_CREDENTIAL_NAME}") {
-                  docker.image("${ECR_DOCKER_IMAGE}:latest").push()
+          docker.withRegistry("http://${ECR_REPOSITORY}", "ecr:${REGION}:${AWS_CREDENTIAL_NAME}") {
+            docker.image("${ECR_DOCKER_IMAGE}:latest").push()
+          }
         }
       }
     }
+    
     stage('Clean Up Docker Images on Jenkins Server'){
       steps {
         echo 'Cleaning up unused Docker images on Jenkins server'
-        sh "docker image prune -f --all --filter \"nutil=1h\""
+        sh "docker image prune -f --all --filter \"until=1h\""
       }
     }
-    stage('Upload to S3'){
+    
+    stage('Upload to S3') {
       
     }
-    stage('Codedeploy Workload'){
+    
+    stage('Codedeploy Workload') {
       
     }                        
                           
   }
 }
+                       
