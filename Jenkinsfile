@@ -41,7 +41,7 @@ pipeline {
      }
    }
 
-    stage {'Docker Image Build'){
+    stage ('Docker Image Build'){
       steps {
         echo Docker Image Build'
         dir("${env.WORKSPACE}") {
