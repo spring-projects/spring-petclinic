@@ -4,6 +4,14 @@ pipeline {
     jdk 'jdk17'
     maven 'M3'
   }
+ 
+  environment {
+    AWS_CREDENTIAL_NAME=AWSCredentials
+    REGION = "ap-northest"
+    DOCKER_IMAGE_NAME = "std01-spring-petclinic"
+    ECR_REPOSITORY = "257307634175.dkr.ecr.ap-northeast-2.amazonaws.com"
+    ECR_DOCKER_IMAGE = "${ECR_REPOSITORY}/${DOCKER_IMAGE_NAME}"
+  }
   
   stages {
     stage('Git clone') {
@@ -24,40 +32,28 @@ pipeline {
    stage('Mvnen Build') {
      steps {
        echo 'Maven Build'
-       sh 'mvn -Dmaven.test.failure.igmore=ture clean package '
+       sh 'mvn -Dmaven.test.failure.igmore=ture clean package'
         }
     post {
         success {
           junit 'target/surefire-reports/**/*.xml'
         }
-    }
+     }
    }
-       stage('SSH Publish') {
-          steps {
-            echo 'SSH publish'
-            sshPublisher(publishers: [sshPublisherDesc(configName: 'target', 
-                transfers: [sshTransfer(cleanRemote: false, 
-                excludes: '', 
-                execCommand: '''
-                fuser -k 8080/tcp
-                export BUILD_ID=Pipeline-Test
-                nohup java -jar /home/ubuntu/deploy/spring-petclinic-2.7.3.jar >> nohup.out 2>&1 &''', 
-                execTimeout: 120000, 
-                flatten: false, 
-                makeEmptyDirs: false, 
-                noDefaultExcludes: false, 
-                patternSeparator: '[, ]+', 
-                remoteDirectory: 'deploy', 
-                remoteDirectorySDF: false, 
-                removePrefix: 'target', 
-                sourceFiles: 'target/*.jar')], 
-                usePromotionTimestamp: false, 
-                useWorkspaceInPromotion: false, verbose: false)])
 
-            }
+    stage {'Docker Image Build'){
+      steps {
+        echo Docker Image Build'
+        dir("${env.WORKSPACE}") {
+          sh """
+              docker build -t $ECR_DOCKER_IMAGE:$BUILD_NUMBER .
+              docker tag $ECR_DOCKER_IMAGE:$BUILD_NUMBER $ECR_DOCKER_IMAGE:latest
+          """
         }
-  
-  
-  
+      }
+      
+    }
+
+    
   }
 }
