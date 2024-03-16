@@ -15,23 +15,24 @@
  */
 package org.springframework.samples.petclinic.owner;
 
-import java.time.LocalDate;
-import java.util.Collection;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.time.LocalDate;
+import java.util.Collection;
 
 /**
  * @author Juergen Hoeller
@@ -43,6 +44,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 class PetController {
 
 	private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = "pets/createOrUpdatePetForm";
+
+	private static final String POSTMAN_URL = "https://postman-echo.com/post";
 
 	private final OwnerRepository owners;
 
@@ -117,6 +120,24 @@ class PetController {
 		}
 
 		this.owners.save(owner);
+
+		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+			objectMapper.findAndRegisterModules();
+			String petAsJson = objectMapper.writeValueAsString(pet);
+			RestTemplate restTemplate = new RestTemplate();
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			HttpEntity<String> request = new HttpEntity<>(petAsJson, headers);
+			ResponseEntity<String> response = restTemplate.postForEntity(POSTMAN_URL, request, String.class);
+			if (!response.getStatusCode().is2xxSuccessful()) {
+				System.out.printf("Unsuccessful POST of new pet to %s", POSTMAN_URL);
+			}
+		}
+		catch (JsonProcessingException e) {
+			System.out.printf("Unable to map pet to JSON, skipping the POST request to %s", POSTMAN_URL);
+		}
+
 		redirectAttributes.addFlashAttribute("message", "New Pet has been Added");
 		return "redirect:/owners/{ownerId}";
 	}
