@@ -231,8 +231,8 @@ class OwnerControllerTests {
 					@SuppressWarnings("unchecked")
 					List<Pet> pets = (List<Pet>) item;
 					Pet pet = pets.get(0);
-                    return !pet.getVisits().isEmpty();
-                }
+					return !pet.getVisits().isEmpty();
+				}
 
 				@Override
 				public void describeTo(Description description) {
