@@ -30,7 +30,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.NotBlank;
 
 /**
@@ -56,7 +56,7 @@ public class Owner extends Person {
 
 	@Column(name = "telephone")
 	@NotBlank
-	@Digits(fraction = 0, integer = 10)
+	@Pattern(regexp = "\\d{10}", message = "Telephone must be a 10-digit number")
 	private String telephone;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
