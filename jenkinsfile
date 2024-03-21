@@ -1,0 +1,25 @@
+pipeline{
+    agent{ label 'MAVEN'}
+    options{
+        timeout(time: 30, unit: 'MINUTES')
+    }
+    triggers{ pollSCM('* * * * *')
+    }
+
+    stages{
+        stage('git'){
+            steps{
+                git url: 'https://github.com/Jitu123singh/dummy-repository-for-day-build.git',
+                branch: 'dev'
+                
+            }
+        stage('Build'){
+            steps{
+                sh 'mvn clean package'
+            }
+
+        }    
+        
+        }
+    }
+}
