@@ -2,6 +2,6 @@ version: '3.9'
 services:
   std01-spring-petclinic:
     image: ${IMAGE}:${TAG}
-    container_nome: spring_petclinic
+    container_name: spring-petclinic
     ports:
       - "80:8080"
