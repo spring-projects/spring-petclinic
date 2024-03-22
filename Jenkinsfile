@@ -97,7 +97,7 @@ stage('Codedeploy Workload') {
                     --auto-scaling-groups std01-asg \
                     --deployment-group-name std01-code-deploy-${BUILD_NUMBER} \
                     --deployment-config-name CodeDeployDefault.OneAtATime \
-                    --service-role-arn arn:aws:iam::257307634175:role/std00-codedeploy-service-role
+                    --service-role-arn arn:aws:iam::257307634175:role/std01-codedeploy-service-role
                     '''
                 echo "Codedeploy Workload"   
                 sh '''
