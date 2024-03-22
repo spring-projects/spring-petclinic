@@ -60,6 +60,7 @@ pipeline {
         script {
           sh 'rm -f ~/.dockercfg~/.docker/config.json || true'
           docker.withRegistry("http://${ECR_REPOSITORY}", "ecr:${REGION}:${AWS_CREDENTIAL_NAME}") {
+            docker.image("{ECR_DOCKER_IMAGE}:${BUILD_NUMBER}").push()
             docker.image("${ECR_DOCKER_IMAGE}:latest").push()
           }
         }
@@ -71,8 +72,7 @@ pipeline {
         echo 'Cleaning up unused Docker images on Jenkins server'
         sh "docker image prune -f --all --filter \"until=1h\""
       }
-    }                       
-                          
+    }                                         
   }
 }
                        
