@@ -6,9 +6,11 @@ pipeline {
   }
  
   environment {
-    AWS_DEFAULT_REGION = "ap-northeast-2"
+    AWS_CREDENTIAL_NAME = "AWSCredentials"
+    REGION = "ap-northeast-2"
+    DOCKER_IMAGE_NAME = "std01-spring-petclinic"
     ECR_REPOSITORY = "257307634175.dkr.ecr.ap-northeast-2.amazonaws.com"
-    ECR_DOCKER_IMAGE = "${ECR_REPOSITORY}/std01-spring-petclinic"
+    ECR_DOCKER_IMAGE = "${ECR_REPOSITORY}/${DOCKER_IMAGE_NAME}"
   }
   
   stages {
@@ -57,7 +59,7 @@ pipeline {
         echo "Push Docker Image to ECR"
         script {
           sh 'rm -f ~/.dockercfg ~/.docker/config.json || true'
-          docker.withRegistry("${ECR_REPOSITORY}", "ecr:${AWS_DEFAULT_REGION}") {
+          docker.withRegistry("http://${ECR_REPOSITORY}", "ecr:${REGION}:${AWS_CREDENTIAL_NAME}") {
             docker.image("${ECR_DOCKER_IMAGE}:${BUILD_NUMBER}").push()
             docker.image("${ECR_DOCKER_IMAGE}:latest").push()
           }
@@ -74,9 +76,9 @@ pipeline {
     stage('Upload to S3'){
       steps {
         echo 'Upload to S3'
-        dir("${env.WORKSPACE}"){
+        dir("$(env.WORKSPACE)"){
           sh 'zip -r deploy.zip ./deploy appspec.yaml'
-          withAWS(region:"${AWS_DEFAULT_REGION}", credentials: "AWSCredentials"){
+          withAWS(region:"${REGION}", credentials: "${AWS_CREDENTIAL_NAME}"){
             s3Upload(file:"deploy.zip", bucket:"std01-codedeploy-bucket")
           }
           sh 'rm -rf ./deploy.zip'
