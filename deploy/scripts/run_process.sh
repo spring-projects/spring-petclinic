@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#
 REGION="ap-northeast-2"
 ECR_REPOSITORY="257307634175.dkr.ecr.ap-northeast-2.amazonaws.com"
 ECR_DOCKER_IMAGE="${ECR_REPOSITORY}/std01-spring-petclinic"
