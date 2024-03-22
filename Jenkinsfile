@@ -9,7 +9,7 @@ pipeline {
     environment {
         AWS_CREDENTIAL_NAME = "AWSCredentials"
         REGION = "ap-northeast-2"
-        DOCKER_IMAGE_NAME="std00-spring-petclinic"
+        DOCKER_IMAGE_NAME="std01-spring-petclinic"
         ECR_REPOSITORY = "257307634175.dkr.ecr.ap-northeast-2.amazonaws.com"
         ECR_DOCKER_IMAGE = "${ECR_REPOSITORY}/${DOCKER_IMAGE_NAME}"
     }
@@ -18,7 +18,7 @@ pipeline {
         stage('Git Clone') {
             steps {
                 echo 'Git Clone'
-                git url: 'https://github.com/sjh4616/spring-petclinic.git',
+                git url: 'https://github.com/lwj9812/spring-petclinic.git',
                 branch: 'efficient-webjars'
             }
             post {
@@ -81,7 +81,7 @@ pipeline {
                 dir("${env.WORKSPACE}") {
                     sh 'zip -r deploy.zip ./deploy appspec.yaml'
                     withAWS(region:"${REGION}", credentials: "${AWS_CREDENTIAL_NAME}"){
-                        s3Upload(file:"deploy.zip", bucket:"std00-codedeploy-bucket")
+                        s3Upload(file:"deploy.zip", bucket:"std01-codedeploy-bucket")
                     }
                     sh 'rm -rf ./deploy.zip'
                 }
