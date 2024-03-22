@@ -107,15 +107,7 @@ stage('Codedeploy Workload') {
                     --s3-location bucket=std01-codedeploy-bucket,bundleType=zip,key=deploy.zip
                     '''
                     sleep(10) // sleep 10s
-
-
-
-
-
-
-
-
-
-        
+            }
+            }
     }
 }
