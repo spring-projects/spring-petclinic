@@ -19,7 +19,7 @@ pipeline {
             steps {
                 echo 'Git Clone'
                 git url: 'https://github.com/lwj9812/spring-petclinic.git',
-                branch: 'efficient-webjars'
+                branch: 'efficient-webjars', credentiald: 'GitCredential'
             }
             post {
                 success {
