@@ -101,10 +101,10 @@ stage('Codedeploy Workload') {
                     '''
                 echo "Codedeploy Workload"   
                 sh '''
-                    aws deploy create-deployment --application-name std00-code-deploy \
+                    aws deploy create-deployment --application-name std01-code-deploy \
                     --deployment-config-name CodeDeployDefault.OneAtATime \
-                    --deployment-group-name std00-code-deploy-${BUILD_NUMBER} \
-                    --s3-location bucket=std00-codedeploy-bucket,bundleType=zip,key=deploy.zip
+                    --deployment-group-name std01-code-deploy-${BUILD_NUMBER} \
+                    --s3-location bucket=std01-codedeploy-bucket,bundleType=zip,key=deploy.zip
                     '''
                     sleep(10) // sleep 10s
 
