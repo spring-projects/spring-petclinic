@@ -36,15 +36,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 /**
- * Test class for the {@link PetController}
+ * Test class for the {@link OwnerPetController}
  *
  * @author Colin But
  */
-@WebMvcTest(value = PetController.class,
+@WebMvcTest(value = OwnerPetController.class,
 		includeFilters = @ComponentScan.Filter(value = PetTypeFormatter.class, type = FilterType.ASSIGNABLE_TYPE))
 @DisabledInNativeImage
 @DisabledInAotMode
-class PetControllerTests {
+class OwnerPetControllerTests {
 
 	private static final int TEST_OWNER_ID = 1;
 

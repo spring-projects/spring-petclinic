@@ -79,4 +79,11 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
 	@Transactional(readOnly = true)
 	Page<Owner> findAll(Pageable pageable);
 
+	/**
+	 * Returns the {@link Owner} of a pet
+	 * @param id the pet id to search for
+	 * @return the {@link Owner} if found
+	 */
+	Owner findByPets_Id(Integer id);
+
 }
