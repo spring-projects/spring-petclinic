@@ -1,0 +1,53 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout code from Git repository
+                checkout scm
+            }
+        }
+
+    stage('SonarQube Code Analysis') {
+                steps {
+                    dir("${WORKSPACE}"){
+                    // Run SonarQube analysis for Angular
+                    script {
+                        def scannerHome = tool name: 'angular-demo', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+                        withSonarQubeEnv('sonar') {
+                            sh "echo $pwd"
+                            sh "${scannerHome}/bin/sonar-scanner"
+                        }
+                    }
+                }
+                }
+           }
+           stage("SonarQube Quality Gate Check") {
+                steps {
+                    script {
+                    def qualityGate = waitForQualityGate()
+                        
+                        if (qualityGate.status != 'OK') {
+                            echo "${qualityGate.status}"
+                            error "Quality Gate failed: ${qualityGateStatus}"
+                        }
+                        else {
+                            echo "${qualityGate.status}"
+                            echo "SonarQube Quality Gates Passed"
+                        }
+                    }
+                }
+            }
+          stage('AWS Lambda'){
+            	steps {
+            		invokeLambda([awsRegion: 'us-east-1',
+            			functionName: '7ops_GetSonarqube_SendS3', 
+            			payload: "{ \"Suspend\": \"true\"}] }", 
+            			synchronous: true, 
+            			useInstanceCredentials: true])
+            	}
+        }
+          
+        }
+}
