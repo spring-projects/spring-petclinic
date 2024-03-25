@@ -1,5 +1,7 @@
 pipeline {
-    agent {mavenbuilder}
+    agent {
+        label 'mavenbuilder'
+    }
     stages {
         stage ('Checkstyle') {
             steps {
