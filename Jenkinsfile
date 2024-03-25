@@ -43,6 +43,8 @@ pipeline {
                         withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIALS_ID', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                             sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $DOCKER_REGISTRY"
                             sh "docker push $DOCKER_REGISTRY/$serviceName:$TAG"
+                            echo 'PUSHED TO $DOCKER_REGISTRY/$serviceName:$TAG'
+                            echo $DOCKER_REGISTRY $DOCKER_PASSWORD $DOCKER_USERNAME
                         }
                     }
                 }
