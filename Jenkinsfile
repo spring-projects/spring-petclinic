@@ -2,6 +2,10 @@ pipeline {
     agent {
         label 'mavenbuilder'
     }
+    environment {
+        TAG = sh(returnStdout: true, script: "git rev-parse --short HEAD").trim()
+        DOCKER_REGISTRY = "https://hub.docker.com/repository/docker/rgeorgegrid/mr"
+    }
     stages {
         stage ('Checkstyle') {
             steps {
@@ -30,11 +34,17 @@ pipeline {
         stage ('Containerisation') {
             steps {
                 script {
-                    def dockerImage = docker.build("test-image1:${GIT_COMMIT[0..7]}", '.')
-                    docker.withRegistry('https://hub.docker.com/repository/docker/rgeorgegrid/mr', 'docker_hub_login') {
-                        dockerImage.push()
+                    def composeBuildOutput = sh(script: 'docker-compose build --quiet', returnStdout: true).trim()
+                    def imageIds = composeBuildOutput.tokenize('\n')
+
+                    imageIds.each { imageId ->
+                        def serviceName = sh(script: "docker inspect --format='{{index .RepoTags 0}}' $imageId | cut -d':' -f1", returnStdout: true).trim()
+                        sh "docker tag $imageId $DOCKER_REGISTRY/$serviceName:$TAG"
+                        withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIALS_ID', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                            sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $DOCKER_REGISTRY"
+                            sh "docker push $DOCKER_REGISTRY/$serviceName:$TAG"
+                        }
                     }
-                    echo 'IMAGES BUILT AND PUSHED TO MR REGISTRY'
                 }
             }
         }
