@@ -3,7 +3,7 @@ pipeline {
         label 'mavenbuilder'
     }
     environment {
-        DOCKER_IMAGE_NAME = 'spring-petclinic'
+        DOCKER_IMAGE_NAME = 'rgeorgegrid'
         DOCKER_REPO = 'mr'
     }
     stages {
@@ -35,7 +35,7 @@ pipeline {
             steps {
                 script {
                     def GIT_COMMIT_SHORT = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
-                    env.DOCKER_TAG = "${DOCKER_IMAGE_NAME}:${GIT_COMMIT_SHORT}"
+                    env.DOCKER_TAG = "${DOCKER_IMAGE_NAME}/${DOCKER_REPO}:${GIT_COMMIT_SHORT}"
                     sh "docker build -t ${DOCKER_TAG} ."
                 }
             }
@@ -45,7 +45,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'docker_hub_login', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
                     script {
                         sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
-                        sh "docker push ${DOCKER_TAG}"
+                        sh "docker image push ${DOCKER_TAG}"
                     }
                 }
             }
