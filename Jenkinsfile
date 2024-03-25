@@ -3,8 +3,8 @@ pipeline {
         label 'mavenbuilder'
     }
     environment {
-        TAG = sh(returnStdout: true, script: "git rev-parse --short HEAD").trim()
-        DOCKER_REGISTRY = "https://hub.docker.com/repository/docker/rgeorgegrid/mr"
+        DOCKER_IMAGE_NAME = 'spring-petclinic'
+        DOCKER_REPO = 'mr'
     }
     stages {
         stage ('Checkstyle') {
@@ -31,21 +31,21 @@ pipeline {
                 }
             }
         }
-        stage ('Containerisation') {
+        stage('Build Docker Image') {
             steps {
                 script {
-                    def composeBuildOutput = sh(script: 'docker-compose build --quiet', returnStdout: true).trim()
-                    def imageIds = composeBuildOutput.tokenize('\n')
-
-                    imageIds.each { imageId ->
-                        def serviceName = sh(script: "docker inspect --format='{{index .RepoTags 0}}' $imageId | cut -d':' -f1", returnStdout: true).trim()
-                        sh "docker tag $imageId $DOCKER_REGISTRY/$serviceName:$TAG"
-                        withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIALS_ID', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $DOCKER_REGISTRY"
-                            sh "docker push $DOCKER_REGISTRY/$serviceName:$TAG"
-                            echo 'PUSHED TO $DOCKER_REGISTRY/$serviceName:$TAG'
-                            echo $DOCKER_REGISTRY $DOCKER_PASSWORD $DOCKER_USERNAME
-                        }
+                    def GIT_COMMIT_SHORT = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+                    def DOCKER_TAG = "${DOCKER_IMAGE_NAME}:${GIT_COMMIT_SHORT}"
+                    sh "docker build -t ${DOCKER_TAG} ."
+                }
+            }
+        }        
+        stage('Push Docker Image') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker_hub_login', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                    script {
+                        sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
+                        sh "docker push ${DOCKER_TAG}"
                     }
                 }
             }
