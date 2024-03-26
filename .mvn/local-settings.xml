@@ -1,0 +1,12 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.2.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.2.0 http://maven.apache.org/xsd/settings-1.2.0.xsd">
+    <mirrors>
+        <mirror>
+            <id>sonarqube-http-unblocker</id>
+            <mirrorOf>my-blocked-http-repository</mirrorOf>
+            <name></name>
+            <url>http://ec2-18-198-29-98.eu-central-1.compute.amazonaws.com:9000</url>
+        </mirror>
+    </mirrors>
+</settings>
