@@ -2,11 +2,11 @@
           xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="https://maven.apache.org/SETTINGS/1.2.0 https://maven.apache.org/xsd/settings-1.2.0.xsd">
     <mirrors>
-        <mirror>
-            <id>sonarqube-http-unblocker</id>
-            <mirrorOf>my-blocked-http-repository</mirrorOf>
-            <name></name>
-            <url>http://ec2-18-198-29-98.eu-central-1.compute.amazonaws.com:9000</url>
-        </mirror>
+          <mirror>
+            <id>maven-default-http-blocker</id>
+            <mirrorOf>external:http:*</mirrorOf>
+            <name>Pseudo repository to mirror external repositories initially using HTTP.</name>
+            <url>http://0.0.0.0/</url>
+          </mirror>
     </mirrors>
 </settings>
