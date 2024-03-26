@@ -29,6 +29,7 @@ import java.util.Locale;
  *
  * @author Dave Syer
  *
+ *
  */
 @SpringBootApplication
 @ImportRuntimeHints(PetClinicRuntimeHints.class)
