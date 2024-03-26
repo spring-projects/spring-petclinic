@@ -188,7 +188,7 @@
         </executions>
         <configuration>
           <argLine>
-            -javaagent:../runtime-agent-1.0.7.jar
+            -javaagent:../runtime-agent-1.0.10.jar
             -Dsonatype.runtime.agent.enabled=true
             -Dsonatype.runtime.agent.debugMode=false
             -Dsonatype.runtime.agent.iq.protocol=http
@@ -202,6 +202,8 @@
             -Dsonatype.runtime.agent.scanClasspath=false
             -Dsonatype.runtime.agent.fetchVulnerableClassesFromIQ=true
             -Dsonatype.runtime.agent.vulnerableMethodDetectionEnabled=true
+            -Dsonatype.runtime.agent.runtimeEnabledLabel=true
+            -Dsonatype.runtime.agent.removeRuntimeLabelsOnStartup=true
           </argLine>
         </configuration>
       </plugin>
