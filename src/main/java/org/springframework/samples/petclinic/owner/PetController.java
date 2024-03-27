@@ -135,7 +135,7 @@ class PetController {
 
 		String petName = pet.getName();
 
-		// checking if the pet name already exist for the owner
+		//checking pet name
 		if (StringUtils.hasText(petName)) {
 			Pet existingPet = owner.getPet(petName.toLowerCase(), false);
 			if (existingPet != null && existingPet.getId() != pet.getId()) {
