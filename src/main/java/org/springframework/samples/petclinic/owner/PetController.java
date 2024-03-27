@@ -44,8 +44,6 @@ class PetController {
 
 	private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = "pets/createOrUpdatePetForm";
 	public String tstvar = null;
-	public String unused = null; //adding an unused variable...
-	
 	
 	private final OwnerRepository owners;
 
