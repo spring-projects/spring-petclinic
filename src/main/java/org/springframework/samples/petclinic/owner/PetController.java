@@ -43,7 +43,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 class PetController {
 
 	private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = "pets/createOrUpdatePetForm";
-	public String testvar = null;
+	public String tstvar = null;
+	
 	private final OwnerRepository owners;
 
 	public PetController(OwnerRepository owners) {
