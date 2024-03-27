@@ -134,6 +134,7 @@ class PetController {
 	public String processUpdateForm(@Valid Pet pet, BindingResult result, Owner owner, ModelMap model,
 			RedirectAttributes redirectAttributes) {
 
+		//new features...
 		String petName = pet.getName();
 
 		// checking if the pet name already exist for the owner
@@ -143,7 +144,6 @@ class PetController {
 				result.rejectValue("name", "duplicate", "already exists");
 			}
 		}
-
 		LocalDate currentDate = LocalDate.now();
 		if (pet.getBirthDate() != null && pet.getBirthDate().isAfter(currentDate)) {
 			result.rejectValue("birthDate", "typeMismatch.birthDate");
