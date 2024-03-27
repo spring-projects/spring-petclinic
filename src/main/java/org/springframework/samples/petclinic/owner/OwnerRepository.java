@@ -36,7 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Michael Isvy
  */
 public interface OwnerRepository extends Repository<Owner, Integer> {
-
+	public String lastvariable = null;
 	/**
 	 * Retrieve all {@link PetType}s from the data store.
 	 * @return a Collection of {@link PetType}s.
