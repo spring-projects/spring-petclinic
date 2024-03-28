@@ -84,7 +84,7 @@ class OwnerControllerTests {
 		george.addPet(max);
 		max.setId(1);
 		return george;
-	};
+	}
 
 	@BeforeEach
 	void setup() {
