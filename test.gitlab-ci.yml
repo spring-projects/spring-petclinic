@@ -1,0 +1,21 @@
+# You can copy and paste this template into a new `.gitlab-ci.yml` file.
+# You should not add this template to an existing `.gitlab-ci.yml` file by using the `include:` keyword.
+#
+# To contribute improvements to CI/CD templates, please follow the Development guide at:
+# https://docs.gitlab.com/ee/development/cicd/templates.html
+# This specific template is located at:
+# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Bash.gitlab-ci.yml
+
+# See https://docs.gitlab.com/ee/ci/yaml/index.html for all available options
+
+# you can delete this line if you're not using Docker
+image: busybox:latest
+
+before_script:
+  - echo "Before script section"
+  - echo "For example you might run an update here or install a build dependency"
+  - echo "Or perhaps you might print out some debugging details"
+
+after_script:
+  - echo "After script section"
+  - echo "For example you might do some cleanup here"
