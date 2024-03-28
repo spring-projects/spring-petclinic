@@ -1,23 +1,23 @@
 pipeline {
-    agent{ label 'MAVEN' | 'JDK_17' }
-    options { timeout(time: 30, unit: 'MINUTES') }
-    triggers{
-        pollSCM ('* * * * *')
+    agent { label 'MAVEN' }
+    options { 
+        timeout(time: 30, unit: 'MINUTES') 
     }
-    environment
-    {
-        mypassword = helloadmin
+    triggers {
+        pollSCM('* * * * *')
     }
-    stages{
-        stage('git'){
+    stages {
+        stage('git') {
             steps {
-                git url: 'https://github.com/srikanthkuna1618/spring-petclinic-march.git', branch: 'dev' 
+                git url: 'https://github.com/srikanthkuna1618/spring-petclinic-march.git', 
+                    branch: 'dev'
             }
         }
         stage('build') {
             steps {
-                sh 'mvn  clean package'
+                sh 'mvn clean package'
             }
         }
     }
+
 }
