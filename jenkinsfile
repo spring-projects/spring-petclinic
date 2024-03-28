@@ -2,7 +2,7 @@ pipeline {
     agent{ label 'MAVEN' | 'JDK_17' }
     options { timeout(time: 30, unit: 'MINUTES') }
     triggers{
-        pollSCM ( * * * * * )
+        pollSCM ('* * * * *')
     }
     environment
     {
@@ -19,6 +19,5 @@ pipeline {
                 sh 'mvn  clean package'
             }
         }
-
     }
 }
