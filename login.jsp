@@ -1,0 +1,6 @@
+CREATE TABLE  "USER432"   
+   (    "NAME" VARCHAR2(4000),   
+    "EMAIL" VARCHAR2(4000),   
+    "PASS" VARCHAR2(4000)  
+   )  
+/  
