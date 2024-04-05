@@ -9,21 +9,51 @@ on:
   pull_request:
     branches: [ main ]
 
+# jobs:
+#   build:
+
+#     runs-on: ubuntu-latest
+#     strategy:
+#       matrix:
+#         java: [ '17' ]
+
+#     steps:
+#       - uses: actions/checkout@v4
+#       - name: Set up JDK ${{matrix.java}}
+#         uses: actions/setup-java@v4
+#         with:
+#           java-version: ${{matrix.java}}
+#           distribution: 'adopt'
+#           cache: maven
+#       - name: Build with Maven Wrapper
+#         run: ./mvnw -B package
 jobs:
   build:
-
+    name: Build
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        java: [ '17' ]
-
+    permissions: read-all
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK ${{matrix.java}}
-        uses: actions/setup-java@v4
+      - uses: actions/checkout@v2
         with:
-          java-version: ${{matrix.java}}
-          distribution: 'adopt'
-          cache: maven
-      - name: Build with Maven Wrapper
-        run: ./mvnw -B package
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Set up JDK 17
+        uses: actions/setup-java@v1
+        with:
+          java-version: 17
+      - name: Cache SonarQube packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Cache Maven packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Build and analyze
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=petclinic -Dsonar.projectName='petclinic'
