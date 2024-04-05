@@ -32,6 +32,7 @@ import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
+import java.io.IOException;
 
 /**
  * Simple JavaBean domain object representing an owner.
@@ -68,7 +69,7 @@ public class Owner extends Person {
 		return this.address;
 	}
 
-	public void setAddress(String address) {
+	public void setAddress(String address) throws IOException {
 		this.address = address;
 	}
 
