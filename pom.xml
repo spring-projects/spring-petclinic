@@ -154,10 +154,11 @@
         <artifactId>maven-release-plugin</artifactId>
         <version>3.0.1</version>
         <configuration>
-          <goals>pre-integration-test</goals>
-          <preparationGoals>package</preparationGoals>
-          <tagNameFormat>@{project.version}</tagNameFormat>
-          <remoteTagging>false</remoteTagging>
+          <tagNameFormat>v@{project.version}</tagNameFormat>
+          <releaseProfiles>release</releaseProfiles>
+          <autoVersionSubmodules>true</autoVersionSubmodules>
+          <pushChanges>true</pushChanges>
+          <useReleaseProfile>false</useReleaseProfile>
         </configuration>
       </plugin>
       <plugin>
@@ -362,26 +363,6 @@
             </executions>
           </plugin>
 
-          <plugin>
-            <groupId>com.gitlab.haynes</groupId>
-            <artifactId>libsass-maven-plugin</artifactId>
-            <version>${libsass.version}</version>
-            <executions>
-              <execution>
-                <phase>generate-resources</phase>
-                <?m2e execute onConfiguration,onIncremental?>
-                <goals>
-                  <goal>compile</goal>
-                </goals>
-              </execution>
-            </executions>
-            <configuration>
-              <inputPath>${basedir}/src/main/scss/</inputPath>
-              <outputPath>${basedir}/src/main/resources/static/resources/css/</outputPath>
-              <includePath>
-                ${project.build.directory}/webjars/META-INF/resources/webjars/bootstrap/${webjars-bootstrap.version}/scss/</includePath>
-            </configuration>
-          </plugin>
         </plugins>
       </build>
     </profile>
