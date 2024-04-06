@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
-  <version>4.0.5-SNAPSHOT</version>
+  <version>4.0.5</version>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -19,7 +19,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <!-- Important for reproducible builds. Update using e.g. ./mvnw versions:set -DnewVersion=... -->
-    <project.build.outputTimestamp>2024-04-06T11:27:58Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2024-04-06T13:30:36Z</project.build.outputTimestamp>
 
     <!-- Web dependencies -->
     <webjars-bootstrap.version>5.3.2</webjars-bootstrap.version>
@@ -143,7 +143,7 @@
     <connection>scm:git:https://github.com/JustFiesta/spring-petclinic.git</connection>
     <developerConnection>scm:git:https://github.com/JustFiesta/spring-petclinic.git</developerConnection>
     <url>https://github.com/JustFiesta/spring-petclinic</url>
-    <tag>@{project.version}</tag>
+    <tag>4.0.5</tag>
   </scm>
 
 
