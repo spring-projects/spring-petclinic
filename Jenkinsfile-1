@@ -4,10 +4,16 @@ pipeline {
         stage('SonarQube analysis') {
             steps {
                 script {
-                    scannerHome = tool 'SonarQubeScanner';
-                }
-                withSonarQubeEnv('My SonarQube Server') {
-                    sh "${scannerHome}/bin/sonar-scanner"
+                    withSonarQubeEnv("sq1"){
+                        def mvnHome = tool "M3"
+                        sh """
+                            ${mvnHome}/bin/mvn sonar:sonar \
+                            -Dsonar.projectKey=Web \   // Replace with your actual project key
+                            -Dsonar.host.url=http://localhost:9000/ \
+                            -Dsonar.login=squ_ea9632ad9d734f30372ed61b6565f2fa028e8e5e          // Replace with your actual SonarQube token
+
+                        """
+                    }
                 }
             }
         }
