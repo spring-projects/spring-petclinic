@@ -4,16 +4,20 @@ node {
   }
   stage("build"){
     sh "./mvnw compile"
+    sh 'curl -sL https://deb.nodesource.com/setup_14.x | bash -'
+    sh 'apt-get install -y nodejs'
 
   }
   stage('SonarQube Analysis') {
     environment{
       SCANNER_HOME = tool 'sonar-scanner'
+      NODEJS_HOME = tool 'nodejs'
+      PATH = "/path/to/nodejs/bin:$PATH"
 
     }
     def mvn = tool 'M3';
     withSonarQubeEnv("sq1") {
-      sh "${mvn}/bin/mvn sonar:sonar -Dsonar.projectKey=Web -Dsonar.projectName='Web' -Dsonar.sources=src/ -Dsonar.java.binaries=target/classes/ -Dsonar.exclusions=src/test/java/****/*.java,*.js,*.css,*.html,*.html.js,**/*.html.js,**/*.css,target/classes/"
+      sh "${mvn}/bin/mvn sonar:sonar -Dsonar.projectKey=Web -Dsonar.projectName='Web' -Dsonar.sources=src/ -Dsonar.java.binaries=target/classes/ -Dsonar.exclusions=src/test/java/****/*.java"
     }
   }
 }
