@@ -14,11 +14,9 @@ node {
     environment{
       SCANNER_HOME = tool 'sonar-scanner'
     }
-    // env.NODEJS_HOME = "${tool 'nodejs'}"
-    // env.PATH = "${env.NODEJS_HOME}/bin:${env.PATH}"
+    env.NODEJS_HOME = "${tool 'nodejs'}"
+    env.PATH = "${env.NODEJS_HOME}/bin:${env.PATH}"
     def mvn = tool 'M3';
-    def NODEJS_HOME  = tool "nodejs"
-    def PATH = "${NODEJS_HOME}/bin:${PATH}"
     withSonarQubeEnv("sq1") {
       sh "${mvn}/bin/mvn sonar:sonar -Dsonar.projectKey=Web -Dsonar.projectName='Web' -Dsonar.sources=src/ -Dsonar.java.binaries=target/classes/ -Dsonar.exclusions=src/test/java/****/*.java"
     }
