@@ -1,8 +1,4 @@
 node {
-  agent any
-    tools {
-        nodejs "node"  // The name you gave in the Global Tool Configuration
-    }
   stage('SCM') {
     checkout scm
   }
@@ -13,6 +9,7 @@ node {
   stage('SonarQube Analysis') {
     environment{
       SCANNER_HOME = tool 'sonar-scanner'
+      NODEJS_HOME = tool "node"
 
     }
     def mvn = tool 'M3';
