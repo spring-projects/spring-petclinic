@@ -5,7 +5,7 @@ node {
   stage('SonarQube Analysis') {
     def mvn = tool 'M3';
     withSonarQubeEnv("sq1") {
-      sh "${mvn}/bin/mvn sonar:sonar -Dsonar.projectKey=Web -Dsonar.projectName='Web'"
+      sh "${mvn}/bin/mvn sonar:sonar -Dsonar.projectKey=Web -Dsonar.projectName='Web' -Dsonar.host.url=-Dsonar.host.url=172.19.0.3:9000/"
     }
   }
 }
