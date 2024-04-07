@@ -3,6 +3,9 @@ node {
     checkout scm
   }
   stage('SonarQube Analysis') {
+    environment{
+      SCANNER_HOME = tool 'sonar-scanner' 
+    }
     def mvn = tool 'M3';
     withSonarQubeEnv("sq1") {
       sh "${mvn}/bin/mvn sonar:sonar -Dsonar.projectKey=Web -Dsonar.projectName='Web'"
