@@ -1,3 +1,5 @@
+import java.awt.Desktop
+
 plugins {
   id 'java'
   id 'org.springframework.boot' version '3.2.0'
@@ -5,16 +7,20 @@ plugins {
   id 'org.graalvm.buildtools.native' version '0.9.28'
   id 'io.spring.javaformat' version '0.0.41'
   id "io.spring.nohttp" version "0.0.11"
+  // axion plugin for managing versions
+  id 'pl.allegro.tech.build.axion-release' version '1.15.1'
 }
 
 apply plugin: 'java'
 apply plugin: 'checkstyle'
 apply plugin: 'io.spring.javaformat'
+apply plugin: 'pl.allegro.tech.build.axion-release'
 
 gradle.startParameter.excludedTaskNames += [ "checkFormatAot", "checkFormatAotTest" ]
 
 group = 'org.springframework.samples'
-version = '3.2.0'
+
+version = scmVersion {}.version
 
 java {
   sourceCompatibility = JavaVersion.VERSION_17
@@ -64,13 +70,36 @@ checkstyle {
 checkstyleNohttp {
   configDirectory = project.file('src/checkstyle')
   configFile = file('src/checkstyle/nohttp-checkstyle.xml')
+  enabled = false
 }
 
 tasks.named("formatMain").configure { dependsOn("checkstyleMain") }
 tasks.named("formatMain").configure { dependsOn("checkstyleNohttp") }
-
 tasks.named("formatTest").configure { dependsOn("checkstyleTest") }
 tasks.named("formatTest").configure { dependsOn("checkstyleNohttp") }
+
+//custom task
+tasks.register('openTestResults') {
+  group = "Verification"
+  description = "Opens web browser with index.html from test directory"
+  dependsOn('build')
+  dependsOn('test')
+}
+
+tasks.named('currentVersion') {
+  doNotTrackState("Allegro axiom plugin does not work with tracking state ")
+}
+
+tasks.named('openTestResults'){
+
+  doLast {
+    exec {
+      workingDir './build/reports/tests/test'
+
+      commandLine 'cmd', '/c', 'start index.html'
+    }
+  }
+}
 
 checkstyleAot.enabled = false
 checkstyleAotTest.enabled = false
