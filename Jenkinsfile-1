@@ -7,5 +7,10 @@ node {
     withSonarQubeEnv("sq1") {
       sh "${mvn}/bin/mvn sonar:sonar -Dsonar.projectKey=Web -Dsonar.projectName='Web'"
     }
+     stage('Build') {
+        // Execute Maven build. Replace with your specific build command.
+        def mvn = tool 'M3';
+        sh "./mvnw package" // Or any other relevant Maven goals for your project.
+    }
   }
 }
