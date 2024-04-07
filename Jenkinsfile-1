@@ -13,11 +13,9 @@ node {
   stage('SonarQube Analysis') {
     environment{
       SCANNER_HOME = tool 'sonar-scanner'
-      NODEJS_HOME = tool 'nodejs'
-      PATH = "${NODEJS_HOME}/bin:${PATH}"
     }
-    // env.NODEJS_HOME = "${tool 'nodejs'}"
-    // env.PATH = "${env.NODEJS_HOME}/bin:${env.PATH}"
+    env.NODEJS_HOME = "${tool 'nodejs'}"
+    env.PATH = "${env.NODEJS_HOME}/bin:${env.PATH}"
     def mvn = tool 'M3';
     withSonarQubeEnv("sq1") {
       sh "${mvn}/bin/mvn sonar:sonar -Dsonar.projectKey=Web -Dsonar.projectName='Web' -Dsonar.sources=src/ -Dsonar.java.binaries=target/classes/ -Dsonar.exclusions=src/test/java/****/*.java"
