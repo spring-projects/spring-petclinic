@@ -1,4 +1,8 @@
 node {
+  agent any
+    tools {
+        nodejs "node"  // The name you gave in the Global Tool Configuration
+    }
   stage('SCM') {
     checkout scm
   }
@@ -8,11 +12,12 @@ node {
   }
   stage('SonarQube Analysis') {
     environment{
-      SCANNER_HOME = tool 'sonar-scanner' 
+      SCANNER_HOME = tool 'sonar-scanner'
+
     }
     def mvn = tool 'M3';
     withSonarQubeEnv("sq1") {
-      sh "${mvn}/bin/mvn sonar:sonar -Dsonar.projectKey=Web -Dsonar.projectName='Web' -Dsonar.sources=src/ -Dsonar.java.binaries=target/classes/ -Dsonar.exclusions=src/test/java/****/*.java,**/*.html,**/*.js,**/*.css, **/*.html.js"
+      sh "${mvn}/bin/mvn sonar:sonar -Dsonar.projectKey=Web -Dsonar.projectName='Web' -Dsonar.sources=src/ -Dsonar.java.binaries=target/classes/ -Dsonar.exclusions=src/test/java/****/*.java"
     }
   }
 }
