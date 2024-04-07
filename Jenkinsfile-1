@@ -2,13 +2,17 @@ node {
   stage('SCM') {
     checkout scm
   }
+  stage("build"){
+    sh "./mvnw compile"
+
+  }
   stage('SonarQube Analysis') {
     environment{
       SCANNER_HOME = tool 'sonar-scanner' 
     }
     def mvn = tool 'M3';
     withSonarQubeEnv("sq1") {
-      sh "${mvn}/bin/mvn sonar:sonar -Dsonar.projectKey=Web -Dsonar.projectName='Web' -Dsonar.sources=src/ -Dsonar.exclusions=src/test/java/****/*.java"
+      sh "${mvn}/bin/mvn sonar:sonar -Dsonar.projectKey=Web -Dsonar.projectName='Web' -Dsonar.sources=src/ -Dsonar.java.binaries=target/classes/ -Dsonar.exclusions=src/test/java/****/*.java"
     }
   }
 }
