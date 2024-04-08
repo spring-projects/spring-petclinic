@@ -12,7 +12,7 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Build') {
+        stage('compile') {
             steps {
                 sh './mvnw clean'
                 sh './mvnw compile'
@@ -41,6 +41,7 @@ pipeline {
             }
             post {
                 success {
+                    sh 'java -jar target/*.jar'
                     archiveArtifacts 'target/*.jar'
                 }
             }
