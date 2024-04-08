@@ -22,7 +22,7 @@ pipeline {
       environment {
         SCANNER_HOME = tool 'sonar-scanner'
         NODEJS_HOME =tool "nodejs"
-        //PATH = "${env.NODEJS_HOME}/bin:${env.PATH}"
+        PATH = "${env.NODEJS_HOME}/bin:${env.PATH}"
         def mvn = tool 'M3'
       }
       steps {
