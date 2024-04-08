@@ -28,7 +28,7 @@ pipeline {
             }
             steps {
                 withSonarQubeEnv('sq1') {
-                    sh "${mvn}/bin/mvn sonar:sonar -Dsonar.projectKey=Web -Dsonar.projectName='Web2' -Dsonar.sources=src/ -Dsonar.java.binaries=target/classes/ -Dsonar.exclusions=src/test/java/****/*.java"
+                    sh "${mvn}/bin/mvn sonar:sonar -Dsonar.projectKey=Web2 -Dsonar.projectName='Web2' -Dsonar.sources=src/ -Dsonar.java.binaries=target/classes/ -Dsonar.exclusions=src/test/java/****/*.java"
                 }
             }
         }
