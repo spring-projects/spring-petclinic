@@ -21,4 +21,14 @@ node {
       sh "${mvn}/bin/mvn sonar:sonar -Dsonar.projectKey=Web -Dsonar.projectName='Web' -Dsonar.sources=src/ -Dsonar.java.binaries=target/classes/ -Dsonar.exclusions=src/test/java/****/*.java"
     }
   }
+  stage("Build JAR"){
+    steps{
+      sh "./mvnw package"
+    }
+    post{
+      success{
+        archiveArtifacts "target/*.jar"
+      }
+    }
+  }
 }
