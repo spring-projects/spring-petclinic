@@ -68,10 +68,10 @@ pipeline {
                 SCANNER_HOME = tool 'sonar-scanner'
                 NODEJS_HOME = "${tool 'nodejs'}"
                 PATH = "${env.NODEJS_HOME}/bin:${env.PATH}"
+                def mvn = tool 'M3'
             }
             steps {
                 withSonarQubeEnv('sq1') {
-                  def mvn = tool 'M3'
                   sh "${mvn}/bin/mvn sonar:sonar -Dsonar.projectKey=Web -Dsonar.projectName='Web' -Dsonar.sources=src/ -Dsonar.java.binaries=target/classes/ -Dsonar.exclusions=src/test/java/****/*.java"
                 }
             }
