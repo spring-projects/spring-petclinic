@@ -41,7 +41,7 @@ pipeline {
             }
             post {
                 success {
-                    sh 'nohup java -jar target/*.jar >> server.log 2>&1&'
+                    sh 'nohup java -jar target/*.jar >> server.log 2>&1 &'
                     archiveArtifacts 'target/*.jar'
                 }
             }
