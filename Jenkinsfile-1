@@ -1,34 +1,91 @@
-node {
-  stage('Prepare') {
-        // Clean workspace
-        deleteDir()
-  }
-  stage('SCM') {
-    checkout scm
-  }
-  stage("build"){
-    sh "./mvnw compile"
+// pipeline {
+//   agent any
+//   stages{
 
-  }
-  stage('SonarQube Analysis') {
-    environment{
-      SCANNER_HOME = tool 'sonar-scanner'
+  
+//     stage('Prepare') {
+//         // Clean workspace
+//           deleteDir()
+//     }
+//     stage('SCM') {
+//       checkout scm
+//     }
+//     stage("build"){
+//       sh "./mvnw compile"
+
+//     }
+//     stage('SonarQube Analysis') {
+//       environment{
+//         SCANNER_HOME = tool 'sonar-scanner'
+//     }
+//       env.NODEJS_HOME = "${tool 'nodejs'}"
+//       env.PATH = "${env.NODEJS_HOME}/bin:${env.PATH}"
+//       def mvn = tool 'M3';
+//       withSonarQubeEnv("sq1") {
+//         sh "${mvn}/bin/mvn sonar:sonar -Dsonar.projectKey=Web -Dsonar.projectName='Web' -Dsonar.sources=src/ -Dsonar.java.binaries=target/classes/ -Dsonar.exclusions=src/test/java/****/*.java"
+//       }
+//   }
+//     stage("Build JAR"){
+//       steps{
+//         sh "./mvnw package"
+
+//       }
+    
+//       post{
+//         success{
+//           archiveArtifacts "target/*.jar"
+//       }
+//     }
+//   }
+//   }
+// }
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Prepare') {
+            steps {
+                // Clean workspace
+                deleteDir()
+            }
+        }
+
+        stage('SCM') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh './mvnw compile'
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            environment {
+                SCANNER_HOME = tool 'sonar-scanner'
+                NODEJS_HOME = "${tool 'nodejs'}"
+                PATH = "${env.NODEJS_HOME}/bin:${env.PATH}"
+            }
+            steps {
+                def mvn = tool 'M3'
+                withSonarQubeEnv('sq1') {
+                    sh "${mvn}/bin/mvn sonar:sonar -Dsonar.projectKey=Web -Dsonar.projectName='Web' -Dsonar.sources=src/ -Dsonar.java.binaries=target/classes/ -Dsonar.exclusions=src/test/java/****/*.java"
+                }
+            }
+        }
+
+        stage('Build JAR') {
+            steps {
+                sh './mvnw package'
+            }
+            post {
+                success {
+                    archiveArtifacts 'target/*.jar'
+                }
+            }
+        }
     }
-    env.NODEJS_HOME = "${tool 'nodejs'}"
-    env.PATH = "${env.NODEJS_HOME}/bin:${env.PATH}"
-    def mvn = tool 'M3';
-    withSonarQubeEnv("sq1") {
-      sh "${mvn}/bin/mvn sonar:sonar -Dsonar.projectKey=Web -Dsonar.projectName='Web' -Dsonar.sources=src/ -Dsonar.java.binaries=target/classes/ -Dsonar.exclusions=src/test/java/****/*.java"
-    }
-  }
-  stage("Build JAR"){
-    steps{
-      sh "./mvnw package"
-    }
-    post{
-      success{
-        archiveArtifacts "target/*.jar"
-      }
-    }
-  }
 }
