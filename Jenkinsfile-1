@@ -12,7 +12,7 @@ pipeline {
                 checkout scm
             }
         }
-        stage('compile') {
+        stage('Compile') {
             steps {
                 sh './mvnw clean'
                 sh './mvnw compile'
@@ -35,15 +35,17 @@ pipeline {
 
         stage('Build JAR') {
             steps {
-                sh './mvnw clean'
-                sh './mvnw compile'
                 sh './mvnw package'
             }
             post {
                 success {
-                    sh 'nohup java -jar target/*.jar >> server.log 2>&1 &'
                     archiveArtifacts 'target/*.jar'
                 }
+            }
+        }
+        stage("Deploy to local jenkins server"){
+            steps {
+                sh 'mv target/*.jar /'
             }
         }
     }
