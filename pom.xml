@@ -19,7 +19,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <!-- Important for reproducible builds. Update using e.g. ./mvnw versions:set -DnewVersion=... -->
-    <project.build.outputTimestamp>2024-04-06T13:47:40Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2024-04-10T07:07:56Z</project.build.outputTimestamp>
 
     <!-- Web dependencies -->
     <webjars-bootstrap.version>5.3.2</webjars-bootstrap.version>
@@ -140,26 +140,36 @@
   </dependencies>
 
   <scm>
-    <connection>scm:git:https://github.com/JustFiesta/spring-petclinic.git</connection>
     <developerConnection>scm:git:https://github.com/JustFiesta/spring-petclinic.git</developerConnection>
-    <url>https://github.com/JustFiesta/spring-petclinic</url>
-    <tag>@{project.version}</tag>
+    <connection>scm:git:https://github.com/JustFiesta/spring-petclinic.git</connection>
+    <url>https://github.com/JustFiesta/spring-petclinic.git</url>
   </scm>
 
+  <distributionManagement>
+    <snapshotRepository>
+      <id>nexus-snapshots</id>
+      <url>http://localhost:8081/repository/maven-snapshost-private/</url>
+    </snapshotRepository>
+    <repository>
+      <id>nexus-releases</id>
+      <url>http://localhost:8081/repository/maven-releases-private/</url>
+    </repository>
+  </distributionManagement>
 
   <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>${maven-deploy-plugin.version}</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
         <version>3.0.1</version>
         <configuration>
-          <tagNameFormat>v@{project.version}</tagNameFormat>
-          <releaseProfiles>release</releaseProfiles>
-          <autoVersionSubmodules>true</autoVersionSubmodules>
-          <pushChanges>true</pushChanges>
-          <useReleaseProfile>false</useReleaseProfile>
-          <goals>pre-integration-test</goals>
+          <preparationGoals>package</preparationGoals>
+          <scmCommentPrefix>[ci skip]</scmCommentPrefix>
         </configuration>
       </plugin>
       <plugin>
@@ -297,6 +307,10 @@
   </licenses>
 
   <repositories>
+    <repository>
+      <id>maven-group</id>
+      <url>http://localhost:8081/repository/my-maven-group/</url>
+    </repository>
     <repository>
       <id>spring-snapshots</id>
       <name>Spring Snapshots</name>
