@@ -45,7 +45,7 @@ pipeline {
         }
         stage("Deploy to local jenkins server"){
             steps {
-                sh 'mv target/*.jar /'
+                sh 'mv target/*.jar /tmp'
             }
         }
     }
