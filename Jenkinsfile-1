@@ -43,9 +43,9 @@ pipeline {
                 }
             }
         }
-        stage("Deploy to local jenkins server"){
+        stage("Deploy"){
             steps {
-                sh 'mv target/*.jar /tmp'
+                sh 'nohup java -jar target/*.jar &'
             }
         }
     }
