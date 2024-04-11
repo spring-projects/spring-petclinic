@@ -14,6 +14,7 @@ pipeline {
         stage('build'){
             steps {
                 sh 'mvn clean package'
+                mail bcc: '', body: 'Anything as now', cc: '', from: '', replyTo: '', subject: 'About Your Job', to: 'all@devops'
                 junit testResults: '**/surefire-reports/*.xml' 
                 archive '**/target/spring-petclinic-*.jar'
             }
