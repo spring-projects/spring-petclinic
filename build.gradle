@@ -24,7 +24,7 @@ gradle.startParameter.excludedTaskNames += [ "checkFormatAot", "checkFormatAotTe
 group = 'org.springframework.samples'
 
 scmVersion {
-  localOnly.set(true)
+  localOnly.set(false)
 }
 
 version = scmVersion {}.version
