@@ -14,7 +14,7 @@ pipeline {
       post {
             success {
                 // Archive the artifacts
-                archiveArtifacts artifacts: '**/target/surefire-reports/*.xml'
+                archiveArtifacts artifacts: 'target/surefire-reports/*.xml'
             }
         }
 }
