@@ -73,7 +73,7 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
 	void save(Owner owner);
 
 	/**
-	 * Returnes all the owners from data store
+	 * Returns all the owners from data store
 	 **/
 	@Query("SELECT owner FROM Owner owner")
 	@Transactional(readOnly = true)
