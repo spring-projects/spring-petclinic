@@ -11,10 +11,12 @@ pipeline {
                    }
             }
     }
-      post {
-            success {
-                // Archive the artifacts
-                archiveArtifacts artifacts: '**/surefire-reports/*.xml'
-            }
+    stage('build'){
+        steps {
+            sh 'mvn clean package'
+            junit testResults: '**/surefire-reports/*_xml' 
+            archive '**/target/spring-petclinic-*.jar
         }
+    }
+      
 }
