@@ -9,12 +9,15 @@ plugins {
   id "io.spring.nohttp" version "0.0.11"
   // axion plugin for managing versions
   id 'pl.allegro.tech.build.axion-release' version '1.15.1'
+  // maven publish plugin
+  id 'maven-publish'
 }
 
 apply plugin: 'java'
 apply plugin: 'checkstyle'
 apply plugin: 'io.spring.javaformat'
 apply plugin: 'pl.allegro.tech.build.axion-release'
+apply plugin: 'maven-publish'
 
 gradle.startParameter.excludedTaskNames += [ "checkFormatAot", "checkFormatAotTest" ]
 
@@ -31,7 +34,11 @@ java {
 }
 
 repositories {
-  mavenCentral()
+//  mavenCentral()
+  maven {
+    url 'http://localhost:8081/repository/maven-central-proxy/'
+    allowInsecureProtocol = true
+  }
 }
 
 ext.webjarsFontawesomeVersion = "4.7.0"
@@ -90,10 +97,6 @@ tasks.register('openTestResults') {
   dependsOn('test')
 }
 
-tasks.named('currentVersion') {
-  doNotTrackState("Allegro axiom plugin does not work with tracking state ")
-}
-
 tasks.named('openTestResults'){
 
   doLast {
@@ -103,6 +106,48 @@ tasks.named('openTestResults'){
       commandLine 'cmd', '/c', 'start index.html'
     }
   }
+}
+
+tasks.named('currentVersion') {
+  doNotTrackState("Allegro axiom plugin does not work with tracking state ")
+}
+
+task listRepos {
+  doLast {
+    println "Repositories:"
+    project.repositories.each { println "Name: " + it.name + "; url: " + it.url }
+  }
+}
+
+publishing {
+  publications {
+    maven(MavenPublication) {
+      artifact("build/libs/$rootProject.name-$version"+".jar") {
+        extension 'jar'
+      }
+    }
+  }
+  repositories {
+    maven {
+      name 'nexus-releases-private'
+      url "http://localhost:8081/repository/maven-releases-private/"
+      name 'Nexus_Repo'
+      def releasesRepoUrl = 'http://localhost:8081/repository/maven-releases-private/'
+      def snapshotsRepoUrl = 'http://localhost:8081/repository/maven-snapshost-private/'
+      url = project.version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+
+      allowInsecureProtocol = true
+
+      credentials {
+        username project.repoUser
+        password project.repoPassword
+      }
+    }
+  }
+}
+
+tasks.named('publishMavenPublicationToNexus_RepoRepository') {
+  mustRunAfter('bootJar')
 }
 
 checkstyleAot.enabled = false
