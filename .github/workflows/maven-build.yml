@@ -40,6 +40,6 @@ jobs:
         uses: digma-ai/digma-actions/assert-no-issues@v1.0.6
         with:
           # Assuming the action expects these inputs:
-          digma_url: 'https://collector.meloona01.digma.systems'
+          digma_url: 'https://api.meloona01.digma.systems'
           api_token: ${{ secrets.DIGMA_TOKEN }}
           environment: 'PETCLINIC_CI'
