@@ -1,0 +1,19 @@
+{
+	"name": "Petclinic",
+	"dockerFile": "Dockerfile",
+	"runArgs": [
+        "--mount",
+        "type=volume,source=maven-repo,target=/home/developer/.m2",
+        "--mount",
+        "type=volume,source=gradle-home,target=/home/developer/.gradle",
+        "--env",
+        "GRADLE_USER_HOME=/home/developer/.gradle"
+	],
+	"initializeCommand": "./.devcontainer/jetbrains/initializeCommands.sh",
+	"postCreateCommand": "sudo chown developer:developer /home/developer/.m2 /home/developer/.gradle",
+	"remoteUser": "developer",
+	"features": {
+		"docker-in-docker": "latest"
+	},
+	"forwardPorts": [8080]
+}
