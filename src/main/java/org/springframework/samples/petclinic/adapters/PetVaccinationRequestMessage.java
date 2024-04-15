@@ -3,6 +3,8 @@ package org.springframework.samples.petclinic.adapters;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
+import java.io.Console;
+
 @Component
 public class PetVaccinationRequestMessage {
 
@@ -15,7 +17,12 @@ public class PetVaccinationRequestMessage {
 
 	public void Send() {
 		// template.convertAndSend("petVaccineRequests", "Hello, world!");
-		kafkaTemplate.send("petVaccineRequests", "test");
+		try {
+			kafkaTemplate.send("petVaccineRequests", "test");
+		}
+		catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 }
