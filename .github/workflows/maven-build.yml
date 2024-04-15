@@ -25,5 +25,13 @@ jobs:
           java-version: ${{matrix.java}}
           distribution: 'adopt'
           cache: maven
+      - name: Instrument app
+        uses: digma-ai/digma-java-instrumentation-action@1.0.3
+        with:
+          # Assuming the action expects these inputs:
+          collector_url: 'http://example.com/collector'
+          service_name: 'spring-petclinic'
+          environment: 'PETCLINIC_CI'
+
       - name: Build with Maven Wrapper
-        run: ./mvnw -B package
+        run: mvn '-Dtest=org.springframework.samples.petclinic.integration.*Tests' test
