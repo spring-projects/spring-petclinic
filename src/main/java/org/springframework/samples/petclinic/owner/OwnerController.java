@@ -52,6 +52,7 @@ class OwnerController {
 	private OwnerValidation validator;
 
 	public OwnerController(OwnerRepository clinicService) {
+
 		this.owners = clinicService;
 		var otelTracer = getTracer("OwnerController");
 		validator = new OwnerValidation(otelTracer);
@@ -79,12 +80,13 @@ class OwnerController {
 	// }
 
 	@GetMapping("/owners/new")
-	public String initCreationForm(Map<String, Object> model) {
+	public String initCreationForm(Map<String, Object> model) throws NoSuchMethodException {
 
-//		if (model!=null){
-//			throw new RuntimeException();
-//
-//		}
+		// if (model!=null){
+		// throw new RuntimeException();
+		//
+		// }
+
 		Owner owner = new Owner();
 		validator.ValidateOwnerWithExternalService(owner);
 
@@ -112,8 +114,8 @@ class OwnerController {
 	}
 
 	@GetMapping("/owners")
-	public String processFindForm(@RequestParam(defaultValue = "1") int page, Owner owner, BindingResult result,
-			Model model) {
+	public String processFindForm(@RequestParam(defaultValue = "1") int page, Owner owner,
+								  BindingResult result, Model model) {
 		validator.ValidateUserAccess("admin", "pwd", "fullaccess");
 		// if (owner.getLastName()!=null){
 		// throw new RuntimeException();
@@ -123,7 +125,6 @@ class OwnerController {
 		if (owner.getLastName() == null) {
 			owner.setLastName(""); // empty string signifies broadest possible search
 		}
-
 
 		// find owners by last name
 		Page<Owner> ownersResults = findPaginatedForOwnersLastName(page, owner.getLastName());

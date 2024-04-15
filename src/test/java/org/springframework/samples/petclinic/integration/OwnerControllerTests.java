@@ -104,6 +104,8 @@ class OwnerControllerTests {
 			.statusCode(200)
 			.body(ownerLinkMatcher, Matchers.notNullValue());
 
+		assertThat(false).isTrue();
+
 	}
 
 	@NotNull

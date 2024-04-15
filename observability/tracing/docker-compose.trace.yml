@@ -2,7 +2,7 @@ version: "3.6"
 
 services:
   jaeger:
-    image: jaegertracing/all-in-one:latest
+    image: jaegertracing/all-in-one:1.45.0
     container_name: jaeger
     volumes:
       - badger_data:/badger
@@ -12,34 +12,40 @@ services:
       - "16686:16686"
       - "14250"
       - "0.0.0.0:14268:14268"
+    command: |
+      --query.additional-headers "Access-Control-Allow-Origin: *"
     environment:
       - SPAN_STORAGE_TYPE=badger
+      - COLLECTOR_OTLP_ENABLED=true
       - BADGER_EPHEMERAL=false
-      - BADGER_SPAN_STORE_TTL=2000h
       - BADGER_DIRECTORY_VALUE=/badger/data
       - BADGER_DIRECTORY_KEY=/badger/key
+      - BADGER_SPAN_STORE_TTL=336h0m0s
+      - COLLECTOR_GRPC_PORT=5317
+      - COLLECTOR_OTLP_GRPC_MAX_MESSAGE_SIZE=41943040
+    restart: unless-stopped
 
-  grafana:
-    container_name: grafana
-    volumes:
-      - ./grafana/provisioning:/etc/grafana/provisioning
-    image: grafana/grafana-oss:latest
-    ports:
-      - 3000:3000
-    environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-      - GF_USERS_ALLOW_SIGN_UP=false
+#  grafana:
+#    container_name: grafana
+#    volumes:
+#      - ./grafana/provisioning:/etc/grafana/provisioning
+#    image: grafana/grafana-oss:latest
+#    ports:
+#      - 3000:3000
+#    environment:
+#      - GF_SECURITY_ADMIN_USER=admin
+#      - GF_SECURITY_ADMIN_PASSWORD=admin
+#      - GF_USERS_ALLOW_SIGN_UP=false
     
-  prometheus:
-    container_name: prometheus
-    image: prom/prometheus:latest
-    volumes:
-      - ./prometheus.yaml:/etc/prometheus/prometheus.yml
-    ports:
-      - "9090:9090"
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+#  prometheus:
+#    container_name: prometheus
+#    image: prom/prometheus:latest
+#    volumes:
+#      - ./prometheus.yaml:/etc/prometheus/prometheus.yml
+#    ports:
+#      - "9090:9090"
+#    extra_hosts:
+#      - "host.docker.internal:host-gateway"
       
   collector:
     image: otel/opentelemetry-collector-contrib

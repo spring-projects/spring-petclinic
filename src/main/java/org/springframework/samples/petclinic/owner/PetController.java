@@ -15,8 +15,6 @@
  */
 package org.springframework.samples.petclinic.owner;
 
-import java.time.Instant;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -24,6 +22,7 @@ import java.util.concurrent.Executors;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.adapters.PetVaccinationRequestMessage;
 import org.springframework.samples.petclinic.domain.PetVaccinationStatusService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -51,14 +50,17 @@ class PetController implements InitializingBean {
 	private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = "pets/createOrUpdatePetForm";
 
 	private final OwnerRepository owners;
+	private final PetVaccinationRequestMessage vaccinationRequestMessage;
 
 	@Autowired
 	private PetVaccinationStatusService petVaccinationStatus;
 
 	private ExecutorService executorService;
 
-	public PetController(OwnerRepository owners) {
+	public PetController(OwnerRepository owners,
+						 PetVaccinationRequestMessage petVaccinationRequestMessage) {
 		this.owners = owners;
+		this.vaccinationRequestMessage = petVaccinationRequestMessage;
 	}
 
 	@ModelAttribute("types")
@@ -111,16 +113,17 @@ class PetController implements InitializingBean {
 		this.owners.save(owner);
 		// var pets = owner.getPets().toArray(Pet[]::new);
 
-		var petRequests = owner.getPets()
-			.stream()
-			.map(x -> new PetVaccinationStatusService.UpdateVaccineStatusRequest(owner.getId(), x.getId()))
-			.toList();
+//		var petRequests = owner.getPets()
+//			.stream()
+//			.map(x -> new PetVaccinationStatusService.UpdateVaccineStatusRequest(owner.getId(), x.getId()))
+//			.toList().subList(0,1);
 		// executorService.submit(() ->
 		// petVaccinationStatus.updateVaccinationStatus(petRequests)).get();
-		executorService.submit(() -> petVaccinationStatus.updateVaccinationStatus(petRequests));
+		//executorService.submit(() -> petVaccinationStatus.updateVaccinationStatus(petRequests));
+		//petVaccinationStatus.updateVaccinationStatus(petRequests.subList(0,1));
 		//
-		// BackgroundJob.enqueue(() ->
-		// petVaccinationStatus.updateVaccinationStatus(petRequests));
+
+		vaccinationRequestMessage.Send();
 		return "redirect:/owners/{ownerId}";
 	}
 
