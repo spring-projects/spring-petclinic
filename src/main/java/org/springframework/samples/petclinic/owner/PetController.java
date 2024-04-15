@@ -50,6 +50,7 @@ class PetController implements InitializingBean {
 	private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = "pets/createOrUpdatePetForm";
 
 	private final OwnerRepository owners;
+
 	private final PetVaccinationRequestMessage vaccinationRequestMessage;
 
 	@Autowired
@@ -57,8 +58,7 @@ class PetController implements InitializingBean {
 
 	private ExecutorService executorService;
 
-	public PetController(OwnerRepository owners,
-						 PetVaccinationRequestMessage petVaccinationRequestMessage) {
+	public PetController(OwnerRepository owners, PetVaccinationRequestMessage petVaccinationRequestMessage) {
 		this.owners = owners;
 		this.vaccinationRequestMessage = petVaccinationRequestMessage;
 	}
@@ -113,14 +113,17 @@ class PetController implements InitializingBean {
 		this.owners.save(owner);
 		// var pets = owner.getPets().toArray(Pet[]::new);
 
-//		var petRequests = owner.getPets()
-//			.stream()
-//			.map(x -> new PetVaccinationStatusService.UpdateVaccineStatusRequest(owner.getId(), x.getId()))
-//			.toList().subList(0,1);
+		// var petRequests = owner.getPets()
+		// .stream()
+		// .map(x -> new
+		// PetVaccinationStatusService.UpdateVaccineStatusRequest(owner.getId(),
+		// x.getId()))
+		// .toList().subList(0,1);
 		// executorService.submit(() ->
 		// petVaccinationStatus.updateVaccinationStatus(petRequests)).get();
-		//executorService.submit(() -> petVaccinationStatus.updateVaccinationStatus(petRequests));
-		//petVaccinationStatus.updateVaccinationStatus(petRequests.subList(0,1));
+		// executorService.submit(() ->
+		// petVaccinationStatus.updateVaccinationStatus(petRequests));
+		// petVaccinationStatus.updateVaccinationStatus(petRequests.subList(0,1));
 		//
 
 		vaccinationRequestMessage.Send();

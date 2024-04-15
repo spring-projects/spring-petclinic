@@ -114,8 +114,8 @@ class OwnerController {
 	}
 
 	@GetMapping("/owners")
-	public String processFindForm(@RequestParam(defaultValue = "1") int page, Owner owner,
-								  BindingResult result, Model model) {
+	public String processFindForm(@RequestParam(defaultValue = "1") int page, Owner owner, BindingResult result,
+			Model model) {
 		validator.ValidateUserAccess("admin", "pwd", "fullaccess");
 		// if (owner.getLastName()!=null){
 		// throw new RuntimeException();

@@ -94,10 +94,10 @@ public class OwnerValidation {
 	}
 
 	String usr;
+
 	String pswd;
+
 	String sysCode;
-
-
 
 	@WithSpan
 	private synchronized void AuthServiceValidateUser(Owner owner) {
