@@ -26,7 +26,7 @@ jobs:
           distribution: 'adopt'
           cache: maven
       - name: Instrument app
-        uses: digma-ai/digma-java-instrumentation-action@1.0.2
+        uses: digma-ai/digma-java-instrumentation-action@v1.0.2
         with:
           # Assuming the action expects these inputs:
           collector_url: 'http://example.com/collector'
