@@ -29,7 +29,7 @@ jobs:
         uses: digma-ai/digma-java-instrumentation-action@v1.0.2
         with:
           # Assuming the action expects these inputs:
-          collector_url: 'http://example.com/collector'
+          collector_url: 'https://collector.meloona01.digma.systems'
           service_name: 'spring-petclinic'
           environment: 'PETCLINIC_CI'
 
