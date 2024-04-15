@@ -26,12 +26,20 @@ jobs:
           distribution: 'adopt'
           cache: maven
       - name: Instrument app
-        uses: digma-ai/digma-java-instrumentation-action@v1.0.2
+        uses: digma-ai/digma-actions/instrument@v1.0.4
         with:
           # Assuming the action expects these inputs:
           collector_url: 'https://collector.meloona01.digma.systems'
           service_name: 'spring-petclinic'
           environment: 'PETCLINIC_CI'
 
-      - name: Build with Maven Wrapper
+      - name: Run Tests
         run: mvn '-Dtest=org.springframework.samples.petclinic.integration.*Tests' test
+
+      - name: Validate no issues
+        uses: digma-ai/digma-actions/assert-no-issues@v1.0.4
+        with:
+          # Assuming the action expects these inputs:
+          collector_url: 'https://collector.meloona01.digma.systems'
+          api_token: ${{ secrets.DIGMA_TOKEN }}
+          environment: 'PETCLINIC_CI'
