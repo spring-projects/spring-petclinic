@@ -24,7 +24,7 @@ gradle.startParameter.excludedTaskNames += [ "checkFormatAot", "checkFormatAotTe
 group = 'org.springframework.samples'
 
 scmVersion {
-  localOnly.set(false)
+  localOnly.set(true)
 }
 
 version = scmVersion {}.version
@@ -36,7 +36,7 @@ java {
 repositories {
 //  mavenCentral()
   maven {
-    url 'http://localhost:8081/repository/maven-central-proxy/'
+    url 'http://localhost:9081/repository/maven-central-proxy/'
     allowInsecureProtocol = true
   }
 }
@@ -130,10 +130,9 @@ publishing {
   repositories {
     maven {
       name 'nexus-releases-private'
-      url "http://localhost:8081/repository/maven-releases-private/"
       name 'Nexus_Repo'
-      def releasesRepoUrl = 'http://localhost:8081/repository/maven-releases-private/'
-      def snapshotsRepoUrl = 'http://localhost:8081/repository/maven-snapshost-private/'
+      def releasesRepoUrl = 'http://localhost:9081/repository/maven-releases-private/'
+      def snapshotsRepoUrl = 'http://localhost:9081/repository/maven-snapshost-private/'
       url = project.version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
 
       allowInsecureProtocol = true
