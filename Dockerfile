@@ -18,4 +18,4 @@ WORKDIR /app
 
 COPY --from=build /project/target/spring-petclinic-${app_version}.jar /app/java-application.jar
 
-ENTRYPOINT ["java", "-jar", "java-application.jar"]
+ENTRYPOINT [ "java", "-Dspring.profiles.active=postgres", "-jar", "java-application.jar"]
