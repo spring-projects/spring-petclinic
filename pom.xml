@@ -157,6 +157,15 @@
     </repository>
   </distributionManagement> -->
 
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>MyRepo</name>
+      <url>https://github.com/JustFiesta/spring-petclinic.git</url>
+    </repository>
+  </distributionManagement>
+
+
   <build>
     <plugins>
       <!-- <plugin>
