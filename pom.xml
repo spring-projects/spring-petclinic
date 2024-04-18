@@ -140,8 +140,8 @@
   </dependencies>
 
   <scm>
-    <developerConnection>scm:git:https://github.com/JustFiesta/spring-petclinic.git</developerConnection>
-    <connection>scm:git:https://github.com/JustFiesta/spring-petclinic.git</connection>
+    <developerConnection>scm:git:git@github.com:JustFiesta/spring-petclinic.git</developerConnection>
+    <connection>scm:git:git@github.com:JustFiesta/spring-petclinic.git</connection>
     <url>https://github.com/JustFiesta/spring-petclinic.git</url>
     <tag>spring-petclinic-4.0.8</tag>
   </scm>
