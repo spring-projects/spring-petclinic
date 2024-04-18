@@ -192,7 +192,7 @@
         <version>3.0.1</version>
         <configuration>
           <preparationGoals>package</preparationGoals>
-          <scmCommentPrefix>[ci skip]</scmCommentPrefix>
+          <releaseProfiles>release</releaseProfiles>
         </configuration>
       </plugin>
       <plugin>
