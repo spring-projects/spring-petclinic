@@ -146,7 +146,7 @@
     <tag>spring-petclinic-4.0.6</tag>
   </scm>
 
-  <distributionManagement>
+  <!-- <distributionManagement>
     <snapshotRepository>
       <id>nexus-snapshots</id>
       <url>http://localhost:8081/repository/maven-snapshost-private/</url>
@@ -155,11 +155,11 @@
       <id>nexus-releases</id>
       <url>http://localhost:8081/repository/maven-releases-private/</url>
     </repository>
-  </distributionManagement>
+  </distributionManagement> -->
 
   <build>
     <plugins>
-      <plugin>
+      <!-- <plugin>
         <groupId>org.sonatype.plugins</groupId>
         <artifactId>nexus-staging-maven-plugin</artifactId>
         <version>1.5.1</version>
@@ -177,7 +177,7 @@
           <nexusUrl>http://localhost:8081</nexusUrl>
           <skipStaging>true</skipStaging>
         </configuration>
-      </plugin>
+      </plugin> -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>
