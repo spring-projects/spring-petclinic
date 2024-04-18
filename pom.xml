@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
-  <version>4.0.8</version>
+  <version>4.0.8-SNAPSHOT</version>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -178,14 +178,7 @@
           <skipStaging>true</skipStaging>
         </configuration>
       </plugin> -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <version>${maven-deploy-plugin.version}</version>
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
@@ -193,7 +186,6 @@
                 <configuration>
                     <tagName>${project.artifactId}-${project.version}</tagName>
                     <preRelease>true</preRelease>
-                        <releaseProfiles>release</releaseProfiles>
                 </configuration>
       </plugin>
       <plugin>
