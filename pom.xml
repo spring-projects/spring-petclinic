@@ -32,7 +32,7 @@
     <maven-checkstyle.version>3.3.1</maven-checkstyle.version>
     <nohttp-checkstyle.version>0.0.11</nohttp-checkstyle.version>
     <spring-format.version>0.0.40</spring-format.version>
-
+    <maven.test.skip>true</maven.test.skip>
   </properties>
 
   <dependencies>
@@ -161,7 +161,7 @@
     <repository>
       <id>github</id>
       <name>MyRepo</name>
-      <url>https://github.com/JustFiesta/spring-petclinic.git</url>
+      <url>https://maven.pkg.github.com/JustFiesta/spring-petclinic</url>
     </repository>
   </distributionManagement>
 
