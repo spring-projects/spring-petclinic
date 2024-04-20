@@ -9,10 +9,10 @@
 name: JUnit with Maven
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  workflow_run:
+    workflows: ["SonarCloud analysis"]
+    types:
+      - completed
 
 jobs:
   test:
