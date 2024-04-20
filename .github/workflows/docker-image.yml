@@ -52,6 +52,11 @@ jobs:
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Tag the image for ECR
+      run: |
+        docker tag ghcr.io/${{ github.repository }}/spring-petclinic:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/spring-petclinic:latest
+    
       
     - name: Push image to Amazon ECR
       run: docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/spring-petclinic:latest
