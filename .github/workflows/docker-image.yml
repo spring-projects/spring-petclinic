@@ -7,8 +7,11 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  docker-build:
     runs-on: ubuntu-latest
+    outputs:
+      docker_tag: ${{ steps.meta.outputs.tags }}
+      
     steps:
     #checkout repo
     - uses: actions/checkout@v3
@@ -40,7 +43,12 @@ jobs:
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
-
+        
+  ecr-deploy:
+    needs: docker-build
+    runs-on: ubuntu-latest
+    
+    steps:
     #push to ecr
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -55,8 +63,10 @@ jobs:
 
     - name: Tag the image for ECR
       run: |
-        docker tag ${{ steps.meta.outputs.tags }} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/spring-petclinic:latest
+        docker tag ${{ needs.build.outputs.docker_tag }} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/spring-petclinic:latest
     
       
     - name: Push image to Amazon ECR
       run: docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/spring-petclinic:latest
+    
+  
