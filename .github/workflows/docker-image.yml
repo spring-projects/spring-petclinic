@@ -47,9 +47,8 @@ jobs:
   ecr-deploy:
     needs: docker-build
     runs-on: ubuntu-latest
-    
     steps:
-    #push to ecr
+    #aws authentication
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -61,12 +60,13 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
+    #image setup
+    - name: Pull Docker image from GHCR
+      run: docker pull ghcr.io/${{ github.repository }}/${{ needs.docker-build.outputs.docker_tag }}
+
     - name: Tag the image for ECR
-      run: |
-        docker tag ${{ needs.docker-build.outputs.docker_tag }} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/spring-petclinic:latest
-    
-      
+      run: docker tag ${{ needs.docker-build.outputs.docker_tag }} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/spring-petclinic:latest
+
+    #push image
     - name: Push image to Amazon ECR
       run: docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/spring-petclinic:latest
-    
-  
