@@ -23,6 +23,13 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
+    - name: Docker Login
+      uses: docker/login-action@v3.1.0
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        
     - name: Pull image from GHCR
       run: docker pull ghcr.io/${{ github.repository }}/spring-petclinic:latest
 
