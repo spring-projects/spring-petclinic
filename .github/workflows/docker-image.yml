@@ -15,7 +15,7 @@ jobs:
 
     #build docker image
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag spring-petclinic:$(date +%s)
+      run: docker build . --file Dockerfile --tag spring-petclinic:latest
 
     #login to github container registry
     - name: Docker Login
