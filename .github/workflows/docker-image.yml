@@ -55,7 +55,7 @@ jobs:
 
     - name: Tag the image for ECR
       run: |
-        docker tag ghcr.io/${{ github.repository }}/spring-petclinic:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/spring-petclinic:latest
+        docker tag ${{ steps.meta.outputs.tags }} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/spring-petclinic:latest
     
       
     - name: Push image to Amazon ECR
