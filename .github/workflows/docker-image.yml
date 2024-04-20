@@ -60,6 +60,14 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
+    #login to github container registry
+    - name: Docker Login
+      uses: docker/login-action@v3.1.0
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
     #image setup
     - name: Pull Docker image from GHCR
       run: docker pull ghcr.io/${{ github.repository }}/${{ needs.docker-build.outputs.docker_tag }}
