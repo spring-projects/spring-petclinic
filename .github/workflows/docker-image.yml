@@ -63,7 +63,7 @@ jobs:
 
     - name: Tag the image for ECR
       run: |
-        docker tag ${{ needs.build.outputs.docker_tag }} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/spring-petclinic:latest
+        docker tag ${{ needs.docker-build.outputs.docker_tag }} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/spring-petclinic:latest
     
       
     - name: Push image to Amazon ECR
