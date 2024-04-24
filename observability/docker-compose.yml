@@ -1,0 +1,22 @@
+version: "3.6"
+services:
+ grafana-agent:
+   image: grafana/agent:latest
+   restart: always
+   command:
+     - run
+     - --server.http.listen-addr=0.0.0.0:12345
+     - /etc/agent/config.river
+   volumes:
+     - ./config.river:/etc/agent/config.river
+   ports:
+     - "12345:12345"
+     - "4317:4317"
+   extra_hosts:
+     - "host.docker.internal:host-gateway"
+   environment:
+     - AGENT_MODE=flow
+     - DIGMA_OTLP_ENDPOINT=host.docker.internal:5050
+     - GRAFANA_CLOUD_OTLP_ENDPOINT=--REPLACE_WITH_ENDPOINT--
+     - GRAFANA_CLOUD_API_TOKEN=${GRAFANA_CLOUD_API_TOKEN}
+     - GRAFANA_CLOUD_INSTANCE_ID=--REPLACE_WITH_INSTANCE_ID--

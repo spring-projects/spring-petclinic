@@ -1,0 +1,51 @@
+//Basic authentication 
+otelcol.auth.basic "grafana_auth" {
+ username = env("GRAFANA_CLOUD_INSTANCE_ID")
+ password = env("GRAFANA_CLOUD_API_TOKEN")
+}
+
+
+// Define the 'Receiver' ingesting the data sent out from our app
+otelcol.receiver.otlp "default" {
+   // configures the default grpc endpoint "0.0.0.0:4317"
+   grpc { }
+   // configures the default http/protobuf endpoint "0.0.0.0:4318"
+   http { }
+
+
+   output {
+      traces  = [otelcol.processor.batch.default.input]
+   }
+}
+
+
+//The 'processor' optimizes the network throughput by batching the output
+otelcol.processor.batch "default" {
+ output {
+   traces = [otelcol.exporter.otlp.digma.input,otelcol.exporter.otlphttp.grafana_cloud.input]
+ }
+}
+
+
+//Our two exporters will send the data both to Digma (to analytize our code observability, and to our Grafana cloud instance
+
+
+otelcol.exporter.otlp "digma" {
+  // Send traces to Digma without TLS enabled.
+  client {
+    endpoint = env("DIGMA_OTLP_ENDPOINT")
+
+
+    tls {
+      insecure = true
+    }
+  }
+}
+
+
+otelcol.exporter.otlphttp "grafana_cloud" {
+ client {
+   endpoint = env("GRAFANA_CLOUD_OTLP_ENDPOINT")
+   auth     = otelcol.auth.basic.grafana_auth.handler
+ }
+}
