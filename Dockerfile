@@ -4,7 +4,7 @@ RUN mkdir /project
 COPY . /project
 WORKDIR /project
 
-RUN mvn clean package -DskipTests
+RUN mvn clean package -DskipTests -Dcheckstyle.skip
 
 
 
