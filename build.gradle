@@ -1,9 +1,5 @@
 import java.awt.Desktop
 
-ext {
-    checkstyleVersion = '10.14.2'
-}
-
 plugins {
   id 'java'
   id 'org.springframework.boot' version '3.2.0'
@@ -41,15 +37,11 @@ java {
 }
 
 checkstyle {
-    toolVersion = checkstyleVersion
+    toolVersion = '10.14.2'
 }
 
 repositories {
   mavenCentral()
-  maven {
-    url 'http://localhost:9081/repository/maven-central-proxy/'
-    allowInsecureProtocol = true
-  }
 }
 
 ext.webjarsFontawesomeVersion = "4.7.0"
@@ -128,36 +120,6 @@ task listRepos {
     println "Repositories:"
     project.repositories.each { println "Name: " + it.name + "; url: " + it.url }
   }
-}
-
-publishing {
-  publications {
-    maven(MavenPublication) {
-      artifact("build/libs/$rootProject.name-$version"+".jar") {
-        extension 'jar'
-      }
-    }
-  }
-  repositories {
-    maven {
-      name 'nexus-releases-private'
-      name 'Nexus_Repo'
-      def releasesRepoUrl = 'http://localhost:9081/repository/maven-releases-private/'
-      def snapshotsRepoUrl = 'http://localhost:9081/repository/maven-snapshost-private/'
-      url = project.version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
-
-      allowInsecureProtocol = true
-
-      credentials {
-        username project.repoUser
-        password project.repoPassword
-      }
-    }
-  }
-}
-
-tasks.named('publishMavenPublicationToNexus_RepoRepository') {
-  mustRunAfter('bootJar')
 }
 
 checkstyleAot.enabled = false
