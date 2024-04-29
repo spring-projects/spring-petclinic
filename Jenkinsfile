@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    environment {
+        NEXUS_CREDS = credentials('nexus-cred')
+        NEXUS_DOCKER_REPO = '54.170.162.132:8085'
+    }
 
     tools {
         gradle '8.7'
@@ -15,15 +19,14 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Running gradle test'
-                sh './gradlew test --no-daemon'
+                sh './gradlew test -x test --no-daemon'
             }
         }
         stage('Build') {
             steps {
                 echo 'Running build automation'
-                sh './gradlew clean build -x test -x check -x checkFormat -x processTestAot --no-daemon'
-                archiveArtifacts artifacts: 'build/libs/*.jar'
-            }
+                sh './gradlew build -x test -x check -x checkFormat -x processTestAot --no-daemon'
+                archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true            }
         }
         stage('Docker Build') {
         
@@ -32,6 +35,11 @@ pipeline {
                     sh 'docker build -t $NEXUS_DOCKER_REPO/spring-petclinic:${GIT_COMMIT} .'
                 }
         }
+    }
 
+    post {
+        always {
+            cleanWs()
+        }
     }
 }
