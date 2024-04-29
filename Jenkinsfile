@@ -25,5 +25,13 @@ pipeline {
                 archiveArtifacts artifacts: 'build/libs/*.jar'
             }
         }
+        stage('Docker Build') {
+        
+            steps { 
+                    echo 'Building docker Image'
+                    sh 'docker build -t $NEXUS_DOCKER_REPO/spring-petclinic:${GIT_COMMIT} .'
+                }
+        }
+
     }
 }
