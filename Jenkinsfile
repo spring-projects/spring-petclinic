@@ -31,9 +31,21 @@ pipeline {
         stage('Docker Build') {
         
             steps { 
-                    echo 'Building docker Image'
-                    sh 'docker build -t $NEXUS_DOCKER_REPO/spring-petclinic:${GIT_COMMIT} .'
+                echo 'Building docker Image'
+                sh 'docker build -t $NEXUS_DOCKER_REPO/spring-petclinic:${GIT_COMMIT} .'
+            }
+        }
+
+        stage('Docker Login') {
+            steps {
+                echo 'Nexus Docker Repository Login'
+                script{
+                    withCredentials([usernamePassword(credentialsId: 'nexus-cred', usernameVariable: 'USER', passwordVariable: 'PASS' )]){
+                        sh ' echo $PASS | docker login -u $USER --password-stdin $NEXUS_DOCKER_REPO'
+                    }
+                    
                 }
+            }
         }
     }
 
