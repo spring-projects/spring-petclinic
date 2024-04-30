@@ -35,7 +35,6 @@ pipeline {
                 sh 'docker build -t $NEXUS_DOCKER_REPO/spring-petclinic:${GIT_COMMIT} .'
             }
         }
-
         stage('Docker Login') {
             steps {
                 echo 'Nexus Docker Repository Login'
@@ -45,6 +44,12 @@ pipeline {
                     }
                     
                 }
+            }
+        }
+        stage('Docker Push') {
+            steps {
+                echo 'Pushing Image to docker hub'
+                sh 'docker push $NEXUS_DOCKER_REPO/spring-petclinic:${GIT_COMMIT}'
             }
         }
     }
