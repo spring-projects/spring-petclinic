@@ -1,0 +1,40 @@
+jenkins assesment:
+
+3 kontenery na EC2 -> jenkins-docker, jenkins-blueocean, nexus
+
+!!! Pobranie klucza do EC2 !!!
+
+EC2 - security groups + t6 type:
+	ssh -i C:\lokalizacja_klucza\jenkins-assesement-ec2.pem ec2-user@ec2-3-252-205-41.eu-west-1.compute.amazonaws.com
+
+Po uruchomieniu EC2:
+    docker start nexus
+    docker start jenkins-blueocean
+    docker run \/
+
+!!!!!!!! zmieniaj IP w env w JenkinsFile (GitHub), daemon.json (EC2), docker:dind dodaj --insecure-registries !!!!!!!!!!!!
+
+----------------------------
+W jenkinsie:
+add creds - github, nexus
+
+!!! create github token !!! 
+
+----------------------------
+Serwer Jenkinsa na EC2:
+
+Nexus:
+    sudo docker run -d -p 8081-8085:8081-8085 --name nexus -v nexus-data:/nexus-data sonatype/nexus3
+
+Jenkins Docker:
+    sudo docker run   --name jenkins-docker   --rm   --detach   --privileged   --network jenkins   --network-alias docker   --env DOCKER_TLS_CERTDIR=/certs   --volume jenkins-docker-certs:/certs/client   --volume jenkins-data:/var/jenkins_home   --publish 2376:2376   docker:dind   --insecure-registry 54.195.172.42:8085   --insecure-registry 54.195.172.42:8084   --storage-driver overlay2
+
+Jenkins Blueocean:
+    dockerfile z dokumentacji jenkinsa + run blueocean
+    https://www.jenkins.io/doc/book/installing/docker/
+
+
+
+
+
+
