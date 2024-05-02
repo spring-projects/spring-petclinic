@@ -74,8 +74,8 @@ pipeline {
         NEXUS_CREDS = credentials('nexus-cred')
         NEXUS_DOCKER_REPO_MAIN = '34.241.46.54:8084'
     }
-
-    stage('Docker Build (Main)') {
+    stages {
+        stage('Docker Build (Main)') {
         when {
             branch 'main'
         }
@@ -106,7 +106,7 @@ pipeline {
             sh 'docker push $NEXUS_DOCKER_REPO_MAIN/spring-petclinic:${GIT_COMMIT}'
         }
     }
-
+    }
     post {
         always {
             cleanWs()
