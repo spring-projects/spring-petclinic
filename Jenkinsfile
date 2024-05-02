@@ -53,7 +53,7 @@ pipeline {
         }
         stage('Docker Push (MR)') {
             steps {
-                echo 'Pushing Image to docker hub'
+                echo 'Pushing Image to docker repo'
                 sh 'docker push $NEXUS_DOCKER_REPO_MR/spring-petclinic:${GIT_COMMIT}'
             }
         }
@@ -102,7 +102,7 @@ pipeline {
             branch 'main'
         }
         steps {
-            echo 'Pushing Image to docker hub'
+            echo 'Pushing Image to docker repo'
             sh 'docker push $NEXUS_DOCKER_REPO_MAIN/spring-petclinic:${GIT_COMMIT}'
         }
     }
