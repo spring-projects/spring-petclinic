@@ -13,22 +13,26 @@ repos:
       # -   id: talisman-push
       - id: talisman-commit
         entry: cmd --githook pre-commit
-          -
-#        - id: gitleaks
-#          name: Detect hardcoded secrets
-#          description: Detect hardcoded secrets using Gitleaks
-#          entry: gitleaks protect --verbose --redact --staged
-#          language: golang
-#          pass_filenames: false
-#        - id: pretty-format-java
-#          name: Google Java Formatter
-#          description: Runs Google Java Formatter over Java source files
-#          entry: pretty-format-java
-#          language: python
-#          types: [ java ]
-#          # this is needed because the hook downloads google-java-formatter and
-#          # we don't have yet a nice way of ensuring a single download over multiple runs
-#          require_serial: true
-#          minimum_pre_commit_version: '1'
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.16.1
+    hooks:
+      - id: gitleaks
+        name: Detect hardcoded secrets
+        description: Detect hardcoded secrets using Gitleaks
+        entry: gitleaks protect --verbose --redact --staged
+        language: golang
+        pass_filenames: false
+
+      - id: pretty-format-java
+        name: Google Java Formatter
+        description: Runs Google Java Formatter over Java source files
+        entry: pretty-format-java
+        language: python
+        types: [ java ]
+          # this is needed because the hook downloads google-java-formatter and
+          # we don't have yet a nice way of ensuring a single download over multiple runs
+        require_serial: true
+        minimum_pre_commit_version: '1'
 
 
