@@ -24,15 +24,15 @@ repos:
         language: golang
         pass_filenames: false
 
-      - id: pretty-format-java
-        name: Google Java Formatter
-        description: Runs Google Java Formatter over Java source files
-        entry: pretty-format-java
-        language: python
-        types: [ java ]
-          # this is needed because the hook downloads google-java-formatter and
-          # we don't have yet a nice way of ensuring a single download over multiple runs
-        require_serial: true
-        minimum_pre_commit_version: '1'
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1
+    hooks:
+      - id: check-merge-conflict
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
 
-
+  - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
+    rev: v2.0.0
+    hooks:
+        - id: pretty-format-java
+          args: [ --aosp,--autofix ]
