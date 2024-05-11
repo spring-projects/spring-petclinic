@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="SpringPetClinic">
+    <test name="SpringPetClinicTest">
+       <packages>
+		   <package name="selenium.scenarios"/>
+	   </packages>
+    </test>
+</suite>
