@@ -5,6 +5,7 @@ plugins {
   id 'org.graalvm.buildtools.native' version '0.9.28'
   id 'io.spring.javaformat' version '0.0.41'
   id "io.spring.nohttp" version "0.0.11"
+  id 'jacoco'
 }
 
 apply plugin: 'java'
@@ -14,7 +15,13 @@ apply plugin: 'io.spring.javaformat'
 gradle.startParameter.excludedTaskNames += [ "checkFormatAot", "checkFormatAotTest" ]
 
 group = 'org.springframework.samples'
-version = '3.2.0'
+
+//project always has the property version
+if (project.findProperty('version') != 'unspecified') {
+    version = findProperty('version')
+} else {
+    version = '3.2.0'
+}
 
 java {
   sourceCompatibility = JavaVersion.VERSION_17
@@ -80,3 +87,5 @@ checkFormatAotTest.enabled = false
 
 formatAot.enabled = false
 formatAotTest.enabled = false
+
+test.finalizedBy(jacocoTestReport)

@@ -1,0 +1,50 @@
+#!/bin/bash
+set -e
+
+baseVersion="0.0.0"
+revisionsSince="0"
+
+echo "Available" tags
+git tag -l
+
+if semver $(git tag -l) &>/dev/null
+then
+    baseVersion=$(semver $(semver $(git tag -l)) | tail -n1)
+    echo "Base Version is now: $baseVersion"
+fi
+
+if [ "$baseVersion" = "0.0.0" ]
+then
+    revisionsSince=$(git rev-list --count HEAD)
+else
+    revisionsSince=$(git rev-list "$baseVersion"..HEAD --count)
+fi
+
+echo "Calculating Version."
+calculatedVersion="$baseVersion-$revisionsSince"
+
+branchName=$(git rev-parse --abbrev-ref HEAD | tr / -)
+
+echo $branchName
+
+if [ "$branchName" != "master" ]
+then
+    calculatedVersion="$calculatedVersion-$branchName"
+fi
+
+echo "New version is $calculatedVersion"
+
+semVersion=$(semver "$calculatedVersion" | tail -n1) 
+
+if [ "$1" = "package" ]
+then
+    echo "Forcing package.json to version $semVersion"
+    npm --no-git-tag-version -f version $semVersion
+fi
+
+mkdir -p generated
+echo "build.version=$calculatedVersion" > ./generated/BUILD_INFO.txt
+echo "git.branch.name=$branchName" >> ./generated/BUILD_INFO.txt
+echo "git.commit.hash=$(git rev-parse HEAD)" >> ./generated/BUILD_INFO.txt
+echo "git.commit.short=$(git rev-parse --short HEAD)" >> ./generated/BUILD_INFO.txt
+    

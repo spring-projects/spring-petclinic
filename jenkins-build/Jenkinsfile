@@ -1,0 +1,119 @@
+String buildVersion
+String environment='CI'
+String buildName='spring-petclinic-aws'
+String ciBucketName='xchu-jenkins-artifacts-build-us-east-1'
+String rcBucketName='xchu-jenkins-artifacts-rc-us-east-1'
+String awsCred='lab-aws'
+String awsRegion='lab-aws'
+
+pipeline { 
+    stages { 
+        stage ('Choose Version') { 
+            steps {
+                // calculate version from git tags and commit history
+                sh 'rm -rf generated' 
+                sh 'mkdir generated'
+                echo 'Choosing Version'
+                sh 'chmod 755 ./jenkins-build/build-info'
+                sh './jenkins-build/build-info'
+                script {
+                    def buildProperties = readProperties file: "${env.WORKSPACE}/generated/BUILD_INFO.txt"
+                    buildVersion = buildProperties.get('build.version')
+                    branchName = buildProperties.get('git.branch.name') 
+                    cloudFormationFile="./generated/cloud-formation-${buildVersion}.yaml"
+                }
+            }
+        }
+        stage('Validate CF') {
+            steps{
+                sh "mv jenkins-build/cloud-formation.yaml ${cloudFormationFile}"
+                sh 'ls'
+                withAWS(credentials:"${awsCred}", region:"${awsRegion}"){
+                    cfnValidate(file:"${cloudFormationFile}")
+                }
+            } 
+        }
+        stage('Compile') {
+            steps{
+                sh "./gradlew clean build -x test -Pversion=${buildVersion} -DrootProjectName=${buildName}" 
+                //make the jar file name cohesive
+        }
+        stage('Tests') {
+            parallel unitTest: {
+                stage ('unitTest') {
+                    timeout(time: 5, unit: 'MINUTES') {
+                        sh './gradlew test'
+                        echo 'Unittest done'
+                    }
+                }
+            },
+            checkstyle: {
+                stage ('checkStyle') {
+                    sh './gradlew validate'
+                    echo 'checkStyle done'
+                }
+            },
+            codeCoverage: {
+                stage ('codeCoverage') {
+                    sh './gradlew jacocoTestReport'
+                    echo 'Code coverage test done'
+                }
+            }
+        }
+        stage('Publish to S3'){
+            steps{
+                withAWS(credentials:"${awsCred}", region:"${awsRegion}"){
+                    //Upload application code
+                    s3Upload(bucket:"${ciBucketName}", file: "build/libs/${buildName}-${buildVersion}.jar", path:"${buildName}/${buildVersion}/")
+                    //Upload CloudFormation
+                    s3Upload(bucket:"${ciBucketName}", file: "${cloudFormationFile}", path:"${buildName}/${buildVersion}/")
+                }
+            }
+        }
+        stage('Publish to RC - If main branch'){
+            when {
+                branch 'main'
+            }
+            steps{
+                withAWS(credentials:"${awsCred}", region:"${awsRegion}"){
+                    //Upload application code to release candidate
+                    s3Upload(bucket:"${rcBucketName}", file: "build/libs/${buildName}-${buildVersion}.jar", path:"${buildName}/${buildVersion}/")
+
+                    //Upload CloudFormation to release candidate
+                    s3Upload(bucket:"${rcBucketName}", file: "${cloudFormationFile}", path:"${buildName}/${buildVersion}/")
+
+                    //Upload Build_info to release candidate
+                    s3Upload(bucket:"${rcBucketName}", file: "${env.WORKSPACE}/generated/BUILD_INFO.txt", path:"${buildName}/${buildVersion}/")
+                    
+                }
+            }
+        }
+        stage('Publish Report Html') {
+            steps {
+                echo 'Publishing unittest report...'
+                publishHTML([allowMissing: true,
+                             alwaysLinkToLastBuild: true,
+                             keepAll: true,
+                             reportDir: 'build/reports/tests/test',
+                             reportFiles: 'index.html',
+                             reportName: 'Unittest Report',
+                             reportTitles: 'The unittest report'])
+                echo 'Publishing jacoco report...'
+                publishHTML([allowMissing: true,
+                             alwaysLinkToLastBuild: true,
+                             keepAll: true,
+                             reportDir: 'build/reports/jacoco/test/html',
+                             reportFiles: 'index.html',
+                             reportName: 'Jacoco Coverage Report',
+                             reportTitles: 'The coverage report by jacoco'])
+            }
+        }
+    }
+    post {
+        always {
+            archiveArtifacts artifacts: 'generated/**'
+            echo 'Cleaning up...'
+            cleanWs()
+        }
+    }
+}

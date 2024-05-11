@@ -1,0 +1,82 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Deploy an EC2 instance to run the Petclinic app.
+Parameters:
+  ArtifactPath:
+    Type: String
+    Description: The path to the jar file.
+  AppFile:
+    Type: String
+    Description: The name of the jar file.
+  LatestAmiId:
+    Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+    Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
+  ServerPort:
+    Type: Number
+    Default: 8080
+    Description: The port on which the server will listen.
+
+Resources:
+  InstanceSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: Allow http to instance
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: !Ref ServerPort
+          ToPort: !Ref ServerPort
+          CidrIp: 0.0.0.0/0
+
+  InstanceRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Policies:
+        - PolicyName: AccessArtifact
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 's3:GetObject'
+                Resource:
+                  - !Sub 'arn:aws:s3:::${ArtifactPath}/*.jar'
+
+  InstanceProfile:
+    Type: 'AWS::IAM::InstanceProfile'
+    Properties:
+      Roles:
+        - !Ref InstanceRole
+
+  EC2Instance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      InstanceType: t2.micro
+      ImageId: LatestAmiId  # Amazon Linux 2 AMI in us-east-1
+      SecurityGroups:
+        - !Ref InstanceSecurityGroup
+      IamInstanceProfile: !Ref InstanceProfile
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          yum update -y
+          yum install -y java-17-amazon-corretto-devel
+          aws s3 cp s3://${ArtifactPath}/${AppFile} /home/ec2-user/
+          java -jar /home/ec2-user/${AppFile} --server.port=${ServerPort}
+
+Outputs:
+  InstanceId:
+    Description: The Instance ID
+    Value: !Ref EC2Instance
+  WebsiteURL:
+    Description: URL to access the Java application
+    Value: !Sub "http://${EC2Instance.PublicIp}:${ServerPort}"
+    Export:
+      Name: ServerURL
