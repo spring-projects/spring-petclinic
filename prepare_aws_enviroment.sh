@@ -52,7 +52,7 @@ echo "Subnet is now correctly configured."
 
 # Create Elastic Container Registry (ECR)
 echo "Creating Elastic Container Registry (ECR)..."
-ECR_REPO_URI=$(aws ecr create-repository --repository-name "$ECR_NAME" --region "$REGION" --query 'repository.repositoryUri' --output text)
+ECR_REPO_URI=$(aws ecr create-repository --repository-name "$ECR_NAME" -tags Key=Name,Value="$ECR_NAME" Key=Owner,Value="$OWNER" Key=Project,Value="$PROJECT" --region "$REGION" --query 'repository.repositoryUri' --output text)
 
 export ECR_REPO_URI
 
@@ -61,10 +61,6 @@ if [ -z "$ECR_REPO_URI" ]; then
     exit 1
 fi
 echo "ECR repository created: $ECR_REPO_URI"
-
-# Add tags to ECR repository
-aws ecr create-repository --repository-name "$ECR_NAME" --tags Key=Name,Value="$ECR_NAME" Key=Owner,Value="$OWNER" Key=Project,Value="$PROJECT" --region "$REGION"
-echo "ECR repository is now correctly configured."
 
 # Create Security Group
 echo "Creating Security Group..."
