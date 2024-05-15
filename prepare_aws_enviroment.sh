@@ -112,3 +112,5 @@ aws ec2 associate-address --instance-id "$INSTANCE_ID" --public-ip "$PUBLIC_IP" 
 echo "Public IP address has been allocated and associated with EC2 instance: $PUBLIC_IP"
 
 echo "EC2 instance, public IP address, and Security Group have been successfully created."
+
+./send_image_to_aws.sh

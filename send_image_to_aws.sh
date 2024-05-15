@@ -5,9 +5,9 @@
 # Note: docker is reqiured
 
 # Global data
-AWS_REGION="eu-west-1"
+source prepare_aws_enviroment.sh
+
 AWS_ACCOUNT_ID=""
-ECR_REPO_NAME="$ECR_NAME"
 DOCKERFILE_DIR=""
 
 # Get data from user
@@ -25,7 +25,7 @@ fi
 
 # Log in to ECR
 echo "Logging in to Amazon ECR..."
-DOCKER_LOGIN_CMD=$(aws ecr get-login-password --region "$AWS_REGION")
+DOCKER_LOGIN_CMD=$(aws ecr get-login-password --region "$REGION")
 
 if [ $? -eq 0 ]; then
     echo "Got credentials from AWS CLI."
@@ -34,7 +34,7 @@ else
     exit 1
 fi
 
-if echo "$DOCKER_LOGIN_CMD" | docker login --username AWS --password-stdin "$AWS_ACCOUNT_ID".dkr.ecr."$AWS_REGION".amazonaws.com; then
+if echo "$DOCKER_LOGIN_CMD" | docker login --username AWS --password-stdin "$AWS_ACCOUNT_ID".dkr.ecr."$REGION".amazonaws.com; then
     echo "Logged in to ECR successfully."
 else
     echo "Error: Failed to log in to ECR."
@@ -43,7 +43,7 @@ fi
 
 # Tag the image
 echo "Tagging Docker image..."
-if docker tag spring-petclinic:latest "$AWS_ACCOUNT_ID".dkr.ecr."$AWS_REGION".amazonaws.com/"$ECR_REPO_NAME":latest; then
+if docker tag spring-petclinic:latest "$AWS_ACCOUNT_ID".dkr.ecr."$REGION".amazonaws.com/"$ECR_NAME":latest; then
     echo "Docker image tagged successfully."
 else
     echo "Error: Failed to tag Docker image."
@@ -52,7 +52,7 @@ fi
 
 # Push image to ECR
 echo "Pushing Docker image to ECR..."
-if docker push "$AWS_ACCOUNT_ID".dkr.ecr."$AWS_REGION".amazonaws.com/"$ECR_REPO_NAME":latest; then
+if docker push "$AWS_ACCOUNT_ID".dkr.ecr."$REGION".amazonaws.com/"$ECR_NAME":latest; then
     echo "Docker image pushed to ECR successfully."
 else
     echo "Error: Failed to push Docker image to ECR."
@@ -60,3 +60,5 @@ else
 fi
 
 echo "Docker image has been successfully pushed to ECR."
+
+./run_container_on_EC2.sh

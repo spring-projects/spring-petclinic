@@ -3,8 +3,9 @@
 # This script sets authenthicates and pulls docker image. Then runs it on host
 
 # Global data
-REGION="eu-west-1"
-IMAGE_NAME=""
+source send_image_to_aws.sh
+
+IMAGE_NAME="$ECR_NAME:latest"
 
 # Get data from user
 read -p "Enter the ECR image name: " IMAGE_NAME
