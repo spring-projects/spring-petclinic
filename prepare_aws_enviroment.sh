@@ -107,7 +107,10 @@ echo "EC2 instance is now correctly configured."
 
 # Allocate and associate public IP address with EC2 instance
 echo "Allocating and associating public IP address with EC2 instance..."
+
 PUBLIC_IP=$(aws ec2 allocate-address --domain vpc --region "$REGION" --output text)
+export PUBLIC_IP
+
 aws ec2 associate-address --instance-id "$INSTANCE_ID" --public-ip "$PUBLIC_IP" --region "$REGION"
 echo "Public IP address has been allocated and associated with EC2 instance: $PUBLIC_IP"
 

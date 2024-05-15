@@ -3,7 +3,7 @@
 # This script sets authenthicates and pulls docker image. Then runs it on host
 
 # Global data
-source send_image_to_aws.sh
+source ./send_image_to_aws.sh
 
 IMAGE_NAME="$ECR_NAME:latest"
 
@@ -22,7 +22,7 @@ echo "Public IP address of EC2 instance: $PUBLIC_IP"
 
 # Authorize ECR in docker
 echo "Getting authentication token for ECR..."
-DOCKER_LOGIN_CMD=$(aws ecr get-login-password --region "$REGION" | docker login --username AWS --password-stdin "$ACCOUNT_ID".dkr.ecr."$REGION".amazonaws.com 2>&1)
+DOCKER_LOGIN_CMD=$(aws ecr get-login-password --region "$REGION" | docker login --username AWS --password-stdin "$AWS_ACCOUNT_ID".dkr.ecr."$REGION".amazonaws.com 2>&1)
 
 if [[ $DOCKER_LOGIN_CMD == *"Login Succeeded"* ]]; then
     echo "Authentication with ECR successful."
