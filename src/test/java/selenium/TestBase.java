@@ -1,5 +1,7 @@
 package selenium;
 
+import org.junit.After;
+import org.junit.Before;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,9 +11,6 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -37,7 +36,7 @@ public class TestBase {
 
 	public static FileReader frInput;
 
-	@BeforeMethod
+	@Before
 	public void setUp() throws IOException {
 		String userDirectory = System.getProperty("user.dir");
 		String basePath = "\\src\\test\\java\\selenium\\config\\";
@@ -86,12 +85,11 @@ public class TestBase {
 		WebElement welcomePhoto = driver.findElement(By.className(locators.getProperty("welcomePhoto")));
 		String ActualWelcomePhotoSrc = welcomePhoto.getAttribute("src");
 		String expectedWelcomePhoto = tap.getProperty("welcomePhoto");
-		Assert.assertEquals(ActualWelcomePhotoSrc, expectedWelcomePhoto);
+		org.junit.Assert.assertEquals(ActualWelcomePhotoSrc, expectedWelcomePhoto);
 	}
 
-	@AfterMethod
+	@After
 	public void tearDown() {
 		driver.quit();
 	}
-
 }

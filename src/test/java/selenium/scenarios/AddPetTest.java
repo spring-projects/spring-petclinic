@@ -1,25 +1,20 @@
 package selenium.scenarios;
 
-import jdk.jfr.Description;
-import org.jetbrains.annotations.NotNull;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.Before;
+import org.junit.Test;
 import selenium.TestBase;
 import selenium.pages.*;
 
-import static org.testng.AssertJUnit.*;
+import static org.junit.Assert.*;
 
-public class TS03AddPetTest extends TestBase {
+public class AddPetTest extends TestBase {
 
 	private AddOwnerPage addOwnerPage;
-
 	private OwnerPage ownerPage;
-
 	private FindOwnersPage findOwnersPage;
-
 	private AddPetPage addPetPage;
 
-	@BeforeMethod
+	@Before
 	public void setObjects() {
 		addOwnerPage = new AddOwnerPage(driver, locators);
 		ownerPage = new OwnerPage(driver, locators);
@@ -27,7 +22,7 @@ public class TS03AddPetTest extends TestBase {
 		addPetPage = new AddPetPage(driver, locators);
 	}
 
-	public void addOrEditPet(@NotNull String action, String petName, String birthDate, String petType) {
+	public void addOrEditPet(String action, String petName, String birthDate, String petType) {
 		String petNameText = input.getProperty(petName);
 		String petBirthDateText = input.getProperty(birthDate);
 		String petTypeOption = input.getProperty(petType);
@@ -35,23 +30,21 @@ public class TS03AddPetTest extends TestBase {
 		addPetPage.fillTheFields(petNameText, petBirthDateText, petTypeOption);
 		if (action.equalsIgnoreCase("add")) {
 			addPetPage.clickOnAddPetButton();
-		}
-		else if (action.equalsIgnoreCase("update")) {
+		} else if (action.equalsIgnoreCase("update")) {
 			addPetPage.clickOnUpdatePetButton();
 		}
 	}
 
-	public void navigateToAddPetForExistingOwner() {
+	public void navigateToAddPetForExistingOwner(int row) {
 		findOwnersPage.navigateToFindOwnersPage();
 		findOwnersPage.clickOnFindOwnerButton();
 
 		ListOwnersPage listOwnersPage = new ListOwnersPage(driver, locators);
-		listOwnersPage.clickOnNameFromTable();
+		listOwnersPage.clickOnNameFromTable(row);
 		ownerPage.clickOnAddNewPetButton();
 	}
 
 	@Test
-	@Description("Validate adding a pet to a newly added owner")
 	public void testAddPetToNewlyAddedOwner() {
 		findOwnersPage.navigateToFindOwnersPage();
 		findOwnersPage.clickOnAddOwnerButton();
@@ -71,20 +64,18 @@ public class TS03AddPetTest extends TestBase {
 		assertTrue(ownerPage.isPetNameDisplayed("petName"));
 	}
 
-	@Test(priority = 1)
-	@Description("Validate adding a new pet to an already existing owner")
+	@Test
 	public void testAddPetToExistingOwner() {
-		navigateToAddPetForExistingOwner();
+		navigateToAddPetForExistingOwner(4);
 
 		addOrEditPet("add", "petName2", "birthDate2", "petType2");
 		assertTrue(ownerPage.isPetAddedSuccessMessageDisplayed());
 		assertTrue(ownerPage.isPetNameDisplayed("petName2"));
 	}
 
-	@Test(priority = 2)
-	@Description("Validate adding the same pet twice")
+	@Test
 	public void testAddingSamePetTwice() {
-		navigateToAddPetForExistingOwner();
+		navigateToAddPetForExistingOwner(1);
 
 		addOrEditPet("add", "petName3", "birthDate3", "petType3");
 		driver.navigate().back();
@@ -93,43 +84,39 @@ public class TS03AddPetTest extends TestBase {
 		assertTrue(addPetPage.isErrorMessageDisplayedForSamePetName());
 	}
 
-	@Test(priority = 3)
-	@Description("Validate adding a pet without filling any of the fields")
+	@Test
 	public void testAddPetWithEmptyFields() {
-		navigateToAddPetForExistingOwner();
+		navigateToAddPetForExistingOwner(1);
 
 		addPetPage.clickOnAddPetButton();
 		String expectedErrorMessage = tap.getProperty("emptyPetFieldsErrorMessage");
 		assertTrue(addPetPage.isErrorMessageDisplayedForEmptyFields(expectedErrorMessage));
 	}
 
-	@Test(priority = 4)
-	@Description("Validate adding a pet with a future birth date")
+	@Test
 	public void testAddPetWithFutureBirthDate() {
-		navigateToAddPetForExistingOwner();
+		navigateToAddPetForExistingOwner(1);
 
 		addOrEditPet("add", "petName4", "futureBirthDate", "petType4");
 		assertTrue(addPetPage.isInvalidDateErrorMessageDisplayed());
 	}
 
 	// Pet is still added after putting numbers in 'Name' field - REPORT DEFECT!!!
-	@Test(priority = 5)
-	@Description("Validate adding numbers in the 'Name' field")
+	@Test
 	public void testAddNumbersInNameField() {
-		navigateToAddPetForExistingOwner();
+		navigateToAddPetForExistingOwner(1);
 
 		addOrEditPet("add", "numberPetName", "birthDate5", "petType5");
 		assertFalse(ownerPage.isPetAddedSuccessMessageDisplayed());
 	}
 
-	@Test(priority = 6)
-	@Description("Validate updating a pet")
+	@Test
 	public void testUpdatePet() {
 		findOwnersPage.navigateToFindOwnersPage();
 		findOwnersPage.clickOnFindOwnerButton();
 
 		ListOwnersPage listOwnersPage = new ListOwnersPage(driver, locators);
-		listOwnersPage.clickOnNameFromTable();
+		listOwnersPage.clickOnNameFromTable(1);
 		ownerPage.clickOnEditPetButton();
 		addPetPage.clearFields();
 

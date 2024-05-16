@@ -1,21 +1,19 @@
 package selenium.scenarios;
 
-import org.springframework.context.annotation.Description;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.Before;
+import org.junit.Test;
 import selenium.TestBase;
 import selenium.pages.FindOwnersPage;
 import selenium.pages.HomePage;
 
-import static org.testng.AssertJUnit.assertTrue;
+import static org.junit.Assert.assertTrue;
 
-public class TS05HomePageTest extends TestBase {
+public class HomePageTest extends TestBase {
 
 	private HomePage homePage;
-
 	private FindOwnersPage findOwnersPage;
 
-	@BeforeMethod
+	@Before
 	public void setObjects() {
 		homePage = new HomePage(driver, locators);
 		findOwnersPage = new FindOwnersPage(driver, locators);
@@ -27,7 +25,6 @@ public class TS05HomePageTest extends TestBase {
 	}
 
 	@Test
-	@Description("Validate if you can navigate to home page by clicking on the 'Home' header")
 	public void testNavigateHomeFromHeader() {
 		findOwnersPage.navigateToFindOwnersPage();
 
@@ -35,8 +32,7 @@ public class TS05HomePageTest extends TestBase {
 		checkForCorrectWelcomePhoto();
 	}
 
-	@Test(priority = 1)
-	@Description("Validate if you can navigate to home by page by clicking on the logo of the application")
+	@Test
 	public void navigateHomeFromLogo() {
 		findOwnersPage.navigateToFindOwnersPage();
 

@@ -10,9 +10,10 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Properties;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+
 
 public class ListOwnersPage extends TestBase {
 
@@ -35,15 +36,15 @@ public class ListOwnersPage extends TestBase {
 		assertTrue(tableElement.isDisplayed(), "Table is displayed");
 		assertEquals(rows.size(), 6, "Expected 6 rows in the table");
 
-		String owner1 = tap.getProperty("Owner1");
-		String owner2 = tap.getProperty("Owner2");
+		String owner1 = driver.findElement(By.xpath("(//tr)[2]")).getText();
+		String owner2 = driver.findElement(By.xpath("(//tr)[3]")).getText();
 
 		assertEquals(rows.get(1).getText(), owner1, "Incorrect data in row 1");
 		assertEquals(rows.get(2).getText(), owner2, "Incorrect data in row 2");
 	}
 
-	public void clickOnNameFromTable() {
-		WebElement firstRow = rows.get(1);
+	public void clickOnNameFromTable(int row) {
+		WebElement firstRow = rows.get(row);
 		List<WebElement> name = firstRow.findElements(By.tagName("td"));
 		WebElement firstName = name.get(0);
 		String firstNameText = firstName.getText();

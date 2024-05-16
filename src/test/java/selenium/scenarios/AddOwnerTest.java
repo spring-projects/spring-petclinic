@@ -1,26 +1,22 @@
 package selenium.scenarios;
 
-import jdk.jfr.Description;
-import org.jetbrains.annotations.NotNull;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.Before;
+import org.junit.Test;
 import selenium.TestBase;
 import selenium.pages.AddOwnerPage;
 import selenium.pages.FindOwnersPage;
 import selenium.pages.ListOwnersPage;
 import selenium.pages.OwnerPage;
 
-import static org.testng.AssertJUnit.*;
+import static org.junit.Assert.*;
 
-public class TS02AddOwnerTest extends TestBase {
+public class AddOwnerTest extends TestBase {
 
 	private AddOwnerPage addOwnerPage;
-
 	private OwnerPage ownerPage;
-
 	private FindOwnersPage findOwnersPage;
 
-	@BeforeMethod
+	@Before
 	public void setObjects() {
 		addOwnerPage = new AddOwnerPage(driver, locators);
 		ownerPage = new OwnerPage(driver, locators);
@@ -32,8 +28,8 @@ public class TS02AddOwnerTest extends TestBase {
 		findOwnersPage.clickOnAddOwnerButton();
 	}
 
-	public void addOrEditAnOwner(@NotNull String action, String firstName, String lastName, String address, String city,
-			String telephone) {
+	public void addOrEditAnOwner(String action, String firstName, String lastName, String address, String city,
+								 String telephone) {
 		String firstNameText = input.getProperty(firstName);
 		String lastNameText = input.getProperty(lastName);
 		String addressText = input.getProperty(address);
@@ -43,14 +39,12 @@ public class TS02AddOwnerTest extends TestBase {
 		addOwnerPage.setTextInFields(firstNameText, lastNameText, addressText, cityText, telephoneText);
 		if (action.equalsIgnoreCase("add")) {
 			addOwnerPage.clickingOnAddOwnerButton();
-		}
-		else if (action.equalsIgnoreCase("update")) {
+		} else if (action.equalsIgnoreCase("update")) {
 			addOwnerPage.clickOnUpdateOwnerButton();
 		}
 	}
 
 	@Test
-	@Description("Validate successfully adding an owner")
 	public void testAddingAnOwner() {
 		navigateToAddOwner();
 		addOrEditAnOwner("add", "firstName", "lastName", "address", "city", "telephone");
@@ -59,8 +53,7 @@ public class TS02AddOwnerTest extends TestBase {
 		assertTrue(ownerPage.isLastNameDisplayed(input.getProperty("lastName")));
 	}
 
-	@Test(priority = 1)
-	@Description("Validate adding an owner without filling any of the fields")
+	@Test
 	public void testEmptyFields() {
 		navigateToAddOwner();
 		addOwnerPage.clickingOnAddOwnerButton();
@@ -69,9 +62,8 @@ public class TS02AddOwnerTest extends TestBase {
 		assertTrue(addOwnerPage.isErrorMessageDisplayedForEmptyFields(expectedErrorMessage));
 	}
 
-	// User is still created - REPORT DEFECT!!!
-	@Test(priority = 2)
-	@Description("Validate if an owner is added after putting numbers in the name fields")
+	// User is still created after putting numbers in the name fields - REPORT DEFECT!!!
+	@Test
 	public void testNumbersInNameFields() {
 		navigateToAddOwner();
 
@@ -81,8 +73,7 @@ public class TS02AddOwnerTest extends TestBase {
 	}
 
 	// You can add the same owner twice - REPORT DEFECT!!!
-	@Test(priority = 3)
-	@Description("Validate if you can add the same owner twice")
+	@Test
 	public void testCreateSameOwnerTwice() {
 		navigateToAddOwner();
 
@@ -93,8 +84,7 @@ public class TS02AddOwnerTest extends TestBase {
 		assertFalse("Message should not be visible", ownerPage.isSuccessMessageDisplayed());
 	}
 
-	@Test(priority = 4)
-	@Description("Validate if an owner is added after putting text in the 'Telephone' field")
+	@Test
 	public void testTextInTelephoneField() {
 		navigateToAddOwner();
 
@@ -102,37 +92,35 @@ public class TS02AddOwnerTest extends TestBase {
 
 		String expectedErrorMessage = tap.getProperty("errorMessageTelephoneField");
 		assertTrue("Error message should be displayed for invalid telephone number",
-				addOwnerPage.isErrorMessageDisplayedForTextInTelephoneField(expectedErrorMessage));
+			addOwnerPage.isErrorMessageDisplayedForTextInTelephoneField(expectedErrorMessage));
 	}
 
-	@Test(priority = 5)
-	@Description("Validate updating an owner")
+	@Test
 	public void testUpdateOwner() {
 		findOwnersPage.navigateToFindOwnersPage();
 		findOwnersPage.clickOnFindOwnerButton();
 
 		ListOwnersPage listOwnersPage = new ListOwnersPage(driver, locators);
-		listOwnersPage.clickOnNameFromTable();
+		listOwnersPage.clickOnNameFromTable(2);
 
 		ownerPage.clickOnEditOwnerButton();
 		addOwnerPage.clearFields();
 
 		addOrEditAnOwner("update", "updateFirstName", "updateLastName", "updateAddress", "updateCity",
-				"updateTelephone");
+			"updateTelephone");
 
 		assertTrue(ownerPage.isUpdateMessageDisplayed());
 		assertTrue(ownerPage.isLastNameDisplayed(input.getProperty("updateLastName")));
 	}
 
 	// User can still be updated - REPORT DEFECT!!!
-	@Test(priority = 6)
-	@Description("Validate updating an owner with the details of an already existing owner")
-	public void testUpdateOwnerWithExistingDetails() {
+	@Test
+	public void testUpdateOwnerWithSameDetailsFromOtherOwner() {
 		findOwnersPage.navigateToFindOwnersPage();
 		findOwnersPage.clickOnFindOwnerButton();
 
 		ListOwnersPage listOwnersPage = new ListOwnersPage(driver, locators);
-		listOwnersPage.clickOnNameFromTable();
+		listOwnersPage.clickOnNameFromTable(3);
 
 		ownerPage.clickOnEditOwnerButton();
 		addOwnerPage.clearFields();
@@ -142,8 +130,7 @@ public class TS02AddOwnerTest extends TestBase {
 		assertFalse("Error message is not displayed", ownerPage.isUpdateMessageDisplayed());
 	}
 
-	@Test(priority = 7)
-	@Description("Validate if a newly added owner can be updated")
+	@Test
 	public void testUpdateNewlyAddedOwner() {
 		navigateToAddOwner();
 		addOrEditAnOwner("add", "firstName3", "lastName3", "address3", "city3", "telephone3");
@@ -152,10 +139,9 @@ public class TS02AddOwnerTest extends TestBase {
 		addOwnerPage.clearFields();
 
 		addOrEditAnOwner("update", "updateFirstName2", "updateLastName2", "updateAddress2", "updateCity2",
-				"updateTelephone2");
+			"updateTelephone2");
 
 		assertTrue(ownerPage.isUpdateMessageDisplayed());
 		assertTrue(ownerPage.isLastNameDisplayed(input.getProperty("updateLastName2")));
 	}
-
 }

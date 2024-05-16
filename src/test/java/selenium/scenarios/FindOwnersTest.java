@@ -1,10 +1,9 @@
 package selenium.scenarios;
 
-import jdk.jfr.Description;
+import org.junit.Before;
+import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 import selenium.TestBase;
 import selenium.pages.AddOwnerPage;
 import selenium.pages.FindOwnersPage;
@@ -13,16 +12,16 @@ import selenium.pages.OwnerPage;
 
 import java.util.List;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-public class TS01FindOwnersTest extends TestBase {
+public class FindOwnersTest extends TestBase {
 
 	private OwnerPage ownerPage;
 
 	private FindOwnersPage findOwnersPage;
 
-	@BeforeMethod
+	@Before
 	public void setObjects() {
 		ownerPage = new OwnerPage(driver, locators);
 		findOwnersPage = new FindOwnersPage(driver, locators);
@@ -35,46 +34,38 @@ public class TS01FindOwnersTest extends TestBase {
 	}
 
 	@Test
-	@Description("Validate if the correct owner is displayed after searching by an existing last name")
 	public void testFindOwnerByExistingLastName() {
 		setupFindOwnersPage(input.getProperty("existingLastName"));
 
-		assertTrue(ownerPage.isLastNameDisplayed(input.getProperty("existingLastName")),
-				"The last name should be displayed on the Owner page");
+		assertTrue(ownerPage.isLastNameDisplayed(input.getProperty("existingLastName")));
 	}
 
-	@Test(priority = 1)
-	@Description("Validate if an owner is displayed after searching by an existing first name")
+	@Test
 	public void testFindOwnerByExistingFirstName() {
 		setupFindOwnersPage(input.getProperty("existingFirstName"));
 
 		String ownerNotFoundText = findOwnersPage.getOwnerNotFoundText();
 		String expectedText = tap.getProperty("ownerNotFoundText");
-		assertEquals(ownerNotFoundText, expectedText, "Expected text has been displayed");
+		assertEquals(expectedText, ownerNotFoundText);
 	}
 
-	@Test(priority = 2)
-	@Description("Validate if an owner is displayed after searching for a non-existing last name")
+	@Test
 	public void testFindOwnerByNonExistingLastName() {
 		setupFindOwnersPage(input.getProperty("nonExistingLastName"));
 
 		String ownerNotFoundText = findOwnersPage.getOwnerNotFoundText();
 		String expectedText = tap.getProperty("ownerNotFoundText");
-		assertEquals(ownerNotFoundText, expectedText, "Expected text has been displayed");
+		assertEquals(expectedText, ownerNotFoundText);
 	}
 
-	@Test(priority = 3)
-	@Description("Validate case sensitivity after searching by an existing last name")
+	@Test
 	public void testCaseSensitiveLastName() {
 		setupFindOwnersPage(input.getProperty("caseSensitiveLastName"));
 
-		assertTrue(ownerPage.isLastNameDisplayed(input.getProperty("existingLastName")),
-				"The last name should be displayed on the Owner page");
+		assertTrue(ownerPage.isLastNameDisplayed(input.getProperty("existingLastName")));
 	}
 
-	@Test(priority = 4)
-	@Description("Validate if all owners are displayed after clicking the 'Find Owner' button "
-			+ "without filling the 'Last name' field")
+	@Test
 	public void testEmptyLastNameField() {
 		setupFindOwnersPage("");
 
@@ -82,17 +73,15 @@ public class TS01FindOwnersTest extends TestBase {
 		listOwnersPage.tableAppearance();
 	}
 
-	@Test(priority = 5)
-	@Description("Validate if you can navigate to the Owner page after clicking on a name from the table")
+	@Test
 	public void testNavigateToOwnerPageFromTable() {
 		setupFindOwnersPage("");
 
 		ListOwnersPage listOwnersPage = new ListOwnersPage(driver, locators);
-		listOwnersPage.clickOnNameFromTable();
+		listOwnersPage.clickOnNameFromTable(1);
 	}
 
-	@Test(priority = 6)
-	@Description("Validate finding a newly added owner")
+	@Test
 	public void testFindNewlyAddedOwner() {
 		findOwnersPage.navigateToFindOwnersPage();
 		findOwnersPage.clickOnAddOwnerButton();

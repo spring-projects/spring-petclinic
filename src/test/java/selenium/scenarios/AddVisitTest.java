@@ -1,22 +1,19 @@
 package selenium.scenarios;
 
-import jdk.jfr.Description;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.Before;
+import org.junit.Test;
 import selenium.TestBase;
 import selenium.pages.*;
 
-import static org.testng.AssertJUnit.assertTrue;
+import static org.junit.Assert.assertTrue;
 
-public class TS04AddVisitTest extends TestBase {
+public class AddVisitTest extends TestBase {
 
 	private OwnerPage ownerPage;
-
 	private FindOwnersPage findOwnersPage;
-
 	private AddVisitPage addVisitPage;
 
-	@BeforeMethod
+	@Before
 	public void setObjects() {
 		ownerPage = new OwnerPage(driver, locators);
 		findOwnersPage = new FindOwnersPage(driver, locators);
@@ -38,13 +35,11 @@ public class TS04AddVisitTest extends TestBase {
 		findOwnersPage.clickOnFindOwnerButton();
 
 		ListOwnersPage listOwnersPage = new ListOwnersPage(driver, locators);
-		listOwnersPage.clickOnNameFromTable();
+		listOwnersPage.clickOnNameFromTable(1);
 		ownerPage.clickOnAddVisitButton();
 	}
 
-	// Spelling mistake in success message - Report
 	@Test
-	@Description("Validate adding a visit for a pet")
 	public void testAddVisitForPet() {
 		navigateToVisitPage();
 
@@ -53,8 +48,7 @@ public class TS04AddVisitTest extends TestBase {
 		assertTrue(ownerPage.isVisitAdded("description"));
 	}
 
-	@Test(priority = 1)
-	@Description("Validate adding a visit without filling any of the fields")
+	@Test
 	public void testVisitEmptyFields() {
 		navigateToVisitPage();
 
@@ -63,8 +57,7 @@ public class TS04AddVisitTest extends TestBase {
 		assertTrue(addVisitPage.isErrorMessageDisplayedForEmptyField(expectedErrorMessage));
 	}
 
-	@Test(priority = 2)
-	@Description("Validate adding a visit with an invalid date")
+	@Test
 	public void testInvalidDate() {
 		navigateToVisitPage();
 
