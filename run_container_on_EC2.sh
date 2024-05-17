@@ -40,10 +40,14 @@ sudo yum install -y docker
 sudo service docker start
 
 echo "---------------------------------------"
+echo "Creating docker network for containers..."
+docker network create spring-petclinic-network
+
+echo "---------------------------------------"
 echo "Running database container for spring-petclinic..."
 # Run Postgres whitch is needed for spring-petclinic
-docker run -d \
-    --name spring-pertlinic-db \
+docker run -d --name spring-pertlinic-db \
+    --network spring-petclinic-network \
     -e POSTGRES_DB=petclinic \
     -e POSTGRES_USER=petclinic \
     -e POSTGRES_PASSWORD=petclinic \
@@ -71,7 +75,9 @@ docker pull "$AWS_ACCOUNT_ID".dkr.ecr."$REGION".amazonaws.com/"$IMAGE_NAME"
 echo "---------------------------------------"
 echo "Running spring-petclinic container..."
 # Run the Docker image
-docker run -d --name spring-pertlinic -p 80:8080 "$AWS_ACCOUNT_ID".dkr.ecr."$REGION".amazonaws.com/"$IMAGE_NAME"
+docker run -d --name spring-pertlinic \
+    --network spring-petclinic-network \
+    -p 80:8080 "$AWS_ACCOUNT_ID".dkr.ecr."$REGION".amazonaws.com/"$IMAGE_NAME"
 
 # Check if the docker run command was successful
 if [ \$? -eq 0 ]; then
