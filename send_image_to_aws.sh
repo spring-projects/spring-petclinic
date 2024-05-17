@@ -5,7 +5,6 @@
 # Note: docker is reqiured
 
 # Global data
-source ./prepare_aws_enviroment.sh
 
 AWS_ACCOUNT_ID=""
 
