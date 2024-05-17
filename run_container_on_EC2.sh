@@ -43,29 +43,6 @@ sudo yum install -y docker
 sudo service docker start
 
 echo "---------------------------------------"
-echo "Creating docker network for containers..."
-docker network create spring-petclinic-network
-
-echo "---------------------------------------"
-echo "Running database container for spring-petclinic..."
-# Run Postgres whitch is needed for spring-petclinic
-docker run -d --name spring-pertlinic-db \
-    --network spring-petclinic-network \
-    -e POSTGRES_DB=petclinic \
-    -e POSTGRES_USER=petclinic \
-    -e POSTGRES_PASSWORD=petclinic \
-    -v db-data:/var/lib/postgresql/data \
-    -p 5432:5432 \
-    postgres
-
-if [ \$? -eq 0 ]; then
-    echo "Database container started successfully."
-else
-    echo "Error: Failed to start database container."
-    exit 1
-fi
-
-echo "---------------------------------------"
 echo "Authorising ECR..."
 # Authorize ECR in Docker using IAM role
 aws ecr get-login-password --region "$REGION" | docker login --username AWS --password-stdin "$AWS_ACCOUNT_ID".dkr.ecr."$REGION".amazonaws.com
@@ -79,8 +56,6 @@ echo "---------------------------------------"
 echo "Running spring-petclinic container..."
 # Run the Docker image
 docker run -d --name spring-pertlinic \
-    --link spring-pertlinic-db:db \
-    --network spring-petclinic-network \
     -p 80:8080 "$AWS_ACCOUNT_ID".dkr.ecr."$REGION".amazonaws.com/"$IMAGE_NAME"
 
 # Check if the docker run command was successful
