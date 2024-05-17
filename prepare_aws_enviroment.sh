@@ -95,7 +95,7 @@ newgrp docker
 EOF
 )
 
-INSTANCE_ID=$(aws ec2 run-instances --image-id ami-0ac67a26390dc374d --count 1 --instance-type t3.micro --key-name "$KEY_PAIR_NAME" --security-group-ids "$SECURITY_GROUP_ID" --subnet-id "$SUBNET_ID" --region "$REGION" --user-data "$USER_DATA_SCRIPT" --query 'Instances[0].InstanceId' --output text)
+INSTANCE_ID=$(aws ec2 run-instances --image-id ami-0ac67a26390dc374d --count 1 --instance-type t3.micro --key-name "$KEY_PAIR_NAME" --security-group-ids "$SECURITY_GROUP_ID" --subnet-id "$SUBNET_ID" --region "$REGION" --user-data "$USER_DATA_SCRIPT" --iam-instance-profile Name=allow_ec2_ecr --query 'Instances[0].InstanceId' --output text)
 export INSTANCE_ID
 
 if [ -z "$INSTANCE_ID" ]; then
