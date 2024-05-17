@@ -34,18 +34,44 @@ fi
 echo "SSH-ing to EC2 instance and running Docker image from ECR..."
 ssh -i "$FULL_KEY_PATH" ec2-user@"$PUBLIC_IP" <<EOF
 # Ensure Docker is installed and running
+echo "Updating packages and starting Docker..."
 sudo yum update -y
 sudo yum install -y docker
 sudo service docker start
 
+echo "---------------------------------------"
+echo "Running database container for spring-petclinic..."
+# Run Postgres whitch is needed for spring-petclinic
+docker run -d \
+    --name spring-pertlinic-db \
+    -e POSTGRES_DB=petclinic \
+    -e POSTGRES_USER=petclinic \
+    -e POSTGRES_PASSWORD=petclinic \
+    -v db-data:/var/lib/postgresql/data \
+    -p 5432:5432 \
+    postgres
+
+if [ \$? -eq 0 ]; then
+    echo "Database container started successfully."
+else
+    echo "Error: Failed to start database container."
+    exit 1
+fi
+
+echo "---------------------------------------"
+echo "Authorising ECR..."
 # Authorize ECR in Docker using IAM role
 aws ecr get-login-password --region "$REGION" | docker login --username AWS --password-stdin "$AWS_ACCOUNT_ID".dkr.ecr."$REGION".amazonaws.com
 
+echo "---------------------------------------"
+echo "Pulling Docker image from ECR..."
 # Pull the Docker image
 docker pull "$AWS_ACCOUNT_ID".dkr.ecr."$REGION".amazonaws.com/"$IMAGE_NAME"
 
+echo "---------------------------------------"
+echo "Running spring-petclinic container..."
 # Run the Docker image
-docker run -d -p 80:8080 "$AWS_ACCOUNT_ID".dkr.ecr."$REGION".amazonaws.com/"$IMAGE_NAME"
+docker run -d --name spring-pertlinic -p 80:8080 "$AWS_ACCOUNT_ID".dkr.ecr."$REGION".amazonaws.com/"$IMAGE_NAME"
 
 # Check if the docker run command was successful
 if [ \$? -eq 0 ]; then
