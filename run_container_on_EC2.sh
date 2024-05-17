@@ -56,7 +56,7 @@ echo "---------------------------------------"
 echo "Running spring-petclinic container..."
 # Run the Docker image
 docker run -d --name spring-pertlinic \
-    -p 80:8080 "$AWS_ACCOUNT_ID".dkr.ecr."$REGION".amazonaws.com/"$IMAGE_NAME"
+    -p 8080:8080 "$AWS_ACCOUNT_ID".dkr.ecr."$REGION".amazonaws.com/"$IMAGE_NAME"
 
 # Check if the docker run command was successful
 if [ \$? -eq 0 ]; then
