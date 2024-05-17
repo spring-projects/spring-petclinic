@@ -25,7 +25,7 @@ fi
 echo "Logging in to Amazon ECR..."
 DOCKER_LOGIN_CMD=$(aws ecr get-login-password --region "$REGION")
 
-if [ $? -eq 0 ]; then
+if [ -n "$DOCKER_LOGIN_CMD" ]; then
     echo "Got credentials from AWS CLI."
 else
     echo "Error: Failed to get credentials from AWS CLI."
