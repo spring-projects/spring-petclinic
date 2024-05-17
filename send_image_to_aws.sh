@@ -8,15 +8,13 @@
 source ./prepare_aws_enviroment.sh
 
 AWS_ACCOUNT_ID=""
-DOCKERFILE_DIR=""
 
 # Get data from user
 read -p "Enter your AWS account ID: " AWS_ACCOUNT_ID
-read -p "Enter the path to Dockerfile directory: " DOCKERFILE_DIR
 
 # Build docker image locally
 echo "Building Docker image..."
-if docker build -t spring-petclinic "$DOCKERFILE_DIR"; then
+if docker build -t spring-petclinic .; then
     echo "Docker image built successfully."
 else
     echo "Error: Failed to build Docker image."

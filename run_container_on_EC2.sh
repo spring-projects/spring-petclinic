@@ -6,9 +6,9 @@
 source ./send_image_to_aws.sh
 
 IMAGE_NAME="$ECR_NAME:latest"
+FULL_KEY_PATH=""
 
-# Get data from user
-read -p "Enter the ECR image name: " IMAGE_NAME
+read -p "Enter your AWS Key absoluet path: " FULL_KEY_PATH
 
 # Get the public IP of EC2 instance from previus script
 echo "Getting public IP address of EC2 instance..."
@@ -33,7 +33,7 @@ fi
 
 # SSH to EC2 and run instance
 echo "SSH-ing to EC2 instance and running Docker image from ECR..."
-ssh -i /path/to/your/private-key.pem ec2-user@"$PUBLIC_IP" <<EOF
+ssh -i "$FULL_KEY_PATH" ec2-user@"$PUBLIC_IP" <<EOF
 docker pull "$IMAGE_NAME"
 docker run -d -p 80:8080 "$IMAGE_NAME"
 EOF
