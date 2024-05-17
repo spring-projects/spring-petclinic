@@ -14,6 +14,8 @@ ECR_REPO_URI=""
 INSTANCE_ID=""
 
 # Get data from user - set it as env to be used in later scripts
+echo "---------------------------------------"
+echo ""
 read -p "Enter VPC name: " VPC_NAME && export VPC_NAME
 read -p "Enter owner name: " OWNER && export OWNER
 read -p "Enter project name: " PROJECT && export PROJECT
@@ -23,6 +25,8 @@ read -p "Enter security group name: " SECURITY_GROUP_NAME && export SECURITY_GRO
 read -p "Enter key pair name: " KEY_PAIR_NAME && export KEY_PAIR_NAME
 
 # Create VPC
+echo "---------------------------------------"
+
 echo "Creating VPC..."
 VPC_ID=$(aws ec2 create-vpc --cidr-block 10.0.0.0/16 --region "$REGION" --query 'Vpc.VpcId' --output text)
 
@@ -37,6 +41,7 @@ aws ec2 create-tags --resources "$VPC_ID" --tags Key=Name,Value="$VPC_NAME" Key=
 echo "VPC is now correctly configured."
 
 # Create Subnet
+echo "---------------------------------------"
 echo "Creating Subnet..."
 SUBNET_ID=$(aws ec2 create-subnet --vpc-id "$VPC_ID" --cidr-block 10.0.0.0/24 --availability-zone "$REGION"a --query 'Subnet.SubnetId' --output text)
 
@@ -51,6 +56,7 @@ aws ec2 create-tags --resources "$SUBNET_ID" --tags Key=Name,Value="$VPC_NAME-Su
 echo "Subnet is now correctly configured."
 
 # Create Elastic Container Registry (ECR)
+echo "---------------------------------------"
 echo "Creating Elastic Container Registry (ECR)..."
 ECR_REPO_URI=$(aws ecr create-repository --repository-name "$ECR_NAME" -tags Key=Name,Value="$ECR_NAME" Key=Owner,Value="$OWNER" Key=Project,Value="$PROJECT" --region "$REGION" --query 'repository.repositoryUri' --output text)
 
@@ -63,6 +69,7 @@ fi
 echo "ECR repository created: $ECR_REPO_URI"
 
 # Create Security Group
+echo "---------------------------------------"
 echo "Creating Security Group..."
 SECURITY_GROUP_ID=$(aws ec2 create-security-group --group-name "$SECURITY_GROUP_NAME" --description "Security group for devOps internship assesment" --vpc-id "$VPC_ID" --region "$REGION" --output text)
 
@@ -81,6 +88,7 @@ aws ec2 authorize-security-group-ingress --group-id "$SECURITY_GROUP_ID" --proto
 echo "Inbound SSH access has been allowed for Security Group."
 
 # Create EC2 instance
+echo "---------------------------------------"
 echo "Creating EC2 instance..."
 
 # UserData script to install Docker and run it
@@ -109,6 +117,7 @@ aws ec2 create-tags --resources "$INSTANCE_ID" --tags Key=Name,Value="$INSTANCE_
 echo "EC2 instance is now correctly configured."
 
 # Allocate and associate public IP address with EC2 instance
+echo "---------------------------------------"
 echo "Allocating and associating public IP address with EC2 instance..."
 
 PUBLIC_IP=$(aws ec2 allocate-address --domain vpc --region "$REGION" --output text)

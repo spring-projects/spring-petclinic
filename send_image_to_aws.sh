@@ -9,9 +9,12 @@
 AWS_ACCOUNT_ID=""
 
 # Get data from user
+echo "---------------------------------------"
+echo ""
 read -p "Enter your AWS account ID: " AWS_ACCOUNT_ID
 
 # Build docker image locally
+echo "---------------------------------------"
 echo "Building Docker image..."
 if docker build -t spring-petclinic .; then
     echo "Docker image built successfully."
@@ -21,6 +24,7 @@ else
 fi
 
 # Log in to ECR
+echo "---------------------------------------"
 echo "Logging in to Amazon ECR..."
 DOCKER_LOGIN_CMD=$(aws ecr get-login-password --region "$REGION")
 
@@ -39,6 +43,7 @@ else
 fi
 
 # Tag the image
+echo "---------------------------------------"
 echo "Tagging Docker image..."
 if docker tag spring-petclinic:latest "$AWS_ACCOUNT_ID".dkr.ecr."$REGION".amazonaws.com/"$ECR_NAME":latest; then
     echo "Docker image tagged successfully."
@@ -48,6 +53,7 @@ else
 fi
 
 # Push image to ECR
+echo "---------------------------------------"
 echo "Pushing Docker image to ECR..."
 if docker push "$AWS_ACCOUNT_ID".dkr.ecr."$REGION".amazonaws.com/"$ECR_NAME":latest; then
     echo "Docker image pushed to ECR successfully."

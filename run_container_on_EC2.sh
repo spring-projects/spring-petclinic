@@ -7,6 +7,9 @@
 IMAGE_NAME="$ECR_NAME:latest"
 FULL_KEY_PATH=""
 
+echo "---------------------------------------"
+echo ""
+
 read -p "Enter your AWS Key absolute path: " FULL_KEY_PATH
 
 # Get the public IP of EC2 instance from previus script
@@ -76,6 +79,7 @@ echo "---------------------------------------"
 echo "Running spring-petclinic container..."
 # Run the Docker image
 docker run -d --name spring-pertlinic \
+    --link spring-pertlinic-db:db \
     --network spring-petclinic-network \
     -p 80:8080 "$AWS_ACCOUNT_ID".dkr.ecr."$REGION".amazonaws.com/"$IMAGE_NAME"
 
