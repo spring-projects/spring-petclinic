@@ -59,11 +59,13 @@ public class TestBase {
 
 		String browser = prop.getProperty("browser").toLowerCase();
 		ChromeOptions chromeOptions = new ChromeOptions();
-		chromeOptions.addArguments("--headless", "-disable-gpu", "-window-size=1920,1080");
+		chromeOptions.addArguments("--headless=new", "-disable-gpu", "-window-size=1920,1080", "--lang=en");
+
 		FirefoxOptions firefoxOptions = new FirefoxOptions();
-		firefoxOptions.addArguments("--headless", "-disable-gpu", "-window-size=1920,1080");
+		firefoxOptions.addArguments("--headless", "-disable-gpu", "-window-size=1920,1080", "--lang=en");
+
 		EdgeOptions edgeOptions = new EdgeOptions();
-		edgeOptions.addArguments("--headless", "-disable-gpu", "-window-size=1920,1080");
+		edgeOptions.addArguments("--headless=new", "-disable-gpu", "-window-size=1920,1080", "--lang=en");
 
 		switch (browser) {
 			case "chrome":
@@ -79,7 +81,7 @@ public class TestBase {
 				throw new IllegalArgumentException("Unsupported browser: " + browser);
 		}
 
-		// driver.manage().window().maximize();
+		driver.manage().window().maximize();
 		driver.get(prop.getProperty("testUrl"));
 
 		WebElement welcomePhoto = driver.findElement(By.className(locators.getProperty("welcomePhoto")));
@@ -92,4 +94,5 @@ public class TestBase {
 	public void tearDown() {
 		driver.quit();
 	}
+
 }

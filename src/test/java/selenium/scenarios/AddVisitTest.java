@@ -10,7 +10,9 @@ import static org.junit.Assert.assertTrue;
 public class AddVisitTest extends TestBase {
 
 	private OwnerPage ownerPage;
+
 	private FindOwnersPage findOwnersPage;
+
 	private AddVisitPage addVisitPage;
 
 	@Before

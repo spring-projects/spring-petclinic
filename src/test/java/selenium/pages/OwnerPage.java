@@ -83,10 +83,10 @@ public class OwnerPage extends TestBase {
 	}
 
 	public boolean isPetNameDisplayed(String petName) {
-		WebElement petDetails = driver.findElement(petDetailsClass);
-		String petDetailsText = petDetails.getText();
+		List<WebElement> petDetails = driver.findElements(petDetailsClass);
+		List<String> petDetailsText = petDetails.stream().map(WebElement::getText).toList();
 		String expectedPetName = input.getProperty(petName);
-		return petDetailsText.contains(expectedPetName);
+		return petDetailsText.stream().anyMatch(petDetailsItem -> petDetailsItem.contains(expectedPetName));
 	}
 
 	public void clickOnEditPetButton() {

@@ -11,6 +11,7 @@ import static org.junit.Assert.assertTrue;
 public class HomePageTest extends TestBase {
 
 	private HomePage homePage;
+
 	private FindOwnersPage findOwnersPage;
 
 	@Before

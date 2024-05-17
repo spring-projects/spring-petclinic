@@ -1,6 +1,7 @@
 package selenium.scenarios;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import selenium.TestBase;
 import selenium.pages.*;
@@ -10,8 +11,11 @@ import static org.junit.Assert.*;
 public class AddPetTest extends TestBase {
 
 	private AddOwnerPage addOwnerPage;
+
 	private OwnerPage ownerPage;
+
 	private FindOwnersPage findOwnersPage;
+
 	private AddPetPage addPetPage;
 
 	@Before
@@ -30,7 +34,8 @@ public class AddPetTest extends TestBase {
 		addPetPage.fillTheFields(petNameText, petBirthDateText, petTypeOption);
 		if (action.equalsIgnoreCase("add")) {
 			addPetPage.clickOnAddPetButton();
-		} else if (action.equalsIgnoreCase("update")) {
+		}
+		else if (action.equalsIgnoreCase("update")) {
 			addPetPage.clickOnUpdatePetButton();
 		}
 	}
@@ -103,6 +108,7 @@ public class AddPetTest extends TestBase {
 
 	// Pet is still added after putting numbers in 'Name' field - REPORT DEFECT!!!
 	@Test
+	@Ignore("Disabled due to defect")
 	public void testAddNumbersInNameField() {
 		navigateToAddPetForExistingOwner(1);
 

@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
 
-
 public class ListOwnersPage extends TestBase {
 
 	public ListOwnersPage(WebDriver driver, Properties loc) {

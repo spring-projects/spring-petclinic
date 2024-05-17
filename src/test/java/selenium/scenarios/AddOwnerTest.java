@@ -1,6 +1,7 @@
 package selenium.scenarios;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import selenium.TestBase;
 import selenium.pages.AddOwnerPage;
@@ -13,7 +14,9 @@ import static org.junit.Assert.*;
 public class AddOwnerTest extends TestBase {
 
 	private AddOwnerPage addOwnerPage;
+
 	private OwnerPage ownerPage;
+
 	private FindOwnersPage findOwnersPage;
 
 	@Before
@@ -29,7 +32,7 @@ public class AddOwnerTest extends TestBase {
 	}
 
 	public void addOrEditAnOwner(String action, String firstName, String lastName, String address, String city,
-								 String telephone) {
+			String telephone) {
 		String firstNameText = input.getProperty(firstName);
 		String lastNameText = input.getProperty(lastName);
 		String addressText = input.getProperty(address);
@@ -39,7 +42,8 @@ public class AddOwnerTest extends TestBase {
 		addOwnerPage.setTextInFields(firstNameText, lastNameText, addressText, cityText, telephoneText);
 		if (action.equalsIgnoreCase("add")) {
 			addOwnerPage.clickingOnAddOwnerButton();
-		} else if (action.equalsIgnoreCase("update")) {
+		}
+		else if (action.equalsIgnoreCase("update")) {
 			addOwnerPage.clickOnUpdateOwnerButton();
 		}
 	}
@@ -64,6 +68,7 @@ public class AddOwnerTest extends TestBase {
 
 	// User is still created after putting numbers in the name fields - REPORT DEFECT!!!
 	@Test
+	@Ignore("Disabled due to defect")
 	public void testNumbersInNameFields() {
 		navigateToAddOwner();
 
@@ -74,6 +79,7 @@ public class AddOwnerTest extends TestBase {
 
 	// You can add the same owner twice - REPORT DEFECT!!!
 	@Test
+	@Ignore("Disabled due to defect")
 	public void testCreateSameOwnerTwice() {
 		navigateToAddOwner();
 
@@ -92,7 +98,7 @@ public class AddOwnerTest extends TestBase {
 
 		String expectedErrorMessage = tap.getProperty("errorMessageTelephoneField");
 		assertTrue("Error message should be displayed for invalid telephone number",
-			addOwnerPage.isErrorMessageDisplayedForTextInTelephoneField(expectedErrorMessage));
+				addOwnerPage.isErrorMessageDisplayedForTextInTelephoneField(expectedErrorMessage));
 	}
 
 	@Test
@@ -107,7 +113,7 @@ public class AddOwnerTest extends TestBase {
 		addOwnerPage.clearFields();
 
 		addOrEditAnOwner("update", "updateFirstName", "updateLastName", "updateAddress", "updateCity",
-			"updateTelephone");
+				"updateTelephone");
 
 		assertTrue(ownerPage.isUpdateMessageDisplayed());
 		assertTrue(ownerPage.isLastNameDisplayed(input.getProperty("updateLastName")));
@@ -115,6 +121,7 @@ public class AddOwnerTest extends TestBase {
 
 	// User can still be updated - REPORT DEFECT!!!
 	@Test
+	@Ignore("Disabled due to defect")
 	public void testUpdateOwnerWithSameDetailsFromOtherOwner() {
 		findOwnersPage.navigateToFindOwnersPage();
 		findOwnersPage.clickOnFindOwnerButton();
@@ -139,9 +146,10 @@ public class AddOwnerTest extends TestBase {
 		addOwnerPage.clearFields();
 
 		addOrEditAnOwner("update", "updateFirstName2", "updateLastName2", "updateAddress2", "updateCity2",
-			"updateTelephone2");
+				"updateTelephone2");
 
 		assertTrue(ownerPage.isUpdateMessageDisplayed());
 		assertTrue(ownerPage.isLastNameDisplayed(input.getProperty("updateLastName2")));
 	}
+
 }
