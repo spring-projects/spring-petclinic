@@ -15,6 +15,9 @@ pipeline {
     stages {
         // Merge request pipeline
         stage('Checkstyle') {
+            when {
+                changeRequest()
+            }
             steps{
                 echo 'Running gradle checkstyle'
                 sh './gradlew checkstyleMain --no-daemon'
@@ -26,24 +29,36 @@ pipeline {
             }
         }
         stage('Test') {
+            when {
+                changeRequest()
+            }
             steps {
                 echo 'Running gradle test'
                 sh './gradlew test -x test --no-daemon'
             }
         }
         stage('Build') {
+            when {
+                changeRequest()
+            }
             steps {
                 echo 'Running build automation'
                 sh './gradlew build -x test -x check -x checkFormat -x processTestAot --no-daemon'
                 archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true            }
         }
         stage('Docker Build (MR)') {
+            when {
+                changeRequest()
+            }
             steps { 
                 echo 'Building docker Image'
                 sh 'docker build -t $NEXUS_DOCKER_REPO_MR/spring-petclinic:${GIT_COMMIT} .'
             }
         }
         stage('Docker Login (MR)') {
+            when {
+                changeRequest()
+            }
             steps {
                 echo 'Nexus Docker Repository Login'
                 script{
@@ -55,6 +70,9 @@ pipeline {
             }
         }
         stage('Docker Push (MR)') {
+            when {
+                changeRequest()
+            }
             steps {
                 echo 'Pushing Image to docker repo'
                 sh 'docker push $NEXUS_DOCKER_REPO_MR/spring-petclinic:${GIT_COMMIT}'
