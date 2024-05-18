@@ -53,7 +53,7 @@ public class PetClinicIntegrationTests {
 
 	@Test
 	void testDemo(){
-		assertEquals(2, 2);
+		assertEquals(1, 2);
 	}
 
 	@Test
