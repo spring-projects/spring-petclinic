@@ -50,9 +50,8 @@ public class PetClinicIntegrationTests {
 		vets.findAll(); // served from cache
 	}
 
-
 	@Test
-	void testDemo(){
+	void testDemo() {
 		assertEquals(1, 2);
 	}
 
