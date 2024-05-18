@@ -33,6 +33,7 @@ To debug in IntelliJ Idea, open the 'Maven Projects' tool window (View
 version = "2024.03"
 
 project {
+    description = "Code stored at https://github.com/TPG-Teklada/spring-petclinic"
 
     buildType(Build)
     buildType(Deploy)
