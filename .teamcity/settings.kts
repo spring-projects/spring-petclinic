@@ -33,6 +33,7 @@ version = "2024.03"
 project {
 
     buildType(Build)
+    buildType(Deploy)
 }
 
 object Build : BuildType({
@@ -74,4 +75,8 @@ object Build : BuildType({
             }
         }
     }
+})
+
+object Deploy : BuildType({
+    name = "Deploy"
 })
