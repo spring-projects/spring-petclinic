@@ -157,7 +157,7 @@ object Deploy : BuildType({
                 val githubToken = getArg(args,"token" )
                 
                 val releaseId = createRelease(client, githubToken, repoOwner, repoName, tagName, releaseName, releaseDescription)
-                //uploadFileToRelease(client, githubToken, repoOwner, repoName, releaseId, filePath)
+                uploadFileToRelease(client, githubToken, repoOwner, repoName, releaseId, filePath)
             """.trimIndent()
             arguments = """-repoOwner "TPG-Teklada" -repoName "spring-petclinic" -tagName "v1.0.0" -releaseName "Release 1.0.0" -description "Description of the release" -filePath "*.jar" -token "%github_key%""""
         }
