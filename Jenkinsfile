@@ -43,7 +43,7 @@ pipeline {
                 sh 'docker build -t $NEXUS_DOCKER_REPO_MR/spring-petclinic:${GIT_COMMIT} .'
             }
         }
-        stage('Docker Login') {
+        stage('Docker Login (MR)') {
             steps {
                 echo 'Nexus Docker Repository Login'
                 script{
@@ -71,7 +71,7 @@ pipeline {
                 sh 'docker build -t $NEXUS_DOCKER_REPO_MAIN/spring-petclinic:${GIT_COMMIT} .'
             }
         }
-        stage('Docker Login') {
+        stage('Docker Login (Main)') {
             when {
                 branch 'main'
             }
