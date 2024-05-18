@@ -3,7 +3,7 @@
 # This script sets up basic AWS environment for pushing docker images into the cloud
 # It creates: VPC, Subnet, Elastic Container Registry (ECR), EC2 instance with a public IP, Security Groups
 #
-# Note: script needs preconfigured AWS CLI
+# Reqiured: Docker, configured AWS CLI, EC2 key pair created from AWS
 
 # Global data
 REGION="eu-west-1"

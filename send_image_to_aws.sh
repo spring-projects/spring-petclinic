@@ -2,7 +2,7 @@
 # -------------------
 # This script sets builds and pushes image to previously made ECR
 # 
-# Note: docker is reqiured
+# Reqiured: Docker, configured AWS CLI, EC2 key pair created from AWS
 
 # Global data
 

@@ -3,7 +3,7 @@
 # This script removes AWS environment from previus scripts
 # It removes: VPC, Subnet, Elastic Container Registry (ECR), EC2 instance with a public IP, Security Groups
 #
-# Note: script needs preconfigured AWS CLI
+# Reqiured: configured AWS CLI
 
 read -p "Enter VPC id: " VPC_ID
 read -p "Enter Subnet id: " SUBNET_ID

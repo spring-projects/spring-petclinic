@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # -------------------
 # This script sets authenthicates and pulls docker image. Then runs it on host
+#
+# Reqiured: configured AWS CLI, EC2 key pair created from AWS
 
 # Global data
 
