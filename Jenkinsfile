@@ -4,7 +4,8 @@ pipeline {
 
     environment {
         NEXUS_CREDS = credentials('nexus-cred')
-        NEXUS_DOCKER_REPO_MR = '34.241.46.54:8085'
+        NEXUS_DOCKER_REPO_MR = '34.245.131.115:8085'
+        NEXUS_DOCKER_REPO_MAIN = '34.245.131.115:8084'
     }
 
     tools {
