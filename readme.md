@@ -52,13 +52,13 @@ A similar setup is provided for MySQL and PostgreSQL if a persistent database co
 You only need to pass the Spring Boot profile at the time of running the application:
 
 ```bash
-./mvnw spring-boot:run -Dspring-boot.run.profiles=mysql
+./mvnw spring-boot:test-run -Dstart-class=org.springframework.samples.petclinic.MysqlTestApplication
 ```
 
 or
 
 ```bash
-./mvnw spring-boot:run -Dspring-boot.run.profiles=postgres
+./mvnw spring-boot:test-run -Dstart-class=org.springframework.samples.petclinic.PostgresIntegrationTests
 ```
 
 ## Test Applications
