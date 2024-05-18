@@ -56,8 +56,8 @@ object Build : BuildType({
     publishArtifacts = PublishMode.SUCCESSFUL
 
     params {
-        param("maven.project.version", "1")
         param("maven.project.artifactId", "%repo_name%")
+        param("maven.project.version", "1")
     }
 
     vcs {
