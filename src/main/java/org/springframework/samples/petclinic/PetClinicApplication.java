@@ -33,8 +33,9 @@ import java.util.Locale;
 @SpringBootApplication
 @ImportRuntimeHints(PetClinicRuntimeHints.class)
 public class PetClinicApplication {
-
+	
 	public static void main(String[] args) {
+		// comment
 		SpringApplication.run(PetClinicApplication.class, args);
 	}
 
