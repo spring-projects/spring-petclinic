@@ -220,7 +220,7 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
         <executions>
           <execution>
-            <!-- Spring Boot Actuator displays build-related information 
+            <!-- Spring Boot Actuator displays build-related information
               if a META-INF/build-info.properties file is present -->
             <goals>
               <goal>build-info</goal>
@@ -378,7 +378,7 @@
       <build>
         <pluginManagement>
           <plugins>
-            <!-- This plugin's configuration is used to store Eclipse m2e settings 
+            <!-- This plugin's configuration is used to store Eclipse m2e settings
               only. It has no influence on the Maven build itself. -->
             <plugin>
               <groupId>org.eclipse.m2e</groupId>
@@ -433,6 +433,30 @@
           </plugins>
         </pluginManagement>
       </build>
+    </profile>
+    <profile>
+      <id>mysql</id>
+      <properties>
+        <spring-boot.run.profiles>mysql,docker-compose</spring-boot.run.profiles>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-docker-compose</artifactId>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>postgres</id>
+      <properties>
+        <spring-boot.run.profiles>postgres,docker-compose</spring-boot.run.profiles>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-docker-compose</artifactId>
+        </dependency>
+      </dependencies>
     </profile>
   </profiles>
 
