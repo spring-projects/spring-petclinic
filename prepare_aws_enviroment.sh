@@ -24,6 +24,7 @@ read -p "Enter EC2 instance name: " INSTANCE_NAME && export INSTANCE_NAME
 read -p "Enter security group name: " SECURITY_GROUP_NAME && export SECURITY_GROUP_NAME
 read -p "Enter key pair name: " KEY_PAIR_NAME && export KEY_PAIR_NAME
 
+
 # Create VPC
 echo "---------------------------------------"
 
@@ -40,6 +41,7 @@ echo "VPC with ID $VPC_ID has been created."
 aws ec2 create-tags --resources "$VPC_ID" --tags Key=Name,Value="$VPC_NAME" Key=Owner,Value="$OWNER" Key=Project,Value="$PROJECT" --region "$REGION"
 echo "VPC is now correctly configured."
 
+
 # Create Subnet
 echo "---------------------------------------"
 echo "Creating Subnet..."
@@ -55,18 +57,24 @@ echo "Subnet with ID $SUBNET_ID has been created."
 aws ec2 create-tags --resources "$SUBNET_ID" --tags Key=Name,Value="$VPC_NAME-Subnet" Key=Owner,Value="$OWNER" Key=Project,Value="$PROJECT" --region "$REGION"
 echo "Subnet is now correctly configured."
 
+
 # Create Elastic Container Registry (ECR)
 echo "---------------------------------------"
 echo "Creating Elastic Container Registry (ECR)..."
-ECR_REPO_URI=$(aws ecr create-repository --repository-name "$ECR_NAME" -tags Key=Name,Value="$ECR_NAME" Key=Owner,Value="$OWNER" Key=Project,Value="$PROJECT" --region "$REGION" --query 'repository.repositoryUri' --output text)
+ECR_REPO_JSON=$(aws ecr create-repository --repository-name "$ECR_NAME" --region "$REGION" --query 'repository' --output json)
+ECR_REPO_URI=$(echo "$ECR_REPO_JSON" | jq -r '.repositoryUri')
+ECR_REPO_ARN=$(echo "$ECR_REPO_JSON" | jq -r '.repositoryArn')
 
-export ECR_REPO_URI
-
-if [ -z "$ECR_REPO_URI" ]; then
+if [ -z "$ECR_REPO_URI" ] || [ -z "$ECR_REPO_ARN" ]; then
     echo "Error during ECR creation."
     exit 1
 fi
 echo "ECR repository created: $ECR_REPO_URI"
+
+# Add tags to Elastic Container Registry
+aws ecr tag-resource --resource-arn "$ECR_REPO_ARN" --tags Key=Name,Value="$ECR_NAME" Key=Owner,Value="$OWNER" Key=Project,Value="$PROJECT" --region "$REGION"
+echo "Tags added to ECR repository."
+
 
 # Create Security Group
 echo "---------------------------------------"
@@ -86,6 +94,7 @@ echo "Security Group is now correctly configured."
 # Allow inbound SSH access (port 22) from anywhere
 aws ec2 authorize-security-group-ingress --group-id "$SECURITY_GROUP_ID" --protocol tcp --port 22 --cidr 0.0.0.0/0 --region "$REGION"
 echo "Inbound SSH access has been allowed for Security Group."
+
 
 # Create EC2 instance
 echo "---------------------------------------"
@@ -116,6 +125,7 @@ echo "EC2 instance with ID $INSTANCE_ID has been created."
 aws ec2 create-tags --resources "$INSTANCE_ID" --tags Key=Name,Value="$INSTANCE_NAME" Key=Owner,Value="$OWNER" Key=Project,Value="$PROJECT" --region "$REGION"
 echo "EC2 instance is now correctly configured."
 
+
 # Allocate and associate public IP address with EC2 instance
 echo "---------------------------------------"
 echo "Allocating and associating public IP address with EC2 instance..."
@@ -125,6 +135,7 @@ export PUBLIC_IP
 
 aws ec2 associate-address --instance-id "$INSTANCE_ID" --public-ip "$PUBLIC_IP" --region "$REGION"
 echo "Public IP address has been allocated and associated with EC2 instance: $PUBLIC_IP"
+
 
 echo "EC2 instance, public IP address, and Security Group have been successfully created."
 
