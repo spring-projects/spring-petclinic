@@ -16,14 +16,19 @@ INSTANCE_ID=""
 # Get data from user - set it as env to be used in later scripts
 echo "---------------------------------------"
 echo ""
-read -p "Enter VPC name: " VPC_NAME && export VPC_NAME
 read -p "Enter owner name: " OWNER && export OWNER
+read -p "Enter VPC name: " VPC_NAME && export VPC_NAME
 read -p "Enter project name: " PROJECT && export PROJECT
 read -p "Enter ECR repository name: " ECR_NAME && export ECR_NAME
 read -p "Enter EC2 instance name: " INSTANCE_NAME && export INSTANCE_NAME
+read -p "Enter key pair name: " KEY_PAIR_NAME && export KEY_PAIR_NAME
 read -p "Enter security group name: " SECURITY_GROUP_NAME && export SECURITY_GROUP_NAME
 read -p "Enter Elastic IP name: " EIP_NAME && export EIP_NAME
-read -p "Enter key pair name: " KEY_PAIR_NAME && export KEY_PAIR_NAME
+
+
+echo ""
+echo "---------------------------------------"
+echo ""
 
 
 echo "Creating VPC..."
@@ -42,9 +47,12 @@ echo "VPC with ID $VPC_ID has been created and tagged."
 
 echo "VPC is now correctly configured."
 
+echo ""
+echo "---------------------------------------"
+echo ""
+
 
 # Create Subnet
-echo "---------------------------------------"
 echo "Creating Subnet..."
 SUBNET_ID=$(aws ec2 create-subnet \
     --vpc-id "$VPC_ID" \
@@ -62,9 +70,12 @@ echo "Subnet with ID $SUBNET_ID has been created and tagged."
 
 echo "Subnet is now correctly configured."
 
+echo ""
+echo "---------------------------------------"
+echo ""
+
 
 # Create Elastic Container Registry (ECR)
-echo "---------------------------------------"
 echo "Creating Elastic Container Registry (ECR)..."
 ECR_REPO_JSON=$(aws ecr create-repository \
     --repository-name "$ECR_NAME" \
@@ -87,9 +98,12 @@ aws ecr tag-resource \
 
 echo "Tags added to ECR repository."
 
+echo ""
+echo "---------------------------------------"
+echo ""
+
 
 # Create Security Group
-echo "---------------------------------------"
 echo "Creating Security Group..."
 SECURITY_GROUP_ID=$(aws ec2 create-security-group \
     --description "Security group for devOps internship assesment" \
@@ -115,9 +129,12 @@ aws ec2 authorize-security-group-ingress \
     --region "$REGION"
 echo "Inbound SSH access has been allowed for Security Group."
 
+echo ""
+echo "---------------------------------------"
+echo ""
+
 
 # Create EC2 instance
-echo "---------------------------------------"
 echo "Creating EC2 instance..."
 
 # UserData script to install Docker and run it
@@ -155,9 +172,12 @@ echo "EC2 instance with ID $INSTANCE_ID has been created."
 
 echo "EC2 instance is now correctly configured."
 
+echo ""
+echo "---------------------------------------"
+echo ""
+
 
 # Allocate and associate public IP address with EC2 instance
-echo "---------------------------------------"
 echo "Allocating and associating public IP address with EC2 instance..."
 
 EIP_ALLOCATION_JSON=$(aws ec2 allocate-address \
