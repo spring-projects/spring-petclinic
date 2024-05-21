@@ -3,7 +3,7 @@
 # This script sets up basic AWS environment for pushing docker images into the cloud
 # It creates: VPC, Subnet, Elastic Container Registry (ECR), EC2 instance with a public IP, Security Groups
 #
-# Reqiured: Docker, configured AWS CLI, EC2 key pair created from AWS
+# Required: Docker, configured AWS CLI, EC2 key pair created from AWS
 
 # Global data
 REGION="eu-west-1"
@@ -92,10 +92,9 @@ echo "Tags added to ECR repository."
 echo "---------------------------------------"
 echo "Creating Security Group..."
 SECURITY_GROUP_ID=$(aws ec2 create-security-group \
-    --group-name "$SECURITY_GROUP_NAME" \
     --description "Security group for devOps internship assesment" \
     --vpc-id "$VPC_ID" \
-    --tag-specifications 'ResourceType=security-group,Tags=[{Key=Name,Value='"$VPC_NAME"'},{Key=Owner,Value='"$OWNER"'},{Key=Project,Value='"$PROJECT"'}]' \
+    --tag-specifications 'ResourceType=security-group,Tags=[{Key=Name,Value='"$SECURITY_GROUP_NAME"'},{Key=Owner,Value='"$OWNER"'},{Key=Project,Value='"$PROJECT"'}]' \
     --region "$REGION" \
     --output text)
 
