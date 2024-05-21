@@ -69,7 +69,6 @@ echo "Creating Elastic Container Registry (ECR)..."
 ECR_REPO_JSON=$(aws ecr create-repository \
     --repository-name "$ECR_NAME" \
     --region "$REGION" \
-    --tag-specifications 'ResourceType=repository,Tags=[{Key=Name,Value='"$VPC_NAME"'},{Key=Owner,Value='"$OWNER"'},{Key=Project,Value='"$PROJECT"'}]' \
     --query 'repository' \
     --output json)
 ECR_REPO_URI=$(echo "$ECR_REPO_JSON" | jq -r '.repositoryUri')
@@ -80,6 +79,11 @@ if [ -z "$ECR_REPO_URI" ] || [ -z "$ECR_REPO_ARN" ]; then
     exit 1
 fi
 echo "ECR repository created: $ECR_REPO_URI"
+
+# Adding tags to the ECR repository
+aws ecr tag-resource \
+    --resource-arn "$ECR_REPO_ARN" \
+    --tags Key=Name,Value="$ECR_NAME" Key=Owner,Value="$OWNER" Key=Project,Value="$PROJECT"
 
 echo "Tags added to ECR repository."
 
