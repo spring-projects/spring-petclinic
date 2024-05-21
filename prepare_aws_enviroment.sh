@@ -19,12 +19,12 @@ echo ""
 read -p "Enter owner name: " OWNER && export OWNER
 read -p "Enter project name: " PROJECT && export PROJECT
 read -p "Enter VPC name: " VPC_NAME && export VPC_NAME
+read -p "Enter security group name: " SECURITY_GROUP_NAME && export SECURITY_GROUP_NAME
+read -p "Enter internet gateway name: " INTERNERT_GATEWAY_NAME && export INTERNERT_GATEWAY_NAME
 read -p "Enter ECR repository name: " ECR_NAME && export ECR_NAME
 read -p "Enter EC2 instance name: " INSTANCE_NAME && export INSTANCE_NAME
 read -p "Enter key pair name: " KEY_PAIR_NAME && export KEY_PAIR_NAME
-read -p "Enter security group name: " SECURITY_GROUP_NAME && export SECURITY_GROUP_NAME
 read -p "Enter Elastic IP name: " EIP_NAME && export EIP_NAME
-
 
 echo ""
 echo "---------------------------------------"
@@ -74,7 +74,6 @@ echo ""
 echo "---------------------------------------"
 echo ""
 
-
 # Create Security Group
 echo "Creating Security Group..."
 SECURITY_GROUP_ID=$(aws ec2 create-security-group \
@@ -83,8 +82,10 @@ SECURITY_GROUP_ID=$(aws ec2 create-security-group \
     --vpc-id "$VPC_ID" \
     --tag-specifications 'ResourceType=security-group,Tags=[{Key=Name,Value='"$SECURITY_GROUP_NAME"'},{Key=Owner,Value='"$OWNER"'},{Key=Project,Value='"$PROJECT"'}]' \
     --region "$REGION" \
-    --query 'SecurityGroups[*].[GroupId]' \
+    --query 'GroupId' \
     --output text)
+
+echo "Security Group ID: $SECURITY_GROUP_ID"
 
 if [ -z "$SECURITY_GROUP_ID" ]; then
     echo "Error during Security Group creation."
@@ -102,6 +103,35 @@ aws ec2 authorize-security-group-ingress \
     --cidr 0.0.0.0/0 \
     --region "$REGION"
 echo "Inbound SSH access has been allowed for Security Group."
+
+echo ""
+echo "---------------------------------------"
+echo ""
+
+echo "Creating Internet Gateway..."
+INTERNET_GATEWAY_ID=$(aws ec2 create-internet-gateway \
+    --tag-specifications 'ResourceType=internet-gateway,Tags=[{Key=Name,Value='"$VPC_NAME"'},{Key=Owner,Value='"$OWNER"'},{Key=Project,Value='"$PROJECT"'}]' \
+    --region "$REGION" \
+    --query 'InternetGateway.InternetGatewayId' \
+    --output text)
+
+if [ -z "$INTERNET_GATEWAY_ID" ]; then
+    echo "Error during Internet Gateway creation."
+    exit 1
+fi
+
+echo "Internet Gateway with ID $INTERNET_GATEWAY_ID has been created and tagged."
+
+# Attach Internet Gateway to VPC
+aws ec2 attach-internet-gateway --internet-gateway-id "$INTERNET_GATEWAY_ID" --vpc-id "$VPC_ID" --region "$REGION"
+
+if [ $? -ne 0 ]; then
+    echo "Error during attaching Internet Gateway to VPC."
+    exit 1
+fi
+
+echo "Internet Gateway has been attached to VPC."
+
 
 echo ""
 echo "---------------------------------------"
