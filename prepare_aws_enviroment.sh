@@ -17,8 +17,8 @@ INSTANCE_ID=""
 echo "---------------------------------------"
 echo ""
 read -p "Enter owner name: " OWNER && export OWNER
-read -p "Enter VPC name: " VPC_NAME && export VPC_NAME
 read -p "Enter project name: " PROJECT && export PROJECT
+read -p "Enter VPC name: " VPC_NAME && export VPC_NAME
 read -p "Enter ECR repository name: " ECR_NAME && export ECR_NAME
 read -p "Enter EC2 instance name: " INSTANCE_NAME && export INSTANCE_NAME
 read -p "Enter key pair name: " KEY_PAIR_NAME && export KEY_PAIR_NAME
@@ -75,6 +75,39 @@ echo "---------------------------------------"
 echo ""
 
 
+# Create Security Group
+echo "Creating Security Group..."
+SECURITY_GROUP_ID=$(aws ec2 create-security-group \
+    --group-name "$SECURITY_GROUP_NAME" \
+    --description "Security group for devOps internship assesment" \
+    --vpc-id "$VPC_ID" \
+    --tag-specifications 'ResourceType=security-group,Tags=[{Key=Name,Value='"$SECURITY_GROUP_NAME"'},{Key=Owner,Value='"$OWNER"'},{Key=Project,Value='"$PROJECT"'}]' \
+    --region "$REGION" \
+    --query 'SecurityGroups[*].[GroupId]' \
+    --output text)
+
+if [ -z "$SECURITY_GROUP_ID" ]; then
+    echo "Error during Security Group creation."
+    exit 1
+fi
+echo "Security Group with ID $SECURITY_GROUP_ID has been created."
+
+echo "Security Group is now correctly configured."
+
+# Allow inbound SSH access (port 22) from anywhere
+aws ec2 authorize-security-group-ingress \
+    --group-id "$SECURITY_GROUP_ID" \
+    --protocol tcp \
+    --port 22 \
+    --cidr 0.0.0.0/0 \
+    --region "$REGION"
+echo "Inbound SSH access has been allowed for Security Group."
+
+echo ""
+echo "---------------------------------------"
+echo ""
+
+
 # Create Elastic Container Registry (ECR)
 echo "Creating Elastic Container Registry (ECR)..."
 ECR_REPO_JSON=$(aws ecr create-repository \
@@ -97,37 +130,6 @@ aws ecr tag-resource \
     --tags Key=Name,Value="$ECR_NAME" Key=Owner,Value="$OWNER" Key=Project,Value="$PROJECT"
 
 echo "Tags added to ECR repository."
-
-echo ""
-echo "---------------------------------------"
-echo ""
-
-
-# Create Security Group
-echo "Creating Security Group..."
-SECURITY_GROUP_ID=$(aws ec2 create-security-group \
-    --description "Security group for devOps internship assesment" \
-    --vpc-id "$VPC_ID" \
-    --tag-specifications 'ResourceType=security-group,Tags=[{Key=Name,Value='"$SECURITY_GROUP_NAME"'},{Key=Owner,Value='"$OWNER"'},{Key=Project,Value='"$PROJECT"'}]' \
-    --region "$REGION" \
-    --output text)
-
-if [ -z "$SECURITY_GROUP_ID" ]; then
-    echo "Error during Security Group creation."
-    exit 1
-fi
-echo "Security Group with ID $SECURITY_GROUP_ID has been created."
-
-echo "Security Group is now correctly configured."
-
-# Allow inbound SSH access (port 22) from anywhere
-aws ec2 authorize-security-group-ingress \
-    --group-id "$SECURITY_GROUP_ID" \
-    --protocol tcp \
-    --port 22 \
-    --cidr 0.0.0.0/0 \
-    --region "$REGION"
-echo "Inbound SSH access has been allowed for Security Group."
 
 echo ""
 echo "---------------------------------------"
