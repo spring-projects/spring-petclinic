@@ -56,3 +56,5 @@ This repository contains sample spring-boot app - [spring-petclinic](https://git
 2. Credential management for CLI
 3. Creation and usage of basic components: S3, EC2, VPC, ECR, Security Groups, IAM.
 4. Some automation with bash scripts
+
+Note: run scripts using `source` command, eg. `source prepare_aws_enviroment.sh`
