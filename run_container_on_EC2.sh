@@ -12,7 +12,7 @@ FULL_KEY_PATH=""
 echo "---------------------------------------"
 echo ""
 
-read -p "Enter your AWS Key absolute path: " FULL_KEY_PATH
+read -p "Enter your SSH AWS Key absolute path: " FULL_KEY_PATH
 
 # Get the public IP of EC2 instance from previus script
 echo "Getting public IP address of EC2 instance..."
