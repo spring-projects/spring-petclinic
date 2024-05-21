@@ -22,6 +22,7 @@ read -p "Enter project name: " PROJECT && export PROJECT
 read -p "Enter ECR repository name: " ECR_NAME && export ECR_NAME
 read -p "Enter EC2 instance name: " INSTANCE_NAME && export INSTANCE_NAME
 read -p "Enter security group name: " SECURITY_GROUP_NAME && export SECURITY_GROUP_NAME
+read -p "Enter Elastic IP name: " EIP_NAME && export EIP_NAME
 read -p "Enter key pair name: " KEY_PAIR_NAME && export KEY_PAIR_NAME
 
 
@@ -130,11 +131,44 @@ echo "EC2 instance is now correctly configured."
 echo "---------------------------------------"
 echo "Allocating and associating public IP address with EC2 instance..."
 
-PUBLIC_IP=$(aws ec2 allocate-address --domain vpc --region "$REGION" --output text)
-export PUBLIC_IP
+EIP_ALLOCATION_JSON=$(aws ec2 allocate-address --domain vpc --region "$REGION" --output json)
 
-aws ec2 associate-address --instance-id "$INSTANCE_ID" --public-ip "$PUBLIC_IP" --region "$REGION"
-echo "Public IP address has been allocated and associated with EC2 instance: $PUBLIC_IP"
+# Check if the allocation was successful
+if [ $? -ne 0 ]; then
+    echo "Error during EIP allocation."
+    exit 1
+fi
+
+# Extract the AllocationId and PublicIp using jq
+EIP_ALLOCATION_ID=$(echo "$EIP_ALLOCATION_JSON" | jq -r '.AllocationId')
+PUBLIC_IP=$(echo "$EIP_ALLOCATION_JSON" | jq -r '.PublicIp')
+
+if [ -z "$EIP_ALLOCATION_ID" ] || [ -z "$PUBLIC_IP" ]; then
+    echo "Error: Unable to retrieve EIP details."
+    exit 1
+fi
+
+echo "Public IP allocated: $PUBLIC_IP with Allocation ID: $EIP_ALLOCATION_ID"
+
+# Associate the allocated Elastic IP with the EC2 instance
+aws ec2 associate-address --instance-id "$INSTANCE_ID" --allocation-id "$EIP_ALLOCATION_ID" --region "$REGION"
+
+if [ $? -ne 0 ]; then
+    echo "Error during EIP association."
+    exit 1
+fi
+
+echo "Public IP address has been associated with EC2 instance: $PUBLIC_IP"
+
+# Add tags to the Elastic IP
+aws ec2 create-tags --resources "$EIP_ALLOCATION_ID" --tags Key=Name,Value="$EIP_NAME" Key=Owner,Value="$OWNER" Key=Project,Value="$PROJECT" --region "$REGION"
+
+if [ $? -ne 0 ]; then
+    echo "Error during tagging Elastic IP."
+    exit 1
+fi
+
+echo "Tags added to Elastic IP."
 
 
 echo "EC2 instance, public IP address, and Security Group have been successfully created."
