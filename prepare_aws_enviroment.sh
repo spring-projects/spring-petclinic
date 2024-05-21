@@ -30,7 +30,7 @@ echo "Creating VPC..."
 VPC_ID=$(aws ec2 create-vpc \
     --cidr-block 10.0.0.0/16 \
     --region "$REGION" \
-    --tag-specifications 'ResourceType=vpc,Tags=[{Key=Name,Value='"$VPC_NAME"'}{Key=Owner,Value='"$OWNER"'}{Key=Project,Value='"$PROJECT"'}]' \
+    --tag-specifications 'ResourceType=vpc,Tags=[{Key=Name,Value='"$VPC_NAME"'},{Key=Owner,Value='"$OWNER"'},{Key=Project,Value='"$PROJECT"'}]' \
     --query 'Vpc.VpcId' \
     --output text)
 
@@ -50,7 +50,7 @@ SUBNET_ID=$(aws ec2 create-subnet \
     --vpc-id "$VPC_ID" \
     --cidr-block 10.0.0.0/24 \
     --availability-zone "$REGION"a \
-    --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value='"$VPC_NAME-Subnet"'}{Key=Owner,Value='"$OWNER"'}{Key=Project,Value='"$PROJECT"'}]' \
+    --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value='"$VPC_NAME"'},{Key=Owner,Value='"$OWNER"'},{Key=Project,Value='"$PROJECT"'}]' \
     --query 'Subnet.SubnetId' \
     --output text)
 
@@ -69,7 +69,7 @@ echo "Creating Elastic Container Registry (ECR)..."
 ECR_REPO_JSON=$(aws ecr create-repository \
     --repository-name "$ECR_NAME" \
     --region "$REGION" \
-    --tag-specifications 'ResourceType=repository,Tags=[{Key=Name,Value='"$ECR_NAME"'}{Key=Owner,Value='"$OWNER"'}{Key=Project,Value='"$PROJECT"'}]' \
+    --tag-specifications 'ResourceType=repository,Tags=[{Key=Name,Value='"$VPC_NAME"'},{Key=Owner,Value='"$OWNER"'},{Key=Project,Value='"$PROJECT"'}]' \
     --query 'repository' \
     --output json)
 ECR_REPO_URI=$(echo "$ECR_REPO_JSON" | jq -r '.repositoryUri')
@@ -91,7 +91,7 @@ SECURITY_GROUP_ID=$(aws ec2 create-security-group \
     --group-name "$SECURITY_GROUP_NAME" \
     --description "Security group for devOps internship assesment" \
     --vpc-id "$VPC_ID" \
-    --tag-specifications 'ResourceType=security-group,Tags=[{Key=Name,Value='"$SECURITY_GROUP_NAME"'}{Key=Owner,Value='"$OWNER"'}{Key=Project,Value='"$PROJECT"'}]' \
+    --tag-specifications 'ResourceType=security-group,Tags=[{Key=Name,Value='"$VPC_NAME"'},{Key=Owner,Value='"$OWNER"'},{Key=Project,Value='"$PROJECT"'}]' \
     --region "$REGION" \
     --output text)
 
@@ -139,7 +139,7 @@ INSTANCE_ID=$(aws ec2 run-instances \
     --region "$REGION" \
     --user-data "$USER_DATA_SCRIPT" \
     --iam-instance-profile Name=allow_ec2_ecr \
-    --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value='"$INSTANCE_NAME"'}{Key=Owner,Value='"$OWNER"'}{Key=Project,Value='"$PROJECT"'}]' \
+    --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value='"$VPC_NAME"'},{Key=Owner,Value='"$OWNER"'},{Key=Project,Value='"$PROJECT"'}]' \
     --query 'Instances[0].InstanceId' \
     --output text)
 export INSTANCE_ID
@@ -160,7 +160,7 @@ echo "Allocating and associating public IP address with EC2 instance..."
 EIP_ALLOCATION_JSON=$(aws ec2 allocate-address \
     --domain vpc \
     --region "$REGION" \
-    --tag-specifications 'ResourceType=elastic-ip,Tags=[{Key=Name,Value='"$EIP_NAME"'}{Key=Owner,Value='"$OWNER"'}{Key=Project,Value='"$PROJECT"'}]' \
+    --tag-specifications 'ResourceType=elastic-ip,Tags=[{Key=Name,Value='"$VPC_NAME"'},{Key=Owner,Value='"$OWNER"'},{Key=Project,Value='"$PROJECT"'}]' \
     --output json)
 
 # Check if the allocation was successful
