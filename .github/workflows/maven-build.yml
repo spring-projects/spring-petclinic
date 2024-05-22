@@ -26,7 +26,7 @@ jobs:
           distribution: 'adopt'
           cache: maven
       - name: Instrument app
-        uses: digma-ai/digma-actions/instrument@v1.0.12
+        uses: digma-ai/digma-actions/instrument@v1.0.13
         with:
           # Assuming the action expects these inputs:
           collector_url: 'https://collector.meloona01.digma.systems'
@@ -37,7 +37,7 @@ jobs:
         run: mvn '-Dtest=org.springframework.samples.petclinic.integration.*Tests' test
 
       - name: Validate no issues
-        uses: digma-ai/digma-actions/assert-no-issues@v1.0.12
+        uses: digma-ai/digma-actions/assert-no-issues@v1.0.13
         with:
           # Assuming the action expects these inputs:
           digma_url: 'https://api.meloona01.digma.systems'
