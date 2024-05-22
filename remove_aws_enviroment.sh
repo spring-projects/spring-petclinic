@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # -------------------
-# This script removes AWS environment from previus scripts
+# This script removes AWS environment from previous scripts
 # It removes: VPC, Subnet, Elastic Container Registry (ECR), EC2 instance with a public IP, Security Groups
 #
-# Reqiured: configured AWS CLI
+# Required: configured AWS CLI
 
 # Global variable
 ERR=0
@@ -12,7 +12,7 @@ ERR=0
 read -p "Enter region remove resources from: " REGION
 read -p "Enter tag key to remove resources from: " TAG_KEY
 read -p "Enter tag value to remove resources from: " TAG_VALUE
-read -p "Enter ECR name to remove it from aws: " ECR_NAME
+read -p "Enter ECR name to remove it from AWS: " ECR_NAME
 
 
 echo "---------------------------------------"
@@ -22,7 +22,7 @@ echo "Deleting EC2 Instances..."
 instances=$(aws ec2 describe-instances --region "$REGION" --query "Reservations[].Instances[?Tags[?Key=='$TAG_KEY'&&Value=='$TAG_VALUE']].InstanceId" --output text)
 
 if [ -z "$instances" ]; then
-    echo "There is no EC2 instances for tag $TAG_KEY:$TAG_VALUE."
+    echo "There are no EC2 instances for tag $TAG_KEY:$TAG_VALUE."
 else
     for instance_id in $instances; do
         aws ec2 terminate-instances --region "$REGION" --instance-ids "$instance_id"
@@ -41,12 +41,16 @@ echo ""
 
 # Deleting Elastic Container Registry (ECR)
 echo "Deleting Elastic Container Registries (ECR)..."
-aws ecr delete-repository --region "$REGION" --repository-name "$ECR_NAME" --force
-if [ $? -eq 0 ]; then
-    echo "ECR repository $ECR_NAME deleted successfully."
+if aws ecr describe-repositories --repository-names "$ECR_NAME" --region "$REGION" > /dev/null 2>&1; then
+    aws ecr delete-repository --region "$REGION" --repository-name "$ECR_NAME" --force
+    if [ $? -eq 0 ]; then
+        echo "ECR repository $ECR_NAME deleted successfully."
+    else
+        echo "Error deleting ECR repository $ECR_NAME."
+        ERR=$((ERR+1))
+    fi
 else
-    echo "Error deleting ECR repository $ECR_NAME."
-    ERR=$((ERR+1))
+    echo "ECR repository $ECR_NAME does not exist."
 fi
 echo ""
 echo "---------------------------------------"
@@ -70,7 +74,7 @@ echo "---------------------------------------"
 echo ""
 
 if [ $ERR -gt 0 ]; then
-    echo "Not all recources were delted successfully. Please check them manuanlly."
+    echo "Not all resources were deleted successfully. Please check them manually."
 else
     echo "All resources with tag $TAG_KEY:$TAG_VALUE have been successfully deleted from AWS."
 fi
