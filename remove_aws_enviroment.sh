@@ -5,6 +5,10 @@
 #
 # Reqiured: configured AWS CLI
 
+# Global variable
+ERR=0
+
+# User info
 read -p "Enter region remove resources from: " REGION
 read -p "Enter tag key to remove resources from: " TAG_KEY
 read -p "Enter tag value to remove resources from: " TAG_VALUE
@@ -15,14 +19,21 @@ echo "---------------------------------------"
 echo ""
 # Deleting EC2 Instance
 echo "Deleting EC2 Instances..."
-for instance_id in $(aws ec2 describe-instances --region "$REGION" --query "Reservations[].Instances[?Tags[?Key=='$TAG_KEY'&&Value=='$TAG_VALUE']].InstanceId" --output text); do
-    aws ec2 terminate-instances --region "$REGION" --instance-ids "$instance_id"
-    if [ $? -eq 0 ]; then
-        echo "Instance $instance_id terminated successfully."
-    else
-        echo "Error terminating instance $instance_id."
-    fi
-done
+instances=$(aws ec2 describe-instances --region "$REGION" --query "Reservations[].Instances[?Tags[?Key=='$TAG_KEY'&&Value=='$TAG_VALUE']].InstanceId" --output text)
+
+if [ -z "$instances" ]; then
+    echo "There is no EC2 instances for tag $TAG_KEY:$TAG_VALUE."
+else
+    for instance_id in $instances; do
+        aws ec2 terminate-instances --region "$REGION" --instance-ids "$instance_id"
+        if [ $? -eq 0 ]; then
+            echo "Instance $instance_id terminated successfully."
+        else
+            echo "Error terminating instance $instance_id."
+            ERR=$((ERR+1))
+        fi
+    done
+fi
 echo ""
 echo "---------------------------------------"
 echo ""
@@ -35,6 +46,7 @@ if [ $? -eq 0 ]; then
     echo "ECR repository $ECR_NAME deleted successfully."
 else
     echo "Error deleting ECR repository $ECR_NAME."
+    ERR=$((ERR+1))
 fi
 echo ""
 echo "---------------------------------------"
@@ -49,6 +61,7 @@ for vpc_id in $(aws ec2 describe-vpcs --region "$REGION" --query "Vpcs[?Tags[?Ke
         echo "VPC $vpc_id deleted successfully."
     else
         echo "Error deleting VPC $vpc_id."
+        ERR=$((ERR+1))
     fi
 done
 
@@ -56,4 +69,8 @@ echo ""
 echo "---------------------------------------"
 echo ""
 
-echo "All resources with tag $TAG_KEY:$TAG_VALUE have been successfully deleted from AWS."
+if [ $ERR -gt 0 ]; then
+    echo "Not all recources were delted successfully. Please check them manuanlly."
+else
+    echo "All resources with tag $TAG_KEY:$TAG_VALUE have been successfully deleted from AWS."
+fi
