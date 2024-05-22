@@ -70,25 +70,37 @@ for vpc_id in $(aws ec2 describe-vpcs --region "$REGION" --query "Vpcs[?Tags[?Ke
     fi
 
     # Delete route table associations and route tables
-    for rtb_id in $(aws ec2 describe-route-tables --region "$REGION" --filters "Name=vpc-id,Values=$vpc_id" --query "RouteTables[].RouteTableId" --output text); do
-        aws ec2 disassociate-route-table --association-id "$(aws ec2 describe-route-tables --region "$REGION" --route-table-id "$rtb_id" --query "RouteTables[?VpcId=='$vpc_id'].Associations[].RouteTableAssociationId" --output text)" --region "$REGION"
-        aws ec2 delete-route-table --route-table-id "$rtb_id" --region "$REGION"
-    done
+    route_tables_ids=$(aws ec2 describe-route-tables --region "$REGION" --filters "Name=vpc-id,Values=$vpc_id" --query "RouteTables[].RouteTableId" --output text)
+    if [ -n "$route_tables_ids" ]; then
+        for rtb_id in $route_tables_ids; do
+            aws ec2 disassociate-route-table --association-id "$(aws ec2 describe-route-tables --region "$REGION" --route-table-id "$rtb_id" --query "RouteTables[?VpcId=='$vpc_id'].Associations[].RouteTableAssociationId" --output text)" --region "$REGION"
+            aws ec2 delete-route-table --route-table-id "$rtb_id" --region "$REGION"
+        done
+    fi
 
     # Delete subnets
-    for subnet_id in $(aws ec2 describe-subnets --region "$REGION" --filters "Name=vpc-id,Values=$vpc_id" --query "Subnets[].SubnetId" --output text); do
-        aws ec2 delete-subnet --subnet-id "$subnet_id" --region "$REGION"
-    done
+    subnets_ids=$(aws ec2 describe-subnets --region "$REGION" --filters "Name=vpc-id,Values=$vpc_id" --query "Subnets[].SubnetId" --output text)
+    if [ -n "$subnets_ids" ]; then
+        for subnet_id in $subnets_ids; do
+            aws ec2 delete-subnet --subnet-id "$subnet_id" --region "$REGION"
+        done
+    fi
 
     # Delete network ACLs
-    for nacl_id in $(aws ec2 describe-network-acls --region "$REGION" --filters "Name=vpc-id,Values=$vpc_id" --query "NetworkAcls[].NetworkAclId" --output text); do
+    nacl_ids=$(aws ec2 describe-network-acls --region "$REGION" --filters "Name=vpc-id,Values=$vpc_id" --query "NetworkAcls[].NetworkAclId" --output text)
+    if [ -n "$nacl_ids" ]; then
+        for nacl_id in $nacl_ids; do
         aws ec2 delete-network-acl --network-acl-id "$nacl_id" --region "$REGION"
-    done
+        done
+    fi
 
     # Delete security groups
-    for sg_id in $(aws ec2 describe-security-groups --region "$REGION" --filters "Name=vpc-id,Values=$vpc_id" --query "SecurityGroups[].GroupId" --output text); do
-        aws ec2 delete-security-group --group-id "$sg_id" --region "$REGION"
-    done
+    sec_groups_ids=$(aws ec2 describe-security-groups --region "$REGION" --filters "Name=vpc-id,Values=$vpc_id" --query "SecurityGroups[].GroupId" --output text)
+    if [ -n "$sec_groups_ids" ]; then
+        for sg_id in $sec_groups_ids; do
+            aws ec2 delete-security-group --group-id "$sg_id" --region "$REGION"
+        done
+    fi
 
     # Finally, delete VPC
     aws ec2 delete-vpc --vpc-id "$vpc_id" --region "$REGION"
