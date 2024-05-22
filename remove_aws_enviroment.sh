@@ -62,27 +62,11 @@ echo "Deleting VPCs..."
 for vpc_id in $(aws ec2 describe-vpcs --region "$REGION" --query "Vpcs[?Tags[?Key=='$TAG_KEY'&&Value=='$TAG_VALUE']].VpcId" --output text); do
     echo "Deleting VPC: $vpc_id..."
 
-    # Delete internet gateway
-    igw_id=$(aws ec2 describe-internet-gateways --region "$REGION" --filters "Name=attachment.vpc-id,Values=$vpc_id" --query "InternetGateways[].InternetGatewayId" --output text)
-    if [ -n "$igw_id" ]; then
-        aws ec2 detach-internet-gateway --internet-gateway-id "$igw_id" --vpc-id "$vpc_id" --region "$REGION"
-        aws ec2 delete-internet-gateway --internet-gateway-id "$igw_id" --region "$REGION"
-    fi
-
-    # Delete route table associations and route tables
-    route_tables_ids=$(aws ec2 describe-route-tables --region "$REGION" --filters "Name=vpc-id,Values=$vpc_id" --query "RouteTables[].RouteTableId" --output text)
-    if [ -n "$route_tables_ids" ]; then
-        for rtb_id in $route_tables_ids; do
-            aws ec2 disassociate-route-table --association-id "$(aws ec2 describe-route-tables --region "$REGION" --route-table-id "$rtb_id" --query "RouteTables[?VpcId=='$vpc_id'].Associations[].RouteTableAssociationId" --output text)" --region "$REGION"
-            aws ec2 delete-route-table --route-table-id "$rtb_id" --region "$REGION"
-        done
-    fi
-
-    # Delete subnets
-    subnets_ids=$(aws ec2 describe-subnets --region "$REGION" --filters "Name=vpc-id,Values=$vpc_id" --query "Subnets[].SubnetId" --output text)
-    if [ -n "$subnets_ids" ]; then
-        for subnet_id in $subnets_ids; do
-            aws ec2 delete-subnet --subnet-id "$subnet_id" --region "$REGION"
+    # Delete security groups
+    sec_groups_ids=$(aws ec2 describe-security-groups --region "$REGION" --filters "Name=vpc-id,Values=$vpc_id" --query "SecurityGroups[].GroupId" --output text)
+    if [ -n "$sec_groups_ids" ]; then
+        for sg_id in $sec_groups_ids; do
+            aws ec2 delete-security-group --group-id "$sg_id" --region "$REGION"
         done
     fi
 
@@ -94,17 +78,34 @@ for vpc_id in $(aws ec2 describe-vpcs --region "$REGION" --query "Vpcs[?Tags[?Ke
         done
     fi
 
-    # Delete security groups
-    sec_groups_ids=$(aws ec2 describe-security-groups --region "$REGION" --filters "Name=vpc-id,Values=$vpc_id" --query "SecurityGroups[].GroupId" --output text)
-    if [ -n "$sec_groups_ids" ]; then
-        for sg_id in $sec_groups_ids; do
-            aws ec2 delete-security-group --group-id "$sg_id" --region "$REGION"
+    # Delete subnets
+    subnets_ids=$(aws ec2 describe-subnets --region "$REGION" --filters "Name=vpc-id,Values=$vpc_id" --query "Subnets[].SubnetId" --output text)
+    if [ -n "$subnets_ids" ]; then
+        for subnet_id in $subnets_ids; do
+            aws ec2 delete-subnet --subnet-id "$subnet_id" --region "$REGION"
         done
+    fi
+
+    # Delete route table associations and route tables
+    route_tables_ids=$(aws ec2 describe-route-tables --region "$REGION" --filters "Name=vpc-id,Values=$vpc_id" --query "RouteTables[].RouteTableId" --output text)
+    if [ -n "$route_tables_ids" ]; then
+        for rtb_id in $route_tables_ids; do
+            aws ec2 disassociate-route-table --association-id "$(aws ec2 describe-route-tables --region "$REGION" --route-table-id "$rtb_id" --query "RouteTables[?VpcId=='$vpc_id'].Associations[].RouteTableAssociationId" --output text)" --region "$REGION"
+            aws ec2 delete-route-table --route-table-id "$rtb_id" --region "$REGION"
+        done
+    fi
+
+    # Delete internet gateway
+    igw_id=$(aws ec2 describe-internet-gateways --region "$REGION" --filters "Name=attachment.vpc-id,Values=$vpc_id" --query "InternetGateways[].InternetGatewayId" --output text)
+    if [ -n "$igw_id" ]; then
+        aws ec2 detach-internet-gateway --internet-gateway-id "$igw_id" --vpc-id "$vpc_id" --region "$REGION"
+        aws ec2 delete-internet-gateway --internet-gateway-id "$igw_id" --region "$REGION"
     fi
 
     # Finally, delete VPC
     aws ec2 delete-vpc --vpc-id "$vpc_id" --region "$REGION"
     if [ $? -eq 0 ]; then
+        echo ""
         echo "VPC $vpc_id deleted successfully."
     else
         echo "Error deleting VPC $vpc_id."
