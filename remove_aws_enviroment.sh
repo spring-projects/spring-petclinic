@@ -5,45 +5,41 @@
 #
 # Reqiured: configured AWS CLI
 
-read -p "Enter VPC id: " VPC_ID
-read -p "Enter Subnet id: " SUBNET_ID
-read -p "Enter ECR repository name: " ECR_NAME
-read -p "Enter EC2 instance id: " INSTANCE_ID
-read -p "Enter security group name: " SECURITY_GROUP_ID
+read -p "Enter region remove resources from: " REGION
+read -p "Enter Project tag key to remove resources from: " TAG_VALUE
+read -p "Enter Project tag value to remove resources from: " TAG_KEY
 
+
+echo "---------------------------------------"
+echo ""
 # Deleting EC2 Instance
-echo "Deleting EC2 Instance..."
-aws ec2 terminate-instances --instance-ids "$INSTANCE_ID" --region "$REGION"
-echo "EC2 Instance has been successfully deleted."
+echo "Deleting EC2 Instances..."
+for instance_id in $(aws ec2 describe-instances --region "$REGION" --query "Reservations[].Instances[?Tags[?Key=='$TAG_KEY'&&Value=='$TAG_VALUE']].InstanceId" --output text); do
+    aws ec2 terminate-instances --region "$REGION" --instance-ids "$instance_id"
+done
+echo ""
+echo "---------------------------------------"
+echo ""
 
-# Waiting for instance termination
-echo "Waiting for instance termination..."
-aws ec2 wait instance-terminated --instance-ids "$INSTANCE_ID" --region "$REGION"
-echo "Instance termination has completed."
-
-# Releasing public IP
-echo "Releasing public IP..."
-aws ec2 release-address --allocation-id "$(aws ec2 describe-instances --instance-ids "$INSTANCE_ID" --query 'Reservations[0].Instances[0].NetworkInterfaces[0].Association.AllocationId' --output text --region "$REGION")" --region "$REGION"
-echo "Public IP has been successfully released."
 
 # Deleting Elastic Container Registry (ECR)
-echo "Deleting Elastic Container Registry (ECR)..."
-aws ecr delete-repository --repository-name "$ECR_NAME" --force --region "$REGION"
-echo "ECR Repository has been successfully deleted."
+echo "Deleting Elastic Container Registries (ECR)..."
+for repo_name in $(aws ecr describe-repositories --region "$REGION" --query "repositories[?Tags[?Key=='$TAG_KEY'&&Value=='$TAG_VALUE']].repositoryName" --output text); do
+    aws ecr delete-repository --region "$REGION" --repository-name "$repo_name" --force
+done
+echo ""
+echo "---------------------------------------"
+echo ""
 
-# Deleting Security Group
-echo "Deleting Security Group..."
-aws ec2 delete-security-group --group-id "$SECURITY_GROUP_ID" --region "$REGION"
-echo "Security Group has been successfully deleted."
-
-# Deleting Subnet
-echo "Deleting Subnet..."
-aws ec2 delete-subnet --subnet-id "$SUBNET_ID" --region "$REGION"
-echo "Subnet has been successfully deleted."
 
 # Deleting VPC
-echo "Deleting VPC..."
-aws ec2 delete-vpc --vpc-id "$VPC_ID" --region "$REGION"
-echo "VPC has been successfully deleted."
+echo "Deleting VPCs..."
+for vpc_id in $(aws ec2 describe-vpcs --region "$REGION" --query "Vpcs[?Tags[?Key=='$TAG_KEY'&&Value=='$TAG_VALUE']].VpcId" --output text); do
+    aws ec2 delete-vpc --region "$REGION" --vpc-id "$vpc_id"
+done
 
-echo "All resources have been successfully deleted from AWS."
+echo ""
+echo "---------------------------------------"
+echo ""
+
+echo "All resources with tag $TAG_KEY:$TAG_VALUE have been successfully deleted from AWS."
