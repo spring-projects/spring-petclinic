@@ -7,6 +7,10 @@ plugins {
   id "io.spring.nohttp" version "0.0.11"
 }
 
+plugins {
+  id "com.microsoft.azure.azurewebapp" version "1.10.0"
+}
+
 apply plugin: 'java'
 apply plugin: 'checkstyle'
 apply plugin: 'io.spring.javaformat'
@@ -80,3 +84,16 @@ checkFormatAotTest.enabled = false
 
 formatAot.enabled = false
 formatAotTest.enabled = false
+
+azurewebapp {
+  subscription = 'c68c793f-ad34-4871-bb6d-88e912e3afc7'
+  resourceGroup = 'pa200_group'
+  appName = 'Petclinic-SpringApp'
+  pricingTier = 'B1'
+  region = 'westeurope'
+  runtime {
+    os = 'Linux'
+    webContainer = 'Tomcat 9.0'
+    javaVersion = 'Java 17'
+  }
+}

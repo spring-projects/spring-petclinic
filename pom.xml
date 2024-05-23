@@ -139,6 +139,34 @@
       <artifactId>jakarta.xml.bind-api</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.33</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>spring-cloud-azure-dependencies</artifactId>
+      <version>5.12.0</version>
+      <type>pom</type>
+      <scope>import</scope>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.microsoft.azure/azure-spring-boot-starter -->
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-spring-boot-starter</artifactId>
+      <version>2.3.5</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.microsoft.sqlserver</groupId>
+      <artifactId>mssql-jdbc</artifactId>
+      <version>6.4.0.jre8</version>
+      <scope>runtime</scope>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -220,7 +248,7 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
         <executions>
           <execution>
-            <!-- Spring Boot Actuator displays build-related information 
+            <!-- Spring Boot Actuator displays build-related information
               if a META-INF/build-info.properties file is present -->
             <goals>
               <goal>build-info</goal>
@@ -378,7 +406,7 @@
       <build>
         <pluginManagement>
           <plugins>
-            <!-- This plugin's configuration is used to store Eclipse m2e settings 
+            <!-- This plugin's configuration is used to store Eclipse m2e settings
               only. It has no influence on the Maven build itself. -->
             <plugin>
               <groupId>org.eclipse.m2e</groupId>
