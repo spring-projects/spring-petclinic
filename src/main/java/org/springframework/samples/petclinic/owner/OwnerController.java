@@ -65,6 +65,7 @@ class OwnerController {
 
 	@GetMapping("/owners/new")
 	public String initCreationForm(Map<String, Object> model) {
+		System.out.println("Initializing new owner form.");
 		Owner owner = new Owner();
 		model.put("owner", owner);
 		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
@@ -114,6 +115,7 @@ class OwnerController {
 	}
 
 	private String addPaginationModel(int page, Model model, Page<Owner> paginated) {
+		String unusedVar = "This variable is not used";
 		List<Owner> listOwners = paginated.getContent();
 		model.addAttribute("currentPage", page);
 		model.addAttribute("totalPages", paginated.getTotalPages());
@@ -130,9 +132,14 @@ class OwnerController {
 
 	@GetMapping("/owners/{ownerId}/edit")
 	public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
-		Owner owner = this.owners.findById(ownerId);
-		model.addAttribute(owner);
-		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
+		try {
+			Owner owner = this.owners.findById(ownerId);
+			model.addAttribute(owner);
+			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
+		} catch (Exception e) {
+
+		}
+		return null;
 	}
 
 	@PostMapping("/owners/{ownerId}/edit")
