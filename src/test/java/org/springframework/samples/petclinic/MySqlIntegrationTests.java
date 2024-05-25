@@ -46,7 +46,7 @@ class MySqlIntegrationTests {
 
 	@ServiceConnection
 	@Container
-	static MySQLContainer<?> container = new MySQLContainer<>("mysql:8.2");
+	static MySQLContainer<?> container = new MySQLContainer<>("mysql:8.4");
 
 	@LocalServerPort
 	int port;

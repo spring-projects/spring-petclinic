@@ -24,16 +24,16 @@
     <project.build.outputTimestamp>2023-05-10T07:42:50Z</project.build.outputTimestamp>
 
     <!-- Web dependencies -->
-    <webjars-bootstrap.version>5.3.2</webjars-bootstrap.version>
+    <webjars-bootstrap.version>5.3.3</webjars-bootstrap.version>
     <webjars-font-awesome.version>4.7.0</webjars-font-awesome.version>
 
-    <checkstyle.version>10.12.5</checkstyle.version>
-    <jacoco.version>0.8.11</jacoco.version>
+    <checkstyle.version>10.16.0</checkstyle.version>
+    <jacoco.version>0.8.12</jacoco.version>
     <libsass.version>0.2.29</libsass.version>
     <lifecycle-mapping>1.0.0</lifecycle-mapping>
     <maven-checkstyle.version>3.3.1</maven-checkstyle.version>
     <nohttp-checkstyle.version>0.0.11</nohttp-checkstyle.version>
-    <spring-format.version>0.0.40</spring-format.version>
+    <spring-format.version>0.0.41</spring-format.version>
 
   </properties>
 
@@ -155,7 +155,8 @@
             <configuration>
               <rules>
                 <requireJavaVersion>
-                  <message>This build requires at least Java ${java.version}, update your JVM, and run the build again</message>
+                  <message>This build requires at least Java ${java.version}, update your JVM, and
+                    run the build again</message>
                   <version>${java.version}</version>
                 </requireJavaVersion>
               </rules>
