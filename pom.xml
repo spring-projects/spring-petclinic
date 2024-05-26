@@ -257,8 +257,8 @@
         </executions>
       </plugin>
 
-      <!-- Spring Boot Actuator displays build-related information if a git.properties
-        file is present at the classpath -->
+      <!-- Spring Boot Actuator displays build-related information if a git.properties file is
+      present at the classpath -->
       <plugin>
         <groupId>io.github.git-commit-id</groupId>
         <artifactId>git-commit-id-maven-plugin</artifactId>
@@ -266,6 +266,12 @@
           <failOnNoGitDirectory>false</failOnNoGitDirectory>
           <failOnUnableToExtractRepoInfo>false</failOnUnableToExtractRepoInfo>
         </configuration>
+      </plugin>
+      <!-- Spring Boot Actuator displays sbom-related information if a CycloneDX SBOM file is
+      present at the classpath -->
+      <plugin>
+        <groupId>org.cyclonedx</groupId>
+        <artifactId>cyclonedx-maven-plugin</artifactId>
       </plugin>
 
     </plugins>
