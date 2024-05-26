@@ -1,8 +1,8 @@
 plugins {
   id 'java'
-  id 'org.springframework.boot' version '3.2.5'
-  id 'io.spring.dependency-management' version '1.1.4'
-  id 'org.graalvm.buildtools.native' version '0.9.28'
+  id 'org.springframework.boot' version '3.3.0'
+  id 'io.spring.dependency-management' version '1.1.5'
+  id 'org.graalvm.buildtools.native' version '0.10.2'
   id 'io.spring.javaformat' version '0.0.41'
   id "io.spring.nohttp" version "0.0.11"
 }
@@ -14,7 +14,7 @@ apply plugin: 'io.spring.javaformat'
 gradle.startParameter.excludedTaskNames += [ "checkFormatAot", "checkFormatAotTest" ]
 
 group = 'org.springframework.samples'
-version = '3.2.0'
+version = '3.3.0'
 
 java {
   sourceCompatibility = JavaVersion.VERSION_17
