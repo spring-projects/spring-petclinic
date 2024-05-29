@@ -71,9 +71,9 @@ class OwnerController {
 	}
 
 	@PostMapping("/owners/new")
-	public String processCreationForm(@Valid Owner owner, BindingResult result, RedirectAttributes redirectAttributes) {
+	public String processCreationForm(@Valid Owner owner, BindingResult result, RedirectAttributes redirectAttributes, Model model) {
 		if (result.hasErrors()) {
-			redirectAttributes.addFlashAttribute("error", "There was an error in creating the owner.");
+			model.addAttribute("owner", owner);
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 		}
 
@@ -137,9 +137,9 @@ class OwnerController {
 
 	@PostMapping("/owners/{ownerId}/edit")
 	public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result, @PathVariable("ownerId") int ownerId,
-			RedirectAttributes redirectAttributes) {
+			RedirectAttributes redirectAttributes,Model model) {
 		if (result.hasErrors()) {
-			redirectAttributes.addFlashAttribute("error", "There was an error in updating the owner.");
+			model.addAttribute("owner", owner);
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 		}
 
