@@ -142,5 +142,11 @@ My device is running with user 'krishna' and Jenkins service is running with the
 sudo setfacl -R -m user:jenkins:rwx /var/run/docker.sock
 `````
 
+### LAST UMCOMMIT
+`````
+git reset --hard HEAD~1
+git push origin -f
+`````
+
 ## License
 The Spring PetClinic sample application is released under version 2.0 of the [Apache License](https://www.apache.org/licenses/LICENSE-2.0).
