@@ -72,6 +72,12 @@
         </exclusions>
     </dependency>
 
+    <!-- Expose metrics from actuator in prometheus format -->
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-registry-prometheus</artifactId>
+    </dependency>
+    
     <!-- Databases - Uses H2 by default -->
     <dependency>
       <groupId>com.h2database</groupId>
