@@ -28,6 +28,9 @@ pipeline {
             steps {
                 sh '''
                     docker pull kerallenarium/spring-petclinic:latest
+                    if [ "$(docker ps -q)" ]; then
+                        docker stop $(docker ps -q)
+                    fi
                     docker run -d -p 80:8080 kerallenarium/spring-petclinic:latest
                 '''
             }
