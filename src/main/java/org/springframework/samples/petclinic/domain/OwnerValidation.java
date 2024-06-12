@@ -14,6 +14,7 @@ public class OwnerValidation {
 
 	private UserValidationService usrValSvc;
 
+	private DomainValidationService domainValidation;
 	private PasswordUtils pwdUtils;
 
 	private Tracer otelTracer;
@@ -27,6 +28,7 @@ public class OwnerValidation {
 		this.roleSvc = new RoleService();
 		this.otelTracer = otelTracer;
 		this.usrValSvc = new UserValidationService();
+		this.domainValidation=new DomainValidationService();
 		this.twoFASvc = new TwoFactorAuthenticationService();
 	}
 
@@ -60,6 +62,11 @@ public class OwnerValidation {
 		UserNameMustStartWithR(usr);
 		boolean vldUsr = usrValSvc.vldtUsr(usr);
 		if (!vldUsr) {
+			return false;
+		}
+
+		boolean vldDomain = domainValidation.validateDomainLogic(usr);
+		if (!vldDomain) {
 			return false;
 		}
 
