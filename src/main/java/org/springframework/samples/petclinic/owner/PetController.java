@@ -111,20 +111,6 @@ class PetController implements InitializingBean {
 		}
 
 		this.owners.save(owner);
-		// var pets = owner.getPets().toArray(Pet[]::new);
-
-		// var petRequests = owner.getPets()
-		// .stream()
-		// .map(x -> new
-		// PetVaccinationStatusService.UpdateVaccineStatusRequest(owner.getId(),
-		// x.getId()))
-		// .toList().subList(0,1);
-		// executorService.submit(() ->
-		// petVaccinationStatus.updateVaccinationStatus(petRequests)).get();
-		// executorService.submit(() ->
-		// petVaccinationStatus.updateVaccinationStatus(petRequests));
-		// petVaccinationStatus.updateVaccinationStatus(petRequests.subList(0,1));
-		//
 
 		vaccinationRequestMessage.Send();
 		return "redirect:/owners/{ownerId}";
