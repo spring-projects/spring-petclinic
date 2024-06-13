@@ -15,6 +15,7 @@ public class OwnerValidation {
 	private UserValidationService usrValSvc;
 
 	private DomainValidationService domainValidation;
+
 	private PasswordUtils pwdUtils;
 
 	private Tracer otelTracer;
@@ -28,7 +29,7 @@ public class OwnerValidation {
 		this.roleSvc = new RoleService();
 		this.otelTracer = otelTracer;
 		this.usrValSvc = new UserValidationService();
-		this.domainValidation=new DomainValidationService();
+		this.domainValidation = new DomainValidationService();
 		this.twoFASvc = new TwoFactorAuthenticationService();
 	}
 

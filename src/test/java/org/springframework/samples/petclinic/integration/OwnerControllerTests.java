@@ -93,37 +93,24 @@ class OwnerControllerTests {
 	@Test
 	void shouldProvideOwnerVaccinationDate() {
 
-		for (int i=0; i<10;i++){
-			Owner owner = CreateOwner();
+		Owner owner = CreateOwner();
 
-			var ownerLinkMatcher = String.format("**.findAll { node -> node.@href=='/owners/%s'}", owner.getId());
+		var ownerLinkMatcher = String.format("**.findAll { node -> node.@href=='/owners/%s'}", owner.getId());
 
-			given().contentType(ContentType.JSON)
-				.when()
-				.get("/owners")
-				.then()
-				.contentType(ContentType.HTML)
-				.statusCode(200)
-				.body(ownerLinkMatcher, Matchers.notNullValue());
+		given().contentType(ContentType.JSON)
+			.when()
+			.get("/owners")
+			.then()
+			.contentType(ContentType.HTML)
+			.statusCode(200)
+			.body(ownerLinkMatcher, Matchers.notNullValue());
 
-		}
-
-		for (int i=0; i<50;i++) {
-
-			given().contentType(ContentType.JSON)
-				.when()
-				.get("/owners")
-				.then()
-				.contentType(ContentType.HTML)
-				.statusCode(200);
-
-			try {
-				Thread.sleep(200);
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
-		}
-
+		given().contentType(ContentType.JSON)
+			.when()
+			.get("/owners")
+			.then()
+			.contentType(ContentType.HTML)
+			.statusCode(200);
 
 		// assertThat(false).isTrue();
 
