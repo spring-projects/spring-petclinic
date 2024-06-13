@@ -42,6 +42,6 @@ jobs:
           # Assuming the action expects these inputs:
           digma_url: 'https://api.meloona01.digma.systems'
           api_token: ${{ secrets.DIGMA_TOKEN }}
-          environment_id: 'PETCLINIC_CI%23ID%231'
+          environment_id: 'PETCLINIC_CI#ID#1'
           user_name: ${{ secrets.DIGMA_USER }}
           password:  ${{ secrets.DIGMA_PASSWORD }}
