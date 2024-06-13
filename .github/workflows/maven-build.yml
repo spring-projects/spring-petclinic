@@ -33,7 +33,8 @@ jobs:
         # Commonly enabled options, see https://github.com/actions/dependency-review-action#configuration-options for all available options.
         with:
           comment-summary-in-pr: always
-           fail-on-severity: high
+          fail-on-severity: high
+        
            deny-licenses: GPL-1.0-or-later, LGPL-2.0-or-later
         #   retry-on-snapshot-warnings: true        
       - name: Build with Maven Wrapper
