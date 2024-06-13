@@ -27,7 +27,7 @@ public class DomainValidationService {
 			saveValidationResults(domain, false, false);
 		}
 
-		notifyAdmin(domain);
+		asyncNotifyAdmin(domain);
 		return true;
 	}
 
@@ -75,6 +75,20 @@ public class DomainValidationService {
 		// contents
 		Notification notification = new Notification("admin@example.com", "Domain Validation Completed",
 				"Validation completed for domain: " + domain);
+		try {
+			Thread.sleep(2000);
+		}
+		catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+		System.out.println("Notifying admin: " + notification);
+	}
+
+	private void asyncNotifyAdmin(String domain) {
+		// Simulated notification: Creating a fake notification object and printing its
+		// contents
+		Notification notification = new Notification("admin@example.com", "Domain Validation Completed",
+			"Validation completed for domain: " + domain);
 		try {
 			Thread.sleep(2000);
 		}
