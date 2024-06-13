@@ -1,29 +1,102 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
-
-name: Java CI with Maven
+name: Build Spring Petclinic with JFrog Artifactory
 
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
+
 
 jobs:
   build:
-
+    name: 'Build Spring Petclinic'
+    env:
+      JFROG_CLI_BUILD_NAME: 'Petclinic from GitHub workflow'
+      JFROG_CLI_BUILD_NUMBER: ${{ github.run_number }}
+      JFROG_CLI_BUILD_PROJECT: ${{ vars.JF_PROJECT }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
         java: [ '17' ]
 
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK ${{matrix.java}}
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      - 
+        name: Set up JDK ${{matrix.java}}
         uses: actions/setup-java@v4
         with:
           java-version: ${{matrix.java}}
           distribution: 'adopt'
           cache: maven
-      - name: Build with Maven Wrapper
-        run: ./mvnw -B package
+      - 
+        name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4
+        env:
+          JF_URL: ${{ vars.JF_URL }}
+          JF_USER: ${{ secrets.JF_USER }}
+          JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
+          JF_PROJECT: ${{ vars.JF_PROJECT }}
+      -
+        name: Read POM
+        run: |
+          echo "petclinicArtifactName=$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)" >> $GITHUB_ENV
+          echo "petclinicVersion=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+      -
+        name: Run Source Code Audit
+        run: |
+          jf audit --licenses --format=table --mvn=true
+      -
+        name: Build Maven package
+        run: |
+          jf mvn-config --repo-resolve-releases fg-maven --repo-resolve-snapshots fg-maven --repo-deploy-releases fg-maven-dev-local-releases --repo-deploy-snapshots fg-maven-dev-local-snapshots
+          jf mvn clean package -Dtest=!PostgresIntegrationTests* '-Dspring-javaformat.skip=true' --project ${{ env.JFROG_CLI_BUILD_PROJECT }}
+      -
+        name: Scan Maven package
+        run: |
+          jf scan --watches fredericg-watch --licenses --format=json ./target/${{ env.petclinicArtifactName }}-${{ env.petclinicVersion }}.jar
+      -
+        name: Deploy Maven package to Artifactory
+        if: github.ref == 'refs/heads/main'
+        run: |
+          jf mvn deploy -Dmaven.main.skip=true -Dmaven.install.skip=true -DskipTests --project ${{ env.JFROG_CLI_BUILD_PROJECT }}
+      -
+        name: Build Docker image
+        if: github.ref == 'refs/heads/main'
+        env:
+          JF_URL: ${{ vars.JF_URL }}
+          JF_USER: ${{ secrets.JF_USER }}
+          JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
+          JF_PROJECT: ${{ vars.JF_PROJECT }}
+        run: |
+          jf docker build -t soleng.jfrog.io/fg-docker/${{ env.petclinicArtifactName }}:${{ env.petclinicVersion }} --build-arg petclinicArtifact=./target/${{ env.petclinicArtifactName }}-${{ env.petclinicVersion }}.jar .
+          jf docker push soleng.jfrog.io/fg-docker/${{ env.petclinicArtifactName }}:${{ env.petclinicVersion }} --project ${{ env.JFROG_CLI_BUILD_PROJECT }}
+      -
+        name: Scan Docker image
+        if: github.ref == 'refs/heads/main'
+        run: |
+          jf docker scan soleng.jfrog.io/fg-docker/${{ env.petclinicArtifactName }}:${{ env.petclinicVersion }} --severity='HIGH,CRITICAL'
+      -
+        name: Publish build info
+        if: github.ref == 'refs/heads/main'
+        run: |
+          jf rt build-publish --project ${{ env.JFROG_CLI_BUILD_PROJECT }} "${{ env.JFROG_CLI_BUILD_NAME }}" "${{ env.JFROG_CLI_BUILD_NUMBER }}"
+      -
+        name: Create Release Bundle
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "=== Generating Release Bundle ==="
+          echo '
+                {
+                  "builds": [
+                    {
+                      "name": "${{ env.JFROG_CLI_BUILD_NAME }}",
+                      "number": "${{ env.JFROG_CLI_BUILD_NUMBER }}",
+                      "project": "${{ env.JFROG_CLI_BUILD_PROJECT }}"
+                    }
+                  ]
+                }
+          ' > builds.json
+          jf release-bundle-create --builds=./builds.json --project ${{ env.JFROG_CLI_BUILD_PROJECT }} --signing-key fredericg-gpg "${{ env.petclinicArtifactName }}" "${{ env.petclinicVersion }}"
