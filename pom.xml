@@ -40,6 +40,11 @@
   <dependencies>
     <!-- Spring and Spring Boot dependencies -->
     <dependency>
+      <groupId>org.jacoco</groupId>
+      <artifactId>jacoco-maven-plugin</artifactId>
+      <version>0.8.6</version>
+    </dependency>
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
@@ -143,7 +148,13 @@
 
   <build>
     <plugins>
-      <plugin>
+    <plugin>
+      <groupId>org.sonarsource.scanner.maven</groupId>
+      <artifactId>sonar-maven-plugin</artifactId>
+      <version>3.9.0.2155</version>
+    </plugin>
+
+    <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <executions>
@@ -437,6 +448,18 @@
                 </lifecycleMappingMetadata>
               </configuration>
             </plugin>
+            <plugin>
+      <groupId>org.owasp</groupId>
+      <artifactId>dependency-check-maven</artifactId>
+      <version>INSERT_VERSION_HERE</version>
+      <executions>
+        <execution>
+          <goals>
+            <goal>check</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
           </plugins>
         </pluginManagement>
       </build>
