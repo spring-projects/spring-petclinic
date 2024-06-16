@@ -45,6 +45,11 @@ pipeline {
                 }
             }
         }
+        stage('OWASP Dependency-Check') {
+            steps {
+                dependencyCheck additionalArguments: '--scan target/', odcInstallation: 'OWASP Check'
+            }
+        }
         
         stage('Maven Package') {
             steps {
