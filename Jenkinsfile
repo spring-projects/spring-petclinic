@@ -39,25 +39,6 @@ pipeline {
                 sh 'mvn clean package -DskipTests'
             }
         }
-        stage('OWASP Dependency-Check') {
-            steps {
-                dependencyCheck additionalArguments: '--scan target/', odcInstallation: 'OWASP Check'
-            }
-        }
-        stage('Build & push Docker Image') {
-            when {
-                branch 'Release'
-            }
-            steps {
-                script {
-                    withDockerRegistry(credentialsId: 'c9b058e5-bfe6-41f8-9b5d-dc0b0d2955ac', toolName: 'docker') {
-                        sh "docker build -t prasannakumarsinganamalla431/petclinic:${BUILD_NUMBER} -f .devcontainer/Dockerfile ."
-                        sh "docker push prasannakumarsinganamalla431/petclinic:${BUILD_NUMBER}"
-
-                    }
-                }
-            }
-        }
-
+        
     }   
 }
