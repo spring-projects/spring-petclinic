@@ -4,7 +4,6 @@ pipeline {
     tools {
         jdk 'jdk17'
         maven 'maven3'
-        
     }
     
     environment {
@@ -12,45 +11,45 @@ pipeline {
     }
     
     stages {
-        stage('compile ') {
+        stage('compile') {
             steps {
                 sh 'mvn compile'
             }
         }
+        
         stage('SonarQube Analysis') {
             steps {
                 script {
                     // Run Maven with SonarQube plugin for analysis
-                    withSonarQubeEnv('SonarQubeScanner') { // 'SonarQubeScanner' is the name of the SonarQube server configured in Jenkins
+                    withSonarQubeEnv('SonarQubeScanner') {
                         sh """
                             mvn sonar:sonar -Dsonar.login=${SONAR_AUTH_TOKEN} \
                             -Dsonar.projectName=spring-petclinic \
                             -Dsonar.java.binaries=. \
                             -Dsonar.projectKey=spring-petclinic
                         """
-                        //mvn sonar:sonar sonar maven plugin command
-                        //Command: $SCANNER_HOME/bin/sonar-scanner standalone sonarqub scanner  command
                     }
                 }
             }
         }
+        
         stage("Quality Gate") {
-    steps {
-        timeout(time: 1, unit: 'HOURS') {
-            script {
-                def qg = waitForQualityGate()
-                if (qg.status != 'OK') {
-                    error "Pipeline aborted due to quality gate failure: ${qg.status}"
+            steps {
+                timeout(time: 1, unit: 'HOURS') {
+                    script {
+                        def qg = waitForQualityGate()
+                        if (qg.status != 'OK') {
+                            error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                        }
+                    }
                 }
             }
         }
-    }
-}
+        
         stage('Maven Package') {
             steps {
                 sh 'mvn clean package -DskipTests'
             }
         }
-        
-    }   
+    }    
 }
