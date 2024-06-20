@@ -16,16 +16,18 @@ declare -A char_replacements=(
 )
 
 scrub_string() {
-  local string=$1
-  # Replace characters
-  for char in "${!char_replacements[@]}"; do
-    string=${string//"$char"/"${char_replacements[$char]}"}
-  done
-  # Replace multiple underscores with a single underscore
-  string=$(echo "$string" | sed 's/[_]\{2,\}/_/g')
-  # Remove leading and trailing underscores
-  string=$(echo "$string" | sed 's/^_//;s/_$//')
-  echo "$string"
+    local string=$1
+    # Replace characters
+    for char in "${!char_replacements[@]}"; do
+        string=${string//"$char"/"${char_replacements[$char]}"}
+    done
+    # Replace multiple underscores with a single underscore
+    string=$(echo "$string" | sed 's/[_]\{2,\}/_/g')
+    # Remove leading and trailing underscores
+    string=$(echo "$string" | sed 's/^_//;s/_$//')
+    # Convert to lowercase
+    string=$(echo "$string" | tr '[:upper:]' '[:lower:]')
+    echo "$string"
 }
 
 # Iterate through environment variables
