@@ -13,12 +13,16 @@ pipelines:
           caches:
             - docker
           script: 
-          - ps -p $$ && echo whoami 
+          - ps -p $$ && whoami 
           - cat /etc/os-release
           - echo "$SHELL"
           - source scr_scrub_bitbucket_env_vars.sh
           - source scr_non_secret_env_vars.sh
           - printenv | sort
+          - source scr_validate_mandatory_variables.sh
+          - echo "$HARBOR_ACCESS_TOKEN" | docker login "$HARBOR_LOGIN_ADDRESS" -u "$HARBOR_USERNAME" --password-stdin 
+          - docker build -t "${DOCKER_IMAGE_NAME}:${DOCKER_TAG_PIPELINE_UUID}" .
+          - docker push "${DOCKER_IMAGE_NAME}:${DOCKER_TAG_PIPELINE_UUID}"
           # - docker build -
           # - source pack_install.sh
           # - which pack && pack version

@@ -1,11 +1,7 @@
 #!/usr/bin/env bash
 echo "$(date +%Y%m%d_%H%M%S) - Entering $(basename "$(realpath "${BASH_SOURCE[0]}")") on host $(hostname)"
 
-if [ -z ${BITBUCKET_BRANCH+x} ]; then #  this shouldn't be defined locally, so we can use it to determine local vs pipeline run and tests...
-  source scr_test_pipeline_variables.sh
-else
-  echo "Running in a pipeline, using Bitbuckets real variable values."
-fi
+
 
 # List of characters to replace
 declare -A char_replacements=(
