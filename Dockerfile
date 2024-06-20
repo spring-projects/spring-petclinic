@@ -1,14 +1,11 @@
-FROM gradle:4.7.0-jdk8-alpine AS build
-COPY --chown=gradle:gradle . /home/gradle/src
-WORKDIR /home/gradle/src
-RUN gradle build --no-daemon 
+FROM gradle:jdk22-jammy as builder
+COPY . /home/gradle/source
+WORKDIR /home/gradle/source
+RUN gradle build
 
-FROM openjdk:8-jre-slim
+FROM openjdk:24-slim-bullseye
+COPY --from=builder /home/gradle/source/build/libs/spring-petclinic-3.3.0.jar /app/
+# COPY --from=builder ./build/libs/spring-petclinic-3.3.0-plain.jar /app/
 
-EXPOSE 8080
-
-RUN mkdir /app
-
-COPY --from=build /home/gradle/src/build/libs/*.jar /app/spring-boot-application.jar
-
-ENTRYPOINT ["java", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Djava.security.egd=file:/dev/./urandom","-jar","/app/spring-boot-application.jar"]
+WORKDIR /app
+ENTRYPOINT ["java", "-jar", "spring-petclinic-3.3.0.jar"]
