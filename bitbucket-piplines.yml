@@ -13,11 +13,13 @@ pipelines:
           caches:
             - docker
           script: 
-          - ps -p $$ && echo whoami && printenv | sort && cat /etc/os-release
+          - ps -p $$ && echo whoami 
+          - cat /etc/os-release
           - echo "$SHELL"
           - source scr_scrub_bitbucket_env_vars.sh
           - source scr_non_secret_env_vars.sh
-          - docker build 
+          - printenv | sort
+          # - docker build -
           # - source pack_install.sh
           # - which pack && pack version
             # - bash create-settings.sh # Create our settings.xml file.  Will fail if environment variables aren't set properly.
