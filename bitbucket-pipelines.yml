@@ -4,7 +4,8 @@ pipelines:
   branches:
     master:  # Trigger this for any pushes to the master branch.
       - step:
-          name: Buildpack
+          name: DockerBuild
+          size: 2x  # Increase memory by using a larger build container                    
           trigger: automatic
           # caches:
           #   - maven # Cache any dependencies we download, speeds up build times.
