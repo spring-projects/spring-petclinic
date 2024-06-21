@@ -26,7 +26,7 @@ pipeline {
                     // Run Maven with SonarQube plugin for analysis
                     withSonarQubeEnv('SonarQubeScanner') {
                         sh """
-                            mvn sonar:sonar -Dsonar.login=${SONAR_AUTH_TOKEN} \
+                            mvn sonar:sonar -Dsonar.login="${SONAR_AUTH_TOKEN}" \
                             -Dsonar.projectName=spring-petclinic \
                             -Dsonar.java.binaries=. \
                             -Dsonar.projectKey=spring-petclinic
@@ -66,7 +66,7 @@ pipeline {
             
             steps {
                 script {
-                    withDockerRegistry(credentialsId: 'DOCKER_REGISTRY_CREDENTIALS',registryUrl: "https://hub.docker.com/") {
+                    withDockerRegistry(credentialsId:"${DOCKER_REGISTRY_CREDENTIALS}" ,registryUrl: "https://hub.docker.com/") {
                         sh "docker build -t prasannakumarsinganamalla431/petclinic:${BUILD_NUMBER} ."
 
 
