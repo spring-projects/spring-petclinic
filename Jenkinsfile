@@ -8,6 +8,8 @@ pipeline {
     
     environment {
         SONAR_AUTH_TOKEN = credentials('SONAR_AUTH_TOKEN') // Assumes you have stored your token in Jenkins Credentials
+        DOCKER_REGISTRY_CREDENTIALS = credentials('prasannakumarsinganamalla431/****** (dockerhub)')
+
         
     }
     
@@ -57,11 +59,11 @@ pipeline {
                 sh 'mvn clean package -DskipTests'
             }
         }
-        stage('Build & push Docker Image') {
+        stage('Building Docker Image') {
             
             steps {
                 script {
-                    withDockerRegistry('Docker') {
+                    withDockerRegistry(credentialsId: 'DOCKER_REGISTRY_CREDENTIALS',registryUrl: "https://hub.docker.com/") {
                         sh "docker build -t prasannakumarsinganamalla431/petclinic:${BUILD_NUMBER} ."
 
 
