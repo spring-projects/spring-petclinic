@@ -8,7 +8,7 @@ pipeline {
     
     environment {
         SONAR_AUTH_TOKEN = credentials('SONAR_AUTH_TOKEN') // Assumes you have stored your token in Jenkins Credentials
-        DOCKER_REGISTRY_CREDENTIALS = credentials('prasannakumarsinganamalla431/****** (dockerhub)')
+        DOCKER_REGISTRY_CREDENTIALS = credentials('prasannakumarsinganamalla431')
 
         
     }
