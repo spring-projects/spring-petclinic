@@ -49,6 +49,9 @@ pipeline {
             }
         }
         stage('OWASP Dependency-Check') {
+            when {
+                branch 'Release'
+            }
             steps {
                 dependencyCheck additionalArguments: '--scan target/', odcInstallation: 'OWASP Check'
             }
