@@ -1,7 +1,7 @@
 FROM gradle:jdk22-jammy as builder
 COPY . /home/gradle/source
 WORKDIR /home/gradle/source
-RUN gradle build
+RUN gradle build --stacktrace
 
 FROM openjdk:24-slim-bullseye
 COPY --from=builder /home/gradle/source/build/libs/spring-petclinic-3.3.0.jar /app/
