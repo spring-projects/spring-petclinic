@@ -11,5 +11,5 @@ metadata:
     - maven
 spec:
   type: service
-  owner: dawncoll
+  owner: user:dawncoll
   lifecycle: experimental
