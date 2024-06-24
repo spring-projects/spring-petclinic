@@ -5,6 +5,8 @@ metadata:
   title: spring-petclinic
   annotations:
     github.com/project-slug: dawncoll/spring-petclinic
+    # instanceName and github-organization-project-name are optional. The value is a string and should be enclosed in double quotes ""
+    jenkins.io/petclinic-build-test: "instanceName:dawncoll-spring-petclinic/petclinic-build-test"
   tags:
     - spring-boot
     - java
