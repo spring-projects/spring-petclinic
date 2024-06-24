@@ -213,8 +213,7 @@
 		<configuration>
 			<exportDatatables>true</exportDatatables>
 			<activeRecipes>
-   				 <recipe>org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_3</recipe>
-   				 <recipe>com.example.UpgradeWro4jPluginVersion</recipe>
+   				 <recipe>com.example.MigrateToSpringBoot3_3</recipe>
 			</activeRecipes>
 		</configuration>
 		<dependencies>

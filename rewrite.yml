@@ -1,10 +1,21 @@
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: com.example.UpgradeWro4jPluginVersion
+name: com.example.MigrateToSpringBoot3_3
 displayName: Upgrade Wro4j Maven plugin version
+causesAnotherCycle: true
 recipeList:
-  - org.openrewrite.maven.UpgradePluginVersion:
-      groupId: ro.isdc.wro4j
-      artifactId: wro4j-maven-plugin
-      newVersion: 2.1.1
+    - org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_3
+    - org.openrewrite.maven.UpgradePluginVersion:
+        groupId: ro.isdc.wro4j
+        artifactId: wro4j-maven-plugin
+        newVersion: 2.1.1
+    - org.openrewrite.maven.RemoveProperty:
+        propertyName: cobertura.version
+    - org.openrewrite.maven.UpgradeDependencyVersion:
+        groupId: jakarta.xml.bind
+        artifactId: jakarta.xml.bind-api
+        newVersion: 4.0.2
+
+
+
 
