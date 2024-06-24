@@ -209,12 +209,15 @@
       <plugin>
 		<groupId>org.openrewrite.maven</groupId>
 		<artifactId>rewrite-maven-plugin</artifactId>
-		<version>5.34.0</version>
+		<version>5.35.0-SNAPSHOT</version>
 		<configuration>
 			<exportDatatables>true</exportDatatables>
 			<activeRecipes>
-				<!--
+						<!--
    				 <recipe>com.example.MigrateToSpringBoot3_3</recipe>
+   				 <recipe>com.example.PostMigrateToSpringBoot3_3</recipe>
+   				 
+   				  <recipe>org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_3</recipe>
    				 -->
    				 <recipe>org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_3</recipe>
 			</activeRecipes>
@@ -223,7 +226,7 @@
 			<dependency>
 				<groupId>org.openrewrite.recipe</groupId>
 				<artifactId>rewrite-spring</artifactId>
-				<version>5.13.2</version>
+				<version>5.14.0-SNAPSHOT</version>
 			</dependency>
 
 		</dependencies>
