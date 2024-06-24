@@ -1,0 +1,15 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: spring-petclinic
+  title: spring-petclinic
+  annotations:
+    github.com/project-slug: dawncoll/spring-petclinic
+  tags:
+    - spring-boot
+    - java
+    - maven
+spec:
+  type: service
+  owner: dawncoll
+  lifecycle: experimental
