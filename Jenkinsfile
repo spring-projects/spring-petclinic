@@ -21,6 +21,9 @@ pipeline {
         }
         
         stage('SonarQube Analysis') {
+            when {
+                branch 'Release'
+            }
             steps {
                 script {
                     // Run Maven with SonarQube plugin for analysis
@@ -37,6 +40,9 @@ pipeline {
         }
         
         stage("Quality Gate") {
+            when {
+                branch 'Release'
+            }
             steps {
                 timeout(time: 1, unit: 'HOURS') {
                     script {
