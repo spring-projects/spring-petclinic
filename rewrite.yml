@@ -1,7 +1,7 @@
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: com.example.MigrateToSpringBoot3_3
-displayName: Upgrade Wro4j Maven plugin version
+displayName: Migrate to Spring Boot and add some fixes
 causesAnotherCycle: true
 recipeList:
     - org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_3
@@ -15,6 +15,7 @@ recipeList:
         groupId: jakarta.xml.bind
         artifactId: jakarta.xml.bind-api
         newVersion: 4.0.2
+		
 
 
 
