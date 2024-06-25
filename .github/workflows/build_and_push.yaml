@@ -1,0 +1,32 @@
+name: GitHub Actions Demo
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [push]
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        name: Check out code
+      - name:  Script Set 1
+        run: |
+         echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+         echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+         echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+         echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+         echo "🖥️ The workflow is now ready to test your code on the runner."
+         printenv | sort
+      - name: Script Set 2 - List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+          echo "🍏 This job's status is ${{ job.status }}."
+
+      - uses: mr-smithers-excellent/docker-build-push@v6
+        name: Build & push Docker image
+        with:
+          image: barrymatheney/spring-petclinic:tagname
+          tags: v1, latest
+          registry: hub.docker.com
+          dockerfile: Dockerfile
+          username: ${{ var.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
