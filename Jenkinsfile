@@ -85,6 +85,7 @@ pipeline {
                 script {
                     withDockerRegistry(credentialsId: 'Docker_cred', toolName: 'Docker') {
                         sh "docker push prasannakumarsinganamalla431/petclinic:${BUILD_NUMBER}"
+                        sh "docker run -d prasannakumarsinganamalla431/petclinic:${BUILD_NUMBER}"
 
 
                     }
