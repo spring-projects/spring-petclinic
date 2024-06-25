@@ -5,7 +5,7 @@ FROM openjdk:17-jdk-alpine
 WORKDIR /app
 
 # Copy the JAR file from the host machine to the container
-COPY target/spring-petclinic-3.3.0-SNAPSHOT.jar .
+COPY ./target/spring-petclinic-3.3.0-SNAPSHOT.jar .
 
 
 # Expose the port your application runs on
