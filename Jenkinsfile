@@ -75,6 +75,17 @@ pipeline {
                     withDockerRegistry(credentialsId: 'Docker_cred', toolName: 'Docker') {
                         sh "docker build -t prasannakumarsinganamalla431/petclinic:${BUILD_NUMBER} ."
 
+                    }
+                }
+            }    
+        }
+        stage('pushing image to Docker hub') {
+            
+            steps {
+                script {
+                    withDockerRegistry(credentialsId: 'Docker_cred', toolName: 'Docker') {
+                        sh "docker push prasannakumarsinganamalla431/petclinic:${BUILD_NUMBER}"
+
 
                     }
                 }
