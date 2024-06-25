@@ -9,7 +9,7 @@ COPY target/spring-petclinic-3.3.0-SNAPSHOT.jar .
 
 
 # Expose the port your application runs on
-EXPOSE 8000
+EXPOSE 80
 
 # Set the entry point to run the JAR file
 ENTRYPOINT ["java", "-jar", "spring-petclinic-3.3.0-SNAPSHOT.jar"]
