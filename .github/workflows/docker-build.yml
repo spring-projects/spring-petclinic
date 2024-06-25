@@ -28,5 +28,5 @@ jobs:
           tags: v1, latest
           registry: hub.docker.com
           dockerfile: Dockerfile
-          username: ${{ var.DOCKER_USERNAME }}
+          username: ${{ vars.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}

@@ -1,0 +1,6 @@
+origin	git@github.com:barrymatheney/spring-petclinic.git (fetch)
+origin	git@github.com:barrymatheney/spring-petclinic.git (push)
+origin-bitbucket	git@bitbucket.org:JBMTeam001/spring-petclinic.git (fetch)
+origin-bitbucket	git@bitbucket.org:JBMTeam001/spring-petclinic.git (push)
+origin-github	https://github.com/spring-projects/spring-petclinic.git (fetch)
+origin-github	https://github.com/spring-projects/spring-petclinic.git (push)
