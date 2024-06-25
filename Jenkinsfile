@@ -72,7 +72,7 @@ pipeline {
             
             steps {
                 script {
-                    withDockerRegistry(credentialsId: 'Docker_cred', toolName: 'Docker', url: 'https://hub.docker.com') {
+                    withDockerRegistry(credentialsId: 'Docker_cred', toolName: 'Docker') {
                         sh "docker build -t prasannakumarsinganamalla431/petclinic:${BUILD_NUMBER} ."
 
 
