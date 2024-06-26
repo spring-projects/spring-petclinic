@@ -4,6 +4,7 @@ WORKDIR /app/petclinic
 
 COPY target/spring-petclinic-3.3.0-SNAPSHOT.jar .
 
-EXPOSE 80
+EXPOSE 8888
+
 
 ENTRYPOINT ["java", "-jar", "spring-petclinic-3.3.0-SNAPSHOT.jar"]
