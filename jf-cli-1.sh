@@ -2,7 +2,7 @@
 # export PACKAGE_CATEGORIES=(APPLICATION LIBRARY)
 
 # export BUILD_ID="cmd.$(date '+%Y-%m-%d-%H-%M')"
-export BUILD_NAME="spring-petclinic" && export BUILD_ID="cmd.$(date '+%Y-%m-%d-%H-%M')" && export JFROG_CLI_LOG_LEVEL="DEBUG" && export PACKAGE_CATEGORY='LIBRARY' & export JF_BEARER_TOKEN=''
+export BUILD_NAME="spring-petclinic" && export BUILD_ID="cmd.$(date '+%Y-%m-%d-%H-%M')" && export JFROG_CLI_LOG_LEVEL="DEBUG" && export PACKAGE_CATEGORY='LIBRARY' & export JF_BEARER_TOKEN='cmVmdGtuOjAxOjE3NDg2MzI1MzU6czl4SDNES1F6dGRPZlMzMTdEMktkRmZhTmdB'
 
 # MVN 
 #jf rt mvn clean install -DskipTests=true --build-name=spring-petclinic --build-number=${BUILD_ID} --detailed-summary=true --scan=true

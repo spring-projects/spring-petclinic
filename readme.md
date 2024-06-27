@@ -20,6 +20,11 @@ Note: This process with not deploy to the envionrmnet platform.
 [![Walk through demo](https://img.youtube.com/vi/zgiaPIp-ZZA/0.jpg)](https://www.youtube.com/watch?v=zgiaPIp-ZZA)
 ### Assumption
 My assumption is that the user has the necessary infrastucture in place, including Java v17+, Maven v3.8+, Docker v25+, and a Jenkins v2.445+ server, to implement an automated pipeline for the PetClinic application.
+`````
+docker pull psazuse.jfrog.io/krishnam-docker-virtual/myjenkins:latest
+
+docker pull psazuse.jfrog.io/krishnam-docker-virtual/krishnamanchikalapudi/myjenkins:latest
+`````
 
 ### Pipeline
 <img src="./cipipeline.svg">
@@ -111,6 +116,10 @@ A few options are available to execute the Docker image [krishnamanchikalapudi/m
 `````
 docker pull krishnamanchikalapudi/mypetclinic:latest
 `````
+`````
+docker pull psazuse.jfrog.io/krishnam-docker-virtual/krishnamanchikalapudi/mypetclinic:latest
+`````
+
 - Execute the container
 `````
 docker run -d --name mypetclinic -p 7080:8080 krishnamanchikalapudi/mypetclinic:latest
