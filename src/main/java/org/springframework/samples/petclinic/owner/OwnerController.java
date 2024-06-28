@@ -15,11 +15,6 @@
  */
 package org.springframework.samples.petclinic.owner;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.validation.Valid;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,12 +22,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Juergen Hoeller
@@ -157,6 +157,18 @@ class OwnerController {
 		ModelAndView mav = new ModelAndView("owners/ownerDetails");
 		Owner owner = this.owners.findById(ownerId);
 		mav.addObject(owner);
+		return mav;
+	}
+
+	/**
+	 * Delete an owner and related entities by id
+	 * @param ownerId the id to delete
+	 * @return a ModelMap showing the owners list
+	 */
+	@DeleteMapping("/owners/{ownerId}")
+	public ModelAndView deleteOwner(@PathVariable("ownerId") int ownerId) {
+		ModelAndView mav = new ModelAndView("owners/ownersList");
+		this.owners.deleteById(ownerId);
 		return mav;
 	}
 

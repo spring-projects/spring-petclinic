@@ -6,6 +6,9 @@
 ## Running petclinic locally
 Petclinic is a [Spring Boot](https://spring.io/guides/gs/spring-boot) application built using [Maven](https://spring.io/guides/gs/maven/). You can build a jar file and run it from the command line (it should work just as well with Java 8, 11 or 17):
 
+## Changes from original repo
+
++ For Spring Boot 2.6.3 version, added the ability to delete Owners and cascade deletions to other tables
 
 ```
 git clone https://github.com/spring-projects/spring-petclinic.git
