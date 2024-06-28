@@ -15,8 +15,3 @@ recipeList:
         groupId: jakarta.xml.bind
         artifactId: jakarta.xml.bind-api
         newVersion: 4.0.2
-		
-
-
-
-
