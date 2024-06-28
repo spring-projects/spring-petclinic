@@ -18,4 +18,5 @@ COPY --from=build /project/target/spring-petclinic-*.jar /app/java-application.j
 COPY --from=build /project/metrics /app/metrics
 
 # ENTRYPOINT [ "java", "-Dspring.profiles.active=postgres", "-jar", "java-application.jar"]
-ENTRYPOINT [ "java", "-javaagent:/app/metrics/jmx_prometheus_javaagent-1.0.1.jar=12345:/app/metrics/config.yaml", "-jar", "java-application.jar"]
+# ENTRYPOINT [ "java", "-javaagent:/app/metrics/jmx_prometheus_javaagent-1.0.1.jar=12345:/app/metrics/config.yaml", "-jar", "java-application.jar"]
+ENTRYPOINT [ "java", " -Dspring.profiles.active=mysql", "-jar", "java-application.jar"]
