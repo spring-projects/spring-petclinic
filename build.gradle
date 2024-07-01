@@ -94,14 +94,6 @@ checkstyleNohttp {
   enabled = true
 }
 
-tasks.withType(Checkstyle) {
-    reports {
-        xml.enabled false
-        html.enabled true
-        html.stylesheet resources.text.fromFile('config/xsl/checkstyle-custom.xsl')
-    }
-}
-
 tasks.named("formatMain").configure { dependsOn("checkstyleMain") }
 tasks.named("formatMain").configure { dependsOn("checkstyleNohttp") }
 tasks.named("formatTest").configure { dependsOn("checkstyleTest") }
