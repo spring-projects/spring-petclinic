@@ -3,13 +3,17 @@ pipeline {
     agent any
 
     environment {
-        NEXUS_CREDS = credentials('nexus-cred')
-        NEXUS_DOCKER_REPO_MR = '34.245.131.115:8085'
-        NEXUS_DOCKER_REPO_MAIN = '34.245.131.115:8084'
+        DOCKER_STORAGE = 'testfiesta/petclinic'
+        SHORT_COMMIT = "${GIT_COMMIT[0..7]}"
+        GIT_TAG = ''
     }
 
     tools {
         gradle '8.7'
+    }
+
+    parameters {
+        choice(name: 'ACTION', choices: ['MR', 'Deploy'], description: 'Choose the action to perform')
     }
 
     stages {
@@ -20,7 +24,7 @@ pipeline {
             }
             steps{
                 echo 'Running gradle checkstyle'
-                sh './gradlew checkstyleMain --no-daemon'
+                sh './gradlew check --no-daemon'
             }
             post {
                 always {
@@ -34,7 +38,7 @@ pipeline {
             }
             steps {
                 echo 'Running gradle test'
-                sh './gradlew test -x test --no-daemon'
+                sh './gradlew test -x check --no-daemon'
             }
         }
         stage('Build') {
@@ -52,7 +56,7 @@ pipeline {
             }
             steps { 
                 echo 'Building docker Image'
-                sh 'docker build -t $NEXUS_DOCKER_REPO_MR/spring-petclinic:${GIT_COMMIT} .'
+                sh 'docker build -t $DOCKER_STORAGE:${SHORT_COMMIT} .'
             }
         }
         stage('Docker Login (MR)') {
@@ -60,12 +64,11 @@ pipeline {
                 changeRequest()
             }
             steps {
-                echo 'Nexus Docker Repository Login'
+                echo 'Docker Repository Login'
                 script{
-                    withCredentials([usernamePassword(credentialsId: 'nexus-cred', usernameVariable: 'USER', passwordVariable: 'PASS' )]){
-                        sh 'echo $PASS | docker login -u $USER --password-stdin $NEXUS_DOCKER_REPO_MR'
-                    }
-                    
+                    withCredentials([usernamePassword(credentialsId: 'docker-cred', usernameVariable: 'USER', passwordVariable: 'PASS' )]){
+                        sh 'echo $PASS | docker login -u $USER --password-stdin $DOCKER_STORAGE'
+                    }    
                 }
             }
         }
@@ -74,19 +77,28 @@ pipeline {
                 changeRequest()
             }
             steps {
-                echo 'Pushing Image to docker repo'
-                sh 'docker push $NEXUS_DOCKER_REPO_MR/spring-petclinic:${GIT_COMMIT}'
+                echo 'Pushing Image to Docker repository'
+                sh 'docker push $DOCKER_STORAGE:${SHORT_COMMIT}'
             }
         }
 
         // Main branch pipeline
+        stage('Git tag the current state') {
+            when {
+                branch 'main'
+            }
+            steps { 
+                echo 'Tagging'
+                
+            }
+        }
         stage('Docker Build (Main)') {
             when {
                 branch 'main'
             }
             steps { 
                 echo 'Building docker Image'
-                sh 'docker build -t $NEXUS_DOCKER_REPO_MAIN/spring-petclinic:${GIT_COMMIT} .'
+                sh 'docker build -t $DOCKER_STORAGE:${GIT_TAG} .'
             }
         }
         stage('Docker Login (Main)') {
@@ -94,10 +106,10 @@ pipeline {
                 branch 'main'
             }
             steps {
-                echo 'Nexus Docker Repository Login'
+                echo 'Docker Repository Login'
                 script{
-                    withCredentials([usernamePassword(credentialsId: 'nexus-cred', usernameVariable: 'USER', passwordVariable: 'PASS' )]){
-                        sh 'echo $PASS | docker login -u $USER --password-stdin $NEXUS_DOCKER_REPO_MAIN'
+                    withCredentials([usernamePassword(credentialsId: 'docker-cred', usernameVariable: 'USER', passwordVariable: 'PASS' )]){
+                        sh 'echo $PASS | docker login -u $USER --password-stdin $DOCKER_STORAGE'
                     }
                 }
             }
@@ -107,8 +119,8 @@ pipeline {
                 branch 'main'
             }
             steps {
-                echo 'Pushing Image to docker repo'
-                sh 'docker push $NEXUS_DOCKER_REPO_MAIN/spring-petclinic:${GIT_COMMIT}'
+                echo 'Pushing Image to Docker repository'
+                sh 'docker push $DOCKER_STORAGE:${GIT_TAG}'
             }
         }
     }
