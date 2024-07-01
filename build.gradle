@@ -75,15 +75,31 @@ tasks.named('test') {
   useJUnitPlatform()
 }
 
+// Checkstyle configuration - html reports, main classes paths, do not allow http
 checkstyle {
   configDirectory = project.file('src/checkstyle')
   configFile = file('src/checkstyle/nohttp-checkstyle.xml')
+}
+
+checkstyleMain {
+    source ='src/main/java'
+}
+checkstyleTest {
+    source ='src/test/java'
 }
 
 checkstyleNohttp {
   configDirectory = project.file('src/checkstyle')
   configFile = file('src/checkstyle/nohttp-checkstyle.xml')
   enabled = true
+}
+
+tasks.withType(Checkstyle) {
+    reports {
+        xml.enabled false
+        html.enabled true
+        html.stylesheet resources.text.fromFile('config/xsl/checkstyle-custom.xsl')
+    }
 }
 
 tasks.named("formatMain").configure { dependsOn("checkstyleMain") }
