@@ -24,7 +24,7 @@ pipeline {
             }
             post {
                 always {
-                    archiveArtifacts artifacts: 'build/reports/checkstyle/*.xml', fingerprint: true
+                    archiveArtifacts artifacts: 'build/reports/checkstyleNohttp/*.html', fingerprint: true
                 }
             }
         }

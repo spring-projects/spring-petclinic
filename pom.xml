@@ -146,17 +146,6 @@
     <tag>@{project.version}</tag>
   </scm>
 
-  <!-- <distributionManagement>
-    <snapshotRepository>
-      <id>nexus-snapshots</id>
-      <url>http://localhost:8081/repository/maven-snapshost-private/</url>
-    </snapshotRepository>
-    <repository>
-      <id>nexus-releases</id>
-      <url>http://localhost:8081/repository/maven-releases-private/</url>
-    </repository>
-  </distributionManagement> -->
-
   <distributionManagement>
     <repository>
       <id>github</id>
@@ -168,26 +157,6 @@
 
   <build>
     <plugins>
-      <!-- <plugin>
-        <groupId>org.sonatype.plugins</groupId>
-        <artifactId>nexus-staging-maven-plugin</artifactId>
-        <version>1.5.1</version>
-        <executions>
-          <execution>
-            <id>default-deploy</id>
-            <phase>deploy</phase>
-            <goals>
-              <goal>deploy</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <serverId>nexus</serverId>
-          <nexusUrl>http://localhost:8081</nexusUrl>
-          <skipStaging>true</skipStaging>
-        </configuration>
-      </plugin> -->
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
@@ -222,41 +191,6 @@
             <phase>validate</phase>
             <goals>
               <goal>validate</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>${maven-checkstyle.version}</version>
-        <dependencies>
-          <dependency>
-            <groupId>com.puppycrawl.tools</groupId>
-            <artifactId>checkstyle</artifactId>
-            <version>${checkstyle.version}</version>
-          </dependency>
-          <dependency>
-            <groupId>io.spring.nohttp</groupId>
-            <artifactId>nohttp-checkstyle</artifactId>
-            <version>${nohttp-checkstyle.version}</version>
-          </dependency>
-        </dependencies>
-        <executions>
-          <execution>
-            <id>nohttp-checkstyle-validation</id>
-            <phase>validate</phase>
-            <configuration>
-              <configLocation>src/checkstyle/nohttp-checkstyle.xml</configLocation>
-              <sourceDirectories>${basedir}</sourceDirectories>
-              <includes>**/*</includes>
-              <excludes>**/.git/**/*,**/.idea/**/*,**/target/**/,**/.flattened-pom.xml,**/*.class</excludes>
-              <propertyExpansion>
-                config_loc=${basedir}/src/checkstyle/
-              </propertyExpansion>
-            </configuration>
-            <goals>
-              <goal>check</goal>
             </goals>
           </execution>
         </executions>
@@ -320,6 +254,19 @@
     </plugins>
   </build>
 
+  <reporting>
+      <plugins>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-checkstyle-plugin</artifactId>
+              <version>3.0.0</version>
+              <configuration>
+                  <configLocation>/config/checkstyle/rules.xml</configLocation>
+              </configuration>
+          </plugin>
+      </plugins>
+  </reporting>
+
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>
@@ -328,10 +275,6 @@
   </licenses>
 
   <repositories>
-    <repository>
-      <id>maven-group</id>
-      <url>http://localhost:8081/repository/my-maven-group/</url>
-    </repository>
     <repository>
       <id>spring-snapshots</id>
       <name>Spring Snapshots</name>

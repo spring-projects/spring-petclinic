@@ -20,7 +20,6 @@ apply plugin: 'checkstyle'
 apply plugin: 'io.spring.javaformat'
 apply plugin: 'pl.allegro.tech.build.axion-release'
 apply plugin: 'maven-publish'
-apply plugin: 'checkstyle'
 
 gradle.startParameter.excludedTaskNames += [ "checkFormatAot", "checkFormatAotTest" ]
 
@@ -84,7 +83,7 @@ checkstyle {
 checkstyleNohttp {
   configDirectory = project.file('src/checkstyle')
   configFile = file('src/checkstyle/nohttp-checkstyle.xml')
-  enabled = false
+  enabled = true
 }
 
 tasks.named("formatMain").configure { dependsOn("checkstyleMain") }
