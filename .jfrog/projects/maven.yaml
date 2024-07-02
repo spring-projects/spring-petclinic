@@ -1,0 +1,10 @@
+version: 1
+type: maven
+resolver:
+    serverId: psazuse
+    snapshotRepo: krishnam-mvn-virtual
+    releaseRepo: krishnam-mvn-virtual
+deployer:
+    serverId: psazuse
+    snapshotRepo: krishnam-mvn-dev-local
+    releaseRepo: krishnam-mvn-local

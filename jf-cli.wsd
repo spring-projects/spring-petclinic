@@ -1,0 +1,5 @@
+' https://plantuml.com/sequence-diagram '
+participant GitHub as Git
+participant Artifactory [
+    = User
+]

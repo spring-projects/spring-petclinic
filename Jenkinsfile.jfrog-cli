@@ -1,0 +1,158 @@
+node {
+    JF_RT_URL="https://psazuse.jfrog.io"
+    JFROG_NAME="psazuse"
+    
+    # https://github.com/krishnamanchikalapudi/spring-petclinic
+    projectName="spring-petclinic" 
+    JF_CLI_LOG_LEVEL='DEBUG'
+    stage('init') {
+        stage('jf.ver') {
+            sh """ #!/bin/bash
+                jf -v
+            """ 
+        } // stage: jf.ver
+        stage('rt.config') {
+            // jenkins secrets: https://www.jenkins.io/doc/book/using/using-credentials/
+             // JFrog CLI config
+            withCredentials([usernamePassword(credentialsId: 'JFROG_ARTIFACTORY_CLI', passwordVariable: 'JFROG_RT_PWD', usernameVariable: 'JFROG_RT_USER')]) {
+                sh """ #!/bin/bash
+                    jf config add ${JFROG_NAME} --artifactory-url=${JF_RT_URL}/artifactory --xray-url=${JF_RT_URL}/xray --user=${JFROG_RT_USER} --password=${JFROG_RT_PWD} --interactive=false --overwrite    
+                """
+            } // withCredentials: JFROG_ARTIFACTORY
+        } // stage: rt.config
+        stage('rt.ping') {
+            sh """ #!/bin/bash
+                export JFROG_CLI_LOG_LEVEL='${JF_CLI_LOG_LEVEL}'
+                jf rt ping
+            """
+        } // stage: rt.ping
+        stage('config.show') {
+            sh """ #!/bin/bash
+                export JFROG_CLI_LOG_LEVEL='${JF_CLI_LOG_LEVEL}'
+                echo "\n"
+                jf config show
+            """
+        } // stage: config.show
+    } // stage: init
+    stage('Code') {
+        stage('clone') {
+            git branch: 'main', url: 'https://github.com/krishnamanchikalapudi/spring-petclinic.git'
+        } // stage: clone
+        stage('mvnc') {
+            repoPath="krishnam-mvn"
+            sh """ #!/bin/bash  
+                export JFROG_CLI_LOG_LEVEL='${JF_CLI_LOG_LEVEL}'
+
+                jf mvnc --server-id-resolve ${JFROG_NAME} --server-id-deploy ${JFROG_NAME} --repo-resolve-releases ${repoPath}-virtual --repo-resolve-snapshots ${repoPath}-virtual --repo-deploy-releases ${repoPath}-local --repo-deploy-snapshots ${repoPath}-dev-local
+            """
+        } // stage: mvnc
+        stage('audit') {
+            sh """ #!/bin/bash
+                export JFROG_CLI_LOG_LEVEL='${JF_CLI_LOG_LEVEL}'
+
+                jf audit --mvn --extended-table=true --format=simple-json
+            """
+        }
+        stage('compile') {
+            sh """ #!/bin/bash
+                export JFROG_CLI_LOG_LEVEL='${JF_CLI_LOG_LEVEL}'
+
+                jf rt mvn clean install -DskipTests=true --scan=true --build-name=${projectName} --build-number=${env.BUILD_ID} --detailed-summary=true 
+            """
+        } // stage: compile
+        stage('scan') {
+            sh """ #!/bin/bash
+                export JFROG_CLI_LOG_LEVEL='${JF_CLI_LOG_LEVEL}'
+
+                jf scan . --extended-table=true --format=simple-json
+            """
+        }
+    } // stage: code
+    stage('Tests') {
+        parallel unitTest: {
+            stage ("unitTest") {
+                timeout(time: 10, unit: 'MINUTES') {
+                    sh """ #!/bin/bash
+                        mvn test surefire-report:report
+
+                        echo 'surefire report generated in ${env.JENKINS_URL}job/${env.JOB_NAME}/${env.BUILD_ID}/execution/node/3/ws/target/site/surefire-report.html'
+                    """
+                } // timeout
+            } // stage: unittest
+        }, checkstyle: {
+            stage ("checkStyle") {
+                timeout(time: 2, unit: 'MINUTES') {
+                    sh """ #!/bin/bash
+                        mvn validate
+                    """
+                } // timeout
+            } // stage: validate
+        }, codeCoverage: {
+            stage ("codeCoverage") {
+                timeout(time: 2, unit: 'MINUTES') {
+                    sh """ #!/bin/bash
+                        mvn jacoco:report
+                                    
+                        echo 'Jacoco report generated in ${env.JENKINS_URL}job/${env.JOB_NAME}/${env.BUILD_ID}/execution/node/3/ws/target/site/jacoco/index.html'
+                    """
+                } // timeout
+            } // stage: Jacoo
+        } // parallel
+    } // stage: tests
+    stage('BuildInfo') {
+        stage('vcs info') {
+            timeout(time: 2, unit: 'MINUTES') {
+                sh """ #!/bin/bash
+                    export JFROG_CLI_LOG_LEVEL='${JF_CLI_LOG_LEVEL}'
+
+                    jf rt bag ${projectName} ${env.BUILD_ID}
+                """
+            } // timeout
+        } // stage: git info
+        stage('env info') {
+            timeout(time: 2, unit: 'MINUTES') {
+                sh """ #!/bin/bash
+                    export JFROG_CLI_LOG_LEVEL='${JF_CLI_LOG_LEVEL}'
+
+                    jf rt bce ${projectName} ${env.BUILD_ID} 
+                """
+            } // timeout
+        }  // stage: env info
+        stage ('publish') {
+            timeout(time: 2, unit: 'MINUTES') {
+                sh """ #!/bin/bash
+                    export JFROG_CLI_LOG_LEVEL='${JF_CLI_LOG_LEVEL}'
+
+                    jf rt bp ${projectName} ${env.BUILD_ID} --detailed-summary=true
+                """
+            } // timeout
+        } // stage: publish
+    } // stage: BuildInfo
+    stage("Queries") {
+        stage('build') {
+            //  echo $BP_RESP_DATA | jq -r 'buildInfo.env.PACKAGE_CATEGORY'
+            sh """ #!/bin/bash
+                export JFROG_CLI_LOG_LEVEL='${JF_CLI_LOG_LEVEL}'
+
+                jf rt curl /api/build/${projectName}/${env.BUILD_ID} 
+            """
+        } // stage: build
+    } // stage: queries
+    stage("RBv2") {
+        stage("create") {
+            sh """ #!/bin/bash
+
+            """
+        } // stage: create
+        stage("promote:New2Dev") {
+            sh """ #!/bin/bash
+
+            """
+        } // stage: promote New 2 Dev
+        stage ("promote:Dev2QA") {
+            sh """ #!/bin/bash
+
+            """
+        } // stage: promote Dev 2 QA
+    } // stage: RBv2
+} // node
