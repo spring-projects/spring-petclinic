@@ -16,4 +16,4 @@ WORKDIR /app
 COPY --from=build /project/build/libs/spring-petclinic-*.jar /app/java-application.jar
 COPY --from=build /project/metrics /app/metrics
 
-ENTRYPOINT [ "java", "-Dspring.profiles.active=default", "-jar", "java-application.jar"]
+ENTRYPOINT [ "java", "-Dspring.profiles.active=mysql", "-jar", "java-application.jar"]
