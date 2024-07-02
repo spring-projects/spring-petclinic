@@ -18,9 +18,9 @@
   <!-- SonarQube server URL -->
   <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 <!-- Project key -->
-<sonar.projectKey>sonartestconfig_test</sonar.projectKey>
+<sonar.projectKey>nagarjunasonar_jenkins</sonar.projectKey>
 <!-- Organization key (if applicable) -->
-<sonar.organization>sonartestconfig</sonar.organization>
+<sonar.organization>nagarjunasonar</sonar.organization>
     <!-- Generic properties -->
     <java.version>17</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
