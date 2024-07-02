@@ -17,9 +17,9 @@
   <properties>
 
     <!-- Project key -->
-<sonar.projectKey>chanduc_chanduc</sonar.projectKey>
+<sonar.projectKey>chandusonar_test</sonar.projectKey>
 <!-- Organization key (if applicable) -->
-<sonar.organization>chanduc</sonar.organization>
+<sonar.organization>chandusonar</sonar.organization>
     <!-- Generic properties -->
     <java.version>17</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
