@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
 
@@ -126,6 +125,7 @@ pipeline {
     }
     post {
         always {
+            sh 'docker logout'
             cleanWs()
         }
     }
