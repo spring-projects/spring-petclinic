@@ -4,26 +4,5 @@ services:
       context: .
     ports:
       - 80:8080
-    depends_on:
-      db:
-        condition: service_healthy
     environment:
       - MYSQL_URL=jdbc:mysql://petclinic:petclinic@db:3306/petclinic
-  db:
-    image: mysql
-    restart: always
-    volumes:
-      - db-data:/var/lib/mysql
-    environment:
-      - MYSQL_DATABASE=petclinic
-      - MYSQL_USER=petclinic
-      - MYSQL_PASSWORD=petclinic
-    ports:
-      - 3306:3306
-    healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-volumes:
-  db-data:

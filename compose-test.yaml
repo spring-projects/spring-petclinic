@@ -1,0 +1,25 @@
+services:
+  server:
+    build:
+      context: .
+    ports:
+      - 80:8080
+    depends_on:
+      - db
+    environment:
+      - MYSQL_URL=jdbc:mysql://petclinic:petclinic@db:3306/petclinic
+  db:
+    image: mysql
+    restart: always
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=petclinic
+      - MYSQL_USER=petclinic
+      - MYSQL_PASSWORD=petclinic
+    ports:
+      - 3306:3306
+
+volumes:
+  db-data:
