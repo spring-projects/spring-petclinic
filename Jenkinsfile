@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_STORAGE = 'testfiesta/petclinic'
         SHORT_COMMIT = "${GIT_COMMIT[0..7]}"
-        GIT_TAG = ''
+        GIT_TAG = '1.0'
     }
 
     tools {
