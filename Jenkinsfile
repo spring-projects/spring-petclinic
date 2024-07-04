@@ -66,7 +66,7 @@ pipeline {
                 echo 'Docker Repository Login'
                 script{
                     withCredentials([usernamePassword(credentialsId: 'docker-cred', usernameVariable: 'USER', passwordVariable: 'PASS' )]){
-                        sh 'echo $PASS | docker login -u $USER --password-stdin $DOCKER_STORAGE'
+                        sh 'echo $PASS | docker login -u $USER --password-stdin'
                     }    
                 }
             }
@@ -108,7 +108,7 @@ pipeline {
                 echo 'Docker Repository Login'
                 script{
                     withCredentials([usernamePassword(credentialsId: 'docker-cred', usernameVariable: 'USER', passwordVariable: 'PASS' )]){
-                        sh 'echo $PASS | docker login -u $USER --password-stdin $DOCKER_STORAGE'
+                        sh 'echo $PASS | docker login -u $USER --password-stdin'
                     }
                 }
             }
