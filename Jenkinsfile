@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'petclinic' }
 
     environment {
         DOCKER_STORAGE = 'testfiesta/petclinic'
