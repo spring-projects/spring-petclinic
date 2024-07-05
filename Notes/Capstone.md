@@ -25,11 +25,12 @@ They are needed for conenction to RDS. One can use it via `docker -e MYSQL_...` 
 
 ### CI/CD
 
-Jenkins server needs to be initilized manually (user, password, plugins, etc.)
+Agent is configured via command got from main Controller
+and to be initilized manually (user, password, plugins, connection, etc.)
 
-For the pipeline to work correctly one needs to setup credentials for Docker Hub and GitHub in Jenkins build server after provisioning infrastructure.
+For the pipeline to work correctly one needs to setup credentials for Docker Hub and GitHub in Jenkins controller server.
 
-The Github credentials are used to push tags ti repository.
+The Github credentials are used to push tags to repository.
 
 Also one needs to configure repository webhook for build server.
 
