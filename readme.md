@@ -1,60 +1,68 @@
-# DevOps excercises
+# Sprint-petclinic codebase
 
-This repository contains sample spring-boot app - [spring-petclinic](https://github.com/spring-projects/spring-petclinic). It is a starting point for excercises with:
+This repository contains codebase for capstone project.
 
-* Gradle/Maven - build tools
-* Nexus - artifact management, private repositories
-* Docker - containerisation
-* Jenkins - CI + CD
-* AWS - cloud
+For capstone project I made some changes in this code base. Mainly in: Dockerfile, Jenkinsfile and build.gradle.
+
+Also I learned how to use MySQL for spring petclinic - it reqiures some enviroment variables:
+
+* MYSQL_USER
+* MYSQL_PASSWORD
+* MYSQL_ROOT_PASSWORD
+* MYSQL_DATABASE
+* MYSQL_URL
+
+They are needed for conenction to RDS. One can use it via `docker -e MYSQL_...` or `export MYSQL_...` (for `java -jar` usage).
 
 <hr>
 
-## Build tools
+## Overwiev
 
-1. Getting familiar with wrappers
-2. Setting up with build.gradle/pom.xml
-3. Getting familiar with test/build/package/checkstyle/install/cleanup processes
-4. Adding source control management (SCM)
-5. Versioning with release plugin
-6. Plugin management
-7. Custom jobs (Gradle)
-8. Adding custom repositories
+### Build
 
-## Nexus
+* Application is built with Gradle 8.X
+* Checkstyle is provided via Gradle plugin
 
-1. Setting up proxy and private repositories
-2. Releasing artifacts to private repository
-3. Integration with maven via Nexus Repository Maven Plugin
+<hr>
 
-## Docker
+### CI/CD
 
-1. Containers vs VM
-2. How container works
-3. Dockerfile and its (best practices)[https://docs.docker.com/develop/develop-images/dockerfile_best-practices/]
-4. Multi-stage builds
-5. Usage in (local development)[https://docs.docker.com/language/java/develop/]
-6. (How to make images smaller)[https://learnk8s.io/blog/smaller-docker-images] - distroless/slim base images + multi-stage + less layers
-7. (Vulnerability scanning)[https://docs.docker.com/scout/]
-8. Basics of docker compose
+Jenkins server can be used in two ways:
 
-## Jenkins
+* As agent
+* As separete build server
 
-1. Core principals of CI/CD
-2. Credentials management
-3. Plugins
-4. Distributed builds using agents
-5. Integrate source code management, build tools, and test reports in Jenkins. (>Tools)
-6. Manage builds
-7. Enviroment variables and parametrised builds
-8. Integration with docker
-9. Creating basic pipeline
+Each will change a bit in configuration.
 
-## AWS
+<hr>
 
-1. Console + CLI operations
-2. Credential management for CLI
-3. Creation and usage of basic components: S3, EC2, VPC, ECR, Security Groups, IAM.
-4. Some automation with bash scripts
+### Dockerfile
 
-Note: run scripts using `source` command, eg. `source prepare_aws_enviroment.sh`
+Dockerfile is provided, also compose file for testing is present. Additionally, there is compose file with provided sample connection string - one needs to change it accoring to RDS endpoint and user data.
+
+## Explanation of components
+
+### CI/CD
+
+Agent is configured via command got from main Controller (Or used as a separete server - then Jenkins file agent need to be updated) and to be initilized manually (user, password, plugins, connection, etc.)
+
+Agent usage:
+
+* Add agent via commend given from Controller.
+* Ensure all needed credentials are added in Controller (DockerHub, GitHub, AWS, etc.) - check infrastructure README
+* Configure repository webhook for server
+
+Separete server usage:
+
+* For the pipeline to work correctly one needs to setup credentials for Docker Hub and GitHub in Jenkins server
+* Configure repository webhook for server
+
+<hr>
+
+### Dockerfile
+
+For image creation basic Gradle image is used for build purposes, with addition of distroless layer for application. Image is split into layers according to (at time of creation and my knowlage) current standards, and optimalized for minimal size.
+
+Two compose files are present - one for testing connection string, other for providing container that connects to RDS. 
+
+<hr>
