@@ -15,7 +15,7 @@
 <scm>
   <connection>scm:git:https://github.com/KubaGrid/spring-petclinic.git</connection>
     <developerConnection>scm:git:https://github.com/KubaGrid/spring-petclinic.git</developerConnection>
-    <url>https://github.com/KubaGrid/spring-petclinic.git</url>
+    <url>https://github.com/KubaGrid/spring-petclinic</url>
     <tag>HEAD</tag>
 </scm>
   <properties>
