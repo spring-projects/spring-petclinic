@@ -12,11 +12,12 @@
   </parent>
   <name>petclinic</name>
 
-  <scm>
-    <tag>myproj-1.4-SNAPSHOT</tag>
-    <connection>scm:ssh://git@github.com:KubaGrid/spring-petclinic.git</connection>
-    <developerConnection>scm:git:https://github.com/KubaGrid/spring-petclinic</developerConnection>
-  </scm>
+<scm>
+    <connection>scm:git:git@github.com:KubaGrid/spring-petclinic.git</connection>
+    <developerConnection>scm:git:git@github.com:KubaGrid/spring-petclinic.git</developerConnection>
+    <url>https://github.com/KubaGrid/spring-petclinic</url>
+    <tag>HEAD</tag>
+</scm>
   <properties>
 
     <!-- Generic properties -->
