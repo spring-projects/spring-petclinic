@@ -11,7 +11,13 @@
     <version>3.3.0</version>
   </parent>
   <name>petclinic</name>
-
+  <distributionManagement>
+    <repository>
+      <id>dev</id>
+      <name>local</name>
+      <url>file://${user.home}/.m2/repository</url>
+    </repository>
+  </distributionManagement>
 <scm>
   <connection>scm:git:https://github.com/KubaGrid/spring-petclinic.git</connection>
     <developerConnection>scm:git:https://github.com/KubaGrid/spring-petclinic.git</developerConnection>
