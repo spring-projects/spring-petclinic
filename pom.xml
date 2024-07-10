@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
-  <version>1.4p</version>
+  <version>4.0-SNAPSHOT</version>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -16,7 +16,7 @@
   <connection>scm:git:https://github.com/KubaGrid/spring-petclinic.git</connection>
     <developerConnection>scm:git:https://github.com/KubaGrid/spring-petclinic.git</developerConnection>
     <url>https://github.com/KubaGrid/spring-petclinic</url>
-    <tag>myproj-1.2-SNAPSHOT</tag>
+    <tag>HEAD</tag>
 </scm>
   <properties>
 
@@ -25,7 +25,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <!-- Important for reproducible builds. Update using e.g. ./mvnw versions:set -DnewVersion=... -->
-    <project.build.outputTimestamp>2024-07-10T10:43:37Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2024-07-10T10:43:56Z</project.build.outputTimestamp>
 
     <!-- Web dependencies -->
     <webjars-bootstrap.version>5.3.3</webjars-bootstrap.version>
