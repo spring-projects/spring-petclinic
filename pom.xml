@@ -13,8 +13,9 @@
   <name>petclinic</name>
 
   <scm>
-    <connection>scm:git:https://github.com/KubaGrid/spring-petclinic</connection>
     <tag>myproj-1.4-SNAPSHOT</tag>
+    <connection>scm:ssh://git@github.com:KubaGrid/spring-petclinic.git</connection>
+    <developerConnection>scm:git:https://github.com/KubaGrid/spring-petclinic</developerConnection>
   </scm>
   <properties>
 
