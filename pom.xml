@@ -13,7 +13,7 @@
   <name>petclinic</name>
 
   <scm>
-    <connection>scm:git:</connection>
+    <connection>scm:git:https://github.com/KubaGrid/spring-petclinic</connection>
     <tag>myproj-1.4-SNAPSHOT</tag>
   </scm>
   <properties>
