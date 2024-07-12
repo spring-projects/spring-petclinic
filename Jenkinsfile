@@ -14,9 +14,9 @@ pipeline {
         sh 'mvn clean package'
       }
     }
-    stage('Static Code Analysis') {
+    stage('StaticCode Analysis') {
       environment {
-        SONAR_URL = "https://20.197.43.119:32768"
+        SONAR_URL = "http://20.197.43.119:32768"
       }
       steps {
         withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
