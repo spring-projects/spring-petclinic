@@ -4,7 +4,7 @@ pipeline {
     stage('Checkout') {
       steps {
         sh 'echo passed'
-        //git branch: 'main', url: 'https://github.com/iam-veeramalla/Jenkins-Zero-To-Hero.git'
+        //git branch: 'test', url: 'https://github.com/vuyyuru-bhanu/spring-petclinic'
       }
     }
     stage('Build and Test') {
@@ -14,16 +14,16 @@ pipeline {
         sh 'mvn clean package'
       }
     }
-    //stage('Static Code Analysis') {
-      //environment {
-       // SONAR_URL = "http://20.197.43.119:32768"
-     // }
-     // steps {
-      //  withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
-      //    sh 'mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}'
-      //  }
-     // }
-    //}
+    stage('Static Code Analysis') {
+      environment {
+        SONAR_URL = "https://20.197.43.119:32768"
+      }
+      steps {
+        withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
+          sh 'mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}'
+        }
+      }
+    }
     stage('Build and Push Docker Image') {
       environment {
         DOCKER_IMAGE = "bhanu3333/kube:${BUILD_NUMBER}"
