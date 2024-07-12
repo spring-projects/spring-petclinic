@@ -1,5 +1,9 @@
 pipeline {
-  agent { label 'hello' }
+  agent { docker {
+      image 'bhanu3333/test:4'
+      args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
+    }
+  }
   stages {
     stage('Checkout') {
       steps {
@@ -14,9 +18,9 @@ pipeline {
         sh 'mvn clean package'
       }
     }
-    stage('StaticCode Analysis') {
+    stage('Static Code Analysis') {
       environment {
-        SONAR_URL = "http://20.197.43.119:32768"
+        SONAR_URL = "https://20.197.43.119:32768"
       }
       steps {
         withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
