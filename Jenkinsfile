@@ -4,7 +4,7 @@ pipeline {
     environment {
         SCANNER_HOME=tool 'sonar-scanner'
     }
-    
+
     stages {
         stage('Stage 1') {
             steps {
@@ -18,7 +18,6 @@ pipeline {
                     sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Petclinic \
                     -Dsonar.java.binaries=. \
                     -Dsonar.projectKey=Petclinic '''
-    
                 }
             }
         }
