@@ -6,6 +6,7 @@ plugins {
   id 'org.cyclonedx.bom' version '1.8.2'
   id 'io.spring.javaformat' version '0.0.41'
   id "io.spring.nohttp" version "0.0.11"
+  id 'pl.allegro.tech.build.axion-release' version '1.18.0'
 }
 
 apply plugin: 'java'
@@ -15,7 +16,7 @@ apply plugin: 'io.spring.javaformat'
 gradle.startParameter.excludedTaskNames += [ "checkFormatAot", "checkFormatAotTest" ]
 
 group = 'org.springframework.samples'
-version = '3.3.0'
+version = scmVersion.version
 
 java {
   sourceCompatibility = JavaVersion.VERSION_17
@@ -56,7 +57,32 @@ dependencies {
 tasks.named('test') {
   useJUnitPlatform()
 }
+tasks.register('custom'){
 
+}
+
+tasks.named('custom') {dependsOn('build')
+  doLast {
+        def testResultsDir = file("${buildDir}/reports/tests/test")
+        println "Test results directory: ${testResultsDir.absolutePath}"
+        
+        if (testResultsDir.exists()) {
+            def testReportFile = new File(testResultsDir, 'index.html')
+            println "Test report file: ${testReportFile.absolutePath}"
+            
+            if (testReportFile.exists()) {
+                println "Opening test report: ${testReportFile.absolutePath}"
+                def url = testReportFile.toURI().toURL().toString()
+                ["open", url].execute()
+            } else {
+                println "Test report not found at: ${testReportFile.absolutePath}"
+            }
+        } else {
+            println "Test results directory not found: ${testResultsDir.absolutePath}"
+        }
+  }
+    
+}
 checkstyle {
   configDirectory = project.file('src/checkstyle')
   configFile = file('src/checkstyle/nohttp-checkstyle.xml')
