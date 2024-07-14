@@ -2,8 +2,14 @@ echo "####################################################"
 echo "Stop and remove all running containers..."
 echo "docker stop $(docker ps -a -q)"
 echo "docker system prune -af"
+
 docker stop $(docker ps -a -q)
-docker system prune -af
+
+# remove the stopped docker containers
+docker rm -v -f $(docker ps -qa)
+
+# uncomment this to remove the images too
+# docker system prune -af
 
 echo "####################################################"
 echo "Build and run container..."
