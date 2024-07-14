@@ -1,3 +1,6 @@
+# use this by running sh automation.sh in Terminal
+
+
 echo "####################################################"
 echo "Stop and remove all running containers..."
 echo "docker stop $(docker ps -a -q)"
