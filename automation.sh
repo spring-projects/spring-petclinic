@@ -14,7 +14,7 @@ docker rm -v -f $(docker ps -qa)
 echo "####################################################"
 echo "Build and run container..."
 echo "build . -t spring_image"
-echo "docker run -itd --p:8080:8080 --name spring-clinic spring_image"
+echo "docker run -itd -p:8080:8080 --name spring-petclinic spring_image"
 docker build . -t spring_image
-docker run -itd -p:8080:8080 --name spring-clinic spring_image
+docker run -itd -p:8080:8080 --name spring-petclinic spring_image
 
