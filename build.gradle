@@ -58,7 +58,7 @@ tasks.named('test') {
   useJUnitPlatform()
 }
 tasks.register('custom'){
-
+ println("changed")
 }
 
 tasks.named('custom') {dependsOn('build')
