@@ -8,7 +8,7 @@ docker system prune -af
 echo "####################################################"
 echo "Build and run container..."
 echo "build . -t spring_image"
-echo "docker run -itd --net=assignment2 -p:8080:8080 --name spring-clinic spring_image"
+echo "docker run -itd --p:8080:8080 --name spring-clinic spring_image"
 docker build . -t spring_image
-docker run -itd --net=assignment2 -p:8080:8080 --name spring-clinic spring_image
+docker run -itd -p:8080:8080 --name spring-clinic spring_image
 
