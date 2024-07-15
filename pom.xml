@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
-  <version>4.1-SNAPSHOT</version>
+  <version>4.1</version>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -14,6 +14,7 @@
 
   <scm>
     <developerConnection>scm:git:https://github.com/KubaGrid/spring-petclinic.git</developerConnection>
+    <tag>spring-petclinic-4.1</tag>
   </scm>
   <distributionManagement>
     <repository>
@@ -30,7 +31,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <!-- Important for reproducible builds. Update using e.g. ./mvnw versions:set -DnewVersion=... -->
-    <project.build.outputTimestamp>2024-07-15T09:11:57Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2024-07-15T09:47:32Z</project.build.outputTimestamp>
 
     <!-- Web dependencies -->
     <webjars-bootstrap.version>5.3.3</webjars-bootstrap.version>
