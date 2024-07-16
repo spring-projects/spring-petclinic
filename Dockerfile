@@ -5,7 +5,7 @@ LABEL project="petclinic"
 LABEL author="bhanu"
 
 EXPOSE 8080
-ARG artifact=target/*.ja
+ARG artifact=target/*.jar
 
 COPY ${artifact} /spring-petclinic.jar
 
