@@ -1,0 +1,27 @@
+services:
+  petclinic:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - custom-network
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - prometheus_data:/prometheus
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - custom-network
+    depends_on:
+      - petclinic
+
+volumes:
+  prometheus_data:
+
+networks:
+  custom-network:
