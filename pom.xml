@@ -209,7 +209,7 @@
       <plugin>
 		<groupId>org.openrewrite.maven</groupId>
 		<artifactId>rewrite-maven-plugin</artifactId>
-		<version>5.35.0-SNAPSHOT</version>
+		<version>5.36.0</version>
 		<configuration>
 			<exportDatatables>true</exportDatatables>
 			<activeRecipes>
@@ -226,7 +226,7 @@
 			<dependency>
 				<groupId>org.openrewrite.recipe</groupId>
 				<artifactId>rewrite-spring</artifactId>
-				<version>5.14.0-SNAPSHOT</version>
+				<version>5.15.1</version>
 			</dependency>
 
 		</dependencies>
