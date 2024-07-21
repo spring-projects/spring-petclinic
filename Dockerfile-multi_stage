@@ -1,0 +1,28 @@
+FROM eclipse-temurin:17-jdk-jammy as build
+WORKDIR /build
+COPY --chmod=0755 mvnw mvnw
+COPY .mvn/ .mvn/
+COPY pom.xml .
+RUN --mount=type=cache,target=/root/.m2 ./mvnw dependency:go-offline -DskipTests
+
+COPY ./src src/
+RUN --mount=type=cache,target=/root/.m2 \
+    ./mvnw package -DskipTests && \
+    mv target/$(./mvnw help:evaluate -Dexpression=project.artifactId -q -DforceStdout)-$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout).jar target/app.jar
+
+
+FROM eclipse-temurin:17-jre-jammy AS final
+
+WORKDIR /src
+
+COPY --from=build /build/target/app.jar .
+
+RUN groupadd -r -g 2001 groupuser && useradd -r -m -d /home/myuser -u 2001 -g 2001 -s /sbin/nologin myuser
+
+RUN chown myuser:groupuser .
+
+USER myuser
+
+EXPOSE 8080
+
+ENTRYPOINT [ "java", "-jar",  "/src/app.jar" ]

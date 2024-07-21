@@ -1,0 +1,34 @@
+services:
+  database:
+    image: postgres
+    environment:
+      - POSTGRES_USER=${DB_USER:-petclinic}
+      - POSTGRES_DB=${DB_DATABASE:-petclinic}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-petclinic}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "${DB_DATABASE:-petclinic}"]
+      interval: 10s
+      retries: 5
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile-multi_stage
+    environment:
+      - POSTGRES_URL=${DB_URL:-petclinic}
+      - POSTGRES_USER=${DB_USER:-petclinic}
+      - POSTGRES_PASS=${DB_PASSWORD:-petclinic}
+      - DATABASE=postgres
+      - SPRING_PROFILES_ACTIVE=postgres
+    depends_on:
+      database:
+        condition: service_healthy
+    volumes:
+      - deps:/home/myuser/.m2
+    ports:
+      - "8080:8080"
+volumes:
+  postgres_data:
+  deps:

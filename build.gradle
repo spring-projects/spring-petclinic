@@ -7,11 +7,14 @@ plugins {
   id 'io.spring.javaformat' version '0.0.41'
   id "io.spring.nohttp" version "0.0.11"
   id 'pl.allegro.tech.build.axion-release' version '1.18.0'
+  id 'maven-publish'
+  id 'java-library'
 }
 
 apply plugin: 'java'
 apply plugin: 'checkstyle'
 apply plugin: 'io.spring.javaformat'
+
 
 gradle.startParameter.excludedTaskNames += [ "checkFormatAot", "checkFormatAotTest" ]
 
@@ -25,6 +28,34 @@ java {
 repositories {
   mavenCentral()
   mavenLocal()
+}
+
+publishing {
+  publications {
+      mavenJava(MavenPublication) {
+        from components.java
+        groupId = 'com.example'
+        artifactId = 'myCustomLib'
+        version = '1.0.0'
+    }   
+  }
+
+  repositories {
+    maven {
+      name = 'nexus'
+      url = uri('http://localhost:8081/repository/maven-local/')
+allowInsecureProtocol = true
+      credentials {
+        username = 'admin'
+        password = 'admin'
+      }
+    }
+  }
+}
+
+task localpublish {
+  dependsOn publish
+  description "publish to a local nexus repository instance"
 }
 
 ext.webjarsFontawesomeVersion = "4.7.0"

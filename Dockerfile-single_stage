@@ -1,0 +1,13 @@
+FROM maven:3.9-eclipse-temurin-17
+
+WORKDIR  /src
+
+COPY ./target/spring-petclinic-4.2.jar /src/app.jar
+
+RUN groupadd -r -g 2001 groupuser && useradd -r -m -d /home/myuser -g 2001 myuser
+
+RUN chown myuser:groupuser .
+
+USER myuser
+
+ENTRYPOINT [ "java", "-jar",  "/src/app.jar" ]
