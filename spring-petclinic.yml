@@ -1,3 +1,5 @@
+version: '3'
+
 services:
   petclinic:
     build:
@@ -47,6 +49,26 @@ services:
       - custom-network
     environment:
       - JENKINS_OPTS=--prefix=/jenkins
+
+  zap:
+    image: ghcr.io/zaproxy/zaproxy:stable
+    command: zap-baseline.py -t http://petclinic:8080 -g gen.conf -r zap-report.html
+    volumes:
+      - ./zap-report:/zap/wrk:rw
+    networks:
+      - custom-network
+    depends_on:
+      - petclinic
+
+  sonarqube:
+    image: sonarqube:latest
+    ports:
+      - "9000:9000"
+    networks:
+      - custom-network
+    depends_on:
+      - petclinic
+
 
 volumes:
   prometheus_data:
