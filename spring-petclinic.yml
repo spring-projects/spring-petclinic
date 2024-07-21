@@ -20,8 +20,22 @@ services:
     depends_on:
       - petclinic
 
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - custom-network
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus
+
 volumes:
   prometheus_data:
+  grafana_data:
 
 networks:
   custom-network:
