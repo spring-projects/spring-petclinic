@@ -1,4 +1,6 @@
 # Use an official OpenJDK runtime as a parent image
+# FROM openjdk:17-jdk-alpine
+
 FROM openjdk
 
 # Set the working directory inside the container
