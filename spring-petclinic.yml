@@ -1,3 +1,5 @@
+version: '3'
+
 services:
   petclinic:
     build:
@@ -32,6 +34,16 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=admin
     depends_on:
       - prometheus
+
+  zap:
+    image: ghcr.io/zaproxy/zaproxy:stable
+    command: zap-baseline.py -t http://petclinic:8080 -g gen.conf -r zap-report.html
+    volumes:
+      - ./zap-report:/zap/wrk:rw
+    networks:
+      - custom-network
+    depends_on:
+      - petclinic
 
 volumes:
   prometheus_data:
