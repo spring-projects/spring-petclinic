@@ -33,9 +33,25 @@ services:
     depends_on:
       - prometheus
 
+  jenkins:
+    build:
+      context: .
+      dockerfile: Dockerfile.jenkins
+    ports:
+      - "8081:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_data:/var/jenkins_home
+      - ./jenkins.yaml:/var/jenkins_home/casc_configs/jenkins.yaml
+    networks:
+      - custom-network
+    environment:
+      - JENKINS_OPTS=--prefix=/jenkins
+
 volumes:
   prometheus_data:
   grafana_data:
+  jenkins_data:
 
 networks:
   custom-network:
