@@ -35,6 +35,21 @@ services:
     depends_on:
       - prometheus
 
+  jenkins:
+    build:
+      context: .
+      dockerfile: Dockerfile.jenkins
+    ports:
+      - "8081:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_data:/var/jenkins_home
+      - ./jenkins.yaml:/var/jenkins_home/casc_configs/jenkins.yaml
+    networks:
+      - custom-network
+    environment:
+      - JENKINS_OPTS=--prefix=/jenkins
+
   zap:
     image: ghcr.io/zaproxy/zaproxy:stable
     command: zap-baseline.py -t http://petclinic:8080 -g gen.conf -r zap-report.html
@@ -54,9 +69,11 @@ services:
     depends_on:
       - petclinic
 
+
 volumes:
   prometheus_data:
   grafana_data:
+  jenkins_data:
 
 networks:
   custom-network:

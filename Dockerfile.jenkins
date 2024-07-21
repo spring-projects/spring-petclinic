@@ -1,0 +1,18 @@
+FROM jenkins/jenkins:lts
+
+USER root
+RUN apt-get update && apt-get install -y docker.io
+
+# Install plugins
+RUN jenkins-plugin-cli --plugins prometheus configuration-as-code
+
+# Copy JCasC configuration file
+COPY jenkins.yaml /var/jenkins_home/casc_configs/jenkins.yaml
+
+# Set environment variable for JCasC
+ENV CASC_JENKINS_CONFIG=/var/jenkins_home/casc_configs/jenkins.yaml
+
+USER jenkins
+
+# Expose the port the app runs on
+EXPOSE 8080
