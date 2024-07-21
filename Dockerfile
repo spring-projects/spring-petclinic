@@ -12,7 +12,7 @@ COPY mvnw pom.xml ./
 COPY src ./src
 
 # Package the application
-RUN ./mvnw package
+RUN ./mvnw clean package
 
 # Copy the JAR file to the app directory
 COPY target/*.jar app.jar

@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\.devcontainer",
+    "\\.github",
+    "\\.mvn",
+    "\\gradle",
+    "\\src"
+  ],
+  "SelectedNode": "\\src\\main",
+  "PreviewInSolutionExplorer": false
+}
