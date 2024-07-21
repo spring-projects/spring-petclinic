@@ -45,6 +45,15 @@ services:
     depends_on:
       - petclinic
 
+  sonarqube:
+    image: sonarqube:latest
+    ports:
+      - "9000:9000"
+    networks:
+      - custom-network
+    depends_on:
+      - petclinic
+
 volumes:
   prometheus_data:
   grafana_data:
