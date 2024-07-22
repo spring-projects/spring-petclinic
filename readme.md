@@ -1,3 +1,25 @@
+# Getting started
+
+## Running a build pipeline
+
+```
+docker-compose -f docker-compose_spring-petclinic.yml  up -d
+```
+
+Go to the following locations:
+* [petclinic](http://localhost:8080)
+* [jenkins](http://localhost:8081)
+* [sonarqube](http://localhost:9000)
+* [promethius](http://localhost:8080/prometheus)
+* [zap](http://localhost:8080/zap)
+
+
+## Stopping a build pipeline
+```
+docker-compose -f docker-compose_spring-petclinic.yml  down
+```
+
+
 # Setting up Jenkins
 
 ## Steps 1: Set up Jenkins in Docker

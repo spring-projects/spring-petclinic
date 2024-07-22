@@ -15,4 +15,5 @@ build/*
 _site/
 *.css
 !petclinic.css
-zap-report/zap-report.html
+
+zap-report/*
