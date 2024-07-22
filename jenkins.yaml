@@ -5,43 +5,43 @@ jenkins:
       allowsSignup: false
       users:
         - id: "admin"
-          password: "admin"
+          password: "${JENKINS_ADMIN_PASSWORD:-admin}"
   authorizationStrategy:
     loggedInUsersCanDoAnything:
-      allowAnonymousRead: true
+      allowAnonymousRead: false
 
 unclassified:
   location:
     url: "http://localhost:8080/"
-  prometheus:
-    defaultQuantiles:
-      - name: "0.5"
-        value: 0.5
-      - name: "0.9"
-        value: 0.9
-      - name: "0.99"
-        value: 0.99
-    defaultBuckets:
-      - name: "0.1"
-        value: 0.1
-      - name: "0.2"
-        value: 0.2
-      - name: "0.5"
-        value: 0.5
-      - name: "1.0"
-        value: 1.0
-      - name: "2.5"
-        value: 2.5
-      - name: "5.0"
-        value: 5.0
-      - name: "10.0"
-        value: 10.0
-
-tools:
-  installations:
-    - name: "JDK11"
-      jdkInstaller:
-        id: "jdk-11.0.2+9"
-    - name: "Maven3"
-      mavenInstaller:
-        id: "maven-3.6.3"
+#  prometheus:
+#    defaultQuantiles:
+#      - name: "0.5"
+#        value: 0.5
+#      - name: "0.9"
+#        value: 0.9
+#      - name: "0.99"
+#        value: 0.99
+#    defaultBuckets:
+#      - name: "0.1"
+#        value: 0.1
+#      - name: "0.2"
+#        value: 0.2
+#      - name: "0.5"
+#        value: 0.5
+#      - name: "1.0"
+#        value: 1.0
+#      - name: "2.5"
+#        value: 2.5
+#      - name: "5.0"
+#        value: 5.0
+#      - name: "10.0"
+#        value: 10.0
+#
+#tools:
+#  installations:
+#    - name: "JDK11"
+#      jdkInstaller:
+#        id: "jdk-11.0.2+9"
+#    - name: "Maven3"
+#      mavenInstaller:
+#        id: "maven-3.6.3"
