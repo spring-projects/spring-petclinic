@@ -17,3 +17,4 @@ _site/
 !petclinic.css
 
 zap-report/*
+.DS_Store

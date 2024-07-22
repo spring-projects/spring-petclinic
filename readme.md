@@ -19,6 +19,19 @@ Go to the following locations:
 docker-compose -f docker-compose_spring-petclinic.yml  down
 ```
 
+## Troubleshooting a container
+
+See an event in a running container:
+```
+docker logs <container-id>
+docker logs spring-petclinic-petclinic-1 
+```
+
+Run terminal in a running container:
+```
+docker exec -it <container-id> bash
+docker exec -it  spring-petclinic-petclinic-1  bash
+```
 
 # Setting up Jenkins
 
