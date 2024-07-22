@@ -36,19 +36,17 @@ services:
       - prometheus
 
   jenkins:
-    build:
-      context: .
-      dockerfile: Dockerfile.jenkins
+    image: jenkins/jenkins:lts
     ports:
       - "8081:8080"
       - "50000:50000"
+    privileged: true
+    user: root
     volumes:
       - jenkins_data:/var/jenkins_home
       - ./jenkins.yaml:/var/jenkins_home/casc_configs/jenkins.yaml
     networks:
       - custom-network
-    environment:
-      - JENKINS_OPTS=--prefix=/jenkins
 
   zap:
     image: ghcr.io/zaproxy/zaproxy:stable
