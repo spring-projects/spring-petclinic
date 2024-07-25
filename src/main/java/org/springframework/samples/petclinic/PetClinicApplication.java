@@ -35,6 +35,7 @@ import java.util.Locale;
 public class PetClinicApplication {
 
 	public static void main(String[] args) {
+		System.out.println("This is Good Web App");
 		SpringApplication.run(PetClinicApplication.class, args);
 	}
 
