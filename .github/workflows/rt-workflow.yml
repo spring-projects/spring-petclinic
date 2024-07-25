@@ -1,0 +1,77 @@
+name: Build and Publish to Artifactory
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ '17' ]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Set up JDK ${{matrix.java}}
+      uses: actions/setup-java@v4
+      with:
+        java-version: ${{matrix.java}}
+        distribution: 'adopt'
+        cache: maven
+    - name: Cache Maven packages
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+
+    - name: Set up JFrog CLI
+      uses: jfrog/setup-jfrog-cli@v4
+      with:
+        version: 'latest'
+      env:
+       # JFrog platform url (for example: https://acme.jfrog.io)
+        JF_URL: ${{ secrets.JF_URL }}
+
+        # Basic authentication credentials
+        JF_USER: ${{ secrets.JF_USER }}
+        JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
+
+   # - name: Configure JFrog CLI
+    #  run: |
+     #   jfrog config add artifactory-server --url=$ARTIFACTORY_URL --user=$ARTIFACTORY_USERNAME --password=$ARTIFACTORY_PASSWORD
+
+    - name: Configure Maven
+      run: |
+        jfrog mvn-config --repo-deploy-releases super-demo-libs-release --repo-deploy-snapshots super-demo-libs-snapshot --repo-resolve-releases super-demo-libs-release --repo-resolve-snapshots super-demo-libs-snapshot
+
+    - name: Publish build info to Artifactory
+      run: |
+        jfrog rt build-publish omriz-pet-clinic $GITHUB_RUN_NUMBER
+
+    - name: Xray Scan Build
+      run: |
+        jfrog build-scan --fail=false --format=json omriz-pet-clinic $GITHUB_RUN_NUMBER
+    - name: Build Docker Image
+      run: |
+        jfrog mvn spring-boot:build-image -Dspring-boot.build-image.imageName=omri-petclinic:1.0-$GITHUB_RUN_NUMBER -DskipTests
+    - name: Log in to Artifactory Docker registry
+      run: |
+        echo ${{ secrets.JF_PASSWORD }} | docker login -u ${{ secrets.JF_USER }} --password-stdin omriz.jfrog.io
+
+    - name: Push Docker image to Artifactory
+      run: |
+        docker tag omri-petclinic:1.0-$GITHUB_RUN_NUMBER omriz.jfrog.io/docker-trial/omri-petclinic:1.0-$GITHUB_RUN_NUMBER 
+        jfrog rt dp omriz.jfrog.io/docker-trial/omri-petclinic:1.0-$GITHUB_RUN_NUMBER docker-trial --build-name=omriz-pet-clinic-docker --build-number=$GITHUB_RUN_NUMBER
+    - name: Publish build info to Artifactory
+      run: |
+        jfrog rt build-publish omriz-pet-clinic-docker $GITHUB_RUN_NUMBER
+
+    - name: Xray Scan Build
+      run: |
+        jfrog build-scan --fail=false --format=json omriz-pet-clinic-docker $GITHUB_RUN_NUMBER

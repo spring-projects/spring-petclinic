@@ -139,6 +139,12 @@
       <artifactId>jakarta.xml.bind-api</artifactId>
     </dependency>
 
+    <!-- Omri -->
+    <dependency>
+      <groupId>com.squareup.okio</groupId>
+      <artifactId>okio-jvm</artifactId>
+      <version>3.0.0</version>
+    </dependency>
   </dependencies>
 
   <build>
