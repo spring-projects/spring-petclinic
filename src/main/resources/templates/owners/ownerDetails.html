@@ -47,9 +47,23 @@
     <br />
     <br />
     <h2>Pets and Visits</h2>
-  
+
+
+
     <table class="table table-striped">
-  
+
+      <h3> Pet Photograph</h3>
+
+      <!-- TODO add the image from S3 for the respective pet -->
+
+      <div class="row">
+        <div class="col-md-12">
+          <img class="img-responsive" src="../static/resources/images/pets.png" th:src="@{/resources/images/pets.png}"/>
+        </div>
+      </div>
+
+      <br>
+
       <tr th:each="pet : ${owner.pets}">
         <td valign="top">
           <dl class="dl-horizontal">
