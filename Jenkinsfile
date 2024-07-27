@@ -80,9 +80,13 @@ pipeline {
     post {
         always {
             script {
-                if (dockerImage != null) {
-                    dockerImage.stop()
-                    dockerImage.remove()
+                try {
+                    if (dockerImage != null) {
+                        dockerImage.stop()
+                        dockerImage.remove()
+                    }
+                } catch (Exception e) {
+                    echo "Error during cleanup: ${e.message}"
                 }
             }
         }
