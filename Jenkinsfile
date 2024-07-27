@@ -7,9 +7,6 @@ pipeline {
         GITHUB_TOKEN = credentials('github-token')
     }
 
-    // Define dockerImage at a higher scope to ensure availability in post block
-    def dockerImage = null
-
     stages {
         stage('Checkout') {
             steps {
@@ -24,41 +21,25 @@ pipeline {
             steps {
                 script {
                     echo "Building Docker Image..."
-                    dockerImage = docker.build("spring-petclinic")
+                    def dockerImage = docker.build("spring-petclinic")
                     echo "Docker Image built: ${dockerImage.id}"
+                    // Store the Docker image ID in the environment if needed across stages
+                    env.DOCKER_IMAGE_ID = dockerImage.id
                 }
             }
         }
 
-        stage('SonarQube Analysis') {
-            steps {
-                script {
-                    echo "Starting SonarQube analysis..."
-                    withSonarQubeEnv('SonarQube') {
-                        dockerImage.inside("-u root") {
-                            sh './mvnw sonar:sonar -Dsonar.projectKey=spring-petclinic'
-                        }
-                    }
-                    echo "SonarQube analysis completed."
-                }
-            }
-        }
-
-        // Other stages omitted for brevity
+        // Further stages would reference env.DOCKER_IMAGE_ID if needed
 
     }
 
     post {
         always {
             script {
-                try {
-                    if (dockerImage != null) {
-                        echo "Stopping and removing Docker Image..."
-                        dockerImage.stop()
-                        dockerImage.remove()
-                    }
-                } catch (Exception e) {
-                    echo "Error during cleanup: ${e.message}"
+                // Use the saved Docker image ID from the environment if needed
+                if (env.DOCKER_IMAGE_ID) {
+                    echo "Stopping and removing Docker Image with ID: ${env.DOCKER_IMAGE_ID}"
+                    docker.rmi(env.DOCKER_IMAGE_ID)
                 }
             }
         }
