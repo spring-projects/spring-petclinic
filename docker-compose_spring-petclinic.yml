@@ -52,7 +52,6 @@ services:
       - jenkins_data:/var/jenkins_home
       - ./jenkins.yaml:/var/jenkins_home/casc_configs/jenkins.yaml
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./target:/var/jenkins_home/target
     networks:
       - custom-network
 

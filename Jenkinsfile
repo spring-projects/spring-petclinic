@@ -21,14 +21,16 @@ pipeline {
             steps {
                 script {
                     echo "Building Docker Image..."
+                    // Ensure Maven build is executed
+                    sh './mvnw clean package -DskipTests'
                     def dockerImage = docker.build("spring-petclinic")
                     echo "Docker Image built: ${dockerImage.id}"
                     // Store the Docker image ID in the environment if needed across stages
                     env.DOCKER_IMAGE_ID = dockerImage.id
-                    sh 'ls -la target/'
                 }
             }
         }
+
 
     }
 
