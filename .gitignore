@@ -18,3 +18,6 @@ _site/
 
 zap-report/*
 .DS_Store
+sonarqube_data
+sonarqube_extensions
+sonarqube_logs
