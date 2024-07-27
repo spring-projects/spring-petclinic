@@ -36,6 +36,9 @@ services:
       - prometheus
 
   jenkins:
+    build:
+      context: .
+      dockerfile: Dockerfile.jenkins
     image: my-jenkins:latest
     ports:
       - "8081:8080"
