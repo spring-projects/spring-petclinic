@@ -2,7 +2,8 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_CREDENTIALS_ID = 'your-docker-credentials-id'  // Replace with your actual Docker credentials ID
+        SONARQUBE_URL = 'http://sonarqube:9000'
+        SONARQUBE_CREDENTIALS_ID = 'admin' 
     }
 
     stages {
@@ -11,39 +12,50 @@ pipeline {
                 checkout scm
             }
         }
+
         stage('Build') {
             steps {
-                script {
-                    sh './mvnw clean package'
+                sh './mvnw clean install'
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    sh './mvnw sonar:sonar -Dsonar.projectKey=spring-petclinic'
                 }
             }
         }
-        stage('Build Docker Image') {
+
+        stage('OWASP ZAP') {
             steps {
-                script {
-                    // Build the Docker image
-                    sh 'docker build -t petclinic:latest .'
-                }
+                sh '''
+                docker run --rm -v $(pwd)/zap-report:/zap/wrk:rw \
+                -t owasp/zap2docker-stable zap-baseline.py -t http://petclinic:8080 \
+                -g gen.conf -r zap-report.html
+                '''
             }
         }
-        stage('Push Docker Image') {
+
+        stage('Publish ZAP Report') {
             steps {
-                script {
-                    // Push the Docker image to a registry
-                    docker.withRegistry('https://index.docker.io/v1/', "${DOCKER_CREDENTIALS_ID}") {
-                        sh 'docker tag petclinic:latest your-docker-username/petclinic:latest'
-                        sh 'docker push your-docker-username/petclinic:latest'
-                    }
-                }
+                publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'zap-report', reportFiles: 'zap-report.html', reportName: 'OWASP ZAP Report'])
             }
         }
-        stage('Deploy') {
+
+        stage('Deploy to Production') {
             steps {
-                script {
-                    // Deploy the application using Docker Compose
-                    sh 'docker-compose up -d'
-                }
+                sh 'ansible-playbook -i inventory/production deploy.yml'
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed.'
         }
     }
 }
