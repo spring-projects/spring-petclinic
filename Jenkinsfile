@@ -3,13 +3,14 @@ pipeline {
 
     environment {
         SONARQUBE_URL = 'http://sonarqube:9000'
-        SONARQUBE_CREDENTIALS_ID = 'admin' 
+        SONARQUBE_CREDENTIALS_ID = 'admin'
+        GITHUB_TOKEN = credentials('github-token')
     }
 
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                git url: 'https://github.com/CChariot/spring-petclinic.git', branch: 'FinalProject_main', credentialsId: 'github-token'
             }
         }
 
@@ -46,7 +47,9 @@ pipeline {
         stage('Run Application') {
             steps {
                 script {
-                    dockerImage.run("-p 8080:8080 --name spring-petclinic")
+                    dockerImage.inside("-u root") {
+                        sh 'java -jar target/*.jar'
+                    }
                 }
             }
         }
@@ -77,8 +80,10 @@ pipeline {
     post {
         always {
             script {
-                dockerImage.stop()
-                dockerImage.remove()
+                if (dockerImage != null) {
+                    dockerImage.stop()
+                    dockerImage.remove()
+                }
             }
         }
         success {
