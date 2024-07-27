@@ -13,16 +13,40 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Build Docker Image') {
             steps {
-                sh './mvnw clean install'
+                script {
+                    dockerImage = docker.build("spring-petclinic")
+                }
             }
         }
 
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
-                    sh './mvnw sonar:sonar -Dsonar.projectKey=spring-petclinic'
+                    script {
+                        dockerImage.inside("-u root") {
+                            sh './mvnw sonar:sonar -Dsonar.projectKey=spring-petclinic'
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Build Application') {
+            steps {
+                script {
+                    dockerImage.inside("-u root") {
+                        sh './mvnw clean package -DskipTests'
+                    }
+                }
+            }
+        }
+
+        stage('Run Application') {
+            steps {
+                script {
+                    dockerImage.run("-p 8080:8080 --name spring-petclinic")
                 }
             }
         }
@@ -31,7 +55,7 @@ pipeline {
             steps {
                 sh '''
                 docker run --rm -v $(pwd)/zap-report:/zap/wrk:rw \
-                -t owasp/zap2docker-stable zap-baseline.py -t http://petclinic:8080 \
+                owasp/zap2docker-stable zap-baseline.py -t http://localhost:8080 \
                 -g gen.conf -r zap-report.html
                 '''
             }
@@ -51,6 +75,12 @@ pipeline {
     }
 
     post {
+        always {
+            script {
+                dockerImage.stop()
+                dockerImage.remove()
+            }
+        }
         success {
             echo 'Pipeline completed successfully!'
         }
