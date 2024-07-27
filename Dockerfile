@@ -15,7 +15,7 @@ COPY src ./src
 RUN ./mvnw clean package -DskipTests
 
 # Copy the JAR file to the app directory
-COPY /app/target/spring-petclinic-3.3.0-SNAPSHOT.jar app.jar
+COPY target/*.jar app.jar
 
 # Run the jar file
 CMD ["java", "-jar", "app.jar"]
