@@ -21,8 +21,6 @@ pipeline {
             steps {
                 script {
                     echo "Building Docker Image..."
-                    // Ensure Maven build is executed
-                    sh './mvnw clean package -DskipTests'
                     def dockerImage = docker.build("spring-petclinic")
                     echo "Docker Image built: ${dockerImage.id}"
                     // Store the Docker image ID in the environment if needed across stages
@@ -31,16 +29,17 @@ pipeline {
             }
         }
 
+        // Further stages would reference env.DOCKER_IMAGE_ID if needed
 
     }
 
     post {
         always {
             script {
+                // Use the saved Docker image ID from the environment if needed
                 if (env.DOCKER_IMAGE_ID) {
                     echo "Stopping and removing Docker Image with ID: ${env.DOCKER_IMAGE_ID}"
-                    // Using shell command to remove Docker image
-                    sh "docker rmi ${env.DOCKER_IMAGE_ID}"
+                    docker.rmi(env.DOCKER_IMAGE_ID)
                 }
             }
         }
