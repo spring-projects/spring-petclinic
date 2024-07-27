@@ -36,7 +36,7 @@ services:
       - prometheus
 
   jenkins:
-    image: jenkins/jenkins:lts
+    image: my-jenkins:latest
     ports:
       - "8081:8080"
       - "50000:50000"
@@ -48,6 +48,7 @@ services:
     volumes:
       - jenkins_data:/var/jenkins_home
       - ./jenkins.yaml:/var/jenkins_home/casc_configs/jenkins.yaml
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - custom-network
 

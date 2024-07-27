@@ -1,5 +1,5 @@
 # Use an official OpenJDK runtime as a parent image
-FROM openjdk
+FROM openjdk:11-jdk
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -11,8 +11,9 @@ COPY mvnw pom.xml ./
 # Copy the project source code
 COPY src ./src
 
+RUN chmod +x ./mvnw
 # Package the application
-RUN ./mvnw clean package -DskipTests
+RUN ./mvnw clean package -DskipTests -X
 
 # Copy the JAR file to the app directory
 COPY target/*.jar app.jar

@@ -29,8 +29,6 @@ pipeline {
             }
         }
 
-        // Further stages would reference env.DOCKER_IMAGE_ID if needed
-
     }
 
     post {
