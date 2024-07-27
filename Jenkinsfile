@@ -37,10 +37,10 @@ pipeline {
     post {
         always {
             script {
-                // Use the saved Docker image ID from the environment if needed
                 if (env.DOCKER_IMAGE_ID) {
                     echo "Stopping and removing Docker Image with ID: ${env.DOCKER_IMAGE_ID}"
-                    docker.rmi(env.DOCKER_IMAGE_ID)
+                    // Using shell command to remove Docker image
+                    sh "docker rmi ${env.DOCKER_IMAGE_ID}"
                 }
             }
         }
