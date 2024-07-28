@@ -12,7 +12,7 @@ COPY mvnw pom.xml ./
 COPY src ./src
 
 # Package the application
-RUN ./mvnw clean package -Dmaven.test.skip=true
+RUN ./mvnw clean package -DskipTests
 
 # Copy the JAR file to the app directory
 COPY target/*.jar app.jar
