@@ -1,3 +1,4 @@
+ARG CACHEBUST=1
 # Use an official OpenJDK runtime as a parent image
 FROM openjdk
 
