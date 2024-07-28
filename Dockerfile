@@ -18,7 +18,7 @@ RUN ./mvnw clean package -Dmaven.test.skip=true
 RUN ls -alh /app/target/
 
 # Copy the JAR file to the app directory
-COPY /app/target/spring-petclinic-3.3.0-SNAPSHOT.jar app.jar
+COPY /app/target/spring-petclinic-3.3.0-SNAPSHOT.jar.original app.jar
 
 # Run the jar file
 CMD ["java", "-jar", "app.jar"]
