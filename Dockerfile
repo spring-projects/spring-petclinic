@@ -13,9 +13,12 @@ COPY src ./src
 
 # Package the application
 RUN ./mvnw clean package -Dmaven.test.skip=true
-RUN ls -alh /app/target/  # This will list the contents of the target directory
+
+WORKDIR /app
+RUN ls -alh /app/target/
 
 # Copy the JAR file to the app directory
+WORKDIR /app
 COPY target/spring-petclinic-3.3.0-SNAPSHOT.jar app.jar
 
 # Run the jar file
