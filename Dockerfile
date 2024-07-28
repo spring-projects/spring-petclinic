@@ -12,10 +12,12 @@ COPY mvnw pom.xml ./
 COPY src ./src
 
 # Package the application
-RUN ./mvnw clean package -DskipTests
+RUN ./mvnw clean package -Dmaven.test.skip=true
+RUN ls -alh /app/target/
 
 # Copy the JAR file to the app directory
-COPY target/*.jar app.jar
+WORKDIR /app
+COPY /var/jenkins_home/workspace/ing-petclinic_use_docker_compose/target/spring-petclinic-3.3.0-SNAPSHOT.jar /app/app.jar
 
 # Run the jar file
 CMD ["java", "-jar", "app.jar"]
