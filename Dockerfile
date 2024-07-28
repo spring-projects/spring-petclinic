@@ -14,8 +14,8 @@ COPY src ./src
 # Package the application
 RUN ./mvnw clean package -DskipTests
 
-# Copy the JAR file to the app directory
-COPY target/*.jar app.jar
+# Copy the JAR file to the app directory. This is created in the build process
+RUN cp /app/target/*.jar app.jar
 
 # Run the jar file
 CMD ["java", "-jar", "app.jar"]
