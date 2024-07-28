@@ -11,12 +11,11 @@ COPY mvnw pom.xml ./
 # Copy the project source code
 COPY src ./src
 
-# Introduce an ARG to act as a cache breaker
-ARG CACHEBUSTER=unknown
+# Use an argument to force a rebuild
+ARG FORCE_REBUILD=unknown
 
 # Package the application
-RUN ./mvnw clean package -Dmaven.test.skip=true
-RUN ls -alh /app/target/
+RUN ./mvnw clean package -Dmaven.test.skip=true && ls -alh /app/target/
 
 # Move the JAR file to the app directory (update this if necessary based on actual JAR names)
 COPY target/*.jar /app/app.jar
