@@ -1,47 +1,172 @@
+credentials:
+  system:
+    domainCredentials:
+    - credentials:
+      - string:
+          description: "github"
+          id: "3afa055d-73a9-4aff-aa10-9d385042650c"
+          scope: GLOBAL
+          secret: "{AQAAABAAAAAw/i6NBKJoBVdluXYKvFf1I+3/6aJWsbknhkIW7h0ipryqjIzcofzR7k33bNlQqZKUP1gSMzy7EavUnHEt7dunnQ==}"
+      - string:
+          id: "58b57ccb-9fc0-4180-9e6c-91b9df3a6440"
+          scope: GLOBAL
+          secret: "{AQAAABAAAAAwzL567eZhfHhwsevOonI290HxU4cFwbVCxg7dwlxIglQAiAenE40WxSmN0JnlO4mZoxNk6LWV02LsmfO9ozcsNQ==}"
 jenkins:
-  systemMessage: "Jenkins configured automatically by Jenkins Configuration as Code plugin\n\n"
-  securityRealm:
-    local:
-      allowsSignup: false
-      users:
-        - id: "admin"
-          password: "${JENKINS_ADMIN_PASSWORD:-admin}"
+  agentProtocols:
+  - "JNLP4-connect"
+  - "Ping"
   authorizationStrategy:
     loggedInUsersCanDoAnything:
       allowAnonymousRead: false
+  crumbIssuer:
+    standard:
+      excludeClientIPFromCrumb: false
+  disableRememberMe: false
+  disabledAdministrativeMonitors:
+  - "jenkins.diagnostics.ControllerExecutorsNoAgents"
+  - "hudson.util.DoubleLaunchChecker"
+  labelAtoms:
+  - name: "built-in"
+  markupFormatter: "plainText"
+  mode: NORMAL
+  myViewsTabBar: "standard"
+  nodeMonitors:
+  - "architecture"
+  - "clock"
+  - diskSpace:
+      freeSpaceThreshold: "1GiB"
+      freeSpaceWarningThreshold: "2GiB"
+  - "swapSpace"
+  - tmpSpace:
+      freeSpaceThreshold: "1GiB"
+      freeSpaceWarningThreshold: "2GiB"
+  - "responseTime"
+  numExecutors: 2
+  primaryView:
+    all:
+      name: "all"
+  projectNamingStrategy: "standard"
+  quietPeriod: 5
+  remotingSecurity:
+    enabled: true
+  scmCheckoutRetryCount: 0
+  securityRealm:
+    local:
+      allowsSignup: false
+      enableCaptcha: false
+      users:
+      - id: "admin"
+        name: "admin"
+        properties:
+        - "apiToken"
+        - "consoleUrlProvider"
+        - mailer:
+            emailAddress: "lihanzhan@gmail.com"
+        - "favorite"
+        - preferredProvider:
+            providerId: "default"
+        - "experimentalFlags"
+  slaveAgentPort: 50000
+  systemMessage: |+
+    Jenkins configured automatically by Jenkins Configuration as Code plugin
 
+  updateCenter:
+    sites:
+    - id: "default"
+      url: "https://updates.jenkins.io/update-center.json"
+  views:
+  - all:
+      name: "all"
+  viewsTabBar: "standard"
+globalCredentialsConfiguration:
+  configuration:
+    providerFilter: "none"
+    typeFilter: "none"
+appearance:
+  prism:
+    theme: PRISM
+security:
+  apiToken:
+    creationOfLegacyTokenEnabled: false
+    tokenGenerationOnCreationEnabled: false
+    usageStatisticsEnabled: true
+  gitHooks:
+    allowedOnAgents: true
+    allowedOnController: true
+  gitHostKeyVerificationConfiguration:
+    sshHostKeyVerificationStrategy: "knownHostsFileVerificationStrategy"
+  sSHD:
+    port: -1
+  scriptApproval:
+    approvedSignatures:
+    - "method groovy.lang.GroovyObject invokeMethod java.lang.String java.lang.Object"
 unclassified:
+  bitbucketEndpointConfiguration:
+    endpoints:
+    - bitbucketCloudEndpoint:
+        enableCache: false
+        manageHooks: false
+        repositoriesCacheDuration: 0
+        teamCacheDuration: 0
+  buildDiscarders:
+    configuredBuildDiscarders:
+    - "jobBuildDiscarder"
+  fingerprints:
+    fingerprintCleanupDisabled: false
+    storage: "file"
+  gitHubConfiguration:
+    apiRateLimitChecker: NoThrottle
+  gitHubPluginConfig:
+    hookSecretConfigs:
+    - credentialsId: "3afa055d-73a9-4aff-aa10-9d385042650c"
+    hookUrl: "http://localhost:8080/github-webhook/"
+  githubPullRequests:
+    actualiseOnFactory: false
+  junitTestResultStorage:
+    storage: "file"
   location:
+    adminAddress: "address not configured yet <nobody@nowhere>"
     url: "http://localhost:8080/"
-#  prometheus:
-#    defaultQuantiles:
-#      - name: "0.5"
-#        value: 0.5
-#      - name: "0.9"
-#        value: 0.9
-#      - name: "0.99"
-#        value: 0.99
-#    defaultBuckets:
-#      - name: "0.1"
-#        value: 0.1
-#      - name: "0.2"
-#        value: 0.2
-#      - name: "0.5"
-#        value: 0.5
-#      - name: "1.0"
-#        value: 1.0
-#      - name: "2.5"
-#        value: 2.5
-#      - name: "5.0"
-#        value: 5.0
-#      - name: "10.0"
-#        value: 10.0
-#
-#tools:
-#  installations:
-#    - name: "JDK11"
-#      jdkInstaller:
-#        id: "jdk-11.0.2+9"
-#    - name: "Maven3"
-#      mavenInstaller:
-#        id: "maven-3.6.3"
+  mailer:
+    charset: "UTF-8"
+    useSsl: false
+    useTls: false
+  mavenModuleSet:
+    localRepository: "default"
+  pollSCM:
+    pollingThreadCount: 10
+  prometheusConfiguration:
+    appendParamLabel: false
+    appendStatusLabel: false
+    collectCodeCoverage: false
+    collectDiskUsage: true
+    collectNodeStatus: true
+    collectingMetricsPeriodInSeconds: 120
+    countAbortedBuilds: true
+    countFailedBuilds: true
+    countNotBuiltBuilds: true
+    countSuccessfulBuilds: true
+    countUnstableBuilds: true
+    defaultNamespace: "default"
+    fetchTestResults: true
+    jobAttributeName: "jenkins_job"
+    path: "prometheus"
+    perBuildMetrics: false
+    processingDisabledBuilds: false
+    useAuthenticatedEndpoint: false
+  scmGit:
+    addGitTagAction: false
+    allowSecondFetch: false
+    createAccountBasedOnEmail: false
+    disableGitToolChooser: false
+    hideCredentials: false
+    showEntireCommitSummaryInChanges: false
+    useExistingAccountWithSameEmail: false
+tool:
+  git:
+    installations:
+    - home: "git"
+      name: "Default"
+  mavenGlobalConfig:
+    globalSettingsProvider: "standard"
+    settingsProvider: "standard"
