@@ -11,13 +11,15 @@ COPY mvnw pom.xml ./
 # Copy the project source code
 COPY src ./src
 
+# Introduce an ARG to act as a cache breaker
+ARG CACHEBUSTER=unknown
+
 # Package the application
 RUN ./mvnw clean package -Dmaven.test.skip=true
 RUN ls -alh /app/target/
 
-# Copy the JAR file to the app directory
-WORKDIR /app
-COPY /var/jenkins_home/workspace/ing-petclinic_use_docker_compose/target/spring-petclinic-3.3.0-SNAPSHOT.jar /app/app.jar
+# Move the JAR file to the app directory (update this if necessary based on actual JAR names)
+COPY target/*.jar /app/app.jar
 
 # Run the jar file
 CMD ["java", "-jar", "app.jar"]
