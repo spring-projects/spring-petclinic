@@ -17,12 +17,21 @@ pipeline {
             }
         }
 
+        stage('Prepare Environment') {
+            steps {
+                script {
+                    sh "pwd" // Prints the current working directory
+                    sh "ls -alh" // Lists all files in the current directory
+                }
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 script {
                     echo "Building Docker Image..."
                     // Correctly escape dollar signs in Groovy string
-                    def dockerImage = docker.build("spring-petclinic", "--build-arg CACHEBUSTER=\\$(date +%s) --no-cache .")
+                    def dockerImage = docker.build("spring-petclinic", "--no-cache --build-arg FORCE_REBUILD=$(date +%s) .")
                     echo "Docker Image built: ${dockerImage.id}"
                     // Store the Docker image ID in the environment if needed across stages
                     env.DOCKER_IMAGE_ID = dockerImage.id
