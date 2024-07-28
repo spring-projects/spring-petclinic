@@ -47,7 +47,7 @@ pipeline {
                 // Use the saved Docker image ID from the environment if needed
                 if (env.DOCKER_IMAGE_ID) {
                     echo "Stopping and removing Docker Image with ID: ${env.DOCKER_IMAGE_ID}"
-                    docker.image(env.DOCKER_IMAGE_ID).remove()
+                    sh "docker rmi -f ${env.DOCKER_IMAGE_ID}"
                 }
             }
         }
