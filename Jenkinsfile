@@ -21,8 +21,8 @@ pipeline {
             steps {
                 script {
                     echo "Building Docker Image..."
-                    // Add a cache buster to force no-cache on certain steps
-                    def dockerImage = docker.build("spring-petclinic", "--build-arg CACHEBUSTER=$(date +%s) --no-cache .")
+                    // Correctly escape dollar signs in Groovy string
+                    def dockerImage = docker.build("spring-petclinic", "--build-arg CACHEBUSTER=\\$(date +%s) --no-cache .")
                     echo "Docker Image built: ${dockerImage.id}"
                     // Store the Docker image ID in the environment if needed across stages
                     env.DOCKER_IMAGE_ID = dockerImage.id
