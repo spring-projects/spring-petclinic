@@ -92,3 +92,39 @@ docker exec -it  spring-petclinic-petclinic-1  bash
     - Go back to the Jenkins dashboard.
     - Select your pipeline job.
     - Click on **Build Now** to run the pipeline.
+
+## Steps 3: Running Static Analysis with Sonarqube
+1. Access Sonarqube: Open [http://localhost:9000](http://localhost:9000) and set up Sonarqube. Install the suggested plugins.
+
+2. Login to Sonarqube with the following user and password:
+    - Username: admin
+    - Password: admin (update password when prompted after login)
+
+3. Create project on Sonarqube
+    - Navigate over to create project
+    - set the following variables:
+        Project display name = petclinic
+        Project key = petclinic
+        Main branch name = main
+    - Choose the following option: global branch setting
+    - Choose the following Analysis Method: Locally
+    - Generate a project token
+
+3. Set sonar token
+    - Copy the generated project token to clipboard
+    - In your workspace, set the token environment variable (MY_SONAR_TOKEN)
+
+        ```bash
+            export MY_SONAR_TOKEN=<paste_token_here>
+    ```
+
+4. Run static analysis
+
+        ```bash
+            docker run \                                              
+                --rm \
+                -e SONAR_HOST_URL=http://sonarqube:9000/ \
+                -e SONAR_TOKEN=$MY_SONAR_TOKEN \
+                -v "./:/usr/src" --network=spring-petclinic_custom-network\
+                sonarsource/sonar-scanner-cli
+    ```

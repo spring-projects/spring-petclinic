@@ -107,6 +107,7 @@ services:
       - ./:/usr/src
     environment:
       - SONAR_HOST_URL=http://sonarqube:9000/
+      - SONAR_TOKEN=$MY_SONAR_TOKEN
     depends_on:
       - sonarqube
 
