@@ -21,3 +21,4 @@ zap-report/*
 sonarqube_data
 sonarqube_extensions
 sonarqube_logs
+jenkins_data
