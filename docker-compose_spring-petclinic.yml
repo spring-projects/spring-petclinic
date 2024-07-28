@@ -49,7 +49,7 @@ services:
       - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
       - CASC_JENKINS_CONFIG=/var/jenkins_home/casc_configs/jenkins.yaml
     volumes:
-      - jenkins_data:/var/jenkins_home
+      - ./jenkins_data:/var/jenkins_home
       - ./jenkins.yaml:/var/jenkins_home/casc_configs/jenkins.yaml
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
@@ -98,20 +98,20 @@ services:
 
 
 
-  sonarscanner:
-    image: sonarsource/sonar-scanner-cli
-
-    # need this for macOS Apple M1
-#    platform: linux/amd64
-    networks:
-      - custom-network
-    volumes:
-      - ./:/usr/src
-    environment:
-      - SONAR_HOST_URL=http://sonarqube:9000/
-      - SONAR_TOKEN=$MY_SONAR_TOKEN
-    depends_on:
-      - sonarqube
+#  sonarscanner:
+#    image: sonarsource/sonar-scanner-cli
+#
+#    # need this for macOS Apple M1
+##    platform: linux/amd64
+#    networks:
+#      - custom-network
+#    volumes:
+#      - ./:/usr/src
+#    environment:
+#      - SONAR_HOST_URL=http://sonarqube:9000/
+#      - SONAR_TOKEN=$MY_SONAR_TOKEN
+#    depends_on:
+#      - sonarqube
 
 volumes:
   prometheus_data:
