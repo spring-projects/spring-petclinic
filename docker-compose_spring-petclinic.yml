@@ -72,28 +72,48 @@ services:
       SONAR_JDBC_USERNAME: sonar
       SONAR_JDBC_PASSWORD: sonar
     volumes:
+      - ./sonarqube_conf:/opt/sonarqube/conf
       - ./sonarqube_data:/opt/sonarqube/data
-      - ./sonarqube_extensions:/opt/sonarqube/extensions
       - ./sonarqube_logs:/opt/sonarqube/logs
+      - ./sonarqube_extensions:/opt/sonarqube/extensions
+      - ./sonarqube_bundled-plugins:/opt/sonarqube/lib/bundled-plugins
     ports:
       - "9000:9000"
+      - "9092:9092"
+    networks:
+      - custom-network
+
   db:
     image: postgres:12
     environment:
       POSTGRES_USER: sonar
       POSTGRES_PASSWORD: sonar
     volumes:
-      - postgresql:/var/lib/postgresql
-      - postgresql_data:/var/lib/postgresql/data
+      - ./postgresql:/var/lib/postgresql
+      - ./postgresql_data:/var/lib/postgresql/data
+    networks:
+      - custom-network
 
+  sonarscanner:
+    image: sonarsource/sonar-scanner-cli
+    networks:
+      - custom-network
+    volumes:
+      - ./:/usr/src
+    environment:
+      - SONAR_HOST_URL=http://sonarqube:9000/
+    depends_on:
+      - sonarqube
 
 volumes:
   prometheus_data:
   grafana_data:
   jenkins_data:
+  sonarqube_conf:
   sonarqube_data:
-  sonarqube_extensions:
   sonarqube_logs:
+  sonarqube_extensions:
+  sonarqube_bundled-plugins:
   postgresql:
   postgresql_data:
 

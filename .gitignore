@@ -21,4 +21,8 @@ zap-report/*
 sonarqube_data
 sonarqube_extensions
 sonarqube_logs
+sonarqube_bundled-plugins
+sonarqube_conf
 jenkins_data
+postgresql
+postgresql_data
