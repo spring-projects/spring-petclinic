@@ -17,11 +17,20 @@ pipeline {
             }
         }
 
+        stage('Build JAR') {
+            steps {
+                script {
+                    echo "Building JAR..."
+                    sh './mvnw clean package -Dmaven.test.skip=true'
+                }
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 script {
                     echo "Building Docker Image..."
-                    def dockerImage = docker.build("spring-petclinic")
+                    def dockerImage = docker.build("spring-petclinic", "--no-cache .")
                     echo "Docker Image built: ${dockerImage.id}"
                     // Store the Docker image ID in the environment if needed across stages
                     env.DOCKER_IMAGE_ID = dockerImage.id
@@ -29,6 +38,7 @@ pipeline {
             }
         }
 
+        // Further stages would reference env.DOCKER_IMAGE_ID if needed
     }
 
     post {
@@ -37,7 +47,7 @@ pipeline {
                 // Use the saved Docker image ID from the environment if needed
                 if (env.DOCKER_IMAGE_ID) {
                     echo "Stopping and removing Docker Image with ID: ${env.DOCKER_IMAGE_ID}"
-                    docker.rmi(env.DOCKER_IMAGE_ID)
+                    sh "docker rmi -f ${env.DOCKER_IMAGE_ID}"
                 }
             }
         }

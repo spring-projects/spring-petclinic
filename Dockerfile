@@ -1,21 +1,11 @@
 # Use an official OpenJDK runtime as a parent image
-FROM openjdk
+FROM openjdk:11-jdk-slim
 
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy the Maven wrapper and the pom.xml file
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-
-# Copy the project source code
-COPY src ./src
-
-# Package the application
-RUN ./mvnw clean package -DskipTests
-
-# Copy the JAR file to the app directory. This is created in the build process
-RUN cp /app/target/*.jar app.jar
+# Copy the JAR file to the app directory (adjust this path according to your actual JAR file name in the target directory)
+COPY target/*.jar app.jar
 
 # Run the jar file
 CMD ["java", "-jar", "app.jar"]
