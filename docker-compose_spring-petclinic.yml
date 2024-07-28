@@ -63,6 +63,17 @@ services:
     depends_on:
       - petclinic
 
+  db:
+    image: postgres:12
+    environment:
+      POSTGRES_USER: sonar
+      POSTGRES_PASSWORD: sonar
+    volumes:
+      - ./postgresql:/var/lib/postgresql
+      - ./postgresql_data:/var/lib/postgresql/data
+    networks:
+      - custom-network
+
   sonarqube:
     image: sonarqube:community
     depends_on:
@@ -83,19 +94,13 @@ services:
     networks:
       - custom-network
 
-  db:
-    image: postgres:12
-    environment:
-      POSTGRES_USER: sonar
-      POSTGRES_PASSWORD: sonar
-    volumes:
-      - ./postgresql:/var/lib/postgresql
-      - ./postgresql_data:/var/lib/postgresql/data
-    networks:
-      - custom-network
+
 
   sonarscanner:
     image: sonarsource/sonar-scanner-cli
+
+    # need this for macOS Apple M1
+#    platform: linux/amd64
     networks:
       - custom-network
     volumes:
