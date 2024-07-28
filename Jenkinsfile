@@ -17,11 +17,11 @@ pipeline {
             }
         }
 
-        stage('Prepare Environment') {
+        stage('Build JAR') {
             steps {
                 script {
-                    sh "pwd" // Prints the current working directory
-                    sh "ls -alh" // Lists all files in the current directory
+                    echo "Building JAR..."
+                    sh './mvnw clean package -Dmaven.test.skip=true'
                 }
             }
         }
@@ -30,8 +30,7 @@ pipeline {
             steps {
                 script {
                     echo "Building Docker Image..."
-                    // Correctly escape dollar signs in Groovy string
-                    def dockerImage = docker.build("spring-petclinic", "--no-cache --build-arg FORCE_REBUILD=$(date +%s) .")
+                    def dockerImage = docker.build("spring-petclinic", "--no-cache .")
                     echo "Docker Image built: ${dockerImage.id}"
                     // Store the Docker image ID in the environment if needed across stages
                     env.DOCKER_IMAGE_ID = dockerImage.id
@@ -40,7 +39,6 @@ pipeline {
         }
 
         // Further stages would reference env.DOCKER_IMAGE_ID if needed
-
     }
 
     post {
