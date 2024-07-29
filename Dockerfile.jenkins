@@ -4,10 +4,11 @@ USER root
 RUN apt-get update && apt-get install -y docker.io
 
 # Install plugins
-RUN jenkins-plugin-cli --plugins prometheus configuration-as-code
+RUN jenkins-plugin-cli --plugins prometheus configuration-as-code blueocean sonar
 
 # Copy JCasC configuration file
 COPY jenkins.yaml /var/jenkins_home/casc_configs/jenkins.yaml
+COPY jenkins.yaml /var/jenkins_home/jobs/cmu_devops_project/workspace
 
 # Set environment variable for JCasC
 ENV CASC_JENKINS_CONFIG=/var/jenkins_home/casc_configs/jenkins.yaml
