@@ -3,8 +3,17 @@ FROM jenkins/jenkins:lts
 USER root
 RUN apt-get update && apt-get install -y docker.io
 
-# Install plugins
-RUN jenkins-plugin-cli --plugins prometheus configuration-as-code blueocean sonar
+# Install plugins (and dependencies)
+RUN jenkins-plugin-cli --plugins \
+    prometheus \
+    configuration-as-code \
+    blueocean \
+    sonar \
+    json-path-api:2.8.0-5.v07cb_a_1ca_738c \
+    token-macro:400.v35420b_922dcb_ \
+    favorite:2.218.vd60382506538 \
+    github:1.39.0 \
+    github-branch-source:1790.v5a_7859812c8d
 
 # Copy JCasC configuration file
 COPY jenkins.yaml /var/jenkins_home/casc_configs/jenkins.yaml
@@ -17,3 +26,5 @@ USER jenkins
 
 # Expose the port the app runs on
 EXPOSE 8080
+
+
