@@ -4,7 +4,7 @@ pipeline {
     environment {
         SONARQUBE_URL = 'http://sonarqube:9000'
         SONARQUBE_CREDENTIALS_ID = 'admin'
-        GITHUB_TOKEN = credentials('github-token')
+        GITHUB_TOKEN = $GITHUB_TOKEN
     }
 
     stages {

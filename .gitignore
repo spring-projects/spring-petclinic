@@ -24,3 +24,5 @@ sonarqube_conf
 jenkins_data
 postgresql
 postgresql_data
+prometheus_data
+grafana_data
