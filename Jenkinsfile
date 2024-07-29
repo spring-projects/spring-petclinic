@@ -8,23 +8,23 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                script {
-                    echo "Checking out code..."
-                    git url: 'https://github.com/CChariot/spring-petclinic.git', branch: 'FinalProject_main', credentialsId: 'github-token'
-                }
-            }
-        }
+        // stage('Checkout') {
+        //     steps {
+        //         script {
+        //             echo "Checking out code..."
+        //             git url: 'https://github.com/CChariot/spring-petclinic.git', branch: 'FinalProject_main', credentialsId: 'github-token'
+        //         }
+        //     }
+        // }
 
-        stage('Build JAR') {
-            steps {
-                script {
-                    echo "Building JAR..."
-                    sh './mvnw clean package -Dmaven.test.skip=true'
-                }
-            }
-        }
+        // stage('Build JAR') {
+        //     steps {
+        //         script {
+        //             echo "Building JAR..."
+        //             sh './mvnw clean package -Dmaven.test.skip=true'
+        //         }
+        //     }
+        // }
 
         stage('Build Docker Image') {
             steps {
