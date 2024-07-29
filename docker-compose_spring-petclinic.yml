@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: petclinic:latest
     ports:
       - "8080:8080"
     networks:
@@ -15,105 +16,112 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.jenkins
-    image: my-jenkins:latest
     ports:
       - "8081:8080"
       - "50000:50000"
-    privileged: true
-    user: root
-    environment:
-      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
-      - CASC_JENKINS_CONFIG=/var/jenkins_home/casc_configs/jenkins.yaml
+    networks:
+      - custom-network
     volumes:
       - ./jenkins_data:/var/jenkins_home
       - ./jenkins.yaml:/var/jenkins_home/casc_configs/jenkins.yaml
       - /var/run/docker.sock:/var/run/docker.sock
-    networks:
-      - custom-network
+    environment:
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+      - CASC_JENKINS_CONFIG=/var/jenkins_home/casc_configs/jenkins.yaml
+    env_file:
+      - .env
+
 
   prometheus:
     image: prom/prometheus:latest
     ports:
       - "9090:9090"
-    volumes:
-      - prometheus_data:/prometheus
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
     networks:
       - custom-network
+    volumes:
+      - ./prometheus_data:/prometheus
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
     depends_on:
       - petclinic
+
 
   grafana:
     image: grafana/grafana:latest
     ports:
       - "3000:3000"
-    volumes:
-      - grafana_data:/var/lib/grafana
     networks:
       - custom-network
+    volumes:
+      - ./grafana_data:/var/lib/grafana
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD}
+      - GF_SECURITY_ALLOW_EMBEDDING=true
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+
     depends_on:
       - prometheus
+    env_file:
+      - .env
 
 
   zap:
     image: ghcr.io/zaproxy/zaproxy:stable
     command: zap-baseline.py -t http://petclinic:8080 -g gen.conf -r zap-report.html
-    volumes:
-      - ./zap-report:/zap/wrk:rw
     networks:
       - custom-network
+    volumes:
+      - ./zap-report:/zap/wrk:rw
     depends_on:
       - petclinic
 
+
   db:
     image: postgres:12
-    environment:
-      POSTGRES_USER: sonar
-      POSTGRES_PASSWORD: sonar
+    networks:
+      - custom-network
     volumes:
       - ./postgresql:/var/lib/postgresql
       - ./postgresql_data:/var/lib/postgresql/data
-    networks:
-      - custom-network
+    environment:
+      POSTGRES_USER: sonar
+      POSTGRES_PASSWORD: sonar
 
   sonarqube:
     image: sonarqube:community
-    depends_on:
-      - db
-    environment:
-      SONAR_JDBC_URL: jdbc:postgresql://db:5432/sonar
-      SONAR_JDBC_USERNAME: sonar
-      SONAR_JDBC_PASSWORD: sonar
+    ports:
+      - "9000:9000"
+      - "9092:9092"
+    networks:
+      - custom-network
     volumes:
       - ./sonarqube_conf:/opt/sonarqube/conf
       - ./sonarqube_data:/opt/sonarqube/data
       - ./sonarqube_logs:/opt/sonarqube/logs
       - ./sonarqube_extensions:/opt/sonarqube/extensions
       - ./sonarqube_bundled-plugins:/opt/sonarqube/lib/bundled-plugins
-    ports:
-      - "9000:9000"
-      - "9092:9092"
-    networks:
-      - custom-network
-
-
-
-#  sonarscanner:
-#    image: sonarsource/sonar-scanner-cli
-#
-#    # need this for macOS Apple M1
-##    platform: linux/amd64
-#    networks:
-#      - custom-network
-#    volumes:
-#      - ./:/usr/src
-#    environment:
-#      - SONAR_HOST_URL=http://sonarqube:9000/
-#      - SONAR_TOKEN=$MY_SONAR_TOKEN
-#    depends_on:
-#      - sonarqube
+    environment:
+      SONAR_JDBC_URL: jdbc:postgresql://db:5432/sonar
+      SONAR_JDBC_USERNAME: sonar
+      SONAR_JDBC_PASSWORD: sonar
+    depends_on:
+      - db
+    env_file:
+      - .env
+  # Uncomment and update the sonarscanner service if needed
+  # sonarscanner:
+  #   image: sonarsource/sonar-scanner-cli
+  #   networks:
+  #     - custom-network
+  #   volumes:
+  #     - ./:/usr/src
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - sonarqube
 
 volumes:
   prometheus_data:
