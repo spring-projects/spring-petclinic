@@ -1,0 +1,25 @@
+name: PR Build
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "corretto"
+      - uses: gradle/actions/setup-gradle@v3
+        with:
+          add-job-summary-as-pr-comment: on-failure
+      - name: Run Build & tests
+        env:
+          GRADLE_CREDS: ${{ secrets.GRADLE_CREDS }}
+        run: |
+          echo ${GRADLE_CREDS} | base64 --decode > ~/.gradle/gradle.properties
+          ./gradlew build
