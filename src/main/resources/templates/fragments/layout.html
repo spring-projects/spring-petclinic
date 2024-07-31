@@ -88,7 +88,13 @@
   </div>
 
   <script th:src="@{/webjars/bootstrap/5.3.3/dist/js/bootstrap.bundle.min.js}"></script>
-
+  <script src="https://unpkg.com/@elastic/apm-rum@5.16.1/dist/bundles/elastic-apm-rum.umd.js" crossorigin></script>
+  <script>
+    elasticApm.init({
+      serviceName: 'my-service-name',
+      serverUrl: 'http://192.168.1.193:8200',
+    })
+  </script>
 </body>
 
 </html>
