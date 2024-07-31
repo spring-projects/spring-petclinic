@@ -52,8 +52,8 @@ jobs:
       env:
         JFROG_CLI_BUILD_NAME: omriz-pet-clinic 
       run: |
+        jfrog rt build-collect-env "omri-demo-petclinic" "$GITHUB_RUN_NUMBER"
         jfrog rt build-publish omriz-pet-clinic $GITHUB_RUN_NUMBER
-
     - name: Xray Scan Build
       run: |
         jfrog build-scan --fail=false --format=json omriz-pet-clinic $GITHUB_RUN_NUMBER
