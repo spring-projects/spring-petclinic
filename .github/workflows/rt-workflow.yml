@@ -1,4 +1,4 @@
-name: Build and Publish to Artifactory
+name: OMRI - Build and Publish to Artifactory 
 
 on:
   push:
@@ -35,7 +35,6 @@ jobs:
       with:
         version: 'latest'
       env:
-       # JFrog platform url (for example: https://acme.jfrog.io)
         JF_URL: ${{ secrets.JF_URL }}
 
         # Basic authentication credentials
@@ -51,6 +50,8 @@ jobs:
         jfrog mvn-config --repo-deploy-releases super-demo-libs-release --repo-deploy-snapshots super-demo-libs-snapshot --repo-resolve-releases super-demo-libs-release --repo-resolve-snapshots super-demo-libs-snapshot
 
     - name: Publish build info to Artifactory
+      env:
+        JFROG_CLI_BUILD_NAME: omriz-pet-clinic 
       run: |
         jfrog rt build-publish omriz-pet-clinic $GITHUB_RUN_NUMBER
 
