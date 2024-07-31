@@ -47,12 +47,12 @@ jobs:
       env:
         JFROG_CLI_BUILD_NAME: omriz-pet-clinic 
       run: |
-        jfrog mvn clean install -DskipTests --build-name=omri-demo-petclinic --build-number=$GITHUB_RUN_NUMBER -Dartifactory.publish.artifacts=true
+        jfrog mvn clean install -DskipTests --build-name=omriz-pet-clinic --build-number=$GITHUB_RUN_NUMBER -Dartifactory.publish.artifacts=true
     - name: Publish build info to Artifactory
       env:
         JFROG_CLI_BUILD_NAME: omriz-pet-clinic 
       run: |
-        jfrog rt build-collect-env "omri-demo-petclinic" "$GITHUB_RUN_NUMBER"
+        jfrog rt build-collect-env "omriz-pet-clinic" "$GITHUB_RUN_NUMBER"
         jfrog rt build-publish omriz-pet-clinic $GITHUB_RUN_NUMBER
     - name: Xray Scan Build
       run: |
