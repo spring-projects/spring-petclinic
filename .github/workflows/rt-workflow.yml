@@ -40,15 +40,14 @@ jobs:
         # Basic authentication credentials
         JF_USER: ${{ secrets.JF_USER }}
         JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
-
-   # - name: Configure JFrog CLI
-    #  run: |
-     #   jfrog config add artifactory-server --url=$ARTIFACTORY_URL --user=$ARTIFACTORY_USERNAME --password=$ARTIFACTORY_PASSWORD
-
     - name: Configure Maven
       run: |
         jfrog mvn-config --repo-deploy-releases super-demo-libs-release --repo-deploy-snapshots super-demo-libs-snapshot --repo-resolve-releases super-demo-libs-release --repo-resolve-snapshots super-demo-libs-snapshot
-
+    - name: Run Maven Build
+      env:
+        JFROG_CLI_BUILD_NAME: omriz-pet-clinic 
+      run: |
+        jfrog mvn clean install -DskipTests --build-name=omri-demo-petclinic --build-number=$GITHUB_RUN_NUMBER
     - name: Publish build info to Artifactory
       env:
         JFROG_CLI_BUILD_NAME: omriz-pet-clinic 
