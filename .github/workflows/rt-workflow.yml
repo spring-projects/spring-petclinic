@@ -40,6 +40,7 @@ jobs:
         # Basic authentication credentials
         JF_USER: ${{ secrets.JF_USER }}
         JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
+        JF_GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Configure Maven
       run: |
         jfrog mvn-config --repo-deploy-releases super-demo-libs-release --repo-deploy-snapshots super-demo-libs-snapshot --repo-resolve-releases super-demo-libs-release --repo-resolve-snapshots super-demo-libs-snapshot
