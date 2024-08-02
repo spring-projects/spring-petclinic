@@ -25,6 +25,12 @@ repositories {
   mavenCentral()
 }
 
+bootJar {
+    archiveBaseName = 'app'
+    archiveVersion = ''
+    archiveClassifier = ''
+}
+
 ext.webjarsFontawesomeVersion = "4.7.0"
 ext.webjarsBootstrapVersion = "5.3.3"
 
