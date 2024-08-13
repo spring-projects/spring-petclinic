@@ -83,9 +83,9 @@ name: CI/CD Pipelineson:
         uses: actions/checkout@v3      - name: Verify JAR file
         run: |
           echo "Verifying JAR file presence..."
-          ls -al /home/aiman/GITHUB/spring-petclinic/target/
-          if [ -z "$(find /home/aiman/GITHUB/spring-petclinic/target/ -name 'spring-petclinic-3.3.0-SNAPSHOT.jar')" ]; then
-            echo "JAR file not found in target directory!"
+          ls -al /home/aiman/spring-petclinic/target/
+          if [ -z "$(find /home/aiman/spring-petclinic/target/ -name 'spring-petclinic-3.3.0-SNAPSHOT.jar')" ]; then
+            echo "JAR file not found in target directory!" 
             exit 1
           fi      - name: Setup SSH
         run: |
@@ -102,8 +102,8 @@ name: CI/CD Pipelineson:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
           echo "Deploying application to $DEPLOY_SERVER"
-          scp -i ~/.ssh/id_rsa /home/aiman/GITHUB/spring-petclinic/target/spring-petclinic-3.3.0-SNAPSHOT.jar $DEPLOY_USER@$DEPLOY_SERVER:/home/waqas/spring-petclinic/
-          ssh -i ~/.ssh/id_rsa $DEPLOY_USER@$DEPLOY_SERVER "nohup java -jar /home/waqas/spring-petclinic/spring-petclinic-3.3.0-SNAPSHOT.jar > /dev/null 2>&1 &"
+          scp -i ~/.ssh/id_rsa /home/aiman/spring-petclinic/target/spring-petclinic-3.3.0-SNAPSHOT.jar $DEPLOY_USER@$DEPLOY_SERVER:/home/aiman/spring-petclinic/
+          ssh -i ~/.ssh/id_rsa $DEPLOY_USER@$DEPLOY_SERVER "nohup java -jar /home/aiman/spring-petclinic/spring-petclinic-3.3.0-SNAPSHOT.jar > /dev/null 2>&1 &"
           rm -f ~/.ssh/id_rsa      - name: Wait for application to start
         run: |
           echo "Waiting for application to start..."
