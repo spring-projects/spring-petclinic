@@ -1,29 +1,53 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
-
-name: Java CI with Maven
-
+name: 'vulnability-scan'
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  pull_request:*
+  push:*
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        java: [ '17' ]
-
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK ${{matrix.java}}
-        uses: actions/setup-java@v4
+      - uses: actions/checkout@v2
+      - name: Run Trivy vulnerability scanner in repo mode
+        uses: aquasecurity/trivy-action@master
         with:
-          java-version: ${{matrix.java}}
-          distribution: 'adopt'
-          cache: maven
-      - name: Build with Maven Wrapper
-        run: ./mvnw -B package
+          scan-type: 'fs'
+          severity: 'HIGH,CRITICAL'
+          ignore-unfixed: true
+          format: 'json'
+          output: 'result.json'
+      - uses: CemitDigital/trivy-report-issue-action@v1.1
+        with:
+          # Token passed by GitHub actions, required for access to GitHub issues
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+          # File with scan results
+          input-filename: "result.json"
+
+          # Label name
+          # Default: vulnerability (this label must be created in advance)
+          label: 'vulnerability'
+
+          # Assignees, comma separated
+          # Default: ''
+          # Example: 'monalisa,hubot'
+          assignee: ''
+
+          # If set the new issues will be assigned to the specified project
+          # Default: ''
+          project-id: ''
+
+      - name: Run Trivy vulnerability scanner in repo mode
+        uses: aquasecurity/trivy-action@0.20.0
+        with:
+          scan-type: 'fs'
+          ignore-unfixed: true
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          # exit-code: '1'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-results.sarif'
