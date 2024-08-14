@@ -23,3 +23,5 @@ services:
       - POSTGRES_DB=petclinic
     profiles:
       - postgres
+
+      
