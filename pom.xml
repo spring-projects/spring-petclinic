@@ -144,13 +144,13 @@
 
   <build>
     <plugins>
+    <!-- Sonar plugin -->
      <plugin>
        <groupId>org.sonarsource.scanner.maven</groupId>
        <artifactId>sonar-maven-plugin</artifactId>
        <version>3.9.1.2184</version>
       </plugin>
-    </plugins>
-    <plugins>
+    <!-- Other plugins -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
@@ -281,7 +281,6 @@
         <groupId>org.cyclonedx</groupId>
         <artifactId>cyclonedx-maven-plugin</artifactId>
       </plugin>
-
     </plugins>
   </build>
 
