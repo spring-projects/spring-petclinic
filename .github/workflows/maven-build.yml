@@ -25,6 +25,7 @@ jobs:
           java-version: ${{matrix.java}}
           distribution: 'adopt'
           cache: maven
+
       - name: Build with Maven Wrapper
         run: ./mvnw -B package
 
@@ -34,5 +35,5 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}    # SonarQube authentication token
         run: ./mvnw sonar:sonar \
           -Dsonar.projectKey=maven-java \
-          -Dsonar.host.url=http://localhost:9000 \
+          -Dsonar.host.url=https://b9fd04991336.ngrok.app \
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
