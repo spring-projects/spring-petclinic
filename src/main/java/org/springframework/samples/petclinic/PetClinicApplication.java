@@ -44,7 +44,6 @@ public class PetClinicApplication {
     }
 
     /**
-     * Prints a startup message to the console. Here we go! Here we go again......
      */
     private static void printStartupMessage() {
         System.out.println("PetClinic Application has started successfully!");
