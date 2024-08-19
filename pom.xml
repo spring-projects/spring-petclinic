@@ -17,6 +17,9 @@
 
   <properties>
 
+    <!-- Include additional directories -->
+    <sonar.sources>src/main/java,src/main/resources</sonar.sources>
+
     <!-- Generic properties -->
     <java.version>17</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
