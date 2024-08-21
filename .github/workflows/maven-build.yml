@@ -1,41 +1,17 @@
-name: 'vulnability-scan'
+name: 'vulnerability-scan'
+
 on:
-  pull_request:*
-  push:*
+  pull_request:
+    branches: ['**']
+  push:
+    branches: ['**']
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Run Trivy vulnerability scanner in repo mode
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: 'fs'
-          severity: 'HIGH,CRITICAL'
-          ignore-unfixed: true
-          format: 'json'
-          output: 'result.json'
-      - uses: CemitDigital/trivy-report-issue-action@v1.1
-        with:
-          # Token passed by GitHub actions, required for access to GitHub issues
-          token: ${{ secrets.TOKEN }}
-
-          # File with scan results
-          input-filename: "result.json"
-
-          # Label name
-          # Default: vulnerability (this label must be created in advance)
-          label: 'vulnerability'
-
-          # Assignees, comma separated
-          # Default: ''
-          # Example: 'monalisa,hubot'
-          assignee: ''
-
-          # If set the new issues will be assigned to the specified project
-          # Default: ''
-          project-id: ''
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
       - name: Run Trivy vulnerability scanner in repo mode
         uses: aquasecurity/trivy-action@0.20.0
@@ -43,11 +19,36 @@ jobs:
           scan-type: 'fs'
           ignore-unfixed: true
           format: 'sarif'
-          output: 'trivy-results.sarif'
           # exit-code: '1'
+          output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
 
       - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v1
         with:
           sarif_file: 'trivy-results.sarif'
+      
+      - name: create issue in github
+        uses: knqyf263/trivy-issue-action@v0.0.6
+        with:
+          # Label name
+          # Default: vulnerability (this label must be created in advance)
+          label: 'vulnerability'
+
+          # Severities of vulnerabilities to be registered to GitHub Issues
+          # Default: 'CRITICAL'
+          severity: 'CRITICAL,HIGH'
+          
+          # Comma separated list of directories where traversal is skipped
+          # Default: ''
+          # Example: 'tests, integration-tests'
+          skip-dirs: ''
+
+          # Assignees
+          # Default: ''
+          # Example: 'monalisa,hubot'
+          assignee: ''
+
+          # Project ID to which the created Issue will be tied.
+          # Default: ''
+          project-id: ''
