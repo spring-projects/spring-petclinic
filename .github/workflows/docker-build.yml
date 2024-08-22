@@ -42,5 +42,9 @@ jobs:
         with:
           # image: barrymatheney/spring-petclinic  
           push: true
-          tags: barrymatheney/spring-petclinic:${{ github.sha }} 
+          cache-from: type=registry,ref=${{ vars.DOCKER_USERNAME }}/${{ vars.DOCKER_IMAGE_NAME }}:latest
+          cache-to: type=inline          
+          tags: ${{ vars.DOCKER_USERNAME }}/${{ vars.DOCKER_IMAGE_NAME }}:latest
+
+          # tags: barrymatheney/spring-petclinic:${{ github.sha }} 
           # , ${{ github.run_id }}, ${{ github.ref_name }}
