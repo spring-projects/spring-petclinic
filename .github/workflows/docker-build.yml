@@ -40,6 +40,7 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v6
         with:
-          image: barrymatheney/spring-petclinic  
+          # image: barrymatheney/spring-petclinic  
           push: true
-          tags: ${{ github.sha }} , ${{ github.run_id }}, ${{ github.ref_name }}
+          tags: barrymatheney/spring-petclinic:${{ github.sha }} 
+          # , ${{ github.run_id }}, ${{ github.ref_name }}
