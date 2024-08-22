@@ -30,6 +30,8 @@ jobs:
       image: docker:latest # Running Docker commands inside Docker container (Docker-in-Docker)
       options: --privileged # Required for Docker-in-Docker setup
     steps:
+      - uses: actions/checkout@v3
+        name: Check out code for Docker build and push
       - name: Script Set 2 - List files in the repository
         run: |
           ls  -alt
