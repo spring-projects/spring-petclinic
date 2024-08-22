@@ -1,4 +1,4 @@
-FROM gradle:jdk22-jammy as builder
+FROM gradle:jdk22-jammy AS builder
 COPY . /home/gradle/source
 WORKDIR /home/gradle/source
 RUN gradle build --stacktrace --no-daemon
