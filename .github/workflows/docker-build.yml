@@ -44,7 +44,13 @@ jobs:
           push: true
           cache-from: type=registry,ref=${{ vars.DOCKER_USERNAME }}/${{ vars.DOCKER_IMAGE_NAME }}:latest
           cache-to: type=inline          
-          tags: ${{ vars.DOCKER_USERNAME }}/${{ vars.DOCKER_IMAGE_NAME }}:latest
+          tags: |
+            ${{ vars.DOCKER_USERNAME }}/${{ vars.DOCKER_IMAGE_NAME }}:latest,
+            ${{ vars.DOCKER_USERNAME }}/${{ vars.DOCKER_IMAGE_NAME }}:${{ github.sha }},
+            ${{ vars.DOCKER_USERNAME }}/${{ vars.DOCKER_IMAGE_NAME }}:${{ github.run_id }},
+            ${{ vars.DOCKER_USERNAME }}/${{ vars.DOCKER_IMAGE_NAME }}:${{ github.ref_name }}
+
+          # tags: ${{ vars.DOCKER_USERNAME }}/${{ vars.DOCKER_IMAGE_NAME }}:latest
 
           # tags: barrymatheney/spring-petclinic:${{ github.sha }} 
           # , ${{ github.run_id }}, ${{ github.ref_name }}
