@@ -30,10 +30,10 @@ jobs:
       options: --privileged # Required for Docker-in-Docker setup
 
     steps:
-      - name: Script Set 2 - List files in the repository
-        run: |
-          ls ${{ github.workspace }} -alt
-          echo "🍏 This job's status is ${{ job.status }}."    
+      # - name: Script Set 2 - List files in the repository
+      #   run: |
+      #     ls ${{ github.workspace }} -alt
+      #     echo "🍏 This job's status is ${{ job.status }}."    
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Login to Docker Hub
