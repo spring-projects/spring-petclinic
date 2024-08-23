@@ -1,0 +1,19 @@
+on: [pull_request]
+
+jobs:
+  code-review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      # This step checks out a copy of your repository.
+      - uses: actions/checkout@v3
+      # This step references the directory that contains the action.
+      - uses: sshnaidm/gpt-code-review-action@v2.0
+        with:
+          openai-key: ${{ secrets.CHATGPT_API_KEY }}
+          # model: 'gpt-4'
+          # max-length: 8000
+          # prompt: 'Only suggest performance improvements for this code.'
+          # post-if-error: false
