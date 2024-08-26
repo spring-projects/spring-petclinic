@@ -1,6 +1,6 @@
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: com.example.MigrateToSpringBoot3_3
+name: com.example.MigrateToSpringBoot3_3_Before_Solve_Issues
 displayName: Migrate to Spring Boot and add some fixes
 causesAnotherCycle: true
 recipeList:
@@ -15,3 +15,14 @@ recipeList:
         groupId: jakarta.xml.bind
         artifactId: jakarta.xml.bind-api
         newVersion: 4.0.2
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: com.example.ReplaceStringLiteral
+displayName: Replace String literal with constant example
+recipeList:
+  - org.openrewrite.java.ReplaceStringLiteralWithConstant:
+      literalValue: application/json;charset=UTF-8
+      fullyQualifiedConstantName: org.springframework.http.MediaType.APPLICATION_JSON_VALUE
+  - org.openrewrite.java.migrate.ReplaceStringLiteralValue:
+      oldLiteralValue: may not be empty
+      newLiteralValue: must not be empty

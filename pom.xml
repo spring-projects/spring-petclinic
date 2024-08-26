@@ -10,14 +10,16 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>1.5.4.RELEASE</version>
+    <version>3.3.3</version>
   </parent>
   <name>petclinic</name>
 
   <properties>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
 
     <!-- Generic properties -->
-    <java.version>1.8</java.version>
+    <java.version>17</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
@@ -25,8 +27,7 @@
     <webjars-bootstrap.version>3.3.6</webjars-bootstrap.version>
     <webjars-jquery-ui.version>1.11.4</webjars-jquery-ui.version>
     <webjars-jquery.version>2.2.4</webjars-jquery.version>
-    <wro4j.version>1.8.0</wro4j.version>
-    <thymeleaf.version>3.0.6.RELEASE</thymeleaf.version>
+    <wro4j.version>2.1.1</wro4j.version>
 
     <cobertura.version>2.7</cobertura.version>
 
@@ -34,6 +35,10 @@
 
   <dependencies>
     <!-- Spring and Spring Boot dependencies -->
+    <dependency>
+      <groupId>jakarta.xml.bind</groupId>
+      <artifactId>jakarta.xml.bind-api</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
@@ -62,6 +67,10 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
@@ -73,8 +82,8 @@
       <scope>runtime</scope>
     </dependency>
     <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
       <scope>runtime</scope>
     </dependency>
 
@@ -86,12 +95,13 @@
     <dependency>
       <groupId>org.ehcache</groupId>
       <artifactId>ehcache</artifactId>
+      <classifier>jakarta</classifier>
     </dependency>
 
     <!-- webjars -->
     <dependency>
       <groupId>org.webjars</groupId>
-      <artifactId>webjars-locator</artifactId>
+      <artifactId>webjars-locator-core</artifactId>
     </dependency>
     <dependency>
       <groupId>org.webjars</groupId>
@@ -137,22 +147,6 @@
                 <java.target>${maven.compiler.target}</java.target>
               </additionalProperties>
             </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>cobertura-maven-plugin</artifactId>
-        <version>${cobertura.version}</version>
-        <configuration>
-          <check />
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>clean</goal>
-              <goal>check</goal>
-            </goals>
           </execution>
         </executions>
       </plugin>
@@ -209,15 +203,13 @@
       <plugin>
 		<groupId>org.openrewrite.maven</groupId>
 		<artifactId>rewrite-maven-plugin</artifactId>
-		<version>5.36.0</version>
+		<version>5.39.1</version>
 		<configuration>
 			<exportDatatables>true</exportDatatables>
 			<activeRecipes>
-						<!--
-   				 <recipe>com.example.MigrateToSpringBoot3_3</recipe>
-   				 <recipe>com.example.PostMigrateToSpringBoot3_3</recipe>
-   				 
-   				  <recipe>org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_3</recipe>
+				<!--
+   				 <recipe>com.example.MigrateToSpringBoot3_3_Before_Solve_Issues</recipe>
+  				  <recipe>org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_3</recipe>
    				 -->
    				 <recipe>org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_3</recipe>
 			</activeRecipes>
@@ -226,9 +218,13 @@
 			<dependency>
 				<groupId>org.openrewrite.recipe</groupId>
 				<artifactId>rewrite-spring</artifactId>
-				<version>5.15.1</version>
+				<version>5.17.0</version>
 			</dependency>
-
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-web</artifactId>
+				<version>6.1.0</version>
+			</dependency>
 		</dependencies>
 	</plugin>
     </plugins>
@@ -236,17 +232,6 @@
   <reporting>
     <plugins>
       <!-- integrate maven-cobertura-plugin to project site -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>cobertura-maven-plugin</artifactId>
-        <version>${cobertura.version}</version>
-        <configuration>
-          <formats>
-            <format>html</format>
-          </formats>
-          <check />
-        </configuration>
-      </plugin>
     </plugins>
   </reporting>
 
