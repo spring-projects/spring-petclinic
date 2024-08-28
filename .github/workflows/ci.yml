@@ -15,7 +15,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Set up JDK 17
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v4 # Update to the latest version if available
       with:
         distribution: 'adopt'
         java-version: '17'
@@ -24,7 +24,7 @@ jobs:
       run: mvn clean install
 
     - name: Upload Build Artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4 
       with:
         name: build-artifacts
         path: target/**
@@ -33,7 +33,7 @@ jobs:
       run: mvn test
 
     - name: Upload Test Reports
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4 
       with:
         name: test-reports
         path: target/surefire-reports/**
@@ -42,7 +42,7 @@ jobs:
       run: mvn jacoco:report
 
     - name: Upload Code Coverage Report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4 
       with:
         name: code-coverage-report
         path: target/site/jacoco/**
