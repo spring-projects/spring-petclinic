@@ -48,4 +48,4 @@ jobs:
         path: target/site/jacoco/**
 
     - name: Run Deployment
-      run: java -jar target/your-app.jar
+      run: java -jar target/spring-petclinic-3.3.0-SNAPSHOT.jar
