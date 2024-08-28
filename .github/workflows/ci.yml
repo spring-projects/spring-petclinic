@@ -47,5 +47,5 @@ jobs:
         name: code-coverage-report
         path: target/site/jacoco/**
 
-    - name: Run Deployment
-      run: java -jar target/spring-petclinic-3.3.0-SNAPSHOT.jar
+    # - name: Run Deployment
+    #   run: java -jar target/spring-petclinic-3.3.0-SNAPSHOT.jar
