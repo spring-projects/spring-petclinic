@@ -1,25 +1,22 @@
 services:
-  mysql:
-    image: mysql:8.4
+  petclinic:
+    image: samanthayeep/petclinic:latest
     ports:
-      - "3306:3306"
+      - "8082:8082"
+    depends_on:
+      - db
     environment:
-      - MYSQL_ROOT_PASSWORD=
-      - MYSQL_ALLOW_EMPTY_PASSWORD=true
-      - MYSQL_USER=petclinic
-      - MYSQL_PASSWORD=petclinic
-      - MYSQL_DATABASE=petclinic
-    volumes:
-      - "./conf.d:/etc/mysql/conf.d:ro"
-    profiles:
-      - mysql
-  postgres:
-    image: postgres:16.3
+      - SPRING_PROFILES_ACTIVE=dev
+      - DATABASE_URL=jdbc:mysql://db:3307/petclinic
+      - DATABASE_USERNAME=petclinic
+      - DATABASE_PASSWORD=petclinicpassword
+
+  db:
+    image: my-mysql-image
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: petclinic
+      MYSQL_USER: petclinic
+      MYSQL_PASSWORD: petclinicpassword
     ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_PASSWORD=petclinic
-      - POSTGRES_USER=petclinic
-      - POSTGRES_DB=petclinic
-    profiles:
-      - postgres
+      - "3307:3306"
