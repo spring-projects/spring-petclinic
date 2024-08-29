@@ -18,7 +18,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Set up JDK 17
-      uses: actions/setup-java@v4 # Update to the latest version if available
+      uses: actions/setup-java@v4
       with:
         distribution: 'adopt'
         java-version: '17'
@@ -69,6 +69,5 @@ jobs:
       - name: Push Docker Image
         run: docker push samanthayeep/petclinic-app:latest
 
-      # Deploy step may need adjustment based on your deployment strategy
       - name: Deploy Docker Container
         run: docker run -d -p 8082:8082 samanthayeep/petclinic-app:latest
