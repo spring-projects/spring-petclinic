@@ -6,6 +6,7 @@ on:
      - main
      - deploy-automation
   pull_request:
+    branches: 
      - main
      - deploy-automation
 
