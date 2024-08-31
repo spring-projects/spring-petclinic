@@ -15,7 +15,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Set up JDK 17
-      uses: actions/setup-java@v4 # Update to the latest version if available
+      uses: actions/setup-java@v4 
       with:
         distribution: 'adopt'
         java-version: '17'
@@ -46,6 +46,3 @@ jobs:
       with:
         name: code-coverage-report
         path: target/site/jacoco/**
-
-    # - name: Run Deployment
-    #   run: java -jar target/spring-petclinic-3.3.0-SNAPSHOT.jar
