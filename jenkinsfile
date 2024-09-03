@@ -1,0 +1,19 @@
+pipeline {
+    agent any
+    tools {
+        maven 'maven9'
+     }
+     stages {
+         stage('SCM') {
+             steps {
+                 git url: 'https://github.com/Tejadeepc/spring-petclinic.git',
+                 branch: 'main'
+             }
+         }
+         stage('BUILD') {
+             steps {
+             sh 'mvn --version'
+             sh 'mvn validate'
+         }
+     }
+} }
