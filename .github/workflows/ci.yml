@@ -22,19 +22,16 @@ jobs:
     
     - name: Install Dependencies
       run: mvn dependency:resolve
-
+    
     - name: Build with Maven
       run: mvn clean install
-      
+
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v4 
       with:
         name: build-artifacts
         path: target/**
-
-    - name: Run Unit Tests
-      run: mvn test
-
+    
     - name: Run Unit Tests and Generate Coverage
       run: mvn test jacoco:report
     
