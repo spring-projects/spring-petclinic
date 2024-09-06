@@ -2,9 +2,9 @@ name: CI Pipeline
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
@@ -20,29 +20,30 @@ jobs:
         distribution: 'adopt'
         java-version: '17'
     
+    - name: Install Dependencies
+      run: mvn dependency:resolve
+    
     - name: Build with Maven
       run: mvn clean install
     
-    - name: Run Unit Tests
-      run: mvn test
+    - name: Run Unit Tests and Generate Coverage
+      run: mvn test jacoco:report   
 
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v4 
       with:
         name: build-artifacts
         path: target/**
-
+        
     - name: Upload Test Reports
       uses: actions/upload-artifact@v4 
       with:
         name: test-reports
         path: target/surefire-reports/**
         
-    - name: Generate Code Coverage Report
-      run: mvn jacoco:report
-
     - name: Upload Code Coverage Report
       uses: actions/upload-artifact@v4 
       with:
         name: code-coverage-report
         path: target/site/jacoco/**
+
