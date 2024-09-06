@@ -3,7 +3,7 @@ version: '3.8'
 services:
   app:
     image: spring-petclinic:latest
-    container_name: app
+    container_name: spring-petclinic-app
     ports:
       - "8080:8080"
     environment:
@@ -18,7 +18,7 @@ services:
 
   db:
     image: postgres:16.3
-    container_name: db
+    container_name: postgres-db
     environment:
       POSTGRES_USER: petclinic
       POSTGRES_PASSWORD: petclinic
