@@ -26,7 +26,7 @@ import java.util.Locale;
 
 /**
  * PetClinic Spring Boot Application.
- *  PetClinic1
+ *  PetClinic2
  * @author Dave Syer
  *
  */
