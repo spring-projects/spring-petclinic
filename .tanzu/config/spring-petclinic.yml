@@ -1,0 +1,18 @@
+apiVersion: apps.tanzu.vmware.com/v1
+kind: ContainerApp
+metadata:
+  creationTimestamp: null
+  name: spring-petclinic
+spec:
+  nonSecretEnv:
+    - name: SPRING_PROFILES_ACTIVE
+      value: postgres-openai
+  build:
+    buildpacks: {}
+    nonSecretEnv:
+    - name: BP_JVM_VERSION
+      value: "17"
+    path: ../..
+  ports:
+  - name: main
+    port: 8080

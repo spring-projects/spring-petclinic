@@ -12,24 +12,32 @@ import org.springframework.samples.petclinic.owner.Pet;
 @Configuration
 class AIFunctionConfiguration {
 
-  @Bean
-  @Description("List the owners that the pet clinic has")
-  public Function<OwnerRequest, OwnersResponse> listOwners(PetclinicAiProvider petclinicAiProvider) {
-    return request -> {
-		return petclinicAiProvider.getAllOwners();
-	};
-  }
+	@Bean
+	@Description("List the owners that the pet clinic has")
+	public Function<OwnerRequest, OwnersResponse> listOwners(PetclinicAiProvider petclinicAiProvider) {
+		return request -> {
+			return petclinicAiProvider.getAllOwners();
+		};
+	}
 
-  @Bean
-  @Description("Add a pet to an owner identified by the ownerId")
-  public Function<AddPetRequest, AddedPetResponse> addPetToOwner(PetclinicAiProvider petclinicAiProvider) {
-    return request -> {
-		return petclinicAiProvider.addPetToOwner(request);
-	};	  
-  }
+	@Bean
+	@Description("Add a pet to an owner identified by the ownerId")
+	public Function<AddPetRequest, AddedPetResponse> addPetToOwner(PetclinicAiProvider petclinicAiProvider) {
+		return request -> {
+			return petclinicAiProvider.addPetToOwner(request);
+		};
+	}
+
 }
 
-record AddPetRequest (Pet pet, Integer ownerId) {};
-record OwnerRequest (Owner owner) {};
-record OwnersResponse(List<Owner> owners) {};
-record AddedPetResponse(Owner owner) {};
+record AddPetRequest(Pet pet, Integer ownerId) {
+};
+
+record OwnerRequest(Owner owner) {
+};
+
+record OwnersResponse(List<Owner> owners) {
+};
+
+record AddedPetResponse(Owner owner) {
+};

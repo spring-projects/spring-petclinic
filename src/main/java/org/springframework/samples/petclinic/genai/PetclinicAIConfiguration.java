@@ -8,13 +8,15 @@ import org.springframework.web.client.RestClient;
 
 @Configuration
 public class PetclinicAIConfiguration {
+
 	@Bean
 	public RestClient restClient() {
 		return RestClient.create();
 	}
-	
+
 	@Bean
 	public ChatMemory chatMemory() {
 		return new InMemoryChatMemory();
 	}
+
 }
