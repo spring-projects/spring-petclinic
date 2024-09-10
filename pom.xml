@@ -34,11 +34,15 @@
     <maven-checkstyle.version>3.3.1</maven-checkstyle.version>
     <nohttp-checkstyle.version>0.0.11</nohttp-checkstyle.version>
     <spring-format.version>0.0.41</spring-format.version>
-
+	<spring-ai.version>1.0.0-M1</spring-ai.version>
   </properties>
 
   <dependencies>
     <!-- Spring and Spring Boot dependencies -->
+	<dependency>
+		<groupId>org.springframework.ai</groupId>
+		<artifactId>spring-ai-azure-openai-spring-boot-starter</artifactId>
+	</dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
@@ -140,6 +144,18 @@
     </dependency>
 
   </dependencies>
+
+  <dependencyManagement>
+  	<dependencies>
+		<dependency>
+			<groupId>org.springframework.ai</groupId>
+			<artifactId>spring-ai-bom</artifactId>
+			<version>${spring-ai.version}</version>
+			<type>pom</type>
+			<scope>import</scope>
+		</dependency>
+	</dependencies>
+  </dependencyManagement>
 
   <build>
     <plugins>
