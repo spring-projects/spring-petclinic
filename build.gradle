@@ -23,12 +23,15 @@ java {
 
 repositories {
   mavenCentral()
+  maven { url 'https://repo.spring.io/milestone' }
 }
 
 ext.webjarsFontawesomeVersion = "4.7.0"
 ext.webjarsBootstrapVersion = "5.3.3"
+ext.springAiVersion = "1.0.0-M2"
 
 dependencies {
+  implementation 'org.springframework.ai:spring-ai-azure-openai-spring-boot-starter'
   implementation 'org.springframework.boot:spring-boot-starter-cache'
   implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
   implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
@@ -51,6 +54,12 @@ dependencies {
   testImplementation 'org.testcontainers:mysql'
   checkstyle 'io.spring.javaformat:spring-javaformat-checkstyle:0.0.41'
   checkstyle 'com.puppycrawl.tools:checkstyle:10.16.0'
+}
+
+dependencyManagement {
+  imports {
+    mavenBom "org.springframework.ai:spring-ai-bom:${springAiVersion}"
+  }
 }
 
 tasks.named('test') {

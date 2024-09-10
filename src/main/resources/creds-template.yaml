@@ -1,0 +1,17 @@
+spring:
+  ai:
+    #These parameters only apply when using the spring-ai-azure-openai-spring-boot-starter dependency:
+    azure:
+      openai:
+        api-key: ""
+        endpoint: ""
+        chat:
+          options:
+             deployment-name: "gpt-4o"
+    #These parameters only apply when using the spring-ai-openai-spring-boot-starter dependency:
+    openai:
+      api-key: ""
+      endpoint: ""
+      chat:
+        options:
+           deployment-name: "gpt-4o"
