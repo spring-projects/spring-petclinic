@@ -1,0 +1,9 @@
+spring:
+  ai:
+    azure:
+      openai:
+        api-key: ""
+        endpoint: ""
+        chat:
+          options:
+             deployment-name: "gpt-4o"
