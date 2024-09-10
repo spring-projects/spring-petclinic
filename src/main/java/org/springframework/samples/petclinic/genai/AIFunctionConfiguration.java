@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
 import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.owner.Pet;
+import org.springframework.samples.petclinic.vet.Vet;
 
 @Configuration
 class AIFunctionConfiguration {
@@ -17,6 +18,14 @@ class AIFunctionConfiguration {
 	public Function<OwnerRequest, OwnersResponse> listOwners(PetclinicAiProvider petclinicAiProvider) {
 		return request -> {
 			return petclinicAiProvider.getAllOwners();
+		};
+	}
+
+	@Bean
+	@Description("List the veterinarians that the pet clinic has")
+	public Function<VetRequest, VetResponse> listVets(PetclinicAiProvider petclinicAiProvider) {
+		return request -> {
+			return petclinicAiProvider.getAllVets();
 		};
 	}
 
@@ -41,3 +50,10 @@ record OwnersResponse(List<Owner> owners) {
 
 record AddedPetResponse(Owner owner) {
 };
+
+record VetResponse(List<Vet> vet) {
+};
+
+record VetRequest(Vet vet) {
+
+}
