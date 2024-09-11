@@ -17,3 +17,4 @@ _site/
 !petclinic.css
 **/creds.yaml
 .tanzu
+tanzu.yml
