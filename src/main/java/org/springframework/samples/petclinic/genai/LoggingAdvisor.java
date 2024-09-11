@@ -18,7 +18,7 @@ public class LoggingAdvisor implements RequestResponseAdvisor {
 
 	@Override
 	public AdvisedRequest adviseRequest(AdvisedRequest request, Map<String, Object> context) {
-		log.info("Request: {}" + request);
+		log.info("Received Spring AI Request: " + request);
 		return request;
 	}
 
