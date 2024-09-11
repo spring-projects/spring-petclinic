@@ -75,6 +75,29 @@ or
 ```bash
 docker-compose --profile postgres up
 ```
+## Integrating the Spring AI Chatbot
+
+Spring Petclinic integrates a Chatbot that allows you to interact with the application in a natural language. Here are some examples of what you could ask:
+
+1. Please list the owners that come to the clinic.
+2. How many vets are there?
+3. Is there an owner named Betty?
+4. Which owners have dogs?
+5. Add a dog for Betty. Its name is Moopsie.
+
+![alt text](spring-ai.png)
+
+By default, The Spring AI Chatbot is disabled and will return the message `Chat is currently unavailable. Please try again later.`.
+
+Spring Petclinic currently supports OpenAI or Azure's OpenAI as the LLM provider.
+In order to enable Spring AI, perform the following steps:
+
+1. Decide which provider you want to use. By default, the `spring-ai-azure-openai-spring-boot-starter` dependency is enabled. You can change it to `spring-ai-openai-spring-boot-starter`in either`pom.xml` or in `build.gradle`, depending on your build tool of choice.
+2. Copy `src/main/resources/creds-template.yaml` into `src/main/resources/creds.yaml`, and edit its contents with your API key and API endpoint. Refer to OpenAI's or Azure's documentation for further information on how to obtain these. You only need to populate the provider you're using - either openai, or azure-openai.
+3. Boot your application with the `openai` profile. This profile will work for both LLM providers. You can boot the application with that profile using any of the following:
+- For maven: `mvn -Dspring-boot.run.profiles=openai spring-boot:run`
+- For Gradle: `./gradlew bootRun --args='--spring.profiles.active=openai'` 
+- For a standard jar file: `SPRING_PROFILES_ACTIVE=openai java -jar build/libs/spring-petclinic-3.3.0.jar` or `SPRING_PROFILES_ACTIVE=openai java -jar target/spring-petclinic-3.3.0-SNAPSHOT.jar`.
 
 ## Test Applications
 
