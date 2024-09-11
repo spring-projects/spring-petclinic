@@ -9387,6 +9387,72 @@ table td.action-column {
 hr {
   border-top: 1px dotted #34302D; }
 
+.chatbox {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 300px;
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  overflow: hidden; }
+  .chatbox.minimized {
+    height: 40px; }
+  .chatbox-header {
+    background-color: #6db33f;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center; }
+  .chatbox-content {
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: white;
+    transition: height 0.3s ease; }
+  .chatbox-messages {
+    padding: 10px;
+    overflow-y: auto;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; }
+    .chatbox-messages .chat-bubble {
+      padding: 10px;
+      border-radius: 15px;
+      max-width: 70%;
+      word-wrap: break-word; }
+      .chatbox-messages .chat-bubble.user {
+        background-color: #34302D;
+        color: white;
+        align-self: flex-end; }
+      .chatbox-messages .chat-bubble.bot {
+        background-color: #838789;
+        color: black;
+        align-self: flex-start; }
+  .chatbox-footer {
+    display: flex;
+    padding: 10px;
+    background-color: #f1f1f1; }
+    .chatbox-footer input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #34302D; }
+    .chatbox-footer button {
+      margin-left: 10px;
+      padding: 10px 20px;
+      background-color: #6db33f;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer; }
+      .chatbox-footer button:hover {
+        background-color: #568d32; }
+
 @font-face {
   font-family: 'varela_roundregular';
   src: url("../fonts/varela_round-webfont.eot");
@@ -9518,117 +9584,3 @@ strong {
     margin-bottom: 30px; } }
 
 /*# sourceMappingURL=../../../../../../target/petclinic.css.map */
-
-
-
-/* Chatbox container */
-.chatbox {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    width: 300px;
-    background-color: #f1f1f1;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-}
-
-/* Header styling */
-.chatbox-header {
-    background-color: #075E54;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    cursor: pointer;
-}
-
-/* Chatbox content styling */
-.chatbox-content {
-    display: flex;
-    flex-direction: column;
-    height: 400px; /* Adjust to desired height */
-    overflow: hidden; /* Hide overflow to make it scrollable */
-}
-
-/* Minimize style */
-.chatbox.minimized .chatbox-content {
-    height: 40px; /* Height when minimized (header only) */
-}
-
-.chatbox.minimized .chatbox-messages,
-.chatbox.minimized .chatbox-footer {
-    display: none;
-}
-
-.chatbox-messages {
-    flex-grow: 1;
-    overflow-y: auto; /* Allows vertical scrolling */
-    padding: 10px;
-}
-
-/* Chat bubbles styling */
-.chat-bubble {
-    max-width: 80%;
-    padding: 10px;
-    border-radius: 20px;
-    margin-bottom: 10px;
-    position: relative;
-    word-wrap: break-word;
-    font-size: 14px;
-}
-
-/* Ensure bold and italic styles are handled */
-.chat-bubble strong {
-    font-weight: bold;
-}
-
-.chat-bubble em {
-    font-style: italic;
-}
-
-.chat-bubble.user {
-    background-color: #dcf8c6; /* WhatsApp-style light green */
-    margin-left: auto;
-    text-align: right;
-    border-bottom-right-radius: 0;
-}
-
-.chat-bubble.bot {
-    background-color: #ffffff;
-    margin-right: auto;
-    text-align: left;
-    border-bottom-left-radius: 0;
-    border: 1px solid #e1e1e1;
-}
-
-/* Input field and button */
-.chatbox-footer {
-    padding: 10px;
-    background-color: #f9f9f9;
-    display: flex;
-}
-
-.chatbox-footer input {
-    flex-grow: 1;
-    padding: 10px;
-    border-radius: 20px;
-    border: 1px solid #ccc;
-    margin-right: 10px;
-    outline: none;
-}
-
-.chatbox-footer button {
-    background-color: #075E54;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-.chatbox-footer button:hover {
-    background-color: #128C7E;
-}
