@@ -1,0 +1,88 @@
+.chatbox {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 300px;
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  overflow: hidden;
+  
+  &.minimized {
+    height: 40px;
+  }
+
+  &-header {
+    background-color: $spring-green;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  &-content {
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: white;
+    transition: height 0.3s ease;
+  }
+
+  &-messages {
+    padding: 10px;
+    overflow-y: auto;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    
+    .chat-bubble {
+      padding: 10px;
+      border-radius: 15px;
+      max-width: 70%;
+      word-wrap: break-word;
+
+      &.user {
+        background-color: $spring-brown;
+        color: white;
+        align-self: flex-end;
+      }
+
+      &.bot {
+        background-color: $spring-grey;
+        color: black;
+        align-self: flex-start;
+      }
+    }
+  }
+
+  &-footer {
+    display: flex;
+    padding: 10px;
+    background-color: $spring-light-grey;
+
+    input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid $spring-brown;
+    }
+
+    button {
+      margin-left: 10px;
+      padding: 10px 20px;
+      background-color: $spring-green;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: darken($spring-green, 10%);
+      }
+    }
+  }
+}
