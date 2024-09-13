@@ -10,7 +10,8 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.3.2</version>
+    <version>3.3.3</version>
+	<relativePath/>
   </parent>
   <name>petclinic</name>
 
@@ -270,6 +271,7 @@
       <!-- Spring Boot Actuator displays sbom-related information if a CycloneDX SBOM file is
       present at the classpath -->
       <plugin>
+		<?m2e ignore?>
         <groupId>org.cyclonedx</groupId>
         <artifactId>cyclonedx-maven-plugin</artifactId>
       </plugin>
