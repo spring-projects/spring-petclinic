@@ -27,6 +27,8 @@ import jakarta.validation.constraints.NotBlank;
 @MappedSuperclass
 public class Person extends BaseEntity {
 
+	private static final long serialVersionUID = -5934070342233945557L;
+
 	@Column(name = "first_name")
 	@NotBlank
 	private String firstName;
