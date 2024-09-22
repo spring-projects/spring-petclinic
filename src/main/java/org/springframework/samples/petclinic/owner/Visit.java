@@ -35,6 +35,8 @@ import jakarta.validation.constraints.NotBlank;
 @Table(name = "visits")
 public class Visit extends BaseEntity {
 
+	private static final long serialVersionUID = -8061148591973721283L;
+
 	@Column(name = "visit_date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate date;
