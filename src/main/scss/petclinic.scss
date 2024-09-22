@@ -21,6 +21,20 @@ $spring-brown:      #34302D;
 $spring-grey:       #838789;
 $spring-light-grey: #f1f1f1;
 
+$chatbox-bg-color: #f1f1f1;
+$chatbox-header-bg-color: #075E54;
+$chatbox-header-text-color: white;
+$chatbox-height: 400px;
+$chatbox-border-radius: 10px;
+$chatbox-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+$chatbox-bubble-user-bg-color: #dcf8c6;
+$chatbox-bubble-bot-bg-color: #ffffff;
+$chatbox-bubble-border-color: #e1e1e1;
+$chatbox-footer-bg-color: #f9f9f9;
+$chatbox-input-border-color: #ccc;
+$chatbox-button-bg-color: #075E54;
+$chatbox-button-hover-bg-color: #128C7E;
+
 $body-bg:                           $spring-light-grey;
 $text-color:                        $spring-brown;
 $link-color:                        $spring-dark-green;
@@ -207,6 +221,117 @@ table td.action-column {
 
 hr {
   border-top: 1px dotted $spring-brown;
+}
+
+/* Chatbox container */
+.chatbox {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  width: 300px;
+  background-color: $chatbox-bg-color;
+  border-radius: $chatbox-border-radius;
+  box-shadow: $chatbox-box-shadow;
+  display: flex;
+  flex-direction: column;
+  
+  &.minimized {
+    .chatbox-content {
+      height: 40px; /* Height when minimized (header only) */
+    }
+    .chatbox-messages,
+    .chatbox-footer {
+      display: none;
+    }
+  }
+}
+
+/* Header styling */
+.chatbox-header {
+  background-color: $chatbox-header-bg-color;
+  color: $chatbox-header-text-color;
+  padding: 10px;
+  text-align: center;
+  border-top-left-radius: $chatbox-border-radius;
+  border-top-right-radius: $chatbox-border-radius;
+  cursor: pointer;
+}
+
+/* Chatbox content styling */
+.chatbox-content {
+  display: flex;
+  flex-direction: column;
+  height: $chatbox-height; /* Adjust to desired height */
+  overflow: hidden; /* Hide overflow to make it scrollable */
+}
+
+.chatbox-messages {
+  flex-grow: 1;
+  overflow-y: auto; /* Allows vertical scrolling */
+  padding: 10px;
+}
+
+/* Chat bubbles styling */
+.chat-bubble {
+  max-width: 80%;
+  padding: 10px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  position: relative;
+  word-wrap: break-word;
+  font-size: 14px;
+
+  strong {
+    font-weight: bold;
+  }
+  
+  em {
+    font-style: italic;
+  }
+
+  &.user {
+    background-color: $chatbox-bubble-user-bg-color; /* WhatsApp-style light green */
+    margin-left: auto;
+    text-align: right;
+    border-bottom-right-radius: 0;
+  }
+
+  &.bot {
+    background-color: $chatbox-bubble-bot-bg-color;
+    margin-right: auto;
+    text-align: left;
+    border-bottom-left-radius: 0;
+    border: 1px solid $chatbox-bubble-border-color;
+  }
+}
+
+/* Input field and button */
+.chatbox-footer {
+  padding: 10px;
+  background-color: $chatbox-footer-bg-color;
+  display: flex;
+}
+
+.chatbox-footer input {
+  flex-grow: 1;
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid $chatbox-input-border-color;
+  margin-right: 10px;
+  outline: none;
+}
+
+.chatbox-footer button {
+  background-color: $chatbox-button-bg-color;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $chatbox-button-hover-bg-color;
+  }
 }
 
 @import "typography.scss";

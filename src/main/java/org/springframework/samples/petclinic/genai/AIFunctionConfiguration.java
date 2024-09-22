@@ -11,6 +11,8 @@ import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.owner.Pet;
 import org.springframework.samples.petclinic.vet.Vet;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 /**
  * This class defines the @Bean functions that the LLM provider will invoke when it
  * requires more Information on a given topic. The currently available functions enable
@@ -26,7 +28,7 @@ class AIFunctionConfiguration {
 	// The @Description annotation helps the model understand when to call the function
 	@Bean
 	@Description("List the owners that the pet clinic has")
-	public Function<OwnerRequest, OwnersResponse> listOwners(PetclinicAIProvider petclinicAiProvider) {
+	public Function<OwnerRequest, OwnersResponse> listOwners(AIDataProvider petclinicAiProvider) {
 		return request -> {
 			return petclinicAiProvider.getAllOwners();
 		};
@@ -34,25 +36,39 @@ class AIFunctionConfiguration {
 
 	@Bean
 	@Description("List the veterinarians that the pet clinic has")
-	public Function<VetRequest, VetResponse> listVets(PetclinicAIProvider petclinicAiProvider) {
+	public Function<VetRequest, VetResponse> listVets(AIDataProvider petclinicAiProvider) {
 		return request -> {
-			return petclinicAiProvider.getAllVets();
+			try {
+				return petclinicAiProvider.getVets(request);
+			}
+			catch (JsonProcessingException e) {
+				e.printStackTrace();
+				return null;
+			}
 		};
 	}
 
 	@Bean
-	@Description("Add a pet with the specified petTypeId, " + "to an owner identified by the ownerId. "
-			+ "The allowed Pet types IDs are only: " + "1 - cat" + "2 - dog" + "3 - lizard" + "4 - snake" + "5 - bird"
-			+ "6 - hamster")
-	public Function<AddPetRequest, AddedPetResponse> addPetToOwner(PetclinicAIProvider petclinicAiProvider) {
+	@Description("Add a pet with the specified petTypeId, to an owner identified by the ownerId.")
+	public Function<AddPetRequest, AddedPetResponse> addPetToOwner(AIDataProvider petclinicAiProvider) {
 		return request -> {
 			return petclinicAiProvider.addPetToOwner(request);
 		};
 	}
 
+	@Bean
+	@Description("Add a new pet owner to the pet clinic. "
+			+ "The Owner must include a first name and a last name as two separate words, "
+			+ "plus an address and a 10-digit phone number")
+	public Function<OwnerRequest, OwnerResponse> addOwnerToPetclinic(AIDataProvider petclinicAiDataProvider) {
+		return request -> {
+			return petclinicAiDataProvider.addOwnerToPetclinic(request);
+		};
+	}
+
 }
 
-record AddPetRequest(Pet pet, String petType, Integer ownerId) {
+record AddPetRequest(Pet pet, Integer ownerId) {
 };
 
 record OwnerRequest(Owner owner) {
@@ -61,10 +77,13 @@ record OwnerRequest(Owner owner) {
 record OwnersResponse(List<Owner> owners) {
 };
 
+record OwnerResponse(Owner owner) {
+};
+
 record AddedPetResponse(Owner owner) {
 };
 
-record VetResponse(List<Vet> vet) {
+record VetResponse(List<String> vet) {
 };
 
 record VetRequest(Vet vet) {
