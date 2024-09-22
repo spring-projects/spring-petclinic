@@ -10,7 +10,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.3.2</version>
+    <version>3.3.3</version>
   </parent>
   <name>petclinic</name>
 
@@ -34,7 +34,7 @@
     <maven-checkstyle.version>3.3.1</maven-checkstyle.version>
     <nohttp-checkstyle.version>0.0.11</nohttp-checkstyle.version>
     <spring-format.version>0.0.41</spring-format.version>
-	<spring-ai.version>1.0.0-M2</spring-ai.version>
+	  <spring-ai.version>1.0.0-M2</spring-ai.version>
   </properties>
 
   <dependencies>

@@ -46,6 +46,8 @@ import jakarta.validation.constraints.NotBlank;
 @Table(name = "owners")
 public class Owner extends Person {
 
+	private static final long serialVersionUID = 7676019169107660494L;
+
 	@Column(name = "address")
 	@NotBlank
 	private String address;
