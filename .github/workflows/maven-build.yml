@@ -1,29 +1,39 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
-
-name: Java CI with Maven
+name: Maven Cache Testing Pipeline
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches:
+      - main  # Runs pipeline on push to main branch
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        java: [ '17' ]
 
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK ${{matrix.java}}
-        uses: actions/setup-java@v4
+      # Step 1: Checkout the code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Set up JDK 17
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
         with:
-          java-version: ${{matrix.java}}
-          distribution: 'adopt'
-          cache: maven
-      - name: Build with Maven Wrapper
-        run: ./mvnw -B package
+          java-version: '17'
+          distribution: 'temurin'
+
+      # Step 3: Cache Maven dependencies to speed up future builds
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository   # Cache Maven's local repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}  # Cache key based on OS and pom.xml
+          restore-keys: |
+            ${{ runner.os }}-maven-  # Restore from the closest matching cache if an exact match is unavailable
+
+      # Step 4: Build the Maven project
+      - name: Build the application
+        run: ./mvnw clean package
+
+      # Step 5: Display the Maven version and build summary (Optional)
+      - name: Display Maven version
+        run: ./mvnw --version
