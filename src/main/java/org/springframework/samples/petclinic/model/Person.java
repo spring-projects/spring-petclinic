@@ -20,7 +20,7 @@ import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.NotBlank;
 
 /**
- * Simple JavaBean domain object representing an person.
+ * Simple JavaBean domain object representing a person.
  *
  * @author Ken Krebs
  */
