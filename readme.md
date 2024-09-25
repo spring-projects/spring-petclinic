@@ -1,3 +1,5 @@
+## What is Spring PetClinic?
+The **Spring PetClinic** application is a widely used reference project demonstrating how to build a simple, full-stack web application using **Spring Boot**, **Spring Data**, **Thymeleaf**, and other components from the Spring ecosystem.
 # Spring PetClinic Sample Application [![Build Status](https://github.com/spring-projects/spring-petclinic/actions/workflows/maven-build.yml/badge.svg)](https://github.com/spring-projects/spring-petclinic/actions/workflows/maven-build.yml)
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/spring-projects/spring-petclinic) [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=7517918)
@@ -29,6 +31,29 @@ Or you can run it from Maven directly using the Spring Boot Maven plugin. If you
 
 > NOTE: If you prefer to use Gradle, you can build the app using `./gradlew build` and look for the jar file in `build/libs`.
 
+
+## Terminology
+Spring-Boot: It is a web-based framework. It allows us to make business based apps efficiently. 
+
+SQL: Stands for Structured Query Language. It is used to communicate with the database. SQL statements can be used to update, delete, and more within a database.
+
+API: Stands for Application Programming Interface. API's sre HTTP services that can be accessed from any client. It is an ideal platform for building CRUD applications with the ASP.NET framework
+
+CRUD: Stands for Create, Read, Update, Delete. These are the 4 basic database operations.
+
+MVC: Stands for model-view-controller. MVC is a pattern for developing applications that are testable and easy to maintain.
+
+Models: These are classes that represent the data of the application and that use validation logic to enforce business rules for that data.
+
+Views: Consist of template files that the application uses in order to dynamically generate HTML responses.
+
+Controllers: This project contains controllers that handle HTTP requests and responses. Each controller is responsible for a specific resource or entity. Controllers use HTTP methods (GET, POST, PUT, DELETE) that map to specific actions for CRUD loperations.
+
+Routing: This maps incoming HTTP requests to the appropriate controller and action method based on the URL. RESTful APIs typically use a resource-based URL pattern.
+
+HTTP Methods: RESTful APIs use standard HTTP methods (GET, POST, PUT, DELETE) to perform CRUD operations on resources. Each HTTP method corresponds to a specific action on the API.
+
+Status Codes: RESTful APIs use standard HTTP status codes to indicate the success or failure of an API request. For example, 200 (OK) for successful GET requests, 201 (Created) for successful POST requests, 204 (No Content) for successful DELETE requests, etc.
 ## Building a Container
 
 There is no `Dockerfile` in this project. You can build a container image (if you have a docker daemon) using the Spring Boot build plugin:
