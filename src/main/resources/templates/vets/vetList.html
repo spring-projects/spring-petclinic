@@ -12,6 +12,7 @@
   <tr>
     <th>Name</th>
     <th>Specialties</th>
+    <th>Actions</th>
   </tr>
   </thead>
   <tbody>
@@ -20,6 +21,12 @@
     <td><span th:each="specialty : ${vet.specialties}"
               th:text="${specialty.name + ' '}"/> <span
       th:if="${vet.nrOfSpecialties == 0}">none</span></td>
+    <td>
+      <form th:action="@{/vets/{uuid}(uuid=${vet.uuid})}" method="get">
+        <input type="hidden" name="uuid" th:value="${vet.uuid}"/>
+        <button type="submit">Profile</button>
+      </form>
+    </td>
   </tr>
   </tbody>
 </table>

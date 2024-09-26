@@ -18,7 +18,9 @@ package org.springframework.samples.petclinic.vet;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.SerializationUtils;
 
+import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.samples.petclinic.vet.VetTestUtil.setPrivateField;
 
 /**
  * @author Dave Syer
@@ -31,11 +33,13 @@ class VetTests {
 		vet.setFirstName("Zaphod");
 		vet.setLastName("Beeblebrox");
 		vet.setId(123);
+		setPrivateField(vet, "uuid", randomUUID().toString());
 		@SuppressWarnings("deprecation")
 		Vet other = (Vet) SerializationUtils.deserialize(SerializationUtils.serialize(vet));
 		assertThat(other.getFirstName()).isEqualTo(vet.getFirstName());
 		assertThat(other.getLastName()).isEqualTo(vet.getLastName());
 		assertThat(other.getId()).isEqualTo(vet.getId());
+		assertThat(other.getUuid()).isEqualTo(vet.getUuid());
 	}
 
 }

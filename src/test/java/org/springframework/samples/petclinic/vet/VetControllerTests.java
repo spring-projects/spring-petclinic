@@ -31,8 +31,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static java.util.Optional.of;
+import static java.util.UUID.randomUUID;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
+import static org.springframework.samples.petclinic.vet.VetTestUtil.setPrivateField;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -56,6 +60,7 @@ class VetControllerTests {
 		james.setFirstName("James");
 		james.setLastName("Carter");
 		james.setId(1);
+		setPrivateField(james, "uuid", randomUUID().toString());
 		return james;
 	}
 
@@ -68,6 +73,7 @@ class VetControllerTests {
 		radiology.setId(1);
 		radiology.setName("radiology");
 		helen.addSpecialty(radiology);
+		setPrivateField(helen, "uuid", randomUUID().toString());
 		return helen;
 	}
 
@@ -95,6 +101,16 @@ class VetControllerTests {
 			.andExpect(status().isOk());
 		actions.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 			.andExpect(jsonPath("$.vetList[0].id").value(1));
+	}
+
+	@Test
+	void testShowVetProfile() throws Exception {
+		Vet james = james();
+		when(vets.findByUuid(james.getUuid())).thenReturn(of(james).orElseThrow());
+		mockMvc.perform(get("/vets/" + james.getUuid()))
+			.andExpect(status().isOk())
+			.andExpect(model().attributeExists("vet"))
+			.andExpect(view().name("vets/vetDetails"));
 	}
 
 }

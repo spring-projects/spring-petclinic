@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'vets')}">
+<body>
+<h2>Vet Details</h2>
+
+<div th:if="${message}" class="alert alert-success" id="success-message">
+  <span th:text="${message}"></span>
+</div>
+
+<div th:if="${error}" class="alert alert-danger" id="error-message">
+  <span th:text="${error}"></span>
+</div>
+
+<table class="table table-striped" th:object="${vet}">
+  <tr>
+    <th>First Name</th>
+    <td><b th:text="${vet.firstName}"></b></td>
+  </tr>
+  <tr>
+    <th>Last Name</th>
+    <td><b th:text="${vet.lastName}"></b></td>
+  </tr>
+  <tr>
+    <th>Specialties</th>
+    <td>
+        <span th:if="${vet.specialties != null and vet.specialties.size() > 0}"
+              th:text="${vet.specialties}"></span>
+      <span th:if="${vet.specialties == null or vet.specialties.size() == 0}">None</span>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

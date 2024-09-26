@@ -55,4 +55,13 @@ public interface VetRepository extends Repository<Vet, Integer> {
 	@Cacheable("vets")
 	Page<Vet> findAll(Pageable pageable) throws DataAccessException;
 
+	/**
+	 * Get <code>Vet</code> by uuid
+	 * @param uuid this is the UUID generated for the Vet in persisted storage
+	 * @return found Vet
+	 * @throws DataAccessException
+	 */
+	@Transactional(readOnly = true)
+	Vet findByUuid(String uuid) throws DataAccessException;
+
 }

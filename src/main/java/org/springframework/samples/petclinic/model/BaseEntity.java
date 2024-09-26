@@ -22,6 +22,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 
+import static java.util.UUID.randomUUID;
+
 /**
  * Simple JavaBean domain object with an id property. Used as a base class for objects
  * needing this property.
@@ -36,6 +38,8 @@ public class BaseEntity implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
+	private final String uuid = randomUUID().toString();
+
 	public Integer getId() {
 		return id;
 	}
@@ -46,6 +50,10 @@ public class BaseEntity implements Serializable {
 
 	public boolean isNew() {
 		return this.id == null;
+	}
+
+	public String getUuid() {
+		return uuid;
 	}
 
 }

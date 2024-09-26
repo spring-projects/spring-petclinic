@@ -23,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -73,6 +74,12 @@ class VetController {
 		Vets vets = new Vets();
 		vets.getVetList().addAll(this.vetRepository.findAll());
 		return vets;
+	}
+
+	@GetMapping({ "/vets/{uuid}" })
+	public String getVetById(@PathVariable("uuid") String uuid, Model model) {
+		model.addAttribute("vet", this.vetRepository.findByUuid(uuid));
+		return "vets/vetDetails";
 	}
 
 }
