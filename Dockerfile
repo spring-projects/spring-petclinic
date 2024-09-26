@@ -32,7 +32,3 @@ EXPOSE 8080
 
 #cmd command
 CMD ["app.jar"]
-
-
-# Set the command to run the application
-CMD ["java", "-jar", "target/spring-petclinic-3.3.0-SNAPSHOT.jar"]
