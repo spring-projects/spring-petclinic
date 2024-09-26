@@ -23,5 +23,5 @@ RUN ./mvnw clean package -DskipTests
 # Expose the port on which the application will run
 EXPOSE 8080
 
-# Run the Spring Boot application
-ENTRYPOINT ["java", "-jar", "target/spring-petclinic-2.6.0-SNAPSHOT.jar"]
+# Run the Spring Boot application with the correct JAR version
+ENTRYPOINT ["java", "-jar", "target/spring-petclinic-3.3.0-SNAPSHOT.jar"]
