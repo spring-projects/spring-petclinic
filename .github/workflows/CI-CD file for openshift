@@ -6,7 +6,7 @@ on:
     - demo
 
 env:
-  ENV: "prod"
+  ENV: "demo"
   APP_NAME: petclinic-app
   APP_IMAGE_NAME: petclinic-app
   APP_IMAGE_TAG: latest
@@ -39,7 +39,7 @@ jobs:
     - name: Determine image tags (If not yet present)
       if: env.APP_IMAGE_TAG == ''
       run: |
-        echo "APP_IMAGE_TAG=prod" >> $GITHUB_ENV
+        echo "APP_IMAGE_TAG=demo" >> $GITHUB_ENV
 
     - name: Build container image
       run: docker build -t ${{ env.CONTAINER_REGISTRY }}/${{ env.DOCKER_USERNAME }}/${{ env.APP_IMAGE_NAME }}:$(echo $GITHUB_SHA | head -c7) .
