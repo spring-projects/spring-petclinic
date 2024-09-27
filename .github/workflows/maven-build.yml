@@ -1,7 +1,4 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
-
-name: Java CI with Maven
+name: Java CI with Maven and OpenShift Deployment
 
 on:
   push:
@@ -11,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -25,5 +21,17 @@ jobs:
           java-version: ${{matrix.java}}
           distribution: 'adopt'
           cache: maven
+
       - name: Build with Maven Wrapper
         run: ./mvnw -B package
+
+      - name: Deploy to OpenShift
+        if: github.ref == 'refs/heads/main'  # Only deploy on main branch
+        run: |
+          oc login --token=$OPENSHIFT_TOKEN --server=$OPENSHIFT_SERVER
+          oc project $OPENSHIFT_PROJECT
+          oc start-build petclinic --from-dir=target --wait
+        env:
+          OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
+          OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}
+          OPENSHIFT_PROJECT: ${{ secrets.OPENSHIFT_PROJECT }}
