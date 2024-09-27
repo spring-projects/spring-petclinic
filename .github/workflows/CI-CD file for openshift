@@ -1,0 +1,99 @@
+name: CI/CD for PROD Environment
+
+on:
+  push:
+    branches:
+    - demo
+
+env:
+  ENV: "prod"
+  APP_NAME: petclinic-app
+  APP_IMAGE_NAME: petclinic-app
+  APP_IMAGE_TAG: latest
+  REPOSITORY_URL: "https://github.com/mohitkumar1313/spring-petclinic.git"
+  REPOSITORY_NAME: "spring-petclinic"
+  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+  CONTAINER_REGISTRY_PULL_SECRET: ${{ secrets.QUAY_DOCKER_CONFIG_JSON_PULL_SECRET}}
+  CONTAINER_REGISTRY: ${{ secrets.CONTAINER_REGISTRY}} # use "docker.io" for docker hub
+  OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}
+  OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
+  OPENSHIFT_NAMESPACE: ${{ secrets.OPENSHIFT_NAMESPACE }}
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'adopt'
+        cache: maven
+
+    - name: Build with Maven Wrapper
+      run: ./mvnw clean package -DskipTests
+
+    - name: Determine image tags (If not yet present)
+      if: env.APP_IMAGE_TAG == ''
+      run: |
+        echo "APP_IMAGE_TAG=prod" >> $GITHUB_ENV
+
+    - name: Build container image
+      run: docker build -t ${{ env.CONTAINER_REGISTRY }}/${{ env.DOCKER_USERNAME }}/${{ env.APP_IMAGE_NAME }}:$(echo $GITHUB_SHA | head -c7) .
+
+    - name: Docker Login
+      run: docker login -u ${{ env.DOCKER_USERNAME }} -p ${{ env.DOCKER_PASSWORD }} ${{ env.CONTAINER_REGISTRY }}
+
+    - name: Push image to DockerHub
+      run: docker push ${{ env.CONTAINER_REGISTRY }}/${{ env.DOCKER_USERNAME }}/${{ env.APP_IMAGE_NAME }}:$(echo $GITHUB_SHA | head -c7)
+
+  deploy-to-prod:
+    runs-on: ubuntu-latest
+    needs: [build-release]
+    environment:
+      name: prod-openshift
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Docker Login
+      run: docker login -u ${{ env.DOCKER_USERNAME }} -p ${{ env.DOCKER_PASSWORD }} ${{ env.CONTAINER_REGISTRY }}
+
+    - name: Promote current release-image as prod
+      run: |
+        docker pull ${{ env.CONTAINER_REGISTRY }}/${{ env.DOCKER_USERNAME }}/${{ env.APP_IMAGE_NAME }}:$(echo $GITHUB_SHA | head -c7)
+        docker image tag ${{ env.CONTAINER_REGISTRY }}/${{ env.DOCKER_USERNAME }}/${{ env.APP_IMAGE_NAME }}:$(echo $GITHUB_SHA | head -c7) \
+                          ${{ env.CONTAINER_REGISTRY }}/${{ env.DOCKER_USERNAME }}/${{ env.APP_IMAGE_NAME }}:latest
+        docker push ${{ env.CONTAINER_REGISTRY }}/${{ env.DOCKER_USERNAME }}/${{ env.APP_IMAGE_NAME }}:latest
+
+    - name: Login to OpenShift - ${{ env.OPENSHIFT_NAMESPACE }}
+      uses: redhat-actions/oc-login@v1
+      with:
+        openshift_server_url: ${{ env.OPENSHIFT_SERVER }}
+        openshift_token: ${{ env.OPENSHIFT_TOKEN }}
+        namespace: ${{ env.OPENSHIFT_NAMESPACE }}
+        insecure_skip_tls_verify: true
+
+    - name: Update ImageStream latest Tag to point to new latest image in Container Registry
+      run: |
+        oc project ${{ env.OPENSHIFT_NAMESPACE }}
+        oc tag ${{ env.CONTAINER_REGISTRY }}/${{ env.DOCKER_USERNAME }}/${{ env.APP_IMAGE_NAME }}:latest ${{ env.APP_IMAGE_NAME }}:latest
+
+    - name: Deploy to OpenShift - Status Check
+      run: |
+        oc project ${{ env.OPENSHIFT_NAMESPACE }}
+        oc rollout status dc/${{ env.APP_NAME }}
+
+    - name: Get OpenShift Route name
+      run: echo ::set-output name=route_name::$(oc get route ${{ env.APP_NAME }} -o jsonpath='{.spec.host}')
+      id: openshift_route_name
+
+    - name: Add a comment to PR
+      uses: peter-evans/create-or-update-comment@v1
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        body: |
+          New Version of the PetClinic Web Application has been deployed on OpenShift, here is the link to the application endpoint: http://${{ steps.openshift_route_name.outputs.route_name}}
+        reactions: rocket
