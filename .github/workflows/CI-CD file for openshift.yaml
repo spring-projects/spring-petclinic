@@ -97,3 +97,4 @@ jobs:
         body: |
           New Version of the PetClinic Web Application has been deployed on OpenShift, here is the link to the application endpoint: http://${{ steps.openshift_route_name.outputs.route_name}}
         reactions: rocket
+
