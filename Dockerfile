@@ -24,4 +24,4 @@ RUN ./mvnw clean package -DskipTests
 EXPOSE 8080
 
 # Run the Spring Boot application with the correct JAR version
-ENTRYPOINT ["java", "-jar", "target/spring-petclinic-3.3.0-SNAPSHOT.jar", "--spring.profiles.active=mysql"]
+ENTRYPOINT ["java", "-jar", "target/spring-petclinic-3.3.0-SNAPSHOT.jar", "--spring.profiles.active=postgres"]
