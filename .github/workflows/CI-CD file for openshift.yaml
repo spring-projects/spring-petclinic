@@ -87,10 +87,13 @@ jobs:
         oc rollout status dc/${{ env.APP_NAME }}
 
     - name: Get OpenShift Route name
-      run: echo ::set-output name=route_name::$(oc get route ${{ env.APP_NAME }} -o jsonpath='{.spec.host}')
+      run: |
+        oc get route petclinic-app -o jsonpath='{.spec.host}' > route_name.txt
+        echo "route_name=$(cat route_name.txt)" >> $GITHUB_ENV
       id: openshift_route_name
 
     - name: Add a comment to PR
+      if: github.event_name == 'pull_request'
       uses: peter-evans/create-or-update-comment@v1
       with:
         issue-number: ${{ github.event.pull_request.number }}
