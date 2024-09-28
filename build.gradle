@@ -1,10 +1,10 @@
 plugins {
   id 'java'
   id 'org.springframework.boot' version '3.3.4'
-  id 'io.spring.dependency-management' version '1.1.5'
-  id 'org.graalvm.buildtools.native' version '0.10.2'
-  id 'org.cyclonedx.bom' version '1.8.2'
-  id 'io.spring.javaformat' version '0.0.41'
+  id 'io.spring.dependency-management' version '1.1.6'
+  id 'org.graalvm.buildtools.native' version '0.10.3'
+  id 'org.cyclonedx.bom' version '1.10.0'
+  id 'io.spring.javaformat' version '0.0.43'
   id "io.spring.nohttp" version "0.0.11"
 }
 
@@ -25,6 +25,8 @@ repositories {
   mavenCentral()
 }
 
+ext.checkstyleVersion = "10.18.1"
+ext.springJavaformatCheckstyleVersion = "0.0.43"
 ext.webjarsFontawesomeVersion = "4.7.0"
 ext.webjarsBootstrapVersion = "5.3.3"
 
@@ -49,8 +51,8 @@ dependencies {
   testImplementation 'org.springframework.boot:spring-boot-docker-compose'
   testImplementation 'org.testcontainers:junit-jupiter'
   testImplementation 'org.testcontainers:mysql'
-  checkstyle 'io.spring.javaformat:spring-javaformat-checkstyle:0.0.41'
-  checkstyle 'com.puppycrawl.tools:checkstyle:10.16.0'
+  checkstyle "io.spring.javaformat:spring-javaformat-checkstyle:${springJavaformatCheckstyleVersion}"
+  checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
 }
 
 tasks.named('test') {
