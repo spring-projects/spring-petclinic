@@ -1,6 +1,6 @@
 services:
   mysql:
-    image: mysql:8.4
+    image: mysql:9.0
     ports:
       - "3306:3306"
     environment:
@@ -14,7 +14,7 @@ services:
     profiles:
       - mysql
   postgres:
-    image: postgres:16.3
+    image: postgres:17.0
     ports:
       - "5432:5432"
     environment:
