@@ -1,0 +1,36 @@
+name: Deploy application
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - closed
+      - synchronized
+
+jobs:
+  build-code:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v4  
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Compile the code
+        run: |
+          ./mvnw compile
+
+      - name: Test the code
+        run: |
+          ./mvnw test -Dmaven.test.skip=false -Dmaven.compile.skip=true
+
+      - name: Package the code
+        run: |
+          ./mvnw package -Dmaven.compile.skip=true -Dmaven.test.skip=true
