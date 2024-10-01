@@ -16,6 +16,8 @@
 package org.springframework.samples.petclinic.owner;
 
 import io.opentelemetry.instrumentation.annotations.WithSpan;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +25,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.samples.petclinic.domain.OwnerValidation;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.ErrorResponse;
@@ -50,6 +53,9 @@ class OwnerController {
 	private final OwnerRepository owners;
 
 	private OwnerValidation validator;
+
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	public OwnerController(OwnerRepository clinicService) {
 
@@ -94,6 +100,49 @@ class OwnerController {
 		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 	}
 
+	@GetMapping("/owners/selects")
+	public String deathBySelects() throws NoSuchMethodException {
+
+		// if (model!=null){
+		// throw new RuntimeException();
+		//
+		// }
+		var owner = this.owners.findById(3);
+		for (var pet : owner.getPets()){
+			System.out.println(pet.getName());
+
+		}
+		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
+
+	}
+	@GetMapping("/owners/inserts")
+	@Transactional
+	public String deathByInserts() throws NoSuchMethodException {
+
+		var txn = entityManager.getTransaction();
+		txn.begin();
+		// if (model!=null){
+		// throw new RuntimeException();
+		//
+		// }
+		var owner = this.owners.findById(3);
+		for (int i=0;i<3000;i++){
+			Pet pet = new Pet();
+			PetType type = new PetType();
+			type.setName("dog");
+			type.setId(1);
+			pet.setType(type);
+			pet.setName("A"+i);
+			owner.addPet(pet);
+		}
+
+		this.owners.save(owner);
+		txn.commit();
+		//model.put("owner", owner);
+
+		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
+	}
+
 	@PostMapping("/owners/new")
 	public String processCreationForm(@Valid Owner owner, BindingResult result) {
 		if (result.hasErrors()) {
@@ -106,7 +155,7 @@ class OwnerController {
 		this.owners.save(owner);
 		validator.ValidateUserAccess("admin", "pwd", "fullaccess");
 		return "redirect:/owners/" + owner.getId();
-	}
+	}	
 
 	@GetMapping("/owners/find")
 	public String initFindForm() {

@@ -87,7 +87,7 @@ public class Pet extends NamedEntity {
 		return this.pet_vaccines;
 	}
 
-	public void addVisit(Visit visit) {
+	public void 	addVisit(Visit visit) {
 		getVisits().add(visit);
 	}
 

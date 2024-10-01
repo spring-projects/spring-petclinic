@@ -4,12 +4,17 @@ import io.opentelemetry.instrumentation.annotations.WithSpan;
 
 public class DomainValidationService {
 
+
+	public void testFunc(){
+
+	}
 	// Main method for domain validation logic
 	@WithSpan
 	public boolean validateDomainLogic(String usr) {
 		String domain = normalizeDomainFormat("example.com");
 
 		if (isValidDomain(domain)) {
+
 			if (!containsRestrictedWords(domain) && isValidDomainSuffix(domain)) {
 				if (isDomainAvailable(domain)) {
 					saveValidationResults(domain, true, true);
@@ -97,6 +102,7 @@ public class DomainValidationService {
 		}
 		System.out.println("Notifying admin: " + notification);
 	}
+
 
 	// Fake method to check if the domain is reserved
 	private boolean isReservedDomain(String domain) {
