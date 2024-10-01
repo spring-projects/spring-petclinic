@@ -146,7 +146,6 @@ public class OwnerValidation {
 
 	}
 
-	@WithSpan
 	public boolean checkOwnerValidity(Owner owner) {
 
 		this.ValidateOwnerUserBad(owner);
@@ -158,7 +157,7 @@ public class OwnerValidation {
 	private boolean ValidateOwnerUserBad(Owner owner) {
 		{
 
-			for (int i = 0; i < 100; i++) {
+			for (int i = 0; i < 120; i++) {
 				ValidateOwner();
 			}
 			return true;
@@ -166,12 +165,11 @@ public class OwnerValidation {
 		}
 	}
 
-	@WithSpan
 	private boolean ValidateOwnerUser(Owner owner) {
 
 		Span span = otelTracer.spanBuilder("db_access_01").startSpan();
 
-		var max = ThreadLocalRandom.current().nextInt(90, 110 + 1);
+		int max = ThreadLocalRandom.current().nextInt(90, 110 + 1);
 		try {
 			for (int i = 0; i < max; i++) {
 				ValidateOwner();
@@ -184,7 +182,6 @@ public class OwnerValidation {
 
 	}
 
-	@WithSpan
 	private void ValidateOwner() {
 		// simulate SpanKind of DB query
 		// see
