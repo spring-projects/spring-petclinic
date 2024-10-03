@@ -30,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 // luck ((plain(st) UNIT test)! :)
 class CrashControllerTests {
 
-	CrashController testee = new CrashController();
+	final CrashController testee = new CrashController();
 
 	@Test
 	void testTriggerException() {
