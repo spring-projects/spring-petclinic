@@ -17,6 +17,7 @@
 package org.springframework.samples.petclinic;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.util.Arrays;
@@ -114,7 +115,20 @@ public class PostgresIntegrationTests {
 				Arrays.sort(names);
 				for (String name : names) {
 					String resolved = environment.getProperty(name);
-					String value = source.getProperty(name).toString();
+
+					if (resolved == null) {
+						fail("resolved property named {0} was expecting a string but is null.", name);
+						return;
+					}
+
+					Object sourceProperty = source.getProperty(name);
+
+					if (sourceProperty == null || sourceProperty.toString() == null) {
+						fail("source property named {0} was expecting a string value but is null.", name);
+						return;
+					}
+
+					String value = sourceProperty.toString();
 					if (resolved.equals(value)) {
 						log.info(name + "=" + resolved);
 					}
