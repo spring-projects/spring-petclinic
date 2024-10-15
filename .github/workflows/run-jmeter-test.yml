@@ -10,16 +10,15 @@ on:
 
 
 jobs:
-
   action_build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
       - name: Run JMeter Action on a test
-        uses: rbhadti94/apache-jmeter-action@v0.7.0
+        uses: kzhou57/apache-jmeter-action@v0.8.3
         with:
-          testFilePath:  src/test/jmeter/petclinic_test_plan.jmx 
+          testFilePath:  src/test/jmeter/petclinic_test_plan.jmx
           outputReportsFolder: reports/
           args: "--loglevel INFO"
 
