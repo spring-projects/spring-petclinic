@@ -15,7 +15,7 @@ jobs:
         
 
 #name: Test JMeter Action
-test2
+#test2
 #    push:
 #      branches: [ main ]
 #    pull_request:
