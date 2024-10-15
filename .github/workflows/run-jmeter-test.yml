@@ -1,28 +1,44 @@
-name: Test JMeter Action
-
+name: Test Action
 on:
-    push:
-      branches: [ main ]
-    pull_request:
-      branches: [ main ]
+  push
+jobs:
+  test-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Jmeter
+        uses: tush-tr/setup-jmeter@v1.1.0
+      - name: Run Jmeter
+        run: jmeter -n -t src/test/jmeter/petclinic_test_plan.jmx -l reports/results.jtl
+
+        
+
+        
+
+#name: Test JMeter Action
+
+#on:
+#    push:
+#      branches: [ main ]
+#    pull_request:
+#      branches: [ main ]
 
       
 
 
-jobs:
-  action_build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+#jobs:
+#  action_build:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v4
 
-      - name: Run JMeter Action on a test
-        uses: kzhou57/apache-jmeter-action@v0.8.3
-        with:
-          testFilePath:  src/test/jmeter/petclinic_test_plan.jmx
-          outputReportsFolder: reports/
-          args: "--loglevel INFO"
+#      - name: Run JMeter Action on a test
+#        uses: kzhou57/apache-jmeter-action@v0.8.3
+#        with:
+#          testFilePath:  src/test/jmeter/petclinic_test_plan.jmx
+#          outputReportsFolder: reports/
+#          args: "--loglevel INFO"
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: jmeter-test-results
-          path: reports/
+#      - uses: actions/upload-artifact@v4
+#        with:
+#          name: jmeter-test-results
+#          path: reports/
