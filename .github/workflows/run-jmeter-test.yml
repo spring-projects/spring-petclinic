@@ -8,7 +8,7 @@ jobs:
       - name: Setup Jmeter
         uses: Rodi26/setup-jmeter@v0.0.4
       - name: Run Jmeter
-        run: ${{ github.workspace }}/jmeter-5.6.3/bin/jmeter -n -t src/test/jmeter/petclinic_test_plan.jmx -l reports/results.jtl
+        run: ${{ github.workspace }}/jmeter-5.6.3/bin/jmeter -n -t ${{ github.workspace }}/src/test/jmeter/petclinic_test_plan.jmx -l reports/results.jtl
         #run: ls -la ${{ github.workspace }}/apache-jmeter-5.6.3/bin
 
 
