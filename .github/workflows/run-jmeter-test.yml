@@ -10,7 +10,7 @@ jobs:
   action_build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Run JMeter Action on a test
         uses: rbhadti94/apache-jmeter-action@v0.7.0
@@ -19,7 +19,7 @@ jobs:
           outputReportsFolder: reports/
           args: "--loglevel INFO"
 
-      - uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v4
         with:
           name: jmeter-test-results
           path: reports/
