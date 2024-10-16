@@ -23,4 +23,4 @@
             uses: docker/build-push-action@v6
             with:
               push: true
-              tags: rodi26.jfrog.io/spring-petclinic:latest
+              tags: rodi26.jfrog.io/rodi26-docker/spring-petclinic:latest
