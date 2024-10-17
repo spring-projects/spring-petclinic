@@ -48,7 +48,7 @@ jobs:
 
   Run_Jmeter_test_plan:
         runs-on: ubuntu-latest
-        needs: Run_add _ test
+        needs: Run_test
         strategy:
           matrix:
             java: [ '21' ]
