@@ -60,8 +60,12 @@ jobs:
               java-version: ${{matrix.java}}
               distribution: 'adopt'
               cache: maven
-          - name: Build with Maven Wrapper
-            run: ./mvnw spring-boot:run
+          - name: run docker
+            uses: docker-practice/actions-setup-docker@master
+          - name: Build Docker Image
+            run: docker build -t spring-petclinic .
+          - name: Run Docker Container
+            run: docker run -d -p 8080:8080 spring-petclinic
           - name: Run JMeter Action on a test
             uses: rbhadti94/apache-jmeter-action@v0.5.0
             with:
