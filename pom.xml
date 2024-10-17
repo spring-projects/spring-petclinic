@@ -282,7 +282,7 @@
         <configuration>
           <!-- openjdk:11.0.5-jre -->
           <from>
-            <image>openjdk:11.0.5-jre</image>
+            <image>openjdk:17-oracle</image>
           </from>
           <to>
             <image>docker.io/${docker.image.prefix}/${project.artifactId}</image>
