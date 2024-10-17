@@ -52,7 +52,7 @@ dependencies {
   testImplementation 'org.springframework.boot:spring-boot-docker-compose'
   testImplementation 'org.testcontainers:junit-jupiter'
   testImplementation 'org.testcontainers:mysql'
-  checkstyle "io.spring.javaformat:spring-javaformat-checkstyle:${springJavaformatCheckstyleVersion}"
+  checkstyle "io.spring.javaformat:spring-javaformat-checkstyle:0.0.43"
   checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
 }
 
