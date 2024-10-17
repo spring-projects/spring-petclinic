@@ -34,7 +34,7 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
-  Run test:
+  Run_test:
     runs-on: ubuntu-latest
     needs: build
     steps:
@@ -46,9 +46,9 @@ jobs:
     - name: Run Tests
       run: ./mvnw -B test
 
-  Run Jmeter test plan:
+  Run_Jmeter_test_plan:
         runs-on: ubuntu-latest
-        needs: Run test
+        needs: Run_add _ test
         strategy:
           matrix:
             java: [ '21' ]
