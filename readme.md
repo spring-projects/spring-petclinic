@@ -33,5 +33,3 @@ docker run -d -p 8080:8080 rodi26.jfrog.io/rodi26-docker-local/jfrog-spring-petc
 ```
 
 This command will start the application in detached mode, making it accessible on port 8080.
-
-----
