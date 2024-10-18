@@ -1,4 +1,5 @@
 A test for image build and push to JFrog Artifactory
+this is a test
 ---
     name: Build to Docker Hub
     
