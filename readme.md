@@ -24,9 +24,17 @@ A robust CI pipeline has been set up with the following automated steps:
 3. **Dockerize**: Build and tag the Docker container for deployment.
 4. **Security Scan**: Launch a vulnerability scan to maintain robust security standards.
 
+## Instruction to use the repo
+1. Create 4 variables
+    - **JF_URL** : The url of your JFrog server
+    - **JF_USER** : The user authorize to use xray
+    - **JF_ACCESS_TOKEN** : your token to connect to Artifactory
+    - **JF_REPO** : your artifactory repo (ex: myrepo.jfrog.io)
+2. Authorize Github Actions. The github action will only execute on your main branch. 
+
 ## Docker Instructions
 
-The `Dockerfile` is located in the root directory. You can run the application locally on a Linux environment using Docker with the following command:
+The `Dockerfile` is located in the root directory of the repo. You can run the application locally on a Linux environment using Docker with the following command:
 
 ```other
 docker run -d -p 8080:8080 rodi26.jfrog.io/rodi26-docker-local/jfrog-spring-petclinic:latest

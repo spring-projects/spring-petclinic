@@ -5,9 +5,9 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ main, Features ]
+    branches: [ main ]
   pull_request:
-    branches: [ main, Features ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -113,8 +113,8 @@ jobs:
       - name: Login to Jfrog Artifactory
         uses: docker/login-action@v3
         with:
-          registry: rodi26.jfrog.io
-          username: 'rodolphe.fontaine@orange.fr'
+          registry: ${{ secrets.JF_REPO }}
+          username: ${{ secrets.JF_USER }}
           password: ${{ secrets.JF_ACCESS_TOKEN }}
      
       - name: Set Up Docker
@@ -144,7 +144,7 @@ jobs:
 
       - name: Build Tag and push Docker Image
         env:
-          IMAGE_NAME: rodi26.jfrog.io/rodi26-docker/jfrog-spring-petclinic:${{ github.run_number }}
+          IMAGE_NAME: rodi26.jfrog.io/rodi26-docker/jfrog-spring-petclinic:latest
         run: |
           jf docker build -t $IMAGE_NAME .
           jf docker push $IMAGE_NAME
