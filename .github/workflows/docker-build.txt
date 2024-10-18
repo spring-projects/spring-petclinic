@@ -1,3 +1,4 @@
+A test for image build and push to JFrog Artifactory
 ---
     name: Build to Docker Hub
     
