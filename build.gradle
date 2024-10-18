@@ -15,10 +15,11 @@ apply plugin: 'io.spring.javaformat'
 gradle.startParameter.excludedTaskNames += [ "checkFormatAot", "checkFormatAotTest" ]
 
 group = 'org.springframework.samples'
-version = '3.3.0'
+version = '2.1.0.RELEASE'
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_17
+  sourceCompatibility = 17
+  targetCompatibility = 17
 }
 
 repositories {
@@ -51,7 +52,7 @@ dependencies {
   testImplementation 'org.springframework.boot:spring-boot-docker-compose'
   testImplementation 'org.testcontainers:junit-jupiter'
   testImplementation 'org.testcontainers:mysql'
-  checkstyle "io.spring.javaformat:spring-javaformat-checkstyle:${springJavaformatCheckstyleVersion}"
+  checkstyle "io.spring.javaformat:spring-javaformat-checkstyle:0.0.43"
   checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
 }
 
