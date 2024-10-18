@@ -51,7 +51,7 @@ jobs:
 
   scan-repository:
     runs-on: ubuntu-latest
-    needs: Build_Container_and_push_to_Artifactory
+    needs: build-and-tag
     strategy:
       matrix:
         # The repository scanning will be triggered periodically on the following branches.
