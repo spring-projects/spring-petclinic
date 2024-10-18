@@ -69,6 +69,22 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+    <!-- Updated for security reasons JFOG-->
+      <groupId>org.xmlunit</groupId>
+      <artifactId>xmlunit-legacy</artifactId>
+      <version>2.10.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.xmlunit</groupId>
+      <artifactId>xmlunit-core</artifactId>
+      <version>2.10.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-compress</artifactId>
+      <version>1.27.1</version>
+    </dependency>
 
     <!-- Databases - Uses H2 by default -->
     <dependency>
@@ -139,7 +155,6 @@
       <groupId>jakarta.xml.bind</groupId>
       <artifactId>jakarta.xml.bind-api</artifactId>
     </dependency>
-
   </dependencies>
 
   <build>
