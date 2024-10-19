@@ -36,5 +36,5 @@ jobs:
           context: .
           push: true
           tags: 
-            ${{ secrets.DOCKER_USERNAME }}/springboot-petclinic-docker:${{ steps.semver.outputs.version }}
-            ${{ secrets.DOCKER_USERNAME }}/springboot-petclinic-docker:latest
+            ${{ secrets.DOCKER_USERNAME }}/springboot-petclinic-docker:latest , ${{ secrets.DOCKER_USERNAME }}/springboot-petclinic-docker:${{ steps.semver.outputs.version }}
+            
