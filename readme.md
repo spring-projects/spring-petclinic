@@ -1,3 +1,5 @@
+## What is Spring PetClinic?
+The **Spring PetClinic** application is a widely used reference project demonstrating how to build a simple, full-stack web application using **Spring Boot**, **Spring Data**, **Thymeleaf**, and other components from the Spring ecosystem.
 # Spring PetClinic Sample Application [![Build Status](https://github.com/spring-projects/spring-petclinic/actions/workflows/maven-build.yml/badge.svg)](https://github.com/spring-projects/spring-petclinic/actions/workflows/maven-build.yml)
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/spring-projects/spring-petclinic) [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=7517918)
@@ -29,6 +31,29 @@ Or you can run it from Maven directly using the Spring Boot Maven plugin. If you
 
 > NOTE: If you prefer to use Gradle, you can build the app using `./gradlew build` and look for the jar file in `build/libs`.
 
+
+## Terminology
+Spring-Boot: It is a web-based framework. It allows us to make business based apps efficiently. 
+
+SQL: Stands for Structured Query Language. It is used to communicate with the database. SQL statements can be used to update, delete, and more within a database.
+
+API: Stands for Application Programming Interface. API's sre HTTP services that can be accessed from any client. It is an ideal platform for building CRUD applications with the ASP.NET framework
+
+CRUD: Stands for Create, Read, Update, Delete. These are the 4 basic database operations.
+
+MVC: Stands for model-view-controller. MVC is a pattern for developing applications that are testable and easy to maintain.
+
+Models: These are classes that represent the data of the application and that use validation logic to enforce business rules for that data.
+
+Views: Consist of template files that the application uses in order to dynamically generate HTML responses.
+
+Controllers: This project contains controllers that handle HTTP requests and responses. Each controller is responsible for a specific resource or entity. Controllers use HTTP methods (GET, POST, PUT, DELETE) that map to specific actions for CRUD loperations.
+
+Routing: This maps incoming HTTP requests to the appropriate controller and action method based on the URL. RESTful APIs typically use a resource-based URL pattern.
+
+HTTP Methods: RESTful APIs use standard HTTP methods (GET, POST, PUT, DELETE) to perform CRUD operations on resources. Each HTTP method corresponds to a specific action on the API.
+
+Status Codes: RESTful APIs use standard HTTP status codes to indicate the success or failure of an API request. For example, 200 (OK) for successful GET requests, 201 (Created) for successful POST requests, 204 (No Content) for successful DELETE requests, etc.
 ## Building a Container
 
 There is no `Dockerfile` in this project. You can build a container image (if you have a docker daemon) using the Spring Boot build plugin:
@@ -43,20 +68,20 @@ Our issue tracker is available [here](https://github.com/spring-projects/spring-
 
 ## Database configuration
 
-In its default configuration, Petclinic uses an in-memory database (H2) which
-gets populated at startup with data. The h2 console is exposed at `http://localhost:8080/h2-console`,
-and it is possible to inspect the content of the database using the `jdbc:h2:mem:<uuid>` URL. The UUID is printed at startup to the console.
+By default, Spring PetClinic uses an in-memory H2 database that gets populated with sample data during startup. The H2 console can be accessed at http://localhost:8080/h2-console. You can inspect the database using the following JDBC URL: jdbc:h2:mem:<uuid> where the UUID is printed at startup.
 
-A similar setup is provided for MySQL and PostgreSQL if a persistent database configuration is needed. Note that whenever the database type changes, the app needs to run with a different profile: `spring.profiles.active=mysql` for MySQL or `spring.profiles.active=postgres` for PostgreSQL. See the [Spring Boot documentation](https://docs.spring.io/spring-boot/how-to/properties-and-configuration.html#howto.properties-and-configuration.set-active-spring-profiles) for more detail on how to set the active profile.
+If you need a persistent database, MySQL and PostgreSQL configurations are also supported. When switching databases, you'll need to activate the appropriate profile by setting spring.profiles.active=mysql or spring.profiles.active=postgres.
 
-You can start MySQL or PostgreSQL locally with whatever installer works for your OS or use docker:
+Here’s how to start MySQL or PostgreSQL with Docker:
 
+## MySQL
 ```bash
 docker run -e MYSQL_USER=petclinic -e MYSQL_PASSWORD=petclinic -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=petclinic -p 3306:3306 mysql:9.0
 ```
 
 or
 
+## PostgreSQL
 ```bash
 docker run -e POSTGRES_USER=petclinic -e POSTGRES_PASSWORD=petclinic -e POSTGRES_DB=petclinic -p 5432:5432 postgres:17.0
 ```
@@ -64,7 +89,7 @@ docker run -e POSTGRES_USER=petclinic -e POSTGRES_PASSWORD=petclinic -e POSTGRES
 Further documentation is provided for [MySQL](https://github.com/spring-projects/spring-petclinic/blob/main/src/main/resources/db/mysql/petclinic_db_setup_mysql.txt)
 and [PostgreSQL](https://github.com/spring-projects/spring-petclinic/blob/main/src/main/resources/db/postgres/petclinic_db_setup_postgres.txt).
 
-Instead of vanilla `docker` you can also use the provided `docker-compose.yml` file to start the database containers. Each one has a profile just like the Spring profile:
+Alternatively, use the provided docker-compose.yml file for a more streamlined setup:
 
 ```bash
 docker-compose --profile mysql up
@@ -77,8 +102,14 @@ docker-compose --profile postgres up
 ```
 
 ## Test Applications
+`MySqlTestApplication`
 
-At development time we recommend you use the test applications set up as `main()` methods in `PetClinicIntegrationTests` (using the default H2 database and also adding Spring Boot Devtools), `MySqlTestApplication` and `PostgresIntegrationTests`. These are set up so that you can run the apps in your IDE to get fast feedback and also run the same classes as integration tests against the respective database. The MySql integration tests use Testcontainers to start the database in a Docker container, and the Postgres tests use Docker Compose to do the same thing.
+We recommend running the test applications configured in the following classes for faster feedback during development:
+
+`PetClinicIntegrationTests`(using the default H2 database and Spring Boot DevTools)
+`MySqlTestApplication` (for MySQL)
+`PostgresIntegrationTests` (for PostgreSQL)
+These classes are designed to help you test the application easily in your IDE and can also be run as integration tests. MySQL tests use Testcontainers to manage the database, while PostgreSQL tests rely on Docker Compose.
 
 ## Compiling the CSS
 
@@ -133,10 +164,10 @@ The following items should be installed in your system:
 |Properties Files | [application.properties](https://github.com/spring-projects/spring-petclinic/blob/main/src/main/resources) |
 |Caching | [CacheConfiguration](https://github.com/spring-projects/spring-petclinic/blob/main/src/main/java/org/springframework/samples/petclinic/system/CacheConfiguration.java) |
 
-## Interesting Spring Petclinic branches and forks
+## Explore Other Forks and Branches
 
 The Spring Petclinic "main" branch in the [spring-projects](https://github.com/spring-projects/spring-petclinic)
-GitHub org is the "canonical" implementation based on Spring Boot and Thymeleaf. There are
+repository is the "canonical" implementation based on Spring Boot and Thymeleaf. There are
 [quite a few forks](https://spring-petclinic.github.io/docs/forks.html) in the GitHub org
 [spring-petclinic](https://github.com/spring-petclinic). If you are interested in using a different technology stack to implement the Pet Clinic, please join the community there.
 
