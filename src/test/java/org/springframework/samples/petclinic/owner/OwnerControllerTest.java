@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Page;
 import java.util.ArrayList;
+import org.springframework.data.domain.PageImpl;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -163,6 +164,27 @@ class OwnerControllerTest {
 		assertThat(view).isEqualTo("owners/findOwners");
 		verify(ownerRepository).findByLastName("", PageRequest.of(0, 5));
 		verify(result).rejectValue("lastName", "notFound", "not found");
+	}
+
+	@Test
+	@DisplayName("Test processFindForm with multiple results")
+	void testProcessFindFormWithMultipleResults() {
+		Owner owner = new Owner();
+		owner.setLastName("Doe");
+
+		List<Owner> owners = new ArrayList<>();
+		owners.add(new Owner());
+		owners.add(new Owner());
+		Page<Owner> page = new PageImpl<>(owners);
+
+		doReturn(page).when(ownerRepository).findByLastName("Doe", PageRequest.of(0, 5));
+
+		Model model = new ConcurrentModel();
+		String view = ownerController.processFindForm(1, owner, result, model);
+
+		assertThat(view).isEqualTo("owners/ownersList");
+		assertThat(model.asMap().get("listOwners")).isNotNull();
+		verify(ownerRepository).findByLastName("Doe", PageRequest.of(0, 5));
 	}
 
 }
