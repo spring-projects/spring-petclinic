@@ -20,6 +20,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Page;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -145,6 +147,22 @@ class OwnerControllerTest {
 		assertThat(view).isEqualTo("redirect:/owners/{ownerId}");
 		verify(result).hasErrors();
 		verify(ownerRepository).save(owner);
+	}
+
+	@Test
+	@DisplayName("Test processFindForm with empty result")
+	void testProcessFindFormWithEmptyResult() {
+		Owner owner = new Owner();
+		owner.setLastName("");
+
+		doReturn(Page.empty()).when(ownerRepository).findByLastName("", PageRequest.of(0, 5));
+
+		Model model = new ConcurrentModel();
+		String view = ownerController.processFindForm(1, owner, result, model);
+
+		assertThat(view).isEqualTo("owners/findOwners");
+		verify(ownerRepository).findByLastName("", PageRequest.of(0, 5));
+		verify(result).rejectValue("lastName", "notFound", "not found");
 	}
 
 }
