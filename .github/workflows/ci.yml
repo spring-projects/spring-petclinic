@@ -10,7 +10,7 @@ jobs:
       - name: Set GCP project
         run: gcloud config set project ${{ secrets.PROJECT_ID }}
       - name: Setup GCP authentication
-        run: echo "${{ secrets.BASE64_ENV_VAR }}" | base64 --decode > output_file.txt
+        run: echo "${{ secrets.GCP_JSON }}" | base64 --decode > output_file.txt
       - run: gcloud auth activate-service-account --key-file output_file.txt
       - name: Initiate Terraform
         run: terraform init
