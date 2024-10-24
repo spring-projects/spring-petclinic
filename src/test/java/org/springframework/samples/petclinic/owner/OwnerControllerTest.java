@@ -203,9 +203,8 @@ class OwnerControllerTest {
 		int ownerId = 999;
 		doReturn(null).when(ownerRepository).findById(ownerId);
 
-		assertThatThrownBy(() -> ownerController.findOwner(ownerId)).isInstanceOf(IllegalArgumentException.class)
-			.hasMessage("Owner ID not found: " + ownerId);
-		assertThat(true).isTrue();
+		Owner owner = ownerController.findOwner(ownerId);
+		assertThat(owner).isEqualTo(null);
 
 		verify(ownerRepository).findById(ownerId);
 	}

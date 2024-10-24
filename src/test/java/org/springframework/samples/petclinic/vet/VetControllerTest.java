@@ -91,4 +91,23 @@ class VetControllerTest {
 		verify(model).addAttribute("listVets", paginatedVets.getContent());
 	}
 
+	@Test
+	@DisplayName("Test showVetList with empty database")
+	void testShowVetListWithEmptyDatabase() {
+		int page = 1;
+		Pageable pageable = PageRequest.of(page - 1, 5);
+		Page<Vet> paginatedVets = new PageImpl<>(Collections.emptyList(), pageable, 0);
+
+		doReturn(paginatedVets).when(vetRepository).findAll(pageable);
+
+		String viewName = vetController.showVetList(page, model);
+
+		assertThat(viewName).isEqualTo("vets/vetList");
+		verify(vetRepository).findAll(pageable);
+		verify(model).addAttribute("currentPage", page);
+		verify(model).addAttribute("totalPages", paginatedVets.getTotalPages());
+		verify(model).addAttribute("totalItems", paginatedVets.getTotalElements());
+		verify(model).addAttribute("listVets", paginatedVets.getContent());
+	}
+
 }
