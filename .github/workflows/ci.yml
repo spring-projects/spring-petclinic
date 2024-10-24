@@ -5,13 +5,13 @@ on:
 jobs:
   terraform-test:
     runs-on: ubuntu-latest
-    container: cedricguadalupe/terraform-gcloud
+    container: hashicorp/terraform:1.9.8
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Setup GCP authentication
         run: echo "${{ secrets.GCP_JSON }}" | base64 -d > output_file.txt
-      - run: export GOOGLE_APPLICATION_CREDENTIALS=output_file.txt
+      - run: export GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/output_file.txt
       - name: Initiate Terraform
         run: terraform -chdir=terraform init
       - name: Dry run Terraform
