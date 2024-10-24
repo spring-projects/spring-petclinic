@@ -84,4 +84,20 @@ class OwnerControllerTest {
 		verify(ownerRepository).save(owner);
 	}
 
+	@Test
+	@DisplayName("Test processUpdateOwnerForm without validation errors")
+	void testProcessUpdateOwnerFormWithoutValidationErrors() {
+		Owner owner = new Owner();
+		owner.setId(1);
+
+		doReturn(false).when(result).hasErrors();
+		doNothing().when(ownerRepository).save(owner);
+
+		String view = ownerController.processUpdateOwnerForm(owner, result, 1, redirectAttributes);
+
+		assertThat(view).isEqualTo("redirect:/owners/{ownerId}");
+		verify(result).hasErrors();
+		verify(ownerRepository).save(owner);
+	}
+
 }
