@@ -49,7 +49,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.doNothing;
 
+import org.junit.jupiter.api.DisplayName;
+
 @ExtendWith(MockitoExtension.class)
+@DisplayName("OwnerController Tests")
 class OwnerControllerTest {
 
 	@Mock
@@ -204,6 +207,46 @@ class OwnerControllerTest {
 		assertThat(view).isEqualTo("owners/findOwners");
 		verify(ownerRepository).findByLastName("Smith", PageRequest.of(0, 5));
 		verify(result).rejectValue("lastName", "notFound", "not found");
+	}
+
+}
+
+@ExtendWith(MockitoExtension.class)
+class PetControllerTest {
+
+	@Mock
+	private OwnerRepository ownerRepository;
+
+	@InjectMocks
+	private PetController petController;
+
+	@BeforeEach
+	void setup() {
+		mockMvc = MockMvcBuilders.standaloneSetup(petController).build();
+	}
+
+	@Test
+	@DisplayName("Test findOwner with valid ownerId")
+	void testFindOwnerWithValidOwnerId() {
+		int ownerId = 1;
+		Owner owner = new Owner();
+		doReturn(owner).when(ownerRepository).findById(ownerId);
+
+		Owner result = petController.findOwner(ownerId);
+
+		assertThat(result).isEqualTo(owner);
+		verify(ownerRepository).findById(ownerId);
+	}
+
+	@Test
+	@DisplayName("Test findOwner with invalid ownerId")
+	void testFindOwnerWithInvalidOwnerId() {
+		int ownerId = 999;
+		doReturn(null).when(ownerRepository).findById(ownerId);
+
+		assertThatThrownBy(() -> petController.findOwner(ownerId)).isInstanceOf(IllegalArgumentException.class)
+			.hasMessage("Owner ID not found: " + ownerId);
+		verify(ownerRepository).findById(ownerId);
 	}
 
 }
