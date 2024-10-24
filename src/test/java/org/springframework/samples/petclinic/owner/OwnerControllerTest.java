@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.doNothing;
 
 @ExtendWith(MockitoExtension.class)
 class OwnerControllerTest {
@@ -65,6 +66,22 @@ class OwnerControllerTest {
 		assertThat(view).isEqualTo("owners/createOrUpdateOwnerForm");
 		verify(result).hasErrors();
 		verifyNoInteractions(ownerRepository);
+	}
+
+	@Test
+	@DisplayName("Test processCreationForm without validation errors")
+	void testProcessCreationFormWithoutValidationErrors() {
+		Owner owner = new Owner();
+		owner.setId(1);
+
+		doReturn(false).when(result).hasErrors();
+		doNothing().when(ownerRepository).save(owner);
+
+		String view = ownerController.processCreationForm(owner, result, redirectAttributes);
+
+		assertThat(view).isEqualTo("redirect:/owners/1");
+		verify(result).hasErrors();
+		verify(ownerRepository).save(owner);
 	}
 
 }
