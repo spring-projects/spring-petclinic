@@ -187,4 +187,21 @@ class OwnerControllerTest {
 		verify(ownerRepository).findByLastName("Doe", PageRequest.of(0, 5));
 	}
 
+	@Test
+	@DisplayName("Test processFindForm with non-empty last name and empty results")
+	void testProcessFindFormWithNonEmptyLastNameAndEmptyResults() {
+		Owner owner = new Owner();
+		owner.setLastName("Smith");
+
+		doReturn(Page.empty()).when(ownerRepository).findByLastName("Smith", PageRequest.of(0, 5));
+		doNothing().when(result).rejectValue("lastName", "notFound", "not found");
+
+		Model model = new ConcurrentModel();
+		String view = ownerController.processFindForm(1, owner, result, model);
+
+		assertThat(view).isEqualTo("owners/findOwners");
+		verify(ownerRepository).findByLastName("Smith", PageRequest.of(0, 5));
+		verify(result).rejectValue("lastName", "notFound", "not found");
+	}
+
 }
