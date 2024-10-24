@@ -1,7 +1,9 @@
 package org.springframework.samples.petclinic.owner;
 
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import java.util.Map;
 import org.springframework.ui.Model;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.samples.petclinic.owner.Owner;
@@ -202,6 +204,48 @@ class OwnerControllerTest {
 		assertThat(view).isEqualTo("owners/findOwners");
 		verify(ownerRepository).findByLastName("Smith", PageRequest.of(0, 5));
 		verify(result).rejectValue("lastName", "notFound", "not found");
+	}
+
+}
+
+@ExtendWith(MockitoExtension.class)
+class VisitControllerTest {
+
+	@Mock
+	private OwnerRepository ownerRepository;
+
+	@InjectMocks
+	private VisitController visitController;
+
+	@Mock
+	private MockMvc mockMvc;
+
+	@BeforeEach
+	void setup() {
+		mockMvc = MockMvcBuilders.standaloneSetup(visitController).build();
+	}
+
+	@Test
+	@DisplayName("Test loadPetWithVisit without validation errors")
+	void testLoadPetWithVisit() {
+		int ownerId = 1;
+		int petId = 1;
+		Map<String, Object> model = new ConcurrentModel();
+
+		Owner owner = new Owner();
+		Pet pet = new Pet();
+		Visit visit = new Visit();
+
+		doReturn(owner).when(ownerRepository).findById(ownerId);
+		doReturn(pet).when(owner).getPet(petId);
+
+		Visit result = visitController.loadPetWithVisit(ownerId, petId, model);
+
+		assertThat(result).isNotNull();
+		assertThat(model.get("pet")).isEqualTo(pet);
+		assertThat(model.get("owner")).isEqualTo(owner);
+		verify(ownerRepository).findById(ownerId);
+		verify(owner).getPet(petId);
 	}
 
 }
