@@ -52,4 +52,23 @@ class VetControllerTest {
 		verify(model).addAttribute("listVets", paginatedVets.getContent());
 	}
 
+	@Test
+	@DisplayName("Test showVetList without pagination")
+	void testShowVetListWithoutPagination() {
+		int defaultPage = 1;
+		Pageable pageable = PageRequest.of(defaultPage - 1, 5);
+		Page<Vet> paginatedVets = new PageImpl<>(Collections.emptyList(), pageable, 0);
+
+		doReturn(paginatedVets).when(vetRepository).findAll(pageable);
+
+		String viewName = vetController.showVetList(defaultPage, model);
+
+		assertThat(viewName).isEqualTo("vets/vetList");
+		verify(vetRepository).findAll(pageable);
+		verify(model).addAttribute("currentPage", defaultPage);
+		verify(model).addAttribute("totalPages", paginatedVets.getTotalPages());
+		verify(model).addAttribute("totalItems", paginatedVets.getTotalElements());
+		verify(model).addAttribute("listVets", paginatedVets.getContent());
+	}
+
 }
