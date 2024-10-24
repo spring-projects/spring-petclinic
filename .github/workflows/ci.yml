@@ -13,6 +13,7 @@ jobs:
         run: echo "${{ secrets.GCP_JSON }}" | base64 -d > output_file.txt
       - run: gcloud auth activate-service-account --key-file output_file.txt
       - name: Initiate Terraform
-        run: terraform init
+        run: cd terraform
+      - run: terraform init
       - name: Dry run Terraform
         run: terraform plan
