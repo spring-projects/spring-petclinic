@@ -5,7 +5,10 @@ on:
 jobs:
   terraform-test:
     runs-on: ubuntu-latest
-    container: hashicorp/terraform:1.9.8
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./terraform
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -13,12 +16,11 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.9.8
-          project_id: ${{ secrets.PROJECT_ID }}
       - name: Validate Terraform Configuration
-        run: terraform -chdir=terraform init
+        run: terraform init
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GCP_JSON }}
       - name: Dry run Terraform
-        run: terraform -chdir=terraform plan -var-file=terraform/variables.tfvars
+        run: terraform plan -var-file=variables.tfvars
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GCP_JSON }}
