@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.owner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.ui.ConcurrentModel;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -10,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.BindingResult;
+import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -38,6 +40,17 @@ class OwnerControllerTest {
 	@BeforeEach
 	void setup() {
 		mockMvc = MockMvcBuilders.standaloneSetup(ownerController).build();
+	}
+
+	@DisplayName("Test initCreationForm")
+	@Test
+	void testInitCreationForm() {
+		Model model = new ConcurrentModel();
+
+		String view = ownerController.initCreationForm(model.asMap());
+
+		assertThat(view).isEqualTo("owners/createOrUpdateOwnerForm");
+		assertThat(model.asMap().get("owner")).isInstanceOf(Owner.class);
 	}
 
 	@Test
