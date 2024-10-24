@@ -16,6 +16,7 @@ jobs:
       - run: gcloud auth activate-service-account --key-file output_file.txt
       - name: Initiate Terraform
         run: cd terraform
+      - run: ls -la
       - run: terraform init
       - name: Dry run Terraform
         run: terraform plan
