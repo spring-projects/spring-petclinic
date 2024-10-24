@@ -3,6 +3,8 @@ provider "google" {
   region  = var.region
 }
 
+data "google_compute_default_service_account" "default" {}
+
 data "google_compute_network" "default" {
   name = "default"
 }
@@ -28,6 +30,11 @@ resource "google_compute_instance" "petclinic" {
   }
 
   metadata_startup_script = "${file("startup-script.sh")}"
+
+  service_account {
+    email  = data.google_compute_default_service_account.default.email
+    scopes = ["cloud-platform"]
+  }
 }
 
 resource "google_sql_database_instance" "petclinic" {
@@ -48,7 +55,7 @@ resource "google_sql_database_instance" "petclinic" {
 resource "google_sql_user" "users" {
   name     = var.app
   instance = google_sql_database_instance.petclinic.name
-  password = POSTGRES_PASSWORD
+  password = "changeme"
 }
 
 resource "google_sql_database" "database" {

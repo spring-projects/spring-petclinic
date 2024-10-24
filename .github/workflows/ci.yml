@@ -9,10 +9,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Setup GCP authentication
-        run: echo "${{ secrets.GCP_JSON }}" | base64 -d > output_file.txt
-      - run: export GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/output_file.txt
-      - name: Initiate Terraform
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.8
+          project_id: ${{ secrets.PROJECT_ID }}
+      - name: Validate Terraform Configuration
         run: terraform -chdir=terraform init
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GCP_JSON }}
       - name: Dry run Terraform
         run: terraform -chdir=terraform plan -var-file=terraform/variables.tfvars
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GCP_JSON }}

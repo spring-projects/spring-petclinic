@@ -13,3 +13,6 @@ sudo apt-get update
 sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 grep -qxF "petclinic.local" /etc/hosts || echo "127.0.0.1     petclinic.local" >> /etc/hosts
+
+curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
+sudo bash add-google-cloud-ops-agent-repo.sh --also-install
