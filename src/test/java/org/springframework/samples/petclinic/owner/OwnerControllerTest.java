@@ -2,6 +2,30 @@ package org.springframework.samples.petclinic.owner;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.springframework.ui.Model;
+import org.springframework.ui.ConcurrentModel;
+import org.springframework.samples.petclinic.owner.Owner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.doNothing;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.samples.petclinic.owner.OwnerController;
+import org.springframework.samples.petclinic.owner.OwnerRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.ui.ConcurrentModel;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,6 +64,16 @@ class OwnerControllerTest {
 	@BeforeEach
 	void setup() {
 		mockMvc = MockMvcBuilders.standaloneSetup(ownerController).build();
+	}
+
+	@DisplayName("Test initFindForm")
+	@Test
+	void testInitFindForm() {
+		Model model = new ConcurrentModel();
+
+		String view = ownerController.initFindForm();
+
+		assertThat(view).isEqualTo("owners/findOwners");
 	}
 
 	@DisplayName("Test initCreationForm")
