@@ -1,0 +1,18 @@
+name: CI 
+on:
+  push:
+    branches: [ dev ]
+jobs:
+  terraform-test:
+    runs-on: ubuntu-latest
+    container: cedricguadalupe/terraform-gcloud
+    steps:
+      - name: Set GCP project
+        run: gcloud config set project $PROJECT_ID
+      - name: Setup GCP authentication
+        run: echo "$BASE64_ENV_VAR" | base64 --decode > output_file.txt
+      - run: gcloud auth activate-service-account --key-file output_file.txt
+      - name: Initiate Terraform
+        run: terraform init
+      - name: Dry run Terraform
+        run: terraform plan
