@@ -53,4 +53,18 @@ class OwnerControllerTest {
 		verifyNoInteractions(ownerRepository);
 	}
 
+	@Test
+	@DisplayName("Test processUpdateOwnerForm with validation errors")
+	void testProcessUpdateOwnerFormWithValidationErrors() {
+		Owner owner = new Owner();
+
+		doReturn(true).when(result).hasErrors();
+
+		String view = ownerController.processUpdateOwnerForm(owner, result, 1, redirectAttributes);
+
+		assertThat(view).isEqualTo("owners/createOrUpdateOwnerForm");
+		verify(result).hasErrors();
+		verifyNoInteractions(ownerRepository);
+	}
+
 }
