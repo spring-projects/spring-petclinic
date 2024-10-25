@@ -2,6 +2,9 @@ package org.springframework.samples.petclinic.owner;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -73,6 +76,31 @@ class PetControllerTest {
 		int ownerId = 1;
 		Pet pet = petController.findPet(ownerId, null);
 		assertThat(pet).isNotNull();
+	}
+
+	@Test
+	@DisplayName("Test processCreationForm handles duplicate pet name")
+	void testProcessCreationFormHandlesDuplicatePetName() {
+		Owner owner = org.mockito.Mockito.mock(Owner.class);
+		Pet existingPet = new Pet();
+		existingPet.setName("Buddy");
+		owner.addPet(existingPet);
+
+		Pet newPet = new Pet();
+		newPet.setName("Buddy");
+
+		BindingResult result = org.mockito.Mockito.mock(BindingResult.class);
+		ModelMap model = org.mockito.Mockito.mock(ModelMap.class);
+		RedirectAttributes redirectAttributes = org.mockito.Mockito.mock(RedirectAttributes.class);
+
+		doReturn(existingPet).when(owner).getPet("Buddy", true);
+		doReturn(true).when(result).hasErrors();
+
+		petController.processCreationForm(owner, newPet, result, model, redirectAttributes);
+
+		verify(result).rejectValue("name", "duplicate", "already exists");
+		verify(result).hasErrors();
+		verify(model).put("pet", newPet);
 	}
 
 }
