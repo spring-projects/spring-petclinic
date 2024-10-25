@@ -70,6 +70,7 @@ class OwnerControllerTest {
 		String view = ownerController.initFindForm();
 
 		assertThat(view).isEqualTo("owners/findOwners");
+		verifyNoInteractions(result, ownerRepository, redirectAttributes);
 	}
 
 	@DisplayName("Test initCreationForm")
