@@ -4,6 +4,7 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.samples.petclinic.owner.Owner;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -210,6 +211,20 @@ class OwnerControllerTest {
 		Owner owner = ownerController.findOwner(ownerId);
 		assertThat(owner).isEqualTo(null);
 
+		verify(ownerRepository).findById(ownerId);
+	}
+
+	@Test
+	@DisplayName("Test showOwner")
+	void testShowOwner() {
+		int ownerId = 1;
+		Owner owner = new Owner();
+		doReturn(owner).when(ownerRepository).findById(ownerId);
+
+		ModelAndView mav = ownerController.showOwner(ownerId);
+
+		assertThat(mav.getViewName()).isEqualTo("owners/ownerDetails");
+		assertThat(mav.getModel().get("owner")).isEqualTo(owner);
 		verify(ownerRepository).findById(ownerId);
 	}
 
