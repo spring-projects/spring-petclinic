@@ -22,6 +22,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.doThrow;
 import org.junit.jupiter.api.Assertions;
+import java.time.LocalDate;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("PetController Tests")
@@ -118,6 +119,26 @@ class PetControllerTest {
 
 		assertThat(view).isEqualTo("pets/createOrUpdatePetForm");
 		verify(owner).getPet(2);
+		verify(model).put("pet", pet);
+	}
+
+	@Test
+	@DisplayName("Test processUpdateForm handles invalid birth date")
+	void testProcessUpdateFormHandlesInvalidBirthDate() {
+		Pet pet = new Pet();
+		pet.setBirthDate(LocalDate.now().plusDays(1)); // Invalid birth date (future date)
+
+		BindingResult result = org.mockito.Mockito.mock(BindingResult.class);
+		Owner owner = org.mockito.Mockito.mock(Owner.class);
+		ModelMap model = org.mockito.Mockito.mock(ModelMap.class);
+		RedirectAttributes redirectAttributes = org.mockito.Mockito.mock(RedirectAttributes.class);
+
+		doReturn(true).when(result).hasErrors();
+
+		String view = petController.processUpdateForm(pet, result, owner, model, redirectAttributes);
+
+		assertThat(view).isEqualTo("pets/createOrUpdatePetForm");
+		verify(result).rejectValue("birthDate", "typeMismatch.birthDate");
 		verify(model).put("pet", pet);
 	}
 
