@@ -17,6 +17,8 @@ import java.util.Collection;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.doThrow;
+import org.junit.jupiter.api.Assertions;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("PetController Tests")
@@ -50,6 +52,19 @@ class PetControllerTest {
 		assertThat(petTypes).hasSize(2);
 		assertThat(petTypes).contains(type1, type2);
 		verify(ownerRepository).findPetTypes();
+	}
+
+	@Test
+	@DisplayName("Test findOwner throws IllegalArgumentException")
+	void testFindOwnerThrowsIllegalArgumentException() {
+		int ownerId = 999;
+		doThrow(new IllegalArgumentException()).when(ownerRepository).findById(ownerId);
+
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			petController.findOwner(ownerId);
+		});
+
+		verify(ownerRepository).findById(ownerId);
 	}
 
 }
