@@ -72,6 +72,21 @@ class PetControllerTest {
 	}
 
 	@Test
+	@DisplayName("Test findOwner with valid ownerId")
+	void testFindOwnerWithValidOwnerId() {
+		int ownerId = 1;
+		Owner owner = new Owner();
+		owner.setId(ownerId);
+		doReturn(owner).when(ownerRepository).findById(ownerId);
+
+		Owner foundOwner = petController.findOwner(ownerId);
+
+		assertThat(foundOwner).isNotNull();
+		assertThat(foundOwner.getId()).isEqualTo(ownerId);
+		verify(ownerRepository).findById(ownerId);
+	}
+
+	@Test
 	@DisplayName("Test findPet with null petId returns new Pet")
 	void testFindPetWithNullPetIdReturnsNewPet() {
 		int ownerId = 1;
