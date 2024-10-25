@@ -103,4 +103,22 @@ class PetControllerTest {
 		verify(model).put("pet", newPet);
 	}
 
+	@Test
+	@DisplayName("Test initUpdateForm adds existing Pet to model")
+	void testInitUpdateFormAddsExistingPetToModel() {
+		Owner owner = org.mockito.Mockito.mock(Owner.class);
+		Pet pet = new Pet();
+		pet.setId(2);
+		ModelMap model = org.mockito.Mockito.mock(ModelMap.class);
+
+		doReturn(pet).when(owner).getPet(2);
+
+		RedirectAttributes redirectAttributes = org.mockito.Mockito.mock(RedirectAttributes.class);
+		String view = petController.initUpdateForm(owner, 2, model, redirectAttributes);
+
+		assertThat(view).isEqualTo("pets/createOrUpdatePetForm");
+		verify(owner).getPet(2);
+		verify(model).put("pet", pet);
+	}
+
 }
