@@ -67,4 +67,12 @@ class PetControllerTest {
 		verify(ownerRepository).findById(ownerId);
 	}
 
+	@Test
+	@DisplayName("Test findPet with null petId returns new Pet")
+	void testFindPetWithNullPetIdReturnsNewPet() {
+		int ownerId = 1;
+		Pet pet = petController.findPet(ownerId, null);
+		assertThat(pet).isNotNull();
+	}
+
 }
