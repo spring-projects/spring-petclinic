@@ -26,12 +26,11 @@ jobs:
         run: terraform init
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GCP_JSON }}
-      - name: Replace secret
-        run: sed -i "s/POSTGRES_PASSWORD/${{ secrets.POSTGRES_PASSWORD }}/" main.tf
       - name: Dry run Terraform
         run: terraform plan -var-file=variables.tfvars
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GCP_JSON }}
+          TF_VAR_db_password: ${{ secrets.POSTGRES_PASSWORD }}
           
   terraform-deploy:
     runs-on: ubuntu-latest
@@ -57,3 +56,4 @@ jobs:
         run: terraform apply -var-file=variables.tfvars -auto-approve
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GCP_JSON }}
+          TF_VAR_db_password: ${{ secrets.POSTGRES_PASSWORD }}

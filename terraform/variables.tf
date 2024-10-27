@@ -46,4 +46,9 @@ variable "db_version" {
 variable "db_tier" {
     type = string
     description = "Tier of CloudSQL in GCP"
-} 
+}
+
+variable "db_password" {
+    type = string
+    description = "Password for CloudSQL instance in GCP"
+}
