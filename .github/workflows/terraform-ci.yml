@@ -1,0 +1,59 @@
+name: Terraform-CI 
+on:
+  push:
+    branches:
+      - dev
+      - master
+    paths:
+      - 'terraform/**'
+
+jobs:
+  terraform-test:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/dev'
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./terraform
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.8
+      - name: Validate Terraform Configuration
+        run: terraform init
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GCP_JSON }}
+      - name: Replace secret
+        run: sed -i "s/POSTGRES_PASSWORD/${{ secrets.POSTGRES_PASSWORD }}/" main.tf
+      - name: Dry run Terraform
+        run: terraform plan -var-file=variables.tfvars
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GCP_JSON }}
+          
+  terraform-deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./terraform
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.8
+      - name: Validate Terraform Configuration
+        run: terraform init
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GCP_JSON }}
+      - name: Replace secret
+        run: sed -i "s/POSTGRES_PASSWORD/${{ secrets.POSTGRES_PASSWORD }}/" main.tf
+      - name: Deploy Terraform
+        run: terraform apply -var-file=variables.tfvars -auto-approve
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GCP_JSON }}
