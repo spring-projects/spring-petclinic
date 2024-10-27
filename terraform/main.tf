@@ -55,7 +55,7 @@ resource "google_sql_database_instance" "petclinic" {
 resource "google_sql_user" "users" {
   name     = var.app
   instance = google_sql_database_instance.petclinic.name
-  password = "changeme"
+  password = POSTGRES_PASSWORD
 }
 
 resource "google_sql_database" "database" {
@@ -103,4 +103,11 @@ resource "google_compute_router_nat" "nat" {
     enable = true
     filter = "ERRORS_ONLY"
   }
+}
+
+resource "google_artifact_registry_repository" "petclinic_repo" {
+  location      = "asia"
+  repository_id = "petclinic"
+  description   = "Repository of petclinic app"
+  format        = "DOCKER"
 }
