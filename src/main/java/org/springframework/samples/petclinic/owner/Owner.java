@@ -101,7 +101,7 @@ public class Owner extends Person {
 	/**
 	 * Return the Pet with the given name, or null if none found for this Owner.
 	 * @param name to test
-	 * @return a pet if pet name is already in use
+	 * @return the Pet with the given name, or null if no such Pet exists for this Owner
 	 */
 	public Pet getPet(String name) {
 		return getPet(name, false);
@@ -110,7 +110,7 @@ public class Owner extends Person {
 	/**
 	 * Return the Pet with the given id, or null if none found for this Owner.
 	 * @param id to test
-	 * @return a pet if pet id is already in use
+	 * @return the Pet with the given id, or null if no such Pet exists for this Owner
 	 */
 	public Pet getPet(Integer id) {
 		for (Pet pet : getPets()) {
@@ -127,10 +127,10 @@ public class Owner extends Person {
 	/**
 	 * Return the Pet with the given name, or null if none found for this Owner.
 	 * @param name to test
-	 * @return a pet if pet name is already in use
+	 * @param ignoreNew whether to ignore new pets (pets that are not saved yet)
+	 * @return the Pet with the given name, or null if no such Pet exists for this Owner
 	 */
 	public Pet getPet(String name, boolean ignoreNew) {
-		name = name.toLowerCase();
 		for (Pet pet : getPets()) {
 			String compName = pet.getName();
 			if (compName != null && compName.equalsIgnoreCase(name)) {
