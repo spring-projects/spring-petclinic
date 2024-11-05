@@ -29,6 +29,14 @@ Or you can run it from Maven directly using the Spring Boot Maven plugin. If you
 
 > NOTE: If you prefer to use Gradle, you can build the app using `./gradlew build` and look for the jar file in `build/libs`.
 
+At development time it is recommended to use the integration tests (whch have their own `main` method) to run the application. This will allow you to make changes to the content and see the changes immediately. You can run the integration tests from your IDE or using the command line. Because there are multiple main classes for different database configurations, you have to choose one, e.g:
+
+```bash
+./mvnw spring-boot:test-run -Dspring-boot.run.main-class=org.springframework.samples.petclinic.PetClinicIntegrationTests
+```
+
+Or you can run it in your IDE directly from the test class of your choice.
+
 ## Building a Container
 
 There is no `Dockerfile` in this project. You can build a container image (if you have a docker daemon) using the Spring Boot build plugin:
@@ -44,7 +52,8 @@ Our issue tracker is available [here](https://github.com/spring-projects/spring-
 ## Database configuration
 
 In its default configuration, Petclinic uses an in-memory database (H2) which
-gets populated at startup with data. The h2 console is exposed at `http://localhost:8080/h2-console`,
+gets populated at startup with data. If you launch the app from the integration tests, the h2 console is automatically 
+exposed at `http://localhost:8080/h2-console`,
 and it is possible to inspect the content of the database using the `jdbc:h2:mem:<uuid>` URL. The UUID is printed at startup to the console.
 
 A similar setup is provided for MySQL and PostgreSQL if a persistent database configuration is needed. Note that whenever the database type changes, the app needs to run with a different profile: `spring.profiles.active=mysql` for MySQL or `spring.profiles.active=postgres` for PostgreSQL. See the [Spring Boot documentation](https://docs.spring.io/spring-boot/how-to/properties-and-configuration.html#howto.properties-and-configuration.set-active-spring-profiles) for more detail on how to set the active profile.
