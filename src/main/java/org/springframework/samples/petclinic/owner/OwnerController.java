@@ -16,7 +16,6 @@
 package org.springframework.samples.petclinic.owner;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -64,9 +63,7 @@ class OwnerController {
 	}
 
 	@GetMapping("/owners/new")
-	public String initCreationForm(Map<String, Object> model) {
-		Owner owner = new Owner();
-		model.put("owner", owner);
+	public String initCreationForm() {
 		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 	}
 
@@ -129,9 +126,7 @@ class OwnerController {
 	}
 
 	@GetMapping("/owners/{ownerId}/edit")
-	public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
-		Owner owner = this.owners.findById(ownerId);
-		model.addAttribute(owner);
+	public String initUpdateOwnerForm() {
 		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 	}
 
@@ -141,6 +136,12 @@ class OwnerController {
 		if (result.hasErrors()) {
 			redirectAttributes.addFlashAttribute("error", "There was an error in updating the owner.");
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
+		}
+
+		if (owner.getId() != ownerId) {
+			result.rejectValue("id", "mismatch", "The owner ID in the form does not match the URL.");
+			redirectAttributes.addFlashAttribute("error", "Owner ID mismatch. Please try again.");
+			return "redirect:/owners/{ownerId}/edit";
 		}
 
 		owner.setId(ownerId);
