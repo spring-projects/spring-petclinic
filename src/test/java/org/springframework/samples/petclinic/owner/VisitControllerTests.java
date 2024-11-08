@@ -32,10 +32,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.aot.DisabledInAotMode;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Optional;
+
 /**
  * Test class for {@link VisitController}
  *
  * @author Colin But
+ * @author Wick Dynex
  */
 @WebMvcTest(VisitController.class)
 @DisabledInNativeImage
@@ -58,7 +61,7 @@ class VisitControllerTests {
 		Pet pet = new Pet();
 		owner.addPet(pet);
 		pet.setId(TEST_PET_ID);
-		given(this.owners.findById(TEST_OWNER_ID)).willReturn(owner);
+		given(this.owners.findById(TEST_OWNER_ID)).willReturn(Optional.of(owner));
 	}
 
 	@Test

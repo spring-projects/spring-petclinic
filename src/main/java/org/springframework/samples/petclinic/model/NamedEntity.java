@@ -25,6 +25,7 @@ import jakarta.validation.constraints.NotBlank;
  *
  * @author Ken Krebs
  * @author Juergen Hoeller
+ * @author Wick Dynex
  */
 @MappedSuperclass
 public class NamedEntity extends BaseEntity {

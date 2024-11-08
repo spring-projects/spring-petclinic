@@ -41,6 +41,7 @@ import jakarta.validation.constraints.NotBlank;
  * @author Sam Brannen
  * @author Michael Isvy
  * @author Oliver Drotbohm
+ * @author Wick Dynex
  */
 @Entity
 @Table(name = "owners")
