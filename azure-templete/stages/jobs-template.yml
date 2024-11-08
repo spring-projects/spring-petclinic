@@ -1,0 +1,12 @@
+jobs:
+  - job: build
+    displayName: 'building using maven' 
+    steps:
+      - task: Maven@4
+        inputs:
+          mavenPOMFile: 'pom.xml'
+          goals: clean package
+          publishjunitResults: true
+          testResultsFiles: '**/surefire-reports/TEST-*.xml'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: "${{ parameters.jdkversion }}"
