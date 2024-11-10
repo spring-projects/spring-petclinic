@@ -39,6 +39,7 @@ import jakarta.persistence.Table;
  * @author Ken Krebs
  * @author Juergen Hoeller
  * @author Sam Brannen
+ * @author Wick Dynex
  */
 @Entity
 @Table(name = "pets")
