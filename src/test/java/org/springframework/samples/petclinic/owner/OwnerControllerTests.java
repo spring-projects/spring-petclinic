@@ -91,7 +91,7 @@ class OwnerControllerTests {
 	void setup() {
 
 		Owner george = george();
-		given(this.owners.findByLastName(eq("Franklin"), any(Pageable.class)))
+		given(this.owners.findByLastNameStartingWith(eq("Franklin"), any(Pageable.class)))
 			.willReturn(new PageImpl<>(Lists.newArrayList(george)));
 
 		given(this.owners.findAll(any(Pageable.class))).willReturn(new PageImpl<>(Lists.newArrayList(george)));
@@ -144,14 +144,14 @@ class OwnerControllerTests {
 	@Test
 	void testProcessFindFormSuccess() throws Exception {
 		Page<Owner> tasks = new PageImpl<>(Lists.newArrayList(george(), new Owner()));
-		when(this.owners.findByLastName(anyString(), any(Pageable.class))).thenReturn(tasks);
+		when(this.owners.findByLastNameStartingWith(anyString(), any(Pageable.class))).thenReturn(tasks);
 		mockMvc.perform(get("/owners?page=1")).andExpect(status().isOk()).andExpect(view().name("owners/ownersList"));
 	}
 
 	@Test
 	void testProcessFindFormByLastName() throws Exception {
 		Page<Owner> tasks = new PageImpl<>(Lists.newArrayList(george()));
-		when(this.owners.findByLastName(eq("Franklin"), any(Pageable.class))).thenReturn(tasks);
+		when(this.owners.findByLastNameStartingWith(eq("Franklin"), any(Pageable.class))).thenReturn(tasks);
 		mockMvc.perform(get("/owners?page=1").param("lastName", "Franklin"))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
@@ -160,7 +160,7 @@ class OwnerControllerTests {
 	@Test
 	void testProcessFindFormNoOwnersFound() throws Exception {
 		Page<Owner> tasks = new PageImpl<>(Lists.newArrayList());
-		when(this.owners.findByLastName(eq("Unknown Surname"), any(Pageable.class))).thenReturn(tasks);
+		when(this.owners.findByLastNameStartingWith(eq("Unknown Surname"), any(Pageable.class))).thenReturn(tasks);
 		mockMvc.perform(get("/owners?page=1").param("lastName", "Unknown Surname"))
 			.andExpect(status().isOk())
 			.andExpect(model().attributeHasFieldErrors("owner", "lastName"))
