@@ -19,6 +19,13 @@
 
   <name>petclinic</name>
 
+  <distributionManagement>
+        <repository>
+            <id>local-repo</id>
+            <url>file:////Users/idvylyuk/local-maven-repo</url>
+        </repository>
+    </distributionManagement>
+
   <properties>
 
     <!-- Generic properties -->
