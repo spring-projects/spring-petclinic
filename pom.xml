@@ -11,11 +11,11 @@
 
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
-  <version>4.0.0</version>
+  <version>4.0.1-SNAPSHOT</version>
 
   <scm>
     <developerConnection>scm:git:https://github.com/idvylyuk/spring-petclinic.git</developerConnection>
-    <tag>spring-petclinic-4.0.0</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <name>petclinic</name>
@@ -34,7 +34,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <!-- Important for reproducible builds. Update using e.g. ./mvnw versions:set -DnewVersion=... -->
-    <project.build.outputTimestamp>2024-11-11T14:53:45Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2024-11-11T14:54:19Z</project.build.outputTimestamp>
 
     <!-- Web dependencies -->
     <webjars-bootstrap.version>5.3.3</webjars-bootstrap.version>
