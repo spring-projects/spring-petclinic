@@ -37,8 +37,8 @@ class VetController {
 
 	private final VetRepository vetRepository;
 
-	public VetController(VetRepository clinicService) {
-		this.vetRepository = clinicService;
+	public VetController(VetRepository vetRepository) {
+		this.vetRepository = vetRepository;
 	}
 
 	@GetMapping("/vets.html")
