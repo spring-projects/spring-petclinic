@@ -19,20 +19,6 @@ group = 'org.springframework.samples'
 version = scmVersion.version
 
 
-task customRelease {
-    dependsOn 'release'
-    doFirst {
-        def githubToken = System.getenv('GH_TOKEN') // Get token from environment variable
-        if (githubToken == null) {
-            throw new GradleException("GH_TOKEN environment variable is not set.")
-        }
-
-        scmVersion.repository.customUsername.set('idvylyuk') // Your GitHub username
-        scmVersion.repository.customPassword.set(githubToken) // Token from the environment variable
-    }
-}
-
-
 java {
   sourceCompatibility = JavaVersion.VERSION_17
 }
