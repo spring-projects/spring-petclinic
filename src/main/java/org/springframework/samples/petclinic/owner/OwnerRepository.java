@@ -44,7 +44,6 @@ public interface OwnerRepository extends JpaRepository<Owner, Integer> {
 	 * @return a Collection of {@link PetType}s.
 	 */
 	@Query("SELECT ptype FROM PetType ptype ORDER BY ptype.name")
-	@Transactional(readOnly = true)
 	List<PetType> findPetTypes();
 
 	/**
