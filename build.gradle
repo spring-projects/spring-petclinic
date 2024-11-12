@@ -6,6 +6,7 @@ plugins {
   id 'org.cyclonedx.bom' version '1.10.0'
   id 'io.spring.javaformat' version '0.0.43'
   id "io.spring.nohttp" version "0.0.11"
+  id("pl.allegro.tech.build.axion-release") version "1.18.7"
 }
 
 apply plugin: 'java'
@@ -15,7 +16,7 @@ apply plugin: 'io.spring.javaformat'
 gradle.startParameter.excludedTaskNames += [ "checkFormatAot", "checkFormatAotTest" ]
 
 group = 'org.springframework.samples'
-version = '3.3.0'
+version = scmVersion.version
 
 java {
   sourceCompatibility = JavaVersion.VERSION_17
@@ -58,6 +59,22 @@ dependencies {
 tasks.named('test') {
   useJUnitPlatform()
 }
+
+tasks.register("testResults") {
+  group = "Reporting"
+  description = "Open the browser with generated test results"
+  dependsOn "build", "test"
+
+  doLast {
+      def report_file = file("./build/reports/tests/test/index.html")
+      if (report_file.exists()) {
+            java.awt.Desktop.desktop.browse(report_file.toURI())
+        } else {
+            println "Test report file does not exist: ${report_file}"
+        }
+   }
+}
+
 
 checkstyle {
   configDirectory = project.file('src/checkstyle')
