@@ -15,14 +15,23 @@
  */
 package org.springframework.samples.petclinic.vet;
 
+import jakarta.annotation.Nonnull;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.validation.Valid;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
+import org.springframework.samples.petclinic.owner.Owner;
+import org.springframework.samples.petclinic.owner.PetType;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
+import java.util.*;
 
 /**
  * Repository class for <code>Vet</code> domain objects All method names are compliant
@@ -35,24 +44,21 @@ import java.util.Collection;
  * @author Sam Brannen
  * @author Michael Isvy
  */
-public interface VetRepository extends Repository<Vet, Integer> {
+public interface VetRepository extends JpaRepository<Vet, Integer> {
 
 	/**
-	 * Retrieve all <code>Vet</code>s from the data store.
-	 * @return a <code>Collection</code> of <code>Vet</code>s
+	 * Retrieve {@link Vet}s from the data store by last name, returning all owners
+	 * whose last name <i>starts</i> with the given name.
+	 * @param lastName Value to search for
+	 * @return a Collection of matching {@link Vet}s (or an empty Collection if none
+	 * found)
 	 */
-	@Transactional(readOnly = true)
-	@Cacheable("vets")
-	Collection<Vet> findAll() throws DataAccessException;
+	Page<Vet> findByLastNameStartingWith(String lastName, Pageable pageable);
 
-	/**
-	 * Retrieve all <code>Vet</code>s from data store in Pages
-	 * @param pageable
-	 * @return
-	 * @throws DataAccessException
-	 */
+
+
+	@Query("SELECT s FROM Specialty s ORDER BY s.name")
 	@Transactional(readOnly = true)
-	@Cacheable("vets")
-	Page<Vet> findAll(Pageable pageable) throws DataAccessException;
+	List<Specialty> findSpecialties();
 
 }

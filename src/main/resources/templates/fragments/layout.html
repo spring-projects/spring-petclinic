@@ -59,6 +59,10 @@
             <span class="fa fa-th-list" aria-hidden="true"></span>
             <span>Veterinarians</span>
           </li>
+          <li th:replace="~{::menuItem ('/vets/find','vets','find veterinarians','search','Find Veterinarians')}">
+            <span class="fa fa-search" aria-hidden="true"></span>
+            <span>Find Veterinarians</span>
+          </li>
 
           <li
             th:replace="~{::menuItem ('/oups','error','trigger a RuntimeException to see how it is handled','exclamation-triangle','Error')}">
