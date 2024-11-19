@@ -6,12 +6,12 @@
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>3.3.5</version>
-    <relativePath></relativePath>
+    <relativePath />
   </parent>
 
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
-  <version>3.3.0-SNAPSHOT</version>
+  <version>4.0.0</version>
 
   <name>petclinic</name>
 
@@ -19,7 +19,7 @@
       <url>https://github.com/Prathushadevijsgd/spring-petclinic.git</url>
       <developerConnection>scm:git:https://github.com/Prathushadevijsgd/spring-petclinic.git</developerConnection>
       <connection>scm:git:https://github.com/Prathushadevijsgd/spring-petclinic.git</connection>
-      <tag>HEAD</tag> 
+      <tag>spring-petclinic-4.0.0</tag> 
   </scm>
 
   <properties>
@@ -29,7 +29,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <!-- Important for reproducible builds. Update using e.g. ./mvnw versions:set -DnewVersion=... -->
-    <project.build.outputTimestamp>2023-05-10T07:42:50Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2024-11-19T12:10:12Z</project.build.outputTimestamp>
 
     <!-- Web dependencies -->
     <webjars-bootstrap.version>5.3.3</webjars-bootstrap.version>
@@ -408,7 +408,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore></ignore>
+                        <ignore />
                       </action>
                     </pluginExecution>
                     <pluginExecution>
@@ -421,7 +421,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore></ignore>
+                        <ignore />
                       </action>
                     </pluginExecution>
                     <pluginExecution>
@@ -434,7 +434,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore></ignore>
+                        <ignore />
                       </action>
                     </pluginExecution>
                   </pluginExecutions>
