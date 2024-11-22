@@ -1,0 +1,41 @@
+services:
+  petclinic-db:
+    image: postgres:14-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DB}
+    networks:
+      - petclinic-network
+    profiles:
+      - postgres
+
+  petclinic-web-app:
+    image: spring-petclinic:build-4.0.1-SNAPSHOT
+    depends_on:
+      - petclinic-db
+    environment:
+      - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - SPRING_PROFILES_ACTIVE=postgres 
+    deploy:
+      replicas: 1
+    ports:
+      - "8080:8080"
+    networks:
+      - petclinic-network
+    profiles:
+      - postgres
+
+volumes:
+  postgres-data:
+    driver: local
+  
+networks:
+  petclinic-network:
+    driver: bridge
