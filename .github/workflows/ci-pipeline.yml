@@ -1,5 +1,4 @@
-name: CI Pipeline for Spring Petclinic
-
+name: CI/CD Pipelines
 on:
   push:
     branches:
@@ -7,22 +6,121 @@ on:
   pull_request:
     branches:
       - main
-
 jobs:
-  build:
+  setup:
     runs-on: self-hosted
     steps:
-      # Checkout code
+      - name: Check for Git
+        run: |
+          if ! command -v git &> /dev/null
+          then
+              echo "Git not found, installing..."
+              sudo yum install -y git
+          else
+              echo "Git is already installed."
+          fi
+      - name: Check for Docker
+        run: |
+          if ! command -v docker &> /dev/null
+          then
+              echo "Docker not found, installing..."
+              sudo yum install -y yum-utils
+              sudo yum-config-manager \
+                --add-repo \
+                https://download.docker.com/linux/centos/docker-ce.repo
+              sudo yum install -y docker-ce docker-ce-cli containerd.io
+              sudo systemctl start docker
+              sudo systemctl enable docker
+          else
+              echo "Docker is already installed."
+          fi
+      - name: Check for Docker Compose
+        run: |
+          if ! command -v docker-compose &> /dev/null
+          then
+              echo "Docker Compose not found, installing..."
+              sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+              sudo chmod +x /usr/local/bin/docker-compose
+          else
+              echo "Docker Compose is already installed."
+          fi
+      - name: Check for Maven
+        run: |
+          if ! command -v mvn &> /dev/null
+          then
+              echo "Maven not found, installing..."
+              sudo yum install -y maven
+          else
+              echo "Maven is already installed."
+          fi
+      - name: Validate Installation
+        run: |
+          echo "Validating installation..."
+          command -v git
+          command -v docker
+          command -v docker-compose
+          command -v mvn
+
+  build:
+    runs-on: self-hosted
+    needs: setup
+    steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Build with Maven
+        run: ./mvnw -B package
 
-      # Set up JDK
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
+  test:
+    runs-on: self-hosted
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Run tests
+        run: ./mvnw test
 
-      # Build with Maven
-      - name: Build and test with Maven
-        run: mvn clean install
+  deploy:
+    runs-on: self-hosted
+    needs: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Verify JAR file
+        run: |
+          echo "Verifying JAR file presence..."
+          ls -al /home/raziel/spring-petclinic/target/
+          if [ -z "$(find /home/raziel/spring-petclinic/target/ -name 'spring-petclinic-3.3.0-SNAPSHOT.jar')" ]; then
+            echo "JAR file not found in target directory!"
+            exit 1
+          fi
+      - name: Setup SSH
+        run: |
+          echo "Setting up SSH..."
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H $DEPLOY_SERVER >> ~/.ssh/known_hosts || true
+      - name: Deploy application
+        env:
+          DEPLOY_SERVER: '103.172.26.38'
+          DEPLOY_PORT: '8080'
+          DEPLOY_USER: 'raziel'
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          echo "Deploying application to $DEPLOY_SERVER"
+          scp -i ~/.ssh/id_rsa /home/raziel/spring-petclinic/target/spring-petclinic-3.3.0-SNAPSHOT.jar $DEPLOY_USER@$DEPLOY_SERVER:/home/raziel/spring-petclinic/
+          ssh -i ~/.ssh/id_rsa $DEPLOY_USER@$DEPLOY_SERVER "nohup java -jar /home/raziel/spring-petclinic/spring-petclinic-3.3.0-SNAPSHOT.jar > /dev/null 2>&1 &"
+          rm -f ~/.ssh/id_rsa
+      - name: Wait for application to start
+        run: |
+          echo "Waiting for application to start..."
+          for i in {1..30}; do
+            if curl -s http://103.172.26.38:8080 > /dev/null; then
+              echo "Application is up!"
+              break
+            else
+              echo "Application is not up yet, retrying in 10 seconds..."
+              sleep 10
+            fi
+          done
