@@ -83,12 +83,12 @@ jobs:
           ls -al /home/aiman/Documents/CI-CD/spring-petclinic/actions-runner/_work/spring-petclinic/spring-petclinic/target/
           
           # Check if the JAR file exists and display a message if not
-          JAR_PATH="/home/aiman/Documents/CI-CD/spring-petclinic/actions-runner/_work/spring-petclinic/spring-petclinic/target/spring-petclinic-3.3.0-SNAPSHOT.jar"
+          JAR_PATH="/home/aiman/Documents/CI-CD/spring-petclinic/target/spring-petclinic-3.3.0-SNAPSHOT.jar"
           if [ ! -f "$JAR_PATH" ]; then
-            echo "JAR file not found at $JAR_PATH"
-            exit 1
+             echo "JAR file not found at $JAR_PATH"
+             exit 1
           else
-            echo "JAR file found at $JAR_PATH"
+             echo "JAR file found at $JAR_PATH"
           fi
 
       - name: Setup SSH
