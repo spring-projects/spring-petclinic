@@ -69,27 +69,27 @@ jobs:
       - name: Run tests
         run: ./mvnw test
 
- deploy:
-  runs-on: self-hosted
-  needs: test
-  steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-      
-    - name: Verify JAR file
-      run: |
-        echo "Verifying JAR file presence..."
-        # List the files in the target directory
-        ls -al /home/aiman/Documents/CI-CD/spring-petclinic/actions-runner/_work/spring-petclinic/spring-petclinic/target/
+  deploy:
+    runs-on: self-hosted
+    needs: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
         
-        # Check if the JAR file exists and display a message if not
-        JAR_PATH="/home/aiman/Documents/CI-CD/spring-petclinic/actions-runner/_work/spring-petclinic/spring-petclinic/target/spring-petclinic-3.3.0-SNAPSHOT.jar"
-        if [ ! -f "$JAR_PATH" ]; then
-          echo "JAR file not found at $JAR_PATH"
-          exit 1
-        else
-          echo "JAR file found at $JAR_PATH"
-        fi
+      - name: Verify JAR file
+        run: |
+          echo "Verifying JAR file presence..."
+          # List the files in the target directory
+          ls -al /home/aiman/Documents/CI-CD/spring-petclinic/actions-runner/_work/spring-petclinic/spring-petclinic/target/
+          
+          # Check if the JAR file exists and display a message if not
+          JAR_PATH="/home/aiman/Documents/CI-CD/spring-petclinic/actions-runner/_work/spring-petclinic/spring-petclinic/target/spring-petclinic-3.3.0-SNAPSHOT.jar"
+          if [ ! -f "$JAR_PATH" ]; then
+            echo "JAR file not found at $JAR_PATH"
+            exit 1
+          else
+            echo "JAR file found at $JAR_PATH"
+          fi
 
       - name: Setup SSH
         run: |
