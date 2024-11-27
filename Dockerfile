@@ -6,7 +6,7 @@ WORKDIR /app
 RUN mvn package
 
 # Minimal rintime image - only JRE
-# FROM gcr.io/distroless/java21-debian12 AS runtime
-# COPY --from=build /app/target/*.jar /app.jar
+FROM gcr.io/distroless/java21-debian12 AS runtime
+COPY --from=build /app/target/*.jar /app.jar
 ENTRYPOINT [ "java" ]
-CMD [ "-jar", "-Dspring.profiles.active=postgres", "/app.jar" ]
+CMD [ "-jar", "/app.jar" ]
