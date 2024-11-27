@@ -1,0 +1,4 @@
+FROM eclipse-temurin:21-jre-alpine
+
+COPY ./target/spring-petclinic-3.3.0-SNAPSHOT.jar /app.jar
+CMD ["java", "-jar", "app.jar"]

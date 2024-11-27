@@ -1,25 +1,22 @@
 services:
-  mysql:
-    image: mysql:9.1
+  server:
+    build:
+      context: .
     ports:
-      - "3306:3306"
+      - 8080:8080
     environment:
-      - MYSQL_ROOT_PASSWORD=
-      - MYSQL_ALLOW_EMPTY_PASSWORD=true
-      - MYSQL_USER=petclinic
-      - MYSQL_PASSWORD=petclinic
-      - MYSQL_DATABASE=petclinic
+      - POSTGRES_URL=jdbc:postgresql://db:5432/petclinic
+    command: ["-jar", "-Dspring.profiles.active=postgres", "/app.jar"]
+  db:
+    image: postgres:17.1
+    restart: always
     volumes:
-      - "./conf.d:/etc/mysql/conf.d:ro"
-    profiles:
-      - mysql
-  postgres:
-    image: postgres:17.0
-    ports:
-      - "5432:5432"
+      - db-data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_PASSWORD=petclinic
-      - POSTGRES_USER=petclinic
       - POSTGRES_DB=petclinic
-    profiles:
-      - postgres
+      - POSTGRES_USER=petclinic
+      - POSTGRES_PASSWORD=petclinic
+    ports:
+      - 5432:5432
+volumes:
+  db-data:
