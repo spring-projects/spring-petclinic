@@ -22,6 +22,7 @@ jobs:
           else
               echo "Git is already installed."
           fi
+
       - name: Check for Docker
         run: |
           if ! command -v docker &> /dev/null
@@ -34,6 +35,7 @@ jobs:
           else
               echo "Docker is already installed."
           fi
+
       - name: Check for Maven
         run: |
           if ! command -v mvn &> /dev/null
@@ -44,6 +46,7 @@ jobs:
           else
               echo "Maven is already installed."
           fi
+
       - name: Validate Installation
         run: |
           echo "Validating installation..."
@@ -57,6 +60,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
       - name: Build with Maven
         run: ./mvnw -B package
 
@@ -66,6 +70,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
       - name: Run tests
         run: ./mvnw test
 
@@ -75,7 +80,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        
+
       - name: Verify JAR file
         run: |
           echo "Verifying JAR file presence..."
@@ -93,26 +98,29 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H $DEPLOY_SERVER >> ~/.ssh/known_hosts || true
+
       - name: Deploy application
         env:
-          DEPLOY_SERVER: '192.168.1.199'
-          DEPLOY_PORT: '8080'
-          DEPLOY_USER: 'aiman'
+          DEPLOY_SERVER: 192.168.10.11
+          DEPLOY_PORT: 8080
+          DEPLOY_USER: aiman
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
           echo "Deploying application to $DEPLOY_SERVER"
+          # Create deployment directory if it doesn't exist
+          ssh -i ~/.ssh/id_rsa $DEPLOY_USER@$DEPLOY_SERVER "mkdir -p /home/aiman/deployments/"
+          
+          # Copy JAR file
           scp -i ~/.ssh/id_rsa /home/aiman/Documents/spring-petclinic/target/spring-petclinic-3.3.0-SNAPSHOT.jar $DEPLOY_USER@$DEPLOY_SERVER:/home/aiman/deployments/
-          ssh -i ~/.ssh/id_rsa $DEPLOY_USER@$DEPLOY_SERVER "nohup java -jar /home/aiman/deployments/spring-petclinic-3.3.0-SNAPSHOT.jar > /dev/null 2>&1 &"
+          
+          # Ensure the JAR file exists and start the application
+          ssh -i ~/.ssh/id_rsa $DEPLOY_USER@$DEPLOY_SERVER "
+          if [ -f /home/aiman/deployments/spring-petclinic-3.3.0-SNAPSHOT.jar ]; then 
+            nohup java -jar /home/aiman/deployments/spring-petclinic-3.3.0-SNAPSHOT.jar > /dev/null 2>&1 & 
+          else 
+            echo 'JAR file not found!'; 
+            exit 1; 
+          fi"
+          
+          # Clean up private key
           rm -f ~/.ssh/id_rsa
-      - name: Wait for application to start
-        run: |
-          echo "Waiting for application to start..."
-          for i in {1..30}; do
-            if curl -s http://192.168.1.199:8080 > /dev/null; then
-              echo "Application is up!"
-              break
-            else
-              echo "Application is not up yet, retrying in 10 seconds..."
-              sleep 10
-            fi
-          done
