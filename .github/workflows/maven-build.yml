@@ -79,16 +79,10 @@ jobs:
       - name: Verify JAR file
         run: |
           echo "Verifying JAR file presence..."
-          # Dynamically determine the JAR file path
-          JAR_PATH="${{ github.workspace }}/target/spring-petclinic-3.3.0-SNAPSHOT.jar"
-          echo "Expected JAR Path: $JAR_PATH"
-          
-          # Check if the JAR file exists and display a message if not
-          if [ ! -f "$JAR_PATH" ]; then
-             echo "JAR file not found at $JAR_PATH"
-             exit 1
-          else
-             echo "JAR file found at $JAR_PATH"
+          ls -al /home/aiman/Documents/spring-petclinic/target/
+          if [ -z "$(find /home/aiman/Documents/spring-petclinic/target/ -name 'spring-petclinic-3.3.0-SNAPSHOT.jar')" ]; then
+            echo "JAR file not found in target directory!"
+            exit 1
           fi
 
       - name: Setup SSH
@@ -107,7 +101,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
           echo "Deploying application to $DEPLOY_SERVER"
-          scp -i ~/.ssh/id_rsa $JAR_PATH $DEPLOY_USER@$DEPLOY_SERVER:/home/aiman/deployments/
+          scp -i ~/.ssh/id_rsa /home/aiman/Documents/spring-petclinic/target/spring-petclinic-3.3.0-SNAPSHOT.jar $DEPLOY_USER@$DEPLOY_SERVER:/home/aiman/deployments/
           ssh -i ~/.ssh/id_rsa $DEPLOY_USER@$DEPLOY_SERVER "nohup java -jar /home/aiman/deployments/spring-petclinic-3.3.0-SNAPSHOT.jar > /dev/null 2>&1 &"
           rm -f ~/.ssh/id_rsa
       - name: Wait for application to start
@@ -121,4 +115,4 @@ jobs:
               echo "Application is not up yet, retrying in 10 seconds..."
               sleep 10
             fi
-          done 
+          done
