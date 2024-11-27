@@ -4,19 +4,22 @@ pipeline{
     }
     stages{
         stage("A"){
+            when {
+                branch 'main'
+            }
             steps{
+                echo "MAIN BRANCH"
                 sh "printenv"
             }
-            post{
-                always{
-                    echo "========always========"
-                }
-                success{
-                    echo "========A executed successfully========"
-                }
-                failure{
-                    echo "========A execution failed========"
-                }
+        }
+
+        stage("B"){
+            when {
+                changeRequest()
+            }
+            steps {
+                echo "PR"
+                sh "printenv"
             }
         }
     }
