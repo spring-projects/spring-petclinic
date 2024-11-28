@@ -48,6 +48,17 @@ class VetController {
 		Vets vets = new Vets();
 		Page<Vet> paginated = findPaginated(page);
 		vets.getVetList().addAll(paginated.toList());
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
 		return addPaginationModel(page, paginated, model);
 	}
 
@@ -57,12 +68,34 @@ class VetController {
 		model.addAttribute("totalPages", paginated.getTotalPages());
 		model.addAttribute("totalItems", paginated.getTotalElements());
 		model.addAttribute("listVets", listVets);
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
 		return "vets/vetList";
 	}
 
 	private Page<Vet> findPaginated(int page) {
 		int pageSize = 5;
 		Pageable pageable = PageRequest.of(page - 1, pageSize);
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
 		return vetRepository.findAll(pageable);
 	}
 
@@ -72,6 +105,17 @@ class VetController {
 		// objects so it is simpler for JSon/Object mapping
 		Vets vets = new Vets();
 		vets.getVetList().addAll(this.vetRepository.findAll());
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
 		return vets;
 	}
 
