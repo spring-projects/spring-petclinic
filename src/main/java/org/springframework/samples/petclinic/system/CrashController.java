@@ -30,6 +30,17 @@ class CrashController {
 
 	@GetMapping("/oups")
 	public String triggerException() {
+        System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
 		throw new RuntimeException(
 				"Expected: controller used to showcase what " + "happens when an exception is thrown");
 	}
