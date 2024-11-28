@@ -61,6 +61,17 @@ class OwnerController {
 
 	@ModelAttribute("owner")
 	public Owner findOwner(@PathVariable(name = "ownerId", required = false) Integer ownerId) {
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
 		return ownerId == null ? new Owner()
 				: this.owners.findById(ownerId)
 					.orElseThrow(() -> new IllegalArgumentException("Owner not found with id: " + ownerId
@@ -69,11 +80,33 @@ class OwnerController {
 
 	@GetMapping("/owners/new")
 	public String initCreationForm() {
+    	System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
 		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping("/owners/new")
 	public String processCreationForm(@Valid Owner owner, BindingResult result, RedirectAttributes redirectAttributes) {
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
 		if (result.hasErrors()) {
 			redirectAttributes.addFlashAttribute("error", "There was an error in creating the owner.");
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
@@ -86,6 +119,17 @@ class OwnerController {
 
 	@GetMapping("/owners/find")
 	public String initFindForm() {
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
+		System.out.println("===============================================");
 		return "owners/findOwners";
 	}
 
