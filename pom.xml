@@ -37,9 +37,10 @@
     <maven-checkstyle.version>3.6.0</maven-checkstyle.version>
     <nohttp-checkstyle.version>0.0.11</nohttp-checkstyle.version>
     <spring-format.version>0.0.43</spring-format.version>
-
+    <sonar.organization>bh-yu</sonar.organization>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
   </properties>
-
+  
   <dependencies>
     <!-- Spring and Spring Boot dependencies -->
     <dependency>
