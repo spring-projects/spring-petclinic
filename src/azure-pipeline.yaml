@@ -1,0 +1,11 @@
+
+trigger:
+- none
+
+pool:
+  vmImage: 'ubuntu-24.04'
+
+steps:
+- script: "./mvnw clean package"
+
+
