@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.owner;
+package org.springframework.samples.petclinic.pet;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -32,6 +32,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
+import org.springframework.samples.petclinic.visit.Visit;
 
 /**
  * Simple business object representing a pet.

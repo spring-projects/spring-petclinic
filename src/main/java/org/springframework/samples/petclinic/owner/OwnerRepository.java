@@ -23,7 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.samples.petclinic.pet.PetType;
 
 /**
  * Repository class for <code>Owner</code> domain objects All method names are compliant

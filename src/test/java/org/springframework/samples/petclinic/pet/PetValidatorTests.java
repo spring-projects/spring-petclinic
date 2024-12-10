@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.samples.petclinic.owner;
+package org.springframework.samples.petclinic.pet;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
