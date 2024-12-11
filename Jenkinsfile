@@ -25,8 +25,8 @@ pipeline {
         }
         stage ('Creating Docker image') {
             steps {
-                sh 'sudo docker build -t vkarpenko02/spring-petclinic:${GIT_COMMIT} .'
-                sh 'sudo docker push vkarpenko02/mr'
+                sh 'docker build -t vkarpenko02/spring-petclinic:${GIT_COMMIT} .'
+                sh 'docker push vkarpenko02/mr'
             }
         }
     }
