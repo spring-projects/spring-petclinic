@@ -1,5 +1,5 @@
 trigger:
-- main  # Adjust to your branch name
+- master  # Adjust to your branch name
 
 pool:
   vmImage: 'ubuntu-latest'
