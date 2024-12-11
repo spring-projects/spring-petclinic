@@ -5,7 +5,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  - group: springpetclinic
+  - group: springpetcliniic
 
 steps:
 - task: JavaToolInstaller@0
