@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage ('Checkstyle') {
             steps {
-                sh 'mvn checkstyle:checkstyle'
+                sh 'mvn validate'
                 archiveArtifacts artifacts: 'target/checkstyle-report.xml', allowEmptyArchive: true
             }
         }
