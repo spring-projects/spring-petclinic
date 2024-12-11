@@ -1,6 +1,5 @@
 trigger:
-- master  # Adjust to your branch name
-
+- master 
 pool:
   vmImage: 'ubuntu-latest'
 
@@ -10,9 +9,9 @@ variables:
 steps:
 - task: JavaToolInstaller@0
   inputs:
-    versionSpec: '17' # Specify the desired JDK version
-    jdkArchitectureOption: 'x64' # Choose architecture (x64 or x86)
-    jdkSourceOption: 'PreInstalled' # Use PreInstalled if available
+    versionSpec: '17' 
+    jdkArchitectureOption: 'x64' 
+    jdkSourceOption: 'PreInstalled' 
   displayName: 'Install Java 17'
 
 - task: Maven@4
@@ -24,12 +23,12 @@ steps:
 
 - task: SonarCloudPrepare@3
   inputs:
-    SonarCloud: 'SONAR_CLOUD_1' # Replace with your SonarCloud service connection name
-    organization: '$(SONAR_ORGANIZATION)'  # Replace with your SonarCloud organization name
+    SonarCloud: 'SONAR_CLOUD_1' 
+    organization: '$(SONAR_ORGANIZATION)' 
     scannerMode: 'CLI'
     configMode: 'manual'
-    cliProjectKey: '$(SONAR_PROJECT_KEY)'       # Replace with your SonarCloud project key
-    cliProjectName: '$(SONAR_PROJECT)'     # Replace with your SonarCloud project name
+    cliProjectKey: '$(SONAR_PROJECT_KEY)'     
+    cliProjectName: '$(SONAR_PROJECT)'     
     cliProjectVersion: '1.0'
     extraProperties: |
       sonar.java.binaries=target/classes
