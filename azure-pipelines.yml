@@ -43,7 +43,7 @@ steps:
   inputs:
     mavenPomFile: 'pom.xml'
     goals: 'verify sonar:sonar'
-    options: '-Dsonar.token=$(SONAR_TOKEN)'
+    options: '-Dsonar.cloud=$(SONAR_TOKEN)'
   displayName: 'Run SonarCloud Analysis'
 
 - task: SonarCloudPublish@3
