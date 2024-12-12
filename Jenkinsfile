@@ -24,14 +24,9 @@ pipeline {
             }
         }
         stage ('Creating Docker image') {
-            agent {
-                docker {
-                    image 'docker:latest'
-                }
-            }
             steps {
-                sh 'docker build -t vkarpenko02/spring-petclinic:${GIT_COMMIT} .'
-                sh 'docker push vkarpenko02/mr'
+                sh 'docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/workspace -w /workspace docker:20.10 build -t vkarpenko02/spring-petclinic:${GIT_COMMIT} .'
+                sh 'docker run --rm -v /var/run/docker.sock:/var/run/docker.sock docker:20.10 push vkarpenko02/spring-petclinic:${GIT_COMMIT}'
             }
         }
     }
