@@ -1,0 +1,18 @@
+---
+pool: 'ubuntu-24.04'
+trigger:
+  branches:
+    include:
+      - main
+stages:
+  - stage: build
+    jobs:
+     - job: jobbuild
+       steps:
+        - task: maven@4
+          inputs:
+            mavemPOMFile: 'pom.xml'
+            publishJUnitResults: 'true'
+            testResultFiles: 'default'
+            jdkVersionOption: '1.17'
+            goals: 'pacakge'
