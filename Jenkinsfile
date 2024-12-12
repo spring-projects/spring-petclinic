@@ -24,6 +24,11 @@ pipeline {
             }
         }
         stage ('Creating Docker image') {
+            agent {
+                docker {
+                    image 'docker:latest'
+                }
+            }
             steps {
                 sh 'docker build -t vkarpenko02/spring-petclinic:${GIT_COMMIT} .'
                 sh 'docker push vkarpenko02/mr'
