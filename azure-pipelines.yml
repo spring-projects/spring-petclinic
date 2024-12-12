@@ -14,7 +14,7 @@ steps:
     versionSpec: '17' 
     jdkArchitectureOption: 'x64' 
     jdkSourceOption: 'PreInstalled' 
-  displayName: 'Install Java 17'
+  displayName: 'java 17 installed'
 
 - task: Maven@4
   inputs:
