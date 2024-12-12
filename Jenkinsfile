@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         GIT_COMMIT = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+        DOCKER_HOST = 'tcp://dind:2375'
     }
 
     stages {
