@@ -14,7 +14,7 @@ steps:
     versionSpec: '17' 
     jdkArchitectureOption: 'x64' 
     jdkSourceOption: 'PreInstalled' 
-  displayName: 'java 17 installed'
+  displayName: 'java 17 installed for azure'
 
 - task: Maven@4
   inputs:
