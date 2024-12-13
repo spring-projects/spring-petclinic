@@ -51,3 +51,12 @@ steps:
   inputs:
     pollingTimeoutSec: '300'
   displayName: 'Publish Quality Gate Result'
+
+
+- task: Docker@2
+  inputs:
+    containerRegistry: 'DOCKER_HUB'
+    repository: 'kasinenichandu/spring-petclinic'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
+    tags: '$(Build.BuildId)'
