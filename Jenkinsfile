@@ -24,12 +24,6 @@ pipeline {
             }
         }
         stage ('Creating Docker image') {
-            agent {
-                docker {
-                    image 'docker:20.10'
-                    args '-v /var/run/docker.sock:/var/run/docker.sock'
-                }
-            }
             steps {
                 sh 'docker build -t vkarpenko02/spring-petclinic:${GIT_COMMIT} .'
                 sh 'docker push vkarpenko02/mr'
