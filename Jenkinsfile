@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_REPO_MAIN = 'prathushadevijs/main'  // Replace with your Docker Hub or Nexus repository URL
         DOCKER_REPO_MR = 'prathushadevijs/mr'      // Replace with your Docker Hub or Nexus repository URL
-        DOCKER_CREDENTIALS = 'b1305615-4b2e-42e3-97ad-c87166d45f54	'  // Replace with Jenkins credentials ID for Docker Hub/Nexus
+        DOCKER_CREDENTIALS = 'b1305615-4b2e-42e3-97ad-c87166d45f54'  // Replace with Jenkins credentials ID for Docker Hub/Nexus
     }
 
     stages {
@@ -25,8 +25,10 @@ pipeline {
         stage('Checkstyle') {
             steps {
                 script {
-                    // Run Maven Checkstyle plugin and save the report as an artifact
-                    sh 'mvn checkstyle:checkstyle'
+                    // Run Maven Checkstyle plugin using a Maven Docker image
+                    docker.image('maven:3.8.4-openjdk-17-slim').inside {
+                        sh 'mvn checkstyle:checkstyle'
+                    }
                     archiveArtifacts allowEmptyArchive: true, artifacts: '**/checkstyle-result.xml'
                 }
             }
@@ -35,8 +37,10 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    // Run tests with Maven (or Gradle if preferred)
-                    sh 'mvn test'
+                    // Run tests with Maven using Maven Docker image
+                    docker.image('maven:3.8.4-openjdk-17-slim').inside {
+                        sh 'mvn test'
+                    }
                 }
             }
         }
@@ -44,8 +48,10 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Build the application without running tests
-                    sh 'mvn clean package -DskipTests'
+                    // Build the application without running tests using Maven Docker image
+                    docker.image('maven:3.8.4-openjdk-17-slim').inside {
+                        sh 'mvn clean package -DskipTests'
+                    }
                 }
             }
         }
@@ -91,6 +97,3 @@ pipeline {
         }
     }
 }
-
-
-    
