@@ -2,12 +2,26 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_REPO_MAIN = 'prathushadevijs/main'  // Replace with your Docker Hub username or Nexus repository URL
-        DOCKER_REPO_MR = 'prathushadevijs/mr'      // Replace with your Docker Hub username or Nexus repository URL
-        DOCKER_CREDENTIALS = 'b1305615-4b2e-42e3-97ad-c87166d45f54'
+        DOCKER_REPO_MAIN = 'prathushadevijs/main'  // Replace with your Docker Hub or Nexus repository URL
+        DOCKER_REPO_MR = 'prathushadevijs/mr'      // Replace with your Docker Hub or Nexus repository URL
+        DOCKER_CREDENTIALS = 'b1305615-4b2e-42e3-97ad-c87166d45f54	'  // Replace with Jenkins credentials ID for Docker Hub/Nexus
     }
 
     stages {
+        stage('Checkout Code') {
+            steps {
+                script {
+                    // Set Git configuration to avoid the "RPC failed" error
+                    sh 'git config --global http.postBuffer 524288000'  // Increase HTTP buffer size
+                    sh 'git config --global core.askPass "echo"'  // Set Git to verbose logging
+                    sh 'git fetch --depth=1'  // Shallow clone to reduce history size
+
+                    // Checkout the repository
+                    checkout scm
+                }
+            }
+        }
+
         stage('Checkstyle') {
             steps {
                 script {
@@ -44,8 +58,11 @@ pipeline {
                 script {
                     // Build Docker image for the merge request
                     def commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                    sh "docker build -t ${DOCKER_REPO_MR}:${commitHash} ."
-                    sh "docker push ${DOCKER_REPO_MR}:${commitHash}"
+                    // Authenticate Docker with Jenkins credentials and push to Docker Hub or Nexus
+                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS) {
+                        sh "docker build -t ${DOCKER_REPO_MR}:${commitHash} ."
+                        sh "docker push ${DOCKER_REPO_MR}:${commitHash}"
+                    }
                 }
             }
         }
@@ -58,8 +75,11 @@ pipeline {
                 script {
                     // Build Docker image for the main branch
                     def commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                    sh "docker build -t ${DOCKER_REPO_MAIN}:${commitHash} ."
-                    sh "docker push ${DOCKER_REPO_MAIN}:${commitHash}"
+                    // Authenticate Docker with Jenkins credentials and push to Docker Hub or Nexus
+                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS) {
+                        sh "docker build -t ${DOCKER_REPO_MAIN}:${commitHash} ."
+                        sh "docker push ${DOCKER_REPO_MAIN}:${commitHash}"
+                    }
                 }
             }
         }
@@ -71,3 +91,6 @@ pipeline {
         }
     }
 }
+
+
+    
