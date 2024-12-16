@@ -1,5 +1,5 @@
 ---
-pool: 'ubuntu-24.04'
+pool: 'default'
 trigger:
   branches:
     include:
@@ -9,10 +9,10 @@ stages:
     jobs:
      - job: jobbuild
        steps:
-        - task: maven@4
+        - task: maven@3
           inputs:
-            mavemPOMFile: 'pom.xml'
-            publishJUnitResults: 'true'
-            testResultFiles: 'default'
-            jdkVersionOption: '17'
+            mavemPomFile: 'pom.xml'
+            publishJUnitResults: true
+            testResultFiles: '**/TEST-*.xml' 
+            jdkVersionOption: '21'
             goals: 'package'
