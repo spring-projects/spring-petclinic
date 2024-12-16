@@ -1,6 +1,5 @@
 pipeline {
-    agent { label 'agent1' }  // Specify that the pipeline should run on agent1
-
+    agent any
     environment {
         DOCKER_REPO_MR = "prathushadevijs/mr"
         DOCKER_REPO_MAIN = "prathushadevijs/main"
