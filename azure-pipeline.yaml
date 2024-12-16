@@ -14,5 +14,5 @@ stages:
             mavemPOMFile: 'pom.xml'
             publishJUnitResults: 'true'
             testResultFiles: 'default'
-            jdkVersionOption: '1.17'
-            goals: 'pacakge'
+            jdkVersionOption: '17'
+            goals: 'package'
