@@ -4,6 +4,7 @@ pipeline {
     environment {
         DOCKER_REPO_MAIN = 'prathushadevijs/main'  // Replace with your Docker Hub username or Nexus repository URL
         DOCKER_REPO_MR = 'prathushadevijs/mr'      // Replace with your Docker Hub username or Nexus repository URL
+        DOCKER_CREDENTIALS = 'b1305615-4b2e-42e3-97ad-c87166d45f54'
     }
 
     stages {
