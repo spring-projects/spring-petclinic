@@ -5,9 +5,9 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ main ]
+    branches: ${{ secrets.BRANCH_NAME }}
   pull_request:
-    branches: [ main ]
+    branches: ${{ secrets.BRANCH_NAME }}
 
 jobs:
   build:
@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ '17' ]
+        java: ['${{secrets.JAVA_VERSION}}']
 
     steps:
       - uses: actions/checkout@v4
@@ -28,4 +28,4 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ${{secrets.BUILD_SCRIPT}} -B verify
