@@ -40,15 +40,18 @@ pipeline {
         
         stage('Create Docker Image for Main Branch') {
             when {
-                branch 'main'
+                // Check if the branch is 'main'
+                expression {
+                    return env.GIT_BRANCH ==~ /origin\/main/
+                }
             }
             steps {
                 script {
                     // Debugging: Print the current branch name to verify it is the correct branch
-                    echo "Current Branch: ${env.BRANCH_NAME}"
+                    echo "Current Branch: ${env.GIT_BRANCH}"
                     
-                    // Check if on main branch and build Docker image
-                    if (env.BRANCH_NAME == 'main') {
+                    // Build Docker image for the main branch
+                    if (env.GIT_BRANCH ==~ /origin\/main/) {
                         // Build Docker image for main branch
                         sh "docker build -t ${DOCKER_REPO_MAIN}/spring-petclinic:${GIT_COMMIT} ."
                         // Push Docker image to Nexus Main repository
