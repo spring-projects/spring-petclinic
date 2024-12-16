@@ -1,88 +1,73 @@
 pipeline {
-    agent any
+    agent { label 'agent1' }  // Specify that the pipeline should run on agent1
 
     environment {
-        DOCKER_REPO_MAIN = 'prathushadevijs/main'
-        DOCKER_REPO_MR = 'prathushadevijs/mr'
-        DOCKER_CREDENTIALS = 'b1305615-4b2e-42e3-97ad-c87166d45f54'
+        DOCKER_REPO_MR = "prathushadevijs/mr"
+        DOCKER_REPO_MAIN = "prathushadevijs/main"
     }
-
+    
     stages {
-        stage('Checkout Code') {
-            steps {
-                script {
-                    sh 'git fetch --depth=1'
-                    checkout scm
-                }
-            }
-        }
-
         stage('Checkstyle') {
             steps {
                 script {
-                    // Ensure Docker can run properly
-                    docker.image('maven:3.8.4-openjdk-17-slim').inside {
-                        sh 'mvn checkstyle:checkstyle'
-                    }
-                    archiveArtifacts allowEmptyArchive: true, artifacts: '**/checkstyle-result.xml'
+                    // Run Checkstyle with Maven (or Gradle)
+                    sh 'mvn checkstyle:checkstyle'
+                }
+            }
+            post {
+                always {
+                    // Archive Checkstyle Report as an artifact
+                    archiveArtifacts artifacts: '**/target/checkstyle-result.xml', allowEmptyArchive: true
                 }
             }
         }
-
         stage('Test') {
             steps {
                 script {
-                    docker.image('maven:3.8.4-openjdk-17-slim').inside {
-                        sh 'mvn test'
-                    }
+                    // Run Tests with Maven (or Gradle)
+                    sh 'mvn test'
                 }
             }
         }
-
         stage('Build') {
             steps {
                 script {
-                    docker.image('maven:3.8.4-openjdk-17-slim').inside {
-                        sh 'mvn clean package -DskipTests'
-                    }
+                    // Build the application without running tests
+                    sh 'mvn clean install -DskipTests'
                 }
             }
         }
-
         stage('Create Docker Image for Merge Request') {
             when {
-                branch 'mr/*'
+                branch 'PR/*'  // Ensure this runs only for Merge Requests
             }
             steps {
                 script {
-                    def commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS) {
-                        sh "docker build -t ${DOCKER_REPO_MR}:${commitHash} ."
-                        sh "docker push ${DOCKER_REPO_MR}:${commitHash}"
-                    }
+                    // Build Docker image with Git commit short hash tag
+                    sh "docker build -t ${DOCKER_REPO_MR}/spring-petclinic:${GIT_COMMIT} ."
+                    // Push Docker image to Nexus MR repository
+                    sh "docker push ${DOCKER_REPO_MR}/spring-petclinic:${GIT_COMMIT}"
                 }
             }
         }
-
         stage('Create Docker Image for Main Branch') {
             when {
                 branch 'main'
             }
             steps {
                 script {
-                    def commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS) {
-                        sh "docker build -t ${DOCKER_REPO_MAIN}:${commitHash} ."
-                        sh "docker push ${DOCKER_REPO_MAIN}:${commitHash}"
-                    }
+                    // Build Docker image for main branch
+                    sh "docker build -t ${DOCKER_REPO_MAIN}/spring-petclinic:${GIT_COMMIT} ."
+                    // Push Docker image to Nexus Main repository
+                    sh "docker push ${DOCKER_REPO_MAIN}/spring-petclinic:${GIT_COMMIT}"
                 }
             }
         }
     }
-
     post {
-        always {
-            cleanWs()
+        failure {
+            // Notify on failure
+            echo 'Pipeline failed!'
         }
     }
 }
