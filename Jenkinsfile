@@ -37,19 +37,7 @@ pipeline {
                 }
             }
         }
-        stage('Create Docker Image for Merge Request') {
-            when {
-                branch 'PR/*'  // Ensure this runs only for Merge Requests
-            }
-            steps {
-                script {
-                    // Build Docker image with Git commit short hash tag
-                    sh "docker build -t ${DOCKER_REPO_MR}/spring-petclinic:${GIT_COMMIT} ."
-                    // Push Docker image to Nexus MR repository
-                    sh "docker push ${DOCKER_REPO_MR}/spring-petclinic:${GIT_COMMIT}"
-                }
-            }
-        }
+        
         stage('Create Docker Image for Main Branch') {
             when {
                 branch 'main'
