@@ -11,13 +11,16 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 script {
-                    // Set Git configuration to avoid the "RPC failed" error
-                    sh 'git config --global http.postBuffer 524288000'  // Increase HTTP buffer size
+                    // Increase Git HTTP buffer size and configure to prevent the RPC failed error
+                    sh 'git config --global http.postBuffer 524288000'  // Increase buffer size to 500MB
+                    sh 'git config --global http.maxRequestBuffer 104857600'  // Increase request buffer size
                     sh 'git config --global core.askPass "echo"'  // Set Git to verbose logging
-                    sh 'git fetch --depth=1'  // Shallow clone to reduce history size
 
-                    // Checkout the repository
-                    checkout scm
+                    // Perform a shallow clone to reduce the repository size and avoid fetching the full history
+                    retry(3) {
+                        sh 'git fetch --depth=1'  // Shallow clone to get only the latest commit
+                        checkout scm
+                    }
                 }
             }
         }
