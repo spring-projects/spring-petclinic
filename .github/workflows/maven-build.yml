@@ -1,29 +1,27 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/use-cases-and-examples/building-and-testing/building-and-testing-java-with-maven
-
-name: Java CI with Maven
+name: Build Maven Tool by Java Project
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - ${{ secrets.BRANCH_NAME }}  # Replace with branch name stored as a secret or environment variable
   pull_request:
-    branches: [ main ]
+    branches:
+      - ${{ secrets.BRANCH_NAME }}  # Replace with branch name stored as a secret or environment variable
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ '17' ]
+        java: [ '${{ secrets.JAVA_VERSION }}' ]  # Replace with Java version from a secret or environment variable
 
     steps:
       - uses: actions/checkout@v4
-      - name: Set up JDK ${{matrix.java}}
+      - name: Set up JDK ${{ matrix.java }}
         uses: actions/setup-java@v4
         with:
-          java-version: ${{matrix.java}}
+          java-version: ${{ matrix.java }}
           distribution: 'adopt'
           cache: maven
       - name: Build with Maven Wrapper
-        run: ./mvnw -B verify
+        run: ./${{ secrets.BUILD_SCRIPT }} -B verify  # Replace with build script if it's dynamic or use 'mvnw'
