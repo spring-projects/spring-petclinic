@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'agent1' }  // Specify that the pipelines should run on agent1
+    agent { label 'agent1' }  // Specify that the pipeline should run on agent1
 
     environment {
         DOCKER_REPO_MR = "prathushadevijs/mr"
@@ -44,10 +44,18 @@ pipeline {
             }
             steps {
                 script {
-                    // Build Docker image for main branch
-                    sh "docker build -t ${DOCKER_REPO_MAIN}/spring-petclinic:${GIT_COMMIT} ."
-                    // Push Docker image to Nexus Main repository
-                    sh "docker push ${DOCKER_REPO_MAIN}/spring-petclinic:${GIT_COMMIT}"
+                    // Debugging: Print the current branch name to verify it is the correct branch
+                    echo "Current Branch: ${env.BRANCH_NAME}"
+                    
+                    // Check if on main branch and build Docker image
+                    if (env.BRANCH_NAME == 'main') {
+                        // Build Docker image for main branch
+                        sh "docker build -t ${DOCKER_REPO_MAIN}/spring-petclinic:${GIT_COMMIT} ."
+                        // Push Docker image to Nexus Main repository
+                        sh "docker push ${DOCKER_REPO_MAIN}/spring-petclinic:${GIT_COMMIT}"
+                    } else {
+                        echo "Not on the main branch, skipping Docker image creation."
+                    }
                 }
             }
         }
