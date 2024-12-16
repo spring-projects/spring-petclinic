@@ -2,82 +2,63 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "myusername/spring-petclinic"
-        DOCKER_REGISTRY = "docker.io"
+        DOCKER_REPO_MAIN = 'prathushadevijs/main'  // Replace with your Docker Hub username or Nexus repository URL
+        DOCKER_REPO_MR = 'prathushadevijs/mr'      // Replace with your Docker Hub username or Nexus repository URL
     }
 
     stages {
-        // This stage runs only for a Merge Request (Pull Request)
         stage('Checkstyle') {
-            when {
-                changeRequest()
-            }
             steps {
                 script {
-                    // Run Maven checkstyle plugin to generate a code style report
-                    sh './mvnw checkstyle:checkstyle'
+                    // Run Maven Checkstyle plugin and save the report as an artifact
+                    sh 'mvn checkstyle:checkstyle'
+                    archiveArtifacts allowEmptyArchive: true, artifacts: '**/checkstyle-result.xml'
                 }
-                // Archive the checkstyle report as a job artifact
-                archiveArtifacts artifacts: 'target/checkstyle-result.xml', allowEmptyArchive: true
             }
         }
 
         stage('Test') {
-            when {
-                changeRequest()
-            }
             steps {
                 script {
-                    // Run tests with Maven or Gradle
-                    sh './mvnw test'
+                    // Run tests with Maven (or Gradle if preferred)
+                    sh 'mvn test'
                 }
             }
         }
 
         stage('Build') {
-            when {
-                changeRequest()
-            }
             steps {
                 script {
-                    // Build without running tests (faster build)
-                    sh './mvnw clean install -DskipTests'
+                    // Build the application without running tests
+                    sh 'mvn clean package -DskipTests'
                 }
             }
         }
 
-        stage('Create Docker Image - MR') {
+        stage('Create Docker Image for Merge Request') {
             when {
-                changeRequest()
+                branch 'mr/*'  // This will trigger the stage for a Merge Request branch
             }
             steps {
                 script {
-                    // Build the Docker image and tag it with GIT_COMMIT (short version)
-                    def gitCommit = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                    docker.build("${DOCKER_IMAGE}:mr-${gitCommit}")
-                    
-                    // Push the image to the "mr" repository
-                    docker.withRegistry("https://${DOCKER_REGISTRY}", 'docker-hub-credentials') {
-                        docker.image("${DOCKER_IMAGE}:mr-${gitCommit}").push('mr')
-                    }
+                    // Build Docker image for the merge request
+                    def commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+                    sh "docker build -t ${DOCKER_REPO_MR}:${commitHash} ."
+                    sh "docker push ${DOCKER_REPO_MR}:${commitHash}"
                 }
             }
         }
 
-        // This stage runs only for the main branch
-        stage('Create Docker Image - Main') {
+        stage('Create Docker Image for Main Branch') {
             when {
-                branch 'main'
+                branch 'main'  // This will trigger the stage for the main branch
             }
             steps {
                 script {
-                    // Build the Docker image and push it to the "main" repository
-                    docker.build("${DOCKER_IMAGE}:latest")
-                    
-                    // Push the image to the "main" repository
-                    docker.withRegistry("https://${DOCKER_REGISTRY}", 'docker-hub-credentials') {
-                        docker.image("${DOCKER_IMAGE}:latest").push('main')
-                    }
+                    // Build Docker image for the main branch
+                    def commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+                    sh "docker build -t ${DOCKER_REPO_MAIN}:${commitHash} ."
+                    sh "docker push ${DOCKER_REPO_MAIN}:${commitHash}"
                 }
             }
         }
@@ -85,8 +66,7 @@ pipeline {
 
     post {
         always {
-            // Clean up any resources, or notify after the build
-            cleanWs()
+            cleanWs()  // Clean workspace after the pipeline run
         }
     }
 }
