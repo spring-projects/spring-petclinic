@@ -9,11 +9,11 @@ stages:
     jobs:
      - job: jobbuild
        steps:
-        - task: Gardle@3
+        - task: Gradle@3
           inputs:
             tasks: 'build'
             gradleWrapperFile: 'gradlew'
             publishJUnitResults: true
             testResultFiles: '**/TEST-*.xml' 
             jdkVersionOption: '1.17'
-            goals: 'build'
+            goals: 'deploy'
