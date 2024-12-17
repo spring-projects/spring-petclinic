@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'agent1' } 
+    agent { label 'jenagent' } 
     environment {
         DOCKER_REPO_MR = "prathushadevijs/mr"
         DOCKER_REPO_MAIN = "prathushadevijs/main"
