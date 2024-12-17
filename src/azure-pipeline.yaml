@@ -11,6 +11,7 @@ stages:
        steps:
         - task: Gardle@3
           inputs:
+            tasks: 'build'
             gradleWrapperFile: 'gradlew'
             publishJUnitResults: true
             testResultFiles: '**/TEST-*.xml' 
