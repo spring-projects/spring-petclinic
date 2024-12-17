@@ -9,9 +9,9 @@ stages:
     jobs:
      - job: jobbuild
        steps:
-        - task: maven@4
+        - task: Gardle@3
           inputs:
-            mavemPomFile: 'pom.xml'
+            gradleWrapperFile: 'gradlew'
             publishJUnitResults: true
             testResultFiles: '**/TEST-*.xml' 
             jdkVersionOption: '1.17'
