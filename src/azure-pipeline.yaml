@@ -1,0 +1,18 @@
+---
+pool: 'default'
+trigger:
+  branches:
+    include:
+      - main
+stages:
+  - stage: build
+    jobs:
+     - job: jobbuild
+       steps:
+        - task: Gardle@3
+          inputs:
+            gradleWrapperFile: 'gradlew'
+            publishJUnitResults: true
+            testResultFiles: '**/TEST-*.xml' 
+            jdkVersionOption: '1.17'
+            goals: 'validate'
