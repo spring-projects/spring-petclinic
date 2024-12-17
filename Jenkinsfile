@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'dindagent' } 
+    agent { label 'dindagent' }
     environment {
         DOCKER_REPO_MR = "prathushadevijs/mr"
         DOCKER_REPO_MAIN = "prathushadevijs/main"
@@ -7,6 +7,7 @@ pipeline {
     
     stages {
         stage('Checkstyle') {
+            agent { label 'dindagent' } // Added agent to this stage
             steps {
                 script {
                     // Run Checkstyle with Maven (or Gradle)
@@ -21,6 +22,7 @@ pipeline {
             }
         }
         stage('Test') {
+            agent { label 'dindagent' } // Added agent to this stage
             steps {
                 script {
                     // Run Tests with Maven (or Gradle)
@@ -29,6 +31,7 @@ pipeline {
             }
         }
         stage('Build') {
+            agent { label 'dindagent' } // Added agent to this stage
             steps {
                 script {
                     // Build the application without running tests
@@ -38,6 +41,7 @@ pipeline {
         }
         
         stage('Create Docker Image for Main Branch') {
+            agent { label 'dindagent' } // Added agent to this stage
             when {
                 // Check if the branch is 'main'
                 expression {
