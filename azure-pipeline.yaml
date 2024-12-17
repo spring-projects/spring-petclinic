@@ -9,10 +9,10 @@ stages:
     jobs:
      - job: jobbuild
        steps:
-        - task: maven@3
+        - task: maven@4
           inputs:
             mavemPomFile: 'pom.xml'
             publishJUnitResults: true
             testResultFiles: '**/TEST-*.xml' 
-            jdkVersionOption: '21'
-            goals: 'package'
+            jdkVersionOption: '1.17'
+            goals: 'validate'
