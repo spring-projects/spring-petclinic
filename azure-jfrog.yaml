@@ -16,5 +16,3 @@
 
   extends:
     template: maven/maven.jfrog.yaml@reusablePublicAssets
-
-    
