@@ -27,8 +27,11 @@ pipeline {
         stage ('Creating Docker image') {
             steps {
                 sh 'docker build -t vkarpenko02/mr:${GIT_COMMIT} .'
-                sh 'echo ${DOCKER_HUB_CREDS_PSW} | docker login -u ${DOCKER_HUB_CREDS_USR} --password-stdin'
-                sh 'docker push vkarpenko02/mr:${GIT_COMMIT}'
+                withCredentials([usernamePassword(credentialsId: 'docker_key', usernameVariable: 'DOCKER_HUB_USER', passwordVariable: 'DOCKER_HUB_PASS')]) {
+                    sh """
+                        echo ${DOCKER_HUB_PASS} | docker login -u ${DOCKER_HUB_USER} --password-stdin
+                        docker push vkarpenko02/mr:${GIT_COMMIT}
+                    """
             }
         }
     }
