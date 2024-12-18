@@ -32,6 +32,7 @@ pipeline {
                         echo ${DOCKER_HUB_PASS} | docker login -u ${DOCKER_HUB_USER} --password-stdin
                         docker push vkarpenko02/mr:${GIT_COMMIT}
                     """
+                }
             }
         }
     }
