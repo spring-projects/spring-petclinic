@@ -1,9 +1,7 @@
 ---
 pool: 'default'
 trigger:
-  branches:
-    include:
-      - main
+  - main
 stages:
   - stage: build
     jobs:
