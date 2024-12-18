@@ -1,0 +1,18 @@
+---
+  pool: Default
+  
+  trigger: none
+  
+  pr:
+    - main
+
+  resources:
+    repositories:
+      - repository: reusablePublicAssets
+        type: github
+        name: VenkeyBoda/AzureDevops_Templates
+        ref: 'refs/heads/main'
+        endpoint: 'github.com_VenkeyBoda' 
+
+  extends:
+    template: maven/maven.pipeline.yaml@reusablePublicAssets
