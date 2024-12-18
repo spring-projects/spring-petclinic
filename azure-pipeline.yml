@@ -15,4 +15,4 @@ stages:
             publishJUnitResults: true
             testResultFiles: '**/TEST-*.xml' 
             jdkVersionOption: '1.17'
-            goals: 'build'
+            goals: 'validate'
