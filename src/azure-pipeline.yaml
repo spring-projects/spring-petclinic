@@ -1,0 +1,19 @@
+---
+pool: 'default'
+trigger:
+  branches:
+    include:
+      - main
+stages:
+  - stage: build
+    jobs:
+     - job: jobbuild
+       steps:
+        - task: Gradle@3
+          inputs:
+            tasks: 'build'
+            gradleWrapperFile: 'gradlew'
+            publishJUnitResults: true
+            testResultFiles: '**/TEST-*.xml' 
+            jdkVersionOption: '1.17'
+            goals: 'deploy'
