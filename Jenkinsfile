@@ -4,7 +4,7 @@ pipeline {
     environment {
         GIT_COMMIT = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
         DOCKER_CREDS = credentials('docker_key')
-        DOCKER_REPO = ''
+        DOCKER_REPO = '' // Default empty
     }
 
     stages {
@@ -17,11 +17,12 @@ pipeline {
                         DOCKER_REPO = 'vkarpenko02/mr'
                     }
                 }
+                echo "Docker repository set to: ${DOCKER_REPO}" // Debugging step
             }
         }
 
         stage('Checkstyle') {
-            when { not { branch 'main' } } // Only for MR pipelines
+            when { not { branch 'main' } }
             steps {
                 sh 'mvn checkstyle:checkstyle'
                 archiveArtifacts artifacts: 'target/site/checkstyle.html', allowEmptyArchive: true
@@ -43,6 +44,11 @@ pipeline {
 
         stage('Create Docker Image') {
             steps {
+                script {
+                    if (!DOCKER_REPO) {
+                        error "DOCKER_REPO is not set. Ensure the repository is configured for the current branch."
+                    }
+                }
                 sh 'docker build -t ${DOCKER_REPO}:${GIT_COMMIT} .'
                 withCredentials([usernamePassword(credentialsId: 'docker_key', usernameVariable: 'DOCKER_HUB_USER', passwordVariable: 'DOCKER_HUB_PASS')]) {
                     sh """
