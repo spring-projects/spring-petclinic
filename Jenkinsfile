@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'agent1' }
+    agent any
     environment {
         DOCKER_REPO_MR = "prathushadevijs/mr"
         DOCKER_REPO_MAIN = "prathushadevijs/main"
@@ -22,7 +22,7 @@ pipeline {
             }
         }
         stage('Test') {
-            agent { label 'agent1' } // Added agent to this stage
+            agent any
             steps {
                 script {
                     // Run Tests with Maven (or Gradle)
@@ -31,7 +31,7 @@ pipeline {
             }
         }
         stage('Build') {
-            agent { label 'agent1' } // Added agent to this stage
+           agent any
             steps {
                 script {
                     // Build the application without running tests
@@ -41,7 +41,7 @@ pipeline {
         }
         
         stage('Create Docker Image for Main Branch') {
-            agent { label 'agent1' } // Added agent to this stage
+           agent any
             when {
                 // Check if the branch is 'main'
                 expression {
