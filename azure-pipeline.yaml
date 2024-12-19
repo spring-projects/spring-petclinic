@@ -1,0 +1,18 @@
+---
+pool: default
+trigger:
+  - main
+stages:
+  - stage: build
+    jobs:
+     - job: jobbuild
+       steps:
+        - task: maven@4
+          inputs:
+            mavemPOMFile: pom.xml
+            publishJUnitResults: true
+            testResultFiles:  '**/surefire-reports/TEST-*.xml'
+            jdkVersionOption: '1.17'
+            goals: validate
+        
+     
