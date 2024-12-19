@@ -3,6 +3,7 @@ pipeline {
     environment {
         DOCKER_REPO_MR = "prathushadevijs/mr"
         DOCKER_REPO_MAIN = "prathushadevijs/main"
+        DOCKER_CREDENTIALS = credentials('docker-credentials-id')
     }
     
     stages {
