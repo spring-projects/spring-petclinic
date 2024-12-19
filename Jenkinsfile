@@ -7,7 +7,7 @@ pipeline {
     
     stages {
         stage('Checkstyle') {
-            agent { label 'dindagent' } // Added agent to this stage
+            agent any
             steps {
                 script {
                     // Run Checkstyle with Maven (or Gradle)
