@@ -4,6 +4,8 @@ pipeline {
     environment {
         GIT_COMMIT = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
         DOCKER_CREDS = credentials('docker_key')
+        DOCKER_HOST: "tcp://docker:2375"
+        DOCKER_TLS_CERTDIR: ""
     }
 
     stages {
