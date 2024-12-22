@@ -172,4 +172,17 @@ public class Owner extends Person {
 		pet.addVisit(visit);
 	}
 
+	public void updatePet(Pet newPet)
+	{
+		for(int i=0 ; i<pets.size() ; i++)
+		{
+			Pet existingPet = pets.get(i);
+			if(existingPet.getId().equals(newPet.getId()))
+			{
+				pets.set(i,newPet);
+				break;
+			}
+		}
+	}
+
 }

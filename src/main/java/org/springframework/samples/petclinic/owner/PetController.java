@@ -17,6 +17,7 @@ package org.springframework.samples.petclinic.owner;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
@@ -128,7 +129,7 @@ class PetController {
 			RedirectAttributes redirectAttributes) {
 
 		String petName = pet.getName();
-
+		System.out.println(pet.getId()+" SOUMEN");
 		// checking if the pet name already exist for the owner
 		if (StringUtils.hasText(petName)) {
 			Pet existingPet = owner.getPet(petName, false);
@@ -147,9 +148,16 @@ class PetController {
 		}
 
 		owner.addPet(pet);
+		owner.updatePet(pet);
+
 		this.owners.save(owner);
 		redirectAttributes.addFlashAttribute("message", "Pet details has been edited");
 		return "redirect:/owners/{ownerId}";
 	}
+
+
+
+
+
 
 }
