@@ -43,7 +43,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  */
 @Controller
 @RequestMapping("/owners/{ownerId}")
-class PetController {
+class privatePetController {
 
 	private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = "pets/createOrUpdatePetForm";
 
@@ -147,9 +147,26 @@ class PetController {
 			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 		}
 
+<<<<<<< HEAD
 		owner.addPet(pet);
 		owner.updatePet(pet);
 
+||||||| 6148ddd
+		owner.addPet(pet);
+=======
+		//owner.addPet(pet);
+
+		List<Pet> petlist = owner.getPets();
+		for(int i=0 ; i<petlist.size() ; i++)
+		{
+			if(petlist.get(i).getId().equals(pet.getId()))
+			{
+				petlist.set(i,pet);
+				break;
+			}
+		}
+
+>>>>>>> 588fd808f860ff0896eb2e4cb841f8cacd19855b
 		this.owners.save(owner);
 		redirectAttributes.addFlashAttribute("message", "Pet details has been edited");
 		return "redirect:/owners/{ownerId}";
