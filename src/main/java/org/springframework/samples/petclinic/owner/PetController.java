@@ -146,7 +146,9 @@ class PetController {
 			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 		}
 
-		owner.addPet(pet);
+		//owner.addPet(pet);
+		owner.updatePet(pet);
+
 		this.owners.save(owner);
 		redirectAttributes.addFlashAttribute("message", "Pet details has been edited");
 		return "redirect:/owners/{ownerId}";
