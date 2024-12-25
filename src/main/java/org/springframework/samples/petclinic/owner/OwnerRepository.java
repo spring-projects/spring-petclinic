@@ -19,11 +19,13 @@ import java.util.List;
 import java.util.Optional;
 
 import jakarta.annotation.Nonnull;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.repository.query.Param;
 
 /**
  * Repository class for <code>Owner</code> domain objects All method names are compliant
@@ -53,7 +55,7 @@ public interface OwnerRepository extends JpaRepository<Owner, Integer> {
 	 * @return a Collection of matching {@link Owner}s (or an empty Collection if none
 	 * found)
 	 */
-	Page<Owner> findByLastNameStartingWith(String lastName, Pageable pageable);
+	Page<Owner> findByLastNameStartingWith(String lastName, Pageable pageable, String city);
 
 	/**
 	 * Retrieve an {@link Owner} from the data store by id.
@@ -74,5 +76,17 @@ public interface OwnerRepository extends JpaRepository<Owner, Integer> {
 	 * Returns all the owners from data store
 	 **/
 	Page<Owner> findAll(Pageable pageable);
+
+	Page<Owner> findByLastNameStartingWith(String lastName, Pageable pageable);
+
+	@Query("SELECT o FROM Owner o WHERE o.lastName LIKE :lastName% AND (:city IS NULL OR o.city = :city)")
+	Page<Owner> findByLastNameAndCity(@Param("lastName") String lastName, @Param("city") String city,
+			Pageable pageable);
+
+	List<Owner> findByLastName(String lastName);
+
+	Page<Owner> findByCity(@NotBlank String city, Pageable pageable);
+
+	List<Owner> city(@NotBlank String city);
 
 }

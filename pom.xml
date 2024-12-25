@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--suppress ALL -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
@@ -32,11 +33,13 @@
 
     <checkstyle.version>10.20.1</checkstyle.version>
     <jacoco.version>0.8.12</jacoco.version>
-    <libsass.version>0.2.29</libsass.version>
+    <libsass.version>0.7.0</libsass.version>
     <lifecycle-mapping>1.0.0</lifecycle-mapping>
     <maven-checkstyle.version>3.6.0</maven-checkstyle.version>
     <nohttp-checkstyle.version>0.0.11</nohttp-checkstyle.version>
     <spring-format.version>0.0.43</spring-format.version>
+    <maven.compiler.source>23</maven.compiler.source>
+    <maven.compiler.target>23</maven.compiler.target>
 
   </properties>
 
@@ -146,10 +149,38 @@
       <artifactId>mysql</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.antlr</groupId>
+      <artifactId>antlr4-runtime</artifactId>
+      <version>4.13.2</version>
+    </dependency>
 
     <dependency>
       <groupId>jakarta.xml.bind</groupId>
       <artifactId>jakarta.xml.bind-api</artifactId>
+    </dependency>
+    <!-- AssertJ (for fluent assertions) -->
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>3.24.2</version> <!-- Ensure the version exists in the Maven repository -->
+      <scope>test</scope>
+    </dependency>
+
+    <!-- JUnit 5 (Jupiter) -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.11.3</version> <!-- Check for the latest version -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
     </dependency>
 
   </dependencies>
@@ -196,10 +227,27 @@
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>${maven-checkstyle.version}</version>
         <dependencies>
+            <dependency>
+              <groupId>org.antlr</groupId>
+              <artifactId>antlr4-runtime</artifactId>
+              <version>4.13.2</version> <!-- Use the latest version -->
+            </dependency>
+            <dependency>
+              <groupId>org.junit.jupiter</groupId>
+              <artifactId>junit-jupiter-engine</artifactId>
+              <version>5.11.3</version>
+              <scope>compile</scope>
+            </dependency>
+          <!-- AssertJ (for fluent assertions) -->
+          <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.24.2</version> <!-- Ensure the version exists in the Maven repository -->
+          </dependency>
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
             <artifactId>checkstyle</artifactId>
-            <version>${checkstyle.version}</version>
+            <version>10.12.1</version>
           </dependency>
           <dependency>
             <groupId>io.spring.nohttp</groupId>
@@ -209,7 +257,7 @@
         </dependencies>
         <executions>
           <execution>
-            <id>nohttp-checkstyle-validation</id>
+            <id>validation-checkstyle</id>
             <goals>
               <goal>check</goal>
             </goals>
@@ -297,6 +345,18 @@
   </licenses>
 
   <repositories>
+            <repository>
+                <id>libsass-maven-plugin-repo</id>
+                <url>https://plugins.gitlab.com/maven</url>
+              </repository>
+    <repository>
+      <id>jcenter</id>
+      <url>https://jcenter.bintray.com</url>
+    </repository>
+    <repository>
+      <id>spring-plugins-release</id>
+      <url>https://repo.spring.io/plugins-release</url>
+    </repository>
     <repository>
       <snapshots>
         <enabled>true</enabled>
@@ -341,6 +401,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-dependency-plugin</artifactId>
+              <version>3.5.0</version>
             <executions>
               <execution>
                 <id>unpack</id>
@@ -366,7 +427,8 @@
           <plugin>
             <groupId>com.gitlab.haynes</groupId>
             <artifactId>libsass-maven-plugin</artifactId>
-            <version>${libsass.version}</version>
+            <version>0.7.0</version>
+
             <configuration>
               <inputPath>${basedir}/src/main/scss/</inputPath>
               <outputPath>${basedir}/src/main/resources/static/resources/css/</outputPath>

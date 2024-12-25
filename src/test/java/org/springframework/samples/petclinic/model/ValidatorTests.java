@@ -16,11 +16,10 @@
 
 package org.springframework.samples.petclinic.model;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.Locale;
 import java.util.Set;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
