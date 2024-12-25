@@ -17,15 +17,15 @@ pipeline {
         }
         stage ('build and package') {
             rtMavenDeployer (
-                id: 'SPC_DEPLOYER'
-                serverId: 'JFROG_CLOUD'
-                releaseRepo: 'atdevops-libs-snapshot'
+                id: 'SPC_DEPLOYER',
+                serverId: 'JFROG_CLOUD',
+                releaseRepo: 'atdevops-libs-snapshot',
                 snapshotRepo: 'atdevops-libs-snapshot'
             )
             rtMavenRun (
-                tool: 'Maven_3.8'
-                deployerId: 'SPC_DEPLOYER'
-                pom: 'pom.xml'
+                tool: 'Maven_3.8',
+                deployerId: 'SPC_DEPLOYER',
+                pom: 'pom.xml',
                 goals: 'clean install'
             )
             rtPublishBuildInfo (
