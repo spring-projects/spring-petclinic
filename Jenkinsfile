@@ -35,11 +35,12 @@ pipeline {
                 serverId: 'JFROG_CLOUD'
             )
            }
+           }
         stage('reporting'){
             junit testResults: '**/target/surefire-reports/TEST-*.xml'
         }
 
-        }
+        
         }
     }
   
