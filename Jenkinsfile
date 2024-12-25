@@ -12,10 +12,13 @@ pipeline {
     }
     stages {
         stage ('git'){
+            steps{
             git branch: 'develop',
                 url: 'https://github.com/Akhil-Tejas225/spring-petclinic.git'
+            }
         }
         stage ('build and package') {
+           steps{ 
             rtMavenDeployer (
                 id: 'SPC_DEPLOYER',
                 serverId: 'JFROG_CLOUD',
@@ -31,6 +34,7 @@ pipeline {
             rtPublishBuildInfo (
                 serverId: 'JFROG_CLOUD'
             )
+           }
         stage ('reporting'){
             junit testResults: '**/target/surefire-reports/TEST-*.xml'
         }
