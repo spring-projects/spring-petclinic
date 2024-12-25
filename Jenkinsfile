@@ -17,7 +17,7 @@ pipeline {
                 url: 'https://github.com/Akhil-Tejas225/spring-petclinic.git'
             }
         }
-        stage ('build and package') {
+        stage('build and package') {
            steps{ 
             rtMavenDeployer (
                 id: 'SPC_DEPLOYER',
@@ -26,7 +26,7 @@ pipeline {
                 snapshotRepo: 'atdevops-libs-snapshot'
             )
             rtMavenRun (
-                tool: 'Maven_3.8',
+                tool: maven 'Maven_3.8',
                 deployerId: 'SPC_DEPLOYER',
                 pom: 'pom.xml',
                 goals: 'clean install'
@@ -35,7 +35,7 @@ pipeline {
                 serverId: 'JFROG_CLOUD'
             )
            }
-        stage ('reporting'){
+        stage('reporting'){
             junit testResults: '**/target/surefire-reports/TEST-*.xml'
         }
 
