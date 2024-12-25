@@ -26,7 +26,7 @@ pipeline {
                 snapshotRepo: 'atdevops-libs-snapshot'
             )
             rtMavenRun (
-                tool: maven 'Maven_3.8',
+                tool: maven 'MAVEN_3.8',
                 deployerId: 'SPC_DEPLOYER',
                 pom: 'pom.xml',
                 goals: 'clean install'
