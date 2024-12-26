@@ -81,12 +81,11 @@ class PetController {
 
 	@InitBinder("owner")
 	public void initOwnerBinder(WebDataBinder dataBinder) {
-		dataBinder.setDisallowedFields("id");
+		setAllowedFields(dataBinder);
 	}
 
-	@InitBinder("pet")
-	public void initPetBinder(WebDataBinder dataBinder) {
-		dataBinder.setValidator(new PetValidator());
+	private void setAllowedFields(WebDataBinder dataBinder) {
+		dataBinder.setDisallowedFields("id");
 	}
 
 	@GetMapping("/pets/new")
