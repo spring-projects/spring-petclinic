@@ -31,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Data. See:
  * https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories.query-methods.query-creation
  *
+ * Encapsulates data access operations for the Owner entity.
  * @author Ken Krebs
  * @author Juergen Hoeller
  * @author Sam Brannen
@@ -74,5 +75,4 @@ public interface OwnerRepository extends JpaRepository<Owner, Integer> {
 	 * Returns all the owners from data store
 	 **/
 	Page<Owner> findAll(Pageable pageable);
-
 }
