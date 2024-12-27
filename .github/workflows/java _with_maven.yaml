@@ -4,16 +4,17 @@ name : Java with maven
 on: 
    push:
     branches: 
-      - test 
+      - main
      
 jobs: 
   build:
     name:  "maven" 
     runs-on: ubuntu-24.04
-    steps: 
+    steps:
+      - uses: actions/checkout@v4 
       - name: My first step
         run: mvn package
-      - uses: actions/checkout@v4 
+       
         
        
 
