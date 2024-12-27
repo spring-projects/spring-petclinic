@@ -2,8 +2,10 @@
 
 name : Java with maven
 on: 
-   push
- 
+   push:
+    branches: 
+      - test 
+     
 jobs: 
   build:
     name:  "maven" 
@@ -11,7 +13,8 @@ jobs:
     steps: 
       - name: My first step
         run: mvn package
-      - uses:  actions/checkout@v4 
+      - uses: actions/checkout@v4 
+        
        
 
 
