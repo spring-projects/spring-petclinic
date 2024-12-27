@@ -7,7 +7,7 @@ pipeline {
         pollSCM('* * * * *')
     }
     tools {
-        maven 'MAVEN_3.8'
+        maven 'Maven_3.8'
         jdk 'JDK_17' 
     }
     stages {
@@ -18,22 +18,11 @@ pipeline {
             }
         }
         stage('build and package') {
-           steps{ 
-            rtMavenDeployer (
-                id: 'SPC_DEPLOYER',
-                serverId: 'JFROG_CLOUD',
-                releaseRepo: 'atdevops-libs-snapshot',
-                snapshotRepo: 'atdevops-libs-snapshot'
-            )
-            rtMavenRun (
-                tool: 'MAVEN_3.8',
-                deployerId: 'SPC_DEPLOYER',
-                pom: 'pom.xml',
-                goals: 'clean install'
-            )
-            rtPublishBuildInfo (
-                serverId: 'JFROG_CLOUD'
-            )
+           steps { 
+            withSonarQubeEnv('SONAR_CLOUD') {
+                sh 'mvn clean package:sonar -Dsonar.organization=Akhil-Tejas225 -Dsonar.token=65fa1d49335531273f064cf5bd21d6c43c30bbc9 -Dsonar.projectKey=spring-petclinic'
+
+            }
            }
            }
         stage('reporting'){
