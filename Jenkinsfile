@@ -7,7 +7,7 @@ pipeline {
         pollSCM('* * * * *')
     }
     tools {
-        maven 'Maven_3.8'
+        maven 'MAVEN_3.8'
         jdk 'JDK_17' 
     }
     stages {
