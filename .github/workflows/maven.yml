@@ -10,7 +10,12 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: print github context
-        run: echo "${{ toJson(github) }}"     
+        run: echo "${{ toJson(github) }}"
+      - shell: bash
+        env:
+          SUPER_SECRET: ${{ secrets.USERNAME }}
+        run: |
+          echo "$SUPER_SECRET"
 
 
 
