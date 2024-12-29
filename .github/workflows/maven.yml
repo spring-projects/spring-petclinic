@@ -1,0 +1,15 @@
+---
+name: CI with Maven
+on: # when to run 
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    name: "maven"
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: maven build
+        run: mvn package
+          
