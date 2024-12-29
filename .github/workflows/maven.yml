@@ -5,7 +5,7 @@ on: # when to run
     branches:
       - main
 jobs:
-  build:
+  buildwith17:
     name: "maven"
     runs-on: ubuntu-24.04
     steps:
@@ -17,4 +17,17 @@ jobs:
             java-version: '17'
       - name: maven build
         run: mvn package
+  buildwith21:
+    name: "maven"
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: setup jdk 21
+        uses: actions/setup-java@v4
+        with:
+            distribution: 'corretto' # See 'Supported distributions' for available options
+            java-version: '21'
+      - name: maven build
+        run: mvn package  
+
 
