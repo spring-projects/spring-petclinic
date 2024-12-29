@@ -1,0 +1,14 @@
+---
+name:
+  push:
+    branches:
+      - main
+
+jobs:
+  call-workflow-passing-data:
+    uses: Rk-Yadav7899/ReusableWorkflows/.github/workflows/maven-basic.yaml@main
+    with:
+      goal: package
+      java_version: '17'
+
+  
