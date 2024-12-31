@@ -129,7 +129,7 @@ class PetController {
 
 		String petName = pet.getName();
 
-		// checking if the pet name already exist for the owner
+		// checking if the pet name already exists for the owner
 		if (StringUtils.hasText(petName)) {
 			Pet existingPet = owner.getPet(petName, false);
 			if (existingPet != null && !existingPet.getId().equals(pet.getId())) {
@@ -146,10 +146,28 @@ class PetController {
 			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 		}
 
-		owner.addPet(pet);
-		this.owners.save(owner);
+		updatePetDetails(owner, pet);
 		redirectAttributes.addFlashAttribute("message", "Pet details has been edited");
 		return "redirect:/owners/{ownerId}";
+	}
+
+	/**
+	 * Updates the pet details if it exists or adds a new pet to the owner.
+	 * @param owner The owner of the pet
+	 * @param pet The pet with updated details
+	 */
+	private void updatePetDetails(Owner owner, Pet pet) {
+		Pet existingPet = owner.getPet(pet.getId());
+		if (existingPet != null) {
+			// Update existing pet's properties
+			existingPet.setName(pet.getName());
+			existingPet.setBirthDate(pet.getBirthDate());
+			existingPet.setType(pet.getType());
+		}
+		else {
+			owner.addPet(pet);
+		}
+		this.owners.save(owner);
 	}
 
 }
