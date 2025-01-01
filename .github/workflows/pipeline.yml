@@ -2,9 +2,9 @@ name: CI/CD Pipeline with Monitoring
 
 on:
   push:
-    branches: [ main ]
+    branches: [ pipeline-optimization  ]
   pull_request:
-    branches: [ main ]
+    branches: [ pipeline-optimization ]
 
 env:
   PROMETHEUS_URL: http://localhost:9090
