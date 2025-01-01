@@ -145,7 +145,7 @@ class PetController {
 		if (result.hasErrors()) {
 			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 		}
-		
+
 		owner.updatePet(pet);
 
 		this.owners.save(owner);
