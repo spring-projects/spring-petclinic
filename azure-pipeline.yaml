@@ -14,5 +14,9 @@ stages:
             testResultFiles:  '**/surefire-reports/TEST-*.xml'
             jdkVersionOption: '1.17'
             goals: validate
+
+
+
+            
         
      
