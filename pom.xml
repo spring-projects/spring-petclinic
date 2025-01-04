@@ -8,13 +8,11 @@
     <version>3.4.0</version>
     <relativePath />
   </parent>
-
   <scm>
-      <connection>scm:git:git://github.com/Piasecki-grid/maven-project</connection>
-    <developerConnection>scm:git:ssh://git@github.com:Piasecki-grid/maven-project</developerConnection>
-    <url>https://github.com/Piasecki-grid/maven-project</url>
-    <tag>spring-petclinic-4.2.1</tag>
-  </scm>
+      <connection>scm:git:git@github.com:Piasecki-grid/maven-project.git</connection>
+      <developerConnection>scm:git:git@github.com:Piasecki-grid/maven-project.git</developerConnection>
+      <url>https://github.com/Piasecki-grid/maven-project</url>
+    </scm>
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
   <version>4.2.1</version>
