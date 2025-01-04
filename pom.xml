@@ -10,8 +10,8 @@
   </parent>
 
   <scm>
-      <connection>scm:git:git://github.com/Piasecki-grid/maven-project.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com:Piasecki-grid/maven-project.git</developerConnection>
+      <connection>scm:git:git@github.com:Piasecki-grid/maven-project.git</connection>
+    <developerConnection>scm:git:git@github.com:Piasecki-grid/maven-project.git</developerConnection>
     <url>https://github.com/Piasecki-grid/maven-project</url>
   </scm>
   <groupId>org.springframework.samples</groupId>
