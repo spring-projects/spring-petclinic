@@ -10,8 +10,8 @@
   </parent>
 
   <scm>
-      <connection>scm:git:git://github.com/Piasecki-grid/maven-project</connection>
-    <developerConnection>scm:git:ssh://git@github.com:Piasecki-grid/maven-project</developerConnection>
+      <connection>scm:git:git://github.com/Piasecki-grid/maven-project.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com:Piasecki-grid/maven-project.git</developerConnection>
     <url>https://github.com/Piasecki-grid/maven-project</url>
   </scm>
   <groupId>org.springframework.samples</groupId>
@@ -161,6 +161,15 @@
 
   <build>
     <plugins>
+      <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-release-plugin</artifactId>
+    <version>3.0.1</version>
+    <configuration>
+        <serverId>github</serverId>
+    </configuration>
+</plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
