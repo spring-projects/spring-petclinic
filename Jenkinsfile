@@ -1,99 +1,110 @@
-#!/usr/bin/env groovy
-
 pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = 'dockerhub-credentials'
-        DOCKERHUB_USERNAME = 'marijastopa'
+        DOCKER_REPO_MAIN = 'marijastopa/main-jenkins'
+        DOCKER_REPO_MR = 'marijastopa/mr-jenkins'
+        GIT_COMMIT_SHORT = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
     }
 
     stages {
         stage('Prepare') {
             steps {
-                script {
-                    // Use Jenkins environment variable or fallback to git command
-                    env.GIT_BRANCH_NAME = env.BRANCH_NAME ?: sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true).trim()
-                    env.GIT_COMMIT_SHORT = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
-                    echo "Branch: ${env.GIT_BRANCH_NAME}"
-                    echo "Commit: ${env.GIT_COMMIT_SHORT}"
-                }
+                echo "Branch: ${env.BRANCH_NAME}"
+                echo "Commit: ${GIT_COMMIT_SHORT}"
             }
         }
-        
+
+        // Jobs for Merge Requests
         stage('Checkstyle') {
             when {
-                expression { return env.GIT_BRANCH_NAME != 'main' }
-            }
-            steps {
-                echo 'Running Checkstyle...'
-                sh "./gradlew checkstyleMain checkstyleTest"
-                // Archive checkstyle reports as artifacts
-                archiveArtifacts artifacts: 'build/reports/checkstyle/*.xml', fingerprint: true
-            }
-        }
-        
-        stage('Test') {
-            when {
-                expression { return env.GIT_BRANCH_NAME != 'main' }
-            }
-            steps {
-                echo 'Running tests...'
-                sh "./gradlew test"
-            }
-        }
-        
-        stage('Build without Tests') {
-            when {
-                expression { return env.GIT_BRANCH_NAME != 'main' }
-            }
-            steps {
-                echo 'Building application (excluding tests)...'
-                sh "./gradlew clean build -x test"
-            }
-        }
-        
-        stage('Docker Build & Push') {
-            steps {
-                script {
-                    // Decide which repo to push to based on the branch
-                    if (env.GIT_BRANCH_NAME == 'main') {
-                        // Main branch
-                        echo "Building Docker image for main-jenkins repo..."
-                        sh "docker build -t ${DOCKERHUB_USERNAME}/main-jenkins:${GIT_COMMIT_SHORT} ."
-
-                        // Login & push
-                        withCredentials([usernamePassword(
-                            credentialsId: "${DOCKERHUB_CREDENTIALS}",
-                            usernameVariable: 'DOCKER_USER',
-                            passwordVariable: 'DOCKER_PASS'
-                        )]) {
-                            sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
-                        }
-                        
-                        sh "docker push ${DOCKERHUB_USERNAME}/main-jenkins:${GIT_COMMIT_SHORT}"
-                        sh "docker tag ${DOCKERHUB_USERNAME}/main-jenkins:${GIT_COMMIT_SHORT} ${DOCKERHUB_USERNAME}/main-jenkins:latest"
-                        sh "docker push ${DOCKERHUB_USERNAME}/main-jenkins:latest"
-                        
-                    } else {
-                        // Feature or merge-request branch
-                        echo "Building Docker image for mr-jenkins repo..."
-                        sh "docker build -t ${DOCKERHUB_USERNAME}/mr-jenkins:${GIT_COMMIT_SHORT} ."
-
-                        withCredentials([usernamePassword(
-                            credentialsId: "${DOCKERHUB_CREDENTIALS}",
-                            usernameVariable: 'DOCKER_USER',
-                            passwordVariable: 'DOCKER_PASS'
-                        )]) {
-                            sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
-                        }
-
-                        sh "docker push ${DOCKERHUB_USERNAME}/mr-jenkins:${GIT_COMMIT_SHORT}"
-                        sh "docker tag ${DOCKERHUB_USERNAME}/mr-jenkins:${GIT_COMMIT_SHORT} ${DOCKERHUB_USERNAME}/mr-jenkins:latest"
-                        sh "docker push ${DOCKERHUB_USERNAME}/mr-jenkins:latest"
-                    }
+                expression {
+                    return env.BRANCH_NAME != 'main'
                 }
             }
+            steps {
+                echo "Running Checkstyle..."
+                sh './gradlew checkstyleMain checkstyleTest'
+                archiveArtifacts artifacts: '**/build/reports/checkstyle/*.xml', allowEmptyArchive: true
+                echo "Checkstyle completed and reports archived"
+            }
+        }
+
+        stage('Test') {
+            when {
+                expression {
+                    return env.BRANCH_NAME != 'main'
+                }
+            }
+            steps {
+                echo "Running Tests..."
+                sh './gradlew test'
+                junit '**/build/test-results/test/*.xml'
+            }
+        }
+
+        stage('Build without Tests') {
+            when {
+                expression {
+                    return env.BRANCH_NAME != 'main'
+                }
+            }
+            steps {
+                echo "Building without running tests..."
+                sh './gradlew clean build -x test'
+            }
+        }
+
+        stage('Docker Build & Push (Merge Request)') {
+            when {
+                expression {
+                    return env.BRANCH_NAME != 'main'
+                }
+            }
+            steps {
+                echo "Building Docker image for MR..."
+                sh "docker build -t ${DOCKER_REPO_MR}:${GIT_COMMIT_SHORT} ."
+                withCredentials([string(credentialsId: 'dockerhub-credentials', variable: 'DOCKER_PASS')]) {
+                    sh '''
+                        echo $DOCKER_PASS | docker login -u marijastopa --password-stdin
+                        docker push ${DOCKER_REPO_MR}:${GIT_COMMIT_SHORT}
+                        docker tag ${DOCKER_REPO_MR}:${GIT_COMMIT_SHORT} ${DOCKER_REPO_MR}:latest
+                        docker push ${DOCKER_REPO_MR}:latest
+                    '''
+                }
+            }
+        }
+
+        // Jobs for Main Branch
+        stage('Docker Build & Push (Main Branch)') {
+            when {
+                branch 'main'
+            }
+            steps {
+                echo "Building Docker image for main branch..."
+                sh "docker build -t ${DOCKER_REPO_MAIN}:${GIT_COMMIT_SHORT} ."
+                withCredentials([string(credentialsId: 'dockerhub-credentials', variable: 'DOCKER_PASS')]) {
+                    sh '''
+                        echo $DOCKER_PASS | docker login -u marijastopa --password-stdin
+                        docker push ${DOCKER_REPO_MAIN}:${GIT_COMMIT_SHORT}
+                        docker tag ${DOCKER_REPO_MAIN}:${GIT_COMMIT_SHORT} ${DOCKER_REPO_MAIN}:latest
+                        docker push ${DOCKER_REPO_MAIN}:latest
+                    '''
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            echo "Cleaning up Docker images..."
+            sh 'docker rmi $(docker images -f "dangling=true" -q) || true'
+        }
+        success {
+            echo "Pipeline completed successfully!"
+        }
+        failure {
+            echo "Pipeline failed. Check logs for errors."
         }
     }
 }
