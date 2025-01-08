@@ -12,9 +12,7 @@ pipeline {
         stage('Prepare') {
             steps {
                 script {
-                    // Grab branch name
                     env.GIT_BRANCH_NAME = sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true).trim()
-                    // Grab short commit
                     env.GIT_COMMIT_SHORT = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
                     echo "Branch: ${env.GIT_BRANCH_NAME}"
                     echo "Commit: ${env.GIT_COMMIT_SHORT}"
@@ -29,7 +27,6 @@ pipeline {
             steps {
                 echo 'Running Checkstyle...'
                 sh "./gradlew checkstyleMain checkstyleTest"
-                // Archive checkstyle reports as artifacts
                 archiveArtifacts artifacts: 'build/reports/checkstyle/*.xml', fingerprint: true
             }
         }
@@ -57,44 +54,22 @@ pipeline {
         stage('Docker Build & Push') {
             steps {
                 script {
-                    // Decide which repo to push to based on the branch
-                    if (env.GIT_BRANCH_NAME == 'main') {
-                        // main branch
-                        echo "Building Docker image for MAIN repo..."
-                        sh "docker build -t ${DOCKERHUB_USERNAME}/main-jenkins:${GIT_COMMIT_SHORT} ."
-
-                        // Login & push
-                        withCredentials([usernamePassword(
-                            credentialsId: "${DOCKERHUB_CREDENTIALS}",
-                            usernameVariable: 'DOCKER_USER',
-                            passwordVariable: 'DOCKER_PASS'
-                        )]) {
-                            sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
-                        }
-                        
-                        sh "docker push ${DOCKERHUB_USERNAME}/main-jenkins:${GIT_COMMIT_SHORT}"
-                        // Optional: push latest tag
-                        sh "docker tag ${DOCKERHUB_USERNAME}/main-jenkins:${GIT_COMMIT_SHORT} ${DOCKERHUB_USERNAME}/main-jenkins:latest"
-                        sh "docker push ${DOCKERHUB_USERNAME}/main-jenkins:latest"
-                        
-                    } else {
-                        // merge-request or feature branch
-                        echo "Building Docker image for MR repo..."
-                        sh "docker build -t ${DOCKERHUB_USERNAME}/mr-jenkins:${GIT_COMMIT_SHORT} ."
-
-                        withCredentials([usernamePassword(
-                            credentialsId: "${DOCKERHUB_CREDENTIALS}",
-                            usernameVariable: 'DOCKER_USER',
-                            passwordVariable: 'DOCKER_PASS'
-                        )]) {
-                            sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
-                        }
-
-                        sh "docker push ${DOCKERHUB_USERNAME}/mr-jenkins:${GIT_COMMIT_SHORT}"
-                        // Optional: push latest tag
-                        sh "docker tag ${DOCKERHUB_USERNAME}/mr-jenkins:${GIT_COMMIT_SHORT} ${DOCKERHUB_USERNAME}/mr-jenkins:latest"
-                        sh "docker push ${DOCKERHUB_USERNAME}/mr-jenkins:latest"
+                    def dockerRepo = (env.GIT_BRANCH_NAME == 'main') ? 'main-jenkins' : 'mr-jenkins'
+                    
+                    echo "Building Docker image for ${dockerRepo} repo..."
+                    sh "docker build -t ${DOCKERHUB_USERNAME}/${dockerRepo}:${GIT_COMMIT_SHORT} ."
+                    
+                    withCredentials([usernamePassword(
+                        credentialsId: "${DOCKERHUB_CREDENTIALS}",
+                        usernameVariable: 'DOCKER_USER',
+                        passwordVariable: 'DOCKER_PASS'
+                    )]) {
+                        sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
                     }
+                    
+                    sh "docker push ${DOCKERHUB_USERNAME}/${dockerRepo}:${GIT_COMMIT_SHORT}"
+                    sh "docker tag ${DOCKERHUB_USERNAME}/${dockerRepo}:${GIT_COMMIT_SHORT} ${DOCKERHUB_USERNAME}/${dockerRepo}:latest"
+                    sh "docker push ${DOCKERHUB_USERNAME}/${dockerRepo}:latest"
                 }
             }
         }
