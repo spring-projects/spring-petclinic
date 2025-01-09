@@ -19,3 +19,19 @@ services:
       - POSTGRES_PASSWORD=petclinic
       - POSTGRES_USER=petclinic
       - POSTGRES_DB=petclinic
+
+  phpmyadmin:
+    image: phpmyadmin
+    ports:
+      - 8088:80
+    environment:
+      - PMA_HOST=mysql
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: petclinic
+    ports:
+      - "5050:80"
