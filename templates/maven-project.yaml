@@ -1,0 +1,21 @@
+steps:
+ - task: Maven@4
+    inputs:
+    mavemPOMFile: pom.xml
+    goals: package
+    publishJUnitResults: true
+    testResultFiles:  '**/surefire-reports/TEST-*.xml'
+    jdkVersionOption: 'default'
+    sonarQubeRunAnalysis: true
+- task: CopyFiles@2
+  inputs:
+    contents: '**/java-hello-world-with-maven*.jar'
+    targetFolder: $(Build.ArtifactStagingDirectory)
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: $(Build.ArtifactStagingDirectory)
+    artifactName: $(Build.Repository.Name)
+- task: SonarCloudPublish@3
+  inputs:
+    pollingTimeoutSec: '300'
+  
