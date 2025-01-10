@@ -7,6 +7,15 @@ pipeline {
         DOCKER_CREDENTIALS_ID = 'dockerhub-credentials'  // Jenkins credential ID for Docker Hub
     }
     stages {
+        stage('Verify Docker Version') {
+            agent {
+                docker { image "${DOCKER_BUILD_IMAGE}" }
+            }
+            steps {
+                echo 'Checking Docker version...'
+                sh 'docker --version'
+            }
+       }
         stage('Checkstyle') {
             when {
                 expression { env.CHANGE_ID != null }  // Only run for merge requests
