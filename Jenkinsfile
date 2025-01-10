@@ -2,7 +2,8 @@ pipeline {
     agent any
     environment {
         GRADLE_BUILD_IMAGE = "gradle:8.12.0-jdk17"
-        DOCKER_BUILD_IMAGE = "docker:27"
+        DOCKER_VERSION = "27.3.1"  
+        DOCKER_BUILD_IMAGE = "docker:${DOCKER_VERSION}"  /
         DOCKER_CREDENTIALS_ID = 'dockerhub-credentials'  // Jenkins credential ID for Docker Hub
     }
     stages {
