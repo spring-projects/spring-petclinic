@@ -11,11 +11,8 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git {
-                    url: 'git@github.com:Nalexx06/spring-petclinic.git'
-                    credentialsId: "nalexx06_github_ssh"
-                    branch: 'dev'
-                }
+                git url: 'git@github.com:Nalexx06/spring-petclinic.git', credentialsId: "nalexx06_github_ssh", branch: 'dev'
+
             }
         }
         stage('Build & Test') {
