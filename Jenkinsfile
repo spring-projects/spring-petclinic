@@ -1,15 +1,17 @@
 pipeline {
     agent any
     environment {
+        DOCKER_REPO_MAIN = 'marijastopa/main-jenkins'
+        DOCKER_REPO_MR = 'marijastopa/mr-jenkins'
+        GIT_COMMIT_SHORT = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
         DOCKER_IMAGE_MAIN = 'marijastopa/main-jenkins'
         DOCKER_IMAGE_MR = 'marijastopa/mr-jenkins'
-        GRADLE_BUILD_IMAGE = "gradle:8.12.0-jdk17"
-        DOCKER_BUILD_IMAGE = "docker:27"
-        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials'  // Jenkins credential ID for Docker Hub
     }
     stages {
         stage('Prepare') {
             steps {
+                echo "Branch: ${env.BRANCH_NAME}"
+                echo "Commit: ${GIT_COMMIT_SHORT}"
                 echo "Preparing environment..."
                 script {
                     BRANCH_NAME = env.BRANCH_NAME ?: 'main'
@@ -19,67 +21,65 @@ pipeline {
                 }
             }
         }
+        // Jobs for Merge Requests
         stage('Checkstyle') {
             when {
                 expression {
+                    return env.BRANCH_NAME != 'main'
                     BRANCH_NAME != 'main'
                 }
-                expression { env.CHANGE_ID != null }  // Only run for merge requests
-            }
-            agent {
-                docker { image "${GRADLE_BUILD_IMAGE}" }
             }
             steps {
                 echo "Running Checkstyle..."
                 sh './gradlew checkstyleMain checkstyleTest'
                 archiveArtifacts artifacts: '**/build/reports/checkstyle/*.xml', allowEmptyArchive: true
-                sh 'gradle checkstyleMain'
-                archiveArtifacts artifacts: 'build/reports/checkstyle/**/*', allowEmptyArchive: true
+                echo "Checkstyle completed and reports archived"
             }
         }
         stage('Test') {
             when {
                 expression {
+                    return env.BRANCH_NAME != 'main'
                     BRANCH_NAME != 'main'
                 }
-                expression { env.CHANGE_ID != null }  // Only run for merge requests
-            }
-            agent {
-                docker { image "${GRADLE_BUILD_IMAGE}" }
             }
             steps {
+                echo "Running Tests..."
                 echo "Running tests..."
                 sh './gradlew test'
-                sh 'gradle test'
+                junit '**/build/test-results/test/*.xml'
             }
         }
         stage('Build without Tests') {
             when {
                 expression {
+                    return env.BRANCH_NAME != 'main'
                     BRANCH_NAME != 'main'
                 }
-                expression { env.CHANGE_ID != null }  // Only run for merge requests
-            }
-            agent {
-                docker { image "${GRADLE_BUILD_IMAGE}" }
             }
             steps {
+                echo "Building without running tests..."
                 echo "Building application (without tests)..."
                 sh './gradlew clean build -x test'
-                sh 'gradle clean build -x test'
             }
         }
         stage('Docker Build & Push (Merge Request)') {
             when {
                 expression {
+                    return env.BRANCH_NAME != 'main'
                     BRANCH_NAME != 'main'
                 }
-                expression { env.CHANGE_ID != null }  // Only run for merge requests
-            }
-            agent {
-                docker { image "${DOCKER_BUILD_IMAGE}" }
             }
             steps {
+                echo "Building Docker image for MR..."
+                sh "docker build -t ${DOCKER_REPO_MR}:${GIT_COMMIT_SHORT} ."
+                withCredentials([string(credentialsId: 'dockerhub-credentials', variable: 'DOCKER_PASS')]) {
+                    sh '''
+                        echo $DOCKER_PASS | docker login -u marijastopa --password-stdin
+                        docker push ${DOCKER_REPO_MR}:${GIT_COMMIT_SHORT}
+                        docker tag ${DOCKER_REPO_MR}:${GIT_COMMIT_SHORT} ${DOCKER_REPO_MR}:latest
+                        docker push ${DOCKER_REPO_MR}:latest
+                    '''
                 echo "Building Docker image for merge request..."
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                     sh """
@@ -89,25 +89,24 @@ pipeline {
                         docker tag $DOCKER_IMAGE_MR:${COMMIT} $DOCKER_IMAGE_MR:latest
                         docker push $DOCKER_IMAGE_MR:latest
                     """
-                withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sh '''
-                        echo "$DOCKER_PASS" | docker login --username "$DOCKER_USER" --password-stdin
-                        docker build -t marijastopa/mr-jenkins:${GIT_COMMIT:0:7} .
-                        docker push marijastopa/mr-jenkins:${GIT_COMMIT:0:7}
-                    '''
                 }
             }
         }
+        // Jobs for Main Branch
         stage('Docker Build & Push (Main Branch)') {
             when {
                 branch 'main'
-                branch 'main'  // Only run for the main branch
-            }
-            agent {
-                docker { image "${DOCKER_BUILD_IMAGE}" }
             }
             steps {
                 echo "Building Docker image for main branch..."
+                sh "docker build -t ${DOCKER_REPO_MAIN}:${GIT_COMMIT_SHORT} ."
+                withCredentials([string(credentialsId: 'dockerhub-credentials', variable: 'DOCKER_PASS')]) {
+                    sh '''
+                        echo $DOCKER_PASS | docker login -u marijastopa --password-stdin
+                        docker push ${DOCKER_REPO_MAIN}:${GIT_COMMIT_SHORT}
+                        docker tag ${DOCKER_REPO_MAIN}:${GIT_COMMIT_SHORT} ${DOCKER_REPO_MAIN}:latest
+                        docker push ${DOCKER_REPO_MAIN}:latest
+                    '''
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                     sh """
                         docker build -t $DOCKER_IMAGE_MAIN:${COMMIT} .
@@ -116,12 +115,6 @@ pipeline {
                         docker tag $DOCKER_IMAGE_MAIN:${COMMIT} $DOCKER_IMAGE_MAIN:latest
                         docker push $DOCKER_IMAGE_MAIN:latest
                     """
-                withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sh '''
-                        echo "$DOCKER_PASS" | docker login --username "$DOCKER_USER" --password-stdin
-                        docker build -t marijastopa/main-jenkins:latest .
-                        docker push marijastopa/main-jenkins:latest
-                    '''
                 }
             }
         }
@@ -129,24 +122,21 @@ pipeline {
     post {
         always {
             echo "Cleaning up Docker images..."
+            sh 'docker rmi $(docker images -f "dangling=true" -q) || true'
+        }
+        success {
+            echo "Pipeline completed successfully!"
             sh """
                 docker ps -a -q | xargs docker rm -f || true
                 docker images -f dangling=true -q | xargs docker rmi -f || true
             """
         }
         failure {
+            echo "Pipeline failed. Check logs for errors."
             echo 'Pipeline failed. Check logs for errors.'
-            echo 'Cleaning up Docker images...'
-            sh '''
-                docker ps -a -q | xargs --no-run-if-empty docker rm -f
-                docker images -f dangling=true -q | xargs --no-run-if-empty docker rmi -f
-            '''
         }
         success {
             echo 'Pipeline executed successfully!'
-        }
-        failure {
-            echo 'Pipeline failed. Check logs for errors.'
         }
     }
 }
