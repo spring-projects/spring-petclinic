@@ -1,11 +1,11 @@
 pipeline {
     agent any
-//    triggers {
-//        pollSCM('H/5 * * * *') // Watches the `dev` branch
-//    }
+    triggers {
+        pollSCM('H/5 * * * *') // Watches the `dev` branch
+    }
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('nalexxgd_docker_pass')
-        DOCKERHUB_USERNAME = "nalexxgd"
+        DOCKERHUB_CREDENTIALS = credentials('nalexx6_docker_pass')
+        DOCKERHUB_USERNAME = "nalexx6"
         NEXUS_URL = 'localhost:8081'
         def ARTIFACT_VERSION = sh(script: "mvn help:evaluate -Dexpression=project.version -q -DforceStdout", returnStdout: true).trim()
 
