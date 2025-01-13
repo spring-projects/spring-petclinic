@@ -33,7 +33,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh "DOCKER_BUILDKIT=0 docker build --build-arg ARTIFACT_VERSION=${ARTIFACT_VERSION} ARTIFACT_PATH=${ARTIFACT_PATH} -t petclinic:${ARTIFACT_VERSION} ."
+                    sh "DOCKER_BUILDKIT=0 docker build --build-arg ARTIFACT_VERSION=${ARTIFACT_VERSION} --build-arg ARTIFACT_PATH=${ARTIFACT_PATH} -t petclinic:${ARTIFACT_VERSION} ."
                     sh "docker tag petclinic:${ARTIFACT_VERSION} ${DOCKERHUB_USERNAME}/petclinic:${ARTIFACT_VERSION}"
                     sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_CREDENTIALS}"
                     sh "docker push ${DOCKERHUB_USERNAME}/petclinic:${ARTIFACT_VERSION}"
