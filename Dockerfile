@@ -7,8 +7,10 @@ WORKDIR /app
 # Define a build argument for the artifact version
 ARG ARTIFACT_VERSION
 
+ARG ARTIFACT_PATH
+
 # Copy the JAR file into the image dynamically using the provided version
-COPY target/spring-petclinic-${ARTIFACT_VERSION}.jar app.jar
+COPY ${ARTIFACT_PATH}/petclinic-${ARTIFACT_VERSION}.jar app.jar
 
 # Expose port 80 for the application
 EXPOSE 80
