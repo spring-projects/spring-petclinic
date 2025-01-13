@@ -1,8 +1,8 @@
 pipeline {
     agent any
-    triggers {
-        pollSCM('H/5 * * * *') // Watches the `dev` branch
-    }
+//    triggers {
+//        pollSCM('H/5 * * * *') // Watches the `dev` branch
+//    }
     environment {
         DOCKERHUB_CREDENTIALS = credentials('nalexxgd-docker-pass')
         DOCKERHUB_USERNAME = "nalexxgd"
@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git url: 'https://github.com/spring-projects/spring-petclinic.git', branch: 'main'
+                git url: 'https://github.com/Nalexx06/spring-petclinic.git', branch: 'dev'
 
             }
         }
