@@ -331,6 +331,14 @@
       <name>Spring Milestones</name>
       <url>https://repo.spring.io/milestone</url>
     </pluginRepository>
+    <pluginRepository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>mvn-central</id>
+      <name>MVN central</name>
+      <url>https://mvnrepository.com</url>
+    </pluginRepository>
   </pluginRepositories>
 
   <profiles>
