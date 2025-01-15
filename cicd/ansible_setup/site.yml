@@ -1,0 +1,7 @@
+---
+- hosts: local
+  roles:
+    - jenkins_master
+    - jenkins_agent
+    - nexus
+

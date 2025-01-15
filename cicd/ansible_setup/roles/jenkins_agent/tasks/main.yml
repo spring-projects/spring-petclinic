@@ -1,0 +1,10 @@
+---
+
+- name: Start Jenkins agent
+  shell: |
+    curl -sO {{ jenkins_url }}/jnlpJars/agent.jar;
+    java -jar agent.jar -url {{ jenkins_url }} -secret {{ jenkins_agent_secret }} -name agent1 -webSocket -workDir "{{ jenkins_agent_dir }}"
+  args:
+  become: true
+  async: 60
+  poll: 0

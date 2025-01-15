@@ -1,0 +1,3 @@
+---
+jenkins_agent_dir: "/tmp/jenkins-agent"
+jenkins_agent_secret: <jenkins-secret-token>

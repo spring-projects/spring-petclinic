@@ -1,0 +1,13 @@
+---
+- name: Install Jenkins
+  homebrew:
+    name: jenkins-lts
+    state: present
+
+- name: Start Jenkins Controller
+  shell: |
+    nohup /opt/homebrew/opt/openjdk@21/bin/java -Dmail.smtp.starttls.enable\=true -jar /opt/homebrew/opt/jenkins-lts/libexec/jenkins.war --httpListenAddress\=127.0.0.1 --httpPort\=8080
+  become: true
+  async: 60
+  poll: 0
+  ignore_errors: true

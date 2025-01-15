@@ -1,0 +1,18 @@
+---
+- name: Unarchive Nexus package
+  unarchive:
+    src: "{{ nexus_dir }}/nexus.tar.gz"
+    dest: "/opt"
+    remote_src: yes
+    creates: "{{ nexus_dir }}/nexus-3.43.0-01"
+
+- name: Start Nexus repository
+  shell: |
+    nohup {{ nexus_dir }}/nexus-3.43.0-01/bin/nexus run
+  become: true
+  async: 60
+  poll: 0
+  ignore_errors: true
+
+
+
