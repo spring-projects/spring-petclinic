@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label 'agent1'
+    }
     parameters {
         string(name: 'ARTIFACT_VERSION', description: 'Version of the artifact to deploy')
     }

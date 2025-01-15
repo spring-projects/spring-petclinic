@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label 'agent1'
+    }
     parameters {
         string(name: 'SNAPSHOT_VERSION', description: 'Snapshot version to promote')
     }
@@ -26,7 +28,7 @@ pipeline {
         stage('Promote Artifact to Release') {
             steps {
                 script {
-                    sh "mvn deploy:deploy-file -DgroupId=org -DartifactId=petclinic -Dversion=${RELEASE_VERSION} -Dpackaging=jar -Dfile=petclinic-${RELEASE_VERSION}.jar -DrepositoryId=maven-releases -Durl=${NEXUS_RELEASE_URL} --settings settings.xml"
+                    sh "./mvnw deploy:deploy-file -DgroupId=org -DartifactId=petclinic -Dversion=${RELEASE_VERSION} -Dpackaging=jar -Dfile=petclinic-${RELEASE_VERSION}.jar -DrepositoryId=maven-releases -Durl=${NEXUS_RELEASE_URL} --settings settings.xml"
                 }
             }
         }

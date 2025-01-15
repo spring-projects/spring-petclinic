@@ -1,12 +1,14 @@
 pipeline {
-    agent any
+    agent {
+        label 'agent1'
+    }
     triggers {
         pollSCM('H/5 * * * *') // Adjust polling interval as needed
     }
     stages {
         stage('Checkout Code') {
             steps {
-                git url: 'https://github.com/spring-projects/spring-petclinic.git', branch: 'main'
+                git url: 'https://github.com/Nalexx06/spring-petclinic.git', branch: 'dev'
             }
         }
         stage('Build & Test') {
