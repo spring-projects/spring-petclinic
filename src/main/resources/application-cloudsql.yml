@@ -1,0 +1,19 @@
+database: postgres
+spring:
+  sql:
+    init:
+      mode: always
+  cloud:
+    gcp:
+      sql:
+        database-name: ${DB_NAME}
+        enable-iam-auth: true
+        instance-connection-name: ${INSTANCE_CONNECTION_NAME}
+        sslmode: disable
+  datasource:
+    url: jdbc:postgresql:///${DB_NAME}?socketFactory=com.google.cloud.sql.postgres.SocketFactory&cloudSqlInstance=${INSTANCE_CONNECTION_NAME}&enableIamAuth=true&user=${DB_USER}&password=dummy&sslmode=disable
+    username: ${DB_USER}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
