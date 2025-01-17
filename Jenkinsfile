@@ -1,76 +1,69 @@
 pipeline {
-    agent {
-        docker {
-            image 'docker:20.10.8-dind' // Docker DinD image
-            args '--privileged -v /var/lib/docker:/var/lib/docker'
-        }
-    }
+    agent any
 
     environment {
-        DOCKER_IMAGE_NAME = "mr-jenkins" 
-        DOCKER_MAIN_REPO = "main-jenkins"
-        SHORT_COMMIT = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim() 
-        DOCKERHUB_REPO = "marijastopa"
+        GIT_COMMIT_SHORT = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
+        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials' 
+        DOCKERHUB_USER = 'marijastopa'
+        DOCKERHUB_REPO_MAIN = 'main-jenkins'
+        DOCKERHUB_REPO_MR = 'mr-jenkins'
     }
 
     stages {
         stage('Checkstyle') {
             when {
-                not { branch 'main' } // merge request
+                not {
+                    branch 'main'
+                }
             }
             steps {
+                echo 'Running Checkstyle...'
                 sh './mvnw checkstyle:checkstyle'
-                archiveArtifacts artifacts: 'target/site/checkstyle.html', fingerprint: true
+                archiveArtifacts artifacts: 'target/site/checkstyle.html', allowEmptyArchive: true
             }
         }
+
         stage('Test') {
             when {
-                not { branch 'main' } // merge request
+                not {
+                    branch 'main'
+                }
             }
             steps {
+                echo 'Running Tests...'
                 sh './mvnw clean test'
             }
         }
+
         stage('Build') {
             when {
-                not { branch 'main' } // merge request
+                not {
+                    branch 'main'
+                }
             }
             steps {
+                echo 'Building application...'
                 sh './mvnw clean package -DskipTests'
             }
         }
+
         stage('Create Docker Image') {
             steps {
+                echo 'Creating Docker Image...'
                 script {
-                    def repoName = BRANCH_NAME == 'main' ? DOCKER_MAIN_REPO : DOCKER_IMAGE_NAME
-                    def tag = "${DOCKERHUB_REPO}/${repoName}:${SHORT_COMMIT}"
-                    sh "docker build -t ${tag} ."
-                }
-            }
-        }
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    def repoName = BRANCH_NAME == 'main' ? DOCKER_MAIN_REPO : DOCKER_IMAGE_NAME
-                    def tag = "${DOCKERHUB_REPO}/${repoName}:${SHORT_COMMIT}"
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
-                        sh "docker push ${tag}"
+                    def dockerRepo = BRANCH_NAME == 'main' ? DOCKERHUB_REPO_MAIN : DOCKERHUB_REPO_MR
+                    def imageTag = "${DOCKERHUB_USER}/${dockerRepo}:${GIT_COMMIT_SHORT}"
+                    
+                    withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS_ID, usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                        sh """
+                            echo "$PASSWORD" | docker login -u "$USERNAME" --password-stdin
+                            docker build -t ${imageTag} .
+                            docker push ${imageTag}
+                            docker logout
+                        """
                     }
                 }
             }
-        }
-    }
-
-    post {
-        always {
-            echo 'Pipeline completed.'
-        }
-        success {
-            echo 'Pipeline completed successfully.'
-        }
-        failure {
-            echo 'Pipeline failed.'
         }
     }
 }
