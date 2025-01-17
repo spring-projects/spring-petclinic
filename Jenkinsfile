@@ -1,10 +1,13 @@
 pipeline {
     agent any
+    tools {
+        maven 'Maven 3' // Global Tool Configuration
+    }
     environment {
         DOCKERHUB_USERNAME = credentials('dockerhub') 
         DOCKERHUB_PASSWORD = credentials('dockerhub') 
-        DOCKER_IMAGE_MR = "marijastopa/mr-jenkins"
-        DOCKER_IMAGE_MAIN = "marijastopa/main-jenkins"
+        DOCKER_IMAGE_MR = "marijastopa/mr-jenkins" 
+        DOCKER_IMAGE_MAIN = "marijastopa/main-jenkins" 
     }
     stages {
         stage('Checkstyle') {
@@ -28,7 +31,7 @@ pipeline {
         }
         stage('Build and Push Docker Image (Merge Request)') {
             when {
-                branch 'develop'
+                branch 'develop' 
             }
             steps {
                 script {
@@ -42,7 +45,7 @@ pipeline {
         }
         stage('Build and Push Docker Image (Main)') {
             when {
-                branch 'main'
+                branch 'main' 
             }
             steps {
                 script {
