@@ -1,9 +1,9 @@
 pipeline {
     agent any
     environment {
-        DOCKERHUB_USERNAME = credentials('dockerhub-username') 
-        DOCKERHUB_PASSWORD = credentials('dockerhub-password')
-        DOCKER_IMAGE_MR = "marijastopa/mr-jenkins" 
+        DOCKERHUB_USERNAME = credentials('dockerhub') 
+        DOCKERHUB_PASSWORD = credentials('dockerhub') 
+        DOCKER_IMAGE_MR = "marijastopa/mr-jenkins"
         DOCKER_IMAGE_MAIN = "marijastopa/main-jenkins"
     }
     stages {
@@ -28,7 +28,7 @@ pipeline {
         }
         stage('Build and Push Docker Image (Merge Request)') {
             when {
-                branch 'develop' // Radi samo za granu develop
+                branch 'develop'
             }
             steps {
                 script {
@@ -42,7 +42,7 @@ pipeline {
         }
         stage('Build and Push Docker Image (Main)') {
             when {
-                branch 'main' // Radi samo za granu main
+                branch 'main'
             }
             steps {
                 script {
