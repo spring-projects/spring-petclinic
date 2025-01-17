@@ -1,0 +1,146 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > OwnerRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org.springframework.samples.petclinic.owner</a>
+</div>
+
+<h1>Coverage Summary for Class: OwnerRepository (org.springframework.samples.petclinic.owner)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">OwnerRepository</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2012-2019 the original author or authors.
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *      https://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package org.springframework.samples.petclinic.owner;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;import jakarta.annotation.Nonnull;
+&nbsp;import org.springframework.data.domain.Page;
+&nbsp;import org.springframework.data.domain.Pageable;
+&nbsp;import org.springframework.data.jpa.repository.JpaRepository;
+&nbsp;import org.springframework.data.jpa.repository.Query;
+&nbsp;import org.springframework.transaction.annotation.Transactional;
+&nbsp;
+&nbsp;/**
+&nbsp; * Repository class for &lt;code&gt;Owner&lt;/code&gt; domain objects All method names are compliant
+&nbsp; * with Spring Data naming conventions so this interface can easily be extended for Spring
+&nbsp; * Data. See:
+&nbsp; * https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories.query-methods.query-creation
+&nbsp; *
+&nbsp; * @author Ken Krebs
+&nbsp; * @author Juergen Hoeller
+&nbsp; * @author Sam Brannen
+&nbsp; * @author Michael Isvy
+&nbsp; * @author Wick Dynex
+&nbsp; */
+&nbsp;public interface OwnerRepository extends JpaRepository&lt;Owner, Integer&gt; {
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Retrieve all {@link PetType}s from the data store.
+&nbsp;	 * @return a Collection of {@link PetType}s.
+&nbsp;	 */
+&nbsp;	@Query(&quot;SELECT ptype FROM PetType ptype ORDER BY ptype.name&quot;)
+&nbsp;	List&lt;PetType&gt; findPetTypes();
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Retrieve {@link Owner}s from the data store by last name, returning all owners
+&nbsp;	 * whose last name &lt;i&gt;starts&lt;/i&gt; with the given name.
+&nbsp;	 * @param lastName Value to search for
+&nbsp;	 * @return a Collection of matching {@link Owner}s (or an empty Collection if none
+&nbsp;	 * found)
+&nbsp;	 */
+&nbsp;	Page&lt;Owner&gt; findByLastNameStartingWith(String lastName, Pageable pageable);
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Retrieve an {@link Owner} from the data store by id.
+&nbsp;	 * &lt;p&gt;
+&nbsp;	 * This method returns an {@link Optional} containing the {@link Owner} if found. If
+&nbsp;	 * no {@link Owner} is found with the provided id, it will return an empty
+&nbsp;	 * {@link Optional}.
+&nbsp;	 * &lt;/p&gt;
+&nbsp;	 * @param id the id to search for
+&nbsp;	 * @return an {@link Optional} containing the {@link Owner} if found, or an empty
+&nbsp;	 * {@link Optional} if not found.
+&nbsp;	 * @throws IllegalArgumentException if the id is null (assuming null is not a valid
+&nbsp;	 * input for id)
+&nbsp;	 */
+&nbsp;	Optional&lt;Owner&gt; findById(@Nonnull Integer id);
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Returns all the owners from data store
+&nbsp;	 **/
+&nbsp;	Page&lt;Owner&gt; findAll(Pageable pageable);
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-01-16 22:35</div>
+</div>
+</body>
+</html>

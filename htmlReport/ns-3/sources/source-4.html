@@ -1,0 +1,271 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > PetController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org.springframework.samples.petclinic.owner</a>
+</div>
+
+<h1>Coverage Summary for Class: PetController (org.springframework.samples.petclinic.owner)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PetController</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/26)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/42)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2012-2019 the original author or authors.
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *      https://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package org.springframework.samples.petclinic.owner;
+&nbsp;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.util.Collection;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;import org.springframework.stereotype.Controller;
+&nbsp;import org.springframework.ui.ModelMap;
+&nbsp;import org.springframework.util.StringUtils;
+&nbsp;import org.springframework.validation.BindingResult;
+&nbsp;import org.springframework.web.bind.WebDataBinder;
+&nbsp;import org.springframework.web.bind.annotation.GetMapping;
+&nbsp;import org.springframework.web.bind.annotation.InitBinder;
+&nbsp;import org.springframework.web.bind.annotation.ModelAttribute;
+&nbsp;import org.springframework.web.bind.annotation.PathVariable;
+&nbsp;import org.springframework.web.bind.annotation.PostMapping;
+&nbsp;import org.springframework.web.bind.annotation.RequestMapping;
+&nbsp;
+&nbsp;import jakarta.validation.Valid;
+&nbsp;import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+&nbsp;
+&nbsp;/**
+&nbsp; * @author Juergen Hoeller
+&nbsp; * @author Ken Krebs
+&nbsp; * @author Arjen Poutsma
+&nbsp; * @author Wick Dynex
+&nbsp; */
+&nbsp;@Controller
+&nbsp;@RequestMapping(&quot;/owners/{ownerId}&quot;)
+&nbsp;class PetController {
+&nbsp;
+&nbsp;	private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = &quot;pets/createOrUpdatePetForm&quot;;
+&nbsp;
+&nbsp;	private final OwnerRepository owners;
+&nbsp;
+<b class="nc">&nbsp;	public PetController(OwnerRepository owners) {</b>
+<b class="nc">&nbsp;		this.owners = owners;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@ModelAttribute(&quot;types&quot;)
+&nbsp;	public Collection&lt;PetType&gt; populatePetTypes() {
+<b class="nc">&nbsp;		return this.owners.findPetTypes();</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@ModelAttribute(&quot;owner&quot;)
+&nbsp;	public Owner findOwner(@PathVariable(&quot;ownerId&quot;) int ownerId) {
+<b class="nc">&nbsp;		Optional&lt;Owner&gt; optionalOwner = this.owners.findById(ownerId);</b>
+<b class="nc">&nbsp;		Owner owner = optionalOwner.orElseThrow(() -&gt; new IllegalArgumentException(</b>
+&nbsp;				&quot;Owner not found with id: &quot; + ownerId + &quot;. Please ensure the ID is correct &quot;));
+<b class="nc">&nbsp;		return owner;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@ModelAttribute(&quot;pet&quot;)
+&nbsp;	public Pet findPet(@PathVariable(&quot;ownerId&quot;) int ownerId,
+&nbsp;			@PathVariable(name = &quot;petId&quot;, required = false) Integer petId) {
+&nbsp;
+<b class="nc">&nbsp;		if (petId == null) {</b>
+<b class="nc">&nbsp;			return new Pet();</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		Optional&lt;Owner&gt; optionalOwner = this.owners.findById(ownerId);</b>
+<b class="nc">&nbsp;		Owner owner = optionalOwner.orElseThrow(() -&gt; new IllegalArgumentException(</b>
+&nbsp;				&quot;Owner not found with id: &quot; + ownerId + &quot;. Please ensure the ID is correct &quot;));
+<b class="nc">&nbsp;		return owner.getPet(petId);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@InitBinder(&quot;owner&quot;)
+&nbsp;	public void initOwnerBinder(WebDataBinder dataBinder) {
+<b class="nc">&nbsp;		dataBinder.setDisallowedFields(&quot;id&quot;);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@InitBinder(&quot;pet&quot;)
+&nbsp;	public void initPetBinder(WebDataBinder dataBinder) {
+<b class="nc">&nbsp;		dataBinder.setValidator(new PetValidator());</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@GetMapping(&quot;/pets/new&quot;)
+&nbsp;	public String initCreationForm(Owner owner, ModelMap model) {
+<b class="nc">&nbsp;		Pet pet = new Pet();</b>
+<b class="nc">&nbsp;		owner.addPet(pet);</b>
+<b class="nc">&nbsp;		return VIEWS_PETS_CREATE_OR_UPDATE_FORM;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@PostMapping(&quot;/pets/new&quot;)
+&nbsp;	public String processCreationForm(Owner owner, @Valid Pet pet, BindingResult result,
+&nbsp;			RedirectAttributes redirectAttributes) {
+&nbsp;
+<b class="nc">&nbsp;		if (StringUtils.hasText(pet.getName()) &amp;&amp; pet.isNew() &amp;&amp; owner.getPet(pet.getName(), true) != null)</b>
+<b class="nc">&nbsp;			result.rejectValue(&quot;name&quot;, &quot;duplicate&quot;, &quot;already exists&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;		LocalDate currentDate = LocalDate.now();</b>
+<b class="nc">&nbsp;		if (pet.getBirthDate() != null &amp;&amp; pet.getBirthDate().isAfter(currentDate)) {</b>
+<b class="nc">&nbsp;			result.rejectValue(&quot;birthDate&quot;, &quot;typeMismatch.birthDate&quot;);</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		if (result.hasErrors()) {</b>
+<b class="nc">&nbsp;			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		owner.addPet(pet);</b>
+<b class="nc">&nbsp;		this.owners.save(owner);</b>
+<b class="nc">&nbsp;		redirectAttributes.addFlashAttribute(&quot;message&quot;, &quot;New Pet has been Added&quot;);</b>
+<b class="nc">&nbsp;		return &quot;redirect:/owners/{ownerId}&quot;;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@GetMapping(&quot;/pets/{petId}/edit&quot;)
+&nbsp;	public String initUpdateForm() {
+<b class="nc">&nbsp;		return VIEWS_PETS_CREATE_OR_UPDATE_FORM;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@PostMapping(&quot;/pets/{petId}/edit&quot;)
+&nbsp;	public String processUpdateForm(Owner owner, @Valid Pet pet, BindingResult result,
+&nbsp;			RedirectAttributes redirectAttributes) {
+&nbsp;
+<b class="nc">&nbsp;		String petName = pet.getName();</b>
+&nbsp;
+&nbsp;		// checking if the pet name already exist for the owner
+<b class="nc">&nbsp;		if (StringUtils.hasText(petName)) {</b>
+<b class="nc">&nbsp;			Pet existingPet = owner.getPet(petName, false);</b>
+<b class="nc">&nbsp;			if (existingPet != null &amp;&amp; !existingPet.getId().equals(pet.getId())) {</b>
+<b class="nc">&nbsp;				result.rejectValue(&quot;name&quot;, &quot;duplicate&quot;, &quot;already exists&quot;);</b>
+&nbsp;			}
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		LocalDate currentDate = LocalDate.now();</b>
+<b class="nc">&nbsp;		if (pet.getBirthDate() != null &amp;&amp; pet.getBirthDate().isAfter(currentDate)) {</b>
+<b class="nc">&nbsp;			result.rejectValue(&quot;birthDate&quot;, &quot;typeMismatch.birthDate&quot;);</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		if (result.hasErrors()) {</b>
+<b class="nc">&nbsp;			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		owner.addPet(pet);</b>
+<b class="nc">&nbsp;		this.owners.save(owner);</b>
+<b class="nc">&nbsp;		redirectAttributes.addFlashAttribute(&quot;message&quot;, &quot;Pet details has been edited&quot;);</b>
+<b class="nc">&nbsp;		return &quot;redirect:/owners/{ownerId}&quot;;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-01-16 22:35</div>
+</div>
+</body>
+</html>

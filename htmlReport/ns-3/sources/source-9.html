@@ -1,0 +1,216 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > VisitController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org.springframework.samples.petclinic.owner</a>
+</div>
+
+<h1>Coverage Summary for Class: VisitController (org.springframework.samples.petclinic.owner)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">VisitController</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/18)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2012-2019 the original author or authors.
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *      https://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package org.springframework.samples.petclinic.owner;
+&nbsp;
+&nbsp;import java.util.Map;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;import org.springframework.stereotype.Controller;
+&nbsp;import org.springframework.validation.BindingResult;
+&nbsp;import org.springframework.web.bind.WebDataBinder;
+&nbsp;import org.springframework.web.bind.annotation.GetMapping;
+&nbsp;import org.springframework.web.bind.annotation.InitBinder;
+&nbsp;import org.springframework.web.bind.annotation.ModelAttribute;
+&nbsp;import org.springframework.web.bind.annotation.PathVariable;
+&nbsp;import org.springframework.web.bind.annotation.PostMapping;
+&nbsp;
+&nbsp;import jakarta.validation.Valid;
+&nbsp;import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+&nbsp;
+&nbsp;/**
+&nbsp; * @author Juergen Hoeller
+&nbsp; * @author Ken Krebs
+&nbsp; * @author Arjen Poutsma
+&nbsp; * @author Michael Isvy
+&nbsp; * @author Dave Syer
+&nbsp; * @author Wick Dynex
+&nbsp; */
+&nbsp;@Controller
+&nbsp;class VisitController {
+&nbsp;
+&nbsp;	private final OwnerRepository owners;
+&nbsp;
+<b class="nc">&nbsp;	public VisitController(OwnerRepository owners) {</b>
+<b class="nc">&nbsp;		this.owners = owners;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@InitBinder
+&nbsp;	public void setAllowedFields(WebDataBinder dataBinder) {
+<b class="nc">&nbsp;		dataBinder.setDisallowedFields(&quot;id&quot;);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Called before each and every @RequestMapping annotated method. 2 goals: - Make sure
+&nbsp;	 * we always have fresh data - Since we do not use the session scope, make sure that
+&nbsp;	 * Pet object always has an id (Even though id is not part of the form fields)
+&nbsp;	 * @param petId
+&nbsp;	 * @return Pet
+&nbsp;	 */
+&nbsp;	@ModelAttribute(&quot;visit&quot;)
+&nbsp;	public Visit loadPetWithVisit(@PathVariable(&quot;ownerId&quot;) int ownerId, @PathVariable(&quot;petId&quot;) int petId,
+&nbsp;			Map&lt;String, Object&gt; model) {
+<b class="nc">&nbsp;		Optional&lt;Owner&gt; optionalOwner = owners.findById(ownerId);</b>
+<b class="nc">&nbsp;		Owner owner = optionalOwner.orElseThrow(() -&gt; new IllegalArgumentException(</b>
+&nbsp;				&quot;Owner not found with id: &quot; + ownerId + &quot;. Please ensure the ID is correct &quot;));
+&nbsp;
+<b class="nc">&nbsp;		Pet pet = owner.getPet(petId);</b>
+<b class="nc">&nbsp;		model.put(&quot;pet&quot;, pet);</b>
+<b class="nc">&nbsp;		model.put(&quot;owner&quot;, owner);</b>
+&nbsp;
+<b class="nc">&nbsp;		Visit visit = new Visit();</b>
+<b class="nc">&nbsp;		pet.addVisit(visit);</b>
+<b class="nc">&nbsp;		return visit;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	// Spring MVC calls method loadPetWithVisit(...) before initNewVisitForm is
+&nbsp;	// called
+&nbsp;	@GetMapping(&quot;/owners/{ownerId}/pets/{petId}/visits/new&quot;)
+&nbsp;	public String initNewVisitForm() {
+<b class="nc">&nbsp;		return &quot;pets/createOrUpdateVisitForm&quot;;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	// Spring MVC calls method loadPetWithVisit(...) before processNewVisitForm is
+&nbsp;	// called
+&nbsp;	@PostMapping(&quot;/owners/{ownerId}/pets/{petId}/visits/new&quot;)
+&nbsp;	public String processNewVisitForm(@ModelAttribute Owner owner, @PathVariable int petId, @Valid Visit visit,
+&nbsp;			BindingResult result, RedirectAttributes redirectAttributes) {
+<b class="nc">&nbsp;		if (result.hasErrors()) {</b>
+<b class="nc">&nbsp;			return &quot;pets/createOrUpdateVisitForm&quot;;</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		owner.addVisit(petId, visit);</b>
+<b class="nc">&nbsp;		this.owners.save(owner);</b>
+<b class="nc">&nbsp;		redirectAttributes.addFlashAttribute(&quot;message&quot;, &quot;Your visit has been booked&quot;);</b>
+<b class="nc">&nbsp;		return &quot;redirect:/owners/{ownerId}&quot;;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-01-16 22:35</div>
+</div>
+</body>
+</html>
