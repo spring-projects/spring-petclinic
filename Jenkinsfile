@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'docker:latest'
-            args '--privileged -v /var/lib/docker'
-        }
-    }
+    agent any
     environment {
         DOCKER_CREDENTIALS_ID = 'dockerhub-credentials'
     }
