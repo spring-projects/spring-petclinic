@@ -1,102 +1,58 @@
 pipeline {
     agent any
     environment {
-        DOCKER_REPO_MAIN = 'marijastopa/main-jenkins'
-        DOCKER_REPO_MR = 'marijastopa/mr-jenkins'
+        DOCKERHUB_USERNAME = credentials('dockerhub-username') 
+        DOCKERHUB_PASSWORD = credentials('dockerhub-password')
+        DOCKER_IMAGE_MR = "marijastopa/mr-jenkins" 
+        DOCKER_IMAGE_MAIN = "marijastopa/main-jenkins"
     }
     stages {
-        stage('Prepare') {
-            steps {
-                echo "Preparing environment..."
-                script {
-                    BRANCH_NAME = env.BRANCH_NAME ?: 'main'
-                    COMMIT = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                    echo "Branch: ${BRANCH_NAME}"
-                    echo "Commit: ${COMMIT}"
-                }
-            }
-        }
-
-        // Merge Request Pipeline Stages
         stage('Checkstyle') {
-            when {
-                expression { BRANCH_NAME != 'main' }
-            }
             steps {
-                echo "Running Checkstyle..."
-                sh './gradlew checkstyleMain checkstyleTest'
-                archiveArtifacts artifacts: '**/build/reports/checkstyle/*.xml', allowEmptyArchive: true
+                echo 'Running Checkstyle...'
+                sh 'mvn checkstyle:checkstyle'
+                archiveArtifacts artifacts: '**/target/site/checkstyle.html', fingerprint: true
             }
         }
         stage('Test') {
-            when {
-                expression { BRANCH_NAME != 'main' }
-            }
             steps {
-                echo "Running Tests..."
-                sh './gradlew test'
-                junit '**/build/test-results/test/*.xml'
+                echo 'Running Tests...'
+                sh 'mvn test'
             }
         }
-        stage('Build without Tests') {
-            when {
-                expression { BRANCH_NAME != 'main' }
-            }
+        stage('Build') {
             steps {
-                echo "Building application without tests..."
-                sh './gradlew clean build -x test'
+                echo 'Building application without tests...'
+                sh 'mvn clean package -DskipTests'
             }
         }
-        stage('Docker Build & Push (Merge Request)') {
+        stage('Build and Push Docker Image (Merge Request)') {
             when {
-                expression { BRANCH_NAME != 'main' }
+                branch 'develop' // Radi samo za granu develop
             }
             steps {
-                echo "Building Docker image for merge request..."
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sh """
-                        docker build -t ${DOCKER_REPO_MR}:${COMMIT} .
-                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                        docker push ${DOCKER_REPO_MR}:${COMMIT}
-                        docker tag ${DOCKER_REPO_MR}:${COMMIT} ${DOCKER_REPO_MR}:latest
-                        docker push ${DOCKER_REPO_MR}:latest
-                    """
+                script {
+                    def commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+                    withDockerRegistry([credentialsId: 'dockerhub', url: '']) {
+                        def image = docker.build("${DOCKER_IMAGE_MR}:${commitHash}")
+                        image.push()
+                    }
                 }
             }
         }
-
-        // Main Branch Pipeline Stage
-        stage('Docker Build & Push (Main Branch)') {
+        stage('Build and Push Docker Image (Main)') {
             when {
-                branch 'main'
+                branch 'main' // Radi samo za granu main
             }
             steps {
-                echo "Building Docker image for main branch..."
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sh """
-                        docker build -t ${DOCKER_REPO_MAIN}:${COMMIT} .
-                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                        docker push ${DOCKER_REPO_MAIN}:${COMMIT}
-                        docker tag ${DOCKER_REPO_MAIN}:${COMMIT} ${DOCKER_REPO_MAIN}:latest
-                        docker push ${DOCKER_REPO_MAIN}:latest
-                    """
+                script {
+                    def commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+                    withDockerRegistry([credentialsId: 'dockerhub', url: '']) {
+                        def image = docker.build("${DOCKER_IMAGE_MAIN}:${commitHash}")
+                        image.push()
+                    }
                 }
             }
-        }
-    }
-    post {
-        always {
-            echo "Cleaning up Docker images..."
-            sh """
-                docker ps -a -q | xargs --no-run-if-empty docker rm -f || true
-                docker images -f dangling=true -q | xargs --no-run-if-empty docker rmi -f || true
-            """
-        }
-        success {
-            echo "Pipeline completed successfully!"
-        }
-        failure {
-            echo "Pipeline failed. Check logs for errors."
         }
     }
 }
