@@ -26,8 +26,8 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh """
                             docker login -u \$DOCKER_USERNAME --password \$DOCKER_PASSWORD
-                            docker build -t marijastopa/mr-jenkins:\${GIT_COMMIT[0..6]} .
-                            docker push marijastopa/mr-jenkins:\${GIT_COMMIT[0..6]}
+                            docker build -t marijastopa/mr-jenkins:\blabla .
+                            docker push marijastopa/mr-jenkins:\blabla
                         """
                     }
                 }
