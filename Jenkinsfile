@@ -1,58 +1,64 @@
 pipeline {
     agent any
-    tools {
-        maven 'Maven 3' // Global Tool Configuration
+
+    parameters {
+        string(name: "DOCKERHUB_CREDENTIALS_ID", description: "DockerHub credentials ID")
     }
+
     environment {
-        DOCKERHUB_USERNAME = credentials('dockerhub') 
-        DOCKERHUB_PASSWORD = credentials('dockerhub') 
-        DOCKER_IMAGE_MR = "marijastopa/mr-jenkins" 
-        DOCKER_IMAGE_MAIN = "marijastopa/main-jenkins" 
+        DOCKERHUB_REPO_MR = "mr-jenkins"
+        DOCKERHUB_REPO_MAIN = "main-jenkins"
     }
+
     stages {
-        stage('Checkstyle') {
-            steps {
-                echo 'Running Checkstyle...'
-                sh 'mvn checkstyle:checkstyle'
-                archiveArtifacts artifacts: '**/target/site/checkstyle.html', fingerprint: true
-            }
-        }
-        stage('Test') {
-            steps {
-                echo 'Running Tests...'
-                sh 'mvn test'
-            }
-        }
-        stage('Build') {
-            steps {
-                echo 'Building application without tests...'
-                sh 'mvn clean package -DskipTests'
-            }
-        }
-        stage('Build and Push Docker Image (Merge Request)') {
+        stage("Checkstyle") {
             when {
-                branch 'develop' 
+                expression { env.BRANCH_NAME != 'main' }
             }
             steps {
-                script {
-                    def commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                    withDockerRegistry([credentialsId: 'dockerhub', url: '']) {
-                        def image = docker.build("${DOCKER_IMAGE_MR}:${commitHash}")
-                        image.push()
-                    }
+                withMaven(maven: 'maven-3.9.8') {
+                    sh './mvnw checkstyle:checkstyle -Dcheckstyle.output.file=target/checkstyle-result.xml'
+                }
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'target/checkstyle-result.xml', allowEmptyArchive: false
                 }
             }
         }
-        stage('Build and Push Docker Image (Main)') {
+
+        stage("Test") {
             when {
-                branch 'main' 
+                expression { env.BRANCH_NAME != 'main' }
             }
             steps {
+                withMaven(maven: 'maven-3.9.8') {
+                    sh './mvnw clean test'
+                }
+            }
+        }
+
+        stage("Build") {
+            when {
+                expression { env.BRANCH_NAME != 'main' }
+            }
+            steps {
+                withMaven(maven: 'maven-3.9.8') {
+                    sh './mvnw clean package -DskipTests'
+                }
+            }
+        }
+
+        stage("Create Docker Image") {
+            steps {
                 script {
-                    def commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                    withDockerRegistry([credentialsId: 'dockerhub', url: '']) {
-                        def image = docker.build("${DOCKER_IMAGE_MAIN}:${commitHash}")
-                        image.push()
+                    def imageName = "${env.DOCKERHUB_REPO_MR}:${env.GIT_COMMIT.substring(0, 7)}"
+                    if (env.BRANCH_NAME == 'main') {
+                        imageName = "${env.DOCKERHUB_REPO_MAIN}:${env.GIT_COMMIT.substring(0, 7)}"
+                    }
+                    docker.build(imageName)
+                    docker.withRegistry('https://index.docker.io/v1/', "${params.DOCKERHUB_CREDENTIALS_ID}") {
+                        docker.image(imageName).push()
                     }
                 }
             }
