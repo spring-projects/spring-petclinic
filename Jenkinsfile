@@ -1,67 +1,76 @@
 pipeline {
-    agent any
-
-    parameters {
-        string(name: "DOCKERHUB_CREDENTIALS_ID", description: "DockerHub credentials ID")
+    agent {
+        docker {
+            image 'docker:20.10.8-dind' // Docker DinD image
+            args '--privileged -v /var/lib/docker:/var/lib/docker'
+        }
     }
 
     environment {
-        DOCKERHUB_REPO_MR = "mr-jenkins"
-        DOCKERHUB_REPO_MAIN = "main-jenkins"
+        DOCKER_IMAGE_NAME = "mr-jenkins" 
+        DOCKER_MAIN_REPO = "main-jenkins"
+        SHORT_COMMIT = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim() 
+        DOCKERHUB_REPO = "marijastopa"
     }
 
     stages {
-        stage("Checkstyle") {
+        stage('Checkstyle') {
             when {
-                expression { env.BRANCH_NAME != 'main' }
+                not { branch 'main' } // merge request
             }
             steps {
-                withMaven(maven: 'maven-3.9.8') {
-                    sh './mvnw checkstyle:checkstyle -Dcheckstyle.output.file=target/checkstyle-result.xml'
-                }
-            }
-            post {
-                always {
-                    archiveArtifacts artifacts: 'target/checkstyle-result.xml', allowEmptyArchive: false
-                }
+                sh './mvnw checkstyle:checkstyle'
+                archiveArtifacts artifacts: 'target/site/checkstyle.html', fingerprint: true
             }
         }
-
-        stage("Test") {
+        stage('Test') {
             when {
-                expression { env.BRANCH_NAME != 'main' }
+                not { branch 'main' } // merge request
             }
             steps {
-                withMaven(maven: 'maven-3.9.8') {
-                    sh './mvnw clean test'
-                }
+                sh './mvnw clean test'
             }
         }
-
-        stage("Build") {
+        stage('Build') {
             when {
-                expression { env.BRANCH_NAME != 'main' }
+                not { branch 'main' } // merge request
             }
             steps {
-                withMaven(maven: 'maven-3.9.8') {
-                    sh './mvnw clean package -DskipTests'
-                }
+                sh './mvnw clean package -DskipTests'
             }
         }
-
-        stage("Create Docker Image") {
+        stage('Create Docker Image') {
             steps {
                 script {
-                    def imageName = "${env.DOCKERHUB_REPO_MR}:${env.GIT_COMMIT.substring(0, 7)}"
-                    if (env.BRANCH_NAME == 'main') {
-                        imageName = "${env.DOCKERHUB_REPO_MAIN}:${env.GIT_COMMIT.substring(0, 7)}"
-                    }
-                    docker.build(imageName)
-                    docker.withRegistry('https://index.docker.io/v1/', "${params.DOCKERHUB_CREDENTIALS_ID}") {
-                        docker.image(imageName).push()
+                    def repoName = BRANCH_NAME == 'main' ? DOCKER_MAIN_REPO : DOCKER_IMAGE_NAME
+                    def tag = "${DOCKERHUB_REPO}/${repoName}:${SHORT_COMMIT}"
+                    sh "docker build -t ${tag} ."
+                }
+            }
+        }
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    def repoName = BRANCH_NAME == 'main' ? DOCKER_MAIN_REPO : DOCKER_IMAGE_NAME
+                    def tag = "${DOCKERHUB_REPO}/${repoName}:${SHORT_COMMIT}"
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
+                        sh "docker push ${tag}"
                     }
                 }
             }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline completed.'
+        }
+        success {
+            echo 'Pipeline completed successfully.'
+        }
+        failure {
+            echo 'Pipeline failed.'
         }
     }
 }
