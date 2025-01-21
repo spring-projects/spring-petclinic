@@ -2,6 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <distributionManagement>
+      <snapshotRepository>
+        <id>nexus-snapshots</id>
+        <url>http://localhost:8081/repository/maven-snapshots/</url>
+      </snapshotRepository>
+      <repository>
+        <id>nexus-releases</id>
+        <url>http://localhost:8081/repository/maven-releases/</url>
+      </repository>
+    </distributionManagement>
 
 
   <scm>
@@ -175,7 +185,6 @@
                         </goals>
                         <configuration>
                             <!-- Customize the deployment process if needed -->
-                            <altDeploymentRepository>nexus-snapshots::default::http://localhost:8081/#browse/browse:maven-snapshots</altDeploymentRepository>
                         </configuration>
                     </execution>
                 </executions>
@@ -335,10 +344,6 @@
   </licenses>
 
   <repositories>
-    <!-- <repository>
-      <id>maven-group</id>
-      <url>http://localhost:8081/repository/maven-group/</url>
-    </repository> -->
     <repository>
       <snapshots>
         <enabled>true</enabled>
@@ -435,16 +440,7 @@
         </property>
       </activation>
 
-      <distributionManagement>
-        <snapshotRepository>
-          <id>nexus-snapshots</id>
-          <url>http://localhost:8081/repository/maven-snapshots/</url>
-        </snapshotRepository>
-        <repository>
-          <id>nexus-releases</id>
-          <url>http://localhost:8081/repository/maven-releases/</url>
-        </repository>
-      </distributionManagement>
+    
 
 
       <build>
