@@ -6,7 +6,9 @@ plugins {
   id 'org.cyclonedx.bom' version '1.10.0'
   id 'io.spring.javaformat' version '0.0.43'
   id "io.spring.nohttp" version "0.0.11"
+  id 'pl.allegro.tech.build.axion-release' version "1.18.7"
 }
+version = scmVersion.version
 
 apply plugin: 'java'
 apply plugin: 'checkstyle'
@@ -15,7 +17,6 @@ apply plugin: 'io.spring.javaformat'
 gradle.startParameter.excludedTaskNames += [ "checkFormatAot", "checkFormatAotTest" ]
 
 group = 'org.springframework.samples'
-version = '3.4.0'
 
 java {
   sourceCompatibility = JavaVersion.VERSION_17
@@ -88,3 +89,15 @@ checkFormatAotTest.enabled = false
 
 formatAot.enabled = false
 formatAotTest.enabled = false
+
+task showInBrowser {
+  doLast {
+    def file = project.file('build/reports/tests/test/index.html')
+    exec { 
+      commandLine 'open', file
+    }
+  }
+}
+
+tasks.named("showInBrowser").configure{ dependsOn ("build") }
+tasks.named("showInBrowser").configure{ dependsOn("test") }
