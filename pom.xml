@@ -16,7 +16,7 @@
 
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
-  <version>3.4.0-SNAPSHOT</version>
+  <version>4.0.2-SNAPSHOT</version>
 
   <name>petclinic</name>
 
@@ -28,7 +28,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <!-- Important for reproducible builds. Update using e.g. ./mvnw versions:set
         -DnewVersion=... -->
-    <project.build.outputTimestamp>2025-01-28T10:44:36Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2025-01-28T10:47:28Z</project.build.outputTimestamp>
 
     <!-- Web dependencies -->
     <webjars-locator.version>1.0.1</webjars-locator.version>
