@@ -11,6 +11,8 @@
 
 
   <scm>
+    <url>scm:git:git@github.com:obrenovicm/spring-petclinic.git</url>
+    <connection>scm:git:git@github.com:obrenovicm/spring-petclinic.git</connection>
     <developerConnection>scm:git:git@github.com:obrenovicm/spring-petclinic.git</developerConnection>
     <tag>spring-petclinic-4.0.2</tag>
   </scm>
