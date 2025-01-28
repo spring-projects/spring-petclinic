@@ -11,13 +11,12 @@
 
 
   <scm>
-    <developerConnection>scm:git:https://github.com/obrenovicm/spring-petclinic.git</developerConnection>
-    <tag>spring-petclinic-4.0.1</tag>
+    <developerConnection>scm:git:git@github.com:obrenovicm/spring-petclinic.git</developerConnection>
   </scm>
 
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
-  <version>4.0.1</version>
+  <version>3.4.0-SNAPSHOT</version>
 
   <name>petclinic</name>
 
