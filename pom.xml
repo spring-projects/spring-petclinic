@@ -9,9 +9,18 @@
     <relativePath></relativePath>
   </parent>
 
+<<<<<<< HEAD
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
   <version>3.4.0-SNAPSHOT</version>
+=======
+  <scm>
+    <developerConnection>scm:git:https://github.com/obrenovicm/spring-petclinic.git</developerConnection>
+  </scm>
+
+  <groupId>org.springframework.samples</groupId>
+  <artifactId>spring-petclinic</artifactId>
+>>>>>>> cb95a48 ([add] mvn release plugin)
 
   <name>petclinic</name>
 
