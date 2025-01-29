@@ -17,6 +17,19 @@
     <tag>spring-petclinic-4.0.2</tag>
   </scm>
 
+  <distributionManagement>
+    <repository>
+        <id>nexus-releases</id>
+        <url>http://localhost:8081/repository/maven-releases/</url>
+    </repository>
+    <snapshotRepository>
+        <id>nexus-snapshots</id>
+        <url>http://localhost:8081/repository/maven-snapshots/</url>
+    </snapshotRepository>
+</distributionManagement>
+
+
+
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
   <version>4.0.3-SNAPSHOT</version>
@@ -287,8 +300,22 @@
           <failOnUnableToExtractRepoInfo>false</failOnUnableToExtractRepoInfo>
         </configuration>
       </plugin>
-      <!-- Spring Boot Actuator displays sbom-related information if a CycloneDX SBOM file is
-      present at the classpath -->
+
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nxrm3-maven-plugin</artifactId>
+        <version>1.0.3</version>
+        <extensions>true</extensions>
+        <configuration>
+          <nexusUrl>http://localhost:8081</nexusUrl>
+          
+          <serverId>nexus-snapshots</serverId>
+          
+          <repository>maven-snapshots</repository>
+          
+          <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
+        </configuration>
+    </plugin>
       <plugin>
         <?m2e ignore?>
         <groupId>org.cyclonedx</groupId>

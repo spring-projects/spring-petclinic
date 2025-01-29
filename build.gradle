@@ -7,7 +7,10 @@ plugins {
   id 'io.spring.javaformat' version '0.0.43'
   id "io.spring.nohttp" version "0.0.11"
   id 'pl.allegro.tech.build.axion-release' version "1.18.7"
+  id 'maven-publish'
 }
+// version '1.2'
+
 version = scmVersion.version
 
 apply plugin: 'java'
@@ -20,6 +23,8 @@ group = 'org.springframework.samples'
 
 java {
   sourceCompatibility = JavaVersion.VERSION_17
+  // archiveName = 'spring-petclinic' 
+  // version = '0.1.3-SNAPSHOT'
 }
 
 repositories {
@@ -101,3 +106,43 @@ task showInBrowser {
 
 tasks.named("showInBrowser").configure{ dependsOn ("build") }
 tasks.named("showInBrowser").configure{ dependsOn("test") }
+
+// Maven Publish Configuration
+
+def nexusUrl = 'http://localhost:8081/repository/maven-snapshots'  
+def nexusUsername = project.hasProperty('nexusUsername') ? project.nexusUsername : System.getenv('NEXUS_USERNAME')
+def nexusPassword = project.hasProperty('nexusPassword') ? project.nexusPassword : System.getenv('NEXUS_PASSWORD')
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java  
+
+            artifact file("${buildDir}/libs/spring-petclinic-${version}.jar") 
+        }
+    }
+
+    repositories {
+        maven {
+            url nexusUrl
+            allowInsecureProtocol = true
+            credentials {
+                username nexusUsername
+                password nexusPassword
+            }
+        }
+    }
+}
+
+tasks.named("publish").configure{ dependsOn("build")}
+tasks.named("publish").configure{dependsOn("bootJar")}
+tasks.named("publishMavenJavaPublicationToMavenRepository").configure{ dependsOn("bootJar")}
+
+task testProxy {
+    doLast {
+        def url = new URL('http://localhost:8081/repository/maven-central')
+        def connection = url.openConnection()
+        connection.connect()
+        println "Proxy connection successful to Maven Central!"
+    }
+}
