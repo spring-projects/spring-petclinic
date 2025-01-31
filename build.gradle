@@ -7,6 +7,7 @@ plugins {
   id 'io.spring.javaformat' version '0.0.43'
   id "io.spring.nohttp" version "0.0.11"
 	id("pl.allegro.tech.build.axion-release") version "1.18.7"
+	id('maven-publish')
 }
 
 version = scmVersion.version
@@ -20,13 +21,41 @@ gradle.startParameter.excludedTaskNames += [ "checkFormatAot", "checkFormatAotTe
 group = 'org.springframework.samples'
 version = '3.4.0'
 
+def nexusUsername = project.hasProperty('nexusUsername') ? project.nexusUsername : System.getenv('NEXUS_USERNAME')
+def nexusPassword = project.hasProperty('nexusPassword') ? project.nexusPassword : System.getenv('NEXUS_PASSWORD')
 java {
   sourceCompatibility = JavaVersion.VERSION_17
 }
 
 repositories {
-  mavenCentral()
+	maven {
+		 url 'http://localhost:8081/repository/maven-central/'      
+		 allowInsecureProtocol = true
+  }
+	mavenCentral()
 }
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java 
+            artifact file("build/libs/spring-application-${version}.jar")  
+        }
+    }
+
+   repositories {
+        maven { 
+            name = "maven-releases"
+						url 'http://localhost:8081/repository/maven-releases/' 
+            allowInsecureProtocol = true
+            credentials {
+              username nexusUsername
+              password nexusPassword
+            }
+        }
+    }
+}
+
 
 ext.checkstyleVersion = "10.20.1"
 ext.springJavaformatCheckstyleVersion = "0.0.43"
@@ -61,6 +90,7 @@ dependencies {
   testImplementation 'org.testcontainers:mysql'
   checkstyle "io.spring.javaformat:spring-javaformat-checkstyle:${springJavaformatCheckstyleVersion}"
   checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
+  testImplementation 'junit:junit:4.13'
 }
 
 tasks.named('test') {
@@ -104,6 +134,15 @@ task openTestResults(dependsOn: ['build', 'test']) {
         } else {
             throw new GradleException("Test results file not found: ${testResultsFile}")
         }
+    }
+}
+
+task testProxy {
+    doLast {
+        def url = new URL('http://localhost:8081/repository/maven-central')
+        def connection = url.openConnection()
+        connection.connect()
+        println "Proxy connection successful to Maven Central!"
     }
 }
 
