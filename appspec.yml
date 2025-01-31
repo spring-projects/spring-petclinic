@@ -1,0 +1,24 @@
+version: 0.0
+os: linux
+
+files:
+  - source: /target/*.jar
+    destination: /home/ec2-user/spring-petclinic
+
+permissions:
+  - object: /home/ec2-user/spring-petclinic
+    owner: ec2-user
+    group: ec2-user
+    mode: 755
+
+hooks:
+  BeforeInstall:
+    - location: scripts/before_install.sh
+      timeout: 300
+      runas: ec2-user
+  ApplicationStart:
+    - location: scripts/start_application.sh
+      timeout: 300
+      runas: ec2-user
+
+
