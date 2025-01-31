@@ -6,7 +6,10 @@ plugins {
   id 'org.cyclonedx.bom' version '1.10.0'
   id 'io.spring.javaformat' version '0.0.43'
   id "io.spring.nohttp" version "0.0.11"
+	id("pl.allegro.tech.build.axion-release") version "1.18.7"
 }
+
+version = scmVersion.version
 
 apply plugin: 'java'
 apply plugin: 'checkstyle'
@@ -79,6 +82,30 @@ tasks.named("formatMain").configure { dependsOn("checkstyleNohttp") }
 
 tasks.named("formatTest").configure { dependsOn("checkstyleTest") }
 tasks.named("formatTest").configure { dependsOn("checkstyleNohttp") }
+
+
+task openTestResults(dependsOn: ['build', 'test']) {
+    doLast {
+        def testResultsFile = file('build/reports/tests/test/index.html') 
+       
+        if (testResultsFile.exists()) {
+            println "Opening test results in the browser..."
+            // Open the test results file in the default browser (cross-platform)
+            if (System.getProperty('os.name').toLowerCase().contains('win')) {
+                // On Windows, use "start"
+                "cmd /c start ${testResultsFile}".execute()
+            } else if (System.getProperty('os.name').toLowerCase().contains('mac')) {
+                // On macOS, use "open"
+                "open ${testResultsFile}".execute()
+            } else {
+                // On Linux, use "xdg-open"
+                "xdg-open ${testResultsFile}".execute()
+            }
+        } else {
+            throw new GradleException("Test results file not found: ${testResultsFile}")
+        }
+    }
+}
 
 checkstyleAot.enabled = false
 checkstyleAotTest.enabled = false
