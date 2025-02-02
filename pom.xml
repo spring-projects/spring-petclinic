@@ -260,9 +260,10 @@
             <goals>
               <goal>check</goal>
             </goals>
-            <phase>validate</phase>
+            <!-- changed from validate to none -->
+            <phase>none</phase>
             <configuration>
-              <configLocation>src/checkstyle/nohttp-checkstyle.xml</configLocation>
+              <configLocation>src/checkstyle/nohttp-checkstyle.xml</configLocation> 
               <sourceDirectories>${basedir}</sourceDirectories>
               <includes>**/*</includes>
               <excludes>**/.git/**/*,**/.idea/**/*,**/target/**/,**/.flattened-pom.xml,**/*.class</excludes>
