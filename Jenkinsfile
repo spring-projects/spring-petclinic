@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     environment {
-        REPO_MR = "mr"
         REPO_MAIN = "main"
         IMAGE_NAME = "spring-petclinic"
     }
@@ -68,10 +67,10 @@ pipeline {
                         passwordVariable: 'DOCKER_CREDS_PSW'
                     )]) {
                         sh """
-                        echo "${DOCKER_CREDS_PSW}" | docker login localhost:8084 -u "${DOCKER_CREDS_USR}" --password-stdin
-                        docker build -t ${IMAGE_NAME}:${shortCommit} .
-                        docker tag ${IMAGE_NAME}:${shortCommit} localhost:8084/repository/${REPO_MR}/${IMAGE_NAME}:${shortCommit}
-                        docker push localhost:8084/repository/${REPO_MR}/${IMAGE_NAME}:${shortCommit}
+                        echo "${DOCKER_CREDS_PSW}" | docker login -u "${DOCKER_CREDS_USR}" --password-stdin
+                        docker build -t ${DOCKER_CREDS_USR}/${IMAGE_NAME}:${shortCommit} .
+                        docker tag ${DOCKER_CREDS_USR}/${IMAGE_NAME}:${shortCommit} ${DOCKER_CREDS_USR}/${IMAGE_NAME}:${shortCommit}
+                        docker push ${DOCKER_CREDS_USR}/${IMAGE_NAME}:${shortCommit}
                         """
                     }
                 }
@@ -81,7 +80,7 @@ pipeline {
         stage ('Docker Image for main branch') {
             when {
                 expression {
-                    env.BRANCH_NAME == 'origin/main' || env.GIT_BRANCH?.contains('main')
+                    env.BRANCH_NAME == 'main' || env.GIT_BRANCH?.contains('main')
                 }
             }
             steps {
@@ -93,7 +92,7 @@ pipeline {
                         passwordVariable: 'DOCKER_HUB_TOKEN'
                     )]) {
                         sh """
-                        echo "${DOCKER_HUB_PSW}" | docker login -u "${DOCKER_HUB_USR}" --password-stdin
+                        echo "${DOCKER_HUB_TOKEN}" | docker login -u "${DOCKER_HUB_USR}" --password-stdin
                         docker build -t ${DOCKER_HUB_USR}/${IMAGE_NAME}:${shortCommit} .
                         docker tag ${DOCKER_HUB_USR}/${IMAGE_NAME}:${shortCommit} ${DOCKER_HUB_USR}/${IMAGE_NAME}:${shortCommit}
                         docker push ${DOCKER_HUB_USR}/${IMAGE_NAME}:${shortCommit}
