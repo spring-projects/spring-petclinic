@@ -68,9 +68,9 @@ pipeline {
                     )]) {
                         sh """
                         echo "${DOCKER_CREDS_PSW}" | docker login -u "${DOCKER_CREDS_USR}" --password-stdin
-                        docker build -t ${DOCKER_CREDS_USR}/${IMAGE_NAME}:${shortCommit} .
-                        docker tag ${DOCKER_CREDS_USR}/${IMAGE_NAME}:${shortCommit} ${DOCKER_CREDS_USR}/${IMAGE_NAME}:${shortCommit}
-                        docker push ${DOCKER_CREDS_USR}/${IMAGE_NAME}:${shortCommit}
+                        docker build -t ${IMAGE_NAME}:${shortCommit} .
+                        docker tag ${IMAGE_NAME}:${shortCommit} ${DOCKER_HUB_USR}/mr:${shortCommit}
+                        docker push ${DOCKER_HUB_USR}/mr:${shortCommit}
                         """
                     }
                 }
@@ -93,9 +93,9 @@ pipeline {
                     )]) {
                         sh """
                         echo "${DOCKER_HUB_TOKEN}" | docker login -u "${DOCKER_HUB_USR}" --password-stdin
-                        docker build -t ${DOCKER_HUB_USR}/${IMAGE_NAME}:${shortCommit} .
-                        docker tag ${DOCKER_HUB_USR}/${IMAGE_NAME}:${shortCommit} ${DOCKER_HUB_USR}/${IMAGE_NAME}:${shortCommit}
-                        docker push ${DOCKER_HUB_USR}/${IMAGE_NAME}:${shortCommit}
+                        docker build -t ${IMAGE_NAME}:${shortCommit} .
+                        docker tag ${IMAGE_NAME}:${shortCommit} ${DOCKER_HUB_USR}/main:${shortCommit}
+                        docker push ${DOCKER_HUB_USR}/main:${shortCommit}
                         """
                     }
                 }
