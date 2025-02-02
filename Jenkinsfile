@@ -89,14 +89,14 @@ pipeline {
                     def shortCommit = env.GIT_COMMIT.substring(0, 7)
                     withCredentials([usernamePassword(
                         credentialsId: 'docker-credentials',
-                        usernameVariable: 'DOCKER_CREDS_USR',
-                        passwordVariable: 'DOCKER_CREDS_PSW'
+                        usernameVariable: 'DOCKER_HUB_USR',
+                        passwordVariable: 'DOCKER_HUB_TOKEN'
                     )]) {
                         sh """
-                        echo "${DOCKER_CREDS_PSW}" | docker login localhost:8085 -u "${DOCKER_CREDS_USR}" --password-stdin
-                        docker build -t ${IMAGE_NAME}:${shortCommit} .
-                        docker tag ${IMAGE_NAME}:${shortCommit} localhost:8085/repository/${REPO_MAIN}/${IMAGE_NAME}:${shortCommit}
-                        docker push localhost:8085/repository/${REPO_MAIN}/${IMAGE_NAME}:${shortCommit}
+                        echo "${DOCKER_HUB_PSW}" | docker login -u "${DOCKER_HUB_USR}" --password-stdin
+                        docker build -t ${DOCKER_HUB_USR}/${IMAGE_NAME}:${shortCommit} .
+                        docker tag ${DOCKER_HUB_USR}/${IMAGE_NAME}:${shortCommit} ${DOCKER_HUB_USR}/${IMAGE_NAME}:${shortCommit}
+                        docker push ${DOCKER_HUB_USR}/${IMAGE_NAME}:${shortCommit}
                         """
                     }
                 }
