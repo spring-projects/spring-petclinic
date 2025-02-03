@@ -15,21 +15,21 @@ jobs:
         image: prom/prometheus:latest
         ports:
           - 9090:9090
-        healthcheck:
-          test: ["CMD", "wget", "-q", "--spider", "http://localhost:9090/-/healthy"]
-          interval: 10s
-          timeout: 5s
-          retries: 3
+        options: >-
+          --health-cmd "wget -q -O- http://localhost:9090/-/healthy"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 3
 
       pushgateway:
         image: prom/pushgateway:latest
         ports:
           - 9091:9091
-        healthcheck:
-          test: ["CMD", "wget", "-q", "--spider", "http://localhost:9091/-/healthy"]
-          interval: 10s
-          timeout: 5s
-          retries: 3
+        options: >-
+          --health-cmd "wget -q -O- http://localhost:9091/-/healthy"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 3
 
     steps:
       - uses: actions/checkout@v4
