@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-          cache: 'pip'  # Enable pip caching
+          # Removed pip caching since requirements.txt is not present
 
       - name: Install system dependencies
         run: |
@@ -29,13 +29,22 @@ jobs:
             gcc \
             make
 
+      - name: Create requirements file
+        run: |
+          cat > requirements.txt << EOF
+          cython>=3.0.11
+          pyyaml==5.4.1
+          docker-compose
+          EOF
+
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip setuptools wheel
-          pip install --no-cache-dir cython
-          # Install PyYAML with specific build flags to avoid Cython issues
-          PYTHONPATH='' CFLAGS="-O2" pip install --no-cache-dir --no-build-isolation pyyaml==5.4.1
-          pip install --no-cache-dir docker-compose
+          pip install -r requirements.txt
+          # Reinstall PyYAML with specific build flags if the initial installation fails
+          if ! python -c "import yaml"; then
+            PYTHONPATH='' CFLAGS="-O2" pip install --no-cache-dir --no-build-isolation pyyaml==5.4.1
+          fi
 
       - name: Check Docker Compose version
         run: |
