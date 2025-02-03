@@ -140,7 +140,7 @@ jobs:
       # Save metrics as artifacts
       - name: Save metrics
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: pipeline-metrics
           path: |
