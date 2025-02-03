@@ -16,18 +16,17 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
+          python-version: '3.10'
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip setuptools wheel
           sudo apt update
-          sudo apt install -y python3-dev libffi-dev libssl-dev
+          sudo apt install -y python3-dev libffi-dev libssl-dev python3-yaml
 
       - name: Install Docker Compose
         run: |
-          pip install PyYAML==5.4.1
-          pip install docker-compose || sudo apt install -y docker-compose-plugin
+          pip install --no-cache-dir docker-compose
 
       - name: Check Docker Compose version
         run: |
