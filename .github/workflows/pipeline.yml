@@ -6,9 +6,15 @@ on:
   pull_request:
     branches: [ pipeline-optimization ]
 
+# Add concurrency limit to prevent resource contention
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-with-metrics:
     runs-on: ubuntu-latest
+    timeout-minutes: 60  # Add overall job timeout
 
     services:
       prometheus:
@@ -16,43 +22,79 @@ jobs:
         ports:
           - 9090:9090
         options: >-
-          --health-cmd "wget -q -O- http://localhost:9090/-/healthy"
+          --health-cmd "wget -q -O- http://localhost:9090/-/healthy || exit 1"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 3
+          --health-start-period 10s
 
       pushgateway:
         image: prom/pushgateway:latest
         ports:
           - 9091:9091
         options: >-
-          --health-cmd "wget -q -O- http://localhost:9091/-/healthy"
+          --health-cmd "wget -q -O- http://localhost:9091/-/healthy || exit 1"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 3
+          --health-start-period 10s
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for better metrics
 
-      # Installation and setup of monitoring tools
+      # Installation and setup of monitoring tools with error handling
       - name: Setup monitoring tools
+        id: setup-monitoring
+        timeout-minutes: 5
         run: |
-          sudo apt-get update
-          sudo apt-get install -y powerstat linux-tools-common linux-tools-generic
-          sudo snap install powerapi
-          curl -L https://github.com/prometheus/node_exporter/releases/download/v1.3.1/node_exporter-1.3.1.linux-amd64.tar.gz -o node_exporter.tar.gz
-          tar xvfz node_exporter.tar.gz
-
-      # Start monitoring tools with improved configuration
-      - name: Start monitoring
-        run: |
-          # Start PowerAPI with Prometheus output
-          sudo powerapi --pid $$ --frequency 1000 --output prometheus --pushgateway-url http://localhost:9091/metrics/job/powerapi &
-          echo "POWERAPI_PID=$!" >> $GITHUB_ENV
+          set -eo pipefail
           
-          # Start node exporter
+          echo "::group::Installing system packages"
+          sudo apt-get update || (echo "Failed to update package lists" && exit 1)
+          sudo apt-get install -y powerstat linux-tools-common linux-tools-generic || (echo "Failed to install powerstat and linux tools" && exit 1)
+          echo "::endgroup::"
+          
+          echo "::group::Installing PowerAPI"
+          sudo snap install powerapi || (echo "Failed to install PowerAPI" && exit 1)
+          echo "::endgroup::"
+          
+          echo "::group::Setting up node exporter"
+          curl -L --retry 3 https://github.com/prometheus/node_exporter/releases/download/v1.3.1/node_exporter-1.3.1.linux-amd64.tar.gz -o node_exporter.tar.gz || (echo "Failed to download node exporter" && exit 1)
+          tar xvfz node_exporter.tar.gz || (echo "Failed to extract node exporter" && exit 1)
+          echo "::endgroup::"
+
+      # Start monitoring tools with improved configuration and error handling
+      - name: Start monitoring
+        id: start-monitoring
+        timeout-minutes: 2
+        run: |
+          set -eo pipefail
+          
+          # Start PowerAPI with retry mechanism
+          max_retries=3
+          retry_count=0
+          while [ $retry_count -lt $max_retries ]; do
+            if sudo powerapi --pid $$ --frequency 1000 --output prometheus --pushgateway-url http://localhost:9091/metrics/job/powerapi & then
+              echo "POWERAPI_PID=$!" >> $GITHUB_ENV
+              break
+            fi
+            retry_count=$((retry_count+1))
+            sleep 5
+          done
+          
+          if [ $retry_count -eq $max_retries ]; then
+            echo "Failed to start PowerAPI after $max_retries attempts"
+            exit 1
+          fi
+          
+          # Start node exporter with health check
           ./node_exporter-*/node_exporter --web.listen-address=":9100" &
           echo "NODE_EXPORTER_PID=$!" >> $GITHUB_ENV
+          
+          # Wait for node exporter to become healthy
+          timeout 30s bash -c 'until curl -s http://localhost:9100/metrics > /dev/null; do sleep 1; done' || (echo "Node exporter failed to start" && exit 1)
           
           # Create start timestamp file
           date +%s%N > pipeline_start_time.txt
@@ -65,79 +107,161 @@ jobs:
           cache: maven
 
       - name: Build with Maven
+        id: build
+        timeout-minutes: 15
         run: |
+          set -eo pipefail
           start_time=$(date +%s%N)
-          ./mvnw -B verify
+          ./mvnw -B verify -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+          build_status=$?
           end_time=$(date +%s%N)
           echo "BUILD_TIME=$((($end_time - $start_time)/1000000))" >> $GITHUB_ENV
+          exit $build_status
 
       - name: Run tests
+        id: test
+        if: success() || failure()  # Run even if build fails
+        timeout-minutes: 20
         run: |
+          set -eo pipefail
           start_time=$(date +%s%N)
-          ./mvnw test
+          ./mvnw test -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+          test_status=$?
           end_time=$(date +%s%N)
           echo "TEST_TIME=$((($end_time - $start_time)/1000000))" >> $GITHUB_ENV
+          exit $test_status
 
       - name: Build Docker image
+        id: docker-build
+        if: success()
+        timeout-minutes: 10
         run: |
+          set -eo pipefail
           start_time=$(date +%s%N)
-          docker build -t app:latest .
+          docker build -t app:latest . --no-cache
+          build_status=$?
           end_time=$(date +%s%N)
           echo "DOCKER_BUILD_TIME=$((($end_time - $start_time)/1000000))" >> $GITHUB_ENV
+          exit $build_status
 
       - name: Setup Kubernetes
+        id: k8s-setup
+        if: success()
         uses: helm/kind-action@v1
+        with:
+          wait: 120s
 
       - name: Deploy to Kubernetes
+        id: deploy
+        if: success()
+        timeout-minutes: 10
         run: |
+          set -eo pipefail
           start_time=$(date +%s%N)
-          kubectl apply -f k8s/
-          kubectl wait --for=condition=ready pod -l app=petclinic --timeout=180s
+          kubectl apply -f k8s/ || (echo "Failed to apply Kubernetes manifests" && exit 1)
+          
+          # Wait for deployment with proper error handling
+          if ! kubectl wait --for=condition=ready pod -l app=petclinic --timeout=180s; then
+            echo "::error::Deployment failed - collecting debug information"
+            kubectl describe pods -l app=petclinic
+            kubectl logs -l app=petclinic --all-containers=true
+            exit 1
+          fi
+          
           end_time=$(date +%s%N)
           echo "DEPLOY_TIME=$((($end_time - $start_time)/1000000))" >> $GITHUB_ENV
 
-      # Export metrics with improved labeling and job naming
+      # Export metrics with improved error handling
       - name: Export metrics to Prometheus
+        if: always()  # Run even if previous steps failed
+        timeout-minutes: 5
         run: |
-          # Export timing metrics with descriptive labels
-          echo "pipeline_build_duration_ms{stage=\"build\",project=\"petclinic\"} ${{ env.BUILD_TIME }}" | curl --data-binary @- http://localhost:9091/metrics/job/petclinic-pipeline
-          echo "pipeline_test_duration_ms{stage=\"test\",project=\"petclinic\"} ${{ env.TEST_TIME }}" | curl --data-binary @- http://localhost:9091/metrics/job/petclinic-pipeline
-          echo "pipeline_docker_build_duration_ms{stage=\"docker-build\",project=\"petclinic\"} ${{ env.DOCKER_BUILD_TIME }}" | curl --data-binary @- http://localhost:9091/metrics/job/petclinic-pipeline
-          echo "pipeline_deploy_duration_ms{stage=\"deploy\",project=\"petclinic\"} ${{ env.DEPLOY_TIME }}" | curl --data-binary @- http://localhost:9091/metrics/job/petclinic-pipeline
+          set -eo pipefail
           
-          # Export power consumption metrics
-          while IFS=, read -r timestamp watts; do
-            echo "power_consumption_watts{project=\"petclinic\"} $watts $timestamp" | curl --data-binary @- http://localhost:9091/metrics/job/petclinic-pipeline
-          done < energy_metrics.csv
+          # Function to safely export metric
+          export_metric() {
+            local metric_name=$1
+            local metric_value=$2
+            local stage=$3
+          
+            if [ -n "$metric_value" ]; then
+              echo "${metric_name}{stage=\"${stage}\",project=\"petclinic\"} ${metric_value}" | \
+                curl --retry 3 --retry-delay 2 --max-time 10 --silent --show-error \
+                  --data-binary @- http://localhost:9091/metrics/job/petclinic-pipeline || \
+                echo "::warning::Failed to export ${metric_name} for ${stage}"
+            fi
+          }
+          
+          # Export timing metrics
+          export_metric "pipeline_build_duration_ms" "${BUILD_TIME}" "build"
+          export_metric "pipeline_test_duration_ms" "${TEST_TIME}" "test"
+          export_metric "pipeline_docker_build_duration_ms" "${DOCKER_BUILD_TIME}" "docker-build"
+          export_metric "pipeline_deploy_duration_ms" "${DEPLOY_TIME}" "deploy"
+          
+          # Export power consumption metrics with error handling
+          if [ -f energy_metrics.csv ]; then
+            while IFS=, read -r timestamp watts; do
+              export_metric "power_consumption_watts" "$watts" "power" || continue
+            done < energy_metrics.csv
+          else
+            echo "::warning::energy_metrics.csv not found"
+          fi
 
       # Collect additional resource metrics
       - name: Collect resource metrics
+        if: always()
+        timeout-minutes: 2
         run: |
-          # Memory usage metric
-          echo "pipeline_memory_usage_bytes{project=\"petclinic\"} $(free -b | grep Mem: | awk '{print $3}')" | curl --data-binary @- http://localhost:9091/metrics/job/petclinic-pipeline
+          set -eo pipefail
           
-          # CPU usage metric
-          echo "pipeline_cpu_usage_percent{project=\"petclinic\"} $(top -bn1 | grep "Cpu(s)" | awk '{print $2}')" | curl --data-binary @- http://localhost:9091/metrics/job/petclinic-pipeline
+          # Memory usage metric with error handling
+          mem_usage=$(free -b | grep Mem: | awk '{print $3}') || echo "::warning::Failed to collect memory usage"
+          if [ -n "$mem_usage" ]; then
+            export_metric "pipeline_memory_usage_bytes" "$mem_usage" "memory"
+          fi
+          
+          # CPU usage metric with error handling
+          cpu_usage=$(top -bn1 | grep "Cpu(s)" | awk '{print $2}') || echo "::warning::Failed to collect CPU usage"
+          if [ -n "$cpu_usage" ]; then
+            export_metric "pipeline_cpu_usage_percent" "$cpu_usage" "cpu"
+          fi
 
       # Stop monitoring tools and collect metrics
-      - name: Collect metrics
+      - name: Collect final metrics
         if: always()
+        timeout-minutes: 5
         run: |
+          set -eo pipefail
+          
           # End timestamp
           date +%s%N > pipeline_end_time.txt
           
-          # Stop PowerAPI
-          sudo kill ${{ env.POWERAPI_PID }}
+          # Stop monitoring processes safely
+          if [ -n "$POWERAPI_PID" ]; then
+            sudo kill $POWERAPI_PID || echo "::warning::Failed to stop PowerAPI"
+          fi
           
-          # Stop node exporter
-          kill ${{ env.NODE_EXPORTER_PID }}
+          if [ -n "$NODE_EXPORTER_PID" ]; then
+            kill $NODE_EXPORTER_PID || echo "::warning::Failed to stop node exporter"
+          fi
           
-          # Collect system metrics
-          top -b -n 1 > system_metrics.txt
-          free -m > memory_metrics.txt
-          df -h > disk_metrics.txt
+          # Collect system metrics with error handling
+          {
+            echo "=== System Resources ===" > system_metrics.txt
+            top -b -n 1 >> system_metrics.txt
+          } || echo "::warning::Failed to collect top metrics"
+          
+          {
+            echo "=== Memory Usage ===" > memory_metrics.txt
+            free -m >> memory_metrics.txt
+          } || echo "::warning::Failed to collect memory metrics"
+          
+          {
+            echo "=== Disk Usage ===" > disk_metrics.txt
+            df -h >> disk_metrics.txt
+          } || echo "::warning::Failed to collect disk metrics"
 
-      # Save metrics as artifacts using the latest version
+      # Save metrics as artifacts
       - name: Save metrics
         if: always()
         uses: actions/upload-artifact@v4
@@ -151,3 +275,4 @@ jobs:
             pipeline_start_time.txt
             pipeline_end_time.txt
           retention-days: 90
+          if-no-files-found: warn
