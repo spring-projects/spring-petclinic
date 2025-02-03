@@ -14,6 +14,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup Rust and Scaphandre
+        run: |
+          # Installer Rust si nécessaire
+          if ! command -v cargo &> /dev/null; then
+            curl https://sh.rustup.rs -sSf | sh -s -- -y
+            source "$HOME/.cargo/env"
+          fi
+
+          # Installer Scaphandre via Cargo
+          cargo install scaphandre
+
       - name: Setup directories and install dependencies
         run: |
           set -eo pipefail
@@ -29,13 +40,8 @@ jobs:
             linux-tools-common \
             linux-tools-generic \
             python3-pip \
-            python3-psutil \
-            wget
-          
-          # Installer Scaphandre
-          wget https://github.com/hubblo-org/scaphandre/releases/download/v0.5.0/scaphandre_0.5.0_amd64.deb
-          sudo dpkg -i scaphandre_0.5.0_amd64.deb
-          
+            python3-psutil
+
           # Installer dépendances Python
           pip3 install pandas numpy
 
@@ -45,9 +51,11 @@ jobs:
           import subprocess
           import csv
           import os
+          import sys
           import time
+          import json
           from datetime import datetime
-          
+
           def monitor_energy(command, output_file):
               # Créer le répertoire si nécessaire
               os.makedirs(os.path.dirname(output_file), exist_ok=True)
@@ -61,17 +69,19 @@ jobs:
                       'Component'
                   ])
           
-              # Commande scaphandre pour la sortie CSV
+              # Commande scaphandre pour la sortie JSON
               scaphandre_cmd = [
-                  'scaphandre', 'record', 
-                  '-f', output_file, 
-                  '-m', 'csv',
-                  '--max-power-filter', '0.1',  # Filtrer les valeurs insignifiantes
-                  '--timeout', '120'  # Timeout de 2 minutes max
+                  'scaphandre', 'json',
+                  '-t', '120'  # Timeout de 2 minutes max
               ]
           
               # Lancer le monitoring en arrière-plan
-              monitor_process = subprocess.Popen(scaphandre_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+              monitor_process = subprocess.Popen(
+                  scaphandre_cmd, 
+                  stdout=subprocess.PIPE, 
+                  stderr=subprocess.PIPE,
+                  universal_newlines=True
+              )
           
               try:
                   # Attendre un court instant pour que Scaphandre démarre
@@ -81,15 +91,45 @@ jobs:
                   main_process = subprocess.Popen(command, shell=True)
                   main_process.wait()
           
+                  # Attendre et traiter les données de Scaphandre
+                  try:
+                      monitor_output, _ = monitor_process.communicate(timeout=10)
+                      process_scaphandre_output(monitor_output, output_file)
+                  except subprocess.TimeoutExpired:
+                      print("Scaphandre monitoring timed out", file=sys.stderr)
+          
               finally:
                   # Arrêter le monitoring
                   monitor_process.terminate()
                   monitor_process.wait()
           
-          def main():
-              import sys
+          def process_scaphandre_output(output, output_file):
+              try:
+                  # Diviser le flux JSON en objets individuels
+                  json_objects = output.strip().split('\n')
           
-              # Vérifier si une commande est fournie
+                  with open(output_file, 'a', newline='') as csvfile:
+                      writer = csv.writer(csvfile)
+          
+                      for json_str in json_objects:
+                          try:
+                              data = json.loads(json_str)
+          
+                              # Extraire les informations pertinentes
+                              timestamp = data.get('timestamp', datetime.now().isoformat())
+                              power = data.get('power', {}).get('total_power', 0)
+          
+                              writer.writerow([
+                                  timestamp,
+                                  power,
+                                  'System'
+                              ])
+                          except json.JSONDecodeError:
+                              print(f"Could not parse JSON: {json_str}", file=sys.stderr)
+              except Exception as e:
+                  print(f"Error processing Scaphandre output: {e}", file=sys.stderr)
+          
+          def main():
               if len(sys.argv) < 3:
                   print("Usage: python energy_monitor.py 'command' output_file.csv")
                   sys.exit(1)
@@ -144,6 +184,9 @@ jobs:
         run: |
           set -eo pipefail
           
+          # Ajouter Cargo et Scaphandre au PATH
+          source "$HOME/.cargo/env"
+          
           start_time=$(date +%s%N)
           
           # Collecter les métriques avant build
@@ -172,6 +215,9 @@ jobs:
         run: |
           set -eo pipefail
           
+          # Ajouter Cargo et Scaphandre au PATH
+          source "$HOME/.cargo/env"
+          
           start_time=$(date +%s%N)
           
           # Collecter les métriques pré-tests
@@ -199,6 +245,9 @@ jobs:
         timeout-minutes: 10
         run: |
           set -eo pipefail
+          
+          # Ajouter Cargo et Scaphandre au PATH
+          source "$HOME/.cargo/env"
           
           start_time=$(date +%s%N)
           
