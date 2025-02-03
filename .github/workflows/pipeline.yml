@@ -81,41 +81,61 @@ jobs:
           # Mesure de la consommation d'énergie avec PowerAPI
           python3 -c "
           import powerapi
-          from powerapi import database
+          import csv
+          from datetime import datetime
+          import os
+          import subprocess
+          import time
           
-          # Configuration de la base de données
-          db = database.InfluxDatabase(
-              host='localhost',
-              port=8086,
-              database='powerapi'
-          )
+          def log_power_metrics(output_file='metrics/power/build_power_metrics.csv', duration=60):
+              os.makedirs(os.path.dirname(output_file), exist_ok=True)
           
-          # Configuration du monitoring
-          monitor = powerapi.monitor.PowerMonitor(
-              'rapl',  # Utilisation de l'interface RAPL
-              db,
-              1  # Période de mesure en secondes
-          )
+              with open(output_file, 'w', newline='') as csvfile:
+                  csv_writer = csv.writer(csvfile)
+                  csv_writer.writerow([
+                      'Timestamp', 
+                      'Power_Watts', 
+                      'Energy_Joules', 
+                      'Device_Name'
+                  ])
           
-          # Démarrer le monitoring
-          monitor.start()
+              class CSVPowerReporter(powerapi.reporter.Reporter):
+                  def __init__(self, output_file):
+                      super().__init__()
+                      self.output_file = output_file
           
-          # Enregistrer le début du monitoring
-          print('Monitoring started')
-          " &
-          POWERAPI_PID=$!
+                  def report(self, data):
+                      with open(self.output_file, 'a', newline='') as csvfile:
+                          csv_writer = csv.writer(csvfile)
+                          csv_writer.writerow([
+                              datetime.now().isoformat(),
+                              getattr(data, 'power', 'N/A'),
+                              getattr(data, 'energy', 'N/A'),
+                              getattr(data, 'device_name', 'N/A')
+                          ])
           
-          # Build optimisé
-          ./mvnw -B verify \
-            -Dmaven.test.skip=true \
-            -Dcheckstyle.skip=true \
-            -T 1C
+              reporter = CSVPowerReporter(output_file)
+          
+              monitor = powerapi.monitor.PowerMonitor(
+                  'rapl',  # Utilisation de l'interface RAPL
+                  reporter,
+                  1  # Période de mesure en secondes
+              )
+          
+              try:
+                  monitor.start()
+                  result = subprocess.run(['./mvnw', '-B', 'verify', '-Dmaven.test.skip=true', '-Dcheckstyle.skip=true', '-T', '1C'], capture_output=True, text=True)
+                  print(result.stdout)
+                  print(result.stderr, file=sys.stderr)
+                  time.sleep(5)  # Période supplémentaire après le build
+              finally:
+                  monitor.stop()
+          
+          log_power_metrics()
+          " 
           
           build_status=$?
           end_time=$(date +%s%N)
-          
-          # Arrêter PowerAPI
-          kill $POWERAPI_PID
           
           # Collecter les métriques post-build
           free -m > metrics/system/post_build_memory.txt
@@ -140,38 +160,61 @@ jobs:
           # Mesure de la consommation d'énergie avec PowerAPI
           python3 -c "
           import powerapi
-          from powerapi import database
+          import csv
+          from datetime import datetime
+          import os
+          import subprocess
+          import time
           
-          # Configuration de la base de données
-          db = database.InfluxDatabase(
-              host='localhost',
-              port=8086,
-              database='powerapi'
-          )
+          def log_power_metrics(output_file='metrics/power/test_power_metrics.csv', duration=60):
+              os.makedirs(os.path.dirname(output_file), exist_ok=True)
           
-          # Configuration du monitoring
-          monitor = powerapi.monitor.PowerMonitor(
-              'rapl',  # Utilisation de l'interface RAPL
-              db,
-              1  # Période de mesure en secondes
-          )
+              with open(output_file, 'w', newline='') as csvfile:
+                  csv_writer = csv.writer(csvfile)
+                  csv_writer.writerow([
+                      'Timestamp', 
+                      'Power_Watts', 
+                      'Energy_Joules', 
+                      'Device_Name'
+                  ])
           
-          # Démarrer le monitoring
-          monitor.start()
+              class CSVPowerReporter(powerapi.reporter.Reporter):
+                  def __init__(self, output_file):
+                      super().__init__()
+                      self.output_file = output_file
           
-          # Enregistrer le début du monitoring
-          print('Monitoring started')
-          " &
-          POWERAPI_PID=$!
+                  def report(self, data):
+                      with open(self.output_file, 'a', newline='') as csvfile:
+                          csv_writer = csv.writer(csvfile)
+                          csv_writer.writerow([
+                              datetime.now().isoformat(),
+                              getattr(data, 'power', 'N/A'),
+                              getattr(data, 'energy', 'N/A'),
+                              getattr(data, 'device_name', 'N/A')
+                          ])
           
-          # Tests optimisés
-          ./mvnw test -T 1C
+              reporter = CSVPowerReporter(output_file)
+          
+              monitor = powerapi.monitor.PowerMonitor(
+                  'rapl',  # Utilisation de l'interface RAPL
+                  reporter,
+                  1  # Période de mesure en secondes
+              )
+          
+              try:
+                  monitor.start()
+                  result = subprocess.run(['./mvnw', 'test', '-T', '1C'], capture_output=True, text=True)
+                  print(result.stdout)
+                  print(result.stderr, file=sys.stderr)
+                  time.sleep(5)  # Période supplémentaire après les tests
+              finally:
+                  monitor.stop()
+          
+          log_power_metrics()
+          " 
           
           test_status=$?
           end_time=$(date +%s%N)
-          
-          # Arrêter PowerAPI
-          kill $POWERAPI_PID
           
           # Collecter les métriques post-tests
           free -m > metrics/system/post_test_memory.txt
@@ -197,38 +240,61 @@ jobs:
           # Mesure de la consommation d'énergie avec PowerAPI
           python3 -c "
           import powerapi
-          from powerapi import database
+          import csv
+          from datetime import datetime
+          import os
+          import subprocess
+          import time
           
-          # Configuration de la base de données
-          db = database.InfluxDatabase(
-              host='localhost',
-              port=8086,
-              database='powerapi'
-          )
+          def log_power_metrics(output_file='metrics/power/docker_build_power_metrics.csv', duration=60):
+              os.makedirs(os.path.dirname(output_file), exist_ok=True)
           
-          # Configuration du monitoring
-          monitor = powerapi.monitor.PowerMonitor(
-              'rapl',  # Utilisation de l'interface RAPL
-              db,
-              1  # Période de mesure en secondes
-          )
+              with open(output_file, 'w', newline='') as csvfile:
+                  csv_writer = csv.writer(csvfile)
+                  csv_writer.writerow([
+                      'Timestamp', 
+                      'Power_Watts', 
+                      'Energy_Joules', 
+                      'Device_Name'
+                  ])
           
-          # Démarrer le monitoring
-          monitor.start()
+              class CSVPowerReporter(powerapi.reporter.Reporter):
+                  def __init__(self, output_file):
+                      super().__init__()
+                      self.output_file = output_file
           
-          # Enregistrer le début du monitoring
-          print('Monitoring started')
-          " &
-          POWERAPI_PID=$!
+                  def report(self, data):
+                      with open(self.output_file, 'a', newline='') as csvfile:
+                          csv_writer = csv.writer(csvfile)
+                          csv_writer.writerow([
+                              datetime.now().isoformat(),
+                              getattr(data, 'power', 'N/A'),
+                              getattr(data, 'energy', 'N/A'),
+                              getattr(data, 'device_name', 'N/A')
+                          ])
           
-          # Build Docker optimisé
-          docker build -t app:latest -f .devcontainer/Dockerfile . --no-cache
+              reporter = CSVPowerReporter(output_file)
+          
+              monitor = powerapi.monitor.PowerMonitor(
+                  'rapl',  # Utilisation de l'interface RAPL
+                  reporter,
+                  1  # Période de mesure en secondes
+              )
+          
+              try:
+                  monitor.start()
+                  result = subprocess.run(['docker', 'build', '-t', 'app:latest', '-f', '.devcontainer/Dockerfile', '.', '--no-cache'], capture_output=True, text=True)
+                  print(result.stdout)
+                  print(result.stderr, file=sys.stderr)
+                  time.sleep(5)  # Période supplémentaire après le build Docker
+              finally:
+                  monitor.stop()
+          
+          log_power_metrics()
+          "
           
           build_status=$?
           end_time=$(date +%s%N)
-          
-          # Arrêter PowerAPI
-          kill $POWERAPI_PID
           
           # Collecter les métriques post-docker
           free -m > metrics/system/post_docker_memory.txt
