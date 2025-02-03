@@ -7,7 +7,6 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                /*checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'github-creds', url: 'https://github.com/Prathushadevijsgd/spring-petclinic']])*/
                 checkout scm
             }
         }
