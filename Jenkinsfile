@@ -49,7 +49,7 @@ pipeline {
                         sh """
                             mkdir -p ~/.ssh
                             ssh-keyscan -H 34.232.44.227 >> ~/.ssh/known_hosts
-                            ssh -i $KEYFILE ec2-user@34.232.44.227 'docker pull ${DOCKER_IMAGE}:${DOCKER_TAG} && \
+                            ssh -i $KEYFILE ec2-user@34.201.2.231 'docker pull ${DOCKER_IMAGE}:${DOCKER_TAG} && \
                             docker stop spring-petclinic || true && \
                             docker rm spring-petclinic || true && \
                             docker run -d --name spring-petclinic -p 8081:8080 ${DOCKER_IMAGE}:${DOCKER_TAG}'
