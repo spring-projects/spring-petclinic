@@ -2,7 +2,7 @@ name: CI/CD Pipeline with Monitoring
 
 on:
   push:
-    branches: [ pipeline-optimization  ]
+    branches: [ pipeline-optimization ]
   pull_request:
     branches: [ pipeline-optimization ]
 
@@ -15,83 +15,101 @@ jobs:
     runs-on: ubuntu-latest
     services:
       mysql:
-        image: mysql:9.1
+        image: mysql:8.0  # Updated to stable version
         env:
-          MYSQL_ROOT_PASSWORD: ''
-          MYSQL_ALLOW_EMPTY_PASSWORD: true
+          MYSQL_ROOT_PASSWORD: root  # Avoid empty passwords
           MYSQL_USER: petclinic
           MYSQL_PASSWORD: petclinic
           MYSQL_DATABASE: petclinic
         ports:
           - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Compose
+        run: |
+          docker-compose version
+          docker-compose pull prometheus grafana powerapi node-exporter
+
       - name: Start Monitoring Stack
         run: |
           docker-compose up -d prometheus grafana powerapi node-exporter
-          sleep 10 # Attendre que les services démarrent
-
-      - name: Checkout code
-        uses: actions/checkout@v4
+          # Use healthcheck instead of sleep
+          timeout 60s bash -c 'until curl -s -f http://localhost:9090/-/healthy; do sleep 2; done'
+          timeout 60s bash -c 'until curl -s -f http://localhost:3000/api/health; do sleep 2; done'
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'adopt'
+          distribution: 'temurin'  # More stable than adopt
+          cache: 'maven'  # Enable Maven caching
 
       - name: Record Build Start
         run: |
           curl -X POST http://localhost:9091/metrics/job/pipeline/instance/build \
-          --data-binary "pipeline_stage_start{stage=\"build\"} $(date +%s)"
+          --data-binary "pipeline_stage_start{stage=\"build\"} $(date +%s)" \
+          --retry 3 --retry-delay 2  # Add retry logic
 
       - name: Maven Build
         run: |
           start_time=$(date +%s%N)
-          ./mvnw clean package
+          ./mvnw -B clean package  # Add -B for non-interactive mode
           end_time=$(date +%s%N)
           duration=$(( ($end_time - $start_time)/1000000 ))
           
-          # Envoyer les métriques à Prometheus
           echo "pipeline_build_duration_ms $duration" | curl -X POST --data-binary @- \
-            http://localhost:9091/metrics/job/pipeline/instance/build
+            http://localhost:9091/metrics/job/pipeline/instance/build \
+            --retry 3 --retry-delay 2
 
       - name: Run Tests
         run: |
           start_time=$(date +%s%N)
-          ./mvnw test
+          ./mvnw -B test
           end_time=$(date +%s%N)
           duration=$(( ($end_time - $start_time)/1000000 ))
           
-          # Envoyer les métriques à Prometheus
           echo "pipeline_test_duration_ms $duration" | curl -X POST --data-binary @- \
-            http://localhost:9091/metrics/job/pipeline/instance/test
+            http://localhost:9091/metrics/job/pipeline/instance/test \
+            --retry 3 --retry-delay 2
 
       - name: Collect Metrics
         if: always()
         run: |
-          # Récupérer les métriques de PowerAPI
-          curl -o power_metrics.json http://localhost:9091/metrics/job/powerapi
+          # Add error handling for metric collection
+          collect_metric() {
+            local url=$1
+            local output=$2
+            curl -f -S --retry 3 --retry-delay 2 -o "$output" "$url" || echo "Failed to collect metric from $url"
+          }
           
-          # Récupérer les métriques système
-          curl -o node_metrics.json http://localhost:9100/metrics
+          collect_metric "http://localhost:9091/metrics/job/powerapi" "power_metrics.json"
+          collect_metric "http://localhost:9100/metrics" "node_metrics.json"
+          collect_metric "$PROMETHEUS_URL/api/v1/query?query=pipeline_build_duration_ms" "prometheus_metrics.json"
           
-          # Récupérer les métriques de Prometheus
-          curl -o prometheus_metrics.json "$PROMETHEUS_URL/api/v1/query?query=pipeline_build_duration_ms"
-          
-          # Générer le rapport des métriques
-          cat << EOF > metrics_report.txt
+          # Generate report only if metrics are available
+          if [[ -f prometheus_metrics.json && -f power_metrics.json && -f node_metrics.json ]]; then
+            cat << EOF > metrics_report.txt
           Pipeline Run Report - $(date)
           ===========================
           
-          Build Duration: $(cat prometheus_metrics.json | jq .data.result[0].value[1])ms
-          Power Consumption: $(cat power_metrics.json | jq .total_power_consumption)W
-          CPU Usage: $(cat node_metrics.json | grep cpu_usage_percent | awk '{print $2}')%
-          Memory Usage: $(cat node_metrics.json | grep memory_usage_bytes | awk '{print $2/1024/1024}')MB
+          Build Duration: $(jq -r '.data.result[0].value[1] // "N/A"' prometheus_metrics.json)ms
+          Power Consumption: $(jq -r '.total_power_consumption // "N/A"' power_metrics.json)W
+          CPU Usage: $(grep -oP 'cpu_usage_percent \K[\d.]+' node_metrics.json || echo "N/A")%
+          Memory Usage: $(awk '/memory_usage_bytes/{printf "%.2f", $2/1024/1024}' node_metrics.json || echo "N/A")MB
           EOF
+          fi
 
       - name: Upload Metrics
-        uses: actions/upload-artifact@v3
+        if: always()
+        uses: actions/upload-artifact@v4  # Updated from v3
         with:
           name: pipeline-metrics
           path: |
@@ -99,43 +117,250 @@ jobs:
             power_metrics.json
             node_metrics.json
             prometheus_metrics.json
+          retention-days: 30
+          compression-level: 'maximum'
+
+      # Verify project structure
+      - name: List monitoring directory
+        run: |
+          ls -la monitoring/grafana/dashboards/
+          echo "Content of pipeline.json:"
+          cat monitoring/grafana/dashboards/pipeline.json
 
       - name: Create Grafana Dashboard
         if: always()
         run: |
-          # Créer un dashboard Grafana via l'API
-          curl -X POST -H "Content-Type: application/json" \
-            -d @- \
-            $GRAFANA_URL/api/dashboards/db << EOF
-          {
-            "dashboard": {
-              "title": "Pipeline Performance Dashboard",
+          # Using the full path relative to workspace
+          DASHBOARD_PATH="$GITHUB_WORKSPACE/monitoring/grafana/dashboards/pipeline.json"
+          if [ ! -f "$DASHBOARD_PATH" ]; then
+            echo "Error: Dashboard file not found at $DASHBOARD_PATH"
+            exit 1
+          fi
+
+          # Create dashboard using the JSON file
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            --retry 3 \
+            --retry-delay 2 \
+            -f \
+            -d "{\"dashboard\": $(cat $DASHBOARD_PATH), \"overwrite\": true}" \
+            $GRAFANA_URL/api/dashboards/db || echo "Failed to create dashboard"
+              "annotations": {
+                "list": []
+              },
+              "editable": true,
+              "fiscalYearStartMonth": 0,
+              "graphTooltip": 0,
+              "links": [],
+              "liveNow": false,
               "panels": [
                 {
-                  "title": "Build Duration",
-                  "type": "graph",
-                  "datasource": "Prometheus",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "palette-classic"
+                      },
+                      "custom": {
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 20,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                          "legend": false,
+                          "tooltip": false,
+                          "viz": false
+                        },
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 2,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                          "type": "linear"
+                        },
+                        "showPoints": "never",
+                        "spanNulls": true,
+                        "stacking": {
+                          "group": "A",
+                          "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                          "mode": "off"
+                        }
+                      },
+                      "mappings": [],
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "green",
+                            "value": null
+                          },
+                          {
+                            "color": "red",
+                            "value": 80
+                          }
+                        ]
+                      },
+                      "unit": "ms"
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 8,
+                    "w": 12,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "id": 1,
+                  "options": {
+                    "legend": {
+                      "calcs": ["mean", "max", "min"],
+                      "displayMode": "table",
+                      "placement": "bottom",
+                      "showLegend": true
+                    },
+                    "tooltip": {
+                      "mode": "single",
+                      "sort": "none"
+                    }
+                  },
                   "targets": [
                     {
-                      "expr": "pipeline_build_duration_ms"
+                      "datasource": {
+                        "type": "prometheus",
+                        "uid": "prometheus"
+                      },
+                      "editorMode": "code",
+                      "expr": "pipeline_build_duration_ms",
+                      "legendFormat": "Build Duration",
+                      "range": true,
+                      "refId": "A"
                     }
-                  ]
+                  ],
+                  "title": "Pipeline Build Duration",
+                  "type": "timeseries"
                 },
                 {
-                  "title": "Power Consumption",
-                  "type": "graph",
-                  "datasource": "Prometheus",
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "palette-classic"
+                      },
+                      "custom": {
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 20,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                          "legend": false,
+                          "tooltip": false,
+                          "viz": false
+                        },
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 2,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                          "type": "linear"
+                        },
+                        "showPoints": "never",
+                        "spanNulls": true,
+                        "stacking": {
+                          "group": "A",
+                          "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                          "mode": "off"
+                        }
+                      },
+                      "mappings": [],
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "green",
+                            "value": null
+                          },
+                          {
+                            "color": "red",
+                            "value": 80
+                          }
+                        ]
+                      },
+                      "unit": "watts"
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 8,
+                    "w": 12,
+                    "x": 12,
+                    "y": 0
+                  },
+                  "id": 2,
+                  "options": {
+                    "legend": {
+                      "calcs": ["mean", "max"],
+                      "displayMode": "table",
+                      "placement": "bottom",
+                      "showLegend": true
+                    },
+                    "tooltip": {
+                      "mode": "single",
+                      "sort": "none"
+                    }
+                  },
                   "targets": [
                     {
-                      "expr": "power_consumption_watts"
+                      "datasource": {
+                        "type": "prometheus",
+                        "uid": "prometheus"
+                      },
+                      "editorMode": "code",
+                      "expr": "power_consumption_watts",
+                      "legendFormat": "Power Consumption",
+                      "range": true,
+                      "refId": "A"
                     }
-                  ]
+                  ],
+                  "title": "Power Consumption",
+                  "type": "timeseries"
                 }
-              ]
-            }
+              ],
+              "refresh": "5s",
+              "schemaVersion": 38,
+              "style": "dark",
+              "tags": ["pipeline", "performance"],
+              "templating": {
+                "list": []
+              },
+              "time": {
+                "from": "now-1h",
+                "to": "now"
+              },
+              "title": "Pipeline Performance",
+              "weekStart": ""
+            },
+            "overwrite": true
           }
           EOF
 
       - name: Cleanup
         if: always()
-        run: docker-compose down
+        run: |
+          docker-compose down --volumes --remove-orphans
+          docker system prune -f
