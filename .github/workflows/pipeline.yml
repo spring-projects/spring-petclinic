@@ -17,7 +17,6 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-          # Removed pip caching since requirements.txt is not present
 
       - name: Install system dependencies
         run: |
@@ -27,7 +26,8 @@ jobs:
             libffi-dev \
             libssl-dev \
             gcc \
-            make
+            make \
+            libyaml-dev  # Ajouté pour PyYAML
 
       - name: Create requirements file
         run: |
@@ -40,11 +40,13 @@ jobs:
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip setuptools wheel
-          pip install -r requirements.txt
-          # Reinstall PyYAML with specific build flags if the initial installation fails
-          if ! python -c "import yaml"; then
-            PYTHONPATH='' CFLAGS="-O2" pip install --no-cache-dir --no-build-isolation pyyaml==5.4.1
-          fi
+          pip install -r requirements.txt || \
+          (echo "⚠️ Première installation échouée, tentative avec flags spécifiques..." && \
+          CFLAGS="-O2" pip install --no-cache-dir --no-build-isolation pyyaml==5.4.1)
+
+      - name: Verify PyYAML installation
+        run: |
+          python -c "import yaml; print('PyYAML version:', yaml.__version__)"
 
       - name: Check Docker Compose version
         run: |
@@ -53,14 +55,14 @@ jobs:
       - name: Run tests
         run: |
           echo "Running tests..."
-          # Add your test commands here
+          # Ajoute ici tes commandes de test
 
       - name: Deploy application
         run: |
           echo "Deploying application..."
-          # Add your deployment commands here
+          # Ajoute ici tes commandes de déploiement
 
       - name: Monitoring setup
         run: |
           echo "Setting up monitoring..."
-          # Add your monitoring configuration here
+          # Ajoute ici ta configuration de monitoring
