@@ -1,4 +1,4 @@
-name: Enhanced Java Application Pipeline with Metrics and Energy Monitoring
+name: Enhanced Java Application Pipeline with Metrics Collection
 
 on:
   push:
@@ -11,31 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
 
-    services:
-      prometheus:
-        image: prom/prometheus:latest
-        ports:
-          - 9090:9090
-        options: >-
-          --health-cmd "wget -q -O- http://localhost:9090/-/healthy || exit 1"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 3
-
-      pushgateway:
-        image: prom/pushgateway:latest
-        ports:
-          - 9091:9091
-        options: >-
-          --health-cmd "wget -q -O- http://localhost:9091/-/healthy || exit 1"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 3
-
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup directories and tools
+      - name: Setup directories for metrics
         run: |
           set -eo pipefail
           
@@ -66,8 +45,7 @@ jobs:
           sudo powerapi daemon start --formula rapl
           echo "POWERAPI_PID=$(pgrep -f powerapi)" >> $GITHUB_ENV
 
-      - name: Start monitoring
-        id: start-monitoring
+      - name: Collect initial system metrics
         run: |
           set -eo pipefail
           
@@ -124,7 +102,6 @@ jobs:
           free -m > metrics/system/post_build_memory.txt
           
           # Enregistrer le temps de build
-          echo "BUILD_TIME=$((($end_time - $start_time)/1000000))" >> $GITHUB_ENV
           echo "$((($end_time - $start_time)/1000000))" > metrics/performance/build_time.txt
           
           exit $build_status
@@ -158,7 +135,6 @@ jobs:
           free -m > metrics/system/post_test_memory.txt
           
           # Enregistrer le temps des tests
-          echo "TEST_TIME=$((($end_time - $start_time)/1000000))" >> $GITHUB_ENV
           echo "$((($end_time - $start_time)/1000000))" > metrics/performance/test_time.txt
           
           exit $test_status
@@ -194,7 +170,6 @@ jobs:
           df -h > metrics/system/post_docker_disk.txt
           
           # Enregistrer le temps de build Docker
-          echo "DOCKER_BUILD_TIME=$((($end_time - $start_time)/1000000))" >> $GITHUB_ENV
           echo "$((($end_time - $start_time)/1000000))" > metrics/performance/docker_time.txt
           
           # Collecter la taille de l'image
@@ -202,7 +177,7 @@ jobs:
           
           exit $build_status
 
-      - name: Collect and analyze metrics
+      - name: Collect final system metrics
         if: always()
         run: |
           set -eo pipefail
@@ -219,149 +194,6 @@ jobs:
 
           # Marquer la fin du pipeline
           date +%s%N > metrics/pipeline_end_time.txt
-
-          python3 << EOF
-          import pandas as pd
-          import glob
-          import os
-
-          def read_time_file(filename, default=0):
-              """Lit un fichier de temps avec gestion d'erreur"""
-              try:
-                  with open(filename) as f:
-                      return float(f.read().strip())
-              except Exception as e:
-                  print(f"Warning: Could not read {filename}: {e}")
-                  return default
-
-          def analyze_power_metrics():
-              """Analyse les données de PowerAPI avec gestion d'erreur"""
-              try:
-                  power_files = glob.glob('metrics/power/*.csv')
-                  if not power_files:
-                      print("No power metrics found")
-                      return {}
-
-                  power_data = []
-                  for file in power_files:
-                      stage = os.path.basename(file).replace('_power.csv', '')
-                      try:
-                          df = pd.read_csv(file)
-                          stats = {
-                              'stage': stage,
-                              'avg_power': df['power'].mean(),
-                              'max_power': df['power'].max(),
-                              'total_energy': df['power'].sum() * df['power'].count() * 0.1,
-                              'duration': len(df) * 0.1
-                          }
-                          power_data.append(stats)
-                      except Exception as e:
-                          print(f"Error processing {file}: {e}")
-
-                  if power_data:
-                      power_df = pd.DataFrame(power_data)
-                      power_df.to_csv('metrics/power/power_analysis.csv', index=False)
-                      return power_df
-                  return {}
-              except Exception as e:
-                  print(f"Error in power analysis: {e}")
-                  return {}
-
-            def analyze_times():
-              """Analyse les temps d'exécution avec gestion d'erreur"""
-              try:
-                  times = {
-                      'build': read_time_file('metrics/performance/build_time.txt'),
-                      'test': read_time_file('metrics/performance/test_time.txt'),
-                      'docker': read_time_file('metrics/performance/docker_time.txt')
-                  }
-
-                  total_time = sum(times.values())
-                  if total_time > 0:
-                      os.makedirs('metrics/performance', exist_ok=True)
-
-                      with open('metrics/performance/summary.txt', 'w') as f:
-                          f.write("Pipeline Performance Summary\n")
-                          f.write("==========================\n\n")
-
-                          for stage, duration in times.items():
-                              percentage = (duration / total_time * 100) if total_time > 0 else 0
-                              f.write(f"{stage.capitalize()} Stage:\n")
-                              f.write(f"Duration: {duration/1000:.2f} seconds\n")
-                              f.write(f"Percentage of total time: {percentage:.1f}%\n\n")
-
-                          f.write(f"Total Pipeline Duration: {total_time/1000:.2f} seconds\n")
-
-                      pd.DataFrame([times]).to_csv('metrics/performance/times.csv', index=False)
-                  return times
-              except Exception as e:
-                  print(f"Error in time analysis: {e}")
-                  return {}
-
-          # Créer les répertoires si nécessaire
-          os.makedirs('metrics/power', exist_ok=True)
-          os.makedirs('metrics/performance', exist_ok=True)
-          os.makedirs('metrics/system', exist_ok=True)
-
-          # Analyser les données
-          power_metrics = analyze_power_metrics()
-          time_metrics = analyze_times()
-
-          # Créer un rapport final
-          try:
-              with open('metrics/summary_report.txt', 'w') as f:
-                  f.write("Pipeline Analysis Report\n")
-                  f.write("======================\n\n")
-
-                  if time_metrics:
-                      f.write("Performance Metrics:\n")
-                      f.write("-----------------\n")
-                      total_time = sum(time_metrics.values())
-                      f.write(f"Total Duration: {total_time/1000:.2f} seconds\n")
-                      for stage, duration in time_metrics.items():
-                          f.write(f"{stage}: {duration/1000:.2f}s\n")
-                      f.write("\n")
-
-                  if power_metrics:
-                      f.write("Energy Metrics:\n")
-                      f.write("--------------\n")
-                      for stage, metrics in power_metrics.items():
-                          f.write(f"Stage: {stage}\n")
-                          for metric, value in metrics.items():
-                              if metric != 'stage':
-                                  f.write(f"{metric}: {value:.2f}\n")
-                          f.write("\n")
-          except Exception as e:
-              print(f"Error creating final report: {e}")
-
-          EOF
-      - name: Export metrics to Prometheus
-        if: always()
-        timeout-minutes: 5
-        run: |
-          set -eo pipefail
-          
-          function export_metric() {
-            local metric_name=$1
-            local metric_value=$2
-            local stage=$3
-          
-            if [ -n "$metric_value" ]; then
-              echo "${metric_name}{stage=\"${stage}\",project=\"java-app\"} ${metric_value}" | \
-                curl --retry 3 --max-time 10 --silent --show-error \
-                  --data-binary @- http://localhost:9091/metrics/job/pipeline-metrics || \
-                echo "Failed to export metric ${metric_name}"
-            fi
-          }
-          
-          # Exporter les temps d'exécution
-          export_metric "pipeline_duration_ms" "${BUILD_TIME}" "build"
-          export_metric "pipeline_duration_ms" "${TEST_TIME}" "test"
-          export_metric "pipeline_duration_ms" "${DOCKER_BUILD_TIME}" "docker"
-          
-          # Exporter l'utilisation mémoire finale
-          mem_usage=$(free -b | grep Mem: | awk '{print $3}')
-          export_metric "memory_usage_bytes" "$mem_usage" "final"
 
       - name: Save metrics
         if: always()
@@ -381,4 +213,3 @@ jobs:
           fi
           
           docker system prune -af
-          rm -rf node_exporter*
