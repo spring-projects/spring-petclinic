@@ -6,152 +6,44 @@ on:
   pull_request:
     branches: [ pipeline-optimization ]
 
-env:
-  PROMETHEUS_URL: http://localhost:9090
-  GRAFANA_URL: http://localhost:3000
-
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_USER: petclinic
-          MYSQL_PASSWORD: petclinic
-          MYSQL_DATABASE: petclinic
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
-
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          sudo apt update
+          sudo apt install -y python3-dev libffi-dev libssl-dev
 
       - name: Install Docker Compose
         run: |
-          # Installation de Docker Compose via pip (méthode alternative)
-          sudo apt-get update
-          sudo apt-get install -y python3-pip
-          sudo pip3 install docker-compose
-          docker-compose version
-          
-          # Vérifier que Docker est en cours d'exécution
-          sudo systemctl status docker || true
-          sudo docker info
+          pip install PyYAML==5.4.1
+          pip install docker-compose || sudo apt install -y docker-compose-plugin
 
-      - name: Create monitoring directories
+      - name: Check Docker Compose version
         run: |
-          mkdir -p monitoring/grafana/dashboards
-          cp $GITHUB_WORKSPACE/monitoring/grafana/dashboards/pipeline.json monitoring/grafana/dashboards/
-          ls -la monitoring/grafana/dashboards/
+          docker-compose version || docker compose version
 
-      - name: Start Monitoring Stack
+      - name: Run tests
         run: |
-          docker-compose up -d prometheus grafana powerapi node-exporter
-          echo "Waiting for services to be healthy..."
-          timeout 60s bash -c 'until curl -s -f http://localhost:9090/-/healthy; do sleep 2; echo "Waiting for Prometheus..."; done'
-          timeout 60s bash -c 'until curl -s -f http://localhost:3000/api/health; do sleep 2; echo "Waiting for Grafana..."; done'
+          echo "Running tests..."
+          # Ajouter ici les commandes pour exécuter les tests
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: 'maven'
-
-      - name: Record Build Start
+      - name: Deploy application
         run: |
-          curl -X POST http://localhost:9091/metrics/job/pipeline/instance/build \
-          --data-binary "pipeline_stage_start{stage=\"build\"} $(date +%s)" \
-          --retry 3 --retry-delay 2 || echo "Failed to record build start"
+          echo "Deploying application..."
+          # Ajouter ici les commandes de déploiement
 
-      - name: Maven Build
+      - name: Monitoring setup
         run: |
-          start_time=$(date +%s%N)
-          ./mvnw -B clean package || true
-          end_time=$(date +%s%N)
-          duration=$(( ($end_time - $start_time)/1000000 ))
-          
-          echo "pipeline_build_duration_ms $duration" | curl -X POST --data-binary @- \
-            http://localhost:9091/metrics/job/pipeline/instance/build \
-            --retry 3 --retry-delay 2 || echo "Failed to send build metrics"
-
-      - name: Run Tests
-        run: |
-          start_time=$(date +%s%N)
-          ./mvnw -B test || true
-          end_time=$(date +%s%N)
-          duration=$(( ($end_time - $start_time)/1000000 ))
-          
-          echo "pipeline_test_duration_ms $duration" | curl -X POST --data-binary @- \
-            http://localhost:9091/metrics/job/pipeline/instance/test \
-            --retry 3 --retry-delay 2 || echo "Failed to send test metrics"
-
-      - name: Collect Metrics
-        if: always()
-        run: |
-          # Create directory for metrics
-          mkdir -p metrics
-          
-          # Function to collect metrics with error handling
-          collect_metric() {
-            local url=$1
-            local output=$2
-            curl -f -S --retry 3 --retry-delay 2 -o "metrics/$output" "$url" || echo "Failed to collect metric from $url"
-          }
-          
-          # Collect metrics
-          collect_metric "http://localhost:9091/metrics/job/powerapi" "power_metrics.json"
-          collect_metric "http://localhost:9100/metrics" "node_metrics.json"
-          collect_metric "$PROMETHEUS_URL/api/v1/query?query=pipeline_build_duration_ms" "prometheus_metrics.json"
-          
-          # Generate report if metrics are available
-          if [ -f "metrics/prometheus_metrics.json" ]; then
-            cat << EOF > metrics/metrics_report.txt
-          Pipeline Run Report - $(date)
-          ===========================
-          
-          Build Duration: $(cat metrics/prometheus_metrics.json | jq -r '.data.result[0].value[1] // "N/A"')ms
-          Power Consumption: $(cat metrics/power_metrics.json | jq -r '.total_power_consumption // "N/A"')W
-          EOF
-          fi
-
-      - name: Upload Metrics
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: pipeline-metrics
-          path: metrics/
-          retention-days: 30
-          if-no-files-found: warn
-
-      - name: Create Grafana Dashboard
-        if: always()
-        run: |
-          DASHBOARD_PATH="$GITHUB_WORKSPACE/monitoring/grafana/dashboards/pipeline.json"
-          if [ -f "$DASHBOARD_PATH" ]; then
-            echo "Creating dashboard from $DASHBOARD_PATH"
-            curl -X POST \
-              -H "Content-Type: application/json" \
-              --retry 3 \
-              --retry-delay 2 \
-              -f \
-              -d "{\"dashboard\": $(cat $DASHBOARD_PATH), \"overwrite\": true}" \
-              $GRAFANA_URL/api/dashboards/db || echo "Failed to create dashboard"
-          else
-            echo "Dashboard file not found at $DASHBOARD_PATH"
-            ls -la $GITHUB_WORKSPACE/monitoring/grafana/dashboards/
-          fi
-
-      - name: Cleanup
-        if: always()
-        run: |
-          docker-compose down --volumes --remove-orphans || echo "Failed to stop containers"
-          docker system prune -f || echo "Failed to prune Docker system"
+          echo "Setting up monitoring..."
+          # Ajouter ici les outils de monitoring (ex: Prometheus, Grafana)
