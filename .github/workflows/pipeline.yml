@@ -46,15 +46,11 @@ jobs:
           
           # Installation des packages nécessaires
           sudo apt-get update
-          sudo apt-get install -y powerstat linux-tools-common linux-tools-generic python3-pip
+          sudo apt-get install -y linux-tools-common linux-tools-generic python3-pip python3-psutil
           
-          # Installation de PowerAPI et pandas
-          pip3 install powerapi pandas
-          
-          # Vérifier les installations
-          python3 --version
-          pip3 list | grep powerapi
-          pip3 list | grep pandas
+          # Installation de PowerAPI et dépendances
+          pip3 install powerapi==0.9.0 pandas numpy
+          sudo powerapi --formula rapl
 
       - name: Cache Maven packages
         uses: actions/cache@v3
@@ -62,6 +58,13 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
+
+      - name: Start PowerAPI monitoring
+        id: start-powerapi
+        run: |
+          # Démarrer le daemon PowerAPI
+          sudo powerapi daemon start --formula rapl
+          echo "POWERAPI_PID=$(pgrep -f powerapi)" >> $GITHUB_ENV
 
       - name: Start monitoring
         id: start-monitoring
@@ -98,6 +101,10 @@ jobs:
           
           start_time=$(date +%s%N)
           
+          # Démarrer la mesure PowerAPI
+          sudo powerapi monitor record --formula rapl --pid $$ --output metrics/power/build_power.csv &
+          POWER_MONITOR_PID=$!
+          
           # Collecter les métriques avant build
           free -m > metrics/system/pre_build_memory.txt
           
@@ -109,6 +116,9 @@ jobs:
           
           build_status=$?
           end_time=$(date +%s%N)
+          
+          # Arrêter la mesure PowerAPI
+          kill $POWER_MONITOR_PID
           
           # Collecter les métriques post-build
           free -m > metrics/system/post_build_memory.txt
@@ -128,6 +138,10 @@ jobs:
           
           start_time=$(date +%s%N)
           
+          # Démarrer la mesure PowerAPI
+          sudo powerapi monitor record --formula rapl --pid $$ --output metrics/power/test_power.csv &
+          POWER_MONITOR_PID=$!
+          
           # Collecter les métriques pré-tests
           free -m > metrics/system/pre_test_memory.txt
           
@@ -136,6 +150,9 @@ jobs:
           
           test_status=$?
           end_time=$(date +%s%N)
+          
+          # Arrêter la mesure PowerAPI
+          kill $POWER_MONITOR_PID
           
           # Collecter les métriques post-tests
           free -m > metrics/system/post_test_memory.txt
@@ -155,6 +172,10 @@ jobs:
           
           start_time=$(date +%s%N)
           
+          # Démarrer la mesure PowerAPI
+          sudo powerapi monitor record --formula rapl --pid $$ --output metrics/power/docker_power.csv &
+          POWER_MONITOR_PID=$!
+          
           # Collecter les métriques pré-docker
           free -m > metrics/system/pre_docker_memory.txt
           df -h > metrics/system/pre_docker_disk.txt
@@ -164,6 +185,9 @@ jobs:
           
           build_status=$?
           end_time=$(date +%s%N)
+          
+          # Arrêter la mesure PowerAPI
+          kill $POWER_MONITOR_PID
           
           # Collecter les métriques post-docker
           free -m > metrics/system/post_docker_memory.txt
@@ -185,53 +209,84 @@ jobs:
           
           # Collecter les métriques système finales
           echo "=== Final System Resources ===" > metrics/system/final_metrics.txt
-          top -b -n 1 >> metrics/system/final_metrics.txt || echo "Failed to collect top metrics"
+          top -b -n 1 >> metrics/system/final_metrics.txt
           
           echo "=== Final Memory Usage ===" > metrics/system/final_memory.txt
-          free -m >> metrics/system/final_memory.txt || echo "Failed to collect memory metrics"
+          free -m >> metrics/system/final_memory.txt
           
           echo "=== Final Disk Usage ===" > metrics/system/final_disk.txt
-          df -h >> metrics/system/final_disk.txt || echo "Failed to collect disk metrics"
+          df -h >> metrics/system/final_disk.txt
           
           # Marquer la fin du pipeline
           date +%s%N > metrics/pipeline_end_time.txt
           
-          # Analyser les temps d'exécution
           python3 << EOF
           import pandas as pd
+          import glob
           import os
+
+          def analyze_power_metrics():
+              power_files = glob.glob('metrics/power/*.csv')
+              if not power_files:
+                  print("No power metrics found")
+                  return
           
-          def read_time_file(filename):
-              try:
-                  with open(filename, 'r') as f:
-                      return float(f.read().strip())
-              except:
-                  return 0
+              power_data = []
+              for file in power_files:
+                  stage = os.path.basename(file).replace('_power.csv', '')
+                  try:
+                      df = pd.read_csv(file)
+                      stats = {
+                          'stage': stage,
+                          'avg_power': df['power'].mean(),
+                          'max_power': df['power'].max(),
+                          'total_energy': df['power'].sum() * df['power'].count() * 0.1,
+                          'duration': len(df) * 0.1
+                      }
+                      power_data.append(stats)
+                  except Exception as e:
+                      print(f"Error processing {file}: {e}")
           
-          # Collecter les temps
-          times = {
-              'build': read_time_file('metrics/performance/build_time.txt'),
-              'test': read_time_file('metrics/performance/test_time.txt'),
-              'docker': read_time_file('metrics/performance/docker_time.txt')
-          }
+              if power_data:
+                  power_df = pd.DataFrame(power_data)
+                  power_df.to_csv('metrics/power/power_analysis.csv', index=False)
           
-          # Créer le rapport de performance
-          with open('metrics/performance/summary.txt', 'w') as f:
-              f.write("Pipeline Performance Summary\n")
-              f.write("==========================\n\n")
+                  with open('metrics/power/power_summary.txt', 'w') as f:
+                      f.write("Energy Consumption Summary\n")
+                      f.write("=========================\n\n")
+          
+                      for _, row in power_df.iterrows():
+                          f.write(f"Stage: {row['stage']}\n")
+                          f.write(f"Average Power: {row['avg_power']:.2f} W\n")
+                          f.write(f"Maximum Power: {row['max_power']:.2f} W\n")
+                          f.write(f"Total Energy: {row['total_energy']:.2f} J\n")
+                          f.write(f"Duration: {row['duration']:.2f} s\n\n")
+
+          def analyze_times():
+              times = {
+                  'build': float(open('metrics/performance/build_time.txt').read().strip()),
+                  'test': float(open('metrics/performance/test_time.txt').read().strip()),
+                  'docker': float(open('metrics/performance/docker_time.txt').read().strip())
+              }
           
               total_time = sum(times.values())
           
-              for stage, duration in times.items():
-                  percentage = (duration / total_time * 100) if total_time > 0 else 0
-                  f.write(f"{stage.capitalize()} Stage:\n")
-                  f.write(f"Duration: {duration/1000:.2f} seconds\n")
-                  f.write(f"Percentage of total time: {percentage:.1f}%\n\n")
+              with open('metrics/performance/summary.txt', 'w') as f:
+                  f.write("Pipeline Performance Summary\n")
+                  f.write("==========================\n\n")
           
-              f.write(f"Total Pipeline Duration: {total_time/1000:.2f} seconds\n")
+                  for stage, duration in times.items():
+                      percentage = (duration / total_time * 100)
+                      f.write(f"{stage.capitalize()} Stage:\n")
+                      f.write(f"Duration: {duration/1000:.2f} seconds\n")
+                      f.write(f"Percentage of total time: {percentage:.1f}%\n\n")
           
-          # Créer un CSV avec les métriques
-          pd.DataFrame([times]).to_csv('metrics/performance/times.csv', index=False)
+                  f.write(f"Total Pipeline Duration: {total_time/1000:.2f} seconds\n")
+          
+              pd.DataFrame([times]).to_csv('metrics/performance/times.csv', index=False)
+          
+          analyze_power_metrics()
+          analyze_times()
           EOF
 
       - name: Export metrics to Prometheus
@@ -274,5 +329,10 @@ jobs:
       - name: Cleanup
         if: always()
         run: |
+          # Arrêter PowerAPI
+          if [ -n "$POWERAPI_PID" ]; then
+            sudo powerapi daemon stop
+          fi
+          
           docker system prune -af
           rm -rf node_exporter*
