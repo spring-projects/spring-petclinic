@@ -131,7 +131,8 @@ jobs:
         run: |
           set -eo pipefail
           start_time=$(date +%s%N)
-          docker build -t app:latest . --no-cache
+          
+          docker build -t app:latest -f .devcontainer/Dockerfile . --no-cache
           build_status=$?
           end_time=$(date +%s%N)
           echo "DOCKER_BUILD_TIME=$((($end_time - $start_time)/1000000))" >> $GITHUB_ENV
