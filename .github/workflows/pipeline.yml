@@ -160,7 +160,7 @@ jobs:
           df -h > metrics/system/pre_docker_disk.txt
           
           # Build Docker optimisé
-          DOCKER_BUILDKIT=1 docker build -t app:latest .
+          docker build -t app:latest -f .devcontainer/Dockerfile . --no-cache
           
           build_status=$?
           end_time=$(date +%s%N)
