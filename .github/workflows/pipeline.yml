@@ -206,89 +206,135 @@ jobs:
         if: always()
         run: |
           set -eo pipefail
-          
+
           # Collecter les métriques système finales
           echo "=== Final System Resources ===" > metrics/system/final_metrics.txt
-          top -b -n 1 >> metrics/system/final_metrics.txt
-          
+          top -b -n 1 >> metrics/system/final_metrics.txt || echo "Failed to collect top metrics"
+
           echo "=== Final Memory Usage ===" > metrics/system/final_memory.txt
-          free -m >> metrics/system/final_memory.txt
-          
+          free -m >> metrics/system/final_memory.txt || echo "Failed to collect memory metrics"
+
           echo "=== Final Disk Usage ===" > metrics/system/final_disk.txt
-          df -h >> metrics/system/final_disk.txt
-          
+          df -h >> metrics/system/final_disk.txt || echo "Failed to collect disk metrics"
+
           # Marquer la fin du pipeline
           date +%s%N > metrics/pipeline_end_time.txt
-          
+
           python3 << EOF
           import pandas as pd
           import glob
           import os
 
+          def read_time_file(filename, default=0):
+              """Lit un fichier de temps avec gestion d'erreur"""
+              try:
+                  with open(filename) as f:
+                      return float(f.read().strip())
+              except Exception as e:
+                  print(f"Warning: Could not read {filename}: {e}")
+                  return default
+
           def analyze_power_metrics():
-              power_files = glob.glob('metrics/power/*.csv')
-              if not power_files:
-                  print("No power metrics found")
-                  return
-          
-              power_data = []
-              for file in power_files:
-                  stage = os.path.basename(file).replace('_power.csv', '')
-                  try:
-                      df = pd.read_csv(file)
-                      stats = {
-                          'stage': stage,
-                          'avg_power': df['power'].mean(),
-                          'max_power': df['power'].max(),
-                          'total_energy': df['power'].sum() * df['power'].count() * 0.1,
-                          'duration': len(df) * 0.1
-                      }
-                      power_data.append(stats)
-                  except Exception as e:
-                      print(f"Error processing {file}: {e}")
-          
-              if power_data:
-                  power_df = pd.DataFrame(power_data)
-                  power_df.to_csv('metrics/power/power_analysis.csv', index=False)
-          
-                  with open('metrics/power/power_summary.txt', 'w') as f:
-                      f.write("Energy Consumption Summary\n")
-                      f.write("=========================\n\n")
-          
-                      for _, row in power_df.iterrows():
-                          f.write(f"Stage: {row['stage']}\n")
-                          f.write(f"Average Power: {row['avg_power']:.2f} W\n")
-                          f.write(f"Maximum Power: {row['max_power']:.2f} W\n")
-                          f.write(f"Total Energy: {row['total_energy']:.2f} J\n")
-                          f.write(f"Duration: {row['duration']:.2f} s\n\n")
+              """Analyse les données de PowerAPI avec gestion d'erreur"""
+              try:
+                  power_files = glob.glob('metrics/power/*.csv')
+                  if not power_files:
+                      print("No power metrics found")
+                      return {}
 
-          def analyze_times():
-              times = {
-                  'build': float(open('metrics/performance/build_time.txt').read().strip()),
-                  'test': float(open('metrics/performance/test_time.txt').read().strip()),
-                  'docker': float(open('metrics/performance/docker_time.txt').read().strip())
-              }
-          
-              total_time = sum(times.values())
-          
-              with open('metrics/performance/summary.txt', 'w') as f:
-                  f.write("Pipeline Performance Summary\n")
-                  f.write("==========================\n\n")
-          
-                  for stage, duration in times.items():
-                      percentage = (duration / total_time * 100)
-                      f.write(f"{stage.capitalize()} Stage:\n")
-                      f.write(f"Duration: {duration/1000:.2f} seconds\n")
-                      f.write(f"Percentage of total time: {percentage:.1f}%\n\n")
-          
-                  f.write(f"Total Pipeline Duration: {total_time/1000:.2f} seconds\n")
-          
-              pd.DataFrame([times]).to_csv('metrics/performance/times.csv', index=False)
-          
-          analyze_power_metrics()
-          analyze_times()
+                  power_data = []
+                  for file in power_files:
+                      stage = os.path.basename(file).replace('_power.csv', '')
+                      try:
+                          df = pd.read_csv(file)
+                          stats = {
+                              'stage': stage,
+                              'avg_power': df['power'].mean(),
+                              'max_power': df['power'].max(),
+                              'total_energy': df['power'].sum() * df['power'].count() * 0.1,
+                              'duration': len(df) * 0.1
+                          }
+                          power_data.append(stats)
+                      except Exception as e:
+                          print(f"Error processing {file}: {e}")
+
+                  if power_data:
+                      power_df = pd.DataFrame(power_data)
+                      power_df.to_csv('metrics/power/power_analysis.csv', index=False)
+                      return power_df
+                  return {}
+              except Exception as e:
+                  print(f"Error in power analysis: {e}")
+                  return {}
+
+            def analyze_times():
+              """Analyse les temps d'exécution avec gestion d'erreur"""
+              try:
+                  times = {
+                      'build': read_time_file('metrics/performance/build_time.txt'),
+                      'test': read_time_file('metrics/performance/test_time.txt'),
+                      'docker': read_time_file('metrics/performance/docker_time.txt')
+                  }
+
+                  total_time = sum(times.values())
+                  if total_time > 0:
+                      os.makedirs('metrics/performance', exist_ok=True)
+
+                      with open('metrics/performance/summary.txt', 'w') as f:
+                          f.write("Pipeline Performance Summary\n")
+                          f.write("==========================\n\n")
+
+                          for stage, duration in times.items():
+                              percentage = (duration / total_time * 100) if total_time > 0 else 0
+                              f.write(f"{stage.capitalize()} Stage:\n")
+                              f.write(f"Duration: {duration/1000:.2f} seconds\n")
+                              f.write(f"Percentage of total time: {percentage:.1f}%\n\n")
+
+                          f.write(f"Total Pipeline Duration: {total_time/1000:.2f} seconds\n")
+
+                      pd.DataFrame([times]).to_csv('metrics/performance/times.csv', index=False)
+                  return times
+              except Exception as e:
+                  print(f"Error in time analysis: {e}")
+                  return {}
+
+          # Créer les répertoires si nécessaire
+          os.makedirs('metrics/power', exist_ok=True)
+          os.makedirs('metrics/performance', exist_ok=True)
+          os.makedirs('metrics/system', exist_ok=True)
+
+          # Analyser les données
+          power_metrics = analyze_power_metrics()
+          time_metrics = analyze_times()
+
+          # Créer un rapport final
+          try:
+              with open('metrics/summary_report.txt', 'w') as f:
+                  f.write("Pipeline Analysis Report\n")
+                  f.write("======================\n\n")
+
+                  if time_metrics:
+                      f.write("Performance Metrics:\n")
+                      f.write("-----------------\n")
+                      total_time = sum(time_metrics.values())
+                      f.write(f"Total Duration: {total_time/1000:.2f} seconds\n")
+                      for stage, duration in time_metrics.items():
+                          f.write(f"{stage}: {duration/1000:.2f}s\n")
+                      f.write("\n")
+
+                  if power_metrics:
+                      f.write("Energy Metrics:\n")
+                      f.write("--------------\n")
+                      for stage, metrics in power_metrics.items():
+                          f.write(f"Stage: {stage}\n")
+                          for metric, value in metrics.items():
+                              if metric != 'stage':
+                                  f.write(f"{metric}: {value:.2f}\n")
+                          f.write("\n")
+          except Exception as e:
+              print(f"Error creating final report: {e}")
+
           EOF
-
       - name: Export metrics to Prometheus
         if: always()
         timeout-minutes: 5
