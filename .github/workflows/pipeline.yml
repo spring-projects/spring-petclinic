@@ -2,9 +2,9 @@ name: Enhanced Java Application Pipeline with Metrics
 
 on:
   push:
-    branches: [ main ]
+    branches: [ pipeline-optimization ]
   pull_request:
-    branches: [ main ]
+    branches: [ pipeline-optimization ]
 
 jobs:
   build-with-metrics:
