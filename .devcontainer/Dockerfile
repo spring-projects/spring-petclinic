@@ -1,5 +1,5 @@
 # Build stage
-FROM openjdk:17-jdk-slim as builder
+FROM registry.access.redhat.com/ubi8/openjdk-17:latest as builder
 
 WORKDIR /app
 
@@ -17,7 +17,7 @@ COPY src ./src
 RUN ./mvnw package -DskipTests
 
 # Run stage
-FROM openjdk:17-jre-slim
+FROM registry.access.redhat.com/ubi8/openjdk-17-runtime:latest
 
 WORKDIR /app
 
