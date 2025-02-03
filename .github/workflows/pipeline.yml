@@ -32,13 +32,29 @@ jobs:
           --health-timeout 5s
           --health-retries 3
 
-      grafana:
-        image: grafana/grafana:latest
-        ports:
-          - 3000:3000
-
     steps:
       - uses: actions/checkout@v4
+
+      - name: Setup directories and tools
+        run: |
+          set -eo pipefail
+          
+          # Créer la structure des répertoires
+          mkdir -p metrics/system
+          mkdir -p metrics/power
+          mkdir -p metrics/performance
+          
+          # Installation des packages nécessaires
+          sudo apt-get update
+          sudo apt-get install -y powerstat linux-tools-common linux-tools-generic python3-pip
+          
+          # Installation de PowerAPI et pandas
+          pip3 install powerapi pandas
+          
+          # Vérifier les installations
+          python3 --version
+          pip3 list | grep powerapi
+          pip3 list | grep pandas
 
       - name: Cache Maven packages
         uses: actions/cache@v3
@@ -47,46 +63,23 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
-      - name: Setup monitoring tools
-        id: setup-monitoring
-        timeout-minutes: 5
-        run: |
-          set -eo pipefail
-          
-          echo "::group::Installing system packages"
-          sudo apt-get update
-          sudo apt-get install -y powerstat linux-tools-common linux-tools-generic python3-pip stress-ng
-          echo "::endgroup::"
-          
-          echo "::group::Installing PowerAPI"
-          pip3 install powerapi pandas
-          sudo powerapi --formula rapl
-          echo "::endgroup::"
-          
-          echo "::group::Setting up node exporter"
-          curl -L --retry 3 https://github.com/prometheus/node_exporter/releases/download/v1.3.1/node_exporter-1.3.1.linux-amd64.tar.gz -o node_exporter.tar.gz
-          tar xvfz node_exporter.tar.gz
-          echo "::endgroup::"
-
-      - name: Start monitoring services
+      - name: Start monitoring
         id: start-monitoring
-        timeout-minutes: 2
         run: |
           set -eo pipefail
           
-          # Démarrer node exporter
-          ./node_exporter-*/node_exporter --web.listen-address=":9100" &
-          echo "NODE_EXPORTER_PID=$!" >> $GITHUB_ENV
-          
-          # Démarrer PowerAPI
-          sudo powerapi daemon start --formula rapl
-          echo "POWERAPI_PID=$(pgrep -f powerapi)" >> $GITHUB_ENV
-          
-          # Créer les répertoires pour les métriques
-          mkdir -p metrics/{power,system,performance}
-          
-          # Marquer le début du pipeline
+          # Enregistrer le temps de début
           date +%s%N > metrics/pipeline_start_time.txt
+          
+          # Collecter les métriques initiales
+          echo "=== Initial System Resources ===" > metrics/system/initial_metrics.txt
+          top -b -n 1 >> metrics/system/initial_metrics.txt
+          
+          echo "=== Initial Memory Usage ===" > metrics/system/initial_memory.txt
+          free -m >> metrics/system/initial_memory.txt
+          
+          echo "=== Initial Disk Usage ===" > metrics/system/initial_disk.txt
+          df -h >> metrics/system/initial_disk.txt
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -103,27 +96,26 @@ jobs:
         run: |
           set -eo pipefail
           
-          # Démarrer la mesure PowerAPI pour le build
-          sudo powerapi monitor record --formula rapl --pid $$ --output metrics/power/build_power.csv &
-          POWER_MONITOR_PID=$!
-          
           start_time=$(date +%s%N)
+          
+          # Collecter les métriques avant build
+          free -m > metrics/system/pre_build_memory.txt
           
           # Build optimisé
           ./mvnw -B verify \
             -Dmaven.test.skip=true \
             -Dcheckstyle.skip=true \
-            -T 1C \
-            -Dmaven.parallel.threads=4
+            -T 1C
           
           build_status=$?
           end_time=$(date +%s%N)
           
-          # Arrêter la mesure PowerAPI
-          kill $POWER_MONITOR_PID
+          # Collecter les métriques post-build
+          free -m > metrics/system/post_build_memory.txt
           
-          # Exporter les métriques de build
+          # Enregistrer le temps de build
           echo "BUILD_TIME=$((($end_time - $start_time)/1000000))" >> $GITHUB_ENV
+          echo "$((($end_time - $start_time)/1000000))" > metrics/performance/build_time.txt
           
           exit $build_status
 
@@ -134,25 +126,24 @@ jobs:
         run: |
           set -eo pipefail
           
-          # Démarrer la mesure PowerAPI pour les tests
-          sudo powerapi monitor record --formula rapl --pid $$ --output metrics/power/test_power.csv &
-          POWER_MONITOR_PID=$!
-          
           start_time=$(date +%s%N)
           
+          # Collecter les métriques pré-tests
+          free -m > metrics/system/pre_test_memory.txt
+          
           # Tests optimisés
-          ./mvnw test \
-            -T 1C \
-            -Dmaven.parallel.threads=4 \
-            -Dsurefire.useFile=false
+          ./mvnw test -T 1C
           
           test_status=$?
           end_time=$(date +%s%N)
           
-          # Arrêter la mesure PowerAPI
-          kill $POWER_MONITOR_PID
+          # Collecter les métriques post-tests
+          free -m > metrics/system/post_test_memory.txt
           
+          # Enregistrer le temps des tests
           echo "TEST_TIME=$((($end_time - $start_time)/1000000))" >> $GITHUB_ENV
+          echo "$((($end_time - $start_time)/1000000))" > metrics/performance/test_time.txt
+          
           exit $test_status
 
       - name: Build Docker image
@@ -162,73 +153,30 @@ jobs:
         run: |
           set -eo pipefail
           
-          # Démarrer la mesure PowerAPI pour le build Docker
-          sudo powerapi monitor record --formula rapl --pid $$ --output metrics/power/docker_power.csv &
-          POWER_MONITOR_PID=$!
-          
           start_time=$(date +%s%N)
           
+          # Collecter les métriques pré-docker
+          free -m > metrics/system/pre_docker_memory.txt
+          df -h > metrics/system/pre_docker_disk.txt
+          
           # Build Docker optimisé
-          DOCKER_BUILDKIT=1 docker build \
-            --no-cache \
-            --build-arg JAVA_VERSION=17 \
-            --build-arg JAVA_DISTRIBUTION=adoptopenjdk \
-            -t app:latest \
-            -f Dockerfile .
+          DOCKER_BUILDKIT=1 docker build -t app:latest .
           
           build_status=$?
           end_time=$(date +%s%N)
           
-          # Arrêter la mesure PowerAPI
-          kill $POWER_MONITOR_PID
+          # Collecter les métriques post-docker
+          free -m > metrics/system/post_docker_memory.txt
+          df -h > metrics/system/post_docker_disk.txt
           
+          # Enregistrer le temps de build Docker
           echo "DOCKER_BUILD_TIME=$((($end_time - $start_time)/1000000))" >> $GITHUB_ENV
+          echo "$((($end_time - $start_time)/1000000))" > metrics/performance/docker_time.txt
+          
+          # Collecter la taille de l'image
+          docker images app:latest --format "{{.Size}}" > metrics/performance/docker_image_size.txt
+          
           exit $build_status
-
-      - name: Setup Kubernetes
-        id: k8s-setup
-        if: success()
-        uses: helm/kind-action@v1
-        with:
-          wait: 120s
-          config: |
-            kind: Cluster
-            apiVersion: kind.x-k8s.io/v1alpha4
-            nodes:
-            - role: control-plane
-              kubeadmConfigPatches:
-              - |
-                kind: InitConfiguration
-                nodeRegistration:
-                  kubeletExtraArgs:
-                    system-reserved: memory=1Gi
-                    eviction-hard: memory.available<500Mi
-
-      - name: Deploy to Kubernetes
-        id: deploy
-        if: success()
-        timeout-minutes: 10
-        run: |
-          set -eo pipefail
-          
-          # Démarrer la mesure PowerAPI pour le déploiement
-          sudo powerapi monitor record --formula rapl --pid $$ --output metrics/power/deploy_power.csv &
-          POWER_MONITOR_PID=$!
-          
-          start_time=$(date +%s%N)
-          
-          # Déploiement optimisé
-          kubectl apply -f k8s/
-          
-          # Attendre que les pods soient prêts
-          kubectl wait --for=condition=ready pod -l app=petclinic --timeout=180s
-          
-          end_time=$(date +%s%N)
-          
-          # Arrêter la mesure PowerAPI
-          kill $POWER_MONITOR_PID
-          
-          echo "DEPLOY_TIME=$((($end_time - $start_time)/1000000))" >> $GITHUB_ENV
 
       - name: Collect and analyze metrics
         if: always()
@@ -236,55 +184,54 @@ jobs:
           set -eo pipefail
           
           # Collecter les métriques système finales
-          echo "=== System Resources ===" > metrics/system/system_metrics.txt
-          top -b -n 1 >> metrics/system/system_metrics.txt
+          echo "=== Final System Resources ===" > metrics/system/final_metrics.txt
+          top -b -n 1 >> metrics/system/final_metrics.txt || echo "Failed to collect top metrics"
           
-          echo "=== Memory Usage ===" > metrics/system/memory_metrics.txt
-          free -m >> metrics/system/memory_metrics.txt
+          echo "=== Final Memory Usage ===" > metrics/system/final_memory.txt
+          free -m >> metrics/system/final_memory.txt || echo "Failed to collect memory metrics"
           
-          echo "=== Disk Usage ===" > metrics/system/disk_metrics.txt
-          df -h >> metrics/system/disk_metrics.txt
+          echo "=== Final Disk Usage ===" > metrics/system/final_disk.txt
+          df -h >> metrics/system/final_disk.txt || echo "Failed to collect disk metrics"
           
           # Marquer la fin du pipeline
           date +%s%N > metrics/pipeline_end_time.txt
           
-          # Analyser les métriques de puissance
+          # Analyser les temps d'exécution
           python3 << EOF
           import pandas as pd
-          import glob
           import os
           
-          def analyze_power_metrics():
-              power_files = glob.glob('metrics/power/*.csv')
-              metrics = []
+          def read_time_file(filename):
+              try:
+                  with open(filename, 'r') as f:
+                      return float(f.read().strip())
+              except:
+                  return 0
           
-              for file in power_files:
-                  stage = os.path.basename(file).replace('_power.csv', '')
-                  df = pd.read_csv(file)
-                  stats = {
-                      'stage': stage,
-                      'avg_power': df['power'].mean(),
-                      'max_power': df['power'].max(),
-                      'total_energy': df['energy'].sum(),
-                      'duration': len(df) * df['power'].iloc[0]  # Assuming fixed sampling rate
-                  }
-                  metrics.append(stats)
+          # Collecter les temps
+          times = {
+              'build': read_time_file('metrics/performance/build_time.txt'),
+              'test': read_time_file('metrics/performance/test_time.txt'),
+              'docker': read_time_file('metrics/performance/docker_time.txt')
+          }
           
-              results = pd.DataFrame(metrics)
-              results.to_csv('metrics/power/power_analysis.csv', index=False)
+          # Créer le rapport de performance
+          with open('metrics/performance/summary.txt', 'w') as f:
+              f.write("Pipeline Performance Summary\n")
+              f.write("==========================\n\n")
           
-              # Créer un rapport sommaire
-              with open('metrics/performance/summary.txt', 'w') as f:
-                  f.write("Pipeline Performance Summary\n")
-                  f.write("==========================\n\n")
+              total_time = sum(times.values())
           
-                  for _, row in results.iterrows():
-                      f.write(f"Stage: {row['stage']}\n")
-                      f.write(f"Average Power: {row['avg_power']:.2f} W\n")
-                      f.write(f"Total Energy: {row['total_energy']:.2f} J\n")
-                      f.write(f"Duration: {row['duration']:.2f} s\n\n")
+              for stage, duration in times.items():
+                  percentage = (duration / total_time * 100) if total_time > 0 else 0
+                  f.write(f"{stage.capitalize()} Stage:\n")
+                  f.write(f"Duration: {duration/1000:.2f} seconds\n")
+                  f.write(f"Percentage of total time: {percentage:.1f}%\n\n")
           
-          analyze_power_metrics()
+              f.write(f"Total Pipeline Duration: {total_time/1000:.2f} seconds\n")
+          
+          # Créer un CSV avec les métriques
+          pd.DataFrame([times]).to_csv('metrics/performance/times.csv', index=False)
           EOF
 
       - name: Export metrics to Prometheus
@@ -299,41 +246,21 @@ jobs:
             local stage=$3
           
             if [ -n "$metric_value" ]; then
-              echo "${metric_name}{stage=\"${stage}\",project=\"petclinic\"} ${metric_value}" | \
-                curl --retry 3 --retry-delay 2 --max-time 10 --silent --show-error \
-                  --data-binary @- http://localhost:9091/metrics/job/petclinic-pipeline
+              echo "${metric_name}{stage=\"${stage}\",project=\"java-app\"} ${metric_value}" | \
+                curl --retry 3 --max-time 10 --silent --show-error \
+                  --data-binary @- http://localhost:9091/metrics/job/pipeline-metrics || \
+                echo "Failed to export metric ${metric_name}"
             fi
           }
           
-          # Exporter les durées
-          export_metric "pipeline_build_duration_ms" "${BUILD_TIME}" "build"
-          export_metric "pipeline_test_duration_ms" "${TEST_TIME}" "test"
-          export_metric "pipeline_docker_build_duration_ms" "${DOCKER_BUILD_TIME}" "docker-build"
-          export_metric "pipeline_deploy_duration_ms" "${DEPLOY_TIME}" "deploy"
+          # Exporter les temps d'exécution
+          export_metric "pipeline_duration_ms" "${BUILD_TIME}" "build"
+          export_metric "pipeline_duration_ms" "${TEST_TIME}" "test"
+          export_metric "pipeline_duration_ms" "${DOCKER_BUILD_TIME}" "docker"
           
-          # Exporter les métriques de ressources
+          # Exporter l'utilisation mémoire finale
           mem_usage=$(free -b | grep Mem: | awk '{print $3}')
-          export_metric "pipeline_memory_usage_bytes" "$mem_usage" "memory"
-          
-          cpu_usage=$(top -bn1 | grep "Cpu(s)" | awk '{print $2}')
-          export_metric "pipeline_cpu_usage_percent" "$cpu_usage" "cpu"
-          
-          # Exporter les métriques de puissance
-          while IFS=, read -r stage avg_power total_energy; do
-            export_metric "pipeline_power_usage_watts" "$avg_power" "$stage"
-            export_metric "pipeline_energy_consumption_joules" "$total_energy" "$stage"
-          done < <(tail -n +2 metrics/power/power_analysis.csv)
-
-      - name: Stop monitoring services
-        if: always()
-        run: |
-          # Arrêter PowerAPI
-          sudo powerapi daemon stop
-          
-          # Arrêter node exporter
-          if [ -n "$NODE_EXPORTER_PID" ]; then
-            kill $NODE_EXPORTER_PID
-          fi
+          export_metric "memory_usage_bytes" "$mem_usage" "final"
 
       - name: Save metrics
         if: always()
