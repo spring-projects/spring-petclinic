@@ -1,68 +1,152 @@
-name: CI/CD Pipeline with Monitoring
+name: Enhanced Java Application Pipeline with Metrics
 
 on:
   push:
-    branches: [ pipeline-optimization ]
+    branches: [ main ]
   pull_request:
-    branches: [ pipeline-optimization ]
+    branches: [ main ]
 
 jobs:
-  build:
+  build-with-metrics:
     runs-on: ubuntu-latest
+
+    services:
+      prometheus:
+        image: prom/prometheus:latest
+        ports:
+          - 9090:9090
+        healthcheck:
+          test: ["CMD", "wget", "-q", "--spider", "http://localhost:9090/-/healthy"]
+          interval: 10s
+          timeout: 5s
+          retries: 3
+
+      pushgateway:
+        image: prom/pushgateway:latest
+        ports:
+          - 9091:9091
+        healthcheck:
+          test: ["CMD", "wget", "-q", "--spider", "http://localhost:9091/-/healthy"]
+          interval: 10s
+          timeout: 5s
+          retries: 3
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-
-      - name: Install system dependencies
+      # Installation and setup of monitoring tools
+      - name: Setup monitoring tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y \
-            python3-dev \
-            libffi-dev \
-            libssl-dev \
-            gcc \
-            make \
-            libyaml-dev  # Ajouté pour PyYAML
+          sudo apt-get install -y powerstat linux-tools-common linux-tools-generic
+          sudo snap install powerapi
+          curl -L https://github.com/prometheus/node_exporter/releases/download/v1.3.1/node_exporter-1.3.1.linux-amd64.tar.gz -o node_exporter.tar.gz
+          tar xvfz node_exporter.tar.gz
 
-      - name: Create requirements file
+      # Start monitoring tools with improved configuration
+      - name: Start monitoring
         run: |
-          cat > requirements.txt << EOF
-          cython>=3.0.11
-          pyyaml==5.4.1
-          docker-compose
-          EOF
+          # Start PowerAPI with Prometheus output
+          sudo powerapi --pid $$ --frequency 1000 --output prometheus --pushgateway-url http://localhost:9091/metrics/job/powerapi &
+          echo "POWERAPI_PID=$!" >> $GITHUB_ENV
+          
+          # Start node exporter
+          ./node_exporter-*/node_exporter --web.listen-address=":9100" &
+          echo "NODE_EXPORTER_PID=$!" >> $GITHUB_ENV
+          
+          # Create start timestamp file
+          date +%s%N > pipeline_start_time.txt
 
-      - name: Install Python dependencies
-        run: |
-          python -m pip install --upgrade pip setuptools wheel
-          pip install -r requirements.txt || \
-          (echo "⚠️ Première installation échouée, tentative avec flags spécifiques..." && \
-          CFLAGS="-O2" pip install --no-cache-dir --no-build-isolation pyyaml==5.4.1)
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          cache: maven
 
-      - name: Verify PyYAML installation
+      - name: Build with Maven
         run: |
-          python -c "import yaml; print('PyYAML version:', yaml.__version__)"
-
-      - name: Check Docker Compose version
-        run: |
-          docker compose version || docker-compose version
+          start_time=$(date +%s%N)
+          ./mvnw -B verify
+          end_time=$(date +%s%N)
+          echo "BUILD_TIME=$((($end_time - $start_time)/1000000))" >> $GITHUB_ENV
 
       - name: Run tests
         run: |
-          echo "Running tests..."
-          # Ajoute ici tes commandes de test
+          start_time=$(date +%s%N)
+          ./mvnw test
+          end_time=$(date +%s%N)
+          echo "TEST_TIME=$((($end_time - $start_time)/1000000))" >> $GITHUB_ENV
 
-      - name: Deploy application
+      - name: Build Docker image
         run: |
-          echo "Deploying application..."
-          # Ajoute ici tes commandes de déploiement
+          start_time=$(date +%s%N)
+          docker build -t app:latest .
+          end_time=$(date +%s%N)
+          echo "DOCKER_BUILD_TIME=$((($end_time - $start_time)/1000000))" >> $GITHUB_ENV
 
-      - name: Monitoring setup
+      - name: Setup Kubernetes
+        uses: helm/kind-action@v1
+
+      - name: Deploy to Kubernetes
         run: |
-          echo "Setting up monitoring..."
-          # Ajoute ici ta configuration de monitoring
+          start_time=$(date +%s%N)
+          kubectl apply -f k8s/
+          kubectl wait --for=condition=ready pod -l app=petclinic --timeout=180s
+          end_time=$(date +%s%N)
+          echo "DEPLOY_TIME=$((($end_time - $start_time)/1000000))" >> $GITHUB_ENV
+
+      # Export metrics with improved labeling and job naming
+      - name: Export metrics to Prometheus
+        run: |
+          # Export timing metrics with descriptive labels
+          echo "pipeline_build_duration_ms{stage=\"build\",project=\"petclinic\"} ${{ env.BUILD_TIME }}" | curl --data-binary @- http://localhost:9091/metrics/job/petclinic-pipeline
+          echo "pipeline_test_duration_ms{stage=\"test\",project=\"petclinic\"} ${{ env.TEST_TIME }}" | curl --data-binary @- http://localhost:9091/metrics/job/petclinic-pipeline
+          echo "pipeline_docker_build_duration_ms{stage=\"docker-build\",project=\"petclinic\"} ${{ env.DOCKER_BUILD_TIME }}" | curl --data-binary @- http://localhost:9091/metrics/job/petclinic-pipeline
+          echo "pipeline_deploy_duration_ms{stage=\"deploy\",project=\"petclinic\"} ${{ env.DEPLOY_TIME }}" | curl --data-binary @- http://localhost:9091/metrics/job/petclinic-pipeline
+          
+          # Export power consumption metrics
+          while IFS=, read -r timestamp watts; do
+            echo "power_consumption_watts{project=\"petclinic\"} $watts $timestamp" | curl --data-binary @- http://localhost:9091/metrics/job/petclinic-pipeline
+          done < energy_metrics.csv
+
+      # Collect additional resource metrics
+      - name: Collect resource metrics
+        run: |
+          # Memory usage metric
+          echo "pipeline_memory_usage_bytes{project=\"petclinic\"} $(free -b | grep Mem: | awk '{print $3}')" | curl --data-binary @- http://localhost:9091/metrics/job/petclinic-pipeline
+          
+          # CPU usage metric
+          echo "pipeline_cpu_usage_percent{project=\"petclinic\"} $(top -bn1 | grep "Cpu(s)" | awk '{print $2}')" | curl --data-binary @- http://localhost:9091/metrics/job/petclinic-pipeline
+
+      # Stop monitoring tools and collect metrics
+      - name: Collect metrics
+        if: always()
+        run: |
+          # End timestamp
+          date +%s%N > pipeline_end_time.txt
+          
+          # Stop PowerAPI
+          sudo kill ${{ env.POWERAPI_PID }}
+          
+          # Stop node exporter
+          kill ${{ env.NODE_EXPORTER_PID }}
+          
+          # Collect system metrics
+          top -b -n 1 > system_metrics.txt
+          free -m > memory_metrics.txt
+          df -h > disk_metrics.txt
+
+      # Save metrics as artifacts
+      - name: Save metrics
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: pipeline-metrics
+          path: |
+            energy_metrics.csv
+            system_metrics.txt
+            memory_metrics.txt
+            disk_metrics.txt
+            pipeline_start_time.txt
+            pipeline_end_time.txt

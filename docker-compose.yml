@@ -3,7 +3,7 @@ version: '3.8'
 services:
   # Database
   mysql:
-    image: mysql:8.0
+    image: mysql:9.1
     ports:
       - "3306:3306"
     environment:
@@ -14,13 +14,14 @@ services:
       - MYSQL_DATABASE=petclinic
     volumes:
       - "./conf.d:/etc/mysql/conf.d:ro"
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - monitoring-network
+  postgres:
+      image: postgres:17.0
+      ports:
+        - "5432:5432"
+      environment:
+        - POSTGRES_PASSWORD=petclinic
+        - POSTGRES_USER=petclinic
+        - POSTGRES_DB=petclinic
 
   prometheus:
     image: prom/prometheus:latest

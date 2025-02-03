@@ -9,7 +9,7 @@ scrape_configs:
   # Pipeline metrics
   - job_name: 'petclinic-pipeline'
     static_configs:
-      - targets: ['pushgateway:9091']  # Changé de localhost:9091 à pushgateway:9091
+      - targets: ['pushgateway:9091']
         labels:
           application: 'petclinic'
           type: 'pipeline'
@@ -33,6 +33,6 @@ scrape_configs:
 
   # Database metrics
   - job_name: 'mysql'
-    metrics_path: '/metrics'  # Ajouté le chemin des métriques
+    metrics_path: '/metrics'
     static_configs:
       - targets: ['mysql:3306']
