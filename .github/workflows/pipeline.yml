@@ -24,6 +24,11 @@ jobs:
           sudo apt update
           sudo apt install -y python3-dev libffi-dev libssl-dev python3-yaml
 
+      - name: Install Cython and PyYAML (Fix build)
+        run: |
+          pip install --no-cache-dir cython  # Fixes "cython_sources" error
+          pip install --no-cache-dir "pyyaml==5.4.1"  # Force compatible pre-built version
+
       - name: Install Docker Compose
         run: |
           pip install --no-cache-dir docker-compose
@@ -35,14 +40,14 @@ jobs:
       - name: Run tests
         run: |
           echo "Running tests..."
-          # Ajouter ici les commandes pour exécuter les tests
+          # Add test commands here
 
       - name: Deploy application
         run: |
           echo "Deploying application..."
-          # Ajouter ici les commandes de déploiement
+          # Add deployment commands here
 
       - name: Monitoring setup
         run: |
           echo "Setting up monitoring..."
-          # Ajouter ici les outils de monitoring (ex: Prometheus, Grafana)
+          # Add monitoring tools here (e.g., Prometheus, Grafana)
