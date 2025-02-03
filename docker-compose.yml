@@ -1,8 +1,9 @@
 version: '3.8'
 
 services:
+  # Database
   mysql:
-    image: mysql:9.1
+    image: mysql:8.0
     ports:
       - "3306:3306"
     environment:
@@ -13,44 +14,53 @@ services:
       - MYSQL_DATABASE=petclinic
     volumes:
       - "./conf.d:/etc/mysql/conf.d:ro"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - monitoring-network
 
-  postgres:
-    image: postgres:17.0
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_PASSWORD=petclinic
-      - POSTGRES_USER=petclinic
-      - POSTGRES_DB=petclinic
-
-  # Ajout de Prometheus pour la collecte des métriques
   prometheus:
     image: prom/prometheus:latest
     ports:
       - "9090:9090"
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/prometheus/pipeline-rules.yml:/etc/prometheus/pipeline-rules.yml:ro
       - prometheus_data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
-      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
-      - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--web.enable-lifecycle'
+      - '--log.level=debug'
+    user: root  # Added this line
+    healthcheck:
+      test: [ "CMD", "wget", "-q", "--spider", "http://localhost:9090/-/healthy" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - monitoring-network
 
-  # Ajout de Grafana pour la visualisation
   grafana:
     image: grafana/grafana:latest
     ports:
       - "3000:3000"
     volumes:
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards
       - grafana_data:/var/lib/grafana
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
       - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel
     depends_on:
-      - prometheus
+      prometheus:
+        condition: service_healthy
+    networks:
+      - monitoring-network
 
-  # PowerAPI pour la mesure de consommation énergétique
   powerapi:
     image: powerapi/powerapi:latest
     privileged: true
@@ -61,11 +71,19 @@ services:
     environment:
       - POWERAPI_CPU_EVENTS=cpu-cycles,instructions
       - POWERAPI_PUSH_FREQUENCY=1000
-      - POWERAPI_PUSH_URL=http://prometheus:9091/metrics/job/powerapi
+      - POWERAPI_PUSH_URL=http://pushgateway:9091/metrics/job/powerapi
     depends_on:
-      - prometheus
+      - pushgateway
+    networks:
+      - monitoring-network
 
-  # Node exporter pour les métriques système
+  pushgateway:
+    image: prom/pushgateway
+    ports:
+      - "9091:9091"
+    networks:
+      - monitoring-network
+
   node-exporter:
     image: prom/node-exporter:latest
     volumes:
@@ -78,7 +96,15 @@ services:
       - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
     ports:
       - "9100:9100"
+    depends_on:
+      - prometheus
+    networks:
+      - monitoring-network
 
 volumes:
   prometheus_data:
   grafana_data:
+
+networks:
+  monitoring-network:
+    driver: bridge

@@ -1,0 +1,38 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  - "pipeline-rules.yml"
+
+scrape_configs:
+  # Pipeline metrics
+  - job_name: 'petclinic-pipeline'
+    static_configs:
+      - targets: ['pushgateway:9091']  # Changé de localhost:9091 à pushgateway:9091
+        labels:
+          application: 'petclinic'
+          type: 'pipeline'
+
+  # PowerAPI metrics
+  - job_name: 'powerapi'
+    static_configs:
+      - targets: ['powerapi:9091']
+    metrics_path: '/metrics'
+
+  # Node Exporter metrics
+  - job_name: 'node'
+    static_configs:
+      - targets: ['node-exporter:9100']
+
+  # Application metrics
+  - job_name: 'spring-petclinic'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['host.docker.internal:8080']
+
+  # Database metrics
+  - job_name: 'mysql'
+    metrics_path: '/metrics'  # Ajouté le chemin des métriques
+    static_configs:
+      - targets: ['mysql:3306']

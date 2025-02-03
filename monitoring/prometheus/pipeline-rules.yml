@@ -1,0 +1,29 @@
+groups:
+  - name: pipeline_performance
+    rules:
+      # Durée moyenne du build
+      - record: pipeline:build_duration:avg_5m
+        expr: avg_over_time(pipeline_build_duration_ms[5m])
+
+      # Consommation énergétique totale
+      - record: pipeline:power_consumption:total
+        expr: sum(power_consumption_watts{job="powerapi"})
+
+      # Alertes
+      - alert: HighBuildTime
+        expr: pipeline_build_duration_ms > 300000
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Build duration too high"
+          description: "Build is taking more than 5 minutes"
+
+      - alert: HighPowerConsumption
+        expr: power_consumption_watts > 100
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High power consumption detected"
+          description: "Power consumption is above 100W for more than 2 minutes"
