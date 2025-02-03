@@ -130,6 +130,15 @@ jobs:
         timeout-minutes: 10
         run: |
           set -eo pipefail
+    
+          # Debug: List contents of current directory
+           echo "Current directory contents:"
+            ls -la
+    
+          # Debug: Print working directory
+          echo "Current working directory:"
+          pwd
+    
           start_time=$(date +%s%N)
           docker build -t app:latest . --no-cache
           build_status=$?
