@@ -1,4 +1,4 @@
-name: Enhanced Java Application Pipeline with Metrics Collection
+name: Enhanced Java Application Pipeline with Energy Monitoring
 
 on:
   push:
@@ -29,10 +29,81 @@ jobs:
             linux-tools-common \
             linux-tools-generic \
             python3-pip \
-            python3-psutil
+            python3-psutil \
+            wget
           
-          # Installer PowerAPI globalement
-          sudo pip3 install powerapi pandas numpy
+          # Installer Scaphandre
+          wget https://github.com/hubblo-org/scaphandre/releases/download/v0.5.0/scaphandre_0.5.0_amd64.deb
+          sudo dpkg -i scaphandre_0.5.0_amd64.deb
+          
+          # Installer dépendances Python
+          pip3 install pandas numpy
+
+      - name: Create energy monitoring script
+        run: |
+          cat > energy_monitor.py << 'EOL'
+          import subprocess
+          import csv
+          import os
+          import time
+          from datetime import datetime
+          
+          def monitor_energy(command, output_file):
+              # Créer le répertoire si nécessaire
+              os.makedirs(os.path.dirname(output_file), exist_ok=True)
+          
+              # Préparer le fichier CSV
+              with open(output_file, 'w', newline='') as csvfile:
+                  writer = csv.writer(csvfile)
+                  writer.writerow([
+                      'Timestamp', 
+                      'Power_Watts', 
+                      'Component'
+                  ])
+          
+              # Commande scaphandre pour la sortie CSV
+              scaphandre_cmd = [
+                  'scaphandre', 'record', 
+                  '-f', output_file, 
+                  '-m', 'csv',
+                  '--max-power-filter', '0.1',  # Filtrer les valeurs insignifiantes
+                  '--timeout', '120'  # Timeout de 2 minutes max
+              ]
+          
+              # Lancer le monitoring en arrière-plan
+              monitor_process = subprocess.Popen(scaphandre_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+          
+              try:
+                  # Attendre un court instant pour que Scaphandre démarre
+                  time.sleep(2)
+          
+                  # Exécuter la commande principale
+                  main_process = subprocess.Popen(command, shell=True)
+                  main_process.wait()
+          
+              finally:
+                  # Arrêter le monitoring
+                  monitor_process.terminate()
+                  monitor_process.wait()
+          
+          def main():
+              import sys
+          
+              # Vérifier si une commande est fournie
+              if len(sys.argv) < 3:
+                  print("Usage: python energy_monitor.py 'command' output_file.csv")
+                  sys.exit(1)
+          
+              command = sys.argv[1]
+              output_file = sys.argv[2]
+          
+              monitor_energy(command, output_file)
+          
+          if __name__ == '__main__':
+              main()
+          EOL
+          
+          chmod +x energy_monitor.py
 
       - name: Cache Maven packages
         uses: actions/cache@v3
@@ -78,61 +149,10 @@ jobs:
           # Collecter les métriques avant build
           free -m > metrics/system/pre_build_memory.txt
           
-          # Mesure de la consommation d'énergie avec PowerAPI
-          python3 -c "
-          import powerapi
-          import csv
-          from datetime import datetime
-          import os
-          import subprocess
-          import time
-          
-          def log_power_metrics(output_file='metrics/power/build_power_metrics.csv', duration=60):
-              os.makedirs(os.path.dirname(output_file), exist_ok=True)
-          
-              with open(output_file, 'w', newline='') as csvfile:
-                  csv_writer = csv.writer(csvfile)
-                  csv_writer.writerow([
-                      'Timestamp', 
-                      'Power_Watts', 
-                      'Energy_Joules', 
-                      'Device_Name'
-                  ])
-          
-              class CSVPowerReporter(powerapi.reporter.Reporter):
-                  def __init__(self, output_file):
-                      super().__init__()
-                      self.output_file = output_file
-          
-                  def report(self, data):
-                      with open(self.output_file, 'a', newline='') as csvfile:
-                          csv_writer = csv.writer(csvfile)
-                          csv_writer.writerow([
-                              datetime.now().isoformat(),
-                              getattr(data, 'power', 'N/A'),
-                              getattr(data, 'energy', 'N/A'),
-                              getattr(data, 'device_name', 'N/A')
-                          ])
-          
-              reporter = CSVPowerReporter(output_file)
-          
-              monitor = powerapi.monitor.PowerMonitor(
-                  'rapl',  # Utilisation de l'interface RAPL
-                  reporter,
-                  1  # Période de mesure en secondes
-              )
-          
-              try:
-                  monitor.start()
-                  result = subprocess.run(['./mvnw', '-B', 'verify', '-Dmaven.test.skip=true', '-Dcheckstyle.skip=true', '-T', '1C'], capture_output=True, text=True)
-                  print(result.stdout)
-                  print(result.stderr, file=sys.stderr)
-                  time.sleep(5)  # Période supplémentaire après le build
-              finally:
-                  monitor.stop()
-          
-          log_power_metrics()
-          " 
+          # Monitoring énergétique avec Scaphandre
+          python3 energy_monitor.py \
+            "./mvnw -B verify -Dmaven.test.skip=true -Dcheckstyle.skip=true -T 1C" \
+            metrics/power/build_power_metrics.csv
           
           build_status=$?
           end_time=$(date +%s%N)
@@ -157,61 +177,10 @@ jobs:
           # Collecter les métriques pré-tests
           free -m > metrics/system/pre_test_memory.txt
           
-          # Mesure de la consommation d'énergie avec PowerAPI
-          python3 -c "
-          import powerapi
-          import csv
-          from datetime import datetime
-          import os
-          import subprocess
-          import time
-          
-          def log_power_metrics(output_file='metrics/power/test_power_metrics.csv', duration=60):
-              os.makedirs(os.path.dirname(output_file), exist_ok=True)
-          
-              with open(output_file, 'w', newline='') as csvfile:
-                  csv_writer = csv.writer(csvfile)
-                  csv_writer.writerow([
-                      'Timestamp', 
-                      'Power_Watts', 
-                      'Energy_Joules', 
-                      'Device_Name'
-                  ])
-          
-              class CSVPowerReporter(powerapi.reporter.Reporter):
-                  def __init__(self, output_file):
-                      super().__init__()
-                      self.output_file = output_file
-          
-                  def report(self, data):
-                      with open(self.output_file, 'a', newline='') as csvfile:
-                          csv_writer = csv.writer(csvfile)
-                          csv_writer.writerow([
-                              datetime.now().isoformat(),
-                              getattr(data, 'power', 'N/A'),
-                              getattr(data, 'energy', 'N/A'),
-                              getattr(data, 'device_name', 'N/A')
-                          ])
-          
-              reporter = CSVPowerReporter(output_file)
-          
-              monitor = powerapi.monitor.PowerMonitor(
-                  'rapl',  # Utilisation de l'interface RAPL
-                  reporter,
-                  1  # Période de mesure en secondes
-              )
-          
-              try:
-                  monitor.start()
-                  result = subprocess.run(['./mvnw', 'test', '-T', '1C'], capture_output=True, text=True)
-                  print(result.stdout)
-                  print(result.stderr, file=sys.stderr)
-                  time.sleep(5)  # Période supplémentaire après les tests
-              finally:
-                  monitor.stop()
-          
-          log_power_metrics()
-          " 
+          # Monitoring énergétique avec Scaphandre
+          python3 energy_monitor.py \
+            "./mvnw test -T 1C" \
+            metrics/power/test_power_metrics.csv
           
           test_status=$?
           end_time=$(date +%s%N)
@@ -237,61 +206,10 @@ jobs:
           free -m > metrics/system/pre_docker_memory.txt
           df -h > metrics/system/pre_docker_disk.txt
           
-          # Mesure de la consommation d'énergie avec PowerAPI
-          python3 -c "
-          import powerapi
-          import csv
-          from datetime import datetime
-          import os
-          import subprocess
-          import time
-          
-          def log_power_metrics(output_file='metrics/power/docker_build_power_metrics.csv', duration=60):
-              os.makedirs(os.path.dirname(output_file), exist_ok=True)
-          
-              with open(output_file, 'w', newline='') as csvfile:
-                  csv_writer = csv.writer(csvfile)
-                  csv_writer.writerow([
-                      'Timestamp', 
-                      'Power_Watts', 
-                      'Energy_Joules', 
-                      'Device_Name'
-                  ])
-          
-              class CSVPowerReporter(powerapi.reporter.Reporter):
-                  def __init__(self, output_file):
-                      super().__init__()
-                      self.output_file = output_file
-          
-                  def report(self, data):
-                      with open(self.output_file, 'a', newline='') as csvfile:
-                          csv_writer = csv.writer(csvfile)
-                          csv_writer.writerow([
-                              datetime.now().isoformat(),
-                              getattr(data, 'power', 'N/A'),
-                              getattr(data, 'energy', 'N/A'),
-                              getattr(data, 'device_name', 'N/A')
-                          ])
-          
-              reporter = CSVPowerReporter(output_file)
-          
-              monitor = powerapi.monitor.PowerMonitor(
-                  'rapl',  # Utilisation de l'interface RAPL
-                  reporter,
-                  1  # Période de mesure en secondes
-              )
-          
-              try:
-                  monitor.start()
-                  result = subprocess.run(['docker', 'build', '-t', 'app:latest', '-f', '.devcontainer/Dockerfile', '.', '--no-cache'], capture_output=True, text=True)
-                  print(result.stdout)
-                  print(result.stderr, file=sys.stderr)
-                  time.sleep(5)  # Période supplémentaire après le build Docker
-              finally:
-                  monitor.stop()
-          
-          log_power_metrics()
-          "
+          # Monitoring énergétique avec Scaphandre
+          python3 energy_monitor.py \
+            "docker build -t app:latest -f .devcontainer/Dockerfile . --no-cache" \
+            metrics/power/docker_build_power_metrics.csv
           
           build_status=$?
           end_time=$(date +%s%N)
