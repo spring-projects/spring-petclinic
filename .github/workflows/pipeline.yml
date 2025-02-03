@@ -17,37 +17,41 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
+          cache: 'pip'  # Enable pip caching
 
-      - name: Install dependencies
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            python3-dev \
+            libffi-dev \
+            libssl-dev \
+            gcc \
+            make
+
+      - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip setuptools wheel
-          sudo apt update
-          sudo apt install -y python3-dev libffi-dev libssl-dev python3-yaml
-
-      - name: Install Cython and PyYAML (Fix build)
-        run: |
-          pip install --no-cache-dir cython  # Fixes "cython_sources" error
-          pip install --no-cache-dir "pyyaml==5.4.1"  # Force compatible pre-built version
-
-      - name: Install Docker Compose
-        run: |
+          pip install --no-cache-dir cython
+          # Install PyYAML with specific build flags to avoid Cython issues
+          PYTHONPATH='' CFLAGS="-O2" pip install --no-cache-dir --no-build-isolation pyyaml==5.4.1
           pip install --no-cache-dir docker-compose
 
       - name: Check Docker Compose version
         run: |
-          docker-compose version || docker compose version
+          docker compose version || docker-compose version
 
       - name: Run tests
         run: |
           echo "Running tests..."
-          # Add test commands here
+          # Add your test commands here
 
       - name: Deploy application
         run: |
           echo "Deploying application..."
-          # Add deployment commands here
+          # Add your deployment commands here
 
       - name: Monitoring setup
         run: |
           echo "Setting up monitoring..."
-          # Add monitoring tools here (e.g., Prometheus, Grafana)
+          # Add your monitoring configuration here
