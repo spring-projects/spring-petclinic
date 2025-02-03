@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup directories for metrics
+      - name: Setup directories and install dependencies
         run: |
           set -eo pipefail
           
@@ -25,11 +25,14 @@ jobs:
           
           # Installation des packages nécessaires
           sudo apt-get update
-          sudo apt-get install -y linux-tools-common linux-tools-generic python3-pip python3-psutil
+          sudo apt-get install -y \
+            linux-tools-common \
+            linux-tools-generic \
+            python3-pip \
+            python3-psutil
           
-          # Installation de PowerAPI et dépendances
-          pip3 install powerapi==0.9.0 pandas numpy
-          sudo powerapi --formula rapl
+          # Installer PowerAPI globalement
+          sudo pip3 install powerapi pandas numpy
 
       - name: Cache Maven packages
         uses: actions/cache@v3
@@ -37,13 +40,6 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-
-      - name: Start PowerAPI monitoring
-        id: start-powerapi
-        run: |
-          # Démarrer le daemon PowerAPI
-          sudo powerapi daemon start --formula rapl
-          echo "POWERAPI_PID=$(pgrep -f powerapi)" >> $GITHUB_ENV
 
       - name: Collect initial system metrics
         run: |
@@ -69,7 +65,7 @@ jobs:
           distribution: 'adopt'
           cache: maven
 
-      - name: Build with Maven
+      - name: Build with Maven and measure energy
         id: build
         timeout-minutes: 15
         env:
@@ -79,12 +75,35 @@ jobs:
           
           start_time=$(date +%s%N)
           
-          # Démarrer la mesure PowerAPI
-          sudo powerapi monitor record --formula rapl --pid $$ --output metrics/power/build_power.csv &
-          POWER_MONITOR_PID=$!
-          
           # Collecter les métriques avant build
           free -m > metrics/system/pre_build_memory.txt
+          
+          # Mesure de la consommation d'énergie avec PowerAPI
+          python3 -c "
+          import powerapi
+          from powerapi import database
+          
+          # Configuration de la base de données
+          db = database.InfluxDatabase(
+              host='localhost',
+              port=8086,
+              database='powerapi'
+          )
+          
+          # Configuration du monitoring
+          monitor = powerapi.monitor.PowerMonitor(
+              'rapl',  # Utilisation de l'interface RAPL
+              db,
+              1  # Période de mesure en secondes
+          )
+          
+          # Démarrer le monitoring
+          monitor.start()
+          
+          # Enregistrer le début du monitoring
+          print('Monitoring started')
+          " &
+          POWERAPI_PID=$!
           
           # Build optimisé
           ./mvnw -B verify \
@@ -95,8 +114,8 @@ jobs:
           build_status=$?
           end_time=$(date +%s%N)
           
-          # Arrêter la mesure PowerAPI
-          kill $POWER_MONITOR_PID
+          # Arrêter PowerAPI
+          kill $POWERAPI_PID
           
           # Collecter les métriques post-build
           free -m > metrics/system/post_build_memory.txt
@@ -106,7 +125,7 @@ jobs:
           
           exit $build_status
 
-      - name: Run tests
+      - name: Run tests with energy monitoring
         id: test
         if: success()
         timeout-minutes: 20
@@ -115,12 +134,35 @@ jobs:
           
           start_time=$(date +%s%N)
           
-          # Démarrer la mesure PowerAPI
-          sudo powerapi monitor record --formula rapl --pid $$ --output metrics/power/test_power.csv &
-          POWER_MONITOR_PID=$!
-          
           # Collecter les métriques pré-tests
           free -m > metrics/system/pre_test_memory.txt
+          
+          # Mesure de la consommation d'énergie avec PowerAPI
+          python3 -c "
+          import powerapi
+          from powerapi import database
+          
+          # Configuration de la base de données
+          db = database.InfluxDatabase(
+              host='localhost',
+              port=8086,
+              database='powerapi'
+          )
+          
+          # Configuration du monitoring
+          monitor = powerapi.monitor.PowerMonitor(
+              'rapl',  # Utilisation de l'interface RAPL
+              db,
+              1  # Période de mesure en secondes
+          )
+          
+          # Démarrer le monitoring
+          monitor.start()
+          
+          # Enregistrer le début du monitoring
+          print('Monitoring started')
+          " &
+          POWERAPI_PID=$!
           
           # Tests optimisés
           ./mvnw test -T 1C
@@ -128,8 +170,8 @@ jobs:
           test_status=$?
           end_time=$(date +%s%N)
           
-          # Arrêter la mesure PowerAPI
-          kill $POWER_MONITOR_PID
+          # Arrêter PowerAPI
+          kill $POWERAPI_PID
           
           # Collecter les métriques post-tests
           free -m > metrics/system/post_test_memory.txt
@@ -139,7 +181,7 @@ jobs:
           
           exit $test_status
 
-      - name: Build Docker image
+      - name: Build Docker image with energy monitoring
         id: docker-build
         if: success()
         timeout-minutes: 10
@@ -148,13 +190,36 @@ jobs:
           
           start_time=$(date +%s%N)
           
-          # Démarrer la mesure PowerAPI
-          sudo powerapi monitor record --formula rapl --pid $$ --output metrics/power/docker_power.csv &
-          POWER_MONITOR_PID=$!
-          
           # Collecter les métriques pré-docker
           free -m > metrics/system/pre_docker_memory.txt
           df -h > metrics/system/pre_docker_disk.txt
+          
+          # Mesure de la consommation d'énergie avec PowerAPI
+          python3 -c "
+          import powerapi
+          from powerapi import database
+          
+          # Configuration de la base de données
+          db = database.InfluxDatabase(
+              host='localhost',
+              port=8086,
+              database='powerapi'
+          )
+          
+          # Configuration du monitoring
+          monitor = powerapi.monitor.PowerMonitor(
+              'rapl',  # Utilisation de l'interface RAPL
+              db,
+              1  # Période de mesure en secondes
+          )
+          
+          # Démarrer le monitoring
+          monitor.start()
+          
+          # Enregistrer le début du monitoring
+          print('Monitoring started')
+          " &
+          POWERAPI_PID=$!
           
           # Build Docker optimisé
           docker build -t app:latest -f .devcontainer/Dockerfile . --no-cache
@@ -162,8 +227,8 @@ jobs:
           build_status=$?
           end_time=$(date +%s%N)
           
-          # Arrêter la mesure PowerAPI
-          kill $POWER_MONITOR_PID
+          # Arrêter PowerAPI
+          kill $POWERAPI_PID
           
           # Collecter les métriques post-docker
           free -m > metrics/system/post_docker_memory.txt
@@ -207,9 +272,4 @@ jobs:
       - name: Cleanup
         if: always()
         run: |
-          # Arrêter PowerAPI
-          if [ -n "$POWERAPI_PID" ]; then
-            sudo powerapi daemon stop
-          fi
-          
           docker system prune -af
