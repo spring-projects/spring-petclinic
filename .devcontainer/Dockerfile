@@ -1,5 +1,5 @@
 # Build stage
-FROM adoptopenjdk/openjdk17:latest as builder
+FROM openjdk:17-jdk-slim as builder
 
 WORKDIR /app
 
@@ -17,7 +17,7 @@ COPY src ./src
 RUN ./mvnw package -DskipTests
 
 # Run stage
-FROM adoptopenjdk/openjdk17:jre-slim
+FROM openjdk:17-jre-slim
 
 WORKDIR /app
 
