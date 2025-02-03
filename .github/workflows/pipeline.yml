@@ -36,9 +36,15 @@ jobs:
 
       - name: Install Docker Compose
         run: |
+          # Installation de Docker Compose via pip (méthode alternative)
           sudo apt-get update
-          sudo apt-get install -y docker-compose-plugin
-          docker compose version
+          sudo apt-get install -y python3-pip
+          sudo pip3 install docker-compose
+          docker-compose version
+          
+          # Vérifier que Docker est en cours d'exécution
+          sudo systemctl status docker || true
+          sudo docker info
 
       - name: Create monitoring directories
         run: |
@@ -48,7 +54,7 @@ jobs:
 
       - name: Start Monitoring Stack
         run: |
-          docker compose up -d prometheus grafana powerapi node-exporter
+          docker-compose up -d prometheus grafana powerapi node-exporter
           echo "Waiting for services to be healthy..."
           timeout 60s bash -c 'until curl -s -f http://localhost:9090/-/healthy; do sleep 2; echo "Waiting for Prometheus..."; done'
           timeout 60s bash -c 'until curl -s -f http://localhost:3000/api/health; do sleep 2; echo "Waiting for Grafana..."; done'
@@ -147,5 +153,5 @@ jobs:
       - name: Cleanup
         if: always()
         run: |
-          docker compose down --volumes --remove-orphans || echo "Failed to stop containers"
+          docker-compose down --volumes --remove-orphans || echo "Failed to stop containers"
           docker system prune -f || echo "Failed to prune Docker system"
