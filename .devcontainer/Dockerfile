@@ -16,13 +16,12 @@ COPY --chown=1001:0 mvnw pom.xml ./
 RUN chmod +x mvnw
 
 # Create Checkstyle suppressions file
-RUN echo '<?xml version="1.0"?>\n\
-<!DOCTYPE suppressions PUBLIC "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN" "https://checkstyle.org/dtds/suppressions_1_2.dtd">\n\
-<suppressions>\n\
-    <suppress files=".*\.jar" checks="NoHttp"/>\n\
-    <suppress files=".*\.pom" checks="NoHttp"/>\n\
-</suppressions>' > checkstyle-suppressions.xml
-
+RUN echo '<?xml version="1.0"?>' > checkstyle-suppressions.xml && \
+    echo '<!DOCTYPE suppressions PUBLIC "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN" "https://checkstyle.org/dtds/suppressions_1_2.dtd">' >> checkstyle-suppressions.xml && \
+    echo '<suppressions>' >> checkstyle-suppressions.xml && \
+    echo '    <suppress files=".*\.jar" checks="NoHttp"/>' >> checkstyle-suppressions.xml && \
+    echo '    <suppress files=".*\.pom" checks="NoHttp"/>' >> checkstyle-suppressions.xml && \
+    echo '</suppressions>' >> checkstyle-suppressions.xml
 # Download dependencies
 RUN ./mvnw dependency:go-offline -Dcheckstyle.suppressions.location=checkstyle-suppressions.xml
 
