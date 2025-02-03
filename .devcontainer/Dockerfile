@@ -1,5 +1,5 @@
 # Build stage
-FROM eclipse-temurin:17-jdk-bullseye as builder
+FROM adoptopenjdk/openjdk17:latest as builder
 
 WORKDIR /app
 
@@ -17,7 +17,7 @@ COPY src ./src
 RUN ./mvnw package -DskipTests
 
 # Run stage
-FROM eclipse-temurin:17-jre-bullseye
+FROM adoptopenjdk/openjdk17:jre-slim
 
 WORKDIR /app
 
