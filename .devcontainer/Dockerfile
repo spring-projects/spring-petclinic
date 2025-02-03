@@ -1,17 +1,25 @@
 # Build stage
 FROM registry.access.redhat.com/ubi8/openjdk-17:latest as builder
 
+# Install required packages
+USER root
+RUN microdnf install -y tar gzip
+
+# Switch back to default user
+USER 1001
+
 WORKDIR /app
 
 # Copy Maven wrapper and POM
-COPY .mvn/ .mvn/
-COPY mvnw pom.xml ./
+COPY --chown=1001:0 .mvn/ .mvn/
+COPY --chown=1001:0 mvnw pom.xml ./
+RUN chmod +x mvnw
 
 # Download dependencies
 RUN ./mvnw dependency:go-offline
 
 # Copy source code
-COPY src ./src
+COPY --chown=1001:0 src ./src
 
 # Build the application
 RUN ./mvnw package -DskipTests
