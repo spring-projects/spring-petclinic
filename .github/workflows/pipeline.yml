@@ -35,7 +35,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Installation and setup of monitoring tools
       - name: Setup monitoring tools
         id: setup-monitoring
         timeout-minutes: 5
@@ -52,21 +51,17 @@ jobs:
           tar xvfz node_exporter.tar.gz || (echo "Failed to extract node exporter" && exit 1)
           echo "::endgroup::"
 
-      # Start monitoring tools with improved configuration
       - name: Start monitoring
         id: start-monitoring
         timeout-minutes: 2
         run: |
           set -eo pipefail
           
-          # Start node exporter with health check
           ./node_exporter-*/node_exporter --web.listen-address=":9100" &
           echo "NODE_EXPORTER_PID=$!" >> $GITHUB_ENV
           
-          # Wait for node exporter to become healthy
           timeout 30s bash -c 'until curl -s http://localhost:9100/metrics > /dev/null; do sleep 1; done' || (echo "Node exporter failed to start" && exit 1)
           
-          # Create start timestamp file
           date +%s%N > pipeline_start_time.txt
 
       - name: Set up JDK 17
@@ -76,49 +71,49 @@ jobs:
           distribution: 'adopt'
           cache: maven
 
-
       - name: Build with Maven
         id: build
         timeout-minutes: 15
         env:
           MAVEN_OPTS: "-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
-          run: |
-            set -eo pipefail
-            
-            echo "Creating checkstyle suppressions file..."
-            cat > checkstyle-suppressions.xml << 'EOF'
-            <?xml version="1.0"?>
-            <!DOCTYPE suppressions PUBLIC
-              "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
-              "https://checkstyle.org/dtds/suppressions_1_2.dtd">
-            <suppressions>
-              <suppress files="node_exporter.*" checks="NoHttp"/>
-            </suppressions>
-            EOF
-            
-            echo "Modifying checkstyle configuration..."
-            if [ -f "src/checkstyle/nohttp-checkstyle.xml" ]; then
-              sed -i '/<module name="Checker">/a \    <module name="SuppressionFilter">\n      <property name="file" value="${config_loc}/checkstyle-suppressions.xml"/>\n    </module>' src/checkstyle/nohttp-checkstyle.xml
-            fi
-            
-            echo "Starting Maven build..."
-            start_time=$(date +%s%N)
-            
-            ./mvnw -B verify \
-              -Dcheckstyle.config.location=src/checkstyle/nohttp-checkstyle.xml \
-              -Dcheckstyle.suppressions.location=checkstyle-suppressions.xml
-            
-            build_status=$?
-            end_time=$(date +%s%N)
-            echo "BUILD_TIME=$((($end_time - $start_time)/1000000))" >> $GITHUB_ENV
-            
-            if [ $build_status -ne 0 ]; then
-              echo "::error::Maven build failed with status $build_status"
-              exit $build_status
-            fi
+        run: |
+          set -eo pipefail
+          
+          echo "Creating checkstyle suppressions file..."
+          cat > checkstyle-suppressions.xml << 'EOF'
+          <?xml version="1.0"?>
+          <!DOCTYPE suppressions PUBLIC
+            "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+            "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+          <suppressions>
+            <suppress files="node_exporter.*" checks="NoHttp"/>
+          </suppressions>
+          EOF
+          
+          echo "Modifying checkstyle configuration..."
+          if [ -f "src/checkstyle/nohttp-checkstyle.xml" ]; then
+            sed -i '/<module name="Checker">/a \    <module name="SuppressionFilter">\n      <property name="file" value="${config_loc}/checkstyle-suppressions.xml"/>\n    </module>' src/checkstyle/nohttp-checkstyle.xml
+          fi
+          
+          echo "Starting Maven build..."
+          start_time=$(date +%s%N)
+          
+          ./mvnw -B verify \
+            -Dcheckstyle.config.location=src/checkstyle/nohttp-checkstyle.xml \
+            -Dcheckstyle.suppressions.location=checkstyle-suppressions.xml
+          
+          build_status=$?
+          end_time=$(date +%s%N)
+          echo "BUILD_TIME=$((($end_time - $start_time)/1000000))" >> $GITHUB_ENV
+          
+          if [ $build_status -ne 0 ]; then
+            echo "::error::Maven build failed with status $build_status"
+            exit $build_status
+          fi
+
       - name: Run tests
         id: test
-        if: success() || failure()  # Run even if build fails
+        if: success() || failure()
         timeout-minutes: 20
         run: |
           set -eo pipefail
@@ -168,14 +163,12 @@ jobs:
           end_time=$(date +%s%N)
           echo "DEPLOY_TIME=$((($end_time - $start_time)/1000000))" >> $GITHUB_ENV
 
-      # Export metrics with proper function definition
       - name: Export metrics to Prometheus
         if: always()
         timeout-minutes: 5
         run: |
           set -eo pipefail
           
-          # Define the export_metric function
           export_metric() {
             local metric_name=$1
             local metric_value=$2
@@ -189,20 +182,17 @@ jobs:
             fi
           }
           
-          # Export timing metrics
           export_metric "pipeline_build_duration_ms" "${BUILD_TIME}" "build"
           export_metric "pipeline_test_duration_ms" "${TEST_TIME}" "test"
           export_metric "pipeline_docker_build_duration_ms" "${DOCKER_BUILD_TIME}" "docker-build"
           export_metric "pipeline_deploy_duration_ms" "${DEPLOY_TIME}" "deploy"
 
-      # Collect additional resource metrics with function definition
       - name: Collect resource metrics
         if: always()
         timeout-minutes: 2
         run: |
           set -eo pipefail
           
-          # Define the export_metric function again since it's a new shell context
           export_metric() {
             local metric_name=$1
             local metric_value=$2
@@ -216,34 +206,28 @@ jobs:
             fi
           }
           
-          # Memory usage metric with error handling
           mem_usage=$(free -b | grep Mem: | awk '{print $3}') || echo "::warning::Failed to collect memory usage"
           if [ -n "$mem_usage" ]; then
             export_metric "pipeline_memory_usage_bytes" "$mem_usage" "memory"
           fi
           
-          # CPU usage metric with error handling
           cpu_usage=$(top -bn1 | grep "Cpu(s)" | awk '{print $2}') || echo "::warning::Failed to collect CPU usage"
           if [ -n "$cpu_usage" ]; then
             export_metric "pipeline_cpu_usage_percent" "$cpu_usage" "cpu"
           fi
 
-      # Collect final metrics
       - name: Collect final metrics
         if: always()
         timeout-minutes: 5
         run: |
           set -eo pipefail
           
-          # End timestamp
           date +%s%N > pipeline_end_time.txt
           
-          # Stop node exporter
           if [ -n "$NODE_EXPORTER_PID" ]; then
             kill $NODE_EXPORTER_PID || echo "::warning::Failed to stop node exporter"
           fi
           
-          # Collect system metrics with error handling
           {
             echo "=== System Resources ===" > system_metrics.txt
             top -b -n 1 >> system_metrics.txt
@@ -259,7 +243,6 @@ jobs:
             df -h >> disk_metrics.txt
           } || echo "::warning::Failed to collect disk metrics"
 
-      # Save metrics as artifacts
       - name: Save metrics
         if: always()
         uses: actions/upload-artifact@v4
