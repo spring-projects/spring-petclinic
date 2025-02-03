@@ -137,10 +137,10 @@ jobs:
           free -m > memory_metrics.txt
           df -h > disk_metrics.txt
 
-      # Save metrics as artifacts
+      # Save metrics as artifacts using the latest version
       - name: Save metrics
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: pipeline-metrics
           path: |
@@ -150,3 +150,4 @@ jobs:
             disk_metrics.txt
             pipeline_start_time.txt
             pipeline_end_time.txt
+          retention-days: 90
