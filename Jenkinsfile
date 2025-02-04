@@ -1,9 +1,24 @@
 pipeline {
   agent any
+
+  environment {
+    imageName = "spring-pet-clinic"
+    registryCredentials = "nexus-credentials"
+    registry = "https://localhost:9081"
+    dockerImage = ''
+  }
+
   tools {
     maven 'm3'
   }
+
   stages {
+    stage ('Docker build') {
+      script {
+        dockerImage = docker.build imageName
+      }
+
+    }
     stage ('Build') {
       steps {
         sh './mvnw -B -DskipTests clean package'
