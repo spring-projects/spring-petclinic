@@ -1,6 +1,6 @@
 pipeline {
   agent {
-    label 'master'
+    label 'workerNode'
   }
 
   environment {
@@ -12,6 +12,7 @@ pipeline {
 
   tools {
     maven 'm3'
+    docker 'docker'
   }
 
   stages {
