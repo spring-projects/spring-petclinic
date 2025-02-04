@@ -13,6 +13,7 @@ pipeline {
         stage('Create Git Tag') {
             steps {
                 script {
+                    sh 'chmod +x ./increment_version.sh'
                     // Run the version increment script
                     sh './increment_version.sh'
                 }
