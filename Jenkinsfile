@@ -73,7 +73,7 @@ pipeline {
                             sudo docker stop spring-petclinic || true && \
                             sudo docker rm spring-petclinic || true && \
                             sudo docker run -d --name spring-petclinic -p 8081:8080 ${DOCKER_IMAGE}:${gitTag}'
-                            echo "Application is running at http://34.201.2.231:8081"
+                            
                         """
                     }
                 }
