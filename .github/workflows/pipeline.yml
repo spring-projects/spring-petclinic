@@ -9,7 +9,7 @@ on:
 jobs:
   build-with-metrics:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 15
 
     steps:
       - uses: actions/checkout@v4
@@ -22,8 +22,10 @@ jobs:
             source "$HOME/.cargo/env"
           fi
 
-          # Installer Scaphandre via Cargo
+          # Installer Scaphandre et configurer les permissions
           cargo install scaphandre
+          sudo setcap cap_sys_rawio=+ep $(which scaphandre)
+          sudo chmod +r /dev/cpu/*/msr
 
       - name: Setup directories and install dependencies
         run: |
@@ -40,7 +42,11 @@ jobs:
             linux-tools-common \
             linux-tools-generic \
             python3-pip \
-            python3-psutil
+            python3-psutil \
+            msr-tools
+
+          # Charger le module msr
+          sudo modprobe msr
 
           # Installer dépendances Python
           pip3 install pandas numpy
@@ -54,6 +60,7 @@ jobs:
           import sys
           import time
           import json
+          import signal
           from datetime import datetime
 
           def monitor_energy(command, output_file):
@@ -63,72 +70,64 @@ jobs:
               # Préparer le fichier CSV
               with open(output_file, 'w', newline='') as csvfile:
                   writer = csv.writer(csvfile)
-                  writer.writerow([
-                      'Timestamp', 
-                      'Power_Watts', 
-                      'Component'
-                  ])
+                  writer.writerow(['Timestamp', 'Power_Watts', 'Component'])
           
-              # Commande scaphandre pour la sortie JSON
-              scaphandre_cmd = [
-                  'scaphandre', 'json',
-                  '-t', '120'  # Timeout de 2 minutes max
-              ]
+              def signal_handler(signum, frame):
+                  print("Signal reçu, arrêt du monitoring...")
+                  sys.exit(0)
           
-              # Lancer le monitoring en arrière-plan
-              monitor_process = subprocess.Popen(
-                  scaphandre_cmd, 
-                  stdout=subprocess.PIPE, 
-                  stderr=subprocess.PIPE,
-                  universal_newlines=True
-              )
+              signal.signal(signal.SIGTERM, signal_handler)
+              signal.signal(signal.SIGINT, signal_handler)
+          
+              # Lancer la commande principale
+              print(f"Exécution de la commande: {command}")
+              main_process = subprocess.Popen(command, shell=True)
           
               try:
-                  # Attendre un court instant pour que Scaphandre démarre
-                  time.sleep(2)
+                  # Monitoring en continu pendant l'exécution de la commande
+                  while main_process.poll() is None:
+                      try:
+                          # Exécuter scaphandre pour une seule mesure
+                          scaphandre_output = subprocess.check_output(
+                              ['sudo', 'scaphandre', 'json', '-n', '1'],
+                              universal_newlines=True
+                          )
           
-                  # Exécuter la commande principale
-                  main_process = subprocess.Popen(command, shell=True)
-                  main_process.wait()
+                          # Traiter la mesure
+                          process_measurement(scaphandre_output, output_file)
           
-                  # Attendre et traiter les données de Scaphandre
-                  try:
-                      monitor_output, _ = monitor_process.communicate(timeout=10)
-                      process_scaphandre_output(monitor_output, output_file)
-                  except subprocess.TimeoutExpired:
-                      print("Scaphandre monitoring timed out", file=sys.stderr)
+                          # Attendre 1 seconde avant la prochaine mesure
+                          time.sleep(1)
+          
+                      except subprocess.CalledProcessError as e:
+                          print(f"Erreur lors de la mesure: {e}")
+                          continue
+                      except Exception as e:
+                          print(f"Erreur inattendue: {e}")
+                          continue
+          
+                  return main_process.returncode
           
               finally:
-                  # Arrêter le monitoring
-                  monitor_process.terminate()
-                  monitor_process.wait()
-          
-          def process_scaphandre_output(output, output_file):
+                  if main_process.poll() is None:
+                      main_process.terminate()
+                      main_process.wait()
+
+          def process_measurement(output, output_file):
               try:
-                  # Diviser le flux JSON en objets individuels
-                  json_objects = output.strip().split('\n')
+                  data = json.loads(output.strip())
+                  timestamp = data.get('timestamp', datetime.now().isoformat())
+                  power = data.get('power', {}).get('total_power', 0)
           
                   with open(output_file, 'a', newline='') as csvfile:
                       writer = csv.writer(csvfile)
+                      writer.writerow([timestamp, power, 'System'])
           
-                      for json_str in json_objects:
-                          try:
-                              data = json.loads(json_str)
-          
-                              # Extraire les informations pertinentes
-                              timestamp = data.get('timestamp', datetime.now().isoformat())
-                              power = data.get('power', {}).get('total_power', 0)
-          
-                              writer.writerow([
-                                  timestamp,
-                                  power,
-                                  'System'
-                              ])
-                          except json.JSONDecodeError:
-                              print(f"Could not parse JSON: {json_str}", file=sys.stderr)
+              except json.JSONDecodeError as e:
+                  print(f"Erreur de décodage JSON: {e}")
               except Exception as e:
-                  print(f"Error processing Scaphandre output: {e}", file=sys.stderr)
-          
+                  print(f"Erreur de traitement: {e}")
+
           def main():
               if len(sys.argv) < 3:
                   print("Usage: python energy_monitor.py 'command' output_file.csv")
@@ -137,8 +136,13 @@ jobs:
               command = sys.argv[1]
               output_file = sys.argv[2]
           
-              monitor_energy(command, output_file)
-          
+              try:
+                  exit_code = monitor_energy(command, output_file)
+                  sys.exit(exit_code)
+              except Exception as e:
+                  print(f"Erreur fatale: {e}")
+                  sys.exit(1)
+
           if __name__ == '__main__':
               main()
           EOL
@@ -178,13 +182,13 @@ jobs:
 
       - name: Build with Maven and measure energy
         id: build
-        timeout-minutes: 15
+        timeout-minutes: 5
         env:
           MAVEN_OPTS: "-Xmx2048m -XX:+TieredCompilation -XX:TieredStopAtLevel=1"
         run: |
           set -eo pipefail
           
-          # Ajouter Cargo et Scaphandre au PATH
+          # Ajouter Cargo au PATH
           source "$HOME/.cargo/env"
           
           start_time=$(date +%s%N)
@@ -193,8 +197,8 @@ jobs:
           free -m > metrics/system/pre_build_memory.txt
           
           # Monitoring énergétique avec Scaphandre
-          python3 energy_monitor.py \
-            "./mvnw -B verify -Dmaven.test.skip=true -Dcheckstyle.skip=true -T 1C" \
+          sudo python3 energy_monitor.py \
+            "./mvnw -B verify -Dmaven.test.skip=true" \
             metrics/power/build_power_metrics.csv
           
           build_status=$?
@@ -206,16 +210,20 @@ jobs:
           # Enregistrer le temps de build
           echo "$((($end_time - $start_time)/1000000))" > metrics/performance/build_time.txt
           
+          # Vérifier le contenu du fichier de métriques
+          echo "=== Build power metrics content ==="
+          cat metrics/power/build_power_metrics.csv
+          
           exit $build_status
 
       - name: Run tests with energy monitoring
         id: test
         if: success()
-        timeout-minutes: 20
+        timeout-minutes: 5
         run: |
           set -eo pipefail
           
-          # Ajouter Cargo et Scaphandre au PATH
+          # Ajouter Cargo au PATH
           source "$HOME/.cargo/env"
           
           start_time=$(date +%s%N)
@@ -224,8 +232,8 @@ jobs:
           free -m > metrics/system/pre_test_memory.txt
           
           # Monitoring énergétique avec Scaphandre
-          python3 energy_monitor.py \
-            "./mvnw test -T 1C" \
+          sudo python3 energy_monitor.py \
+            "./mvnw test" \
             metrics/power/test_power_metrics.csv
           
           test_status=$?
@@ -237,16 +245,20 @@ jobs:
           # Enregistrer le temps des tests
           echo "$((($end_time - $start_time)/1000000))" > metrics/performance/test_time.txt
           
+          # Vérifier le contenu du fichier de métriques
+          echo "=== Test power metrics content ==="
+          cat metrics/power/test_power_metrics.csv
+          
           exit $test_status
 
       - name: Build Docker image with energy monitoring
         id: docker-build
         if: success()
-        timeout-minutes: 10
+        timeout-minutes: 5
         run: |
           set -eo pipefail
           
-          # Ajouter Cargo et Scaphandre au PATH
+          # Ajouter Cargo au PATH
           source "$HOME/.cargo/env"
           
           start_time=$(date +%s%N)
@@ -256,8 +268,8 @@ jobs:
           df -h > metrics/system/pre_docker_disk.txt
           
           # Monitoring énergétique avec Scaphandre
-          python3 energy_monitor.py \
-            "docker build -t app:latest -f .devcontainer/Dockerfile . --no-cache" \
+          sudo python3 energy_monitor.py \
+            "docker build -t app:latest -f .devcontainer/Dockerfile ." \
             metrics/power/docker_build_power_metrics.csv
           
           build_status=$?
@@ -272,6 +284,10 @@ jobs:
           
           # Collecter la taille de l'image
           docker images app:latest --format "{{.Size}}" > metrics/performance/docker_image_size.txt
+          
+          # Vérifier le contenu du fichier de métriques
+          echo "=== Docker build power metrics content ==="
+          cat metrics/power/docker_build_power_metrics.csv
           
           exit $build_status
 
@@ -292,6 +308,29 @@ jobs:
 
           # Marquer la fin du pipeline
           date +%s%N > metrics/pipeline_end_time.txt
+
+      - name: Verify metrics collection
+        if: always()
+        run: |
+          echo "=== Checking power metrics files ==="
+          for file in metrics/power/*.csv; do
+            echo "=== Content of $file: ==="
+            cat "$file"
+            echo "Size of $file: $(wc -l < "$file") lines"
+            echo "File permissions: $(ls -l "$file")"
+          done
+
+          echo "=== Checking system metrics files ==="
+          for file in metrics/system/*; do
+            echo "=== Content of $file: ==="
+            cat "$file"
+          done
+
+          echo "=== Checking performance metrics files ==="
+          for file in metrics/performance/*; do
+            echo "=== Content of $file: ==="
+            cat "$file"
+          done
 
       - name: Save metrics
         if: always()
