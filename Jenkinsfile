@@ -1,5 +1,7 @@
 pipeline {
-  agent any 
+  agent {
+    label 'master'
+  }
 
   environment {
     imageName = "spring-pet-clinic"
