@@ -2,7 +2,6 @@ pipeline {
     agent any
     environment {
         DOCKER_IMAGE = "prathushadevijs/spring-petclinic-proj"
-       
     }
     stages {
         stage('Checkout') {
@@ -13,6 +12,7 @@ pipeline {
         stage('Create Git Tag') {
             steps {
                 script {
+                    // Make sure the script has execute permissions
                     sh 'chmod +x ./increment_version.sh'
                     // Run the version increment script
                     sh './increment_version.sh'
@@ -35,10 +35,19 @@ pipeline {
                 }
             }
         }
+        stage('Get Git Tag') {
+            steps {
+                script {
+                    // Fetch the most recent Git tag
+                    env.gitTag = sh(script: 'git describe --tags --abbrev=0', returnStdout: true).trim()
+                    echo "Using Git Tag: ${gitTag}"
+                }
+            }
+        }
         stage('Build Docker Image') {
             steps {
                 script {
-                    def gitTag = sh(script: 'git describe --tags --abbrev=0', returnStdout: true).trim()
+                    // Use the gitTag variable set earlier
                     sh "docker build -t ${DOCKER_IMAGE}:${gitTag} ."
                 }
             }
@@ -46,7 +55,7 @@ pipeline {
         stage('Push to Docker Hub') {
             steps {
                 script {
-                    def gitTag = sh(script: 'git describe --tags --abbrev=0', returnStdout: true).trim()
+                    // Push the Docker image with the gitTag
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh "docker push ${DOCKER_IMAGE}:${gitTag}"
                     }
