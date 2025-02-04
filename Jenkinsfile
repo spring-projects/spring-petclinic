@@ -1,6 +1,6 @@
 pipeline {
   agent {
-    label 'workerNode'
+    label 'worker2'
   }
 
   environment {
