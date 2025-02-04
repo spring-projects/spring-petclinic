@@ -1,0 +1,15 @@
+services:
+
+  petclinic:
+    image: multi-petclinic
+    ports:
+      - 8080:8080
+
+  postgres:
+    image: postgres:17.0
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=petclinic
+      - POSTGRES_USER=petclinic
+      - POSTGRES_DB=petclinic
