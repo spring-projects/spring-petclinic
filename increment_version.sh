@@ -8,8 +8,8 @@ if [ -z "$latest_tag" ]; then
     echo "No tags found. Starting from v1.0.0"
     new_version="v1.0.0"
 else
-    # Extract major and minor version from the latest tag
-    version_pattern="v([0-9]+)\.([0-9]+)\.([0-9]+)"
+    # Check if the tag has a 'v' prefix (e.g., v1.2.3) or not (e.g., 1.2.3)
+    version_pattern="v?([0-9]+)\.([0-9]+)\.([0-9]+)"
     if [[ $latest_tag =~ $version_pattern ]]; then
         major="${BASH_REMATCH[1]}"
         minor="${BASH_REMATCH[2]}"
@@ -19,7 +19,7 @@ else
         minor=$((minor + 1))
         new_version="v${major}.${minor}.0"  # Reset patch version to 0 when incrementing minor
     else
-        echo "Invalid tag format. Expected format: vX.Y.Z"
+        echo "Invalid tag format. Expected format: vX.Y.Z or X.Y.Z"
         exit 1
     fi
 fi
