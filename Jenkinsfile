@@ -2,12 +2,20 @@ pipeline {
     agent any
     environment {
         DOCKER_IMAGE = "prathushadevijs/spring-petclinic-proj"
-        DOCKER_TAG = "${GIT_COMMIT}"
+       
     }
     stages {
         stage('Checkout') {
             steps {
                 checkout scm
+            }
+        }
+        stage('Create Git Tag') {
+            steps {
+                script {
+                    // Run the version increment script
+                    sh './increment_version.sh'
+                }
             }
         }
         stage('Build & Test') {
@@ -29,15 +37,17 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .'
+                    def gitTag = sh(script: 'git describe --tags --abbrev=0', returnStdout: true).trim()
+                    sh "docker build -t ${DOCKER_IMAGE}:${gitTag} ."
                 }
             }
         }
         stage('Push to Docker Hub') {
             steps {
                 script {
+                    def gitTag = sh(script: 'git describe --tags --abbrev=0', returnStdout: true).trim()
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        sh 'docker push ${DOCKER_IMAGE}:${DOCKER_TAG}'
+                        sh "docker push ${DOCKER_IMAGE}:${gitTag}"
                     }
                 }
             }
@@ -49,11 +59,10 @@ pipeline {
                         sh """
                             mkdir -p ~/.ssh
                             ssh-keyscan -H 34.201.2.231 >> ~/.ssh/known_hosts
-                            ssh -i $KEYFILE ec2-user@34.201.2.231 'sudo docker pull ${DOCKER_IMAGE}:${DOCKER_TAG} && \
+                            ssh -i $KEYFILE ec2-user@34.201.2.231 'sudo docker pull ${DOCKER_IMAGE}:${gitTag} && \
                             sudo docker stop spring-petclinic || true && \
                             sudo docker rm spring-petclinic || true && \
-                            sudo docker run -d --name spring-petclinic -p 8081:8080 ${DOCKER_IMAGE}:${DOCKER_TAG}'
-
+                            sudo docker run -d --name spring-petclinic -p 8081:8080 ${DOCKER_IMAGE}:${gitTag}'
                         """
                     }
                 }
