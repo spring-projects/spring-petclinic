@@ -16,15 +16,17 @@ jobs:
 
       - name: Setup Rust and Scaphandre
         run: |
-          # Installer Rust si nécessaire
+          
           if ! command -v cargo &> /dev/null; then
-            curl https://sh.rustup.rs -sSf | sh -s -- -y
-            source "$HOME/.cargo/env"
+           curl https://sh.rustup.rs -sSf | sh -s -- -y
+           source "$HOME/.cargo/env"
           fi
 
           # Installer Scaphandre et configurer les permissions
           cargo install scaphandre
-          sudo setcap cap_sys_rawio=+ep $(which scaphandre)
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+          sudo cp $HOME/.cargo/bin/scaphandre /usr/local/bin/
+          sudo setcap cap_sys_rawio=+ep /usr/local/bin/scaphandre
           sudo chmod +r /dev/cpu/*/msr
 
       - name: Setup directories and install dependencies
