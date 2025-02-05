@@ -26,6 +26,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+
 /**
  * Repository class for <code>Owner</code> domain objects All method names are compliant
  * with Spring Data naming conventions so this interface can easily be extended for Spring
