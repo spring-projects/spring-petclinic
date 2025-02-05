@@ -124,11 +124,6 @@ class OwnerController {
 		return "owners/ownersList";
 	}
 
-	// private Page<Owner> findPaginatedForOwnersLastName(int page, String lastname) {
-	// int pageSize = 5;
-	// Pageable pageable = PageRequest.of(page - 1, pageSize);
-	// return owners.findByLastNameStartingWith(lastname, pageable);
-	// }
 	private Page<Owner> findPaginatedForOwnersName(int page, String lastname) {
 		int pageSize = 5;
 		Pageable pageable = PageRequest.of(page - 1, pageSize);

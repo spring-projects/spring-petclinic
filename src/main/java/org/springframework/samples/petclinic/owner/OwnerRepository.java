@@ -54,7 +54,7 @@ public interface OwnerRepository extends JpaRepository<Owner, Integer> {
 	 * @return a Collection of matching {@link Owner}s (or an empty Collection if none
 	 * found)
 	 */
-	// Page<Owner> findByLastNameStartingWith(String lastName, Pageable pageable);
+
 	@Query("SELECT o FROM Owner o " + "WHERE LOWER(o.firstName) LIKE LOWER(CONCAT('%', :namePart, '%')) "
 			+ "OR LOWER(o.lastName) LIKE LOWER(CONCAT('%', :namePart, '%'))")
 	Page<Owner> findByNameContaining(@Param("namePart") String namePart, Pageable pageable);
