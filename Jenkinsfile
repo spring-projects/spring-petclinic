@@ -2,6 +2,9 @@ pipeline {
     agent any
     environment {
         DOCKER_IMAGE = "prathushadevijs/spring-petclinic-proj"
+        RDS_DB_URL = credentials('terraform-20250201163508870100000001.cx8weoi6ueor.us-east-1.rds.amazonaws.com')  // RDS endpoint, e.g., mydb.cluster-xyz.us-west-2.rds.amazonaws.com
+        RDS_DB_USERNAME = credentials('admin')  // RDS DB username
+        RDS_DB_PASSWORD = credentials('projRDS123')  // RDS DB password
     }
     stages {
         stage('Checkout') {
@@ -22,7 +25,13 @@ pipeline {
         stage('Build & Test') {
             steps {
                 script {
-                    sh 'mvn clean install -DskipTests'
+                    // Override DB properties for testing with RDS connection
+                    sh """
+                        echo 'spring.datasource.url=jdbc:mysql://${RDS_DB_URL}:3306/petclinic' > src/main/resources/application.properties
+                        echo 'spring.datasource.username=${RDS_DB_USERNAME}' >> src/main/resources/application.properties
+                        echo 'spring.datasource.password=${RDS_DB_PASSWORD}' >> src/main/resources/application.properties
+                        mvn clean install -DskipTests
+                    """
                 }
             }
         }
