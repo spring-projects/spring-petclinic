@@ -40,7 +40,7 @@ stage('Login to dockerhub') {
 
     stage('Push') {
       steps {
-        sh 'docker push piachsecki/spring-pet-clinic:latest'
+        sh '/usr/sbin/envShell.sh push piachsecki/spring-pet-clinic:latest'
       }
 
     }
