@@ -5,6 +5,7 @@ pipeline {
 
   environment {
     imageName = "spring-pet-clinic"
+
     registryCredentials = "nexus-credentials"
     registry = "https://localhost:9081"
     dockerImage = ''
@@ -17,8 +18,8 @@ pipeline {
   stages {
     stage ('Docker build') {
       steps {
-        script {
-          dockerImage = docker.build(imageName)
+       script {
+          sh 'docker build -t spring-pet-clinic .'
         }
       }
 
