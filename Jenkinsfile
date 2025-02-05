@@ -19,7 +19,8 @@ pipeline {
     stage ('Docker build') {
       steps {
        script {
-          sh 'DOCKER_HOST=tcp://docker:2376 docker build -t spring-pet-clinic .'
+          sh 'DOCKER_CERT_PATH=/certs/client DOCKER_TLS_VERIFY=1 DOCKER_HOST=tcp://docker:2376 docker build -t spring-pet-clinic .'
+
         }
       }
 
