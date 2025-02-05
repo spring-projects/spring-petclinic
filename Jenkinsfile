@@ -30,8 +30,12 @@ pipeline {
     }
     stage('Login to dockerhub') {
       steps {
-        sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker  login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-   }
+        docker.withRegistry('https://index.docker.io/v1/', 'piachsecki-dockerhub') {
+        echo 'Logged into DockerHub'
+      }
+
+  }
+
    }
     stage('Push') {
       steps {
