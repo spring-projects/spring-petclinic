@@ -25,7 +25,7 @@ pipeline {
       }
 
     }
-    stage ('Build') {
+    /*stage ('Build') {
       steps {
         sh './mvnw -B -DskipTests clean package'
       }
@@ -42,6 +42,6 @@ pipeline {
         sh 'echo "hello $USER"'
       }
     }
-
+*/
   }
 }
