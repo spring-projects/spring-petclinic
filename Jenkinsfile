@@ -28,15 +28,16 @@ pipeline {
       }
 
     }
-    stage('Login to dockerhub') {
-      steps {
-        docker.withRegistry('https://index.docker.io/v1/', 'piachsecki-dockerhub') {
-        echo 'Logged into DockerHub'
-      }
-
+stage('Login to dockerhub') {
+  steps {
+    withCredentials([usernamePassword(credentialsId: 'piachsecki-dockerhub', 
+                                      usernameVariable: 'DOCKERHUB_USER', 
+                                      passwordVariable: 'DOCKERHUB_PASS')]) {
+      sh 'echo $DOCKERHUB_PASS | docker login -u $DOCKERHUB_USER --password-stdin'
+    }
   }
+}
 
-   }
     stage('Push') {
       steps {
         sh 'docker push piachsecki/spring-pet-clinic:latest'
