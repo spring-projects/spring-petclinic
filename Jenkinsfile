@@ -19,7 +19,7 @@ pipeline {
     stage ('Docker build') {
       steps {
        script {
-          sh 'docker build -t spring-pet-clinic .'
+          sh 'DOCKER_HOST=tcp://docker:2376 docker build -t spring-pet-clinic .'
         }
       }
 
