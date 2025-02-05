@@ -19,7 +19,7 @@ pipeline {
     stage ('Docker build') {
       steps {
        script {
-          sh 'dbuild -t spring-pet-clinic .'
+          sh '/usr/sbin/envShell.sh -t spring-pet-clinic .'
 
         }
       }
