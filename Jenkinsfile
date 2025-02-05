@@ -37,6 +37,15 @@ stage('Login to dockerhub') {
     }
   }
 }
+stage('Login to Nexus') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'nexus-credentials', 
+                                          usernameVariable: 'NEXUS_USER', 
+                                          passwordVariable: 'NEXUS_PASS')]) {
+          sh 'echo $NEXUS_PASS | docker login $registry -u $NEXUS_USER --password-stdin'
+        }
+      }
+    }
 
     stage('Push') {
       steps {
