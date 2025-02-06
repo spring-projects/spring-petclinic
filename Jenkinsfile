@@ -73,7 +73,14 @@ pipeline {
                             ssh -i $KEYFILE ec2-user@34.201.2.231 'sudo docker pull ${DOCKER_IMAGE}:${gitTag} && \
                             sudo docker stop spring-petclinic || true && \
                             sudo docker rm spring-petclinic || true && \
-                            sudo docker run -d --name spring-petclinic -p 8081:8080 ${DOCKER_IMAGE}:${gitTag}'
+                            sudo docker run -d --name spring-petclinic \
+                              -e DB_HOST=terraform-20250201163508870100000001.cx8weoi6ueor.us-east-1.rds.amazonaws.com \
+                              -e DB_PORT=3306 \
+                              -e DB_NAME=springpetclinicdb \
+                              -e DB_USERNAME=admin \
+                              -e DB_PASSWORD=projRDS123 \
+                              -p 8081:8080 \
+                              ${DOCKER_IMAGE}:${gitTag}
                             
                         """
                     }
