@@ -1,0 +1,40 @@
+pool: Default
+
+pr: 
+  - develop
+
+stages:
+  - stage: CI
+    jobs:
+      - job: Build
+        displayName: 'Building and Testing'
+        steps:  
+
+steps:
+  - task: Maven@4
+    displayName: 'build and publish the maven code'
+    inputs:
+      mavenPomFile: pom.xml
+      goals: 'clean package'
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      publishJUnitResults: true
+ 
+  - task: CopyFiles@2
+    inputs:
+      contents: '**/*.jar'
+      targetFolder: '$(Build.ArtifactStagingDirectory)'
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathToPublish: '$(Build.ArtifactStagingDirectory)'
+      artifactName: drop
+
+  - task: Docker@2
+    displayName: 'Build docker image'  
+    inputs:
+      command: 'buildAndPush'
+      Dockerfile: './Dockerfile'
+      repository: venkeyboda/spring-petclinic
+      tags: '$(Build.BuildId)'
+
+    
