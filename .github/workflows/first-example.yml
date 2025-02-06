@@ -3,7 +3,7 @@ on: push
 
 jobs:
   first:
-    runs_on: ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Start
         run: echo "Hello Kacper!"
