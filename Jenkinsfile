@@ -79,7 +79,7 @@ pipeline {
                               -e DB_USERNAME=admin \
                               -e DB_PASSWORD=projRDS123 \
                               -p 8081:8080 \
-                              ${DOCKER_IMAGE}:${gitTag}   
+                              ${DOCKER_IMAGE}:${gitTag}'   
                         """
                     }
                 }
