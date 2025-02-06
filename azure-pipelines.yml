@@ -33,7 +33,8 @@ stages:
             command: 'build'
             Dockerfile: './Dockerfile'
             repository: venkeyboda/spring-petclinic
-            tags: '$(Build.BuildId)'
+            tags: |
+             '$(Build.BuildId)'
 
         - task: CmdLine@2
           displayName: 'scannig image '
