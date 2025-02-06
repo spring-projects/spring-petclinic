@@ -40,7 +40,7 @@ stages:
           displayName: 'scannig image '
           inputs:
             script: |
-              trivy image  $(venkeyboda/spring-petclinic):$(Build.BuildId) -o trivy-report.xml
+              trivy image $('venkeyboda/spring-petclinic'):'$(Build.BuildId)' -o trivy-report.xml
 
         - task: PublishPipelineArtifact@1
           displayName: 'Publish Trivy Report'
