@@ -32,9 +32,28 @@ steps:
   - task: Docker@2
     displayName: 'Build docker image'  
     inputs:
-      command: 'buildAndPush'
+      command: 'build'
       Dockerfile: './Dockerfile'
       repository: venkeyboda/spring-petclinic
       tags: '$(Build.BuildId)'
 
-    
+  - task: CmdLine@2
+    displayName: 'scannig image '
+    inputs:
+      script: |
+        trivy image  $(venkeyboda/spring-petclinic):$(Build.BuildId) -o trivy-report.xml
+
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish Trivy Report'
+    inputs:
+      targetPath: 'trivy-report.xml'
+      artifact: 'TrivyReport'
+
+  - task: Docker@2
+    displayName: 'pushing the docker image'  
+    inputs:
+      command: 'push'
+      containerRegistry: 'docker hub'
+      repository: venkeyboda/spring-petclinic
+      tags: |
+        '$(Build.BuildId)'          
