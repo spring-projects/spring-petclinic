@@ -1,0 +1,14 @@
+name: My first workflow
+on: push
+
+jobs:
+  first:
+    runs_on: ubuntu-latest
+    steps:
+      - name: Start
+        run: echo "Hello Kacper!"
+      - name: List files
+        run: ls
+
+      - name: Read my amazing dockerfile
+        run: cat Dockerfile
