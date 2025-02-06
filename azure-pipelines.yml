@@ -9,51 +9,49 @@ stages:
       - job: Build
         displayName: 'Building and Testing'
         steps:  
+        - task: Maven@4
+          displayName: 'build and publish the maven code'
+          inputs:
+            mavenPomFile: pom.xml
+            goals: 'clean package'
+            testResultsFiles: '**/surefire-reports/TEST-*.xml'
+            publishJUnitResults: true
+      
+        - task: CopyFiles@2
+          inputs:
+            contents: '**/*.jar'
+            targetFolder: '$(Build.ArtifactStagingDirectory)'
 
-steps:
-  - task: Maven@4
-    displayName: 'build and publish the maven code'
-    inputs:
-      mavenPomFile: pom.xml
-      goals: 'clean package'
-      testResultsFiles: '**/surefire-reports/TEST-*.xml'
-      publishJUnitResults: true
- 
-  - task: CopyFiles@2
-    inputs:
-      contents: '**/*.jar'
-      targetFolder: '$(Build.ArtifactStagingDirectory)'
+        - task: PublishBuildArtifacts@1
+          inputs:
+            pathToPublish: '$(Build.ArtifactStagingDirectory)'
+            artifactName: drop
 
-  - task: PublishBuildArtifacts@1
-    inputs:
-      pathToPublish: '$(Build.ArtifactStagingDirectory)'
-      artifactName: drop
+        - task: Docker@2
+          displayName: 'Build docker image'  
+          inputs:
+            command: 'build'
+            Dockerfile: './Dockerfile'
+            repository: venkeyboda/spring-petclinic
+            tags: '$(Build.BuildId)'
 
-  - task: Docker@2
-    displayName: 'Build docker image'  
-    inputs:
-      command: 'build'
-      Dockerfile: './Dockerfile'
-      repository: venkeyboda/spring-petclinic
-      tags: '$(Build.BuildId)'
+        - task: CmdLine@2
+          displayName: 'scannig image '
+          inputs:
+            script: |
+              trivy image  $(venkeyboda/spring-petclinic):$(Build.BuildId) -o trivy-report.xml
 
-  - task: CmdLine@2
-    displayName: 'scannig image '
-    inputs:
-      script: |
-        trivy image  $(venkeyboda/spring-petclinic):$(Build.BuildId) -o trivy-report.xml
+        - task: PublishPipelineArtifact@1
+          displayName: 'Publish Trivy Report'
+          inputs:
+            targetPath: 'trivy-report.xml'
+            artifact: 'TrivyReport'
 
-  - task: PublishPipelineArtifact@1
-    displayName: 'Publish Trivy Report'
-    inputs:
-      targetPath: 'trivy-report.xml'
-      artifact: 'TrivyReport'
-
-  - task: Docker@2
-    displayName: 'pushing the docker image'  
-    inputs:
-      command: 'push'
-      containerRegistry: 'docker hub'
-      repository: venkeyboda/spring-petclinic
-      tags: |
-        '$(Build.BuildId)'          
+        - task: Docker@2
+          displayName: 'pushing the docker image'  
+          inputs:
+            command: 'push'
+            containerRegistry: 'docker hub'
+            repository: venkeyboda/spring-petclinic
+            tags: |
+              '$(Build.BuildId)'          
