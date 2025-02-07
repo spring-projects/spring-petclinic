@@ -1,4 +1,5 @@
-pool: Default
+pool:
+  vmImage: ubuntu-latest
 
 pr: 
   - develop
@@ -60,4 +61,3 @@ stages:
             repository: $(dockerImagerepo)
             tags: |
               $(dockerImagetag)         
-              
