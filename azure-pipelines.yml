@@ -60,4 +60,7 @@ stages:
             containerRegistry: 'DOCKER_HUB'
             repository: $(dockerImagerepo)
             tags: |
-              $(dockerImagetag)         
+              $(dockerImagetag)        
+              
+              
+              
