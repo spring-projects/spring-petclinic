@@ -3,6 +3,10 @@ pool: Default
 pr: 
   - develop
 
+variables:
+  dockerImagerepo: 'venkeyboda/spc'
+  dockerImagetag:  '$(Build.BuildId)' 
+
 stages:
   - stage: CI
     jobs:
@@ -32,15 +36,15 @@ stages:
           inputs:
             command: 'build'
             Dockerfile: './Dockerfile'
-            repository: venkeyboda/spring-petclinic
+            repository: $(dockerImagerepo)
             tags: |
-             '$(Build.BuildId)'
+             $(dockerImagetag)
 
         - task: CmdLine@2
           displayName: 'scannig image '
           inputs:
             script: |
-              trivy image $('venkeyboda/spring-petclinic'):'$(Build.BuildId)' -o trivy-report.xml
+              trivy image $(dockerImagerepo):$(dockerImagetag) -o trivy-report.xml
 
         - task: PublishPipelineArtifact@1
           displayName: 'Publish Trivy Report'
@@ -52,7 +56,8 @@ stages:
           displayName: 'pushing the docker image'  
           inputs:
             command: 'push'
-            containerRegistry: 'docker hub'
-            repository: venkeyboda/spring-petclinic
+            containerRegistry: 'DOCKER_HUB'
+            repository: $(dockerImagerepo)
             tags: |
-              '$(Build.BuildId)'          
+              $(dockerImagetag)         
+              
