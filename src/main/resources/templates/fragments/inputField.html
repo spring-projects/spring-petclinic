@@ -1,28 +1,25 @@
-<html>
-<body>
-  <form>
-    <th:block th:fragment="input (label, name, type)">
-      <div th:with="valid=${!#fields.hasErrors(name)}"
-        th:class="${'form-group' + (valid ? '' : ' has-error')}"
-        class="form-group">
-        <label class="col-sm-2 control-label" th:text="${label}">Label</label>
-        <div class="col-sm-10">
-            <div th:switch="${type}">
-                <input th:case="'text'" class="form-control" type="text" th:field="*{__${name}__}" />
-                <input th:case="'date'" class="form-control" type="date" th:field="*{__${name}__}"/>
-            </div>
-          <span th:if="${valid}"
-            class="fa fa-ok form-control-feedback"
-            aria-hidden="true"></span>
-          <th:block th:if="${!valid}">
-            <span
-              class="fa fa-remove form-control-feedback"
-              aria-hidden="true"></span>
-            <span class="help-inline" th:errors="*{__${name}__}">Error</span>
-          </th:block>
-        </div>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Define the fragment 'input' that takes label, name, and type as parameters -->
+<th:block th:fragment="input(label, name, type)">
+  <div th:with="valid=${!#fields.hasErrors(name)}"
+       th:class="'form-group' + (valid ? '' : ' has-error')">
+    <label class="col-sm-2 control-label" th:text="${label}">Label</label>
+    <div class="col-sm-10">
+      <div th:switch="${type}">
+        <!-- For text input -->
+        <input th:case="'text'" class="form-control" type="text" th:field="*{__${name}__}" />
+        <!-- For date input -->
+        <input th:case="'date'" class="form-control" type="date" th:field="*{__${name}__}" />
+        <!-- Add other input types as needed -->
       </div>
-    </th:block>
-  </form>
-</body>
+      <!-- Show a check icon if there are no errors -->
+      <span th:if="${valid}" class="fa fa-ok form-control-feedback" aria-hidden="true"></span>
+      <!-- When there are errors, show an error icon and display error messages -->
+      <th:block th:if="${!valid}">
+        <span class="fa fa-remove form-control-feedback" aria-hidden="true"></span>
+        <span class="help-inline" th:errors="*{__${name}__}">Error</span>
+      </th:block>
+    </div>
+  </div>
+</th:block>
 </html>
