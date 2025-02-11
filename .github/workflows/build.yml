@@ -23,7 +23,7 @@ jobs:
     
     - name: Build Docker Image
       run: | 
-        docker build -t petclinic:${{ github.sha }} .
+        docker build -t ybandala/petclinic:${{ github.sha }} .
         docker tag ybandala/petclinic:${{ github.sha }} ybandala/petclinic:latest
 
     - name: Test
