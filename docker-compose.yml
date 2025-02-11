@@ -1,21 +1,19 @@
 services:
-  mysql:
-    image: mysql:9.1
+  app:
+    image: spring-app:latest
     ports:
-      - "3306:3306"
-    environment:
-      - MYSQL_ROOT_PASSWORD=
-      - MYSQL_ALLOW_EMPTY_PASSWORD=true
-      - MYSQL_USER=petclinic
-      - MYSQL_PASSWORD=petclinic
-      - MYSQL_DATABASE=petclinic
-    volumes:
-      - "./conf.d:/etc/mysql/conf.d:ro"
+      - "8080:8080" 
+
   postgres:
     image: postgres:17.0
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_PASSWORD=petclinic
-      - POSTGRES_USER=petclinic
-      - POSTGRES_DB=petclinic
+      POSTGRES_PASSWORD: petclinic
+      POSTGRES_USER: petclinic
+      POSTGRES_DB: petclinic
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
