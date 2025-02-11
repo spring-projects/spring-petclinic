@@ -22,7 +22,9 @@ jobs:
       run: ./mvnw package -B
     
     - name: Build Docker Image
-      run: docker build -t petclinic:${{ github.sha }} .
+      run: | 
+        docker build -t petclinic:${{ github.sha }} .
+        docker tag ybandala/petclinic:${{ github.sha }} ybandala/petclinic:latest
 
     - name: Test
       run: ./mvnw test
@@ -31,4 +33,6 @@ jobs:
       run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
     
     - name: Push Image to Docker Hub
-      run: docker push ybandala/petclinic:${{ github.sha }}
+      run: | 
+        docker push ybandala/petclinic:${{ github.sha }}
+        docker push ybandala/petclinic:latest
