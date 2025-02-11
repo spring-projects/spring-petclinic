@@ -46,7 +46,7 @@ jobs:
 
     - name: Deploy to Minikube
       run: |
-        sed -i 's|image: .*|image: your-dockerhub-username/petclinic:'${{ github.sha }}'|' k8s/base/deployment.yaml
+        sed -i '' 's|image: .*|image: your-dockerhub-username/petclinic:'${{ github.sha }}'|' k8s/base/deployment.yaml
 
         # Apply the Kubernetes manifests
         kubectl apply -f k8s/base/
