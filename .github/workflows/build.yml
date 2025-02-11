@@ -39,8 +39,7 @@ jobs:
     
     - name: Install kubectl
       run: |
-        sudo apt-get update
-        sudo apt-get install -y kubectl
+        brew install kubectl
 
     - name: Set Minikube context
       run: kubectl config use-context minikube
