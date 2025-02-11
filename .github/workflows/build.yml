@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
     - uses: actions/checkout@v3
 
@@ -36,3 +36,21 @@ jobs:
       run: | 
         docker push ybandala/petclinic:${{ github.sha }}
         docker push ybandala/petclinic:latest
+    
+    - name: Install kubectl
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y kubectl
+
+      - name: Set Minikube context
+        run: kubectl config use-context minikube
+
+      - name: Deploy to Minikube
+        run: |
+          sed -i 's|image: .*|image: your-dockerhub-username/petclinic:'${{ github.sha }}'|' k8s/base/deployment.yaml
+
+          # Apply the Kubernetes manifests
+          kubectl apply -f k8s/base/
+
+          # Wait for deployment to complete
+          kubectl rollout status deployment/petclinic -n petclinic-dev --timeout=180s
