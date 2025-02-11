@@ -26,3 +26,9 @@ jobs:
 
     - name: Test
       run: ./mvnw test
+
+    - name: Login to dockerhub
+      run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "{{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+    
+    - name: Push Image to Docker Hub
+      run: docker push ybandala/petclinic:${{ github.sha }}
