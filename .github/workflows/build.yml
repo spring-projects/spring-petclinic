@@ -28,19 +28,27 @@ jobs:
       env:
         JF_URL: ${{ secrets.JF_URL }}
         JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+        IMAGE_NAME: petclinic
+        IMAGE_TAG: ${{ github.sha }}
+        ARTIFACTORY_URL: petclinicmac.jfrog.io
     
-    - name: Build and Push Docker Image to Artifactory
+    - name: Build Docker Image
       run: |
-        # Build the image
-        docker build -t ${{ secrets.JF_URL }}/docker-local/petclinic:${{ github.sha }} .
-        docker tag ${{ secrets.JF_URL }}/docker-local/petclinic:${{ github.sha }} ${{ secrets.JF_URL }}/docker-local/petclinic:latest
+        # Build Docker image
+        docker build -t $IMAGE_NAME:$IMAGE_TAG .
+          
+        # Tag for Artifactory
+        docker tag $IMAGE_NAME:$IMAGE_TAG $ARTIFACTORY_URL/petclinic-docker/$IMAGE_NAME:$IMAGE_TAG
+        docker tag $IMAGE_NAME:$IMAGE_TAG $ARTIFACTORY_URL/petclinic-docker/$IMAGE_NAME:latest
     
-        # Login to Artifactory
-        echo "${{ secrets.ARTIFACTORY_PASSWORD }}" | docker login ${{ secrets.JF_URL }} -u ${{ secrets.ARTIFACTORY_USERNAME }} --password-stdin
+    - name: Login to Artifactory
+      run: |
+        docker login -u${{ secrets.ARTIFACTORY_USERNAME }} ${{ secrets.JF_URL }} -p${{ secrets.ARTIFACTORY_PASSWORD }}
     
+    - name: Push Image to Artifactory    
         # Push images
-        docker push ${{ secrets.JF_URL }}/docker-local/petclinic:${{ github.sha }}
-        docker push ${{ secrets.JF_URL }}/docker-local/petclinic:latest
+        docker push $ARTIFACTORY_URL/petclinic-docker/$IMAGE_NAME:$IMAGE_TAG
+        docker push $ARTIFACTORY_URL/petclinic-docker/$IMAGE_NAME:latest
     
     # - name: Build Docker Image
     #   run: | 
@@ -50,13 +58,13 @@ jobs:
     - name: Test
       run: ./mvnw test
 
-    - name: Login to dockerhub
-      run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+    # - name: Login to dockerhub
+    #   run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
     
-    - name: Push Image to Docker Hub
-      run: | 
-        docker push ybandala/petclinic:${{ github.sha }}
-        docker push ybandala/petclinic:latest
+    # - name: Push Image to Docker Hub
+    #   run: | 
+    #     docker push ybandala/petclinic:${{ github.sha }}
+    #     docker push ybandala/petclinic:latest
     
     # - name: Install kubectl
     #   run: |
@@ -74,21 +82,21 @@ jobs:
 
     #     # Wait for deployment to complete
     #     kubectl rollout status deployment/petclinic -n petclinic-dev --timeout=180s
-    - name: Deploy to Minikube
-      run: |
-        # Update image path in deployment yaml
-        sed -i '' 's|image: .*|image: ${{ secrets.ARTIFACTORY_URL }}/docker-local/petclinic:'${{ github.sha }}'|' k8s/base/deployment.yaml
+    # - name: Deploy to Minikube
+    #   run: |
+    #     # Update image path in deployment yaml
+    #     sed -i '' 's|image: .*|image: ${{ secrets.ARTIFACTORY_URL }}/docker-local/petclinic:'${{ github.sha }}'|' k8s/base/deployment.yaml
     
-        # Configure kubectl to pull from Artifactory
-        kubectl create secret docker-registry artifactory-secret \
-          --docker-server=${{ secrets.ARTIFACTORY_URL }} \
-          --docker-username=${{ secrets.ARTIFACTORY_USERNAME }} \
-          --docker-password=${{ secrets.ARTIFACTORY_PASSWORD }}
+    #     # Configure kubectl to pull from Artifactory
+    #     kubectl create secret docker-registry artifactory-secret \
+    #       --docker-server=${{ secrets.ARTIFACTORY_URL }} \
+    #       --docker-username=${{ secrets.ARTIFACTORY_USERNAME }} \
+    #       --docker-password=${{ secrets.ARTIFACTORY_PASSWORD }}
     
-        # Apply the secret to the namespace
-        kubectl patch serviceaccount default -p '{"imagePullSecrets": [{"name": "artifactory-secret"}]}'
+    #     # Apply the secret to the namespace
+    #     kubectl patch serviceaccount default -p '{"imagePullSecrets": [{"name": "artifactory-secret"}]}'
     
-        # Apply deployment
-        kubectl apply -f k8s/base/
-        kubectl rollout status deployment/petclinic --timeout=180s
+    #     # Apply deployment
+    #     kubectl apply -f k8s/base/
+    #     kubectl rollout status deployment/petclinic --timeout=180s
   
