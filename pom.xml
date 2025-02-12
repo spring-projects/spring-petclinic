@@ -5,22 +5,12 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.4.0</version>
+    <version>3.2.0</version>
     <relativePath />
   </parent>
 
 
 
-  <distributionManagement>
-    <snapshotRepository>
-      <id>nexus-snapshots</id>
-      <url>http://localhost:8081/repository/maven-snapshots/</url>
-    </snapshotRepository>
-    <repository>
-      <id>nexus-releases</id>
-      <url>http://localhost:8081/repository/maven-releases/</url>
-    </repository>
-  </distributionManagement>
   <scm>
     <connection>scm:git:git@github.com:Piasecki-grid/maven-project.git</connection>
     <developerConnection>scm:git:git@github.com:Piasecki-grid/maven-project.git</developerConnection>
@@ -57,7 +47,22 @@
     <spring-format.version>0.0.43</spring-format.version>
 
   </properties>
-
+<reporting>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <version>3.6.0</version>
+          <reportSets>
+            <reportSet>
+              <reports>
+                <report>checkstyle</report>
+              </reports>
+            </reportSet>
+          </reportSets>
+        </plugin>
+      </plugins>
+    </reporting>
   <dependencies>
     <!-- Spring and Spring Boot dependencies -->
       <dependency>
@@ -340,10 +345,6 @@
   </licenses>
 
   <repositories>
-    <repository>
-      <id>maven-group</id>
-      <url>http://localhost:8081/repository/maven-central/</url>
-    </repository>
 
     <repository>
       <snapshots>
