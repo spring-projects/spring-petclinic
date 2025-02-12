@@ -1,0 +1,96 @@
+name: Maven github actions CI/CD for merge
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+jobs:
+  checkstyle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: setup java + maven
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          cache: 'maven'
+          distribution: 'corretto'
+      
+      - name: maven install dependencies
+        run: ./mvnw install
+
+      - name: Maven run reports
+        run: ./mvnw checkstyle:checkstyle
+
+      - name: Upload artifact of reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-artifact
+          path: ./target/checkstyle*
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: setup java + maven
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          cache: 'maven'
+          distribution: 'corretto'
+      
+      - name: maven install dependencies
+        run: ./mvnw install
+
+      - name: Maven run reports
+        run: ./mvnw clean test 
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: setup java + maven
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          cache: 'maven'
+          distribution: 'corretto'
+      
+      - name: maven install dependencies
+        run: ./mvnw install
+
+      - name: Maven run reports
+        run: ./mvnw clean install -Dmaven.test.skip=true
+ 
+
+
+
+  docker:
+    if: ${{ github.event.pull_request.merged }}
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Check out code
+      uses: actions/checkout@v4
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ vars.AWS_REGION }}
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
+    - name: Build, tag, and push docker image to Amazon ECR
+      env:
+        REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        REPOSITORY: kpiasecki-spring-pet-clinic-main
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+        docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
