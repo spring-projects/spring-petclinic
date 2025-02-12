@@ -13,12 +13,9 @@ jobs:
       - name: setup java + maven
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
+          java-version: '17'
           cache: 'maven'
-          distribution: 'corretto'
-      
-      - name: maven install dependencies
-        run: ./mvnw install
+          distribution: 'adopt' 
 
       - name: Maven run reports
         run: ./mvnw checkstyle:checkstyle
@@ -39,10 +36,7 @@ jobs:
         with:
           java-version: '17'
           cache: 'maven'
-          distribution: 'corretto'
-      
-      - name: maven install dependencies
-        run: ./mvnw install
+          distribution: 'adopt' 
 
       - name: Maven run reports
         run: ./mvnw clean test 
@@ -59,8 +53,6 @@ jobs:
           cache: 'maven'
           distribution: 'corretto'
       
-      - name: maven install dependencies
-        run: ./mvnw install
 
       - name: Maven run reports
         run: ./mvnw clean install -Dmaven.test.skip=true
