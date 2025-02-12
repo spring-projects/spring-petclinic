@@ -20,11 +20,32 @@ jobs:
     
     - name: Build with Maven
       run: ./mvnw package -B
+
+    - name: Setup JFrog CLI
+      uses: jfrog/setup-jfrog-cli@v3
+      with:
+        version: latest
+      env:
+        JF_URL: ${{ secrets.JF_URL }}
+        JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
     
-    - name: Build Docker Image
-      run: | 
-        docker build -t ybandala/petclinic:${{ github.sha }} .
-        docker tag ybandala/petclinic:${{ github.sha }} ybandala/petclinic:latest
+    - name: Build and Push Docker Image to Artifactory
+      run: |
+        # Build the image
+        docker build -t ${{ secrets.JF_URL }}/docker-local/petclinic:${{ github.sha }} .
+        docker tag ${{ secrets.JF_URL }}/docker-local/petclinic:${{ github.sha }} ${{ secrets.JF_URL }}/docker-local/petclinic:latest
+    
+        # Login to Artifactory
+        echo "${{ secrets.ARTIFACTORY_PASSWORD }}" | docker login ${{ secrets.JF_URL }} -u ${{ secrets.ARTIFACTORY_USERNAME }} --password-stdin
+    
+        # Push images
+        docker push ${{ secrets.JF_URL }}/docker-local/petclinic:${{ github.sha }}
+        docker push ${{ secrets.JF_URL }}/docker-local/petclinic:latest
+    
+    # - name: Build Docker Image
+    #   run: | 
+    #     docker build -t ybandala/petclinic:${{ github.sha }} .
+    #     docker tag ybandala/petclinic:${{ github.sha }} ybandala/petclinic:latest
 
     - name: Test
       run: ./mvnw test
@@ -37,19 +58,37 @@ jobs:
         docker push ybandala/petclinic:${{ github.sha }}
         docker push ybandala/petclinic:latest
     
-    - name: Install kubectl
-      run: |
-        brew install kubectl
+    # - name: Install kubectl
+    #   run: |
+    #     brew install kubectl
 
-    - name: Set Minikube context
-      run: kubectl config use-context minikube
+    # - name: Set Minikube context
+    #   run: kubectl config use-context minikube
 
+    # - name: Deploy to Minikube
+    #   run: |
+    #     sed -i '' 's|image: .*|image: your-dockerhub-username/petclinic:'${{ github.sha }}'|' k8s/base/deployment.yaml
+
+    #     # Apply the Kubernetes manifests
+    #     kubectl apply -f k8s/base/
+
+    #     # Wait for deployment to complete
+    #     kubectl rollout status deployment/petclinic -n petclinic-dev --timeout=180s
     - name: Deploy to Minikube
       run: |
-        sed -i '' 's|image: .*|image: your-dockerhub-username/petclinic:'${{ github.sha }}'|' k8s/base/deployment.yaml
-
-        # Apply the Kubernetes manifests
+        # Update image path in deployment yaml
+        sed -i '' 's|image: .*|image: ${{ secrets.ARTIFACTORY_URL }}/docker-local/petclinic:'${{ github.sha }}'|' k8s/base/deployment.yaml
+    
+        # Configure kubectl to pull from Artifactory
+        kubectl create secret docker-registry artifactory-secret \
+          --docker-server=${{ secrets.ARTIFACTORY_URL }} \
+          --docker-username=${{ secrets.ARTIFACTORY_USERNAME }} \
+          --docker-password=${{ secrets.ARTIFACTORY_PASSWORD }}
+    
+        # Apply the secret to the namespace
+        kubectl patch serviceaccount default -p '{"imagePullSecrets": [{"name": "artifactory-secret"}]}'
+    
+        # Apply deployment
         kubectl apply -f k8s/base/
-
-        # Wait for deployment to complete
-        kubectl rollout status deployment/petclinic -n petclinic-dev --timeout=180s
+        kubectl rollout status deployment/petclinic --timeout=180s
+  
