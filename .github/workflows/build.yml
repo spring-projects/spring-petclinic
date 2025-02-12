@@ -43,8 +43,8 @@ jobs:
         docker build -t "${IMAGE_NAME}:${IMAGE_TAG}" .
           
         # Tag for Artifactory
-        docker tag "${IMAGE_NAME}:${IMAGE_TAG}" "${ARTIFACTORY_URL}/petclinic-docker/${IMAGE_NAME}:${IMAGE_TAG}"
-        docker tag "${IMAGE_NAME}:${IMAGE_TAG}" "${ARTIFACTORY_URL}/petclinic-docker/${IMAGE_NAME}:latest"
+        docker tag "${IMAGE_NAME}:${IMAGE_TAG}" "${ARTIFACTORY_URL}/petclinic-docker-remote/${IMAGE_NAME}:${IMAGE_TAG}"
+        docker tag "${IMAGE_NAME}:${IMAGE_TAG}" "${ARTIFACTORY_URL}/petclinic-docker-remote/${IMAGE_NAME}:latest"
     
     - name: Login to Artifactory
       run: |
@@ -52,8 +52,8 @@ jobs:
     
     - name: Push Image to Artifactory
       run: |
-        docker push "${ARTIFACTORY_URL}/petclinic-docker/${IMAGE_NAME}:${IMAGE_TAG}"
-        docker push "${ARTIFACTORY_URL}/petclinic-docker/${IMAGE_NAME}:latest"
+        docker push "${ARTIFACTORY_URL}/petclinic-docker-remote/${IMAGE_NAME}:${IMAGE_TAG}"
+        docker push "${ARTIFACTORY_URL}/petclinic-docker-remote/${IMAGE_NAME}:latest"
     
     # - name: Build Docker Image
     #   run: | 
