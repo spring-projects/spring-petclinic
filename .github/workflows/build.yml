@@ -45,8 +45,8 @@ jobs:
       run: |
         docker login -u${{ secrets.ARTIFACTORY_USERNAME }} ${{ secrets.JF_URL }} -p${{ secrets.ARTIFACTORY_PASSWORD }}
     
-    - name: Push Image to Artifactory    
-        # Push images
+    - name: Push Image to Artifactory
+      run: |
         docker push $ARTIFACTORY_URL/petclinic-docker/$IMAGE_NAME:$IMAGE_TAG
         docker push $ARTIFACTORY_URL/petclinic-docker/$IMAGE_NAME:latest
     
