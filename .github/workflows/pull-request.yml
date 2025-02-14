@@ -28,7 +28,7 @@ jobs:
   
   test:
 
-    runs-on: ubuntu-latest
+    runs-on: macos-13
     container:
       image: gradle:8.12-jdk17-focal
 
@@ -41,7 +41,7 @@ jobs:
         name: Run tests w/ Gradle
         run: ./gradlew clean test
 
-        
+
   build:
 
     runs-on: ubuntu-latest
