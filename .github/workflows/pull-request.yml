@@ -29,8 +29,6 @@ jobs:
   test:
 
     runs-on: macos-13
-    container:
-      image: gradle:8.12-jdk17-focal
 
     needs: [checkstyle]
     steps:
