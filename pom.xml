@@ -5,13 +5,35 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
+
     <version>3.4.2</version>
     <relativePath></relativePath>
   </parent>
 
+
+  <scm>
+    <url>scm:git:git@github.com:obrenovicm/spring-petclinic.git</url>
+    <connection>scm:git:git@github.com:obrenovicm/spring-petclinic.git</connection>
+    <developerConnection>scm:git:git@github.com:obrenovicm/spring-petclinic.git</developerConnection>
+    <tag>spring-petclinic-4.0.2</tag>
+  </scm>
+
+  <distributionManagement>
+    <repository>
+        <id>nexus-releases</id>
+        <url>http://localhost:8081/repository/maven-releases/</url>
+    </repository>
+    <snapshotRepository>
+        <id>nexus-snapshots</id>
+        <url>http://localhost:8081/repository/maven-snapshots/</url>
+    </snapshotRepository>
+</distributionManagement>
+
+
+
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
-  <version>3.4.0-SNAPSHOT</version>
+  <version>4.0.3-SNAPSHOT</version>
 
   <name>petclinic</name>
 
@@ -23,7 +45,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <!-- Important for reproducible builds. Update using e.g. ./mvnw versions:set
         -DnewVersion=... -->
-    <project.build.outputTimestamp>2024-11-28T14:37:52Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2025-01-28T10:50:25Z</project.build.outputTimestamp>
 
     <!-- Web dependencies -->
     <webjars-locator.version>1.0.1</webjars-locator.version>
@@ -279,8 +301,22 @@
           <failOnUnableToExtractRepoInfo>false</failOnUnableToExtractRepoInfo>
         </configuration>
       </plugin>
-      <!-- Spring Boot Actuator displays sbom-related information if a CycloneDX SBOM file is
-      present at the classpath -->
+
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nxrm3-maven-plugin</artifactId>
+        <version>1.0.3</version>
+        <extensions>true</extensions>
+        <configuration>
+          <nexusUrl>http://localhost:8081</nexusUrl>
+          
+          <serverId>nexus-snapshots</serverId>
+          
+          <repository>maven-snapshots</repository>
+          
+          <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
+        </configuration>
+    </plugin>
       <plugin>
         <?m2e ignore?>
         <groupId>org.cyclonedx</groupId>
@@ -414,7 +450,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore></ignore>
+                        <ignore />
                       </action>
                     </pluginExecution>
                     <pluginExecution>
@@ -427,7 +463,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore></ignore>
+                        <ignore />
                       </action>
                     </pluginExecution>
                     <pluginExecution>
@@ -440,7 +476,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore></ignore>
+                        <ignore />
                       </action>
                     </pluginExecution>
                   </pluginExecutions>
