@@ -1,10 +1,11 @@
-name: Create and push docker image to Docker Hub.
+name: Create and push docker image to Docker Hub on "push" event.
 
 on:
   push:
     branches: [ main ]
-
+    
 jobs:
+
   docker:
         
     runs-on: ubuntu-latest
