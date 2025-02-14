@@ -24,7 +24,7 @@ jobs:
         uses: actions/upload-artifact@v4.6.0
         with:
           name: checkstyle-report
-          path: build/reports/checkstyle/main/checkstyle.xml
+          path: build/reports/checkstyle/main.xml
   
   test:
 
