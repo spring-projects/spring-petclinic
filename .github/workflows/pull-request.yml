@@ -30,7 +30,7 @@ jobs:
 
     runs-on: ubuntu-latest
     container:
-      image: maven:3.8.5-openjdk-17
+      image: gradle:8.12-jdk17-focal
     steps:
       -
         name: Checkout code
@@ -57,7 +57,7 @@ jobs:
 
     runs-on: ubuntu-latest
     
-    needs: [build]
+    needs: [checkstyle, test, build]
     steps:
         - 
           name: Checkout the code from main branch
