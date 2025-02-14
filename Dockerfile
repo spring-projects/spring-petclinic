@@ -8,6 +8,6 @@ RUN gradle clean build
 FROM eclipse-temurin:17.0.14_7-jre-ubi9-minimal
 
 RUN mkdir /app
-COPY --from=build /project/build/libs/spring-petclinic-0.1.3-SNAPSHOT.jar /app/java-application.jar
+COPY --from=build /project/build/libs/spring-petclinic*.jar /app/java-application.jar
 WORKDIR /app
 CMD [ "java", "-jar", "java-application.jar"]
