@@ -92,32 +92,26 @@ class OwnerController {
 	@GetMapping("/owners")
 	public String processFindForm(@RequestParam(defaultValue = "1") int page, Owner owner, BindingResult result,
 			Model model) {
-		try {
-			// allow parameterless GET request for /owners to return all records
-			if (owner.getLastName() == null) {
-				owner.setLastName(""); // empty string signifies broadest possible search
-			}
-
-			// find owners by last name
-			Page<Owner> ownersResults = findPaginatedForOwnersLastName(page, owner.getLastName());
-			if (ownersResults.isEmpty()) {
-				// no owners found
-				result.rejectValue("lastName", "notFound", "not found");
-				return "owners/findOwners";
-			}
-
-			if (ownersResults.getTotalElements() == 1) {
-				// 1 owner found
-				owner = ownersResults.iterator().next();
-				return "redirect:/owners/" + owner.getId();
-			}
-			// multiple owners found
-			return addPaginationModel(page, model, ownersResults);
+		// allow parameterless GET request for /owners to return all records
+		if (owner.getLastName() == null) {
+			owner.setLastName(""); // empty string signifies broadest possible search
 		}
-		catch (Exception e) {
-			e.printStackTrace();// print exception to console or log in file
-			return "error"; // redirect to generic error page
+
+		// find owners by last name
+		Page<Owner> ownersResults = findPaginatedForOwnersLastName(page, owner.getLastName());
+		if (ownersResults.isEmpty()) {
+			// no owners found
+			result.rejectValue("lastName", "notFound", "not found");
+			return "owners/findOwners";
 		}
+
+		if (ownersResults.getTotalElements() == 1) {
+			// 1 owner found
+			owner = ownersResults.iterator().next();
+			return "redirect:/owners/" + owner.getId();
+		}
+		// multiple owners found
+		return addPaginationModel(page, model, ownersResults);
 
 	}
 
