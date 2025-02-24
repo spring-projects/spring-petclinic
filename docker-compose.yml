@@ -1,4 +1,10 @@
 services:
+  pet-clinic:
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+
   mysql:
     image: mysql:9.1
     ports:
