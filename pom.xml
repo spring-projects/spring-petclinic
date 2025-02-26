@@ -24,12 +24,14 @@
 
   <distributionManagement>
     <repository>
-      <id>release-repo</id>
-      <url>file://${project.build.directory}/deploy/releases</url>
+      <id>nexus</id>
+      <name>releases</name>
+      <url>http://localhost:8081/repository/maven-releases/</url>
     </repository>
     <snapshotRepository>
-      <id>snapshot-repo</id>
-      <url>file://${project.build.directory}/deploy/snapshots</url>
+      <id>nexus</id>
+      <name>snapshots</name>
+      <url>http://localhost:8081/repository/maven-snapshots/</url>
     </snapshotRepository>
   </distributionManagement>
 
