@@ -4,12 +4,28 @@ pipeline {
   }
 
   stages {
-    stage('Build') {
+    stage('Checkstyle') {
       steps {
-        echo 'Bulding'
         checkout scm
         sh 'mvn checkstyle:checkstyle'
       }
+      post {
+        always {
+          archiveArtifacts artifacts: 'target/checkstyle-result.xml', allowEmptyArchive: true
+        }
+      }
     }
+    
+    stage('Build') {
+      steps {
+        sh 'mvn clean package -DskipTests'
+      }
+      post {
+        always {
+          archiveArtifacts artifacts: 'target/*.jar', allowEmptyArchive: true
+        }
+      }
+    }
+    
   }
 }
