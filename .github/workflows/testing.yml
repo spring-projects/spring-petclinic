@@ -1,0 +1,26 @@
+name: Testing GraalVM
+
+on:
+  pull_request
+
+jobs:
+  testing:
+    runs-on: ubuntu-latest
+    name: Testing
+    steps:
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Set up JDK 21 GraalVM
+        uses: actions/setup-graalvm@v1.2.3
+        with:
+          java-version: 21
+          distribution: 'graalvm-community'
+
+      - name: Testing
+        run: |
+          echo "Hello"
+
