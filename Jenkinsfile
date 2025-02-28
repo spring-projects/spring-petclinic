@@ -19,13 +19,11 @@ pipeline {
       steps {
         sh 'mvn clean package -DskipTests -Dcheckstyle.skip=true'
       }
-/*
       post {
         always {
           archiveArtifacts artifacts: 'target/*.jar', allowEmptyArchive: true
         }
       }
-*/
     }
   }
 }
