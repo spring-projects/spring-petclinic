@@ -38,9 +38,13 @@ pipeline {
         }
       }
       steps {
+        checkout scm
+
+        def docker_image=docker.build("mr:8084/spring-petclinic:${env.GIT_COMMIT}")
         sh 'docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS" mr:8084'
-        sh 'docker build -t mr:8084/spring-petclinic:${GIT_COMMIT} .'
-        sh 'docker push mr:8084/spring-petclinic:${GIT_COMMIT}'
+        
+        docker_image.push('${env.GIT_COMMIT})
+        sh 'docker push mr:8084/spring-petclinic:${env.GIT_COMMIT}'
       }
     }
   }
