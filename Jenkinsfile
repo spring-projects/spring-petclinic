@@ -38,7 +38,6 @@ pipeline {
         }
       }
       steps {
-        checkout scm
         script {
           def docker_image=docker.build("mr:8084/spring-petclinic:$GIT_COMMIT")
           sh 'docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS" mr:8084'
