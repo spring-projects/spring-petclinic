@@ -1,10 +1,11 @@
 pipeline {
-  agent {
-    docker { image 'maven:3.8.5-openjdk-17' }
-  }
+  agent none
 
   stages {
     stage('Checkstyle') {
+      agent {
+        docker { image 'maven:3.8.5-openjdk-17' }
+       }
       steps {
         checkout scm
         sh 'mvn checkstyle:checkstyle'
@@ -16,11 +17,17 @@ pipeline {
       }
     }
     stage('Test') {
+      agent {
+        docker { image 'maven:3.8.5-openjdk-17' }
+       }
       steps {
         sh 'mvn test -Dcheckstyle.skip=true'
       }
     }
     stage('Build') {
+      agent {
+        docker { image 'maven:3.8.5-openjdk-17' }
+      }
       steps {
         sh 'mvn clean package -DskipTests -Dcheckstyle.skip=true'
       }
