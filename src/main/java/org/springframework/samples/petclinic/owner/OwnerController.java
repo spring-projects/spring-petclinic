@@ -18,6 +18,8 @@ package org.springframework.samples.petclinic.owner;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -50,6 +52,8 @@ class OwnerController {
 
 	private final OwnerRepository owners;
 
+	private static final Logger logger = LoggerFactory.getLogger(OwnerController.class);
+
 	public OwnerController(OwnerRepository owners) {
 		this.owners = owners;
 	}
@@ -81,6 +85,8 @@ class OwnerController {
 
 		this.owners.save(owner);
 		redirectAttributes.addFlashAttribute("message", "New Owner Created");
+		logger.info("New owner added: {} {}", owner.getFirstName(), owner.getLastName());
+
 		return "redirect:/owners/" + owner.getId();
 	}
 
@@ -96,12 +102,14 @@ class OwnerController {
 		if (owner.getLastName() == null) {
 			owner.setLastName(""); // empty string signifies broadest possible search
 		}
+		logger.info("Searching for owners with last name: {}", owner.getLastName());
 
 		// find owners by last name
 		Page<Owner> ownersResults = findPaginatedForOwnersLastName(page, owner.getLastName());
 		if (ownersResults.isEmpty()) {
 			// no owners found
 			result.rejectValue("lastName", "notFound", "not found");
+
 			return "owners/findOwners";
 		}
 
