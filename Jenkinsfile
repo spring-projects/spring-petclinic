@@ -33,11 +33,12 @@ pipeline {
     stage('Build Image') {
       agent {
         image 'docker:20.10.16'
+        args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
       }
       steps {
         sh 'docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS" mr:8084'
-        sh 'docker build -t mr:8084/spring-petclinic:$GITCOMMIT .'
-        sh 'docker push mr:8084/spring-petclinic:$GITCOMMIT'
+        sh 'docker build -t mr:8084/spring-petclinic:${GIT_COMMIT} .'
+        sh 'docker push mr:8084/spring-petclinic:${GIT_COMMIT}'
       }
     }
   }
