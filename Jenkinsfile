@@ -15,11 +15,11 @@ pipeline {
         }
       }
     }
-/*    
     stage('Build') {
       steps {
         sh 'mvn clean package -DskipTests'
       }
+/*
       post {
         always {
           archiveArtifacts artifacts: 'target/*.jar', allowEmptyArchive: true
