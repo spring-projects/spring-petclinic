@@ -54,5 +54,22 @@ pipeline {
         }
       }
     }
+    stage('Build Image Main') {
+      agent {
+        docker {
+          image 'docker:20.10.16'
+          args '--privileged -u root -v /var/run/docker.sock:/var/run/docker.sock'
+        }
+      }
+      steps {
+        script {
+          def docker_image=docker.build("main:8084/spring-petclinic:$GIT_COMMIT")
+          sh 'docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS" main:8084'
+          docker.withRegistry('http://main:8084') {
+            docker_image.push()
+          }
+        }
+      }
+    }
   }
 }
