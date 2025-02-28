@@ -63,9 +63,9 @@ pipeline {
       }
       steps {
         script {
-          def docker_image=docker.build("main:8085/spring-petclinic:$GIT_COMMIT")
-          sh 'docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS" main:8085'
-          docker.withRegistry('http://main:8085') {
+          def docker_image=docker.build("main:8083/spring-petclinic:$GIT_COMMIT")
+          sh 'docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS" main:8083'
+          docker.withRegistry('http://main:8083') {
             docker_image.push()
           }
         }
