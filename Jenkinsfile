@@ -32,8 +32,10 @@ pipeline {
     }
     stage('Build Image') {
       agent {
-        image 'docker:20.10.16'
-        args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
+        docker {
+          image 'docker:20.10.16'
+          args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
+        }
       }
       steps {
         sh 'docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS" mr:8084'
