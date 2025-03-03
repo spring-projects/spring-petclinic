@@ -55,6 +55,9 @@ pipeline {
       }
     }
     stage('Build Image Main') {
+      when {
+        branch 'main'
+      }
       agent {
         docker {
           image 'docker:20.10.16'
