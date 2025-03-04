@@ -3,6 +3,9 @@ pipeline {
 
   stages {
     stage('Checkstyle') {
+      when {
+        changeRequest()
+      } 
       agent {
         docker { image 'maven:3.8.5-openjdk-17' }
        }
