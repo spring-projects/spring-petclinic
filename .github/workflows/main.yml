@@ -17,7 +17,7 @@ jobs:
       - name: Run Checkstyle
         run: mvn checkstyle:checkstyle
       - name: Upload Checkstyle Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: checkstyle-result
           path: target/checkstyle-result.xml
@@ -44,7 +44,7 @@ jobs:
       - name: Build Package
         run: mvn clean package -DskipTests
       - name: Upload JAR Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: jar-files
           path: target/*.jar
