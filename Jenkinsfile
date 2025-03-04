@@ -20,6 +20,10 @@ pipeline {
       }
     }
     stage('Test') {
+      when {
+        changeRequest()
+      } 
+ 
       agent {
         docker { image 'maven:3.8.5-openjdk-17' }
        }
@@ -28,6 +32,10 @@ pipeline {
       }
     }
     stage('Build') {
+      when {
+        changeRequest()
+      } 
+ 
       agent {
         docker { image 'maven:3.8.5-openjdk-17' }
       }
@@ -41,6 +49,10 @@ pipeline {
       }
     }
     stage('Build Image') {
+      when {
+        changeRequest()
+      } 
+ 
       agent {
         docker {
           image 'docker:20.10.16'
@@ -59,8 +71,9 @@ pipeline {
     }
     stage('Build Image Main') {
       when {
-        branch 'main'
-      }
+        not { changeRequest() }
+      } 
+ 
       agent {
         docker {
           image 'docker:20.10.16'
