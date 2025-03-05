@@ -58,7 +58,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: Login to Registry (mr)
-        run: echo ${{ secrets.REGISTRY_PASS }} | docker login mr:8084 -u ${{ secrets.REGISTRY_USER }} --password-stdin
+        run: docker login mr:8084 -u ${{ secrets.REGISTRY_USER }} -p ${{ secrets.REGISTRY_PASS }}
       - name: Extract Short SHA
         id: vars
         run: echo "::set-output name=short_sha::$(echo $GITHUB_SHA | cut -c1-7)"
@@ -76,7 +76,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: Login to Registry (main)
-        run: echo ${{ secrets.REGISTRY_PASS }} | docker login main:8083 -u ${{ secrets.REGISTRY_USER }} --password-stdin
+        run: docker login main:8083 -u ${{ secrets.REGISTRY_USER }} -p ${{ secrets.REGISTRY_PASS }}
       - name: Extract Short SHA
         id: vars
         run: echo "::set-output name=short_sha::$(echo $GITHUB_SHA | cut -c1-7)"
