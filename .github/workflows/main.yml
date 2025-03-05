@@ -68,7 +68,7 @@ jobs:
         run: docker push mr:8084/spring-petclinic:${{ steps.vars.outputs.short_sha }}
 
   build_image_main:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/master'
     runs-on: self-hosted
     needs: build
     steps:
