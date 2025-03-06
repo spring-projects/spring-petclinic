@@ -5,7 +5,6 @@ pipeline {
         // Define environment variables
         DOCKER_REGISTRY = "docker.io"
         DOCKER_IMAGE = "mmarcetic/main"
-        DOCKER_CREDENTIALS = "Docker_hub" 
     }
     
     stages {
@@ -20,7 +19,8 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image
-                    sh 'docker build -t ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:latest .'
+                    def gitCommit = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
+                    sh "docker build -t ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${gitCommit} ."
                 }
             }
         }
@@ -28,10 +28,10 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                //Login to the Docker repository 
-                    docker.withRegistry('https://${DOCKER_REGISTRY}', "${DOCKER_CREDENTIALS}") {
-                        // Push the Docker image to the registry
-                        sh 'docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:latest'
+                    def gitCommit = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
+                    withCredentials([usernamePassword(credentialsId: "docker-login", usernameVariable: "DOCKER_USER", passwordVariable: "DOCKER_PASSWORD")]) {
+                        sh "docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}"
+                        sh "docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${gitCommit}"
                     }
                 }
             }
@@ -39,10 +39,6 @@ pipeline {
     }
 
     post {
-        always {
-            // Clean up Docker images after the job is done
-            sh 'docker rmi ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:latest || true'
-        }
         success {
             echo 'Docker image built and pushed successfully.'
         }
