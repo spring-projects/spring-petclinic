@@ -6,7 +6,11 @@ plugins {
   id 'org.cyclonedx.bom' version '1.10.0'
   id 'io.spring.javaformat' version '0.0.43'
   id "io.spring.nohttp" version "0.0.11"
+	id("pl.allegro.tech.build.axion-release") version "1.18.7"
+	id('maven-publish')
 }
+
+version = scmVersion.version
 
 apply plugin: 'java'
 apply plugin: 'checkstyle'
@@ -17,13 +21,37 @@ gradle.startParameter.excludedTaskNames += [ "checkFormatAot", "checkFormatAotTe
 group = 'org.springframework.samples'
 version = '3.4.0'
 
+def nexusUsername = project.hasProperty('nexusUsername') ? project.nexusUsername : System.getenv('NEXUS_USERNAME')
+def nexusPassword = project.hasProperty('nexusPassword') ? project.nexusPassword : System.getenv('NEXUS_PASSWORD')
 java {
   sourceCompatibility = JavaVersion.VERSION_17
 }
 
 repositories {
-  mavenCentral()
+	mavenCentral()
 }
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java 
+            artifact file("build/libs/spring-application-${version}.jar")  
+        }
+    }
+
+   repositories {
+        maven { 
+            name = "maven-releases"
+						url 'http://localhost:8081/repository/maven-releases/' 
+            allowInsecureProtocol = true
+            credentials {
+              username nexusUsername
+              password nexusPassword
+            }
+        }
+    }
+}
+
 
 ext.checkstyleVersion = "10.20.1"
 ext.springJavaformatCheckstyleVersion = "0.0.43"
@@ -58,6 +86,7 @@ dependencies {
   testImplementation 'org.testcontainers:mysql'
   checkstyle "io.spring.javaformat:spring-javaformat-checkstyle:${springJavaformatCheckstyleVersion}"
   checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
+  testImplementation 'junit:junit:4.13'
 }
 
 tasks.named('test') {
@@ -79,6 +108,39 @@ tasks.named("formatMain").configure { dependsOn("checkstyleNohttp") }
 
 tasks.named("formatTest").configure { dependsOn("checkstyleTest") }
 tasks.named("formatTest").configure { dependsOn("checkstyleNohttp") }
+
+
+task openTestResults(dependsOn: ['build', 'test']) {
+    doLast {
+        def testResultsFile = file('build/reports/tests/test/index.html') 
+       
+        if (testResultsFile.exists()) {
+            println "Opening test results in the browser..."
+            // Open the test results file in the default browser (cross-platform)
+            if (System.getProperty('os.name').toLowerCase().contains('win')) {
+                // On Windows, use "start"
+                "cmd /c start ${testResultsFile}".execute()
+            } else if (System.getProperty('os.name').toLowerCase().contains('mac')) {
+                // On macOS, use "open"
+                "open ${testResultsFile}".execute()
+            } else {
+                // On Linux, use "xdg-open"
+                "xdg-open ${testResultsFile}".execute()
+            }
+        } else {
+            throw new GradleException("Test results file not found: ${testResultsFile}")
+        }
+    }
+}
+
+task testProxy {
+    doLast {
+        def url = new URL('http://localhost:8081/repository/maven-central')
+        def connection = url.openConnection()
+        connection.connect()
+        println "Proxy connection successful to Maven Central!"
+    }
+}
 
 checkstyleAot.enabled = false
 checkstyleAotTest.enabled = false
