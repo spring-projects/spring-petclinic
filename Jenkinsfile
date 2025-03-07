@@ -40,7 +40,7 @@ pipeline {
                 script {
                     // Checkstyle with Gradle
                     sh './gradlew checkstyleMain'
-                    archiveArtifacts artifacts: 'build/reports/checkstyle/checkstyle.xml'
+                    archiveArtifacts artifacts: 'build/reports/checkstyle/*.xml', allowEmptyArchive: true
                 }
             }
         }
@@ -51,7 +51,7 @@ pipeline {
             }
             steps {
                 // Test using Gradle
-                sh './gradlew test'
+                sh './gradlew clean test'
             }
         }
 
@@ -68,9 +68,6 @@ pipeline {
         }
 
         stage('Build Docker Image') {
-            when {
-                    changeRequest()
-            }
             steps {
                 script {
                     // Build the Docker image
