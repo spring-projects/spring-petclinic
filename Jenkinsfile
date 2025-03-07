@@ -4,7 +4,9 @@ pipeline {
     environment {
         // Define environment variables
         DOCKER_REGISTRY = "docker.io"
-        DOCKER_IMAGE = "mmarcetic/main"
+        DOCKER_IMAGE_MAIN = 'mmarcetic/main'
+        DOCKER_IMAGE_MR = 'mmarcetic/mr'
+        GIT_COMMIT = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
     }
     
     stages {
@@ -15,23 +17,91 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Set Docker Image') {
             steps {
                 script {
-                    // Build the Docker image
-                    def gitCommit = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
-                    sh "docker build -t ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${gitCommit} ."
+                    // Set Docker image based on the branch name
+                    if (env.BRANCH_NAME == 'main') {
+                        env.DOCKER_IMAGE = DOCKER_IMAGE_MAIN
+                    } else {
+                        env.DOCKER_IMAGE = DOCKER_IMAGE_MR
+                    }
+
+                    echo "Using Docker image: ${env.DOCKER_IMAGE}"
                 }
             }
         }
 
-        stage('Push Docker Image') {
+        stage('Checkstyle Report') {
+            when {
+                    changeRequest()
+                }
             steps {
                 script {
-                    def gitCommit = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
+                    // Checkstyle with Gradle
+                    sh './gradlew checkstyleMain'
+                    archiveArtifacts artifacts: 'build/reports/checkstyle/checkstyle.xml'
+                }
+            }
+        }
+
+        stage('Test') {
+            when {
+                changeRequest()
+            }
+            steps {
+                // Test using Gradle
+                sh './gradlew test'
+            }
+        }
+
+        stage('Build Without Tests') {
+            when {
+                changeRequest()
+            }
+            steps {
+                script {
+                    // Build without tests using Gradle
+                    sh './gradlew build -x test'
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            when {
+                    changeRequest()
+            }
+            steps {
+                script {
+                    // Build the Docker image
+                    sh "docker build -t ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${GIT_COMMIT} ."
+                }
+            }
+        }
+
+        stage('Push Docker Image for Change Request') {
+            when {
+                    changeRequest()
+            }
+            steps {
+                script {
                     withCredentials([usernamePassword(credentialsId: "docker-login", usernameVariable: "DOCKER_USER", passwordVariable: "DOCKER_PASSWORD")]) {
                         sh "docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}"
-                        sh "docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${gitCommit}"
+                        sh "docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${GIT_COMMIT}"
+                    }
+                }
+            }
+        }
+
+        stage('Push Docker Image for Main') {
+            when {
+                    branch "main"
+            }
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: "docker-login", usernameVariable: "DOCKER_USER", passwordVariable: "DOCKER_PASSWORD")]) {
+                        sh "docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}"
+                        sh "docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${GIT_COMMIT}"
                     }
                 }
             }
