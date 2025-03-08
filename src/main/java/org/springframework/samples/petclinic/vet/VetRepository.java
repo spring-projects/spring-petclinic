@@ -23,6 +23,7 @@ import org.springframework.data.repository.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * Repository class for <code>Vet</code> domain objects All method names are compliant
@@ -36,6 +37,13 @@ import java.util.Collection;
  * @author Michael Isvy
  */
 public interface VetRepository extends Repository<Vet, Integer> {
+
+	/**
+	 * Retrieve a <code>Vet</code> from the data store.
+	 * @return a <code>Optional</code> of <code>Vet</code>
+	 */
+	@Transactional(readOnly = true)
+	Optional<Vet> findById(Integer id) throws DataAccessException;
 
 	/**
 	 * Retrieve all <code>Vet</code>s from the data store.
