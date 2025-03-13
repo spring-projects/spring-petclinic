@@ -3,8 +3,6 @@
   <modelVersion>4.0.0</modelVersion>
 
 
-
-
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
@@ -12,13 +10,17 @@
     <relativePath></relativePath>
   </parent>
 
+
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
   <version>3.4.0-SNAPSHOT</version>
 
+
   <name>petclinic</name>
 
+
   <properties>
+
 
     <!-- Generic properties -->
     <java.version>17</java.version>
