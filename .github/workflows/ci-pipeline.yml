@@ -1,0 +1,48 @@
+name: CI Pipeline with JFrog Artifactory
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: maven-${{ runner.os }}-${{ hashFiles('**/pom.xml') }}
+          restore-keys: maven-${{ runner.os }}-
+
+      - name: Compile the code
+        run: mvn clean compile
+
+      - name: Run tests
+        run: mvn test
+
+      - name: Build Docker image
+        run: |
+          docker build -t trialt0zppb.jfrog.io/onboarding-docker-local/spring-petclinic:latest .
+
+      - name: Log in to JFrog Artifactory using Identity Token
+        run: echo ${{ secrets.ARTIFACTORY_IDENTITY_TOKEN }} | docker login trialt0zppb.jfrog.io -u ${{ secrets.ARTIFACTORY_USERNAME }} --password-stdin
+
+      - name: Push Docker image to JFrog Artifactory
+        run: |
+          docker push trialt0zppb.jfrog.io/onboarding-docker-local/spring-petclinic:latest
+
