@@ -22,6 +22,27 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Configure Maven to use JFrog Artifactory
+        run: |
+          mkdir -p ~/.m2
+          echo '<settings>
+            <mirrors>
+              <mirror>
+                <id>jfrog-artifactory</id>
+                <mirrorOf>central</mirrorOf>
+                <url>https://trialt0zppb.jfrog.io/artifactory/maven-maven-remote/</url>
+                <repositoryManager>true</repositoryManager>
+              </mirror>
+            </mirrors>
+            <servers>
+              <server>
+                <id>jfrog-artifactory</id>
+                <username>${{ secrets.ARTIFACTORY_USERNAME }}</username>
+                <password>${{ secrets.ARTIFACTORY_IDENTITY_TOKEN }}</password>
+              </server>
+            </servers>
+          </settings>' > ~/.m2/settings.xml
+
       - name: Cache Maven dependencies
         uses: actions/cache@v3
         with:
@@ -46,6 +67,5 @@ jobs:
         run: echo ${{ secrets.ARTIFACTORY_IDENTITY_TOKEN }} | docker login trialt0zppb.jfrog.io -u ${{ secrets.ARTIFACTORY_USERNAME }} --password-stdin
 
       - name: Push Docker image to JFrog Artifactory
-        run: |
-          docker push trialt0zppb.jfrog.io/onboarding-docker-local/spring-petclinic:latest
+        run: docker push trialt0zppb.jfrog.io/onboarding-docker-local/spring-petclinic:latest
 
