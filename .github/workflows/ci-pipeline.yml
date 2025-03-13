@@ -43,13 +43,6 @@ jobs:
             </servers>
           </settings>' > ~/.m2/settings.xml
 
-      - name: Cache Maven dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2
-          key: maven-${{ runner.os }}-${{ hashFiles('**/pom.xml') }}
-          restore-keys: maven-${{ runner.os }}-
-
       - name: Compile the code
         run: mvn clean compile
 
