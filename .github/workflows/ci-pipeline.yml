@@ -35,6 +35,9 @@ jobs:
       - name: Run tests
         run: mvn test
 
+      - name: Package the application with Maven
+        run: mvn package -DskipTests
+
       - name: Build Docker image
         run: |
           docker build -t trialt0zppb.jfrog.io/onboarding-docker-local/spring-petclinic:latest .
