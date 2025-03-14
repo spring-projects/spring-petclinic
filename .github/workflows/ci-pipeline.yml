@@ -2,33 +2,26 @@ name: Build and Publish with JFrog Artifactory
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [main]
   pull_request:
-    branches: [ "main" ]
+    branches: [main]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      ################################################################
-      # 1) Check out your code
-      ################################################################
       - name: Checkout
         uses: actions/checkout@v3
 
-      ################################################################
-      # 2) Set up Java
-      ################################################################
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
           java-version: '17'
+          distribution: 'temurin'
 
-      ################################################################
-      # 3) Install & configure JFrog CLI
-      ################################################################
+      - name: Set build-info extractor version
+        run: echo "JFROG_CLI_BUILD_INFO_EXTRACTOR_VERSION=2.38.6" >> $GITHUB_ENV
+
       - name: Install JFrog CLI
         run: |
           curl -fL https://getcli.jfrog.io | bash
@@ -43,11 +36,7 @@ jobs:
             --password="${{ secrets.ARTIFACTORY_IDENTITY_TOKEN }}" \
             --interactive=false
 
-      ################################################################
-      # 4) Configure Maven to Use Artifactory
-      #    (jfrog rt mvnc sets up the Maven resolver & deploy repos)
-      ################################################################
-      - name: Configure JFrog CLI for Maven
+      - name: Configure Maven for Artifactory
         run: |
           jfrog rt mvnc \
             --server-id-resolve=my-artifactory \
@@ -57,37 +46,28 @@ jobs:
             --repo-deploy-releases=maven-libs-release-local \
             --repo-deploy-snapshots=maven-libs-snapshot-local
 
-      ################################################################
-      # 5) Clear the local .m2 cache to avoid leftover references
-      ################################################################
       - name: Clear local Maven cache
         run: rm -rf ~/.m2/repository
 
-      ################################################################
-      # 6) Maven build & publish artifact via JFrog CLI with build info
-      ################################################################
-      - name: Build & Publish Maven Artifact
+      - name: Debug Maven Settings
+        run: mvn help:effective-settings
+
+      - name: Maven Build & Publish
         run: |
           jfrog rt mvn clean install \
-            --build-name=spring-petclinic \
+            --build-name="spring-petclinic" \
             --build-number="${{ github.run_id }}"
 
-      ################################################################
-      # 7) Build and push Docker image with JFrog CLI (no 'docker push')
-      ################################################################
-      - name: Build Docker Image
+      - name: Docker Build
         run: |
           docker build -t trialt0zppb.jfrog.io/onboarding-docker-local/spring-petclinic:${{ github.run_id }} .
 
-      - name: Push Docker Image to Artifactory
+      - name: Docker Push via JFrog CLI
         run: |
           jfrog rt docker-push trialt0zppb.jfrog.io/onboarding-docker-local/spring-petclinic:${{ github.run_id }} onboarding-docker-local \
-            --build-name=spring-petclinic \
+            --build-name="spring-petclinic" \
             --build-number="${{ github.run_id }}"
 
-      ################################################################
-      # 8) Publish the Build Info to Artifactory for full traceability
-      ################################################################
       - name: Publish Build Info
         run: |
           jfrog rt build-publish spring-petclinic "${{ github.run_id }}"
