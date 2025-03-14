@@ -84,6 +84,9 @@ jobs:
       #################################################
       - name: Clear local Maven cache
         run: rm -rf ~/.m2/repository
+      
+      - name: check mvn version
+        run: mvn -version
 
       #################################################
       # 8) Build via jfrog rt mvn, using the new extractor jar
