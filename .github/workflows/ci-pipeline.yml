@@ -86,7 +86,7 @@ jobs:
         run: rm -rf ~/.m2/repository
       
       - name: check mvn version
-        run: mvn -version
+        run: mvnw -version
 
       #################################################
       # 8) Build via jfrog rt mvn, using the new extractor jar
