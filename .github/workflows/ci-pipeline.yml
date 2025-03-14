@@ -38,16 +38,20 @@ jobs:
 
       - name: Configure JFrog CLI for Maven
         run: |
-          jfrog rt mvnc --server-id-resolve=my-artifactory \
+          jfrog rt mvnc \
+            --server-id-resolve=my-artifactory \
             --repo-resolve-releases=maven-maven-remote \
             --repo-resolve-snapshots=maven-maven-remote \
             --server-id-deploy=my-artifactory \
             --repo-deploy-releases=maven-libs-release-local \
-            --repo-deploy-snapshots=maven-libs-snapshot-local
+            --repo-deploy-snapshots=maven-libs-snapshot-local \
+            --set-proxy
+
+      - name: Debug Maven Settings
+        run: mvn help:effective-settings
 
       - name: Compile and Package the Application
-        run: |
-          mvn clean package -DskipTests
+        run: mvn clean package -DskipTests
 
       - name: Publish Maven Artifact to JFrog Artifactory
         run: |
