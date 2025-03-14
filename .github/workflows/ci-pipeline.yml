@@ -33,9 +33,9 @@ jobs:
         uses: jfrog/setup-jfrog-cli@v4
         id: setup-cli
         env:
-          JF_URL: ${{env.JF_RT_URL}}
-          JFROG_CLI_RELEASES_REPO: '${{env.JF_RT_URL}}/artifactory/${{secrets.RT_REPO_MVN_VIRTUAL}}'
-          JFROG_CLI_EXTRACTORS_REMOTE: '${{env.JF_RT_URL}}/artifactory/${{secrets.RT_REPO_MVN_VIRTUAL}}'
+          JF_URL: ${{secrets.JF_RT_URL}}
+          JFROG_CLI_RELEASES_REPO: '${{secrets.JF_RT_URL}}/artifactory/${{secrets.RT_REPO_MVN_VIRTUAL}}'
+          JFROG_CLI_EXTRACTORS_REMOTE: '${{secrets.JF_RT_URL}}/artifactory/${{secrets.RT_REPO_MVN_VIRTUAL}}'
           JF_GIT_TOKEN: ${{secrets.GH_TOKEN}}
           JF_USER: ${{secrets.ARTIFACTORY_USERNAME}}
           JF_PASSWORD: ${{secrets.ARTIFACTORY_IDENTITY_TOKEN}}
