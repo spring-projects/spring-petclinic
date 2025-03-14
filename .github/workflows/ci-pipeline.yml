@@ -85,8 +85,14 @@ jobs:
       - name: Clear local Maven cache
         run: rm -rf ~/.m2/repository
       
+      - name: Ensure mvnw is executable
+        run: chmod +x mvnw
+
       - name: check mvn version
-        run: mvnw -version
+        run: ./mvnw -version
+
+      - name: Debug repository files
+        run: ls -lah
 
       #################################################
       # 8) Build via jfrog rt mvn, using the new extractor jar
