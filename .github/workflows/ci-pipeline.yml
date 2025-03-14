@@ -44,8 +44,7 @@ jobs:
             --repo-resolve-snapshots=maven-maven-remote \
             --server-id-deploy=my-artifactory \
             --repo-deploy-releases=maven-libs-release-local \
-            --repo-deploy-snapshots=maven-libs-snapshot-local \
-            --set-proxy
+            --repo-deploy-snapshots=maven-libs-snapshot-local
 
       - name: Debug Maven Settings
         run: mvn help:effective-settings
