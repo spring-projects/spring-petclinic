@@ -102,7 +102,7 @@ jobs:
       #################################################
       - name: Maven Build With JFrog CLI
         run: |
-          jfrog rt mvn clean package -X -e \
+          jfrog rt mvn clean install -X -e \
             --build-name="spring-petclinic" \
             --build-number="${{ github.run_id }}"
 
