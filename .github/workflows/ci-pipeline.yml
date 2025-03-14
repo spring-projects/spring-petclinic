@@ -1,33 +1,43 @@
-name: Build and Publish with JFrog Artifactory
+name: CI Pipeline (Simplified)
 
 on:
   push:
-    branches: [main]
+    branches: [ "main" ]
   pull_request:
-    branches: [main]
+    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
+      #################################################
+      # 1) Check out the repository
+      #################################################
       - name: Checkout
         uses: actions/checkout@v3
 
+      #################################################
+      # 2) Set up Java
+      #################################################
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Set build-info extractor version
-        run: echo "JFROG_CLI_BUILD_INFO_EXTRACTOR_VERSION=2.38.6" >> $GITHUB_ENV
-
+      #################################################
+      # 3) Install JFrog CLI
+      #################################################
       - name: Install JFrog CLI
         run: |
           curl -fL https://getcli.jfrog.io | bash
           chmod +x jfrog
           mv jfrog /usr/local/bin/
 
+      #################################################
+      # 4) Configure JFrog CLI
+      #################################################
       - name: Configure JFrog CLI
         run: |
           jfrog config add my-artifactory \
@@ -36,38 +46,74 @@ jobs:
             --password="${{ secrets.ARTIFACTORY_IDENTITY_TOKEN }}" \
             --interactive=false
 
-      - name: Configure Maven for Artifactory
-        run: |
-          jfrog rt mvnc \
-            --server-id-resolve=my-artifactory \
-            --repo-resolve-releases=maven-maven-remote \
-            --repo-resolve-snapshots=maven-maven-remote \
-            --server-id-deploy=my-artifactory \
-            --repo-deploy-releases=maven-libs-release-local \
-            --repo-deploy-snapshots=maven-libs-snapshot-local
+      #################################################
+      # 5) (Optional) Modify Maven Settings to Use Artifactory
+      #
+      # This is optional if your project's pom.xml references
+      # standard Maven Central. If you do want all dependencies
+      # to come from Artifactory, you can still do:
+      #
+      #   jfrog rt mvnc --server-id-resolve=my-artifactory ...
+      #
+      # but it may not be strictly necessary if the goal
+      # is simply to upload the final artifact.
+      #################################################
 
+      #################################################
+      # 6) Clear the local Maven cache
+      #################################################
       - name: Clear local Maven cache
         run: rm -rf ~/.m2/repository
 
-      - name: Debug Maven Settings
-        run: mvn help:effective-settings
+      #################################################
+      # 7) Build with standard Maven (no build-info extraction)
+      #################################################
+      - name: Maven Build
+        run: mvn clean package -DskipTests
 
-      - name: Maven Build & Publish
+      #################################################
+      # 8) Upload the built artifact with JFrog CLI
+      #
+      # target/*.jar -> maven-libs-release-local (or whichever repo you prefer)
+      #################################################
+      - name: Upload Maven Artifact to Artifactory
         run: |
-          jfrog rt mvn clean install \
+          jfrog rt upload \
+            "target/*.jar" \
+            "maven-libs-release-local/spring-petclinic/" \
+            --flat=false \
             --build-name="spring-petclinic" \
             --build-number="${{ github.run_id }}"
 
-      - name: Docker Build
+      #################################################
+      # 9) Build Docker image with local Docker
+      #################################################
+      - name: Build Docker Image
         run: |
           docker build -t trialt0zppb.jfrog.io/onboarding-docker-local/spring-petclinic:${{ github.run_id }} .
 
-      - name: Docker Push via JFrog CLI
+      #################################################
+      # 10) Push Docker image using JFrog CLI
+      #################################################
+      - name: Push Docker Image to Artifactory
         run: |
-          jfrog rt docker-push trialt0zppb.jfrog.io/onboarding-docker-local/spring-petclinic:${{ github.run_id }} onboarding-docker-local \
+          jfrog rt docker-push \
+            trialt0zppb.jfrog.io/onboarding-docker-local/spring-petclinic:${{ github.run_id }} \
+            onboarding-docker-local \
             --build-name="spring-petclinic" \
             --build-number="${{ github.run_id }}"
 
+      #################################################
+      # 11) Collect & Publish Build Info
+      #
+      # This won't include the dependency graph from
+      # "jfrog rt mvn", but you'll still get:
+      #  - The JAR(s) you uploaded
+      #  - Docker image(s)
+      #  - Environment info
+      #################################################
       - name: Publish Build Info
         run: |
-          jfrog rt build-publish spring-petclinic "${{ github.run_id }}"
+          jfrog rt build-publish \
+            "spring-petclinic" \
+            "${{ github.run_id }}"
