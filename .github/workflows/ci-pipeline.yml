@@ -53,7 +53,7 @@ jobs:
       # 5) Verify JFrog connection
       #################################################
       - name: ping jfrog
-        run: jf rt ping  # Verify connectivity to JFrog Artifactory
+        run: jf rt ping
 
       #################################################
       # 6) Configure Maven to use JFrog as a repository
@@ -68,9 +68,9 @@ jobs:
       - name: Maven Build With JFrog CLI
         run: |
           jf mvn clean install \
-            -DskipTests=true -Denforcer.skip=true \  # Skip tests & enforce Maven rules
-            --build-name="spring-petclinic" \  # Set JFrog build name
-            --build-number="${{ github.run_id }}"  # Use GitHub Actions run ID as build number
+            -DskipTests=true -Denforcer.skip=true \
+            --build-name="spring-petclinic" \
+            --build-number="${{ github.run_id }}"
 
       #################################################
       # 8) Build Docker Image
