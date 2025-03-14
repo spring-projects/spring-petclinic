@@ -13,6 +13,7 @@ jobs:
       #################################################
       - name: Checkout
         uses: actions/checkout@v3
+
       #################################################
       # 2) Set up Java
       #################################################
@@ -21,6 +22,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+
       #################################################
       # 3) Install JFrog CLI
       #################################################
@@ -29,31 +31,24 @@ jobs:
           curl -fL https://getcli.jfrog.io | bash
           chmod +x jfrog
           mv jfrog /usr/local/bin/
+
       #################################################
-      # 4) Configure JFrog CLI
-      #################################################
-      - name: Configure JFrog CLI
-        run: |
-          jfrog config add my-artifactory \
-            --artifactory-url=https://trialt0zppb.jfrog.io/artifactory \
-            --user="${{ secrets.ARTIFACTORY_USERNAME }}" \
-            --password="${{ secrets.ARTIFACTORY_IDENTITY_TOKEN }}" \
-            --interactive=false
-      #################################################
-      # 5) Clear the local Maven cache
+      # 4) Clear the local Maven cache
       #################################################
       - name: Clear local Maven cache
         run: rm -rf ~/.m2/repository
+
       #################################################
-      # 6) Build with JFrog CLI wrapped around Maven
+      # 5) Build with JFrog CLI wrapped around Maven
       #################################################
       - name: Build with JFrog CLI
         run: |
           jfrog rt mvn clean package \
             --build-name="spring-petclinic" \
-            --build-number="${{ github.run_id }}" \
+            --build-number="${{ github.run_id }}"
+
       #################################################
-      # 7) Upload the built artifact with JFrog CLI
+      # 6) Upload the built artifact with JFrog CLI
       #################################################
       - name: Upload Maven Artifact to Artifactory
         run: |
@@ -63,14 +58,16 @@ jobs:
             --flat=false \
             --build-name="spring-petclinic" \
             --build-number="${{ github.run_id }}"
+
       #################################################
-      # 8) Build Docker image with local Docker
+      # 7) Build Docker image with local Docker
       #################################################
       - name: Build Docker Image
         run: |
           docker build -t trialt0zppb.jfrog.io/onboarding-docker-local/spring-petclinic:${{ github.run_id }} .
+
       #################################################
-      # 9) Push Docker image using JFrog CLI
+      # 8) Push Docker image using JFrog CLI
       #################################################
       - name: Push Docker Image to Artifactory
         run: |
@@ -79,8 +76,9 @@ jobs:
             onboarding-docker-local \
             --build-name="spring-petclinic" \
             --build-number="${{ github.run_id }}"
+
       #################################################
-      # 10) Collect & Publish Build Info
+      # 9) Collect & Publish Build Info
       #################################################
       - name: Publish Build Info
         run: |

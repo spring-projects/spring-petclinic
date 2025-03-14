@@ -1,0 +1,11 @@
+version: 1
+type: maven
+resolver:
+    serverId: test3
+    snapshotRepo: maven-libs-snapshot
+    releaseRepo: maven-libs-release
+deployer:
+    serverId: test3
+    snapshotRepo: maven-libs-snapshot-local
+    releaseRepo: maven-libs-release-local
+useWrapper: true
