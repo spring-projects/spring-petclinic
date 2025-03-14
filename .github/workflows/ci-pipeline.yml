@@ -1,12 +1,15 @@
-name: CI Pipeline (Simplified)
+name: Build with JFrog CLI (Forcing New Extractor)
+
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       #################################################
       # 1) Check out the repository
@@ -20,14 +23,26 @@ jobs:
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
           distribution: 'temurin'
-
-      - name: Set build-info extractor version
-        run: echo "JFROG_CLI_BUILD_INFO_EXTRACTOR_VERSION=2.38.6" >> $GITHUB_ENV
+          java-version: '17'
 
       #################################################
-      # 3) Install JFrog CLI
+      # 3) Download & Override Build-Info Extractor
+      #
+      #   We manually download a newer build-info-extractor
+      #   to overshadow the old 2.28.6 version. Adjust
+      #   2.39.6 to any newer version you prefer.
+      #################################################
+      - name: Download & Override Build-Info Extractor
+        run: |
+          mkdir -p custom-extractor
+          curl -sSL -o custom-extractor/build-info-extractor-uber.jar \
+            https://repo1.maven.org/maven2/org/jfrog/buildinfo/build-info-extractor-maven3/2.39.6/build-info-extractor-maven3-2.39.6-uber.jar
+
+          echo "JFROG_CLI_BUILD_INFO_EXTRACTOR_DOWNLOAD_URL=file://$(pwd)/custom-extractor/build-info-extractor-uber.jar" >> $GITHUB_ENV
+
+      #################################################
+      # 4) Install JFrog CLI
       #################################################
       - name: Install JFrog CLI
         run: |
@@ -36,7 +51,7 @@ jobs:
           mv jfrog /usr/local/bin/
 
       #################################################
-      # 4) Configure JFrog CLI using GitHub secrets
+      # 5) Configure JFrog CLI
       #################################################
       - name: Configure JFrog CLI
         run: |
@@ -47,43 +62,52 @@ jobs:
             --interactive=false
 
       #################################################
-      # 5) Clear the local Maven cache
+      # 6) Configure Maven Repos (Optional)
+      #
+      # If you want to ensure dependencies are fetched
+      # through Artifactory, uncomment the jfrog rt mvnc
+      # step below. If you're just hooking the build-info
+      # for publishing, you can skip it.
+      #################################################
+      # - name: Configure JFrog CLI for Maven
+      #   run: |
+      #     jfrog rt mvnc \
+      #       --server-id-resolve=my-artifactory \
+      #       --repo-resolve-releases=maven-maven-remote \
+      #       --repo-resolve-snapshots=maven-maven-remote \
+      #       --server-id-deploy=my-artifactory \
+      #       --repo-deploy-releases=maven-libs-release-local \
+      #       --repo-deploy-snapshots=maven-libs-snapshot-local
+
+      #################################################
+      # 7) Clear local Maven cache
       #################################################
       - name: Clear local Maven cache
         run: rm -rf ~/.m2/repository
 
       #################################################
-      # 6) Build with JFrog CLI wrapped around Maven
+      # 8) Build via jfrog rt mvn, using the new extractor jar
+      #
+      # Notice the flags: -X -e for debug; remove them once
+      # you confirm it’s working.
       #################################################
-      - name: Build with JFrog CLI
+      - name: Maven Build With JFrog CLI
         run: |
           jfrog rt mvn clean package -X -e \
             --build-name="spring-petclinic" \
             --build-number="${{ github.run_id }}"
 
       #################################################
-      # 7) Upload the built artifact with JFrog CLI
-      #################################################
-      - name: Upload Maven Artifact to Artifactory
-        run: |
-          jfrog rt upload \
-            "target/*.jar" \
-            "maven-libs-release-local/spring-petclinic/" \
-            --flat=false \
-            --build-name="spring-petclinic" \
-            --build-number="${{ github.run_id }}"
-
-      #################################################
-      # 8) Build Docker image with local Docker
+      # 9) Build Docker Image
       #################################################
       - name: Build Docker Image
         run: |
           docker build -t trialt0zppb.jfrog.io/onboarding-docker-local/spring-petclinic:${{ github.run_id }} .
 
       #################################################
-      # 9) Push Docker image using JFrog CLI
+      # 10) Push Docker Image via JFrog CLI
       #################################################
-      - name: Push Docker Image to Artifactory
+      - name: Docker Push to Artifactory
         run: |
           jfrog rt docker-push \
             trialt0zppb.jfrog.io/onboarding-docker-local/spring-petclinic:${{ github.run_id }} \
@@ -92,10 +116,8 @@ jobs:
             --build-number="${{ github.run_id }}"
 
       #################################################
-      # 10) Collect & Publish Build Info
+      # 11) Publish Build Info
       #################################################
       - name: Publish Build Info
         run: |
-          jfrog rt build-publish \
-            "spring-petclinic" \
-            "${{ github.run_id }}"
+          jfrog rt build-publish "spring-petclinic" "${{ github.run_id }}"
