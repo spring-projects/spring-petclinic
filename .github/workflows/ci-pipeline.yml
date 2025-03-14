@@ -23,6 +23,9 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Set build-info extractor version
+        run: echo "JFROG_CLI_BUILD_INFO_EXTRACTOR_VERSION=2.38.6" >> $GITHUB_ENV
+
       #################################################
       # 3) Install JFrog CLI
       #################################################
