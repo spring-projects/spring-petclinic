@@ -8,4 +8,4 @@ deployer:
     serverId: my-artifactory
     snapshotRepo: maven-libs-snapshot-local
     releaseRepo: maven-libs-release-local
-useWrapper: true
+useWrapper: false
