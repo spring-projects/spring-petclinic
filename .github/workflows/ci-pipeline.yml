@@ -57,7 +57,7 @@ jobs:
       #
       # Notice the flags: -X -e for debug; remove them once
       # you confirm it’s working.
-      #################################################
+      ##################################################
       - name: Maven Build With JFrog CLI
         run: |
           jf mvn clean install -X -e \
