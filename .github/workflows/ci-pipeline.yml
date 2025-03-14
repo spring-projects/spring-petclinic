@@ -51,7 +51,7 @@ jobs:
 
       - name: Publish Maven Artifact to JFrog Artifactory
         run: |
-          jfrog rt mvn clean install --config my-artifactory \
+          jfrog rt mvn clean install \
             --build-name=spring-petclinic \
             --build-number=${{ github.run_id }}
 
