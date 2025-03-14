@@ -52,7 +52,6 @@ jobs:
           jfrog rt mvn clean package \
             --build-name="spring-petclinic" \
             --build-number="${{ github.run_id }}" \
-            --fail-fast=true
       #################################################
       # 7) Upload the built artifact with JFrog CLI
       #################################################
