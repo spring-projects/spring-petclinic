@@ -60,7 +60,7 @@ jobs:
       #################################################
       - name: Maven Build With JFrog CLI
         run: |
-          jf rt mvn clean install -X -e \
+          jf mvn clean install -X -e \
             --DskipTests=true --Denforcer.skip=true \
             --build-name="spring-petclinic" \
             --build-number="${{ github.run_id }}"
