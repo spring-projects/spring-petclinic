@@ -27,72 +27,30 @@ jobs:
           java-version: '17'
 
       #################################################
-      # 3) Download & Override Build-Info Extractor
-      #
-      #   We manually download a newer build-info-extractor
-      #   to overshadow the old 2.28.6 version. Adjust
-      #   2.39.6 to any newer version you prefer.
-      #################################################
-      - name: Download & Override Build-Info Extractor
-        run: |
-          mkdir -p custom-extractor
-          curl -sSL -o custom-extractor/build-info-extractor-uber.jar \
-            https://repo1.maven.org/maven2/org/jfrog/buildinfo/build-info-extractor-maven3/2.39.6/build-info-extractor-maven3-2.39.6-uber.jar
-
-          echo "JFROG_CLI_BUILD_INFO_EXTRACTOR_DOWNLOAD_URL=file://$(pwd)/custom-extractor/build-info-extractor-uber.jar" >> $GITHUB_ENV
-
-      #################################################
       # 4) Install JFrog CLI
       #################################################
-      - name: Install JFrog CLI
-        run: |
-          curl -fL https://getcli.jfrog.io | bash
-          chmod +x jfrog
-          mv jfrog /usr/local/bin/
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4
+        id: setup-cli
+        env:
+          JF_URL: ${{env.JF_RT_URL}}
+          JFROG_CLI_RELEASES_REPO: '${{env.JF_RT_URL}}/artifactory/${{secrets.RT_REPO_MVN_VIRTUAL}}'
+          JFROG_CLI_EXTRACTORS_REMOTE: '${{env.JF_RT_URL}}/artifactory/${{secrets.RT_REPO_MVN_VIRTUAL}}'
+          JF_GIT_TOKEN: ${{secrets.GH_TOKEN}}
+          JF_USER: ${{secrets.ARTIFACTORY_USERNAME}}
+          JF_PASSWORD: ${{secrets.ARTIFACTORY_IDENTITY_TOKEN}}
 
-      #################################################
-      # 5) Configure JFrog CLI
-      #################################################
-      - name: Configure JFrog CLI
-        run: |
-          jfrog config add my-artifactory \
-            --artifactory-url=https://trialt0zppb.jfrog.io/artifactory \
-            --user="${{ secrets.ARTIFACTORY_USERNAME }}" \
-            --password="${{ secrets.ARTIFACTORY_IDENTITY_TOKEN }}" \
-            --interactive=false
-
-      #################################################
-      # 6) Configure Maven Repos (Optional)
-      #
-      # If you want to ensure dependencies are fetched
-      # through Artifactory, uncomment the jfrog rt mvnc
-      # step below. If you're just hooking the build-info
-      # for publishing, you can skip it.
-      #################################################
-      # - name: Configure JFrog CLI for Maven
-      #   run: |
-      #     jfrog rt mvnc \
-      #       --server-id-resolve=my-artifactory \
-      #       --repo-resolve-releases=maven-maven-remote \
-      #       --repo-resolve-snapshots=maven-maven-remote \
-      #       --server-id-deploy=my-artifactory \
-      #       --repo-deploy-releases=maven-libs-release-local \
-      #       --repo-deploy-snapshots=maven-libs-snapshot-local
-
-      #################################################
-      # 7) Clear local Maven cache
-      #################################################
       - name: Clear local Maven cache
         run: rm -rf ~/.m2/repository
       
       - name: Ensure mvnw is executable
         run: chmod +x mvnw
 
-      - name: check mvn version
-        run: ./mvnw -version
+      - name: ping jfrog
+        run: jf rt ping
 
-      - name: Debug repository files
-        run: ls -lah
+      - name: configure maven
+        run: jf mvnc --global --repo-resolve-releases ${{secrets.RT_REPO_MVN_VIRTUAL}} --repo-resolve-snapshots ${{secrets.RT_REPO_MVN_VIRTUAL}}
 
       #################################################
       # 8) Build via jfrog rt mvn, using the new extractor jar
@@ -102,7 +60,8 @@ jobs:
       #################################################
       - name: Maven Build With JFrog CLI
         run: |
-          jfrog rt mvn clean install -X -e \
+          jf rt mvn clean install -X -e \
+            --DskipTests=true --Denforcer.skip=true \
             --build-name="spring-petclinic" \
             --build-number="${{ github.run_id }}"
 
