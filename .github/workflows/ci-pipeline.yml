@@ -2,78 +2,88 @@ name: Build with JFrog CLI (Forcing New Extractor)
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main" ]  # Trigger workflow on push to the main branch
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main" ]  # Trigger workflow on pull requests targeting main
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Use the latest Ubuntu runner for execution
 
     steps:
       #################################################
-      # 1) Check out the repository
+      # 1) Checkout the repository to the runner
       #################################################
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3  # Pulls the latest code from the repository
 
       #################################################
-      # 2) Set up Java
+      # 2) Set up Java environment
       #################################################
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: 'temurin'  # Use Eclipse Temurin JDK (OpenJDK)
+          java-version: '17'  # Ensure Java 17 is installed
 
       #################################################
-      # 4) Install JFrog CLI
+      # 3) Install and Configure JFrog CLI
       #################################################
       - name: Setup JFrog CLI
-        uses: jfrog/setup-jfrog-cli@v4
+        uses: jfrog/setup-jfrog-cli@v4  # Official JFrog CLI GitHub Action
         id: setup-cli
         env:
-          JF_URL: ${{secrets.JF_RT_URL}}
+          JF_URL: ${{secrets.JF_RT_URL}}  # Artifactory base URL (stored as a GitHub secret)
           JFROG_CLI_RELEASES_REPO: '${{secrets.JF_RT_URL}}/artifactory/${{secrets.RT_REPO_MVN_VIRTUAL}}'
           JFROG_CLI_EXTRACTORS_REMOTE: '${{secrets.JF_RT_URL}}/artifactory/${{secrets.RT_REPO_MVN_VIRTUAL}}'
-          JF_GIT_TOKEN: ${{secrets.GH_TOKEN}}
-          JF_USER: ${{secrets.ARTIFACTORY_USERNAME}}
-          JF_PASSWORD: ${{secrets.ARTIFACTORY_IDENTITY_TOKEN}}
+          JF_GIT_TOKEN: ${{secrets.GH_TOKEN}}  # GitHub token for authentication
+          JF_USER: ${{secrets.ARTIFACTORY_USERNAME}}  # Artifactory username
+          JF_PASSWORD: ${{secrets.ARTIFACTORY_IDENTITY_TOKEN}}  # Artifactory identity token
 
+      #################################################
+      # 4) Clean the local Maven cache (optional but recommended)
+      #################################################
       - name: Clear local Maven cache
-        run: rm -rf ~/.m2/repository
+        run: rm -rf ~/.m2/repository  # Ensures a clean build by removing old dependencies
       
       - name: Ensure mvnw is executable
-        run: chmod +x mvnw
-
-      - name: ping jfrog
-        run: jf rt ping
-
-      - name: configure maven
-        run: jf mvnc --global --repo-resolve-releases ${{secrets.RT_REPO_MVN_VIRTUAL}} --repo-resolve-snapshots ${{secrets.RT_REPO_MVN_VIRTUAL}}
+        run: chmod +x mvnw  # Make the Maven wrapper script executable
 
       #################################################
-      # 8) Build via jfrog rt mvn, using the new extractor jar
-      #
-      # Notice the flags: -X -e for debug; remove them once
-      # you confirm it’s working.
-      ##################################################
+      # 5) Verify JFrog connection
+      #################################################
+      - name: ping jfrog
+        run: jf rt ping  # Verify connectivity to JFrog Artifactory
+
+      #################################################
+      # 6) Configure Maven to use JFrog as a repository
+      #################################################
+      - name: configure maven
+        run: jf mvnc --global \
+          --repo-resolve-releases ${{secrets.RT_REPO_MVN_VIRTUAL}} \
+          --repo-resolve-snapshots ${{secrets.RT_REPO_MVN_VIRTUAL}}
+        # This sets up JFrog CLI to resolve dependencies from Artifactory
+
+      #################################################
+      # 7) Build project using JFrog CLI with Maven
+      #################################################
       - name: Maven Build With JFrog CLI
         run: |
-          jf mvn clean install -X -e \
-            -DskipTests=true -Denforcer.skip=true \
-            --build-name="spring-petclinic" \
-            --build-number="${{ github.run_id }}"
+          jf mvn clean install \
+            -DskipTests=true -Denforcer.skip=true \  # Skip tests & enforce Maven rules
+            --build-name="spring-petclinic" \  # Set JFrog build name
+            --build-number="${{ github.run_id }}"  # Use GitHub Actions run ID as build number
 
       #################################################
-      # 9) Build Docker Image
+      # 8) Build Docker Image
       #################################################
       - name: Build Docker Image
         run: |
           docker build -t trialt0zppb.jfrog.io/onboarding-docker-local/spring-petclinic:${{ github.run_id }} .
+        # Builds the application into a Docker image and tags it with the GitHub run ID
 
       #################################################
-      # 10) Push Docker Image via JFrog CLI
+      # 9) Push Docker Image to JFrog Artifactory
       #################################################
       - name: Docker Push to Artifactory
         run: |
@@ -82,10 +92,12 @@ jobs:
             onboarding-docker-local \
             --build-name="spring-petclinic" \
             --build-number="${{ github.run_id }}"
+        # Uploads the built Docker image to Artifactory for storage and deployment
 
       #################################################
-      # 11) Publish Build Info
+      # 10) Publish Build Information to JFrog
       #################################################
       - name: Publish Build Info
         run: |
           jfrog rt build-publish "spring-petclinic" "${{ github.run_id }}"
+        # Publishes build metadata (dependencies, artifacts, environment) to JFrog
