@@ -36,26 +36,14 @@ jobs:
             --password=${{ secrets.ARTIFACTORY_IDENTITY_TOKEN }} \
             --interactive=false
 
-      - name: Configure Maven to use JFrog Artifactory
+      - name: Configure JFrog CLI for Maven
         run: |
-          mkdir -p ~/.m2
-          echo '<settings>
-            <mirrors>
-              <mirror>
-                <id>jfrog-artifactory</id>
-                <mirrorOf>central</mirrorOf>
-                <url>https://trialt0zppb.jfrog.io/artifactory/maven-maven-remote/</url>
-                <repositoryManager>true</repositoryManager>
-              </mirror>
-            </mirrors>
-            <servers>
-              <server>
-                <id>jfrog-artifactory</id>
-                <username>${{ secrets.ARTIFACTORY_USERNAME }}</username>
-                <password>${{ secrets.ARTIFACTORY_IDENTITY_TOKEN }}</password>
-              </server>
-            </servers>
-          </settings>' > ~/.m2/settings.xml
+          jfrog rt mvnc --server-id-resolve=my-artifactory \
+            --repo-resolve-releases=maven-maven-remote \
+            --repo-resolve-snapshots=maven-maven-remote \
+            --server-id-deploy=my-artifactory \
+            --repo-deploy-releases=maven-libs-release-local \
+            --repo-deploy-snapshots=maven-libs-snapshot-local
 
       - name: Compile and Package the Application
         run: |
@@ -63,13 +51,15 @@ jobs:
 
       - name: Publish Maven Artifact to JFrog Artifactory
         run: |
-          jfrog rt mvn clean install --build-name=spring-petclinic --build-number=${{ github.run_id }}
+          jfrog rt mvn clean install --config my-artifactory \
+            --build-name=spring-petclinic \
+            --build-number=${{ github.run_id }}
 
       - name: Build Docker Image
         run: |
           docker build -t trialt0zppb.jfrog.io/onboarding-docker-local/spring-petclinic:${{ github.run_id }} .
 
-      - name: Collect Docker Build Info with JFrog CLI
+      - name: Push Docker Image to JFrog Artifactory using JFrog CLI
         run: |
           jfrog rt docker-push trialt0zppb.jfrog.io/onboarding-docker-local/spring-petclinic:${{ github.run_id }} onboarding-docker-local \
             --build-name=spring-petclinic \
