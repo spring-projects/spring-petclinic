@@ -59,9 +59,7 @@ jobs:
       # 6) Configure Maven to use JFrog as a repository
       #################################################
       - name: configure maven
-        run: jf mvnc --global \
-          --repo-resolve-releases ${{secrets.RT_REPO_MVN_VIRTUAL}} \
-          --repo-resolve-snapshots ${{secrets.RT_REPO_MVN_VIRTUAL}}
+        run: jf mvnc --global --repo-resolve-releases ${{secrets.RT_REPO_MVN_VIRTUAL}} --repo-resolve-snapshots ${{secrets.RT_REPO_MVN_VIRTUAL}}
         # This sets up JFrog CLI to resolve dependencies from Artifactory
 
       #################################################
