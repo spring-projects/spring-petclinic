@@ -33,13 +33,24 @@ jobs:
           mv jfrog /usr/local/bin/
 
       #################################################
-      # 4) Clear the local Maven cache
+      # 4) Configure JFrog CLI using GitHub secrets
+      #################################################
+      - name: Configure JFrog CLI
+        run: |
+          jfrog config add my-artifactory \
+            --artifactory-url=https://trialt0zppb.jfrog.io/artifactory \
+            --user="${{ secrets.ARTIFACTORY_USERNAME }}" \
+            --password="${{ secrets.ARTIFACTORY_IDENTITY_TOKEN }}" \
+            --interactive=false
+
+      #################################################
+      # 5) Clear the local Maven cache
       #################################################
       - name: Clear local Maven cache
         run: rm -rf ~/.m2/repository
 
       #################################################
-      # 5) Build with JFrog CLI wrapped around Maven
+      # 6) Build with JFrog CLI wrapped around Maven
       #################################################
       - name: Build with JFrog CLI
         run: |
@@ -48,7 +59,7 @@ jobs:
             --build-number="${{ github.run_id }}"
 
       #################################################
-      # 6) Upload the built artifact with JFrog CLI
+      # 7) Upload the built artifact with JFrog CLI
       #################################################
       - name: Upload Maven Artifact to Artifactory
         run: |
@@ -60,14 +71,14 @@ jobs:
             --build-number="${{ github.run_id }}"
 
       #################################################
-      # 7) Build Docker image with local Docker
+      # 8) Build Docker image with local Docker
       #################################################
       - name: Build Docker Image
         run: |
           docker build -t trialt0zppb.jfrog.io/onboarding-docker-local/spring-petclinic:${{ github.run_id }} .
 
       #################################################
-      # 8) Push Docker image using JFrog CLI
+      # 9) Push Docker image using JFrog CLI
       #################################################
       - name: Push Docker Image to Artifactory
         run: |
@@ -78,7 +89,7 @@ jobs:
             --build-number="${{ github.run_id }}"
 
       #################################################
-      # 9) Collect & Publish Build Info
+      # 10) Collect & Publish Build Info
       #################################################
       - name: Publish Build Info
         run: |
