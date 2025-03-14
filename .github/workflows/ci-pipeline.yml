@@ -1,22 +1,18 @@
 name: CI Pipeline (Simplified)
-
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       #################################################
       # 1) Check out the repository
       #################################################
       - name: Checkout
         uses: actions/checkout@v3
-
       #################################################
       # 2) Set up Java
       #################################################
@@ -25,7 +21,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-
       #################################################
       # 3) Install JFrog CLI
       #################################################
@@ -34,7 +29,6 @@ jobs:
           curl -fL https://getcli.jfrog.io | bash
           chmod +x jfrog
           mv jfrog /usr/local/bin/
-
       #################################################
       # 4) Configure JFrog CLI
       #################################################
@@ -45,36 +39,22 @@ jobs:
             --user="${{ secrets.ARTIFACTORY_USERNAME }}" \
             --password="${{ secrets.ARTIFACTORY_IDENTITY_TOKEN }}" \
             --interactive=false
-
       #################################################
-      # 5) (Optional) Modify Maven Settings to Use Artifactory
-      #
-      # This is optional if your project's pom.xml references
-      # standard Maven Central. If you do want all dependencies
-      # to come from Artifactory, you can still do:
-      #
-      #   jfrog rt mvnc --server-id-resolve=my-artifactory ...
-      #
-      # but it may not be strictly necessary if the goal
-      # is simply to upload the final artifact.
-      #################################################
-
-      #################################################
-      # 6) Clear the local Maven cache
+      # 5) Clear the local Maven cache
       #################################################
       - name: Clear local Maven cache
         run: rm -rf ~/.m2/repository
-
       #################################################
-      # 7) Build with standard Maven (no build-info extraction)
+      # 6) Build with JFrog CLI wrapped around Maven
       #################################################
-      - name: Maven Build
-        run: mvn clean package -DskipTests
-
+      - name: Build with JFrog CLI
+        run: |
+          jfrog rt mvn clean package \
+            --build-name="spring-petclinic" \
+            --build-number="${{ github.run_id }}" \
+            --fail-fast=true
       #################################################
-      # 8) Upload the built artifact with JFrog CLI
-      #
-      # target/*.jar -> maven-libs-release-local (or whichever repo you prefer)
+      # 7) Upload the built artifact with JFrog CLI
       #################################################
       - name: Upload Maven Artifact to Artifactory
         run: |
@@ -84,16 +64,14 @@ jobs:
             --flat=false \
             --build-name="spring-petclinic" \
             --build-number="${{ github.run_id }}"
-
       #################################################
-      # 9) Build Docker image with local Docker
+      # 8) Build Docker image with local Docker
       #################################################
       - name: Build Docker Image
         run: |
           docker build -t trialt0zppb.jfrog.io/onboarding-docker-local/spring-petclinic:${{ github.run_id }} .
-
       #################################################
-      # 10) Push Docker image using JFrog CLI
+      # 9) Push Docker image using JFrog CLI
       #################################################
       - name: Push Docker Image to Artifactory
         run: |
@@ -102,15 +80,8 @@ jobs:
             onboarding-docker-local \
             --build-name="spring-petclinic" \
             --build-number="${{ github.run_id }}"
-
       #################################################
-      # 11) Collect & Publish Build Info
-      #
-      # This won't include the dependency graph from
-      # "jfrog rt mvn", but you'll still get:
-      #  - The JAR(s) you uploaded
-      #  - Docker image(s)
-      #  - Environment info
+      # 10) Collect & Publish Build Info
       #################################################
       - name: Publish Build Info
         run: |
