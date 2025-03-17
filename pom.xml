@@ -18,7 +18,7 @@
 
   <properties>
 
-    <!-- this is first practice ssh -->
+    <!-- this is first practice ssh 2025.03.17-->
     <java.version>17</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
