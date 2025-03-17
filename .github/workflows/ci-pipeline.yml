@@ -73,7 +73,14 @@ jobs:
             --build-number="${{ github.run_id }}"
 
       #################################################
-      # 8) Build Docker Image
+      # 8) Scan with XRay
+      #################################################
+      - name: Scan Artifact
+        run: |
+          jf scan /path/to/artifact
+          
+      #################################################
+      # 9) Build Docker Image
       #################################################
       - name: Build Docker Image
         run: |
@@ -81,7 +88,7 @@ jobs:
         # Builds the application into a Docker image and tags it with the GitHub run ID
 
       #################################################
-      # 9) Push Docker Image to JFrog Artifactory
+      # 10) Push Docker Image to JFrog Artifactory
       #################################################
       - name: Docker Push to Artifactory
         run: |
@@ -93,7 +100,7 @@ jobs:
         # Uploads the built Docker image to Artifactory for storage and deployment
 
       #################################################
-      # 10) Publish Build Information to JFrog
+      # 11) Publish Build Information to JFrog
       #################################################
       - name: Publish Build Info
         run: |
