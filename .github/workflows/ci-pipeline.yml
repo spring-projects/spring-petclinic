@@ -72,7 +72,7 @@ jobs:
         run: |
           jf mvn clean install \
             -DskipTests=true -Denforcer.skip=true \
-            --build-name="webgoat" \
+            --build-name="spring-petclinic" \
             --build-number="${{ github.run_id }}"
 
       #################################################
