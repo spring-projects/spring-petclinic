@@ -2,7 +2,10 @@ name: Build with JFrog CLI (Forcing New Extractor)
 
 on:
   push:
-    branches: [ "main" ]  # Trigger workflow on push to the main branch
+    branches:
+      - master
+      - develop
+
   pull_request:
     branches: [ "main" ]  # Trigger workflow on pull requests targeting main
 
@@ -69,7 +72,7 @@ jobs:
         run: |
           jf mvn clean install \
             -DskipTests=true -Denforcer.skip=true \
-            --build-name="spring-petclinic" \
+            --build-name="webgoat" \
             --build-number="${{ github.run_id }}"
 
       #################################################
@@ -82,29 +85,12 @@ jobs:
           jf scan "$latest_jar"
 
       #################################################
-      # 9) Build Docker Image
-      #################################################
-      - name: Build Docker Image
-        run: |
-          docker build -t trialt0zppb.jfrog.io/onboarding-docker-local/spring-petclinic:${{ github.run_id }} .
-        # Builds the application into a Docker image and tags it with the GitHub run ID
-
-      #################################################
-      # 10) Push Docker Image to JFrog Artifactory
-      #################################################
-      - name: Docker Push to Artifactory
-        run: |
-          jfrog rt docker-push \
-            trialt0zppb.jfrog.io/onboarding-docker-local/spring-petclinic:${{ github.run_id }} \
-            onboarding-docker-local \
-            --build-name="spring-petclinic" \
-            --build-number="${{ github.run_id }}"
-        # Uploads the built Docker image to Artifactory for storage and deployment
-
-      #################################################
-      # 11) Publish Build Information to JFrog
+      # 9) Publish Build Information to JFrog
       #################################################
       - name: Publish Build Info
         run: |
+          jfrog rt build-collect-env           # Collect environment variables
+          jfrog rt build-add-dependencies .     # Add dependencies found in the current directory
+          jfrog rt build-add-git                # Add Git commit information
           jfrog rt build-publish "spring-petclinic" "${{ github.run_id }}"
         # Publishes build metadata (dependencies, artifacts, environment) to JFrog
