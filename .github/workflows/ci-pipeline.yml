@@ -3,7 +3,7 @@ name: Build with JFrog CLI (Forcing New Extractor)
 on:
   push:
     branches:
-      - master
+      - main
       - develop
 
   pull_request:
