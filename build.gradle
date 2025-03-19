@@ -6,7 +6,10 @@ plugins {
   id 'org.cyclonedx.bom' version '1.10.0'
   id 'io.spring.javaformat' version '0.0.43'
   id "io.spring.nohttp" version "0.0.11"
+  id 'pl.allegro.tech.build.axion-release' version '1.18.18'
 }
+
+version=scmVersion.version
 
 apply plugin: 'java'
 apply plugin: 'checkstyle'
@@ -88,3 +91,4 @@ checkFormatAotTest.enabled = false
 
 formatAot.enabled = false
 formatAotTest.enabled = false
+
