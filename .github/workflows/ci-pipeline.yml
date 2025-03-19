@@ -58,6 +58,9 @@ jobs:
       - name: ping jfrog
         run: jf rt ping
 
+      - name: confirm artifactory secret
+        run: echo $ARTIFACTORY_REPO_URL
+
       #################################################
       # 6) Configure Maven to use JFrog as a repository
       #################################################
