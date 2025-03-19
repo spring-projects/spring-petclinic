@@ -83,6 +83,24 @@ jobs:
           latest_jar=$(find target -name "*.jar" | sort | tail -n 1)
           echo "Scanning: $latest_jar"
           jf scan "$latest_jar"
+      
+      #################################################
+      # 9) Build Docker image with local Docker
+      #################################################
+      - name: Build Docker Image
+        run: |
+          docker build -t trialt0zppb.jfrog.io/petclinic-docker-dev-local/spring-petclinic:${{ github.run_id }} .
+
+      #################################################
+      # 10) Push Docker image using JFrog CLI
+      #################################################
+      - name: Push Docker Image to Artifactory
+        run: |
+          jfrog rt docker-push \
+            trialt0zppb.jfrog.io/petclinic-docker-dev-local/spring-petclinic:${{ github.run_id }} \
+            petclinic-docker-dev-local \
+            --build-name="spring-petclinic" \
+            --build-number="${{ github.run_id }}"
 
       #################################################
       # 9) Publish Build Information to JFrog
