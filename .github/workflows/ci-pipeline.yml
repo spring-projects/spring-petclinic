@@ -37,8 +37,8 @@ jobs:
         id: setup-cli
         env:
           JF_URL: ${{secrets.JF_RT_URL}}  # Artifactory base URL (stored as a GitHub secret)
-          JFROG_CLI_RELEASES_REPO: '${{secrets.JF_RT_URL}}/artifactory/${{secrets.RT_REPO_MVN_VIRTUAL}}'
-          JFROG_CLI_EXTRACTORS_REMOTE: '${{secrets.JF_RT_URL}}/artifactory/${{secrets.RT_REPO_MVN_VIRTUAL}}'
+          JFROG_CLI_RELEASES_REPO: 'https://trialt0zppb.jfrog.io/artifactory/petclinic-maven-dev-virtual/'
+          JFROG_CLI_EXTRACTORS_REMOTE: 'https://trialt0zppb.jfrog.io/artifactory/petclinic-maven-dev-virtual/'
           JF_GIT_TOKEN: ${{secrets.GH_TOKEN}}  # GitHub token for authentication
           JF_USER: ${{secrets.ARTIFACTORY_USERNAME}}  # Artifactory username
           JF_PASSWORD: ${{secrets.ARTIFACTORY_IDENTITY_TOKEN}}  # Artifactory identity token
