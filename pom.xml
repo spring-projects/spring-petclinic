@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   This is pratice session feature/2025.03.20
-  this is pratice from remote to local
+  this is pratice from remote to local 20
   <parent> 
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
