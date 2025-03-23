@@ -1,6 +1,5 @@
 package org.springframework.samples.petclinic.course;
 
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.samples.petclinic.vet.VetRepository;
@@ -14,7 +13,7 @@ import java.util.Collection;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CourseService {
-	private final CourseRepository courseRepository;
+	private final CouresRepository courseRepository;
 	private final VetRepository vetRepository;
 
 
