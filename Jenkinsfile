@@ -18,6 +18,7 @@ pipeline {
                         docker run --rm \
                             -v ./:/app \
                             -v "/home/jenkins/.m2":"/home/jenkins/.m2" \
+                            -r JOB_ACTION="compile" \
                             -e MAVEN_CMD="clean verify sonar:sonar -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.token=$SONAR_TOKEN" \
                             $BUILD_IMAGE
                     '''
