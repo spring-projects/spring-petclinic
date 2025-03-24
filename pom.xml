@@ -37,7 +37,8 @@
     <maven-checkstyle.version>3.6.0</maven-checkstyle.version>
     <nohttp-checkstyle.version>0.0.11</nohttp-checkstyle.version>
     <spring-format.version>0.0.43</spring-format.version>
-
+    
+    <sonar.projectKey>spring-petclinic</sonar.projectKey>
   </properties>
 
   <dependencies>
@@ -285,6 +286,12 @@
         <?m2e ignore?>
         <groupId>org.cyclonedx</groupId>
         <artifactId>cyclonedx-maven-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>org.sonarsource.scanner.maven</groupId>
+        <artifactId>sonar-maven-plugin</artifactId>
+        <version>3.9.1.2184</version>
       </plugin>
 
     </plugins>
