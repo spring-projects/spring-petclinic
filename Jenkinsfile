@@ -9,7 +9,9 @@ pipeline {
   stages {
     stage('Setup JFrog CLI') {
       steps {
-        jfrog rt config --server-id-resolve jfrog-local --server-id-deploy jfrog-local
+        sh '''
+          jfrog rt config --server-id-resolve jfrog-local --server-id-deploy jfrog-local --interactive=false
+        '''
       }
     }
 
@@ -22,9 +24,11 @@ pipeline {
     stage('Build with Maven') {
       steps {
         sh '''
+          chmod +x mvnw
           jf mvnc --global \
             --repo-resolve-releases=libs-release-local \
             --repo-resolve-snapshots=libs-snapshot-local
+
           jf mvn clean install -DskipTests=true -Denforcer.skip=true
         '''
       }
@@ -32,19 +36,19 @@ pipeline {
 
     stage('Build Docker Image') {
       steps {
-        sh """
-          docker build -t localhost:8081/petclinic-docker-dev-local/spring-petclinic:${BUILD_ID} .
-        """
+        sh '''
+          docker build -t localhost:8081/petclinic-docker-dev-local/spring-petclinic:$BUILD_ID .
+        '''
       }
     }
 
     stage('Push Docker Image') {
       steps {
-        sh """
+        sh '''
           jf docker-push \
-            localhost:8081/petclinic-docker-dev-local/spring-petclinic:${BUILD_ID} \
+            localhost:8081/petclinic-docker-dev-local/spring-petclinic:$BUILD_ID \
             petclinic-docker-dev-local
-        """
+        '''
       }
     }
 
