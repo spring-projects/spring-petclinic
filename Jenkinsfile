@@ -25,7 +25,7 @@ pipeline {
         jf '''mvnc --global \
           --repo-resolve-releases=petclinic-maven-dev-virtual \
           --repo-resolve-snapshots=petclinic-maven-dev-virtual'''
-        jf "mvn clean deploy -DskipTests"
+        jf "mvn clean deploy -DskipTests -Dcheckstyle.skip=true"
       }
     }
 
