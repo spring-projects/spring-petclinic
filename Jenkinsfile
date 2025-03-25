@@ -22,7 +22,9 @@ pipeline {
     stage('Build Maven') {
       steps {
         sh 'chmod +x mvnw'
-        jf "mvnc --global --repo-resolve-releases=libs-release-local --repo-resolve-snapshots=libs-snapshot-local"
+        jf '''mvnc --global \
+          --repo-resolve-releases=petclinic-maven-dev-virtual \
+          --repo-resolve-snapshots=petclinic-maven-dev-virtual'''
         jf "mvn clean install -DskipTests=true"
       }
     }
