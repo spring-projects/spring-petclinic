@@ -2,24 +2,36 @@ pipeline {
   agent any
 
   tools {
-    jfrog 'jfrog-cli'
+    // You can still let Jenkins manage Maven, if you want
     maven 'maven-3'
   }
 
   environment {
     JFROG_CLI_BUILD_NAME = "spring-petclinic"
     JFROG_CLI_BUILD_NUMBER = "${BUILD_ID}"
+    // Adjust URL if needed (HTTP vs. HTTPS)
+    ARTIFACTORY_URL = "http://artifactory.artifactory.svc.cluster.local:8081/artifactory"
   }
 
   stages {
+
+    stage('Download JFrog CLI') {
+      steps {
+        // Download the CLI to "jf"
+        sh '''
+          curl -fL https://releases.jfrog.io/artifactory/jfrog-cli/v2-jf/latest/jfrog-cli-linux-arm64/jf -o jf
+          chmod +x jf
+        '''
+      }
+    }
+
     stage('Configure JFrog CLI') {
       steps {
         withCredentials([usernamePassword(credentialsId: 'jfrog-platform-creds', usernameVariable: 'ARTIFACTORY_USER', passwordVariable: 'ARTIFACTORY_PASSWORD')]) {
+          // Add the config called "petclinic"
           sh '''
-            curl -fL https://install-cli.jfrog.io | sh
-            chmod +x jf
             ./jf c add petclinic \
-              --url=http://artifactory.artifactory.svc.cluster.local:8081/artifactory \
+              --url=${ARTIFACTORY_URL} \
               --user=$ARTIFACTORY_USER \
               --password=$ARTIFACTORY_PASSWORD \
               --interactive=false
@@ -38,6 +50,7 @@ pipeline {
     stage('Build Maven') {
       steps {
         sh 'chmod +x mvnw'
+        // Configure Maven's Artifactory resolver/deployer
         sh '''
           ./jf mvnc --global \
             --repo-resolve-releases=petclinic-maven-dev-virtual \
@@ -45,6 +58,7 @@ pipeline {
             --repo-deploy-releases=petclinic-maven-dev-local \
             --repo-deploy-snapshots=petclinic-maven-dev-local
         '''
+        // Run the actual build & deploy
         sh './jf mvn clean deploy -DskipTests -Dcheckstyle.skip=true'
       }
     }
