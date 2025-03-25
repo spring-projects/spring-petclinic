@@ -3,6 +3,7 @@ pipeline {
 
   tools {
     jfrog 'jfrog-cli'
+    maven 'maven-3'
   }
 
   environment {
