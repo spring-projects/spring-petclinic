@@ -11,22 +11,22 @@ pipeline {
     JFROG_CLI_BUILD_NUMBER = "${BUILD_ID}"
   }
 
-stage('Configure JFrog CLI') {
-  steps {
-    withCredentials([usernamePassword(credentialsId: 'jfrog-platform-creds', usernameVariable: 'ARTIFACTORY_USER', passwordVariable: 'ARTIFACTORY_PASSWORD')]) {
-      sh '''
-        curl -fL https://install-cli.jfrog.io | sh
-        ./jf c add petclinic \
-          --url=http://artifactory.artifactory.svc.cluster.local:8081/artifactory \
-          --user=$ARTIFACTORY_USER \
-          --password=$ARTIFACTORY_PASSWORD \
-          --interactive=false
-        mv jf /usr/local/bin/jf || true
-      '''
+  stages {
+    stage('Configure JFrog CLI') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'jfrog-platform-creds', usernameVariable: 'ARTIFACTORY_USER', passwordVariable: 'ARTIFACTORY_PASSWORD')]) {
+          sh '''
+            curl -fL https://install-cli.jfrog.io | sh
+            ./jf c add petclinic \
+              --url=http://artifactory.artifactory.svc.cluster.local:8081/artifactory \
+              --user=$ARTIFACTORY_USER \
+              --password=$ARTIFACTORY_PASSWORD \
+              --interactive=false
+            mv jf /usr/local/bin/jf || true
+          '''
+        }
+      }
     }
-  }
-}
-
 
     stage('Validate Connection') {
       steps {
