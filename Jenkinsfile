@@ -1,41 +1,35 @@
 pipeline {
   agent any
 
+  tools {
+    jfrog 'jfrog-cli'
+  }
+
   environment {
     JFROG_CLI_BUILD_NAME = "spring-petclinic"
     JFROG_CLI_BUILD_NUMBER = "${BUILD_ID}"
   }
 
   stages {
-    stage('Setup JFrog CLI') {
+    stage('Setup') {
       steps {
-        jf "rt config --server-id-resolve jfrog-local --server-id-deploy jfrog-local --interactive=false"
+        jf 'c show'
+        jf 'rt ping'
       }
     }
 
-    stage('Checkout') {
-      steps {
-        git branch: 'main', url: 'https://github.com/JesseHouldsworth/spring-petclinic.git'
-      }
-    }
-
-    stage('Build with Maven') {
+    stage('Build Maven') {
       steps {
         sh 'chmod +x mvnw'
         jf "mvnc --global --repo-resolve-releases=libs-release-local --repo-resolve-snapshots=libs-snapshot-local"
-        jf "mvn clean install -DskipTests=true -Denforcer.skip=true"
+        jf "mvn clean install -DskipTests=true"
       }
     }
 
-    stage('Build Docker Image') {
+    stage('Docker') {
       steps {
-        sh "docker build -t localhost:8081/petclinic-docker-dev-local/spring-petclinic:${BUILD_ID} ."
-      }
-    }
-
-    stage('Push Docker Image') {
-      steps {
-        jf "docker-push localhost:8081/petclinic-docker-dev-local/spring-petclinic:${BUILD_ID} petclinic-docker-dev-local"
+        sh "docker build -t localhost:8081/petclinic-docker-dev-local/spring-petclinic:$BUILD_ID ."
+        jf "docker-push localhost:8081/petclinic-docker-dev-local/spring-petclinic:$BUILD_ID petclinic-docker-dev-local"
       }
     }
 
