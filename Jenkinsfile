@@ -17,12 +17,12 @@ pipeline {
         withCredentials([usernamePassword(credentialsId: 'jfrog-platform-creds', usernameVariable: 'ARTIFACTORY_USER', passwordVariable: 'ARTIFACTORY_PASSWORD')]) {
           sh '''
             curl -fL https://install-cli.jfrog.io | sh
+            chmod +x jf
             ./jf c add petclinic \
               --url=http://artifactory.artifactory.svc.cluster.local:8081/artifactory \
               --user=$ARTIFACTORY_USER \
               --password=$ARTIFACTORY_PASSWORD \
               --interactive=false
-            mv jf /usr/local/bin/jf || true
           '''
         }
       }
@@ -30,8 +30,8 @@ pipeline {
 
     stage('Validate Connection') {
       steps {
-        sh 'jf c use petclinic'
-        sh 'jf rt ping'
+        sh './jf c use petclinic'
+        sh './jf rt ping'
       }
     }
 
@@ -39,21 +39,21 @@ pipeline {
       steps {
         sh 'chmod +x mvnw'
         sh '''
-          jf mvnc --global \
+          ./jf mvnc --global \
             --repo-resolve-releases=petclinic-maven-dev-virtual \
             --repo-resolve-snapshots=petclinic-maven-dev-virtual \
             --repo-deploy-releases=petclinic-maven-dev-local \
             --repo-deploy-snapshots=petclinic-maven-dev-local
         '''
-        sh 'jf mvn clean deploy -DskipTests -Dcheckstyle.skip=true'
+        sh './jf mvn clean deploy -DskipTests -Dcheckstyle.skip=true'
       }
     }
 
     stage('Publish Build Info') {
       steps {
-        sh 'jf rt build-collect-env'
-        sh 'jf rt build-add-git'
-        sh 'jf rt build-publish'
+        sh './jf rt build-collect-env'
+        sh './jf rt build-add-git'
+        sh './jf rt build-publish'
       }
     }
   }
