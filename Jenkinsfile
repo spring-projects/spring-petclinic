@@ -9,39 +9,59 @@ pipeline {
   environment {
     JFROG_CLI_BUILD_NAME = "spring-petclinic"
     JFROG_CLI_BUILD_NUMBER = "${BUILD_ID}"
+    ARTIFACTORY_URL = "http://artifactory.artifactory.svc.cluster.local:8081/artifactory"
   }
 
   stages {
-    stage('Setup') {
+    stage('Configure JFrog CLI') {
       steps {
-        jf 'c show'
-        jf 'rt ping'
+        withCredentials([usernamePassword(credentialsId: 'artifactory-creds', usernameVariable: 'ARTIFACTORY_USER', passwordVariable: 'ARTIFACTORY_PASSWORD')]) {
+          sh '''
+            jf c show petclinic || jf c add petclinic \
+              --url=${ARTIFACTORY_URL} \
+              --user=${ARTIFACTORY_USER} \
+              --password=${ARTIFACTORY_PASSWORD} \
+              --interactive=false
+            jf use petclinic
+          '''
+        }
+      }
+    }
+
+    stage('Validate Connection') {
+      steps {
+        sh 'jf rt ping'
       }
     }
 
     stage('Build Maven') {
       steps {
         sh 'chmod +x mvnw'
-        jf '''mvnc --global \
-          --repo-resolve-releases=petclinic-maven-dev-virtual \
-          --repo-resolve-snapshots=petclinic-maven-dev-virtual'''
-        jf "mvn clean deploy -DskipTests -Dcheckstyle.skip=true"
-      }
-    }
-
-    stage('Docker') {
-      steps {
-        sh "docker build -t localhost:8081/petclinic-docker-dev-local/spring-petclinic:$BUILD_ID ."
-        jf "docker-push localhost:8081/petclinic-docker-dev-local/spring-petclinic:$BUILD_ID petclinic-docker-dev-local"
+        sh '''
+          jf mvnc --global \
+            --repo-resolve-releases=petclinic-maven-dev-virtual \
+            --repo-resolve-snapshots=petclinic-maven-dev-virtual \
+            --repo-deploy-releases=petclinic-maven-dev-local \
+            --repo-deploy-snapshots=petclinic-maven-dev-local
+        '''
+        sh 'jf mvn clean deploy -DskipTests -Dcheckstyle.skip=true'
       }
     }
 
     stage('Publish Build Info') {
       steps {
-        jf "rt build-collect-env"
-        jf "rt build-add-git"
-        jf "rt build-publish"
+        sh '''
+          jf rt build-collect-env
+          jf rt build-add-git
+          jf rt build-publish
+        '''
       }
+    }
+  }
+
+  post {
+    always {
+      echo "Build complete: $JFROG_CLI_BUILD_NAME #$JFROG_CLI_BUILD_NUMBER"
     }
   }
 }
