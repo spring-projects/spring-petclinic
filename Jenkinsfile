@@ -2,6 +2,7 @@ pipeline {
   agent any
 
   tools {
+    // This is your Jenkins-managed Maven tool
     maven 'maven-3'
   }
 
@@ -12,11 +13,12 @@ pipeline {
   }
 
   stages {
+
     stage('Download JFrog CLI') {
       steps {
-        // Download a specific ARM64 version of the jf binary
+        // Download a *confirmed* ARM64 version – 2.44.0
         sh '''
-          curl -fL https://releases.jfrog.io/artifactory/jfrog-cli/v2-jf/2.42.2/jfrog-cli-linux-arm64/jf -o jf
+          curl -fL https://releases.jfrog.io/artifactory/jfrog-cli/v2-jf/2.44.0/jfrog-cli-linux-arm64/jf -o jf
           chmod +x jf
         '''
       }
@@ -38,6 +40,7 @@ pipeline {
 
     stage('Validate Connection') {
       steps {
+        // Switch to "petclinic" config & ping Artifactory
         sh './jf c use petclinic'
         sh './jf rt ping'
       }
@@ -46,6 +49,7 @@ pipeline {
     stage('Build Maven') {
       steps {
         sh 'chmod +x mvnw'
+        // Configure Maven resolution + deployment in Artifactory
         sh '''
           ./jf mvnc --global \
             --repo-resolve-releases=petclinic-maven-dev-virtual \
@@ -53,6 +57,7 @@ pipeline {
             --repo-deploy-releases=petclinic-maven-dev-local \
             --repo-deploy-snapshots=petclinic-maven-dev-local
         '''
+        // Perform the actual build + deploy
         sh './jf mvn clean deploy -DskipTests -Dcheckstyle.skip=true'
       }
     }
