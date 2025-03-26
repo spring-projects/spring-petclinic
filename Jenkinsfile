@@ -8,7 +8,7 @@ pipeline {
   environment {
     JFROG_CLI_BUILD_NAME = "spring-petclinic"
     JFROG_CLI_BUILD_NUMBER = "${BUILD_ID}"
-    ARTIFACTORY_URL = "http://artifactory.artifactory.svc.cluster.local:8081"
+    ARTIFACTORY_URL = "https://trialt0zppb.jfrog.io/"
     JF = "${WORKSPACE}/jf"
   }
 
@@ -25,7 +25,7 @@ pipeline {
 
     stage('Configure JFrog CLI') {
       steps {
-        withCredentials([usernamePassword(credentialsId: 'jfrog-platform-creds', usernameVariable: 'ARTIFACTORY_USER', passwordVariable: 'ARTIFACTORY_PASSWORD')]) {
+        withCredentials([usernamePassword(credentialsId: 'jfrog-saas', usernameVariable: 'ARTIFACTORY_USER', passwordVariable: 'ARTIFACTORY_PASSWORD')]) {
           sh '''
             "$JF" c add petclinic \
               --url="${ARTIFACTORY_URL}" \
