@@ -31,7 +31,7 @@ pipeline {
               --url="${ARTIFACTORY_URL}" \
               --user="$ARTIFACTORY_USER" \
               --password="$ARTIFACTORY_PASSWORD" \
-              --interactive=false
+              --interactive=false \
               --enc-password=false
           '''
         }
