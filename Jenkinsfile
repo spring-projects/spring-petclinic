@@ -59,9 +59,8 @@ pipeline {
         sh '''
           "$JF" mvn clean deploy \
             -DskipTests -Dcheckstyle.skip=true \
-            --build-name=$JFROG_CLI_BUILD_NAME \
-            --build-number=$JFROG_CLI_BUILD_NUMBER \
-            --no-publish-build-info
+            --build-name="$JFROG_CLI_BUILD_NAME" \
+            --build-number="$JFROG_CLI_BUILD_NUMBER"
         '''
       }
     }
