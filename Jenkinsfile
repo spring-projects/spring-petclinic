@@ -8,7 +8,7 @@ pipeline {
   environment {
     JFROG_CLI_BUILD_NAME = "spring-petclinic"
     JFROG_CLI_BUILD_NUMBER = "${BUILD_ID}"
-    ARTIFACTORY_URL = "http://artifactory.artifactory.svc.cluster.local:8081/artifactory"
+    ARTIFACTORY_URL = "http://artifactory.artifactory.svc.cluster.local:8081"
     JF = "${WORKSPACE}/jf"
   }
 
@@ -32,6 +32,7 @@ pipeline {
               --user="$ARTIFACTORY_USER" \
               --password="$ARTIFACTORY_PASSWORD" \
               --interactive=false
+              --enc-password=false
           '''
         }
       }
