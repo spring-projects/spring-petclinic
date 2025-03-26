@@ -17,7 +17,7 @@ pipeline {
     stage('Download JFrog CLI') {
       steps {
         sh '''
-          curl -fL https://releases.jfrog.io/artifactory/jfrog-cli/v2-jf/2.44.0/jfrog-cli-linux-arm64/jf -o "$JF"
+          curl -fL https://releases.jfrog.io/artifactory/jfrog-cli/v2-jf/2.74.1/jfrog-cli-linux-arm64/jf -o "$JF"
           chmod +x "$JF"
         '''
       }
