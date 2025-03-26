@@ -42,6 +42,7 @@ pipeline {
       steps {
         sh '"$JF" c use petclinic'
         sh '"$JF" rt ping'
+        sh '"$JF" c show petclinic'
       }
     }
 
@@ -55,7 +56,13 @@ pipeline {
             --repo-deploy-releases=petclinic-maven-dev-local \
             --repo-deploy-snapshots=petclinic-maven-dev-local
         '''
-        sh '"$JF" mvn clean deploy -DskipTests -Dcheckstyle.skip=true'
+        sh '''
+          "$JF" mvn clean deploy \
+            -DskipTests -Dcheckstyle.skip=true \
+            --build-name=$JFROG_CLI_BUILD_NAME \
+            --build-number=$JFROG_CLI_BUILD_NUMBER \
+            --no-publish-build-info
+        '''
       }
     }
 
