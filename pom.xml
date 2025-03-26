@@ -452,14 +452,4 @@
       </build>
     </profile>
   </profiles>
-  <distributionManagement>
-    <repository>
-      <id>petclinic-maven-dev-local</id>
-      <url>http://artifactory.artifactory.svc.cluster.local:8081/artifactory/petclinic-maven-dev-local</url>
-    </repository>
-    <snapshotRepository>
-      <id>petclinic-maven-dev-local</id>
-      <url>http://artifactory.artifactory.svc.cluster.local:8081/artifactory/petclinic-maven-dev-local</url>
-    </snapshotRepository>
-  </distributionManagement>
 </project>
