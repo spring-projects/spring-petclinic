@@ -8,11 +8,11 @@ on:
 
 jobs:
   build:
-    env:
-      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+    # env:
+    #   ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+    #   ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+    #   ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+    #   ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -22,7 +22,7 @@ jobs:
       - name: Install kubectl
         uses: azure/setup-kubectl@v4
         with:
-          version: '1.29.0'  
+          version: 'v1.29.0'  
         id: install
 
       - uses: actions/checkout@v4
