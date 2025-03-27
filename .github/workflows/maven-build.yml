@@ -65,13 +65,18 @@ jobs:
         with:
           creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
 
-      - name: Azure CLI script
-        uses: azure/cli@v2
-        with:
-          azcliversion: latest
-          inlineScript: |
-            az aks get-credentials --resource-group grid-capstone --name dev-grid-cluster --admin --overwrite-existing
-            cat ~/.kube/config
+      # - name: Azure CLI script
+      #   uses: azure/cli@v2
+      #   with:
+      #     azcliversion: latest
+      #     inlineScript: |
+      #       az aks get-credentials --resource-group grid-capstone --name dev-grid-cluster --admin --overwrite-existing
+      #       cat ~/.kube/config
+      
+      - name: Try to execute az commands
+        run: |
+          az aks get-credentials --resource-group grid-capstone --name dev-grid-cluster --admin --overwrite-existing
+          cat ~/.kube/config
       
       - name: check kubectl
         run: |
