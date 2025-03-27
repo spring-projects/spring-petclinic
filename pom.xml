@@ -250,45 +250,7 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-          <groupId>org.jacoco</groupId>
-          <artifactId>jacoco-maven-plugin</artifactId>
-          <version>${jacoco.version}</version>
-          <executions>
-              <!-- Agente de JaCoCo para la instrumentación del código -->
-              <execution>
-                  <id>prepare-agent</id>
-                  <goals>
-                      <goal>prepare-agent</goal>
-                  </goals>
-              </execution>
 
-              <!-- Generar el informe de cobertura en la fase "verify" para asegurar que se ejecuta después de los tests -->
-              <execution>
-                  <id>report</id>
-                  <phase>verify</phase>
-                  <goals>
-                      <goal>report</goal>
-                  </goals>
-                  <configuration>
-                      <outputEncoding>UTF-8</outputEncoding>
-                  </configuration>
-              </execution>
-
-              <!-- Generar el informe en formato XML para SonarQube -->
-              <execution>
-                  <id>report-aggregate</id>
-                  <phase>verify</phase>
-                  <goals>
-                      <goal>report-aggregate</goal>
-                  </goals>
-                  <configuration>
-                      <outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
-                  </configuration>
-              </execution>
-          </executions>
-      </plugin>
-      
       <!-- Spring Boot Actuator displays build-related information if a git.properties file is
       present at the classpath -->
       <plugin>
@@ -475,6 +437,37 @@
             </plugin>
           </plugins>
         </pluginManagement>
+      </build>
+    </profile>
+    <profile>
+      <id>coverage</id>
+      <build>
+      <plugins>
+        <plugin>
+          <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+          <version>0.8.7</version>
+          <executions>
+            <execution>
+              <id>prepare-agent</id>
+              <goals>
+                <goal>prepare-agent</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>report</id>
+              <goals>
+                <goal>report</goal>
+              </goals>
+              <configuration>
+                <formats>
+                  <format>XML</format>
+                </formats>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
       </build>
     </profile>
   </profiles>
