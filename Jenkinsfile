@@ -10,7 +10,6 @@ pipeline {
         JFROG_CREDENTIALS_ID = 'jfrog-saas'
         JFROG_CLI_BUILD_NAME = "spring-petclinic"
         JFROG_CLI_BUILD_NUMBER = "${BUILD_ID}"
-        // Downloaded JFrog CLI path
         JF = "${WORKSPACE}/jfrog"
     }
     stages {
@@ -57,9 +56,9 @@ pipeline {
 
         stage('Xray Scan') {
             steps {
-                // Changed to modern syntax: jf x s
+                // Use the Artifactory command to scan the build with Xray:
                 sh """
-                    ${JF} x s ${JFROG_CLI_BUILD_NAME} ${JFROG_CLI_BUILD_NUMBER} \\
+                    ${JF} rt build-scan ${JFROG_CLI_BUILD_NAME} ${JFROG_CLI_BUILD_NUMBER} \\
                         --fail-on-severity=High
                 """
             }
