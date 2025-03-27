@@ -89,6 +89,12 @@ jobs:
           git add .
           git commit -m "Kubernetes manifests file update: $(date)"
           git push
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: 'v1.29.0'  
+        id: install
+        
       - uses: azure/login@v2
         name: Azure Login
         with:
