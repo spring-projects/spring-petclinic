@@ -24,6 +24,12 @@ jobs:
         with:
           version: 'v1.29.0'  
         id: install
+      - name: check kubectl
+        run: |
+          echo "---------"
+          echo "---------"
+          kubectl get nodes
+          kubectl get pods
 
       - uses: actions/checkout@v4
         name: Checkout code
