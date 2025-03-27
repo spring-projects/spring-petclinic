@@ -49,6 +49,12 @@ jobs:
           registry: ${{ vars.ACR_NAME }}.azurecr.io
           username: ${{ secrets.AZURE_CLIENT_ID }}
           password: ${{ secrets.AZURE_CLIENT_SECRET }}
+
+          
+      - uses: azure/login@v2
+        name: Azure Login
+        with:
+          creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
       
       - name: Docker Build and push
         uses: docker/build-push-action@v6
@@ -59,13 +65,6 @@ jobs:
             grid-capstone-${{ github.sha }}
 
 
-
-          
-      - uses: azure/login@v2
-        name: Azure Login
-        with:
-          creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
-      
       - name: Getting access to the cluster
         run: |
           az aks get-credentials --resource-group grid-capstone --name dev-grid-cluster --admin --overwrite-existing
