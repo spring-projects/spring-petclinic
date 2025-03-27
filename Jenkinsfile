@@ -4,16 +4,14 @@ pipeline {
         maven 'maven-3'
     }
     environment {
-        // -----------------------------
-        // Adjust these values as needed
-        // -----------------------------
         JFROG_URL = "https://trialt0zppb.jfrog.io"
         JFROG_REPO_RELEASES = "petclinic-maven-dev-local"
         JFROG_REPO_SNAPSHOTS = "petclinic-maven-dev-virtual"
         JFROG_CREDENTIALS_ID = 'jfrog-saas'
         JFROG_CLI_BUILD_NAME = "spring-petclinic"
         JFROG_CLI_BUILD_NUMBER = "${BUILD_ID}"
-        JF = "${WORKSPACE}/jfrog"  // local path to the downloaded CLI
+        // Downloaded JFrog CLI path
+        JF = "${WORKSPACE}/jfrog"
     }
     stages {
         stage('Download JFrog CLI') {
@@ -59,10 +57,9 @@ pipeline {
 
         stage('Xray Scan') {
             steps {
-                // Scan the build you just deployed using Xray
-                // Fail the build if there's a severity of "High" or above
+                // Changed to modern syntax: jf x s
                 sh """
-                    ${JF} xr build-scan ${JFROG_CLI_BUILD_NAME} ${JFROG_CLI_BUILD_NUMBER} \
+                    ${JF} x s ${JFROG_CLI_BUILD_NAME} ${JFROG_CLI_BUILD_NUMBER} \\
                         --fail-on-severity=High
                 """
             }
