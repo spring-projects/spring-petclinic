@@ -81,6 +81,8 @@ jobs:
       - name: check kubectl
         run: |
           cat ~/.kube/config
+          kubectl get pods
+          kubectl get nodes
           
             
       
