@@ -25,13 +25,13 @@ pipeline {
         stage('Configure JFrog CLI') {
             steps {
                 withCredentials([usernamePassword(credentialsId: "${JFROG_CREDENTIALS_ID}", usernameVariable: 'JFROG_USER', passwordVariable: 'JFROG_API_KEY')]) {
-                    sh '''
-                        "$JF" config add jenkins-config \
-                            --artifactory-url="${JFROG_URL}" \
-                            --user="$JFROG_USER" \
-                            --apikey="$JFROG_API_KEY" \
+                    sh """
+                        ${JF} config add jenkins-config \
+                            --artifactory-url=${JFROG_URL}/artifactory \
+                            --user=${JFROG_USER} \
+                            --apikey=${JFROG_API_KEY} \
                             --interactive=false
-                    '''
+                    """
                 }
             }
         }
