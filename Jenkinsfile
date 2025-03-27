@@ -29,7 +29,7 @@ pipeline {
                         ${JF} config add jenkins-config \
                             --artifactory-url=${JFROG_URL}/artifactory \
                             --user=${JFROG_USER} \
-                            --apikey=${JFROG_API_KEY} \
+                            --password=${JFROG_API_KEY} \
                             --interactive=false \
                             --overwrite=true
                     """
