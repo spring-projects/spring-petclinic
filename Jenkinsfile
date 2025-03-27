@@ -4,13 +4,16 @@ pipeline {
         maven 'maven-3'
     }
     environment {
+        // -----------------------------
+        // Adjust these values as needed
+        // -----------------------------
         JFROG_URL = "https://trialt0zppb.jfrog.io"
         JFROG_REPO_RELEASES = "petclinic-maven-dev-local"
         JFROG_REPO_SNAPSHOTS = "petclinic-maven-dev-virtual"
         JFROG_CREDENTIALS_ID = 'jfrog-saas'
         JFROG_CLI_BUILD_NAME = "spring-petclinic"
         JFROG_CLI_BUILD_NUMBER = "${BUILD_ID}"
-        JF = "${WORKSPACE}/jfrog"
+        JF = "${WORKSPACE}/jfrog"  // local path to the downloaded CLI
     }
     stages {
         stage('Download JFrog CLI') {
@@ -37,19 +40,30 @@ pipeline {
             }
         }
 
-        stage('Build Maven') {
+        stage('Build with Maven') {
             steps {
                 sh """
-                    ${JF} mvnc --global \
-                        --repo-resolve-releases=${JFROG_REPO_SNAPSHOTS} \
-                        --repo-resolve-snapshots=${JFROG_REPO_SNAPSHOTS} \
-                        --repo-deploy-releases=${JFROG_REPO_RELEASES} \
+                    ${JF} mvnc --global \\
+                        --repo-resolve-releases=${JFROG_REPO_SNAPSHOTS} \\
+                        --repo-resolve-snapshots=${JFROG_REPO_SNAPSHOTS} \\
+                        --repo-deploy-releases=${JFROG_REPO_RELEASES} \\
                         --repo-deploy-snapshots=${JFROG_REPO_RELEASES}
                 """
                 sh """
-                    ${JF} mvn clean deploy -DskipTests -Dcheckstyle.skip=true \
-                        --build-name=${JFROG_CLI_BUILD_NAME} \
+                    ${JF} mvn clean deploy -DskipTests -Dcheckstyle.skip=true \\
+                        --build-name=${JFROG_CLI_BUILD_NAME} \\
                         --build-number=${JFROG_CLI_BUILD_NUMBER}
+                """
+            }
+        }
+
+        stage('Xray Scan') {
+            steps {
+                // Scan the build you just deployed using Xray
+                // Fail the build if there's a severity of "High" or above
+                sh """
+                    ${JF} xray scan --build="${JFROG_CLI_BUILD_NAME}" ${JFROG_CLI_BUILD_NUMBER} \
+                        --fail-on-severity=High
                 """
             }
         }
