@@ -4,26 +4,54 @@
 name: Java CI with Maven
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
-
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
         java: [ '17' ]
 
     steps:
+
+      - uses: azure/setup-kubectl@v4
+        with:
+          id: install
+
       - uses: actions/checkout@v4
+        name: Checkout code
+
       - name: Set up JDK ${{matrix.java}}
         uses: actions/setup-java@v4
         with:
           java-version: ${{matrix.java}}
-          distribution: 'adopt'
+          distribution: 'temurin'
           cache: maven
-      - name: Build with Maven Wrapper
-        run: ./mvnw -B verify
+
+      - name: Add executable permissions
+        run: chmod a+x mvnw
+
+      - name: Maven install dependencies
+        run: ./mvnw clean install package
+
+      - name: Upload JAR artifact 
+        uses: actions/upload-artifact@4
+        with:
+          name: grid-capstone
+          path: ./target/*.jar
+          
+      - name: Azure CLI script
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az account show
+            az storage -h
+      
+      
