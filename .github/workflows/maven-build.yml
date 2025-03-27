@@ -34,11 +34,11 @@ jobs:
       - name: Maven install dependencies
         run: ./mvnw clean install package
 
-      - name: Upload JAR artifact 
-        uses: actions/upload-artifact@4
-        with:
-          name: grid-capstone
-          path: ./target/*.jar
+      # - name: Upload JAR artifact 
+      #   uses: actions/upload-artifact@4
+      #   with:
+      #     name: grid-capstone
+      #     path: ./target/*.jar
 
 
 
