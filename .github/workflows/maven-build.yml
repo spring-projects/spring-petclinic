@@ -71,6 +71,7 @@ jobs:
           azcliversion: latest
           inlineScript: |
             az aks get-credentials --resource-group grid-capstone --name dev-grid-cluster --admin --overwrite-existing
+            cat ~/.kube/config
       
       - name: check kubectl
         run: |
