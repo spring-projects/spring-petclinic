@@ -24,12 +24,7 @@ jobs:
         with:
           version: 'v1.29.0'  
         id: install
-      - name: check kubectl
-        run: |
-          echo "---------"
-          echo "---------"
-          kubectl get nodes
-          kubectl get pods
+      
 
       - uses: actions/checkout@v4
         name: Checkout code
@@ -76,15 +71,13 @@ jobs:
           azcliversion: latest
           inlineScript: |
             az aks get-credentials --resource-group grid-capstone --name dev-grid-cluster --admin
-            cat ~/.kube/config
-            echo "---------"
-            echo "---------"
-            echo "---------"
-            echo "---------"
-            echo "---------"
-            echo "---------"
-            kubectl get nodes
-            kubectl get pods
+      
+      - name: check kubectl
+        run: |
+          echo "---------"
+          echo "---------"
+          kubectl get nodes
+          kubectl get pods
             
       
       
