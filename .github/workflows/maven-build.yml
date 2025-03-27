@@ -70,7 +70,7 @@ jobs:
         with:
           azcliversion: latest
           inlineScript: |
-            az aks get-credentials --resource-group grid-capstone --name dev-grid-cluster --admin
+            az aks get-credentials --resource-group grid-capstone --name dev-grid-cluster --admin --overwrite-existing
       
       - name: check kubectl
         run: |
