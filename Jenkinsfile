@@ -62,7 +62,7 @@ pipeline {
                 // Scan the build you just deployed using Xray
                 // Fail the build if there's a severity of "High" or above
                 sh """
-                    ${JF} xray scan --build="${JFROG_CLI_BUILD_NAME}" ${JFROG_CLI_BUILD_NUMBER} \
+                    ${JF} xr scan --build="${JFROG_CLI_BUILD_NAME}" ${JFROG_CLI_BUILD_NUMBER} \
                         --fail-on-severity=High
                 """
             }
