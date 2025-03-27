@@ -59,7 +59,7 @@ pipeline {
                 // Use the new "jf build-scan" command
                 // "Fail Build" is decided by your Xray policy if severity >= High
                 sh """
-                    ${JF} build-scan ${JFROG_CLI_BUILD_NAME} ${JFROG_CLI_BUILD_NUMBER} --fail=false
+                    ${JF} build-scan ${JFROG_CLI_BUILD_NAME} ${JFROG_CLI_BUILD_NUMBER} --fail false
                 """
             }
         }
