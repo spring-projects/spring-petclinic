@@ -34,7 +34,7 @@ jobs:
       - name: Upload JAR artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-protector
+          name: grid-capstone
           path: ./target/*.jar
 
 
@@ -86,6 +86,13 @@ jobs:
         name: Azure Login
         with:
           creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
+
+      - uses: actions/download-artifact@v4
+        name: Copy artifact from build job
+        with:
+          name: grid-capstone
+          path: ./target/*.jar
+
 
       - name: Docker Build and push
         run: |
