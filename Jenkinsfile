@@ -27,7 +27,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: "${JFROG_CREDENTIALS_ID}", usernameVariable: 'JFROG_USER', passwordVariable: 'JFROG_API_KEY')]) {
                     sh '''
                         "$JF" config add jenkins-config \
-                            --url="${JFROG_URL}" \
+                            --artifactory-url="${JFROG_URL}" \
                             --user="$JFROG_USER" \
                             --apikey="$JFROG_API_KEY" \
                             --interactive=false
