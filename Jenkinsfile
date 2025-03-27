@@ -4,7 +4,7 @@ pipeline {
         maven 'maven-3'
     }
     environment {
-        JFROG_URL = "https://trialt0zppb.jfrog.io"
+        JFROG_URL = "https://trialt0zppb.jfrog.io/"
         JFROG_REPO_RELEASES = "petclinic-maven-dev-local"
         JFROG_REPO_SNAPSHOTS = "petclinic-maven-dev-virtual"
         JFROG_CREDENTIALS_ID = 'jfrog-saas'
@@ -27,7 +27,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: "${JFROG_CREDENTIALS_ID}", usernameVariable: 'JFROG_USER', passwordVariable: 'JFROG_API_KEY')]) {
                     sh """
                         ${JF} config add jenkins-config \
-                            --artifactory-url=${JFROG_URL}/artifactory \
+                            --url=${JFROG_URL} \
                             --user=${JFROG_USER} \
                             --password=${JFROG_API_KEY} \
                             --interactive=false \
