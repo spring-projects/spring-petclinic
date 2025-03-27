@@ -1,18 +1,10 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/use-cases-and-examples/building-and-testing/building-and-testing-java-with-maven
-
-name: Java CI with Maven
+name: Successfull merge pipeline
 
 on:
   workflow_dispatch:
 
 jobs:
   build:
-    # env:
-    #   ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-    #   ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-    #   ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-    #   ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -39,48 +31,42 @@ jobs:
       - name: Add executable permissions
         run: chmod a+x mvnw
 
-      # - name: Maven install dependencies
-      #   run: ./mvnw clean install package
+      - name: Maven install dependencies
+        run: ./mvnw clean install package
 
-      # - name: Upload JAR artifact 
-      #   uses: actions/upload-artifact@4
-      #   with:
-      #     name: grid-capstone
-      #     path: ./target/*.jar
+      - name: Upload JAR artifact 
+        uses: actions/upload-artifact@4
+        with:
+          name: grid-capstone
+          path: ./target/*.jar
+
+
+
+      - name: Login to ACR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ vars.ACR_NAME }}.azurecr.io
+          username: ${{ secrets.AZURE_CLIENT_ID }}
+          password: ${{ secrets.AZURE_CLIENT_SECRET }}
+      
+      - name: Docker Build and push
+        uses:
+        with:
+          push: true
+          tags: |
+            grid-capstone-${{ github.sha }}
+
+
+
           
-      # - name: Install kubectl
-      #   run: |
-      #       curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-      #       sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl 
-      #       chmod +x kubectl
-      #       mkdir -p ~/.local/bin
-      #       mv ./kubectl ~/.local/bin/kubectl
-      #       kubectl version --client
-
-
-
-
-
       - uses: azure/login@v2
+        name: Azure Login
         with:
           creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
-
-      # - name: Azure CLI script
-      #   uses: azure/cli@v2
-      #   with:
-      #     azcliversion: latest
-      #     inlineScript: |
-      #       az aks get-credentials --resource-group grid-capstone --name dev-grid-cluster --admin --overwrite-existing
-      #       cat ~/.kube/config
       
-      - name: Try to execute az commands
+      - name: Getting access to the cluster
         run: |
           az aks get-credentials --resource-group grid-capstone --name dev-grid-cluster --admin --overwrite-existing
-          cat ~/.kube/config
-      
-      - name: check kubectl
-        run: |
-          cat ~/.kube/config
           kubectl get pods
           kubectl get nodes
           
