@@ -50,7 +50,7 @@ jobs:
           password: ${{ secrets.AZURE_CLIENT_SECRET }}
       
       - name: Docker Build and push
-        uses:
+        uses: docker/build-push-action@v6ś
         with:
           push: true
           tags: |
