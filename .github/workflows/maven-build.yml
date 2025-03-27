@@ -94,7 +94,7 @@ jobs:
         with:
           version: 'v1.29.0'  
         id: install
-        
+
       - uses: azure/login@v2
         name: Azure Login
         with:
@@ -102,7 +102,7 @@ jobs:
       - name: Getting access to the cluster
         run: |
           az aks get-credentials --resource-group grid-capstone --name dev-grid-cluster --admin --overwrite-existing
-          kubectl apply -f .
+          kubectl apply -f ./cicd/grid-capstone-k8s-manifests
 
             
       
