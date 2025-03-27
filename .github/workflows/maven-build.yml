@@ -45,6 +45,7 @@ jobs:
       - name: Login to ACR
         uses: docker/login-action@v3
         with:
+
           registry: ${{ vars.ACR_NAME }}.azurecr.io
           username: ${{ secrets.AZURE_CLIENT_ID }}
           password: ${{ secrets.AZURE_CLIENT_SECRET }}
@@ -52,6 +53,7 @@ jobs:
       - name: Docker Build and push
         uses: docker/build-push-action@v6
         with:
+          context: .
           push: true
           tags: |
             grid-capstone-${{ github.sha }}
