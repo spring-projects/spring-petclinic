@@ -19,7 +19,6 @@ jobs:
         java: [ '17' ]
 
     steps:
-
       - uses: azure/setup-kubectl@v4
         with:
           id: install
@@ -40,11 +39,11 @@ jobs:
       - name: Maven install dependencies
         run: ./mvnw clean install package
 
-      - name: Upload JAR artifact 
-        uses: actions/upload-artifact@4
-        with:
-          name: grid-capstone
-          path: ./target/*.jar
+      # - name: Upload JAR artifact 
+      #   uses: actions/upload-artifact@4
+      #   with:
+      #     name: grid-capstone
+      #     path: ./target/*.jar
           
       - name: Azure CLI script
         uses: azure/cli@v2
