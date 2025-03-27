@@ -15,8 +15,13 @@ pipeline {
         stage('Build Maven') {
             steps {
                 script {
-                    // Using JFrog plugin to capture build info
-                    artifactory.upload spec: """{
+                    def server = Artifactory.server(env.JFROG_CREDENTIALS_ID)
+
+                    // Run Maven Build
+                    sh 'mvn clean install -DskipTests -Dcheckstyle.skip=true'
+
+                    // Upload artifacts to Artifactory
+                    server.upload spec: """{
                         "files": [
                             {
                                 "pattern": "target/*.jar",
@@ -24,21 +29,19 @@ pipeline {
                             }
                         ]
                     }"""
-                    
-                    // Run Maven Build
-                    sh 'mvn clean deploy -DskipTests -Dcheckstyle.skip=true'
                 }
             }
         }
         stage('Publish Build Info') {
             steps {
                 script {
-                    // Publish build information to JFrog Artifactory
+                    def server = Artifactory.server(env.JFROG_CREDENTIALS_ID)
+
                     def buildInfo = Artifactory.newBuildInfo()
-                    buildInfo.name = "${JFROG_CLI_BUILD_NAME}"
-                    buildInfo.number = "${JFROG_CLI_BUILD_NUMBER}"
-                    
-                    Artifactory.publishBuildInfo(buildInfo)
+                    buildInfo.name = env.JFROG_CLI_BUILD_NAME
+                    buildInfo.number = env.JFROG_CLI_BUILD_NUMBER
+
+                    server.publishBuildInfo(buildInfo)
                 }
             }
         }
