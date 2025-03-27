@@ -59,8 +59,8 @@ jobs:
       - name: Docker Build and push
         run: |
           az acr login --name ${{ vars.ACR_NAME }}
-          docker build -t ${{ ACR_NAME }}.azurecr.io/grid-capstone:${{ github.sha }} .
-          docker push ${{ ACR_NAME }}.azurecr.io/grid-capstone:${{ github.sha }}
+          docker build -t ${{ vars.ACR_NAME }}.azurecr.io/grid-capstone:${{ github.sha }} .
+          docker push ${{ vars.ACR_NAME }}.azurecr.io/grid-capstone:${{ github.sha }}
 
 
       - name: Getting access to the cluster
