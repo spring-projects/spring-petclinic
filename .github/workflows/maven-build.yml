@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: azure/setup-kubectl@v4
         with:
-          id: install
+        id: install
 
       - uses: actions/checkout@v4
         name: Checkout code
@@ -45,14 +45,14 @@ jobs:
       #     name: grid-capstone
       #     path: ./target/*.jar
           
-      - name: Install kubectl
-        run: |
-            curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-            sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl 
-            chmod +x kubectl
-            mkdir -p ~/.local/bin
-            mv ./kubectl ~/.local/bin/kubectl
-            kubectl version --client
+      # - name: Install kubectl
+      #   run: |
+      #       curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+      #       sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl 
+      #       chmod +x kubectl
+      #       mkdir -p ~/.local/bin
+      #       mv ./kubectl ~/.local/bin/kubectl
+      #       kubectl version --client
 
 
 
