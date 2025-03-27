@@ -56,5 +56,14 @@ jobs:
           inlineScript: |
             az aks get-credentials --resource-group grid-capstone --name dev-grid-cluster --admin
             cat ~/.kube/config
+            echo "---------"
+            echo "---------"
+            echo "---------"
+            echo "---------"
+            echo "---------"
+            echo "---------"
+            kubectl get nodes
+            kubectl get pods
+            
       
       
