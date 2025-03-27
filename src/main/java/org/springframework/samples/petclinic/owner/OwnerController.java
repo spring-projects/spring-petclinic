@@ -110,9 +110,9 @@ class OwnerController {
 			owner = ownersResults.iterator().next();
 			return "redirect:/owners/" + owner.getId();
 		}
-
 		// multiple owners found
 		return addPaginationModel(page, model, ownersResults);
+
 	}
 
 	private String addPaginationModel(int page, Model model, Page<Owner> paginated) {
