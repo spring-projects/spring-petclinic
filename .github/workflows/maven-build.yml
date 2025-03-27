@@ -62,6 +62,11 @@ jobs:
           docker build -t ${{ vars.ACR_NAME }}.azurecr.io/grid-capstone:${{ github.sha }} .
           docker push ${{ vars.ACR_NAME }}.azurecr.io/grid-capstone:${{ github.sha }}
 
+      - name: My GitOps solution
+        run: |
+          sed -i 's|${{ vars.ACR_NAME }}.azurecr.io/grid-capstone:[0-9a-f]\{40\}|${{ vars.ACR_NAME }}.azurecr.io/grid-capstone:${{ github.sha }}|g' deployment.yml
+          kubectl apply -f deployment.yml
+
 
       - name: Getting access to the cluster
         run: |
