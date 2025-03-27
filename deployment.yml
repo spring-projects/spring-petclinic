@@ -9,7 +9,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: test1
+      app: test2
   strategy: {}
   template:
     metadata:
