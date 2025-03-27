@@ -67,12 +67,29 @@ jobs:
           az aks get-credentials --resource-group grid-capstone --name dev-grid-cluster --admin --overwrite-existing
           kubectl get pods
           kubectl get nodes
-          
-      - name: My GitOps solution
+      
+  deploy:
+    runs-on: ubuntu-latest  
+    steps:  
+      - name: Automatic deployment
         run: |
+          git config --global user.name 'Kacper Piasecki'
+          git config --global user.email 'k.r.piasecki2@gmail.com'
+          git config --unset-all http.https://github.com/.extraheader
+          git clone "https://x-access-token:${{ secrets.K8S_GITHUB_TOKEN }}@github.com/Piasecki-grid/grid-capstone-k8s-manifests.git"
+          cd grid-capstone-k8s-manifests
           sed -i 's|${{ vars.ACR_NAME }}.azurecr.io/grid-capstone:[0-9a-f]\{40\}|${{ vars.ACR_NAME }}.azurecr.io/grid-capstone:${{ github.sha }}|g' deployment.yml
-          kubectl apply -f deployment.yml
-
+          git add .
+          git commit -m "Kubernetes manifests file update: $(date)"
+          git push
+      - uses: azure/login@v2
+        name: Azure Login
+        with:
+          creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
+      - name: Getting access to the cluster
+        run: |
+          az aks get-credentials --resource-group grid-capstone --name dev-grid-cluster --admin --overwrite-existing
+          kubectl apply -f .
 
             
       
