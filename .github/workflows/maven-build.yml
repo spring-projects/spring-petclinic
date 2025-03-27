@@ -42,13 +42,13 @@ jobs:
 
 
 
-      - name: Login to ACR
-        uses: docker/login-action@v3
-        with:
+      # - name: Login to ACR
+      #   uses: docker/login-action@v3
+      #   with:
 
-          registry: ${{ vars.ACR_NAME }}.azurecr.io
-          username: ${{ secrets.AZURE_CLIENT_ID }}
-          password: ${{ secrets.AZURE_CLIENT_SECRET }}
+      #     registry: ${{ vars.ACR_NAME }}.azurecr.io
+      #     username: ${{ secrets.AZURE_CLIENT_ID }}
+      #     password: ${{ secrets.AZURE_CLIENT_SECRET }}
 
           
       - uses: azure/login@v2
@@ -57,12 +57,10 @@ jobs:
           creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
       
       - name: Docker Build and push
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          push: true
-          tags: |
-            grid-capstone-${{ github.sha }}
+        run: |
+          az acr login --name ${{ vars.ACR_NAME }}
+          docker build -t ${{ ACR_NAME }}.azurecr.io/grid-capstone:${{ github.sha }} .
+          docker push ${{ ACR_NAME }}.azurecr.io/grid-capstone:${{ github.sha }}
 
 
       - name: Getting access to the cluster
