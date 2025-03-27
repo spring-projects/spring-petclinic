@@ -72,12 +72,18 @@ jobs:
     needs: build
     runs-on: ubuntu-latest  
     steps:  
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Automatic deployment
         run: |
           git config --global user.name 'Kacper Piasecki'
           git config --global user.email 'k.r.piasecki2@gmail.com'
           git config --unset-all http.https://github.com/.extraheader
           rm -rf .git
+          mkdir cicd
+          cd cicd
           git clone "https://x-access-token:${{ secrets.K8S_GITHUB_TOKEN }}@github.com/Piasecki-grid/grid-capstone-k8s-manifests.git"
           cd grid-capstone-k8s-manifests
           sed -i 's|${{ vars.ACR_NAME }}.azurecr.io/grid-capstone:[0-9a-f]\{40\}|${{ vars.ACR_NAME }}.azurecr.io/grid-capstone:${{ github.sha }}|g' deployment.yml
