@@ -19,8 +19,10 @@ jobs:
         java: [ '17' ]
 
     steps:
-      - uses: azure/setup-kubectl@v4
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v4
         with:
+          version: '1.29.0'  
         id: install
 
       - uses: actions/checkout@v4
