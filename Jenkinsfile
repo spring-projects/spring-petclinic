@@ -10,15 +10,15 @@ pipeline {
         JFROG_CREDENTIALS_ID = 'jfrog-saas'
         JFROG_CLI_BUILD_NAME = "spring-petclinic"
         JFROG_CLI_BUILD_NUMBER = "${BUILD_ID}"
-        JF = "${WORKSPACE}/jfrog"  // Local CLI path
+        JF = "${WORKSPACE}/jfrog"
     }
     stages {
         stage('Download JFrog CLI') {
             steps {
-                sh '''
-                    curl -fL https://releases.jfrog.io/artifactory/jfrog-cli/v2-jf/2.74.1/jfrog-cli-linux-amd64/jf -o "$JF"
-                    chmod +x "$JF"
-                '''
+                sh """
+                    curl -fL https://releases.jfrog.io/artifactory/jfrog-cli/v2-jf/2.74.1/jfrog-cli-linux-amd64/jf -o "${JF}"
+                    chmod +x "${JF}"
+                """
             }
         }
 
@@ -30,7 +30,8 @@ pipeline {
                             --artifactory-url=${JFROG_URL}/artifactory \
                             --user=${JFROG_USER} \
                             --apikey=${JFROG_API_KEY} \
-                            --interactive=false
+                            --interactive=false \
+                            --overwrite=true
                     """
                 }
             }
@@ -38,28 +39,28 @@ pipeline {
 
         stage('Build Maven') {
             steps {
-                sh '''
-                    "$JF" mvnc --global \
+                sh """
+                    ${JF} mvnc --global \
                         --repo-resolve-releases=${JFROG_REPO_SNAPSHOTS} \
                         --repo-resolve-snapshots=${JFROG_REPO_SNAPSHOTS} \
                         --repo-deploy-releases=${JFROG_REPO_RELEASES} \
                         --repo-deploy-snapshots=${JFROG_REPO_RELEASES}
-                '''
-                sh '''
-                    "$JF" mvn clean deploy -DskipTests -Dcheckstyle.skip=true \
-                        --build-name="$JFROG_CLI_BUILD_NAME" \
-                        --build-number="$JFROG_CLI_BUILD_NUMBER"
-                '''
+                """
+                sh """
+                    ${JF} mvn clean deploy -DskipTests -Dcheckstyle.skip=true \
+                        --build-name=${JFROG_CLI_BUILD_NAME} \
+                        --build-number=${JFROG_CLI_BUILD_NUMBER}
+                """
             }
         }
 
         stage('Publish Build Info') {
             steps {
-                sh '''
-                    "$JF" rt build-collect-env
-                    "$JF" rt build-add-git
-                    "$JF" rt build-publish
-                '''
+                sh """
+                    ${JF} rt build-collect-env
+                    ${JF} rt build-add-git
+                    ${JF} rt build-publish
+                """
             }
         }
     }
