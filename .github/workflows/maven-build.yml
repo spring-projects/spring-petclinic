@@ -36,8 +36,8 @@ jobs:
       - name: Add executable permissions
         run: chmod a+x mvnw
 
-      - name: Maven install dependencies
-        run: ./mvnw clean install package
+      # - name: Maven install dependencies
+      #   run: ./mvnw clean install package
 
       # - name: Upload JAR artifact 
       #   uses: actions/upload-artifact@4
@@ -54,6 +54,7 @@ jobs:
         with:
           azcliversion: latest
           inlineScript: |
-            az account show
+            az aks get-credentials --resource-group grid-capstone --name dev-grid-cluster --admin
+            cat ~/.kube/config
       
       

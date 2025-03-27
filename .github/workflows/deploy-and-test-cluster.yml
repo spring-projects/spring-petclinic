@@ -1,14 +1,15 @@
 name: Deploy and Test Cluster
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'k8s/**'
-  pull_request:
-    branches: [main]
-    paths:
-      - 'k8s/**'
+  # push:
+  #   branches: [main]
+  #   paths:
+  #     - 'k8s/**'
+  # pull_request:
+  #   branches: [main]
+  #   paths:
+  #     - 'k8s/**'
+    workflow_dispatch:
 
 jobs:
   deploy-and-test-cluster:
