@@ -51,11 +51,6 @@ jobs:
           az storage container create \
             --name tfstate \
             --account-name tfstatestorageaccount25
-
-          az ad sp create-for-rbac \
-            --name "terraform-github-actions" \
-            --role Contributor \
-            --scopes /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}
           
       - name: Terraform Init
         run: |
