@@ -55,6 +55,30 @@ public interface OwnerRepository extends JpaRepository<Owner, Integer> {
 	Page<Owner> findByLastNameStartingWith(String lastName, Pageable pageable);
 
 	/**
+	 * Retrieve {@link Owner}s from the data store whose pets' names contain the given name.
+	 * @param petName Value to search for in pet names (supports fuzzy search)
+	 * @param pageable pagination information
+	 * @return a Collection of matching {@link Owner}s (or an empty Collection if none
+	 * found)
+	 */
+	@Query("SELECT DISTINCT owner FROM Owner owner JOIN owner.pets pet WHERE pet.name LIKE %:petName%")
+	Page<Owner> findByPetNameContaining(@org.springframework.data.repository.query.Param("petName") String petName, Pageable pageable);
+
+	/**
+	 * Retrieve {@link Owner}s from the data store by combining last name and pet name search.
+	 * @param lastName Value to search for in last names
+	 * @param petName Value to search for in pet names
+	 * @param pageable pagination information
+	 * @return a Collection of matching {@link Owner}s (or an empty Collection if none
+	 * found)
+	 */
+	@Query("SELECT DISTINCT owner FROM Owner owner JOIN owner.pets pet WHERE owner.lastName LIKE %:lastName% AND pet.name LIKE %:petName%")
+	Page<Owner> findByLastNameAndPetName(
+		@org.springframework.data.repository.query.Param("lastName") String lastName, 
+		@org.springframework.data.repository.query.Param("petName") String petName, 
+		Pageable pageable);
+
+	/**
 	 * Retrieve an {@link Owner} from the data store by id.
 	 * <p>
 	 * This method returns an {@link Optional} containing the {@link Owner} if found. If
