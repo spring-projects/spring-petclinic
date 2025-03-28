@@ -1,0 +1,143 @@
+name: Successfull merge pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ '17' ]
+
+    steps:
+      
+      - uses: actions/checkout@v4
+        name: Checkout code
+
+      - name: Set up JDK ${{matrix.java}}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{matrix.java}}
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Add executable permissions
+        run: chmod a+x mvnw
+
+      - name: Maven install dependencies
+        run: ./mvnw clean package 
+
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: grid-capstone
+          path: ./target/*.jar
+
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ '17' ]
+
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout code
+
+      - name: Set up JDK ${{matrix.java}}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{matrix.java}}
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Add executable permissions
+        run: chmod a+x mvnw
+
+      - name: Run tests
+        run: ./mvnw test
+
+      - name: Generate HTML report
+        run: ./mvnw surefire-report:report
+
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: target/site/
+  
+      
+      
+
+  docker:
+    needs: [build, test]
+    runs-on: ubuntu-latest  
+    steps:
+
+      - uses: actions/checkout@v4
+        name: Checkout code
+
+      - uses: azure/login@v2
+        name: Azure Login
+        with:
+          creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
+
+      - uses: actions/download-artifact@v4
+        name: Copy artifact from build job
+        with:
+          name: grid-capstone
+          path: ./target/*.jar
+
+
+      - name: Docker Build and push
+        run: |
+          az acr login --name ${{ vars.ACR_NAME }}
+          docker build -t ${{ vars.ACR_NAME }}.azurecr.io/grid-capstone:${{ github.sha }} .
+          docker push ${{ vars.ACR_NAME }}.azurecr.io/grid-capstone:${{ github.sha }}
+
+  deploy:
+    needs: [docker]
+    runs-on: ubuntu-latest  
+    steps:  
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Automatic deployment
+        run: |
+          git config --global user.name 'Kacper Piasecki'
+          git config --global user.email 'k.r.piasecki2@gmail.com'
+          rm -Rf .git
+          mkdir cicd
+          cd cicd
+          git clone https://x-access-token:${{ secrets.K8S_GITHUB_TOKEN }}@github.com/Piasecki-grid/grid-capstone-k8s-manifests.git
+          cd grid-capstone-k8s-manifests
+          sed -i 's|${{ vars.ACR_NAME }}.azurecr.io/grid-capstone:[0-9a-f]\{40\}|${{ vars.ACR_NAME }}.azurecr.io/grid-capstone:${{ github.sha }}|g' deployment.yml
+          git add .
+          git commit -m "Kubernetes manifests file update: $(date)"
+          git push
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: 'v1.29.0'  
+        id: install
+
+      - uses: azure/login@v2
+        name: Azure Login
+        with:
+          creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
+
+      - name: Deploy new version of an image to the cluster
+        run: |
+          az aks get-credentials --resource-group grid-capstone --name dev-grid-cluster --admin --overwrite-existing
+          kubectl apply -f ./cicd/grid-capstone-k8s-manifests
+
+            
+      
+      
