@@ -65,6 +65,13 @@ public class Owner extends Person {
 	@OrderBy("name")
 	private final List<Pet> pets = new ArrayList<>();
 
+	/**
+	 * This field is used for form binding for pet search
+	 * and is not persisted to the database.
+	 */
+	@jakarta.persistence.Transient
+	private String petName;
+
 	public String getAddress() {
 		return this.address;
 	}
@@ -170,6 +177,14 @@ public class Owner extends Person {
 		Assert.notNull(pet, "Invalid Pet identifier!");
 
 		pet.addVisit(visit);
+	}
+
+	public String getPetName() {
+		return this.petName;
+	}
+
+	public void setPetName(String petName) {
+		this.petName = petName;
 	}
 
 }
