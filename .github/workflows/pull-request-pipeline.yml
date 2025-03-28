@@ -1,11 +1,12 @@
 name: Pull request pipeline
 
 on:
-  pull_request:
-    types:
-     - opened       
-    branches:
-      - 'main'
+  workflow_dispatch:
+  # pull_request:
+  #   types:
+  #    - opened       
+  #   branches:
+  #     - 'main'
 
 jobs:
   build:
