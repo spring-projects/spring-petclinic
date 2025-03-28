@@ -96,12 +96,30 @@ class OwnerController {
 		if (owner.getLastName() == null) {
 			owner.setLastName(""); // empty string signifies broadest possible search
 		}
+		
+		if (owner.getPetName() == null) {
+			owner.setPetName(""); // empty string signifies broadest possible search
+		}
 
-		// find owners by last name
-		Page<Owner> ownersResults = findPaginatedForOwnersLastName(page, owner.getLastName());
+		// find owners based on search parameters
+		Page<Owner> ownersResults;
+		
+		if (!owner.getLastName().isEmpty() && !owner.getPetName().isEmpty()) {
+			// search by both lastName and petName
+			ownersResults = findPaginatedForOwnersLastNameAndPetName(page, owner.getLastName(), owner.getPetName());
+		} else if (!owner.getPetName().isEmpty()) {
+			// search by petName only
+			ownersResults = findPaginatedForOwnersPetName(page, owner.getPetName());
+		} else {
+			// search by lastName only (or return all if lastName is empty)
+			ownersResults = findPaginatedForOwnersLastName(page, owner.getLastName());
+		}
+		
 		if (ownersResults.isEmpty()) {
 			// no owners found
-			result.rejectValue("lastName", "notFound", "not found");
+			String errorField = !owner.getLastName().isEmpty() ? "lastName" : 
+							   (!owner.getPetName().isEmpty() ? "petName" : "lastName");
+			result.rejectValue(errorField, "notFound", "not found");
 			return "owners/findOwners";
 		}
 
@@ -128,6 +146,18 @@ class OwnerController {
 		int pageSize = 5;
 		Pageable pageable = PageRequest.of(page - 1, pageSize);
 		return owners.findByLastNameStartingWith(lastname, pageable);
+	}
+	
+	private Page<Owner> findPaginatedForOwnersPetName(int page, String petName) {
+		int pageSize = 5;
+		Pageable pageable = PageRequest.of(page - 1, pageSize);
+		return owners.findByPetNameContaining(petName, pageable);
+	}
+	
+	private Page<Owner> findPaginatedForOwnersLastNameAndPetName(int page, String lastName, String petName) {
+		int pageSize = 5;
+		Pageable pageable = PageRequest.of(page - 1, pageSize);
+		return owners.findByLastNameAndPetName(lastName, petName, pageable);
 	}
 
 	@GetMapping("/owners/{ownerId}/edit")
