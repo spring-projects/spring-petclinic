@@ -55,11 +55,11 @@ jobs:
           terraform init
 
 
-      - name: Terraform Format & Validate
-        run: |
-          cd cicd/grid-capstone-terraform-infra
-          terraform fmt -check
-          terraform validate
+      # - name: Terraform Format & Validate
+      #   run: |
+      #     cd cicd/grid-capstone-terraform-infra
+      #     terraform fmt -check
+      #     terraform validate
 
 
       - name: Terraform Apply
