@@ -18,7 +18,7 @@ jobs:
       # 1) Checkout the repository to the runner
       #################################################
       - name: Checkout
-        uses: actions/checkout@v3  # Pulls the latest code from the repository
+        uses: actions/checkout@v4  # Pulls the latest code from the repository
 
       #################################################
       # 2) Set up Java environment
@@ -57,9 +57,6 @@ jobs:
       #################################################
       - name: ping jfrog
         run: jf rt ping
-
-      - name: confirm artifactory secret
-        run: echo $ARTIFACTORY_REPO_URL
 
       #################################################
       # 6) Configure Maven to use JFrog as a repository
