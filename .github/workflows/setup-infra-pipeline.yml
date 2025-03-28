@@ -1,0 +1,59 @@
+name: Setup cloud infrastructure
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+     - 'feature-branch'
+
+jobs:
+  infrastructure:
+    runs-on: ubuntu-latest  
+    steps:  
+      - uses: azure/login@v2
+        name: Azure Login
+        with:
+          creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setting up terraform
+        uses: hashicorp/setup-terraform@v3
+
+          
+      - name: Setup git configuration
+        run: |
+          git config --global user.name 'Kacper Piasecki'
+          git config --global user.email 'k.r.piasecki2@gmail.com'
+
+      - name: Clone git repository of infrastructure
+        run: |
+          rm -Rf .git
+          mkdir cicd
+          cd cicd
+          git clone https://x-access-token:${{ secrets.INFRA_GITHUB_TOKEN }}@github.com/Piasecki-grid/grid-capstone-terraform-infra.git
+
+          
+      - name: Terraform Init
+        run: |
+          cd cicd/grid-capstone-terraform-infra
+          terraform init
+
+
+      - name: Terraform Format & Validate
+        run: |
+          cd cicd/grid-capstone-terraform-infra
+          terraform fmt -check
+          terraform validate
+
+
+      - name: Terraform Apply
+        run: |
+          cd cicd/grid-capstone-terraform-infra
+          terraform apply --auto-approve
+            
+      
+      

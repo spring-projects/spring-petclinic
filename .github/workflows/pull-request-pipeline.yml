@@ -1,0 +1,77 @@
+name: Pull request pipeline
+
+on:
+  pull_request:
+    types:
+     - opened       
+    branches:
+      - 'main'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ '17' ]
+
+    steps:
+      
+      - uses: actions/checkout@v4
+        name: Checkout code
+
+      - name: Set up JDK ${{matrix.java}}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{matrix.java}}
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Add executable permissions
+        run: chmod a+x mvnw
+
+      - name: Maven install dependencies
+        run: ./mvnw clean package 
+
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: grid-capstone
+          path: ./target/*.jar
+
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ '17' ]
+
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout code
+
+      - name: Set up JDK ${{matrix.java}}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{matrix.java}}
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Add executable permissions
+        run: chmod a+x mvnw
+
+      - name: Run tests
+        run: ./mvnw test
+
+      - name: Generate HTML report
+        run: ./mvnw surefire-report:report
+
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: target/site/
+  
+            
+      
+      
