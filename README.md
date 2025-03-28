@@ -167,9 +167,7 @@ The Spring PetClinic sample application is released under version 2.0 of the [Ap
 
 
 
-
-
-
+Zeynep Çalapkulu-64210019
 Nefise Buse Uzun -64220041
 Hilal Melike Tengilimoğlu 64220063
 Hadiya Ismail
