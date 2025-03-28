@@ -180,7 +180,7 @@ public class Owner extends Person {
 	}
 
 	public String getPetName() {
-		return this.petName;
+		return this.address;
 	}
 
 	public void setPetName(String petName) {

@@ -31,6 +31,7 @@ bin/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+.cursor/
 
 ### NetBeans ###
 /nbproject/private/
