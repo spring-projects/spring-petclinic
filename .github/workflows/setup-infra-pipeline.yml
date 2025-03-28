@@ -42,7 +42,7 @@ jobs:
           az group create --name tfstate-rg --location eastus
 
           az storage account create \
-            --name tfstatestorageaccount \
+            --name tfstatestorageaccount-25131241 \
             --resource-group tfstate-rg \
             --location eastus \
             --sku Standard_LRS \
