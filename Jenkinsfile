@@ -54,14 +54,6 @@ pipeline {
             }
         }
 
-        stage('Xray Scan') {
-            steps {
-                // Use the new "jf build-scan" command
-                // "Fail Build" is decided by your Xray policy if severity >= High
-                sh "${JF} build-scan ${JFROG_CLI_BUILD_NAME} ${JFROG_CLI_BUILD_NUMBER} --fail=false"
-            }
-        }
-
         stage('Publish Build Info') {
             steps {
                 sh """
@@ -69,6 +61,14 @@ pipeline {
                     ${JF} rt build-add-git
                     ${JF} rt build-publish
                 """
+            }
+        }
+        
+        stage('Xray Scan') {
+            steps {
+                // Use the new "jf build-scan" command
+                // "Fail Build" is decided by your Xray policy if severity >= High
+                sh "${JF} build-scan ${JFROG_CLI_BUILD_NAME} ${JFROG_CLI_BUILD_NUMBER} --fail=false"
             }
         }
     }
