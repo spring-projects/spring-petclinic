@@ -53,6 +53,12 @@ jobs:
         run: |
           cd cicd/grid-capstone-terraform-infra
           terraform init
+        
+      - name: Save terraform lock file in the repo.
+        run: |
+          git add .terraform.lock.hcl
+          git commit -m "Add Terraform provider lock file"
+          git push
 
 
       # - name: Terraform Format & Validate
