@@ -35,10 +35,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 class VetController {
 
-	private final VetRepository vets;
+	private final VetRepository vetRepository;
 
-	public VetController(VetRepository clinicService) {
-		this.vets = clinicService;
+	public VetController(VetRepository vetRepository) {
+		this.vetRepository = vetRepository;
 	}
 
 	@GetMapping("/vets.html")
@@ -49,7 +49,6 @@ class VetController {
 		Page<Vet> paginated = findPaginated(page);
 		vets.getVetList().addAll(paginated.toList());
 		return addPaginationModel(page, paginated, model);
-
 	}
 
 	private String addPaginationModel(int page, Page<Vet> paginated, Model model) {
@@ -64,7 +63,7 @@ class VetController {
 	private Page<Vet> findPaginated(int page) {
 		int pageSize = 5;
 		Pageable pageable = PageRequest.of(page - 1, pageSize);
-		return vets.findAll(pageable);
+		return vetRepository.findAll(pageable);
 	}
 
 	@GetMapping({ "/vets" })
@@ -72,7 +71,7 @@ class VetController {
 		// Here we are returning an object of type 'Vets' rather than a collection of Vet
 		// objects so it is simpler for JSon/Object mapping
 		Vets vets = new Vets();
-		vets.getVetList().addAll(this.vets.findAll());
+		vets.getVetList().addAll(this.vetRepository.findAll());
 		return vets;
 	}
 
