@@ -36,6 +36,26 @@ jobs:
           cd cicd
           git clone https://x-access-token:${{ secrets.INFRA_GITHUB_TOKEN }}@github.com/Piasecki-grid/grid-capstone-terraform-infra.git
 
+
+      - name: Create resources for remote backend
+        run: |
+          az group create --name tfstate-rg --location eastus
+
+          az storage account create \
+            --name tfstatestorageaccount \
+            --resource-group tfstate-rg \
+            --location eastus \
+            --sku Standard_LRS \
+            --kind StorageV2
+
+          az storage container create \
+            --name tfstate \
+            --account-name tfstatestorageaccount
+
+          az ad sp create-for-rbac \
+            --name "terraform-github-actions" \
+            --role Contributor \
+            --scopes /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}
           
       - name: Terraform Init
         run: |
