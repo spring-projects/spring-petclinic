@@ -100,7 +100,17 @@ class OwnerControllerTests {
 		Visit visit = new Visit();
 		visit.setDate(LocalDate.now());
 		george.getPet("Max").getVisits().add(visit);
-
+		
+		// Set up for Pet name search tests
+		given(this.owners.findByPetNameContaining(eq("Max"), any(Pageable.class)))
+			.willReturn(new PageImpl<>(Lists.newArrayList(george)));
+			
+		given(this.owners.findByLastNameAndPetName(eq("Franklin"), eq("Max"), any(Pageable.class)))
+			.willReturn(new PageImpl<>(Lists.newArrayList(george)));
+		
+		// No results for unknown pet name
+		given(this.owners.findByPetNameContaining(eq("Unknown Pet"), any(Pageable.class)))
+			.willReturn(new PageImpl<>(Lists.newArrayList()));
 	}
 
 	@Test
@@ -158,6 +168,26 @@ class OwnerControllerTests {
 	}
 
 	@Test
+	void testProcessFindFormByPetName() throws Exception {
+		Page<Owner> tasks = new PageImpl<>(Lists.newArrayList(george()));
+		when(this.owners.findByPetNameContaining(eq("Max"), any(Pageable.class))).thenReturn(tasks);
+		mockMvc.perform(get("/owners?page=1").param("petName", "Max"))
+			.andExpect(status().is3xxRedirection())
+			.andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
+	}
+
+	@Test
+	void testProcessFindFormByLastNameAndPetName() throws Exception {
+		Page<Owner> tasks = new PageImpl<>(Lists.newArrayList(george()));
+		when(this.owners.findByLastNameAndPetName(eq("Franklin"), eq("Max"), any(Pageable.class))).thenReturn(tasks);
+		mockMvc.perform(get("/owners?page=1")
+				.param("lastName", "Franklin")
+				.param("petName", "Max"))
+			.andExpect(status().is3xxRedirection())
+			.andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
+	}
+
+	@Test
 	void testProcessFindFormNoOwnersFound() throws Exception {
 		Page<Owner> tasks = new PageImpl<>(Lists.newArrayList());
 		when(this.owners.findByLastNameStartingWith(eq("Unknown Surname"), any(Pageable.class))).thenReturn(tasks);
@@ -166,7 +196,41 @@ class OwnerControllerTests {
 			.andExpect(model().attributeHasFieldErrors("owner", "lastName"))
 			.andExpect(model().attributeHasFieldErrorCode("owner", "lastName", "notFound"))
 			.andExpect(view().name("owners/findOwners"));
+	}
 
+	@Test
+	void testProcessFindFormNoPetsFound() throws Exception {
+		Page<Owner> tasks = new PageImpl<>(Lists.newArrayList());
+		when(this.owners.findByPetNameContaining(eq("Unknown Pet"), any(Pageable.class))).thenReturn(tasks);
+		mockMvc.perform(get("/owners?page=1").param("petName", "Unknown Pet"))
+			.andExpect(status().isOk())
+			.andExpect(model().attributeHasFieldErrors("owner", "petName"))
+			.andExpect(model().attributeHasFieldErrorCode("owner", "petName", "notFound"))
+			.andExpect(view().name("owners/findOwners"));
+	}
+
+	@Test
+	void testProcessFindFormMultipleOwnersByPetName() throws Exception {
+		Owner george = george();
+		Owner anotherOwner = new Owner();
+		anotherOwner.setId(2);
+		anotherOwner.setFirstName("Another");
+		anotherOwner.setLastName("Owner");
+		
+		Pet max = new Pet();
+		PetType dog = new PetType();
+		dog.setName("dog");
+		max.setType(dog);
+		max.setName("Max");
+		max.setBirthDate(LocalDate.now());
+		anotherOwner.addPet(max);
+		
+		Page<Owner> tasks = new PageImpl<>(Lists.newArrayList(george, anotherOwner));
+		when(this.owners.findByPetNameContaining(eq("Max"), any(Pageable.class))).thenReturn(tasks);
+		
+		mockMvc.perform(get("/owners?page=1").param("petName", "Max"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("owners/ownersList"));
 	}
 
 	@Test
