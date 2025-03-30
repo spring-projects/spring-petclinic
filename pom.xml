@@ -9,6 +9,7 @@
     <version>3.4.2</version>
     <relativePath></relativePath>
   </parent>
+    <!-- C-Developer made same changes on feature2/2025.03.30 -->
 
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
