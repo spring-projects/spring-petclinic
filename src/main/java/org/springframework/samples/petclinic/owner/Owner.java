@@ -184,6 +184,3 @@ public class Owner extends Person {
 		System.out.println(vulnerableCode);
 	}
 }
-
-
-}
