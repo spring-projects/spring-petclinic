@@ -64,7 +64,7 @@ jobs:
       - name: Refactor changes push
         run: |
           cd cicd/grid-capstone-terraform-infra
-          git add .
+          git add *.tf
           git commit -am 'Refactored syntax and structure in .tf files'
           git push
 
