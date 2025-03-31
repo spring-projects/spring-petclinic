@@ -1,5 +1,4 @@
-HELP.md
-/Документация
+
 pom.xml.bak
 target/
 !.mvn/wrapper/maven-wrapper.jar
