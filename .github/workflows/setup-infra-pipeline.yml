@@ -53,13 +53,21 @@ jobs:
         run: |
           cd cicd/grid-capstone-terraform-infra
           terraform init
-          ls -al
+
           
       - name: Terraform Validate
         run: |
           cd cicd/grid-capstone-terraform-infra
           terraform validate
           terraform fmt
+
+      - name: Refactor changes push
+        run: |
+          cd cicd/grid-capstone-terraform-infra
+          git add .
+          git commit -am 'Refactored syntax and structure in .tf files'
+          git push
+
 
       - name: Terraform Apply
         run: |
