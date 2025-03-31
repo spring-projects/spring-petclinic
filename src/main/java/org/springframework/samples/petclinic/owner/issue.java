@@ -1,68 +1,41 @@
 package org.springframework.samples.petclinic.owner;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class issue {
 
-	public void obtenerUsuarioPorCorreo(String correoElectronico, String contrasena) {
-		Connection conexion = null;
-		Statement declaracion = null;
-		ResultSet resultado = null;
+	// Ejemplo de método vulnerable que usa datos de usuario directamente en la consulta
+	// SQL
+	public ResultSet insecureLogin(Connection connection, String username, String password) throws SQLException {
+		String query = "SELECT * FROM users WHERE username = '" + username + "' AND password = '" + password + "'";
+		Statement stmt = connection.createStatement();
+		return stmt.executeQuery(query); // SonarQube marcará esto como Blocker
+	}
 
+	// Método que expone la vulnerabilidad usando parámetros de request simulados
+	public ResultSet searchUsers(Connection connection, String searchTerm) throws SQLException {
+		String query = "SELECT * FROM users WHERE name = '" + searchTerm + "'";
+		Statement stmt = connection.createStatement();
+		return stmt.executeQuery(query); // Vulnerabilidad SQL Injection
+	}
+
+	// Uso peligroso con concatenación directa
+	public static void main(String[] args) {
 		try {
-			// Establecer la conexión con la base de datos
-			conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/miBaseDeDatos", "usuario",
-					"contrasena");
+			// Simulación de datos controlados por el usuario
+			String userInput = "admin' OR '1'='1";
+			String passInput = "fake' OR 'x'='x";
 
-			// Crear la declaración
-			declaracion = conexion.createStatement();
+			issue example = new issue();
+			ResultSet rs = example.insecureLogin(null, userInput, passInput);
 
-			// Construir la consulta SQL directamente con datos proporcionados por el
-			// usuario (vulnerable a inyección SQL)
-			String consulta = "SELECT * FROM Usuarios WHERE correo_electronico = '" + correoElectronico
-					+ "' AND contrasena = '" + contrasena + "'";
-
-			// Ejecutar la consulta
-			resultado = declaracion.executeQuery(consulta);
-
-			// Procesar el resultado
-			while (resultado.next()) {
-				System.out.println("Usuario encontrado: " + resultado.getString("nombre"));
-			}
+			// ... procesar resultados
 		}
 		catch (SQLException e) {
 			e.printStackTrace();
-		}
-		finally {
-			// Cerrar recursos en el bloque finally
-			if (resultado != null) {
-				try {
-					resultado.close();
-				}
-				catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (declaracion != null) {
-				try {
-					declaracion.close();
-				}
-				catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (conexion != null) {
-				try {
-					conexion.close();
-				}
-				catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
 		}
 	}
 
