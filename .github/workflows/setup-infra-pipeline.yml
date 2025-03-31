@@ -67,7 +67,7 @@ jobs:
           git add *.tf
           git commit -am 'Refactored syntax and structure in .tf files'
           git push
-
+        continue-on-error: true
 
       - name: Terraform Apply
         run: |
