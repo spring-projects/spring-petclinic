@@ -54,13 +54,12 @@ jobs:
           cd cicd/grid-capstone-terraform-infra
           terraform init
           ls -al
-        
-      - name: Save terraform lock file in the repo.
+          
+      - name: Terraform Validate
         run: |
           cd cicd/grid-capstone-terraform-infra
-          git commit -m "There was a change in infra .tf files"
-          git push
-        continue-on-error: true
+          terraform validate
+          terraform fmt
 
       - name: Terraform Apply
         run: |
