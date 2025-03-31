@@ -60,6 +60,7 @@ jobs:
           git add .terraform.lock.hcl
           git commit -m "Add Terraform provider lock file"
           git push
+        continue-on-error: true
 
 
       - name: Terraform Format & Validate
