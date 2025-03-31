@@ -171,4 +171,19 @@ public class Owner extends Person {
 
 		pet.addVisit(visit);
 	}
+
+	/**
+	 * WARNING: Este método construye una consulta SQL directamente a partir de datos
+	 * controlados por el usuario, lo cual es inseguro y susceptible a inyección SQL.
+	 * Issue: Change this code to not construct SQL queries directly from user-controlled
+	 * data.
+	 */
+	public String generateUnsafeQuery(String userInput) {
+		// Construcción directa de la consulta SQL (vulnerable a inyección)
+		String query = "SELECT * FROM users WHERE username = '" + userInput + "'";
+		// Simulación de ejecución de la consulta
+		System.out.println("Ejecutando query insegura: " + query);
+		return query;
+	}
+
 }
