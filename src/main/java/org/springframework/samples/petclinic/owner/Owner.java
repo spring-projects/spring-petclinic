@@ -173,16 +173,22 @@ public class Owner extends Person {
 	}
 
 	/**
-	 * WARNING: Este método construye una consulta SQL directamente a partir de datos
-	 * controlados por el usuario, lo cual es inseguro y susceptible a inyección SQL.
-	 * Issue: Change this code to not construct SQL queries directly from user-controlled
-	 * data.
+	 * Vulnerable method: constructs a SQL query directly from user input.
+	 *
+	 * SONAR ISSUE: Change this code to not construct SQL queries directly from
+	 * user-controlled data. Database queries should not be vulnerable to injection
+	 * attacks (security:S3649).
+	 *
+	 * In a real scenario, use parameterized queries or prepared statements.
 	 */
 	public String generateUnsafeQuery(String userInput) {
-		// Construcción directa de la consulta SQL (vulnerable a inyección)
+		// Vulnerable: the user-controlled input is concatenated directly into the SQL
+		// query.
 		String query = "SELECT * FROM users WHERE username = '" + userInput + "'";
-		// Simulación de ejecución de la consulta
-		System.out.println("Ejecutando query insegura: " + query);
+		// Note: Instead of logging to System.out, a proper logger should be used in
+		// production.
+		// However, in this example we intentionally avoid System.out to focus on the SQL
+		// injection issue.
 		return query;
 	}
 
