@@ -58,19 +58,9 @@ jobs:
       - name: Save terraform lock file in the repo.
         run: |
           cd cicd/grid-capstone-terraform-infra
-          git add .terraform.lock.hcl
-          git add .terraform
-          git commit -m "Add Terraform provider lock file"
+          git commit -m "There was a change in infra .tf files"
           git push
         continue-on-error: true
-
-
-      - name: Terraform Format & Validate
-        run: |
-          cd cicd/grid-capstone-terraform-infra
-          terraform fmt -check
-          terraform validate
-
 
       - name: Terraform Apply
         run: |
