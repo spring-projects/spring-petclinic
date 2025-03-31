@@ -30,8 +30,6 @@ jobs:
       - name: Deploy new version of an image to the cluster
         run: |
           az aks get-credentials --resource-group grid-capstone --name dev-grid-cluster --admin --overwrite-existing
-          export KUBE_CONFIG_PATH=~/.kube/config
-
           
       - name: Setup git configuration
         run: |
@@ -84,6 +82,7 @@ jobs:
       - name: Terraform Apply
         run: |
           cd cicd/grid-capstone-terraform-infra
+          export KUBE_CONFIG_PATH=~/.kube/config
           terraform apply --auto-approve
             
       
