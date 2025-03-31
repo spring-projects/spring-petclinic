@@ -6,10 +6,9 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
 
-public class UsuarioDAO {
+public class issue {
 
-	public Usuario obtenerUsuarioPorCorreo(String correoElectronico, String contrasena) {
-		Usuario usuario = null;
+	public void obtenerUsuarioPorCorreo(String correoElectronico, String contrasena) {
 		Connection conexion = null;
 		Statement declaracion = null;
 		ResultSet resultado = null;
@@ -31,12 +30,8 @@ public class UsuarioDAO {
 			resultado = declaracion.executeQuery(consulta);
 
 			// Procesar el resultado
-			if (resultado.next()) {
-				usuario = new Usuario();
-				usuario.setId(resultado.getInt("id"));
-				usuario.setNombre(resultado.getString("nombre"));
-				usuario.setCorreoElectronico(resultado.getString("correo_electronico"));
-				// Asignar otros atributos según sea necesario
+			while (resultado.next()) {
+				System.out.println("Usuario encontrado: " + resultado.getString("nombre"));
 			}
 		}
 		catch (SQLException e) {
@@ -69,7 +64,6 @@ public class UsuarioDAO {
 				}
 			}
 		}
-		return usuario;
 	}
 
 }
