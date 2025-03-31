@@ -170,14 +170,6 @@ public class Owner extends Person {
 		Assert.notNull(pet, "Invalid Pet identifier!");
 
 		pet.addVisit(visit);
-
-		(req: Request, res: Response, next: NextFunction) => {
-			verifyPreLoginChallenges(req) // vuln-code-snippet hide-line
-			models.sequelize.query('SELECT * FROM Users WHERE email = :email AND password = :password AND deletedAt IS NULL', {
-			replacements: { email: req.body.email || '', password: security.hash(req.body.password || '') },
-			model: UserModel,
-			plain: true
-    	})
 	}
 
 }
