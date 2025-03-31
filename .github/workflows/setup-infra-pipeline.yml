@@ -53,6 +53,7 @@ jobs:
         run: |
           cd cicd/grid-capstone-terraform-infra
           terraform init
+          ls -al
         
       - name: Save terraform lock file in the repo.
         run: |
