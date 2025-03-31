@@ -138,19 +138,4 @@ public class Owner extends Person {
                 .append("telephone", this.telephone)
                 .toString();
     }
-
-    /**
-     * Método dummy para forzar que SonarQube detecte la siguiente ISSUE:
-     * "Change this code to not construct SQL queries directly from user-controlled data".
-     * 
-     * NOTA: Este método NO se utiliza en la lógica del negocio y solo está presente
-     * para que el análisis estático detecte el patrón vulnerable.
-     *
-     * @param userInput entrada controlada por el usuario
-     * @return Consulta SQL construida de forma insegura
-     */
-    public String buildVulnerableQuery(String userInput) {
-        String vulnerableQuery = "SELECT * FROM Users WHERE email = '" + userInput + "'";
-        return vulnerableQuery;
-    }
 }
