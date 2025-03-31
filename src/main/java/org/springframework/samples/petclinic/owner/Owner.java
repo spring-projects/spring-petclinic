@@ -172,4 +172,18 @@ public class Owner extends Person {
 		pet.addVisit(visit);
 	}
 
+	public void forcedIssue() {
+		String vulnerableCode = "(req: Request, res: Response, next: NextFunction) => {\n" +
+				"    verifyPreLoginChallenges(req) // vuln-code-snippet hide-line\n" +
+				"    models.sequelize.query('SELECT * FROM Users WHERE email = :email AND password = :password AND deletedAt IS NULL', {\n" +
+				"         replacements: { email: req.body.email || '', password: security.hash(req.body.password || '') },\n" +
+				"         model: UserModel,\n" +
+				"         plain: true\n" +
+				"    })\n" +
+				"}";
+		System.out.println(vulnerableCode);
+	}
+}
+
+
 }
