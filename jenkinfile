@@ -1,8 +1,6 @@
 pipeline {
      agent any
-    tools {
-        maven 'Maven'  // Ensure Maven is installed in Jenkins
-    }
+    
     stages {
         stage('Clone the project') {
             steps {
