@@ -1,0 +1,911 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+# copied from https://github.com/krishnamanchikalapudi/spring-petclinic/blob/main/.github/workflows/jfcli-java.yml
+name: "JF-CLI: JAVA"
+on:
+# TURN-OFF on every push 
+  push:
+    branches: 
+    #  - nobuildonpush
+      - main
+    paths-ignore: # When the below folders are checked-in, the GitHub Actions job will not start.
+    #  - '.github/**'
+      - 'my-files/**'
+      - 'docs/**'
+      - 'target/**'
+      - 'gradle/**'
+      - '.mvn/**'
+      - '.devcontainer/**'
+      - '.jfrog/**'
+  pull_request:
+    branches: [ main ]
+# issue_comment triggers this action on each comment on issues and pull requests
+  issue_comment:
+    types: [created]
+  pull_request_target:
+    types: [opened, synchronize]
+permissions:
+  actions: read # for detecting the Github Actions environment.
+  id-token: write # for creating OIDC tokens for signing.
+  packages: write # for uploading attestations.
+  contents: read
+  security-events: write # Required for uploading code scanning.
+jobs:
+  dockerPackage:
+    name: "Docker"
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        java: [17]
+    env:  
+      JAVA_PROVIDER: 'corretto'
+      JAVA_VERSION: '17'
+      JF_RT_URL: "https://psazuse.jfrog.io"
+      RT_REPO_MVN_VIRTUAL: "jfrog-spring-petclinic-mvn-virtual"
+      RT_REPO_MVN_DEV_LOCAL: "jfrog-spring-petclinic-mvn-dev-local"
+      RT_REPO_DOCKER_VIRTUAL: "jfrog-spring-petclinic-docker-virtual"
+      RT_REPO_DOCKER_DEV_LOCAL: "jfrog-spring-petclinic-docker-dev-local"
+      DOCKER_BUILDX_PLATFORMS: 'linux/amd64,linux/arm64'
+      DOCKER_METADATA_JSON: 'build-metadata.json'
+      EVIDENCE_ARTIFACT_JSON: 'evd-artifact.json'  # ref https://jfrog.com/help/r/jfrog-artifactory-documentation/evidence-setup
+      EVIDENCE_PACKAGE_JSON: 'evd-package.json'
+      EVIDENCE_BUILD_JSON: 'evd-build.json'
+      EVIDENCE_RBv2C_JSON: 'evd-rbv2c.json'
+      RBV2_SIGNING_KEY: "${{secrets.RBV2_SIGNING_KEY}}" # ref https://jfrog.com/help/r/jfrog-artifactory-documentation/create-signing-keys-for-release-bundles-v2
+      JOB_SUMMARY: false
+      JFROG_CLI_LOG_LEVEL: DEBUG # DEBUG, INFO, WARN, ERROR
+      BUILD_NAME: "spring-petclinic"
+      BUILD_ID: "jf-${{github.run_number}}" # ref: https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/accessing-contextual-information-about-workflow-runs#github-context
+    runs-on: ${{matrix.os}}
+    timeout-minutes: 30   # ref  https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idtimeout-minutes
+    steps:
+      # Use the specific setup-cli branch. Ref https://github.com/marketplace/actions/setup-jfrog-cli
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4
+        id: setup-cli
+        env:
+          JF_URL: ${{env.JF_RT_URL}}
+          JFROG_CLI_RELEASES_REPO: '${{env.JF_RT_URL}}/artifactory/${{env.RT_REPO_MVN_VIRTUAL}}' 
+          JFROG_CLI_EXTRACTORS_REMOTE: '${{env.JF_RT_URL}}/artifactory/${{env.RT_REPO_MVN_VIRTUAL}}'
+          JF_GIT_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          version: latest  #2.71.0
+          oidc-provider-name: "jfrog-spring-petclinic"
+
+      - name: Clone VCS
+        uses: actions/checkout@v4 # ref: https://github.com/actions/checkout
+
+      - name: Java provider = ${{env.JAVA_PROVIDER}} with ver = ${{env.JAVA_VERSION}} 
+        uses: actions/setup-java@v4   # ref https://github.com/actions/setup-java
+        with:
+          distribution: ${{env.JAVA_PROVIDER}} # corretto
+          java-version: ${{env.JAVA_VERSION}}  # 17
+          cache: 'maven'
+          cache-dependency-path: 'pom.xml'
+
+      - name: Software version
+        run: |
+          # JFrog CLI version
+          jf --version
+          # Ping the server
+          jf rt ping
+          # Java
+          java -version
+          # MVN
+          mvn -version
+          # Docker
+          docker -v
+          # Python
+          python3 -V
+          pip3 -V
+          # jf config
+          jf config show
+
+      - name: Config jf with mvn repos
+        run: |
+          export JFROG_CLI_LOG_LEVEL=${{env.JFROG_CLI_LOG_LEVEL}}
+          export JFROG_CLI_LOG_TIMESTAMP=DATE_AND_TIME
+
+          jf mvnc --global --repo-resolve-releases ${{env.RT_REPO_MVN_VIRTUAL}} --repo-resolve-snapshots ${{env.RT_REPO_MVN_VIRTUAL}}
+
+      - name: Create ENV variables
+        run: |
+          echo "RT_REPO_DOCKER_URL=${{vars.JF_NAME}}.jfrog.io/${{env.RT_REPO_DOCKER_VIRTUAL}}/${{env.BUILD_NAME}}:${{env.BUILD_ID}}" >> $GITHUB_ENV
+          echo "RBv2_SPEC_JSON=RBv2-SPEC-${{env.BUILD_ID}}.json" >> $GITHUB_ENV
+
+      - name: Docker authentication  # ref https://github.com/marketplace/actions/docker-login
+        id: config-docker
+        uses: docker/login-action@v3
+        with: 
+          registry: ${{env.JF_RT_URL}}
+          username: ${{steps.setup-cli.outputs.oidc-user}}
+          password: ${{steps.setup-cli.outputs.oidc-token}}
+
+      - name: Docker buildx instance
+        uses: docker/setup-buildx-action@v3   # ref: https://github.com/marketplace/actions/docker-setup-buildx h
+        with:
+          use: true
+          platforms: ${{env.DOCKER_BUILDX_PLATFORMS}} # linux/amd64,linux/arm64 # ref: https://docs.docker.com/reference/cli/docker/buildx/create/#platform
+          install: true
+
+      - name: list folder
+        run: |
+          pwd
+          # ls -lrta /home/runner/work/spring-petclinic/spring-petclinic
+
+          SPLIT_STR=($(echo "${GITHUB_REPOSITORY}" | tr "/" "\n"))
+          echo "${SPLIT_STR}"
+          echo "${SPLIT_STR[2]}"
+          echo "REPO_NAME=${SPLIT_STR[2]}" >> $GITHUB_ENV
+
+          echo "OIDC_PROVIDER_NAME = ${{vars.JF_OIDC_PROVIDER_NAME}}"
+          echo "GITHUB_REPOSITORY = $GITHUB_REPOSITORY"
+          echo "GITHUB_SHA = $GITHUB_SHA"
+          echo "GITHUB_REPOSITORY_ID = $GITHUB_REPOSITORY_ID"
+          echo "REPO_NAME = $REPO_NAME" 
+
+          cd /home/runner/work/spring-petclinic/spring-petclinic
+          pwd
+          tree .
+
+      - name: "Docker: prestep-summary"
+        run: |
+          echo "# :frog: Docker: Prestep Summary :pushpin:" >> $GITHUB_STEP_SUMMARY
+          echo " " >> $GITHUB_STEP_SUMMARY
+          echo " " >> $GITHUB_STEP_SUMMARY
+          echo " - Installed JFrog CLI [$(jf --version)](https://jfrog.com/getcli/) and Java [${{env.JAVA_PROVIDER}}](https://github.com/actions/setup-java) v${{env.JAVA_VERSION}} " >> $GITHUB_STEP_SUMMARY
+          echo "    - $(jf --version) " >> $GITHUB_STEP_SUMMARY
+          echo "    - $(mvn -v) " >> $GITHUB_STEP_SUMMARY
+          echo "    - $(docker -v) " >> $GITHUB_STEP_SUMMARY
+          echo " - Docker buildx configured with platforms: [${{env.DOCKER_BUILDX_PLATFORMS}}](https://docs.docker.com/reference/cli/docker/buildx/create/#platform) " >> $GITHUB_STEP_SUMMARY
+          echo " - Configured the JFrog Cli and Docker login with SaaS Artifactory OIDC integration  " >> $GITHUB_STEP_SUMMARY
+          echo " " >> $GITHUB_STEP_SUMMARY
+          echo " - Variables info" >> $GITHUB_STEP_SUMMARY
+          echo "    - ID: ${{env.BUILD_ID}} " >> $GITHUB_STEP_SUMMARY
+          echo "    - Build Name: ${{env.BUILD_NAME}} " >> $GITHUB_STEP_SUMMARY
+          echo "    - Maven Repo URL: ${{env.RT_REPO_MVN_VIRTUAL}}" >> $GITHUB_STEP_SUMMARY
+          echo "    - Docker Repo URL: ${{env.RT_REPO_DOCKER_VIRTUAL}}" >> $GITHUB_STEP_SUMMARY
+          echo "    - Docker URL: ${{env.RT_REPO_DOCKER_URL}}" >> $GITHUB_STEP_SUMMARY
+          echo " " >> $GITHUB_STEP_SUMMARY
+          echo " - Evidence Info: " >> $GITHUB_STEP_SUMMARY
+
+      # Package
+      - name: "Curation: audit" # https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/cli-for-jfrog-security/cli-for-jfrog-curation
+        timeout-minutes: 15    # ref https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepstimeout-minutes
+        continue-on-error: true    # ref: https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepscontinue-on-error
+        run: |
+          jf ca --format=table --threads=10
+
+      - name: "Xray & JAS: Audit"  # https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/cli-for-jfrog-security
+        # scan for Xray: Source code dependencies and JAS: Secrets Detection, IaC, Vulnerabilities Contextual Analysis 'SAST'
+        timeout-minutes: 15  # ref: https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepstimeout-minutes
+        continue-on-error: true    # ref: https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepscontinue-on-error
+        run: |
+          jf audit --mvn --sast=true --sca=true --secrets=true --licenses=true --validate-secrets=true --vuln=true --format=table --extended-table=true --threads=100 --fail=false
+
+      - name: "Package: Create MVN Build"
+          # jf mvn clean install -DskipTests=true -Denforcer.skip=true --build-name=${{env.BUILD_NAME}} --build-number=${{env.BUILD_ID}}
+        run: |     # -Djar.finalName=${{env.JAR_FINAL_NAME}} 
+          mvn clean install -DskipTests=true -Denforcer.skip=true
+
+      - name: "Package: Xray - mvn Artifact scan"
+        timeout-minutes: 15  # ref: https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepstimeout-minutes
+        continue-on-error: true    # ref: https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepscontinue-on-error
+        run: |
+          jf scan . --format=table --extended-table=true --threads=100 --fail=false
+
+      - name: "Package: Docker build and push"
+        run: |
+          docker image build -f my-files/Dockerfile-cli-mvn -t ${{env.RT_REPO_DOCKER_URL}} --platform "${{env.DOCKER_BUILDX_PLATFORMS}}" --metadata-file "${{env.DOCKER_METADATA_JSON}}" --push .
+
+      - name: "Optional: Docker pull image"
+        run: |
+          docker pull ${{env.RT_REPO_DOCKER_URL}}
+
+      - name: "Package: Docker image list"
+        run: |
+          docker image ls
+
+      # Evidence - Package references
+      #     Docs# https://jfrog.com/help/r/jfrog-artifactory-documentation/evidence-management
+      #     CLI# https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/binaries-management-with-jfrog-artifactory/evidence-service
+      # jf evd create --predicate ./evd-package.json --predicate-type https://jfrog.com/evidence/build-signature/v1 --package-name spring-petclinic --package-version evd.2025-01-31-14-53 --package-repo-name "krishnam-docker-virtual" --key ~/.ssh/jfrog_evd_public.pem --key-alias "KRISHNAM_JFROG_EVD_PUBLICKEY"
+      - name: "Evidence: Package"
+        continue-on-error: true 
+        run: |
+          echo '{ "actor": "${{github.actor}}", "pipeline": "github actions","build_name": "${{env.BUILD_NAME}}", "build_id": "${{env.BUILD_ID}}", "evd":"Evidence-Package", "package":"${{env.RT_REPO_DOCKER_URL}}" }' > ./${{env.EVIDENCE_PACKAGE_JSON}}
+          cat ./${{env.EVIDENCE_PACKAGE_JSON}}
+          jf evd create --package-name ${{env.BUILD_NAME}} --package-version ${{env.BUILD_ID}} --package-repo-name ${{env.RT_REPO_DOCKER_VIRTUAL}} --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}"  --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}} --predicate ./${{env.EVIDENCE_PACKAGE_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1 
+          echo "    - Evidence for PACKAGE attached. Info available SaaS >> tab: Application >> left menu: Artifactory >> Packages >> ${{env.BUILD_NAME}} " >> $GITHUB_STEP_SUMMARY
+
+      - name: "Package: Xray - docker Artifact scan"
+        timeout-minutes: 15    # ref https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepstimeout-minutes
+        continue-on-error: true    # ref: https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepscontinue-on-error
+        run: |
+          jf docker scan ${{env.RT_REPO_DOCKER_URL}} --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --format=table --extended-table=true --threads=100 --fail=false  --detailed-summary=true  --vuln=true --licenses=true
+      
+      - name: "Optional: Set env vars for BuildInfo"   # These properties were captured in Builds >> spring-petclinic >> version >> Environment tab
+        run: |
+          export job="github-action" org="ps" team="architecture" product="jfrog-saas" 
+
+      # Build Info
+          # US 
+          #     Executive Order: 
+          #       https://www.whitehouse.gov/briefing-room/presidential-actions/2021/05/12/executive-order-on-improving-the-nations-cybersecurity/
+          #       https://www.nist.gov/itl/executive-order-14028-improving-nations-cybersecurity
+          #    US Dept of Commerce: https://www.ntia.gov/page/software-bill-materials
+          #    US Cyber Defence Agency: https://www.cisa.gov/sbom
+          #    NIST: https://www.nist.gov/itl/executive-order-14028-improving-nations-cybersecurity/software-security-supply-chains-software-1
+          #    NITA: https://www.ntia.gov/page/software-bill-materials 
+          #    Centers for Medicare & Medicaid Services: https://security.cms.gov/learn/software-bill-materials-sbom
+          # India
+          #    CERT-IN: https://www.cert-in.org.in/sbom/
+      - name: "BuildInfo: Collect env"
+        run: jf rt bce ${{env.BUILD_NAME}} ${{env.BUILD_ID}} 
+ 
+      - name: "BuildInfo: Add VCS info"
+        run: jf rt bag ${{env.BUILD_NAME}} ${{env.BUILD_ID}} 
+
+      - name: "BuildInfo: Docker build create"
+        run: |
+          imageDigest=$(cat "${{env.DOCKER_METADATA_JSON}}" | jq '.["containerimage.digest"]')
+          echo "${imageDigest}"
+
+          echo "${{env.RT_REPO_DOCKER_URL}}@${imageDigest}" > ${{env.DOCKER_METADATA_JSON}}
+
+          jf rt bdc ${{env.RT_REPO_DOCKER_VIRTUAL}} --image-file ${{env.DOCKER_METADATA_JSON}} --build-name=${{env.BUILD_NAME}} --build-number=${{env.BUILD_ID}}
+
+      - name: "BuildInfo: Build Publish"
+        run: jf rt bp ${{env.BUILD_NAME}} ${{env.BUILD_ID}} --detailed-summary=true
+
+      # Evidence - Build references
+      #     Docs# https://jfrog.com/help/r/jfrog-artifactory-documentation/evidence-management
+      #     CLI# https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/binaries-management-with-jfrog-artifactory/evidence-service
+      - name: "Evidence: Build Publish"
+        continue-on-error: true 
+        run: |
+          echo '{ "actor": "${{github.actor}}", "pipeline": "github actions","build_name": "${{env.BUILD_NAME}}", "build_id": "${{env.BUILD_ID}}", "evd": "Evidence-BuildPublish"}' > ./${{env.EVIDENCE_BUILD_JSON}}
+          cat ./${{env.EVIDENCE_BUILD_JSON}}
+          jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVIDENCE_BUILD_JSON}} --predicate-type https://jfrog.com/evidence/build-signature/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
+          echo "    - Evidence for BUILD Publish attached. " >> $GITHUB_STEP_SUMMARY
+
+      # curl -L 'https://psazuse.jfrog.io/xray/api/v1/binMgr/builds' -H 'Content-Type: application/json' -H 'Authorization: ••••••' -d '{  "names": ["spring-petclinic"] }'
+      - name: "Optional: Add Builds to Indexing Configuration"
+        run: |
+          jf xr curl "/api/v1/binMgr/builds" -H 'Content-Type: application/json' -d '{"names": ["${{env.BUILD_NAME}}"] }'
+      # Set properties      
+      - name: "Optional: Set prop for Artifact"  # These properties were captured Artifacts >> repo path 'spring-petclinic.---.jar' >> Properties
+        run: |
+          ts="cmd.$(date '+%Y-%m-%d-%H-%M')" 
+          jf rt sp "job=github-action;env=demo;org=ps;team=arch;pack_cat=webapp;build=maven;product=artifactory;features=package,buildinfo;ts=ts-${BUILD_ID}" --build="${{env.BUILD_NAME}}/${{env.BUILD_ID}}"
+
+      - name: "Optional: Query build info"
+        env: 
+          BUILD_INFO_JSON: "BuildInfo-${{env.BUILD_ID}}.json"
+        run: |
+           jf rt curl "/api/build/${{env.BUILD_NAME}}/${{env.BUILD_ID}}" -o $BUILD_INFO_JSON
+           cat $BUILD_INFO_JSON
+
+           sleep 20   # Sleeping for 20 seconds before executing the build publish seems to have resolved the build-scan issue. This delay might be helping with synchronization or resource availability, ensuring a smooth build process.
+
+      - name: "Optional: Query - Build Scan status"
+        run: |
+          jf xr curl "/api/v1/build/status" -H 'Content-Type: application/json' -d '{"name": "${{env.BUILD_NAME}}", "number": "${{env.BUILD_ID}}" }'
+ 
+      # ref https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/cli-for-jfrog-security/enrich-your-sbom
+      # MVN plugin '<artifactId>cyclonedx-maven-plugin</artifactId>' is used to generate SBOM information in the CycloneDX format# target/classes/META-INF/sbom/application.cdx.json
+      # ref https://spring.io/blog/2024/05/24/sbom-support-in-spring-boot-3-3
+      - name: "Optional: Xray sbom-enrich" 
+        run: |
+          jf se "target/classes/META-INF/sbom/application.cdx.json" --threads=100
+
+      - name: "BuildInfo: Xray - Build scan"
+        timeout-minutes: 15    # ref https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepstimeout-minutes
+        continue-on-error: true    # ref: https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepscontinue-on-error
+        run: |
+          jf bs ${{env.BUILD_NAME}} ${{env.BUILD_ID}} --fail=false --format=table --extended-table=true --rescan=false --vuln=true
+
+      - name: "Optional: Build Scan V2"  # https://jfrog.com/help/r/xray-rest-apis/scan-build-v2
+        # jf xr curl /api/v2/ci/build -H 'Content-Type: application/json' -d '{"build_name": "spring-petclinic", "build_number": "ga-gdl-xray-50","rescan":true }'
+        run: |
+          jf xr curl /api/v2/ci/build -H 'Content-Type: application/json' -d '{"build_name": "${{env.BUILD_NAME}}", "build_number": "${{env.BUILD_ID}}","rescan":false  }'
+
+      # Release Bundle v2
+      - name: "RLM: RBv2 spec - create"
+        run: |
+          echo "{ \"files\": [ {\"build\": \"${{env.BUILD_NAME}}/${{env.BUILD_ID}}\" } ] }"  > ${{env.RBv2_SPEC_JSON}}
+          cat ${{env.RBv2_SPEC_JSON}}
+
+      - name: "RLM: RBv2 Create NEW"
+        run: |
+          jf rbc ${{env.BUILD_NAME}} ${{env.BUILD_ID}} --sync=true --signing-key=${{env.RBV2_SIGNING_KEY}} --spec=${{env.RBv2_SPEC_JSON}}
+
+      # Evidence - RBv2 new references
+      #     Docs# https://jfrog.com/help/r/jfrog-artifactory-documentation/evidence-management
+      #     CLI# https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/binaries-management-with-jfrog-artifactory/evidence-service
+      - name: "Evidence: RBv2 state NEW"
+        continue-on-error: true 
+        env:
+          # https://psazuse.jfrog.io/ui/artifactory/lifecycle/?bundleName=spring-petclinic&bundleToFlash=spring-petclinic&repositoryKey=release-bundles-v2&activeKanbanTab=promotion
+          NAME_LINK: "${{env.JF_RT_URL}}/ui/artifactory/lifecycle/?bundleName=${{env.BUILD_NAME}}&bundleToFlash=${{env.BUILD_NAME}}&repositoryKey=release-bundles-v2&activeKanbanTab=promotion"
+          VER_LINK: "${{env.JF_RT_URL}}/ui/artifactory/lifecycle/?bundleName='${{env.BUILD_NAME}}'&bundleToFlash='${{env.BUILD_NAME}}'&releaseBundleVersion='${{env.BUILD_ID}}'&repositoryKey=release-bundles-v2&activeVersionTab=Version%20Timeline&activeKanbanTab=promotion"
+        run: |
+          echo '{ "actor": "${{github.actor}}", "pipeline": "github actions", "build_name": "${{env.BUILD_NAME}}", "build_id": "${{env.BUILD_ID}}", "evd": "Evidence-RBv2", "rbv2_stage": "NEW" }' > ./${{env.EVIDENCE_RBv2C_JSON}}
+          cat ./${{env.EVIDENCE_RBv2C_JSON}}
+          jf evd create --release-bundle ${{env.BUILD_NAME}} --release-bundle-version ${{env.BUILD_ID}} --predicate ./${{env.EVIDENCE_RBv2C_JSON}} --predicate-type https://jfrog.com/evidence/rbv2-new/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
+          echo "    - Evidence for RBv2 attached at [${{env.BUILD_NAME}}](${{env.VER_LINK}}) " >> $GITHUB_STEP_SUMMARY
+
+      - name: "RLM: RBv2 promote DEV"
+        run: |
+          jf rbp ${{env.BUILD_NAME}} ${{env.BUILD_ID}} DEV --sync=true --signing-key=${{env.RBV2_SIGNING_KEY}}  
+
+      - name: "Evidence: RBv2 state DEV"
+        continue-on-error: true 
+        env:
+          # https://psazuse.jfrog.io/ui/artifactory/lifecycle/?bundleName=spring-petclinic&bundleToFlash=spring-petclinic&repositoryKey=release-bundles-v2&activeKanbanTab=promotion
+          NAME_LINK: "${{env.JF_RT_URL}}/ui/artifactory/lifecycle/?bundleName=${{env.BUILD_NAME}}&bundleToFlash=${{env.BUILD_NAME}}&repositoryKey=release-bundles-v2&activeKanbanTab=promotion"
+          VER_LINK: "${{env.JF_RT_URL}}/ui/artifactory/lifecycle/?bundleName='${{env.BUILD_NAME}}'&bundleToFlash='${{env.BUILD_NAME}}'&releaseBundleVersion='${{env.BUILD_ID}}'&repositoryKey=release-bundles-v2&activeVersionTab=Version%20Timeline&activeKanbanTab=promotion"
+        run: |
+          echo '{ "actor": "${{github.actor}}", "pipeline": "github actions", "build_name": "${{env.BUILD_NAME}}", "build_id": "${{env.BUILD_ID}}", "evd": "Evidence-RBv2", "rbv2_stage": "DEV" }' > ./${{env.EVIDENCE_RBv2C_JSON}}
+          cat ./${{env.EVIDENCE_RBv2C_JSON}}
+          jf evd create --release-bundle ${{env.BUILD_NAME}} --release-bundle-version ${{env.BUILD_ID}} --predicate ./${{env.EVIDENCE_RBv2C_JSON}} --predicate-type https://jfrog.com/evidence/rbv2-new/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
+          echo "    - Evidence for RBv2 attached at [${{env.BUILD_NAME}}](${{env.VER_LINK}}) " >> $GITHUB_STEP_SUMMARY
+
+      - name: "RLM: RBv2 promote QA"
+        run: |
+          jf rbp ${{env.BUILD_NAME}} ${{env.BUILD_ID}} QA --sync=true --signing-key=${{env.RBV2_SIGNING_KEY}}  
+
+      - name: "Evidence: RBv2 state QA"
+        continue-on-error: true 
+        env:
+          # https://psazuse.jfrog.io/ui/artifactory/lifecycle/?bundleName=spring-petclinic&bundleToFlash=spring-petclinic&repositoryKey=release-bundles-v2&activeKanbanTab=promotion
+          NAME_LINK: "${{env.JF_RT_URL}}/ui/artifactory/lifecycle/?bundleName=${{env.BUILD_NAME}}&bundleToFlash=${{env.BUILD_NAME}}&repositoryKey=release-bundles-v2&activeKanbanTab=promotion"
+          VER_LINK: "${{env.JF_RT_URL}}/ui/artifactory/lifecycle/?bundleName='${{env.BUILD_NAME}}'&bundleToFlash='${{env.BUILD_NAME}}'&releaseBundleVersion='${{env.BUILD_ID}}'&repositoryKey=release-bundles-v2&activeVersionTab=Version%20Timeline&activeKanbanTab=promotion"
+        run: |
+          echo '{ "actor": "${{github.actor}}", "pipeline": "github actions", "build_name": "${{env.BUILD_NAME}}", "build_id": "${{env.BUILD_ID}}", "evd": "Evidence-RBv2", "rbv2_stage": "QA" }' > ./${{env.EVIDENCE_RBv2C_JSON}}
+          cat ./${{env.EVIDENCE_RBv2C_JSON}}
+          jf evd create --release-bundle ${{env.BUILD_NAME}} --release-bundle-version ${{env.BUILD_ID}} --predicate ./${{env.EVIDENCE_RBv2C_JSON}} --predicate-type https://jfrog.com/evidence/rbv2-new/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
+          echo "    - Evidence for RBv2 attached at [${{env.BUILD_NAME}}](${{env.VER_LINK}}) " >> $GITHUB_STEP_SUMMARY
+
+      - name: "RLM: RBv2 promote PROD"
+        run: |
+          jf rbp ${{env.BUILD_NAME}} ${{env.BUILD_ID}} PROD --sync=true --signing-key=${{env.RBV2_SIGNING_KEY}}  
+
+      - name: "Evidence: RBv2 state PROD"
+        continue-on-error: true 
+        env:
+          # https://psazuse.jfrog.io/ui/artifactory/lifecycle/?bundleName=spring-petclinic&bundleToFlash=spring-petclinic&repositoryKey=release-bundles-v2&activeKanbanTab=promotion
+          NAME_LINK: "${{env.JF_RT_URL}}/ui/artifactory/lifecycle/?bundleName=${{env.BUILD_NAME}}&bundleToFlash=${{env.BUILD_NAME}}&repositoryKey=release-bundles-v2&activeKanbanTab=promotion"
+          VER_LINK: "${{env.JF_RT_URL}}/ui/artifactory/lifecycle/?bundleName='${{env.BUILD_NAME}}'&bundleToFlash='${{env.BUILD_NAME}}'&releaseBundleVersion='${{env.BUILD_ID}}'&repositoryKey=release-bundles-v2&activeVersionTab=Version%20Timeline&activeKanbanTab=promotion"
+        run: |
+          echo '{ "actor": "${{github.actor}}", "pipeline": "github actions", "build_name": "${{env.BUILD_NAME}}", "build_id": "${{env.BUILD_ID}}", "evd": "Evidence-RBv2", "rbv2_stage": "PROD" }' > ./${{env.EVIDENCE_RBv2C_JSON}}
+          cat ./${{env.EVIDENCE_RBv2C_JSON}}
+          jf evd create --release-bundle ${{env.BUILD_NAME}} --release-bundle-version ${{env.BUILD_ID}} --predicate ./${{env.EVIDENCE_RBv2C_JSON}} --predicate-type https://jfrog.com/evidence/rbv2-new/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
+          echo "    - Evidence for RBv2 attached at [${{env.BUILD_NAME}}](${{env.VER_LINK}}) " >> $GITHUB_STEP_SUMMARY
+
+      - name: "Optional: rbv2-summary"
+        env:
+          NAME_LINK: "${{env.JF_RT_URL}}/ui/artifactory/lifecycle/?bundleName=${{env.BUILD_NAME}}&bundleToFlash=${{env.BUILD_NAME}}&repositoryKey=release-bundles-v2&activeKanbanTab=promotion"
+          VER_LINK: "${{env.JF_RT_URL}}/ui/artifactory/lifecycle/?bundleName='${{env.BUILD_NAME}}'&bundleToFlash='${{env.BUILD_NAME}}'&releaseBundleVersion='${{env.BUILD_ID}}'&repositoryKey=release-bundles-v2&activeVersionTab=Version%20Timeline&activeKanbanTab=promotion"
+        run: |
+          echo "# :frog:📦 Release Bundle v2 Summary :rocket: " >> $GITHUB_STEP_SUMMARY
+          echo " " >> $GITHUB_STEP_SUMMARY
+          echo " " >> $GITHUB_STEP_SUMMARY
+          # echo "<details><summary>The RBv2 artifacts has elevated to the subsequent stages</summary>" >> $GITHUB_STEP_SUMMARY
+          echo "The Build Artifacts has elevated to the subsequent stages" >> $GITHUB_STEP_SUMMARY
+          RB2_STATUS_RESP=$(curl -v -G ${JF_RT_URL}/lifecycle/api/v2/promotion/records/${BUILD_NAME}/${BUILD_ID}?async=false -H 'Content-Type:  application/json' -H "Authorization: Bearer ${{steps.setup-cli.outputs.oidc-token}}")
+          echo $RB2_STATUS_RESP > RBv2_STATUS-${{env.BUILD_ID}}.json
+          cat RBv2_STATUS-${{env.BUILD_ID}}.json 
+          # export RB2_STATUS=$(echo $RB2_STATUS_RESP | jq -r '.promotions[0].environment')
+          items=$(echo "$RB2_STATUS_RESP" | jq -c -r '.promotions[]')
+          for item in ${items[@]}; do
+            # {"status":"COMPLETED","repository_key":"release-bundles-v2","release_bundle_name":"spring-petclinic-ga","release_bundle_version":"58","environment":"QA","service_id":"s","created_by":"token:***","created":"2024-09-21T00:53:57.326Z","created_millis":1726880037326,"xray_retrieval_status":"RECEIVED"}
+            envVal=$(echo $item | jq -r '.environment')
+            crtVal=$(echo $item | jq -r '.created')
+            echo " - ${envVal} on ${crtVal} " >> $GITHUB_STEP_SUMMARY
+          done
+          echo "  - Release bundle [${{env.BUILD_NAME}}](${{env.NAME_LINK}}):[${{env.BUILD_NAME}}](${{env.VER_LINK}}) " >> $GITHUB_STEP_SUMMARY
+          echo " " >> $GITHUB_STEP_SUMMARY
+
+      # Query build 
+      - name: "Optional: Query build info"
+        env: 
+          BUILD_INFO_JSON: "BuildInfo-${{env.BUILD_ID}}.json"
+        run: |
+           jf rt curl "/api/build/${{env.BUILD_NAME}}/${{env.BUILD_ID}}" -o $BUILD_INFO_JSON
+           cat $BUILD_INFO_JSON
+          
+  saasArtifactory:
+    name: "Distribute & Download RLM from SaaS Artifactory"
+    needs: dockerPackage
+    runs-on: ubuntu-latest
+    env:
+      JF_RT_URL: https://${{vars.JF_NAME}}.jfrog.io
+      BUILD_NAME: 'spring-petclinic'
+      BUILD_ID: "ga-${{github.run_number}}" 
+      JOB_SUMMARY: true # default is false, true - turn of publish Gradle buildinfo
+      JFROG_CLI_LOG_LEVEL: DEBUG # DEBUG, INFO, WARN, ERROR
+    steps:
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4
+        id: setup-cli
+        env:
+          JF_URL: ${{env.JF_RT_URL}}
+        with:
+          version: latest 
+          oidc-provider-name: ${{vars.JF_OIDC_PROVIDER_NAME}}
+          disable-job-summary: ${{env.JOB_SUMMARY}}
+
+      - name: Config jf-cli
+        run: |
+          export JFROG_CLI_LOG_LEVEL=${{env.JFROG_CLI_LOG_LEVEL}}
+      
+      # ref: https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/binaries-management-with-jfrog-artifactory/release-lifecycle-management#distribute-a-release-bundle-v2
+      - name: "RLM: RBv2 Distribute to SaaS Artifactory and edges"
+        run: |
+          jf rbd ${{env.BUILD_NAME}} ${{env.BUILD_ID}} --sync=true --create-repo=true
+
+      # refer: https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/binaries-management-with-jfrog-artifactory/release-lifecycle-management#download-release-bundle-v2-content
+      - name: "Download RBv2 from SaaS Artifactory"
+        run: |
+          jf rt dl --bundle ${{env.BUILD_NAME}}/${{env.BUILD_ID}} --detailed-summary=true --threads=100
+
+      - name: "Query Distribution status"  # https://psazuse.jfrog.io/lifecycle/api/v2/distribution/trackers/spring-petclinic/ga-49
+        run: |
+            jf rt curl "/lifecycle/api/v2/distribution/trackers/${{env.BUILD_NAME}}/${{env.BUILD_ID}}"
+
+      - name: "Info list"
+        run: |
+          pwd 
+          ls -lR .
+      - name: "Optional: Saas Artifactory summary"
+        run: |
+          echo "# :frog:📦 Download package from SaaS " >> $GITHUB_STEP_SUMMARY
+          echo "  - Download RBv2 from Artifactory [${{env.JF_RT_URL}}](${{env.JF_RT_URL}}) " >> $GITHUB_STEP_SUMMARY
+          echo " " >> $GITHUB_STEP_SUMMARY
+          
+  saasEdge:
+    name: Download RBv2 from SaaS Edge
+    needs: saasArtifactory
+    runs-on: ubuntu-latest
+    env:
+      JF_EDGE_URL: https://${{vars.JF_EDGE_NAME}}.jfrog.io
+      BUILD_NAME: 'spring-petclinic'
+      BUILD_ID: "ga-${{github.run_number}}" 
+      JOB_SUMMARY: true # default is false, true - turn of publish Gradle buildinfo
+      JFROG_CLI_LOG_LEVEL: DEBUG # DEBUG, INFO, WARN, ERROR
+    steps:
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4
+        id: setup-cli
+        env:
+          JF_URL: ${{env.JF_EDGE_URL}}
+          JF_ACCESS_TOKEN: ${{secrets.EDGE_ACCESS_TOKEN}}
+        with:
+          version: latest 
+
+      - name: Config jf-cli
+        run: |
+          export JFROG_CLI_LOG_LEVEL=${{env.JFROG_CLI_LOG_LEVEL}}
+      
+      - name: Edge config show
+        run: |
+          jf config show
+
+      # refer: https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/binaries-management-with-jfrog-artifactory/release-lifecycle-management#download-release-bundle-v2-content
+      - name: "Download RBv2 from SaaS Edge"
+        run: |
+          jf rt dl --bundle ${{env.BUILD_NAME}}/${{env.BUILD_ID}} --detailed-summary=true --threads=100
+
+      - name: "Info list"
+        run: |
+          pwd
+          ls -lR .
+
+      - name: "Optional: Saas Edge summary"
+        run: |
+          echo "# :frog:📦 Download package from SaaS " >> $GITHUB_STEP_SUMMARY
+          echo "  - Download RBv2 from Edge [${{env.JF_EDGE_URL}}](${{env.JF_EDGE_URL}}) " >> $GITHUB_STEP_SUMMARY
+          echo " " >> $GITHUB_STEP_SUMMARY
+  
+  mvnPackage:
+    name: MVN
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        java: [17]
+        include:
+          - language: ['java-kotlin']
+            build-mode: none 
+    env:  
+      JAVA_PROVIDER: 'corretto'
+      JAVA_VERSION: '17'
+      JF_RT_URL: https://${{vars.JF_NAME}}.jfrog.io
+      RT_REPO_MVN_VIRTUAL: "krishnam-mvn-virtual"
+      RT_REPO_MVN_DEV_LOCAL: "krishnam-mvn-dev-local"
+      EVIDENCE_ARTIFACT_JSON: 'evd-artifact.json'
+      EVIDENCE_PACKAGE_JSON: 'evd-package.json'
+      JOB_SUMMARY: false
+      JFROG_CLI_LOG_LEVEL: DEBUG # DEBUG, INFO, WARN, ERROR
+      BUILD_NAME: "spring-petclinic"
+      BUILD_ID: "ga-mvn${{github.run_number}}" # ref: https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/accessing-contextual-information-about-workflow-runs#github-context
+    runs-on: ${{matrix.os}}
+    timeout-minutes: 30   # ref  https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idtimeout-minutes
+    steps:
+      # Use the specific setup-cli branch. Ref https://github.com/marketplace/actions/setup-jfrog-cli
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4
+        id: setup-cli
+        env:
+          JF_URL: ${{env.JF_RT_URL}}
+          JFROG_CLI_RELEASES_REPO: '${{env.JF_RT_URL}}/artifactory/${{env.RT_REPO_MVN_VIRTUAL}}' 
+          JFROG_CLI_EXTRACTORS_REMOTE: '${{env.JF_RT_URL}}/artifactory/${{env.RT_REPO_MVN_VIRTUAL}}'
+          JF_GIT_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          version: latest  # 2.73.0
+          oidc-provider-name: ${{vars.JF_OIDC_PROVIDER_NAME}}
+
+      - name: Clone VCS
+        uses: actions/checkout@v4 # ref: https://github.com/actions/checkout
+
+      - name: Java provider = ${{env.JAVA_PROVIDER}} with ver = ${{env.JAVA_VERSION}} 
+        uses: actions/setup-java@v4   # ref https://github.com/actions/setup-java
+        with:
+          distribution: ${{env.JAVA_PROVIDER}} # corretto
+          java-version: ${{env.JAVA_VERSION}}  # 17
+          cache: 'maven'
+          cache-dependency-path: 'pom.xml'
+
+      - name: Software version
+        run: |
+          # JFrog CLI version
+          jf --version
+          # Ping the server
+          jf rt ping
+          # Java
+          java -version
+          # MVN
+          mvn -version
+          # Docker
+          docker -v
+          # Python
+          python3 -V
+          pip3 -V
+          # jf config
+          jf config show
+
+      - name: Config jf with mvn repos
+        run: |
+          export JFROG_CLI_LOG_LEVEL=${{env.JFROG_CLI_LOG_LEVEL}}
+          export JFROG_CLI_LOG_TIMESTAMP=DATE_AND_TIME
+
+          jf mvnc --global --repo-resolve-releases ${{env.RT_REPO_MVN_VIRTUAL}} --repo-resolve-snapshots ${{env.RT_REPO_MVN_VIRTUAL}}
+
+      - name: list folder
+        run: |
+          pwd
+          # ls -lrta /home/runner/work/spring-petclinic/spring-petclinic
+
+          SPLIT_STR=($(echo "${GITHUB_REPOSITORY}" | tr "/" "\n"))
+          echo "${SPLIT_STR}"
+          echo "${SPLIT_STR[2]}"
+          echo "REPO_NAME=${SPLIT_STR[2]}" >> $GITHUB_ENV
+
+          echo "OIDC_PROVIDER_NAME = ${{vars.JF_OIDC_PROVIDER_NAME}}"
+          echo "GITHUB_REPOSITORY = $GITHUB_REPOSITORY"
+          echo "GITHUB_SHA = $GITHUB_SHA"
+          echo "GITHUB_REPOSITORY_ID = $GITHUB_REPOSITORY_ID"
+          echo "REPO_NAME = $REPO_NAME" 
+
+          cd /home/runner/work/spring-petclinic/spring-petclinic
+          pwd
+          tree .
+
+      - name: "MVN: prestep-summary"
+        run: |
+          echo "# :frog: MVN: Prestep Summary :pushpin:" >> $GITHUB_STEP_SUMMARY
+          echo " " >> $GITHUB_STEP_SUMMARY
+          echo " " >> $GITHUB_STEP_SUMMARY
+          echo " - Installed JFrog CLI [$(jf --version)](https://jfrog.com/getcli/) and Java [${{env.JAVA_PROVIDER}}](https://github.com/actions/setup-java) v${{env.JAVA_VERSION}} " >> $GITHUB_STEP_SUMMARY
+          echo "    - $(jf --version) " >> $GITHUB_STEP_SUMMARY
+          echo "    - $(mvn -v) " >> $GITHUB_STEP_SUMMARY
+          echo "    - $(docker -v) " >> $GITHUB_STEP_SUMMARY
+          echo " - Docker buildx configured with platforms: [${{env.DOCKER_BUILDX_PLATFORMS}}](https://docs.docker.com/reference/cli/docker/buildx/create/#platform) " >> $GITHUB_STEP_SUMMARY
+          echo " - Configured the JFrog Cli and Docker login with SaaS Artifactory OIDC integration  " >> $GITHUB_STEP_SUMMARY
+          echo " " >> $GITHUB_STEP_SUMMARY
+          echo " - Variables info" >> $GITHUB_STEP_SUMMARY
+          echo "    - ID: ${{env.BUILD_ID}} " >> $GITHUB_STEP_SUMMARY
+          echo "    - Build Name: ${{env.BUILD_NAME}} " >> $GITHUB_STEP_SUMMARY
+          echo "    - Maven Repo URL: ${{env.RT_REPO_MVN_VIRTUAL}}" >> $GITHUB_STEP_SUMMARY
+          echo "    - Docker Repo URL: ${{env.RT_REPO_DOCKER_VIRTUAL}}" >> $GITHUB_STEP_SUMMARY
+          echo "    - Docker URL: ${{env.RT_REPO_DOCKER_URL}}" >> $GITHUB_STEP_SUMMARY
+          echo " " >> $GITHUB_STEP_SUMMARY
+          echo " - Evidence Info: " >> $GITHUB_STEP_SUMMARY
+
+      # Package
+      - name: "Curation: audit" # https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/cli-for-jfrog-security/cli-for-jfrog-curation
+        timeout-minutes: 15    # ref https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepstimeout-minutes
+        continue-on-error: true    # ref: https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepscontinue-on-error
+        run: |
+          jf ca --format=table --threads=10
+
+      - name: "Package: Create MVN Build"
+        run: |     # -Djar.finalName=${{env.JAR_FINAL_NAME}} 
+          jf mvn clean install -DskipTests=true -Denforcer.skip=true --build-name=${{env.BUILD_NAME}} --build-number=${{env.BUILD_ID}}
+
+      # Build Info
+          # US 
+          #     Executive Order: 
+          #       https://www.whitehouse.gov/briefing-room/presidential-actions/2021/05/12/executive-order-on-improving-the-nations-cybersecurity/
+          #       https://www.nist.gov/itl/executive-order-14028-improving-nations-cybersecurity
+          #    US Dept of Commerce: https://www.ntia.gov/page/software-bill-materials
+          #    US Cyber Defence Agency: https://www.cisa.gov/sbom
+          #    NIST: https://www.nist.gov/itl/executive-order-14028-improving-nations-cybersecurity/software-security-supply-chains-software-1
+          #    NITA: https://www.ntia.gov/page/software-bill-materials 
+          #    Centers for Medicare & Medicaid Services: https://security.cms.gov/learn/software-bill-materials-sbom
+          # India
+          #    CERT-IN: https://www.cert-in.org.in/sbom/
+      - name: "BuildInfo: Collect env"
+        run: jf rt bce ${{env.BUILD_NAME}} ${{env.BUILD_ID}} 
+
+      - name: "BuildInfo: Build Publish"
+        run: jf rt bp ${{env.BUILD_NAME}} ${{env.BUILD_ID}} --detailed-summary=true
+
+      - name: "Optional: Xray sbom-enrich" 
+        run: |
+          jf se "target/classes/META-INF/sbom/application.cdx.json" --threads=100
+  
+      # Evidence - Build references
+      #     Docs# https://jfrog.com/help/r/jfrog-artifactory-documentation/evidence-management
+      #     CLI# https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/binaries-management-with-jfrog-artifactory/evidence-service
+      - name: "Evidence: Build Publish"
+        continue-on-error: true 
+        run: |
+          echo '{ "actor": "${{github.actor}}", "pipeline": "github actions","build_name": "${{env.BUILD_NAME}}", "build_id": "${{env.BUILD_ID}}", "evd": "Evidence-BuildPublish"}' > ./${{env.EVIDENCE_BUILD_JSON}}
+          cat ./${{env.EVIDENCE_BUILD_JSON}}
+          jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVIDENCE_BUILD_JSON}} --predicate-type https://jfrog.com/evidence/build-signature/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
+          echo "    - Evidence for BUILD Publish attached. " >> $GITHUB_STEP_SUMMARY
+
+  # Gradle using Federated repositories        
+  gradlePackage:
+    name: Gradle
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        java: [17 ]
+        include:
+          - language: ['java-kotlin']
+            build-mode: none
+    env:  
+      JAVA_PROVIDER: 'corretto'
+      JAVA_VERSION: '17'
+      JF_RT_URL: https://${{vars.JF_NAME}}.jfrog.io
+      RT_REPO_GRADLE_VIRTUAL: 'krishnam-gradle-virtual'
+      RT_REPO_GRADLE_LOCAL: 'krishnam-gdl-dev-fed'
+      JOB_SUMMARY: true # default is false, true - turn of publish Gradle buildinfo
+      JFROG_CLI_LOG_LEVEL: DEBUG # DEBUG, INFO, WARN, ERROR
+      BUILD_NAME: 'spring-petclinic'
+      BUILD_ID: "ga-gdl${{github.run_number}}" # ref: https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/accessing-contextual-information-about-workflow-runs#github-context
+      EVIDENCE_ARTIFACT_JSON: 'evd-artifact.json'
+    runs-on: ${{matrix.os}}
+    timeout-minutes: 20   # ref  https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idtimeout-minutes
+    steps:
+      # Use the specific setup-cli branch. Ref https://github.com/marketplace/actions/setup-jfrog-cli
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4
+        id: setup-cli
+        env:
+          JF_URL: ${{env.JF_RT_URL}}
+          JFROG_CLI_RELEASES_REPO: '${{env.JF_RT_URL}}/artifactory/${{env.RT_REPO_GRADLE_VIRTUAL}}' 
+          JFROG_CLI_EXTRACTORS_REMOTE: '${{env.JF_RT_URL}}/artifactory/${{env.RT_REPO_GRADLE_VIRTUAL}}'
+          JF_GIT_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          version: latest 
+          oidc-provider-name: ${{vars.JF_OIDC_PROVIDER_NAME}}
+          disable-job-summary: ${{env.JOB_SUMMARY}}
+
+      - name: Clone VCS
+        uses: actions/checkout@v4 # ref: https://github.com/actions/checkout
+
+      - name: Java provider = ${{env.JAVA_PROVIDER}} with ver = ${{env.JAVA_VERSION}} 
+        uses: actions/setup-java@v4   # ref https://github.com/actions/setup-java
+        with:
+          distribution: ${{env.JAVA_PROVIDER}} # corretto
+          java-version: ${{env.JAVA_VERSION}}  # 17
+
+      - name: Setup Gradle    # ref https://docs.github.com/en/enterprise-cloud@latest/actions/use-cases-and-examples/building-and-testing/building-and-testing-java-with-gradle
+        uses: gradle/actions/setup-gradle@v4 # v4.0.0
+        with:
+          gradle-version: release-candidate
+      - name: Software version
+        run: |
+          # JFrog CLI version
+          jf --version
+          # Ping the server
+          jf rt ping
+          # Java
+          java -version
+          # Gradle
+          gradle -v
+          # jf config
+          jf config show
+
+      - name: Config jf with gradle repos
+        run: |
+          export JFROG_CLI_LOG_LEVEL=${{env.JFROG_CLI_LOG_LEVEL}}
+          export JFROG_CLI_LOG_TIMESTAMP=DATE_AND_TIME
+          jf gradlec --repo-deploy ${{env.RT_REPO_GRADLE_VIRTUAL}} --repo-resolve ${{env.RT_REPO_GRADLE_VIRTUAL}} --repo-deploy ${{env.RT_REPO_GRADLE_VIRTUAL}}
+
+      - name: list folder
+        run: |
+          pwd
+          ls -lrta /home/runner/work/spring-petclinic/spring-petclinic
+
+          echo "OIDC_PROVIDER_NAME = ${{vars.JF_OIDC_PROVIDER_NAME}}"
+          echo "GITHUB_REPOSITORY = $GITHUB_REPOSITORY"
+          echo "GITHUB_SHA = $GITHUB_SHA"
+          echo "GITHUB_REPOSITORY_ID = $GITHUB_REPOSITORY_ID"
+
+          cd /home/runner/work/spring-petclinic/spring-petclinic
+          pwd
+          tree .
+
+      - name: "Gradle: prestep-summary"
+        run: |
+          jfcliv=`jf --version`
+          echo "# :frog: Gradle: Prestep Summary :pushpin:" >> $GITHUB_STEP_SUMMARY
+          echo " " >> $GITHUB_STEP_SUMMARY
+          echo " " >> $GITHUB_STEP_SUMMARY
+          echo " - Installed JFrog CLI [${jfcliv}](https://jfrog.com/getcli/) and Java [${{env.JAVA_PROVIDER}}](https://github.com/actions/setup-java) v${{env.JAVA_VERSION}} " >> $GITHUB_STEP_SUMMARY
+          echo "    - $(jf --version) " >> $GITHUB_STEP_SUMMARY
+          echo "    - $(gradle -v) " >> $GITHUB_STEP_SUMMARY
+          echo " - Configured the JFrog Cli with SaaS Artifactory OIDC integration  " >> $GITHUB_STEP_SUMMARY
+          echo " " >> $GITHUB_STEP_SUMMARY
+          echo " - Variables info" >> $GITHUB_STEP_SUMMARY
+          echo "    - ID: ${{env.BUILD_ID}} " >> $GITHUB_STEP_SUMMARY
+          echo "    - Build Name: ${{env.BUILD_NAME}} " >> $GITHUB_STEP_SUMMARY
+          echo "    - Gradle Repo URL: ${{env.RT_REPO_GRADLE_VIRTUAL}}" >> $GITHUB_STEP_SUMMARY
+          echo " " >> $GITHUB_STEP_SUMMARY
+
+      # Package
+      - name: "Curation: audit" # https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/cli-for-jfrog-security/cli-for-jfrog-curation
+        timeout-minutes: 15    # ref https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepstimeout-minutes
+        continue-on-error: true    # ref: https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepscontinue-on-error
+        run: |
+          jf ca --format=table --threads=10
+
+      - name: "Package: Create Build"
+        run: |
+          jf gradle clean artifactoryPublish -x test -b ./build.gradle --build-name=${{env.BUILD_NAME}} --build-number=${{env.BUILD_ID}} 
+
+      - name: "Evidence: Artifact"
+        continue-on-error: true 
+        env:
+          REPO_JAR: "${{env.RT_REPO_GRADLE_LOCAL}}/org/springframework/samples/${{env.BUILD_NAME}}/3.4.0/${{env.BUILD_NAME}}-3.4.0-plain.jar"  # /krishnam-gdl-dev-fed/org/springframework/samples/spring-petclinic/3.4.0/
+          # REPO_JAR: "${{env.RT_REPO_GRADLE_VIRTUAL}}/org/springframework/samples/${{env.BUILD_NAME}}/3.4.0/${{env.BUILD_NAME}}-3.4.0-plain.jar"  # krishnam-gradle-virtual/org/springframework/samples/spring-petclinic/3.4.0/spring-petclinic-3.4.0-plain.jar
+        run: |
+          echo '{ "actor": "${{github.actor}}", "pipeline": "github actions", "build_name": "${{env.BUILD_NAME}}", "build_id": "${{env.BUILD_ID}}", "evd": "Evidence-Artifact", "artifact": "${{env.REPO_JAR}}" }' > ./${{env.EVIDENCE_ARTIFACT_JSON}}
+          cat ./${{env.EVIDENCE_ARTIFACT_JSON}}
+
+          jf evd create --subject-repo-path ${{env.REPO_JAR}} --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}"  --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}} --predicate ./${{env.EVIDENCE_ARTIFACT_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1
+
+          echo "    - TODO: Evidence for ARTIFACT attached " >> $GITHUB_STEP_SUMMARY
+
+      # Build Info
+          # US 
+          #     Executive Order: 
+          #       https://www.whitehouse.gov/briefing-room/presidential-actions/2021/05/12/executive-order-on-improving-the-nations-cybersecurity/
+          #       https://www.nist.gov/itl/executive-order-14028-improving-nations-cybersecurity
+          #    US Dept of Commerce: https://www.ntia.gov/page/software-bill-materials
+          #    US Cyber Defence Agency: https://www.cisa.gov/sbom
+          #    NIST: https://www.nist.gov/itl/executive-order-14028-improving-nations-cybersecurity/software-security-supply-chains-software-1
+          #    NITA: https://www.ntia.gov/page/software-bill-materials 
+          #    Centers for Medicare & Medicaid Services: https://security.cms.gov/learn/software-bill-materials-sbom
+          # India
+          #    CERT-IN: https://www.cert-in.org.in/sbom/
+      - name: "BuildInfo: Collect env"
+        run: jf rt bce ${{env.BUILD_NAME}} ${{env.BUILD_ID}} 
+ 
+      - name: "BuildInfo: Add VCS info"
+        run: jf rt bag ${{env.BUILD_NAME}} ${{env.BUILD_ID}} 
+
+      - name: "BuildInfo: Build Publish"
+        run: jf rt bp ${{env.BUILD_NAME}} ${{env.BUILD_ID}} --detailed-summary=true
+
+  # Generate GH-Pages  
+  secReport:
+    name: "Generate SEC Report"
+    # needs: mvnPackage
+    # needs: dockerPackage
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.13"]
+    env:
+      JF_RT_URL: https://${{vars.JF_NAME}}.jfrog.io
+      JOB_SUMMARY: true # default is false, true - turn of publish Gradle buildinfo
+      JFROG_CLI_LOG_LEVEL: DEBUG # DEBUG, INFO, WARN, ERROR
+    permissions:
+      id-token: write # for creating OIDC tokens for signing.
+      pages: write  # deploy to GitHub Pages 'gh-pages' branch
+      contents: write
+
+    steps:
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4
+        id: setup-cli
+        env:
+          JF_URL: ${{env.JF_RT_URL}}
+          JF_GIT_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          version: latest 
+          oidc-provider-name: ${{vars.JF_OIDC_PROVIDER_NAME}}
+
+      - name: Clone VCS
+        uses: actions/checkout@v4 
+
+      - name: "Software Info"
+        run: |
+          python3 --version
+          pip3 --version
+          jf -v
+          jf config show
+
+      - name: "set env"
+        run: |
+          echo "REPO_HOME=/home/runner/work/spring-petclinic/spring-petclinic" >> $GITHUB_ENV
+          echo "REPO_HOME:: ${{env.REPO_HOME}}"
+          export REPORT_DATE="$(date '+%Y-%m-%d-%H-%M')" 
+          echo "REPORT_DATE=${REPORT_DATE}" >> $GITHUB_ENV
+
+      - name: "Create Docs folder if doesn't exist"
+        run: |
+          cd ${{env.REPO_HOME}}
+          mkdir -p docs
+          tree .
+
+      - name: List folder
+        run: |
+          echo "REPO_HOME = ${{env.REPO_HOME}}"
+          echo "REPORT_DATE = ${{env.REPORT_DATE}}"
+          echo "OIDC_PROVIDER_NAME = ${{vars.JF_OIDC_PROVIDER_NAME}}"
+          echo "OIDC user: ${{steps.setup-cli.outputs.oidc-user}}"
+          echo "password: ${{steps.setup-cli.outputs.oidc-token}}"
+
+
+#  jf curl -XGET "${{env.JF_RT_URL}}/artifactory/api/search/artifact?name=*log4j*&repos=mvn-remote-cache" -H "Content-Type: application/json" -H "Authorization: Bearer ${{steps.setup-cli.outputs.oidc-token}}"
+      - name: Generate Report  
+          # GenerateSBOMreport.py
+        run: | 
+          cd ${{env.REPO_HOME}}/my-files/scripts-report/
+          tree .
+          pwd
+
+          pip3 install -r requirements.txt
+
+          python3 scripts/Test.py
+          tree .
+
+      - name: Copy Report  
+        run: | 
+          cd ${{env.REPO_HOME}}/my-files/scripts-report/
+          pwd
+          cp -r index.html ${{env.REPO_HOME}}/docs/report-${{env.REPORT_DATE}}.html
+          mv -f index.html ${{env.REPO_HOME}}/docs/index.html
+
+          cd ${{env.REPO_HOME}}
+          tree .
+
+      - name: Commit & Push changes  # ref: https://github.com/marketplace/actions/github-commit-push
+        uses: actions-js/push@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          message: "SEC Report generated on ${{env.REPORT_DATE}}"
+          branch: "gh-pages"
+          author_name: "github-actions[bot]"
+          rebase: true
+          force: true
