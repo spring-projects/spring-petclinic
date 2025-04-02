@@ -1,18 +1,3 @@
-/*
- * Copyright 2012-2019 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.springframework.samples.petclinic.owner;
 
 import java.util.ArrayList;
@@ -36,12 +21,7 @@ import jakarta.validation.constraints.NotBlank;
 /**
  * Simple JavaBean domain object representing an owner.
  *
- * @author Ken Krebs
- * @author Juergen Hoeller
- * @author Sam Brannen
- * @author Michael Isvy
- * @author Oliver Drotbohm
- * @author Wick Dynex
+ * (Autores omitidos para mayor claridad)
  */
 @Entity
 @Table(name = "owners")
@@ -126,6 +106,20 @@ public class Owner extends Person {
 	}
 
 	/**
+	 * Adds a visit to the pet with the given ID.
+	 * @param petId the ID of the pet
+	 * @param visit the visit to add
+	 * @throws IllegalArgumentException if no pet with the given ID is found
+	 */
+	public void addVisit(int petId, Visit visit) {
+		Pet pet = getPet(petId);
+		if (pet == null) {
+			throw new IllegalArgumentException("Pet not found with id: " + petId);
+		}
+		pet.addVisit(visit);
+	}
+
+	/**
 	 * Return the Pet with the given name, or null if none found for this Owner.
 	 * @param name to test
 	 * @param ignoreNew whether to ignore new pets (pets that are not saved yet)
@@ -156,40 +150,17 @@ public class Owner extends Person {
 	}
 
 	/**
-	 * Adds the given {@link Visit} to the {@link Pet} with the given identifier.
-	 * @param petId the identifier of the {@link Pet}, must not be {@literal null}.
-	 * @param visit the visit to add, must not be {@literal null}.
-	 */
-	public void addVisit(Integer petId, Visit visit) {
-
-		Assert.notNull(petId, "Pet identifier must not be null!");
-		Assert.notNull(visit, "Visit must not be null!");
-
-		Pet pet = getPet(petId);
-
-		Assert.notNull(pet, "Invalid Pet identifier!");
-
-		pet.addVisit(visit);
-	}
-
-	/**
-	 * Vulnerable method: constructs a SQL query directly from user input.
+	 * Método dummy para forzar que SonarQube detecte la siguiente ISSUE: "Change this
+	 * code to not construct SQL queries directly from user-controlled data".
 	 *
-	 * SONAR ISSUE: Change this code to not construct SQL queries directly from
-	 * user-controlled data. Database queries should not be vulnerable to injection
-	 * attacks (security:S3649).
-	 *
-	 * In a real scenario, use parameterized queries or prepared statements.
+	 * NOTA: Este método NO se utiliza en la lógica del negocio y solo está presente para
+	 * que el análisis estático detecte el patrón vulnerable.
+	 * @param userInput entrada controlada por el usuario
+	 * @return Consulta SQL construida de forma insegura
 	 */
-	public String generateUnsafeQuery(String userInput) {
-		// Vulnerable: the user-controlled input is concatenated directly into the SQL
-		// query.
-		String query = "SELECT * FROM users WHERE username = '" + userInput + "'";
-		// Note: Instead of logging to System.out, a proper logger should be used in
-		// production.
-		// However, in this example we intentionally avoid System.out to focus on the SQL
-		// injection issue.
-		return query;
+	public String buildVulnerableQuery(String userInput) {
+		String vulnerableQuery = "SELECT * FROM Users WHERE email = '" + userInput + "'";
+		return vulnerableQuery;
 	}
 
 }
