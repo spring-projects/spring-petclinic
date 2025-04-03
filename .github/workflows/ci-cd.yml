@@ -1,0 +1,146 @@
+name: Build and Deploy Spring Boot Image
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Run Tests with Coverage
+        run: ./mvnw test jacoco:report
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Upload Coverage Reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-reports
+          path: target/site/jacoco/*.xml
+
+  build-and-push:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Build Image with Maven
+        run: ./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=mtu/petclinic:${{ github.sha }} --no-transfer-progress
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Login to Amazon ECR
+        run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 215262883158.dkr.ecr.us-east-1.amazonaws.com
+
+      - name: Tag Image
+        run: docker tag mtu/petclinic:${{ github.sha }} 215262883158.dkr.ecr.us-east-1.amazonaws.com/mtu/petclinic:${{ github.sha }}
+
+      - name: Push Image to ECR
+        run: docker push 215262883158.dkr.ecr.us-east-1.amazonaws.com/mtu/petclinic:${{ github.sha }}
+
+  deploy-staging:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.0
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ./terraform
+
+      - name: Terraform Apply Staging
+        run: terraform apply -auto-approve -var "image_tag=${{ github.sha }}" -var "environment=staging"
+        working-directory: ./terraform
+
+      - name: Send Slack Notification (Staging)
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          slack-bot-token: ${{ secrets.SLACK_BOT_TOKEN }}
+          channel-id: 'staging-deployments'
+          text: "Staging Deployment: ${{ job.status }} for commit ${{ github.sha }}"
+
+  approval:
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Manual Approval
+        run: echo "Waiting for manual approval..."
+
+  deploy-production:
+    needs: approval
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.0
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ./terraform
+
+      - name: Terraform Apply Production
+        run: terraform apply -auto-approve -var "image_tag=${{ github.sha }}" -var "environment=production"
+        working-directory: ./terraform
+
+      - name: Send Slack Notification (Production)
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          slack-bot-token: ${{ secrets.SLACK_BOT_TOKEN }}
+          channel-id: 'production-deployments'
+          text: "Production Deployment: ${{ job.status }} for commit ${{ github.sha }}"
