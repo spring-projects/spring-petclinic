@@ -30,8 +30,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 /**
  * Simple JavaBean domain object representing an owner.
@@ -94,7 +94,7 @@ public class Owner extends Person {
 	}
 
 	public void addPet(Pet pet) {
-		if (pet.isNew()) {
+		if (pet != null && pet.isNew()) {
 			getPets().add(pet);
 		}
 	}
@@ -117,11 +117,12 @@ public class Owner extends Person {
 		for (Pet pet : getPets()) {
 			if (!pet.isNew()) {
 				Integer compId = pet.getId();
-				if (compId.equals(id)) {
+				if (compId != null && compId.equals(id)) {
 					return pet;
 				}
 			}
 		}
+		
 		return null;
 	}
 
@@ -132,6 +133,8 @@ public class Owner extends Person {
 	 * @return the Pet with the given name, or null if no such Pet exists for this Owner
 	 */
 	public Pet getPet(String name, boolean ignoreNew) {
+		if (name == null) return null;
+		
 		for (Pet pet : getPets()) {
 			String compName = pet.getName();
 			if (compName != null && compName.equalsIgnoreCase(name)) {
