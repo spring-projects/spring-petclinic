@@ -52,8 +52,10 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Send Slack Notification (SonarCloud Complete, Pending Docker Push Review)
-        uses: slackapi/slack-github-action@v1.24.0
+        uses: slackapi/slack-github-action@v2.0.0
         with:
-          slack-bot-token: ${{ secrets.SLACK_BOT_TOKEN }}
-          channel-id: 'ci-notifications'
-          text: "SonarCloud Analysis Complete: ${{ job.status }} for commit ${{ github.sha }}. Docker Hub push is pending review in GitHub Actions."
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_BOT_TOKEN }}
+          payload: |
+            channel: ${{ secrets.SLACK_CI_CHANNEL_ID }}
+            text: "SonarCloud Analysis Complete: ${{ job.status }} for commit ${{ github.sha }}. Docker Hub push is pending review in GitHub Actions."
