@@ -12,7 +12,7 @@ jobs:
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-      SLACK_CI_CHANNEL_ID: ${{ secrets.SLACK_CI_CHANNEL_ID }}
+      SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
 
   build-and-push:
     needs: sonarcloud
@@ -74,7 +74,7 @@ jobs:
           method: chat.postMessage
           token: ${{ secrets.SLACK_BOT_TOKEN }}
           payload: |
-            channel: ${{ secrets.SLACK_PROD_CHANNEL_ID }}
+            channel: ${{ secrets.SLACK_CHANNEL_ID }}
             text: "Staging Deployment Complete: ${{ job.status }} for commit ${{ github.sha }}. Production deployment is pending review in GitHub Actions."
 
   deploy-production:
@@ -111,5 +111,5 @@ jobs:
           method: chat.postMessage
           token: ${{ secrets.SLACK_BOT_TOKEN }}
           payload: |
-            channel: ${{ secrets.SLACK_PROD_CHANNEL_ID }}
+            channel: ${{ secrets.SLACK_CHANNEL_ID }}
             text: "Production Deployment: ${{ job.status }} for commit ${{ github.sha }}"
