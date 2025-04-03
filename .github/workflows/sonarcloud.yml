@@ -13,43 +13,36 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-
+          fetch-depth: 0
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: 17
           distribution: 'zulu'
-
       - name: Cache SonarQube packages
         uses: actions/cache@v4
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
-
       - name: Cache Maven packages
         uses: actions/cache@v4
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-
       - name: Build and Test with Coverage
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn -B verify jacoco:report org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=adhl-0216_MTU-DevOps-spring-petclinic
-
       - name: Check Code Coverage
         run: |
-          # Extract coverage percentage from JaCoCo report
           COVERAGE=$(mvn jacoco:report -q -Dquiet=true && grep -oP '(?<=<td class="right" data-value=")[0-9.]+(?=")' target/site/jacoco/index.html | head -1)
           echo "Code Coverage: $COVERAGE%"
           if (( $(echo "$COVERAGE < 80" | bc -l) )); then
             echo "Coverage $COVERAGE% is below 80%. Failing the build."
             exit 1
           fi
-
       - name: Check SonarCloud Quality Gate
         uses: SonarSource/sonarcloud-github-action@master
         with:
@@ -58,3 +51,9 @@ jobs:
             -Dsonar.qualitygate.wait=true
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Send Slack Notification (SonarCloud Complete, Pending Docker Push Review)
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          slack-bot-token: ${{ secrets.SLACK_BOT_TOKEN }}
+          channel-id: 'ci-notifications'
+          text: "SonarCloud Analysis Complete: ${{ job.status }} for commit ${{ github.sha }}. Docker Hub push is pending review in GitHub Actions."
