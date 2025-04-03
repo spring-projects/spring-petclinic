@@ -10,13 +10,11 @@ variable "environment" {
   type = string
 }
 
-# ECR Repository (shared across environments)
-resource "aws_ecr_repository" "petclinic" {
-  name = "mtu/petclinic"
+variable "dockerhub_username" {
+  type = string
 }
 
 # ECS Clusters
-# TODO: update cluster
 resource "aws_ecs_cluster" "staging_cluster" {
   count = var.environment == "staging" ? 1 : 0
   name  = "petclinic-staging-cluster"
@@ -28,7 +26,6 @@ resource "aws_ecs_cluster" "prod_cluster" {
 }
 
 # CloudWatch Log Group
-# TODO: update cluster
 resource "aws_cloudwatch_log_group" "petclinic_logs" {
   name              = "/ecs/petclinic-${var.environment}"
   retention_in_days = 30
@@ -62,13 +59,14 @@ resource "aws_ecs_task_definition" "petclinic_task" {
   family                   = "petclinic-task-${var.environment}"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu                      = "256"
-  memory                   = "512"
+  cpu                      = "256"  # Compatible with small instance type
+  memory                   = "512"  # Compatible with small instance type
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
+  task_role_arn            = aws_iam_role.ecs_task_execution_role.arn  # Use LabRole equivalent
 
   container_definitions = jsonencode([{
     name  = "petclinic"
-    image = "215262883158.dkr.ecr.us-east-1.amazonaws.com/mtu/petclinic:${var.image_tag}"
+    image = "${var.dockerhub_username}/petclinic:${var.image_tag}"
     portMappings = [{
       containerPort = 8080
       hostPort      = 8080
@@ -88,21 +86,20 @@ resource "aws_ecs_task_definition" "petclinic_task" {
 resource "aws_ecs_service" "petclinic_service" {
   name            = "petclinic-service-${var.environment}"
   cluster         = var.environment == "staging" ? aws_ecs_cluster.staging_cluster[0].id : aws_ecs_cluster.prod_cluster[0].id
-  task_definition               
+  task_definition = aws_ecs_task_definition.petclinic_task.arn
   desired_count   = 1
   launch_type     = "FARGATE"
 
   network_configuration {
-    subnets         = ["subnet-12345678"]  # Replace with your subnet IDs
-    security_groups = ["sg-12345678"]     # Replace with your security group ID
+    subnets          = ["subnet-12345678"]  # Replace with your Learner Lab subnet IDs
+    security_groups  = ["sg-12345678"]      # Replace with your Learner Lab security group ID
     assign_public_ip = true
   }
 }
 
-# IAM Role for ECS Task Execution
-# TODO: use lab role (?)
+# IAM Role for ECS Task Execution (LabRole assumed)
 resource "aws_iam_role" "ecs_task_execution_role" {
-  name = "ecsTaskExecutionRole-${var.environment}"
+  name = "LabRole"  # Must match Learner Lab's LabRole name
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
@@ -113,6 +110,8 @@ resource "aws_iam_role" "ecs_task_execution_role" {
       }
     }]
   })
+  # Note: In Learner Lab, this role already exists; Terraform might fail if it tries to recreate it
+  # Use an existing role reference instead if needed (see below)
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_policy" {
