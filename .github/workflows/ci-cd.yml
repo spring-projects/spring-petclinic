@@ -7,37 +7,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - name: Run Tests with Coverage
-        run: ./mvnw test jacoco:report
-
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-      - name: Upload Coverage Reports
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-reports
-          path: target/site/jacoco/*.xml
+  sonarcloud:
+    uses: ./.github/workflows/sonarcloud.yml
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   build-and-push:
-    needs: test
+    needs: sonarcloud
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -50,23 +26,16 @@ jobs:
           distribution: 'temurin'
 
       - name: Build Image with Maven
-        run: ./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=mtu/petclinic:${{ github.sha }} --no-transfer-progress
+        run: ./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=${{ secrets.DOCKERHUB_USERNAME }}/petclinic:${{ github.sha }} --no-transfer-progress
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Login to Amazon ECR
-        run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 215262883158.dkr.ecr.us-east-1.amazonaws.com
-
-      - name: Tag Image
-        run: docker tag mtu/petclinic:${{ github.sha }} 215262883158.dkr.ecr.us-east-1.amazonaws.com/mtu/petclinic:${{ github.sha }}
-
-      - name: Push Image to ECR
-        run: docker push 215262883158.dkr.ecr.us-east-1.amazonaws.com/mtu/petclinic:${{ github.sha }}
+      - name: Push Image to Docker Hub
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/petclinic:${{ github.sha }}
 
   deploy-staging:
     needs: build-and-push
@@ -79,8 +48,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/LabRole
           aws-region: us-east-1
 
       - name: Setup Terraform
@@ -93,7 +61,7 @@ jobs:
         working-directory: ./terraform
 
       - name: Terraform Apply Staging
-        run: terraform apply -auto-approve -var "image_tag=${{ github.sha }}" -var "environment=staging"
+        run: terraform apply -auto-approve -var "image_tag=${{ github.sha }}" -var "environment=staging" -var "dockerhub_username=${{ secrets.DOCKERHUB_USERNAME }}"
         working-directory: ./terraform
 
       - name: Send Slack Notification (Staging)
@@ -121,8 +89,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/LabRole
           aws-region: us-east-1
 
       - name: Setup Terraform
@@ -135,7 +102,7 @@ jobs:
         working-directory: ./terraform
 
       - name: Terraform Apply Production
-        run: terraform apply -auto-approve -var "image_tag=${{ github.sha }}" -var "environment=production"
+        run: terraform apply -auto-approve -var "image_tag=${{ github.sha }}" -var "environment=production" -var "dockerhub_username=${{ secrets.DOCKERHUB_USERNAME }}"
         working-directory: ./terraform
 
       - name: Send Slack Notification (Production)
