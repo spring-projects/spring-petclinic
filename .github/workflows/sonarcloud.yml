@@ -57,5 +57,5 @@ jobs:
           method: chat.postMessage
           token: ${{ secrets.SLACK_BOT_TOKEN }}
           payload: |
-            channel: ${{ secrets.SLACK_CI_CHANNEL_ID }}
+            channel: ${{ secrets.SLACK_CHANNEL_ID }}
             text: "SonarCloud Analysis Complete: ${{ job.status }} for commit ${{ github.sha }}. Docker Hub push is pending review in GitHub Actions."
