@@ -11,10 +11,13 @@ jobs:
     uses: ./.github/workflows/sonarcloud.yml
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      SLACK_CI_CHANNEL_ID: ${{ secrets.SLACK_CI_CHANNEL_ID }}
 
   build-and-push:
     needs: sonarcloud
     runs-on: ubuntu-latest
+    environment: docker-push  # Requires review before proceeding
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -45,11 +48,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Configure AWS Credentials
+      - name: Configure AWS Credentials with LabRole
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/LabRole
           aws-region: us-east-1
+          role-session-name: GitHubActionsSession
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -64,33 +68,29 @@ jobs:
         run: terraform apply -auto-approve -var "image_tag=${{ github.sha }}" -var "environment=staging" -var "dockerhub_username=${{ secrets.DOCKERHUB_USERNAME }}"
         working-directory: ./terraform
 
-      - name: Send Slack Notification (Staging)
-        uses: slackapi/slack-github-action@v1.24.0
+      - name: Send Slack Notification (Staging Complete, Pending Production Review)
+        uses: slackapi/slack-github-action@v2.0.0
         with:
-          slack-bot-token: ${{ secrets.SLACK_BOT_TOKEN }}
-          channel-id: 'staging-deployments'
-          text: "Staging Deployment: ${{ job.status }} for commit ${{ github.sha }}"
-
-  approval:
-    needs: deploy-staging
-    runs-on: ubuntu-latest
-    environment: production
-    steps:
-      - name: Manual Approval
-        run: echo "Waiting for manual approval..."
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_BOT_TOKEN }}
+          payload: |
+            channel: ${{ secrets.SLACK_PROD_CHANNEL_ID }}
+            text: "Staging Deployment Complete: ${{ job.status }} for commit ${{ github.sha }}. Production deployment is pending review in GitHub Actions."
 
   deploy-production:
-    needs: approval
+    needs: deploy-staging
     runs-on: ubuntu-latest
+    environment: production  # Requires review before proceeding
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Configure AWS Credentials
+      - name: Configure AWS Credentials with LabRole
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/LabRole
           aws-region: us-east-1
+          role-session-name: GitHubActionsSession
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -106,8 +106,10 @@ jobs:
         working-directory: ./terraform
 
       - name: Send Slack Notification (Production)
-        uses: slackapi/slack-github-action@v1.24.0
+        uses: slackapi/slack-github-action@v2.0.0
         with:
-          slack-bot-token: ${{ secrets.SLACK_BOT_TOKEN }}
-          channel-id: 'production-deployments'
-          text: "Production Deployment: ${{ job.status }} for commit ${{ github.sha }}"
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_BOT_TOKEN }}
+          payload: |
+            channel: ${{ secrets.SLACK_PROD_CHANNEL_ID }}
+            text: "Production Deployment: ${{ job.status }} for commit ${{ github.sha }}"
