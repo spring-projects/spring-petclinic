@@ -81,7 +81,7 @@ class OwnerController {
 
 		this.owners.save(owner);
 		redirectAttributes.addFlashAttribute("message", "New Owner Created");
-		return "redirect		<p th:text="${owner.lastName}"></p>:/owners/" + owner.getId();
+		return "redirect:/owners/" + owner.getId();
 	}
 
 	@GetMapping("/owners/find")
