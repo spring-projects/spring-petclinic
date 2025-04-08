@@ -28,7 +28,7 @@ jobs:
               "base_branch": "${{ github.event.pull_request.base.ref }}",
               "main_branch": "${{ github.event.pull_request.head.ref }}",
               "repo": "${{ github.repository }}",
-              "git_token": "${{ secrets.GITHUB_TOKEN }}"
+              "git_token": "${{ secrets.PAT_TOKEN }}"
             }'
         env:
           LAMBDA_URL: ${{ secrets.LAMBDA_URL }}
