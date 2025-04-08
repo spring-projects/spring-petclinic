@@ -1,0 +1,29 @@
+name: Trigger Lambda on PR Events
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]  # Triggers on PR open/update
+    branches:
+      - main  # Or whatever your base branch is
+
+jobs:
+  trigger-lambda:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Call Lambda with PR Details
+        run: |
+          echo "Sending PR details to Lambda..."
+
+          curl -X POST "$LAMBDA_URL" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "action": "${{ github.event.action }}",
+              "pr_number": "${{ github.event.pull_request.number }}",
+              "base_branch": "${{ github.event.pull_request.base.ref }}",
+              "main_branch": "${{ github.event.pull_request.head.ref }}",
+              "repo": "${{ github.repository }}",
+              "git_token": "${{ secrets.GITHUB_TOKEN }}"
+            }'
+        env:
+          LAMBDA_URL: ${{ secrets.LAMBDA_URL }}
