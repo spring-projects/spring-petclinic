@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
@@ -6,7 +6,7 @@
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>3.4.0</version>
-    <relativePath></relativePath>
+    <relativePath />
   </parent>
 
   <groupId>org.springframework.samples</groupId>
@@ -17,15 +17,14 @@
 
   <properties>
 
-    <!-- Generic properties -->
+    
     <java.version>17</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <!-- Important for reproducible builds. Update using e.g. ./mvnw versions:set
-        -DnewVersion=... -->
+    
     <project.build.outputTimestamp>2024-11-28T14:37:52Z</project.build.outputTimestamp>
 
-    <!-- Web dependencies -->
+    
     <webjars-locator.version>1.0.1</webjars-locator.version>
     <webjars-bootstrap.version>5.3.3</webjars-bootstrap.version>
     <webjars-font-awesome.version>4.7.0</webjars-font-awesome.version>
@@ -41,7 +40,7 @@
   </properties>
 
   <dependencies>
-    <!-- Spring and Spring Boot dependencies -->
+    
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
@@ -72,12 +71,12 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <!-- Workaround for AOT issue (https://github.com/spring-projects/spring-framework/pull/33949) -->
+      
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-core</artifactId>
     </dependency>
 
-    <!-- Databases - Uses H2 by default -->
+    
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
@@ -94,7 +93,7 @@
       <scope>runtime</scope>
     </dependency>
 
-    <!-- Caching -->
+    
     <dependency>
       <groupId>javax.cache</groupId>
       <artifactId>cache-api</artifactId>
@@ -104,7 +103,7 @@
       <artifactId>caffeine</artifactId>
     </dependency>
 
-    <!-- Webjars -->
+    
     <dependency>
       <groupId>org.webjars</groupId>
       <artifactId>webjars-locator-lite</artifactId>
@@ -233,8 +232,7 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
         <executions>
           <execution>
-            <!-- Spring Boot Actuator displays build-related information
-              if a META-INF/build-info.properties file is present -->
+            
             <goals>
               <goal>build-info</goal>
             </goals>
@@ -269,8 +267,7 @@
         </executions>
       </plugin>
 
-      <!-- Spring Boot Actuator displays build-related information if a git.properties file is
-      present at the classpath -->
+      
       <plugin>
         <groupId>io.github.git-commit-id</groupId>
         <artifactId>git-commit-id-maven-plugin</artifactId>
@@ -279,15 +276,14 @@
           <failOnUnableToExtractRepoInfo>false</failOnUnableToExtractRepoInfo>
         </configuration>
       </plugin>
-      <!-- Spring Boot Actuator displays sbom-related information if a CycloneDX SBOM file is
-      present at the classpath -->
+      
       <plugin>
-        <?m2e ignore?>
+        
         <groupId>org.cyclonedx</groupId>
         <artifactId>cyclonedx-maven-plugin</artifactId>
       </plugin>
 
-    </plugins>
+    <plugin><groupId>org.pitest</groupId><artifactId>pitest-maven</artifactId><version>1.15.0</version><dependencies><dependency><groupId>org.pitest</groupId><artifactId>pitest-junit5-plugin</artifactId><version>1.2.1</version></dependency></dependencies><configuration><outputFormats>XML</outputFormats><timestampedReports>false</timestampedReports><exportLineCoverage>true</exportLineCoverage></configuration></plugin></plugins>
   </build>
   <licenses>
     <license>
@@ -347,7 +343,7 @@
                 <goals>
                   <goal>unpack</goal>
                 </goals>
-                <?m2e execute onConfiguration,onIncremental?>
+                
                 <phase>generate-resources</phase>
                 <configuration>
                   <artifactItems>
@@ -374,7 +370,7 @@
             </configuration>
             <executions>
               <execution>
-                <?m2e execute onConfiguration,onIncremental?>
+                
                 <goals>
                   <goal>compile</goal>
                 </goals>
@@ -395,8 +391,7 @@
       <build>
         <pluginManagement>
           <plugins>
-            <!-- This plugin's configuration is used to store Eclipse m2e settings
-              only. It has no influence on the Maven build itself. -->
+            
             <plugin>
               <groupId>org.eclipse.m2e</groupId>
               <artifactId>lifecycle-mapping</artifactId>
@@ -414,7 +409,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore></ignore>
+                        <ignore />
                       </action>
                     </pluginExecution>
                     <pluginExecution>
@@ -427,7 +422,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore></ignore>
+                        <ignore />
                       </action>
                     </pluginExecution>
                     <pluginExecution>
@@ -440,7 +435,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore></ignore>
+                        <ignore />
                       </action>
                     </pluginExecution>
                   </pluginExecutions>
