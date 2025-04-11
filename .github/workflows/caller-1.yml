@@ -1,8 +1,13 @@
-name: Successfull merge pipeline
+name: Caller-1
 
 on:
   workflow_dispatch:
   push:
+
 jobs:
   call-reusable-workflow-1-in-local-repo:
     uses: ./.github/workflows/reusable-1.yml
+    with:
+      config-path: '.github/labeler.yml'  # Provide the required input
+    secrets:
+      token: ${{ secrets.GITHUB_TOKEN }}  # Provide the required secret
