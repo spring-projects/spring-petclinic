@@ -20,10 +20,18 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+
+    - name: Cache OWASP Dependency-Check data
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2/repository/org/owasp/dependency-check-data
+        key: ${{ runner.os }}-dependency-check-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os  }}-dependency-check-
     
     - name: Run OWASP Dependency Check
       run: ./mvnw org.owasp:dependency-check-maven:check
-    
+
     - name: Archive dependency check results
       uses: actions/upload-artifact@v4
       with:
@@ -74,6 +82,7 @@ jobs:
       uses: zaproxy/action-baseline@v0.7.0
       with:
         target: 'http://localhost:8080'
+        docker_name: 'ghcr.io/zaproxy/zaproxy:stable'
         rules_file_name: '.zap/rules.tsv'
         cmd_options: '-a'
     
