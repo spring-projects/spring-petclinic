@@ -13,7 +13,7 @@ jobs:
       token: ${{ secrets.GITHUB_TOKEN }}  # Provide the required secret
 
   second-caller:
-    uses: Piasecki-grid/test-workflows/.github/workflows/reusable-2.yml
+    uses: Piasecki-grid/test-workflows/.github/workflows/reusable-2.yml@main
     with:
       config-path: '.github/labeler.yml'  # Provide the required input
     secrets:
