@@ -1,0 +1,8 @@
+name: Successfull merge pipeline
+
+on:
+  workflow_dispatch:
+  push:
+jobs:
+  call-reusable-workflow-1-in-local-repo:
+    uses: ./.github/workflows/reusable-1.yml
