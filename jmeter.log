@@ -1,0 +1,47 @@
+2025-04-11 07:49:08,000 INFO o.a.j.u.JMeterUtils: Setting Locale to en_EN
+2025-04-11 07:49:08,013 INFO o.a.j.JMeter: Loading user properties from: /opt/homebrew/Cellar/jmeter/5.6.3/libexec/bin/user.properties
+2025-04-11 07:49:08,013 INFO o.a.j.JMeter: Loading system properties from: /opt/homebrew/Cellar/jmeter/5.6.3/libexec/bin/system.properties
+2025-04-11 07:49:08,016 INFO o.a.j.JMeter: Copyright (c) 1998-2024 The Apache Software Foundation
+2025-04-11 07:49:08,016 INFO o.a.j.JMeter: Version 5.6.3
+2025-04-11 07:49:08,016 INFO o.a.j.JMeter: java.version=21.0.6
+2025-04-11 07:49:08,016 INFO o.a.j.JMeter: java.vm.name=OpenJDK 64-Bit Server VM
+2025-04-11 07:49:08,016 INFO o.a.j.JMeter: os.name=Mac OS X
+2025-04-11 07:49:08,016 INFO o.a.j.JMeter: os.arch=aarch64
+2025-04-11 07:49:08,016 INFO o.a.j.JMeter: os.version=15.0.1
+2025-04-11 07:49:08,016 INFO o.a.j.JMeter: file.encoding=UTF-8
+2025-04-11 07:49:08,016 INFO o.a.j.JMeter: java.awt.headless=null
+2025-04-11 07:49:08,016 INFO o.a.j.JMeter: Max memory     =1073741824
+2025-04-11 07:49:08,016 INFO o.a.j.JMeter: Available Processors =10
+2025-04-11 07:49:08,023 INFO o.a.j.JMeter: Default Locale=English (EN)
+2025-04-11 07:49:08,023 INFO o.a.j.JMeter: JMeter  Locale=English (EN)
+2025-04-11 07:49:08,023 INFO o.a.j.JMeter: JMeterHome=/opt/homebrew/Cellar/jmeter/5.6.3/libexec
+2025-04-11 07:49:08,023 INFO o.a.j.JMeter: user.dir  =/Users/mac/Documents/spring-petclinic
+2025-04-11 07:49:08,023 INFO o.a.j.JMeter: PWD       =/Users/mac/Documents/spring-petclinic
+2025-04-11 07:49:08,046 INFO o.a.j.JMeter: IP: 192.168.100.135 Name: MacBook-Pro.local FullName: 192.168.100.135
+2025-04-11 07:49:08,053 INFO o.a.j.JMeter: Loaded icon properties from org/apache/jmeter/images/icon.properties
+2025-04-11 07:49:08,344 INFO o.a.j.JMeterGuiLauncher: Setting LAF to: com.github.weisj.darklaf.DarkLaf:com.github.weisj.darklaf.theme.DarculaTheme
+2025-04-11 07:49:09,160 INFO o.a.j.r.ClassFinder: Will scan jar /opt/homebrew/Cellar/jmeter/5.6.3/libexec/lib/ext/jmeter-plugins-manager-1.9.jar with filter ExtendsClassFilter [parents=[interface org.apache.jmeter.gui.action.Command], inner=false, contains=null, notContains=null]. Consider exposing JMeter plugins via META-INF/services, and add JMeter-Skip-Class-Scanning=true manifest attribute so JMeter can skip classfile scanning
+2025-04-11 07:49:09,218 INFO o.a.j.r.ClassFinder: Will scan jar /opt/homebrew/Cellar/jmeter/5.6.3/libexec/lib/ext/jmeter-plugins-manager-1.9.jar with filter ExtendsClassFilter [parents=[interface org.apache.jmeter.gui.plugin.MenuCreator], inner=false, contains=null, notContains=null]. Consider exposing JMeter plugins via META-INF/services, and add JMeter-Skip-Class-Scanning=true manifest attribute so JMeter can skip classfile scanning
+2025-04-11 07:49:09,272 INFO o.j.r.JARSourceHTTP: Requesting https://jmeter-plugins.org/repo/?installID=mac_os_x-28274c278bfafd4f9be1af2f4613a2db-gui
+2025-04-11 07:49:10,460 INFO o.a.j.JMeterGuiLauncher: Loading file: performance-tests/petclinic-test-plan.jmx
+2025-04-11 07:49:10,461 INFO o.a.j.s.FileServer: Default base='/Users/mac/Documents/spring-petclinic'
+2025-04-11 07:49:10,462 INFO o.a.j.s.FileServer: Set new base='/Users/mac/Documents/spring-petclinic/performance-tests'
+2025-04-11 07:49:10,558 INFO o.a.j.s.SaveService: Testplan (JMX) version: 2.2. Testlog (JTL) version: 2.2
+2025-04-11 07:49:10,563 INFO o.a.j.s.SaveService: Using SaveService properties version 5.0
+2025-04-11 07:49:10,564 INFO o.a.j.s.SaveService: Using SaveService properties file encoding UTF-8
+2025-04-11 07:49:10,565 INFO o.a.j.s.SaveService: Loading file: performance-tests/petclinic-test-plan.jmx
+2025-04-11 07:49:10,609 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/html is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2025-04-11 07:49:10,609 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xhtml+xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2025-04-11 07:49:10,609 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2025-04-11 07:49:10,610 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2025-04-11 07:49:10,610 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/vnd.wap.wml is org.apache.jmeter.protocol.http.parser.RegexpHTMLParser
+2025-04-11 07:49:10,610 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/css is org.apache.jmeter.protocol.http.parser.CssParser
+2025-04-11 07:49:10,637 INFO o.a.j.s.FileServer: Set new base='/Users/mac/Documents/spring-petclinic/performance-tests'
+2025-04-11 07:49:10,723 INFO o.a.j.s.SampleResult: Note: Sample TimeStamps are START times
+2025-04-11 07:49:10,724 INFO o.a.j.s.SampleResult: sampleresult.default.encoding is set to UTF-8
+2025-04-11 07:49:10,724 INFO o.a.j.s.SampleResult: sampleresult.useNanoTime=true
+2025-04-11 07:49:10,724 INFO o.a.j.s.SampleResult: sampleresult.nanoThreadSleep=5000
+2025-04-11 07:49:10,771 INFO o.a.j.r.ClassFinder: Will scan jar /opt/homebrew/Cellar/jmeter/5.6.3/libexec/lib/ext/jmeter-plugins-manager-1.9.jar with filter ExtendsClassFilter [parents=[interface org.apache.jmeter.visualizers.ResultRenderer], inner=false, contains=null, notContains=null]. Consider exposing JMeter plugins via META-INF/services, and add JMeter-Skip-Class-Scanning=true manifest attribute so JMeter can skip classfile scanning
+2025-04-11 07:49:10,780 INFO o.a.j.r.ClassFinder: Will scan jar /opt/homebrew/Cellar/jmeter/5.6.3/libexec/lib/ext/jmeter-plugins-manager-1.9.jar with filter ExtendsClassFilter [parents=[interface org.apache.jmeter.visualizers.RequestView], inner=false, contains=null, notContains=null]. Consider exposing JMeter plugins via META-INF/services, and add JMeter-Skip-Class-Scanning=true manifest attribute so JMeter can skip classfile scanning
+2025-04-11 07:49:11,483 INFO o.j.r.PluginManager: Plugins Status: [jpgc-plugins-manager=1.9, jmeter-core=5.6.3, jmeter-ftp=5.6.3, jmeter-http=5.6.3, jmeter-jdbc=5.6.3, jmeter-jms=5.6.3, jmeter-junit=5.6.3, jmeter-java=5.6.3, jmeter-ldap=5.6.3, jmeter-mail=5.6.3, jmeter-mongodb=5.6.3, jmeter-native=5.6.3, jmeter-tcp=5.6.3, jmeter-components=5.6.3]
+2025-04-11 07:49:11,483 INFO o.j.r.PluginManagerMenuItem: Plugins Manager has upgrades: [jpgc-plugins-manager]

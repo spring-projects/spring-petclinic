@@ -1,0 +1,96 @@
+name: Performance Testing
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to test'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - dev
+          - staging
+      threads:
+        description: 'Number of concurrent users'
+        required: true
+        default: '50'
+        type: string
+      duration:
+        description: 'Test duration in seconds'
+        required: true
+        default: '60'
+        type: string
+
+jobs:
+  performance-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    
+    - name: Install JMeter
+      run: |
+        wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.5.tgz
+        tar -xzf apache-jmeter-5.5.tgz
+        
+    - name: Get application URL
+      id: get-url
+      run: |
+        # This would typically be retrieved from your infrastructure
+        # For example, from an AWS Load Balancer DNS name
+        echo "APP_URL=petclinic-${{ github.event.inputs.environment }}.example.com" >> $GITHUB_ENV
+    
+    - name: Run JMeter Test
+      run: |
+        ./apache-jmeter-5.5/bin/jmeter -n \
+          -t performance-tests/petclinic-test-plan.jmx \
+          -Jhost=${APP_URL} \
+          -Jport=80 \
+          -Jthreads=${{ github.event.inputs.threads }} \
+          -Jduration=${{ github.event.inputs.duration }} \
+          -l results.jtl \
+          -e -o report
+    
+    - name: Archive test results
+      uses: actions/upload-artifact@v3
+      with:
+        name: performance-test-results
+        path: |
+          results.jtl
+          report/
+    
+    - name: Analyze Results
+      run: |
+        # Extract key metrics from the results
+        echo "===== Performance Test Results ====="
+        TOTAL_REQUESTS=$(grep -c "<httpSample" results.jtl)
+        FAILED_REQUESTS=$(grep -c "success=\"false\"" results.jtl)
+        SUCCESS_RATE=$(( (TOTAL_REQUESTS - FAILED_REQUESTS) * 100 / TOTAL_REQUESTS ))
+        
+        # Calculate average response time
+        AVG_RESPONSE=$(awk -F\" '/<httpSample/ {sum+=$26; count++} END {print sum/count}' results.jtl)
+        
+        echo "Total Requests: $TOTAL_REQUESTS"
+        echo "Failed Requests: $FAILED_REQUESTS"
+        echo "Success Rate: $SUCCESS_RATE%"
+        echo "Average Response Time: $AVG_RESPONSE ms"
+        
+        # Check if success rate is acceptable
+        if [ $SUCCESS_RATE -lt 95 ]; then
+          echo "::error::Performance test failed: Success rate below 95%"
+          exit 1
+        fi
+        
+        # Check if average response time is acceptable
+        if (( $(echo "$AVG_RESPONSE > 500" | bc -l) )); then
+          echo "::error::Performance test failed: Average response time above 500ms"
+          exit 1
+        fi
+        
+        echo "Performance test passed!"
