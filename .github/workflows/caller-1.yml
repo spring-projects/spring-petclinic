@@ -18,3 +18,16 @@ jobs:
       config-path: '.github/labeler.yml'  # Provide the required input
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}  # Provide the required secret
+
+  run-composite-action:
+    runs-on: ubuntu-latest
+    needs: second-caller  # Optional: make it run after the reusable workflow
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Use Composite Action
+        uses: Piasecki-grid/composite-action-repo/actions/my-composite-action@main
+        with:
+          greeting: 'Hi there'
+          name: 'GitHub Actions User'
