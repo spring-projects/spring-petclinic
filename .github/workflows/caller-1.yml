@@ -27,7 +27,7 @@ jobs:
         uses: actions/checkout@v3
       
       - name: Use Composite Action
-        uses: Piasecki-grid/test-workflows/actions/my-composite/action.yml@main
+        uses: Piasecki-grid/test-workflows/actions/my-composite/action.yml
         with:
           greeting: 'Hi there'
           name: 'GitHub Actions User'
