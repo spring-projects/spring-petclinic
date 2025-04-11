@@ -25,7 +25,7 @@ jobs:
       run: ./mvnw org.owasp:dependency-check-maven:check
     
     - name: Archive dependency check results
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: dependency-check-report
         path: target/dependency-check-report.html
@@ -78,7 +78,7 @@ jobs:
         cmd_options: '-a'
     
     - name: Archive ZAP results
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: zap-scan-results
         path: |
