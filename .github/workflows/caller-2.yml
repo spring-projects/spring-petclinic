@@ -1,10 +1,10 @@
-name: Caller-1
+name: Caller-2
 
 on:      
   pull_request:
     paths:
       - .github/workflows/reusable-1.yml
-      - .github/workflows/caller-1.yml
+      - .github/workflows/caller-2.yml
     branches:
       - main
 
