@@ -85,3 +85,8 @@ resource "aws_db_instance" "petclinic" {
     Environment = var.environment
   }
 }
+
+output "ecr_repository_name" {
+  value       = aws_ecr_repository.petclinic.name
+  description = "Name of the PetClinic ECR repository"
+}
