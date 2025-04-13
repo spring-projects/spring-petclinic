@@ -2,19 +2,25 @@ provider "aws" {
   region = var.aws_region
 }
 
+# Create a local value to ensure we always have a valid environment name
+locals {
+  # If environment is empty, default to "dev"
+  env_name = var.environment != "" ? var.environment : "dev"
+}
+
 # S3 bucket for storing artifacts
 resource "aws_s3_bucket" "artifacts" {
-  bucket = "petclinic-${var.environment}-artifacts"
+  bucket = "petclinic-${local.env_name}-artifacts"
   
   tags = {
     Name        = "PetClinic Artifacts"
-    Environment = var.environment
+    Environment = local.env_name
   }
 }
 
 # ECR repository for Docker images
 resource "aws_ecr_repository" "petclinic" {
-  name = "petclinic-${var.environment}"
+  name = "petclinic-${local.env_name}"
   
   image_scanning_configuration {
     scan_on_push = true
@@ -22,13 +28,13 @@ resource "aws_ecr_repository" "petclinic" {
   
   tags = {
     Name        = "PetClinic Docker Repository"
-    Environment = var.environment
+    Environment = local.env_name
   }
 }
 
 # ECS cluster
 resource "aws_ecs_cluster" "petclinic" {
-  name = "petclinic-${var.environment}"
+  name = "petclinic-${local.env_name}"
   
   setting {
     name  = "containerInsights"
@@ -37,13 +43,13 @@ resource "aws_ecs_cluster" "petclinic" {
   
   tags = {
     Name        = "PetClinic Cluster"
-    Environment = var.environment
+    Environment = local.env_name
   }
 }
 
 # Security group for the ECS tasks
 resource "aws_security_group" "ecs_tasks" {
-  name        = "petclinic-${var.environment}-tasks-sg"
+  name        = "petclinic-${local.env_name}-tasks-sg"
   description = "Allow inbound traffic to petclinic application"
   vpc_id      = var.vpc_id
   
@@ -63,13 +69,13 @@ resource "aws_security_group" "ecs_tasks" {
   
   tags = {
     Name        = "PetClinic Tasks SG"
-    Environment = var.environment
+    Environment = local.env_name
   }
 }
 
 # RDS Database for PetClinic
 resource "aws_db_instance" "petclinic" {
-  identifier           = "petclinic-${var.environment}db"
+  identifier           = "petclinic-${local.env_name}db"
   allocated_storage    = 20
   storage_type         = "gp2"
   engine               = "mysql"
@@ -82,7 +88,7 @@ resource "aws_db_instance" "petclinic" {
   
   tags = {
     Name        = "PetClinic Database"
-    Environment = var.environment
+    Environment = local.env_name
   }
 }
 
