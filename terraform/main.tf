@@ -69,7 +69,7 @@ resource "aws_security_group" "ecs_tasks" {
 
 # RDS Database for PetClinic
 resource "aws_db_instance" "petclinic" {
-  identifier           = "petclinic-${var.environment}-db"
+  identifier           = "petclinic-${var.environment}db"
   allocated_storage    = 20
   storage_type         = "gp2"
   engine               = "mysql"
