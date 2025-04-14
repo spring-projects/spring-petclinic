@@ -8,7 +8,7 @@ services:
   #     - POSTGRES_USER=petclinic
   #     - POSTGRES_DB=petclinic
   petclinic:
-    image: spring.petclinic:${CONTEINER_VESION}
+    image: spring.petclinic:${CONTAINER_VESION:-latest}
     container_name: petclinic
     build: ./
     environment:
