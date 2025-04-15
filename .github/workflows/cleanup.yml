@@ -1,91 +1,101 @@
----
-    name: Cleanup AWS Resources
-    
-    on:
-      workflow_dispatch:
-        inputs:
-          environment:
-            description: 'Environment to clean up'
-            required: true
-            default: 'dev'
-            type: choice
-            options:
-              - dev
-              - staging
-              - prod
-          confirm:
-            description: 'Type "delete" to confirm deletion'
-            required: true
+name: Cleanup AWS Resources
 
-      push:
-        branches:
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to clean up'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
           - dev
-    
-    jobs:
-      cleanup:
-        runs-on: ubuntu-latest
-        if: github.event.inputs.confirm == 'delete'
-        steps:
-          - uses: actions/checkout@v3
-          
-          - name: Set environment name
-            run: echo "ENV_NAME=${{ github.event.inputs.environment || 'dev' }}" >> $GITHUB_ENV
-          
-          - name: Configure AWS credentials
-            uses: aws-actions/configure-aws-credentials@v1
-            with:
-              aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-              aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-              aws-region: us-east-1
-          
-          - name: Setup Terraform
-            uses: hashicorp/setup-terraform@v2
-          
-          - name: Terraform Init
-            working-directory: ./terraform
-            run: terraform init
-          
-          - name: Terraform Destroy
-            working-directory: ./terraform
-            run: |
-              echo "Destroying resources for environment: ${{ env.ENV_NAME }}"
-              terraform destroy -auto-approve -var="environment=${{ env.ENV_NAME }}" \
-              -var="db_username=${{ secrets.DB_USERNAME }}" \
-              -var="db_password=${{ secrets.DB_PASSWORD }}" \
-              -var="vpc_id=${{ secrets.VPC_ID }}"
-          
-          - name: Manual cleanup for any remaining resources
-            run: |
-              # Clean up ECR repository if it exists
-              if aws ecr describe-repositories --repository-names petclinic-${{ env.ENV_NAME }} 2>/dev/null; then
-                echo "Cleaning up ECR repository..."
-                aws ecr delete-repository --repository-name petclinic-${{ env.ENV_NAME }} --force
-              fi
-              
-              # Clean up ECS cluster if it exists
-              if aws ecs describe-clusters --clusters petclinic-${{ env.ENV_NAME }} | grep -q "ACTIVE"; then
-                echo "Cleaning up ECS services..."
-                for service in $(aws ecs list-services --cluster petclinic-${{ env.ENV_NAME }} --output text --query 'serviceArns[*]'); do
-                  aws ecs update-service --cluster petclinic-${{ env.ENV_NAME }} --service $(basename $service) --desired-count 0
-                  aws ecs delete-service --cluster petclinic-${{ env.ENV_NAME }} --service $(basename $service) --force
-                done
-                
-                echo "Cleaning up ECS cluster..."
-                aws ecs delete-cluster --cluster petclinic-${{ env.ENV_NAME }}
-              fi
-              
-              # Clean up S3 bucket if it exists
-              BUCKET_NAME="petclinic-${{ env.ENV_NAME }}-artifacts"
-              if aws s3api head-bucket --bucket $BUCKET_NAME 2>/dev/null; then
-                echo "Cleaning up S3 bucket..."
-                aws s3 rm s3://$BUCKET_NAME --recursive
-                aws s3api delete-bucket --bucket $BUCKET_NAME
-              fi
+          - staging
+          - prod
+      confirm:
+        description: 'Type "delete" to confirm deletion'
+        required: true
+  push:
+    branches:
+      - dev
 
-              # Clean up Security Groups
-              SG_NAME="petclinic-${{ env.ENV_NAME }}-tasks-sg"
-              SG_ID=$(aws ec2 describe-security-groups --filters "Name=group-name,Values=$SG_NAME" --query "SecurityGroups[0].GroupId" --output text)
-              if [[ "$SG_ID" != "None" && "$SG_ID" != "" ]]; then
-                echo "Cleaning up security group $SG_NAME ($SG_ID)..."
-                aws ec2 delete-security-group --group-id $SG_ID
-              fi
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.confirm == 'delete' || github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set environment name
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "ENV_NAME=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
+          else
+            echo "ENV_NAME=dev" >> $GITHUB_ENV
+          fi
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2
+      
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+      
+      - name: Terraform Init
+        working-directory: ./terraform
+        run: terraform init
+      
+      - name: Terraform Destroy
+        working-directory: ./terraform
+        run: |
+          echo "Destroying resources for environment: ${{ env.ENV_NAME }}"
+          terraform destroy -auto-approve -var="environment=${{ env.ENV_NAME }}" \
+          -var="db_username=${{ secrets.DB_USERNAME }}" \
+          -var="db_password=${{ secrets.DB_PASSWORD }}" \
+          -var="vpc_id=${{ secrets.VPC_ID }}"
+      
+      - name: Manual cleanup for any remaining resources
+        run: |
+          # Clean up ECR repository if it exists
+          if aws ecr describe-repositories --repository-names petclinic-${{ env.ENV_NAME }} 2>/dev/null; then
+            echo "Cleaning up ECR repository..."
+            aws ecr delete-repository --repository-name petclinic-${{ env.ENV_NAME }} --force
+          fi
+          
+          # Clean up ECS cluster if it exists
+          if aws ecs describe-clusters --clusters petclinic-${{ env.ENV_NAME }} | grep -q "ACTIVE"; then
+            echo "Cleaning up ECS services..."
+            for service in $(aws ecs list-services --cluster petclinic-${{ env.ENV_NAME }} --output text --query 'serviceArns[*]'); do
+              aws ecs update-service --cluster petclinic-${{ env.ENV_NAME }} --service $(basename $service) --desired-count 0
+              aws ecs delete-service --cluster petclinic-${{ env.ENV_NAME }} --service $(basename $service) --force
+            done
+            
+            echo "Cleaning up ECS cluster..."
+            aws ecs delete-cluster --cluster petclinic-${{ env.ENV_NAME }}
+          fi
+          
+          # Clean up Security Groups
+          SG_NAME="petclinic-${{ env.ENV_NAME }}-tasks-sg"
+          SG_ID=$(aws ec2 describe-security-groups --filters "Name=group-name,Values=$SG_NAME" --query "SecurityGroups[0].GroupId" --output text)
+          if [[ "$SG_ID" != "None" && "$SG_ID" != "" ]]; then
+            echo "Cleaning up security group $SG_NAME ($SG_ID)..."
+            aws ec2 delete-security-group --group-id $SG_ID
+          fi
+          
+          # Clean up S3 bucket if it exists
+          BUCKET_NAME="petclinic-${{ env.ENV_NAME }}-artifacts"
+          if aws s3api head-bucket --bucket $BUCKET_NAME 2>/dev/null; then
+            echo "Cleaning up S3 bucket..."
+            aws s3 rm s3://$BUCKET_NAME --recursive
+            aws s3api delete-bucket --bucket $BUCKET_NAME
+          fi
+          
+          # Clean up RDS instance if it exists
+          DB_IDENTIFIER="petclinic-${{ env.ENV_NAME }}db"
+          if aws rds describe-db-instances --db-instance-identifier $DB_IDENTIFIER 2>/dev/null; then
+            echo "Cleaning up RDS instance..."
+            aws rds delete-db-instance --db-instance-identifier $DB_IDENTIFIER --skip-final-snapshot
+          fi
