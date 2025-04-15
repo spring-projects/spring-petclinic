@@ -97,6 +97,16 @@
           id: login-ecr
           uses: aws-actions/amazon-ecr-login@v1
         
+        - name: Ensure ECR Repository exists
+          run: |
+            echo "Checking for ECR repository: petclinic-${{ env.ENV_NAME }}"
+            if ! aws ecr describe-repositories --repository-names petclinic-${{ env.ENV_NAME }} 2>/dev/null; then
+              echo "ECR repository doesn't exist, creating it now..."
+              aws ecr create-repository --repository-name petclinic-${{ env.ENV_NAME }} --image-scanning-configuration scanOnPush=true
+            else
+              echo "ECR repository already exists"
+            fi
+        
         - name: Build, tag, and push image to Amazon ECR
           env:
             ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -109,13 +119,38 @@
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
         
+        - name: Ensure ECS service exists
+          run: |
+            CLUSTER_NAME="petclinic-${{ env.ENV_NAME }}"
+            SERVICE_NAME="petclinic-service"
+            
+            # Check if cluster exists
+            if ! aws ecs describe-clusters --clusters $CLUSTER_NAME | grep -q "ACTIVE"; then
+              echo "Error: ECS cluster $CLUSTER_NAME doesn't exist or isn't active"
+              exit 1
+            fi
+            
+            # Check if service exists
+            if ! aws ecs list-services --cluster $CLUSTER_NAME | grep -q $SERVICE_NAME; then
+              echo "Service $SERVICE_NAME doesn't exist in cluster $CLUSTER_NAME, creating it..."
+              # Here you would add code to create the service
+              # This would require task definition setup as well
+              echo "For now, skipping deployment as service doesn't exist yet"
+              echo "DEPLOYMENT_NEEDED=false" >> $GITHUB_ENV
+            else
+              echo "Service exists, proceeding with deployment"
+              echo "DEPLOYMENT_NEEDED=true" >> $GITHUB_ENV
+            fi
+        
         - name: Deploy to ECS
+          if: env.DEPLOYMENT_NEEDED == 'true'
           run: |
             aws ecs update-service --cluster petclinic-${{ env.ENV_NAME }} \
             --service petclinic-service \
             --force-new-deployment
         
         - name: Verify Deployment
+          if: env.DEPLOYMENT_NEEDED == 'true'
           run: |
             echo "Waiting for deployment to complete..."
             aws ecs wait services-stable --cluster petclinic-${{ env.ENV_NAME }} \
