@@ -3,6 +3,8 @@ name: Auto Resolve Conflicts
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+    branches:
+      - jeet-dev  # Change this to your target branch if needed
 
 jobs:
   resolve-conflicts:
