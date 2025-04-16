@@ -1,35 +1,35 @@
-name: Trigger Lambda on PR Events
+# name: Trigger Lambda on PR Events
 
-on:
-  pull_request:
-    types: [opened, reopened, synchronize]
-    branches:
-      - main  # Change this to your target branch if needed
+# on:
+#   pull_request:
+#     types: [opened, reopened, synchronize]
+#     branches:
+#       - main  # Change this to your target branch if needed
 
-jobs:
-  trigger-lambda:
-    runs-on: ubuntu-latest
+# jobs:
+#   trigger-lambda:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Extract Repo Owner
-        id: extract
-        run: |
-          echo "##[set-output name=owner;]$(echo '${{ github.repository }}' | cut -d'/' -f1)"
-          echo "repo_name=${GITHUB_REPOSITORY#*/}" >> $GITHUB_OUTPUT
+#     steps:
+#       - name: Extract Repo Owner
+#         id: extract
+#         run: |
+#           echo "##[set-output name=owner;]$(echo '${{ github.repository }}' | cut -d'/' -f1)"
+#           echo "repo_name=${GITHUB_REPOSITORY#*/}" >> $GITHUB_OUTPUT
 
-      - name: Call Lambda with PR Details
-        run: |
-          echo "Sending PR details to Lambda..."
+#       - name: Call Lambda with PR Details
+#         run: |
+#           echo "Sending PR details to Lambda..."
 
-          curl -X POST "$LAMBDA_URL" \
-            -H "Content-Type: application/json" \
-            -d '{
-              "repo_owner": "${{ steps.extract.outputs.owner }}",
-              "pr_number": "${{ github.event.pull_request.number }}",
-              "base_branch": "${{ github.event.pull_request.base.ref }}",
-              "main_branch": "${{ github.event.pull_request.head.ref }}",
-              "repo": "${{ steps.extract.outputs.repo_name }}",
-              "git_token": "${{ secrets.PAT_TOKEN }}"
-            }'
-        env:
-          LAMBDA_URL: ${{ secrets.LAMBDA_URL }}
+#           curl -X POST "$LAMBDA_URL" \
+#             -H "Content-Type: application/json" \
+#             -d '{
+#               "repo_owner": "${{ steps.extract.outputs.owner }}",
+#               "pr_number": "${{ github.event.pull_request.number }}",
+#               "base_branch": "${{ github.event.pull_request.base.ref }}",
+#               "main_branch": "${{ github.event.pull_request.head.ref }}",
+#               "repo": "${{ steps.extract.outputs.repo_name }}",
+#               "git_token": "${{ secrets.PAT_TOKEN }}"
+#             }'
+#         env:
+#           LAMBDA_URL: ${{ secrets.LAMBDA_URL }}
