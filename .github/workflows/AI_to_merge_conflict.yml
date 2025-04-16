@@ -1,0 +1,67 @@
+name: Auto Resolve Conflicts
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  resolve-conflicts:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Set up Git
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+      - name: Check for merge conflicts
+        id: check_conflicts
+        run: |
+          git fetch origin ${{ github.event.pull_request.base.ref }}
+          git merge --no-commit --no-ff origin/${{ github.event.pull_request.base.ref }} || true
+          git status --porcelain | grep 'UU' || echo "NO_CONFLICTS"
+        continue-on-error: true
+
+      - name: Extract conflicted files
+        id: conflicted_files
+        if: steps.check_conflicts.outcome == 'success'
+        run: |
+          conflict_files=$(git status --porcelain | grep '^UU' | awk '{print $2}')
+          echo "conflicted: $conflict_files"
+          echo "files=$conflict_files" >> $GITHUB_OUTPUT
+
+      # - name: Call Lambda to resolve conflicts
+      #   if: steps.conflicted_files.outputs.files != ''
+      #   env:
+      #     LAMBDA_URL: ${{ secrets.LAMBDA_URL }}
+      #   run: |
+      #     for file in ${{ steps.conflicted_files.outputs.files }}; do
+      #       payload=$(jq -n \
+      #         --arg file "$file" \
+      #         --arg content "$(cat $file | base64)" \
+      #         --arg repo "${{ github.event.repository.name }}" \
+      #         --arg owner "${{ github.repository_owner }}" \
+      #         --arg pr_number "${{ github.event.pull_request.number }}" \
+      #         '{file: $file, content: $content, repo: $repo, owner: $owner, pr_number: $pr_number}')
+
+      #       resolved=$(curl -s -X POST "$LAMBDA_URL" -H "Content-Type: application/json" -d "$payload")
+
+      #       echo "$resolved" | base64 -d > "$file"
+      #       git add "$file"
+      #     done
+
+      # - name: Commit resolved files
+      #   if: steps.conflicted_files.outputs.files != ''
+      #   run: |
+      #     git commit -m "Auto-resolved conflicts via Lambda"
+      #     git push origin HEAD:${{ github.event.pull_request.head.ref }}
