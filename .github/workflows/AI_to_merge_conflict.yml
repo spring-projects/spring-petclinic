@@ -27,14 +27,14 @@ jobs:
           git config user.name "github-actions"
           git config user.email "actions@github.com"
 
-      - name: Detect Merge Conflicts
-        id: detect_conflicts
-        run: |
-          git fetch origin ${{ github.base_ref }}
-          git merge --no-commit --no-ff origin/${{ github.base_ref }} || true
-          git diff --name-only --diff-filter=U > conflict_files.txt
-          CONFLICT_FILES=$(cat conflict_files.txt | xargs)
-          echo "conflict_files=$CONFLICT_FILES" >> "$GITHUB_OUTPUT"
+      # - name: Detect Merge Conflicts
+      #   id: detect_conflicts
+      #   run: |
+      #     git fetch origin ${{ github.base_ref }}
+      #     git merge --no-commit --no-ff origin/${{ github.base_ref }} || true
+      #     git diff --name-only --diff-filter=U > conflict_files.txt
+      #     CONFLICT_FILES=$(cat conflict_files.txt | xargs)
+      #     echo "conflict_files=$CONFLICT_FILES" >> "$GITHUB_OUTPUT"
 
       # - name: Exit if no conflicts
       #   if: steps.detect_conflicts.outputs.conflict_files == ''
