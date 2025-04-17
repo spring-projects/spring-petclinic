@@ -53,16 +53,14 @@ jobs:
              # Send to Bedrock API via curl
             response=$(bash -c "curl -s -X POST https://5xwi3ji63jx6n2c46rn6l7olky0himwz.lambda-url.us-east-1.on.aws \
               -H 'Content-Type: application/json' \
-              -d @- <<'EOF'
-            {
-              \"repo\": \"${{ github.repository }}\",
-              \"owner\": \"${{ github.repository_owner }}\",
-              \"repo_name\": \"${{ github.event.repository.name }}\",
-              \"file_path\": \"$file\",
-              \"conflict_content\": $(jq -Rs <<< \"$conflict_content\"),
-              \"pr_number\": \"${{ github.event.pull_request.number }}\",
-            }
-            EOF
+              -d '{
+                "repo": "${{ github.repository }}",
+                "owner": "${{ github.repository_owner }}",
+                "repo_name": "${{ github.event.repository.name }}",
+                "file_path": "$file",
+                "conflict_content": $(jq -Rs <<< "$conflict_content"),
+                "pr_number": "${{ github.event.pull_request.number }}",
+            }'
                   ")
 
             echo "$response" > response.json
