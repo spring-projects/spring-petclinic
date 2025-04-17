@@ -1,0 +1,25 @@
+# .github/workflows/comment-trigger.yml
+name: Trigger PR Tests from Comment
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  dispatch:
+    if: |
+      github.event.issue.pull_request &&
+      startsWith(github.event.comment.body, '/run-tests')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (not required but good practice)
+        uses: actions/checkout@v3
+
+      - name: Set up GitHub CLI
+        uses: cli/cli-action@v2
+
+      - name: Trigger PR Test Workflow
+        run: |
+          gh workflow run pr-tests.yml -f pr_number=${{ github.event.issue.number }}
+        env:
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
