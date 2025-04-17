@@ -59,7 +59,7 @@ jobs:
               \"owner\": \"${{ github.repository_owner }}\",
               \"repo_name\": \"${{ github.event.repository.name }}\",
               \"file_path\": \"$file\",
-              # \"conflict_content\": $(jq -Rs <<< \"$conflict_content\"),
+              \"conflict_content\": $(jq -Rs <<< \"$conflict_content\"),
               \"pr_number\": \"${{ github.event.pull_request.number }}\",
             }
             EOF
