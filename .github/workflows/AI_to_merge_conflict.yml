@@ -50,18 +50,25 @@ jobs:
           # for file in $files; do
           #   conflict_content=$(cat "$file")
 
-             # Send to Bedrock API via curl
-            response=$(bash -c "curl -s -X POST https://5xwi3ji63jx6n2c46rn6l7olky0himwz.lambda-url.us-east-1.on.aws \
-              -H 'Content-Type: application/json' \
-              -d '{
-                "repo": "${{ github.repository }}",
-                "owner": "${{ github.repository_owner }}",
-                "repo_name": "${{ github.event.repository.name }}",
-                "file_path": "$file",
-                "conflict_content": $(jq -Rs <<< "$conflict_content"),
-                "pr_number": "${{ github.event.pull_request.number }}",
-            }'
-                  ")
+               # Send to Bedrock API via curl
+              response=$(curl -s -X POST https://kjshfdkdshfks.lambda-url.us-east-1.on.aws \
+                      -H 'Content-Type: application/json' \
+                      -d "$(jq -n \
+                        --arg repo "${{ github.repository }}" \
+                        --arg owner "${{ github.repository_owner }}" \
+                        --arg repo_name "${{ github.event.repository.name }}" \
+                        --arg file_path "$file" \
+                        --arg conflict_content "$conflict_content" \
+                        --arg pr_number "${{ github.event.pull_request.number }}" \
+                        '{
+                          repo: $repo,
+                          owner: $owner,
+                          repo_name: $repo_name,
+                          file_path: $file_path,
+                          conflict_content: $conflict_content,
+                          pr_number: $pr_number
+                        }')"
+                    )
 
             echo "$response" > response.json
 
