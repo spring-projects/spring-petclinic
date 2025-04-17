@@ -1,11 +1,14 @@
 name: Auto Resolve Conflicts
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+  issue_comment:
+    types: [created]
 
 jobs:
-  resolve-conflicts:
+  dispatch:
+    if: |
+      github.event.issue.pull_request &&
+      startsWith(github.event.comment.body, '/run-ai')
     runs-on: ubuntu-latest
 
     permissions:
