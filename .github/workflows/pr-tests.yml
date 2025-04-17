@@ -1,0 +1,25 @@
+# .github/workflows/pr-tests.yml
+name: Run PR Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'Pull request number'
+        required: true
+        type: string
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR code
+        uses: actions/checkout@v3
+        with:
+          ref: refs/pull/${{ github.event.inputs.pr_number }}/merge
+
+      - name: Run tests
+        run: |
+          echo "Running tests for PR #${{ github.event.inputs.pr_number }}"
+          # Replace this with actual test commands
+          echo "✅ Tests complete"
