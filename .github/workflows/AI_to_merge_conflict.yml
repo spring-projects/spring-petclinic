@@ -41,14 +41,14 @@ jobs:
       #   run: echo "No merge conflicts detected. Skipping AI resolution."
 
       - name: Resolve conflicts with AI (Bedrock)
-        if: steps.detect_conflicts.outputs.conflict_files != ''
+        # if: steps.detect_conflicts.outputs.conflict_files != ''
         id: ai_resolve
         run: |
-          files="${{ steps.detect_conflicts.outputs.conflict_files }}"
-          result_json="{}"
+          # files="${{ steps.detect_conflicts.outputs.conflict_files }}"
+          # result_json="{}"
 
-          for file in $files; do
-            conflict_content=$(cat "$file")
+          # for file in $files; do
+          #   conflict_content=$(cat "$file")
 
              # Send to Bedrock API via curl
             response=$(bash -c "curl -s -X POST https://5xwi3ji63jx6n2c46rn6l7olky0himwz.lambda-url.us-east-1.on.aws \
@@ -59,7 +59,7 @@ jobs:
               \"owner\": \"${{ github.repository_owner }}\",
               \"repo_name\": \"${{ github.event.repository.name }}\",
               \"file_path\": \"$file\",
-              \"conflict_content\": $(jq -Rs <<< \"$conflict_content\"),
+              # \"conflict_content\": $(jq -Rs <<< \"$conflict_content\"),
               \"pr_number\": \"${{ github.event.pull_request.number }}\",
             }
             EOF
@@ -78,13 +78,13 @@ jobs:
           done
 
       - name: Commit and Push Resolved Files
-        if: steps.detect_conflicts.outputs.conflict_files != ''
+        # if: steps.detect_conflicts.outputs.conflict_files != ''
         run: |
           git commit -m "Auto-resolved merge conflicts using AI 🤖"
           git push origin HEAD:${{ github.head_ref }}
 
       - name: Comment on PR with Confidence Score
-        if: steps.detect_conflicts.outputs.conflict_files != ''
+        # if: steps.detect_conflicts.outputs.conflict_files != ''
         uses: peter-evans/create-or-update-comment@v4
         with:
           token: ${{ secrets.PAT_TOKEN }}
