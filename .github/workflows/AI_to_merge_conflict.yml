@@ -51,7 +51,7 @@ jobs:
           #   conflict_content=$(cat "$file")
 
                # Send to Bedrock API via curl
-              response=$(curl -s -X POST https://kjshfdkdshfks.lambda-url.us-east-1.on.aws \
+              response=$(curl -s -X POST https://5xwi3ji63jx6n2c46rn6l7olky0himwz.lambda-url.us-east-1.on.aws \
                       -H 'Content-Type: application/json' \
                       -d "$(jq -n \
                         --arg repo "${{ github.repository }}" \
