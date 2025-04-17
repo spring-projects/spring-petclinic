@@ -12,12 +12,12 @@ jobs:
       startsWith(github.event.comment.body, '/run-tests')
     runs-on: ubuntu-latest
     steps:
-      - name: Install GitHub CLI
-        run: |
-          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
-          sudo apt-add-repository https://cli.github.com/packages
-          sudo apt-get update
-          sudo apt-get install gh -y
+      # - name: Install GitHub CLI
+      #   run: |
+      #     sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
+      #     sudo apt-add-repository https://cli.github.com/packages
+      #     sudo apt-get update
+      #     sudo apt-get install gh -y
 
       - name: Trigger PR Test Workflow
         run: |
