@@ -3,8 +3,6 @@ name: Auto Resolve Conflicts
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-    branches:
-      - main  # Change this to your target branch if needed
 
 jobs:
   resolve-conflicts:
