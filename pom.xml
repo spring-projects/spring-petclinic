@@ -6,12 +6,12 @@
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>3.4.2</version>
-    <relativePath></relativePath>
+    <relativePath />
   </parent>
 
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
-  <version>3.4.0-SNAPSHOT</version>
+  <version>4.0.0-SNAPSHOT</version>
 
   <name>petclinic</name>
 
@@ -23,7 +23,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <!-- Important for reproducible builds. Update using e.g. ./mvnw versions:set
         -DnewVersion=... -->
-    <project.build.outputTimestamp>2024-11-28T14:37:52Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2025-04-20T23:29:38Z</project.build.outputTimestamp>
 
     <!-- Web dependencies -->
     <webjars-locator.version>1.0.1</webjars-locator.version>
@@ -296,6 +296,11 @@
     </license>
   </licenses>
 
+   <scm>
+    <connection>scm:git:https://github.com/schurikova/spring-petclinic.git</connection>
+     <developerConnection>scm:git:https://github.com/schurikova/spring-petclinic.git</developerConnection>
+  </scm>
+
   <repositories>
     <repository>
       <snapshots>
@@ -414,7 +419,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore></ignore>
+                        <ignore />
                       </action>
                     </pluginExecution>
                     <pluginExecution>
@@ -427,7 +432,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore></ignore>
+                        <ignore />
                       </action>
                     </pluginExecution>
                     <pluginExecution>
@@ -440,7 +445,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore></ignore>
+                        <ignore />
                       </action>
                     </pluginExecution>
                   </pluginExecutions>
