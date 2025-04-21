@@ -296,11 +296,10 @@
     </license>
   </licenses>
 
-   <scm>
-    <connection>scm:git:https://github.com/schurikova/spring-petclinic.git</connection>
-     <developerConnection>scm:git:https://github.com/schurikova/spring-petclinic.git</developerConnection>
-    <tag>spring-petclinic-4.0.0</tag>
-  </scm>
+<scm>
+    <connection>scm:git:git@github.com:schurikova/spring-petclinic.git</connection>
+    <developerConnection>scm:git:git@github.com:schurikova/spring-petclinic.git</developerConnection>
+</scm>
 
   <repositories>
     <repository>
