@@ -289,18 +289,27 @@
 
     </plugins>
   </build>
+
+  <distributionManagement>
+      <repository>
+          <id>local-repo</id>
+          <name>Local Repository</name>
+          <url>file://${user.home}/.m2/repository-local</url>
+      </repository>
+  </distributionManagement>
+
+  <scm>
+    <connection>scm:git:https://github.com/schurikova/spring-petclinic.git</connection>
+     <developerConnection>scm:git:https://github.com/schurikova/spring-petclinic.git</developerConnection>
+    <tag>spring-petclinic-4.0.0</tag>
+  </scm>
+
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>
       <url>https://www.apache.org/licenses/LICENSE-2.0</url>
     </license>
   </licenses>
-
-   <scm>
-    <connection>scm:git:https://github.com/schurikova/spring-petclinic.git</connection>
-     <developerConnection>scm:git:https://github.com/schurikova/spring-petclinic.git</developerConnection>
-    <tag>spring-petclinic-4.0.0</tag>
-  </scm>
 
   <repositories>
     <repository>
