@@ -1,11 +1,4 @@
-public class HelloWorld {
-    public static void main(String[] args) {
-        helloWorld();
-    }
-
-    public static void helloWorld() {
-        System.out.println("Hello, World!");
-		System.out.println("Hello, World! from dev");
-		System.out.println("Hello, World! from dev");
-    }
+{
+"code": "public class HelloWorld {\n    public static void main(String[] args) {\n        helloWorld();\n    }\n\n    public static void helloWorld() {\n        System.out.println(\"Hello, World!\");\n        System.out.println(\"Hello, World! from dev\");\n        System.out.println(\"Hello, World! from main\");\n    }\n}",
+"confidence Score": 85
 }
