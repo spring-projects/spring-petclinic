@@ -4,6 +4,6 @@ public class HelloWorld {
     }
 
     public static void helloWorld() {
-        System.out.println("Hello, World! dev");
+        System.out.println("Hello, World!");
     }
 }
