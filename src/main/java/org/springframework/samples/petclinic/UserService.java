@@ -1,6 +1,6 @@
 public class UserService {
     public String getUserName(int userId) {
-        return "Feature: User#" + userId;
+        return "User_" + userId;
     }
 
     public boolean isUserActive(int userId) {
@@ -17,6 +17,10 @@ public class UserService {
     }
 
     public void deleteUser(int userId) {
-        System.out.println("Feature branch: deleting user " + userId);
+        logDeletion(userId);
+    }
+
+    private void logDeletion(int userId) {
+        System.out.println("Main: user " + userId + " deleted");
     }
 }
