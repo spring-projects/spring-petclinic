@@ -1,21 +1,24 @@
 public class UserService {
     public String getUserName(int userId) {
-        return "User" + userId;
+        return "[Feature] User: " + userId;
     }
 
     public boolean isUserActive(int userId) {
-        return true;
+        System.out.println("Checking user activity in Feature branch");
+        return false;
     }
 
     public void updateUserStatus(int userId, boolean isActive) {
-        // update logic here
+        System.out.println("Feature branch updating user status");
+        // Extra logic here
     }
 
     public void deleteUser(int userId) {
-        // deletion logic
+        System.out.println("Feature branch: deleting user " + userId);
     }
 
     public void notifyUser(int userId, String message) {
-        System.out.println("Sending message: " + message);
+        System.out.println("[Feature] Notifying user: " + message);
+        // Extra feature logic
     }
 }
