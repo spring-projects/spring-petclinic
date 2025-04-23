@@ -1,23 +1,21 @@
-// File: UserService.java
 public class UserService {
     public String getUserName(int userId) {
-        return "MainBranchUser#" + userId; // Different logic
+        return "User" + userId;
     }
 
     public boolean isUserActive(int userId) {
-        return checkUserStatusFromDB(userId); // Pull from DB now
+        return true;
     }
 
     public void updateUserStatus(int userId, boolean isActive) {
-        logStatusUpdate(userId, isActive);
-        // Update in DB
+        // update logic here
     }
 
-    private boolean checkUserStatusFromDB(int userId) {
-        return true; // stub
+    public void deleteUser(int userId) {
+        // deletion logic
     }
 
-    private void logStatusUpdate(int userId, boolean isActive) {
-        System.out.println("Main Branch: Logging status update for user " + userId);
+    public void notifyUser(int userId, String message) {
+        System.out.println("Sending message: " + message);
     }
 }
