@@ -1,6 +1,6 @@
 public class UserService {
     public String getUserName(int userId) {
-        return "Main: User_" + userId;
+        return "User_" + userId;
     }
 
     public boolean isUserActive(int userId) {
