@@ -1,0 +1,90 @@
+plugins {
+  id 'java'
+  id 'org.springframework.boot' version '3.4.2'
+  id 'io.spring.dependency-management' version '1.1.6'
+  id 'org.graalvm.buildtools.native' version '0.10.3'
+  id 'org.cyclonedx.bom' version '1.10.0'
+  id 'io.spring.javaformat' version '0.0.43'
+  id "io.spring.nohttp" version "0.0.11"
+}
+
+apply plugin: 'java'
+apply plugin: 'checkstyle'
+apply plugin: 'io.spring.javaformat'
+
+gradle.startParameter.excludedTaskNames += [ "checkFormatAot", "checkFormatAotTest" ]
+
+group = 'org.springframework.samples'
+version = '3.4.0'
+
+java {
+  sourceCompatibility = JavaVersion.VERSION_17
+}
+
+repositories {
+  mavenCentral()
+}
+
+ext.checkstyleVersion = "10.20.1"
+ext.springJavaformatCheckstyleVersion = "0.0.43"
+ext.webjarsLocatorLiteVersion = "1.0.1"
+ext.webjarsFontawesomeVersion = "4.7.0"
+ext.webjarsBootstrapVersion = "5.3.3"
+
+dependencies {
+  // Workaround for AOT issue (https://github.com/spring-projects/spring-framework/pull/33949) -->
+  implementation 'io.projectreactor:reactor-core'
+
+  implementation 'org.springframework.boot:spring-boot-starter-cache'
+  implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+  implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+  implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'org.springframework.boot:spring-boot-starter-validation'
+  implementation 'javax.cache:cache-api'
+  implementation 'jakarta.xml.bind:jakarta.xml.bind-api'
+  runtimeOnly 'org.springframework.boot:spring-boot-starter-actuator'
+  runtimeOnly "org.webjars:webjars-locator-lite:${webjarsLocatorLiteVersion}"
+  runtimeOnly "org.webjars.npm:bootstrap:${webjarsBootstrapVersion}"
+  runtimeOnly "org.webjars.npm:font-awesome:${webjarsFontawesomeVersion}"
+  runtimeOnly 'com.github.ben-manes.caffeine:caffeine'
+  runtimeOnly 'com.h2database:h2'
+  runtimeOnly 'com.mysql:mysql-connector-j'
+  runtimeOnly 'org.postgresql:postgresql'
+  developmentOnly 'org.springframework.boot:spring-boot-devtools'
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+  testImplementation 'org.springframework.boot:spring-boot-docker-compose'
+  testImplementation 'org.testcontainers:junit-jupiter'
+  testImplementation 'org.testcontainers:mysql'
+  checkstyle "io.spring.javaformat:spring-javaformat-checkstyle:${springJavaformatCheckstyleVersion}"
+  checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
+}
+
+tasks.named('test') {
+  useJUnitPlatform()
+}
+
+checkstyle {
+  configDirectory = project.file('src/checkstyle')
+  configFile = file('src/checkstyle/nohttp-checkstyle.xml')
+}
+
+checkstyleNohttp {
+  configDirectory = project.file('src/checkstyle')
+  configFile = file('src/checkstyle/nohttp-checkstyle.xml')
+}
+
+tasks.named("formatMain").configure { dependsOn("checkstyleMain") }
+tasks.named("formatMain").configure { dependsOn("checkstyleNohttp") }
+
+tasks.named("formatTest").configure { dependsOn("checkstyleTest") }
+tasks.named("formatTest").configure { dependsOn("checkstyleNohttp") }
+
+checkstyleAot.enabled = false
+checkstyleAotTest.enabled = false
+
+checkFormatAot.enabled = false
+checkFormatAotTest.enabled = false
+
+formatAot.enabled = false
+formatAotTest.enabled = false
