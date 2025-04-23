@@ -1,18 +1,21 @@
-// File: UserService.java
 public class UserService {
     public String getUserName(int userId) {
-        return "FeatureBranch_User_" + userId; // Changed logic
+        return "User" + userId;
     }
 
     public boolean isUserActive(int userId) {
-        return false; // Changed logic
+        return true;
     }
 
     public void updateUserStatus(int userId, boolean isActive) {
-        System.out.println("Feature Branch: Updating user " + userId + " to " + (isActive ? "active" : "inactive"));
+        // update logic here
     }
 
-    public void deactivateUser(int userId) {
-        System.out.println("Feature Branch: Deactivating user " + userId);
+    public void deleteUser(int userId) {
+        // deletion logic
+    }
+
+    public void notifyUser(int userId, String message) {
+        System.out.println("Sending message: " + message);
     }
 }
