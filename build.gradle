@@ -1,5 +1,6 @@
 plugins {
   id 'java'
+  id 'checkstyle'
   id 'org.springframework.boot' version '3.4.2'
   id 'io.spring.dependency-management' version '1.1.6'
   id 'org.graalvm.buildtools.native' version '0.10.3'
@@ -22,6 +23,14 @@ version = '3.4.0'
 
 java {
   sourceCompatibility = JavaVersion.VERSION_17
+}
+
+checkstyle{
+  toolVersion = '10.12.3'
+  configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
+  configProperties = [
+    'checkstyle.cache.file': "${buildDir}/checkstyle/cachefile"
+  ]
 }
 
 repositories {
