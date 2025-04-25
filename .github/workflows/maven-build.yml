@@ -27,3 +27,39 @@ jobs:
           cache: maven
       - name: Build with Maven Wrapper
         run: ./mvnw -B verify
+      - name: JaCoCo Report
+        uses: Madrapps/jacoco-report@v1.7.2-beta
+        with:
+          # Comma separated paths of the generated jacoco xml files (supports wildcard glob pattern)
+          paths: target/site/jacoco/jacoco.xml
+          token: ${{secrets.TOKEN}}
+
+      - name: Depcheck
+        uses: dependency-check/Dependency-Check_Action@main
+        id: Depcheck
+        env: 
+          JAVA_HOME: '/opt/jdk'
+        with:
+          project: 'test'
+          path: '.'
+          format: 'HTML'
+          out: 'reports' # this is the default, no need to specify unless you wish to override it
+          args: >
+            --failOnCVSS 7
+            --enableRetired
+      - name: Upload Test results
+        uses: actions/upload-artifact@master
+        with:
+           name: Depcheck report
+           path: ${{github.workspace}}/reports
+      - name: Docker Setup QEMU
+        uses: docker/setup-qemu-action@v3.6.0
+      - name: Docker Setup Buildx
+        uses: docker/setup-buildx-action@v3.10.0
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v6.16.0
+        with:
+          push: false
+          context: .
+          file: .devcontainer/Dockerfile
+      
