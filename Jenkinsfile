@@ -2,6 +2,7 @@ pipeline{
   agent any
 
   environment{
+    imageTag = "latest"
     REGISTRY_URL = "https://hub.docker.com/repositories/prankumar313"
     IMAGE_NAME = "spring-petclinic"
     GIT_COMMIT_SHORT = "${env.GIT_COMMIT[0..6]}"
