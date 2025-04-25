@@ -1,5 +1,10 @@
 pipeline{
-  agent any
+  agent {
+        docker {
+            image 'docker:24.0.5-dind'  // Or use another version
+            args '--privileged'         // Required to run Docker inside Docker
+        }
+    }
 
   environment{
     imageTag = "latest"
