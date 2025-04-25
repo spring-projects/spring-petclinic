@@ -32,7 +32,7 @@
 
     <checkstyle.version>10.23.0</checkstyle.version>
     <jacoco.version>0.8.13</jacoco.version>
-    <libsass.version>0.2.29</libsass.version>
+    <libsass.version>0.3.3</libsass.version>
     <lifecycle-mapping>1.0.0</lifecycle-mapping>
     <maven-checkstyle.version>3.6.0</maven-checkstyle.version>
     <nohttp-checkstyle.version>0.0.11</nohttp-checkstyle.version>
