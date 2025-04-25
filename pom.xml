@@ -27,7 +27,7 @@
 
     <!-- Web dependencies -->
     <webjars-locator.version>1.0.1</webjars-locator.version>
-    <webjars-bootstrap.version>5.3.3</webjars-bootstrap.version>
+    <webjars-bootstrap.version>5.3.5</webjars-bootstrap.version>
     <webjars-font-awesome.version>4.7.0</webjars-font-awesome.version>
 
     <checkstyle.version>10.20.1</checkstyle.version>
