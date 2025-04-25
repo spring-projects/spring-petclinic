@@ -54,8 +54,8 @@ pipeline{
           def imageTag = env.BRANCH_NAME == 'main' ? 'latest' : GIT_COMMIT_SHORT
           sh """
             echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin $REGISTRY_URL
-            docker tag $REGISTRY_URL/$(IMAGE_NAME):${imageTag} $REGISTRY_URL/${targetRepo}/${IMAGE_NAME}:${imageTag}
-            docker push $REGISTRY_URL/${targetRepo}/${IMAGE_NAME}:${imageTag}
+            docker tag $REGISTRY_URL/$IMAGE_NAME:$imageTag $REGISTRY_URL/$targetRepo/$IMAGE_NAME:$imageTag
+            docker push $REGISTRY_URL/$targetRepo/$IMAGE_NAME:$imageTag
           """
         }
       }
