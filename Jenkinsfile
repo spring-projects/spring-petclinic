@@ -43,7 +43,7 @@ pipeline{
       steps{
         script{
           def ImageTag = env.BRANCH_NAME == 'main' ? 'latest' : GIT_COMMIT_SHORT
-	  sh "docker build -t $REGISTRY_URL/${IMAGE_NAME}:${imageTag} ."
+	  sh "docker build -t $REGISTRY_URL/$IMAGE_NAME:$imageTag ."
 	}
       }
     }
