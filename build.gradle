@@ -6,6 +6,7 @@ plugins {
   id 'org.cyclonedx.bom' version '1.10.0'
   id 'io.spring.javaformat' version '0.0.43'
   id "io.spring.nohttp" version "0.0.11"
+  id 'jacoco'
 }
 
 apply plugin: 'java'
@@ -25,6 +26,18 @@ repositories {
   mavenCentral()
 }
 
+
+jacoco {
+    toolVersion = "0.8.11"  // The Latest version
+}
+
+jacocoTestReport {
+    dependsOn test  // Ensures tests run before generating reports
+    reports {
+        xml.required = true   // Required for CI tools (e.g., SonarQube)
+        html.required = true  // Human-readable HTML report
+    }
+}
 ext.checkstyleVersion = "10.20.1"
 ext.springJavaformatCheckstyleVersion = "0.0.43"
 ext.webjarsLocatorLiteVersion = "1.0.1"
@@ -88,3 +101,13 @@ checkFormatAotTest.enabled = false
 
 formatAot.enabled = false
 formatAotTest.enabled = false
+
+// Custom Build task
+task printBuildInfo {
+    doLast {
+        println "Hi,we edit here!!"
+        println "Project: ${project.name}"
+        println "Version: ${version}"
+        println "Java Version: ${java.sourceCompatibility}" // Uses sourceCompatibility instead of toolchain
+    }
+}
