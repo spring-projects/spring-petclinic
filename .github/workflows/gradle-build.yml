@@ -5,17 +5,16 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ '17' ]
+        java: ["17"]
 
     steps:
       - uses: actions/checkout@v4
@@ -23,9 +22,32 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: ${{matrix.java}}
-          distribution: 'adopt'
+          distribution: "adopt"
           cache: maven
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
       - name: Build with Gradle
         run: ./gradlew build
+
+  # Below are added codes
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "adopt"
+      - name: Run tests
+        run: ./gradlew test
+
+  deploy:
+    runs-on: self-hosted # Use your own machine for deploying
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Deploy to Vagrant VM
+        run: |
+          vagrant up --provision
