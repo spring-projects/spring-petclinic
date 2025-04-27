@@ -1,5 +1,5 @@
 .navbar {
-  border-top: 4px solid #6db33f;
+  border-top: 10px solid #d08c27;
   background-color: #34302d;
   margin-bottom: 0px;
   border-bottom: 0;
@@ -19,8 +19,8 @@
 
 .navbar a.navbar-brand span {
   display: block;
-  width: 229px;
-  height: 46px;
+  width: 231px;
+  height: 44px;
   background: url("../images/spring-logo-dataflow.png") -1px -48px no-repeat;
   opacity: 0;
   -moz-transition: opacity 0.12s ease-in-out;
@@ -71,3 +71,4 @@
   }
 
 }
+// Just a comment to test GitHub Action 1
