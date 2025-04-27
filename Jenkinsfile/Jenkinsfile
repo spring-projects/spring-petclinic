@@ -1,11 +1,7 @@
 pipeline {
     agent any  // This runs the pipeline on any available agent
 
-    environment {
-        // Set environment variables if needed
-        APP_DIR = "/home/vagrant/petclinic"
-        REPO_URL = "https://github.com/yiting68/spring-petclinic.git"
-    }
+ 
 
     stages {
         stage('Checkout') {
@@ -18,14 +14,14 @@ pipeline {
         stage('Build') {
             steps {
                 // Install dependencies and build the project
-                sh './gradlew clean build'  // assuming you are using Gradle
+                gradlew clean build  // assuming you are using Gradle
             }
         }
 
         stage('Test') {
             steps {
                 // Run tests (JUnit tests in this case)
-                sh './gradlew test'
+                ./gradlew test
             }
         }
 
