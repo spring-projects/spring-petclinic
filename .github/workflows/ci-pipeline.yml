@@ -96,7 +96,7 @@ jobs:
       
       - name: Build Docker Image
         run: |
-          docker build -t jesseh.jfrog.io/jesseh-docker-dev-local/spring-petclinic:${{ github.run_id }} .
+          docker build -t soleng.jfrog.io/jesseh-docker-dev-local/spring-petclinic:${{ github.run_id }} .
 
       #################################################
       # 10) Push Docker image using JFrog CLI
