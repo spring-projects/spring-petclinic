@@ -62,7 +62,7 @@ jobs:
       # 6) Configure Maven to use JFrog as a repository
       #################################################
       - name: configure maven
-        run: jf mvnc --global --repo-resolve-releases petclinic-maven-dev-virtual/ --repo-resolve-snapshots petclinic-maven-dev-virtual/
+        run: jf mvnc --global --repo-resolve-releases jesseh-maven-dev-virtual/ --repo-resolve-snapshots jesseh-maven-dev-virtual/
         # This sets up JFrog CLI to resolve dependencies from Artifactory
 
       #################################################
@@ -89,7 +89,7 @@ jobs:
       #################################################
       - name: Build Docker Image
         run: |
-          docker build -t trialt0zppb.jfrog.io/petclinic-docker-dev-local/spring-petclinic:${{ github.run_id }} .
+          docker build -t jesseh.jfrog.io/jesseh-docker-dev-local/spring-petclinic:${{ github.run_id }} .
 
       #################################################
       # 10) Push Docker image using JFrog CLI
@@ -97,8 +97,8 @@ jobs:
       - name: Push Docker Image to Artifactory
         run: |
           jfrog rt docker-push \
-            trialt0zppb.jfrog.io/petclinic-docker-dev-local/spring-petclinic:${{ github.run_id }} \
-            petclinic-docker-dev-local \
+            jesseh.jfrog.io/jesseh-docker-dev-local/spring-petclinic:${{ github.run_id }} \
+            jesseh-docker-dev-local \
             --build-name="spring-petclinic" \
             --build-number="${{ github.run_id }}"
 
