@@ -1,71 +1,71 @@
-pipeline{
-  agent {
-        docker {
-            image 'docker:24.0.5-dind'  // Or use another version
-            args '--privileged'         // Required to run Docker inside Docker
-        }
+pipeline {
+    agent any
+
+    environment {
+        IMAGE_TAG = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
+        REGISTRY = "your-dockerhub-username" // Or Nexus repo URL
     }
 
-  environment{
-    imageTag = "latest"
-    REGISTRY_URL = "https://hub.docker.com/repositories/prankumar313"
-    IMAGE_NAME = "spring-petclinic"
-    GIT_COMMIT_SHORT = "${env.GIT_COMMIT[0..6]}"
-  }
-  
-  stages{
-    stage('Checkstyle'){
-      when{
-        not{
-          branch 'main'
+    stages {
+        stage('Check Branch') {
+            steps {
+                script {
+                    if (env.BRANCH_NAME == 'main') {
+                        currentBuild.description = "Main branch build"
+                        buildMainPipeline()
+                    } else {
+                        currentBuild.description = "Merge request build"
+                        buildMRPipeline()
+                    }
+                }
+            }
         }
-      }
-      steps{
-        sh './gradlew checkstyleMain'
-        archiveArtifacts artifacts: '**/build/reports/checkstyle/*.xml', allowEmptyArchive: true
-      }
     }
-
-    stage('Test'){
-      when{
-        not{
-          branch 'main'
-        }
-      }
-      steps{
-        sh './gradlew test'
-        junit '**/build/test-results/test/*.xml'
-      }
-    }
-
-    stage('Build'){
-      steps{
-        sh './gradlew clean build -x test'
-      }
-    }
-
-    stage('Build Docker Image'){
-      steps{
-        script{
-          def ImageTag = env.BRANCH_NAME == 'main' ? 'latest' : GIT_COMMIT_SHORT
-	  sh "docker build -t www.github.com/prankumargrid/$IMAGE_NAME:$imageTag ."
-	}
-      }
-    }
-    
-    stage('Push Docker Image'){
-      steps{
-        script{
-          def targetRepo = env.BRANCH_NAME == 'main' ? 'main' : 'mr'
-          def imageTag = env.BRANCH_NAME == 'main' ? 'latest' : GIT_COMMIT_SHORT
-          sh """
-            echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin $REGISTRY_URL
-            docker tag $REGISTRY_URL/$IMAGE_NAME:$imageTag $REGISTRY_URL/$targetRepo/$IMAGE_NAME:$imageTag
-            docker push $REGISTRY_URL/$targetRepo/$IMAGE_NAME:$imageTag
-          """
-        }
-      }
-    }
-  }
 }
+
+def buildMainPipeline() {
+    stage('Docker Build and Push') {
+        steps {
+            script {
+                docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials-id') {
+                    def app = docker.build("${env.REGISTRY}/main:${env.IMAGE_TAG}")
+                    app.push()
+                }
+            }
+        }
+    }
+}
+
+def buildMRPipeline() {
+    stage('Checkstyle') {
+        steps {
+            sh 'gradle checkstyleMain checkstyleTest'
+            archiveArtifacts artifacts: '**/build/reports/checkstyle/*.xml', allowEmptyArchive: true
+        }
+    }
+
+    stage('Test') {
+        steps {
+            sh 'gradle test'
+        }
+    }
+
+    stage('Build (No Tests)') {
+        steps {
+            sh 'gradle build -x test'
+        }
+    }
+
+    stage('Docker Build and Push') {
+        steps {
+            script {
+                docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials-id') {
+                    def app = docker.build("${env.REGISTRY}/mr:${env.IMAGE_TAG}")
+                    app.push()
+                }
+            }
+        }
+    }
+}
+
 
