@@ -6,7 +6,7 @@
 
 [See the presentation here](https://speakerdeck.com/michaelisvy/spring-petclinic-sample-application)
 
-this is the ERD: [View Entity Relationship Diagram](/erd.pdf)
+[See the UML Diagram here]: [View Entity Relationship Diagram](/erd.pdf)
 
 ## Run Petclinic locally
 
