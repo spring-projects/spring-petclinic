@@ -10,7 +10,7 @@ pipeline {
         stage('Initialize') {
             steps {
                 script {
-                    IMAGE_TAG = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
+                    def IMAGE_TAG = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
                     env.IMAGE_TAG = IMAGE_TAG // Save it to env for next stages
                     echo "Image tag is: ${env.IMAGE_TAG}"
                 }
