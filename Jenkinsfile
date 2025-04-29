@@ -8,15 +8,13 @@ pipeline {
 
     stages {
         stage('Check Branch') {
-            steps {
-                script {
-                    if (env.BRANCH_NAME == 'main') {
-                        currentBuild.description = "Main branch build"
-                        buildMainPipeline()
-                    } else {
-                        currentBuild.description = "Merge request build"
-                        buildMRPipeline()
-                    }
+            script {
+                if (env.BRANCH_NAME == 'main') {
+                    currentBuild.description = "Main branch build"
+                    buildMainPipeline()
+                } else {
+                    currentBuild.description = "Merge request build"
+                    buildMRPipeline()
                 }
             }
         }
@@ -25,12 +23,10 @@ pipeline {
 
 def buildMainPipeline() {
     stage('Docker Build and Push') {
-        steps {
-            script {
-                docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials-id') {
-                    def app = docker.build("${env.REGISTRY}/main:${env.IMAGE_TAG}")
-                    app.push()
-                }
+        script {
+            docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials-id') {
+                def app = docker.build("${env.REGISTRY}/main:${env.IMAGE_TAG}")
+                app.push()
             }
         }
     }
@@ -38,31 +34,23 @@ def buildMainPipeline() {
 
 def buildMRPipeline() {
     stage('Checkstyle') {
-        steps {
-            sh 'gradle checkstyleMain checkstyleTest'
-            archiveArtifacts artifacts: '**/build/reports/checkstyle/*.xml', allowEmptyArchive: true
-        }
+        sh 'gradle checkstyleMain checkstyleTest'
+        archiveArtifacts artifacts: '**/build/reports/checkstyle/*.xml', allowEmptyArchive: true
     }
 
     stage('Test') {
-        steps {
-            sh 'gradle test'
-        }
+        sh 'gradle test'
     }
 
     stage('Build (No Tests)') {
-        steps {
-            sh 'gradle build -x test'
-        }
+        sh 'gradle build -x test'
     }
 
     stage('Docker Build and Push') {
-        steps {
-            script {
-                docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials-id') {
-                    def app = docker.build("${env.REGISTRY}/mr:${env.IMAGE_TAG}")
-                    app.push()
-                }
+        script {
+            docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials-id') {
+                def app = docker.build("${env.REGISTRY}/mr:${env.IMAGE_TAG}")
+                app.push()
             }
         }
     }
