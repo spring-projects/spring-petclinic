@@ -37,8 +37,8 @@ jobs:
         id: setup-cli
         env:
           JF_URL: ${{secrets.JF_RT_URL}}  # Artifactory base URL (stored as a GitHub secret)
-          JFROG_CLI_RELEASES_REPO: 'https://trialt0zppb.jfrog.io/artifactory/petclinic-maven-dev-virtual/'
-          JFROG_CLI_EXTRACTORS_REMOTE: 'https://trialt0zppb.jfrog.io/artifactory/petclinic-maven-dev-virtual/'
+          JFROG_CLI_RELEASES_REPO: 'https://soleng.jfrog.io/artifactory/jesseh-maven-dev-virtual/'
+          JFROG_CLI_EXTRACTORS_REMOTE: 'https://soleng.jfrog.io/artifactory/jesseh-maven-dev-virtual/'
           JF_GIT_TOKEN: ${{secrets.GH_TOKEN}}  # GitHub token for authentication
           JF_USER: ${{secrets.ARTIFACTORY_USERNAME}}  # Artifactory username
           JF_PASSWORD: ${{secrets.ARTIFACTORY_IDENTITY_TOKEN}}  # Artifactory identity token
@@ -62,7 +62,7 @@ jobs:
       # 6) Configure Maven to use JFrog as a repository
       #################################################
       - name: configure maven
-        run: jf mvnc --global --repo-resolve-releases petclinic-maven-dev-virtual/ --repo-resolve-snapshots petclinic-maven-dev-virtual/
+        run: jf mvnc --global --repo-resolve-releases jesseh-maven-dev-virtual/ --repo-resolve-snapshots jesseh-maven-dev-virtual/
         # This sets up JFrog CLI to resolve dependencies from Artifactory
 
       #################################################
@@ -89,7 +89,7 @@ jobs:
       #################################################
       - name: Build Docker Image
         run: |
-          docker build -t trialt0zppb.jfrog.io/petclinic-docker-dev-local/spring-petclinic:${{ github.run_id }} .
+          docker build -t jesseh.jfrog.io/jesseh-docker-dev-local/spring-petclinic:${{ github.run_id }} .
 
       #################################################
       # 10) Push Docker image using JFrog CLI
@@ -97,8 +97,8 @@ jobs:
       - name: Push Docker Image to Artifactory
         run: |
           jfrog rt docker-push \
-            trialt0zppb.jfrog.io/petclinic-docker-dev-local/spring-petclinic:${{ github.run_id }} \
-            petclinic-docker-dev-local \
+            jesseh.jfrog.io/jesseh-docker-dev-local/spring-petclinic:${{ github.run_id }} \
+            jesseh-docker-dev-local \
             --build-name="spring-petclinic" \
             --build-number="${{ github.run_id }}"
 
