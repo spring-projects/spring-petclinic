@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         IMAGE_TAG = '' // Will be set in 'Initialize'
-        REGISTRY = "your-dockerhub-username" // Replace with actual DockerHub or Nexus repo
+        REGISTRY = "prankumar313" // Replace with actual DockerHub or Nexus repo
     }
 
     stages {
