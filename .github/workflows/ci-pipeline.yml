@@ -104,8 +104,7 @@ jobs:
       - name: Push Docker Image to Artifactory
         run: |
           jf docker push \
-            jesseh.jfrog.io/jesseh-docker-dev-local/spring-petclinic:${{ github.run_id }} \
-            jesseh-docker-dev-local \
+            soleng.jfrog.io/jesseh-docker-dev-local/spring-petclinic:${{ github.run_id }} \
             --build-name="spring-petclinic" \
             --build-number="${{ github.run_id }}"
 
