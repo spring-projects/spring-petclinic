@@ -2,47 +2,68 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_TAG = '' // Will be set in 'Initialize'
-        REGISTRY = "your-dockerhub-username" // Replace with actual DockerHub or Nexus repo
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
+        IMAGE_NAME_MAIN = "prankumar313/main"
+        IMAGE_NAME_MR = "prankumar313/mr"
     }
 
     stages {
-        stage('Initialize') {
+        stage('Check Git Branch') {
             steps {
                 script {
-                    env.IMAGE_TAG = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
-                    echo "Image tag is: ${env.IMAGE_TAG}"
+                    BRANCH_NAME = env.BRANCH_NAME ?: sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
+                    IS_MR = BRANCH_NAME != 'main'
+                    COMMIT_HASH = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
                 }
             }
         }
 
-        stage('Branch Specific Pipeline') {
+        stage('Checkstyle') {
+            when {
+                expression { IS_MR }
+            }
+            steps {
+                sh './gradlew checkstyleMain'
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'build/reports/checkstyle/*.html', allowEmptyArchive: true
+                }
+            }
+        }
+
+        stage('Test') {
+            when {
+                expression { IS_MR }
+            }
+            steps {
+                sh './gradlew test'
+            }
+        }
+
+        stage('Build') {
+            when {
+                expression { IS_MR }
+            }
+            steps {
+                sh './gradlew build -x test'
+            }
+        }
+
+        stage('Build Docker Image') {
             steps {
                 script {
-                    if (env.BRANCH_NAME == 'main') {
-                        currentBuild.description = "Main branch build"
-                        
-                        // Main branch: Just build and push image
-                        docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials-id') {
-                            def app = docker.build("${env.REGISTRY}/main:${env.IMAGE_TAG}")
-                            app.push()
-                        }
+                    IMAGE_TAG = "${IS_MR ? IMAGE_NAME_MR : IMAGE_NAME_MAIN}:${COMMIT_HASH}"
+                    sh "docker buildx build -t ${IMAGE_TAG} ."
+                }
+            }
+        }
 
-                    } else {
-                        currentBuild.description = "Merge request build"
-                        
-                        // MR branch: Full build
-                        sh 'gradle checkstyleMain checkstyleTest'
-                        archiveArtifacts artifacts: '**/build/reports/checkstyle/*.xml', allowEmptyArchive: true
-
-                        sh 'gradle test'
-                        sh 'gradle build -x test'
-
-                        docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials-id') {
-                            def app = docker.build("${env.REGISTRY}/mr:${env.IMAGE_TAG}")
-                            app.push()
-                        }
-                    }
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    sh "echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin"
+                    sh "docker push ${IMAGE_TAG}"
                 }
             }
         }
