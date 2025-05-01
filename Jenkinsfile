@@ -1,4 +1,10 @@
 pipeline {
+  agent {
+     docker {
+       image 'gradle:8.1.1-jdk17'
+       args '-v /var/run/docker.sock:/var/run/docker.sock'
+     }
+  }
   agent any
   environment {
     DOCKER_IMAGE = "prankumar313"
