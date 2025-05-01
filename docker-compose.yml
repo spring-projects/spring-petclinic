@@ -1,21 +1,27 @@
+version: "3"
+
 services:
-  mysql:
-    image: mysql:9.1
+  petclinic:
+    build:
+      context: .
+      dockerfile: Dockerfile.multi
     ports:
-      - "3306:3306"
+      - 8080:8080
     environment:
-      - MYSQL_ROOT_PASSWORD=
-      - MYSQL_ALLOW_EMPTY_PASSWORD=true
-      - MYSQL_USER=petclinic
-      - MYSQL_PASSWORD=petclinic
+      - MYSQL_URL=jdbc:mysql://mysqlserver/petclinic
+      - SERVER_PORT=8080
+    depends_on:
+      - mysqlserver
+  mysqlserver:
+    image: mysql:8.0
+    ports:
+      - 3306:3306
+    environment:
       - MYSQL_DATABASE=petclinic
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
     volumes:
-      - "./conf.d:/etc/mysql/conf.d:ro"
-  postgres:
-    image: postgres:17.0
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_PASSWORD=petclinic
-      - POSTGRES_USER=petclinic
-      - POSTGRES_DB=petclinic
+      - mysql_data:/var/lib/mysql
+volumes:
+  mysql_data:

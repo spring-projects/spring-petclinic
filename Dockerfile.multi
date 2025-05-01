@@ -1,0 +1,12 @@
+FROM eclipse-temurin:21-jdk-jammy as build
+WORKDIR /app
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+RUN ./mvnw dependency:resolve
+COPY src ./src
+RUN ./mvnw package
+
+FROM eclipse-temurin:21-jre-alpine
+COPY --from=build /app/target/spring-petclinic-*.jar /spring-petclinic.jar
+EXPOSE 8080
+CMD ["java", "-jar", "spring-petclinic.jar"]
