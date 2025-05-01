@@ -1,28 +1,17 @@
 pipeline {
-  agent {
-    docker {
-      image 'gradle:8.1.1-jdk17'
-      args '-v /var/run/docker.sock:/var/run/docker.sock'
-    }
-  }
+  agent none
 
   environment {
-    IMAGE_NAME = "spring-petclinic"
-    DOCKERHUB_USER = "prankumar313"  // Change to your Docker Hub username
+    DOCKERHUB_USER = "prankumar313"
   }
 
   stages {
-    stage('Install Docker CLI') {
-      steps {
-        sh '''
-          apt-get update
-          apt-get install -y docker.io
-          docker --version
-        '''
-      }
-    }
-
     stage('Checkstyle') {
+      agent {
+        docker {
+          image 'gradle:8.1.1-jdk17'
+        }
+      }
       when {
         expression { env.BRANCH_NAME != 'main' }
       }
@@ -33,6 +22,11 @@ pipeline {
     }
 
     stage('Test') {
+      agent {
+        docker {
+          image 'gradle:8.1.1-jdk17'
+        }
+      }
       when {
         expression { env.BRANCH_NAME != 'main' }
       }
@@ -42,6 +36,11 @@ pipeline {
     }
 
     stage('Build (No Tests)') {
+      agent {
+        docker {
+          image 'gradle:8.1.1-jdk17'
+        }
+      }
       when {
         expression { env.BRANCH_NAME != 'main' }
       }
@@ -51,29 +50,23 @@ pipeline {
     }
 
     stage('Build & Push Docker Image') {
+      agent { label 'docker-enabled' }  // runs on a node with Docker installed
       steps {
         script {
-          COMMIT = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
-          IMAGE_TAG = "${DOCKERHUB_USER}/${env.BRANCH_NAME == 'main' ? 'main' : 'mr'}:${COMMIT}"
+          def commit = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+          def repo = env.BRANCH_NAME == 'main' ? 'main' : 'mr'
+          def image = "${DOCKERHUB_USER}/${repo}:${commit}"
 
-          sh """
-            docker build -t ${IMAGE_TAG} .
-          """
+          sh "docker build -t ${image} ."
 
           withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
             sh """
               echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-              docker push ${IMAGE_TAG}
+              docker push ${image}
             """
           }
         }
       }
-    }
-  }
-
-  post {
-    always {
-      cleanWs()
     }
   }
 }
