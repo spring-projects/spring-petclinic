@@ -11,6 +11,14 @@ pipeline {
     COMMIT = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
   }
   stages {
+    stage('Install Docker') {
+      steps {
+        sh '''
+         apt-get update
+         apt-get install -y docker.io
+        '''
+      }
+    }
     stage('Checkstyle') {
       when {
         not { branch 'main' }
