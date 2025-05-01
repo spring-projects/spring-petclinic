@@ -1,11 +1,10 @@
 pipeline {
-  agent {
-     docker {
-       image 'gradle:8.1.1-jdk17'
-       args '-v /var/run/docker.sock:/var/run/docker.sock'
-     }
-  }
+  age
   agent any
+  docker {
+    image 'gradle:8.1.1-jdk17'
+    args '-v /var/run/docker.sock:/var/run/docker.sock'
+  }
   environment {
     DOCKER_IMAGE = "prankumar313"
     COMMIT = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
