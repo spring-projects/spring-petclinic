@@ -7,7 +7,8 @@ pipeline {
   }
 
   environment {
-    IMAGE_NAME = 'prankumar313-main'
+    IMAGE_NAME = "spring-petclinic"
+    DOCKERHUB_USER = "prankumar313"  // Change to your Docker Hub username
   }
 
   stages {
@@ -16,29 +17,63 @@ pipeline {
         sh '''
           apt-get update
           apt-get install -y docker.io
+          docker --version
         '''
       }
     }
 
-    stage('Build Docker Image') {
+    stage('Checkstyle') {
+      when {
+        expression { env.BRANCH_NAME != 'main' }
+      }
       steps {
-        script {
-          COMMIT = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
-          sh "docker build -t ${IMAGE_NAME}:${COMMIT} ."
-        }
+        sh './gradlew checkstyleMain checkstyleTest'
+        archiveArtifacts artifacts: '**/build/reports/checkstyle/*.xml', allowEmptyArchive: true
       }
     }
 
-    stage('Push to Docker Hub') {
+    stage('Test') {
+      when {
+        expression { env.BRANCH_NAME != 'main' }
+      }
       steps {
-        withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-          sh '''
-            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-            docker tag ${IMAGE_NAME}:${COMMIT} ${DOCKER_USER}/${IMAGE_NAME}:${COMMIT}
-            docker push ${DOCKER_USER}/${IMAGE_NAME}:${COMMIT}
-          '''
+        sh './gradlew test'
+      }
+    }
+
+    stage('Build (No Tests)') {
+      when {
+        expression { env.BRANCH_NAME != 'main' }
+      }
+      steps {
+        sh './gradlew build -x test'
+      }
+    }
+
+    stage('Build & Push Docker Image') {
+      steps {
+        script {
+          COMMIT = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
+          IMAGE_TAG = "${DOCKERHUB_USER}/${env.BRANCH_NAME == 'main' ? 'main' : 'mr'}:${COMMIT}"
+
+          sh """
+            docker build -t ${IMAGE_TAG} .
+          """
+
+          withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+            sh """
+              echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+              docker push ${IMAGE_TAG}
+            """
+          }
         }
       }
+    }
+  }
+
+  post {
+    always {
+      cleanWs()
     }
   }
 }
