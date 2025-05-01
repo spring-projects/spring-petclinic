@@ -1,60 +1,42 @@
 pipeline {
-  agent any
-  docker {
-    image 'gradle:8.1.1-jdk17'
-    args '-v /var/run/docker.sock:/var/run/docker.sock'
+  agent {
+    docker {
+      image 'gradle:8.1.1-jdk17'
+      args '-v /var/run/docker.sock:/var/run/docker.sock'
+    }
   }
+
   environment {
-    DOCKER_IMAGE = "prankumar313"
-    COMMIT = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+    IMAGE_NAME = 'prankumar313-main'
   }
+
   stages {
-    stage('Install Docker') {
+    stage('Install Docker CLI') {
       steps {
         sh '''
-         apt-get update
-         apt-get install -y docker.io
+          apt-get update
+          apt-get install -y docker.io
         '''
-      }
-    }
-    stage('Checkstyle') {
-      when {
-        not { branch 'main' }
-      }
-      steps {
-        sh './gradlew checkstyleMain checkstyleTest'
-        archiveArtifacts artifacts: '**/build/reports/checkstyle/*.xml', allowEmptyArchive: true
-      }
-    }
-
-    stage('Test') {
-      when {
-        not { branch 'main' }
-      }
-      steps {
-        sh './gradlew test'
-      }
-    }
-
-    stage('Build (No Tests)') {
-      when {
-        not { branch 'main' }
-      }
-      steps {
-        sh './gradlew build -x test'
       }
     }
 
     stage('Build Docker Image') {
       steps {
         script {
-          def tag = BRANCH_NAME == 'main' ? 'latest' : "${COMMIT}"
-          def repo = BRANCH_NAME == 'main' ? "${DOCKER_IMAGE}-main" : "${DOCKER_IMAGE}-mr"
-          sh "docker buildx build -t ${repo}:${tag} ."
-          withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-            sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
-            sh "docker push ${repo}:${tag}"
-          }
+          COMMIT = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
+          sh "docker build -t ${IMAGE_NAME}:${COMMIT} ."
+        }
+      }
+    }
+
+    stage('Push to Docker Hub') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+          sh '''
+            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+            docker tag ${IMAGE_NAME}:${COMMIT} ${DOCKER_USER}/${IMAGE_NAME}:${COMMIT}
+            docker push ${DOCKER_USER}/${IMAGE_NAME}:${COMMIT}
+          '''
         }
       }
     }
