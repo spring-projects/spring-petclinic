@@ -1,5 +1,8 @@
 pipeline {
 	agent any
+	tools {
+		maven 'Maven'
+	}
 	stages {
 		stage('Merge Request Pipeline') {
 			when {
@@ -66,7 +69,7 @@ pipeline {
 					withCredentials([usernamePassword(credentialsId: 'nexus-credentials',
 						usernameVariable: 'NEXUS_USERNAME', 
                         passwordVariable: 'NEXUS_PASSWORD')]) {
-						
+
 						sh "docker build -f Dockerfile.multi -t ${env.NEXUS_SERVER}:${env.NEXUS_PORT_MAIN}/${env.NEXUS_REPO_MAIN}:${shortCommit} ."
                         sh "docker login ${env.NEXUS_SERVER}:${env.NEXUS_PORT_MAIN} -u ${NEXUS_USERNAME} -p ${NEXUS_PASSWORD}"
                         sh "docker push ${env.NEXUS_SERVER}:${env.NEXUS_PORT_MAIN}/${env.NEXUS_REPO_MAIN}:${shortCommit}"
