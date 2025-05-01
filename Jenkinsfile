@@ -52,7 +52,7 @@ pipeline {
         script {
           def tag = BRANCH_NAME == 'main' ? 'latest' : "${COMMIT}"
           def repo = BRANCH_NAME == 'main' ? "${DOCKER_IMAGE}-main" : "${DOCKER_IMAGE}-mr"
-          sh "docker build -t ${repo}:${tag} ."
+          sh "docker buildx build -t ${repo}:${tag} ."
           withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
             sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
             sh "docker push ${repo}:${tag}"
