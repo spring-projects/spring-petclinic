@@ -1,12 +1,16 @@
 pipeline {
     agent any
+    
     tools {
         maven 'Maven'
     }
+    
     environment {
         DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credentials')
         DOCKER_HUB_USERNAME = "${DOCKER_HUB_CREDENTIALS_USR}"
+        GIT_COMMIT_SHORT = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
     }
+    
     stages {
         stage('Merge Request Pipeline') {
             when {
@@ -49,12 +53,16 @@ pipeline {
                 stage('Create Docker Image') {
                     steps {
                         script {
-                            def shortCommit = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
-                            sh 'echo $DOCKER_HUB_CREDENTIALS_PSW | docker login -u $DOCKER_HUB_CREDENTIALS_USR --password-stdin'
-                            def imageName = "${DOCKER_HUB_USERNAME}/mr:${shortCommit}"
-                            sh "docker build -t ${imageName} -f Dockerfile.multi ."
-                            sh "docker push ${imageName}"
-                            sh 'docker logout'
+                            try {
+                                sh 'echo $DOCKER_HUB_CREDENTIALS_PSW | docker login -u $DOCKER_HUB_CREDENTIALS_USR --password-stdin'
+                                def imageName = "${DOCKER_HUB_USERNAME}/mr:${GIT_COMMIT_SHORT}"
+                                sh "docker build -t ${imageName} -f Dockerfile ."
+                                sh "docker push ${imageName}"
+                            } catch (Exception e) {
+                                error "Failed to build or push Docker image: ${e.message}"
+                            } finally {
+                                sh 'docker logout'
+                            }
                         }
                     }
                 }
@@ -80,19 +88,29 @@ pipeline {
                 stage('Create Docker Image') {
                     steps {
                         script {
-                            def shortCommit = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
-                            
-                            sh 'echo $DOCKER_HUB_CREDENTIALS_PSW | docker login -u $DOCKER_HUB_CREDENTIALS_USR --password-stdin'
-                            def imageName = "${DOCKER_HUB_USERNAME}/main:${shortCommit}"
-                            sh "docker build -t ${imageName} -f Dockerfile.multi ."
-                            sh "docker push ${imageName}"
-                            sh 'docker logout'
+                            try {
+                                sh 'echo $DOCKER_HUB_CREDENTIALS_PSW | docker login -u $DOCKER_HUB_CREDENTIALS_USR --password-stdin'
+                                
+                                def imageNameWithCommit = "${DOCKER_HUB_USERNAME}/main:${GIT_COMMIT_SHORT}"
+                                sh "docker build -t ${imageNameWithCommit} -f Dockerfile ."
+                                
+                                def imageNameLatest = "${DOCKER_HUB_USERNAME}/main:latest"
+                                sh "docker tag ${imageNameWithCommit} ${imageNameLatest}"
+                                
+                                sh "docker push ${imageNameWithCommit}"
+                                sh "docker push ${imageNameLatest}"
+                            } catch (Exception e) {
+                                error "Failed to build or push Docker image: ${e.message}"
+                            } finally {
+                                sh 'docker logout'
+                            }
                         }
                     }
                 }
             }
         }
     }
+    
     post {
         always {
             cleanWs()
