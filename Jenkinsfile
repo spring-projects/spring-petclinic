@@ -54,6 +54,8 @@ pipeline {
                     steps {
                         script {
                             try {
+                            	sh 'which docker || echo "Docker not found in PATH"'
+                				sh 'echo "PATH=$PATH"'
                                 sh 'echo $DOCKER_HUB_CREDENTIALS_PSW | docker login -u $DOCKER_HUB_CREDENTIALS_USR --password-stdin'
                                 def imageName = "${DOCKER_HUB_USERNAME}/mr:${GIT_COMMIT_SHORT}"
                                 sh "docker build -t ${imageName} -f Dockerfile ."
@@ -89,6 +91,8 @@ pipeline {
                     steps {
                         script {
                             try {
+                            	sh 'which docker || echo "Docker not found in PATH"'
+                				sh 'echo "PATH=$PATH"'
                                 sh 'echo $DOCKER_HUB_CREDENTIALS_PSW | docker login -u $DOCKER_HUB_CREDENTIALS_USR --password-stdin'
                                 
                                 def imageNameWithCommit = "${DOCKER_HUB_USERNAME}/main:${GIT_COMMIT_SHORT}"
