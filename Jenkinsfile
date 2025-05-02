@@ -47,9 +47,13 @@ pipeline {
                         script {
                             def shortCommit = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
                             
-                            docker.withRegistry("http://host.docker.internal:${env.NEXUS_PORT_MR}", 'nexus-credentials') {
-                                def customImage = docker.build("host.docker.internal:${env.NEXUS_PORT_MR}/${env.NEXUS_REPO_MR}:${shortCommit}", "-f Dockerfile.multi .")
-                                customImage.push()
+                            sh "docker build -f Dockerfile.multi -t host.docker.internal:8084/mr:${shortCommit} ."
+                            
+                            withCredentials([usernamePassword(credentialsId: 'nexus-credentials',
+                                usernameVariable: 'NEXUS_USERNAME',
+                                passwordVariable: 'NEXUS_PASSWORD')]) {
+                                sh "echo \${NEXUS_PASSWORD} | docker login host.docker.internal:8084 -u \${NEXUS_USERNAME} --password-stdin"
+                                sh "docker push host.docker.internal:8084/mr:${shortCommit}"
                             }
                         }
                     }
@@ -78,9 +82,13 @@ pipeline {
                         script {
                             def shortCommit = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
                             
-                            docker.withRegistry("http://host.docker.internal:${env.NEXUS_PORT_MAIN}", 'nexus-credentials') {
-                                def customImage = docker.build("host.docker.internal:${env.NEXUS_PORT_MAIN}/${env.NEXUS_REPO_MAIN}:${shortCommit}", "-f Dockerfile.multi .")
-                                customImage.push()
+                            sh "docker build -f Dockerfile.multi -t host.docker.internal:8083/main:${shortCommit} ."
+                            
+                            withCredentials([usernamePassword(credentialsId: 'nexus-credentials',
+                                usernameVariable: 'NEXUS_USERNAME',
+                                passwordVariable: 'NEXUS_PASSWORD')]) {
+                                sh "echo \${NEXUS_PASSWORD} | docker login host.docker.internal:8083 -u \${NEXUS_USERNAME} --password-stdin"
+                                sh "docker push host.docker.internal:8083/main:${shortCommit}"
                             }
                         }
                     }
