@@ -3,6 +3,10 @@ pipeline {
     tools {
         maven 'Maven'
     }
+    environment {
+        DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credentials')
+        DOCKER_HUB_USERNAME = "${DOCKER_HUB_CREDENTIALS_USR}"
+    }
     stages {
         stage('Merge Request Pipeline') {
             when {
@@ -46,11 +50,11 @@ pipeline {
                     steps {
                         script {
                             def shortCommit = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
-                            
-                            docker.withRegistry("http://${env.NEXUS_SERVER}:${env.NEXUS_PORT_MR}", 'nexus-credentials') {
-                                def customImage = docker.build("${env.NEXUS_SERVER}:${env.NEXUS_PORT_MR}/${env.NEXUS_REPO_MR}:${shortCommit}", "-f Dockerfile.multi .")
-                                customImage.push()
-                            }
+                            sh 'echo $DOCKER_HUB_CREDENTIALS_PSW | docker login -u $DOCKER_HUB_CREDENTIALS_USR --password-stdin'
+                            def imageName = "${DOCKER_HUB_USERNAME}/mr:${shortCommit}"
+                            sh "docker build -t ${imageName} -f Dockerfile.multi ."
+                            sh "docker push ${imageName}"
+                            sh 'docker logout'
                         }
                     }
                 }
@@ -78,14 +82,20 @@ pipeline {
                         script {
                             def shortCommit = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
                             
-                            docker.withRegistry("http://${env.NEXUS_SERVER}:${env.NEXUS_PORT_MAIN}", 'nexus-credentials') {
-                                def customImage = docker.build("${env.NEXUS_SERVER}:${env.NEXUS_PORT_MAIN}/${env.NEXUS_REPO_MAIN}:${shortCommit}", "-f Dockerfile.multi .")
-                                customImage.push()
-                            }
+                            sh 'echo $DOCKER_HUB_CREDENTIALS_PSW | docker login -u $DOCKER_HUB_CREDENTIALS_USR --password-stdin'
+                            def imageName = "${DOCKER_HUB_USERNAME}/main:${shortCommit}"
+                            sh "docker build -t ${imageName} -f Dockerfile.multi ."
+                            sh "docker push ${imageName}"
+                            sh 'docker logout'
                         }
                     }
                 }
             }
+        }
+    }
+    post {
+        always {
+            cleanWs()
         }
     }
 }
