@@ -19,6 +19,7 @@ pipeline {
                         }
                     }
                 }
+                
                 stage('Test') {
                     steps {
                         sh 'mvn test'
@@ -29,6 +30,7 @@ pipeline {
                         }
                     }
                 }
+                
                 stage('Build') {
                     steps {
                         sh 'mvn clean package -DskipTests'
@@ -39,34 +41,28 @@ pipeline {
                         }
                     }
                 }
+                
                 stage('Create Docker Image') {
-                    agent {
-                        docker {
-                            image 'docker:dind'
-                            args '-v /var/run/docker.sock:/var/run/docker.sock'
-                        }
-                    }
                     steps {
                         script {
                             def shortCommit = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
-                            withCredentials([usernamePassword(credentialsId: 'nexus-credentials',
-                                usernameVariable: 'NEXUS_USERNAME',
-                                passwordVariable: 'NEXUS_PASSWORD')]) {
-                                sh "docker build -f Dockerfile.multi -t ${env.NEXUS_SERVER}:${env.NEXUS_PORT_MR}/${env.NEXUS_REPO_MR}:${shortCommit} ."
-                                sh "docker login ${env.NEXUS_SERVER}:${env.NEXUS_PORT_MR} -u ${NEXUS_USERNAME} -p ${NEXUS_PASSWORD}"
-                                sh "docker push ${env.NEXUS_SERVER}:${env.NEXUS_PORT_MR}/${env.NEXUS_REPO_MR}:${shortCommit}"
+                            
+                            docker.withRegistry("http://${env.NEXUS_SERVER}:${env.NEXUS_PORT_MR}", 'nexus-credentials') {
+                                def customImage = docker.build("${env.NEXUS_SERVER}:${env.NEXUS_PORT_MR}/${env.NEXUS_REPO_MR}:${shortCommit}", "-f Dockerfile.multi .")
+                                customImage.push()
                             }
                         }
                     }
                 }
             }
         }
+        
         stage('Main Branch Pipeline') {
             when {
                 branch 'main'
             }
             stages {
-                stage('Build') {
+                stage('Build App') {
                     steps {
                         sh 'mvn clean package -DskipTests'
                     }
@@ -76,22 +72,15 @@ pipeline {
                         }
                     }
                 }
+                
                 stage('Create Docker Image') {
-                    agent {
-                        docker {
-                            image 'docker:dind'
-                            args '-v /var/run/docker.sock:/var/run/docker.sock'
-                        }
-                    }
                     steps {
                         script {
                             def shortCommit = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
-                            withCredentials([usernamePassword(credentialsId: 'nexus-credentials',
-                                usernameVariable: 'NEXUS_USERNAME',
-                                passwordVariable: 'NEXUS_PASSWORD')]) {
-                                sh "docker build -f Dockerfile.multi -t ${env.NEXUS_SERVER}:${env.NEXUS_PORT_MAIN}/${env.NEXUS_REPO_MAIN}:${shortCommit} ."
-                                sh "docker login ${env.NEXUS_SERVER}:${env.NEXUS_PORT_MAIN} -u ${NEXUS_USERNAME} -p ${NEXUS_PASSWORD}"
-                                sh "docker push ${env.NEXUS_SERVER}:${env.NEXUS_PORT_MAIN}/${env.NEXUS_REPO_MAIN}:${shortCommit}"
+                            
+                            docker.withRegistry("http://${env.NEXUS_SERVER}:${env.NEXUS_PORT_MAIN}", 'nexus-credentials') {
+                                def customImage = docker.build("${env.NEXUS_SERVER}:${env.NEXUS_PORT_MAIN}/${env.NEXUS_REPO_MAIN}:${shortCommit}", "-f Dockerfile.multi .")
+                                customImage.push()
                             }
                         }
                     }
