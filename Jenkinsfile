@@ -45,6 +45,8 @@ pipeline {
                 stage('Create Docker Image') {
                     steps {
                         script {
+                        	sh 'sudo chmod 666 /var/run/docker.sock || true'
+                        	
                             def shortCommit = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
                             
                             sh "docker build -f Dockerfile.multi -t host.docker.internal:8084/mr:${shortCommit} ."
@@ -80,6 +82,8 @@ pipeline {
                 stage('Create Docker Image') {
                     steps {
                         script {
+                        	sh 'sudo chmod 666 /var/run/docker.sock || true'
+
                             def shortCommit = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
                             
                             sh "docker build -f Dockerfile.multi -t host.docker.internal:8083/main:${shortCommit} ."
