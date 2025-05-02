@@ -47,8 +47,8 @@ pipeline {
                         script {
                             def shortCommit = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
                             
-                            docker.withRegistry("http://${env.NEXUS_SERVER}:${env.NEXUS_PORT_MR}", 'nexus-credentials') {
-                                def customImage = docker.build("${env.NEXUS_SERVER}:${env.NEXUS_PORT_MR}/${env.NEXUS_REPO_MR}:${shortCommit}", "-f Dockerfile.multi .")
+                            docker.withRegistry("http://host.docker.internal:${env.NEXUS_PORT_MR}", 'nexus-credentials') {
+                                def customImage = docker.build("host.docker.internal:${env.NEXUS_PORT_MR}/${env.NEXUS_REPO_MR}:${shortCommit}", "-f Dockerfile.multi .")
                                 customImage.push()
                             }
                         }
@@ -78,8 +78,8 @@ pipeline {
                         script {
                             def shortCommit = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
                             
-                            docker.withRegistry("http://${env.NEXUS_SERVER}:${env.NEXUS_PORT_MAIN}", 'nexus-credentials') {
-                                def customImage = docker.build("${env.NEXUS_SERVER}:${env.NEXUS_PORT_MAIN}/${env.NEXUS_REPO_MAIN}:${shortCommit}", "-f Dockerfile.multi .")
+                            docker.withRegistry("http://host.docker.internal:${env.NEXUS_PORT_MAIN}", 'nexus-credentials') {
+                                def customImage = docker.build("host.docker.internal:${env.NEXUS_PORT_MAIN}/${env.NEXUS_REPO_MAIN}:${shortCommit}", "-f Dockerfile.multi .")
                                 customImage.push()
                             }
                         }
