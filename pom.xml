@@ -232,37 +232,35 @@
         </executions>
       </plugin>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>${maven-checkstyle.version}</version>
-        <dependencies>
-          <dependency>
+   <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-checkstyle-plugin</artifactId>
+    <version>${maven-checkstyle.version}</version>
+    <dependencies>
+        <dependency>
             <groupId>com.puppycrawl.tools</groupId>
             <artifactId>checkstyle</artifactId>
             <version>${checkstyle.version}</version>
-          </dependency>
-          <dependency>
-            <groupId>io.spring.nohttp</groupId>
-            <artifactId>nohttp-checkstyle</artifactId>
-            <version>${nohttp-checkstyle.version}</version>
-          </dependency>
-        </dependencies>
-        <executions>
-          <execution>
-            <id>nohttp-checkstyle-validation</id>
-            <goals><goal>check</goal></goals>
+        </dependency>
+    </dependencies>
+    <executions>
+        <execution>
+            <id>checkstyle-validation</id>
+            <goals>
+                <goal>check</goal>
+            </goals>
             <phase>validate</phase>
             <configuration>
-              <configLocation>src/checkstyle/nohttp-checkstyle.xml</configLocation>
-              <sourceDirectories>${basedir}</sourceDirectories>
-              <includes>**/*</includes>
-              <excludes>**/.git/**/*,**/.idea/**/*,**/target/**,**/*.class</excludes>
-              <propertyExpansion>config_loc=${basedir}/src/checkstyle/</propertyExpansion>
+                <configLocation>src/checkstyle/checkstyle.xml</configLocation>
+                <sourceDirectories>${basedir}</sourceDirectories>
+                <includes>**/*</includes>
+                <excludes>**/.git/**/*,**/.idea/**/*,**/target/**,**/*.class</excludes>
+                <propertyExpansion>config_loc=${basedir}/src/checkstyle/</propertyExpansion>
             </configuration>
-          </execution>
-        </executions>
-      </plugin>
+        </execution>
+    </executions>
+</plugin>
+
 
       <!-- Spring Boot -->
       <plugin>
