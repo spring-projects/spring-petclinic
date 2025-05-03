@@ -36,11 +36,11 @@
 
   <repositories>
     <repository>
-      <id>nexus-releases</id>
+      <id>maven-releases</id>
       <url>http://35.154.220.191:8081/repository/maven-releases/</url>
     </repository>
     <repository>
-      <id>nexus-snapshots</id>
+      <id>maven-snapshots</id>
       <url>http://35.154.220.191:8081/repository/maven-snapshots/</url>
       <snapshots><enabled>true</enabled></snapshots>
       <releases><enabled>false</enabled></releases>
@@ -59,12 +59,12 @@
 
   <distributionManagement>
     <repository>
-      <id>nexus-releases</id>
+      <id>maven-releases</id>
       <name>Nexus Release Repository</name>
       <url>http://35.154.220.191:8081/repository/maven-releases/</url>
     </repository>
     <snapshotRepository>
-      <id>nexus-snapshots</id>
+      <id>maven-snapshots</id>
       <name>Nexus Snapshot Repository</name>
       <url>http://35.154.220.191:8081/repository/maven-snapshots/</url>
     </snapshotRepository>
