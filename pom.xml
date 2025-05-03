@@ -34,12 +34,6 @@
     <spring-format.version>0.0.43</spring-format.version>
   </properties>
 
-
-  <configuration>
-    <configLocation>google_checks.xml</configLocation> <!-- or sun_checks.xml -->
-</configuration>
-
-
   <repositories>
     <repository>
       <id>nexus-releases</id>
@@ -258,6 +252,7 @@
             <phase>validate</phase>
             <configuration>
                 <configLocation>src/checkstyle/checkstyle.xml</configLocation>
+               <configLocation>google_checks.xml</configLocation>
                 <sourceDirectories>${basedir}</sourceDirectories>
                 <includes>**/*</includes>
                 <excludes>**/.git/**/*,**/.idea/**/*,**/target/**,**/*.class</excludes>
