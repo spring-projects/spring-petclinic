@@ -170,7 +170,7 @@
       <version>${webjars-font-awesome.version}</version>
     </dependency>
 
-    <!-- Testcontainers and Devtools -->
+    <!-- Devtools & Testcontainers -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-devtools</artifactId>
@@ -199,7 +199,7 @@
 
   <build>
     <plugins>
-      <!-- Java Version Enforcement -->
+      <!-- Java Version Check -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
@@ -210,7 +210,6 @@
             <configuration>
               <rules>
                 <requireJavaVersion>
-                  <message>This build requires at least Java ${java.version}</message>
                   <version>${java.version}</version>
                 </requireJavaVersion>
               </rules>
@@ -219,7 +218,7 @@
         </executions>
       </plugin>
 
-      <!-- Java Formatting and Style Checks -->
+      <!-- Format Plugin -->
       <plugin>
         <groupId>io.spring.javaformat</groupId>
         <artifactId>spring-javaformat-maven-plugin</artifactId>
@@ -232,57 +231,43 @@
         </executions>
       </plugin>
 
-   <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-checkstyle-plugin</artifactId>
-    <version>${maven-checkstyle.version}</version>
-    <dependencies>
-        <dependency>
+      <!-- Checkstyle Plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>${maven-checkstyle.version}</version>
+        <dependencies>
+          <dependency>
             <groupId>com.puppycrawl.tools</groupId>
             <artifactId>checkstyle</artifactId>
             <version>${checkstyle.version}</version>
-        </dependency>
-    </dependencies>
-    <executions>
-        <execution>
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
             <id>checkstyle-validation</id>
-            <goals>
-                <goal>check</goal>
-            </goals>
+            <goals><goal>check</goal></goals>
             <phase>validate</phase>
             <configuration>
-                <configLocation>src/checkstyle/checkstyle.xml</configLocation>
-               <configLocation>google_checks.xml</configLocation>
-                <sourceDirectories>${basedir}</sourceDirectories>
-                <includes>**/*</includes>
-                <excludes>**/.git/**/*,**/.idea/**/*,**/target/**,**/*.class</excludes>
-                <propertyExpansion>config_loc=${basedir}/src/checkstyle/</propertyExpansion>
+              <configLocation>src/checkstyle/checkstyle.xml</configLocation>
+              <encoding>${project.build.sourceEncoding}</encoding>
             </configuration>
-        </execution>
-    </executions>
-</plugin>
+          </execution>
+        </executions>
+      </plugin>
 
-
-      <!-- Spring Boot -->
+      <!-- Spring Boot Plugin -->
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <executions>
           <execution>
             <goals><goal>build-info</goal></goals>
-            <configuration>
-              <additionalProperties>
-                <encoding.source>${project.build.sourceEncoding}</encoding.source>
-                <encoding.reporting>${project.reporting.outputEncoding}</encoding.reporting>
-                <java.source>${java.version}</java.source>
-                <java.target>${java.version}</java.target>
-              </additionalProperties>
-            </configuration>
           </execution>
         </executions>
       </plugin>
 
-      <!-- JaCoCo Coverage -->
+      <!-- JaCoCo Plugin -->
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
@@ -297,7 +282,7 @@
         </executions>
       </plugin>
 
-      <!-- Git Commit Info Plugin -->
+      <!-- Git Info Plugin -->
       <plugin>
         <groupId>io.github.git-commit-id</groupId>
         <artifactId>git-commit-id-maven-plugin</artifactId>
@@ -307,7 +292,7 @@
         </configuration>
       </plugin>
 
-      <!-- CycloneDX SBOM -->
+      <!-- CycloneDX -->
       <plugin>
         <groupId>org.cyclonedx</groupId>
         <artifactId>cyclonedx-maven-plugin</artifactId>
