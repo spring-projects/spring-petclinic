@@ -34,6 +34,12 @@
     <spring-format.version>0.0.43</spring-format.version>
   </properties>
 
+
+  <configuration>
+    <configLocation>google_checks.xml</configLocation> <!-- or sun_checks.xml -->
+</configuration>
+
+
   <repositories>
     <repository>
       <id>nexus-releases</id>
