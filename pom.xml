@@ -26,7 +26,8 @@
             <snapshots><enabled>true</enabled></snapshots>
             <releases><enabled>false</enabled></releases>
         </repository>
-    </repositories>
+      </repositories>
+   
 
     <!-- Add this section to push artifacts -->
     <distributionManagement>
@@ -41,6 +42,8 @@
             <url>http://65.0.104.169:8081/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
+
+      
 
   <properties>
 
