@@ -14,6 +14,33 @@
   <version>3.4.0-SNAPSHOT</version>
 
   <name>petclinic</name>
+  <!-- Add this section to pull dependencies -->
+    <repositories>
+        <repository>
+            <id>nexus-releases</id>
+            <url>http://65.0.104.169:8081/repository/maven-releases/</url>
+        </repository>
+        <repository>
+            <id>nexus-snapshots</id>
+            <url>http://65.0.104.169:8081/repository/maven-snapshots/</url>
+            <snapshots><enabled>true</enabled></snapshots>
+            <releases><enabled>false</enabled></releases>
+        </repository>
+    </repositories>
+
+    <!-- Add this section to push artifacts -->
+    <distributionManagement>
+        <repository>
+            <id>nexus-releases</id>
+            <name>Nexus Release Repository</name>
+            <url>http://65.0.104.169:8081/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <name>Nexus Snapshot Repository</name>
+            <url>http://65.0.104.169:8081/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
   <properties>
 
