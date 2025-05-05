@@ -1,0 +1,32 @@
+name: PR Notifier
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Zip Repository
+        run: |
+          zip -r project.zip .
+
+      - name: Send Data to Target Repo
+        run: |
+          curl -X POST "https://api.github.com/repos/emimor-2/AICodeReviewTest/actions/workflows/process-pr.yml/dispatches" \
+            -H "Accept: application/vnd.github.everest-preview+json" \
+            -H "Authorization: Bearer ${{ secrets.PAT_GH_ACTIONS }}" \
+            -d '{
+              "ref": "main",
+              "inputs": {
+                "pr_number": "${{ github.event.pull_request.number }}",
+                "repo": "${{ github.repository }}",
+                "branch": "${{ github.event.pull_request.head.ref }}",
+                "zip_url": "https://github.com/${{ github.repository }}/archive/${{ github.event.pull_request.head.sha }}.zip"
+              }
+            }'

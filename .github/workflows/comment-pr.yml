@@ -1,0 +1,20 @@
+name: Comment PR with AI Review
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        required: true
+      comment_body:
+        required: true
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comment on PR with AI Review
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          token: ${{ secrets.PAT_GH_ACTIONS }}
+          issue-number: ${{ github.event.inputs.pr_number }}
+          body: ${{ github.event.inputs.comment_body }}
