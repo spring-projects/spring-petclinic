@@ -6,7 +6,7 @@
 
 [See the presentation here](https://speakerdeck.com/michaelisvy/spring-petclinic-sample-application)
 
-[See the UML Diagram here]: [View UML Diagram](/erd.pdf)
+[See the UML Diagram here]: [View UML Diagram](/UMLDiagram.pdf)
 
 ## Run Petclinic locally
 
