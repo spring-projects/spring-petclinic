@@ -163,3 +163,18 @@ For additional details, please refer to the blog post [Hello DCO, Goodbye CLA: S
 ## License
 
 The Spring PetClinic sample application is released under version 2.0 of the [Apache License](https://www.apache.org/licenses/LICENSE-2.0).
+
+## Assignment Enhancements
+
+- Added endpoints to GET and POST pet attributes (Temperament, Length, Weight).
+- Created REST API endpoints to **GET** and **POST** pet type data
+- Developed model, service, repository, and controller layers
+- Included SQL schema for new table
+
+## Endpoints
+
+- `POST /api/pettypes` — Create a new pet with attributes  
+- `GET /api/pettypes` — Retrieve all pet types with their attributes    
+
+Access the endpoints via Postman or curl at:
+http://localhost:8080/api/pettypes
