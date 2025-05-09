@@ -163,3 +163,13 @@ For additional details, please refer to the blog post [Hello DCO, Goodbye CLA: S
 ## License
 
 The Spring PetClinic sample application is released under version 2.0 of the [Apache License](https://www.apache.org/licenses/LICENSE-2.0).
+
+### User Story
+
+As a pet clinic administrator, I want to add a `/greetings` API endpoint that returns a personalized welcome message so that I can display it on the homepage.
+
+Acceptance Criteria:
+- Endpoint: `/api/greetings`
+- Method: GET
+- Optional query param: `name`
+- Returns: "Welcome to the PetClinic, <name>!" or "Welcome to the PetClinic!" if no name is passed.
