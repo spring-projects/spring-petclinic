@@ -15,7 +15,8 @@ public class UserService {
     public void notifyUser(int userId) {
         System.out.println("Main: sending notification to user " + userId);
     }
-	 public void notifyUser2(int userId) {
+
+    public void notifyUser2(int userId) {
         System.out.println("main: sending notification to user " + userId);
     }
 
