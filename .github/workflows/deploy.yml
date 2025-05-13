@@ -123,25 +123,25 @@
           run: |
             CLUSTER_NAME="petclinic-${{ env.ENV_NAME }}"
             SERVICE_NAME="petclinic-service"
-            
+              
             # Check if cluster exists
             if ! aws ecs describe-clusters --clusters $CLUSTER_NAME | grep -q "ACTIVE"; then
               echo "Error: ECS cluster $CLUSTER_NAME doesn't exist or isn't active"
               aws ecs create-cluster --cluster-name $CLUSTER_NAME
               echo "DEPLOYMENT_NEEDED=false" >> $GITHUB_ENV
             else
-            
-            # Check if service exists
-            if ! aws ecs list-services --cluster $CLUSTER_NAME | grep -q $SERVICE_NAME; then
-              echo "Service $SERVICE_NAME doesn't exist in cluster $CLUSTER_NAME, creating it..."
-              # Here you would add code to create the service
-              # This would require task definition setup as well
-              echo "For now, skipping deployment as service doesn't exist yet"
-              echo "DEPLOYMENT_NEEDED=false" >> $GITHUB_ENV
-            else
-              echo "Service exists, proceeding with deployment"
-              echo "DEPLOYMENT_NEEDED=true" >> $GITHUB_ENV
+              # Check if service exists
+              if ! aws ecs list-services --cluster $CLUSTER_NAME | grep -q $SERVICE_NAME; then
+                echo "Service $SERVICE_NAME doesn't exist in cluster $CLUSTER_NAME, creating it..."
+                 
+                echo "For now, skipping deployment as service doesn't exist yet"
+                echo "DEPLOYMENT_NEEDED=false" >> $GITHUB_ENV
+              else
+                echo "Service exists, proceeding with deployment"
+                echo "DEPLOYMENT_NEEDED=true" >> $GITHUB_ENV
+              fi
             fi
+          
         
         - name: Deploy to ECS
           if: env.DEPLOYMENT_NEEDED == 'true'
