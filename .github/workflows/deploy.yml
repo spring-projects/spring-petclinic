@@ -134,10 +134,29 @@
               if ! aws ecs list-services --cluster $CLUSTER_NAME | grep -q $SERVICE_NAME; then
                 echo "Service $SERVICE_NAME doesn't exist in cluster $CLUSTER_NAME, creating it..."
                  
-                echo "For now, skipping deployment as service doesn't exist yet"
+                # 1) Retrieve latest task definition ARN
+                TASK_DEF_ARN=$(aws ecs list-task-definitions \
+                  --family-prefix petclinic-task-family \
+                  --status ACTIVE \
+                  --sort DESC \
+                  --max-items 1 \
+                  --query "taskDefinitionArns[0]" \
+                  --output text)
+
+                # 2) Create the ECS service on Fargate
+                aws ecs create-service \
+                  --cluster "$CLUSTER_NAME" \
+                  --service-name "$SERVICE_NAME" \
+                  --task-definition "$TASK_DEF_ARN" \
+                  --desired-count 2 \
+                  --launch-type FARGATE \
+                  --network-configuration "awsvpcConfiguration={subnets=[subnet-abc123,subnet-def456],securityGroups=[sg-123abc],assignPublicIp=ENABLED}" \
+                  --deployment-controller type=ECS
+
+                echo "Service created; skipping immediate deployment"
                 echo "DEPLOYMENT_NEEDED=false" >> $GITHUB_ENV
               else
-                echo "Service exists, proceeding with deployment"
+                echo "Service exists, proceeding with update"
                 echo "DEPLOYMENT_NEEDED=true" >> $GITHUB_ENV
               fi
             fi
