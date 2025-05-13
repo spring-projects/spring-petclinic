@@ -189,14 +189,14 @@
           if: env.DEPLOYMENT_NEEDED == 'true'
           run: |
             aws ecs update-service \
-            --cluster petclinic-${{ env.ENV_NAME }} \
-            --service petclinic-service \
-            --force-new-deployment
-            --task-definition "$TASK_DEF_ARN"
+              --cluster petclinic-${{ env.ENV_NAME }} \
+              --service petclinic-service \
+              --force-new-deployment \
+              --task-definition "$TASK_DEF_ARN"
         
         - name: Verify Deployment
           if: env.DEPLOYMENT_NEEDED == 'true'
           run: |
             echo "Waiting for deployment to complete..."
             aws ecs wait services-stable --cluster petclinic-${{ env.ENV_NAME }} \
-            --services petclinic-service
+              --services petclinic-service
