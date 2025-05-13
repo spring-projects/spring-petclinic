@@ -177,7 +177,7 @@
                   --deployment-controller type=ECS
 
                 echo "Service created; skipping immediate deployment"
-                echo "DEPLOYMENT_NEEDED=false" >> $GITHUB_ENV
+                echo "DEPLOYMENT_NEEDED=true" >> $GITHUB_ENV
               else
                 echo "Service exists, proceeding with update"
                 echo "DEPLOYMENT_NEEDED=true" >> $GITHUB_ENV
