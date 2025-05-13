@@ -127,8 +127,9 @@
             # Check if cluster exists
             if ! aws ecs describe-clusters --clusters $CLUSTER_NAME | grep -q "ACTIVE"; then
               echo "Error: ECS cluster $CLUSTER_NAME doesn't exist or isn't active"
-              exit 1
-            fi
+              aws ecs create-cluster --cluster-name $CLUSTER_NAME
+              echo "DEPLOYMENT_NEEDED=false" >> $GITHUB_ENV
+            else
             
             # Check if service exists
             if ! aws ecs list-services --cluster $CLUSTER_NAME | grep -q $SERVICE_NAME; then
