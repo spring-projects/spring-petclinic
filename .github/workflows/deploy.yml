@@ -173,7 +173,7 @@
                   --task-definition "$TASK_DEF_ARN" \
                   --desired-count 2 \
                   --launch-type FARGATE \
-                  --network-configuration "awsvpcConfiguration={subnets=[subnet-abc123,subnet-def456],securityGroups=[sg-123abc],assignPublicIp=ENABLED}" \
+                  --network-configuration "awsvpcConfiguration={subnets=[subnet-05f3d113572a6b3d8,subnet-09203dd3f04969b1d],securityGroups=[sg-0cb1ae80cbca8af6a],assignPublicIp=DISABLED}" \
                   --deployment-controller type=ECS
 
                 echo "Service created; skipping immediate deployment"
