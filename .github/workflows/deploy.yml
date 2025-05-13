@@ -118,6 +118,39 @@
             docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+        - name: Register ECS Task Definition
+          id: register-task
+          run: |
+            IMAGE_URI="${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}"
+            echo "Registering task definition for $IMAGE_URI"
+
+            aws ecs register-task-definition \
+              --family petclinic-task-family \
+              --network-mode awsvpc \
+              --requires-compatibilities FARGATE \
+              --cpu "256" \
+              --memory "512" \
+              --execution-role-arn arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/ecsTaskExecutionRole \
+              --container-definitions '[
+                {
+                  "name": "petclinic-app",
+                  "image": "'"${IMAGE_URI}"'",
+                  "essential": true,
+                  "portMappings": [
+                    { "containerPort": 8080, "protocol": "tcp" }
+                  ]
+                }
+              ]'
+
+            # Capture the new revision ARN
+            TASK_DEF_ARN=$(aws ecs describe-task-definition \
+              --task-definition petclinic-task-family \
+              --query 'taskDefinition.taskDefinitionArn' \
+              --output text)
+
+            echo "TASK_DEF_ARN=$TASK_DEF_ARN" >> $GITHUB_ENV
+
         
         - name: Ensure ECS service exists
           run: |
@@ -126,7 +159,6 @@
               
             # Check if cluster exists
             if ! aws ecs describe-clusters --clusters $CLUSTER_NAME | grep -q "ACTIVE"; then
-              echo "Error: ECS cluster $CLUSTER_NAME doesn't exist or isn't active"
               aws ecs create-cluster --cluster-name $CLUSTER_NAME
               echo "DEPLOYMENT_NEEDED=false" >> $GITHUB_ENV
             else
@@ -134,16 +166,7 @@
               if ! aws ecs list-services --cluster $CLUSTER_NAME | grep -q $SERVICE_NAME; then
                 echo "Service $SERVICE_NAME doesn't exist in cluster $CLUSTER_NAME, creating it..."
                  
-                # 1) Retrieve latest task definition ARN
-                TASK_DEF_ARN=$(aws ecs list-task-definitions \
-                  --family-prefix petclinic-task-family \
-                  --status ACTIVE \
-                  --sort DESC \
-                  --max-items 1 \
-                  --query "taskDefinitionArns[0]" \
-                  --output text)
-
-                # 2) Create the ECS service on Fargate
+                # Use the ARN from the earlier registration step
                 aws ecs create-service \
                   --cluster "$CLUSTER_NAME" \
                   --service-name "$SERVICE_NAME" \
@@ -165,9 +188,11 @@
         - name: Deploy to ECS
           if: env.DEPLOYMENT_NEEDED == 'true'
           run: |
-            aws ecs update-service --cluster petclinic-${{ env.ENV_NAME }} \
+            aws ecs update-service \
+            --cluster petclinic-${{ env.ENV_NAME }} \
             --service petclinic-service \
             --force-new-deployment
+            --task-definition "$TASK_DEF_ARN"
         
         - name: Verify Deployment
           if: env.DEPLOYMENT_NEEDED == 'true'
