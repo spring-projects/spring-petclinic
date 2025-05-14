@@ -17,68 +17,9 @@ This document outlines the infrastructure architecture, networking, security, an
 
 ## Architecture Diagram
 
-The diagram below provides an end-to-end view of the VPC layout, AWS services, and CI/CD flow:
+Below is the end-to-end architecture diagram for our AWS Fargate deployment. You can view the high-resolution diagram in the repository:
 
-```mermaid
-flowchart LR
-  subgraph VPC [VPC (e.g. 10.0.0.0/16)]
-    direction TB
-
-    subgraph Public Subnets
-      direction LR
-      PubA[Public Subnet (AZ‑A)]
-      PubB[Public Subnet (AZ‑B)]
-    end
-
-    subgraph Private Subnets
-      direction LR
-      PrivA[Private Subnet (AZ‑A)]
-      PrivB[Private Subnet (AZ‑B)]
-    end
-
-    IGW[Internet Gateway]
-    NATGW[NAT Gateway]
-    ALB[Application Load Balancer]
-    ECSCluster[ECS Cluster]
-    ECSService[ECS Fargate Service]
-    TaskDef[Task Definition]
-    ECR[ECR Repository]
-    RDS[(RDS Database)]
-    ExecRole[(ECS Task Execution Role)]
-    SG_Fargate[(SG: Fargate Tasks)]
-    SG_RDS[(SG: RDS)]
-  end
-
-  Internet -->|80/443| ALB
-  IGW --> ALB
-  IGW --> NATGW
-  ALB -->|Target Group| ECSService
-  PubA --> ALB
-  PubB --> ALB
-  ECSService -->|Runs Task| TaskDef
-  ECSService --> SG_Fargate
-  ECSService --> ExecRole
-  PrivA --> ECSService
-  PrivB --> ECSService
-  NATGW --> PrivA
-  NATGW --> PrivB
-  RDS --> SG_RDS
-  PrivA --> RDS
-  PrivB --> RDS
-  TaskDef -->|Image| ECR
-
-  subgraph CI/CD [GitHub Actions]
-    direction TB
-    Build[Test & Package] --> Docker[Build & Push → ECR]
-    Docker --> Terraform[Terraform Apply Infra]
-    Terraform --> Register[Register Task Def]
-    Register --> Deploy[Create/Update ECS Service]
-    Deploy --> Verify[Wait for Service Stable]
-  end
-
-  CI/CD --- ALB
-  CI/CD --- ECSService
-```
+![Architecture Diagram](image.png)
 
 ---
 
