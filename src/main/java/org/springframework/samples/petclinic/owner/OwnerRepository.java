@@ -23,7 +23,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Repository class for <code>Owner</code> domain objects All method names are compliant
@@ -69,10 +68,5 @@ public interface OwnerRepository extends JpaRepository<Owner, Integer> {
 	 * input for id)
 	 */
 	Optional<Owner> findById(@Nonnull Integer id);
-
-	/**
-	 * Returns all the owners from data store
-	 **/
-	Page<Owner> findAll(Pageable pageable);
 
 }

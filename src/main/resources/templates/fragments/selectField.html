@@ -1,11 +1,11 @@
-<html>
+<html xmlns:th="https://www.thymeleaf.org">
 <body>
   <form>
     <th:block th:fragment="select (label, name, items)">
       <div th:with="valid=${!#fields.hasErrors(name)}"
         th:class="${'form-group' + (valid ? '' : ' has-error')}"
         class="form-group">
-        <label class="col-sm-2 control-label" th:text="${label}">Label</label>
+        <label th:for="${name}" class="col-sm-2 control-label" th:text="${label}">Label</label>
 
         <div class="col-sm-10">
           <select th:field="*{__${name}__}">
@@ -19,7 +19,7 @@
             <span
               class="fa fa-remove form-control-feedback"
               aria-hidden="true"></span>
-            <span class="help-inline" th:errors="*{__${name}__}">Error</span>
+            <span class="help-inline" th:errors="*{__${name}__}" th:text="#{error}">Error</span>
           </th:block>
         </div>
       </div>
