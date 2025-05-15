@@ -5,6 +5,7 @@ on:
   - cron: "0 2 * * 1-5"
   push:
     branches: [ "advisor-upgrade" ]
+  workflow_dispatch:
 
 jobs:
   build:
