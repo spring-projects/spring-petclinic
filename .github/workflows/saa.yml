@@ -4,7 +4,7 @@ on:
   schedule:
   - cron: "0 2 * * 1-5"
   push:
-    branches: [ "main" ]
+    branches: [ "advisor-upgrade" ]
 
 jobs:
   build:
@@ -16,6 +16,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+      with:
+        ref: advisor-upgrade
     - name: Set up JDK
       uses: actions/setup-java@v4
       with:
