@@ -6,7 +6,7 @@
 
 [See the presentation here](https://speakerdeck.com/michaelisvy/spring-petclinic-sample-application)
 
-[See the UML Diagram & Layered Architecture Diagram here]: [View UML Diagram](/uml_architecture.pdf)
+[See the UML Diagram & Layered Architecture Diagram here](/uml_architecture.pdf)
 
 ## Run Petclinic locally
 
