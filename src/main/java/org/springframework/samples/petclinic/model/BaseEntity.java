@@ -16,11 +16,9 @@
 package org.springframework.samples.petclinic.model;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 
 /**
  * Simple JavaBean domain object with an id property. Used as a base class for objects
@@ -35,6 +33,28 @@ public class BaseEntity implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+
+	@Column
+	private LocalDateTime created;
+	@Column
+	private LocalDateTime updated;
+	@PrePersist
+	public void onCreate() {
+		LocalDateTime now = LocalDateTime.now();
+		this.created = now;
+		this.updated = now;
+	}
+	@PreUpdate
+	public void onUpdate() {
+		this.updated = LocalDateTime.now();
+	}
+
+
+
+
+
+
+
 
 	public Integer getId() {
 		return id;
