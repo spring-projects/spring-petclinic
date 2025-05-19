@@ -22,6 +22,6 @@ public class LoggingAspect {
 
 	@Before("execution(* model.Person.*())")
 	public void logBeforeMethod3(){
-		System.out.println("model.Person");
+		System.out.println("model.Person*");
 	}
 }
