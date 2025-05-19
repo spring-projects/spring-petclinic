@@ -49,3 +49,8 @@ out/
 _site/
 *.css
 !petclinic.css
+/data/db/h2.lock.db
+/data/db/h2.mv.db
+/data/db/h2.trace.db
+/src/main/resources/db.trace.db
+/src/main/resources/db.mv.db
