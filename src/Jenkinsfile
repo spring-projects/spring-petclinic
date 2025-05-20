@@ -1,0 +1,58 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_IMAGE = "yourdockerhubusername/petclinic"
+        DOCKER_CREDENTIALS_ID = "dockerhub-creds"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/spring-projects/spring-petclinic.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh './mvnw clean install'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh './mvnw test'
+            }
+        }
+
+        stage('Docker Build & Push') {
+            steps {
+                script {
+                    docker.withRegistry('', DOCKER_CREDENTIALS_ID) {
+                        def app = docker.build("${DOCKER_IMAGE}:latest")
+                        app.push()
+                    }
+                }
+            }
+        }
+
+        stage('Deploy (Simulated)') {
+            steps {
+                echo "Deploying ${DOCKER_IMAGE}:latest to staging environment..."
+                // You can replace with kubectl apply -f deployment.yaml or Helm
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline finished.'
+        }
+        success {
+            echo 'CI/CD pipeline completed successfully.'
+        }
+        failure {
+            echo 'CI/CD pipeline failed!'
+        }
+    }
+}
