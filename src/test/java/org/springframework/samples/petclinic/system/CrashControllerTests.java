@@ -22,7 +22,8 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import org.springframework.samples.petclinic.system.controller.CrashController;
 
 /**
- * Test class for {@link org.springframework.samples.petclinic.system.controller.CrashController}
+ * Test class for
+ * {@link org.springframework.samples.petclinic.system.controller.CrashController}
  *
  * @author Colin But
  * @author Alex Lutz

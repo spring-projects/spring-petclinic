@@ -41,7 +41,8 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 
 /**
- * Integration Test for {@link org.springframework.samples.petclinic.system.controller.CrashController}.
+ * Integration Test for
+ * {@link org.springframework.samples.petclinic.system.controller.CrashController}.
  *
  * @author Alex Lutz
  */
