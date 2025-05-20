@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.owner;
+package org.springframework.samples.petclinic.owner.repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +23,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.samples.petclinic.owner.model.Owner;
+import org.springframework.samples.petclinic.owner.model.PetType;
 
 /**
  * Repository class for <code>Owner</code> domain objects All method names are compliant
