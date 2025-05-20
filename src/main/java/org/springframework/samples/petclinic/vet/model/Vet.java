@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.vet;
+package org.springframework.samples.petclinic.vet.model;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.samples.petclinic.model.NamedEntity;
-import org.springframework.samples.petclinic.model.Person;
+import org.springframework.samples.petclinic.common.model.NamedEntity;
+import org.springframework.samples.petclinic.common.model.Person;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
