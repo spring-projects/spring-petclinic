@@ -15,6 +15,13 @@
 
   <name>petclinic</name>
 
+  <scm>
+    <connection>scm:git:https://github.com/Memogoz/spring-petclinic.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/Memogoz/spring-petclinic.git</developerConnection>
+    <url>https://github.com/Memogoz/spring-petclinic</url>
+    <tag>HEAD</tag> <!-- Or your current branch/tag -->
+  </scm>
+
   <properties>
 
     <!-- Generic properties -->
@@ -285,6 +292,13 @@
         <?m2e ignore?>
         <groupId>org.cyclonedx</groupId>
         <artifactId>cyclonedx-maven-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <!-- Version is often managed by the Spring Boot parent -->
+        <!-- You can specify <version>3.0.1</version> or similar if not managed -->
       </plugin>
 
     </plugins>
