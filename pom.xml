@@ -310,6 +310,20 @@
     </license>
   </licenses>
 
+  <distributionManagement>
+    <!-- Deploy releases to GitHub Packages -->
+    <repository>
+      <id>github</id> <!-- This ID must match the server ID in your settings.xml -->
+      <name>GitHub Packages</name>
+      <url>https://maven.pkg.github.com/Memogoz/spring-petclinic</url> <!-- Use your GitHub username and repo name -->
+    </repository>
+    <!-- Deploy snapshots to GitHub Packages -->
+    <snapshotRepository>
+      <id>github</id> <!-- This ID must match the server ID in your settings.xml -->
+      <name>GitHub Packages</name>
+      <url>https://maven.pkg.github.com/Memogoz/spring-petclinic</url> <!-- Use your GitHub username and repo name -->
+    </snapshotRepository>
+  </distributionManagement>
   <repositories>
     <repository>
       <snapshots>
