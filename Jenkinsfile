@@ -9,5 +9,12 @@ pipeline {
                sh "./mvnw install"     
             }
         }
+
+        stage ("Run unit-test"){
+
+            steps {
+               sh "./mvnw test"
+                           }
+        }
     }
 }
