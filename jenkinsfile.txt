@@ -1,10 +1,11 @@
 pipeline {
     agent any
- 
+
+
     stages {
         stage('Clone') {
             steps {
-                git branch: 'main', url: 'https://github.com/srinfotech7358/spring-petclinic.git'
+                git branch: 'main', url: 'https://github.com/vamsiv7/spring-petclinic.git'
             }
         }
           stage('Build') {
