@@ -1,4 +1,4 @@
-<html>
+<html xmlns:th="https://www.thymeleaf.org">
 <body>
   <form>
     <th:block th:fragment="input (label, name, type)">
@@ -18,7 +18,7 @@
             <span
               class="fa fa-remove form-control-feedback"
               aria-hidden="true"></span>
-            <span class="help-inline" th:errors="*{__${name}__}">Error</span>
+            <span class="help-inline" th:errors="*{__${name}__}" th:text="#{error}">Error</span>
           </th:block>
         </div>
       </div>

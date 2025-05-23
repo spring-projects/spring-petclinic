@@ -4,18 +4,18 @@
 <body>
 
   <h2>
-    <th:block th:if="${visit['new']}">New </th:block>
+    <th:block th:if="${visit['new']}" th:text="#{new}">New </th:block>
     Visit
   </h2>
 
-  <b>Pet</b>
+  <b th:text="#{pet}">Pet</b>
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>Name</th>
-        <th>Birth Date</th>
-        <th>Type</th>
-        <th>Owner</th>
+        <th th:text="#{name}">Name</th>
+        <th th:text="#{birthDate}">Birth Date</th>
+        <th th:text="#{type}">Type</th>
+        <th th:text="#{owner}">Owner</th>
       </tr>
     </thead>
     <tr>
@@ -39,17 +39,17 @@
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
         <input type="hidden" name="petId" th:value="${pet.id}" />
-        <button class="btn btn-primary" type="submit">Add Visit</button>
+        <button class="btn btn-primary" type="submit" th:text="${addVisit}">Add Visit</button>
       </div>
     </div>
   </form>
 
   <br />
-  <b>Previous Visits</b>
+  <b th:text="#{previousVisits}">Previous Visits</b>
   <table class="table table-striped">
     <tr>
-      <th>Date</th>
-      <th>Description</th>
+      <th th:text="#{date}">Date</th>
+      <th th:text="#{description}">Description</th>
     </tr>
     <tr th:if="${!visit['new']}" th:each="visit : ${pet.visits}">
       <td th:text="${#temporals.format(visit.date, 'yyyy-MM-dd')}"></td>
