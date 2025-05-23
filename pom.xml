@@ -11,7 +11,7 @@
 
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
-  <version>4.0.1</version>
+  <version>4.0.2-SNAPSHOT</version>
 
   <name>petclinic</name>
 
@@ -19,7 +19,7 @@
     <connection>scm:git:https://github.com/Memogoz/spring-petclinic.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/Memogoz/spring-petclinic.git</developerConnection>
     <url>https://github.com/Memogoz/spring-petclinic</url>
-    <tag>spring-petclinic-4.0.1</tag> <!-- Or your current branch/tag -->
+    <tag>HEAD</tag> <!-- Or your current branch/tag -->
   </scm>
 
   <properties>
@@ -30,7 +30,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <!-- Important for reproducible builds. Update using e.g. ./mvnw versions:set
         -DnewVersion=... -->
-    <project.build.outputTimestamp>2025-05-23T17:28:07Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2025-05-23T17:29:10Z</project.build.outputTimestamp>
 
     <!-- Web dependencies -->
     <webjars-locator.version>1.0.1</webjars-locator.version>
