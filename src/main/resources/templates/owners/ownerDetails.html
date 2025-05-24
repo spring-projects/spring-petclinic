@@ -78,6 +78,16 @@
               <td><a th:href="@{__${owner.id}__/pets/__${pet.id}__/edit}" th:text="#{editPet}">Edit Pet</a></td>
               <td><a th:href="@{__${owner.id}__/pets/__${pet.id}__/visits/new}" th:text="#{addVisit}">Add Visit</a></td>
             </tr>
+            <tr>
+              <td colspan="2" style="text-align: center; padding-top: 10px;">
+                <a th:href="@{__${owner.id}__/pets/__${pet.id}__/visits/new}" 
+                   class="btn btn-primary btn-sm" 
+                   style="background-color: #6db33f; border-color: #5fa134;"
+                   th:title="#{scheduleVisitTooltip}">
+                  <span class="fa fa-calendar"></span> <span th:text="#{scheduleVisit}">Schedule Visit</span>
+                </a>
+              </td>
+            </tr>
           </table>
         </td>
       </tr>
