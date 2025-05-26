@@ -312,17 +312,30 @@
 
   <distributionManagement>
     <!-- Deploy releases to GitHub Packages -->
-    <repository>
-      <id>github</id> <!-- This ID must match the server ID in your settings.xml -->
-      <name>GitHub Packages</name>
-      <url>https://maven.pkg.github.com/Memogoz/spring-petclinic</url> <!-- Use your GitHub username and repo name -->
-    </repository>
+    <!--<repository> -->
+      <!--<id>github</id>>--> <!-- This ID must match the server ID in your settings.xml -->
+      <!--<name>GitHub Packages</name>-->
+      <!--<url>https://maven.pkg.github.com/Memogoz/spring-petclinic</url>--> <!-- Use your GitHub username and repo name -->
+    <!--</repository>-->
     <!-- Deploy snapshots to GitHub Packages -->
+    <!--<snapshotRepository>-->
+      <!--<id>github</id>--> <!-- This ID must match the server ID in your settings.xml -->
+      <!--<name>GitHub Packages</name>-->
+      <!--<url>https://maven.pkg.github.com/Memogoz/spring-petclinic</url>--> <!-- Use your GitHub username and repo name -->
+    <!--</snapshotRepository>-->
+
+    <!-- Deploy releases to local Nexus server -->
+    <repository>
+      <id>nexus-releases</id> <!-- This ID must match a server ID in your settings.xml -->
+      <name>Nexus Release Repository</name>
+      <url>http://localhost:8081/repository/maven-releases/</url>
+    </repository>
     <snapshotRepository>
-      <id>github</id> <!-- This ID must match the server ID in your settings.xml -->
-      <name>GitHub Packages</name>
-      <url>https://maven.pkg.github.com/Memogoz/spring-petclinic</url> <!-- Use your GitHub username and repo name -->
+      <id>nexus-snapshots</id> <!-- This ID must match a server ID in your settings.xml -->
+      <name>Nexus Snapshot Repository</name>
+      <url>http://localhost:8081/repository/maven-snapshots/</url>
     </snapshotRepository>
+
   </distributionManagement>
   <repositories>
     <repository>
