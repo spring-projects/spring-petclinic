@@ -20,10 +20,10 @@ pipeline {
         stage ("CodeScaning"){
             environment {
                 SONAR_HOME = tool 'sonar-scan'
-                  }
+            }
                   steps{
                     withSonarQubeEnv('SonarServer') {
-                   sh '''$SCANNER_HOME/bin/sonar-scanner \
+                   sh '''$SONAR_HOME/bin/sonar-scanner \
                        -Dsonar.projectKey=myPETC \
                        -Dsonar.projectName=mypetclinc \
                        -Dsonar.sources=. \
