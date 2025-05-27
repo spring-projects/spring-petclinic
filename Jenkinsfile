@@ -33,7 +33,6 @@ pipeline {
                        -Dsonar.projectVersion=${BUILD_NUMBER}-${GIT_COMMIT_SHORT}
                     
                     '''
-
                    
                        
                   }
