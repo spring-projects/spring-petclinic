@@ -1,0 +1,12 @@
+name: Launch GitHub Security Scanning Workflow
+on:
+  pull_request:
+    types: [opened, synchronize]
+  
+jobs:
+  pirateCoffeeScanner:
+    secrets: inherit
+    uses: rahulgauli/workflowtest/.github/workflows/scanner.yaml@v0.0.1-beta
+    with:
+      product_id: '123'
+      scan_type: 'full'
