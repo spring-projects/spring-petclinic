@@ -1,0 +1,26 @@
+FROM eclipse-temurin:24.0.1_9-jdk-alpine-3.21@sha256:d729416b123cd50d4a70122328ae17d38adced6fa767062d0c0f134e5843deab AS build
+
+WORKDIR /app
+
+COPY . .
+
+RUN ./mvnw dependency:go-offline -B
+RUN ./mvnw clean package -DskipTests
+
+USER nobody
+
+FROM eclipse-temurin:24.0.1_9-jre-alpine-3.21@sha256:dbc9b392f33b2aca2c3d47de4534f3453e75d3b6dd27e08a555a47369be9b49c as runtime
+
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+WORKDIR /app
+
+COPY --from=build --chown=appuser:appgroup /app/target/*.jar app.jar
+
+RUN chmod 500 app.jar
+
+USER appuser
+
+EXPOSE 8080
+
+ENTRYPOINT [ "java", "-jar", "app.jar" ]
