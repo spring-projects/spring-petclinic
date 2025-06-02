@@ -68,15 +68,23 @@
               <tr>
                 <th th:text="#{visitDate}">Visit Date</th>
                 <th th:text="#{description}">Description</th>
+                <th th:text="#{actions}">Actions</th>
               </tr>
             </thead>
             <tr th:each="visit : ${pet.visits}">
               <td th:text="${#temporals.format(visit.date, 'yyyy-MM-dd')}"></td>
               <td th:text="${visit?.description}"></td>
+              <td></td>
             </tr>
             <tr>
               <td><a th:href="@{__${owner.id}__/pets/__${pet.id}__/edit}" th:text="#{editPet}">Edit Pet</a></td>
               <td><a th:href="@{__${owner.id}__/pets/__${pet.id}__/visits/new}" th:text="#{addVisit}">Add Visit</a></td>
+              <td>
+                <a th:href="@{__${owner.id}__/pets/__${pet.id}__/visits/new}" 
+                   class="btn btn-primary btn-sm" 
+                   th:title="#{scheduleVisitTooltip}" 
+                   th:text="#{scheduleVisit}">Schedule Visit</a>
+              </td>
             </tr>
           </table>
         </td>
