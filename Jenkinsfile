@@ -49,7 +49,7 @@ pipeline {
         }
         stage ('Docker Push to Main') {
             when {
-                branch 'main'
+                branch 'main' // add comment to test pr
             }
             environment {
                 REGISTRY = credentials('nexus_url_main')
