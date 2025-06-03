@@ -1,5 +1,8 @@
 pipeline {
     agent { label 'pipeline-agent' } 
+    environment {
+        IMAGE = credentials('docker_image_name')
+    }
     stages {
         stage ('Checkstyle') {
             when {
@@ -35,7 +38,6 @@ pipeline {
                 changeRequest()
             }
             environment {
-                IMAGE = credentials('docker_image_name')
                 REGISTRY = credentials('nexus_url_main')
             }
             steps {
@@ -50,7 +52,6 @@ pipeline {
                 branch 'main'
             }
             environment {
-                IMAGE = credentials('docker_image_name')
                 REGISTRY = credentials('nexus_url_main')
             }
             steps {
