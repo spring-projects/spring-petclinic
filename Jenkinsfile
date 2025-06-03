@@ -36,7 +36,7 @@ pipeline {
             }
             environment {
                 IMAGE = credentials('docker_image_name')
-                REGISTRY = credentials('nexus_url_main')
+                REGISTRY = credentials('nexus_url_mr')
             }
             steps {
                 script {
