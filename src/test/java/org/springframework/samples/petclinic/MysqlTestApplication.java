@@ -36,7 +36,7 @@ public class MysqlTestApplication {
 	@Profile("mysql")
 	@Bean
 	static MySQLContainer<?> container() {
-		return new MySQLContainer<>("mysql:9.1");
+		return new MySQLContainer<>("mysql:9.3");
 	}
 
 	public static void main(String[] args) {
