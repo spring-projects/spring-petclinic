@@ -5,13 +5,13 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.4.2</version>
+    <version>3.5.0</version>
     <relativePath></relativePath>
   </parent>
 
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
-  <version>3.4.0-SNAPSHOT</version>
+  <version>3.5.0-SNAPSHOT</version>
 
   <name>petclinic</name>
 
@@ -21,22 +21,21 @@
     <java.version>17</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <!-- Important for reproducible builds. Update using e.g. ./mvnw versions:set
-        -DnewVersion=... -->
+    <!-- Important for reproducible builds. Update using e.g. ./mvnw versions:set -DnewVersion=... -->
     <project.build.outputTimestamp>2024-11-28T14:37:52Z</project.build.outputTimestamp>
 
     <!-- Web dependencies -->
-    <webjars-locator.version>1.0.1</webjars-locator.version>
-    <webjars-bootstrap.version>5.3.3</webjars-bootstrap.version>
+    <webjars-locator.version>1.1.0</webjars-locator.version>
+    <webjars-bootstrap.version>5.3.6</webjars-bootstrap.version>
     <webjars-font-awesome.version>4.7.0</webjars-font-awesome.version>
 
-    <checkstyle.version>10.20.1</checkstyle.version>
-    <jacoco.version>0.8.12</jacoco.version>
-    <libsass.version>0.2.29</libsass.version>
+    <checkstyle.version>10.25.0</checkstyle.version>
+    <jacoco.version>0.8.13</jacoco.version>
+    <libsass.version>0.3.4</libsass.version>
     <lifecycle-mapping>1.0.0</lifecycle-mapping>
     <maven-checkstyle.version>3.6.0</maven-checkstyle.version>
     <nohttp-checkstyle.version>0.0.11</nohttp-checkstyle.version>
-    <spring-format.version>0.0.43</spring-format.version>
+    <spring-format.version>0.0.46</spring-format.version>
 
   </properties>
 
