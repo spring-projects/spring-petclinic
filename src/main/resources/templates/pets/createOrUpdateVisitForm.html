@@ -1,5 +1,6 @@
-<html xmlns:th="https://www.thymeleaf.org"
-  th:replace="~{fragments/layout :: layout (~{::body},'owners')}">
+<!DOCTYPE html>
+
+<html xmlns:th="https://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'owners')}">
 
 <body>
 
@@ -20,20 +21,16 @@
     </thead>
     <tr>
       <td th:text="${pet.name}"></td>
-      <td
-        th:text="${#temporals.format(pet.birthDate, 'yyyy-MM-dd')}"></td>
+      <td th:text="${#temporals.format(pet.birthDate, 'yyyy-MM-dd')}"></td>
       <td th:text="${pet.type}"></td>
-      <td
-        th:text="${owner?.firstName + ' ' + owner?.lastName}"></td>
+      <td th:text="${owner?.firstName + ' ' + owner?.lastName}"></td>
     </tr>
   </table>
 
   <form th:object="${visit}" class="form-horizontal" method="post">
     <div class="form-group has-feedback">
-      <input
-        th:replace="~{fragments/inputField :: input ('Date', 'date', 'date')}"  />
-      <input
-        th:replace="~{fragments/inputField :: input ('Description', 'description', 'text')}" />
+      <input th:replace="~{fragments/inputField :: input ('Date', 'date', 'date')}" />
+      <input th:replace="~{fragments/inputField :: input ('Description', 'description', 'text')}" />
     </div>
 
     <div class="form-group">
@@ -58,4 +55,5 @@
   </table>
 
 </body>
+
 </html>
