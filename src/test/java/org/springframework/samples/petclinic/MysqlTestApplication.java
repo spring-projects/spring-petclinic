@@ -22,6 +22,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.utility.DockerImageName;
 
 /**
  * PetClinic Spring Boot Application.
@@ -35,7 +36,7 @@ public class MysqlTestApplication {
 	@Profile("mysql")
 	@Bean
 	static MySQLContainer<?> container() {
-		return new MySQLContainer<>("mysql:9.3");
+		return new MySQLContainer<>(DockerImageName.parse("mysql:9.2"));
 	}
 
 	public static void main(String[] args) {
