@@ -24,6 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.samples.petclinic.owner.PetTypeRepository;
+import org.springframework.samples.petclinic.owner.OwnerRepository;
 import org.springframework.test.context.aot.DisabledInAotMode;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -61,12 +63,15 @@ class PetControllerTests {
 	@MockitoBean
 	private OwnerRepository owners;
 
+	@MockitoBean
+	private PetTypeRepository types;
+
 	@BeforeEach
 	void setup() {
 		PetType cat = new PetType();
 		cat.setId(3);
 		cat.setName("hamster");
-		given(this.owners.findPetTypes()).willReturn(List.of(cat));
+		given(this.types.findPetTypes()).willReturn(List.of(cat));
 
 		Owner owner = new Owner();
 		Pet pet = new Pet();
