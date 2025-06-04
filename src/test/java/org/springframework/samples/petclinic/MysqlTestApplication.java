@@ -27,7 +27,6 @@ import org.testcontainers.containers.MySQLContainer;
  * PetClinic Spring Boot Application.
  *
  * @author Dave Syer
- *
  */
 @Configuration
 public class MysqlTestApplication {
