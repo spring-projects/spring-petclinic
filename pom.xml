@@ -70,11 +70,6 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <!-- Workaround for AOT issue (https://github.com/spring-projects/spring-framework/pull/33949) -->
-      <groupId>io.projectreactor</groupId>
-      <artifactId>reactor-core</artifactId>
-    </dependency>
 
     <!-- Databases - Uses H2 by default -->
     <dependency>
