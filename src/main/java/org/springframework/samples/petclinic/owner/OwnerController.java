@@ -169,5 +169,11 @@ class OwnerController {
 		mav.addObject(owner);
 		return mav;
 	}
+	@GetMapping("/owners/count")
+	public String countOwners(Model model) {
+		int count = owners.countOwners();
+		model.addAttribute("count", count);
+		return "owners/ownerCount"; // we'll create this HTML view next
+	}
 
 }
