@@ -248,4 +248,18 @@ class OwnerControllerTests {
 			.andExpect(flash().attributeExists("error"));
 	}
 
+	@Test
+	public void testProcessCreationFormWithInvalidPhoneNumber() throws Exception {
+		mockMvc
+			.perform(post("/owners/new").param("firstName", "Anna")
+				.param("lastName", "Smith")
+				.param("address", "321 Baker Street")
+				.param("city", "Springfield")
+				.param("telephone", "abc1234567"))
+			.andExpect(status().isOk())
+			.andExpect(model().attributeHasErrors("owner"))
+			.andExpect(model().attributeHasFieldErrors("owner", "telephone"))
+			.andExpect(view().name("owners/createOrUpdateOwnerForm"));
+	}
+
 }
