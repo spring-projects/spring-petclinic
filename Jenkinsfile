@@ -24,6 +24,7 @@ pipeline {
     }
 
     stage('Build') {
+      agent { label 'vps-agent1' }
       steps {
         script {
           def branch = env.BRANCH_NAME
