@@ -1,5 +1,5 @@
 pipeline {
-  agent any
+  agent none
   
   environment {
     GIT_COMMIT_SHORT = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
@@ -9,6 +9,7 @@ pipeline {
   }
 
   stages {
+    agent { label 'vps-agent1' }
     stage('checkStyle') {
       when { not {branch 'main' }}
       steps {
@@ -17,6 +18,7 @@ pipeline {
     }
 
     stage('Test') {
+      agent { label 'vps-agent1' }
       when { not {branch 'main' }}
       steps {
         sh './gradlew test'
