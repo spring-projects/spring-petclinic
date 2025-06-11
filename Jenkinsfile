@@ -28,10 +28,10 @@ pipeline {
         script {
           def branch = env.BRANCH_NAME
           def dockerRepo = (branch == 'main') ? 'main' : 'mr'
-          def imageTag = "${DOCKER_HUB_USER}/${repo}:${GIT_COMMIT_SHORT}"
+          def imageTag = "${DOCKER_HUB_USER}/${dockerRepo}:${GIT_COMMIT_SHORT}"
 
           withCredentials([usernamePassword(
-              credentialsId: DOCKERHUB_CREDES,
+              credentialsId: DOCKERHUB_CREDS,
               usernameVariable: 'DOCKER_USER',
               passwordVariable: 'DOCKER_PASS'
           )]) {
