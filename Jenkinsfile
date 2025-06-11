@@ -1,5 +1,5 @@
 pipeline {
-  agent any
+  agent { label 'vps-agent1' }
   
   environment {
     GIT_COMMIT_SHORT = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
@@ -10,7 +10,6 @@ pipeline {
 
   stages {
     stage('checkStyle') {
-      agent { label 'vps-agent1' }
       when { not {branch 'main' }}
       steps {
         echo "Syle Check"
@@ -19,7 +18,6 @@ pipeline {
     }
 
     stage('Test') {
-      agent { label 'vps-agent1' }
       when { not {branch 'main' }}
       steps {
         echo "Running tests"
@@ -28,7 +26,6 @@ pipeline {
     }
 
     stage('Build') {
-      agent { label 'vps-agent1' }
       steps {
         script {
           def branch = env.BRANCH_NAME
