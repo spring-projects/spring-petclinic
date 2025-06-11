@@ -31,7 +31,7 @@ pipeline {
           def imageTag = "${DOCKER_HUB_USER}/${dockerRepo}:${GIT_COMMIT_SHORT}"
 
           withCredentials([usernamePassword(
-              credentialsId: DOCKERHUB_CREDES,
+              credentialsId: DOCKERHUB_CREDS,
               usernameVariable: 'DOCKER_USER',
               passwordVariable: 'DOCKER_PASS'
           )]) {
