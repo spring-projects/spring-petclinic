@@ -27,16 +27,11 @@ pipeline {
       steps {
           withCredentials([usernamePassword(
               credentialsId: "580b959d-d40a-422f-a3d7-cf11b2ec7a4c",
-          //credentialsId: DOCKERHUB_CREDS,
-          //usernameVariable: '580b959d-d40a-422f-a3d7-cf11b2ec7a4cUsername'
-              // passwordVariable: '580b959d-d40a-422f-a3d7-cf11b2ec7a4cUsername'
               usernameVariable: 'DOCKER_USER',
-              // passwordVariable: 'DOCKER_PASS'
+              passwordVariable: 'DOCKER_PASS',
           )]) {
               echo "Logging in to Docker Hub..."
               sh "echo ${env.DOCKER_USER}"
-              // echo "Pushing Docker image to ${imageTag}"
-              // sh "docker push ${imageTag}"
           }
 
       }
