@@ -26,7 +26,8 @@ pipeline {
     stage('Cred'){
       steps {
           withCredentials([usernamePassword(
-              credentialsId: DOCKERHUB_CREDS,
+              credentialsId: "580b959d-d40a-422f-a3d7-cf11b2ec7a4c",
+          //credentialsId: DOCKERHUB_CREDS,
           //usernameVariable: '580b959d-d40a-422f-a3d7-cf11b2ec7a4cUsername'
               // passwordVariable: '580b959d-d40a-422f-a3d7-cf11b2ec7a4cUsername'
               usernameVariable: 'DOCKER_USER',
