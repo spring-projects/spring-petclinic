@@ -13,6 +13,7 @@ pipeline {
       agent { label 'vps-agent1' }
       when { not {branch 'main' }}
       steps {
+        echo "Syle Check"
         sh './gradlew checkstyleMain'
       }
     }
@@ -21,6 +22,7 @@ pipeline {
       agent { label 'vps-agent1' }
       when { not {branch 'main' }}
       steps {
+        echo "Running tests"
         sh './gradlew test'
       }
     }
