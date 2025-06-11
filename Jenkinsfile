@@ -3,7 +3,9 @@ pipeline {
   
   environment {
     GIT_COMMIT_SHORT = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
-    DOCKER_HUB_USER = "m1kkY8"
+    DOCKER_HUB_USER = "m1kky8"
+    DOCKRHUB_CREDS = "580b959d-d40a-422f-a3d7-cf11b2ec7a4c"
+
   }
 
   stages {
@@ -23,7 +25,12 @@ pipeline {
 
     stage('Build') {
       steps {
-        sh './gradlew build -x test'
+        script {
+          def branch = env.BRANCH_NAME
+          sh """
+            echo $BRANCH_NAME
+          """
+        }
       }
     }
   }
