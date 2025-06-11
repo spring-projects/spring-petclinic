@@ -1,0 +1,11 @@
+FROM eclipse-temurin
+
+WORKDIR /app
+
+COPY /target /app
+
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "spring-petclinic-4.0.3-SNAPSHOT.jar"]
+
+
