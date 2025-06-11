@@ -9,8 +9,8 @@ pipeline {
   }
 
   stages {
-    agent { label 'vps-agent1' }
     stage('checkStyle') {
+      agent { label 'vps-agent1' }
       when { not {branch 'main' }}
       steps {
         sh './gradlew checkstyleMain'
