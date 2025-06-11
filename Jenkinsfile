@@ -27,9 +27,19 @@ pipeline {
       steps {
         script {
           def branch = env.BRANCH_NAME
-          sh """
-            echo $BRANCH_NAME
-          """
+          def dockerRepo = (branch == 'main') ? 'main' : 'mr'
+          def imageTag = "${DOCKER_HUB_USER}/${repo}:${GIT_COMMIT_SHORT}"
+
+          withCredentials([usernamePassword(
+              credentialsId: DOCKERHUB_CREDES,
+              usernameVariable: 'DOCKER_USER',
+              passwordVariable: 'DOCKER_PASS'
+          )]) {
+              echo "Logging in to Docker Hub..."
+              sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
+              echo "Pushing Docker image to ${imageTag}"
+              sh "docker push ${imageTag}"
+          }
         }
       }
     }
