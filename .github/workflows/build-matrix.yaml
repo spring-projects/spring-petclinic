@@ -6,21 +6,21 @@ jobs:
   build:
     runs_on: ubuntu-latest
 
-  strategy:
-    matrix:
-      java: [8, 11, 17]
+    strategy:
+      matrix:
+        java: [8, 11, 17]
 
-  name: Build with Java ${{ matrix.java }}
+    name: Build with Java ${{ matrix.java }}
 
-  steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-    - name: Set up Java ${{ matrix.java }}
-      uses: actions/setup-java@4
-      with:
-        distribution: 'temurin'
-        java-version: ${{ matrix.java }}
+      - name: Set up Java ${{ matrix.java }}
+        uses: actions/setup-java@4
+        with:
+          distribution: 'temurin'
+          java-version: ${{ matrix.java }}
 
-    - name: Build with Gradle
-      run: ./gradlew build
+      - name: Build with Gradle
+        run: ./gradlew build
