@@ -8,7 +8,7 @@ jobs:
 
     strategy:
       matrix:
-        java: [8, 11, 17]
+        java: [17, 21]
 
     name: Build with Java ${{ matrix.java }}
 
