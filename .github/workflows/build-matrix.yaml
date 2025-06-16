@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   build:
-    runs_on: ubuntu-latest
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
