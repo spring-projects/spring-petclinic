@@ -39,9 +39,6 @@ jobs:
       - name: Make Gradle executable
         run: chmod +x ./gradlew
 
-      - name: Build App
-        run: ./gradlew build
-
   docker_push:
     name: Push to Docker Hub
     runs-on: ubuntu-latest
