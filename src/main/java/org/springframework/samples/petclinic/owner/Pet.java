@@ -30,7 +30,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 
@@ -58,21 +57,6 @@ public class Pet extends NamedEntity {
 	@JoinColumn(name = "pet_id")
 	@OrderBy("date ASC")
 	private final Set<Visit> visits = new LinkedHashSet<>();
-	
-	@OneToOne(mappedBy ="pet",cascade = CascadeType.ALL)
-	private PetAttribute petAttribute;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="owner_id")
-	private Owner owner;
-	
-	public Owner getOwner() {
-		return owner;
-	}
-
-	public void setOwner(Owner owner) {
-		this.owner = owner;
-	}
 
 	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
@@ -98,13 +82,4 @@ public class Pet extends NamedEntity {
 		getVisits().add(visit);
 	}
 
-	public PetAttribute getPetAttribute() {
-		return petAttribute;
-	}
-
-	public void setPetAttribute(PetAttribute petAttribute) {
-		this.petAttribute = petAttribute;
-	}
-
-	
 }

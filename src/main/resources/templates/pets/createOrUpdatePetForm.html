@@ -20,9 +20,6 @@
       <input th:replace="~{fragments/inputField :: input ('Name', 'name', 'text')}" />
       <input th:replace="~{fragments/inputField :: input ('Birth Date', 'birthDate', 'date')}" />
       <input th:replace="~{fragments/selectField :: select ('Type', 'type', ${types})}" />
-	  <input th:replace="~{fragments/inputField :: input ('Temperament', 'petAttribute.temperament', 'text')}" />
-	  <input th:replace="~{fragments/inputField :: input ('Length', 'petAttribute.length', 'text')}" />
-	  <input th:replace="~{fragments/inputField :: input ('Weigth', 'petAttribute.weight', 'text')}" />
     </div>
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">

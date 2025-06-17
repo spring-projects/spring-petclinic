@@ -95,15 +95,12 @@ class PetController {
 	@GetMapping("/pets/new")
 	public String initCreationForm(Owner owner, ModelMap model) {
 		Pet pet = new Pet();
-		PetAttribute petAttribute= new PetAttribute();
-		pet.setPetAttribute(petAttribute);
-		pet.getPetAttribute().setPet(pet);
 		owner.addPet(pet);
 		return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping("/pets/new")
-	public String processCreationForm(Owner owner, @Valid Pet pet,BindingResult result,
+	public String processCreationForm(Owner owner, @Valid Pet pet, BindingResult result,
 			RedirectAttributes redirectAttributes) {
 
 		if (StringUtils.hasText(pet.getName()) && pet.isNew() && owner.getPet(pet.getName(), true) != null)
@@ -119,7 +116,6 @@ class PetController {
 		}
 
 		owner.addPet(pet);
-		pet.getPetAttribute().setPet(pet);
 		this.owners.save(owner);
 		redirectAttributes.addFlashAttribute("message", "New Pet has been Added");
 		return "redirect:/owners/{ownerId}";
