@@ -54,6 +54,12 @@
           <dd th:text="${#temporals.format(pet.birthDate, 'yyyy-MM-dd')}"></dd>
           <dt th:text="#{type}">Type</dt>
           <dd th:text="${pet.type}"></dd>
+		  <dt th:text="#{petAttributeTemp}">Temperament</dt>
+		  <dd th:text="${pet.petAttribute != null ?pet.petAttribute.temperament: 'N/A'}"></dd>
+		  <dt th:text="#{petAttributeLength}">Length</dt>
+		  <dd th:text="${pet.petAttribute != null ?pet.petAttribute.length: 'N/A'}"></dd>
+		  <dt th:text="#{petAttributeWeight}">Weight</dt>
+		  <dd th:text="${pet.petAttribute != null ?pet.petAttribute.weight: 'N/A'}"></dd>
         </dl>
       </td>
       <td valign="top">

@@ -48,6 +48,11 @@
             <span th:text="#{findOwners}">Find owners</span>
           </li>
 
+		  <li th:replace="~{::menuItem ('/pets/find','pets','find pets','search',#{findPets})}">
+		     <span class="fa fa-search" aria-hidden="true"></span>
+		     <span th:text="#{findPets}">Find pets</span>
+		  </li>
+					
           <li th:replace="~{::menuItem ('/vets.html','vets','veterinarians','th-list',#{vets})}">
             <span class="fa fa-th-list" aria-hidden="true"></span>
             <span th:text="#{vets}">Veterinarians</span>
