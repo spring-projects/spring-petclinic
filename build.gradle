@@ -19,7 +19,7 @@ apply plugin: 'io.spring.javaformat'
 gradle.startParameter.excludedTaskNames += [ "checkFormatAot", "checkFormatAotTest" ]
 
 group = 'org.springframework.samples'
-version = '3.4.0'
+version = '3.5.0'
 
 java {
   sourceCompatibility = JavaVersion.VERSION_17
@@ -37,16 +37,13 @@ repositories {
   mavenCentral()
 }
 
-ext.checkstyleVersion = "10.20.1"
-ext.springJavaformatCheckstyleVersion = "0.0.43"
-ext.webjarsLocatorLiteVersion = "1.0.1"
+ext.checkstyleVersion = "10.25.0"
+ext.springJavaformatCheckstyleVersion = "0.0.46"
+ext.webjarsLocatorLiteVersion = "1.1.0"
 ext.webjarsFontawesomeVersion = "4.7.0"
-ext.webjarsBootstrapVersion = "5.3.3"
+ext.webjarsBootstrapVersion = "5.3.6"
 
 dependencies {
-  // Workaround for AOT issue (https://github.com/spring-projects/spring-framework/pull/33949) -->
-  implementation 'io.projectreactor:reactor-core'
-
   implementation 'org.springframework.boot:spring-boot-starter-cache'
   implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
   implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
