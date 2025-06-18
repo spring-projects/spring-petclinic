@@ -24,8 +24,14 @@ import java.util.Locale;
 @SuppressWarnings("unused")
 public class WebConfiguration implements WebMvcConfigurer {
 
+	private final RateLimitInterceptor rateLimitInterceptor;
+
+	public WebConfiguration(RateLimitInterceptor rateLimitInterceptor) {
+		this.rateLimitInterceptor = rateLimitInterceptor;
+	}
+
 	/**
-	 * Uses session storage to remember the user’s language setting across requests.
+	 * Uses session storage to remember the user's language setting across requests.
 	 * Defaults to English if nothing is specified.
 	 * @return session-based {@link LocaleResolver}
 	 */
@@ -49,12 +55,13 @@ public class WebConfiguration implements WebMvcConfigurer {
 	}
 
 	/**
-	 * Registers the locale change interceptor so it can run on each request.
+	 * Registers interceptors including locale change and rate limiting.
 	 * @param registry where interceptors are added
 	 */
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(localeChangeInterceptor());
+		registry.addInterceptor(rateLimitInterceptor);
 	}
 
 }

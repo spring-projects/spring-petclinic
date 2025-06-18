@@ -35,6 +35,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import jakarta.validation.Valid;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.samples.petclinic.system.RateLimitInterceptor.*;
 
 /**
  * @author Juergen Hoeller
