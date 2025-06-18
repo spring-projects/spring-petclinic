@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'agent' }
 
     environment {
         GIT_COMMIT_SHORT = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
