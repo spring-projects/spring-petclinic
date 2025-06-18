@@ -21,5 +21,6 @@
       ]
     }
   },
-  "remoteUser": "vscode"
+  "remoteUser": "vscode",
+  "$schema": "vscode"
 }
