@@ -64,7 +64,7 @@ pipeline {
                     docker.build(fullImageName, "-f Dockerfile.two .")
 
                     // Authenticate and push to Docker Hub
-                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials') {
+                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-token') {
                         docker.image(fullImageName).push()
                     }
 
