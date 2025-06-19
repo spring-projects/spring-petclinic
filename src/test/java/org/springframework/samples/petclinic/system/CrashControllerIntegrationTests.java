@@ -50,6 +50,8 @@ import org.springframework.http.ResponseEntity;
 		properties = { "server.error.include-message=ALWAYS", "management.endpoints.enabled-by-default=false" })
 class CrashControllerIntegrationTests {
 
+	private static final String OUPS_PATH = "/oups";
+
 	@SpringBootApplication(exclude = { DataSourceAutoConfiguration.class,
 			DataSourceTransactionManagerAutoConfiguration.class, HibernateJpaAutoConfiguration.class })
 	static class TestConfiguration {
@@ -65,7 +67,7 @@ class CrashControllerIntegrationTests {
 	@Test
 	void testTriggerExceptionJson() {
 		ResponseEntity<Map<String, Object>> resp = rest.exchange(
-				RequestEntity.get("http://localhost:" + port + "/oups").build(),
+				RequestEntity.get("http://localhost:" + port + OUPS_PATH).build(),
 				new ParameterizedTypeReference<Map<String, Object>>() {
 				});
 		assertThat(resp).isNotNull();
@@ -75,14 +77,14 @@ class CrashControllerIntegrationTests {
 		assertThat(resp.getBody()).containsKey("error");
 		assertThat(resp.getBody()).containsEntry("message",
 				"Expected: controller used to showcase what happens when an exception is thrown");
-		assertThat(resp.getBody()).containsEntry("path", "/oups");
+		assertThat(resp.getBody()).containsEntry("path", OUPS_PATH);
 	}
 
 	@Test
 	void testTriggerExceptionHtml() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(List.of(MediaType.TEXT_HTML));
-		ResponseEntity<String> resp = rest.exchange("http://localhost:" + port + "/oups", HttpMethod.GET,
+		ResponseEntity<String> resp = rest.exchange("http://localhost:" + port + OUPS_PATH, HttpMethod.GET,
 				new HttpEntity<>(headers), String.class);
 		assertThat(resp).isNotNull();
 		assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
