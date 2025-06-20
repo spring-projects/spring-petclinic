@@ -38,7 +38,7 @@
     <spring-format.version>0.0.46</spring-format.version>
 
     <!-- SonarCloud properties -->
-    <sonar.organization>mtech-software-solutions</sonar.organization>
+    <sonar.organization>mtech-software-solutions_spring-petclinic</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     <sonar.projectKey>mtech-software-solutions</sonar.projectKey>
     <sonar.projectName>spring-petclinic</sonar.projectName>
