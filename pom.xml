@@ -37,6 +37,27 @@
     <nohttp-checkstyle.version>0.0.11</nohttp-checkstyle.version>
     <spring-format.version>0.0.46</spring-format.version>
 
+    <!-- SonarCloud properties -->
+    <sonar.organization>mtech-software-solutions</sonar.organization>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    <sonar.projectKey>mtech-software-solutions</sonar.projectKey>
+    <sonar.projectName>spring-petclinic</sonar.projectName>
+    
+    <!-- Coverage exclusions for SonarCloud -->
+    <sonar.coverage.exclusions>
+        **/config/**,
+        **/dto/**,
+        **/entity/**,
+        **/exception/**,
+        **/*Application.java,
+        **/target/**
+    </sonar.coverage.exclusions>
+    
+    <!-- Test exclusions -->
+    <sonar.cpd.exclusions>
+        **/test/**
+    </sonar.cpd.exclusions>
+
   </properties>
 
   <dependencies>
@@ -264,6 +285,11 @@
             <phase>prepare-package</phase>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.sonarsource.scanner.maven</groupId>
+        <artifactId>sonar-maven-plugin</artifactId>
+        <version>3.10.0.2594</version>
       </plugin>
 
       <!-- Spring Boot Actuator displays build-related information if a git.properties file is
