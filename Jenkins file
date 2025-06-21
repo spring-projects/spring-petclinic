@@ -8,7 +8,7 @@ pipeline {
         }
         stage('install') {
          }
-        stage ('deploy') {
+        stage('deploy') {
          }
         }
     }
