@@ -2,22 +2,20 @@ pipeline {
     agent any
 
     stages {
-        stage('git') {
+        stage('Build') {
             steps {
-                git branch: '', url: 'https://github.com/Ramesh05/spring-petclinic.git'
+                echo 'Building..'
             }
         }
-        stage('build') {
+        stage('Test') {
             steps {
+                echo 'Testing..'
             }
         }
-        stage('test') {
+        stage('Deploy') {
             steps {
-            }     
-         }
-        stage('deploy') {
-            steps {
-            }    
-         }
+                echo 'Deploying....'
+            }
         }
     }
+}
