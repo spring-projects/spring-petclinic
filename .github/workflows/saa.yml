@@ -37,6 +37,7 @@ jobs:
       run: |
         curl -L -H "Authorization: Bearer ${{ secrets.spring_enterprise_token }}"  -o advisor-linux.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/1.3.0/application-advisor-cli-linux-1.3.0.tar
         tar -xf advisor-linux.tar --strip-components=1 --exclude=./META-INF
+        rm advisor-linux.tar
         ./advisor build-config get
         ./advisor upgrade-plan apply --push --from-yml
     - name: Get errors if exist
