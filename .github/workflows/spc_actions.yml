@@ -1,0 +1,26 @@
+name: spc_git
+run-name: ${{ github.actor }}
+on: 
+  pull_request:
+    branches:
+      - main
+
+jobs:
+    Job-1:
+      name: spc_test
+      runs-on: ubuntu-latest
+      steps: 
+         - name: git clone
+           uses: actions/checkout@v4
+         - name: mvn clean
+           run: mvn clean package
+    Job-2:
+        name: spc_test1
+        # needs: Job-1
+        runs-on: ubuntu-latest
+        steps:
+          - name: install_dotnet
+            run: sudo apt update && sudo apt install dotnet-sdk-8.0 -y
+
+           
+            
