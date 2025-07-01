@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body}, 'Pet Attributes')}">
+<body>
+  <h2>Pet Attributes</h2>
+
+  <a class="btn btn-primary" th:href="@{/petAttributes/new}">Add New</a>
+  <a class="btn btn-primary" th:href="@{/petAttributes/search}">Search by Pet ID</a>
+
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <!--<th>ID</th>-->
+        <th>Pet ID</th>
+        <th>Temperament</th>
+        <th>Length</th>
+        <th>Weight</th>
+        <th>Energy Level</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="attr : ${listAttributes}">
+       <!-- <td th:text="${attr.id}">1</td>-->
+        <td th:text="${attr.petId}">100</td>
+        <td th:text="${attr.temperament}">Calm</td>
+        <td th:text="${attr.length}">25.0</td>
+        <td th:text="${attr.weight}">10.0</td>
+        <td th:text="${attr.energyLevel}">4</td>
+        <td>
+          <a th:href="@{'/petAttributes/edit/' + ${attr.id}}">Edit</a> |
+          
+          <!-- POST-based delete form -->
+          <form th:action="@{'/petAttributes/delete/' + ${attr.id}}" method="post"
+                style="display:inline;">
+            <button type="submit" class="btn btn-link p-0" onclick="return confirm('Delete?')">
+              Delete
+            </button>
+          </form>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+</body>
+</html>

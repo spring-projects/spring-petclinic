@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{fragments/layout :: layout(~{::template}, 'petAttributes')}">
+
+<th:block th:fragment="template">
+  <h2>Search by Pet ID</h2>
+
+  <form th:action="@{/petAttributes/search}" method="get">
+    <div class="form-group">
+      <label for="petId">Pet ID:</label>
+      <input type="number" class="form-control" id="petId" name="petId" required>
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Search</button>
+  </form>
+
+  <div th:if="${error}" class="alert alert-warning mt-3" th:text="${error}"></div>
+
+  <div th:if="${listAttributes}">
+    <h3 class="mt-4">Results</h3>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+         <!-- <th>ID</th>-->
+          <th>Pet ID</th>
+          <th>Temperament</th>
+          <th>Length</th>
+          <th>Weight</th>
+          <th>Energy Level</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="attr : ${listAttributes}">
+        <!--  <td th:text="${attr.id}"></td>-->
+          <td th:text="${attr.petId}"></td>
+          <td th:text="${attr.temperament}"></td>
+          <td th:text="${attr.length}"></td>
+          <td th:text="${attr.weight}"></td>
+          <td th:text="${attr.energyLevel}"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</th:block>
+</html>

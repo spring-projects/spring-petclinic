@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body}, 'Pet Attributes Form')}">
+<body>
+  <h2 th:text="${petAttributes.id} != null ? 'Edit' : 'Add'">Pet Attributes</h2>
+
+  <form th:action="@{/petAttributes/save}" th:object="${petAttributes}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+
+		<!-- Show hidden petId input only for Edit -->
+	   <th:block th:if="${petAttributes.id != null}">
+	     <input type="hidden" th:field="*{petId}" />
+	   </th:block>
+
+	   <!-- Show visible petId input only for Add -->
+	   <th:block th:unless="${petAttributes.id != null}">
+	     <label>Pet ID:</label>
+	     <input type="number" th:field="*{petId}" class="form-control" /><br/>
+	   </th:block>
+    <!--<label>Pet ID:</label>
+    <input type="number" th:field="*{petId}" class="form-control"/><br/>-->
+
+    <label>Temperament:</label>
+    <input type="text" th:field="*{temperament}" class="form-control"/><br/>
+
+    <label>Length:</label>
+    <input type="number" th:field="*{length}" class="form-control" step="0.01"/><br/>
+
+    <label>Weight:</label>
+    <input type="number" th:field="*{weight}" class="form-control" step="0.01"/><br/>
+
+    <label>Energy Level:</label>
+    <input type="number" th:field="*{energyLevel}" class="form-control"/><br/>
+
+    <button type="submit" class="btn btn-success">Save</button>
+    <a class="btn btn-secondary" th:href="@{/petAttributes}">Cancel</a>
+  </form>
+</body>
+</html>
