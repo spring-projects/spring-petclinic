@@ -1,6 +1,6 @@
 plugins {
   id 'java'
-  id 'org.springframework.boot' version '3.5.0'
+  id 'org.springframework.boot' version '4.0.0-SNAPSHOT'
   id 'io.spring.dependency-management' version '1.1.7'
   id 'org.graalvm.buildtools.native' version '0.10.6'
   id 'org.cyclonedx.bom' version '2.3.1'
@@ -15,7 +15,7 @@ apply plugin: 'io.spring.javaformat'
 gradle.startParameter.excludedTaskNames += [ "checkFormatAot", "checkFormatAotTest" ]
 
 group = 'org.springframework.samples'
-version = '3.5.0'
+version = '4.0.0-SNAPSHOT'
 
 java {
   sourceCompatibility = JavaVersion.VERSION_17
@@ -23,6 +23,12 @@ java {
 
 repositories {
   mavenCentral()
+  maven {
+    url = "https://repo.spring.io/milestone"
+  }
+  maven {
+    url = "https://repo.spring.io/snapshot"
+  }
 }
 
 ext.checkstyleVersion = "10.25.0"
