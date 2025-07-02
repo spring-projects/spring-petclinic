@@ -1,0 +1,57 @@
+# .github/workflows/build-and-push-to-artifactory.yml
+
+name: Spring Boot Build-Image & Push to Artifactory
+
+on:
+  push:
+    branches:
+      - main 
+  pull_request:
+    branches:
+      - main 
+  workflow_dispatch: # Allows manual trigger from the GitHub UI
+
+# Define your secrets in GitHub repository settings:
+# - JFROG_USERNAME
+# - JFROG_PASSWORD
+# - JFROG_DOCKER_REGISTRY
+
+jobs:
+  build_test_package_publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4 
+
+      - name: Set up Java Development Kit (JDK)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin' # Eclipse Temurin is a popular OpenJDK distribution
+          java-version: '21'      
+          cache: 'maven'          # Enable Maven caching for faster builds
+
+      - name: Compile and Run Tests with Maven
+        run: ./mvnw clean install
+
+      - name: Log in to JFrog Artifactory Docker Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ secrets.JFROG_DOCKER_REGISTRY }}
+          username: ${{ secrets.JFROG_USERNAME }}
+          password: ${{ secrets.JFROG_PASSWORD }}
+
+      - name: Build Docker Image with Spring Boot Plugin
+        id: spring_boot_build_image
+        run: |
+          IMAGE_FULL_NAME_SHA="${{ secrets.JFROG_DOCKER_REGISTRY }}/your-repo/your-app:${{ github.sha }}"
+          IMAGE_FULL_NAME_LATEST="${{ secrets.JFROG_DOCKER_REGISTRY }}/your-repo/your-app:latest"
+
+          echo "Building and pushing image: $IMAGE_FULL_NAME_SHA"
+          ./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=$IMAGE_FULL_NAME_SHA
+
+          echo "Tagging and pushing image: $IMAGE_FULL_NAME_LATEST"
+          docker tag $IMAGE_FULL_NAME_SHA $IMAGE_FULL_NAME_LATEST
+          docker push $IMAGE_FULL_NAME_LATEST
+
+          echo "Successfully built and pushed Docker images to Artifactory."
