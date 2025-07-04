@@ -1,5 +1,6 @@
 plugins {
   id 'java'
+  id 'checkstyle'
   id 'org.springframework.boot' version '3.5.0'
   id 'io.spring.dependency-management' version '1.1.7'
   id 'org.graalvm.buildtools.native' version '0.10.6'
@@ -8,17 +9,15 @@ plugins {
   id "io.spring.nohttp" version "0.0.11"
 }
 
-apply plugin: 'java'
-apply plugin: 'checkstyle'
-apply plugin: 'io.spring.javaformat'
-
 gradle.startParameter.excludedTaskNames += [ "checkFormatAot", "checkFormatAotTest" ]
 
 group = 'org.springframework.samples'
 version = '3.5.0'
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_17
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(17)
+  }
 }
 
 repositories {
@@ -85,3 +84,8 @@ checkFormatAotTest.enabled = false
 
 formatAot.enabled = false
 formatAotTest.enabled = false
+
+wrapper {
+  gradleVersion = "8.14.3"
+  distributionType = Wrapper.DistributionType.ALL
+}
