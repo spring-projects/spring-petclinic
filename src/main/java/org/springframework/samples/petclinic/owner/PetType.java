@@ -15,10 +15,15 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.OneToMany;
 import org.springframework.samples.petclinic.model.NamedEntity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import org.springframework.samples.petclinic.pet.model.PetAttribute;
+
+import java.util.Set;
 
 /**
  * @author Juergen Hoeller Can be Cat, Dog, Hamster...
@@ -26,5 +31,8 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "types")
 public class PetType extends NamedEntity {
+
+	@OneToMany(mappedBy = "petType", cascade = CascadeType.ALL)
+	private Set<PetAttribute> attributes;
 
 }

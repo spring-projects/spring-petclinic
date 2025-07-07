@@ -27,7 +27,7 @@ import java.util.Collection;
  *
  * @author Juergen Hoeller
  * @author Sam Brannen
- * @see org.springframework.samples.petclinic.model.BaseEntity
+ * @see BaseEntity
  * @since 29.10.2003
  */
 public abstract class EntityUtils {
