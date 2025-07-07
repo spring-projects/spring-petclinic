@@ -6,9 +6,11 @@ on:
   push:
     branches:
       - main 
+      - github-actions
   pull_request:
     branches:
       - main 
+      - github-actions
   workflow_dispatch: # Allows manual trigger from the GitHub UI
 
 # Define your secrets in GitHub repository settings:
