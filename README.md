@@ -31,6 +31,57 @@ Or you can run it from Maven directly using the Spring Boot Maven plugin. If you
 
 > NOTE: If you prefer to use Gradle, you can build the app using `./gradlew build` and look for the jar file in `build/libs`.
 
+## 🔧 New Features Added
+
+### ✅ PetAttribute Module
+
+- Added a new model `PetAttribute` linked to `PetType` to capture details like temperament or breed.
+- REST endpoints:
+    - `POST /api/pettypes/{petTypeId}/attributes` – Add attribute
+    - `GET /api/pettypes/{petTypeId}/attributes` – Get attributes by pet type
+
+### ⚡ gRPC Integration
+
+- Introduced gRPC support using the proto definition `pet-attribute.proto`.
+- Sample proto file:
+  ```proto
+  syntax = "proto3";
+  option java_multiple_files = true;
+  option java_package = "org.springframework.samples.petclinic.grpc";
+  option java_outer_classname = "PetAttributeProto";
+
+  service PetAttributeService {
+    rpc GetAttributes(PetAttributeRequest) returns (PetAttributeList);
+    rpc AddAttribute(NewPetAttribute) returns (PetAttributeResponse);
+  }
+
+### ⚙️ gRPC Java Classes
+
+- Auto-generated under:
+
+  target/generated-sources/grpc
+
+
+### 🔗 Spring HATEOAS Support
+
+Hypermedia links are now included in `PetAttribute` responses.
+
+**Example Response:**
+
+```json
+{
+  "temperament": "Energetic",
+  "_links": {
+    "self": {
+      "href": "http://localhost:8080/api/pettypes/1/attributes/3"
+    },
+    "petType": {
+      "href": "http://localhost:8080/api/pettypes/1"
+    }
+  }
+}
+```
+
 ## Building a Container
 
 There is no `Dockerfile` in this project. You can build a container image (if you have a docker daemon) using the Spring Boot build plugin:

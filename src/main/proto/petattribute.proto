@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "org.springframework.samples.petclinic.grpc";
+option java_outer_classname = "PetAttributeProto";
+
+message PetAttributeRequest {
+  int32 typeId = 1;
+}
+
+message NewPetAttribute {
+  int32 typeId = 1;
+  string temperament = 2;
+  double weight = 3;
+  double length = 4;
+}
+
+message PetAttributeResponse {
+  int32 id = 1;
+  string temperament = 2;
+  double weight = 3;
+  double length = 4;
+}
+
+message PetAttributeList {
+  repeated PetAttributeResponse attributes = 1;
+}
+
+service PetAttributeService {
+  rpc GetAttributes (PetAttributeRequest) returns (PetAttributeList);
+  rpc AddAttribute (NewPetAttribute) returns (PetAttributeResponse);
+}
