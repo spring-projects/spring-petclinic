@@ -18,6 +18,7 @@ package org.springframework.samples.petclinic;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ImportRuntimeHints;
 
 /**
@@ -26,6 +27,7 @@ import org.springframework.context.annotation.ImportRuntimeHints;
  * @author Dave Syer
  */
 @SpringBootApplication
+@EnableCaching
 @ImportRuntimeHints(PetClinicRuntimeHints.class)
 public class PetClinicApplication {
 
