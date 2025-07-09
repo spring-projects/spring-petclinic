@@ -38,15 +38,15 @@ jobs:
       - name: Log in to JFrog Artifactory Docker Registry
         uses: docker/login-action@v3
         with:
-          registry: ${{ env.JFROG_DOCKER_REGISTRY }}
+          registry: ${{ vars.JFROG_DOCKER_REGISTRY }}
           username: ${{ secrets.JFROG_USERNAME }}
           password: ${{ secrets.JFROG_PASSWORD }}
 
       - name: Build Docker Image with Spring Boot Plugin
         id: spring_boot_build_image
         run: |
-          IMAGE_FULL_NAME_SHA="${{ env.JFROG_DOCKER_REGISTRY }}/maven-build-test:${{ github.sha }}"
-          IMAGE_FULL_NAME_LATEST="${{ env.JFROG_DOCKER_REGISTRY }}/maven-build-test:latest"
+          IMAGE_FULL_NAME_SHA="${{ vars.JFROG_DOCKER_REGISTRY }}/maven-build-test:${{ github.sha }}"
+          IMAGE_FULL_NAME_LATEST="${{ vars.JFROG_DOCKER_REGISTRY }}/maven-build-test:latest"
 
           echo "Building and pushing image: $IMAGE_FULL_NAME_SHA"
           ./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=$IMAGE_FULL_NAME_SHA
