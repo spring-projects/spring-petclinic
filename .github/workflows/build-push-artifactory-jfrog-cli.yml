@@ -45,7 +45,7 @@ jobs:
           # Basic authentication credentials
           JF_USER: ${{ secrets.JFROG_USERNAME }}
           JF_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
-          #JF_GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JF_GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
       # - name: Setup JFrog CLI
       #   uses: jfrog/setup-jfrog-cli@v3
