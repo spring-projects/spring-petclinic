@@ -55,7 +55,7 @@ jobs:
         run: |
           echo "Executing Maven clean install via JFrog CLI..."
           MVN_COMMAND="./mvnw clean install"
-          jfrog mvn $MVN_COMMAND
+          jfrog rt mvn $MVN_COMMAND
           #./mvnw clean install
 
       - name: Build Docker Image with Spring Boot Plugin (via JFrog CLI)
