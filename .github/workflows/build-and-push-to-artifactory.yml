@@ -13,11 +13,6 @@ on:
       - github-actions
   workflow_dispatch: # Allows manual trigger from the GitHub UI
 
-# Define your secrets in GitHub repository settings:
-# - JFROG_USERNAME
-# - JFROG_PASSWORD
-# - JFROG_DOCKER_REGISTRY
-
 jobs:
   build_test_package_publish:
     runs-on: ubuntu-latest
