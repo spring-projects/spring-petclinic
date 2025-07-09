@@ -36,6 +36,9 @@ jobs:
           java-version: '21'
           cache: 'maven'
 
+      - name: Clean Maven Local Repository
+        run: rm -rf ~/.m2/repository
+
       - name: Set up JFrog CLI
         uses: jfrog/setup-jfrog-cli@v4
         with:
@@ -85,10 +88,10 @@ jobs:
           echo "Pushing Docker image: $IMAGE_NAME:$IMAGE_TAG_SHA to Artifactory repository: ${{ env.JFROG_DOCKER_REPO_KEY }}"
           #jfrog docker login --url=${{ env.JFROG_PLATFORM_URL }} --user=${{ secrets.JFROG_USERNAME }} --password=${{ secrets.JFROG_PASSWORD }}
           #jfrog docker push $IMAGE_NAME:$IMAGE_TAG_SHA ${{ env.JFROG_DOCKER_REPO_KEY }}
-          jfrog  docker push $IMAGE_NAME:$IMAGE_TAG_SHA --repo=${{ env.JFROG_DOCKER_REPO_KEY }} --url=${{ env.JFROG_PLATFORM_URL }}
+          docker push $IMAGE_NAME:$IMAGE_TAG_SHA --repo=${{ env.JFROG_DOCKER_REPO_KEY }} --url=${{ env.JFROG_PLATFORM_URL }}
           echo "Pushing Docker image: $IMAGE_NAME:$IMAGE_TAG_LATEST to Artifactory repository: ${{ env.JFROG_DOCKER_REPO_KEY }}"
           #jfrog docker push $IMAGE_NAME:$IMAGE_TAG_LATEST ${{ env.JFROG_DOCKER_REPO_KEY }}
-          jfrog docker push $IMAGE_NAME:$IMAGE_TAG_LATEST --repo=${{ env.JFROG_DOCKER_REPO_KEY }} --url=${{ env.JFROG_PLATFORM_URL }}
+          docker push $IMAGE_NAME:$IMAGE_TAG_LATEST --repo=${{ env.JFROG_DOCKER_REPO_KEY }} --url=${{ env.JFROG_PLATFORM_URL }}
 
       - name: Publish Build Info to Artifactory
         run: |
