@@ -73,9 +73,11 @@ jobs:
           docker tag $IMAGE_NAME:$IMAGE_TAG_SHA $IMAGE_NAME:$IMAGE_TAG_LATEST
 
           echo "Pushing Docker image: $IMAGE_NAME:$IMAGE_TAG_SHA to Artifactory repository: ${{ env.JFROG_DOCKER_REPO_KEY }}"
-          jfrog rt docker-push $IMAGE_NAME:$IMAGE_TAG_SHA ${{ env.JFROG_DOCKER_REPO_KEY }}
+          #jfrog rt docker-push $IMAGE_NAME:$IMAGE_TAG_SHA ${{ env.JFROG_DOCKER_REPO_KEY }}
+          jfrog rt docker-push $IMAGE_NAME:$IMAGE_TAG_SHA ${{ env.JFROG_DOCKER_REPO_KEY }} --url=${{ env.JFROG_PLATFORM_URL }}
           echo "Pushing Docker image: $IMAGE_NAME:$IMAGE_TAG_LATEST to Artifactory repository: ${{ env.JFROG_DOCKER_REPO_KEY }}"
-          jfrog rt docker-push $IMAGE_NAME:$IMAGE_TAG_LATEST ${{ env.JFROG_DOCKER_REPO_KEY }}
+          #jfrog rt docker-push $IMAGE_NAME:$IMAGE_TAG_LATEST ${{ env.JFROG_DOCKER_REPO_KEY }}
+          jfrog rt docker-push $IMAGE_NAME:$IMAGE_TAG_LATEST ${{ env.JFROG_DOCKER_REPO_KEY }} --url=${{ env.JFROG_PLATFORM_URL }}
 
       - name: Publish Build Info to Artifactory
         run: |
