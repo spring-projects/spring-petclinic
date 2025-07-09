@@ -19,7 +19,8 @@ jobs:
     env:
       JFROG_PLATFORM_URL: ${{ vars.JFROG_PLATFORM_URL }} 
       JFROG_DOCKER_REGISTRY_HOST: ${{ vars.JFROG_DOCKER_REGISTRY_HOST }} 
-      JFROG_MAVEN_REPO_KEY: rohit-libs-release 
+      JFROG_MAVEN_REPO_KEY: rohit-libs-release
+      JFROG_MAVEN_SNAPSHOT_REPO_KEY: rohit-libs-snapshot
       JFROG_DOCKER_REPO_KEY: maven-build-test
       ARTIFACTORY_BUILD_NAME: spring-petclinic-docker-build
       ARTIFACTORY_BUILD_NUMBER: ${{ github.run_number }}
@@ -47,7 +48,11 @@ jobs:
       - name: Configure Maven to use Artifactory (via JFrog CLI)
         run: |
           echo "Configuring Maven to use Artifactory repository: ${{ env.JFROG_MAVEN_REPO_KEY }}"
-          jfrog mvnc ${{ env.JFROG_MAVEN_REPO_KEY }}
+          jfrog mvnc \
+            --server-id-resolve=jfrog-cli-server \
+            --repo-resolve-releases=${{ env.JFROG_MAVEN_REPO_KEY }} \
+            --repo-resolve-snapshots=${{ env.JFROG_MAVEN_SNAPSHOT_REPO_KEY }}
+          echo "Maven configuration complete."
 
       - name: Compile and Run Tests with Maven (via JFrog CLI)
         run: |
