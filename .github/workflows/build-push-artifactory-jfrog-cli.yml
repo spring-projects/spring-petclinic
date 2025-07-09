@@ -62,7 +62,7 @@ jobs:
       - name: Build Docker Image with Spring Boot Plugin (via JFrog CLI)
         id: spring_boot_build_image
         run: |
-          IMAGE_NAME="${{ env.JFROG_DOCKER_REGISTRY_HOST }}${{ env.JFROG_DOCKER_REPO_KEY }}/maven-build-test" # Base image name without tag
+          IMAGE_NAME="${{ env.JFROG_DOCKER_REGISTRY_HOST }}/${{ env.JFROG_DOCKER_REPO_KEY }}/maven-build-test" # Base image name without tag
           IMAGE_TAG_SHA="${{ github.sha }}" # Tag with commit SHA
           IMAGE_TAG_LATEST="latest" # Tag with latest
 
