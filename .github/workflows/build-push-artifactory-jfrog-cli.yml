@@ -65,7 +65,7 @@ jobs:
       - name: Compile and Run Tests with Maven (via JFrog CLI)
         run: |
           echo "Executing Maven clean install via JFrog CLI..."
-          MVN_COMMAND="./mvnw clean install"
+          MVN_COMMAND="clean install"
           jfrog rt mvn $MVN_COMMAND
           #./mvnw clean install
 
