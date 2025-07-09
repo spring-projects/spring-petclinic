@@ -1,0 +1,86 @@
+# .github/workflows/build-and-push-to-artifactory.yml
+
+name: Spring Boot Build-Image & Push to Artifactory using JFrog CLI
+
+on:
+  push:
+    branches:
+      - main
+      - github-actions
+  pull_request:
+    branches:
+      - main
+      - github-actions
+  workflow_dispatch: # Allows manual trigger from the GitHub UI
+
+jobs:
+  build_test_package_publish:
+    runs-on: ubuntu-latest
+    env:
+      JFROG_PLATFORM_URL: ${{ vars.JFROG_PLATFORM_URL }} 
+      JFROG_DOCKER_REGISTRY_HOST: ${{ vars.JFROG_DOCKER_REGISTRY_HOST }} 
+      JFROG_MAVEN_REPO_KEY: rohit-libs-release 
+      JFROG_DOCKER_REPO_KEY: maven-build-test
+      ARTIFACTORY_BUILD_NAME: spring-petclinic-docker-build
+      ARTIFACTORY_BUILD_NUMBER: ${{ github.run_number }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java Development Kit (JDK)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'
+
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v3
+        with:
+          artifactory-url: ${{ env.JFROG_PLATFORM_URL }}
+          artifactory-username: ${{ secrets.JFROG_USERNAME }}
+          artifactory-password: ${{ secrets.JFROG_PASSWORD }}
+          build-name: ${{ env.ARTIFACTORY_BUILD_NAME }}
+          build-number: ${{ env.ARTIFACTORY_BUILD_NUMBER }}
+
+      - name: Configure Maven to use Artifactory (via JFrog CLI)
+        run: |
+          echo "Configuring Maven to use Artifactory repository: ${{ env.JFROG_MAVEN_REPO_KEY }}"
+          jfrog rt mvnc ${{ env.JFROG_MAVEN_REPO_KEY }}
+
+      - name: Compile and Run Tests with Maven (via JFrog CLI)
+        run: |
+          echo "Executing Maven clean install via JFrog CLI..."
+          ./mvnw clean install
+
+      - name: Build Docker Image with Spring Boot Plugin (via JFrog CLI)
+        id: spring_boot_build_image
+        run: |
+          IMAGE_NAME="${{ env.JFROG_DOCKER_REGISTRY_HOST }}/${{ env.JFROG_DOCKER_REPO_KEY }}" # Base image name without tag
+          IMAGE_TAG_SHA="${{ github.sha }}" # Tag with commit SHA
+          IMAGE_TAG_LATEST="latest" # Tag with latest
+
+          echo "Building Docker image: $IMAGE_NAME:$IMAGE_TAG_SHA"
+          ./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=$IMAGE_NAME:$IMAGE_TAG_SHA
+
+          echo "Tagging image: $IMAGE_NAME:$IMAGE_TAG_SHA as $IMAGE_NAME:$IMAGE_TAG_LATEST"
+          docker tag $IMAGE_NAME:$IMAGE_TAG_SHA $IMAGE_NAME:$IMAGE_TAG_LATEST
+
+          echo "Pushing Docker image: $IMAGE_NAME:$IMAGE_TAG_SHA to Artifactory repository: ${{ env.JFROG_DOCKER_REPO_KEY }}"
+          jfrog rt docker-push $IMAGE_NAME:$IMAGE_TAG_SHA ${{ env.JFROG_DOCKER_REPO_KEY }}
+          echo "Pushing Docker image: $IMAGE_NAME:$IMAGE_TAG_LATEST to Artifactory repository: ${{ env.JFROG_DOCKER_REPO_KEY }}"
+          jfrog rt docker-push $IMAGE_NAME:$IMAGE_TAG_LATEST ${{ env.JFROG_DOCKER_REPO_KEY }}
+
+      - name: Publish Build Info to Artifactory
+        run: |
+          echo "Publishing build info for '${{ env.ARTIFACTORY_BUILD_NAME }}/${{ env.ARTIFACTORY_BUILD_NUMBER }}' to Artifactory..."
+          jfrog rt bp ${{ env.ARTIFACTORY_BUILD_NAME }} ${{ env.ARTIFACTORY_BUILD_NUMBER }}
+
+      - name: Clean up JFrog CLI environment (optional)
+        if: always()
+        run: |
+          echo "Cleaning up JFrog CLI build info and configuration..."
+          jfrog rt bce ${{ env.ARTIFACTORY_BUILD_NAME }} ${{ env.ARTIFACTORY_BUILD_NUMBER }}
+          jfrog rt c --delete-url ${{ env.JFROG_PLATFORM_URL }}
+
