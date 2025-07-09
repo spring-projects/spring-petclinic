@@ -21,7 +21,7 @@ jobs:
       JFROG_DOCKER_REGISTRY_HOST: ${{ vars.JFROG_DOCKER_REGISTRY_HOST }} 
       JFROG_MAVEN_REPO_KEY: rohit-libs-release
       JFROG_MAVEN_SNAPSHOT_REPO_KEY: rohit-libs-snapshot
-      JFROG_DOCKER_REPO_KEY: maven-build-test
+      JFROG_DOCKER_REPO_KEY: rohit-docker
       ARTIFACTORY_BUILD_NAME: spring-petclinic-docker-build
       ARTIFACTORY_BUILD_NUMBER: ${{ github.run_number }}
 
@@ -62,7 +62,7 @@ jobs:
       - name: Build Docker Image with Spring Boot Plugin (via JFrog CLI)
         id: spring_boot_build_image
         run: |
-          IMAGE_NAME="${{ env.JFROG_DOCKER_REGISTRY_HOST }}/artifactory/rohit-docker/${{ env.JFROG_DOCKER_REPO_KEY }}" # Base image name without tag
+          IMAGE_NAME="${{ env.JFROG_DOCKER_REGISTRY_HOST }}/artifactory/${{ env.JFROG_DOCKER_REPO_KEY }}/maven-build-test" # Base image name without tag
           IMAGE_TAG_SHA="${{ github.sha }}" # Tag with commit SHA
           IMAGE_TAG_LATEST="latest" # Tag with latest
 
