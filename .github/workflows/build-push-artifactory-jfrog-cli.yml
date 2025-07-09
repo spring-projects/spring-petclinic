@@ -48,10 +48,7 @@ jobs:
       - name: Configure Maven to use Artifactory (via JFrog CLI)
         run: |
           echo "Configuring Maven to use Artifactory repository: ${{ env.JFROG_MAVEN_REPO_KEY }}"
-          jfrog mvnc \
-            --server-id-resolve=jfrog-cli-server \
-            --repo-resolve-releases=${{ env.JFROG_MAVEN_REPO_KEY }} \
-            --repo-resolve-snapshots=${{ env.JFROG_MAVEN_SNAPSHOT_REPO_KEY }}
+          jfrog mvnc --server-id-resolve=jfrog-cli-server --repo-resolve-releases=${{ env.JFROG_MAVEN_REPO_KEY }} --repo-resolve-snapshots=${{ env.JFROG_MAVEN_SNAPSHOT_REPO_KEY }}
           echo "Maven configuration complete."
 
       - name: Compile and Run Tests with Maven (via JFrog CLI)
