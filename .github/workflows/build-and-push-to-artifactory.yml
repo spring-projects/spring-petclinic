@@ -5,11 +5,11 @@ name: Spring Boot Build-Image & Push to Artifactory
 on:
   push:
     branches:
-      - main 
+      - main
       - github-actions
   pull_request:
     branches:
-      - main 
+      - main
       - github-actions
   workflow_dispatch: # Allows manual trigger from the GitHub UI
 
@@ -19,14 +19,18 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4 
+        uses: actions/checkout@v4
 
-      - name: Set up Java Development Kit (JDK)
+      - name: Set up Java Development Kit (JDK) and Maven Settings
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin' # Eclipse Temurin is a popular OpenJDK distribution
-          java-version: '21'      
-          cache: 'maven'          # Enable Maven caching for faster builds
+          java-version: '21'
+          cache: 'maven'
+          server-id: artifactory-server
+          server-username: ${{ secrets.JFROG_USERNAME }}
+          server-password: ${{ secrets.JFROG_PASSWORD }}
+          maven-repo-url: 'http://rohitannamreddy.jfrog.io/artifactory/rohit-libs-release'
 
       - name: Compile and Run Tests with Maven
         run: ./mvnw clean install
