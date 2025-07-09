@@ -45,8 +45,8 @@ jobs:
       - name: Build Docker Image with Spring Boot Plugin
         id: spring_boot_build_image
         run: |
-          IMAGE_FULL_NAME_SHA="${{ secrets.JFROG_DOCKER_REGISTRY }}/your-repo/your-app:${{ github.sha }}"
-          IMAGE_FULL_NAME_LATEST="${{ secrets.JFROG_DOCKER_REGISTRY }}/your-repo/your-app:latest"
+          IMAGE_FULL_NAME_SHA="${{ secrets.JFROG_DOCKER_REGISTRY }}/maven-build-test:${{ github.sha }}"
+          IMAGE_FULL_NAME_LATEST="${{ secrets.JFROG_DOCKER_REGISTRY }}/maven-build-test:latest"
 
           echo "Building and pushing image: $IMAGE_FULL_NAME_SHA"
           ./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=$IMAGE_FULL_NAME_SHA
