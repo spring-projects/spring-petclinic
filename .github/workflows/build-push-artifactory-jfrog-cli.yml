@@ -62,7 +62,7 @@ jobs:
       - name: Build Docker Image with Spring Boot Plugin (via JFrog CLI)
         id: spring_boot_build_image
         run: |
-          IMAGE_NAME="${{ env.JFROG_DOCKER_REGISTRY_HOST }}/${{ env.JFROG_DOCKER_REPO_KEY }}" # Base image name without tag
+          IMAGE_NAME="${{ env.JFROG_DOCKER_REGISTRY_HOST }}/artifactory/rohit-docker/${{ env.JFROG_DOCKER_REPO_KEY }}" # Base image name without tag
           IMAGE_TAG_SHA="${{ github.sha }}" # Tag with commit SHA
           IMAGE_TAG_LATEST="latest" # Tag with latest
 
@@ -81,7 +81,7 @@ jobs:
 
       - name: Publish Build Info to Artifactory
         run: |
-          echo "Publishing build info for '${{ env.ARTIFACTORY_BUILD_NAME }}/${{ env.ARTIFACTORY_BUILD_NUMBER }}' to Artifactory..."
+          echo "Publishing build info for '${{ env.ARTIFACTORY_BUILD_NAME }}${{ env.ARTIFACTORY_BUILD_NUMBER }}' to Artifactory..."
           jfrog rt bp ${{ env.ARTIFACTORY_BUILD_NAME }} ${{ env.ARTIFACTORY_BUILD_NUMBER }}
 
       - name: Clean up JFrog CLI environment (optional)
