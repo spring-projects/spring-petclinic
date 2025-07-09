@@ -36,14 +36,25 @@ jobs:
           java-version: '21'
           cache: 'maven'
 
-      - name: Setup JFrog CLI
-        uses: jfrog/setup-jfrog-cli@v3
+      - name: Set up JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4
         with:
-          artifactory-url: ${{ env.JFROG_PLATFORM_URL }}
-          artifactory-username: ${{ secrets.JFROG_USERNAME }}
-          artifactory-password: ${{ secrets.JFROG_PASSWORD }}
-          build-name: ${{ env.ARTIFACTORY_BUILD_NAME }}
-          build-number: ${{ env.ARTIFACTORY_BUILD_NUMBER }}
+          version: 'latest'
+        env:
+          JF_URL: ${{ env.JFROG_PLATFORM_URL }}
+          # Basic authentication credentials
+          JF_USER: ${{ secrets.JFROG_USERNAME }}
+          JF_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
+          #JF_GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      # - name: Setup JFrog CLI
+      #   uses: jfrog/setup-jfrog-cli@v3
+      #   with:
+      #     artifactory-url: ${{ env.JFROG_PLATFORM_URL }}
+      #     artifactory-username: ${{ secrets.JFROG_USERNAME }}
+      #     artifactory-password: ${{ secrets.JFROG_PASSWORD }}
+      #     build-name: ${{ env.ARTIFACTORY_BUILD_NAME }}
+      #     build-number: ${{ env.ARTIFACTORY_BUILD_NUMBER }}
 
       - name: Configure Maven to use Artifactory (via JFrog CLI)
         run: |
