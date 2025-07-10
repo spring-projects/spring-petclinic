@@ -94,12 +94,12 @@ jobs:
       - name: Publish Build Info to Artifactory
         run: |
           echo "Publishing build info for '${{ env.ARTIFACTORY_BUILD_NAME }}${{ env.ARTIFACTORY_BUILD_NUMBER }}' to Artifactory..."
-          jfrog build publish ${{ env.ARTIFACTORY_BUILD_NAME }} ${{ env.ARTIFACTORY_BUILD_NUMBER }}
+          jfrog rt bp ${{ env.ARTIFACTORY_BUILD_NAME }} ${{ env.ARTIFACTORY_BUILD_NUMBER }}
 
       - name: Clean up JFrog CLI environment (optional)
         if: always()
         run: |
           echo "Cleaning up JFrog CLI build info and configuration..."
-          jfrog build clean ${{ env.ARTIFACTORY_BUILD_NAME }} ${{ env.ARTIFACTORY_BUILD_NUMBER }}
+          jfrog rt bc ${{ env.ARTIFACTORY_BUILD_NAME }} ${{ env.ARTIFACTORY_BUILD_NUMBER }}
           jfrog c --delete-url ${{ env.JFROG_PLATFORM_URL }}
 
