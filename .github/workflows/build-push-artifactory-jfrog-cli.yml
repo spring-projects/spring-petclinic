@@ -101,5 +101,5 @@ jobs:
         run: |
           echo "Cleaning up JFrog CLI build info and configuration..."
           jfrog rt bc ${{ env.ARTIFACTORY_BUILD_NAME }} ${{ env.ARTIFACTORY_BUILD_NUMBER }}
-          jfrog c --delete-url ${{ env.JFROG_PLATFORM_URL }}
+          jfrog config remove ${{ env.JFROG_PLATFORM_URL }}
 
