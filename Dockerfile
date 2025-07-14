@@ -1,7 +1,7 @@
 FROM maven: 3.9.10-eclipse-temurin-17 AS build
 RUN git clone https://github.com/qadevopsgdr/spring-petclinic.git
 
-RUN cd spring-petclinic && git clean package
+RUN cd spring-petclinic && mvn clean package
 
 FROM amazoncorretto:17-alpine-jdk
 RUN mkdir /spc && chown nobody /spc
