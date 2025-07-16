@@ -32,6 +32,9 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Simple business object representing a pet.
@@ -43,6 +46,8 @@ import jakarta.persistence.Table;
  */
 @Entity
 @Table(name = "pets")
+@Getter
+@Setter
 public class Pet extends NamedEntity {
 
 	@Column(name = "birth_date")
@@ -58,21 +63,7 @@ public class Pet extends NamedEntity {
 	@OrderBy("date ASC")
 	private final Set<Visit> visits = new LinkedHashSet<>();
 
-	public void setBirthDate(LocalDate birthDate) {
-		this.birthDate = birthDate;
-	}
-
-	public LocalDate getBirthDate() {
-		return this.birthDate;
-	}
-
-	public PetType getType() {
-		return this.type;
-	}
-
-	public void setType(PetType type) {
-		this.type = type;
-	}
+	
 
 	public Collection<Visit> getVisits() {
 		return this.visits;

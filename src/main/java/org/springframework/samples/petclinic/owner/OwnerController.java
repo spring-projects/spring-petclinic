@@ -34,6 +34,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -44,15 +46,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * @author Wick Dynex
  */
 @Controller
+@AllArgsConstructor
 class OwnerController {
 
 	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
 
 	private final OwnerRepository owners;
 
-	public OwnerController(OwnerRepository owners) {
-		this.owners = owners;
-	}
+	
 
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {

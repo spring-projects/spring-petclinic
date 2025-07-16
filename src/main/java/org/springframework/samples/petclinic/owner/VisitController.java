@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -39,13 +41,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * @author Wick Dynex
  */
 @Controller
+@AllArgsConstructor
 class VisitController {
 
 	private final OwnerRepository owners;
 
-	public VisitController(OwnerRepository owners) {
-		this.owners = owners;
-	}
 
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
