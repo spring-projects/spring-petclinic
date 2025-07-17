@@ -18,7 +18,9 @@ package org.springframework.samples.petclinic.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Simple JavaBean domain object adds a name property to <code>BaseEntity</code>. Used as
@@ -29,17 +31,13 @@ import lombok.Data;
  * @author Wick Dynex
  */
 @MappedSuperclass
-@Data
+@Getter
+@Setter
+@ToString
 public class NamedEntity extends BaseEntity {
 
 	@Column(name = "name")
 	@NotBlank
 	private String name;
-
-
-	@Override
-	public String toString() {
-		return this.getName();
-	}
 
 }

@@ -32,6 +32,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -42,6 +44,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  */
 @Controller
 @RequestMapping("/owners/{ownerId}")
+@RequiredArgsConstructor
 class PetController {
 
 	private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = "pets/createOrUpdatePetForm";
@@ -49,11 +52,6 @@ class PetController {
 	private final OwnerRepository owners;
 
 	private final PetTypeRepository types;
-
-	public PetController(OwnerRepository owners, PetTypeRepository types) {
-		this.owners = owners;
-		this.types = types;
-	}
 
 	@ModelAttribute("types")
 	public Collection<PetType> populatePetTypes() {

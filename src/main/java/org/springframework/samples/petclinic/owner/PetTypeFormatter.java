@@ -18,6 +18,8 @@ package org.springframework.samples.petclinic.owner;
 import org.springframework.format.Formatter;
 import org.springframework.stereotype.Component;
 
+import lombok.RequiredArgsConstructor;
+
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.Locale;
@@ -33,13 +35,12 @@ import java.util.Locale;
  * @author Michael Isvy
  */
 @Component
+@RequiredArgsConstructor
 public class PetTypeFormatter implements Formatter<PetType> {
 
 	private final PetTypeRepository types;
 
-	public PetTypeFormatter(PetTypeRepository types) {
-		this.types = types;
-	}
+	
 
 	@Override
 	public String print(PetType petType, Locale locale) {

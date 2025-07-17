@@ -18,7 +18,8 @@ package org.springframework.samples.petclinic.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Simple JavaBean domain object representing an person.
@@ -26,7 +27,8 @@ import lombok.Data;
  * @author Ken Krebs
  */
 @MappedSuperclass
-@Data
+@Getter
+@Setter
 public class Person extends BaseEntity {
 
 	@Column(name = "first_name")
