@@ -18,23 +18,22 @@ package org.springframework.samples.petclinic.owner;
 import java.util.List;
 import java.util.Optional;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.samples.petclinic.exception.NotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import jakarta.validation.Valid;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import static java.lang.String.format;
 
 /**
  * @author Juergen Hoeller
@@ -43,7 +42,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * @author Michael Isvy
  * @author Wick Dynex
  */
-@Controller
+@RestController
+@Slf4j
+@RequestMapping
 class OwnerController {
 
 	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
@@ -170,4 +171,17 @@ class OwnerController {
 		return mav;
 	}
 
+	@DeleteMapping("owners/{ownerId}")
+	public void deleteOwner(@PathVariable("ownerId") int id,
+							@RequestParam(name = "deletePets", required = false, defaultValue = "false") boolean deletePets){
+		var owner = this.owners.findById(id)
+			.orElseThrow(() -> new NotFoundException(format("owner not found with id %s", id)));
+		owner.setActive(Boolean.FALSE);
+		if(deletePets){
+			owner.getPets()
+				.forEach(pet -> pet.setActive(Boolean.FALSE));
+		}
+		owners.save(owner);
+		log.info("Owner {} marked inactive{}", id, deletePets ? " along with pets" : "");
+	}
 }
