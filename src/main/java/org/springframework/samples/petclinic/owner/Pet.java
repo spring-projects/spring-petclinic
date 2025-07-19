@@ -17,7 +17,6 @@ package org.springframework.samples.petclinic.owner;
 
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -33,7 +32,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
-import org.springframework.samples.petclinic.vaccine.Vaccination;
+import org.springframework.samples.petclinic.vaccine.Vaccinations;
 
 /**
  * Simple business object representing a pet.
@@ -63,7 +62,7 @@ public class Pet extends NamedEntity {
 	private final Set<Visit> visits = new LinkedHashSet<>();
 
 	@OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private final Set<Vaccination> vaccinations = new LinkedHashSet<>();
+	private final Set<Vaccinations> vaccinations = new LinkedHashSet<>();
 
 	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
@@ -97,8 +96,13 @@ public class Pet extends NamedEntity {
 		this.active = active;
 	}
 
-	public void addVaccination(Vaccination vaccination) {
-		vaccination.setPet(this);
-		this.vaccinations.add(vaccination);
+	public Set<Vaccinations> getVaccinations() {
+		return vaccinations;
 	}
+
+	/*
+	 * public void addVaccination(Vaccinations vaccination) { vaccination.setPet(this);
+	 * this.vaccinations.add(vaccination); }
+	 */
+
 }

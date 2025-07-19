@@ -17,13 +17,15 @@ package org.springframework.samples.petclinic.owner;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.samples.petclinic.exception.NotFoundException;
-import org.springframework.stereotype.Controller;
+import org.springframework.samples.petclinic.vaccine.response.OwnerResponse;
+import org.springframework.samples.petclinic.vaccine.response.VaccinationHistory;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -171,17 +173,43 @@ class OwnerController {
 		return mav;
 	}
 
+	/**
+	 * @param id
+	 * @param deletePets
+	 */
 	@DeleteMapping("owners/{ownerId}")
 	public void deleteOwner(@PathVariable("ownerId") int id,
-							@RequestParam(name = "deletePets", required = false, defaultValue = "false") boolean deletePets){
+			@RequestParam(name = "deletePets", required = false, defaultValue = "false") boolean deletePets) {
 		var owner = this.owners.findById(id)
 			.orElseThrow(() -> new NotFoundException(format("owner not found with id %s", id)));
 		owner.setActive(Boolean.FALSE);
-		if(deletePets){
-			owner.getPets()
-				.forEach(pet -> pet.setActive(Boolean.FALSE));
+		if (deletePets) {
+			owner.getPets().forEach(pet -> pet.setActive(Boolean.FALSE));
 		}
 		owners.save(owner);
 		log.info("Owner {} marked inactive{}", id, deletePets ? " along with pets" : "");
 	}
+
+	@GetMapping("/owners/history/{ownerId}")
+	public OwnerResponse fetchHistory(@PathVariable Integer ownerId) {
+		var vaccinationData = owners.findVaccinationByOwner(ownerId);
+		if (vaccinationData.isEmpty()) {
+			throw new NotFoundException("No vaccination data found for owner id " + ownerId);
+		}
+		OwnerResponse ownerResponse = new OwnerResponse();
+		ownerResponse.setOwnerName(vaccinationData.get(0).getOwnerName());
+
+		var historySummary = vaccinationData.stream().map(rec -> {
+			VaccinationHistory vaccinationHistory = new VaccinationHistory();
+			vaccinationHistory.setPetName(rec.getPetName());
+			vaccinationHistory.setVaccineName(rec.getVaccineName());
+			vaccinationHistory.setVaccinationDate(rec.getVaccinationDate());
+			vaccinationHistory.setInjected(rec.getInjected());
+			return vaccinationHistory;
+		}).collect(Collectors.toSet());
+
+		ownerResponse.setVaccinationHistories(historySummary);
+		return ownerResponse;
+	}
+
 }

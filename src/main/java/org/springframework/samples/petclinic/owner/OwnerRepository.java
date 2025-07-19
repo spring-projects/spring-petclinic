@@ -23,6 +23,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.samples.petclinic.vaccine.response.VaccinationData;
 
 /**
  * Repository class for <code>Owner</code> domain objects. All method names are compliant
@@ -63,5 +65,21 @@ public interface OwnerRepository extends JpaRepository<Owner, Integer> {
 	Optional<Owner> findById(@Nonnull Integer id);
 
 	Optional<Owner> findByIdAndActive(@Nonnull Integer id, Boolean active);
+
+	@Query(value = """
+			SELECT
+			    o.first_name AS ownerName,
+			    p.name AS petName,
+			    m.vaccine_name AS vaccineName,
+			    v.vaccination_date AS vaccinationDate,
+			    v.injected AS injected
+			FROM owners o
+			JOIN pets p ON o.id = p.owner_id
+			JOIN vaccinations v ON p.id = v.pet_id
+			JOIN vaccine m ON v.vaccine_id = m.id
+			WHERE o.id = :ownerId
+			ORDER BY v.vaccination_date DESC
+			""", nativeQuery = true)
+	List<VaccinationData> findVaccinationByOwner(@Param("ownerId") Integer ownerId);
 
 }

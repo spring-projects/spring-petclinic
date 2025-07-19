@@ -10,7 +10,8 @@ public class PetPredicates {
 		return pet -> Boolean.TRUE.equals(pet.getActive());
 	}
 
-	public static Predicate<Pet> hasId(Long petId) {
+	public static Predicate<Pet> hasId(Integer petId) {
 		return pet -> petId.equals(pet.getId());
 	}
+
 }
