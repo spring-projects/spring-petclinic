@@ -73,24 +73,23 @@ public class Pet extends NamedEntity {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "pet_id")
 	@OrderBy("date ASC")
-	private final Set<Visit> visits = new LinkedHashSet<>();
+	private Set<Visit> visits = new LinkedHashSet<>();
 
 	/**
 	 * Adds a visit to this pet.
-	 *
 	 * @param visit the visit to add
 	 */
 	public void addVisit(Visit visit) {
-		this.visits.add(visit);
+		visits.add(visit);
 	}
 
 	/**
-	 * Returns visits associated with the pet.
-	 * Ensures external classes access visits as an unmodifiable collection.
-	 *
+	 * Returns visits associated with the pet. Ensures external classes access visits as
+	 * an unmodifiable collection.
 	 * @return collection of visits
 	 */
 	public Collection<Visit> getVisits() {
-		return this.visits;
+		return visits;
 	}
+
 }

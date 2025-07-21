@@ -35,8 +35,8 @@ import lombok.Setter;
 @MappedSuperclass
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class NamedEntity extends BaseEntity {
 
 	@Column(name = "name")
@@ -45,7 +45,7 @@ public class NamedEntity extends BaseEntity {
 
 	@Override
 	public String toString() {
-		return this.name;
+		return name;
 	}
 
 }

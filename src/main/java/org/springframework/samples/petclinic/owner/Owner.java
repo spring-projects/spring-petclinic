@@ -44,7 +44,6 @@ import jakarta.validation.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-@MappedSuperclass
 public class Owner extends Person {
 
 	@Column(name = "address")
@@ -64,7 +63,6 @@ public class Owner extends Person {
 	@JoinColumn(name = "owner_id")
 	@OrderBy("name")
 	private final List<Pet> pets = new ArrayList<>();
-
 
 	public void addPet(Pet pet) {
 		if (pet.isNew()) {

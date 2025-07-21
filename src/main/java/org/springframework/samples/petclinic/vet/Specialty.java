@@ -29,12 +29,11 @@ import jakarta.persistence.Table;
  *
  * @author Juergen Hoeller
  */
-@Entity
-@Table(name = "specialties")
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "specialties")
 public class Specialty extends NamedEntity {
 
 }
