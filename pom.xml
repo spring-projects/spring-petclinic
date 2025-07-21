@@ -32,6 +32,8 @@
     <checkstyle.version>10.25.0</checkstyle.version>
     <jacoco.version>0.8.13</jacoco.version>
     <libsass.version>0.3.4</libsass.version>
+    <!-- Log4j version to introduce vulnerability for demo purposes -->
+    <log4j2.version>2.14.1</log4j2.version>
     <lifecycle-mapping>1.0.0</lifecycle-mapping>
     <maven-checkstyle.version>3.6.0</maven-checkstyle.version>
     <nohttp-checkstyle.version>0.0.11</nohttp-checkstyle.version>
@@ -40,6 +42,17 @@
   </properties>
 
   <dependencies>
+    <!-- Explicitly adding Log4j 2 dependencies to introduce a known vulnerability for demo purposes -->
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>${log4j2.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log44j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>${log4j2.version}</version>
+    </dependency>
     <!-- Spring and Spring Boot dependencies -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
