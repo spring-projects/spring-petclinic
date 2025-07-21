@@ -21,6 +21,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.samples.petclinic.model.NamedEntity;
 import org.springframework.samples.petclinic.model.Person;
 
@@ -42,6 +46,10 @@ import jakarta.xml.bind.annotation.XmlElement;
  */
 @Entity
 @Table(name = "vets")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Vet extends Person {
 
 	@ManyToMany(fetch = FetchType.EAGER)
@@ -56,9 +64,13 @@ public class Vet extends Person {
 		return this.specialties;
 	}
 
+	/**
+	 * Returns specialties sorted alphabetically by name.
+	 */
 	@XmlElement
 	public List<Specialty> getSpecialties() {
-		return getSpecialtiesInternal().stream()
+		return getSpecialtiesInternal()
+			.stream()
 			.sorted(Comparator.comparing(NamedEntity::getName))
 			.collect(Collectors.toList());
 	}

@@ -20,6 +20,10 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.model.NamedEntity;
 
@@ -43,43 +47,50 @@ import jakarta.persistence.Table;
  */
 @Entity
 @Table(name = "pets")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Pet extends NamedEntity {
 
+	/**
+	 * The pet's birth date.
+	 */
 	@Column(name = "birth_date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate birthDate;
 
+	/**
+	 * Type of the pet (e.g., cat, dog).
+	 */
 	@ManyToOne
 	@JoinColumn(name = "type_id")
 	private PetType type;
 
+	/**
+	 * Visits associated with this pet, sorted by date ascending.
+	 */
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "pet_id")
 	@OrderBy("date ASC")
 	private final Set<Visit> visits = new LinkedHashSet<>();
 
-	public void setBirthDate(LocalDate birthDate) {
-		this.birthDate = birthDate;
+	/**
+	 * Adds a visit to this pet.
+	 *
+	 * @param visit the visit to add
+	 */
+	public void addVisit(Visit visit) {
+		this.visits.add(visit);
 	}
 
-	public LocalDate getBirthDate() {
-		return this.birthDate;
-	}
-
-	public PetType getType() {
-		return this.type;
-	}
-
-	public void setType(PetType type) {
-		this.type = type;
-	}
-
+	/**
+	 * Returns visits associated with the pet.
+	 * Ensures external classes access visits as an unmodifiable collection.
+	 *
+	 * @return collection of visits
+	 */
 	public Collection<Visit> getVisits() {
 		return this.visits;
 	}
-
-	public void addVisit(Visit visit) {
-		getVisits().add(visit);
-	}
-
 }
