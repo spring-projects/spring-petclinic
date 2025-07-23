@@ -252,6 +252,10 @@ def main():
     index_path = "memory_data/faiss.index"
     metadata_path = "memory_data/metadata.json"
     
+    # Configure git first
+    os.system("git config --local user.email 'action@github.com'")
+    os.system("git config --local user.name 'GitHub Action'")
+    
     # Switch to memory branch to load data
     os.system("git checkout memory")
     

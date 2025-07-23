@@ -35,6 +35,10 @@ jobs:
         
     - name: Checkout memory branch
       run: |
+        # Configure git for the runner
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        
         # Create memory branch if it doesn't exist
         git fetch origin memory:memory 2>/dev/null || git checkout --orphan memory
         git checkout memory 2>/dev/null || {
