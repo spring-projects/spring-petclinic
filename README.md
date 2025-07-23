@@ -163,3 +163,8 @@ For additional details, please refer to the blog post [Hello DCO, Goodbye CLA: S
 ## License
 
 The Spring PetClinic sample application is released under version 2.0 of the [Apache License](https://www.apache.org/licenses/LICENSE-2.0).
+## 📽 Updated Presentation
+
+An updated 35-slide presentation of the Spring PetClinic application is available [here](https://docs.google.com/presentation/d/e/2PACX-1vQCWJZNsQJq_0BN4-dWuaDxuAC6s39Huxl1uIvWL9tMSavzm0Y00IGpkP_iEfrJMySAQrdHF9TUcDQv/pub?start=false&loop=false&delayms=3000).
+
+You can also download the full .pptx version from the [docs/slide1-35.pptx](docs/slide1-35.pptx) folder in this repository.
