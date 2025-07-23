@@ -10,14 +10,20 @@ on:
 jobs:
   collect-review:
     runs-on: ubuntu-latest
-    # Only run for actual reviews, not just comments
-    if: github.event.review.state != 'commented' || github.event.action == 'created'
     
     permissions:
       contents: write
       pull-requests: read
       
     steps:
+    - name: Debug event information
+      run: |
+        echo "Event name: ${{ github.event_name }}"
+        echo "Action: ${{ github.event.action }}"
+        echo "Review state: ${{ github.event.review.state }}"
+        echo "Review ID: ${{ github.event.review.id }}"
+        echo "Comment ID: ${{ github.event.comment.id }}"
+        
     - name: Checkout main branch
       uses: actions/checkout@v4
       with:
