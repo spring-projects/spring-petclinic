@@ -4,7 +4,8 @@
 
 ## Understanding the Spring Petclinic application with a few diagrams
 
-[See the presentation here](https://speakerdeck.com/michaelisvy/spring-petclinic-sample-application)
+[See the updated presentation here](https://docs.google.com/presentation/d/e/2PACX-1vQCWJZNsQJq_0BN4-dWuaDxuAC6s39Huxl1uIvWL9tMSavzm0Y00IGpkP_iEfrJMySAQrdHF9TUcDQv/pub?start=false&loop=false&delayms=3000)
+
 
 ## Run Petclinic locally
 
