@@ -41,16 +41,21 @@ jobs:
     - name: Checkout memory branch
       run: |
         # Create memory branch if it doesn't exist
-        git fetch origin memory:memory 2>/dev/null || git checkout --orphan memory
-        git checkout memory 2>/dev/null || {
+        if git fetch origin memory:memory 2>/dev/null; then
+          git checkout memory
+          echo "✅ Switched to existing memory branch"
+        else
+          echo "📝 Creating new memory branch"
           git checkout --orphan memory
-          git rm -rf . 2>/dev/null || true
+          # Remove all files without using git rm
+          find . -maxdepth 1 -not -name '.git' -not -name '.' -exec rm -rf {} \; 2>/dev/null || true
           mkdir -p memory_data
           echo '{"embeddings": [], "metadata": {"version": "1.0", "created": "'$(date -u +%Y-%m-%dT%H:%M:%SZ)'"}}' > memory_data/metadata.json
           git add memory_data/metadata.json
           git commit -m "Initialize memory branch" --allow-empty
           git push origin memory
-        }
+          echo "✅ Created new memory branch"
+        fi
         
     - name: Extract and process review
       env:
