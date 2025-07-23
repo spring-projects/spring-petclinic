@@ -1,0 +1,65 @@
+name: Auto Review PR using Memory
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    
+jobs:
+  auto-review:
+    runs-on: ubuntu-latest
+    # Skip if PR is from memory branch or is a draft
+    if: github.head_ref != 'memory' && !github.event.pull_request.draft
+    
+    permissions:
+      contents: read
+      pull-requests: write
+      
+    steps:
+    - name: Checkout PR branch
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Need full history to get diff
+        
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        
+    - name: Fetch memory branch
+      run: |
+        # Try to fetch memory branch, create empty if doesn't exist
+        git fetch origin memory:memory 2>/dev/null || {
+          echo "Memory branch doesn't exist yet, skipping auto-review"
+          echo "SKIP_REVIEW=true" >> $GITHUB_ENV
+        }
+        
+    - name: Generate auto review
+      if: env.SKIP_REVIEW != 'true'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+        REPO_NAME: ${{ github.repository }}
+        BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+      run: |
+        python scripts/generate_review.py
+        
+    - name: Post review comments
+      if: env.SKIP_REVIEW != 'true'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+        REPO_NAME: ${{ github.repository }}
+      run: |
+        # Check if review file was generated
+        if [ -f "generated_review.json" ]; then
+          python scripts/post_review.py
+          echo "✅ Auto-review posted successfully"
+        else
+          echo "ℹ️ No review suggestions generated"
+        fi
