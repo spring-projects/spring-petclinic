@@ -253,8 +253,8 @@ def main():
     metadata_path = "memory_data/metadata.json"
     
     # Configure git first
-    os.system("git config --local user.email 'action@github.com'")
-    os.system("git config --local user.name 'GitHub Action'")
+    os.system("git config --global user.email 'action@github.com'")
+    os.system("git config --global user.name 'GitHub Action'")
     
     # Switch to memory branch to load data
     os.system("git checkout memory")

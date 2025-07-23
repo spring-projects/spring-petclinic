@@ -24,6 +24,11 @@ jobs:
         ref: main
         token: ${{ secrets.GITHUB_TOKEN }}
         
+    - name: Configure Git Identity
+      run: |
+        git config --global user.email "action@github.com"
+        git config --global user.name "GitHub Action"
+        
     - name: Setup Python
       uses: actions/setup-python@v4
       with:
@@ -35,10 +40,6 @@ jobs:
         
     - name: Checkout memory branch
       run: |
-        # Configure git for the runner
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        
         # Create memory branch if it doesn't exist
         git fetch origin memory:memory 2>/dev/null || git checkout --orphan memory
         git checkout memory 2>/dev/null || {
@@ -64,9 +65,6 @@ jobs:
         
     - name: Update memory and push
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        
         # Add all changes in memory_data directory
         git add memory_data/
         
