@@ -67,6 +67,16 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-logging</artifactId>
+    </dependency>
+    <!-- JSON logging support -->
+    <dependency>
+      <groupId>net.logstash.logback</groupId>
+      <artifactId>logstash-logback-encoder</artifactId>
+      <version>7.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
@@ -138,6 +148,11 @@
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>mysql</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>postgresql</artifactId>
       <scope>test</scope>
     </dependency>
 
@@ -441,6 +456,78 @@
             </plugin>
           </plugins>
         </pluginManagement>
+      </build>
+    </profile>
+    <profile>
+      <id>nativeTest</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.graalvm.buildtools</groupId>
+            <artifactId>native-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>test</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <resourcesConfigDirectory>${project.basedir}/src/test/resources</resourcesConfigDirectory>
+              <buildArgs>
+                <buildArg>-g</buildArg>
+                <!-- Enable verbose output for debugging -->
+                <buildArg>-H:+ReportExceptionStackTraces</buildArg>
+                <!-- AOT processing -->
+                <buildArg>-Dspring.aot.enabled=true</buildArg>
+                <!-- Include all Spring test context classes -->
+                <buildArg>--initialize-at-build-time=org.springframework.test.context</buildArg>
+                <buildArg>--initialize-at-build-time=org.springframework.test.context.web</buildArg>
+                <buildArg>--initialize-at-build-time=org.springframework.test.context.support</buildArg>
+                <buildArg>--initialize-at-build-time=org.springframework.test.context.junit.jupiter</buildArg>
+                <buildArg>--initialize-at-build-time=org.springframework.core</buildArg>
+                <buildArg>--initialize-at-build-time=org.springframework.util</buildArg>
+                <buildArg>--initialize-at-build-time=org.springframework.asm</buildArg>
+                <buildArg>--initialize-at-build-time=org.springframework.context.annotation</buildArg>
+                <buildArg>--initialize-at-build-time=org.springframework.objenesis</buildArg>
+                <buildArg>--initialize-at-build-time=ch.qos.logback.core</buildArg>
+                <buildArg>--initialize-at-build-time=ch.qos.logback.core.io.support</buildArg>
+                <buildArg>--initialize-at-run-time=org.springframework.core.io.VfsUtils</buildArg>
+                <buildArg>--initialize-at-build-time=ch.qos.logback.classic</buildArg>
+                <buildArg>--initialize-at-build-time=org.apache.commons.logging.LogAdapter$Slf4jLocationAwareLog</buildArg>
+                <buildArg>--initialize-at-build-time=org.slf4j.helpers.SubstituteLogger</buildArg>
+                <buildArg>--initialize-at-build-time=org.xml.sax.helpers</buildArg>
+                <buildArg>--initialize-at-build-time=org.apache.commons.logging.impl.NoOpLog</buildArg>
+                <buildArg>--initialize-at-build-time=org.springframework.test.context.aot</buildArg>
+                <!-- Enum handling -->
+                <buildArg>-H:+AllowIncompleteClasspath</buildArg>
+                <buildArg>-H:ReflectionConfigurationFiles=${project.basedir}/src/test/resources/META-INF/native-image/reflect-config.json</buildArg>
+                <buildArg>-H:DynamicProxyConfigurationFiles=${project.basedir}/src/test/resources/META-INF/native-image/proxy-config.json</buildArg>
+                <!-- Spring Configuration classes -->
+                <buildArg>--initialize-at-build-time=org.springframework.context.annotation.Configuration</buildArg>
+                <buildArg>--initialize-at-build-time=org.springframework.context.annotation.ConfigurationClassEnhancer</buildArg>
+                <buildArg>--initialize-at-build-time=org.springframework.context.annotation.ConfigurationClassEnhancer$BeanMethodInterceptor</buildArg>
+                <!-- Initialize base CGLIB packages at build time -->
+                <buildArg>--initialize-at-build-time=org.springframework.cglib.core</buildArg>
+                <buildArg>--initialize-at-build-time=org.springframework.cglib.transform</buildArg>
+                <buildArg>--initialize-at-build-time=org.springframework.cglib.util</buildArg>
+
+                <!-- Initialize CGLIB proxy-related packages at runtime -->
+                <buildArg>--initialize-at-run-time=org.springframework.cglib.proxy</buildArg>
+                <buildArg>--initialize-at-run-time=org.springframework.cglib.reflect</buildArg>
+                <!-- Additional FastClass specific configuration -->
+                <buildArg>--initialize-at-build-time=org.springframework.cglib.proxy.MethodProxy$FastClassInfo</buildArg>
+                <buildArg>--initialize-at-build-time=org.springframework.cglib.proxy.FastClass</buildArg>
+                <buildArg>--initialize-at-build-time=org.springframework.cglib.proxy.NoOp$1</buildArg>
+                <buildArg>--initialize-at-build-time=org.springframework.samples.petclinic.PetClinicApplication__TestContext002_BeanDefinitions</buildArg>
+                <buildArg>--initialize-at-build-time=org.springframework.samples.petclinic.system.WebConfiguration</buildArg>
+
+                <!-- Additional options for CGLIB -->
+                <buildArg>-H:+PrintClassInitialization</buildArg>
+              </buildArgs>
+            </configuration>
+          </plugin>
+        </plugins>
       </build>
     </profile>
   </profiles>

@@ -1,0 +1,203 @@
+[
+  {
+    "name": "java.lang.Enum",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allPublicMethods": true,
+    "allPublicFields": true
+  },
+  {
+    "name": "org.springframework.samples.petclinic.system.WebConfiguration$$SpringCGLIB$$FastClass$$0",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allPublicMethods": true,
+    "methods": [
+      {
+        "name": "invoke",
+        "parameterTypes": ["int", "java.lang.Object", "java.lang.Object[]"]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.samples.petclinic.system.WebConfiguration$$SpringCGLIB$$FastClass$$1",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allPublicMethods": true,
+    "methods": [
+      {
+        "name": "invoke",
+        "parameterTypes": ["int", "java.lang.Object", "java.lang.Object[]"]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.samples.petclinic.system.WebConfiguration$$SpringCGLIB$$0",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allPublicMethods": true,
+    "methods": [
+      {
+        "name": "localeResolver",
+        "parameterTypes": []
+      },
+      {
+        "name": "localeChangeInterceptor",
+        "parameterTypes": []
+      },
+      {
+        "name": "addInterceptors",
+        "parameterTypes": ["org.springframework.web.servlet.config.annotation.InterceptorRegistry"]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.cglib.proxy.MethodProxy",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.cglib.proxy.MethodProxy$FastClassInfo",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.context.annotation.ConfigurationClassEnhancer$BeanMethodInterceptor",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.context.annotation.ConfigurationClassEnhancer",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.samples.petclinic.system.WebConfiguration",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allPublicMethods": true,
+    "methods": [
+      {
+        "name": "localeResolver",
+        "parameterTypes": []
+      },
+      {
+        "name": "localeChangeInterceptor",
+        "parameterTypes": []
+      },
+      {
+        "name": "addInterceptors",
+        "parameterTypes": ["org.springframework.web.servlet.config.annotation.InterceptorRegistry"]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.web.servlet.i18n.SessionLocaleResolver",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.web.servlet.i18n.LocaleChangeInterceptor",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.web.servlet.config.annotation.InterceptorRegistry",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.test.context.web.WebAppConfiguration",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "org.springframework.test.context.BootstrapUtils",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "org.springframework.test.context.TestContextManager",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "org.springframework.test.context.junit.jupiter.SpringExtension",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "org.springframework.test.context.support.DependencyInjectionTestExecutionListener",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.test.context.support.DirtiesContextTestExecutionListener",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.test.context.event.EventPublishingTestExecutionListener",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.test.context.support.DefaultTestContextBootstrapper",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.samples.petclinic.system.WebConfiguration$$SpringCGLIB$$0",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.samples.petclinic.system.WebConfiguration$$SpringCGLIB$$FastClass$$1",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.test.context.aot.AotTestContextInitializers__Generated",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allPublicMethods": true
+  }
+]

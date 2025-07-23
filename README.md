@@ -134,6 +134,25 @@ The following items should be installed in your system:
 |The Main Class | [PetClinicApplication](https://github.com/spring-projects/spring-petclinic/blob/main/src/main/java/org/springframework/samples/petclinic/PetClinicApplication.java) |
 |Properties Files | [application.properties](https://github.com/spring-projects/spring-petclinic/blob/main/src/main/resources) |
 |Caching | [CacheConfiguration](https://github.com/spring-projects/spring-petclinic/blob/main/src/main/java/org/springframework/samples/petclinic/system/CacheConfiguration.java) |
+|Logging | [LoggingConfiguration](src/main/java/org/springframework/samples/petclinic/system/LoggingConfiguration.java) |
+
+## Logging Configuration
+
+Spring PetClinic supports different logging configurations, especially for native images:
+
+1. **Standard Logging**: Default logging configuration using Logback.
+   - Configuration file: `src/main/resources/logback.xml`
+
+2. **JSON Logging**: JSON-formatted logs for better integration with log aggregation systems.
+   - Activate with profile: `--spring.profiles.active=json-logging`
+   - Configuration file: `src/main/resources/logback-json.xml`
+
+3. **File-based Logging**: Redirects logs to files, useful for container environments.
+   - Activate with profile: `--spring.profiles.active=file-logging`
+   - Configuration file: `src/main/resources/logback-file.xml`
+   - Log files are written to `/logs/petclinic.log` (mount this directory as a volume in containers)
+
+All logging configurations are properly registered in `PetClinicRuntimeHints` to ensure they work correctly in native images.
 
 ## Interesting Spring Petclinic branches and forks
 

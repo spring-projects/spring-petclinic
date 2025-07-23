@@ -1,0 +1,37 @@
+[
+  {
+    "interfaces": [
+      "org.springframework.samples.petclinic.system.WebConfiguration"
+    ]
+  },
+  {
+    "interfaces": [
+      "org.springframework.web.servlet.config.annotation.WebMvcConfigurer"
+    ]
+  },
+  {
+    "interfaces": [
+      "org.springframework.context.annotation.Configuration"
+    ]
+  },
+  {
+    "interfaces": [
+      "org.springframework.beans.factory.BeanFactory"
+    ]
+  },
+  {
+    "interfaces": [
+      "org.springframework.beans.factory.config.BeanFactoryPostProcessor"
+    ]
+  },
+  {
+    "interfaces": [
+      "org.springframework.beans.factory.config.BeanPostProcessor"
+    ]
+  },
+  {
+    "interfaces": [
+      "org.springframework.context.ApplicationContextInitializer"
+    ]
+  }
+]

@@ -1,0 +1,42 @@
+# Task Breakdown: Configure logging in native images
+
+## Overview
+This task involves setting up proper logging configuration for Spring Boot native images in the PetClinic application. Native images have specific requirements for resource handling that affect logging configuration. The goal is to ensure logs appear as expected and perform well when the application is compiled as a GraalVM native image.
+
+## Task Instructions
+Configure the Spring PetClinic application to support proper logging in GraalVM native images. This requires adding appropriate dependencies, creating logging configuration files, and ensuring these resources are properly included in the native image. Additionally, implement JSON logging format and file-based logging as challenge variations.
+
+## Implementation Tasks
+
+1. **Add logging dependencies**
+   - Add spring-boot-starter-logging dependency to pom.xml if not already included via other starters
+   - Ensure compatibility with GraalVM native image compilation
+
+2. **Create logging configuration files**
+   - Create logback.xml in src/main/resources with basic configuration
+   - Configure appropriate log levels for different packages
+   - Ensure configuration is compatible with native images
+
+3. **Update PetClinicRuntimeHints for logging resources**
+   - Register logging configuration files in RuntimeHints
+   - Ensure META-INF resources for logging are properly included
+
+4. **Implement JSON logging format**
+   - Add JSON encoder dependency (logstash-logback-encoder)
+   - Create logback-json.xml with JSON logging configuration
+   - Add profile support to switch between standard and JSON logging
+
+5. **Implement file-based logging for containers**
+   - Configure file appender in logging configuration
+   - Set up appropriate log rotation policies
+   - Ensure container compatibility with volume mounting for logs
+
+6. **Create tests for logging configuration**
+   - Create test to verify standard logging works in native image
+   - Create test to verify JSON logging format works correctly
+   - Create test to verify file-based logging works in container environment
+
+7. **Document logging configuration**
+   - Update README with information about logging configuration
+   - Document how to switch between different logging formats
+   - Document how to configure log levels

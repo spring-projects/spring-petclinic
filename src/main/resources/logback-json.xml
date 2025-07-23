@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- JSON Console appender configuration -->
+    <appender name="JSON_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <!-- Customize JSON output if needed -->
+            <includeMdcKeyName>requestId</includeMdcKeyName>
+            <includeMdcKeyName>userId</includeMdcKeyName>
+            <timestampPattern>yyyy-MM-dd'T'HH:mm:ss.SSS'Z'</timestampPattern>
+            <customFields>{"application":"spring-petclinic"}</customFields>
+        </encoder>
+    </appender>
+
+    <!-- Root logger level -->
+    <root level="INFO">
+        <appender-ref ref="JSON_CONSOLE" />
+    </root>
+
+    <!-- Application-specific logger levels -->
+    <logger name="org.springframework.samples.petclinic" level="INFO" />
+    <logger name="org.springframework" level="INFO" />
+    <logger name="org.hibernate" level="WARN" />
+</configuration>
