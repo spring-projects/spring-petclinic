@@ -1,0 +1,174 @@
+name: PR Label Management
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  manage-labels:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Add Review label on PR creation
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            // Add Review label to the PR
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              labels: ['Review']
+            });
+            
+            console.log(`Added Review label to PR #${context.payload.pull_request.number}`);
+            
+            // Extract related issue numbers from PR title and body
+            const prText = `${context.payload.pull_request.title} ${context.payload.pull_request.body || ''}`;
+            const issuePattern = /#(\d+)/g;
+            const relatedIssues = new Set();
+            let match;
+            
+            while ((match = issuePattern.exec(prText)) !== null) {
+              relatedIssues.add(match[1]);
+            }
+            
+            // Also check commit messages for issue references
+            const commits = await github.rest.pulls.listCommits({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number
+            });
+            
+            for (const commit of commits.data) {
+              const commitMessage = commit.commit.message;
+              while ((match = issuePattern.exec(commitMessage)) !== null) {
+                relatedIssues.add(match[1]);
+              }
+            }
+            
+            // Add Review label to all related issues
+            for (const issueNumber of relatedIssues) {
+              try {
+                // Check if issue exists
+                await github.rest.issues.get({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: parseInt(issueNumber)
+                });
+                
+                // Add Review label to the issue
+                await github.rest.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: parseInt(issueNumber),
+                  labels: ['Review']
+                });
+                
+                console.log(`Added Review label to related issue #${issueNumber}`);
+              } catch (error) {
+                console.log(`Error processing issue #${issueNumber}: ${error.message}`);
+              }
+            }
+
+      - name: Handle PR approval
+        if: github.event_name == 'pull_request_review' && github.event.review.state == 'approved'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            
+            // Remove Review label and add Verified label to the PR
+            try {
+              // First try to remove the Review label
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                name: 'Review'
+              });
+              console.log(`Removed Review label from PR #${prNumber}`);
+            } catch (error) {
+              console.log(`Note: Review label might not exist on PR #${prNumber}: ${error.message}`);
+            }
+            
+            // Add Verified label to the PR
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              labels: ['Verified']
+            });
+            console.log(`Added Verified label to PR #${prNumber}`);
+            
+            // Extract related issue numbers from PR title and body
+            const prText = `${context.payload.pull_request.title} ${context.payload.pull_request.body || ''}`;
+            const issuePattern = /#(\d+)/g;
+            const relatedIssues = new Set();
+            let match;
+            
+            while ((match = issuePattern.exec(prText)) !== null) {
+              relatedIssues.add(match[1]);
+            }
+            
+            // Also check commit messages for issue references
+            const commits = await github.rest.pulls.listCommits({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber
+            });
+            
+            for (const commit of commits.data) {
+              const commitMessage = commit.commit.message;
+              while ((match = issuePattern.exec(commitMessage)) !== null) {
+                relatedIssues.add(match[1]);
+              }
+            }
+            
+            // Update labels on all related issues
+            for (const issueNumber of relatedIssues) {
+              try {
+                // Check if issue exists
+                await github.rest.issues.get({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: parseInt(issueNumber)
+                });
+                
+                // Try to remove Review label from the issue
+                try {
+                  await github.rest.issues.removeLabel({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: parseInt(issueNumber),
+                    name: 'Review'
+                  });
+                  console.log(`Removed Review label from related issue #${issueNumber}`);
+                } catch (error) {
+                  console.log(`Note: Review label might not exist on issue #${issueNumber}: ${error.message}`);
+                }
+                
+                // Add Verified label to the issue
+                await github.rest.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: parseInt(issueNumber),
+                  labels: ['Verified']
+                });
+                console.log(`Added Verified label to related issue #${issueNumber}`);
+              } catch (error) {
+                console.log(`Error processing issue #${issueNumber}: ${error.message}`);
+              }
+            }
