@@ -5,24 +5,367 @@ on:
     branches: [ "main", "scenario/*", "eval/*", "feature/*" ]
   pull_request:
     branches: [ "main", "scenario/*", "eval/*", "feature/*" ]
+  issue_comment:
+    types: [created]
 
 jobs:
-  build:
+  # ──────────── 1. collect and process tests ────────────
+  collect-process-tests:
     runs-on: ubuntu-latest
     permissions:
-      issues: write        # so we can create & edit comments
       contents: read
-
+    outputs:
+      fail_to_pass: ${{ steps.combine.outputs.fail_to_pass }}
+      pass_to_pass: ${{ steps.combine.outputs.pass_to_pass }}
+      tests: ${{ steps.combine.outputs.tests }}
+      comment_id: ${{ steps.combine.outputs.comment_id }}
+    if: ${{ github.event_name != 'issue_comment' || contains(github.event.comment.body, 'FAIL_TO_PASS') || contains(github.event.comment.body, 'PASS_TO_PASS') }}
     steps:
-      # ──────────── 1. checkout ────────────
       - uses: actions/checkout@v4
 
-      # ──────────── 2. post placeholder comment (EARLY) ────────────
+      # ─── 1.1 collect issue numbers based on event type ───
+      - name: Collect issue numbers based on event type
+        id: collect_issues
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          # Initialize issue numbers variable
+          ISSUE_NUMBERS=""
+          
+          # Handle different event types
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "Collecting issue numbers from commits in PR #$PR_NUMBER"
+          
+            # Get all commits in the PR
+            COMMITS=$(gh api repos/$REPO/pulls/$PR_NUMBER/commits --jq '.[].sha')
+          
+            # Initialize an empty array for issue numbers
+            ISSUE_NUMBERS_ARRAY=()
+          
+            # For each commit, extract linked issue numbers
+            for COMMIT in $COMMITS; do
+              echo "Processing commit $COMMIT"
+          
+              # Get commit message
+              COMMIT_MSG=$(gh api repos/$REPO/commits/$COMMIT --jq '.commit.message')
+          
+              # Extract issue numbers using regex (e.g., #123, fixes #456, etc.)
+              ISSUES=$(echo "$COMMIT_MSG" | grep -o '#[0-9]\+' | sed 's/#//')
+          
+              if [ -n "$ISSUES" ]; then
+                echo "Found issues in commit $COMMIT: $ISSUES"
+                # Add to our array
+                for ISSUE in $ISSUES; do
+                  ISSUE_NUMBERS_ARRAY+=("$ISSUE")
+                done
+              fi
+            done
+          
+            # Remove duplicates and create JSON array
+            UNIQUE_ISSUES=$(echo "${ISSUE_NUMBERS_ARRAY[@]}" | tr ' ' '\n' | sort -u)
+          
+            if [ -z "$UNIQUE_ISSUES" ]; then
+              echo "No issue numbers found in commit messages, using PR number as fallback"
+              ISSUE_NUMBERS="[\"${{ github.event.pull_request.number }}\"]"
+            else
+              # Convert to JSON array
+              ISSUE_NUMBERS=$(echo "$UNIQUE_ISSUES" | jq -R . | jq -s .)
+            fi
+          elif [[ "${{ github.event_name }}" == "push" ]]; then
+            echo "Extracting issue numbers from commit message"
+          
+            # Get commit message
+            COMMIT_MSG="${{ github.event.head_commit.message }}"
+          
+            # Extract issue numbers using regex (e.g., #123, fixes #456, etc.)
+            ISSUES=$(echo "$COMMIT_MSG" | grep -o '#[0-9]\+' | sed 's/#//')
+          
+            if [ -n "$ISSUES" ]; then
+              echo "Found issues in commit message: $ISSUES"
+          
+              # Initialize an empty array for issue numbers
+              ISSUE_NUMBERS_ARRAY=()
+          
+              # Add to our array
+              for ISSUE in $ISSUES; do
+                ISSUE_NUMBERS_ARRAY+=("$ISSUE")
+              done
+          
+              # Remove duplicates and create JSON array
+              UNIQUE_ISSUES=$(echo "${ISSUE_NUMBERS_ARRAY[@]}" | tr ' ' '\n' | sort -u)
+          
+              # Convert to JSON array
+              ISSUE_NUMBERS=$(echo "$UNIQUE_ISSUES" | jq -R . | jq -s .)
+            else
+              echo "No issue numbers found in commit message, using empty array as fallback"
+              ISSUE_NUMBERS="[\"\"]"
+            fi
+          elif [[ "${{ github.event_name }}" == "issue_comment" ]]; then
+            echo "Using issue number from comment event"
+            ISSUE_NUMBERS="[\"${{ github.event.issue.number }}\"]"
+          else
+            echo "Using fallback issue number from inputs"
+            ISSUE_NUMBERS="[\"\"]"
+          fi
+          
+          echo "Found issue numbers: $ISSUE_NUMBERS"
+          # Escape the JSON string for GitHub Actions output
+          ESCAPED_ISSUE_NUMBERS=$(echo "$ISSUE_NUMBERS" | jq -c .)
+          echo "issue_numbers=$ESCAPED_ISSUE_NUMBERS" >> $GITHUB_OUTPUT
+
+      # ─── 1.2 extract test names from issues ───
+      - name: Extract test names for issues
+        id: extract_tests
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBERS: ${{ steps.collect_issues.outputs.issue_numbers }}
+          REPO: ${{ github.repository }}
+        run: |
+          # Initialize arrays for test results
+          FAIL_TO_PASS=()
+          PASS_TO_PASS=()
+          TESTS=()
+          COMMENT_ID=""
+          
+          # Process each issue number
+          for ISSUE_NUMBER in $(echo $ISSUE_NUMBERS | jq -r '.[]'); do
+            if [[ -z "$ISSUE_NUMBER" || "$ISSUE_NUMBER" == "null" ]]; then
+              continue
+            fi
+          
+            echo "Processing issue #$ISSUE_NUMBER"
+          
+            # Function to extract FAIL_TO_PASS and PASS_TO_PASS from text
+            extract_test_fields() {
+              local text="$1"
+              local fail_to_pass=""
+              local pass_to_pass=""
+          
+              if [[ -n "$text" ]]; then
+                # Find FAIL_TO_PASS pattern
+                if [[ "$text" =~ FAIL_TO_PASS:[[:space:]]*([^$'\n']+) ]]; then
+                  fail_to_pass="${BASH_REMATCH[1]}"
+                fi
+          
+                # Find PASS_TO_PASS pattern
+                if [[ "$text" =~ PASS_TO_PASS:[[:space:]]*([^$'\n']+) ]]; then
+                  pass_to_pass="${BASH_REMATCH[1]}"
+                fi
+              fi
+          
+              echo "$fail_to_pass|$pass_to_pass"
+            }
+          
+            # First check issue comments
+            echo "Checking issue comments for test fields..."
+            COMMENTS=$(gh api repos/$REPO/issues/$ISSUE_NUMBER/comments --jq '.[] | {id: .id, body: .body, created_at: .created_at}')
+          
+            if [[ -n "$COMMENTS" ]]; then
+              # Process all comments to find the latest one with FAIL_TO_PASS or PASS_TO_PASS
+              LATEST_COMMENT_WITH_VALUES=""
+              LATEST_COMMENT_ID=""
+              LATEST_FAIL_TO_PASS=""
+              LATEST_PASS_TO_PASS=""
+          
+              while IFS= read -r COMMENT; do
+                COMMENT_BODY=$(echo "$COMMENT" | jq -r '.body')
+                CURRENT_COMMENT_ID=$(echo "$COMMENT" | jq -r '.id')
+          
+                RESULT=$(extract_test_fields "$COMMENT_BODY")
+                IFS='|' read -r COMMENT_FAIL COMMENT_PASS <<< "$RESULT"
+          
+                if [[ -n "$COMMENT_FAIL" || -n "$COMMENT_PASS" ]]; then
+                  LATEST_COMMENT_WITH_VALUES="$COMMENT"
+                  LATEST_COMMENT_ID="$CURRENT_COMMENT_ID"
+          
+                  if [[ -n "$COMMENT_FAIL" ]]; then
+                    LATEST_FAIL_TO_PASS="$COMMENT_FAIL"
+                    echo "Found FAIL_TO_PASS in issue comment $CURRENT_COMMENT_ID: $COMMENT_FAIL"
+                  fi
+          
+                  if [[ -n "$COMMENT_PASS" ]]; then
+                    LATEST_PASS_TO_PASS="$COMMENT_PASS"
+                    echo "Found PASS_TO_PASS in issue comment $CURRENT_COMMENT_ID: $COMMENT_PASS"
+                  fi
+                fi
+              done <<< "$COMMENTS"
+          
+              # Use values from the latest comment
+              if [[ -n "$LATEST_COMMENT_WITH_VALUES" ]]; then
+                COMMENT_ID="$LATEST_COMMENT_ID"
+          
+                if [[ -n "$LATEST_FAIL_TO_PASS" ]]; then
+                  FAIL_TO_PASS=("$LATEST_FAIL_TO_PASS")
+                  echo "Using FAIL_TO_PASS from latest comment $COMMENT_ID: $LATEST_FAIL_TO_PASS"
+                fi
+          
+                if [[ -n "$LATEST_PASS_TO_PASS" ]]; then
+                  PASS_TO_PASS=("$LATEST_PASS_TO_PASS")
+                  echo "Using PASS_TO_PASS from latest comment $COMMENT_ID: $LATEST_PASS_TO_PASS"
+                fi
+              fi
+            fi
+          
+            # If not found in comments, check commit messages
+            if [[ ${#FAIL_TO_PASS[@]} -eq 0 && ${#PASS_TO_PASS[@]} -eq 0 ]]; then
+              echo "Checking commit messages for test fields..."
+          
+              # Get linked commit IDs
+              COMMIT_IDS=$(gh api repos/$REPO/issues/$ISSUE_NUMBER/timeline --jq '.[] | select(.event == "referenced" and .commit_id != null) | .commit_id')
+          
+              if [[ -z "$COMMIT_IDS" ]]; then
+                echo "No directly linked commits found, checking PRs..."
+          
+                # Try to get commits from PRs
+                PR_NUMBERS=$(gh api repos/$REPO/issues/$ISSUE_NUMBER/timeline --jq '.[] | select(.event == "cross-referenced" and .source.issue.pull_request != null) | .source.issue.number')
+          
+                if [[ -n "$PR_NUMBERS" ]]; then
+                  for PR in $PR_NUMBERS; do
+                    echo "Fetching commits from PR #$PR..."
+                    PR_COMMITS=$(gh api repos/$REPO/pulls/$PR/commits --jq '.[].sha')
+          
+                    if [[ -n "$PR_COMMITS" ]]; then
+                      COMMIT_IDS="$COMMIT_IDS"$'\n'"$PR_COMMITS"
+                    fi
+                  done
+                fi
+              fi
+          
+              # Process commit messages to find the latest one with FAIL_TO_PASS or PASS_TO_PASS
+              if [[ -n "$COMMIT_IDS" ]]; then
+                # Variables to track the latest commit with values
+                LATEST_COMMIT_ID=""
+                LATEST_COMMIT_DATE=""
+                LATEST_COMMIT_FAIL=""
+                LATEST_COMMIT_PASS=""
+          
+                while IFS= read -r COMMIT_ID; do
+                  if [[ -z "$COMMIT_ID" ]]; then
+                    continue
+                  fi
+          
+                  echo "Fetching message for commit: $COMMIT_ID"
+                  COMMIT_DATA=$(gh api repos/$REPO/commits/$COMMIT_ID --jq '{message: .commit.message, date: .commit.author.date}')
+                  COMMIT_MSG=$(echo "$COMMIT_DATA" | jq -r '.message')
+                  COMMIT_DATE=$(echo "$COMMIT_DATA" | jq -r '.date')
+          
+                  if [[ -n "$COMMIT_MSG" ]]; then
+                    RESULT=$(extract_test_fields "$COMMIT_MSG")
+                    IFS='|' read -r COMMIT_FAIL COMMIT_PASS <<< "$RESULT"
+          
+                    if [[ -n "$COMMIT_FAIL" || -n "$COMMIT_PASS" ]]; then
+                      # Check if this commit is newer than our current latest
+                      if [[ -z "$LATEST_COMMIT_DATE" || "$COMMIT_DATE" > "$LATEST_COMMIT_DATE" ]]; then
+                        LATEST_COMMIT_ID="$COMMIT_ID"
+                        LATEST_COMMIT_DATE="$COMMIT_DATE"
+                        LATEST_COMMIT_FAIL="$COMMIT_FAIL"
+                        LATEST_COMMIT_PASS="$COMMIT_PASS"
+          
+                        if [[ -n "$COMMIT_FAIL" ]]; then
+                          echo "Found FAIL_TO_PASS in commit $COMMIT_ID: $COMMIT_FAIL"
+                        fi
+          
+                        if [[ -n "$COMMIT_PASS" ]]; then
+                          echo "Found PASS_TO_PASS in commit $COMMIT_ID: $COMMIT_PASS"
+                        fi
+                      fi
+                    fi
+                  fi
+                done <<< "$COMMIT_IDS"
+          
+                # Use values from the latest commit
+                if [[ -n "$LATEST_COMMIT_ID" ]]; then
+                  if [[ -n "$LATEST_COMMIT_FAIL" ]]; then
+                    FAIL_TO_PASS=("$LATEST_COMMIT_FAIL")
+                    echo "Using FAIL_TO_PASS from latest commit $LATEST_COMMIT_ID: $LATEST_COMMIT_FAIL"
+                  fi
+          
+                  if [[ -n "$LATEST_COMMIT_PASS" ]]; then
+                    PASS_TO_PASS=("$LATEST_COMMIT_PASS")
+                    echo "Using PASS_TO_PASS from latest commit $LATEST_COMMIT_ID: $LATEST_COMMIT_PASS"
+                  fi
+                fi
+              fi
+            fi
+          done
+          
+          # Convert arrays to comma-separated strings
+          FAIL_TO_PASS_STR=$(IFS=,; echo "${FAIL_TO_PASS[*]}")
+          PASS_TO_PASS_STR=$(IFS=,; echo "${PASS_TO_PASS[*]}")
+          
+          # Convert to JSON arrays if not empty
+          if [[ -n "$FAIL_TO_PASS_STR" ]]; then
+            FAIL_TO_PASS_JSON=$(echo "$FAIL_TO_PASS_STR" | jq -R -c 'split(",") | map(select(length > 0))')
+          else
+            FAIL_TO_PASS_JSON="[]"
+          fi
+
+          if [[ -n "$PASS_TO_PASS_STR" ]]; then
+            PASS_TO_PASS_JSON=$(echo "$PASS_TO_PASS_STR" | jq -R -c 'split(",") | map(select(length > 0))')
+          else
+            PASS_TO_PASS_JSON="[]"
+          fi
+          
+          # Combine tests
+          if [[ -n "$FAIL_TO_PASS_STR" || -n "$PASS_TO_PASS_STR" ]]; then
+            TESTS_STR="$FAIL_TO_PASS_STR,$PASS_TO_PASS_STR"
+            TESTS_STR=$(echo "$TESTS_STR" | sed 's/^,//;s/,$//')
+          fi
+          
+          # Output results
+          echo "fail_to_pass=$FAIL_TO_PASS_JSON" >> $GITHUB_OUTPUT
+          echo "pass_to_pass=$PASS_TO_PASS_JSON" >> $GITHUB_OUTPUT
+          echo "tests=$TESTS_STR" >> $GITHUB_OUTPUT
+          echo "comment_id=$COMMENT_ID" >> $GITHUB_OUTPUT
+
+      # ─── 1.3 combine test results ───
+      - name: Combine test results
+        id: combine
+        shell: bash
+        run: |
+          # Just pass through the outputs from extract_tests
+          echo "fail_to_pass=${{ steps.extract_tests.outputs.fail_to_pass }}" >> $GITHUB_OUTPUT
+          echo "pass_to_pass=${{ steps.extract_tests.outputs.pass_to_pass }}" >> $GITHUB_OUTPUT
+          echo "tests=${{ steps.extract_tests.outputs.tests }}" >> $GITHUB_OUTPUT
+          echo "comment_id=${{ steps.extract_tests.outputs.comment_id }}" >> $GITHUB_OUTPUT
+
+      # ─── 1.4 check if FAIL_TO_PASS or PASS_TO_PASS found ───
+      - name: Check if FAIL_TO_PASS or PASS_TO_PASS found
+        if: ${{ github.event_name == 'pull_request' && steps.combine.outputs.fail_to_pass == '[]' && steps.combine.outputs.pass_to_pass == '[]' }}
+        shell: bash
+        run: |
+          echo "::error::FAIL_TO_PASS or PASS_TO_PASS not found in commit messages or issue comments, please add FAIL_TO_PASS or PASS_TO_PASS to issue comment"
+          exit 1
+
+  # ──────────── 2. Run tests and handle comments ────────────
+  run-tests-and-comments:
+    needs: collect-process-tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    if: ${{ always() && (github.event_name != 'pull_request' || needs.collect-process-tests.outputs.fail_to_pass != '[]' || needs.collect-process-tests.outputs.pass_to_pass != '[]') }}
+    outputs:
+      comment_id: ${{ steps.create_comment.outputs.comment_id }}
+      status: ${{ job.status }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # Step 1: Create placeholder comment
       - name: Create placeholder issue comment
         id: create_comment
+        if: ${{ github.event_name == 'push' || github.event_name == 'issue_comment' }}
         uses: actions/github-script@v7
         env:
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          WORKFLOW_NAME: ${{ github.workflow }}
+          FAIL_TO_PASS: ${{ needs.collect-process-tests.outputs.fail_to_pass }}
+          PASS_TO_PASS: ${{ needs.collect-process-tests.outputs.pass_to_pass }}
+          COMMENT_ID: ${{ needs.collect-process-tests.outputs.comment_id }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           result-encoding: string
@@ -43,67 +386,105 @@ jobs:
               }
             }
             
+            // • Issue comment context
+            if (!issueNum && context.payload.issue) {
+              issueNum = context.payload.issue.number;
+            }
+            
             if (!issueNum) { core.info('No #issue reference found.'); return; }
             
-            const body = `⏳ **[${process.env.GITHUB_WORKFLOW}](${process.env.RUN_URL})** has **started**…`;
+            let bodyContent = '';
+
+            if (!process.env.COMMENT_ID){
+              if (process.env.FAIL_TO_PASS && process.env.FAIL_TO_PASS !== '[]') {
+                // Parse JSON array and convert to comma-separated string
+                core.info('FAIL_TO_PASS: '+process.env.FAIL_TO_PASS);
+                const failToPassArray = JSON.parse(process.env.FAIL_TO_PASS);              
+                const failToPassString = failToPassArray.join(', ');            
+                bodyContent += `FAIL_TO_PASS: ${failToPassString}\n`;
+              }
+            
+              if (process.env.PASS_TO_PASS && process.env.PASS_TO_PASS !== '[]') {
+                // Parse JSON array and convert to comma-separated string
+                const passToPassArray = JSON.parse(process.env.PASS_TO_PASS);
+                const passToPassString = passToPassArray.join(', ');
+                bodyContent += `PASS_TO_PASS: ${passToPassString}\n`;
+              }
+            }
+
+            bodyContent += `\n⏳ **[${process.env.WORKFLOW_NAME}](${process.env.RUN_URL})** has **started**…`;
+
+            // If we have an existing comment ID, update it instead of creating a new one
+            if (false && process.env.COMMENT_ID) {
+              try {
+                // Get existing comment body
+                const { data: existingComment } = await github.rest.issues.getComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: Number(process.env.COMMENT_ID)
+                });
+
+                // Append new content to existing body
+                const updatedBody = existingComment.body + '\n' + bodyContent;
+
+                await github.rest.issues.updateComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: Number(process.env.COMMENT_ID),
+                  body: updatedBody
+                });
+                core.setOutput('comment_id', process.env.COMMENT_ID);
+                return;
+              } catch (error) {
+                core.warning(`Failed to update comment ${process.env.COMMENT_ID}: ${error.message}`);
+                // Fall through to create a new comment
+              }
+            }
+
+            // Create a new comment
             const { data: comment } = await github.rest.issues.createComment({
               owner: context.repo.owner,
-              repo:  context.repo.repo,
+              repo: context.repo.repo,
               issue_number: issueNum,
-              body
+              body: bodyContent
             });
             core.setOutput('comment_id', comment.id.toString());
 
-      # ──────────── 3. Java / Maven setup ────────────
+      # Step 2: Setup Java and Maven
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
-          java-version: 24
-          distribution: temurin
-          cache: maven
+          java-version: '24'
+          distribution: 'temurin'
+          cache: 'maven'
 
-      # ──────────── 4. compile ────────────
-      - run: mvn -B compile --file pom.xml
+      # Step 3: Compile project
+      - name: Compile project
+        shell: bash
+        run: mvn -B compile --file pom.xml
 
-      # ──────────── 5. extract FAIL_TO_PASS / PASS_TO_PASS ────────────
-      - name: Extract test names
-        id: extract_tests
-        uses: actions/github-script@v7
-        with:
-          result-encoding: string
-          script: |
-            const grab = (txt, re) => [...txt.matchAll(re)].flatMap(m => m[1].split(/[ ,]+/));
-            const uniq = a => [...new Set(a.filter(Boolean))];
-            
-            let blocks = [];
-            if (context.eventName === 'pull_request') {
-              blocks = [`${context.payload.pull_request.title}\n${context.payload.pull_request.body}`];
-            } else if (context.eventName === 'push') {
-              blocks = context.payload.commits.map(c => c.message);
-            }
-            
-            const fail = blocks.flatMap(b => grab(b, /FAIL_TO_PASS:\s*([^\n]+)/gi));
-            const pass = blocks.flatMap(b => grab(b, /PASS_TO_PASS:\s*([^\n]+)/gi));
-            const tests = uniq([...fail, ...pass]).join(',');
-            core.setOutput('tests', tests);
-
-      # ──────────── 6. run tests ────────────
+      # Step 4: Run tests
       - name: Run selected tests
-        if: ${{ steps.extract_tests.outputs.tests }}
-        run: mvn -B -Dtest="${{ steps.extract_tests.outputs.tests }}" test
+        if: ${{ needs.collect-process-tests.outputs.tests != '' }}
+        shell: bash
+        run: mvn -B -Dtest="${{ needs.collect-process-tests.outputs.tests }}" test
 
       - name: Run all tests
-        if: ${{ steps.extract_tests.outputs.tests == '' }}
+        if: ${{ needs.collect-process-tests.outputs.tests == '' }}
+        shell: bash
         run: mvn -B test --file pom.xml
 
-      # ──────────── 7. update the same comment (FINAL) ────────────
+      # Step 5: Update comment with final status
       - name: Update issue comment with final status
-        if: always()
+        if: ${{ always() && (github.event_name == 'push' || github.event_name == 'issue_comment') }}
         uses: actions/github-script@v7
         env:
           COMMENT_ID: ${{ steps.create_comment.outputs.comment_id }}
-          RUN_URL:    ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          WORKFLOW_NAME: ${{ github.workflow }}
           JOB_STATUS: ${{ job.status }}
+          FAIL_TO_PASS: ${{ needs.collect-process-tests.outputs.fail_to_pass }}
+          PASS_TO_PASS: ${{ needs.collect-process-tests.outputs.pass_to_pass }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -116,11 +497,30 @@ jobs:
               cancelled: '🟡'
             }[process.env.JOB_STATUS] || '🟡';
             
-            const body = `${statusEmoji} **[${process.env.GITHUB_WORKFLOW}](${process.env.RUN_URL})** finished with status **${process.env.JOB_STATUS.toUpperCase()}**.`;
-            
+            let bodyContent = '';
+            if (!process.env.COMMENT_ID){
+              if (process.env.FAIL_TO_PASS && process.env.FAIL_TO_PASS !== '[]') {
+                // Parse JSON array and convert to comma-separated string
+                const quoted = process.env.FAIL_TO_PASS.replace(/(\w+)/g, '"$1"');          
+                const failToPassArray = JSON.parse(quoted);                            
+                const failToPassString = failToPassArray.join(', ');
+                bodyContent += `FAIL_TO_PASS: ${failToPassString}\n`;
+              }
+  
+              if (process.env.PASS_TO_PASS && process.env.PASS_TO_PASS !== '[]') {
+                // Parse JSON array and convert to comma-separated string
+                const quoted = process.env.PASS_TO_PASS.replace(/(\w+)/g, '"$1"');
+                const passToPassArray = JSON.parse(quoted);
+                const passToPassString = passToPassArray.join(', ');
+                bodyContent += `PASS_TO_PASS: ${passToPassString}\n`;
+              }
+            }
+
+            bodyContent += `\n${statusEmoji} **[${process.env.WORKFLOW_NAME}](${process.env.RUN_URL})** finished with status **${process.env.JOB_STATUS.toUpperCase()}**.`;
+
             await github.rest.issues.updateComment({
               owner: context.repo.owner,
-              repo:  context.repo.repo,
+              repo: context.repo.repo,
               comment_id: Number(process.env.COMMENT_ID),
-              body
+              body: bodyContent
             });
