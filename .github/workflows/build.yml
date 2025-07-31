@@ -30,7 +30,7 @@ jobs:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     container:
-      image: ${{ MAVEN_IMAGE }}
+      image: $MAVEN_IMAGE
     steps:
       - uses: actions/checkout@v4
       - name: Run Tests
@@ -40,7 +40,7 @@ jobs:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     container:
-      image: ${{ MAVEN_IMAGE }}
+      image: $MAVEN_IMAGE
     steps:
       - uses: actions/checkout@v4
       - name: Build App (skip tests)
