@@ -6,17 +6,16 @@ on:
   push:
     branches: [ main ]
 
+env:
+  JAVA_VERSION: '17'
+  MAVEN_IMAGE: maven:3.8.5-openjdk-17
 
 jobs:
-  env:
-    JAVA_VERSION: '17'
-    MAVEN_IMAGE: maven:3.8.5-openjdk-17
-
   checkstyle:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     container:
-      image: ${{ env.MAVEN_IMAGE }}
+      image: ${{ MAVEN_IMAGE }}
     steps:
       - uses: actions/checkout@v4
       - name: Run Checkstyle
@@ -31,7 +30,7 @@ jobs:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     container:
-      image: ${{ env.MAVEN_IMAGE }}
+      image: ${{ MAVEN_IMAGE }}
     steps:
       - uses: actions/checkout@v4
       - name: Run Tests
@@ -41,7 +40,7 @@ jobs:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     container:
-      image: ${{ env.MAVEN_IMAGE }}
+      image: ${{ MAVEN_IMAGE }}
     steps:
       - uses: actions/checkout@v4
       - name: Build App (skip tests)
