@@ -6,11 +6,12 @@ on:
   push:
     branches: [ main ]
 
-env:
-  JAVA_VERSION: '17'
-  MAVEN_IMAGE: maven:3.8.5-openjdk-17
 
 jobs:
+  env:
+    JAVA_VERSION: '17'
+    MAVEN_IMAGE: maven:3.8.5-openjdk-17
+
   checkstyle:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
