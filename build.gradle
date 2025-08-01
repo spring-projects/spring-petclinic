@@ -89,3 +89,13 @@ wrapper {
   gradleVersion = "8.14.3"
   distributionType = Wrapper.DistributionType.ALL
 }
+
+import java.awt.Desktop
+import java.io.File
+
+task testResults {
+  doLast {
+    def testResultsFile = file("build/reports/tests/test/index.html")
+    Desktop.desktop.open(testResultsFile)
+  }
+}
