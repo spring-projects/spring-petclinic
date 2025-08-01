@@ -1,0 +1,1 @@
+# 2. Go to https://github.com/spring-projects/spring-petclinic, fork it, and clone the forked repo.
