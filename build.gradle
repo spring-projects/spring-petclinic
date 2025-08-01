@@ -15,9 +15,9 @@ group = 'org.springframework.samples'
 version = '3.5.0'
 
 java {
-  toolchain {
-    languageVersion = JavaLanguageVersion.of(17)
-  }
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(24))
+    }
 }
 
 repositories {
