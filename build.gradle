@@ -7,12 +7,14 @@ plugins {
   id 'org.cyclonedx.bom' version '2.3.1'
   id 'io.spring.javaformat' version '0.0.46'
   id "io.spring.nohttp" version "0.0.11"
+  id 'pl.allegro.tech.build.axion-release' version '1.15.2'
 }
 
 gradle.startParameter.excludedTaskNames += [ "checkFormatAot", "checkFormatAotTest" ]
 
 group = 'org.springframework.samples'
-version = '3.5.0'
+
+project.version = scmVersion.version
 
 java {
     toolchain {
