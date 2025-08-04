@@ -14,6 +14,11 @@ This project is forked from: https://github.com/spring-projects/spring-petclinic
 * Run: `./nexus start`
 
 ### 2. Configure admin user
+* Open your browser and go to: `http://localhost:8081/#admin/repository`
+* The default login:
+  * Username: admin
+  * Password: in file `sonatype-work/nexus3/admin.password`
+* Create new password
 
 ### 3. Configure proxy repo
     1. For Maven: Create setting.xml, maven should use it as mirror
