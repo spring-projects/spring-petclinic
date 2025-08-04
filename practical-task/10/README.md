@@ -11,3 +11,4 @@
 
 3. Add and commit some changes to the project and make the project release:
     ![Screenshot](./3.png)
+    ![Screenshot](./4.png)
