@@ -6,15 +6,22 @@ This project is forked from: https://github.com/spring-projects/spring-petclinic
 
 ## Tasks
 
-1. Install Nexus
-2. Configure admin user
-3. Configure proxy repo
+### 1. Install Nexus
+* Go to: https://help.sonatype.com/en/download.html
+* Download the latest version for your OS
+* Unzip the downloaded file in a desired folder
+* `cd nexus-[version]/bin`
+* Run: `./nexus start`
+
+### 2. Configure admin user
+
+### 3. Configure proxy repo
     1. For Maven: Create setting.xml, maven should use it as mirror
     2. For Gradle: Define proxy repo in gradle settings
-4. Upload spring-petclinic Artifact to Nexus
+### 4. Upload spring-petclinic Artifact to Nexus
     1. For Maven: Use the deploy plugin in your pom.xml. You should be able to upload your artifacts to Nexus using Maven.
     2. For Gradle: Define artifact upload as a separate Gradle task
-5. Search artifacts in Nexus
+### 5. Search artifacts in Nexus
 
 <hr>
 
