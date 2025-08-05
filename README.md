@@ -32,6 +32,9 @@ This project is forked from: https://github.com/spring-projects/spring-petclinic
 ### 4. Upload spring-petclinic Artifact to Nexus
     1. For Maven: Use the deploy plugin in your pom.xml. You should be able to upload your artifacts to Nexus using Maven.
     2. For Gradle: Define artifact upload as a separate Gradle task
+* Update `build.gradle` (check the commit)
+* Run `./gradlew uploadArtifact`
+
 ### 5. Search artifacts in Nexus
 
 <hr>
