@@ -1,3 +1,16 @@
+# Practical Tasks
+
+This project is forked from: https://github.com/spring-projects/spring-petclinic and is used for the practical tasks that are a part of the `Internship: DevOps` course. Each practical task has it's own branch and a folder named `[name]-task` with it's own README.md:
+
+### 1. Gradle:
+    branch: gradle
+    folder: gradle-task
+### 2. Nexus:
+    branch: nexus
+    folder: nexus-task
+
+<hr>
+
 # Spring PetClinic Sample Application [![Build Status](https://github.com/spring-projects/spring-petclinic/actions/workflows/maven-build.yml/badge.svg)](https://github.com/spring-projects/spring-petclinic/actions/workflows/maven-build.yml)[![Build Status](https://github.com/spring-projects/spring-petclinic/actions/workflows/gradle-build.yml/badge.svg)](https://github.com/spring-projects/spring-petclinic/actions/workflows/gradle-build.yml)
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/spring-projects/spring-petclinic) [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=7517918)
