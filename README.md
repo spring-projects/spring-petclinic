@@ -36,6 +36,8 @@ This project is forked from: https://github.com/spring-projects/spring-petclinic
 * Run `./gradlew uploadArtifact`
 
 ### 5. Search artifacts in Nexus
+* Go to: `http://localhost:8081/#browse/browse:maven-snapshots`
+![Screenshot](./nexus-task/1.png)
 
 <hr>
 
