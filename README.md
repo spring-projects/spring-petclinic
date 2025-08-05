@@ -23,6 +23,12 @@ This project is forked from: https://github.com/spring-projects/spring-petclinic
 ### 3. Configure proxy repo
     1. For Maven: Create setting.xml, maven should use it as mirror
     2. For Gradle: Define proxy repo in gradle settings
+* Go to `Admin Settings -> Repositories -> Create repository`
+* Select `Maven 2 (proxy)`
+* Set Up:
+  * Remote storage: `https://repo.maven.apache.org/maven`
+* Update `build.gradle` (check the commit)
+
 ### 4. Upload spring-petclinic Artifact to Nexus
     1. For Maven: Use the deploy plugin in your pom.xml. You should be able to upload your artifacts to Nexus using Maven.
     2. For Gradle: Define artifact upload as a separate Gradle task

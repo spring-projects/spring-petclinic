@@ -24,6 +24,13 @@ java {
 
 repositories {
   mavenCentral()
+  maven {
+    url = uri("https://localhost:8081/repository/maven/")
+    credentials {
+      username System.getenv("NEXUS_USERNAME")
+      password System.getenv("NEXUS_PASSWORD")
+    }
+  }
 }
 
 ext.checkstyleVersion = "10.25.0"
