@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html th:replace="~{fragments/layout :: layout (~{::body},'owners')}">
+
+<body>
+
+<h2 th:text="${title}">Owner Summary</h2>
+
+<h3>Owner Information</h3>
+<table class="table table-striped">
+  <tr>
+    <th>Name</th>
+    <td><b th:text="${owner.firstName + ' ' + owner.lastName}"></b></td>
+  </tr>
+  <tr>
+    <th>Address</th>
+    <td th:text="${owner.address}"></td>
+  </tr>
+  <tr>
+    <th>City</th>
+    <td th:text="${owner.city}"></td>
+  </tr>
+  <tr>
+    <th>Telephone</th>
+    <td th:text="${owner.telephone}"></td>
+  </tr>
+</table>
+
+<h3>Status Details</h3>
+<table class="table table-striped">
+  <tr>
+    <th>VIP Status</th>
+    <td th:text="${isVip} ? 'Yes' : 'No'"></td>
+  </tr>
+  <tr>
+    <th>Visit Count (from last pet)</th>
+    <td th:text="${totalVisits}"></td>
+  </tr>
+</table>
+
+<a th:href="@{/owners/{ownerId}(ownerId=${owner.id})}" class="btn btn-primary">Back to Owner</a>
+
+</body>
+</html>
