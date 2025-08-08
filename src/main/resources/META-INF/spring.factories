@@ -1,0 +1,2 @@
+# [Advisor]: In Spring Framework 6.0.x, the core container performs basic bean property determination without java.beans.Introspector by default. This property ensures full backwards compatibility with 5.3.x in case of sophisticated JavaBeans usage.
+org.springframework.beans.BeanInfoFactory=org.springframework.beans.ExtendedBeanInfoFactory

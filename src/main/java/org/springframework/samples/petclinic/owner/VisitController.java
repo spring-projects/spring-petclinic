@@ -17,7 +17,7 @@ package org.springframework.samples.petclinic.owner;
 
 import java.util.Map;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -72,14 +72,14 @@ class VisitController {
 
 	// Spring MVC calls method loadPetWithVisit(...) before initNewVisitForm is
 	// called
-	@GetMapping("/owners/{ownerId}/pets/{petId}/visits/new")
+	@GetMapping({ "/owners/{ownerId}/pets/{petId}/visits/new", "/owners/{ownerId}/pets/{petId}/visits/new/" })
 	public String initNewVisitForm() {
 		return "pets/createOrUpdateVisitForm";
 	}
 
 	// Spring MVC calls method loadPetWithVisit(...) before processNewVisitForm is
 	// called
-	@PostMapping("/owners/{ownerId}/pets/{petId}/visits/new")
+	@PostMapping({ "/owners/{ownerId}/pets/{petId}/visits/new", "/owners/{ownerId}/pets/{petId}/visits/new/" })
 	public String processNewVisitForm(@ModelAttribute Owner owner, @PathVariable int petId, @Valid Visit visit,
 			BindingResult result) {
 		if (result.hasErrors()) {

@@ -41,7 +41,7 @@ class VetController {
 		this.vetRepository = clinicService;
 	}
 
-	@GetMapping("/vets.html")
+	@GetMapping({ "/vets.html", "/vets.html/" })
 	public String showVetList(@RequestParam(defaultValue = "1") int page, Model model) {
 		// Here we are returning an object of type 'Vets' rather than a collection of Vet
 		// objects so it is simpler for Object-Xml mapping

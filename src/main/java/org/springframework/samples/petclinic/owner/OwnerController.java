@@ -17,7 +17,7 @@ package org.springframework.samples.petclinic.owner;
 
 import java.util.List;
 import java.util.Map;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -60,14 +60,14 @@ class OwnerController {
 		return ownerId == null ? new Owner() : this.owners.findById(ownerId);
 	}
 
-	@GetMapping("/owners/new")
+	@GetMapping({ "/owners/new", "/owners/new/" })
 	public String initCreationForm(Map<String, Object> model) {
 		Owner owner = new Owner();
 		model.put("owner", owner);
 		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 	}
 
-	@PostMapping("/owners/new")
+	@PostMapping({ "/owners/new", "/owners/new/" })
 	public String processCreationForm(@Valid Owner owner, BindingResult result) {
 		if (result.hasErrors()) {
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
@@ -77,13 +77,13 @@ class OwnerController {
 		return "redirect:/owners/" + owner.getId();
 	}
 
-	@GetMapping("/owners/find")
+	@GetMapping({ "/owners/find", "/owners/find/" })
 	public String initFindForm(Map<String, Object> model) {
 		model.put("owner", new Owner());
 		return "owners/findOwners";
 	}
 
-	@GetMapping("/owners")
+	@GetMapping({ "/owners", "/owners/" })
 	public String processFindForm(@RequestParam(defaultValue = "1") int page, Owner owner, BindingResult result,
 			Model model) {
 		// allow parameterless GET request for /owners to return all records
@@ -125,14 +125,14 @@ class OwnerController {
 		return owners.findByLastName(lastname, pageable);
 	}
 
-	@GetMapping("/owners/{ownerId}/edit")
+	@GetMapping({ "/owners/{ownerId}/edit", "/owners/{ownerId}/edit/" })
 	public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
 		Owner owner = this.owners.findById(ownerId);
 		model.addAttribute(owner);
 		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 	}
 
-	@PostMapping("/owners/{ownerId}/edit")
+	@PostMapping({ "/owners/{ownerId}/edit", "/owners/{ownerId}/edit/" })
 	public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result,
 			@PathVariable("ownerId") int ownerId) {
 		if (result.hasErrors()) {
@@ -149,7 +149,7 @@ class OwnerController {
 	 * @param ownerId the ID of the owner to display
 	 * @return a ModelMap with the model attributes for the view
 	 */
-	@GetMapping("/owners/{ownerId}")
+	@GetMapping({ "/owners/{ownerId}", "/owners/{ownerId}/" })
 	public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
 		ModelAndView mav = new ModelAndView("owners/ownerDetails");
 		Owner owner = this.owners.findById(ownerId);
