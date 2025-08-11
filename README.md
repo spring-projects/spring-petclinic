@@ -163,3 +163,13 @@ For additional details, please refer to the blog post [Hello DCO, Goodbye CLA: S
 ## License
 
 The Spring PetClinic sample application is released under version 2.0 of the [Apache License](https://www.apache.org/licenses/LICENSE-2.0).
+
+## Using Docker Compose for Local Development
+
+If you prefer using Docker for local development, a `docker-compose.dev.yml` file has been provided. This spins up a PostgreSQL database, Prometheus, Grafana and the PetClinic application preconfigured.
+
+```bash
+docker compose -f docker-compose.dev.yml up
+```
+
+Once started, access the application at <http://localhost:8080/>. The API documentation is available via Swagger UI at <http://localhost:8080/swagger-ui.html>. Prometheus metrics are exposed at <http://localhost:8080/actuator/prometheus> and Grafana dashboards are available at <http://localhost:3000/>.
