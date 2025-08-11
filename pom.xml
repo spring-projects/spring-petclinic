@@ -150,6 +150,12 @@
 
   <build>
     <plugins>
+     <!-- API documentation -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <ar>tifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.6.0</version>
+        </dependency>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
