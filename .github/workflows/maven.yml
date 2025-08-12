@@ -578,9 +578,44 @@ jobs:
           echo "Base: $BASE_SHA"
           echo "Head: $HEAD_SHA"
 
-          # Generate patches
-          PATCH_CONTENT="$(git diff "$BASE_SHA" "$HEAD_SHA" -- . ':(exclude)src/test*' || true)"
-          TEST_PATCH_CONTENT="$(git diff "$BASE_SHA" "$HEAD_SHA" -- 'src/test*' || true)"
+          # Generate patches using improved logic similar to generate_patches()
+          # 1) Get full diff between base and head
+          FULL_DIFF="$(git diff "$BASE_SHA" "$HEAD_SHA" || true)"
+          # 2) Split per-file diff blocks into source vs test patches using path patterns
+          SRC_FILE="$(mktemp)"
+          TEST_FILE="$(mktemp)"
+          : > "$SRC_FILE"
+          : > "$TEST_FILE"
+          echo "$FULL_DIFF" | awk -v source_out="$SRC_FILE" -v tests_out="$TEST_FILE" '
+            function basename(p,   n, arr){ n=split(p, arr, "/"); return arr[n]; }
+            function is_test_path(p,    pl, bl) {
+              pl=tolower(p); bl=tolower(basename(p));
+              return (index(pl, "/test/") || index(pl, "/tests/") || index(pl, "/src/test/") || index(pl, "/main/test/") ||
+                      index(pl, "/spec/") || index(pl, "/specs/") || index(pl, "__tests__") || index(pl, "__test__") ||
+                      pl ~ /_test[._]/ || pl ~ /_spec[._]/ || bl ~ /^test_/ || bl ~ /tests\./ || bl ~ /test\./ || bl ~ /spec\./);
+            }
+            /^diff --git / {
+              if (block != "") {
+                if (current_is_test) print block >> tests_out; else print block >> source_out;
+              }
+              path="";
+              if (match($0, /^diff --git a\/([^ ]+) b\//, m)) { path=m[1]; }
+              current_is_test=is_test_path(path);
+              block=$0 "\n";
+              next;
+            }
+            {
+              block = block $0 "\n";
+            }
+            END {
+              if (block != "") {
+                if (current_is_test) print block >> tests_out; else print block >> source_out;
+              }
+            }
+          '
+          PATCH_CONTENT="$(cat "$SRC_FILE" || true)"
+          TEST_PATCH_CONTENT="$(cat "$TEST_FILE" || true)"
+          rm -f "$SRC_FILE" "$TEST_FILE"
 
           # Derived parameters
           TEST_ARGS="${CT_TEST_ARGS}"
