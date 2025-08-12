@@ -19,6 +19,8 @@ jobs:
       pass_to_pass: ${{ steps.combine.outputs.pass_to_pass }}
       tests: ${{ steps.combine.outputs.tests }}
       comment_id: ${{ steps.combine.outputs.comment_id }}
+      test_args: ${{ steps.combine.outputs.test_args }}
+      java_version: ${{ steps.combine.outputs.java_version }}
     if: ${{ github.event_name != 'issue_comment' || contains(github.event.comment.body, 'FAIL_TO_PASS') || contains(github.event.comment.body, 'PASS_TO_PASS') }}
     steps:
       - uses: actions/checkout@v4
@@ -322,7 +324,80 @@ jobs:
           echo "tests=$TESTS_STR" >> $GITHUB_OUTPUT
           echo "comment_id=$COMMENT_ID" >> $GITHUB_OUTPUT
 
-      # ─── 1.3 combine test results ───
+      # ─── 1.3 extract metadata (optional) ───
+      - name: Extract metadata fields
+        id: extract_metadata
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBERS: ${{ steps.collect_issues.outputs.issue_numbers }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -e
+          TEST_ARGS=""
+          JAVA_VERSION=""
+
+          parse_metadata() {
+            local text="$1"
+            local json
+            if [[ -n "$text" && "$text" =~ METADATA:[[:space:]]*(\{.*\}) ]]; then
+              json="${BASH_REMATCH[1]}"
+              # Normalize quotes for jq if needed
+              TA=$(echo "$json" | jq -r '."test_args" // empty' 2>/dev/null || true)
+              JV=$(echo "$json" | jq -r '."java-version" // empty' 2>/dev/null || true)
+              if [[ -n "$TA" ]]; then TEST_ARGS="$TA"; fi
+              if [[ -n "$JV" ]]; then JAVA_VERSION="$JV"; fi
+            fi
+          }
+
+          for ISSUE_NUMBER in $(echo $ISSUE_NUMBERS | jq -r '.[]'); do
+            if [[ -z "$ISSUE_NUMBER" || "$ISSUE_NUMBER" == "null" ]]; then
+              continue
+            fi
+
+            # Check issue comments (latest first)
+            COMMENTS=$(gh api repos/$REPO/issues/$ISSUE_NUMBER/comments --jq '.[] | {id: .id, body: .body, created_at: .created_at}' || true)
+            if [[ -n "$COMMENTS" ]]; then
+              LATEST_COMMENT_WITH_VALUES=""
+              while IFS= read -r COMMENT; do
+                COMMENT_BODY=$(echo "$COMMENT" | jq -r '.body')
+                if [[ -n "$COMMENT_BODY" ]]; then
+                  parse_metadata "$COMMENT_BODY"
+                fi
+              done <<< "$COMMENTS"
+            fi
+
+            if [[ -z "$TEST_ARGS" && -z "$JAVA_VERSION" ]]; then
+              # Scan linked commits
+              COMMIT_IDS=$(gh api repos/$REPO/issues/$ISSUE_NUMBER/timeline --jq '.[] | select(.event == "referenced" and .commit_id != null) | .commit_id' || true)
+              if [[ -z "$COMMIT_IDS" ]]; then
+                PR_NUMBERS=$(gh api repos/$REPO/issues/$ISSUE_NUMBER/timeline --jq '.[] | select(.event == "cross-referenced" and .source.issue.pull_request != null) | .source.issue.number' || true)
+                if [[ -n "$PR_NUMBERS" ]]; then
+                  for PR in $PR_NUMBERS; do
+                    PR_COMMITS=$(gh api repos/$REPO/pulls/$PR/commits --jq '.[].sha' || true)
+                    [[ -n "$PR_COMMITS" ]] && COMMIT_IDS="$COMMIT_IDS"$'\n'"$PR_COMMITS"
+                  done
+                fi
+              fi
+              if [[ -n "$COMMIT_IDS" ]]; then
+                while IFS= read -r COMMIT_ID; do
+                  [[ -z "$COMMIT_ID" ]] && continue
+                  COMMIT_MSG=$(gh api repos/$REPO/commits/$COMMIT_ID --jq '.commit.message' || true)
+                  parse_metadata "$COMMIT_MSG"
+                done <<< "$COMMIT_IDS"
+              fi
+            fi
+
+            # Break after first issue with metadata found
+            if [[ -n "$TEST_ARGS" || -n "$JAVA_VERSION" ]]; then
+              break
+            fi
+          done
+
+          echo "test_args=$TEST_ARGS" >> $GITHUB_OUTPUT
+          echo "java_version=$JAVA_VERSION" >> $GITHUB_OUTPUT
+
+      # ─── 1.4 combine test results ───
       - name: Combine test results
         id: combine
         shell: bash
@@ -332,6 +407,8 @@ jobs:
           echo "pass_to_pass=${{ steps.extract_tests.outputs.pass_to_pass }}" >> $GITHUB_OUTPUT
           echo "tests=${{ steps.extract_tests.outputs.tests }}" >> $GITHUB_OUTPUT
           echo "comment_id=${{ steps.extract_tests.outputs.comment_id }}" >> $GITHUB_OUTPUT
+          echo "test_args=${{ steps.extract_metadata.outputs.test_args }}" >> $GITHUB_OUTPUT
+          echo "java_version=${{ steps.extract_metadata.outputs.java_version }}" >> $GITHUB_OUTPUT
 
       # ─── 1.4 check if FAIL_TO_PASS or PASS_TO_PASS found ───
       - name: Check if FAIL_TO_PASS or PASS_TO_PASS found
@@ -450,31 +527,122 @@ jobs:
             });
             core.setOutput('comment_id', comment.id.toString());
 
-      # Step 2: Setup Java and Maven
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          java-version: '24'
-          distribution: 'temurin'
-          cache: 'maven'
-
-      # Step 3: Compile project
-      - name: Compile project
+      # Step 2: Prepare parameters for dataset verification
+      - name: Prepare dataset verification parameters
+        id: prepare_params
         shell: bash
-        run: mvn -B compile --file pom.xml
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          REPO: ${{ github.repository }}
+          CT_TEST_ARGS: ${{ needs.collect-process-tests.outputs.test_args }}
+          CT_JAVA_VERSION: ${{ needs.collect-process-tests.outputs.java_version }}
+        run: |
+          set -e
+          # Determine base and head SHAs
+          if [[ "$EVENT_NAME" == "pull_request" ]]; then
+            BASE_SHA="${{ github.event.pull_request.base.sha }}"
+            HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+            ISSUE_NUMBER="${{ github.event.pull_request.number }}"
+          elif [[ "$EVENT_NAME" == "push" ]]; then
+            BASE_SHA="${{ github.event.before }}"
+            HEAD_SHA="${{ github.sha }}"
+            ISSUE_NUMBER="$(echo "${{ github.event.head_commit.message }}" | grep -oE '#[0-9]+' | head -n1 | tr -d '#')"
+          elif [[ "$EVENT_NAME" == "issue_comment" ]]; then
+            BASE_SHA="$(git rev-parse HEAD~1 || echo "")"
+            HEAD_SHA="${{ github.sha }}"
+            ISSUE_NUMBER="${{ github.event.issue.number }}"
+          else
+            BASE_SHA="$(git rev-parse HEAD~1 || echo "")"
+            HEAD_SHA="${{ github.sha }}"
+            ISSUE_NUMBER=""
+          fi
+          echo "Base: $BASE_SHA"
+          echo "Head: $HEAD_SHA"
 
-      # Step 4: Run tests
-      - name: Run selected tests
-        if: ${{ needs.collect-process-tests.outputs.tests != '' }}
+          # Ensure we have history
+          git fetch --prune --unshallow || true
+          git fetch --all --tags || true
+
+          # Generate patches
+          PATCH_CONTENT="$(git diff $BASE_SHA $HEAD_SHA -- . ':(exclude)src/test*' || true)"
+          TEST_PATCH_CONTENT="$(git diff $BASE_SHA $HEAD_SHA -- 'src/test*' || true)"
+
+          # Derived parameters
+          TEST_ARGS="${CT_TEST_ARGS}"
+          JAVA_VERSION="${CT_JAVA_VERSION}"
+          # Normalize nulls and set defaults
+          if [[ "$TEST_ARGS" == "null" ]]; then TEST_ARGS=""; fi
+          if [[ -z "$JAVA_VERSION" || "$JAVA_VERSION" == "null" ]]; then JAVA_VERSION="24"; fi
+          OWNER="${{ github.repository_owner }}"
+          REPO_NAME="${REPO#*/}"
+          if [[ -n "$ISSUE_NUMBER" ]]; then
+            INSTANCE_ID="${OWNER}__${REPO_NAME}__${ISSUE_NUMBER}"
+          else
+            INSTANCE_ID=""
+          fi
+
+          # Export as outputs (with multiline values)
+          {
+            echo "base_sha=$BASE_SHA"
+            echo "head_sha=$HEAD_SHA"
+            echo "instance_id=$INSTANCE_ID"
+          } >> "$GITHUB_OUTPUT"
+
+          echo "PATCH<<'EOF'" >> $GITHUB_OUTPUT
+          echo "$PATCH_CONTENT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          echo "TEST_PATCH<<'EOF'" >> $GITHUB_OUTPUT
+          echo "$TEST_PATCH_CONTENT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+          echo "test_args=$TEST_ARGS" >> $GITHUB_OUTPUT
+          echo "java_version=$JAVA_VERSION" >> $GITHUB_OUTPUT
+
+      # Step 3: Run dataset verifier script
+      - name: Run dataset verifier
+        id: run_verifier
         shell: bash
-        run: mvn -B -Dtest="${{ needs.collect-process-tests.outputs.tests }}" test
+        env:
+          REPO: ${{ github.repository }}
+          FAIL_TO_PASS: ${{ needs.collect-process-tests.outputs.fail_to_pass }}
+          PASS_TO_PASS: ${{ needs.collect-process-tests.outputs.pass_to_pass }}
+          PATCH: ${{ steps.prepare_params.outputs.PATCH }}
+          TEST_PATCH: ${{ steps.prepare_params.outputs.TEST_PATCH }}
+          COMMIT: ${{ steps.prepare_params.outputs.base_sha }}
+          TEST_ARGS: ${{ steps.prepare_params.outputs.test_args }}
+          JAVA_VERSION: ${{ steps.prepare_params.outputs.java_version }}
+          INSTANCE_ID: ${{ steps.prepare_params.outputs.instance_id }}
+        run: |
+          set -e
+          chmod +x infrastructure/shared/.github/workflows/verify_java_dataset_instance.sh
+          OUTPUT_FILE="$(mktemp)"
+          infrastructure/shared/.github/workflows/verify_java_dataset_instance.sh \
+            "$REPO" \
+            "$COMMIT" \
+            "$PATCH" \
+            "$TEST_PATCH" \
+            "$FAIL_TO_PASS" \
+            "$PASS_TO_PASS" \
+            "$TEST_ARGS" \
+            "true" \
+            "$JAVA_VERSION" \
+            "$INSTANCE_ID" \
+            false \
+            true | tee "$OUTPUT_FILE"
+          VERDICT="$(tail -n1 "$OUTPUT_FILE")"
+          echo "verdict=$VERDICT" >> $GITHUB_OUTPUT
+          if [[ "$VERDICT" == "✅" ]]; then
+            echo "result=success" >> $GITHUB_OUTPUT
+            echo "emoji=✅" >> $GITHUB_OUTPUT
+            echo "reason=All checks passed" >> $GITHUB_OUTPUT
+          else
+            echo "result=failure" >> $GITHUB_OUTPUT
+            echo "emoji=❌" >> $GITHUB_OUTPUT
+            CLEAN_REASON="${VERDICT#❌ }"
+            echo "reason=$CLEAN_REASON" >> $GITHUB_OUTPUT
+          fi
 
-      - name: Run all tests
-        if: ${{ needs.collect-process-tests.outputs.tests == '' }}
-        shell: bash
-        run: mvn -B test --file pom.xml
-
-      # Step 5: Update comment with final status
+      # Step 4: Update comment with final status from verifier
       - name: Update issue comment with final status
         if: ${{ always() && (github.event_name == 'push' || github.event_name == 'issue_comment') }}
         uses: actions/github-script@v7
@@ -482,42 +650,31 @@ jobs:
           COMMENT_ID: ${{ steps.create_comment.outputs.comment_id }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           WORKFLOW_NAME: ${{ github.workflow }}
-          JOB_STATUS: ${{ job.status }}
+          RESULT: ${{ steps.run_verifier.outputs.result }}
+          EMOJI: ${{ steps.run_verifier.outputs.emoji }}
+          REASON: ${{ steps.run_verifier.outputs.reason }}
           FAIL_TO_PASS: ${{ needs.collect-process-tests.outputs.fail_to_pass }}
           PASS_TO_PASS: ${{ needs.collect-process-tests.outputs.pass_to_pass }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            if (!process.env.COMMENT_ID) {
-              core.info('No comment to update.'); return;
-            }
-            const statusEmoji = {
-              success: '✅',
-              failure: '❌',
-              cancelled: '🟡'
-            }[process.env.JOB_STATUS] || '🟡';
-            
+            if (!process.env.COMMENT_ID) { core.info('No comment to update.'); return; }
             let bodyContent = '';
             if (!process.env.COMMENT_ID){
               if (process.env.FAIL_TO_PASS && process.env.FAIL_TO_PASS !== '[]') {
-                // Parse JSON array and convert to comma-separated string
-                const quoted = process.env.FAIL_TO_PASS.replace(/(\w+)/g, '"$1"');          
-                const failToPassArray = JSON.parse(quoted);                            
+                const failToPassArray = JSON.parse(process.env.FAIL_TO_PASS);
                 const failToPassString = failToPassArray.join(', ');
                 bodyContent += `FAIL_TO_PASS: ${failToPassString}\n`;
               }
-  
               if (process.env.PASS_TO_PASS && process.env.PASS_TO_PASS !== '[]') {
-                // Parse JSON array and convert to comma-separated string
-                const quoted = process.env.PASS_TO_PASS.replace(/(\w+)/g, '"$1"');
-                const passToPassArray = JSON.parse(quoted);
+                const passToPassArray = JSON.parse(process.env.PASS_TO_PASS);
                 const passToPassString = passToPassArray.join(', ');
                 bodyContent += `PASS_TO_PASS: ${passToPassString}\n`;
               }
             }
-
-            bodyContent += `\n${statusEmoji} **[${process.env.WORKFLOW_NAME}](${process.env.RUN_URL})** finished with status **${process.env.JOB_STATUS.toUpperCase()}**.`;
-
+            const emoji = process.env.EMOJI || '🟡';
+            const reason = process.env.REASON ? `: ${process.env.REASON}` : '';
+            bodyContent += `\n${emoji} **[${process.env.WORKFLOW_NAME}](${process.env.RUN_URL})** finished${reason}`;
             await github.rest.issues.updateComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
