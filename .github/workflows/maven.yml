@@ -633,9 +633,9 @@ jobs:
           INSTANCE_ID: ${{ steps.prepare_params.outputs.instance_id }}
         run: |
           set -e
-          chmod +x infrastructure/shared/.github/workflows/verify_java_dataset_instance.sh
+          chmod +x .github/workflows/verify_java_dataset_instance.sh
           OUTPUT_FILE="$(mktemp)"
-          infrastructure/shared/.github/workflows/verify_java_dataset_instance.sh \
+          .github/workflows/verify_java_dataset_instance.sh \
             "$REPO" \
             "$COMMIT" \
             "$PATCH" \
