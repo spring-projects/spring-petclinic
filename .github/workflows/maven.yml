@@ -24,6 +24,8 @@ jobs:
     if: ${{ github.event_name != 'issue_comment' || contains(github.event.comment.body, 'FAIL_TO_PASS') || contains(github.event.comment.body, 'PASS_TO_PASS') }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       # ─── 1.1 collect issue numbers based on event type ───
       - name: Collect issue numbers based on event type
@@ -431,6 +433,8 @@ jobs:
       status: ${{ job.status }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       # Step 1: Create placeholder comment
       - name: Create placeholder issue comment
@@ -538,6 +542,10 @@ jobs:
           CT_JAVA_VERSION: ${{ needs.collect-process-tests.outputs.java_version }}
         run: |
           set -e
+          # Ensure we have history before computing SHAs
+          git fetch --prune --unshallow || true
+          git fetch --all --tags || true
+
           # Determine base and head SHAs
           if [[ "$EVENT_NAME" == "pull_request" ]]; then
             BASE_SHA="${{ github.event.pull_request.base.sha }}"
@@ -548,24 +556,31 @@ jobs:
             HEAD_SHA="${{ github.sha }}"
             ISSUE_NUMBER="$(echo "${{ github.event.head_commit.message }}" | grep -oE '#[0-9]+' | head -n1 | tr -d '#')"
           elif [[ "$EVENT_NAME" == "issue_comment" ]]; then
-            BASE_SHA="$(git rev-parse HEAD~1 || echo "")"
             HEAD_SHA="${{ github.sha }}"
+            BASE_SHA="$(git rev-parse HEAD~1 2>/dev/null || true)"
+            if [[ -z "$BASE_SHA" ]]; then
+              if git rev-parse --verify origin/main >/dev/null 2>&1; then
+                BASE_SHA="$(git merge-base HEAD origin/main || true)"
+              elif git rev-parse --verify origin/master >/dev/null 2>&1; then
+                BASE_SHA="$(git merge-base HEAD origin/master || true)"
+              fi
+            fi
+            if [[ -z "$BASE_SHA" ]]; then
+              BASE_SHA="$HEAD_SHA"
+            fi
             ISSUE_NUMBER="${{ github.event.issue.number }}"
           else
-            BASE_SHA="$(git rev-parse HEAD~1 || echo "")"
             HEAD_SHA="${{ github.sha }}"
+            BASE_SHA="$(git rev-parse HEAD~1 2>/dev/null || true)"
+            if [[ -z "$BASE_SHA" ]]; then BASE_SHA="$HEAD_SHA"; fi
             ISSUE_NUMBER=""
           fi
           echo "Base: $BASE_SHA"
           echo "Head: $HEAD_SHA"
 
-          # Ensure we have history
-          git fetch --prune --unshallow || true
-          git fetch --all --tags || true
-
           # Generate patches
-          PATCH_CONTENT="$(git diff $BASE_SHA $HEAD_SHA -- . ':(exclude)src/test*' || true)"
-          TEST_PATCH_CONTENT="$(git diff $BASE_SHA $HEAD_SHA -- 'src/test*' || true)"
+          PATCH_CONTENT="$(git diff "$BASE_SHA" "$HEAD_SHA" -- . ':(exclude)src/test*' || true)"
+          TEST_PATCH_CONTENT="$(git diff "$BASE_SHA" "$HEAD_SHA" -- 'src/test*' || true)"
 
           # Derived parameters
           TEST_ARGS="${CT_TEST_ARGS}"
@@ -588,15 +603,19 @@ jobs:
             echo "instance_id=$INSTANCE_ID"
           } >> "$GITHUB_OUTPUT"
 
-          echo "PATCH<<'EOF'" >> $GITHUB_OUTPUT
-          echo "$PATCH_CONTENT" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-          echo "TEST_PATCH<<'EOF'" >> $GITHUB_OUTPUT
-          echo "$TEST_PATCH_CONTENT" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          {
+            echo "PATCH<<EOF"
+            printf "%s\n" "$PATCH_CONTENT"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+          {
+            echo "TEST_PATCH<<EOF"
+            printf "%s\n" "$TEST_PATCH_CONTENT"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
 
-          echo "test_args=$TEST_ARGS" >> $GITHUB_OUTPUT
-          echo "java_version=$JAVA_VERSION" >> $GITHUB_OUTPUT
+          echo "test_args=$TEST_ARGS" >> "$GITHUB_OUTPUT"
+          echo "java_version=$JAVA_VERSION" >> "$GITHUB_OUTPUT"
 
       # Step 3: Run dataset verifier script
       - name: Run dataset verifier
