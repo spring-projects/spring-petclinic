@@ -1,0 +1,50 @@
+# cloudbuild.yaml
+
+steps:
+  # STEP 2: Build the application. This step ALSO needs to use the cache.
+  - name: 'maven:3.8.5-openjdk-17'
+    id: 'Build Application'
+    entrypoint: 'mvn'
+    args: ['package', '-DskipTests']
+    #wait_for: ['Run Tests']
+    # THIS IS THE FIX: Add the volumes block here as well.
+    volumes:
+      - name: 'm2-cache'
+        path: '/root/.m2'
+
+  # STEP 3: Build the production container image.
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'Build Container Image'
+    args: ['build', '-t', '$_REGION-docker.pkg.dev/$_PROJECT_ID_TO_DEPLOY_TO/gorilla-clinic-repo/$_SERVICE_NAME:$COMMIT_SHA', '.']
+    wait_for: ['Build Application']
+    volumes:
+      - name: 'm2-cache'
+        path: '/root/.m2'
+
+  # STEP 4: Push the container image to Artifact Registry.
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'Push Container Image'
+    args: ['push', '$_REGION-docker.pkg.dev/$_PROJECT_ID_TO_DEPLOY_TO/gorilla-clinic-repo/$_SERVICE_NAME:$COMMIT_SHA']
+    wait_for: ['Build Container Image']
+
+  # STEP 5: Deploy the new image to Cloud Run.
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: 'Deploy to Cloud Run'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - '$_SERVICE_NAME'
+      - '--image=$_REGION-docker.pkg.dev/$_PROJECT_ID_TO_DEPLOY_TO/gorilla-clinic-repo/$_SERVICE_NAME:$COMMIT_SHA'
+      - '--region=$_REGION'
+      - '--project=$_PROJECT_ID_TO_DEPLOY_TO'
+    wait_for: ['Push Container Image']
+
+
+
+# Make the newly pushed image available for the deploy step
+images:
+  - '$_REGION-docker.pkg.dev/$_PROJECT_ID_TO_DEPLOY_TO/gorilla-clinic-repo/$_SERVICE_NAME:$COMMIT_SHA'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
