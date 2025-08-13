@@ -12,10 +12,11 @@ steps:
       - name: 'm2-cache'
         path: '/root/.m2'
 
-  # STEP 3: Build the production container image.
+ # STEP 3: Build the production container image.
   - name: 'gcr.io/cloud-builders/docker'
     id: 'Build Container Image'
-    args: ['build', '-t', '$_REGION-docker.pkg.dev/$_PROJECT_ID_TO_DEPLOY_TO/gorilla-clinic-repo/$_SERVICE_NAME:$COMMIT_SHA', '.']
+    # Use the correct repository name: "gorilla-clinic-images"
+    args: ['build', '-t', '$_REGION-docker.pkg.dev/$_PROJECT_ID_TO_DEPLOY_TO/gorilla-clinic-images/$_SERVICE_NAME:$COMMIT_SHA', '.']
     wait_for: ['Build Application']
     volumes:
       - name: 'm2-cache'
@@ -24,7 +25,8 @@ steps:
   # STEP 4: Push the container image to Artifact Registry.
   - name: 'gcr.io/cloud-builders/docker'
     id: 'Push Container Image'
-    args: ['push', '$_REGION-docker.pkg.dev/$_PROJECT_ID_TO_DEPLOY_TO/gorilla-clinic-repo/$_SERVICE_NAME:$COMMIT_SHA']
+    # Use the correct repository name: "gorilla-clinic-images"
+    args: ['push', '$_REGION-docker.pkg.dev/$_PROJECT_ID_TO_DEPLOY_TO/gorilla-clinic-images/$_SERVICE_NAME:$COMMIT_SHA']
     wait_for: ['Build Container Image']
 
   # STEP 5: Deploy the new image to Cloud Run.
@@ -35,11 +37,11 @@ steps:
       - 'run'
       - 'deploy'
       - '$_SERVICE_NAME'
-      - '--image=$_REGION-docker.pkg.dev/$_PROJECT_ID_TO_DEPLOY_TO/gorilla-clinic-repo/$_SERVICE_NAME:$COMMIT_SHA'
+      # Use the correct repository name: "gorilla-clinic-images"
+      - '--image=$_REGION-docker.pkg.dev/$_PROJECT_ID_TO_DEPLOY_TO/gorilla-clinic-images/$_SERVICE_NAME:$COMMIT_SHA'
       - '--region=$_REGION'
       - '--project=$_PROJECT_ID_TO_DEPLOY_TO'
     wait_for: ['Push Container Image']
-
 
 
 # Make the newly pushed image available for the deploy step
