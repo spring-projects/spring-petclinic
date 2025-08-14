@@ -60,6 +60,35 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisabledInAotMode
 class OwnerControllerTests {
 
+	@Test
+	void testProcessFindFormByFirstName() throws Exception {
+		Owner george = george();
+		Page<Owner> tasks = new PageImpl<>(List.of(george));
+		when(this.owners.findByFirstNameOrLastNameStartingWith(eq("George"), anyString(), any(Pageable.class)))
+			.thenReturn(tasks);
+		mockMvc.perform(get("/owners?page=1").param("firstName", "George"))
+			.andExpect(status().is3xxRedirection())
+			.andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
+	}
+
+	@Test
+	void testProcessFindFormByFirstOrLastNameMultipleResults() throws Exception {
+		Owner george = george();
+		Owner another = new Owner();
+		another.setId(2);
+		another.setFirstName("Greg");
+		another.setLastName("Franklin");
+		another.setAddress("Somewhere");
+		another.setCity("Elsewhere");
+		another.setTelephone("1234567890");
+		Page<Owner> tasks = new PageImpl<>(List.of(george, another));
+		when(this.owners.findByFirstNameOrLastNameStartingWith(eq("G"), eq("Franklin"), any(Pageable.class)))
+			.thenReturn(tasks);
+		mockMvc.perform(get("/owners?page=1").param("firstName", "G").param("lastName", "Franklin"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("owners/ownersList"));
+	}
+
 	private static final int TEST_OWNER_ID = 1;
 
 	@Autowired
@@ -89,16 +118,15 @@ class OwnerControllerTests {
 
 	@BeforeEach
 	void setup() {
-
 		Owner george = george();
 		given(this.owners.findByLastNameStartingWith(eq("Franklin"), any(Pageable.class)))
 			.willReturn(new PageImpl<>(List.of(george)));
-
+		given(this.owners.findByFirstNameOrLastNameStartingWith(anyString(), anyString(), any(Pageable.class)))
+			.willReturn(new PageImpl<>(List.of(george)));
 		given(this.owners.findById(TEST_OWNER_ID)).willReturn(Optional.of(george));
 		Visit visit = new Visit();
 		visit.setDate(LocalDate.now());
 		george.getPet("Max").getVisits().add(visit);
-
 	}
 
 	@Test
@@ -143,6 +171,8 @@ class OwnerControllerTests {
 	void testProcessFindFormSuccess() throws Exception {
 		Page<Owner> tasks = new PageImpl<>(List.of(george(), new Owner()));
 		when(this.owners.findByLastNameStartingWith(anyString(), any(Pageable.class))).thenReturn(tasks);
+		when(this.owners.findByFirstNameOrLastNameStartingWith(anyString(), anyString(), any(Pageable.class)))
+			.thenReturn(tasks);
 		mockMvc.perform(get("/owners?page=1")).andExpect(status().isOk()).andExpect(view().name("owners/ownersList"));
 	}
 
@@ -150,6 +180,8 @@ class OwnerControllerTests {
 	void testProcessFindFormByLastName() throws Exception {
 		Page<Owner> tasks = new PageImpl<>(List.of(george()));
 		when(this.owners.findByLastNameStartingWith(eq("Franklin"), any(Pageable.class))).thenReturn(tasks);
+		when(this.owners.findByFirstNameOrLastNameStartingWith(anyString(), anyString(), any(Pageable.class)))
+			.thenReturn(tasks);
 		mockMvc.perform(get("/owners?page=1").param("lastName", "Franklin"))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
@@ -159,12 +191,13 @@ class OwnerControllerTests {
 	void testProcessFindFormNoOwnersFound() throws Exception {
 		Page<Owner> tasks = new PageImpl<>(List.of());
 		when(this.owners.findByLastNameStartingWith(eq("Unknown Surname"), any(Pageable.class))).thenReturn(tasks);
+		when(this.owners.findByFirstNameOrLastNameStartingWith(anyString(), anyString(), any(Pageable.class)))
+			.thenReturn(tasks);
 		mockMvc.perform(get("/owners?page=1").param("lastName", "Unknown Surname"))
 			.andExpect(status().isOk())
 			.andExpect(model().attributeHasFieldErrors("owner", "lastName"))
 			.andExpect(model().attributeHasFieldErrorCode("owner", "lastName", "notFound"))
 			.andExpect(view().name("owners/findOwners"));
-
 	}
 
 	@Test

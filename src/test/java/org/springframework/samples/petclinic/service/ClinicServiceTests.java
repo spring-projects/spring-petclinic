@@ -73,6 +73,31 @@ import org.springframework.transaction.annotation.Transactional;
 // @TestPropertySource("/application-postgres.properties")
 class ClinicServiceTests {
 
+	@Test
+	void shouldFindOwnersByFirstNameOrLastName() {
+		// Should find by first name
+		Page<Owner> ownersByFirst = this.owners.findByFirstNameOrLastNameStartingWith("George", "", pageable);
+		assertThat(ownersByFirst.getContent().stream().anyMatch(o -> o.getFirstName().equalsIgnoreCase("George")))
+			.isTrue();
+
+		// Should find by last name
+		Page<Owner> ownersByLast = this.owners.findByFirstNameOrLastNameStartingWith("", "Franklin", pageable);
+		assertThat(ownersByLast.getContent().stream().anyMatch(o -> o.getLastName().equalsIgnoreCase("Franklin")))
+			.isTrue();
+
+		// Should find by both
+		Page<Owner> ownersByBoth = this.owners.findByFirstNameOrLastNameStartingWith("George", "Franklin", pageable);
+		assertThat(ownersByBoth.getContent()
+			.stream()
+			.anyMatch(o -> o.getFirstName().equalsIgnoreCase("George") || o.getLastName().equalsIgnoreCase("Franklin")))
+			.isTrue();
+
+		// Should return empty if no match
+		Page<Owner> ownersNone = this.owners.findByFirstNameOrLastNameStartingWith("Nonexistent", "Nonexistent",
+				pageable);
+		assertThat(ownersNone).isEmpty();
+	}
+
 	@Autowired
 	protected OwnerRepository owners;
 
