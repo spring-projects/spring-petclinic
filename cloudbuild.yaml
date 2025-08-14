@@ -41,6 +41,7 @@ steps:
       - '--image=$_REGION-docker.pkg.dev/$_PROJECT_ID_TO_DEPLOY_TO/gorilla-clinic-images/$_SERVICE_NAME:$COMMIT_SHA'
       - '--region=$_REGION'
       - '--project=$_PROJECT_ID_TO_DEPLOY_TO'
+      - '--service-account=$_SERVICE_NAME-sa@$_PROJECT_ID_TO_DEPLOY_TO.iam.gserviceaccount.com'
     wait_for: ['Push Container Image']
 
 
