@@ -81,5 +81,27 @@ public class Pet extends NamedEntity {
 	public void addVisit(Visit visit) {
 		getVisits().add(visit);
 	}
+	// ...existing code...
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Pet)) return false;
+        if (!super.equals(o)) return false;
+        Pet pet = (Pet) o;
+        if (birthDate != null ? !birthDate.equals(pet.birthDate) : pet.birthDate != null) return false;
+        if (type != null ? !type.equals(pet.type) : pet.type != null) return false;
+        return visits != null ? visits.equals(pet.visits) : pet.visits == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (birthDate != null ? birthDate.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (visits != null ? visits.hashCode() : 0);
+        return result;
+
+}
 
 }
