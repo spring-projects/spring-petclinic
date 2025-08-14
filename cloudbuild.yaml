@@ -30,7 +30,7 @@ steps:
     wait_for: ['Build Container Image']
 
  # =========================================================
-  # STEP 4: DEPLOY TO EUROPE-WEST4
+  # STEP 4: DEPLOY TO EUROPE-WEST4 (Pulls from EU)
   # =========================================================
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: 'Deploy to europe-west4'
@@ -38,16 +38,16 @@ steps:
     args:
       - 'run'
       - 'deploy'
-      # Target the specific regional service name
       - 'gorilla-clinic-europe-west4'
       - '--image=europe-west4-docker.pkg.dev/$_PROJECT_ID_TO_DEPLOY_TO/gorilla-clinic-images/gorilla-clinic:$COMMIT_SHA'
       - '--region=europe-west4'
       - '--project=$_PROJECT_ID_TO_DEPLOY_TO'
       - '--service-account=gorilla-clinic-sa@$_PROJECT_ID_TO_DEPLOY_TO.iam.gserviceaccount.com'
+    # Wait for the single push to complete
     wait_for: ['Push Container Image']
 
-  # =========================================================
-  # STEP 5: DEPLOY TO US-CENTRAL1
+   # =========================================================
+  # STEP 5: DEPLOY TO US-CENTRAL1 (Also pulls from EU)
   # =========================================================
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: 'Deploy to us-central1'
@@ -55,13 +55,15 @@ steps:
     args:
       - 'run'
       - 'deploy'
-      # Target the specific regional service name
       - 'gorilla-clinic-us-central1'
+      # THIS IS THE KEY CHANGE: The image path points to the EU registry
       - '--image=europe-west4-docker.pkg.dev/$_PROJECT_ID_TO_DEPLOY_TO/gorilla-clinic-images/gorilla-clinic:$COMMIT_SHA'
       - '--region=us-central1'
       - '--project=$_PROJECT_ID_TO_DEPLOY_TO'
       - '--service-account=gorilla-clinic-sa@$_PROJECT_ID_TO_DEPLOY_TO.iam.gserviceaccount.com'
+    # Wait for the single push to complete
     wait_for: ['Push Container Image']
+
 
 # Make the newly pushed image available for the deploy step
 images:
