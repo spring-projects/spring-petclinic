@@ -20,6 +20,10 @@ steps:
       - 'europe-west4-docker.pkg.dev/$_PROJECT_ID_TO_DEPLOY_TO/gorilla-clinic-images/gorilla-clinic:$COMMIT_SHA'
       - '.'
     wait_for: ['Build Application']
+    volumes:
+      - name: 'm2-cache'
+        path: '/root/.m2'
+
 
   # STEP 3: Push the single container image to the European Registry
   - name: 'gcr.io/cloud-builders/docker'
