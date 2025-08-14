@@ -5,7 +5,7 @@ steps:
   - name: 'maven:3.8.5-openjdk-17'
     id: 'Build Application'
     entrypoint: 'mvn'
-    args: ['package', '-DskipTests']
+    args: ['clean','package', '-DskipTests']
     volumes:
       - name: 'm2-cache'
         path: '/root/.m2'
