@@ -31,6 +31,7 @@ import org.springframework.data.jpa.repository.Query;
  * @author Patrick Baumgartner
  */
 
+@Repository
 public interface PetTypeRepository extends JpaRepository<PetType, Integer> {
 
 	/**

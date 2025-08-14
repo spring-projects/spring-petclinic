@@ -39,6 +39,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * @author Wick Dynex
  */
 @Controller
+@RequestMapping("/")
 class VisitController {
 
 	private final OwnerRepository owners;
