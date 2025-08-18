@@ -16,7 +16,7 @@
           <span th:if="${valid}" class="fa fa-ok form-control-feedback" aria-hidden="true"></span>
           <th:block th:if="${!valid}">
             <span class="fa fa-remove form-control-feedback" aria-hidden="true"></span>
-            <span class="help-inline" th:errors="*{__${name}__}" th:text="#{error}">Error</span>
+            <span class="help-inline" th:text="#{error}">Error</span>
           </th:block>
         </div>
       </div>
