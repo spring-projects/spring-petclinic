@@ -18,6 +18,8 @@ package org.springframework.samples.petclinic.owner;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -60,11 +62,16 @@ class OwnerController {
 	}
 
 	@ModelAttribute("owner")
-	public Owner findOwner(@PathVariable(name = "ownerId", required = false) Integer ownerId) {
-		return ownerId == null ? new Owner()
-				: this.owners.findById(ownerId)
-					.orElseThrow(() -> new IllegalArgumentException("Owner not found with id: " + ownerId
-							+ ". Please ensure the ID is correct " + "and the owner exists in the database."));
+	public Owner findOwner(
+		@PathVariable(name = "ownerId", required = false) Integer ownerId,
+		@ModelAttribute("owner") Owner owner
+	) {
+		if (ownerId == null) return new Owner();
+		if (owner == null) {
+			throw new IllegalArgumentException("Owner not found with id: " + ownerId
+				+ ". Please ensure the ID is correct " + "and the owner exists in the database.");
+		}
+		return owner;
 	}
 
 	@GetMapping("/owners/new")

@@ -15,8 +15,8 @@
  */
 package org.springframework.samples.petclinic.owner;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.core.style.ToStringCreator;
 import org.springframework.samples.petclinic.model.Person;
@@ -63,7 +63,7 @@ public class Owner extends Person {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "owner_id")
 	@OrderBy("name")
-	private final List<Pet> pets = new ArrayList<>();
+	private final Set<Pet> pets = new HashSet<>();
 
 	public String getAddress() {
 		return this.address;
@@ -89,7 +89,7 @@ public class Owner extends Person {
 		this.telephone = telephone;
 	}
 
-	public List<Pet> getPets() {
+	public Set<Pet> getPets() {
 		return this.pets;
 	}
 

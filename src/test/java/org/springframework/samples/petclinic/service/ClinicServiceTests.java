@@ -100,8 +100,9 @@ class ClinicServiceTests {
 		Owner owner = optionalOwner.get();
 		assertThat(owner.getLastName()).startsWith("Franklin");
 		assertThat(owner.getPets()).hasSize(1);
-		assertThat(owner.getPets().get(0).getType()).isNotNull();
-		assertThat(owner.getPets().get(0).getType().getName()).isEqualTo("cat");
+		Pet firstPet = owner.getPets().iterator().next();
+		assertThat(firstPet.getType()).isNotNull();
+		assertThat(firstPet.getType().getName()).isEqualTo("cat");
 	}
 
 	@Test
