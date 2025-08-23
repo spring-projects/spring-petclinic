@@ -15,6 +15,7 @@
 <packaging>war</packaging>
 
   <name>petclinic</name>
+  <name>vamsi</name>
 
   <properties>
 
