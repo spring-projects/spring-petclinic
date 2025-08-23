@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2019 the original author or authors.
+ * Copyright 2012-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,13 +48,16 @@ class PetController {
 
 	private final OwnerRepository owners;
 
-	public PetController(OwnerRepository owners) {
+	private final PetTypeRepository types;
+
+	public PetController(OwnerRepository owners, PetTypeRepository types) {
 		this.owners = owners;
+		this.types = types;
 	}
 
 	@ModelAttribute("types")
 	public Collection<PetType> populatePetTypes() {
-		return this.owners.findPetTypes();
+		return this.types.findPetTypes();
 	}
 
 	@ModelAttribute("owner")

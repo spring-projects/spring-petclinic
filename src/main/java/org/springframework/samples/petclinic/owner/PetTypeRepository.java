@@ -13,18 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.springframework.samples.petclinic.owner;
 
-import org.springframework.samples.petclinic.model.NamedEntity;
+import java.util.List;
+import java.util.Optional;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.annotation.Nonnull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 /**
- * @author Juergen Hoeller Can be Cat, Dog, Hamster...
+ * Repository class for <code>PetType</code> domain objects.
+ *
+ * @author Patrick Baumgartner
  */
-@Entity
-@Table(name = "types")
-public class PetType extends NamedEntity {
+
+public interface PetTypeRepository extends JpaRepository<PetType, Integer> {
+
+	/**
+	 * Retrieve all {@link PetType}s from the data store.
+	 * @return a Collection of {@link PetType}s.
+	 */
+	@Query("SELECT ptype FROM PetType ptype ORDER BY ptype.name")
+	List<PetType> findPetTypes();
 
 }
