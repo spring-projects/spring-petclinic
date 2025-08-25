@@ -36,7 +36,11 @@ jobs:
 
       - name: Configure Maven Repositories
         run: |
-          jf mvnc --repo-resolve-releases jesseh-maven-dev-virtual --repo-deploy-releases jesseh-maven-dev-local
+          jf mvnc \
+            --repo-resolve-releases jesseh-maven-dev-virtual \
+            --repo-resolve-snapshots jesseh-maven-dev-virtual \
+            --repo-deploy-releases jesseh-maven-dev-local \
+            --repo-deploy-snapshots jesseh-maven-dev-local
           
       - name: Run Maven Build
         run: |
