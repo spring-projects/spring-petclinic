@@ -7,6 +7,7 @@ pipeline {
         stage("checkstyle") {
             steps {
                 echo "Checkstyle..."
+                sh './gradlew checkstyleMain'
             }
         }
 
