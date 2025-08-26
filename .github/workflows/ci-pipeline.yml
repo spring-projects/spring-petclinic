@@ -65,7 +65,7 @@ jobs:
         run: jf mvnc --global --repo-resolve-releases jesseh-maven-dev-virtual/ --repo-resolve-snapshots jesseh-maven-dev-virtual/
         # This sets up JFrog CLI to resolve dependencies from Artifactory
       
-        - name: JFrog Audit (SAST & SCA)
+      - name: JFrog Audit (SAST & SCA)
         run: jf audit
 
       #################################################
