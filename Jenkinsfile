@@ -1,20 +1,27 @@
 pipeline {
 
-    agent any
+    agent {label 'agent-1'}
     
     stages {
 
         stage("checkstyle") {
+            when {
+                changeRequest()
+            }
             steps {
                 echo "Checkstyle..."
                 sh './gradlew checkstyleMain'
+                archiveArtifacts artifacts: 'checkstyle.xml'
             }
         }
 
         stage("test") {
+            when {
+                changeRequest()
+            }
             steps {
                 echo "Testing..."
-                sh './gradlew test'
+                sh './gradlew clean test'
             }
         }
         
@@ -25,9 +32,21 @@ pipeline {
             }
         }
 
-        stage("dockerImage") {
+        stage("docker image (change request)") {
+            when {
+                changeRequest()
+            }
             steps {
-                echo "Building Docker image..."
+                echo "Building Docker image for change request..."
+            }
+        }
+
+        stage("docker image (main)") {
+            when {
+                branch 'main'
+            }
+            steps {
+                echo "Building Docker image for main..."
             }
         }
 
