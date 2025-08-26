@@ -3,7 +3,7 @@ pipeline {
     agent {label 'agent-1'}
 
     environment {
-        DOCKER_HUB_CREDENTIALS=credentials('docker-hub-credentials')
+        DOCKER_HUB_CREDENTIALS='docker-hub-credentials'
         MR_IMAGE_NAME='dejanakop/spring-petclinic-mr'
         MAIN_IMAGE_NAME='dejanakop/spring-petclinic-main'
         TAG='latest'
