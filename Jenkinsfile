@@ -11,13 +11,11 @@ pipeline {
         }
 
         stage("checkstyle") {
-            when {
-                changeRequest()
-            }
             steps {
                 echo "Checkstyle..."
                 sh './gradlew checkstyleMain'
-                archiveArtifacts artifacts: 'checkstyle.xml'
+                archiveArtifacts artifacts: 'build/reports/checkstyle/*.xml', allowEmptyArchive: true
+                sh 'ls -la'
             }
         }
 
