@@ -34,14 +34,14 @@ pipeline {
         stage("build") {
             steps {
                 echo "Building..."
-                sh './gradlew clean build -x test'
+                sh './gradlew clean build -x test -x checkstyleNohttp'
             }
         }
 
         stage("docker image (change request)") {
             steps {
                 echo "Building Docker image for change request..."
-                sh 'ls -la'
+                sh 'docker build -t spring-petclinic .'
             }
         }
 

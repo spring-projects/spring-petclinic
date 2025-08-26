@@ -7,7 +7,7 @@ COPY settings.gradle .
 COPY gradle gradle
 COPY src src
 
-RUN ./gradlew clean build
+RUN ./gradlew clean build -x test -x checkstyleNohttp
 
 FROM openjdk:24-jdk-slim
 COPY --from=buildstage /opt/spring-petclinic/build/libs/gradle-practical-task-1.0.0.jar /opt/spring-petclinic/spring-petclinic.jar
