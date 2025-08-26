@@ -3,6 +3,12 @@ pipeline {
     agent {label 'agent-1'}
     
     stages {
+        
+        stage("Checkout") {
+            steps {
+                checkout scm
+            }
+        }
 
         stage("checkstyle") {
             when {
@@ -33,11 +39,9 @@ pipeline {
         }
 
         stage("docker image (change request)") {
-            when {
-                changeRequest()
-            }
             steps {
                 echo "Building Docker image for change request..."
+                sh 'ls -la'
             }
         }
 
