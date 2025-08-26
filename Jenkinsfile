@@ -1,6 +1,13 @@
 pipeline {
 
     agent {label 'agent-1'}
+
+    environment {
+        DOCKER_HUB_CREDENTIALS=credentials('docker-hub-credentials')
+        MR_IMAGE_NAME='dejanakop/spring-petclinic-mr'
+        MAIN_IMAGE_NAME='dejanakop/spring-petclinic-main'
+        TAG='latest'
+    }
     
     stages {
         
@@ -40,12 +47,14 @@ pipeline {
         }
 
         stage("docker image (change request)") {
-            when {
-                changeRequest()
-            }
             steps {
                 echo "Building Docker image for change request..."
-                sh 'docker build -t spring-petclinic .'
+                sh 'docker build -t ${MR_IMAGE_NAME}:${TAG} .'
+                withCredentials([usernamePassword(credentialsId: DOCKER_HUB_CREDENTIALS, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    sh 'echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin'
+                    sh 'docker push ${MR_IMAGE_NAME}:${TAG}'
+                    sh 'docker logout'
+                }
             }
         }
 
@@ -55,7 +64,12 @@ pipeline {
             }
             steps {
                 echo "Building Docker image for main..."
-                sh 'docker build -t spring-petclinic .'
+                sh 'docker build -t ${MAIN_IMAGE_NAME}:${TAG} .'
+                withCredentials([usernamePassword(credentialsId: DOCKER_HUB_CREDENTIALS, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    sh 'echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin'
+                    sh 'docker push ${MAIN_IMAGE_NAME}:${TAG}'
+                    sh 'docker logout'
+                }
             }
         }
 
