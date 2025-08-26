@@ -32,6 +32,9 @@ pipeline {
         }
         
         stage("build") {
+            when {
+                changeRequest()
+            }
             steps {
                 echo "Building..."
                 sh './gradlew clean build -x test -x checkstyleNohttp'
@@ -39,6 +42,9 @@ pipeline {
         }
 
         stage("docker image (change request)") {
+            when {
+                changeRequest()
+            }
             steps {
                 echo "Building Docker image for change request..."
                 sh 'docker build -t spring-petclinic .'
@@ -51,6 +57,7 @@ pipeline {
             }
             steps {
                 echo "Building Docker image for main..."
+                sh 'docker build -t spring-petclinic .'
             }
         }
 
