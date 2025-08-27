@@ -75,7 +75,7 @@ jobs:
         run: |
           jf mvn clean install \
             -DskipTests=true -Denforcer.skip=true \
-            --build-name="spring-petclinic" \
+            --build-name="jesseh-spring-petclinic" \
             --build-number="${{ github.run_id }}"
 
       #################################################
@@ -108,7 +108,7 @@ jobs:
         run: |
           jf docker push \
             soleng.jfrog.io/jesseh-docker-dev-local/spring-petclinic:${{ github.run_id }} \
-            --build-name="spring-petclinic" \
+            --build-name="jesseh-spring-petclinic" \
             --build-number="${{ github.run_id }}"
 
       #################################################
@@ -119,5 +119,5 @@ jobs:
           jfrog rt build-collect-env           # Collect environment variables
           jfrog rt build-add-dependencies .     # Add dependencies found in the current directory
           jfrog rt build-add-git                # Add Git commit information
-          jfrog rt build-publish "spring-petclinic" "${{ github.run_id }}"
+          jfrog rt build-publish "jesseh-spring-petclinic" "${{ github.run_id }}"
         # Publishes build metadata (dependencies, artifacts, environment) to JFrog
