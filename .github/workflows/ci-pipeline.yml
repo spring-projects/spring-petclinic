@@ -116,8 +116,13 @@ jobs:
       #################################################
       - name: Publish Build Info
         run: |
-          jfrog rt build-collect-env           # Collect environment variables
-          jfrog rt build-add-dependencies .     # Add dependencies found in the current directory
-          jfrog rt build-add-git                # Add Git commit information
-          jfrog rt build-publish "jesseh-spring-petclinic" "${{ github.run_id }}"
+          jf rt build-collect-env "jesseh-spring-petclinic" "${{ github.run_id }}"
+          jf rt build-add-dependencies . "jesseh-spring-petclinic" "${{ github.run_id }}"
+          jf rt build-add-git "jesseh-spring-petclinic" "${{ github.run_id }}"
+          jf rt build-publish "jesseh-spring-petclinic" "${{ github.run_id }}"
+
+      - name: Xray build scan
+        run: jf bs "jesseh-spring-petclinic" "${{ github.run_id }}" --vuln
+
+
         # Publishes build metadata (dependencies, artifacts, environment) to JFrog
