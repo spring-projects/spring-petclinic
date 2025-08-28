@@ -2,14 +2,17 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Build and Test 🛠️') {
             steps {
-                echo 'Building..'
+                sh './mvnw --batch-mode --no-transfer-progress -e -U clean install -DskipTests=true -T 1'
+                sh './mvnw --batch-mode --no-transfer-progress -e -U verify -Pjacoco -T 1'
             }
-        }
-        stage('Test') {
-            steps {
-                echo 'Testing..'
+
+            post {
+                always {
+                    archiveArtifacts artifacts: '**/target/surefire-reports/*.xml', allowEmptyArchive: true
+                    junit testResults: '**/target/surefire-reports/*.xml', allowEmptyResults: true
+                }
             }
         }
         stage('Deploy') {
