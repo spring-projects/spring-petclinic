@@ -3,7 +3,7 @@ on:
   push:
     branches: main
 jobs:
-  docker-mr:
+  docker-main:
     runs-on: ubuntu-latest
     steps:
       - name: Get a repo code
@@ -17,6 +17,8 @@ jobs:
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+      - name: Output image name
+        run: echo "${{ secrets.MAIN_REPO }}:${{ github.sha }}"
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
