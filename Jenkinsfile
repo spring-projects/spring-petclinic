@@ -41,9 +41,11 @@ pipeline {
         
         stage("build") {
             steps {
-                if (env.CHANGE_ID) {
-                    echo "Building..."
-                    sh './gradlew clean build -x test -x checkstyleNohttp'
+                script {
+                    if (env.CHANGE_ID) {
+                        echo "Building..."
+                        sh './gradlew clean build -x test -x checkstyleNohttp'
+                    }
                 }
             }
         }
