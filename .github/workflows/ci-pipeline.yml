@@ -2,93 +2,89 @@ name: Build with JFrog CLI (Forcing New Extractor)
 
 on:
   push:
-    branches:
-      - main
-      - develop
-
+    branches: [ "main", "develop" ]
   pull_request:
-    branches: [ "main" ]  # Trigger workflow on pull requests targeting main
+    branches: [ "main" ]
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Use the latest Ubuntu runner for execution
+    runs-on: ubuntu-latest
+
+    # One build per run — everything uses the same build name/number
+    env:
+      JFROG_CLI_BUILD_NAME: jesseh-spring-petclinic
+      JFROG_CLI_BUILD_NUMBER: ${{ github.run_id }}
 
     steps:
       #################################################
-      # 1) Checkout the repository to the runner
+      # 1) Checkout
       #################################################
       - name: Checkout
-        uses: actions/checkout@v4  # Pulls the latest code from the repository
+        uses: actions/checkout@v4
 
       #################################################
-      # 2) Set up Java environment
+      # 2) Java
       #################################################
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'  # Use Eclipse Temurin JDK (OpenJDK)
-          java-version: '17'  # Ensure Java 17 is installed
+          distribution: temurin
+          java-version: '17'
 
       #################################################
-      # 3) Install and Configure JFrog CLI
+      # 3) JFrog CLI
       #################################################
       - name: Setup JFrog CLI
-        uses: jfrog/setup-jfrog-cli@v4  # Official JFrog CLI GitHub Action
+        uses: jfrog/setup-jfrog-cli@v4
         id: setup-cli
         env:
-          JF_URL: ${{secrets.JF_RT_URL}}  # Artifactory base URL (stored as a GitHub secret)
-          JFROG_CLI_RELEASES_REPO: 'https://soleng.jfrog.io/artifactory/jesseh-maven-dev-virtual/'
-          JFROG_CLI_EXTRACTORS_REMOTE: 'https://soleng.jfrog.io/artifactory/jesseh-maven-dev-virtual/'
-          JF_GIT_TOKEN: ${{secrets.GH_TOKEN}}  # GitHub token for authentication
-          JF_USER: ${{secrets.ARTIFACTORY_USERNAME}}  # Artifactory username
-          JF_PASSWORD: ${{secrets.ARTIFACTORY_IDENTITY_TOKEN}}  # Artifactory identity token
+          JF_URL: ${{ secrets.JF_RT_URL }}
+          JFROG_CLI_RELEASES_REPO: https://soleng.jfrog.io/artifactory/jesseh-maven-dev-virtual/
+          JFROG_CLI_EXTRACTORS_REMOTE: https://soleng.jfrog.io/artifactory/jesseh-maven-dev-virtual/
+          JF_GIT_TOKEN: ${{ secrets.GH_TOKEN }}
+          JF_USER: ${{ secrets.ARTIFACTORY_USERNAME }}
+          JF_PASSWORD: ${{ secrets.ARTIFACTORY_IDENTITY_TOKEN }}
 
       #################################################
-      # 4) Clean the local Maven cache (optional but recommended)
+      # 4) Prep
       #################################################
       - name: Clear local Maven cache
-        run: rm -rf ~/.m2/repository  # Ensures a clean build by removing old dependencies
-      
-      - name: Ensure mvnw is executable
-        run: chmod +x mvnw  # Make the Maven wrapper script executable
+        run: rm -rf ~/.m2/repository
 
-      #################################################
-      # 5) Verify JFrog connection
-      #################################################
-      - name: ping jfrog
+      - name: Ensure mvnw is executable
+        run: chmod +x mvnw
+
+      - name: Ping JFrog
         run: jf rt ping
 
-      #################################################
-      # 6) Configure Maven to use JFrog as a repository
-      #################################################
-      - name: configure maven
+      - name: Configure Maven to resolve via Artifactory
         run: jf mvnc --global --repo-resolve-releases jesseh-maven-dev-virtual/ --repo-resolve-snapshots jesseh-maven-dev-virtual/
-        # This sets up JFrog CLI to resolve dependencies from Artifactory
-      
+
+      #################################################
+      # 5) SAST/SCA (on-demand audit; not tied to the build)
+      #################################################
       - name: JFrog Audit (SAST & SCA)
         run: jf audit
 
       #################################################
-      # 7) Build project using JFrog CLI with Maven
+      # 6) Build with Maven (attached to build via env)
       #################################################
       - name: Maven Build With JFrog CLI
         run: |
           jf mvn clean install \
-            -DskipTests=true -Denforcer.skip=true \
-            --build-name="jesseh-spring-petclinic" \
-            --build-number="${{ github.run_id }}"
+            -DskipTests=true -Denforcer.skip=true
 
       #################################################
-      # 8) Scan with XRay
+      # 7) Scan produced artifact (on-demand scan)
       #################################################
       - name: Scan Artifact
         run: |
           latest_jar=$(find target -name "*.jar" | sort | tail -n 1)
           echo "Scanning: $latest_jar"
           jf scan "$latest_jar"
-      
+
       #################################################
-      # 9) Build Docker image with local Docker
+      # 8) Build & Push Docker image
       #################################################
       - name: Login to JFrog Docker Repo
         uses: docker/login-action@v3
@@ -96,33 +92,28 @@ jobs:
           registry: ${{ secrets.JF_RT_URL }}
           username: ${{ secrets.ARTIFACTORY_USERNAME }}
           password: ${{ secrets.ARTIFACTORY_IDENTITY_TOKEN }}
-      
+
       - name: Build Docker Image
         run: |
           docker build -t soleng.jfrog.io/jesseh-docker-dev-local/spring-petclinic:${{ github.run_id }} .
 
-      #################################################
-      # 10) Push Docker image using JFrog CLI
-      #################################################
       - name: Push Docker Image to Artifactory
         run: |
-          jf docker push \
-            soleng.jfrog.io/jesseh-docker-dev-local/spring-petclinic:${{ github.run_id }} \
-            --build-name="jesseh-spring-petclinic" \
-            --build-number="${{ github.run_id }}"
+          jf docker push soleng.jfrog.io/jesseh-docker-dev-local/spring-petclinic:${{ github.run_id }}
 
       #################################################
-      # 9) Publish Build Information to JFrog
+      # 9) Publish Build Info (all commands use env build name/number)
       #################################################
       - name: Publish Build Info
         run: |
-          jf rt build-collect-env "jesseh-spring-petclinic" "${{ github.run_id }}"
-          jf rt build-add-dependencies . "jesseh-spring-petclinic" "${{ github.run_id }}"
-          jf rt build-add-git "jesseh-spring-petclinic" "${{ github.run_id }}"
-          jf rt build-publish "jesseh-spring-petclinic" "${{ github.run_id }}"
+          jf rt build-collect-env
+          jf rt build-add-git
+          jf rt build-add-dependencies "pom.xml"
+          jf rt build-add-dependencies "target/**/*.jar"
+          jf rt build-publish
 
+      #################################################
+      # 10) Xray build scan → populates Build → Security tab
+      #################################################
       - name: Xray build scan
-        run: jf bs "jesseh-spring-petclinic" "${{ github.run_id }}" --vuln
-
-
-        # Publishes build metadata (dependencies, artifacts, environment) to JFrog
+        run: jf bs --vuln
