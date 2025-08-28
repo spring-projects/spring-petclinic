@@ -42,7 +42,7 @@ pipeline {
         stage("build") {
             steps {
                 script {
-                    if (env.CHANGE_ID) {
+                    if (env.BRANCH_NAME.startsWith('PR')) {
                         echo "Building..."
                         sh './gradlew clean build -x test -x checkstyleNohttp'
                     }
