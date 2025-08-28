@@ -1,0 +1,46 @@
+networks:
+  jenkins:
+
+volumes:
+  jenkins-data:
+  jenkins-docker-certs:
+
+services:
+  jenkins:
+    image: myjenkins
+    container_name: jenkins
+    restart: on-failure
+    networks:
+      - jenkins
+    ports:
+      - 8080:8080
+      - 50000:50000
+    tty: true
+    volumes:
+      - jenkins-data:/var/jenkins_home
+      - jenkins-docker-certs:/certs/client:ro
+      - $HOME:/home
+    environment:
+      - DOCKER_HOST=tcp://docker:2376
+      - DOCKER_CERT_PATH=/certs/client
+      - DOCKER_TLS_VERIFY=1
+
+  dind:
+    image: myjenkins-agent-dind
+    container_name: agent
+    privileged: true
+    restart: on-failure
+    networks:
+      jenkins:
+        aliases:
+          - docker
+    ports:
+      - 2376:2376
+    tty: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - jenkins-data:/var/jenkins_home
+      - jenkins-docker-certs:/certs/client
+      - $HOME:/home
+    environment:
+      - DOCKER_TLS_CERTDIR=/certs
