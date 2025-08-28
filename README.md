@@ -10,7 +10,7 @@ This project is forked from: https://github.com/spring-projects/spring-petclinic
     folder: nexus-task
 
 ### Jenkins
-* Test Merge 2
+* Test Merge 2 3
 
 <hr>
 
