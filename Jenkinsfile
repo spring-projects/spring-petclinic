@@ -15,7 +15,7 @@ pipeline {
                 }
             }
         }
-        stage('JaCoCo Report') {
+        stage('JaCoCo Report 📊') {
              steps {
                 jacoco(
                     execPattern: '**/jacoco.exec',
