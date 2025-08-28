@@ -8,7 +8,7 @@ jobs:
   checkstyle:
     runs-on: ubuntu-latest
     container:
-      image: ${{ MAVEN_IMAGE }}
+      image: $MAVEN_IMAGE
     steps:
       - name: Get a repo code
         uses: actions/checkout@v5
@@ -24,7 +24,7 @@ jobs:
     needs: checkstyle
     runs-on: ubuntu-latest
     container:
-      image: ${{ MAVEN_IMAGE }}
+      image: $MAVEN_IMAGE
     steps:
       - name: Get a repo code
         uses: actions/checkout@v5
@@ -34,7 +34,7 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     container:
-      image: ${{ MAVEN_IMAGE }}
+      image: $MAVEN_IMAGE
     steps:
       - name: Get a repo code
         uses: actions/checkout@v5
