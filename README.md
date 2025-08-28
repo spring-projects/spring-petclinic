@@ -1,5 +1,7 @@
 # Practical task GHA for the intrnship GD
 
+Original repositorium: https://github.com/spring-projects/spring-petclinic
+
 ## Prepare Docker Hub and geeral setups
 
 For the purpose of solving this task I prepared two repositories in Docker Hub:
