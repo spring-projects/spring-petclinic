@@ -1,4 +1,4 @@
-FROM maven:3.9.6-eclipse-temurin-17 as build
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /build
 COPY . .
 RUN ./mvnw package
