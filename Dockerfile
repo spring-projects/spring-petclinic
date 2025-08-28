@@ -1,23 +1,10 @@
-version: '3.8'
+FROM maven:3.9.6-eclipse-temurin-17 as build
+WORKDIR /build
+COPY . .
+RUN ./mvnw package
 
-services:
-  petapp:
-    build: .
-    depends_on:
-      - mysql
-    ports:
-      - "8080:8080"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/petclinic
-      SPRING_DATASOURCE_USERNAME: petclinic
-      SPRING_DATASOURCE_PASSWORD: petclinic
-
-  mysql:
-    image: mysql:8.0
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_USER: petclinic
-      MYSQL_PASSWORD: petclinic
-      MYSQL_DATABASE: petclinic
+FROM eclipse-temurin:21-jdk-jammy
+WORKDIR /app
+COPY --from=build /build/target/spring-petclinic-*.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
