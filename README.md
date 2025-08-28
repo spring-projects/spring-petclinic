@@ -7,7 +7,7 @@ Original repositorium: https://github.com/spring-projects/spring-petclinic
 For the purpose of solving this task I prepared two repositories in Docker Hub:
 
 - main 
-- mr
+- mr 
 
 In the GitHub Actions account I created several secrets to protect my code:
 
