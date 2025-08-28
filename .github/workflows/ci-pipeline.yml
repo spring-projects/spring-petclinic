@@ -108,8 +108,6 @@ jobs:
         run: |
           jf rt build-collect-env
           jf rt build-add-git
-          jf rt build-add-dependencies "pom.xml"
-          jf rt build-add-dependencies "target/**/*.jar"
           jf rt build-publish
 
       #################################################
