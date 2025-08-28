@@ -15,10 +15,16 @@ pipeline {
                 }
             }
         }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
-            }
+        stage('JaCoCo Report') {
+             steps {
+                jacoco(
+                    execPattern: '**/jacoco.exec',
+                    classPattern: '**/classes',
+                    sourcePattern: '**/src/main/java',
+                    classDirectories: [[pattern: '**/classes']],
+                    sourceDirectories: [[pattern: '**/src/main/java']]
+                )
+             }
         }
     }
 }
