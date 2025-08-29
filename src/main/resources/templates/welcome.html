@@ -3,11 +3,12 @@
 <html xmlns:th="https://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'home')}">
 
 <body>
-
-  <h2 th:text="#{welcome}">Welcome</h2>
+<!-- ADDED TEST CHANGE -->
+<h1 style="color: red;">THIS IS A TEST CHANGE - 2025‑08‑29</h1>
+  <h2 th:text="#{welcome ABC}">Welcome</h2>
   <div class="row">
     <div class="col-md-12">
-      <img class="img-responsive" src="../static/resources/images/pets.png" th:src="@{/resources/images/pets.png}" />
+      <img class="img-responsive" src="../static/resources/images/pets1.png" th:src="@{/resources/images/pets1.png}" />
     </div>
   </div>
 
