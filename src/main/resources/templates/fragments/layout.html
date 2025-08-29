@@ -12,7 +12,6 @@
   <title th:text="#{layoutTitle}">PetClinic :: a Spring Framework demonstration</title>
   <link th:href="@{/webjars/font-awesome/css/font-awesome.min.css}" rel="stylesheet">
   <link rel="stylesheet" th:href="@{/resources/css/petclinic.css}" />
-  <link rel="stylesheet" th:href="@{/resources/css/custom.css}">
 
 </head>
 
@@ -59,14 +58,6 @@
             <span class="fa exclamation-triangle" aria-hidden="true"></span>
             <span th:text="#{error}">Error</span>
           </li>
-
-          <li class="nav-item">
-            <button id="themeToggle" class="btn btn-outline-secondary btn-sm" type="button" title="Toggle dark mode">
-              🌙
-            </button>
-          </li>
-
-
         </ul>
       </div>
     </div>
@@ -90,8 +81,6 @@
   </div>
 
   <script th:src="@{/webjars/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
-  <script defer th:src="@{/resources/js/custom.js}"></script>
-
 
 </body>
 
