@@ -1,0 +1,34 @@
+/* --- Dark mode overrides (minimal, non-invasive) --- */
+
+/* When <html> has class="dark" */
+html.dark body {
+  background-color: #121212;
+  color: #e5e5e5;
+}
+
+html.dark .navbar {
+  background-color: #1f2937 !important; /* darker navbar */
+}
+
+html.dark a,
+html.dark .nav-link {
+  color: #e5e5e5 !important;
+}
+
+html.dark .table {
+  color: inherit;
+  background-color: transparent;
+}
+
+html.dark .table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+html.dark .btn-outline-secondary {
+  color: #e5e5e5;
+  border-color: #9aa0a6;
+}
+
+html.dark .btn-outline-secondary:hover {
+  background-color: #2a2f36;
+}
