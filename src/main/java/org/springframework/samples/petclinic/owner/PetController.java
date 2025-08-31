@@ -19,6 +19,8 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Optional;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -40,6 +42,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * @author Arjen Poutsma
  * @author Wick Dynex
  */
+@Getter
+@Setter
+
 @Controller
 @RequestMapping("/owners/{ownerId}")
 class PetController {

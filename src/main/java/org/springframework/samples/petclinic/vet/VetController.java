@@ -17,6 +17,8 @@ package org.springframework.samples.petclinic.vet;
 
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +34,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author Ken Krebs
  * @author Arjen Poutsma
  */
+@Getter
+@Setter
+
 @Controller
 class VetController {
 

@@ -17,6 +17,8 @@ package org.springframework.samples.petclinic.owner;
 
 import java.time.LocalDate;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.model.BaseEntity;
 
@@ -31,6 +33,9 @@ import jakarta.validation.constraints.NotBlank;
  * @author Ken Krebs
  * @author Dave Syer
  */
+@Getter
+@Setter
+
 @Entity
 @Table(name = "visits")
 public class Visit extends BaseEntity {
@@ -47,22 +52,6 @@ public class Visit extends BaseEntity {
 	 */
 	public Visit() {
 		this.date = LocalDate.now();
-	}
-
-	public LocalDate getDate() {
-		return this.date;
-	}
-
-	public void setDate(LocalDate date) {
-		this.date = date;
-	}
-
-	public String getDescription() {
-		return this.description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 }
