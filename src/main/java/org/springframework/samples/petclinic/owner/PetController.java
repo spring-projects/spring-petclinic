@@ -42,8 +42,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * @author Arjen Poutsma
  * @author Wick Dynex
  */
-@Getter
-@Setter
+
 
 @Controller
 @RequestMapping("/owners/{ownerId}")

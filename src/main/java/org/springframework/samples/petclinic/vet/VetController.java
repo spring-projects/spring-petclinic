@@ -34,8 +34,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author Ken Krebs
  * @author Arjen Poutsma
  */
-@Getter
-@Setter
+
 
 @Controller
 class VetController {

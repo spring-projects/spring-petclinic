@@ -40,8 +40,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * @author Dave Syer
  * @author Wick Dynex
  */
-@Getter
-@Setter
 
 @Controller
 class VisitController {

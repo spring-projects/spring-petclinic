@@ -31,8 +31,6 @@ import org.springframework.validation.Validator;
  * @author Ken Krebs
  * @author Juergen Hoeller
  */
-@Getter
-@Setter
 
 public class PetValidator implements Validator {
 
