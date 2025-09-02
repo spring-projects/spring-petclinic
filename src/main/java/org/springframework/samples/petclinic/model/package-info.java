@@ -17,4 +17,7 @@
 /**
  * The classes in this package represent utilities used by the domain.
  */
+@NullMarked
 package org.springframework.samples.petclinic.model;
+
+import org.jspecify.annotations.NullMarked;
