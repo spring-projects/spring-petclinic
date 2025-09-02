@@ -1,8 +1,8 @@
 import jetbrains.buildServer.configs.kotlin.*
-import jetbrains.buildServer.configs.kotlin.projectFeatures.*
 import jetbrains.buildServer.configs.kotlin.triggers.*
 import jetbrains.buildServer.configs.kotlin.buildSteps.*
 import jetbrains.buildServer.configs.kotlin.buildFeatures.perfmon
+import jetbrains.buildServer.configs.kotlin.buildFeatures.swabra
 import jetbrains.buildServer.configs.kotlin.vcs.GitVcsRoot
 
 /*
@@ -56,6 +56,10 @@ object Build : BuildType({
             goals = "clean test"
             runnerArgs = "-Dmaven.test.failure.ignore=true"
         }
+        script {
+            name = "Echo Agent Info"
+            scriptContent = "echo Running on %teamcity.agent.name%"
+        }
     }
 
     triggers {
@@ -65,6 +69,10 @@ object Build : BuildType({
 
     features {
         perfmon {
+        }
+    }
+    features {
+        swabra {
         }
     }
 })
