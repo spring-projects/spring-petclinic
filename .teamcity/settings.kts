@@ -35,11 +35,19 @@ object PetclinicVcs : GitVcsRoot({
     url = "https://github.com/yana-ochen/spring-petclinic-teamcity.git"
     branch = "refs/heads/main"
 })
-
-project {
-    vcsRoot(PetclinicVcs)   // register the root
-    buildType(Build)
+fun wrapWithFeature(buildType: BuildType, featureBlock: BuildFeatures.() -> Unit): BuildType {
+    buildType.features {
+        featureBlock()
+    }
+    return buildType
 }
+project {
+    vcsRoot(PetclinicVcs)
+    buildType(wrapWithFeature(Build) {
+        swabra { }
+    })
+}
+
 
 // --- Build configuration using the named root ---
 object Build : BuildType({
@@ -69,10 +77,6 @@ object Build : BuildType({
 
     features {
         perfmon {
-        }
-    }
-    features {
-        swabra {
         }
     }
 })
