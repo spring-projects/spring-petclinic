@@ -60,6 +60,6 @@ public interface OwnerRepository extends JpaRepository<Owner, Integer> {
 	 * @throws IllegalArgumentException if the id is null (assuming null is not a valid
 	 * input for id)
 	 */
-	Optional<Owner> findById(@Nonnull Integer id);
+	Optional<Owner> findById(Integer id);
 
 }

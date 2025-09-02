@@ -67,6 +67,10 @@ class VisitController {
 				"Owner not found with id: " + ownerId + ". Please ensure the ID is correct "));
 
 		Pet pet = owner.getPet(petId);
+		if (pet == null) {
+			throw new IllegalArgumentException(
+					"Pet with id " + petId + " not found for owner with id " + ownerId + ".");
+		}
 		model.put("pet", pet);
 		model.put("owner", owner);
 

@@ -32,6 +32,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Simple business object representing a pet.
@@ -47,30 +48,30 @@ public class Pet extends NamedEntity {
 
 	@Column(name = "birth_date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private LocalDate birthDate;
+	private @Nullable LocalDate birthDate;
 
 	@ManyToOne
 	@JoinColumn(name = "type_id")
-	private PetType type;
+	private @Nullable PetType type;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "pet_id")
 	@OrderBy("date ASC")
 	private final Set<Visit> visits = new LinkedHashSet<>();
 
-	public void setBirthDate(LocalDate birthDate) {
+	public void setBirthDate(@Nullable LocalDate birthDate) {
 		this.birthDate = birthDate;
 	}
 
-	public LocalDate getBirthDate() {
+	public @Nullable LocalDate getBirthDate() {
 		return this.birthDate;
 	}
 
-	public PetType getType() {
+	public @Nullable PetType getType() {
 		return this.type;
 	}
 
-	public void setType(PetType type) {
+	public void setType(@Nullable PetType type) {
 		this.type = type;
 	}
 
