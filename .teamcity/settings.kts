@@ -1,7 +1,9 @@
 import jetbrains.buildServer.configs.kotlin.*
+import jetbrains.buildServer.configs.kotlin.projectFeatures.*
+import jetbrains.buildServer.configs.kotlin.triggers.*
+import jetbrains.buildServer.configs.kotlin.buildSteps.*
 import jetbrains.buildServer.configs.kotlin.buildFeatures.perfmon
-import jetbrains.buildServer.configs.kotlin.buildSteps.maven
-import jetbrains.buildServer.configs.kotlin.triggers.vcs
+import jetbrains.buildServer.configs.kotlin.vcs.GitVcsRoot
 
 /*
 The settings script is an entry point for defining a TeamCity
@@ -27,15 +29,24 @@ To debug in IntelliJ Idea, open the 'Maven Projects' tool window (View
 
 version = "2025.07"
 
+// --- Named VCS root defined here ---
+object PetclinicVcs : GitVcsRoot({
+    name = "PetclinicVcs"
+    url = "https://github.com/yana-ochen/spring-petclinic-teamcity.git"
+    branch = "refs/heads/main"
+})
+
 project {
+    vcsRoot(PetclinicVcs)   // register the root
     buildType(Build)
 }
 
+// --- Build configuration using the named root ---
 object Build : BuildType({
     name = "Build"
 
     vcs {
-        root(DslContext.settingsRoot)
+        root(PetclinicVcs)   // instead of DslContext.settingsRoot
     }
 
     steps {
