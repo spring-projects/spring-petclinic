@@ -13,6 +13,7 @@ jobs:
         uses: actions/setup-java@v5
         with:
           java-version: '24'
+          distribution: 'temurin'
       - name: Generate Checkstyle Report
         run: |
           chmod u+x ./gradlew
@@ -32,6 +33,7 @@ jobs:
         uses: actions/setup-java@v5
         with:
           java-version: '24'
+          distribution: 'temurin'
       - name: Run Tests
         run: |
           chmod u+x ./gradlew
@@ -46,6 +48,7 @@ jobs:
         uses: actions/setup-java@v5
         with:
           java-version: '24'
+          distribution: 'temurin'
       - name: Build Without Tests
         run: |
           chmod u+x ./gradlew
