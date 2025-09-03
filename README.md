@@ -12,7 +12,7 @@ This project is forked from: https://github.com/spring-projects/spring-petclinic
 ### Jenkins
 * Test Merge 2 3
 
-* GitHub Actions Test
+* GitHub Actions Testing
 
 <hr>
 
