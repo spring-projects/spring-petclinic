@@ -39,6 +39,20 @@ pipeline {
         sh 'docker push wodnr8174/spring-petclinic:latest'
       }  
     }
+    stage('Docker Image Remove') {
+      steps {
+        sh 'docker rmi wodnr8174/spring-petclinic:$BUILD_NUMBER wodnr8174/spring-petclinic:latest
+      }  
+    }
+    stage('Publish Over SSH') {
+      steps {
+      sshPublisher(publishers: [sshPublisherDesc(configName: 'target', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '''docker rm -f $(docker ps -aq)
+      docker rm $(docker images -q)
+
+      docker run -itd -p 8080:8080 --name=spring-petclinic wodnr8174/spring-petclinic:latest
+      ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'target'), sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+      }
+    }
   }
 }
 
