@@ -1,0 +1,26 @@
+name: CI Pipeline for the main branch
+
+on:
+  push:
+    branches: main
+  pull_request:
+    branches: main
+
+jobs:
+
+  docker-image-main:
+    name: Docker Image (for the main branch)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v6
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: $ {{ secrets.DOCKER_HUB_USERNAME }}/spring-petclinic-mr:latest
