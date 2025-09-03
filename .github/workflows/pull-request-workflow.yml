@@ -69,5 +69,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/spring-petclinic-mr:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/spring-petclinic-mr:${{ github.sha }}
     
