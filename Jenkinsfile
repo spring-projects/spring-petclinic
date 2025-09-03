@@ -6,6 +6,10 @@ pipeline {
     jdk "JDK17"
   }
 
+  environment {
+    DOCKERHUB_CREDENTIALS = credentials('dockerCredentials')
+  }
+  
   stages{
     stage('Git Clone'){
       steps {
@@ -24,6 +28,16 @@ pipeline {
         docker tag wodnr8174/spring-petclinic:$BUILD_NUMBER wodnr8174/spring-petclinic:latest
         """
       }
+    }
+    stage('Docker Hub Login') {
+      steps {
+        sh 'ehco $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password stdin'
+      }  
+    }  
+    stage('Docker Image Push') {
+      steps{
+        sh 'docker push wodnr8174/spring-petclinic:latest'
+      }  
     }
   }
 }
