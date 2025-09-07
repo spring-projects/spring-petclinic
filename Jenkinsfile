@@ -1,5 +1,5 @@
 node {
-    git branch: 'main',  url: 'https://github.com/k-fathi/spring-petclinic.git'
+    git branch: 'test',  url: 'https://github.com/k-fathi/spring-petclinic.git'
     
     stage('build') {
         try{
