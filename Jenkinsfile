@@ -1,5 +1,5 @@
 node {
-    git branch: 'main',  url: 'https://github.com/k-fathi/spring-petclinic.git'
+    git branch: 'test',  url: 'https://github.com/k-fathi/spring-petclinic.git'
     
     stage('build') {
         try{
@@ -15,7 +15,7 @@ node {
             sh'echo "test stage"'
         }
         else {
-            sh'echo "skip test stage"'
+            sh'echo skip test stage"'
         }
     }
 }
