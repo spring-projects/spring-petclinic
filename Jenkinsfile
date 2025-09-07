@@ -1,13 +1,13 @@
 node {
-    git branch: 'test',  url: 'https://github.com/k-fathi/spring-petclinic.git'
+    git branch: 'main',  url: 'https://github.com/k-fathi/spring-petclinic.git'
     
     stage('build') {
         try{
             sh'echo "Hello, Karim! - Build stage"'
         }
-        catch(Exception e){
+        catch(Exception error){
             sh'echo "exception run"'
-            throw e
+            throw error
         }
     }
     stage('test'){
