@@ -11,6 +11,7 @@ node {
         }
     }
     stage('test'){
+        echo "Jenkins is using this branch name: >>>${env.BRANCH_NAME}<<<"
         if (env.BRANCH_NAME == "main"){
             sh'echo "test stage"'
         }
