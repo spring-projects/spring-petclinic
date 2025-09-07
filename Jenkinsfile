@@ -15,7 +15,7 @@ node {
             sh'echo "test stage"'
         }
         else {
-            sh'echo skip test stage"'
+            sh'echo "skip test stage"'
         }
     }
 }
