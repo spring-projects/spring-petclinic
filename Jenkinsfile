@@ -1,5 +1,6 @@
 node {
     git branch 'main',  url: 'https://github.com/k-fathi/spring-petclinic.git'
+    
     stage('build') {
         try{
             sh'echo "Hello, Karim! - Build stage"'
@@ -10,7 +11,7 @@ node {
         }
     }
     stage('test'){
-        if (env.BRANCH_NAME == 'feature '){
+        if (env.BRANCH_NAME == "test"){
             sh'echo "test stage"'
         }
         else {
