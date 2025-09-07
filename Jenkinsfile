@@ -5,7 +5,7 @@ node {
         try{
             sh'echo "Hello, Karim! - Build stage"'
         }
-        catch(Exeption e){
+        catch(Exception e){
             sh'echo "exception run"'
             throw e
         }
