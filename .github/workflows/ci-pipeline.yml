@@ -64,7 +64,14 @@ jobs:
       # 5) SAST/SCA (on-demand audit; not tied to the build)
       #################################################
       - name: JFrog Audit (SAST & SCA)
-        run: jf audit
+        # Add build info to associate results with the published build
+        # Add --fail=false so the pipeline doesn't stop here.
+        # Let Xray Policies and Watches determine the build status later.
+        run: |
+          jf audit \
+            --build-name=${{ env.JFROG_CLI_BUILD_NAME }} \
+            --build-number=${{ env.JFROG_CLI_BUILD_NUMBER }} \
+            --fail=false
 
       #################################################
       # 6) Build with Maven (attached to build via env)
