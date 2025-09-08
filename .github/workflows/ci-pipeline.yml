@@ -63,14 +63,18 @@ jobs:
       #################################################
       # 5) SAST/SCA (on-demand audit; not tied to the build)
       #################################################
+      #################################################
+      # 5) SAST/SCA (Associated with a JFrog Project)
+      #################################################
+      #################################################
+      # 5) SAST/SCA (Associated with an Xray Watch)
+      #################################################
       - name: JFrog Audit (SAST & SCA)
-        # Add build info to associate results with the published build
-        # Add --fail=false so the pipeline doesn't stop here.
-        # Let Xray Policies and Watches determine the build status later.
+        # Associate the scan with one or more Xray Watches for policy enforcement.
+        # This is the correct method if you are not using JFrog Projects.
         run: |
           jf audit \
-            --build-name=${{ env.JFROG_CLI_BUILD_NAME }} \
-            --build-number=${{ env.JFROG_CLI_BUILD_NUMBER }} \
+            --watches=jesseh-security \
             --fail=false
 
       #################################################
