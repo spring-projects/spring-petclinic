@@ -8,8 +8,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-     - name: checkout 
+     - name: checkout - SPC ...
        uses: actions/checkout@v4
 
-     - name: build the codepipeline
+     - name: build the codepipeline - with Actions...
        run: mvn package
