@@ -37,10 +37,10 @@ jobs:
           JF_PASSWORD: ${{ secrets.ARTIFACTORY_IDENTITY_TOKEN }}
 
       # Configures Maven to resolve all dependencies from your Artifactory instance
+      # Configures Maven to resolve all dependencies from your Artifactory instance
       - name: Configure Maven Repositories
         run: |
           jf mvnc \
-            --server-id-resolve=my-jfrog-server \
             --repo-resolve-releases=jesseh-maven-dev-virtual \
             --repo-resolve-snapshots=jesseh-maven-dev-virtual
 
