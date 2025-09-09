@@ -4,3 +4,8 @@ resolver:
     serverId: soleng
     snapshotRepo: jesseh-maven-dev-virtual
     releaseRepo: jesseh-maven-dev-virtual
+deployer:
+    serverId: soleng
+    snapshotRepo: jesseh-maven-dev-virtual
+    releaseRepo: jesseh-maven-dev-virtual
+useWrapper: true
