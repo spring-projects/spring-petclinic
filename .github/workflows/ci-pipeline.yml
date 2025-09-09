@@ -28,18 +28,21 @@ jobs:
       # Installs and configures the JFrog CLI with your Artifactory server details
       - name: Setup JFrog CLI
         uses: jfrog/setup-jfrog-cli@v4
-        with:
-          server-id: my-jfrog-server
-          url: ${{ secrets.JF_RT_URL }}
-          user: ${{ secrets.ARTIFACTORY_USERNAME }}
-          password: ${{ secrets.ARTIFACTORY_IDENTITY_TOKEN }}
+        env:
+          JF_URL: ${{ secrets.JF_RT_URL }}
+          JFROG_CLI_RELEASES_REPO: https://soleng.jfrog.io/artifactory/jesseh-maven-dev-virtual/
+          JFROG_CLI_EXTRACTORS_REMOTE: https://soleng.jfrog.io/artifactory/jesseh-maven-dev-virtual/
+          JF_GIT_TOKEN: ${{ secrets.GH_TOKEN }}
+          JF_USER: ${{ secrets.ARTIFACTORY_USERNAME }}
+          JF_PASSWORD: ${{ secrets.ARTIFACTORY_IDENTITY_TOKEN }}
 
       # Configures Maven to resolve all dependencies from your Artifactory instance
       - name: Configure Maven Repositories
         run: |
           jf mvnc \
             --server-id-resolve=my-jfrog-server \
-            --repo-resolve-releases=jesseh-maven-dev-virtual
+            --repo-resolve-releases=jesseh-maven-dev-virtual \
+            --repo-resolve-snapshots=jesseh-maven-dev-virtual
 
       # Automatically fixes any code formatting issues to prevent build failures
       - name: Apply Java Formatting
