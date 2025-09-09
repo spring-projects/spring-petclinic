@@ -29,6 +29,7 @@ pipeline {
         stage('build'){
             steps{
                 echo "this is a build stage"
+                echo "test push-1"
             }
         }
     }
