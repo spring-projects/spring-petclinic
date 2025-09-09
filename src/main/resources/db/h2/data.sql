@@ -15,12 +15,12 @@ INSERT INTO vet_specialties VALUES (3, 3);
 INSERT INTO vet_specialties VALUES (4, 2);
 INSERT INTO vet_specialties VALUES (5, 1);
 
-INSERT INTO types VALUES (default, 'cat');
-INSERT INTO types VALUES (default, 'dog');
-INSERT INTO types VALUES (default, 'lizard');
-INSERT INTO types VALUES (default, 'snake');
-INSERT INTO types VALUES (default, 'bird');
-INSERT INTO types VALUES (default, 'hamster');
+INSERT INTO types VALUES (default, 'cat', 'bombay cat',33, 5, 'fur','black', 16, 'Friendly');
+INSERT INTO types VALUES (default, 'dog', 'Golden Retriever', 61, 34,'Double coat', 'gold', 12, 'Intelligent');
+INSERT INTO types VALUES (default, 'lizard','Leopard Gecko', 28, 0.08,'Scaly skin','Yellow', 20, 'Docile');
+INSERT INTO types VALUES (default, 'snake', 'Ball Python',182,1.8,'scaly skin','Black', 30, 'Docile');
+INSERT INTO types VALUES (default, 'bird', 'Cockatiel',35,0.113, 'Feathers','Grey', 20, 'Affectionate');
+INSERT INTO types VALUES (default, 'hamster', 'Syrian Hamster', 18, 0.225, 'Fur', 'Golden-Brown',3,'Friendly');
 
 INSERT INTO owners VALUES (default, 'George', 'Franklin', '110 W. Liberty St.', 'Madison', '6085551023');
 INSERT INTO owners VALUES (default, 'Betty', 'Davis', '638 Cardinal Ave.', 'Sun Prairie', '6085551749');
