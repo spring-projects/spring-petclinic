@@ -1,0 +1,102 @@
+name: Java CI/CD on Azure VM (Spring PetClinic)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    strategy:
+      matrix:
+        java: [ '17' ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ matrix.java }}
+          distribution: temurin
+          cache: maven
+
+      - name: Make Maven wrapper executable
+        run: chmod +x mvnw
+
+      - name: Build & test
+        run: ./mvnw -B -ntp clean verify
+
+      - name: SonarQube analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        run: |
+          ./mvnw -B -ntp verify sonar:sonar \
+            -Dsonar.host.url="${SONAR_HOST_URL}" \
+            -Dsonar.token="${SONAR_TOKEN}" \
+            -Dsonar.projectKey="${{ github.repository }}-petclinic" \
+            -Dsonar.projectName="${{ github.repository }}: Spring PetClinic"
+
+      - name: Archive JAR artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: spring-petclinic-jar
+          path: target/*.jar
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [ build ]
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - name: Checkout (needed for artifact path conventions)
+        uses: actions/checkout@v4
+
+      - name: Download JAR artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: spring-petclinic-jar
+          path: target
+
+      - name: Start SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.AZURE_SSH_PRIVATE_KEY }}
+
+      - name: Add host to known_hosts (optional)
+        run: |
+          ssh-keyscan -H "${{ secrets.AZURE_APP_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Copy JAR to VM (home)
+        run: |
+          JAR="$(ls target/*.jar | head -n1)"
+          echo "Uploading $JAR"
+          scp -o StrictHostKeyChecking=no "$JAR" "${{ secrets.AZURE_SSH_USER }}@${{ secrets.AZURE_APP_HOST }}:/home/${{ secrets.AZURE_SSH_USER }}/spring-petclinic.jar"
+
+      - name: Move JAR into service dir + restart service
+        run: |
+          ssh -o StrictHostKeyChecking=no "${{ secrets.AZURE_SSH_USER }}@${{ secrets.AZURE_APP_HOST }}" \
+            "sudo mv /home/${{ secrets.AZURE_SSH_USER }}/spring-petclinic.jar /opt/petclinic/spring-petclinic.jar && \
+             sudo chown petclinic:petclinic /opt/petclinic/spring-petclinic.jar && \
+             sudo systemctl restart petclinic && \
+             sudo systemctl --no-pager --full status petclinic || true"
+
+      - name: Verify application on port 8080
+        run: |
+          for i in {1..30}; do
+            if curl -fsS "http://${{ secrets.AZURE_APP_HOST }}:8080" >/dev/null; then
+              echo "PetClinic is UP on port 8080 ✅"
+              exit 0
+            fi
+            echo "Waiting for app... ($i/30)"
+            sleep 3
+          done
+          echo "App did not become healthy in time" >&2
+          exit 1
