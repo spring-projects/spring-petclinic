@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        IMAGE_NAME = "your-dockerhub-username/spring-petclinic:${env.BUILD_NUMBER}"
+        IMAGE_NAME = "karimfathy1/petclinic-app:${env.BUILD_NUMBER}"
     }
     stages{
         stage('checkout')
@@ -55,3 +55,4 @@ pipeline {
 // test1
 // test2
 // test3
+// test4
