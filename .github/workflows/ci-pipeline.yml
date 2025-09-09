@@ -61,12 +61,6 @@ jobs:
         run: jf mvnc --global --repo-resolve-releases jesseh-maven-dev-virtual/ --repo-resolve-snapshots jesseh-maven-dev-virtual/
 
       #################################################
-      # 5) SAST/SCA (on-demand audit; not tied to the build)
-      #################################################
-      #################################################
-      # 5) SAST/SCA (Associated with a JFrog Project)
-      #################################################
-      #################################################
       # 5) SAST/SCA (Associated with an Xray Watch)
       #################################################
       - name: JFrog Audit (SAST & SCA)
@@ -75,7 +69,7 @@ jobs:
         run: |
           jf audit \
             --watches=jesseh-security \
-            --fail=false
+            --fail=true
 
       #################################################
       # 6) Build with Maven (attached to build via env)
