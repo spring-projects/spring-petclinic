@@ -32,6 +32,7 @@ pipeline {
                 echo "test push-1"
                 echo "test push-2 >> editing security settings"
                 echo "test push-2 >> editing security settings - 2"
+                echo "test push-2 >> editing security settings - 3"
             }
         }
     }
