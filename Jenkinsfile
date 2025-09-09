@@ -14,7 +14,7 @@ pipeline {
         stage('Cleaning stage'){
             steps{
                 echo "Builing jar file without testing"
-                sh'./mvnw clean'
+                sh './mvnw clean'
             }
         }
         stage('build stage'){
@@ -27,7 +27,9 @@ pipeline {
             steps{
                 echo "Running Unit tests"
                 withSonarQubeEnv('SonarQube-server') {
-                    sh'./mvnw sonar:sonar'
+                    withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+                        sh './mvnw sonar:sonar -Dsonar.login=$SONAR_TOKEN'
+                    }
                 }
             }
         }
