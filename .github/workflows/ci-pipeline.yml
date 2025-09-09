@@ -10,8 +10,7 @@ jobs:
   build-and-scan:
     runs-on: ubuntu-latest
 
-    # Environment variables are applied to all steps in this job.
-    # This ensures every JFrog CLI command is associated with the same build record.
+    # Environment variables for consistent build naming across all steps
     env:
       JFROG_CLI_BUILD_NAME: jesseh-spring-petclinic
       JFROG_CLI_BUILD_NUMBER: ${{ github.run_id }}
@@ -26,8 +25,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      # This action installs the JFrog CLI and configures the connection to your Artifactory server.
-      # It uses your provided secrets to create a server configuration named 'my-jfrog-server'.
+      # Installs and configures the JFrog CLI with your Artifactory server details
       - name: Setup JFrog CLI
         uses: jfrog/setup-jfrog-cli@v4
         with:
@@ -36,47 +34,57 @@ jobs:
           user: ${{ secrets.ARTIFACTORY_USERNAME }}
           password: ${{ secrets.ARTIFACTORY_IDENTITY_TOKEN }}
 
+      # Configures Maven to resolve all dependencies from your Artifactory instance
       - name: Configure Maven Repositories
         run: |
           jf mvnc \
             --server-id-resolve=my-jfrog-server \
             --repo-resolve-releases=jesseh-maven-dev-virtual
 
-      # This is a "shift-left" security scan. It runs SAST and SCA on your source code
-      # before the build to provide fast feedback on vulnerabilities.
-      - name: Run JFrog SAST & SCA Audit
-        run: |
-          jf audit --fail=false --watches=jesseh-security
+      # Automatically fixes any code formatting issues to prevent build failures
+      - name: Apply Java Formatting
+        run: mvn spring-javaformat:apply
 
-      # The 'jf' prefix wraps the Maven command, allowing the JFrog CLI to
-      # resolve dependencies from Artifactory and collect build-info.
+      # Wraps the Maven command to resolve dependencies and collect build-info
       - name: Build Application with Maven
         run: |
           jf mvn clean install -DskipTests=true
 
-      # The standard Docker login action is used for authentication.
-      - name: Login to JFrog Container Registry
+      # "Shift-left" scan for fast feedback on source code and dependencies
+      - name: Run JFrog SAST & SCA Audit
+        run: |
+          jf audit --fail=false --watches=jesseh-security
+
+      # This is your original, working login action. It correctly handles the full URL.
+      - name: Login to JFrog Docker Registry
         uses: docker/login-action@v3
         with:
-          registry: ${{ secrets.JF_RT_URL | sed 's|https://||' }}
+          registry: ${{ secrets.JF_RT_URL }}
           username: ${{ secrets.ARTIFACTORY_USERNAME }}
           password: ${{ secrets.ARTIFACTORY_IDENTITY_TOKEN }}
-
-      # The 'jf docker push' command pushes the image and adds the Docker layers to the build-info.
-      - name: Build and Push Docker Image
+      
+      # Defines the full image name using the registry from your secrets
+      - name: Set Docker Image Name
+        id: docker_image
         run: |
-          export DOCKER_IMAGE_NAME=$(echo "${{ secrets.JF_RT_URL }}" | sed 's|https://||')/jesseh-docker-dev-local/spring-petclinic:${{ github.run_id }}
-          docker build -t $DOCKER_IMAGE_NAME .
-          jf docker push $DOCKER_IMAGE_NAME
+          DOCKER_REGISTRY=$(echo "${{ secrets.JF_RT_URL }}" | sed 's|https://||')
+          echo "image_name=$DOCKER_REGISTRY/jesseh-docker-dev-local/spring-petclinic:${{ github.run_id }}" >> $GITHUB_OUTPUT
 
-      # This command publishes all the collected information (Maven dependencies, environment variables, git context, Docker layers)
-      # to Artifactory as a single, immutable build record.
+      - name: Build Docker Image
+        run: |
+          docker build -t ${{ steps.docker_image.outputs.image_name }} .
+
+      # Pushes the image using JFrog CLI to add the Docker layers to the build-info
+      - name: Push Docker Image
+        run: |
+          jf docker push ${{ steps.docker_image.outputs.image_name }}
+
+      # Publishes all collected build information to Artifactory
       - name: Publish Build Info
         run: |
           jf rt build-publish
 
-      # This is the final and most comprehensive security scan. It scans the entire build record
-      # published in the previous step, giving you a complete security report for your release candidate.
+      # Final, comprehensive security scan on the entire build record
       - name: Scan Build with Xray
         run: |
           jf bs --fail=false --vuln
