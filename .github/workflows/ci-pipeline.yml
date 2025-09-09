@@ -60,6 +60,15 @@ jobs:
       - name: Configure Maven to resolve via Artifactory
         run: jf mvnc --global --repo-resolve-releases jesseh-maven-dev-virtual/ --repo-resolve-snapshots jesseh-maven-dev-virtual/
 
+
+
+      #################################################
+      # 6) Build with Maven (attached to build via env)
+      #################################################
+      - name: Maven Build With JFrog CLI
+        run: |
+          jf mvn clean install \
+            -DskipTests=true -Denforcer.skip=true
       #################################################
       # 5) SAST/SCA (Associated with an Xray Watch)
       #################################################
@@ -70,14 +79,6 @@ jobs:
           jf audit \
             --watches=jesseh-security \
             --fail=true
-
-      #################################################
-      # 6) Build with Maven (attached to build via env)
-      #################################################
-      - name: Maven Build With JFrog CLI
-        run: |
-          jf mvn clean install \
-            -DskipTests=true -Denforcer.skip=true
 
       #################################################
       # 7) Scan produced artifact (on-demand scan)
