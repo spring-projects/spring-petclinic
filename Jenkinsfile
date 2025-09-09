@@ -19,8 +19,8 @@ pipeline {
         }
         stage('build stage'){
             steps{
-                echo "Builing jar file with testing"
-                sh'./mvnw package'
+                echo "Builing jar file without testing"
+                sh'./mvnw package -DskipTests'
             }
         }
         stage('test stage'){
@@ -62,3 +62,5 @@ pipeline {
 // test6
 // test7
 // test8
+// test9
+// test10
