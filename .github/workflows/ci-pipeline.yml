@@ -67,20 +67,21 @@ jobs:
           password: ${{ secrets.ARTIFACTORY_IDENTITY_TOKEN }}
       
       # Defines the full image name using the registry from your secrets
-      - name: Set Docker Image Name
-        id: docker_image
-        run: |
-          DOCKER_REGISTRY=$(echo "${{ secrets.JF_RT_URL }}" | sed 's|https://||')
-          echo "image_name=$DOCKER_REGISTRY/jesseh-docker-dev-local/spring-petclinic:${{ github.run_id }}" >> $GITHUB_OUTPUT
+      - name: Login to JFrog Docker Repo
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ secrets.JF_RT_URL }}
+          username: ${{ secrets.ARTIFACTORY_USERNAME }}
+          password: ${{ secrets.ARTIFACTORY_IDENTITY_TOKEN }}
 
       - name: Build Docker Image
         run: |
-          docker build -t ${{ steps.docker_image.outputs.image_name }} .
+          docker build -t soleng.jfrog.io/jesseh-docker-dev-local/spring-petclinic:${{ github.run_id }} .
 
       # Pushes the image using JFrog CLI to add the Docker layers to the build-info
       - name: Push Docker Image
         run: |
-          jf docker push ${{ steps.docker_image.outputs.image_name }}
+          jf docker push soleng.jfrog.io/jesseh-docker-dev-local/spring-petclinic:${{ github.run_id }}
 
       # Publishes all collected build information to Artifactory
       - name: Publish Build Info
