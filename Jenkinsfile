@@ -31,6 +31,7 @@ pipeline {
                 echo "this is a build stage"
                 echo "test push-1"
                 echo "test push-2 >> editing security settings"
+                echo "test push-2 >> editing security settings - 2"
             }
         }
     }
