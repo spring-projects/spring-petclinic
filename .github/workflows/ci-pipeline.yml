@@ -56,7 +56,7 @@ jobs:
       # "Shift-left" scan for fast feedback on source code and dependencies
       - name: Run JFrog SAST & SCA Audit
         run: |
-          jf audit --sast --fail=true --watches "jesseh-security"
+          jf audit --sast --fail=true --project "jesseh"
 
       # This is your original, working login action. It correctly handles the full URL.
       - name: Login to JFrog Docker Registry
