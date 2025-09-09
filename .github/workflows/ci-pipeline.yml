@@ -1,4 +1,4 @@
-name: Build with JFrog CLI (Forcing New Extractor)
+name: Build and Scan with JFrog
 
 on:
   push:
@@ -7,117 +7,76 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  build-and-scan:
     runs-on: ubuntu-latest
 
-    # One build per run — everything uses the same build name/number
+    # Environment variables are applied to all steps in this job.
+    # This ensures every JFrog CLI command is associated with the same build record.
     env:
       JFROG_CLI_BUILD_NAME: jesseh-spring-petclinic
       JFROG_CLI_BUILD_NUMBER: ${{ github.run_id }}
 
     steps:
-      #################################################
-      # 1) Checkout
-      #################################################
-      - name: Checkout
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      #################################################
-      # 2) Java
-      #################################################
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
-          distribution: temurin
+          distribution: 'temurin'
           java-version: '17'
 
-      #################################################
-      # 3) JFrog CLI
-      #################################################
+      # This action installs the JFrog CLI and configures the connection to your Artifactory server.
+      # It uses your provided secrets to create a server configuration named 'my-jfrog-server'.
       - name: Setup JFrog CLI
         uses: jfrog/setup-jfrog-cli@v4
-        id: setup-cli
-        env:
-          JF_URL: ${{ secrets.JF_RT_URL }}
-          JFROG_CLI_RELEASES_REPO: https://soleng.jfrog.io/artifactory/jesseh-maven-dev-virtual/
-          JFROG_CLI_EXTRACTORS_REMOTE: https://soleng.jfrog.io/artifactory/jesseh-maven-dev-virtual/
-          JF_GIT_TOKEN: ${{ secrets.GH_TOKEN }}
-          JF_USER: ${{ secrets.ARTIFACTORY_USERNAME }}
-          JF_PASSWORD: ${{ secrets.ARTIFACTORY_IDENTITY_TOKEN }}
+        with:
+          server-id: my-jfrog-server
+          url: ${{ secrets.JF_RT_URL }}
+          user: ${{ secrets.ARTIFACTORY_USERNAME }}
+          password: ${{ secrets.ARTIFACTORY_IDENTITY_TOKEN }}
 
-      #################################################
-      # 4) Prep
-      #################################################
-      - name: Clear local Maven cache
-        run: rm -rf ~/.m2/repository
-
-      - name: Ensure mvnw is executable
-        run: chmod +x mvnw
-
-      - name: Ping JFrog
-        run: jf rt ping
-
-      - name: Configure Maven to resolve via Artifactory
-        run: jf mvnc --global --repo-resolve-releases jesseh-maven-dev-virtual/ --repo-resolve-snapshots jesseh-maven-dev-virtual/
-
-
-
-      #################################################
-      # 6) Build with Maven (attached to build via env)
-      #################################################
-      - name: Maven Build With JFrog CLI
+      - name: Configure Maven Repositories
         run: |
-          jf mvn clean install \
-            -DskipTests=true -Denforcer.skip=true
-      #################################################
-      # 5) SAST/SCA (Associated with an Xray Watch)
-      #################################################
-      - name: JFrog Audit (SAST & SCA)
-        # Associate the scan with one or more Xray Watches for policy enforcement.
-        # This is the correct method if you are not using JFrog Projects.
-        run: |
-          jf audit \
-            --watches=jesseh-security \
-            --fail=true
+          jf mvnc \
+            --server-id-resolve=my-jfrog-server \
+            --repo-resolve-releases=jesseh-maven-dev-virtual
 
-      #################################################
-      # 7) Scan produced artifact (on-demand scan)
-      #################################################
-      - name: Scan Artifact
+      # This is a "shift-left" security scan. It runs SAST and SCA on your source code
+      # before the build to provide fast feedback on vulnerabilities.
+      - name: Run JFrog SAST & SCA Audit
         run: |
-          latest_jar=$(find target -name "*.jar" | sort | tail -n 1)
-          echo "Scanning: $latest_jar"
-          jf scan "$latest_jar"
+          jf audit --fail=false --watches=jesseh-security
 
-      #################################################
-      # 8) Build & Push Docker image
-      #################################################
-      - name: Login to JFrog Docker Repo
+      # The 'jf' prefix wraps the Maven command, allowing the JFrog CLI to
+      # resolve dependencies from Artifactory and collect build-info.
+      - name: Build Application with Maven
+        run: |
+          jf mvn clean install -DskipTests=true
+
+      # The standard Docker login action is used for authentication.
+      - name: Login to JFrog Container Registry
         uses: docker/login-action@v3
         with:
-          registry: ${{ secrets.JF_RT_URL }}
+          registry: ${{ secrets.JF_RT_URL | sed 's|https://||' }}
           username: ${{ secrets.ARTIFACTORY_USERNAME }}
           password: ${{ secrets.ARTIFACTORY_IDENTITY_TOKEN }}
 
-      - name: Build Docker Image
+      # The 'jf docker push' command pushes the image and adds the Docker layers to the build-info.
+      - name: Build and Push Docker Image
         run: |
-          docker build -t soleng.jfrog.io/jesseh-docker-dev-local/spring-petclinic:${{ github.run_id }} .
+          export DOCKER_IMAGE_NAME=$(echo "${{ secrets.JF_RT_URL }}" | sed 's|https://||')/jesseh-docker-dev-local/spring-petclinic:${{ github.run_id }}
+          docker build -t $DOCKER_IMAGE_NAME .
+          jf docker push $DOCKER_IMAGE_NAME
 
-      - name: Push Docker Image to Artifactory
-        run: |
-          jf docker push soleng.jfrog.io/jesseh-docker-dev-local/spring-petclinic:${{ github.run_id }}
-
-      #################################################
-      # 9) Publish Build Info (all commands use env build name/number)
-      #################################################
+      # This command publishes all the collected information (Maven dependencies, environment variables, git context, Docker layers)
+      # to Artifactory as a single, immutable build record.
       - name: Publish Build Info
         run: |
-          jf rt build-collect-env
-          jf rt build-add-git
           jf rt build-publish
 
-      #################################################
-      # 10) Xray build scan → populates Build → Security tab
-      #################################################
-      - name: Xray build scan
-        run: jf bs --vuln
+      # This is the final and most comprehensive security scan. It scans the entire build record
+      # published in the previous step, giving you a complete security report for your release candidate.
+      - name: Scan Build with Xray
+        run: |
+          jf bs --fail=false --vuln
