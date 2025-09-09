@@ -61,9 +61,8 @@ class OwnerController {
 
 	@ModelAttribute("owner")
 	public Owner findOwner(@PathVariable(name = "ownerId", required = false) Integer ownerId) {
-		return ownerId == null ? new Owner()
-				: this.owners.findById(ownerId)
-					.orElseThrow(() -> new IllegalArgumentException("Owner ID " + ownerId + " not found."));
+		return ownerId == null ? new Owner() : this.owners.findById(ownerId)
+			.orElseThrow(() -> new IllegalArgumentException("Owner ID " + ownerId + " not found."));
 	}
 
 	@GetMapping("/owners/new")
@@ -105,7 +104,8 @@ class OwnerController {
 		// To fix this, sanitize the input to remove any CRLF characters before logging.
 		/*
 		 * String sanitizedLastName = owner.getLastName().replaceAll("[\r\n]", "_");
-		 * log.info("Searching for owner with sanitized last name: '{}'", sanitizedLastName);
+		 * log.info("Searching for owner with sanitized last name: '{}'",
+		 * sanitizedLastName);
 		 */
 
 		// Find owners by last name
@@ -167,7 +167,8 @@ class OwnerController {
 	@GetMapping("/owners/{ownerId}")
 	public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
 		ModelAndView mav = new ModelAndView("owners/ownerDetails");
-		Owner owner = this.owners.findById(ownerId).orElseThrow(() -> new IllegalArgumentException("Owner ID " + ownerId + " not found."));
+		Owner owner = this.owners.findById(ownerId)
+			.orElseThrow(() -> new IllegalArgumentException("Owner ID " + ownerId + " not found."));
 		mav.addObject(owner);
 		return mav;
 	}

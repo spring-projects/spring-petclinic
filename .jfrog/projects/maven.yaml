@@ -1,0 +1,6 @@
+version: 1
+type: maven
+resolver:
+    serverId: soleng
+    snapshotRepo: jesseh-maven-dev-virtual
+    releaseRepo: jesseh-maven-dev-virtual
