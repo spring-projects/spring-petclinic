@@ -48,12 +48,21 @@ public class PetFeaturesController {
 		return ResponseEntity.ok().body( petFeaturesList );
 	}
 
+	@GetMapping(value = "/{petId}")
+	public ResponseEntity<PetFeatures> getPetData(@PathVariable Integer petId) throws PetIdNotFoundException {
+
+		Optional<PetFeatures> petFeaturesList = Optional.ofNullable(petFeatures.findById(petId)
+			.orElseThrow(() -> new PetIdNotFoundException("Pet Id not found: " + petId)));
+
+		return ResponseEntity.ok().body( petFeaturesList.get() );
+	}
+
 	@PutMapping(value = "/update")
-	public ResponseEntity<ApiResponse> updatePetDetails(@Valid @RequestBody PetFeatureReqBody petFeatureReqBody, @PathVariable int petId)
+	public ResponseEntity<ApiResponse> updatePetDetails(@Valid @RequestBody PetFeatureReqBody petFeatureReqBody)
 		throws PetIdNotFoundException {
 
-		Optional.ofNullable(petFeatures.findById(petId)
-			.orElseThrow(() -> new PetIdNotFoundException("Pet Id not found while updating: "+ petId)));
+		Optional.ofNullable(petFeatures.findById( petFeatureReqBody.getPetId() )
+			.orElseThrow(() -> new PetIdNotFoundException("Pet Id not found while updating: "+ petFeatureReqBody.getPetId())));
 
 		PetFeatures updatePetFeatures = petObject( petFeatureReqBody );
 		petFeatures.save(updatePetFeatures);
