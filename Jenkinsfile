@@ -59,9 +59,9 @@ pipeline {
         noDefaultExcludes: false, 
         patternSeparator: '[, ]+', 
         remoteDirectory: '', 
-        remoteDirectorySDF: false, 
+        remoteDirectorySDF: false,
         removePrefix: 'WEB01', 
-        sourceFiles: '')], 
+        sourceFiles: 'target/*.jar')], 
         usePromotionTimestamp: false, 
         useWorkspaceInPromotion: false, 
         verbose: false)])
