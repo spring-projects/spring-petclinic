@@ -46,7 +46,7 @@ pipeline {
     }
     stage('Publish Over SSH') {
       steps {
-        sshPublisher(publishers: [sshPublisherDesc(configName: 'target', 
+        sshPublisher(publishers: [sshPublisherDesc(configName: 'web01', 
         transfers: [sshTransfer(cleanRemote: false, 
         excludes: '', 
         execCommand: '''
@@ -60,7 +60,7 @@ pipeline {
         patternSeparator: '[, ]+', 
         remoteDirectory: '', 
         remoteDirectorySDF: false, 
-        removePrefix: 'target', 
+        removePrefix: 'web01', 
         sourceFiles: '')], 
         usePromotionTimestamp: false, 
         useWorkspaceInPromotion: false, 
