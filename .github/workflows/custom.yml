@@ -106,8 +106,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Add SHORT_SHA env property with commit short sha
-        run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
+      - name: Get short SHA
+        run: echo "SHORT_SHA=$("${{ github.sha }}".SubString(0, 8))" >> $env:GITHUB_ENV
       
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -136,4 +136,4 @@ jobs:
           # Tag with 'latest' and the short commit SHA for versioning
           tags: |
             ${{ env.DOCKER_IMAGE_OWNER }}/main:latest
-            ${{ env.DOCKER_IMAGE_OWNER }}/main:${GITHUB_SHA}
+            ${{ env.DOCKER_IMAGE_OWNER }}/main:${{ env.SHORT_SHA }}
