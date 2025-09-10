@@ -13,7 +13,8 @@ on:
 
 # Define environment variables for easy configuration
 env:
-  DOCKER_REGISTRY: docker.io # Or your Nexus registry URL
+  DOCKER_MAIN_REGISTRY: ninajakovljevic/main
+  DOCKER_MR_REGISTRY: ninajakovljevic/mr
   DOCKER_IMAGE_OWNER: ninajakovljevic # Your Docker Hub username or Nexus repo path
 
 jobs:
@@ -88,7 +89,7 @@ jobs:
           context: .
           push: true
           # Tag with the unique commit ID from the PR's source branch
-          tags: ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_OWNER }}/mr:${{ github.event.pull_request.head.sha }}
+          tags: ${{ env.DOCKER_MR_REGISTRY }}/${{ env.DOCKER_IMAGE_OWNER }}/mr:${{ github.event.pull_request.head.sha }}
 
   # ===============================================================
   # == JOB 3: RUNS ONLY FOR PUSHES TO THE MAIN BRANCH
@@ -129,5 +130,5 @@ jobs:
           push: true
           # Tag with 'latest' and the short commit SHA for versioning
           tags: |
-            ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_OWNER }}/main:latest
-            ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_OWNER }}/main:${{ GITHUB.SHA_SHORT }}
+            ${{ env.DOCKER_MAIN_REGISTRY}}/${{ env.DOCKER_IMAGE_OWNER }}/main:latest
+            ${{ env.DOCKER_MAIN_REGISTRY }}/${{ env.DOCKER_IMAGE_OWNER }}/main:${{ GITHUB.SHA_SHORT }}
