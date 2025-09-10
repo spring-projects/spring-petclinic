@@ -19,24 +19,10 @@ CREATE TABLE IF NOT EXISTS vet_specialties (
   UNIQUE (vet_id,specialty_id)
 ) engine=InnoDB;
 
---CREATE TABLE IF NOT EXISTS types (
---  id INT(4) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
---  name VARCHAR(80),
---  INDEX(name)
---) engine=InnoDB;
-
 CREATE TABLE IF NOT EXISTS types (
   id INT(4) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(80),
-  breed VARCHAR(80),
-  height int(5),
-  weight int(5),
-  skin_type VARCHAR(50),
-  skin_color VARCHAR(50),
-  life_span int(5),
-  temperament VARCHAR(50),
-  INDEX(pet_name)
-  UNIQUE (name,breed,skin_type,skin_color)
+  INDEX(name)
 ) engine=InnoDB;
 
 CREATE TABLE IF NOT EXISTS owners (
@@ -67,3 +53,15 @@ CREATE TABLE IF NOT EXISTS visits (
   description VARCHAR(255),
   FOREIGN KEY (pet_id) REFERENCES pets(id)
 ) engine=InnoDB;
+
+
+CREATE TABLE IF NOT EXISTS pet_features (
+pet_id INT(5),
+temperament VARCHAR(80),
+height INT(5),
+weight decimal(10,4),
+skin_color VARCHAR(50),
+skin_type VARCHAR(50),
+FOREIGN KEY (pet_id) references pets (id),
+PRIMARY KEY (pet_id)
+);
