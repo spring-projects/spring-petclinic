@@ -130,5 +130,5 @@ jobs:
           push: true
           # Tag with 'latest' and the short commit SHA for versioning
           tags: |
-            ${{ env.DOCKER_MAIN_REGISTRY}}/${{ env.DOCKER_IMAGE_OWNER }}/main:latest
-            ${{ env.DOCKER_MAIN_REGISTRY }}/${{ env.DOCKER_IMAGE_OWNER }}/main:${{ GITHUB.SHA_SHORT }}
+            ${{ env.DOCKER_IMAGE_OWNER }}/${{ env.DOCKER_MAIN_REGISTRY}}:latest
+            ${{ env.DOCKER_IMAGE_OWNER }}/${{ env.DOCKER_MAIN_REGISTRY}}:${{ github.sha_short }}
