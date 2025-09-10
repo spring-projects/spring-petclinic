@@ -1,0 +1,133 @@
+name: PetClinic CI Pipeline
+
+# Define the triggers for this workflow
+on:
+  # Trigger for pushes to the 'main' branch
+  push:
+    branches:
+      - main
+  # Trigger for pull requests targeting the 'main' branch
+  pull_request:
+    branches:
+      - main
+
+# Define environment variables for easy configuration
+env:
+  DOCKER_REGISTRY: docker.io # Or your Nexus registry URL
+  DOCKER_IMAGE_OWNER: ninajakovljevic # Your Docker Hub username or Nexus repo path
+
+jobs:
+  # ===============================================================
+  # == JOB 1: RUNS ONLY FOR PULL REQUESTS (Merge Requests)
+  # ===============================================================
+  build-and-test-pr:
+    name: PR Checks (Style, Test, Build)
+    # This job runs only on pull_request events
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    # As requested, run steps inside a specific maven container
+    container: maven:3.8.5-openjdk-17
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Checkstyle
+        run: mvn checkstyle:checkstyle
+
+      - name: Upload Checkstyle Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: checkstyle-report
+          path: target/site/checkstyle-result.xml
+
+      - name: Run Tests
+        run: mvn test
+
+      - name: Build Application JAR (skip tests)
+        run: mvn package -DskipTests
+
+      - name: Upload Application JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-jar
+          path: target/*.jar
+
+  # ===============================================================
+  # == JOB 2: BUILDS DOCKER IMAGE FOR PULL REQUESTS
+  # ===============================================================
+  push-to-mr-repo:
+    name: Build and Push Docker Image to MR Repo
+    # This job runs only on pull_request events and needs the previous job to succeed
+    if: github.event_name == 'pull_request'
+    needs: build-and-test-pr
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download Application JAR
+        uses: actions/download-artifact@v4
+        with:
+          name: app-jar
+          path: target
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push to "mr" repository
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          # Tag with the unique commit ID from the PR's source branch
+          tags: ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_OWNER }}/mr:${{ github.event.pull_request.head.sha }}
+
+  # ===============================================================
+  # == JOB 3: RUNS ONLY FOR PUSHES TO THE MAIN BRANCH
+  # ===============================================================
+  push-to-main-repo:
+    name: Build and Push Docker Image to Main Repo
+    # This job runs only on push events to the 'main' branch
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Build Application JAR
+        run: mvn package -DskipTests
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push to "main" repository
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          # Tag with 'latest' and the short commit SHA for versioning
+          tags: |
+            ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_OWNER }}/main:latest
+            ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_OWNER }}/main:${{ GITHUB.SHA_SHORT }}
