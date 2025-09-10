@@ -50,9 +50,9 @@ pipeline {
         transfers: [sshTransfer(cleanRemote: false, 
         excludes: '', 
         execCommand: '''
-        docker rm -f $(docker ps -aq)
-        docker rmi $(docker images -q)
-        docker run -itd -p 8080:8080 --name=spring-petclinic wodnr8174/spring-petclinic:latest
+        fuser -k 8080/tcp
+        export BUILD_ID=Petclinic-Pipeline
+        nohup java -jar /home/ubuntu/deploy/spring-petclinic-2.7.3.BUILD-SNAPSHOT.jar >> nohup.out 2>&1 &''', 
         ''', 
         execTimeout: 120000, 
         flatten: false, 
