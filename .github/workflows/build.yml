@@ -1,6 +1,6 @@
 name: PetClinic CI Pipeline
 
-# Define the triggers for this workflow
+# Define triggers 
 on:
   # Trigger for pushes to the 'main' branch
   push:
@@ -11,20 +11,19 @@ on:
     branches:
       - main
 
-# Define environment variables for easy configuration
+# Environment variables 
 env:
   DOCKER_MAIN_REGISTRY: ninajakovljevic/main
   DOCKER_MR_REGISTRY: ninajakovljevic/mr
-  DOCKER_IMAGE_OWNER: ninajakovljevic # Your Docker Hub username or Nexus repo path
+  DOCKER_IMAGE_OWNER: ninajakovljevic 
 
 jobs:
   # ===============================================================
-  # == JOB 1: RUNS ONLY FOR PULL REQUESTS (Merge Requests)
+  # JOB 1: RUNS ONLY FOR PULL REQUESTS (Merge Requests)
   # ===============================================================
   
   build-and-test-pr:
     name: PR Checks (Style, Test, Build)
-    # This job runs only on pull_request events
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     # As requested, run steps inside a specific maven container
@@ -57,7 +56,7 @@ jobs:
           path: target/*.jar
 
   # ===============================================================
-  # == JOB 2: BUILDS DOCKER IMAGE FOR PULL REQUESTS
+  # JOB 2: BUILDS DOCKER IMAGE FOR PULL REQUESTS
   # ===============================================================
   push-to-mr-repo:
     name: Build and Push Docker Image to MR Repo
@@ -94,7 +93,7 @@ jobs:
           tags: ${{ env.DOCKER_MR_REGISTRY }}/${{ env.DOCKER_IMAGE_OWNER }}/mr:${{ github.event.pull_request.head.sha }}
 
   # ===============================================================
-  # == JOB 3: RUNS ONLY FOR PUSHES TO THE MAIN BRANCH
+  # JOB 3: RUNS ONLY FOR PUSHES TO THE MAIN BRANCH
   # ===============================================================
   push-to-main-repo:
     name: Build and Push Docker Image to Main Repo
@@ -133,7 +132,7 @@ jobs:
         with:
           context: .
           push: true
-          # Tag with 'latest' and the short commit SHA for versioning
+          # Tag with 'latest' and the short commit SHA 
           tags: |
             ${{ env.DOCKER_IMAGE_OWNER }}/main:latest
             ${{ env.DOCKER_IMAGE_OWNER }}/main:${{ env.SHORT_SHA }}
