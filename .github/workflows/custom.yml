@@ -21,6 +21,7 @@ jobs:
   # ===============================================================
   # == JOB 1: RUNS ONLY FOR PULL REQUESTS (Merge Requests)
   # ===============================================================
+  
   build-and-test-pr:
     name: PR Checks (Style, Test, Build)
     # This job runs only on pull_request events
@@ -30,6 +31,7 @@ jobs:
     container: maven:3.8.5-openjdk-17
 
     steps:
+    
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -103,6 +105,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Add SHORT_SHA env property with commit short sha
+        run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
       
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -131,4 +136,4 @@ jobs:
           # Tag with 'latest' and the short commit SHA for versioning
           tags: |
             ${{ env.DOCKER_IMAGE_OWNER }}/main:latest
-            ${{ env.DOCKER_IMAGE_OWNER }}/main:${{ github.sha_short }}
+            ${{ env.DOCKER_IMAGE_OWNER }}/main:${GITHUB_SHA}
