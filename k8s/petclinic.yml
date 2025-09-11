@@ -9,7 +9,7 @@ spec:
     - port: 80
       targetPort: 8080
   selector:
-    app: petclinic
+    app: petclini
 
 ---
 apiVersion: apps/v1
