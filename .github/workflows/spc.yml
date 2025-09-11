@@ -1,6 +1,9 @@
 ---
 name: buiding the spring petclinic project
-on: push
+on: 
+    pull_request:
+        branches:
+            - main
 jobs:
     build:
         runs-on: ubuntu-latest
