@@ -51,3 +51,28 @@ INSERT INTO visits VALUES (default, 7, '2013-01-01', 'rabies shot');
 INSERT INTO visits VALUES (default, 8, '2013-01-02', 'rabies shot');
 INSERT INTO visits VALUES (default, 8, '2013-01-03', 'neutered');
 INSERT INTO visits VALUES (default, 7, '2013-01-04', 'spayed');
+
+-- Attributes for cat (id = 1)
+INSERT INTO pet_type_attributes (id, pet_type_id, temperament, length_cm, weight_kg)
+VALUES (default, 1, 'Independent', 45.0, 4.5);
+
+-- Attributes for dog (id = 2)
+INSERT INTO pet_type_attributes (id, pet_type_id, temperament, length_cm, weight_kg)
+VALUES (default, 2, 'Playful', 60.0, 18.0);
+
+-- Attributes for lizard (id = 3)
+INSERT INTO pet_type_attributes (id, pet_type_id, temperament, length_cm, weight_kg)
+VALUES (default, 3, 'Calm', 25.0, 0.3);
+
+-- Attributes for snake (id = 4)
+INSERT INTO pet_type_attributes (id, pet_type_id, temperament, length_cm, weight_kg)
+VALUES (default, 4, 'Aggressive', 120.0, 3.5);
+
+-- Attributes for bird (id = 5)
+INSERT INTO pet_type_attributes (id, pet_type_id, temperament, length_cm, weight_kg)
+VALUES (default, 5, 'Chirpy', 15.0, 0.2);
+
+-- Attributes for hamster (id = 6)
+INSERT INTO pet_type_attributes (id, pet_type_id, temperament, length_cm, weight_kg)
+VALUES (default, 6, 'Friendly', 12.0, 0.1);
+
