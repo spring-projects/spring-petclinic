@@ -53,5 +53,5 @@ INSERT INTO visits VALUES (default, 8, '2013-01-02', 'rabies shot');
 INSERT INTO visits VALUES (default, 8, '2013-01-03', 'neutered');
 INSERT INTO visits VALUES (default, 7, '2013-01-04', 'spayed');
 
-INSERT INTO pet_features VALUES (1, 'friendly', 20, 5, 'black', 'fur');
-INSERT INTO pet_features VALUES (2, 'friendly', 35, 35, 'white', 'fur');
+INSERT INTO pet_attributes VALUES (1, 'friendly', 20, 5, 'black', 'fur');
+INSERT INTO pet_attributes VALUES (2, 'friendly', 35, 35, 'white', 'fur');
