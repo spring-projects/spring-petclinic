@@ -1,0 +1,23 @@
+trigger:
+  branches: { include: [ main ] }
+pr:
+  branches: { include: [ main ] }
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+- stage: Build
+  jobs:
+  - job: MavenBuild
+    steps:
+    - task: Maven@4
+      inputs:
+        mavenPomFile: 'pom.xml'
+        goals: 'clean package'
+        publishJUnitResults: true
+        testResultsFiles: '*/surefire-reports/TEST-.xml'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(System.DefaultWorkingDirectory)/target'
+        ArtifactName: 'drop'
