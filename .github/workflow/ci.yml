@@ -1,0 +1,17 @@
+name: cibuild&package
+on:
+    pull_request:
+        branches: 
+            main
+jobs:
+    maven:
+        runs-on: ubuntu-latest 
+        steps:
+            - name: resuableaction
+              uses: actions/checkout@v5
+            - uses: actions/setup-java@v5
+              with:
+                  distribution: "temurin"
+                  java-version: "21"
+            - name: mavenbuild
+              run: maven clean package
