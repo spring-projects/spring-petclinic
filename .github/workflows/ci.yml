@@ -14,4 +14,4 @@ jobs:
                   distribution: "temurin"
                   java-version: "21"
             - name: mavenbuild
-              run: maven clean package
+              run: mvn clean package
