@@ -1,2 +1,16 @@
 ---
-    
+name: buiding the spring petclinic project
+on: push
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: "checkout the code"
+              uses: actions/checkout@v5
+            - name: "install java jdk"
+              uses: actions/setup-java@v5
+              with:
+                distribution: 'temurin'
+                java-version: '21'
+            - name: "build the package"
+              run: mvn package
