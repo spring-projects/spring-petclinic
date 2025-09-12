@@ -9,6 +9,11 @@ services:
       - MYSQL_USER=petclinic
       - MYSQL_PASSWORD=petclinic
       - MYSQL_DATABASE=petclinic
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U petclinic -d petclinic"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     volumes:
       - "./conf.d:/etc/mysql/conf.d:ro"
   postgres:
@@ -24,5 +29,26 @@ services:
 
 networks:
   jenkins-net:
-    name: 16_jenkins_try_jenkins-net # الاسم الدقيق للشبكة الحالية الخاصة بك
+    name: 16_jenkins_try_jenkins-net
+    external: true
+
+
+
+    # This is the docker-compose.yml inside your Git repository
+services:
+  postgres:
+    image: 'postgres:15.4'
+    restart: always
+    environment:
+      - POSTGRES_DB=petclinic
+      - POSTGRES_USER=petclinic
+      - POSTGRES_PASSWORD=petclinic
+    # Add this entire healthcheck block
+    
+    networks:
+      - jenkins-net
+
+networks:
+  jenkins-net:
+    name: 16_jenkins_try_jenkins-net
     external: true
