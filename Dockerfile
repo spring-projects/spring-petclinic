@@ -14,6 +14,6 @@ WORKDIR /app
 
 COPY --from=build /app/target/spring-petclinic-*.jar /app.jar
 
-# EXPOSE 8080
+EXPOSE 8080
 
 CMD ["java", "-jar", "/app.jar"]

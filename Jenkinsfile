@@ -4,8 +4,14 @@ pipeline {
         IMAGE_NAME = "karimfathy1/petclinic-app:${env.BUILD_NUMBER}"
     }
     stages{
-        stage('checkout')
-        {
+        stage('Checking environment varaibles'){
+            steps{
+                echo "BRANCH_NAME  = ${env.BRANCH_NAME}"
+                echo "IMAGE_NAME   = ${IMAGE_NAME}"
+                echo "BUILD_NUMBER = ${env.BUILD_NUMBER}"
+            }
+        }
+        stage('checkout'){
             steps{
                 echo "Clonning Reposotiory"
                 checkout scm
@@ -13,7 +19,7 @@ pipeline {
         }
         stage('Cleaning stage'){
             steps{
-                echo "Builing jar file without testing"
+                echo "Cleaning Project"
                 sh './mvnw clean'
             }
         }
@@ -26,7 +32,8 @@ pipeline {
         stage('test stage'){
             steps{
                 echo "Running Unit tests"
-                withSonarQubeEnv('SonarQube-server') {
+                sh './mvnw test'
+                withSonarQubeEnv('SonarQube-server'){
                     withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
                         sh './mvnw sonar:sonar -Dsonar.login=$SONAR_TOKEN'
                     }
@@ -51,16 +58,7 @@ pipeline {
                     sh "docker push ${IMAGE_NAME}"
                 }
             }
-        }
+        }    
     }
 }
 // test1
-// test2
-// test3
-// test4
-// test5
-// test6
-// test7
-// test8
-// test9
-// test10
