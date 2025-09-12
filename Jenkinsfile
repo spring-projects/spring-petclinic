@@ -26,7 +26,7 @@ pipeline {
         stage('build stage'){
             steps{
                 echo "Building jar file without testing"
-                sh'./mvnw package'
+                sh'./mvnw package -DskipTests'
             }
         }
         stage('test stage'){
