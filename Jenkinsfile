@@ -25,7 +25,7 @@ pipeline {
         }
         stage('build stage'){
             steps{
-                echo "Builing jar file without testing"
+                echo "Building jar file without testing"
                 sh'./mvnw package'
             }
         }
