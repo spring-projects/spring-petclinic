@@ -57,7 +57,7 @@ pipeline {
                 echo "Building Docker image for change request..."
                 sh 'docker build -t ${MR_IMAGE_NAME}:${TAG} .'
                 withCredentials([usernamePassword(credentialsId: DOCKER_HUB_CREDENTIALS, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh 'echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin'
+                    sh 'docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}'
                     sh 'docker push ${MR_IMAGE_NAME}:${TAG}'
                     sh 'docker logout'
                 }
