@@ -6,7 +6,7 @@ pipeline {
         DOCKER_HUB_CREDENTIALS='docker-hub-credentials'
         MR_IMAGE_NAME='dejanakop/spring-petclinic-mr'
         MAIN_IMAGE_NAME='dejanakop/spring-petclinic-main'
-        TAG='latest'
+        TAG=sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
     }
     
     stages {
