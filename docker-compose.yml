@@ -19,3 +19,10 @@ services:
       - POSTGRES_PASSWORD=petclinic
       - POSTGRES_USER=petclinic
       - POSTGRES_DB=petclinic
+    networks:
+      - jenkins-net
+
+networks:
+  jenkins-net:
+    name: 16_jenkins_try_jenkins-net # الاسم الدقيق للشبكة الحالية الخاصة بك
+    external: true
