@@ -2,7 +2,7 @@ FROM maven:3.9.9-eclipse-temurin-17 AS build
 
 WORKDIR /app
 
-COPY ./spring-petclinic/ .
+COPY . .
 
 RUN mvn package -DskipTests -Dcheckstyle.skip=true
 
