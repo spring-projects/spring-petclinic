@@ -1,4 +1,4 @@
-# PRACTICAL TASKS DEMO
+# PRACTICAL TASK - DEMO
 
 This project is forked from: https://github.com/spring-projects/spring-petclinic and is used for the practical tasks that are a part of the `Internship: DevOps` course. Each practical task has it's own branch and a folder named `[name]-task` with it's own README.md:
 
