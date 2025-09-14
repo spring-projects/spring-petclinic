@@ -11,4 +11,4 @@ RUN sudo mkdir /home/$USER/.m2 /home/$USER/.gradle && sudo chown $USER:$USER /ho
 RUN bash -lc '. /usr/local/sdkman/bin/sdkman-init.sh && sdk install java $JAVA_VERSION && sdk use java $JAVA_VERSION'
 
 ARG USER=vscode1
-RG JAVA_VERSION=17.0.7-ms
+VOLUME /home/$USER/.m2
