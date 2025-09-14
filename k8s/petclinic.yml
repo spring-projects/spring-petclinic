@@ -62,7 +62,18 @@ spec:
             sources:
               - secret:
                   name: demo-db
+
       volumeMounts:
             - mountPath: /bindings/secret
               name: binding
               readOnly: true
+
+
+        volumes:
+        - name: binding
+          projected:
+            sources:
+              - secret:
+                  name: demo-db
+          
+>>>>>>> 96dc7fb84ca611edf3df26b3d42f0297a8f3a70e
