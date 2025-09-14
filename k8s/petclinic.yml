@@ -63,4 +63,3 @@ spec:
               - secret:
                   name: demo-db
 
-          
