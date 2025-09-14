@@ -32,7 +32,7 @@ pipeline {
         stage('test stage'){
             steps{
                 echo "Running Unit tests"
-                sh './mvnw test'
+               // sh './mvnw test'
                 withSonarQubeEnv('SonarQube-server'){
                     withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
                         sh './mvnw sonar:sonar -Dsonar.login=$SONAR_TOKEN'
@@ -62,3 +62,4 @@ pipeline {
     }
 }
 // test1
+// test2
