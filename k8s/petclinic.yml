@@ -62,3 +62,11 @@ spec:
             sources:
               - secret:
                   name: demo-db
+
+        volumes:
+        - name: binding
+          projected:
+            sources:
+              - secret:
+                  name: demo-db
+          
