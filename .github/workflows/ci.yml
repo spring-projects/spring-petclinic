@@ -14,4 +14,4 @@ jobs:
                   distribution: "temurin"
                   java-version: "21"
             - name: mavenbuild
-              run: mvn clean package
+              run: mvn ${{ vars.Goal }}
