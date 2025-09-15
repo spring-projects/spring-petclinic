@@ -4,21 +4,33 @@ on:
     pull_request:
       branches: 
         - main
-    workflow_dispatch:
+    workflow_dispatch:  # Allows manual trigger of this workflow from GitHub UI
+
+permissions:  # Define permissions for the workflow
+  contents: read  # Read access to repository contents
+  checks: write   # Write access to checks
 
 jobs:
-    manual:
+    manual:   # Job name (identifier for this job)
         runs-on: ubuntu-24.04
-        steps:
-          - uses: actions/checkout@v5
-          - uses: actions/setup-java@v5
+        steps:  # Steps run sequentially inside the job
+          - uses: actions/checkout@v5    # Step 1: Check out repository code into the runner
+          - uses: actions/setup-java@v5  # Step 2: Set up Java environment
             with:
-                distribution: 'temurin'
-                java-version: '21'
+                distribution: 'temurin'  # Use Eclipse Temurin distribution
+                java-version: '21'   # Set Java version to 21
+                cache: 'maven'   # Enable Maven dependency caching
+
           - name: build package
-            run: mvn ${{ vars.GOAL  }}
-          - name: publish test results
-            uses: EnricoMi/publish-unit-test-result-action@v2
-            with:
+            run: mvn ${{ vars.GOAL  }}  # Step 3: Run Maven command specified in repository variable 'GOAL'
+          - name: publish test results  # Step 4: Publish test results using a third-party action
+            uses: EnricoMi/publish-unit-test-result-action@v2  
+            with:  
               files: |
                 **/target/surefire-reports/*.xml
+
+          - name: Uploading packaged jar files  # Step 5: Upload packaged JAR files as workflow artifacts
+            uses: actions/upload-artifact@v4   # Use GitHub's upload-artifact action
+            with:
+              name: spring-petclinic-jar  # Name of the artifact
+              path: '**/target/*.jar'  # Path to the JAR files to upload
