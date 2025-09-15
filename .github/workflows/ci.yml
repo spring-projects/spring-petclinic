@@ -3,6 +3,11 @@ on:
     push:
         branches: 
             main
+    workflow_dispatch: 
+      
+permissions: 
+  checks: write
+  contents: read
 jobs:
     maven:
         runs-on: ubuntu-latest
@@ -21,8 +26,11 @@ jobs:
               with:
                 files: |
                   **/target/surefire-reports/*.xml
-           
-                
+            - name: upload artifacts for testers
+              uses: actions/upload-artifact@v4
+              with: 
+                name: my-artifact
+                path: '**/target/*.jar'
 
 
             
