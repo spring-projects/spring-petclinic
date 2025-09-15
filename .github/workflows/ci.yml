@@ -5,7 +5,7 @@ on:
             main
 jobs:
     maven:
-        runs-on: ubuntu-latest 
+        runs-on: ubuntu-latest
         steps:
             - name: resuableaction
               uses: actions/checkout@v5
@@ -13,5 +13,17 @@ jobs:
               with:
                   distribution: "temurin"
                   java-version: "21"
+                  cache: maven
             - name: mavenbuild
               run: mvn ${{ vars.Goal }}
+            - name: Publish Test Results
+              uses: EnricoMi/publish-unit-test-result-action@v2
+              with:
+                files: |
+                  **/target/surefire-reports/*.xml
+           
+                
+
+
+            
+ 
