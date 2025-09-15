@@ -14,12 +14,18 @@ permissions:  # Define permissions for the workflow
 jobs:
     manual:   # Job name (identifier for this job)
         runs-on: ubuntu-24.04
+        strategy:  # Define a strategy for the job
+          fail-fast: false
+          matrix: # Define a matrix for parallel execution
+            java: [17, 21]  # Define a matrix with Java version 21
+
+
         steps:  # Steps run sequentially inside the job
           - uses: actions/checkout@v5    # Step 1: Check out repository code into the runner
           - uses: actions/setup-java@v5  # Step 2: Set up Java environment
             with:
                 distribution: 'temurin'  # Use Eclipse Temurin distribution
-                java-version: '21'   # Set Java version to 21
+                java-version: ${{ matrix.java }}   # Set Java version to 21
                 cache: 'maven'   # Enable Maven dependency caching
 
           - name: build package
@@ -33,5 +39,5 @@ jobs:
           - name: Uploading packaged jar files  # Step 5: Upload packaged JAR files as workflow artifacts
             uses: actions/upload-artifact@v4   # Use GitHub's upload-artifact action
             with:
-              name: spring-petclinic-jar  # Name of the artifact
+              name: spring-petclinic-${{ matrix.java }}.jar  # Name of the artifact
               path: '**/target/*.jar'  # Path to the JAR files to upload
