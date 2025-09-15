@@ -26,7 +26,7 @@ jobs:
             with:
                 distribution: 'temurin'  # Use Eclipse Temurin distribution
                 java-version: ${{ matrix.java }}   # Set Java version to 21
-                cache: 'maven'   # Enable Maven dependency caching
+                cache: ''   # Enable Maven dependency caching
 
           - name: build package
             run: mvn ${{ vars.GOAL  }}  # Step 3: Run Maven command specified in repository variable 'GOAL'
