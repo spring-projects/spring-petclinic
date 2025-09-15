@@ -1,7 +1,7 @@
 package org.springframework.samples.petclinic.controller;
 
 import org.springframework.samples.petclinic.dto.PetAttributeDto;
-import org.springframework.samples.petclinic.service.PetTypeAttributeService;
+import org.springframework.samples.petclinic.service.PetAttributeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,9 +17,9 @@ import jakarta.validation.Valid;
 @RequestMapping("/pet-attributes")
 public class PetAttributeMvcController {
 
-	private final PetTypeAttributeService service;
+	private final PetAttributeService service;
 
-    public PetAttributeMvcController(PetTypeAttributeService service) {
+    public PetAttributeMvcController(PetAttributeService service) {
         this.service = service;
     }
 

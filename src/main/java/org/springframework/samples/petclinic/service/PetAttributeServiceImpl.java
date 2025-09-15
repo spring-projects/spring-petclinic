@@ -24,7 +24,7 @@ import jakarta.transaction.Transactional;
  */
 
 @Service
-public class PetTypeAttributeServiceImpl implements PetTypeAttributeService {
+public class PetAttributeServiceImpl implements PetAttributeService {
 
 	 /** Repository for PetTypeAttribute entity */
     private final PetTypeAttributeRepository attrRepo;
@@ -36,11 +36,11 @@ public class PetTypeAttributeServiceImpl implements PetTypeAttributeService {
     private final ModelMapper modelMapper;
 
     /** Logger for service operations */
-    private final Logger logger = LoggerFactory.getLogger(PetTypeAttributeServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(PetAttributeServiceImpl.class);
     
 
     
-    public PetTypeAttributeServiceImpl(PetTypeAttributeRepository attrRepo,
+    public PetAttributeServiceImpl(PetTypeAttributeRepository attrRepo,
                                        PetTypeRepository typeRepo,
                                        ModelMapper modelMapper) {
         this.attrRepo = attrRepo;
@@ -58,11 +58,11 @@ public class PetTypeAttributeServiceImpl implements PetTypeAttributeService {
     @Transactional
     @Override
     public PetAttributeDto create(Integer typeId, PetAttributeDto attrDto) {
-        logger.info("Creating PetAttribute for PetType id={}", typeId);
+        logger.info("PetAttributeServiceImpl :: create :: Creating PetAttribute for PetType id={}", typeId);
 
         PetType type = typeRepo.findById(typeId)
                 .orElseThrow(() -> {
-                    logger.error("No PetType found with id={}", typeId);
+                    logger.error("PetAttributeServiceImpl :: create ::No PetType found with id={}", typeId);
                     return new ResourceNotFoundException("No PetType found with id " + typeId);
                 });
 
@@ -70,7 +70,7 @@ public class PetTypeAttributeServiceImpl implements PetTypeAttributeService {
         entity.setPetType(type);
 
         PetTypeAttribute saved = attrRepo.save(entity);
-        logger.debug("PetTypeAttribute saved with id={}", saved.getId());
+        logger.debug("PetAttributeServiceImpl :: create ::PetTypeAttribute saved with id={}", saved.getId());
 
         return modelMapper.map(saved, PetAttributeDto.class);
     }
@@ -84,16 +84,17 @@ public class PetTypeAttributeServiceImpl implements PetTypeAttributeService {
      */
     @Override
     public PetAttributeDto getById(Integer id) {
-    	 logger.info("Fetching PetAttribute id={}", id);
+    	 logger.info("PetAttributeServiceImpl :: getById :: Fetching PetAttribute id={}", id);
 
          PetTypeAttribute entity = attrRepo.findById(id)
                  .orElseThrow(() -> {
-                     logger.error("PetAttribute not found with id={}", id);
+                     logger.error("PetAttributeServiceImpl :: getById :: PetAttribute not found with id={}", id);
                      return new ResourceNotFoundException("No PetTypeAttribute found with id " + id);
                  });
 
          return modelMapper.map(entity, PetAttributeDto.class);
     }
+    
 
     /**
      * Fetch all attributes for a given PetType.
@@ -103,10 +104,10 @@ public class PetTypeAttributeServiceImpl implements PetTypeAttributeService {
      */
     @Override
     public List<PetAttributeDto> getByTypeId(Integer typeId) {
-    	 logger.info("Fetching PetAttributes for PetType id={}", typeId);
+    	 logger.info("PetAttributeServiceImpl :: getByTypeId ::Fetching PetAttributes for PetType id={}", typeId);
 
          List<PetTypeAttribute> attributes = attrRepo.findByPetType_Id(typeId);
-         logger.debug("Found {} PetAttributes for PetType id={}", attributes.size(), typeId);
+         logger.debug("PetAttributeServiceImpl :: getByTypeId :: Found {} PetAttributes for PetType id={}", attributes.size(), typeId);
 
          return attributes.stream()
                  .map(attr -> modelMapper.map(attr, PetAttributeDto.class))
@@ -123,11 +124,11 @@ public class PetTypeAttributeServiceImpl implements PetTypeAttributeService {
     @Transactional
     @Override
     public PetAttributeDto update(Integer id, PetAttributeDto dto) {
-    	  logger.info("Updating PetAttribute id={}", id);
+    	  logger.info("PetAttributeServiceImpl :: update :: Updating PetAttribute id={}", id);
 
           PetTypeAttribute existing = attrRepo.findById(id)
                   .orElseThrow(() -> {
-                      logger.error("PetAttribute not found with id={}", id);
+                      logger.error("PetAttributeServiceImpl :: update :: PetAttribute not found with id={}", id);
                       return new ResourceNotFoundException("No PetTypeAttribute found with id " + id);
                   });
 
@@ -136,7 +137,7 @@ public class PetTypeAttributeServiceImpl implements PetTypeAttributeService {
           existing.setWeight(dto.getWeight());
 
           PetTypeAttribute updated = attrRepo.save(existing);
-          logger.debug("Updated PetAttribute id={}", updated.getId());
+          logger.debug("PetAttributeServiceImpl :: update :: Updated PetAttribute id={}", updated.getId());
 
           return modelMapper.map(updated, PetAttributeDto.class);
     }
@@ -149,14 +150,14 @@ public class PetTypeAttributeServiceImpl implements PetTypeAttributeService {
      */
     @Override
     public void delete(Integer id) {
-    	 logger.warn("Deleting PetAttribute id={}", id);
+    	 logger.warn("PetAttributeServiceImpl :: delete ::Deleting PetAttribute id before save={}", id);
 
          if (!attrRepo.existsById(id)) {
-             logger.error("PetAttribute not found with id={}", id);
+             logger.error("PetAttributeServiceImpl :: delete ::PetAttribute not found with id={}", id);
              throw new ResourceNotFoundException("PetTypeAttribute not found with id " + id);
          }
          attrRepo.deleteById(id);
-         logger.info("Deleted PetAttribute id={}", id);
+         logger.info("PetAttributeServiceImpl :: delete :: Deleted PetAttribute id successfully={}", id);
     }
 
     /**

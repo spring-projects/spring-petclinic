@@ -13,9 +13,7 @@ import org.springframework.samples.petclinic.model.PetTypeAttribute;
  */
 
 
-//add a solid Principal and make it generic
-
-public interface PetTypeAttributeService {
+public interface PetAttributeService {
 
 	/* Create a new attribute for a given PetType */
 	PetAttributeDto create(Integer typeId, PetAttributeDto attr);
