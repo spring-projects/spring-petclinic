@@ -18,6 +18,10 @@ jobs:
             - name: setup jre
               run: mvn package
             - name: run tests
-              uses: newrelic/junit-reporter-action@v0.3.0
+              uses: testspace-com/setup-testspace@v1
+            - name: package application for testers
+              uses: actions/upload-artifact@v4
+              
+              
 
             
