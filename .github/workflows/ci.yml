@@ -19,8 +19,13 @@ jobs:
               run: mvn package
             - name: run tests
               uses: EnricoMi/publish-unit-test-result-action@v2
+              with:
+                path: target/surefire-reports/*.xml
             - name: package application for testers
               uses: actions/upload-artifact@v4
+              with:
+                files: |
+                    path: /home/runner/work/spring1/spring1/target/spring-petclinic-3.5.0-SNAPSHOT.jar
 
               
 
