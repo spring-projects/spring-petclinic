@@ -25,9 +25,7 @@ jobs:
             - name: package application for testers
               uses: actions/upload-artifact@v4
               with:
-                files: |
-                    path: **/target/spring-petclinic-3.5.0-SNAPSHOT.jar.original
-
+                path: "**/target/*.jar"
               
 
             
