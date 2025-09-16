@@ -26,7 +26,7 @@ jobs:
               uses: actions/upload-artifact@v4
               with:
                 files: |
-                    path: **/target/spring-petclinic-3.5.0-SNAPSHOT.jar
+                    path: **/target/spring-petclinic-3.5.0-SNAPSHOT.jar.original
 
               
 
