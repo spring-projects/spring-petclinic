@@ -5,7 +5,7 @@ on:
         - main
   workflow_dispatch: #manual trigger
 jobs:
-  maven:
+  maven-name:
     runs-on: ubuntu-latest
     steps:
        - name: Checkout code
