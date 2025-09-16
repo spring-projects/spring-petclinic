@@ -1,0 +1,19 @@
+name: "same workflow"
+on:
+    push: 
+        branches: 
+            main
+jobs:
+    job1:
+        runs-on: ubuntu-latest
+        steps:
+            - name: copy code using actions
+              uses: actions/checkout@v5
+            - name: setup jdk
+              uses:  actions/setup-java@v5
+              with:
+                distribution: 'temurin'
+                java-version: '21'
+            - name: setup jre
+              uses: advanced-security/maven-dependency-submission-action@v3
+            
