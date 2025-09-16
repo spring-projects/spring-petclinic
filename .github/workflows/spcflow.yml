@@ -3,7 +3,7 @@ on:
   push:
     branches:
         - main
-    workflow_dispatch: #manual trigger
+  workflow_dispatch: #manual trigger
 jobs:
   maven:
     runs-on: ubuntu-latest
