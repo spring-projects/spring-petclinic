@@ -1,0 +1,12 @@
+---
+    name: "hello to dr-branch"
+    on:
+      push:
+        branches:
+          - dr-branch
+    jobs:
+      build:
+        runs-on: ubuntu-latest
+        steps:
+          - name: "Hello to dr-branch"
+            run: echo "Hello to dr-branch"
