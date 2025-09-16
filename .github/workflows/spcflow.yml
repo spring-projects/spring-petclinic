@@ -1,0 +1,14 @@
+name: Spring Pet Clinic Build
+on:
+  push:
+    branches:
+        - main
+    workflow_dispatch: #manual trigger
+jobs:
+  maven:
+    runs-on: ubuntu-latest
+    steps:
+       - name: Checkout code
+         uses: actions/checkout@v5
+       - name: build the code 
+         run: mvn package
