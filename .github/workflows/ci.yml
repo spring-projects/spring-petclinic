@@ -15,5 +15,5 @@ jobs:
                 distribution: 'temurin'
                 java-version: '21'
             - name: setup jre
-              uses: advanced-security/maven-dependency-submission-action@v3
+              run: mvn package
             
