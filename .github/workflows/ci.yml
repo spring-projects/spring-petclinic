@@ -18,10 +18,10 @@ jobs:
             - name: setup jre
               run: mvn package
             - name: run tests
-              uses: testspace-com/setup-testspace@v1
+              uses: EnricoMi/publish-unit-test-result-action@v2
             - name: package application for testers
               uses: actions/upload-artifact@v4
-              
+
               
 
             
