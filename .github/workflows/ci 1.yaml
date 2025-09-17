@@ -5,6 +5,10 @@ on:
         - main
     workflow_dispatch:
 
+permissions: 
+     contents: read
+     checks: write 
+
 jobs:
     manual:
         runs-on: ubuntu-24.04
@@ -14,6 +18,7 @@ jobs:
             with:
                 distribution: 'temurin'
                 java-version: '21'
+                cache: maven
           - name: build package
             run: mvn ${{ vars.GOAL  }}
           - name: publish test results
