@@ -9,8 +9,8 @@
     <relativePath></relativePath>
   </parent>
 
-  <groupId>org.springframework.samples</groupId>
-  <artifactId>spring-petclinic</artifactId>
+  <groupId>s25.s26</groupId>
+  <artifactId>helloworld</artifactId>
   <version>3.5.0-SNAPSHOT</version>
 
   <name>petclinic</name>

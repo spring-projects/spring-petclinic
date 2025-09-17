@@ -21,3 +21,4 @@ jobs:
             with:
               files: |
                 **/target/surefire-reports/*.xml
+ 
