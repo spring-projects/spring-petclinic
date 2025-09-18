@@ -25,11 +25,4 @@ indent_size = 2
 
 
 
-[{pom,wro}.xml]
-indent_size = 2
-indent_style = space
 
-[*.{html,sql,less}]
-indent_size = 2
-
-[*.gradle]
