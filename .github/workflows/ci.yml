@@ -30,7 +30,7 @@ jobs:
             - name: package application for testers
               uses: actions/upload-artifact@v4
               with:
-                name: app-java-${{ matrix.java }}
+                name: app-java-${{matrix.java}}
                 path: "**/target/*.jar"
               
 
