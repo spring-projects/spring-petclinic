@@ -1,0 +1,19 @@
+name: Manual maven steps for ci
+on:
+    pull_request:
+      branches: 
+          - main
+    workflow_dispatch:
+
+jobs:
+    manual:
+        runs-on: ubuntu-24.04
+        steps:
+          - uses: actions/checkout@v5
+          - uses: actions/setup-java@v5
+            with:
+                distribution: 'temurin'
+                java-version: '21'
+          - name: build package
+            run: mvn ${{ vars.GOAL }}
+          
