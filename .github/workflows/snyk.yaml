@@ -34,4 +34,4 @@ jobs:
         run: snyk auth ${{ secrets.SNYK_TOKEN }}
 
       - name: Run Snyk scan
-        run: snyk test --file=pom.xml 
+        run: snyk test --all-projects
