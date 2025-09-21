@@ -12,7 +12,7 @@ jobs:
         uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.DISPATCH_TOKEN }}
-          repository: pranjalwagh/ai-code-analyzer/change-guard  # <-- Your repo that has the main workflow
+          repository: pranjalwagh/ai-code-analyzer/tree/main/change-guard  # <-- Your repo that has the main workflow
           event-type: run-analysis
           client-payload: >-
             {
