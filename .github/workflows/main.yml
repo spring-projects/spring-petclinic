@@ -1,0 +1,39 @@
+name: 'ChangeGuard CI Analysis'
+
+on:
+  pull_request:
+    types: [opened, synchronize] # Run on PR open and on new commits to the PR
+
+# --- IMPORTANT: Set permissions for the job ---
+permissions:
+  contents: 'read'
+  id-token: 'write' # Required for authenticating to GCP
+  pull-requests: 'write' # Required for posting comments
+
+jobs:
+  build-and-analyze:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 'Checkout repository'
+      uses: actions/checkout@v4
+
+    # 1. Authenticate to Google Cloud using Workload Identity Federation
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v2'
+      with:
+        workload_identity_provider: '${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}' # e.g., projects/12345/locations/global/workloadIdentityPools/my-pool/providers/my-provider
+        service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}' # e.g., your-service-account@your-project-id.iam.gserviceaccount.com
+
+    # 2. Set up the gcloud CLI
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v2'
+
+    # 3. Submit the build to Google Cloud Build
+    # This triggers the cloudbuild.yaml file and passes PR info as substitutions
+    - name: 'Trigger Cloud Build'
+      run: |
+        gcloud builds submit . \
+          --config=cloudbuild.yaml \
+          --substitutions=_PROJECT_ID=${{ secrets.GCP_PROJECT_ID }},_COMMIT_SHA=${{ github.sha }},_PR_NUMBER=${{ github.event.pull_request.number }},_REPO_FULL_NAME=${{ github.repository }}
