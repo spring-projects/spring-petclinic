@@ -1,61 +1,22 @@
-name: 'Trigger ChangeGuard Analysis (Debug)'
+name: 'Trigger ChangeGuard Analysis'
 
 on:
-  workflow_run:
-    workflows: ["Java CI with Gradle"]
-    types:
-      - completed
+  pull_request:
+    types: [opened, synchronize]
 
 jobs:
   dispatch:
     runs-on: ubuntu-latest
-    if: github.event.workflow_run.conclusion == 'success'
-    
     steps:
-      - name: 'Debug Info'
-        run: |
-          echo "Current repository: ${{ github.repository }}"
-          echo "Workflow run SHA: ${{ github.event.workflow_run.head_sha }}"
-          echo "Has PR data: ${{ github.event.workflow_run.pull_requests != null && github.event.workflow_run.pull_requests[0] != null }}"
-          echo "Target repo: pranjalwagh/ai-code-analyzer/change-guard"
-      
-      - name: 'Direct API Call to Create Repository Dispatch'
-        id: dispatch_debug
-        run: |
-          echo "Using curl to make direct API call..."
-          response=$(curl -s -X POST \
-            -H "Authorization: token ${{ secrets.DISPATCH_TOKEN }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            "https://api.github.com/repos/pranjalwagh/ai-code-analyzer/change-guard/dispatches" \
-            -d '{"event_type":"run-analysis","client_payload":{"commit":"${{ github.event.workflow_run.head_sha }}","pr_number":"${{ github.event.workflow_run.pull_requests[0].number }}","repo_name":"${{ github.repository }}"}}')
-          
-          echo "Response: $response"
-          
-          if [ -n "$response" ]; then
-            echo "Received a response from GitHub API."
-            echo "$response"
-          else
-            echo "No error response received. This usually means success."
-          fi
-          
-          # Test the token's permissions
-          echo "Testing token permissions..."
-          user_response=$(curl -s -H "Authorization: token ${{ secrets.DISPATCH_TOKEN }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            "https://api.github.com/user")
-          
-          echo "GitHub user identified as: $(echo $user_response | grep -o '"login":"[^"]*' | sed 's/"login":"//')"
-          echo "Repo permissions: $(echo $user_response | grep -o '"repos_url":"[^"]*' | sed 's/"repos_url":"//')"
-          
-          # Also check if change-guard repo exists and is accessible with this token
-          repo_response=$(curl -s -H "Authorization: token ${{ secrets.DISPATCH_TOKEN }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            "https://api.github.com/repos/pranjalwagh/ai-code-analyzer/change-guard")
-          
-          if [[ "$repo_response" == *"Not Found"* ]]; then
-            echo "ERROR: Could not access pranjalwagh/ai-code-analyzer/change-guard repo with the token"
-            echo "Make sure the repo exists and the token has access"
-            exit 1
-          else
-            echo "Successfully accessed the change-guard repository"
-          fi
+      - name: 'Trigger analysis workflow in ai-code-analyzer repo'
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.DISPATCH_TOKEN }}
+          repository: pranjalwagh/ai-code-analyzer  # <-- Fixed: just owner/repo format
+          event-type: run-analysis
+          client-payload: >-
+            {
+              "commit": "${{ github.sha }}",
+              "pr_number": "${{ github.event.pull_request.number }}",
+              "repo_name": "${{ github.repository }}"
+            }

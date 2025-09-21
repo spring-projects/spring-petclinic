@@ -1,22 +1,35 @@
-name: 'Trigger ChangeGuard Analysis'
+name: 'ChangeGuard CI Analysis'
 
 on:
-  pull_request:
-    types: [opened, synchronize]
+  repository_dispatch:
+    types: [run-analysis]
+
+permissions:
+  contents: 'read'
+  id-token: 'write'
+  pull-requests: 'write'
 
 jobs:
-  dispatch:
+  build-and-analyze:
     runs-on: ubuntu-latest
+
     steps:
-      - name: 'Trigger analysis workflow in change-guard repo'
-        uses: peter-evans/repository-dispatch@v3
-        with:
-          token: ${{ secrets.DISPATCH_TOKEN }}
-          repository: pranjalwagh/ai-code-analyzer/tree/main/change-guard  # <-- Your repo that has the main workflow
-          event-type: run-analysis
-          client-payload: >-
-            {
-              "commit": "${{ github.sha }}",
-              "pr_number": "${{ github.event.pull_request.number }}",
-              "repo_name": "${{ github.repository }}"
-            }
+    - name: 'Checkout ai-code-analyzer repository'
+      uses: actions/checkout@v4
+
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v2'
+      with:
+        workload_identity_provider: '${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}'
+        service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
+
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v2'
+
+    - name: 'Trigger Cloud Build'
+      run: |
+        # Use the change-guard directory for cloudbuild.yaml
+        gcloud builds submit change-guard \
+          --config=change-guard/cloudbuild.yaml \
+          --substitutions=_PROJECT_ID=${{ secrets.GCP_PROJECT_ID }},_COMMIT_SHA=${{ github.event.client_payload.commit }},_PR_NUMBER=${{ github.event.client_payload.pr_number }},_REPO_FULL_NAME=${{ github.event.client_payload.repo_name }}
