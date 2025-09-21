@@ -1,0 +1,31 @@
+name: 'Trigger ChangeGuard Analysis'
+
+# --- FIX: Change the trigger from 'pull_request' to 'workflow_run' ---
+on:
+  workflow_run:
+    # This workflow will only run AFTER the "Java CI with Gradle" workflow completes.
+    workflows: ["Java CI with Gradle"]
+    types:
+      - completed
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    
+    # Only run this job if the triggering workflow was successful
+    if: github.event.workflow_run.conclusion == 'success'
+
+    steps:
+      - name: 'Trigger analysis workflow in change-guard repo'
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.DISPATCH_TOKEN }}
+          repository: pranjalwagh/change-guard
+          event-type: run-analysis
+          # --- FIX: Get the commit SHA and PR number from the workflow_run context ---
+          client-payload: >-
+            {
+              "commit": "${{ github.event.workflow_run.head_sha }}",
+              "pr_number": "${{ github.event.workflow_run.pull_requests[0].number }}",
+              "repo_name": "${{ github.repository }}"
+            }
