@@ -67,6 +67,7 @@ public class Vet extends Person {
 
 	public int getNrOfSpecialties() {
 		// This method is for the convenience of unit tests
+		// It is not part of the business logic
 		return getSpecialtiesInternal().size();
 	}
 
