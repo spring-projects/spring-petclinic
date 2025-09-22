@@ -15,8 +15,6 @@ jobs:
       matrix:
         java: [ '17' ]
     env:
-      ACR_NAME: ${{ secrets.ACR_NAME }}
-      ACR_LOGIN_SERVER: ${{ secrets.ACR_NAME }}.azurecr.io
       IMAGE_NAME: petclinic
       CHART_DIR: helm/petclinic
       CHART_NAME: petclinic
@@ -24,32 +22,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up JDK ${{ matrix.java }}
-        uses: actions/setup-java@v4
-        with:
-          java-version: ${{ matrix.java }}
-          distribution: 'adopt'
-          cache: maven
-
-      - name: Build with Maven Wrapper
-        run: ./mvnw -B verify
-
-      - name: Azure login
-        uses: azure/login@v2
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Install Helm
         uses: azure/setup-helm@v4
         with:
           version: v3.14.4
 
-      - name: Login to Azure Container Registry
-        run: az acr login --name "$ACR_NAME"
+      - uses: azure/docker-login@v2
+        with:
+          login-server: ckcluster.azurecr.io
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
 
       - name: Build and push Docker image to ACR
         run: |
-          REG="$ACR_LOGIN_SERVER"
+          REG="ckcluster.azurecr.io"
           docker build -t "$REG/$IMAGE_NAME:${{ github.sha }}" -t "$REG/$IMAGE_NAME:latest" .
           docker push "$REG/$IMAGE_NAME:${{ github.sha }}"
           docker push "$REG/$IMAGE_NAME:latest"
