@@ -59,7 +59,6 @@ public class Vet extends Person {
 	@XmlElement
 	public List<Specialty> getSpecialties() {
 		// The returned list is sorted by name
-		// This is safe because we return a copy
 		return getSpecialtiesInternal().stream()
 			.sorted(Comparator.comparing(NamedEntity::getName))
 			.collect(Collectors.toList());
