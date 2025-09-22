@@ -9,7 +9,7 @@ on:
   pull_request:
     branches: [ main ]
   workflow_dispatch:
-    [ main ]
+    branches: [ main ]
 
 
 jobs:
