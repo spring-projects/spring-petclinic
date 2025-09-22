@@ -1,0 +1,15 @@
+# file: 'helm/petclinic/templates/service.yaml'
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    app: {{ .Chart.Name }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+      name: http
+  selector:
+    app: {{ .Chart.Name }}

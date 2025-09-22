@@ -1,0 +1,42 @@
+---
+# file: 'helm/petclinic/values.yaml'
+replicaCount: 1
+
+image:
+  repository: dsyer/petclinic
+  tag: latest
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+# Beispiel:
+# imagePullSecrets:
+#   - name: acr-auth
+
+service:
+  type: NodePort
+  port: 80
+  targetPort: 8080
+
+env:
+  - name: SPRING_PROFILES_ACTIVE
+    value: postgres
+  - name: SERVICE_BINDING_ROOT
+    value: /bindings
+  - name: SPRING_APPLICATION_JSON
+    value: '{"management.endpoint.health.probes.add-additional-paths": true}'
+
+probes:
+  liveness:
+    path: /livez
+  readiness:
+    path: /readyz
+
+binding:
+  enabled: true
+  secretName: demo-db
+  mountPath: /bindings/secret
+
+resources: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
