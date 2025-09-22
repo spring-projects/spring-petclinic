@@ -60,9 +60,13 @@ class VetController {
 		model.addAttribute("listVets", listVets);
 		return "vets/vetList";
 	}
+	
 
 	private Page<Vet> findPaginated(int page) {
 		int pageSize = 5;
+		//test changes
+		int count = 10;
+		System.out.println("count: " + count);
 		Pageable pageable = PageRequest.of(page - 1, pageSize);
 		return vetRepository.findAll(pageable);
 	}
