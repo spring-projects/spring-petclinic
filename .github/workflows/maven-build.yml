@@ -45,9 +45,8 @@ jobs:
         env:
           HELM_EXPERIMENTAL_OCI: 1
         run: |
-          REG="$ACR_LOGIN_SERVER"
-          # Speichere Chart als OCI und pushe Tags (Commit-SHA und latest)
-          helm chart save "$CHART_DIR" "$REG/helm/$CHART_NAME:${{ github.sha }}"
-          helm chart save "$CHART_DIR" "$REG/helm/$CHART_NAME:latest"
-          helm chart push "$REG/helm/$CHART_NAME:${{ github.sha }}"
-          helm chart push "$REG/helm/$CHART_NAME:latest"
+          REG="ckcluster.azurecr.io"
+          helm registry login "$REG" --username "${{ secrets.REGISTRY_USERNAME }}" --password "${{ secrets.REGISTRY_PASSWORD }}"
+          CHART_VERSION="0.1.0-${GITHUB_SHA::7}"
+          helm package "$CHART_DIR" --version "$CHART_VERSION"
+          helm push "$CHART_NAME-$CHART_VERSION.tgz" "oci://$REG/helm"
