@@ -46,6 +46,7 @@ jobs:
           HELM_EXPERIMENTAL_OCI: 1
         run: |
           REG="ckcluster.azurecr.io"
+          cd helm
           helm registry login "$REG" --username "${{ secrets.REGISTRY_USERNAME }}" --password "${{ secrets.REGISTRY_PASSWORD }}"
           CHART_VERSION="0.1.0-${GITHUB_SHA::7}"
           helm package "$CHART_DIR" --version "$CHART_VERSION"
