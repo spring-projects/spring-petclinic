@@ -58,7 +58,6 @@ public class Vet extends Person {
 
 	@XmlElement
 	public List<Specialty> getSpecialties() {
-		// The returned list is sorted by name
 		// This is safe because we return a copy
 		return getSpecialtiesInternal().stream()
 			.sorted(Comparator.comparing(NamedEntity::getName))
@@ -67,7 +66,6 @@ public class Vet extends Person {
 
 	public int getNrOfSpecialties() {
 		// This method is for the convenience of unit tests
-		// It is not part of the business logic
 		return getSpecialtiesInternal().size();
 	}
 
