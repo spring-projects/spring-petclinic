@@ -4,12 +4,14 @@
 
 <body>
 
-  <h2 th:text="#{welcome}">Welcome</h2>
+  <h2 th:text="#{welcome}">Welcome</h2><p>登録されているオーナー数: <span th:text="${ownerCount}"></span></p>
   <div class="row">
     <div class="col-md-12">
       <img class="img-responsive" src="../static/resources/images/pets.png" th:src="@{/resources/images/pets.png}" />
     </div>
   </div>
+  
+  
 
 </body>
 
