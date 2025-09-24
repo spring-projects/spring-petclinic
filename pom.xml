@@ -11,7 +11,7 @@
 
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
-  <version>3.5.0-SNAPSHOT</version>
+  <version>3.5.1</version>
 
   <name>petclinic</name>
 
@@ -278,9 +278,42 @@
         <groupId>org.cyclonedx</groupId>
         <artifactId>cyclonedx-maven-plugin</artifactId>
       </plugin>
-
+      <!-- SonarQube plugin at the end -->
+      <plugin>
+        <groupId>org.sonarsource.scanner.maven</groupId>
+        <artifactId>sonar-maven-plugin</artifactId>
+        <version>3.11.1.2311</version>
+      </plugin>
+      <!-- Jacoco Plugin -->      
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.10</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>report</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
+		      <!-- ===== Add distributionManagement HERE, before </project> ===== -->
+  <distributionManagement>
+     <repository>
+     <id>jfrog-release</id>
+     <name>JFrog Release Repository</name>
+     <url>https://trialplssst.jfrog.io/artifactory/maven-local-libs-release-local/</url>
+     </repository>
+  </distributionManagement>
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>
