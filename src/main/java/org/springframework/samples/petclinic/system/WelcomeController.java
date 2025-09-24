@@ -16,15 +16,25 @@
 
 package org.springframework.samples.petclinic.system;
 
+import org.springframework.samples.petclinic.owner.OwnerService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 class WelcomeController {
+	
+    private final OwnerService ownerService;
 
-	@GetMapping("/")
-	public String welcome() {
-		return "welcome";
-	}
+    public WelcomeController(OwnerService ownerService) {
+        this.ownerService = ownerService;
+    }
+
+    @GetMapping("/")
+    public String welcome(Model model) {
+        long ownerCount = ownerService.getOwnerCount();
+        model.addAttribute("ownerCount", ownerCount);
+        return "welcome"; // welcome.html を表示
+    }
 
 }
