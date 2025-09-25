@@ -32,7 +32,7 @@ probes:
     path: /readyz
 
 binding:
-  enabled: true
+  enabled: false
   secretName: demo-db
   mountPath: /bindings/secret
 
