@@ -1,6 +1,6 @@
 ## Presentation Update
 
-**Related Issue:** [Update presentation on speakerdeck with Spring Boot features #204](https://github.com/spring-projects/spring-petclinic/issues/204)
+**Related Issue forked from:** [Update presentation on speakerdeck with Spring Boot features #204](https://github.com/spring-projects/spring-petclinic/issues/204)
 
 ### Overview
 - **Task:** Update presentation with Spring Boot features as of July 2025
