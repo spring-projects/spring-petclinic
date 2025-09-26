@@ -5,7 +5,8 @@
 ### Overview
 - **Task:** Update presentation with Spring Boot features as of July 2025
 - **Original Platform:** Speakerdeck (as specified in the issue)
-- **Implementation Platform:** Google Slides
+- **Implementation Main platform:** Google Slides
+- **Supporting tools:** Google Docs, Render
 - **Design Approach:** Maintained original Speakerdeck design decisions
 
 ### Implementation Details
