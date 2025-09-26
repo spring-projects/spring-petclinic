@@ -29,7 +29,7 @@ jobs:
             - name: test
               run: mvn test
 
-            - name: build
+            - name: clean build
               run: mvn package
               
             - name: Upload build artifacts
