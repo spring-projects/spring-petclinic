@@ -1262,9 +1262,10 @@ jobs:
           echo " " >> $GITHUB_STEP_SUMMARY
 
       # Package   https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/binaries-management-with-jfrog-artifactory/package-managers-integration#running-gradle-builds
+      # jf gradle clean artifactoryPublish -x test -b ./build.gradle --build-name=${{env.BUILD_NAME}} --build-number=${{env.BUILD_ID}} 
       - name: "Package: Create Build" 
         run: |
-          jf gradle clean artifactoryPublish -x test -b ./build.gradle --build-name=${{env.BUILD_NAME}} --build-number=${{env.BUILD_ID}} 
+          jf gradle clean artifactoryPublish -x test --build-name=${{env.BUILD_NAME}} --build-number=${{env.BUILD_ID}} 
 
       - name: "Evidence: Artifact"
         continue-on-error: true 
