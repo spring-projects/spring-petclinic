@@ -49,3 +49,8 @@ out/
 _site/
 *.css
 !petclinic.css
+
+*.jfrog
+.gradle
+.mvn
+target/
