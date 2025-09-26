@@ -142,7 +142,7 @@ jobs:
       # Package
       - name: "Curation: audit" # https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/cli-for-jfrog-security/cli-for-jfrog-curation
         timeout-minutes: 15    # ref https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepstimeout-minutes
-        # continue-on-error: true    # ref: https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepscontinue-on-error
+        continue-on-error: true    # ref: https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepscontinue-on-error
         run: |
           jf ca --format=table --threads=100
 
@@ -743,7 +743,7 @@ jobs:
 
       - name: "Curation: audit" 
         timeout-minutes: 15    
-        # continue-on-error: true  
+        continue-on-error: true  
         run: |
           jf ca --format=table --threads=100
   
@@ -1282,7 +1282,6 @@ jobs:
           echo " " >> $GITHUB_STEP_SUMMARY
 
       # Package   https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/binaries-management-with-jfrog-artifactory/package-managers-integration#running-gradle-builds
-      # jf gradle clean artifactoryPublish -x test -b ./build.gradle --build-name=${{env.BUILD_NAME}} --build-number=${{env.BUILD_ID}} 
       - name: "Package: Create Build" 
         run: |
           jf gradle clean artifactoryPublish -x test --build-name=${{env.BUILD_NAME}} --build-number=${{env.BUILD_ID}} 
@@ -1301,20 +1300,23 @@ jobs:
           cat ./${{env.EVIDENCE_SPEC_JSON}}
 
           jf evd create --subject-repo-path ${{env.REPO_JAR}} --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}"  --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}} --predicate ./${{env.EVIDENCE_SPEC_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1
+
       - name: "Evidence: Build Info"
-        # continue-on-error: true 
+        continue-on-error: true 
         env:
             EVD_JSON: "build/build-info.json"
         run: |
           cat ./${{env.EVD_JSON}}
+
           jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVD_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
     
       - name: "Evidence: cdx"
-        # continue-on-error: true 
+        continue-on-error: true 
         env:
             EVD_JSON: "build/reports/application.cdx.json"
         run: |
           cat ./${{env.EVD_JSON}}
+
           jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVD_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
           
 

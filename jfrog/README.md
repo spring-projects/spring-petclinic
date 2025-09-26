@@ -1,7 +1,8 @@
 # Spring-PetClinic screenshots in JFrog & GitHub 
 
 
-![GitHub Actions workflow](./images/githubactions.png)
+![GitHub Actions workflow](./images/github-actions.png)
+![GitHub Security](./images/github-security-codescan.png)
 
 ## Build
 
