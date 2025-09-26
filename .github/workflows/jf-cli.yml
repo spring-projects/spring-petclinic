@@ -1,6 +1,5 @@
 name: "JF-CLI: JAVA"
 on: push
-  
 permissions:
   actions: read # for detecting the Github Actions environment.
   id-token: write # for creating OIDC tokens for signing.
@@ -143,14 +142,14 @@ jobs:
       # Package
       - name: "Curation: audit" # https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/cli-for-jfrog-security/cli-for-jfrog-curation
         timeout-minutes: 15    # ref https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepstimeout-minutes
-        continue-on-error: true    # ref: https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepscontinue-on-error
+        # continue-on-error: true    # ref: https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepscontinue-on-error
         run: |
           jf ca --format=table --threads=100
 
       - name: "Xray & JAS: Audit"  # https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/cli-for-jfrog-security
         # scan for Xray: Source code dependencies and JAS: Secrets Detection, IaC, Vulnerabilities Contextual Analysis 'SAST'
         timeout-minutes: 15  # ref: https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepstimeout-minutes
-        continue-on-error: true    # ref: https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepscontinue-on-error
+        # continue-on-error: true    # ref: https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepscontinue-on-error
         run: |
           jf audit --mvn --sast=true --sca=true --secrets=true --licenses=true --validate-secrets=true --vuln=true --format=table --extended-table=true --threads=100 --fail=false
 
@@ -182,9 +181,8 @@ jobs:
       # Evidence - Package references
       #     Docs# https://jfrog.com/help/r/jfrog-artifactory-documentation/evidence-management
       #     CLI# https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/binaries-management-with-jfrog-artifactory/evidence-service
-      # jf evd create --predicate ./evd-package.json --predicate-type https://jfrog.com/evidence/build-signature/v1 --package-name spring-petclinic --package-version evd.2025-01-31-14-53 --package-repo-name "krishnam-docker-virtual" --key ~/.ssh/jfrog_evd_public.pem --key-alias "KRISHNAM_JFROG_EVD_PUBLICKEY"
       - name: "Evidence: Package"
-        continue-on-error: true 
+        # continue-on-error: true 
         run: |
           echo '{ "actor": "${{github.actor}}", "pipeline": "github actions","build_name": "${{env.BUILD_NAME}}", "build_id": "${{env.BUILD_ID}}", "evd":"Evidence-Package", "package":"${{env.RT_REPO_DOCKER_URL}}" }' > ./${{env.EVIDENCE_SPEC_JSON}}
           cat ./${{env.EVIDENCE_SPEC_JSON}}
@@ -235,7 +233,7 @@ jobs:
       #     Docs# https://jfrog.com/help/r/jfrog-artifactory-documentation/evidence-management
       #     CLI# https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/binaries-management-with-jfrog-artifactory/evidence-service
       - name: "Evidence: Build Publish"
-        continue-on-error: true 
+        # continue-on-error: true 
         run: |
           echo '{ "actor": "${{github.actor}}", "pipeline": "github actions","build_name": "${{env.BUILD_NAME}}", "build_id": "${{env.BUILD_ID}}", "evd": "Evidence-BuildPublish"}' > ./${{env.EVIDENCE_SPEC_JSON}}
           cat ./${{env.EVIDENCE_SPEC_JSON}}
@@ -299,11 +297,15 @@ jobs:
           cat ${{env.RBv2_SPEC_JSON}}
           jf rbc ${{env.BUILD_NAME}} ${{env.BUILD_ID}} --sync=true --signing-key=${{secrets.RBV2_SIGNING_KEY}} --spec=${{env.RBv2_SPEC_JSON}}
 
+      - name: "RLM: Xray Indexing"
+        run: |
+            jf xr curl "/api/v1/binMgr/release_bundle_v2" -H 'Content-Type: application/json' -d "{\"names\": [\"${{env.BUILD_NAME}}\"] }"
+
       # Evidence - RBv2 new references
       #     Docs# https://jfrog.com/help/r/jfrog-artifactory-documentation/evidence-management
       #     CLI# https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/binaries-management-with-jfrog-artifactory/evidence-service
       - name: "Evidence: RBv2 state NEW"
-        continue-on-error: true 
+        # continue-on-error: true 
         env:
           # https://psazuse.jfrog.io/ui/artifactory/lifecycle/?bundleName=spring-petclinic&bundleToFlash=spring-petclinic&repositoryKey=release-bundles-v2&activeKanbanTab=promotion
           NAME_LINK: "${{env.JF_RT_URL}}/ui/artifactory/lifecycle/?bundleName=${{env.BUILD_NAME}}&bundleToFlash=${{env.BUILD_NAME}}&repositoryKey=release-bundles-v2&activeKanbanTab=promotion"
@@ -322,6 +324,7 @@ jobs:
       RBv2_ENV_VAL: "DEV"
       BUILD_ID: "psj-dkr-${{github.run_number}}"
       RT_REPO_DEV_LOCAL: "springpetclinic-docker-dev-local"
+      TYPE_PROMOTE: "COPY"
     defaults:
        run:
          working-directory: "${{env.DEFAULT_WORKSPACE}}"
@@ -417,7 +420,7 @@ jobs:
           jf evd create --release-bundle ${{env.BUILD_NAME}} --release-bundle-version ${{env.BUILD_ID}} --predicate ./${{env.EVIDENCE_SPEC_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
 
       - name: "Optional: rbv2-summary"
-        continue-on-error: true 
+        # continue-on-error: true 
         env:
           NAME_LINK: "${{env.JF_RT_URL}}/ui/artifactory/lifecycle/?bundleName=${{env.BUILD_NAME}}&bundleToFlash=${{env.BUILD_NAME}}&repositoryKey=release-bundles-v2&activeKanbanTab=promotion"
           VER_LINK: "${{env.JF_RT_URL}}/ui/artifactory/lifecycle/?bundleName='${{env.BUILD_NAME}}'&bundleToFlash='${{env.BUILD_NAME}}'&releaseBundleVersion='${{env.BUILD_ID}}'&repositoryKey=release-bundles-v2&activeVersionTab=Version%20Timeline&activeKanbanTab=promotion"
@@ -740,13 +743,13 @@ jobs:
 
       - name: "Curation: audit" 
         timeout-minutes: 15    
-        continue-on-error: true  
+        # continue-on-error: true  
         run: |
           jf ca --format=table --threads=100
   
       - name: "Xray & JAS: Audit"  
         timeout-minutes: 15 
-        continue-on-error: true 
+        # continue-on-error: true 
         run: |
           jf audit --mvn --sast=true --sca=true --secrets=true --licenses=true --validate-secrets=true --vuln=true --format=table --extended-table=true --threads=100 --fail=false
 
@@ -764,19 +767,31 @@ jobs:
       - name: "BuildInfo: Collect env"
         run: jf rt bce ${{env.BUILD_NAME}} ${{env.BUILD_ID}} 
 
+      - name: "BuildInfo: Add VCS info"
+        run: jf rt bag ${{env.BUILD_NAME}} ${{env.BUILD_ID}} 
+
       - name: "BuildInfo: Build Publish"
         run: jf rt bp ${{env.BUILD_NAME}} ${{env.BUILD_ID}} --detailed-summary=true
      
       - name: "Evidence: Build Info"
-        continue-on-error: true 
+        # continue-on-error: true 
         env:
-            EVD_JSON: "./target/build-info.json"
+            EVD_JSON: "target/build-info.json"
+        run: |
+          cat ./${{env.EVD_JSON}}
+          jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVD_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
+
+      - name: "Evidence: cdx"
+        # continue-on-error: true 
+        env:
+            EVD_JSON: "target/classes/META-INF/sbom/application.cdx.json"
         run: |
           cat ./${{env.EVD_JSON}}
           jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVD_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
           
+
       - name: "Evidence: Build Publish"
-        continue-on-error: true 
+        # continue-on-error: true 
         run: |
           echo '{ "actor": "${{github.actor}}", "pipeline": "github actions","build_name": "${{env.BUILD_NAME}}", "build_id": "${{env.BUILD_ID}}", "evd": "Evidence-BuildPublish"}' > ./${{env.EVIDENCE_SPEC_JSON}}
           cat ./${{env.EVIDENCE_SPEC_JSON}}
@@ -816,7 +831,7 @@ jobs:
         run: |
           jf bs ${{env.BUILD_NAME}} ${{env.BUILD_ID}} --fail=false --format=table --extended-table=true --rescan=false --vuln=true
 
-      - name: "Optional: Build Scan V2" 
+      - name: "Optional: Build Scan V2" # https://jfrog.com/help/r/xray-rest-apis/scan-build-v2
         run: |
           jf xr curl /api/v2/ci/build -H 'Content-Type: application/json' -d '{"build_name": "${{env.BUILD_NAME}}", "build_number": "${{env.BUILD_ID}}","rescan":false }'
 
@@ -830,6 +845,10 @@ jobs:
           cat ${{env.RBv2_SPEC_JSON}}
 
           jf rbc ${{env.BUILD_NAME}} ${{env.BUILD_ID}} --sync=true --signing-key=${{secrets.RBV2_SIGNING_KEY}} --spec=${{env.RBv2_SPEC_JSON}}
+
+      - name: "RLM: Xray Indexing"
+        run: |
+            jf xr curl "/api/v1/binMgr/release_bundle_v2" -H 'Content-Type: application/json' -d "{\"names\": [\"${{env.BUILD_NAME}}\"] }"
 
       - name: "Evidence: RBv2 state NEW"
         continue-on-error: true 
@@ -1274,7 +1293,6 @@ jobs:
           tree build/
 
       - name: "Evidence: Artifact"
-        continue-on-error: true 
         env:
           REPO_JAR: "${{env.RT_REPO_GRADLE_DEFAULT_LOCAL}}/org/springframework/samples/${{env.BUILD_NAME}}/3.4.0/${{env.BUILD_NAME}}-3.4.0-plain.jar"  # /krishnam-gdl-dev-fed/org/springframework/samples/spring-petclinic/3.4.0/
           # REPO_JAR: "${{env.RT_REPO_GRADLE_VIRTUAL}}/org/springframework/samples/${{env.BUILD_NAME}}/3.4.0/${{env.BUILD_NAME}}-3.4.0-plain.jar"  # krishnam-gradle-virtual/org/springframework/samples/spring-petclinic/3.4.0/spring-petclinic-3.4.0-plain.jar
@@ -1283,8 +1301,22 @@ jobs:
           cat ./${{env.EVIDENCE_SPEC_JSON}}
 
           jf evd create --subject-repo-path ${{env.REPO_JAR}} --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}"  --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}} --predicate ./${{env.EVIDENCE_SPEC_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1
-
-          echo "    - TODO: Evidence for ARTIFACT attached " >> $GITHUB_STEP_SUMMARY
+      - name: "Evidence: Build Info"
+        # continue-on-error: true 
+        env:
+            EVD_JSON: "build/build-info.json"
+        run: |
+          cat ./${{env.EVD_JSON}}
+          jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVD_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
+    
+      - name: "Evidence: cdx"
+        # continue-on-error: true 
+        env:
+            EVD_JSON: "build/reports/application.cdx.json"
+        run: |
+          cat ./${{env.EVD_JSON}}
+          jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVD_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
+          
 
       # Build Info
           # US 

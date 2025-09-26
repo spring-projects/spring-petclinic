@@ -1,0 +1,174 @@
+name: "Frogbot: Scan and Fix"
+# refer https://docs.jfrog-applications.jfrog.io/jfrog-applications/frogbot/setup-frogbot/setup-frogbot-using-github-actions
+on: push
+permissions:
+  pull-requests: write
+  contents: write
+  security-events: write
+  # [Mandatory If using OIDC authentication protocol instead of JF_ACCESS_TOKEN]
+  id-token: write
+jobs:
+  jfrog-bot-scan:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # The repository scanning will be triggered periodically on the following branches.
+        branch: [ "main" ]
+    # A pull request needs to be approved before Frogbot scans it. Any GitHub user who is associated with the
+    # "frogbot" GitHub environment can approve the pull request to be scanned.
+    environment: frogbot
+    steps:
+      - name: "Summary"
+        run: |
+          echo "# :frog: Prestep Summary :pushpin:" >> $GITHUB_STEP_SUMMARY
+          echo " " >> $GITHUB_STEP_SUMMARY
+          echo " " >> $GITHUB_STEP_SUMMARY
+          echo " - NodeJs Info: " >> $GITHUB_STEP_SUMMARY
+          echo "     - node: ${{ env.NODE_VER }} " >> $GITHUB_STEP_SUMMARY
+          echo "     - npm: ${{ env.NPM_VER }} " >> $GITHUB_STEP_SUMMARY
+          echo " " >> $GITHUB_STEP_SUMMARY
+
+      - uses: actions/checkout@v4
+
+      # - name: NodeJS upgrade
+      #   uses: actions/setup-node@v4  # ref: https://github.com/actions/setup-node
+      #   with:
+      #     node-version: 20
+      #     ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION
+
+      # - name: After NodeJS upgrade
+      #   run: |
+      #     # NodeJS
+      #     njs_u_v=`node -v`
+      #     echo "NODE_VER=${njs_u_v}" >> $GITHUB_ENV
+      #     npm_u_v=`npm -v`
+      #     echo "NPM_VER=${npm_u_v}" >> $GITHUB_ENV
+          
+      - uses: jfrog/frogbot@v2    # ref: https://github.com/jfrog/frogbot
+        env:
+          JF_URL: https://${{ vars.JF_NAME }}.jfrog.io
+          JFROG_CLI_LOG_LEVEL: "DEBUG"
+          # [Mandatory]
+          # The GitHub token is automatically generated for the job
+          JF_GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          #JF_GIT_BASE_BRANCH: ${{ matrix.branch }}
+          ACTIONS_ALLOW_UNSECURE_NODE_VERSION: true  # Allow secure Node fallback
+        
+          # [Optional, default: https://api.github.com]
+          # API endpoint to GitHub
+          # JF_GIT_API_ENDPOINT: https://github.example.com
+
+          # [Optional]
+          # By default, the Frogbot workflows download the Frogbot executable as well as other tools
+          # needed from https://releases.jfrog.io
+          # If the machine that runs Frogbot has no access to the internet, follow these steps to allow the
+          # executable to be downloaded from an Artifactory instance, which the machine has access to:
+          #
+          # 1. Login to the Artifactory UI, with a user who has admin credentials.
+          # 2. Create a Remote Repository with the following properties set.
+          #    Under the 'Basic' tab:
+          #       Package Type: Generic
+          #       URL: https://releases.jfrog.io
+          #    Under the 'Advanced' tab:
+          #       Uncheck the 'Store Artifacts Locally' option
+          # 3. Set the value of the 'JF_RELEASES_REPO' variable with the Repository Key you created.
+          # JF_RELEASES_REPO: ""
+
+          # [Optional]
+          # Configure the SMTP server to enable Frogbot to send emails with detected secrets in pull request scans.
+          # SMTP server URL including should the relevant port: (Example: smtp.server.com:8080)
+          # JF_SMTP_SERVER: ""
+
+          # [Mandatory if JF_SMTP_SERVER is set]
+          # The username required for authenticating with the SMTP server.
+          # JF_SMTP_USER: ""
+
+          # [Mandatory if JF_SMTP_SERVER is set]
+          # The password associated with the username required for authentication with the SMTP server.
+          # JF_SMTP_PASSWORD: ""
+
+          ##########################################################################
+          ##   If your project uses a 'frogbot-config.yml' file, you can define   ##
+          ##   the following variables inside the file, instead of here.          ##
+          ##########################################################################
+
+          # [Mandatory if the two conditions below are met]
+          # 1. The project uses yarn 2, NuGet or .NET Core to download its dependencies
+          # 2. The `installCommand` variable isn't set in your frogbot-config.yml file.
+          #
+          # The command that installs the project dependencies (e.g "nuget restore")
+          # JF_INSTALL_DEPS_CMD: ""
+
+          # [Optional, default: "."]
+          # Relative path to the root of the project in the Git repository. If left empty (without providing "." yourself as default), a recursive scan is triggered from the root directory of the project.
+          JF_WORKING_DIR: src/main/java
+
+          # [Default: "*git*;*node_modules*;*target*;*venv*;*test*"]
+          # List of exclusion patterns (utilizing wildcards) for excluding paths in the source code of the Git repository during SCA scans.
+          JF_PATH_EXCLUSIONS: "*git*;*node_modules*;*target*;*venv*;*test*"
+
+          # [Optional]
+          # Xray Watches. Learn more about them here: https://www.jfrog.com/confluence/display/JFROG/Configuring+Xray+Watches
+          # JF_WATCHES: <watch-1>,<watch-2>...<watch-n>
+
+          # [Optional]
+          # JFrog project. Learn more about it here: https://www.jfrog.com/confluence/display/JFROG/Projects
+          # JF_PROJECT: <project-key>
+
+          # [Optional, default: "FALSE"]
+          # Displays all existing vulnerabilities, including the ones that were added by the pull request.
+          JF_INCLUDE_ALL_VULNERABILITIES: "TRUE"
+
+          # [Optional, default: "FALSE"]
+          # When adding new comments on pull requests, keep old comments that were added by previous scans.
+          JF_AVOID_PREVIOUS_PR_COMMENTS_DELETION: "TRUE"
+
+          # [Optional, default: "TRUE"]
+          # Fails the Frogbot task if any security issue is found.
+          JF_FAIL: "FALSE"
+
+          # [Optional]
+          # Frogbot will download the project dependencies if they're not cached locally. To download the
+          # dependencies from a virtual repository in Artifactory, set the name of the repository. There's no
+          # need to set this value, if it is set in the frogbot-config.yml file.
+          # JF_DEPS_REPO: ""
+
+          # [Optional, Default: "FALSE"]
+          # If TRUE, Frogbot creates a single pull request with all the fixes.
+          # If false, Frogbot creates a separate pull request for each fix.
+          # JF_GIT_AGGREGATE_FIXES: "FALSE"
+          JF_GIT_AGGREGATE_FIXES: "TRUE"
+
+          # [Optional, Default: "FALSE"]
+          # Handle vulnerabilities with fix versions only
+          # JF_FIXABLE_ONLY: "TRUE"
+
+          # [Optional]
+          # Set the minimum severity for vulnerabilities that should be fixed and commented on in pull requests
+          # The following values are accepted: Low, Medium, High or Critical
+          JF_MIN_SEVERITY: "Low"
+
+          # [Optional]
+          # List of comma-separated(,) email addresses to receive email notifications about secrets
+          # detected during pull request scanning. The notification is also sent to the email set
+          # in the committer git profile regardless of whether this variable is set or not.
+          # JF_EMAIL_RECEIVERS: ${{ vars.JOB_EMAILS }}
+
+          # [Optional]
+          # Set the list of allowed licenses
+          # The full list of licenses can be found in:
+          # https://github.com/jfrog/frogbot/blob/master/docs/licenses.md
+          # JF_ALLOWED_LICENSES: "MIT, Apache-2.0"
+
+          # [Optional]
+          # Avoid adding extra info to pull request comments. that isn't related to the scan findings.
+          # JF_AVOID_EXTRA_MESSAGES: "TRUE"
+
+          # [Optional]
+          # Add a title to pull request comments generated by Frogbot.
+          # JF_PR_COMMENT_TITLE: ""
+
+        # [Mandatory if using OIDC authentication protocol instead of JF_ACCESS_TOKEN]
+        # Insert to oidc-provider-name the 'Provider Name' defined in the OIDC integration configured in the JPD
+        with:
+           oidc-provider-name: ${{ vars.JF_OIDC_PROVIDER_NAME }}
