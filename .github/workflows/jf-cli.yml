@@ -1237,6 +1237,7 @@ jobs:
           jf config show
 
       - name: "Config jf with gradle repos"
+        # jf gradlec --repo-deploy springpetclinic-gradle-virtual --repo-resolve springpetclinic-gradle-virtual --repo-deploy springpetclinic-gradle-virtual
         run: |
           jf gradlec --repo-deploy ${{env.RT_REPO_GRADLE_VIRTUAL}} --repo-resolve ${{env.RT_REPO_GRADLE_VIRTUAL}} --repo-deploy ${{env.RT_REPO_GRADLE_VIRTUAL}}
 
@@ -1266,6 +1267,11 @@ jobs:
       - name: "Package: Create Build" 
         run: |
           jf gradle clean artifactoryPublish -x test --build-name=${{env.BUILD_NAME}} --build-number=${{env.BUILD_ID}} 
+
+      - name: "list folder"
+        run: |
+          pwd
+          tree build/
 
       - name: "Evidence: Artifact"
         continue-on-error: true 
