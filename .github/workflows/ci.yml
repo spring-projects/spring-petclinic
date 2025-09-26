@@ -1,0 +1,43 @@
+name : Maven
+
+
+on : 
+    pull_request:
+        branches:
+            - main
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: set up code
+              uses: actions/checkout@v4
+
+            - name: setup java
+              uses: actions/setup-java@v3
+              with:
+                distribution: temurin
+                java-version: 17
+                cache: maven
+
+            - name: clean
+              run: mvn clean
+
+            - name: install dependencies
+              run: mvn install
+
+            - name: test
+              run: mvn test
+
+            - name: build
+              run: mvn package
+              
+            - name: Upload build artifacts
+              uses: actions/upload-artifact@v4
+              with:
+                name: my-maven-package
+                path: target/*.jar
+
+
+
+
