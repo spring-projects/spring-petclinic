@@ -6,6 +6,7 @@ on:
         - main
 
     workflow_dispatch:
+      
 jobs:
     manual:
         runs-on: ubuntu-24.04
