@@ -34,8 +34,8 @@ public class Person extends BaseEntity {
 	@Column(name = "middle_name") // <-- ADD THIS LINE
     private String middleName;
 
-	@Column(name = "father_name") // <-- ADD THIS LINE
-    private String fathersname;
+	@Column(name = "mother_name") // <-- ADD THIS LINE
+    private String mothername;
 
 	@Column(name = "last_name")
 	@NotBlank
@@ -63,6 +63,14 @@ public class Person extends BaseEntity {
 
 	public String getMiddleName() {
 		return this.middleName;
+	}
+
+	public void setMotherName(String motherName) {
+		this.motherName = motherName;
+	}
+
+	public String getMotherName() {
+		return this.motherName;
 	}
 
 }
