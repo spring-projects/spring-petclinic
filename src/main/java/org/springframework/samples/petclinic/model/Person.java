@@ -34,6 +34,9 @@ public class Person extends BaseEntity {
 	@Column(name = "middle_name") // <-- ADD THIS LINE
     private String middleName;
 
+	@Column(name = "father_name") // <-- ADD THIS LINE
+    private String fathersname;
+
 	@Column(name = "last_name")
 	@NotBlank
 	private String lastName;
