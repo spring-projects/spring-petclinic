@@ -4,9 +4,8 @@ on:
     pull_request:
       branches: 
         - main
-
     workflow_dispatch:
-      
+
 jobs:
     manual:
         runs-on: ubuntu-24.04
@@ -17,4 +16,9 @@ jobs:
                 distribution: 'temurin'
                 java-version: '21'
           - name: build package
-            run: mvn '${{ vars.GOAL }}'
+            run: mvn ${{ vars.GOAL  }}
+          - name: publish test results
+            uses: EnricoMi/publish-unit-test-result-action@v2
+            with:
+              files: |
+                **/target/surefire-reports/*.xml
