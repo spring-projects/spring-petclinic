@@ -287,6 +287,12 @@
       <url>https://www.apache.org/licenses/LICENSE-2.0</url>
     </license>
   </licenses>
+   <scm>
+    <connection>scm:git:git://github.com/tciobotaru/spring-petclinic.git</connection>
+    <developerConnection>scm:git:ssh://github.com/tciobotaru/spring-petclinic.git</developerConnection>
+    <url>https://github.com/tciobotaru/spring-petclinic</url>
+    <tag>HEAD</tag>
+   </scm>
 
   <repositories>
     <repository>
