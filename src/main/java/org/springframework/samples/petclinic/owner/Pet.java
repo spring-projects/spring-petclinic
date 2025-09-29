@@ -29,7 +29,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.model.NamedEntity;
@@ -45,9 +44,6 @@ import org.springframework.samples.petclinic.model.NamedEntity;
 @Entity
 @Table(name = "pets")
 public class Pet extends NamedEntity {
-	
-    @Size(min = 3, max = 50, message = "{pet.name.size}")
-    private String name;
 
 	@Column(name = "birth_date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
