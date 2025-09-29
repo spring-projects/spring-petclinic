@@ -288,11 +288,12 @@
     </license>
   </licenses>
    <scm>
-    <connection>scm:git:git://github.com/tciobotaru/spring-petclinic.git</connection>
-    <developerConnection>scm:git:ssh://github.com/tciobotaru/spring-petclinic.git</developerConnection>
-    <url>https://github.com/tciobotaru/spring-petclinic</url>
-    <tag>spring-petclinic-3.5.0</tag>
-   </scm>
+  <connection>scm:git:https://github.com/tciobotaru/spring-petclinic.git</connection>
+  <developerConnection>scm:git:https://github.com/tciobotaru/spring-petclinic.git</developerConnection>
+  <url>https://github.com/tciobotaru/spring-petclinic</url>
+  <tag>HEAD</tag>
+</scm>
+
 
   <repositories>
     <repository>
