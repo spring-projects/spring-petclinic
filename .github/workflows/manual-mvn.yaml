@@ -27,9 +27,20 @@ jobs:
                 distribution: 'temurin'
                 java-version: ${{ matrix.java }}
                 cache: maven
+
+          - name: Initialize CodeQL
+            uses: github/codeql-action/init@v3
+            with:
+              languages: java # Specify the language to analyze
+
                 
           - name: build package
             run: mvn ${{ vars.GOAL  }}
+
+          
+          - name: Perform CodeQL Analysis
+            uses: github/codeql-action/analyze@v3
+
           - name: publish test results
             uses: EnricoMi/publish-unit-test-result-action@v2
             with:
@@ -42,14 +53,5 @@ jobs:
             with:
               name: spring-petclinic-jar-${{ matrix.java }}
               path: '**/target/*.jar'
-
-          - name: send email on failure
-            run: echo "everything seems problematic"
-            if: ${{ failure() }}
-
-          
-          - name: send email on success
-            run: echo "everything seems fun"
-            if: ${{ success() }}
 
 
