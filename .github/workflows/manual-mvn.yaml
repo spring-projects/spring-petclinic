@@ -9,17 +9,25 @@ on:
 permissions:
   contents: read
   checks: write
+  pull-requests: write
+  
 
 jobs:
     manual:
         runs-on: ubuntu-24.04
+        strategy:
+          fail-fast: false
+          matrix:
+            java: [17, 21]
+
         steps:
           - uses: actions/checkout@v5
           - uses: actions/setup-java@v5
             with:
                 distribution: 'temurin'
-                java-version: '21'
+                java-version: ${{ matrix.java }}
                 cache: maven
+                
           - name: build package
             run: mvn ${{ vars.GOAL  }}
           - name: publish test results
@@ -32,5 +40,16 @@ jobs:
           - name: Uploading packaged jar files
             uses: actions/upload-artifact@v4
             with:
-              name: spring-petclinic-jar
+              name: spring-petclinic-jar-${{ matrix.java }}
               path: '**/target/*.jar'
+
+          - name: send email on failure
+            run: echo "everything seems problematic"
+            if: ${{ failure() }}
+
+          
+          - name: send email on success
+            run: echo "everything seems fun"
+            if: ${{ success() }}
+
+
