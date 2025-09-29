@@ -28,6 +28,7 @@ spec:
               containerPort: {{ .Values.service.targetPort }}
           env:
             {{- toYaml .Values.env | nindent 12 }}
+          {{- if .Values.binding.enabled }}
           livenessProbe:
             httpGet:
               path: {{ .Values.probes.liveness.path }}
@@ -36,7 +37,6 @@ spec:
             httpGet:
               path: {{ .Values.probes.readiness.path }}
               port: http
-          {{- if .Values.binding.enabled }}
           volumeMounts:
             - name: binding
               mountPath: {{ .Values.binding.mountPath }}
