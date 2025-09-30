@@ -24,11 +24,20 @@ jobs:
 
         steps:
           - uses: actions/checkout@v5
+
           - uses: actions/setup-java@v5
             with:
                 distribution: 'temurin'
                 java-version: ${{ matrix.java }}
                 cache: maven
+                
+          - uses: jfrog/setup-jfrog-cli@v4
+            env:
+              JF_URL: ${{ vars.JF_URL }}
+              JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}                       
+          - run: |
+              jf --version
+              jf rt ping
 
           - name: Initialize CodeQL
             uses: github/codeql-action/init@v3
@@ -55,5 +64,11 @@ jobs:
             with:
               name: spring-petclinic-jar-${{ matrix.java }}
               path: '**/target/*.jar'
+
+          - name: Maven Build and Deploy to Artifactory
+            run: |
+              jf mvn-config --repo-deploy-releases=learning-libs-release --repo-deploy-snapshots=learning-libs-snapshot
+              jf mvn deploy
+              jf rt bp # Optional: Deploy build info
 
 
