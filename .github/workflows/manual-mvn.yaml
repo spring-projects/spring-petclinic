@@ -1,5 +1,6 @@
 ---
 name: Manual maven steps for ci
+
 on:
     pull_request:
       branches: 
@@ -30,7 +31,7 @@ jobs:
                 distribution: 'temurin'
                 java-version: ${{ matrix.java }}
                 cache: maven
-                
+
           - uses: jfrog/setup-jfrog-cli@v4
             env:
               JF_URL: ${{ vars.JF_URL }}
