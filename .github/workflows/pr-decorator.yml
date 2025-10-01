@@ -1,0 +1,33 @@
+name: pr-decorator.yml
+on:
+  pull_request:
+      types: [opened, edited, reopened, synchronize, labeled, unlabeled]
+
+jobs:
+
+  - name: Collect service labels
+    id: svc
+    run: |
+      echo "SERVICES=$(jq -r '.pull_request.labels[].name | select(startswith("svc:")) | sub("^svc:";"")' \
+        <<< '${{ toJson(github) }}' | paste -sd, -)" >> $GITHUB_ENV
+
+  - name: Build kustomization.yaml from labels
+    if: env.SERVICES != ''
+    run: |
+      PREVIEW_DIR="clusters/prod/apps/previews/pr-${{ github.event.pull_request.number }}"
+      IFS=',' read -ra SVC <<< "$SERVICES"
+      {
+        echo "apiVersion: kustomize.config.k8s.io/v1beta1"
+        echo "kind: Kustomization"
+        echo "namespace: shop-pr-${{ github.event.pull_request.number }}"
+        echo "resources:"
+        for s in "${SVC[@]}"; do
+          echo "  - ../../services/overlays/$s"
+        done
+        echo "  - namespace.yaml"
+        echo "  - ../../base/shop"
+        echo "patches:"
+        echo "  - path: patch-deployment.yaml"
+      } 
+      # > "$PREVIEW_DIR/kustomization.yaml"
+      # git add "$PREVIEW_DIR/kustomization.yaml"
