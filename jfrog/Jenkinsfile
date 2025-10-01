@@ -1,0 +1,108 @@
+node {
+    JF_RT_URL="https://psazuse.jfrog.io"
+    JFROG_NAME="psazuse"
+    // https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli
+    JKS_BUILD_NAME="spring-petclinic" 
+    JKS_BUILD_ID="jks.${env.BUILD_ID}"
+    RT_REPO_MVN_VIRTUAL="springpetclinic-mvn-virtual"
+
+    JF_CLI_LOG_LEVEL='DEBUG'
+    JFROG_CLI_OUTPUT_DIR="${WORKSPACE}/cli/"
+    def BUILD_TS = sh(script: "date +%Y-%m-%d-%H-%M", returnStdout: true).trim()
+
+    stage('PACKAGE') { 
+        stage('clean') {
+            sh """ #!/bin/bash
+                rm -rf ~/.jfrog/projects -y
+                ls -la ~/.jfrog/projects
+            """
+        } // stage: clean
+        stage('init') {
+             stage('jf.ver') {
+                sh """ #!/bin/bash
+                    jf -v
+                    java -version
+                    mvn -v
+                """ 
+            } // stage: jf.ver
+            stage('rt.config') {
+                // jenkins secrets: https://www.jenkins.io/doc/book/using/using-credentials/
+                // JFrog CLI config - password is set me up tokenv: JFROG_CLI_PASSWORD
+                withCredentials([usernamePassword(credentialsId: 'JFROG_ARTIFACTORY_CLI', passwordVariable: 'JFROG_RT_PWD', usernameVariable: 'JFROG_RT_USER')]) {
+                    sh """ #!/bin/bash
+                        jf config add ${JFROG_NAME} --artifactory-url=${JF_RT_URL}/artifactory --xray-url=${JF_RT_URL}/xray --user=${JFROG_RT_USER} --password=${JFROG_RT_PWD} --interactive=false --overwrite    
+                    """
+                } // withCredentials: JFROG_ARTIFACTORY_CLI
+                
+            } // stage: rt.config
+            stage('rt.ping') {
+                sh """ #!/bin/bash
+                    jf config show
+                    
+                    jf rt ping
+                """
+            } // stage: rt.ping
+            stage('config.show') {
+                sh """ #!/bin/bash
+                    jf config show
+                """
+            } // stage: config.show
+        } // stage: init
+        stage('Code Checkout') {
+            stage('clone') {
+                git branch: 'main', url: 'https://github.com/ps-jfrog/spring-petclinic.git'
+            } // stage: clone
+            stage('mvnc') {
+                sh """ #!/bin/bash  
+                    jf mvnc --global --repo-resolve-releases ${RT_REPO_MVN_VIRTUAL} --repo-resolve-snapshots ${RT_REPO_MVN_VIRTUAL} --repo-deploy-releases ${RT_REPO_MVN_VIRTUAL} --repo-deploy-snapshots ${RT_REPO_MVN_VIRTUAL}
+
+                    jf gradlec --repo-deploy ${RT_REPO_MVN_VIRTUAL} --repo-resolve ${RT_REPO_MVN_VIRTUAL} --repo-deploy ${RT_REPO_MVN_VIRTUAL}
+                """
+            } // stage: mvnc
+            stage('Curation Audit') {
+                sh """ #!/bin/bash
+                    export JFROG_CLI_LOG_LEVEL=DEBUG
+                    
+                    jf ca --format=table --threads=100
+                """
+            } // stage: compile
+            stage('Xray & JAS: Audit') {
+                sh """ #!/bin/bash
+                   export JFROG_CLI_LOG_LEVEL=DEBUG
+
+                   jf audit --mvn --sast=true --sca=true --secrets=true --licenses=true --validate-secrets=true --vuln=true --format=table --extended-table=true --threads=100 --fail=false
+                """
+            } // stage: 
+            stage('compile') {
+                sh """ #!/bin/bash
+                    export JFROG_CLI_LOG_LEVEL=DEBUG
+                    
+                    jf mvn clean install -DskipTests=true --build-name=${JKS_BUILD_NAME} --build-number=${JKS_BUILD_ID} --detailed-summary=true 
+                """
+            } // stage: compile
+        } // stage: code
+    } // stage: package
+    stage('BUILD INFO') {
+      // Executive Order: 
+      //        https://www.whitehouse.gov/briefing-room/presidential-actions/2021/05/12/executive-order-on-improving-the-nations-cybersecurity/
+      //        https://www.nist.gov/itl/executive-order-14028-improving-nations-cybersecurity
+      //  US Dept of Commerce: https://www.ntia.gov/page/software-bill-materials
+      //  US Cyber Defence Agency: https://www.cisa.gov/sbom
+      //  NIST: https://www.nist.gov/itl/executive-order-14028-improving-nations-cybersecurity/software-security-supply-chains-software-1
+        stage('collect env') {
+            sh """ #!/bin/bash
+                jf rt bce ${JKS_BUILD_NAME} ${JKS_BUILD_ID} 
+            """
+        } // stage: collect env
+        stage('vcs info') {
+            sh """ #!/bin/bash
+                jf rt bag ${JKS_BUILD_NAME} ${JKS_BUILD_ID} 
+            """
+        } // stage: vcs info
+        stage('build publish') {
+            sh """ #!/bin/bash
+                jf rt bp ${JKS_BUILD_NAME} ${JKS_BUILD_ID} --detailed-summary=true
+            """
+        } // stage: build publish
+    } // stage: Build Info
+} // node
