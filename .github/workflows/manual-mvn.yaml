@@ -25,8 +25,15 @@ jobs:
                 distribution: 'temurin'
                 java-version: ${{ matrix.java }}
                 cache: maven
+          - name: Initialize CodeQL
+            uses: github/codeql-action/init@v3
+            with:
+               languages: java
           - name: build package
             run: mvn ${{ vars.GOAL  }}
+          - name: Perform CodeQL Analysis
+            uses: github/codeql-action/analyze@v2
+
           - name: publish test results
             uses: EnricoMi/publish-unit-test-result-action@v2
             with:
@@ -38,6 +45,6 @@ jobs:
             with:
               name: spring-petclinic-${{ matrix.java }}jar
               path: '**/target/*.jar'
-
-
+         
+          
 
