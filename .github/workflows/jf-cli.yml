@@ -144,6 +144,7 @@ jobs:
         timeout-minutes: 15    # ref https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepstimeout-minutes
         continue-on-error: true    # ref: https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepscontinue-on-error
         run: |
+          rm -rf build.gradle 
           jf ca --format=table --threads=100
 
       - name: "Xray & JAS: Audit"  # https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/cli-for-jfrog-security
@@ -721,6 +722,7 @@ jobs:
 
       - name: "list folder"
         run: |
+          rm -rf build.gradle
           pwd
           tree .
 
