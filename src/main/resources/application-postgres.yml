@@ -3,6 +3,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/petclinic
     username: pet
     password: pet
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: update
@@ -12,5 +13,6 @@ spring:
   sql:
     init:
       mode: never
+
 server:
   port: 8080
