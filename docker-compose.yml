@@ -1,21 +1,21 @@
+version: "3.9"
+
 services:
-  mysql:
-    image: mysql:9.2
-    ports:
-      - "3306:3306"
+  db:
+    image: postgres:16-alpine
+    container_name: petclinic-db
     environment:
-      - MYSQL_ROOT_PASSWORD=
-      - MYSQL_ALLOW_EMPTY_PASSWORD=true
-      - MYSQL_USER=petclinic
-      - MYSQL_PASSWORD=petclinic
-      - MYSQL_DATABASE=petclinic
-    volumes:
-      - "./conf.d:/etc/mysql/conf.d:ro"
-  postgres:
-    image: postgres:18.0
+      POSTGRES_USER: pet
+      POSTGRES_PASSWORD: pet
+      POSTGRES_DB: petclinic
     ports:
       - "5432:5432"
-    environment:
-      - POSTGRES_PASSWORD=petclinic
-      - POSTGRES_USER=petclinic
-      - POSTGRES_DB=petclinic
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pet -d petclinic"]
+      interval: 5s
+      retries: 10
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
