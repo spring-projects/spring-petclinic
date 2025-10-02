@@ -1,0 +1,14 @@
+services:
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/petclinic
+      SPRING_DATASOURCE_USERNAME: pet
+      SPRING_DATASOURCE_PASSWORD: pet
+      SPRING_SQL_INIT_MODE: "never"
+    ports:
+      - "8080:8080"
