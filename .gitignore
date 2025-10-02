@@ -49,3 +49,7 @@ out/
 _site/
 *.css
 !petclinic.css
+
+# macOS
+.DS_Store
+**/.DS_Store
