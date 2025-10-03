@@ -1,31 +1,34 @@
-name: Deploy and Test Cluster
-
+name: Manual maven steps for ci
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'k8s/**'
-  pull_request:
-    branches: [main]
-    paths:
-      - 'k8s/**'
+    pull_request:
+      branches: 
+        - main
+    workflow_dispatch:
+
+permissions:
+  contents: read
+  checks: write
 
 jobs:
-  deploy-and-test-cluster:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out the repository
-        uses: actions/checkout@v2
+    manual:
+        runs-on: ubuntu-24.04
+        steps:
+          - uses: actions/checkout@v5
+          - uses: actions/setup-java@v5
+            with:
+                distribution: 'temurin'
+                java-version: '21'
+                cache: maven
+          - name: build package
+            run: mvn ${{ vars.GOAL  }}
+          - name: publish test results
+            uses: EnricoMi/publish-unit-test-result-action@v2
+            with:
+              files: |
+                **/target/surefire-reports/*.xml
 
-      - name: Create k8s Kind Cluster
-        uses: helm/kind-action@v1
-
-      - name: Deploy application
-        run: |
-          kubectl apply -f k8s/
-
-      - name: Wait for Pods to be ready
-        run: |
-          kubectl wait --for=condition=ready pod -l app=demo-db --timeout=180s
-          kubectl wait --for=condition=ready pod -l app=petclinic --timeout=180s
-
+          - name: Uploading packaged jar files
+            uses: actions/upload-artifact@v4
+            with:
+              name: spring-petclinic-jar
+              path: '**/target/*.jar'
