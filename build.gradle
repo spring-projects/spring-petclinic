@@ -1,11 +1,11 @@
 plugins {
   id 'java'
   id 'checkstyle'
-  id 'org.springframework.boot' version '3.5.0'
+  id 'org.springframework.boot' version '3.5.6'
   id 'io.spring.dependency-management' version '1.1.7'
-  id 'org.graalvm.buildtools.native' version '0.10.6'
-  id 'org.cyclonedx.bom' version '2.3.1'
-  id 'io.spring.javaformat' version '0.0.46'
+  id 'org.graalvm.buildtools.native' version '0.11.1'
+  id 'org.cyclonedx.bom' version '3.0.0'
+  id 'io.spring.javaformat' version '0.0.47'
   id "io.spring.nohttp" version "0.0.11"
 }
 
@@ -24,11 +24,11 @@ repositories {
   mavenCentral()
 }
 
-ext.checkstyleVersion = "10.25.0"
-ext.springJavaformatCheckstyleVersion = "0.0.46"
-ext.webjarsLocatorLiteVersion = "1.1.0"
+ext.checkstyleVersion = "11.1.0"
+ext.springJavaformatCheckstyleVersion = "0.0.47"
+ext.webjarsLocatorLiteVersion = "1.1.1"
 ext.webjarsFontawesomeVersion = "4.7.0"
-ext.webjarsBootstrapVersion = "5.3.6"
+ext.webjarsBootstrapVersion = "5.3.8"
 
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-cache'
