@@ -7,7 +7,11 @@ on:
   pull_request:
     branches: [ main ]
     types: [closed]
-
+permissions:
+  # This is required for requesting the OIDC token
+  id-token: write
+  # This is required for actions/checkout
+  contents: read
 jobs:
   build:
 
@@ -24,9 +28,20 @@ jobs:
           java-version: ${{matrix.java}}
           distribution: 'adopt'
           cache: maven
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4
+        env:
+          # JFrog platform url (for example: https://acme.jfrog.io)
+          JF_URL: ${{ vars.JF_URL }}
+        with:
+          oidc-provider-name: davpin/spring-petclinic@github
       - name: Compile with Maven Wrapper
         run: ./mvnw -B compile
       - name: Run tests with Maven Wrapper
         run: ./mvnw -B test
       - name: Build docker image with spring boot plugin
         run: ./mvnw -B spring-boot:build-image
+      - name: Run Jfrog
+        run: |
+          jf rt ping
+          jf rt bce
