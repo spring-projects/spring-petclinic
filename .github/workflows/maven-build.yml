@@ -4,10 +4,9 @@
 name: Java CI with Maven
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
     branches: [ main ]
+    types: [closed]
 
 jobs:
   build:
@@ -25,5 +24,9 @@ jobs:
           java-version: ${{matrix.java}}
           distribution: 'adopt'
           cache: maven
-      - name: Build with Maven Wrapper
-        run: ./mvnw -B verify
+      - name: Compile with Maven Wrapper
+        run: ./mvnw -B compile
+      - name: Run tests with Maven Wrapper
+        run: ./mvnw -B test
+      - name: Build docker image with spring boot plugin
+        run: ./mvnw -B spring-boot:build-image
