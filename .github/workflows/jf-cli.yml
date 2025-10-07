@@ -1393,7 +1393,7 @@ jobs:
         continue-on-error: true
         uses: actions/attest-build-provenance@v3     # https://github.com/marketplace/actions/attest-build-provenance
         with:
-          subject-name: "GitHub Attestation"
+          subject-name: "${{env.RT_REPO_GRADLE_VIRTUAL}}/${{env.BUILD_NAME}}"
           subject-path: |
             "${{ github.workspace }}/build/libs/spring-petclinic-*.jar"
             "${{ github.workspace }}/build/build-info.json"
