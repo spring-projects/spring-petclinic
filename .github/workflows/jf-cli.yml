@@ -217,6 +217,7 @@ jobs:
         run: jf rt bce ${{env.BUILD_NAME}} ${{env.BUILD_ID}} 
 
       - name: "BuildInfo: Adds dependencies"
+        continue-on-error: true
         run: jf rt bad ${{env.BUILD_NAME}} ${{env.BUILD_ID}} 
 
       - name: "BuildInfo: Add VCS info"
@@ -788,6 +789,7 @@ jobs:
         run: jf rt bce ${{env.BUILD_NAME}} ${{env.BUILD_ID}} 
 
       - name: "BuildInfo: Add Dependencies"
+        continue-on-error: true
         run: jf rt bad ${{env.BUILD_NAME}} ${{env.BUILD_ID}}
       
       - name: "BuildInfo: Add VCS info"
