@@ -98,6 +98,7 @@ jobs:
 
       - name: "Create ENV variables"
         run: |
+          echo "RT_REPO_DOCKER_IMG=${{env.RT_REPO_DOCKER_VIRTUAL}}/${{env.BUILD_NAME}}" >> $GITHUB_ENV
           echo "RT_REPO_DOCKER_URL=${{vars.JF_NAME}}.jfrog.io/${{env.RT_REPO_DOCKER_VIRTUAL}}/${{env.BUILD_NAME}}:${{env.BUILD_ID}}" >> $GITHUB_ENV
 
       - name: "Docker authentication"  # ref https://github.com/marketplace/actions/docker-login
@@ -137,6 +138,7 @@ jobs:
           echo "    - Build Name: ${{env.BUILD_NAME}} " >> $GITHUB_STEP_SUMMARY
           echo "    - Maven Repo URL: ${{env.RT_REPO_MVN_VIRTUAL}}" >> $GITHUB_STEP_SUMMARY
           echo "    - Docker Repo URL: ${{env.RT_REPO_DOCKER_VIRTUAL}}" >> $GITHUB_STEP_SUMMARY
+          echo "    - Docker Image: ${{env.RT_REPO_DOCKER_IMG}}" >> $GITHUB_STEP_SUMMARY
           echo "    - Docker URL: ${{env.RT_REPO_DOCKER_URL}}" >> $GITHUB_STEP_SUMMARY
           echo " " >> $GITHUB_STEP_SUMMARY
 
@@ -239,10 +241,9 @@ jobs:
         continue-on-error: true
         uses: actions/attest-build-provenance@v3     # https://github.com/marketplace/actions/attest-build-provenance
         with:
-          subject-name: "GitHub Attestation for ${{env.BUILD_NAME}}:${{env.BUILD_ID}}"
-          subject-digest: "${{env.DOCKER_IMAGE_DIGEST}}"   
-          subject-path: "${{env.RT_REPO_DOCKER_URL}}"
-          show-summary: true
+          subject-name: "oci://${{env.RT_REPO_DOCKER_IMG}}"
+          subject-digest: "${{env.DOCKER_IMAGE_DIGEST}}" 
+          show-summary: true  
           github-token: ${{secrets.GITHUB_TOKEN}} 
 
 
@@ -797,50 +798,73 @@ jobs:
 
       - name: "BuildInfo: Build Publish"
         run: jf rt bp ${{env.BUILD_NAME}} ${{env.BUILD_ID}} --detailed-summary=true
-     
+      
+      - name: "Create artifact digest"
+        id: create_artifact_digest
+        run: |
+          ARTIFACT_DIGEST=$(sha256sum target/spring-petclinic-*.jar | awk '{print "sha256:"$1}')
+          echo "artifact_digest=$ARTIFACT_DIGEST" >> $GITHUB_OUTPUT
+
+      - name: "Create attestation"
+        uses: actions/attest@v2
+        with:
+          subject-digest: ${{ steps.create_artifact_digest.outputs.artifact_digest }}
+          subject-name: dev-repo-local/artifact1.txt
+          predicate-type: "https://github.com/attestations/custom-review-v1"
+          predicate: |
+             {
+                "creationTime": "${{ github.event.repository.pushed_at }}",
+                "reviewer": "Krishna Manchikalapudi",
+                "repository": "${{ github.repository }}"
+              }
+
       # mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout
       # mvn help:evaluate -Dexpression=project.version -q -DforceStdout
       - name: "Evidence: GitHub Attestation"  
         continue-on-error: true
         uses: actions/attest-build-provenance@v3     # https://github.com/marketplace/actions/attest-build-provenance
         with:
-          subject-path: "target/spring-petclinic-*.jar"
+          subject-name: "GitHub Attestation"
+          subject-path: |
+            "${{ github.workspace }}/target/spring-petclinic-*.jar"
+            "${{ github.workspace }}/target/build-info.json"
+            "${{ github.workspace }}/target/classes/META-INF/sbom/application.cdx.json"
           show-summary: true
           github-token: ${{secrets.GITHUB_TOKEN}} 
       
-      - name: "Evidence: SBOM Attestation"
-        uses: actions/attest-sbom@v3     # https://github.com/actions/attest-sbom
-        with:
-          subject-name: "SBOM Attestation"
-          subject-path: "target/spring-petclinic-*.jar"
-          sbom-path: "target/classes/META-INF/sbom/application.cdx.json"
-          show-summary: true
-          github-token: ${{secrets.GITHUB_TOKEN}} 
+      # - name: "Evidence: SBOM Attestation"
+      #   uses: actions/attest-sbom@v3     # https://github.com/actions/attest-sbom
+      #   with:
+      #     subject-name: "SBOM Attestation"
+      #     subject-path: "target/spring-petclinic-*.jar"
+      #     sbom-path: "target/classes/META-INF/sbom/application.cdx.json"
+      #     show-summary: true
+      #     github-token: ${{secrets.GITHUB_TOKEN}} 
 
-      - name: "Evidence: Build Info"
-        # continue-on-error: true 
-        env:
-            EVD_JSON: "target/build-info.json"
-        run: |
-          cat ./${{env.EVD_JSON}}
-          jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVD_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
+      # - name: "Evidence: Build Info"
+      #   # continue-on-error: true 
+      #   env:
+      #       EVD_JSON: "target/build-info.json"
+      #   run: |
+      #     cat ./${{env.EVD_JSON}}
+      #     jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVD_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
 
-      - name: "Evidence: cdx"
-        # continue-on-error: true 
-        env:
-            EVD_JSON: "target/classes/META-INF/sbom/application.cdx.json"      # https://jfrog.com/evidence/signature/v1
-        run: |
-          cat ./${{env.EVD_JSON}}
-          jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVD_JSON}} --predicate-type https://cyclonedx.org/bom/v1.4 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
+      # - name: "Evidence: cdx"
+      #   # continue-on-error: true 
+      #   env:
+      #       EVD_JSON: "target/classes/META-INF/sbom/application.cdx.json"      # https://jfrog.com/evidence/signature/v1
+      #   run: |
+      #     cat ./${{env.EVD_JSON}}
+      #     jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVD_JSON}} --predicate-type https://cyclonedx.org/bom/v1.4 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
           
 
-      - name: "Evidence: Build Publish"
-        # continue-on-error: true 
-        run: |
-          echo '{ "actor": "${{github.actor}}", "pipeline": "github actions","build_name": "${{env.BUILD_NAME}}", "build_id": "${{env.BUILD_ID}}", "evd": "Evidence-BuildPublish"}' > ./${{env.EVIDENCE_SPEC_JSON}}
-          cat ./${{env.EVIDENCE_SPEC_JSON}}
-          jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVIDENCE_SPEC_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
-          # echo "    - Evidence for BUILD Publish attached. " >> $GITHUB_STEP_SUMMARY
+      # - name: "Evidence: Build Publish"
+      #   # continue-on-error: true 
+      #   run: |
+      #     echo '{ "actor": "${{github.actor}}", "pipeline": "github actions","build_name": "${{env.BUILD_NAME}}", "build_id": "${{env.BUILD_ID}}", "evd": "Evidence-BuildPublish"}' > ./${{env.EVIDENCE_SPEC_JSON}}
+      #     cat ./${{env.EVIDENCE_SPEC_JSON}}
+      #     jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVIDENCE_SPEC_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
+      #     # echo "    - Evidence for BUILD Publish attached. " >> $GITHUB_STEP_SUMMARY
 
       - name: "Optional: Add Builds to Indexing Configuration"
         run: |
@@ -1365,13 +1389,18 @@ jobs:
       - name: "BuildInfo: Build Publish"
         run: jf rt bp ${{env.BUILD_NAME}} ${{env.BUILD_ID}} --detailed-summary=true
 
-      # - name: "Evidence: GitHub Build Attestation"  
-      #   continue-on-error: true
-      #   uses: actions/attest-build-provenance@v3     # https://github.com/marketplace/actions/attest-build-provenance
-      #   with:
-      #     subject-path: "build/libs/spring-petclinic-*.jar"
-      #     show-summary: true
-      #     github-token: ${{secrets.GITHUB_TOKEN}} 
+      - name: "Evidence: GitHub Build Attestation"  
+        continue-on-error: true
+        uses: actions/attest-build-provenance@v3     # https://github.com/marketplace/actions/attest-build-provenance
+        with:
+          subject-name: "GitHub Attestation"
+          subject-path: |
+            "${{ github.workspace }}/build/libs/spring-petclinic-*.jar"
+            "${{ github.workspace }}/build/build-info.json"
+            "${{ github.workspace }}/build/reports/application.cdx.json"
+
+          show-summary: true
+          github-token: ${{secrets.GITHUB_TOKEN}} 
 
       # - name: "Evidence: Build Info"
       #   continue-on-error: true 
@@ -1381,14 +1410,14 @@ jobs:
       #     cat ./${{env.EVD_JSON}}
       #     jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVD_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
       
-      - name: "Evidence: SBOM Attestation"
-        uses: actions/attest-sbom@v3     # https://github.com/actions/attest-sbom
-        with:
-          subject-name: "SBOM Attestation"
-          subject-path: 'build/libs/spring-petclinic-*.jar'
-          sbom-path: 'build/reports/application.cdx.json'
-          show-summary: true
-          github-token: ${{secrets.GITHUB_TOKEN}} 
+      # - name: "Evidence: SBOM Attestation"
+      #   uses: actions/attest-sbom@v3     # https://github.com/actions/attest-sbom
+      #   with:
+      #     subject-name: "SBOM Attestation"
+      #     subject-path: 'build/libs/spring-petclinic-*.jar'
+      #     sbom-path: 'build/reports/application.cdx.json'
+      #     show-summary: true
+      #     github-token: ${{secrets.GITHUB_TOKEN}} 
 
       # - name: "Evidence: cdx"
       #   continue-on-error: true 
