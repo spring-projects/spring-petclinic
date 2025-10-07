@@ -6,6 +6,7 @@ permissions:
   packages: write # for uploading attestations.
   contents: read
   security-events: write # Required for uploading code scanning.
+  attestations: write
 env:
   JF_RT_URL: "https://${{vars.JF_NAME}}.jfrog.io"
   BUILD_NAME: "spring-petclinic"
@@ -226,6 +227,14 @@ jobs:
           echo "${{env.RT_REPO_DOCKER_URL}}@${imageDigest}" > ${{env.DOCKER_METADATA_JSON}}
 
           jf rt bdc ${{env.RT_REPO_DOCKER_VIRTUAL}} --image-file ${{env.DOCKER_METADATA_JSON}} --build-name=${{env.BUILD_NAME}} --build-number=${{env.BUILD_ID}}
+
+          
+      - name: "Evidence: GitHub Attestation"
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-name: "oci://${{env.RT_REPO_DOCKER_URL}}"
+          subject-digest: "${{env.DOCKER_METADATA_JSON}}" #  "${{steps.config-docker.outputs.digest}}"
+
 
       - name: "BuildInfo: Build Publish"
         run: jf rt bp ${{env.BUILD_NAME}} ${{env.BUILD_ID}} --detailed-summary=true
