@@ -99,13 +99,14 @@ jobs:
       - name: "Create ENV variables"
         run: |
           echo "RT_REPO_DOCKER_IMG=${{env.RT_REPO_DOCKER_VIRTUAL}}/${{env.BUILD_NAME}}" >> $GITHUB_ENV
+          echo "JF_REGISTRY=${{env.JF_RT_URL}}/${{env.RT_REPO_DOCKER_VIRTUAL}}" >> $GITHUB_ENV
           echo "RT_REPO_DOCKER_URL=${{vars.JF_NAME}}.jfrog.io/${{env.RT_REPO_DOCKER_VIRTUAL}}/${{env.BUILD_NAME}}:${{env.BUILD_ID}}" >> $GITHUB_ENV
 
       - name: "Docker authentication"  # ref https://github.com/marketplace/actions/docker-login
         id: config-docker
         uses: docker/login-action@v3
         with: 
-          registry: ${{env.JF_RT_URL}}
+          registry: ${{env.JF_REGISTRY}}
           username: ${{steps.setup-cli.outputs.oidc-user}}
           password: ${{steps.setup-cli.outputs.oidc-token}}
 
@@ -168,11 +169,24 @@ jobs:
         run: |
           jf scan . --format=table --extended-table=true --threads=100 --fail=false
 
+      # - name: "Package: Docker build and push"
+      #   env:
+      #     JAR_FILE: "${{env.BUILD_NAME}}-${{env.JAR_VERSION}}.jar"  # spring-petclinic-3.5.0-SNAPSHOT.jar
+      #   run: |
+      #     docker image build -f jfrog/Dockerfile --build-arg JAR_FILE=${{env.JAR_FILE}} -t ${{env.RT_REPO_DOCKER_URL}} --platform "${{env.DOCKER_BUILDX_PLATFORMS}}" --metadata-file "${{env.DOCKER_METADATA_JSON}}" --push .
+
       - name: "Package: Docker build and push"
-        env:
-          JAR_FILE: "${{env.BUILD_NAME}}-${{env.JAR_VERSION}}.jar"  # spring-petclinic-3.5.0-SNAPSHOT.jar
-        run: |
-          docker image build -f jfrog/Dockerfile --build-arg JAR_FILE=${{env.JAR_FILE}} -t ${{env.RT_REPO_DOCKER_URL}} --platform "${{env.DOCKER_BUILDX_PLATFORMS}}" --metadata-file "${{env.DOCKER_METADATA_JSON}}" --push .
+        id: build-and-push
+        uses: docker/build-push-action@v6    # https://github.com//docker/build-push-action
+        with:
+          context: .
+          file: jfrog/Dockerfile
+          build-args: |
+            JAR_FILE="${{env.BUILD_NAME}}-${{env.JAR_VERSION}}.jar"
+          platforms: ${{env.DOCKER_BUILDX_PLATFORMS}}  # linux/amd64,linux/arm64
+          tags: ${{env.RT_REPO_DOCKER_URL}}
+          push: true
+          # metadata-file: ${{env.DOCKER_METADATA_JSON}}
 
       - name: "Optional: Docker pull image"
         run: |
@@ -334,7 +348,7 @@ jobs:
         run: |
           echo '{ "actor": "${{github.actor}}", "pipeline": "github actions", "build_name": "${{env.BUILD_NAME}}", "build_id": "${{env.BUILD_ID}}", "evd": "Evidence-RBv2", "rbv2_stage": "NEW" }' > ./${{env.EVIDENCE_SPEC_JSON}}
           cat ./${{env.EVIDENCE_SPEC_JSON}}
-          jf evd create --release-bundle ${{env.BUILD_NAME}} --release-bundle-version ${{env.BUILD_ID}} --predicate ./${{env.EVIDENCE_SPEC_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
+          jf evd create --release-bundle ${{env.BUILD_NAME}} --release-bundle-version ${{env.BUILD_ID}} --predicate ./${{env.EVIDENCE_SPEC_JSON}} --predicate-type https://jfrog.com/evidence/promotion/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
           #echo "    - Evidence for RBv2 attached at [${{env.BUILD_NAME}}](${{env.VER_LINK}}) " >> $GITHUB_STEP_SUMMARY
 
   dockerRBv2PromoteDev:
@@ -370,7 +384,7 @@ jobs:
         run: |
           echo '{ "actor": "${{github.actor}}", "pipeline": "github actions", "build_name": "${{env.BUILD_NAME}}", "build_id": "${{env.BUILD_ID}}", "evd": "Evidence-RBv2", "rbv2_stage": "${{env.RBv2_ENV_VAL}}", "unittests": "100/100" }' > ./${{env.EVIDENCE_SPEC_JSON}}
           cat ./${{env.EVIDENCE_SPEC_JSON}}
-          jf evd create --release-bundle ${{env.BUILD_NAME}} --release-bundle-version ${{env.BUILD_ID}} --predicate ./${{env.EVIDENCE_SPEC_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
+          jf evd create --release-bundle ${{env.BUILD_NAME}} --release-bundle-version ${{env.BUILD_ID}} --predicate ./${{env.EVIDENCE_SPEC_JSON}} --predicate-type https://jfrog.com/evidence/promotion/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
 
   dockerRBv2PromoteQA:
     name: "Docker: RBv2 Promote QA"
@@ -404,7 +418,7 @@ jobs:
         run: |
           echo '{ "actor": "${{github.actor}}", "pipeline": "github actions", "build_name": "${{env.BUILD_NAME}}", "build_id": "${{env.BUILD_ID}}", "evd": "Evidence-RBv2", "rbv2_stage": "${{env.RBv2_ENV_VAL}}", "QA-validation": "99/100" }' > ./${{env.EVIDENCE_SPEC_JSON}}
           cat ./${{env.EVIDENCE_SPEC_JSON}}
-          jf evd create --release-bundle ${{env.BUILD_NAME}} --release-bundle-version ${{env.BUILD_ID}} --predicate ./${{env.EVIDENCE_SPEC_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
+          jf evd create --release-bundle ${{env.BUILD_NAME}} --release-bundle-version ${{env.BUILD_ID}} --predicate ./${{env.EVIDENCE_SPEC_JSON}} --predicate-type https://jfrog.com/evidence/promotion/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
  
   dockerRBv2PromoteProd:
     name: "Docker: RBv2 Promote Prod"
@@ -438,7 +452,7 @@ jobs:
         run: |
           echo '{ "actor": "${{github.actor}}", "pipeline": "github actions", "build_name": "${{env.BUILD_NAME}}", "build_id": "${{env.BUILD_ID}}", "evd": "Evidence-RBv2", "rbv2_stage": "${{env.RBv2_ENV_VAL}}", "prod-validation": "100/100"}' > ./${{env.EVIDENCE_SPEC_JSON}}
           cat ./${{env.EVIDENCE_SPEC_JSON}}
-          jf evd create --release-bundle ${{env.BUILD_NAME}} --release-bundle-version ${{env.BUILD_ID}} --predicate ./${{env.EVIDENCE_SPEC_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
+          jf evd create --release-bundle ${{env.BUILD_NAME}} --release-bundle-version ${{env.BUILD_ID}} --predicate ./${{env.EVIDENCE_SPEC_JSON}} --predicate-type https://jfrog.com/evidence/promotion/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
 
       - name: "Optional: rbv2-summary"
         # continue-on-error: true 
@@ -832,30 +846,30 @@ jobs:
           show-summary: true
           github-token: ${{secrets.GITHUB_TOKEN}} 
       
-      # - name: "Evidence: SBOM Attestation"
-      #   uses: actions/attest-sbom@v3     # https://github.com/actions/attest-sbom
-      #   with:
-      #     subject-name: "SBOM Attestation"
-      #     subject-path: "target/spring-petclinic-*.jar"
-      #     sbom-path: "target/classes/META-INF/sbom/application.cdx.json"
-      #     show-summary: true
-      #     github-token: ${{secrets.GITHUB_TOKEN}} 
+      - name: "Evidence: SBOM Attestation"
+        uses: actions/attest-sbom@v3     # https://github.com/actions/attest-sbom
+        with:
+          subject-name: "${{env.JF_RT_URL}}/${{env.RT_REPO_MVN_VIRTUAL}}/${{env.BUILD_NAME}}"
+          subject-path: "target/spring-petclinic-*.jar"
+          sbom-path: "target/classes/META-INF/sbom/application.cdx.json"
+          show-summary: true
+          github-token: ${{secrets.GITHUB_TOKEN}} 
 
-      # - name: "Evidence: Build Info"
-      #   # continue-on-error: true 
-      #   env:
-      #       EVD_JSON: "target/build-info.json"
-      #   run: |
-      #     cat ./${{env.EVD_JSON}}
-      #     jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVD_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
+      - name: "Evidence: Build Info"
+        # continue-on-error: true 
+        env:
+            EVD_JSON: "target/build-info.json"
+        run: |
+          cat ./${{env.EVD_JSON}}
+          jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVD_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
 
-      # - name: "Evidence: cdx"
-      #   # continue-on-error: true 
-      #   env:
-      #       EVD_JSON: "target/classes/META-INF/sbom/application.cdx.json"      # https://jfrog.com/evidence/signature/v1
-      #   run: |
-      #     cat ./${{env.EVD_JSON}}
-      #     jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVD_JSON}} --predicate-type https://cyclonedx.org/bom/v1.4 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
+      - name: "Evidence: cdx"
+        continue-on-error: true 
+        env:
+            EVD_JSON: "target/classes/META-INF/sbom/application.cdx.json"      # https://jfrog.com/evidence/signature/v1
+        run: |
+          cat ./${{env.EVD_JSON}}
+          jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVD_JSON}} --predicate-type https://cyclonedx.org/bom/v1.4 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
           
 
       # - name: "Evidence: Build Publish"
@@ -926,7 +940,7 @@ jobs:
           echo '{ "actor": "${{github.actor}}", "pipeline": "github actions", "build_name": "${{env.BUILD_NAME}}", "build_id": "${{env.BUILD_ID}}", "evd": "Evidence-RBv2", "rbv2_stage": "NEW" }' > ${{env.EVIDENCE_SPEC_JSON}}
           cat ${{env.EVIDENCE_SPEC_JSON}}
 
-          jf evd create --release-bundle ${{env.BUILD_NAME}} --release-bundle-version ${{env.BUILD_ID}} --predicate ./${{env.EVIDENCE_SPEC_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
+          jf evd create --release-bundle ${{env.BUILD_NAME}} --release-bundle-version ${{env.BUILD_ID}} --predicate ./${{env.EVIDENCE_SPEC_JSON}} --predicate-type https://jfrog.com/evidence/promotion/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
           
 
   mvnRBv2PromoteDev:
@@ -962,7 +976,7 @@ jobs:
         run: |
           echo '{ "actor": "${{github.actor}}", "pipeline": "github actions", "build_name": "${{env.BUILD_NAME}}", "build_id": "${{env.BUILD_ID}}", "evd": "Evidence-RBv2", "rbv2_stage": "${{env.RBv2_ENV_VAL}}", "unittests": "100/100" }' > ./${{env.EVIDENCE_SPEC_JSON}}
           cat ./${{env.EVIDENCE_SPEC_JSON}}
-          jf evd create --release-bundle ${{env.BUILD_NAME}} --release-bundle-version ${{env.BUILD_ID}} --predicate ./${{env.EVIDENCE_SPEC_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
+          jf evd create --release-bundle ${{env.BUILD_NAME}} --release-bundle-version ${{env.BUILD_ID}} --predicate ./${{env.EVIDENCE_SPEC_JSON}} --predicate-type https://jfrog.com/evidence/promotion/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
 
   mvnRBv2PromoteQA:
     name: "MVN: RBv2 Promote QA"
@@ -996,7 +1010,7 @@ jobs:
         run: |
           echo '{ "actor": "${{github.actor}}", "pipeline": "github actions", "build_name": "${{env.BUILD_NAME}}", "build_id": "${{env.BUILD_ID}}", "evd": "Evidence-RBv2", "rbv2_stage": "${{env.RBv2_ENV_VAL}}", "QA-validation": "99/100" }' > ./${{env.EVIDENCE_SPEC_JSON}}
           cat ./${{env.EVIDENCE_SPEC_JSON}}
-          jf evd create --release-bundle ${{env.BUILD_NAME}} --release-bundle-version ${{env.BUILD_ID}} --predicate ./${{env.EVIDENCE_SPEC_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
+          jf evd create --release-bundle ${{env.BUILD_NAME}} --release-bundle-version ${{env.BUILD_ID}} --predicate ./${{env.EVIDENCE_SPEC_JSON}} --predicate-type https://jfrog.com/evidence/promotion/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
 
   mvnRBv2PromoteProd:
     name: "MVN: RBv2 Promote Prod"
@@ -1030,7 +1044,7 @@ jobs:
         run: |
           echo '{ "actor": "${{github.actor}}", "pipeline": "github actions", "build_name": "${{env.BUILD_NAME}}", "build_id": "${{env.BUILD_ID}}", "evd": "Evidence-RBv2", "rbv2_stage": "${{env.RBv2_ENV_VAL}}", "prod-validation": "100/100"}' > ./${{env.EVIDENCE_SPEC_JSON}}
           cat ./${{env.EVIDENCE_SPEC_JSON}}
-          jf evd create --release-bundle ${{env.BUILD_NAME}} --release-bundle-version ${{env.BUILD_ID}} --predicate ./${{env.EVIDENCE_SPEC_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
+          jf evd create --release-bundle ${{env.BUILD_NAME}} --release-bundle-version ${{env.BUILD_ID}} --predicate ./${{env.EVIDENCE_SPEC_JSON}} --predicate-type https://jfrog.com/evidence/promotion/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
 
       - name: "Optional: rbv2-summary"
         continue-on-error: true 
@@ -1393,12 +1407,11 @@ jobs:
         continue-on-error: true
         uses: actions/attest-build-provenance@v3     # https://github.com/marketplace/actions/attest-build-provenance
         with:
-          subject-name: "${{env.RT_REPO_GRADLE_VIRTUAL}}/${{env.BUILD_NAME}}"
+          subject-name: "${{env.JF_RT_URL}}/${{env.RT_REPO_GRADLE_VIRTUAL}}/${{env.BUILD_NAME}}"
           subject-path: |
             "${{ github.workspace }}/build/libs/spring-petclinic-*.jar"
             "${{ github.workspace }}/build/build-info.json"
             "${{ github.workspace }}/build/reports/application.cdx.json"
-
           show-summary: true
           github-token: ${{secrets.GITHUB_TOKEN}} 
 
@@ -1410,20 +1423,11 @@ jobs:
       #     cat ./${{env.EVD_JSON}}
       #     jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVD_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
       
-      # - name: "Evidence: SBOM Attestation"
-      #   uses: actions/attest-sbom@v3     # https://github.com/actions/attest-sbom
-      #   with:
-      #     subject-name: "SBOM Attestation"
-      #     subject-path: 'build/libs/spring-petclinic-*.jar'
-      #     sbom-path: 'build/reports/application.cdx.json'
-      #     show-summary: true
-      #     github-token: ${{secrets.GITHUB_TOKEN}} 
-
-      # - name: "Evidence: cdx"
-      #   continue-on-error: true 
-      #   env:
-      #       EVD_JSON: "build/reports/application.cdx.json"    # https://jfrog.com/evidence/signature/v1
-      #   run: |
-      #     cat ./${{env.EVD_JSON}}
-      #     jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVD_JSON}} --predicate-type https://cyclonedx.org/bom/v1.4 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
+      - name: "Evidence: cdx"
+        continue-on-error: true 
+        env:
+            EVD_JSON: "build/reports/application.cdx.json"    # https://jfrog.com/help/r/jfrog-artifactory-documentation/evidence-payload
+        run: |
+          cat ./${{env.EVD_JSON}}
+          jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVD_JSON}} --predicate-type https://cyclonedx.org/bom/v1.4 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
           
