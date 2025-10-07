@@ -215,7 +215,10 @@ jobs:
           #    CERT-IN: https://www.cert-in.org.in/sbom/
       - name: "BuildInfo: Collect env"
         run: jf rt bce ${{env.BUILD_NAME}} ${{env.BUILD_ID}} 
- 
+
+      - name: "BuildInfo: Adds dependencies"
+        run: jf rt bad ${{env.BUILD_NAME}} ${{env.BUILD_ID}} 
+
       - name: "BuildInfo: Add VCS info"
         run: jf rt bag ${{env.BUILD_NAME}} ${{env.BUILD_ID}} 
 
@@ -232,6 +235,7 @@ jobs:
 
 
       - name: "Evidence: GitHub Attestation"  
+        continue-on-error: true
         uses: actions/attest-build-provenance@v3     # https://github.com/marketplace/actions/attest-build-provenance
         with:
           subject-name: "oci://${{env.RT_REPO_DOCKER_URL}}"
@@ -783,12 +787,25 @@ jobs:
       - name: "BuildInfo: Collect env"
         run: jf rt bce ${{env.BUILD_NAME}} ${{env.BUILD_ID}} 
 
+      - name: "BuildInfo: Add Dependencies"
+        run: jf rt bad ${{env.BUILD_NAME}} ${{env.BUILD_ID}}
+      
       - name: "BuildInfo: Add VCS info"
         run: jf rt bag ${{env.BUILD_NAME}} ${{env.BUILD_ID}} 
 
       - name: "BuildInfo: Build Publish"
         run: jf rt bp ${{env.BUILD_NAME}} ${{env.BUILD_ID}} --detailed-summary=true
      
+      # mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout
+      # mvn help:evaluate -Dexpression=project.version -q -DforceStdout
+      - name: "Evidence: GitHub Attestation"  
+        continue-on-error: true
+        uses: actions/attest-build-provenance@v3     # https://github.com/marketplace/actions/attest-build-provenance
+        with:
+          subject-path: "target/spring-petclinic-*.jar"
+          show-summary: true
+          github-token: ${{secrets.GITHUB_TOKEN}} 
+
       - name: "Evidence: Build Info"
         # continue-on-error: true 
         env:
@@ -1309,13 +1326,21 @@ jobs:
 
       - name: "Evidence: Artifact"
         env:
-          REPO_JAR: "${{env.RT_REPO_GRADLE_DEFAULT_LOCAL}}/org/springframework/samples/${{env.BUILD_NAME}}/3.4.0/${{env.BUILD_NAME}}-3.4.0-plain.jar"  # /krishnam-gdl-dev-fed/org/springframework/samples/spring-petclinic/3.4.0/
-          # REPO_JAR: "${{env.RT_REPO_GRADLE_VIRTUAL}}/org/springframework/samples/${{env.BUILD_NAME}}/3.4.0/${{env.BUILD_NAME}}-3.4.0-plain.jar"  # krishnam-gradle-virtual/org/springframework/samples/spring-petclinic/3.4.0/spring-petclinic-3.4.0-plain.jar
+          REPO_JAR: "${{env.RT_REPO_GRADLE_DEFAULT_LOCAL}}/org/springframework/samples/${{env.BUILD_NAME}}/3.5.0/${{env.BUILD_NAME}}-3.5.0-plain.jar"  # /krishnam-gdl-dev-fed/org/springframework/samples/spring-petclinic/3.5.0/
+          # REPO_JAR: "${{env.RT_REPO_GRADLE_VIRTUAL}}/org/springframework/samples/${{env.BUILD_NAME}}/3.5.0/${{env.BUILD_NAME}}-3.5.0-plain.jar"  # krishnam-gradle-virtual/org/springframework/samples/spring-petclinic/3.5.0/spring-petclinic-3.5.0-plain.jar
         run: |
           echo '{ "actor": "${{github.actor}}", "pipeline": "github actions", "build_name": "${{env.BUILD_NAME}}", "build_id": "${{env.BUILD_ID}}", "evd": "Evidence-Artifact", "artifact": "${{env.REPO_JAR}}" }' > ./${{env.EVIDENCE_SPEC_JSON}}
           cat ./${{env.EVIDENCE_SPEC_JSON}}
 
           jf evd create --subject-repo-path ${{env.REPO_JAR}} --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}"  --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}} --predicate ./${{env.EVIDENCE_SPEC_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1
+
+      - name: "Evidence: GitHub Attestation"  
+        continue-on-error: true
+        uses: actions/attest-build-provenance@v3     # https://github.com/marketplace/actions/attest-build-provenance
+        with:
+          subject-path: "build/libs/spring-petclinic-*.jar"
+          show-summary: true
+          github-token: ${{secrets.GITHUB_TOKEN}} 
 
       - name: "Evidence: Build Info"
         continue-on-error: true 
