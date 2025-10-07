@@ -1302,7 +1302,7 @@ jobs:
       - name: "Config jf with gradle repos"
         # jf gradlec --repo-deploy springpetclinic-gradle-virtual --repo-resolve springpetclinic-gradle-virtual --repo-deploy springpetclinic-gradle-virtual
         run: |
-          jf gradlec --repo-deploy ${{env.RT_REPO_GRADLE_VIRTUAL}} --repo-resolve ${{env.RT_REPO_GRADLE_VIRTUAL}} --repo-deploy ${{env.RT_REPO_GRADLE_VIRTUAL}}
+          jf gradlec --repo-deploy ${{env.RT_REPO_GRADLE_VIRTUAL}} --repo-resolve ${{env.RT_REPO_GRADLE_VIRTUAL}} 
 
       - name: "list folder"
         run: |
@@ -1342,9 +1342,7 @@ jobs:
         run: |
           echo '{ "actor": "${{github.actor}}", "pipeline": "github actions", "build_name": "${{env.BUILD_NAME}}", "build_id": "${{env.BUILD_ID}}", "evd": "Evidence-Artifact", "artifact": "${{env.REPO_JAR}}" }' > ./${{env.EVIDENCE_SPEC_JSON}}
           cat ./${{env.EVIDENCE_SPEC_JSON}}
-
           jf evd create --subject-repo-path ${{env.REPO_JAR}} --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}"  --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}} --predicate ./${{env.EVIDENCE_SPEC_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1
-
 
       # Build Info
           # US 
@@ -1367,22 +1365,21 @@ jobs:
       - name: "BuildInfo: Build Publish"
         run: jf rt bp ${{env.BUILD_NAME}} ${{env.BUILD_ID}} --detailed-summary=true
 
-      - name: "Evidence: GitHub Build Attestation"  
-        continue-on-error: true
-        uses: actions/attest-build-provenance@v3     # https://github.com/marketplace/actions/attest-build-provenance
-        with:
-          subject-path: "build/libs/spring-petclinic-*.jar"
-          show-summary: true
-          github-token: ${{secrets.GITHUB_TOKEN}} 
+      # - name: "Evidence: GitHub Build Attestation"  
+      #   continue-on-error: true
+      #   uses: actions/attest-build-provenance@v3     # https://github.com/marketplace/actions/attest-build-provenance
+      #   with:
+      #     subject-path: "build/libs/spring-petclinic-*.jar"
+      #     show-summary: true
+      #     github-token: ${{secrets.GITHUB_TOKEN}} 
 
-      - name: "Evidence: Build Info"
-        continue-on-error: true 
-        env:
-            EVD_JSON: "build/build-info.json"
-        run: |
-          cat ./${{env.EVD_JSON}}
-
-          jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVD_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
+      # - name: "Evidence: Build Info"
+      #   continue-on-error: true 
+      #   env:
+      #       EVD_JSON: "build/build-info.json"
+      #   run: |
+      #     cat ./${{env.EVD_JSON}}
+      #     jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVD_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
       
       - name: "Evidence: SBOM Attestation"
         uses: actions/attest-sbom@v3     # https://github.com/actions/attest-sbom
@@ -1393,12 +1390,11 @@ jobs:
           show-summary: true
           github-token: ${{secrets.GITHUB_TOKEN}} 
 
-      - name: "Evidence: cdx"
-        continue-on-error: true 
-        env:
-            EVD_JSON: "build/reports/application.cdx.json"    # https://jfrog.com/evidence/signature/v1
-        run: |
-          cat ./${{env.EVD_JSON}}
-
-          jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVD_JSON}} --predicate-type https://cyclonedx.org/bom/v1.4 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
+      # - name: "Evidence: cdx"
+      #   continue-on-error: true 
+      #   env:
+      #       EVD_JSON: "build/reports/application.cdx.json"    # https://jfrog.com/evidence/signature/v1
+      #   run: |
+      #     cat ./${{env.EVD_JSON}}
+      #     jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVD_JSON}} --predicate-type https://cyclonedx.org/bom/v1.4 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
           
