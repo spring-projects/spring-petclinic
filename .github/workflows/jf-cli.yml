@@ -239,7 +239,7 @@ jobs:
         continue-on-error: true
         uses: actions/attest-build-provenance@v3     # https://github.com/marketplace/actions/attest-build-provenance
         with:
-          subject-name: "oci://${{env.RT_REPO_DOCKER_URL}}"
+          subject-name: "GitHub Attestation for ${{env.BUILD_NAME}}:${{env.BUILD_ID}}"
           subject-digest: "${{env.DOCKER_IMAGE_DIGEST}}"   
           subject-path: "${{env.RT_REPO_DOCKER_URL}}"
           show-summary: true
@@ -807,6 +807,15 @@ jobs:
           subject-path: "target/spring-petclinic-*.jar"
           show-summary: true
           github-token: ${{secrets.GITHUB_TOKEN}} 
+      
+      - name: "Evidence: SBOM Attestation"
+        uses: actions/attest-sbom@v3     # https://github.com/actions/attest-sbom
+        with:
+          subject-name: "SBOM Attestation"
+          subject-path: "target/spring-petclinic-*.jar"
+          sbom-path: "target/classes/META-INF/sbom/application.cdx.json"
+          show-summary: true
+          github-token: ${{secrets.GITHUB_TOKEN}} 
 
       - name: "Evidence: Build Info"
         # continue-on-error: true 
@@ -819,10 +828,10 @@ jobs:
       - name: "Evidence: cdx"
         # continue-on-error: true 
         env:
-            EVD_JSON: "target/classes/META-INF/sbom/application.cdx.json"
+            EVD_JSON: "target/classes/META-INF/sbom/application.cdx.json"      # https://jfrog.com/evidence/signature/v1
         run: |
           cat ./${{env.EVD_JSON}}
-          jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVD_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
+          jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVD_JSON}} --predicate-type https://cyclonedx.org/bom/v1.4 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
           
 
       - name: "Evidence: Build Publish"
@@ -1336,32 +1345,6 @@ jobs:
 
           jf evd create --subject-repo-path ${{env.REPO_JAR}} --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}"  --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}} --predicate ./${{env.EVIDENCE_SPEC_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1
 
-      - name: "Evidence: GitHub Attestation"  
-        continue-on-error: true
-        uses: actions/attest-build-provenance@v3     # https://github.com/marketplace/actions/attest-build-provenance
-        with:
-          subject-path: "build/libs/spring-petclinic-*.jar"
-          show-summary: true
-          github-token: ${{secrets.GITHUB_TOKEN}} 
-
-      - name: "Evidence: Build Info"
-        continue-on-error: true 
-        env:
-            EVD_JSON: "build/build-info.json"
-        run: |
-          cat ./${{env.EVD_JSON}}
-
-          jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVD_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
-    
-      - name: "Evidence: cdx"
-        continue-on-error: true 
-        env:
-            EVD_JSON: "build/reports/application.cdx.json"
-        run: |
-          cat ./${{env.EVD_JSON}}
-
-          jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVD_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
-          
 
       # Build Info
           # US 
@@ -1384,4 +1367,38 @@ jobs:
       - name: "BuildInfo: Build Publish"
         run: jf rt bp ${{env.BUILD_NAME}} ${{env.BUILD_ID}} --detailed-summary=true
 
-        
+      - name: "Evidence: GitHub Build Attestation"  
+        continue-on-error: true
+        uses: actions/attest-build-provenance@v3     # https://github.com/marketplace/actions/attest-build-provenance
+        with:
+          subject-path: "build/libs/spring-petclinic-*.jar"
+          show-summary: true
+          github-token: ${{secrets.GITHUB_TOKEN}} 
+
+      - name: "Evidence: Build Info"
+        continue-on-error: true 
+        env:
+            EVD_JSON: "build/build-info.json"
+        run: |
+          cat ./${{env.EVD_JSON}}
+
+          jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVD_JSON}} --predicate-type https://jfrog.com/evidence/signature/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
+      
+      - name: "Evidence: SBOM Attestation"
+        uses: actions/attest-sbom@v3     # https://github.com/actions/attest-sbom
+        with:
+          subject-name: "SBOM Attestation"
+          subject-path: 'build/libs/spring-petclinic-*.jar'
+          sbom-path: 'build/reports/application.cdx.json'
+          show-summary: true
+          github-token: ${{secrets.GITHUB_TOKEN}} 
+
+      - name: "Evidence: cdx"
+        continue-on-error: true 
+        env:
+            EVD_JSON: "build/reports/application.cdx.json"    # https://jfrog.com/evidence/signature/v1
+        run: |
+          cat ./${{env.EVD_JSON}}
+
+          jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVD_JSON}} --predicate-type https://cyclonedx.org/bom/v1.4 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
+          
