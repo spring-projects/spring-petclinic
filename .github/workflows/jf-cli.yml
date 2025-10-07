@@ -223,7 +223,8 @@ jobs:
         run: |
           imageDigest=$(cat "${{env.DOCKER_METADATA_JSON}}" | jq '.["containerimage.digest"]')
           echo "DOCKER_IMAGE_DIGEST: ${imageDigest}"
-          echo "${imageDigest}"  > ${{env.DOCKER_IMAGE_DIGEST}}
+
+          echo "DOCKER_IMAGE_DIGEST=${imageDigest}" >> $GITHUB_ENV. # set env var for next steps
 
           echo "${{env.RT_REPO_DOCKER_URL}}@${imageDigest}" > ${{env.DOCKER_METADATA_JSON}}
 
