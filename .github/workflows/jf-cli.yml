@@ -246,7 +246,6 @@ jobs:
 
           jf rt bdc ${{env.RT_REPO_DOCKER_VIRTUAL}} --image-file ${{env.DOCKER_METADATA_JSON}} --build-name=${{env.BUILD_NAME}} --build-number=${{env.BUILD_ID}}
 
-
       - name: "Docker: Extract metadata"
         run: |
           cat ${{env.DOCKER_METADATA_JSON}}
