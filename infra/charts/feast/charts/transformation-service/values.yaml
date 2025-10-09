@@ -1,0 +1,37 @@
+# replicaCount -- Number of pods that will be created
+replicaCount: 1
+
+image:
+  # image.repository -- Docker image for Transformation Server repository
+  repository: feastdev/feature-transformation-server
+  # image.tag -- Image tag
+  tag: 0.28.0
+  # image.pullPolicy -- Image pull policy
+  pullPolicy: IfNotPresent
+
+service:
+  # service.type -- Kubernetes service type
+  type: ClusterIP
+  grpc:
+    # service.grpc.port -- Service port for GRPC requests
+    port: 6566
+    # service.grpc.targetPort -- Container port serving GRPC requests
+    targetPort: 6566
+    # service.grpc.nodePort -- Port number that each cluster node will listen to
+    nodePort:
+
+
+# resources -- CPU/memory [resource requests/limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container)
+resources: {}
+
+# nodeSelector -- Node labels for pod assignment
+nodeSelector: {}
+
+# envOverrides -- Extra environment variables to set
+envOverrides: {}
+
+# secrets -- List of Kubernetes secrets to be mounted. These secrets will be mounted on /etc/secrets/<secret name>.
+secrets: []
+
+# podLabels -- Labels to be added to Feast Serving pods
+podLabels: {}

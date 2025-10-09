@@ -1,0 +1,11 @@
+apiVersion: v1
+description: Feature store for machine learning
+name: feast
+version: 0.28.0
+keywords:
+  - machine learning
+  - big data
+  - mlops
+home: https://feast.dev/
+sources:
+  - https://github.com/feast-dev/feast

@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "feature-server.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ template "feature-server.name" . }}
+    component: serving
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  application-generated.yaml: |
+{{- if index .Values "application-generated.yaml" "enabled" }}
+    feast:
+      registry: {{ .Values.global.registry.path }}
+      registryRefreshInterval: {{ .Values.global.registry.cache_ttl_seconds }}
+      {{- if .Values.transformationService.host }}
+      transformationServiceEndpoint: {{ .Values.transformationService.host}}:{{ .Values.transformationService.port }}
+      {{- else }}
+      transformationServiceEndpoint: {{ .Release.Name }}-transformation-service:{{ .Values.transformationService.port }}
+      {{- end }}
+      
+      activeStore: online
+      stores:
+      - name: online
+        type: REDIS 
+        config:
+          host: {{ .Release.Name }}-redis-master
+          port: 6379
+    grpc:
+      server:
+        port: {{ .Values.service.grpc.targetPort }}
+{{- end }}
+
+  application-override.yaml: |
+{{- if index .Values "application-override.yaml" "enabled" }}
+  {{- if index .Values "application-override.yaml" "feast" }}
+    feast: {{- toYaml (index .Values "application-override.yaml" "feast") | nindent 6 }}
+      registry: {{ .Values.global.registry.path }}
+      registryRefreshInterval: {{ .Values.global.registry.cache_ttl_seconds }}
+      project: {{ .Values.global.project }}
+  {{- end }}
+  {{- if index .Values "application-override.yaml" "rest" }}
+    rest: {{- toYaml (index .Values "application-override.yaml" "rest") | nindent 6 }}
+  {{- end }}
+  {{- if index .Values "application-override.yaml" "grpc" }}
+    grpc: {{- toYaml (index .Values "application-override.yaml" "grpc") | nindent 6 }}
+  {{- end }}
+{{- end }}

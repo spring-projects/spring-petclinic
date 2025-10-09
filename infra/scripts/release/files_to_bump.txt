@@ -1,0 +1,14 @@
+infra/charts/feast/requirements.yaml 4 9
+infra/charts/feast/Chart.yaml 4
+infra/charts/feast/charts/transformation-service/Chart.yaml 4 5
+infra/charts/feast/charts/transformation-service/README.md 3 16
+infra/charts/feast/charts/transformation-service/values.yaml 8
+infra/charts/feast/charts/feature-server/Chart.yaml 4 5
+infra/charts/feast/charts/feature-server/README.md 3 20
+infra/charts/feast/charts/feature-server/values.yaml 8
+infra/charts/feast/README.md 11 68 69
+infra/charts/feast-feature-server/Chart.yaml 5
+infra/charts/feast-feature-server/README.md 3
+infra/charts/feast-feature-server/values.yaml 12
+java/pom.xml 38
+ui/package.json 3

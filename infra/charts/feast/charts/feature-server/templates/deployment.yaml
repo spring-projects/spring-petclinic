@@ -1,0 +1,143 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "feature-server.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ template "feature-server.name" . }}
+    component: serving
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "feature-server.name" . }}
+      component: serving
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/configmap: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      {{- if .Values.podAnnotations }}
+        {{ toYaml .Values.podAnnotations | nindent 8 }}
+      {{- end }}
+      labels:
+        app: {{ template "feature-server.name" . }}
+        component: serving
+        release: {{ .Release.Name }}
+      {{- if .Values.podLabels }}
+        {{ toYaml .Values.podLabels | nindent 8 }}
+      {{- end }}
+    spec:
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      volumes:
+      - name: {{ template "feature-server.fullname" . }}-config
+        configMap:
+          name: {{ template "feature-server.fullname" . }}
+      - name: {{ template "feature-server.fullname" . }}-secret
+        secret:
+          secretName: {{ template "feature-server.fullname" . }}
+      {{- range $secret := .Values.secrets }}
+      - name: {{ $secret }}
+        secret:
+          secretName: {{ $secret }}
+      {{- end }}
+
+      containers:
+      - name: {{ .Chart.Name }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+        volumeMounts:
+        - name: {{ template "feature-server.fullname" . }}-config
+          mountPath: /etc/feast
+        - name: {{ template "feature-server.fullname" . }}-secret
+          mountPath: /etc/secrets/feast
+          readOnly: true
+        {{- range $secret := .Values.secrets }}
+        - name: {{ $secret }}
+          mountPath: "/etc/secrets/{{ $secret }}"
+          readOnly: true
+        {{- end }}
+
+        env:
+        - name: LOG_TYPE
+          value: {{ .Values.logType | quote }}
+        - name: LOG_LEVEL
+          value: {{ .Values.logLevel | quote }}
+
+        {{- if .Values.javaOpts }}
+        - name: JAVA_TOOL_OPTIONS
+          value: {{ .Values.javaOpts }}
+        {{- end }}
+
+        {{- range $key, $value := .Values.envOverrides }}
+        - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
+          {{- if eq (kindOf $value) "map" }}
+          valueFrom:
+            {{- toYaml $value | nindent 12 }}
+          {{- else }}
+          value: {{ $value | quote }}
+          {{- end }}
+        {{- end }}
+
+        command:
+        - java
+        - -jar
+        - /opt/feast/feast-serving.jar
+        - {{ if index .Values "application.yaml" "enabled" -}}
+          classpath:/application.yml
+          {{- end }}
+          {{- if index .Values "application-generated.yaml" "enabled" -}}
+          ,file:/etc/feast/application-generated.yaml
+          {{- end }}
+          {{- if index .Values "application-secret.yaml" "enabled" -}}
+          ,file:/etc/secrets/feast/application-secret.yaml
+          {{- end }}
+          {{- if index .Values "application-override.yaml" "enabled" -}}
+          ,file:/etc/feast/application-override.yaml
+          {{- end }}
+
+        ports:
+        - name: grpc
+          containerPort: {{ .Values.service.grpc.targetPort }}
+
+        {{- if .Values.livenessProbe.enabled }}
+        livenessProbe:
+          exec:
+            command:
+            - "grpc-health-probe"
+            - "-addr=:{{ .Values.service.grpc.targetPort }}"
+            - "-connect-timeout={{ .Values.livenessProbe.timeoutSeconds }}s"
+            - "-rpc-timeout={{ .Values.livenessProbe.timeoutSeconds }}s"
+          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+          successThreshold: {{ .Values.livenessProbe.successThreshold }}
+          timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+          failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+        {{- end }}
+
+        {{- if .Values.readinessProbe.enabled }}
+        readinessProbe:
+          exec:
+            command:
+            - "grpc-health-probe"
+            - "-addr=:{{ .Values.service.grpc.targetPort }}"
+            - "-connect-timeout={{ .Values.readinessProbe.timeoutSeconds }}s"
+            - "-rpc-timeout={{ .Values.readinessProbe.timeoutSeconds }}s"
+          initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+          successThreshold: {{ .Values.readinessProbe.successThreshold }}
+          timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+          failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+        {{- end }}
+
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}

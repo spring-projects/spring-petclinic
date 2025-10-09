@@ -1,0 +1,68 @@
+{{- /*
+This takes an array of three values:
+- the top context
+- the feast component
+- the service protocol
+- the ingress context
+*/ -}}
+{{- define "feast.ingress" -}}
+{{- $top := (index . 0) -}}
+{{- $component := (index . 1) -}}
+{{- $protocol := (index . 2) -}}
+{{- $ingressValues := (index . 3) -}}
+apiVersion: extensions/v1beta1
+kind: Ingress
+{{ include "feast.ingress.metadata" . }}
+spec:
+  rules:
+  {{- range $host := $ingressValues.hosts }}
+  - host: {{ $host }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ include (printf "feast-%s.fullname" $component) $top }}
+          servicePort: {{ index $top.Values "service" $protocol "port" }}
+  {{- end }}
+{{- if $ingressValues.https.enabled }}
+  tls:
+    {{- range $host := $ingressValues.hosts }}
+    - secretName: {{ index $ingressValues.https.secretNames $host | default (splitList "." $host | rest | join "-" | printf "%s-tls") }}
+      hosts:
+      - {{ $host }}
+    {{- end }}
+{{- end -}}
+{{- end -}}
+
+{{- define "feast.ingress.metadata" -}}
+{{- $commonMetadata := fromYaml (include "common.metadata" (first .)) }}
+{{- $overrides := fromYaml (include "feast.ingress.metadata-overrides" .) -}}
+{{- toYaml (merge $overrides $commonMetadata) -}}
+{{- end -}}
+
+{{- define "feast.ingress.metadata-overrides" -}}
+{{- $top := (index . 0) -}}
+{{- $component := (index . 1) -}}
+{{- $protocol := (index . 2) -}}
+{{- $ingressValues := (index . 3) -}}
+{{- $commonFullname := include "common.fullname" $top }}
+metadata:
+  name: {{ $commonFullname }}-{{ $component }}-{{ $protocol }}
+  annotations:
+    kubernetes.io/ingress.class: {{ $ingressValues.class | quote }}
+    {{- if (and (eq $ingressValues.class "nginx") $ingressValues.auth.enabled) }}
+    nginx.ingress.kubernetes.io/auth-url: {{ $ingressValues.auth.authUrl | quote }}
+    nginx.ingress.kubernetes.io/auth-response-headers: "x-auth-request-email, x-auth-request-user"
+    nginx.ingress.kubernetes.io/auth-signin: "https://{{ $ingressValues.auth.signinHost | default (splitList "." (index $ingressValues.hosts 0) | rest | join "." | printf "auth.%s")}}/oauth2/start?rd=/r/$host/$request_uri"
+    {{- end }}
+    {{- if (and (eq $ingressValues.class "nginx") $ingressValues.whitelist) }}
+    nginx.ingress.kubernetes.io/whitelist-source-range: {{ $ingressValues.whitelist | quote -}}
+    {{- end }}
+    {{- if (and (eq $ingressValues.class "nginx") (eq $protocol "grpc") ) }}
+    # TODO: Allow choice of GRPC/GRPCS
+    nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+    {{- end }}
+    {{- if $ingressValues.annotations -}}
+    {{ include "common.annote" $ingressValues.annotations | indent 4 }}
+    {{- end }}
+{{- end -}}

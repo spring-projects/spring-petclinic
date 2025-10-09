@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "transformation-service.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ template "transformation-service.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+  {{- with .Values.service.annotations }}
+  annotations:
+{{ toYaml . | indent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+  - name: grpc
+    port: {{ .Values.service.grpc.port }}
+    targetPort: {{ .Values.service.grpc.targetPort }}
+    {{- if .Values.service.grpc.nodePort }}
+    nodePort: {{ .Values.service.grpc.nodePort }}
+    {{- end }}
+  selector:
+    app: {{ template "transformation-service.name" . }}
+    component: serving
+    release: {{ .Release.Name }}

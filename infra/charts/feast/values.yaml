@@ -1,0 +1,23 @@
+feature-server:
+  enabled: true
+
+
+transformation-service:
+  enabled: true
+
+redis:
+  # redis.enabled -- Flag to install Redis
+  enabled: false
+  # redis.usePassword -- Disable redis password
+  usePassword: false
+
+global:
+  # global.registry -- Information about registry managed by Feast Python SDK (must be in sync with feature_store.yaml)
+  registry:
+    # global.registry.path -- Path to the registry file managed by Feast Python SDK
+    path: gs://path/to/registry.db
+    # global.registry.cache_ttl_seconds -- Registry cache (in memory) will be refreshed on this interval
+    cache_ttl_seconds: 0
+
+  # global.project -- Project from feature_store.yaml
+  project: default

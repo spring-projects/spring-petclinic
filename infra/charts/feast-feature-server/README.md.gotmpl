@@ -1,0 +1,26 @@
+# Feast Python / Go Feature Server Helm Charts
+
+Current chart version is `{{ template "chart.version" . }}`
+
+## Installation
+
+Run the following commands to add the repository
+
+```
+helm repo add feast-charts https://feast-helm-charts.storage.googleapis.com
+helm repo update
+```
+
+Install Feast Feature Server on Kubernetes
+
+A base64 encoded version of the `feature_store.yaml` file is needed. Helm install example:
+```
+helm install feast-feature-server feast-charts/feast-feature-server --set feature_store_yaml_base64=$(base64 feature_store.yaml)
+```
+
+## Tutorial
+See [here](https://github.com/feast-dev/feast/tree/master/examples/python-helm-demo) for a sample tutorial on testing this helm chart with a demo feature repository and a local Redis instance.
+
+{{ template "chart.requirementsSection" . }}
+
+{{ template "chart.valuesSection" . }}

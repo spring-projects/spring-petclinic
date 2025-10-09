@@ -1,0 +1,140 @@
+# replicaCount -- Number of pods that will be created
+replicaCount: 1
+
+image:
+  # image.repository -- Docker image for Feature Server repository
+  repository: feastdev/feature-server-java
+  # image.tag -- Image tag
+  tag: 0.28.0
+  # image.pullPolicy -- Image pull policy
+  pullPolicy: IfNotPresent
+
+
+transformationService:
+  host: ""
+  port: 6566
+
+
+application.yaml:
+  # "application.yaml".enabled -- Flag to include the default [configuration](https://github.com/feast-dev/feast/blob/master/java/serving/src/main/resources/application.yml). Please set `application-override.yaml` to override this configuration.
+  enabled: true
+
+application-generated.yaml:
+  # "application-generated.yaml".enabled -- Flag to include Helm generated configuration. Please set `application-override.yaml` to override this configuration.
+  enabled: true
+
+# "application-secret.yaml" -- Configuration to override the default [application.yaml](https://github.com/feast-dev/feast/blob/master/java/serving/src/main/resources/application.yml). Will be created as a Secret. `application-override.yaml` has a higher precedence than `application-secret.yaml`. It is recommended to either set `application-override.yaml` or `application-secret.yaml` only to simplify config management.
+application-secret.yaml:
+  enabled: false
+
+# "application-override.yaml" -- Configuration to override the default [application.yaml](https://github.com/feast-dev/feast/blob/master/java/serving/src/main/resources/application.yml). Will be created as a ConfigMap. `application-override.yaml` has a higher precedence than `application-secret.yaml`
+application-override.yaml:
+  enabled: true
+
+# javaOpts -- [JVM options](https://docs.oracle.com/cd/E22289_01/html/821-1274/configuring-the-default-jvm-and-java-arguments.html). For better performance, it is advised to set the min and max heap: <br> `-Xms2048m -Xmx2048m`
+javaOpts:
+
+# logType -- Log format, either `JSON` or `Console`
+logType: Console
+# logLevel -- Default log level, use either one of `DEBUG`, `INFO`, `WARN` or `ERROR`
+logLevel: WARN
+
+
+livenessProbe:
+  # livenessProbe.enabled -- Flag to enabled the probe
+  enabled: true
+  # livenessProbe.initialDelaySeconds -- Delay before the probe is initiated
+  initialDelaySeconds: 60
+  # livenessProbe.periodSeconds -- How often to perform the probe
+  periodSeconds: 10
+  # livenessProbe.timeoutSeconds -- When the probe times out
+  timeoutSeconds: 5
+  # livenessProbe.successThreshold -- Min consecutive success for the probe to be considered successful
+  successThreshold: 1
+  # livenessProbe.failureThreshold -- Min consecutive failures for the probe to be considered failed
+  failureThreshold: 5
+
+readinessProbe:
+  # readinessProbe.enabled -- Flag to enabled the probe
+  enabled: true
+  # readinessProbe.initialDelaySeconds -- Delay before the probe is initiated
+  initialDelaySeconds: 15
+  # readinessProbe.periodSeconds -- How often to perform the probe
+  periodSeconds: 10
+  # readinessProbe.timeoutSeconds -- When the probe times out
+  timeoutSeconds: 10
+  # readinessProbe.successThreshold -- Min consecutive success for the probe to be considered successful
+  successThreshold: 1
+  # readinessProbe.failureThreshold -- Min consecutive failures for the probe to be considered failed
+  failureThreshold: 5
+
+service:
+  # service.type -- Kubernetes service type
+  type: ClusterIP
+  grpc:
+    # service.grpc.port -- Service port for GRPC requests
+    port: 6566
+    # service.grpc.targetPort -- Container port serving GRPC requests
+    targetPort: 6566
+    # service.grpc.nodePort -- Port number that each cluster node will listen to
+    nodePort:
+
+ingress:
+  grpc:
+    # ingress.grpc.enabled -- Flag to create an ingress resource for the service
+    enabled: false
+    # ingress.grpc.class -- Which ingress controller to use
+    class: nginx
+    # ingress.grpc.hosts -- List of hostnames to match when routing requests
+    hosts: []
+    # ingress.grpc.annotations -- Extra annotations for the ingress
+    annotations: {}
+    https:
+      # ingress.grpc.https.enabled -- Flag to enable HTTPS
+      enabled: true
+      # ingress.grpc.https.secretNames -- Map of hostname to TLS secret name
+      secretNames: {}
+    # ingress.grpc.whitelist -- Allowed client IP source ranges
+    whitelist: ""
+    auth:
+      # ingress.grpc.auth.enabled -- Flag to enable auth
+      enabled: false
+  http:
+    # ingress.http.enabled -- Flag to create an ingress resource for the service
+    enabled: false
+    # ingress.http.class -- Which ingress controller to use
+    class: nginx
+    # ingress.http.hosts -- List of hostnames to match when routing requests
+    hosts: []
+    # ingress.http.annotations -- Extra annotations for the ingress
+    annotations: {}
+    https:
+      # ingress.http.https.enabled -- Flag to enable HTTPS
+      enabled: true
+      # ingress.http.https.secretNames -- Map of hostname to TLS secret name
+      secretNames: {}
+    # ingress.http.whitelist -- Allowed client IP source ranges
+    whitelist: ""
+    auth:
+      # ingress.http.auth.enabled -- Flag to enable auth
+      enabled: false
+      # ingress.http.auth.authUrl -- URL to an existing authentication service
+      authUrl: http://auth-server.auth-ns.svc.cluster.local/auth
+
+# resources -- CPU/memory [resource requests/limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container)
+resources: {}
+
+# nodeSelector -- Node labels for pod assignment
+nodeSelector: {}
+
+# envOverrides -- Extra environment variables to set
+envOverrides: {}
+
+# secrets -- List of Kubernetes secrets to be mounted. These secrets will be mounted on /etc/secrets/<secret name>.
+secrets: []
+
+# podAnnotations -- Annotations to be added to Feast Serving pods
+podAnnotations: {}
+
+# podLabels -- Labels to be added to Feast Serving pods
+podLabels: {}

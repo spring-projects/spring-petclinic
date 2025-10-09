@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "transformation-service.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ template "transformation-service.name" . }}
+    component: serving
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "transformation-service.name" . }}
+      component: serving
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "transformation-service.name" . }}
+        component: serving
+        release: {{ .Release.Name }}
+      {{- if .Values.podLabels }}
+        {{ toYaml .Values.podLabels | nindent 8 }}
+      {{- end }}
+    spec:
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      volumes:
+      {{- range $secret := .Values.secrets }}
+      - name: {{ $secret }}
+        secret:
+          secretName: {{ $secret }}
+      {{- end }}
+
+      containers:
+      - name: {{ .Chart.Name }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - name: grpc
+          containerPort: {{ .Values.service.grpc.targetPort }}
+
+        volumeMounts:
+        {{- range $secret := .Values.secrets }}
+        - name: {{ $secret }}
+          mountPath: "/etc/secrets/{{ $secret }}"
+          readOnly: true
+        {{- end }}
+
+        env:
+        - name: FEATURE_TRANSFORMATION_SERVER_PORT
+          value: {{ .Values.service.grpc.targetPort | quote }}
+        - name: FEATURE_STORE_YAML_BASE64
+          value: {{ tpl (.Files.Get "config/feature_store.yaml") . | b64enc | quote }}
+
+        {{- range $key, $value := .Values.envOverrides }}
+        - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
+          {{- if eq (kindOf $value) "map" }}
+          valueFrom:
+            {{- toYaml $value | nindent 12 }}
+          {{- else }}
+          value: {{ $value | quote }}
+          {{- end }}
+        {{- end }}
+
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}

@@ -1,0 +1,5 @@
+registry:
+  path: {{ .Values.global.registry.path }}
+  cache_ttl_seconds: {{ .Values.global.registry.cache_ttl_seconds }}
+provider: local
+project: {{ .Values.global.project }}
