@@ -12,7 +12,7 @@ services:
     volumes:
       - "./conf.d:/etc/mysql/conf.d:ro"
   postgres:
-    image: postgres:17.5
+    image: postgres:18.0
     ports:
       - "5432:5432"
     environment:
