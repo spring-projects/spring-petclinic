@@ -98,9 +98,13 @@ jobs:
 
       - name: "Create ENV variables"
         run: |
+          echo "ARTIFACT_NAME=$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)" >> $GITHUB_ENV
+          echo "ARTIFACT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+          echo "TODAYS_DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
           echo "RT_REPO_DOCKER_IMG=${{env.RT_REPO_DOCKER_VIRTUAL}}/${{env.BUILD_NAME}}" >> $GITHUB_ENV
           echo "JF_REGISTRY=${{env.JF_RT_URL}}/${{env.RT_REPO_DOCKER_VIRTUAL}}" >> $GITHUB_ENV
           echo "RT_REPO_DOCKER_URL=${{vars.JF_NAME}}.jfrog.io/${{env.RT_REPO_DOCKER_VIRTUAL}}/${{env.BUILD_NAME}}:${{env.BUILD_ID}}" >> $GITHUB_ENV
+
 
       - name: "Docker authentication"  # ref https://github.com/marketplace/actions/docker-login
         id: config-docker
@@ -169,24 +173,16 @@ jobs:
         run: |
           jf scan . --format=table --extended-table=true --threads=100 --fail=false
 
-      # - name: "Package: Docker build and push"
-      #   env:
-      #     JAR_FILE: "${{env.BUILD_NAME}}-${{env.JAR_VERSION}}.jar"  # spring-petclinic-3.5.0-SNAPSHOT.jar
-      #   run: |
-      #     docker image build -f jfrog/Dockerfile --build-arg JAR_FILE=${{env.JAR_FILE}} -t ${{env.RT_REPO_DOCKER_URL}} --platform "${{env.DOCKER_BUILDX_PLATFORMS}}" --metadata-file "${{env.DOCKER_METADATA_JSON}}" --push .
-
       - name: "Package: Docker build and push"
-        id: build-and-push
-        uses: docker/build-push-action@v6    # https://github.com//docker/build-push-action
-        with:
-          context: .
-          file: jfrog/Dockerfile
-          build-args: |
-            JAR_FILE="${{env.BUILD_NAME}}-${{env.JAR_VERSION}}.jar"
-          platforms: ${{env.DOCKER_BUILDX_PLATFORMS}}  # linux/amd64,linux/arm64
-          tags: ${{env.RT_REPO_DOCKER_URL}}
-          push: true
-          # metadata-file: ${{env.DOCKER_METADATA_JSON}}
+        env:
+          JAR_FILE: "./target/${{env.ARTIFACT_NAME}}-${{env.ARTIFACT_VERSION}}.jar"
+          TAG10: "${{vars.JF_NAME}}.jfrog.io/${{env.RT_REPO_DOCKER_VIRTUAL}}/${{env.ARTIFACT_NAME}}:${{env.ARTIFACT_VERSION}}"
+          TAG11: "${{vars.JF_NAME}}.jfrog.io/${{env.RT_REPO_DOCKER_VIRTUAL}}/${{env.ARTIFACT_NAME}}:${{env.TODAYS_DATE}}" 
+          TAG12: "${{vars.JF_NAME}}.jfrog.io/${{env.RT_REPO_DOCKER_VIRTUAL}}/${{env.ARTIFACT_NAME}}:${{env.BUILD_ID}}"
+          TAG13: "${{vars.JF_NAME}}.jfrog.io/${{env.RT_REPO_DOCKER_VIRTUAL}}/${{env.ARTIFACT_NAME}}:latest"
+        run: |
+          docker image build -f ./jfrog/Dockerfile --build-arg JAR_FILE=${{env.JAR_FILE}}  --platform "${{env.DOCKER_BUILDX_PLATFORMS}}" --metadata-file "${{env.DOCKER_METADATA_JSON}}" --push . -t ${{env.TAG10}} -t ${{env.TAG11}} -t ${{env.TAG12}}  -t ${{env.TAG13}}
+
 
       - name: "Optional: Docker pull image"
         run: |
@@ -251,15 +247,22 @@ jobs:
           jf rt bdc ${{env.RT_REPO_DOCKER_VIRTUAL}} --image-file ${{env.DOCKER_METADATA_JSON}} --build-name=${{env.BUILD_NAME}} --build-number=${{env.BUILD_ID}}
 
 
-      - name: "Evidence: GitHub Attestation"  
+      - name: "Docker: Extract metadata"
+        run: |
+          cat ${{env.DOCKER_METADATA_JSON}}
+          imageDigest=$(jq -r '.["containerimage.digest"]' "${{env.DOCKER_METADATA_JSON}}")
+          imageDigest=$(echo "${imageDigest}" | tr -d '\r' | xargs)
+          echo "DOCKER_DIGEST=${imageDigest}" >> $GITHUB_ENV
+      
+      - name: "Evidence: GitHub Attest for docker image"
         continue-on-error: true
         uses: actions/attest-build-provenance@v3     # https://github.com/marketplace/actions/attest-build-provenance
         with:
-          subject-name: "oci://${{env.RT_REPO_DOCKER_IMG}}"
-          subject-digest: "${{env.DOCKER_IMAGE_DIGEST}}" 
-          show-summary: true  
+          subject-name: "${{vars.JF_NAME}}.jfrog.io/${{env.RT_REPO_DOCKER_VIRTUAL}}/${{env.ARTIFACT_NAME}}"
+          subject-digest: '${{ env.DOCKER_DIGEST }}'    # sha256:hex_digest
           github-token: ${{secrets.GITHUB_TOKEN}} 
-
+          push-to-registry: true
+          show-summary: true
 
       - name: "BuildInfo: Build Publish"
         run: jf rt bp ${{env.BUILD_NAME}} ${{env.BUILD_ID}} --detailed-summary=true
@@ -509,6 +512,7 @@ jobs:
       
       # ref: https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/binaries-management-with-jfrog-artifactory/release-lifecycle-management#distribute-a-release-bundle-v2
       - name: "RBv2 Distribute to SaaS Artifactory and edges"
+        continue-on-error: true
         run: |
           jf rbd ${{env.BUILD_NAME}} ${{env.BUILD_ID}} --sync=true --create-repo=true
 
@@ -1101,6 +1105,7 @@ jobs:
       
       # ref: https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/binaries-management-with-jfrog-artifactory/release-lifecycle-management#distribute-a-release-bundle-v2
       - name: "RBv2 Distribute to SaaS Artifactory and edges"
+        continue-on-error: true
         run: |
           jf rbd ${{env.BUILD_NAME}} ${{env.BUILD_ID}} --sync=true --create-repo=true
 
