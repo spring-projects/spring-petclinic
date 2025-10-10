@@ -1,15 +1,15 @@
+
 pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "spring-petclinic"
-        REGISTRY_MAIN = "localhost:8084/spring-petclinic"
-        REGISTRY_MR   = "localhost:8083/spring-petclinic"
+        IMAGE_NAME = "yourdockerhubusername/spring-petclinic"
     }
 
     stages {
 
         stage('Checkstyle') {
+            when { expression { env.BRANCH_NAME != 'main' } }
             steps {
                 echo "Running Checkstyle..."
                 sh "./mvnw checkstyle:checkstyle -B"
@@ -18,14 +18,16 @@ pipeline {
         }
 
         stage('Test') {
+            when { expression { env.BRANCH_NAME != 'main' } }
             steps {
                 echo "Running unit tests..."
-                sh "./mvnw test -B -Dspring.testcontainers.enabled=false -Dspring.docker.compose.enabled=false -Dtest=!PostgresIntegrationTests"
+                sh "./mvnw test -B"
                 junit '**/target/surefire-reports/*.xml'
             }
         }
 
         stage('Build JAR') {
+            when { expression { env.BRANCH_NAME != 'main' } }
             steps {
                 echo "Building application JAR (without tests)..."
                 sh "./mvnw clean package -DskipTests -B"
@@ -65,7 +67,7 @@ pipeline {
                     }
                 }
             }
-        }   
+        }
     }
 
     post {
