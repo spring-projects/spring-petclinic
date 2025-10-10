@@ -3,7 +3,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "yourdockerhubusername/spring-petclinic"
+        IMAGE_NAME = "tomaciobotaru12/spring-petclinic"
     }
 
     stages {
