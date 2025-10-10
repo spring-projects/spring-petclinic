@@ -36,6 +36,16 @@ services:
     ports:
       - "8080:8080"
     restart: always
+  
+  
+  postgres:
+    image: postgres:18.0
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=petclinic
+      - POSTGRES_USER=petclinic
+      - POSTGRES_DB=petclinic 
 
 volumes:
   db_data:
