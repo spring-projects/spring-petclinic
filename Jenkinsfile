@@ -1,15 +1,18 @@
-
 pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "tomaciobotaru12/spring-petclinic"
+        IMAGE_NAME = "spring-petclinic"
+        REGISTRY_MAIN = "tomaciobotaru12/spring-petclinic-main"
+        REGISTRY_MR   = "tomaciobotaru12/spring-petclinic-mr"
     }
 
     stages {
 
         stage('Checkstyle') {
-            when { expression { env.BRANCH_NAME != 'main' } }
+            when {
+                expression { env.BRANCH_NAME != 'main' } // Skip for main
+            }
             steps {
                 echo "Running Checkstyle..."
                 sh "./mvnw checkstyle:checkstyle -B"
@@ -18,16 +21,20 @@ pipeline {
         }
 
         stage('Test') {
-            when { expression { env.BRANCH_NAME != 'main' } }
+            when {
+                expression { env.BRANCH_NAME != 'main' } // Skip for main
+            }
             steps {
                 echo "Running unit tests..."
-                sh "./mvnw test -B -Dspring.testcontainers.enabled=false -Dspring.docker.compose.enabled=false -Dtest=!PostgresIntegrationTests"                
+                sh "./mvnw test -B"
                 junit '**/target/surefire-reports/*.xml'
             }
         }
 
         stage('Build JAR') {
-            when { expression { env.BRANCH_NAME != 'main' } }
+            when {
+                expression { env.BRANCH_NAME != 'main' } // Skip for main
+            }
             steps {
                 echo "Building application JAR (without tests)..."
                 sh "./mvnw clean package -DskipTests -B"
@@ -45,24 +52,22 @@ pipeline {
             }
         }
 
-        stage('Push to Docker Hub') {
+        stage('Push to Docker Repository') {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
 
                         if (env.BRANCH_NAME == 'main') {
-                            TARGET_REPO = "${IMAGE_NAME}-main"
+                            TARGET_REGISTRY = "${REGISTRY_MAIN}"
                         } else {
-                            TARGET_REPO = "${IMAGE_NAME}-mr"
+                            TARGET_REGISTRY = "${REGISTRY_MR}"
                         }
 
-                        echo "Logging in to Docker Hub..."
-                        sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
-
-                        echo "Tagging and pushing image to ${TARGET_REPO}:${IMAGE_TAG}"
+                        echo "Tagging and pushing to ${TARGET_REGISTRY}:${IMAGE_TAG}"
                         sh """
-                            docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${TARGET_REPO}:${IMAGE_TAG}
-                            docker push ${TARGET_REPO}:${IMAGE_TAG}
+                            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                            docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${TARGET_REGISTRY}:${IMAGE_TAG}
+                            docker push ${TARGET_REGISTRY}:${IMAGE_TAG}
                         """
                     }
                 }
