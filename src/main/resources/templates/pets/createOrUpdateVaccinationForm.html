@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<head>
+  <title>Create or Update Vaccination</title>
+</head>
+<body>
+<h2 th:text="'Vaccination for ' + ${vaccination.pet.name}"></h2>
+
+<form th:action="@{|/owners/${ownerId}/pets/${vaccination.pet.id}/vaccinations/new|}"
+      th:object="${vaccination}" method="post">
+
+  <div>
+    <label for="date">Date</label>
+    <input type="date" th:field="*{date}" id="date"/>
+  </div>
+
+  <div>
+    <label for="description">Description</label>
+    <input type="text" th:field="*{description}" id="description"/>
+  </div>
+
+  <!-- hidden ownerId to pass along -->
+  <input type="hidden" th:name="ownerId" th:value="${ownerId}"/>
+
+  <div>
+    <button type="submit">Save</button>
+  </div>
+</form>
+
+
+</body>
+</html>
