@@ -21,7 +21,8 @@ pipeline {
             when { expression { env.BRANCH_NAME != 'main' } }
             steps {
                 echo "Running unit tests..."
-                sh "./mvnw test -B -Dspring.testcontainers.enabled=false -Dspring.docker.compose.enabled=false -Dtest=!PostgresIntegrationTests"                junit '**/target/surefire-reports/*.xml'
+                sh "./mvnw test -B -Dspring.testcontainers.enabled=false -Dspring.docker.compose.enabled=false -Dtest=!PostgresIntegrationTests"                
+                junit '**/target/surefire-reports/*.xml'
             }
         }
 
