@@ -43,32 +43,29 @@ pipeline {
             }
         }
 
-        stage('Push to Nexus Registry') {
+        stage('Push to Docker Hub') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'nexus', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
 
-                        // Login to both repos (ignore failures)
-                        sh "echo $NEXUS_PASS | docker login localhost:8083 -u $NEXUS_USER --password-stdin || true"
-                        sh "echo $NEXUS_PASS | docker login localhost:8084 -u $NEXUS_USER --password-stdin || true"
-
-                        BRANCH_NAME = sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true).trim()
-
-                        if (BRANCH_NAME == "main" || BRANCH_NAME == "master") {
-                            TARGET_REGISTRY = "${REGISTRY_MAIN}"
+                        if (env.BRANCH_NAME == 'main') {
+                            TARGET_REPO = "${IMAGE_NAME}-main"
                         } else {
-                            TARGET_REGISTRY = "${REGISTRY_MR}"
+                            TARGET_REPO = "${IMAGE_NAME}-mr"
                         }
 
-                        echo "Tagging and pushing to ${TARGET_REGISTRY}:${IMAGE_TAG}"
+                        echo "Logging in to Docker Hub..."
+                        sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
+
+                        echo "Tagging and pushing image to ${TARGET_REPO}:${IMAGE_TAG}"
                         sh """
-                            docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${TARGET_REGISTRY}:${IMAGE_TAG}
-                            docker push ${TARGET_REGISTRY}:${IMAGE_TAG}
+                            docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${TARGET_REPO}:${IMAGE_TAG}
+                            docker push ${TARGET_REPO}:${IMAGE_TAG}
                         """
                     }
                 }
             }
-        }
+        }   
     }
 
     post {
