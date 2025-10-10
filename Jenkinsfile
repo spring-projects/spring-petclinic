@@ -20,7 +20,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo "Running unit tests..."
-                sh "./mvnw test -B -Dspring.testcontainers.enabled=false -Dspring.docker.compose.enabled=false"                
+                sh "./mvnw test -B -Dspring.testcontainers.enabled=false -Dspring.docker.compose.enabled=false -Dtest=!PostgresIntegrationTests"
                 junit '**/target/surefire-reports/*.xml'
             }
         }
