@@ -1,0 +1,14 @@
+name: spring-petclinic
+on: 
+    push: 
+        branches: 
+            main
+    workflow_dispatch: 
+jobs:
+    job1:
+        runs-on: ubuntu-22.04
+        steps:
+            - name: copycode
+              uses: actions/checkout@v5
+            - name: build code
+              run : mvn package
