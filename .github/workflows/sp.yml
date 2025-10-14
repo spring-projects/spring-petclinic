@@ -14,8 +14,6 @@ jobs:
               with:
                  distribution: 'temurin' 
                  java-version: '21'
-            - name: run tests
-              run : mvn test
-            - name: build code
-              run : mvn package
+            - name: junit tests
+              run : mvn clean install
             
