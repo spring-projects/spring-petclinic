@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>4.0.0-M2</version>
+    <version>4.0.0-M3</version>
     <relativePath></relativePath>
   </parent>
 
@@ -31,15 +31,14 @@
     <webjars-font-awesome.version>4.7.0</webjars-font-awesome.version>
 
     <checkstyle.version>11.1.0</checkstyle.version>
+    <error-prone.version>2.42.0</error-prone.version>
     <jacoco.version>0.8.13</jacoco.version>
     <libsass.version>0.3.4</libsass.version>
     <lifecycle-mapping>1.0.0</lifecycle-mapping>
     <maven-checkstyle.version>3.6.0</maven-checkstyle.version>
     <nohttp-checkstyle.version>0.0.11</nohttp-checkstyle.version>
+    <nullaway.version>0.12.10</nullaway.version>
     <spring-format.version>0.0.47</spring-format.version>
-
-    <error-prone.version>2.41.0</error-prone.version>
-    <nullaway.version>0.12.9</nullaway.version>
   </properties>
 
   <dependencies>
@@ -72,7 +71,8 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
-    </dependency>    <dependency>
+    </dependency>
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-restclient</artifactId>
       <scope>test</scope>
