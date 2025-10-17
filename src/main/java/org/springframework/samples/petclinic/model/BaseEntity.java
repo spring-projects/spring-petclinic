@@ -32,7 +32,6 @@ import org.jspecify.annotations.Nullable;
  */
 @MappedSuperclass
 public class BaseEntity implements Serializable {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private @Nullable Integer id;
