@@ -6,7 +6,7 @@ pipeline {
     // Define the tools to be automatically installed
     // This name MUST match the one you configured in Jenkins > Tools
     tools {
-        maven 'Maven-3.9.6'
+        maven 'Maven-3.9.11'
     }
 
     // 2. STAGES (The CI Workflow)
