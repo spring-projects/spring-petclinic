@@ -7,6 +7,7 @@ pipeline {
     // This name MUST match the one you configured in Jenkins > Tools
     tools {
         maven 'Maven-3.9.11'
+        jdk 'JDK-25'
     }
 
     // 2. STAGES (The CI Workflow)
