@@ -44,6 +44,16 @@ pipeline {
                 junit 'target/surefire-reports/*.xml'
             }
         }
+        // This is the new stage to add
+        stage('Deploy to Staging') {
+            // This 'when' block makes the stage conditional
+            when {
+                branch 'main'
+            }
+            steps {
+                echo "DEPLOYING TO STAGING... (because this is the main branch)"
+            }
+        }
     }
 
     // 6. POST-BUILD ACTIONS
