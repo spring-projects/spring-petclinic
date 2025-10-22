@@ -16,6 +16,7 @@ pipeline {
         // The 'Build' stage runs compile and tests, then packages the app
         stage('Build, Test & Package') {
             steps {
+                echo "BUILDING THE NEW FEATURE BRANCH!"
                 echo 'Building the Spring PetClinic application...'
                 
                 // 3. RUNNING BUILD TOOLS
