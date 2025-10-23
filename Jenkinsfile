@@ -1,17 +1,14 @@
 pipeline {
     agent any
-     options { buildDiscarder(logRotator(numToKeepStr: '10')) }
-     options { timestamps() }
-
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        timestamps()
+        retry(3)
+    }
     stages {
-        stage('frontend') {
-            steps {
-                sh 'cd frontend'
-            }
-        }
         stage('maven build') {
             steps {
-                sh 'clean package'
+                sh 'mvn clean package'
             }
         }
         stage('allure reports') {
