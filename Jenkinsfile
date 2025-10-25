@@ -17,6 +17,7 @@ pipeline {
         stage('Build, Test & Package') {
             steps {
                 echo "BUILDING THE NEW FEATURE BRANCH!"
+                echo "Testing the new github-user-pat credential!"
                 echo 'Building the Spring PetClinic application...'
                 
                 // 3. RUNNING BUILD TOOLS
