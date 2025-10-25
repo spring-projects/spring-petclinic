@@ -16,7 +16,7 @@ pipeline {
         // The 'Build' stage runs compile and tests, then packages the app
         stage('Build, Test & Package') {
             steps {
-                echo "BUILDING THE NEW FEATURE BRANCH! 2"
+                echo "BUILDING THE NEW FEATURE BRANCH! 3"
                 echo "Testing the new github-user-pat credential!"
                 echo 'Building the Spring PetClinic application...'
                 
