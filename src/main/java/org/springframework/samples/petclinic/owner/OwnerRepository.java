@@ -15,14 +15,12 @@
  */
 package org.springframework.samples.petclinic.owner;
 
-import java.util.List;
 import java.util.Optional;
 
 import jakarta.annotation.Nonnull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 /**
  * Repository class for <code>Owner</code> domain objects. All method names are compliant
@@ -60,6 +58,6 @@ public interface OwnerRepository extends JpaRepository<Owner, Integer> {
 	 * @throws IllegalArgumentException if the id is null (assuming null is not a valid
 	 * input for id)
 	 */
-	Optional<Owner> findById(@Nonnull Integer id);
+	Optional<Owner> findById(Integer id);
 
 }

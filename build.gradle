@@ -1,22 +1,23 @@
 plugins {
   id 'java'
   id 'checkstyle'
-  id 'org.springframework.boot' version '3.5.6'
+  id 'org.springframework.boot' version '4.0.0-M3'
   id 'io.spring.dependency-management' version '1.1.7'
   id 'org.graalvm.buildtools.native' version '0.11.1'
   id 'org.cyclonedx.bom' version '3.0.0'
   id 'io.spring.javaformat' version '0.0.47'
   id "io.spring.nohttp" version "0.0.11"
+  id 'net.ltgt.errorprone' version '4.3.0'
 }
 
 gradle.startParameter.excludedTaskNames += [ "checkFormatAot", "checkFormatAotTest" ]
 
 group = 'org.springframework.samples'
-version = '3.5.0'
+version = '4.0.0-SNAPSHOT'
 
 java {
   toolchain {
-    languageVersion = JavaLanguageVersion.of(17)
+    languageVersion = JavaLanguageVersion.of(25)
   }
 }
 
@@ -29,6 +30,8 @@ ext.springJavaformatCheckstyleVersion = "0.0.47"
 ext.webjarsLocatorLiteVersion = "1.1.1"
 ext.webjarsFontawesomeVersion = "4.7.0"
 ext.webjarsBootstrapVersion = "5.3.8"
+ext.errorProneVersion = "2.42.0"
+ext.nullAwayVersion = "0.12.10"
 
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-cache'
@@ -48,12 +51,15 @@ dependencies {
   runtimeOnly 'org.postgresql:postgresql'
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation 'org.springframework.boot:spring-boot-starter-restclient'
   testImplementation 'org.springframework.boot:spring-boot-testcontainers'
   testImplementation 'org.springframework.boot:spring-boot-docker-compose'
   testImplementation 'org.testcontainers:junit-jupiter'
   testImplementation 'org.testcontainers:mysql'
   checkstyle "io.spring.javaformat:spring-javaformat-checkstyle:${springJavaformatCheckstyleVersion}"
   checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
+  errorprone "com.google.errorprone:error_prone_core:${errorProneVersion}"
+  errorprone "com.uber.nullaway:nullaway:${nullAwayVersion}"
 }
 
 tasks.named('test') {
@@ -68,6 +74,21 @@ checkstyle {
 checkstyleNohttp {
   configDirectory = project.file('src/checkstyle')
   configFile = file('src/checkstyle/nohttp-checkstyle.xml')
+}
+
+tasks.withType(JavaCompile).configureEach {
+  options.release = 17
+  options.errorprone {
+    disableAllChecks = true
+  }
+  if (name.equals("compileJava")) {
+    options.errorprone {
+      error("NullAway")
+      option("NullAway:OnlyNullMarked", "true")
+      option("NullAway:CustomContractAnnotations", "org.springframework.lang.Contract")
+      option("NullAway:JSpecifyMode", "true")
+    }
+  }
 }
 
 tasks.named("formatMain").configure { dependsOn("checkstyleMain") }

@@ -82,7 +82,7 @@ class ClinicServiceTests {
 	@Autowired
 	protected VetRepository vets;
 
-	Pageable pageable;
+	private final Pageable pageable = Pageable.unpaged();
 
 	@Test
 	void shouldFindOwnersByLastName() {

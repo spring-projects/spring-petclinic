@@ -5,20 +5,21 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.5.6</version>
+    <version>4.0.0-M3</version>
     <relativePath></relativePath>
   </parent>
 
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
-  <version>3.5.0-SNAPSHOT</version>
+  <version>4.0.0-SNAPSHOT</version>
 
   <name>petclinic</name>
 
   <properties>
 
     <!-- Generic properties -->
-    <java.version>17</java.version>
+    <java.version>25</java.version>
+    <maven.compiler.release>17</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <!-- Important for reproducible builds. Update using e.g. ./mvnw versions:set -DnewVersion=... -->
@@ -30,13 +31,14 @@
     <webjars-font-awesome.version>4.7.0</webjars-font-awesome.version>
 
     <checkstyle.version>11.1.0</checkstyle.version>
+    <error-prone.version>2.42.0</error-prone.version>
     <jacoco.version>0.8.13</jacoco.version>
     <libsass.version>0.3.4</libsass.version>
     <lifecycle-mapping>1.0.0</lifecycle-mapping>
     <maven-checkstyle.version>3.6.0</maven-checkstyle.version>
     <nohttp-checkstyle.version>0.0.11</nohttp-checkstyle.version>
+    <nullaway.version>0.12.10</nullaway.version>
     <spring-format.version>0.0.47</spring-format.version>
-
   </properties>
 
   <dependencies>
@@ -68,6 +70,11 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-restclient</artifactId>
       <scope>test</scope>
     </dependency>
 
@@ -271,6 +278,38 @@
           <failOnUnableToExtractRepoInfo>false</failOnUnableToExtractRepoInfo>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default-compile</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <compilerArgs>
+                <arg>-XDcompilePolicy=simple</arg>
+                <arg>--should-stop=ifError=FLOW</arg>
+                <arg>-Xplugin:ErrorProne -XepDisableAllChecks -Xep:NullAway:ERROR -XepOpt:NullAway:OnlyNullMarked=true -XepOpt:NullAway:CustomContractAnnotations=org.springframework.lang.Contract -XepOpt:NullAway:JSpecifyMode=true</arg>
+              </compilerArgs>
+              <annotationProcessorPaths>
+                <path>
+                  <groupId>com.google.errorprone</groupId>
+                  <artifactId>error_prone_core</artifactId>
+                  <version>${error-prone.version}</version>
+                </path>
+                <path>
+                  <groupId>com.uber.nullaway</groupId>
+                  <artifactId>nullaway</artifactId>
+                  <version>${nullaway.version}</version>
+                </path>
+              </annotationProcessorPaths>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <!-- Spring Boot Actuator displays sbom-related information if a CycloneDX SBOM file is
       present at the classpath -->
       <plugin>
@@ -287,43 +326,6 @@
       <url>https://www.apache.org/licenses/LICENSE-2.0</url>
     </license>
   </licenses>
-
-  <repositories>
-    <repository>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <id>spring-snapshots</id>
-      <name>Spring Snapshots</name>
-      <url>https://repo.spring.io/snapshot</url>
-    </repository>
-    <repository>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>spring-milestones</id>
-      <name>Spring Milestones</name>
-      <url>https://repo.spring.io/milestone</url>
-    </repository>
-  </repositories>
-  <pluginRepositories>
-    <pluginRepository>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <id>spring-snapshots</id>
-      <name>Spring Snapshots</name>
-      <url>https://repo.spring.io/snapshot</url>
-    </pluginRepository>
-    <pluginRepository>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>spring-milestones</id>
-      <name>Spring Milestones</name>
-      <url>https://repo.spring.io/milestone</url>
-    </pluginRepository>
-  </pluginRepositories>
 
   <profiles>
     <profile>
