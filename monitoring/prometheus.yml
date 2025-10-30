@@ -1,0 +1,21 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets:
+          - prometheus:9090
+
+  - job_name: jenkins
+    metrics_path: /prometheus
+    static_configs:
+      - targets:
+          - jenkins:8080
+
+  - job_name: sonarqube
+    metrics_path: /api/monitoring/metrics
+    static_configs:
+      - targets:
+          - sonarqube:9000
