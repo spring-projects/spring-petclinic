@@ -6,6 +6,22 @@
 
   <h2 th:text="#{vets}">Veterinarians</h2>
 
+  <div class="vet-list-toolbar d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3 mb-3">
+    <div class="text-muted small" th:if="${totalItems > 0}"
+      th:text="#{owners.pagination.summary(${startItem}, ${endItem}, ${totalItems})}">Showing 1-10 of 42</div>
+    <form class="d-flex align-items-center gap-2" th:action="@{/vets.html}" method="get">
+      <input type="hidden" name="page" value="1" />
+      <label class="form-label mb-0 small" for="vetsPageSize" th:text="#{owners.pageSize.label}">Page Row</label>
+      <select id="vetsPageSize" name="size" class="form-select form-select-sm" onchange="this.form.submit()">
+        <option th:each="option : ${pageSizeOptions}" th:value="${option}" th:selected="${option == pageSize}"
+          th:text="${option}">10</option>
+      </select>
+      <noscript>
+        <button type="submit" class="btn btn-primary btn-sm" th:text="#{owners.pageSize.submit}">Apply</button>
+      </noscript>
+    </form>
+  </div>
+
   <table id="vets" class="table table-striped">
     <thead>
       <tr>
@@ -23,34 +39,52 @@
       </tr>
     </tbody>
   </table>
-  <div th:if="${totalPages > 1}">
-    <span th:text="#{pages}">Pages:</span>
-    <span>[</span>
-    <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-      <a th:if="${currentPage != i}" th:href="@{'/vets.html?page=__${i}__'}">[[${i}]]</a>
-      <span th:unless="${currentPage != i}">[[${i}]]</span>
-    </span>
-    <span>]&nbsp;</span>
-    <span>
-      <a th:if="${currentPage > 1}" th:href="@{'/vets.html?page=1'}" th:title="#{first}"
-        class="fa fa-fast-backward"></a>
-      <span th:unless="${currentPage > 1}" th:title="#{first}" class="fa fa-fast-backward"></span>
-    </span>
-    <span>
-      <a th:if="${currentPage > 1}" th:href="@{'/vets.html?page=__${currentPage - 1}__'}" th:title="#{previous}"
-        class="fa fa-step-backward"></a>
-      <span th:unless="${currentPage > 1}" th:title="#{previous}" class="fa fa-step-backward"></span>
-    </span>
-    <span>
-      <a th:if="${currentPage < totalPages}" th:href="@{'/vets.html?page=__${currentPage + 1}__'}" th:title="#{next}"
-        class="fa fa-step-forward"></a>
-      <span th:unless="${currentPage < totalPages}" th:title="#{next}" class="fa fa-step-forward"></span>
-    </span>
-    <span>
-      <a th:if="${currentPage < totalPages}" th:href="@{'/vets.html?page=__${totalPages}__'}" th:title="#{last}"
-        class="fa fa-fast-forward"></a>
-      <span th:unless="${currentPage < totalPages}" th:title="#{last}" class="fa fa-fast-forward"></span>
-    </span>
+  <div class="vet-list-pagination d-flex flex-column flex-lg-row align-items-lg-center justify-content-lg-between gap-3 mt-4"
+    th:if="${totalPages > 1}">
+    <div class="text-muted small" th:text="#{owners.pagination.summary(${startItem}, ${endItem}, ${totalItems})}">
+      Showing 1-10 of 42
+    </div>
+    <nav class="flex-grow-1" aria-label="Veterinarians pagination">
+      <ul class="pagination justify-content-lg-end justify-content-center mb-0">
+        <li class="page-item" th:classappend="${currentPage == 1} ? ' disabled'">
+          <a class="page-link" th:href="@{/vets.html(page=1, size=${pageSize})}" th:title="#{first}" aria-label="First">
+            <span class="fa fa-fast-backward" aria-hidden="true"></span>
+            <span class="visually-hidden" th:text="#{first}">First</span>
+          </a>
+        </li>
+        <li class="page-item" th:classappend="${currentPage == 1} ? ' disabled'">
+          <a class="page-link" th:href="@{/vets.html(page=${currentPage - 1}, size=${pageSize})}"
+            th:title="#{previous}" aria-label="Previous">
+            <span class="fa fa-step-backward" aria-hidden="true"></span>
+            <span class="visually-hidden" th:text="#{previous}">Previous</span>
+          </a>
+        </li>
+        <li class="page-item disabled" th:if="${showLeadingGap}">
+          <span class="page-link" aria-hidden="true" th:text="#{owners.pagination.ellipsis}"></span>
+        </li>
+        <li class="page-item" th:each="i : ${pageNumbers}" th:classappend="${currentPage == i} ? ' active'">
+          <a class="page-link" th:href="@{/vets.html(page=${i}, size=${pageSize})}" th:text="${i}"
+            th:aria-current="${currentPage == i} ? 'page' : null"></a>
+        </li>
+        <li class="page-item disabled" th:if="${showTrailingGap}">
+          <span class="page-link" aria-hidden="true" th:text="#{owners.pagination.ellipsis}"></span>
+        </li>
+        <li class="page-item" th:classappend="${currentPage == totalPages} ? ' disabled'">
+          <a class="page-link" th:href="@{/vets.html(page=${currentPage + 1}, size=${pageSize})}" th:title="#{next}"
+            aria-label="Next">
+            <span class="fa fa-step-forward" aria-hidden="true"></span>
+            <span class="visually-hidden" th:text="#{next}">Next</span>
+          </a>
+        </li>
+        <li class="page-item" th:classappend="${currentPage == totalPages} ? ' disabled'">
+          <a class="page-link" th:href="@{/vets.html(page=${totalPages}, size=${pageSize})}" th:title="#{last}"
+            aria-label="Last">
+            <span class="fa fa-fast-forward" aria-hidden="true"></span>
+            <span class="visually-hidden" th:text="#{last}">Last</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </body>
 

@@ -15,9 +15,11 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -50,6 +52,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 class OwnerController {
 
 	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
+
+	private static final String DEFAULT_PAGE_SIZE_VALUE = "10";
+
+	private static final int DEFAULT_PAGE_SIZE = Integer.parseInt(DEFAULT_PAGE_SIZE_VALUE);
+
+	private static final List<Integer> PAGE_SIZE_OPTIONS = List.of(DEFAULT_PAGE_SIZE, 20, 30, 40, 50);
 
 	private final OwnerRepository owners;
 
@@ -94,15 +102,20 @@ class OwnerController {
 
 	@GetMapping("/owners")
 	public String processFindForm(@RequestParam(defaultValue = "1") int page, Owner owner, BindingResult result,
-			Model model) {
+			Model model, @RequestParam(name = "size", defaultValue = DEFAULT_PAGE_SIZE_VALUE) int size) {
 		// allow parameterless GET request for /owners to return all records
 		String lastName = owner.getLastName();
 		if (lastName == null) {
 			lastName = ""; // empty string signifies broadest possible search
 		}
 
+		owner.setLastName(lastName);
+
+		int resolvedPage = Math.max(page, 1);
+		int pageSize = resolvePageSize(size);
+
 		// find owners by last name
-		Page<Owner> ownersResults = findPaginatedForOwnersLastName(page, lastName);
+		Page<Owner> ownersResults = findPaginatedForOwnersLastName(resolvedPage, pageSize, lastName);
 		if (ownersResults.isEmpty()) {
 			// no owners found
 			result.rejectValue("lastName", "notFound", "not found");
@@ -116,22 +129,54 @@ class OwnerController {
 		}
 
 		// multiple owners found
-		return addPaginationModel(page, model, ownersResults);
+		return addPaginationModel(resolvedPage, pageSize, owner, model, ownersResults);
 	}
 
-	private String addPaginationModel(int page, Model model, Page<Owner> paginated) {
+	private String addPaginationModel(int page, int pageSize, Owner owner, Model model, Page<Owner> paginated) {
 		List<Owner> listOwners = paginated.getContent();
+		long totalItems = paginated.getTotalElements();
+		int currentItemCount = paginated.getNumberOfElements();
+		long startItem = totalItems == 0 ? 0L : (long) ((page - 1L) * pageSize) + 1L;
+		long endItem = currentItemCount == 0 ? startItem : Math.min(startItem + currentItemCount - 1L, totalItems);
+		int totalPages = paginated.getTotalPages();
+		int windowSize = 10;
+		int windowStart = 1;
+		int windowEnd = 0;
+		List<Integer> pageNumbers = Collections.emptyList();
+		boolean showLeadingGap = false;
+		boolean showTrailingGap = false;
+		if (totalPages > 0) {
+			int maxWindowStart = Math.max(1, totalPages - windowSize + 1);
+			windowStart = Math.max(1, Math.min(page, maxWindowStart));
+			windowEnd = Math.min(windowStart + windowSize - 1, totalPages);
+			pageNumbers = IntStream.rangeClosed(windowStart, windowEnd).boxed().toList();
+			int leadingHiddenCount = windowStart - 1;
+			int trailingHiddenCount = totalPages - windowEnd;
+			showLeadingGap = leadingHiddenCount > 0;
+			showTrailingGap = trailingHiddenCount > 0;
+		}
 		model.addAttribute("currentPage", page);
-		model.addAttribute("totalPages", paginated.getTotalPages());
-		model.addAttribute("totalItems", paginated.getTotalElements());
+		model.addAttribute("pageSize", pageSize);
+		model.addAttribute("pageSizeOptions", PAGE_SIZE_OPTIONS);
+		model.addAttribute("totalPages", totalPages);
+		model.addAttribute("totalItems", totalItems);
+		model.addAttribute("startItem", startItem);
+		model.addAttribute("endItem", endItem);
 		model.addAttribute("listOwners", listOwners);
+		model.addAttribute("owner", owner);
+		model.addAttribute("pageNumbers", pageNumbers);
+		model.addAttribute("showLeadingGap", showLeadingGap);
+		model.addAttribute("showTrailingGap", showTrailingGap);
 		return "owners/ownersList";
 	}
 
-	private Page<Owner> findPaginatedForOwnersLastName(int page, String lastname) {
-		int pageSize = 5;
+	private Page<Owner> findPaginatedForOwnersLastName(int page, int pageSize, String lastname) {
 		Pageable pageable = PageRequest.of(page - 1, pageSize);
 		return owners.findByLastNameStartingWith(lastname, pageable);
+	}
+
+	private int resolvePageSize(int requestedSize) {
+		return PAGE_SIZE_OPTIONS.contains(requestedSize) ? requestedSize : DEFAULT_PAGE_SIZE;
 	}
 
 	@GetMapping("/owners/{ownerId}/edit")
