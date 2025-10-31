@@ -1,0 +1,103 @@
+pipeline {
+    agent any
+    
+    tools {
+        jdk 'JDK 17'
+    }
+    
+    triggers {
+        pollSCM('H/5 * * * *')
+    }
+    
+    environment {
+        GRADLE_OPTS = '-Xmx1024m -Dorg.gradle.daemon=false'
+        PROJECT_NAME = 'spring-petclinic'
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                echo 'Checking out code...'
+                checkout scm
+                script {
+                    sh 'git rev-parse --short HEAD'
+                    sh 'git log -1 --pretty=%B'
+                }
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                echo 'Building with Gradle...'
+                sh './gradlew clean compileJava --no-daemon'
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                echo 'Running tests...'
+                sh './gradlew test --no-daemon'
+            }
+            post {
+                always {
+                    junit testResults: '**/build/test-results/test/*.xml', allowEmptyResults: true
+                    jacoco(
+                        execPattern: '**/build/jacoco/*.exec',
+                        classPattern: '**/build/classes',
+                        sourcePattern: '**/src/main/java',
+                        exclusionPattern: '**/*Test*.class'
+                    )
+                }
+            }
+        }
+        
+        stage('Code Quality') {
+            steps {
+                echo 'Running checkstyle...'
+                sh './gradlew checkstyleMain checkstyleTest --no-daemon'
+            }
+            post {
+                always {
+                    recordIssues(
+                        enabledForFailure: true,
+                        tool: checkStyle(pattern: '**/build/reports/checkstyle/*.xml')
+                    )
+                }
+            }
+        }
+        
+        stage('Package') {
+            steps {
+                echo 'Packaging application...'
+                sh './gradlew bootJar --no-daemon'
+            }
+        }
+        
+        stage('Archive') {
+            steps {
+                echo 'Archiving artifacts...'
+                archiveArtifacts artifacts: '**/build/libs/*.jar', 
+                                fingerprint: true,
+                                allowEmptyArchive: false
+            }
+        }
+    }
+    
+    post {
+        success {
+            echo 'Build successful!'
+        }
+        failure {
+            echo 'Build failed!'
+        }
+        always {
+            cleanWs(
+                cleanWhenNotBuilt: false,
+                deleteDirs: true,
+                disableDeferredWipeout: true,
+                notFailBuild: true
+            )
+        }
+    }
+}
+
