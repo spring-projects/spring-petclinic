@@ -1,84 +1,223 @@
-import React from "react";
-import { Container, Row, Col, Form, Card } from "react-bootstrap";
-import Button from "../components/Button";
+import { useState } from "react";
+import { Mail, Phone, MapPin, Send } from "lucide-react";
 
 const Contact = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert("Message sent successfully! We will get back to you soon.");
+    setFormData({ name: "", email: "", subject: "", message: "" });
+  };
+
   return (
-    <Container className="my-5">
-      <h1 className="text-center mb-5 text-primary">Get In Touch</h1>
+    <div style={{ paddingTop: "80px" }}>
+      <section
+        className="py-5"
+        style={{
+          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        }}
+      >
+        <div className="container text-white text-center">
+          <h1 className="display-4 fw-bold mb-3 fade-in-up">Contact Us</h1>
+          <p
+            className="lead fade-in-up"
+            style={{
+              maxWidth: "800px",
+              margin: "0 auto",
+              animationDelay: "0.2s",
+            }}
+          >
+            Get in touch with us for any inquiries or assistance
+          </p>
+        </div>
+      </section>
 
-      <Row className="g-5">
-        <Col lg={6}>
-          <Card className="p-4 h-100">
-            <h3 className="mb-4 text-secondary-purple">Send Us a Message</h3>
-            <Form>
-              <Form.Group className="mb-3" controlId="contactName">
-                <Form.Label>Full Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter your name"
-                  required
-                />
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="contactEmail">
-                <Form.Label>Email Address</Form.Label>
-                <Form.Control
-                  type="email"
-                  placeholder="name@example.com"
-                  required
-                />
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="contactSubject">
-                <Form.Label>Subject</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Inquiry subject"
-                  required
-                />
-              </Form.Group>
-              <Form.Group className="mb-4" controlId="contactMessage">
-                <Form.Label>Message</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  rows={4}
-                  placeholder="Your message here"
-                  required
-                />
-              </Form.Group>
-              <Button type="submit">Submit Inquiry</Button>
-            </Form>
-          </Card>
-        </Col>
+      <section className="py-5">
+        <div className="container">
+          <div className="row g-5">
+            <div className="col-lg-4">
+              <div className="mb-4">
+                <div
+                  className="d-inline-flex align-items-center justify-content-center mb-3"
+                  style={{
+                    width: "60px",
+                    height: "60px",
+                    borderRadius: "15px",
+                    background:
+                      "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                  }}
+                >
+                  <MapPin size={30} color="white" />
+                </div>
+                <h5 className="fw-bold mb-2">Our Location</h5>
+                <p className="text-muted">
+                  123 University Avenue
+                  <br />
+                  Education City, EC 12345
+                  <br />
+                  United States
+                </p>
+              </div>
 
-        <Col lg={6}>
-          <h3 className="mb-4 text-secondary-purple">Our Location & Details</h3>
-          <Card className="p-3 mb-4">
-            <p>
-              <strong>Address:</strong> 123 Main Street, Faculty Tower, City,
-              12345
-            </p>
-            <p>
-              <strong>Phone:</strong> (123) 456-7890
-            </p>
-            <p>
-              <strong>Email:</strong> info@fms.edu
-            </p>
-          </Card>
+              <div className="mb-4">
+                <div
+                  className="d-inline-flex align-items-center justify-content-center mb-3"
+                  style={{
+                    width: "60px",
+                    height: "60px",
+                    borderRadius: "15px",
+                    background:
+                      "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                  }}
+                >
+                  <Phone size={30} color="white" />
+                </div>
+                <h5 className="fw-bold mb-2">Phone Number</h5>
+                <p className="text-muted">
+                  Main: +1 (555) 123-4567
+                  <br />
+                  Admissions: +1 (555) 123-4568
+                  <br />
+                  Support: +1 (555) 123-4569
+                </p>
+              </div>
 
-          {/* Google Map Embed */}
-          <div className="ratio ratio-16x9 shadow-lg rounded-3">
+              <div className="mb-4">
+                <div
+                  className="d-inline-flex align-items-center justify-content-center mb-3"
+                  style={{
+                    width: "60px",
+                    height: "60px",
+                    borderRadius: "15px",
+                    background:
+                      "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                  }}
+                >
+                  <Mail size={30} color="white" />
+                </div>
+                <h5 className="fw-bold mb-2">Email Address</h5>
+                <p className="text-muted">
+                  info@facultyportal.edu
+                  <br />
+                  admissions@facultyportal.edu
+                  <br />
+                  support@facultyportal.edu
+                </p>
+              </div>
+            </div>
+
+            <div className="col-lg-8">
+              <div
+                className="card border-0 shadow-sm"
+                style={{ borderRadius: "20px" }}
+              >
+                <div className="card-body p-5">
+                  <h3 className="fw-bold mb-4">Send us a Message</h3>
+                  <form onSubmit={handleSubmit}>
+                    <div className="row g-3">
+                      <div className="col-md-6">
+                        <label className="form-label fw-semibold">
+                          Your Name
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="name"
+                          value={formData.name}
+                          onChange={handleChange}
+                          required
+                          style={{ borderRadius: "10px", padding: "12px" }}
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <label className="form-label fw-semibold">
+                          Your Email
+                        </label>
+                        <input
+                          type="email"
+                          className="form-control"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleChange}
+                          required
+                          style={{ borderRadius: "10px", padding: "12px" }}
+                        />
+                      </div>
+                      <div className="col-12">
+                        <label className="form-label fw-semibold">
+                          Subject
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="subject"
+                          value={formData.subject}
+                          onChange={handleChange}
+                          required
+                          style={{ borderRadius: "10px", padding: "12px" }}
+                        />
+                      </div>
+                      <div className="col-12">
+                        <label className="form-label fw-semibold">
+                          Message
+                        </label>
+                        <textarea
+                          className="form-control"
+                          name="message"
+                          value={formData.message}
+                          onChange={handleChange}
+                          rows="6"
+                          required
+                          style={{ borderRadius: "10px", padding: "12px" }}
+                        ></textarea>
+                      </div>
+                      <div className="col-12">
+                        <button
+                          type="submit"
+                          className="btn btn-gradient btn-lg w-100"
+                        >
+                          <Send size={20} className="me-2" />
+                          Send Message
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-5" style={{ backgroundColor: "#f8f9fa" }}>
+        <div className="container">
+          <div
+            className="rounded overflow-hidden shadow"
+            style={{ height: "400px" }}
+          >
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15222.754779261073!2d85.80582525!3d20.3238686!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a1909a727d5301f%3A0x889895088f11b228!2sKIIT%20University!5e0!3m2!1sen!2sin!4v1680199432000!5m2!1sen!2sin"
-              title="Location Map"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.2412648718453!2d-73.98784492346618!3d40.75889737138558!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25855c6480299%3A0x55194ec5a1ae072e!2sTimes%20Square!5e0!3m2!1sen!2sus!4v1699999999999!5m2!1sen!2sus"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
               allowFullScreen=""
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              className="rounded-3"
             ></iframe>
           </div>
-        </Col>
-      </Row>
-    </Container>
+        </div>
+      </section>
+    </div>
   );
 };
 

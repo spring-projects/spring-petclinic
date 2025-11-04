@@ -1,9 +1,15 @@
-import React from "react";
+import { AuthProvider } from "./context/AuthContext";
 import AppRouter from "./router/AppRouter";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import "./assets/styles/global.css";
 
-const App = () => {
-  // All routing logic is managed by AppRouter
-  return <AppRouter />;
-};
+function App() {
+  return (
+    <AuthProvider>
+      <AppRouter />
+    </AuthProvider>
+  );
+}
 
 export default App;

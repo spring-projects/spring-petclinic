@@ -1,64 +1,200 @@
-import React from "react";
-import { Navbar, Nav, Container } from "react-bootstrap";
-import { NavLink, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { GraduationCap, User, LogOut } from "lucide-react";
 
 const Header = () => {
-  const { isAuthenticated, logout } = useAuth();
+  const [scrolled, setScrolled] = useState(false);
+  const { user, logout, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   return (
-    <Navbar bg="white" expand="lg" sticky="top" className="shadow-sm">
-      <Container>
-        <Navbar.Brand as={Link} to="/" className="fw-bold text-primary">
-          FMS | Faculty Manager
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ms-auto">
-            <Nav.Link as={NavLink} to="/">
-              Home
-            </Nav.Link>
-            <Nav.Link as={NavLink} to="/about">
-              About
-            </Nav.Link>
-            <Nav.Link as={NavLink} to="/faculty">
-              Faculty
-            </Nav.Link>
-            <Nav.Link as={NavLink} to="/courses">
-              Courses
-            </Nav.Link>
-            <Nav.Link as={NavLink} to="/research">
-              Research
-            </Nav.Link>
-            <Nav.Link as={NavLink} to="/events">
-              Events
-            </Nav.Link>
-            <Nav.Link as={NavLink} to="/contact">
-              Contact
-            </Nav.Link>
+    <nav
+      className={`navbar navbar-expand-lg fixed-top ${
+        scrolled ? "navbar-scrolled" : "navbar-light"
+      }`}
+      style={{
+        backgroundColor: scrolled ? "#fff" : "transparent",
+        transition: "all 0.3s ease",
+        padding: "15px 0",
+      }}
+    >
+      <div className="container">
+        <Link className="navbar-brand d-flex align-items-center" to="/">
+          <GraduationCap
+            size={32}
+            className="me-2"
+            style={{ color: "#667eea" }}
+          />
+          <span
+            style={{
+              fontWeight: "700",
+              fontSize: "1.5rem",
+              color: scrolled ? "#1e293b" : "#fff",
+            }}
+          >
+            Faculty Portal
+          </span>
+        </Link>
 
-            {isAuthenticated ? (
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav ms-auto align-items-center">
+            <li className="nav-item">
+              <Link
+                className="nav-link"
+                to="/"
+                style={{
+                  color: scrolled ? "#1e293b" : "#fff",
+                  fontWeight: "500",
+                }}
+              >
+                Home
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                className="nav-link"
+                to="/about"
+                style={{
+                  color: scrolled ? "#1e293b" : "#fff",
+                  fontWeight: "500",
+                }}
+              >
+                About
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                className="nav-link"
+                to="/faculty"
+                style={{
+                  color: scrolled ? "#1e293b" : "#fff",
+                  fontWeight: "500",
+                }}
+              >
+                Faculty
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                className="nav-link"
+                to="/courses"
+                style={{
+                  color: scrolled ? "#1e293b" : "#fff",
+                  fontWeight: "500",
+                }}
+              >
+                Courses
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                className="nav-link"
+                to="/research"
+                style={{
+                  color: scrolled ? "#1e293b" : "#fff",
+                  fontWeight: "500",
+                }}
+              >
+                Research
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                className="nav-link"
+                to="/events"
+                style={{
+                  color: scrolled ? "#1e293b" : "#fff",
+                  fontWeight: "500",
+                }}
+              >
+                Events
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                className="nav-link"
+                to="/contact"
+                style={{
+                  color: scrolled ? "#1e293b" : "#fff",
+                  fontWeight: "500",
+                }}
+              >
+                Contact
+              </Link>
+            </li>
+            {isAuthenticated() ? (
               <>
-                <Nav.Link as={NavLink} to="/dashboard" className="text-success">
-                  Dashboard
-                </Nav.Link>
-                <Nav.Link onClick={logout} className="text-danger">
-                  Logout
-                </Nav.Link>
+                <li className="nav-item">
+                  <Link
+                    className="nav-link"
+                    to="/dashboard"
+                    style={{
+                      color: scrolled ? "#1e293b" : "#fff",
+                      fontWeight: "500",
+                    }}
+                  >
+                    Dashboard
+                  </Link>
+                </li>
+                <li className="nav-item dropdown">
+                  <a
+                    className="nav-link dropdown-toggle d-flex align-items-center"
+                    href="#"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    style={{ color: scrolled ? "#1e293b" : "#fff" }}
+                  >
+                    <User size={20} className="me-1" />
+                    {user?.name || "User"}
+                  </a>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <button className="dropdown-item" onClick={handleLogout}>
+                        <LogOut size={16} className="me-2" />
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
+                </li>
               </>
             ) : (
-              <Nav.Link
-                as={NavLink}
-                to="/login"
-                className="btn btn-primary text-white px-3 ms-lg-3 rounded-pill"
-              >
-                Faculty Login
-              </Nav.Link>
+              <li className="nav-item ms-2">
+                <Link
+                  className="btn btn-gradient px-4"
+                  to="/login"
+                  style={{ borderRadius: "25px" }}
+                >
+                  Login
+                </Link>
+              </li>
             )}
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+          </ul>
+        </div>
+      </div>
+    </nav>
   );
 };
 

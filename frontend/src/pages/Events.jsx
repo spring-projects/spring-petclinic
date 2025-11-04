@@ -1,126 +1,298 @@
-import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Card, Badge } from "react-bootstrap";
-import { FaCalendarAlt, FaMapMarkerAlt, FaRegClock } from "react-icons/fa";
-import Button from "../components/Button";
-
-// Placeholder Event Data (to be replaced by API)
-const dummyEvents = [
-  {
-    id: 201,
-    title: "Annual Research Symposium",
-    date: "2025-11-15",
-    time: "9:00 AM - 4:00 PM",
-    location: "Main Auditorium, Campus 1",
-    category: "Academic",
-    description:
-      "A day of presentations showcasing the latest faculty and student research.",
-  },
-  {
-    id: 202,
-    title: "Industry Collaboration Workshop",
-    date: "2025-12-05",
-    time: "2:00 PM - 5:00 PM",
-    location: "Online (Zoom)",
-    category: "Industry",
-    description:
-      "Bridging the gap between academia and real-world industrial applications.",
-  },
-  {
-    id: 203,
-    title: "Faculty Excellence Awards",
-    date: "2026-01-10",
-    time: "7:00 PM - 9:00 PM",
-    location: "Grand Ballroom, City Center",
-    category: "Social",
-    description:
-      "Celebrating outstanding achievements in teaching and service.",
-  },
-];
+import { useState, useEffect } from "react";
+import { eventsAPI } from "../services/api";
+import { Calendar, MapPin, Clock, Users } from "lucide-react";
 
 const Events = () => {
   const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(false); // Assume fast loading for dummy data
+  const [loading, setLoading] = useState(true);
+
+  const mockEvents = [
+    {
+      id: 1,
+      title: "International AI Conference 2024",
+      date: "2024-12-15",
+      time: "09:00 AM",
+      location: "Main Auditorium",
+      description:
+        "Join leading experts in artificial intelligence for a day of insights and networking.",
+      attendees: 250,
+      category: "Conference",
+    },
+    {
+      id: 2,
+      title: "Workshop: Advanced Data Analytics",
+      date: "2024-11-20",
+      time: "02:00 PM",
+      location: "Computer Lab 3",
+      description:
+        "Hands-on workshop covering modern data analytics techniques and tools.",
+      attendees: 50,
+      category: "Workshop",
+    },
+    {
+      id: 3,
+      title: "Guest Lecture: Future of Quantum Computing",
+      date: "2024-11-25",
+      time: "11:00 AM",
+      location: "Lecture Hall A",
+      description:
+        "Renowned physicist Dr. James Anderson discusses quantum computing breakthroughs.",
+      attendees: 150,
+      category: "Lecture",
+    },
+    {
+      id: 4,
+      title: "Research Symposium 2024",
+      date: "2024-12-10",
+      time: "10:00 AM",
+      location: "Convention Center",
+      description:
+        "Annual showcase of groundbreaking research from our faculty and students.",
+      attendees: 300,
+      category: "Symposium",
+    },
+    {
+      id: 5,
+      title: "Career Fair: Tech Industry",
+      date: "2024-11-30",
+      time: "01:00 PM",
+      location: "Sports Complex",
+      description:
+        "Connect with top tech companies and explore career opportunities.",
+      attendees: 500,
+      category: "Career Fair",
+    },
+    {
+      id: 6,
+      title: "Seminar: Green Chemistry Innovations",
+      date: "2024-12-05",
+      time: "03:00 PM",
+      location: "Chemistry Building",
+      description:
+        "Exploring sustainable and eco-friendly approaches in modern chemistry.",
+      attendees: 80,
+      category: "Seminar",
+    },
+  ];
 
   useEffect(() => {
-    // In a real app, you would fetch from your /api/events endpoint here
-    // For now, use the placeholder data
-    setEvents(dummyEvents);
-    setLoading(false);
+    fetchEvents();
   }, []);
 
-  const handleRegister = (title) => {
-    alert(`Registration link simulated for: ${title}`);
-    // Replace with actual routing or API call to external registration form
+  const fetchEvents = async () => {
+    try {
+      const response = await eventsAPI.getUpcoming();
+      setEvents(response.data);
+    } catch (error) {
+      console.log("Using mock data");
+      setEvents(mockEvents);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  if (loading) return <h2 className="text-center mt-5">Loading Events...</h2>;
+  const getCategoryColor = (category) => {
+    const colors = {
+      Conference: "#3b82f6",
+      Workshop: "#8b5cf6",
+      Lecture: "#10b981",
+      Symposium: "#f59e0b",
+      "Career Fair": "#ef4444",
+      Seminar: "#06b6d4",
+    };
+    return colors[category] || "#667eea";
+  };
+
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return new Date(dateString).toLocaleDateString("en-US", options);
+  };
 
   return (
-    <Container className="my-5">
-      <h1 className="text-center mb-4 text-secondary-purple">
-        Upcoming Events & Activities
-      </h1>
-      <p className="lead text-center mb-5">
-        Join our academic community for conferences, workshops, and ceremonies.
-      </p>
+    <div style={{ paddingTop: "80px" }}>
+      <section
+        className="py-5"
+        style={{
+          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        }}
+      >
+        <div className="container text-white text-center">
+          <h1 className="display-4 fw-bold mb-3 fade-in-up">Upcoming Events</h1>
+          <p
+            className="lead fade-in-up"
+            style={{
+              maxWidth: "800px",
+              margin: "0 auto",
+              animationDelay: "0.2s",
+            }}
+          >
+            Stay connected with our academic community through conferences,
+            workshops, and seminars
+          </p>
+        </div>
+      </section>
 
-      {/* Events Grid */}
-      <Row className="g-4">
-        {events.map((event) => (
-          <Col md={6} lg={4} key={event.id}>
-            <Card className="h-100 p-3 shadow-sm">
-              <Card.Body className="d-flex flex-column">
-                <div className="d-flex justify-content-between align-items-start mb-3">
-                  <Card.Title className="text-primary fw-bold mb-1">
-                    {event.title}
-                  </Card.Title>
-                  <FaCalendarAlt className="fs-3 text-secondary-purple flex-shrink-0 ms-2" />
-                </div>
-
-                <Badge
-                  bg={
-                    event.category === "Academic"
-                      ? "info"
-                      : event.category === "Industry"
-                      ? "warning"
-                      : "success"
-                  }
-                  className="mb-3 align-self-start"
-                >
-                  {event.category}
-                </Badge>
-
-                <Card.Text className="text-muted flex-grow-1 mb-3">
-                  {event.description}
-                </Card.Text>
-
-                <div className="border-top pt-3">
-                  <p className="mb-1">
-                    <FaRegClock className="me-2 text-primary" />
-                    **{new Date(event.date).toDateString()}** at {event.time}
-                  </p>
-                  <p className="mb-3">
-                    <FaMapMarkerAlt className="me-2 text-primary" />
-                    {event.location}
-                  </p>
-
-                  <Button
-                    onClick={() => handleRegister(event.title)}
-                    variant="outline-primary"
-                    size="sm"
-                    className="w-100"
+      <section className="py-5">
+        <div className="container">
+          {loading ? (
+            <div className="text-center py-5">
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          ) : (
+            <div className="row g-4">
+              {events.map((event, index) => (
+                <div key={event.id} className="col-md-6 col-lg-4">
+                  <div
+                    className="card event-card border-0 shadow-sm h-100 fade-in-up"
+                    style={{
+                      borderRadius: "15px",
+                      animationDelay: `${index * 0.1}s`,
+                      borderLeftColor: getCategoryColor(event.category),
+                    }}
                   >
-                    Register Now
-                  </Button>
+                    <div className="card-body p-4">
+                      <div className="d-flex justify-content-between align-items-start mb-3">
+                        <span
+                          className="badge"
+                          style={{
+                            backgroundColor: getCategoryColor(event.category),
+                            padding: "6px 15px",
+                            fontSize: "0.85rem",
+                          }}
+                        >
+                          {event.category}
+                        </span>
+                        <div className="d-flex align-items-center text-muted">
+                          <Users size={16} className="me-1" />
+                          <small>{event.attendees}</small>
+                        </div>
+                      </div>
+
+                      <h5 className="fw-bold mb-3">{event.title}</h5>
+                      <p className="text-muted mb-3">{event.description}</p>
+
+                      <div className="mb-2">
+                        <div className="d-flex align-items-center text-muted mb-2">
+                          <Calendar
+                            size={18}
+                            className="me-2"
+                            style={{ color: getCategoryColor(event.category) }}
+                          />
+                          <small>{formatDate(event.date)}</small>
+                        </div>
+                        <div className="d-flex align-items-center text-muted mb-2">
+                          <Clock
+                            size={18}
+                            className="me-2"
+                            style={{ color: getCategoryColor(event.category) }}
+                          />
+                          <small>{event.time}</small>
+                        </div>
+                        <div className="d-flex align-items-center text-muted">
+                          <MapPin
+                            size={18}
+                            className="me-2"
+                            style={{ color: getCategoryColor(event.category) }}
+                          />
+                          <small>{event.location}</small>
+                        </div>
+                      </div>
+
+                      <button
+                        className="btn btn-gradient w-100 mt-3"
+                        onClick={() =>
+                          alert("Registration feature coming soon!")
+                        }
+                      >
+                        Register Now
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
-    </Container>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      <section className="py-5" style={{ backgroundColor: "#f8f9fa" }}>
+        <div className="container">
+          <div className="row align-items-center">
+            <div className="col-lg-6 mb-4 mb-lg-0">
+              <h2 className="display-5 fw-bold mb-4">Host Your Event</h2>
+              <p className="lead text-muted mb-4">
+                Interested in organizing an event at our institution? We provide
+                world-class facilities and support.
+              </p>
+              <ul className="list-unstyled">
+                <li className="mb-3 d-flex align-items-center">
+                  <span
+                    className="badge bg-primary me-3"
+                    style={{
+                      width: "30px",
+                      height: "30px",
+                      borderRadius: "50%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    ✓
+                  </span>
+                  <span>Modern auditoriums and conference halls</span>
+                </li>
+                <li className="mb-3 d-flex align-items-center">
+                  <span
+                    className="badge bg-primary me-3"
+                    style={{
+                      width: "30px",
+                      height: "30px",
+                      borderRadius: "50%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    ✓
+                  </span>
+                  <span>Advanced audio-visual equipment</span>
+                </li>
+                <li className="mb-3 d-flex align-items-center">
+                  <span
+                    className="badge bg-primary me-3"
+                    style={{
+                      width: "30px",
+                      height: "30px",
+                      borderRadius: "50%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    ✓
+                  </span>
+                  <span>Professional event management support</span>
+                </li>
+              </ul>
+              <button className="btn btn-gradient btn-lg mt-3">
+                Contact Us
+              </button>
+            </div>
+            <div className="col-lg-6">
+              <img
+                src="https://images.pexels.com/photos/2774556/pexels-photo-2774556.jpeg?auto=compress&cs=tinysrgb&w=600"
+                alt="Events"
+                className="img-fluid rounded shadow"
+                style={{ borderRadius: "20px" }}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 };
 
-// 🌟 THIS LINE IS CRUCIAL TO FIX YOUR ERROR 🌟
 export default Events;

@@ -1,179 +1,249 @@
-import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Card, Badge, Form } from "react-bootstrap";
-import { courseService } from "../services/api";
-import { FaGraduationCap, FaFilter } from "react-icons/fa";
-
-// Placeholder data for filtering
-const courseCategories = [
-  "All",
-  "Computer Science",
-  "Applied Physics",
-  "Business",
-  "Mathematics",
-  "Engineering",
-];
-
-// Placeholder Course Data (to be replaced by API)
-const dummyCourses = [
-  {
-    id: 101,
-    title: "Advanced React & Vite",
-    category: "Computer Science",
-    credits: 3,
-    level: "Graduate",
-    description:
-      "Deep dive into state management and performance optimization.",
-  },
-  {
-    id: 102,
-    title: "Quantum Optics",
-    category: "Applied Physics",
-    credits: 4,
-    level: "Advanced",
-    description: "Study of light and matter at the quantum level.",
-  },
-  {
-    id: 103,
-    title: "Strategic Market Entry",
-    category: "Business",
-    credits: 3,
-    level: "Undergraduate",
-    description: "Analyzing global markets and developing entry strategies.",
-  },
-  {
-    id: 104,
-    title: "Differential Equations",
-    category: "Mathematics",
-    credits: 3,
-    level: "Undergraduate",
-    description:
-      "Classic methods for solving ordinary and partial differential equations.",
-  },
-  {
-    id: 105,
-    title: "Structural Integrity",
-    category: "Engineering",
-    credits: 4,
-    level: "Graduate",
-    description: "Principles of structural stability and failure analysis.",
-  },
-];
+import { useState, useEffect } from "react";
+import { coursesAPI } from "../services/api";
+import { Clock, Users, BookOpen } from "lucide-react";
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
+  const [filteredCourses, setFilteredCourses] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("all");
   const [loading, setLoading] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState("All");
+
+  const mockCourses = [
+    {
+      id: 1,
+      title: "Advanced Machine Learning",
+      category: "Computer Science",
+      instructor: "Dr. Sarah Johnson",
+      duration: "12 weeks",
+      students: 45,
+      level: "Advanced",
+      description:
+        "Deep dive into neural networks, deep learning, and AI applications.",
+    },
+    {
+      id: 2,
+      title: "Calculus III",
+      category: "Mathematics",
+      instructor: "Prof. Michael Chen",
+      duration: "16 weeks",
+      students: 60,
+      level: "Intermediate",
+      description:
+        "Multivariable calculus, vector analysis, and differential equations.",
+    },
+    {
+      id: 3,
+      title: "Quantum Mechanics",
+      category: "Physics",
+      instructor: "Dr. Emily Rodriguez",
+      duration: "14 weeks",
+      students: 35,
+      level: "Advanced",
+      description: "Fundamentals of quantum theory and its applications.",
+    },
+    {
+      id: 4,
+      title: "Organic Chemistry II",
+      category: "Chemistry",
+      instructor: "Prof. David Williams",
+      duration: "15 weeks",
+      students: 50,
+      level: "Intermediate",
+      description: "Advanced organic reactions and synthesis techniques.",
+    },
+    {
+      id: 5,
+      title: "Molecular Biology",
+      category: "Biology",
+      instructor: "Dr. Lisa Anderson",
+      duration: "12 weeks",
+      students: 40,
+      level: "Intermediate",
+      description: "DNA, RNA, protein synthesis, and genetic engineering.",
+    },
+    {
+      id: 6,
+      title: "Web Development",
+      category: "Computer Science",
+      instructor: "Prof. James Taylor",
+      duration: "10 weeks",
+      students: 55,
+      level: "Beginner",
+      description: "Full-stack web development using modern frameworks.",
+    },
+  ];
 
   useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        const response = await courseService.getAllCourses();
-        // Use API data or dummy data
-        const data =
-          response.data && response.data.length > 0
-            ? response.data
-            : dummyCourses;
-        setCourses(data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Failed to fetch courses:", error);
-        setCourses(dummyCourses);
-        setLoading(false);
-      }
-    };
     fetchCourses();
   }, []);
 
-  const handleCategoryChange = (e) => {
-    setSelectedCategory(e.target.value);
+  useEffect(() => {
+    filterCourses();
+  }, [selectedCategory, courses]);
+
+  const fetchCourses = async () => {
+    try {
+      const response = await coursesAPI.getAll();
+      setCourses(response.data);
+    } catch (error) {
+      console.log("Using mock data");
+      setCourses(mockCourses);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const filteredCourses = courses.filter(
-    (course) =>
-      selectedCategory === "All" || course.category === selectedCategory
-  );
+  const filterCourses = () => {
+    if (selectedCategory === "all") {
+      setFilteredCourses(courses);
+    } else {
+      setFilteredCourses(
+        courses.filter((c) => c.category === selectedCategory)
+      );
+    }
+  };
 
-  if (loading) return <h2 className="text-center mt-5">Loading Courses...</h2>;
+  const categories = ["all", ...new Set(courses.map((c) => c.category))];
+
+  const getLevelColor = (level) => {
+    switch (level) {
+      case "Beginner":
+        return "bg-success";
+      case "Intermediate":
+        return "bg-warning";
+      case "Advanced":
+        return "bg-danger";
+      default:
+        return "bg-primary";
+    }
+  };
 
   return (
-    <Container className="my-5">
-      <h1 className="text-center mb-4 text-primary">Active Courses Catalog</h1>
-      <p className="lead text-center mb-5">
-        Explore our wide range of academic offerings across various disciplines.
-      </p>
-
-      {/* Filter Section */}
-      <Row className="mb-5 align-items-center bg-white p-4 rounded-3 shadow-sm">
-        <Col md={3} className="d-flex align-items-center">
-          <FaFilter className="fs-4 text-secondary-purple me-2" />
-          <h5 className="mb-0 text-secondary-purple">Filter By Category:</h5>
-        </Col>
-        <Col md={4}>
-          <Form.Select
-            onChange={handleCategoryChange}
-            value={selectedCategory}
-            className="shadow-none border-secondary-purple"
+    <div style={{ paddingTop: "80px" }}>
+      <section
+        className="py-5"
+        style={{
+          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        }}
+      >
+        <div className="container text-white text-center">
+          <h1 className="display-4 fw-bold mb-3 fade-in-up">Our Courses</h1>
+          <p
+            className="lead fade-in-up"
+            style={{
+              maxWidth: "800px",
+              margin: "0 auto",
+              animationDelay: "0.2s",
+            }}
           >
-            {courseCategories.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </Form.Select>
-        </Col>
-        <Col md={5} className="text-md-end mt-3 mt-md-0">
-          <Badge bg="info" className="p-2 fs-6">
-            Showing {filteredCourses.length} of {courses.length} Courses
-          </Badge>
-        </Col>
-      </Row>
+            Explore our comprehensive range of academic programs
+          </p>
+        </div>
+      </section>
 
-      {/* Course Grid */}
-      <Row className="g-4">
-        {filteredCourses.length > 0 ? (
-          filteredCourses.map((course) => (
-            <Col md={6} lg={4} key={course.id}>
-              <Card className="h-100 p-3">
-                <Card.Body className="d-flex flex-column">
-                  <div className="d-flex justify-content-between align-items-center mb-3">
-                    <Card.Title className="text-primary fw-bold mb-0">
-                      {course.title}
-                    </Card.Title>
-                    <FaGraduationCap className="fs-3 text-secondary-purple" />
-                  </div>
-                  <Badge
-                    bg="secondary-purple"
-                    className="mb-2 p-2"
-                    style={{ backgroundColor: "var(--secondary-purple)" }}
+      <section className="py-5">
+        <div className="container">
+          <div className="mb-4">
+            <div className="d-flex gap-2 flex-wrap justify-content-center">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  className={`course-badge ${
+                    selectedCategory === category
+                      ? "btn-gradient text-white"
+                      : "bg-light text-dark"
+                  }`}
+                  onClick={() => setSelectedCategory(category)}
+                  style={{ border: "none", cursor: "pointer" }}
+                >
+                  {category === "all" ? "All Courses" : category}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {loading ? (
+            <div className="text-center py-5">
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          ) : (
+            <div className="row g-4">
+              {filteredCourses.map((course, index) => (
+                <div key={course.id} className="col-md-6 col-lg-4">
+                  <div
+                    className="card border-0 shadow-sm card-hover h-100 fade-in-up"
+                    style={{
+                      borderRadius: "15px",
+                      animationDelay: `${index * 0.1}s`,
+                    }}
                   >
-                    {course.category}
-                  </Badge>
-                  <Card.Text className="text-muted flex-grow-1">
-                    {course.description}
-                  </Card.Text>
-                  <div className="mt-2 pt-3 border-top d-flex justify-content-between">
-                    <Badge bg="success" className="fs-6">
-                      Credits: {course.credits}
-                    </Badge>
-                    <Badge bg="warning" text="dark" className="fs-6">
-                      {course.level}
-                    </Badge>
+                    <div
+                      className="card-header border-0"
+                      style={{
+                        background:
+                          "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                        borderRadius: "15px 15px 0 0",
+                        padding: "20px",
+                      }}
+                    >
+                      <h5 className="card-title text-white fw-bold mb-0">
+                        {course.title}
+                      </h5>
+                    </div>
+                    <div className="card-body p-4">
+                      <div className="mb-3">
+                        <span
+                          className={`badge ${getLevelColor(
+                            course.level
+                          )} me-2`}
+                        >
+                          {course.level}
+                        </span>
+                        <span className="badge bg-light text-dark">
+                          {course.category}
+                        </span>
+                      </div>
+                      <p className="text-muted mb-3">{course.description}</p>
+                      <p className="mb-2">
+                        <strong>Instructor:</strong> {course.instructor}
+                      </p>
+                      <div className="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+                        <div className="d-flex align-items-center">
+                          <Clock size={18} className="me-2 text-primary" />
+                          <small>{course.duration}</small>
+                        </div>
+                        <div className="d-flex align-items-center">
+                          <Users size={18} className="me-2 text-primary" />
+                          <small>{course.students} students</small>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className="card-footer bg-white border-0 p-4"
+                      style={{ borderRadius: "0 0 15px 15px" }}
+                    >
+                      <button className="btn btn-gradient w-100">
+                        <BookOpen size={18} className="me-2" />
+                        Enroll Now
+                      </button>
+                    </div>
                   </div>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))
-        ) : (
-          <Col>
-            <p className="text-center text-muted fs-5">
-              No courses found in the selected category.
-            </p>
-          </Col>
-        )}
-      </Row>
-    </Container>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {filteredCourses.length === 0 && !loading && (
+            <div className="text-center py-5">
+              <p className="text-muted">No courses found in this category.</p>
+            </div>
+          )}
+        </div>
+      </section>
+    </div>
   );
 };
 
-// 🌟 THIS LINE IS CRUCIAL TO FIX YOUR ERROR 🌟
 export default Courses;
