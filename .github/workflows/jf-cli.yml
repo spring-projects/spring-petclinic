@@ -9,12 +9,11 @@ permissions:
   attestations: write
 env:
   JF_RT_URL: "https://${{vars.JF_NAME}}.jfrog.io"
-  BUILD_NAME: "spring-petclinic"
-  JAR_VERSION: "3.5.0-SNAPSHOT" # spring-petclinic-3.5.0-SNAPSHOT.jar
+  BUILD_NAME: "spring-petclinic" # spring-petclinic-3.5.0-SNAPSHOT.jar
   JOB_SUMMARY: false
   JFROG_CLI_LOG_LEVEL: DEBUG # DEBUG, INFO, WARN, ERROR
-  JAVA_PROVIDER: 'corretto'
-  JAVA_VERSION: '17'
+  JAVA_DISTRIBUTION: 'temurin'
+  JAVA_VERSION: '25'
   EVIDENCE_SPEC_JSON: 'evd-spec-info.json'  # ref https://jfrog.com/help/r/jfrog-artifactory-documentation/evidence-setup
   RBv2_SPEC_JSON: "rbv2-spec-info.json"
   #RBV2_SIGNING_KEY: "${{secrets.RBV2_SIGNING_KEY}}" # ref https://jfrog.com/help/r/jfrog-artifactory-documentation/create-signing-keys-for-release-bundles-v2
@@ -22,14 +21,6 @@ env:
 jobs:
   dockerPackage:
     name: "Docker"
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest]
-        java: [17]
-        include:
-          - language: ['java-kotlin']
-            build-mode: none 
     env:  
       BUILD_ID: "psj-dkr-${{github.run_number}}"
       RT_REPO_MVN_VIRTUAL: "springpetclinic-mvn-virtual"
@@ -45,7 +36,7 @@ jobs:
        run:
          working-directory: "${{env.DEFAULT_WORKSPACE}}"
 
-    runs-on: ${{matrix.os}}
+    runs-on: ubuntu-latest
     timeout-minutes: 30   # ref  https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idtimeout-minutes
     steps:
       # Use the specific setup-cli branch. Ref https://github.com/marketplace/actions/setup-jfrog-cli
@@ -66,11 +57,11 @@ jobs:
       - name: "Clone VCS"
         uses: actions/checkout@v4 # ref: https://github.com/actions/checkout
 
-      - name: "Java provider = ${{env.JAVA_PROVIDER}} with ver = ${{env.JAVA_VERSION}}"
+      - name: "setUp JDK provider = ${{env.JAVA_DISTRIBUTION}} with ver = ${{env.JAVA_VERSION}}"
         uses: actions/setup-java@v4   # ref https://github.com/actions/setup-java
         with:
-          distribution: ${{env.JAVA_PROVIDER}} # corretto
-          java-version: ${{env.JAVA_VERSION}}  # 17
+          distribution: ${{env.JAVA_DISTRIBUTION}} # temurin
+          java-version: ${{env.JAVA_VERSION}}  # 25
           cache: 'maven'
           cache-dependency-path: 'pom.xml'
 
@@ -131,7 +122,7 @@ jobs:
           echo "# :frog: :ship: Docker: Summary :pushpin:" >> $GITHUB_STEP_SUMMARY
           echo " " >> $GITHUB_STEP_SUMMARY
           echo " " >> $GITHUB_STEP_SUMMARY
-          echo " - Installed JFrog CLI [$(jf --version)](https://jfrog.com/getcli/) and Java [${{env.JAVA_PROVIDER}}](https://github.com/actions/setup-java) v${{env.JAVA_VERSION}} " >> $GITHUB_STEP_SUMMARY
+          echo " - Installed JFrog CLI [$(jf --version)](https://jfrog.com/getcli/) and Java [${{env.JAVA_DISTRIBUTION}}](https://github.com/actions/setup-java) v${{env.JAVA_VERSION}} " >> $GITHUB_STEP_SUMMARY
           echo "    - $(jf --version) " >> $GITHUB_STEP_SUMMARY
           echo "    - $(mvn -v) " >> $GITHUB_STEP_SUMMARY
           echo "    - $(docker -v) " >> $GITHUB_STEP_SUMMARY
@@ -686,25 +677,15 @@ jobs:
   
   mvnPackage:
     name: "MVN Package"
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest]
-        java: [17]
-        include:
-          - language: ['java-kotlin']
-            build-mode: none 
     env: 
       BUILD_ID: "psj-mvn-${{github.run_number}}"
-      JAVA_PROVIDER: 'corretto'
-      JAVA_VERSION: '17'
       RT_REPO_MVN_VIRTUAL: "springpetclinic-mvn-virtual"  
       RT_REPO_MVN_DEFAULT_LOCAL: "springpetclinic-mvn-snapshot-local"  # springpetclinic-mvn-dev-local, springpetclinic-mvn-qa-local, springpetclinic-mvn-prod-local
       RT_REPO_DEV_LOCAL: "springpetclinic-mvn-dev-local"
       RT_REPO_QA_LOCAL: "springpetclinic-mvn-qa-local"
       RT_REPO_PROD_LOCAL: "springpetclinic-mvn-prod-local"
 
-    runs-on: ${{matrix.os}}
+    runs-on: ubuntu-latest
     timeout-minutes: 30   # ref  https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idtimeout-minutes
     defaults:
        run:
@@ -727,11 +708,11 @@ jobs:
       - name: "Clone VCS"
         uses: actions/checkout@v4 # ref: https://github.com/actions/checkout
 
-      - name: "Java provider = ${{env.JAVA_PROVIDER}} with ver = ${{env.JAVA_VERSION}} "
+      - name: "setUp JDK provider = ${{env.JAVA_DISTRIBUTION}} with ver = ${{env.JAVA_VERSION}}"
         uses: actions/setup-java@v4   # ref https://github.com/actions/setup-java
         with:
-          distribution: ${{env.JAVA_PROVIDER}} # corretto
-          java-version: ${{env.JAVA_VERSION}}  # 17
+          distribution: ${{env.JAVA_DISTRIBUTION}} # temurin
+          java-version: ${{env.JAVA_VERSION}}  # 25
           cache: 'maven'
           cache-dependency-path: 'pom.xml'
 
@@ -1281,21 +1262,11 @@ jobs:
   # Gradle using Federated repositories        
   gradlePackage:
     name: "Gradle"
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest]
-        java: [17 ]
-        include:
-          - language: ['java-kotlin']
-            build-mode: none
     env:  
-      JAVA_PROVIDER: 'corretto'
-      JAVA_VERSION: '17'
       RT_REPO_GRADLE_VIRTUAL: 'springpetclinic-gradle-virtual'
       RT_REPO_GRADLE_DEFAULT_LOCAL: 'springpetclinic-gradle-snapshot-fed-local'  # springpetclinic-gradle-dev-fed-local
       BUILD_ID: "psj-gdl-${{github.run_number}}" 
-    runs-on: ${{matrix.os}}
+    runs-on: ubuntu-latest
     timeout-minutes: 20   # ref  https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idtimeout-minutes
     defaults:
        run:
@@ -1318,11 +1289,11 @@ jobs:
       - name: "Clone VCS"
         uses: actions/checkout@v4 # ref: https://github.com/actions/checkout
 
-      - name: "Java provider = ${{env.JAVA_PROVIDER}} with ver = ${{env.JAVA_VERSION}} "
+      - name: "setUp JDK provider = ${{env.JAVA_DISTRIBUTION}} with ver = ${{env.JAVA_VERSION}}"
         uses: actions/setup-java@v4   # ref https://github.com/actions/setup-java
         with:
-          distribution: ${{env.JAVA_PROVIDER}} # corretto
-          java-version: ${{env.JAVA_VERSION}}  # 17
+          distribution: ${{env.JAVA_DISTRIBUTION}} # temurin
+          java-version: ${{env.JAVA_VERSION}}  # 25
 
       - name: "Setup Gradle"    # ref https://docs.github.com/en/enterprise-cloud@latest/actions/use-cases-and-examples/building-and-testing/building-and-testing-java-with-gradle
         uses: gradle/actions/setup-gradle@v4 # v4.0.0
@@ -1356,7 +1327,7 @@ jobs:
           echo "# :frog: Gradle: Summary :pushpin:" >> $GITHUB_STEP_SUMMARY
           echo " " >> $GITHUB_STEP_SUMMARY
           echo " " >> $GITHUB_STEP_SUMMARY
-          echo " - Installed JFrog CLI [${jfcliv}](https://jfrog.com/getcli/) and Java [${{env.JAVA_PROVIDER}}](https://github.com/actions/setup-java) v${{env.JAVA_VERSION}} " >> $GITHUB_STEP_SUMMARY
+          echo " - Installed JFrog CLI [${jfcliv}](https://jfrog.com/getcli/) and Java [${{env.JAVA_DISTRIBUTION}}](https://github.com/actions/setup-java) v${{env.JAVA_VERSION}} " >> $GITHUB_STEP_SUMMARY
           echo "    - $(jf --version) " >> $GITHUB_STEP_SUMMARY
           # echo "    - $(gradle -v) " >> $GITHUB_STEP_SUMMARY
           echo " - Configured the JFrog Cli with SaaS Artifactory OIDC integration  " >> $GITHUB_STEP_SUMMARY
