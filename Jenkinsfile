@@ -13,6 +13,7 @@ pipeline {
     environment {
         MAVEN_OPTS = '-Xmx1024m'
         PROJECT_NAME = 'spring-petclinic'
+        SONAR_PROJECT_KEY = 'spring-petclinic'
     }
     
     stages {
@@ -48,6 +49,29 @@ pipeline {
                         sourcePattern: '**/src/main/java',
                         exclusionPattern: '**/*Test*.class'
                     )
+                }
+            }
+        }
+        
+        stage('SonarQube Analysis') {
+            steps {
+                echo 'Running SonarQube analysis...'
+                withSonarQubeEnv('SonarQubeServer') {
+                    sh """
+                        ./mvnw sonar:sonar \
+                          -Dsonar.projectKey=${env.SONAR_PROJECT_KEY} \
+                          -Dsonar.projectName=${env.PROJECT_NAME} \
+                          -Dsonar.projectVersion=${env.BUILD_NUMBER} \
+                          -Dsonar.qualitygate.wait=false
+                    """
+                }
+            }
+        }
+        
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
                 }
             }
         }
