@@ -775,6 +775,8 @@ jobs:
 
       - name: "Package: Create MVN Build"
         run: |     # -Djar.finalName=${{env.JAR_FINAL_NAME}} 
+          export MAVEN_OPTS="--add-opens jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED"
+          
           jf mvn clean install -DskipTests=true -Denforcer.skip=true -f pom.xml --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}}
 
       - name: "Package: Xray - mvn Artifact scan"
