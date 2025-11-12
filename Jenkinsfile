@@ -59,21 +59,27 @@ pipeline {
                 withSonarQubeEnv('SonarQubeServer') {
                     sh """
                         ./mvnw clean verify sonar:sonar \
-                          -Dsonar.projectKey=${env.SONAR_PROJECT_KEY} \
-                          -Dsonar.projectName=${env.PROJECT_NAME} \
-                          -Dsonar.projectVersion=${env.BUILD_NUMBER} 
+                        -Dsonar.projectKey=${env.SONAR_PROJECT_KEY} \
+                        -Dsonar.projectName='${env.PROJECT_NAME}' \
+                        -Dsonar.host.url=http://sonarqube:9000 \
+                        -Dsonar.login=${SONAR_AUTH_TOKEN} \
+                        -Dsonar.projectVersion=${env.BUILD_NUMBER}
                     """
                 }
             }
         }
-        
+
         stage('Quality Gate') {
             steps {
-                timeout(time: 15, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
+                script {
+                    timeout(time: 10, unit: 'MINUTES') {
+                        def qg = waitForQualityGate abortPipeline: true
+                        echo "Quality gate status: ${qg.status}"
+                    }
                 }
             }
         }
+
         
         stage('Code Quality') {
             steps {
