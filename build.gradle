@@ -1,7 +1,7 @@
 plugins {
   id 'java'
   id 'checkstyle'
-  id 'org.springframework.boot' version '4.0.0-M3'
+  id 'org.springframework.boot' version '4.0.0-RC2'
   id 'io.spring.dependency-management' version '1.1.7'
   id 'org.graalvm.buildtools.native' version '0.11.1'
   id 'org.cyclonedx.bom' version '3.0.0'
@@ -37,7 +37,7 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-cache'
   implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
   implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-  implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'org.springframework.boot:spring-boot-starter-webmvc'
   implementation 'org.springframework.boot:spring-boot-starter-validation'
   implementation 'javax.cache:cache-api'
   implementation 'jakarta.xml.bind:jakarta.xml.bind-api'
@@ -50,12 +50,13 @@ dependencies {
   runtimeOnly 'com.mysql:mysql-connector-j'
   runtimeOnly 'org.postgresql:postgresql'
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
-  testImplementation 'org.springframework.boot:spring-boot-starter-test'
-  testImplementation 'org.springframework.boot:spring-boot-starter-restclient'
+  testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
+  testImplementation 'org.springframework.boot:spring-boot-starter-restclient-test'
+  testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
   testImplementation 'org.springframework.boot:spring-boot-testcontainers'
   testImplementation 'org.springframework.boot:spring-boot-docker-compose'
-  testImplementation 'org.testcontainers:junit-jupiter'
-  testImplementation 'org.testcontainers:mysql'
+  testImplementation 'org.testcontainers:testcontainers-junit-jupiter'
+  testImplementation 'org.testcontainers:testcontainers-mysql'
   checkstyle "io.spring.javaformat:spring-javaformat-checkstyle:${springJavaformatCheckstyleVersion}"
   checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
   errorprone "com.google.errorprone:error_prone_core:${errorProneVersion}"
@@ -105,8 +106,3 @@ checkFormatAotTest.enabled = false
 
 formatAot.enabled = false
 formatAotTest.enabled = false
-
-wrapper {
-  gradleVersion = "8.14.3"
-  distributionType = Wrapper.DistributionType.ALL
-}
