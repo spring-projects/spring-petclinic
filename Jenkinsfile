@@ -61,6 +61,7 @@ pipeline {
                         ./mvnw clean verify sonar:sonar \
                         -Dspring.docker.compose.skip.in-tests=true \
                         -Dspring.profiles.active=default \
+                        -DskipTests \
                         -Dsonar.projectKey=${env.SONAR_PROJECT_KEY} \
                         -Dsonar.projectName='${env.PROJECT_NAME}' \
                         -Dsonar.host.url=http://sonarqube:9000 \
