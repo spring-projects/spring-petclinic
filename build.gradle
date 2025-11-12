@@ -106,8 +106,3 @@ checkFormatAotTest.enabled = false
 
 formatAot.enabled = false
 formatAotTest.enabled = false
-
-wrapper {
-  gradleVersion = "8.14.3"
-  distributionType = Wrapper.DistributionType.ALL
-}
