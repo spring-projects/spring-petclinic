@@ -73,6 +73,7 @@ pipeline {
         stage('Quality Gate') {
             steps {
                 echo 'Waiting for SonarQube quality gate result...'
+                sleep(15)  // Wait 15 seconds
                 timeout(time: 10, unit: 'MINUTES') {
                     script {
                         def qg = waitForQualityGate abortPipeline: true
