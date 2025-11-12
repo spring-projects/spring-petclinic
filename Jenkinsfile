@@ -59,21 +59,27 @@ pipeline {
                 withSonarQubeEnv('SonarQubeServer') {
                     sh """
                         ./mvnw clean verify sonar:sonar \
-                          -Dsonar.projectKey=${env.SONAR_PROJECT_KEY} \
-                          -Dsonar.projectName=${env.PROJECT_NAME} \
-                          -Dsonar.projectVersion=${env.BUILD_NUMBER} 
+                        -Dsonar.projectKey=${env.SONAR_PROJECT_KEY} \
+                        -Dsonar.projectName='${env.PROJECT_NAME}' \
+                        -Dsonar.projectVersion=${env.BUILD_NUMBER}\
+                        -DskipTests \
+                        -Dspring.docker.compose.skip.in-tests=true \
+                        -Dspring.profiles.active=default \
+                        -Dsonar.host.url=${SONAR_HOST_URL} \
+                        -Dsonar.token=${SONAR_AUTH_TOKEN} \
                     """
                 }
             }
         }
-        
+
         stage('Quality Gate') {
             steps {
-                timeout(time: 15, unit: 'MINUTES') {
+                timeout(time: 10, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
                 }
             }
         }
+
         
         stage('Code Quality') {
             steps {
