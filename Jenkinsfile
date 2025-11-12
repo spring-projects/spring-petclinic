@@ -38,7 +38,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Running tests with default profile (skip docker compose)...'
-                sh './mvnw clean verify -Dspring.docker.compose.skip.in-tests=true -Dspring.profiles.active=default -DskipITs'
+                sh './mvnw clean verify -Dspring.docker.compose.skip.in-tests=true -Dspring.profiles.active=default -DskipTests'
             }
             post {
                 always {
