@@ -37,7 +37,7 @@ pipeline {
         
         stage('Test') {
             steps {
-                echo 'Running tests...'
+                echo 'Running tests with default profile (skip docker compose)...'
                 sh './mvnw test'
             }
             post {
