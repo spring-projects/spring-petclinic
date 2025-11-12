@@ -37,8 +37,8 @@ pipeline {
         
         stage('Test') {
             steps {
-                echo 'Running tests...'
-                sh './mvnw test'
+                echo 'Running tests with default profile (skip docker compose)...'
+                sh './mvnw clean verify -Dspring.docker.compose.skip.in-tests=true -Dspring.profiles.active=default -DskipITs'
             }
             post {
                 always {
@@ -59,6 +59,8 @@ pipeline {
                 withSonarQubeEnv('SonarQubeServer') {
                     sh """
                         ./mvnw clean verify sonar:sonar \
+                        -Dspring.docker.compose.skip.in-tests=true \
+                        -Dspring.profiles.active=default \
                         -Dsonar.projectKey=${env.SONAR_PROJECT_KEY} \
                         -Dsonar.projectName='${env.PROJECT_NAME}' \
                         -Dsonar.host.url=http://sonarqube:9000 \
