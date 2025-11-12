@@ -37,7 +37,7 @@ pipeline {
         
         stage('Test') {
             steps {
-                echo 'Running tests with default profile (skip docker compose)...'
+                echo 'Running unit tests...'
                 sh './mvnw test'
             }
             post {
@@ -52,21 +52,19 @@ pipeline {
                 }
             }
         }
-        
+
         stage('SonarQube Analysis') {
             steps {
                 echo 'Running SonarQube analysis...'
                 withSonarQubeEnv('SonarQubeServer') {
                     sh """
                         ./mvnw clean verify sonar:sonar \
-                        -Dsonar.projectKey=${env.SONAR_PROJECT_KEY} \
-                        -Dsonar.projectName='${env.PROJECT_NAME}' \
-                        -Dsonar.projectVersion=${env.BUILD_NUMBER}\
                         -DskipTests \
-                        -Dspring.docker.compose.skip.in-tests=true \
-                        -Dspring.profiles.active=default \
-                        -Dsonar.host.url=${SONAR_HOST_URL} \
-                        -Dsonar.token=${SONAR_AUTH_TOKEN} \
+                        -Dsonar.projectKey=${env.SONAR_PROJECT_KEY} \
+                        -Dsonar.projectName=${env.PROJECT_NAME} \
+                        -Dsonar.projectVersion=${env.BUILD_NUMBER} \
+                        -Dsonar.host.url=http://localhost:9000 \
+                        -Dsonar.token=${SONAR_AUTH_TOKEN}
                     """
                 }
             }
@@ -74,16 +72,17 @@ pipeline {
 
         stage('Quality Gate') {
             steps {
+                echo 'Waiting for SonarQube quality gate result...'
                 timeout(time: 10, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
+                    def qg = waitForQualityGate abortPipeline: true
+                    echo "Quality gate status: ${qg.status}"
                 }
             }
         }
 
-        
         stage('Code Quality') {
             steps {
-                echo 'Running checkstyle...'
+                echo 'Running Checkstyle analysis...'
                 sh './mvnw checkstyle:checkstyle'
             }
             post {
@@ -95,7 +94,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Package') {
             steps {
                 echo 'Packaging application...'
