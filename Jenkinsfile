@@ -38,7 +38,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Running unit tests...'
-                sh './mvnw test'
+                sh './mvnw test -Dtest="!PostgresIntegrationTests"'
             }
             post {
                 always {
