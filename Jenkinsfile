@@ -58,7 +58,7 @@ pipeline {
                 echo 'Running SonarQube analysis...'
                 withSonarQubeEnv('SonarQubeServer') {
                     sh """
-                        ./mvnw sonar:sonar \
+                        ./mvnw clean verify sonar:sonar \
                           -Dsonar.projectKey=${env.SONAR_PROJECT_KEY} \
                           -Dsonar.projectName=${env.PROJECT_NAME} \
                           -Dsonar.projectVersion=${env.BUILD_NUMBER} \
