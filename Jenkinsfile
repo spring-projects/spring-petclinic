@@ -64,7 +64,7 @@ pipeline {
                         -DskipTests \
                         -Dsonar.projectKey=${env.SONAR_PROJECT_KEY} \
                         -Dsonar.projectName='${env.PROJECT_NAME}' \
-                        -Dsonar.host.url=http://sonarqube:9000 \
+                        -Dsonar.host.url=${SONAR_HOST_URL} \
                         -Dsonar.login=${SONAR_AUTH_TOKEN} \
                         -Dsonar.projectVersion=${env.BUILD_NUMBER}
                     """
