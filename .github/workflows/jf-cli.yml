@@ -788,7 +788,6 @@ jobs:
           ARTIFACT_DIGEST=$(sha256sum target/spring-petclinic-*.jar | awk '{print "sha256:"$1}')
           echo "artifact_digest=$ARTIFACT_DIGEST" >> $GITHUB_OUTPUT
 
-
       - name: "Evidence: Build Info"
         # continue-on-error: true 
         env:
@@ -805,6 +804,18 @@ jobs:
           cat ./${{env.EVD_JSON}}
           jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVD_JSON}} --predicate-type https://cyclonedx.org/bom/v1.4 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
           
+      - name: "Evidence: Test Results"
+        continue-on-error: true 
+        env:
+          PY_SCRIPT: "jfrog/convert/convert_surefire_to_json.py"
+          EVD_JSON: "target/surefire-reports/test-results.json"      # https://jfrog.com/evidence/signature/v1
+        run: |
+          jf mvn test -Denforcer.skip=true
+
+          python3 ./${{env.PY_SCRIPT}} ./${{env.EVD_JSON}}
+
+          cat ./${{env.EVD_JSON}}
+          jf evd create --build-name ${{env.BUILD_NAME}} --build-number ${{env.BUILD_ID}} --predicate ./${{env.EVD_JSON}} --predicate-type https://jfrog.com/evidence/test-results/v1 --key "${{secrets.KRISHNAM_JFROG_EVD_PRIVATEKEY}}" --key-alias ${{secrets.EVIDENCE_KEY_ALIAS}}
 
       # - name: "Evidence: Build Publish"
       #   # continue-on-error: true 
