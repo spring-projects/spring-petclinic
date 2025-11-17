@@ -47,17 +47,18 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                dir('backend') {
+                dir('.') {   // <-- use root directory
                     sh """
-                        mvn sonar:sonar \
-                          -Dsonar.projectKey=RhitaKhadijaAssia_spring-petclinic \
-                          -Dsonar.organization=rhitakhadijaassia \
-                          -Dsonar.host.url=${SONAR_HOST} \
-                          -Dsonar.login=${SONAR_TOKEN}
+                        ./mvnw sonar:sonar \
+                        -Dsonar.projectKey=RhitaKhadijaAssia_spring-petclinic \
+                        -Dsonar.organization=rhitakhadijaassia \
+                        -Dsonar.host.url=${SONAR_HOST} \
+                        -Dsonar.login=${SONAR_TOKEN}
                     """
                 }
             }
         }
+
 
         /***stage('Build Docker on remote machine') {
             steps {
