@@ -1,4 +1,15 @@
 services:
+  app:
+    image: lilitaa/pet-clinic   
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/petclinic
+      SPRING_DATASOURCE_USERNAME: petclinic
+      SPRING_DATASOURCE_PASSWORD: petclinic
+    depends_on:
+      - postgres
+
   mysql:
     image: mysql:9.2
     ports:
