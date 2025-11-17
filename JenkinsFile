@@ -31,7 +31,7 @@ pipeline {
                     sh ''' 
                         echo "JAVA_HOME=$JAVA_HOME"
                         java -version
-                        mvn -B -U clean verify -Dspring-javaformat.skip
+                        ./mvnw -B -U clean verify -Dspring-javaformat.skip
                     '''
                 }
             }
@@ -39,7 +39,7 @@ pipeline {
                 
                 always {
                     junit allowEmptyResults: true, testResults: 'backend/target/surefire-reports/*.xml'
-                    archiveArtifacts artifacts: 'backend/target/*.jar', fingerprint: true
+                    archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
                 }
             }
         }
