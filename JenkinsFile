@@ -7,7 +7,7 @@ pipeline {
     }
 
     environment {
-        SONAR_TOKEN = credentials('edf40d2f41d32dc9a7e0a42cb45aa683e645760c')
+        SONAR_TOKEN = credentials('01')
         SONAR_HOST  = 'https://sonarcloud.io'
         IMAGE       = 'spring-petclinic'
         TAG         = 'latest'
