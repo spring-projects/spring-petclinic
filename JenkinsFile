@@ -11,7 +11,7 @@ pipeline {
         SONAR_HOST  = 'https://sonarcloud.io'
         IMAGE       = 'spring-petclinic'
         TAG         = 'latest'
-        DOCKER_HOST = "tcp://10.52.81.17:2375"   // << Nouveau
+        DOCKER_HOST = "tcp://10.52.81.17:2375"   
     }
 
     stages {
@@ -25,7 +25,7 @@ pipeline {
         stage('Build & Unit Tests') {
             steps {
                 dir('backend') {
-                    bat 'mvn -B -U clean verify'
+                    sh 'mvn -B -U clean verify'
                 }
             }
             post {
@@ -39,10 +39,10 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 dir('backend') {
-                    bat """
+                    sh """
                         mvn sonar:sonar ^
-                          -Dsonar.projectKey=resevation_devices ^
-                          -Dsonar.organization=TON_ORGANISATION ^
+                          -Dsonar.projectKey=RhitaKhadijaAssia_spring-petclinic ^
+                          -Dsonar.organization=rhitakhadijaassia ^
                           -Dsonar.host.url=%SONAR_HOST% ^
                           -Dsonar.login=%SONAR_TOKEN%
                     """
@@ -53,7 +53,7 @@ pipeline {
         stage('Build Docker on remote machine') {
             steps {
                 dir('backend') {
-                    bat """
+                    sh """
                         docker -H %DOCKER_HOST% build -t %IMAGE%:%TAG% .
                     """
                 }
@@ -62,7 +62,7 @@ pipeline {
 
         stage('Run Docker on remote machine') {
             steps {
-                bat """
+                sh """
                     docker -H %DOCKER_HOST% stop %IMAGE% || exit 0
                     docker -H %DOCKER_HOST% rm %IMAGE% || exit 0
                     docker -H %DOCKER_HOST% run -d -p 8080:8080 --name %IMAGE% %IMAGE%:%TAG%
