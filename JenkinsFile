@@ -7,6 +7,8 @@ pipeline {
     }
 
     environment {
+        JAVA_HOME = '/Users/mac/Library/Java/JavaVirtualMachines/ms-17.0.16/Contents/Home'
+        PATH = "${JAVA_HOME}/bin:${env.PATH}"
         SONAR_TOKEN = credentials('01')
         SONAR_HOST  = 'https://sonarcloud.io'
         IMAGE       = 'spring-petclinic'
@@ -25,13 +27,11 @@ pipeline {
         stage('Build & Unit Tests') {
             steps {
                 dir('backend') {
-                    // Debug pour vérifier JAVA_HOME et Maven
-                    sh 'echo JAVA_HOME=$JAVA_HOME'
-                    sh 'java -version'
-                    sh 'mvn -version'
-
-                    // Build Maven
-                    sh 'mvn -B -U clean verify'
+                    sh '''
+                        echo "JAVA_HOME=$JAVA_HOME"
+                        java -version
+                        mvn -B -U clean verify
+                    '''
                 }
             }
             post {
@@ -41,6 +41,7 @@ pipeline {
                 }
             }
         }
+
 
         stage('SonarQube Analysis') {
             steps {
