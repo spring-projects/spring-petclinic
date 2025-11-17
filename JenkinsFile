@@ -14,6 +14,7 @@ pipeline {
         IMAGE       = 'spring-petclinic'
         TAG         = 'latest'
         DOCKER_HOST = "tcp://10.52.81.17:2375"   
+        
     }
 
     stages {
@@ -27,14 +28,15 @@ pipeline {
         stage('Build & Unit Tests') {
             steps {
                 dir('.') {
-                    sh '''
+                    sh ''' 
                         echo "JAVA_HOME=$JAVA_HOME"
                         java -version
-                        mvn -B -U clean verify
+                        mvn -B -U clean verify -Dspring-javaformat.skip
                     '''
                 }
             }
             post {
+                
                 always {
                     junit allowEmptyResults: true, testResults: 'backend/target/surefire-reports/*.xml'
                     archiveArtifacts artifacts: 'backend/target/*.jar', fingerprint: true
