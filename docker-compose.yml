@@ -1,6 +1,6 @@
 services:
   app:
-    image: lilitaa/pet-clinic   
+    image: lilitaa/my-java-app 
     ports:
       - "8080:8080"
     environment:
