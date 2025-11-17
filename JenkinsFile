@@ -45,7 +45,7 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                dir('backend') {
+                dir('.') {
                     sh """
                         mvn sonar:sonar \
                           -Dsonar.projectKey=RhitaKhadijaAssia_spring-petclinic \
