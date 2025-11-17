@@ -25,6 +25,12 @@ pipeline {
         stage('Build & Unit Tests') {
             steps {
                 dir('backend') {
+                    // Debug pour vérifier JAVA_HOME et Maven
+                    sh 'echo JAVA_HOME=$JAVA_HOME'
+                    sh 'java -version'
+                    sh 'mvn -version'
+
+                    // Build Maven
                     sh 'mvn -B -U clean verify'
                 }
             }
@@ -40,11 +46,11 @@ pipeline {
             steps {
                 dir('backend') {
                     sh """
-                        mvn sonar:sonar ^
-                          -Dsonar.projectKey=RhitaKhadijaAssia_spring-petclinic ^
-                          -Dsonar.organization=rhitakhadijaassia ^
-                          -Dsonar.host.url=%SONAR_HOST% ^
-                          -Dsonar.login=%SONAR_TOKEN%
+                        mvn sonar:sonar \
+                          -Dsonar.projectKey=RhitaKhadijaAssia_spring-petclinic \
+                          -Dsonar.organization=rhitakhadijaassia \
+                          -Dsonar.host.url=${SONAR_HOST} \
+                          -Dsonar.login=${SONAR_TOKEN}
                     """
                 }
             }
@@ -53,9 +59,7 @@ pipeline {
         stage('Build Docker on remote machine') {
             steps {
                 dir('backend') {
-                    sh """
-                        docker -H %DOCKER_HOST% build -t %IMAGE%:%TAG% .
-                    """
+                    sh "docker -H ${DOCKER_HOST} build -t ${IMAGE}:${TAG} ."
                 }
             }
         }
@@ -63,9 +67,9 @@ pipeline {
         stage('Run Docker on remote machine') {
             steps {
                 sh """
-                    docker -H %DOCKER_HOST% stop %IMAGE% || exit 0
-                    docker -H %DOCKER_HOST% rm %IMAGE% || exit 0
-                    docker -H %DOCKER_HOST% run -d -p 8080:8080 --name %IMAGE% %IMAGE%:%TAG%
+                    docker -H ${DOCKER_HOST} stop ${IMAGE} || true
+                    docker -H ${DOCKER_HOST} rm ${IMAGE} || true
+                    docker -H ${DOCKER_HOST} run -d -p 8080:8080 --name ${IMAGE} ${IMAGE}:${TAG}
                 """
             }
         }
