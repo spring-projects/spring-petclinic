@@ -26,7 +26,7 @@ pipeline {
 
         stage('Build & Unit Tests') {
             steps {
-                dir('backend') {
+                dir('.') {
                     sh '''
                         echo "JAVA_HOME=$JAVA_HOME"
                         java -version
@@ -45,7 +45,7 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                dir('.') {
+                dir('backend') {
                     sh """
                         mvn sonar:sonar \
                           -Dsonar.projectKey=RhitaKhadijaAssia_spring-petclinic \
