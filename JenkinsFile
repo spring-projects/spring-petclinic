@@ -1,0 +1,78 @@
+pipeline {
+    agent any
+
+    tools {
+        jdk 'jdk17'
+        maven 'maven'
+    }
+
+    environment {
+        SONAR_TOKEN = credentials('edf40d2f41d32dc9a7e0a42cb45aa683e645760c')
+        SONAR_HOST  = 'https://sonarcloud.io'
+        IMAGE       = 'spring-petclinic'
+        TAG         = 'latest'
+        DOCKER_HOST = "tcp://10.52.81.17:2375"   // << Nouveau
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/RhitaKhadijaAssia/spring-petclinic'
+            }
+        }
+
+        stage('Build & Unit Tests') {
+            steps {
+                dir('backend') {
+                    bat 'mvn -B -U clean verify'
+                }
+            }
+            post {
+                always {
+                    junit allowEmptyResults: true, testResults: 'backend/target/surefire-reports/*.xml'
+                    archiveArtifacts artifacts: 'backend/target/*.jar', fingerprint: true
+                }
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                dir('backend') {
+                    bat """
+                        mvn sonar:sonar ^
+                          -Dsonar.projectKey=resevation_devices ^
+                          -Dsonar.organization=TON_ORGANISATION ^
+                          -Dsonar.host.url=%SONAR_HOST% ^
+                          -Dsonar.login=%SONAR_TOKEN%
+                    """
+                }
+            }
+        }
+
+        stage('Build Docker on remote machine') {
+            steps {
+                dir('backend') {
+                    bat """
+                        docker -H %DOCKER_HOST% build -t %IMAGE%:%TAG% .
+                    """
+                }
+            }
+        }
+
+        stage('Run Docker on remote machine') {
+            steps {
+                bat """
+                    docker -H %DOCKER_HOST% stop %IMAGE% || exit 0
+                    docker -H %DOCKER_HOST% rm %IMAGE% || exit 0
+                    docker -H %DOCKER_HOST% run -d -p 8080:8080 --name %IMAGE% %IMAGE%:%TAG%
+                """
+            }
+        }
+    }
+
+    post {
+        success { echo "Pipeline OK → Docker lancé sur la machine distante" }
+        failure { echo "Pipeline KO" }
+    }
+}
