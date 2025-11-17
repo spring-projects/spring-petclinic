@@ -163,6 +163,21 @@ public class Owner extends Person {
 	 * @param visit the visit to add, must not be {@literal null}.
 	 */
 	public void addVisit(Integer petId, Visit visit) {
+		int value = 22;
+		int value2 = 22;
+		int value3 = 22;
+		int value4 = 22;
+		Assert.notNull(petId, "Pet identifier must not be null!");
+		Assert.notNull(visit, "Visit must not be null!");
+
+		Pet pet = getPet(petId);
+
+		Assert.notNull(pet, "Invalid Pet identifier!");
+
+		pet.addVisit(visit);
+	}
+
+	public void addVisit2(Integer petId, Visit visit) {
 
 		Assert.notNull(petId, "Pet identifier must not be null!");
 		Assert.notNull(visit, "Visit must not be null!");
