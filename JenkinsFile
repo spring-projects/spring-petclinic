@@ -57,7 +57,7 @@ pipeline {
             }
         }
 
-        stage('Build Docker on remote machine') {
+        /***stage('Build Docker on remote machine') {
             steps {
                 dir('backend') {
                     sh "docker -H ${DOCKER_HOST} build -t ${IMAGE}:${TAG} ."
@@ -73,7 +73,7 @@ pipeline {
                     docker -H ${DOCKER_HOST} run -d -p 8080:8080 --name ${IMAGE} ${IMAGE}:${TAG}
                 """
             }
-        }
+        }**/
     }
 
     post {
