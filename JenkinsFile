@@ -48,13 +48,14 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 dir('.') {   // <-- use root directory
-                    sh """
-                        ./mvnw sonar:sonar \
-                        -Dsonar.projectKey=RhitaKhadijaAssia_spring-petclinic \
-                        -Dsonar.organization=rhitakhadijaassia \
-                        -Dsonar.host.url=${SONAR_HOST} \
-                        -Dsonar.login=${SONAR_TOKEN}
-                    """
+                    withCredentials([string(credentialsId: '01', variable: 'SONAR_TOKEN')]) {
+                        sh """./mvnw sonar:sonar \
+                            -Dsonar.projectKey=RhitaKhadijaAssia_spring-petclinic \
+                            -Dsonar.organization=rhitakhadijaassia \
+                            -Dsonar.host.url=${SONAR_HOST} \
+                            -Dsonar.login=${SONAR_TOKEN}"""
+                    }
+
                 }
             }
         }
