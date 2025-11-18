@@ -1,0 +1,15 @@
+/target
+/build
+/.mvn/wrapper/maven-wrapper.jar
+/.idea
+/.vscode
+/.git
+/.gitignore
+README.md
+LICENSE.txt
+docker-compose.yml
+k8s
+node_modules
+*.iml
+*.log
+
