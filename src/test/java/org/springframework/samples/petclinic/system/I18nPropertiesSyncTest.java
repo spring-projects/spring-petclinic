@@ -3,7 +3,8 @@ package org.springframework.samples.petclinic.system;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +39,7 @@ public class I18nPropertiesSyncTest {
 
 	@Test
 	public void checkNonInternationalizedStrings() throws IOException {
-		Path root = Paths.get("src/main");
+		Path root = Path.of("src/main");
 		List<Path> files;
 
 		try (Stream<Path> stream = Files.walk(root)) {
@@ -85,7 +86,7 @@ public class I18nPropertiesSyncTest {
 	@Test
 	public void checkI18nPropertyFilesAreInSync() throws IOException {
 		List<Path> propertyFiles;
-		try (Stream<Path> stream = Files.walk(Paths.get(I18N_DIR))) {
+		try (Stream<Path> stream = Files.walk(Path.of(I18N_DIR))) {
 			propertyFiles = stream.filter(p -> p.getFileName().toString().startsWith(BASE_NAME))
 				.filter(p -> p.getFileName().toString().endsWith(PROPERTIES))
 				.toList();
