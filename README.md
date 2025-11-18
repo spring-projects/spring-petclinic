@@ -1,4 +1,4 @@
-# Spring PetClinic Sample Application [![Build Status](https://github.com/spring-projects/spring-petclinic/actions/workflows/maven-build.yml/badge.svg)](https://github.com/spring-projects/spring-petclinic/actions/workflows/maven-build.yml)[![Build Status](https://github.com/spring-projects/spring-petclinic/actions/workflows/gradle-build.yml/badge.svg)](https://github.com/spring-projects/spring-petclinic/actions/workflows/gradle-build.yml)
+# Spring PetClinic Sample Application [![Build Status](https://github.com/spring-projects/spring-petclinic/actions/workflows/maven-build.yml/badge.svg)](https://github.com/spring-projects/spring-petclinic/actions/workflows/maven-build.yml)[![Build Status](https://github.com/spring-projects/spring-petclinic/actions/workflows/gradle-build.yml/badge.svg)](https://github.com/spring-projects/spring-petclinic/actions/workflows/gradle-build.yml)[![Container Build Status](https://github.com/spring-projects/spring-petclinic/actions/workflows/container-build.yml/badge.svg)](https://github.com/spring-projects/spring-petclinic/actions/workflows/container-build.yml)
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/spring-projects/spring-petclinic) [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=7517918)
 
@@ -37,13 +37,41 @@ Or you can run it from Maven directly using the Spring Boot Maven plugin. If you
 
 > NOTE: If you prefer to use Gradle, you can build the app using `./gradlew build` and look for the jar file in `build/libs`.
 
-## Building a Container
+## Containerized Deployment
 
-There is no `Dockerfile` in this project. You can build a container image (if you have a docker daemon) using the Spring Boot build plugin:
+Spring PetClinic now ships with a first-class Dockerfile and Compose stack.
+
+### Build a local image
 
 ```bash
-./mvnw spring-boot:build-image
+docker build -t spring-petclinic .
+docker run --rm -p 8080:8080 \
+  -e SPRING_PROFILES_ACTIVE=mysql \
+  -e SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/petclinic?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC \
+  -e SPRING_DATASOURCE_USERNAME=petclinic \
+  -e SPRING_DATASOURCE_PASSWORD=petclinic \
+  spring-petclinic
 ```
+
+### Run the full stack with Docker Compose
+
+```bash
+docker compose up --build
+```
+
+The default profile uses the MySQL service declared in `docker-compose.yml`. To stop the stack run `docker compose down`.
+
+To switch to PostgreSQL, enable the `postgres` profile and override the datasource values:
+
+```bash
+SPRING_PROFILES_ACTIVE=postgres \
+SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/petclinic \
+docker compose --profile postgres up --build
+```
+
+## Continuous Integration and Deployment
+
+The repository now includes a `Container Build and Publish` workflow that complements the existing Maven and Gradle pipelines. Every push and pull request triggers unit and integration tests via Maven and builds a container image using Docker Buildx. Successful builds on `main` automatically publish a `ghcr.io/<owner>/spring-petclinic:latest` container image using the repository `GITHUB_TOKEN`.
 
 ## In case you find a bug/suggested improvement for Spring Petclinic
 
@@ -72,17 +100,7 @@ docker run -e POSTGRES_USER=petclinic -e POSTGRES_PASSWORD=petclinic -e POSTGRES
 Further documentation is provided for [MySQL](https://github.com/spring-projects/spring-petclinic/blob/main/src/main/resources/db/mysql/petclinic_db_setup_mysql.txt)
 and [PostgreSQL](https://github.com/spring-projects/spring-petclinic/blob/main/src/main/resources/db/postgres/petclinic_db_setup_postgres.txt).
 
-Instead of vanilla `docker` you can also use the provided `docker-compose.yml` file to start the database containers. Each one has a service named after the Spring profile:
-
-```bash
-docker compose up mysql
-```
-
-or
-
-```bash
-docker compose up postgres
-```
+Instead of vanilla `docker` you can also rely on the provided `docker-compose.yml` file to start both the application and database containers together as shown above.
 
 ## Test Applications
 
