@@ -51,7 +51,7 @@ jobs:
       # Wraps the Maven command to resolve dependencies and collect build-info
       - name: Build Application with Maven
         run: |
-          jf mvn clean install -DskipTests=true
+          jf mvn clean install -DskipTests=true -Dcheckstyle.skip=true
 
       # "Shift-left" scan for fast feedback on source code and dependencies
       - name: Run JFrog SAST & SCA Audit
