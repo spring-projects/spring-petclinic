@@ -1,0 +1,12 @@
+{
+  "name": "vulnerability-demo",
+  "version": "1.0.0",
+  "description": "Demo project to showcase vulnerability detection and remediation",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "lodash": "4.17.19"
+  }
+}

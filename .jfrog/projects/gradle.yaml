@@ -1,0 +1,13 @@
+version: 1
+type: gradle
+resolver:
+    repo: jesseh-npm-dev-virtual
+    serverId: soleng
+deployer:
+    repo: jesseh-npm-dev-virtual
+    serverId: soleng
+    deployMavenDescriptors: true
+    deployIvyDescriptors: true
+    ivyPattern: '[organization]/[module]/ivy-[revision].xml'
+    artifactPattern: '[organization]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]'
+useWrapper: true

@@ -1,0 +1,8 @@
+version: 1
+type: npm
+resolver:
+    repo: jesseh-npm-dev-virtual
+    serverId: soleng
+deployer:
+    repo: jesseh-npm-dev-virtual
+    serverId: soleng
