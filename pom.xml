@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>4.0.0-RC2</version>
+    <version>4.0.0</version>
     <relativePath></relativePath>
   </parent>
 
@@ -19,20 +19,19 @@
 
     <!-- Generic properties -->
     <java.version>25</java.version>
-    <maven.compiler.release>17</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <!-- Important for reproducible builds. Update using e.g. ./mvnw versions:set -DnewVersion=... -->
-    <project.build.outputTimestamp>2024-11-28T14:37:52Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2025-11-22T16:15:42Z</project.build.outputTimestamp>
 
     <!-- Web dependencies -->
-    <webjars-locator.version>1.1.1</webjars-locator.version>
+    <webjars-locator.version>1.1.2</webjars-locator.version>
     <webjars-bootstrap.version>5.3.8</webjars-bootstrap.version>
     <webjars-font-awesome.version>4.7.0</webjars-font-awesome.version>
 
-    <checkstyle.version>11.1.0</checkstyle.version>
+    <checkstyle.version>12.1.2</checkstyle.version>
     <error-prone.version>2.42.0</error-prone.version>
-    <jacoco.version>0.8.13</jacoco.version>
+    <jacoco.version>0.8.14</jacoco.version>
     <libsass.version>0.3.4</libsass.version>
     <lifecycle-mapping>1.0.0</lifecycle-mapping>
     <maven-checkstyle.version>3.6.0</maven-checkstyle.version>
@@ -290,10 +289,10 @@
         <executions>
           <execution>
             <id>default-compile</id>
-            <phase>compile</phase>
             <goals>
               <goal>compile</goal>
             </goals>
+            <phase>compile</phase>
             <configuration>
               <compilerArgs>
                 <arg>-XDcompilePolicy=simple</arg>
