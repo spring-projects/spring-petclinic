@@ -35,7 +35,7 @@ pipeline {
         stage('Build (Java 25)') {
             agent {
                 docker {
-                    image 'maven:3.9.5-eclipse-temurin-25'
+                    image 'maven-java25:latest'
                     args "${DOCKER_ARGS}"
                 }
             }
@@ -53,7 +53,7 @@ pipeline {
         stage('Test (Java 25)') {
             agent {
                 docker {
-                    image 'maven:3.9.5-eclipse-temurin-25'
+                    image 'maven-java25:latest'
                     args "${DOCKER_ARGS}"
                 }
             }
@@ -81,7 +81,7 @@ pipeline {
         stage('SonarQube Analysis (Java 25)') {
             agent {
                 docker {
-                    image 'maven:3.9.5-eclipse-temurin-25'
+                    image 'maven-java25:latest'
                     args "${DOCKER_ARGS}"
                 }
             }
@@ -124,7 +124,7 @@ pipeline {
         stage('Checkstyle (Java 25)') {
             agent {
                 docker {
-                    image 'maven:3.9.5-eclipse-temurin-25'
+                    image 'maven-java25:latest'
                     args "${DOCKER_ARGS}"
                 }
             }
@@ -149,7 +149,7 @@ pipeline {
         stage('Package (Java 25)') {
             agent {
                 docker {
-                    image 'maven:3.9.5-eclipse-temurin-25'
+                    image 'maven-java25:latest'
                     args "${DOCKER_ARGS}"
                 }
             }

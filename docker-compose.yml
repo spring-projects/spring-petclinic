@@ -1,6 +1,8 @@
 services:
   jenkins:
-    image: jenkins/jenkins:lts-jdk17-dind
+    build:
+      context: .
+      dockerfile: Dockerfile.jenkins
     user: root
     container_name: jenkins
     privileged: true
@@ -88,6 +90,16 @@ services:
     container_name: petclinic
     ports:
       - "8081:8080"
+    networks:
+      - devops-net
+
+  maven-java25:
+    build:
+      context: .
+      dockerfile: Dockerfile.maven-java25
+    image: maven-java25:latest
+    container_name: maven-java25-builder
+    command: ["tail", "-f", "/dev/null"]
     networks:
       - devops-net
 
