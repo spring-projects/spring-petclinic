@@ -1,8 +1,9 @@
 services:
   jenkins:
-    image: jenkins/jenkins:lts-jdk17
+    image: jenkins/jenkins:lts-jdk17-dind
     user: root
     container_name: jenkins
+    privileged: true
     ports:
       - "8082:8080"
       - "50000:50000"

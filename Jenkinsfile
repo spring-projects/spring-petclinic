@@ -1,23 +1,23 @@
 pipeline {
+
     agent any
-    
-    tools {
-        maven 'Maven 3.9.5'
-        jdk 'JDK 25'
-    }
-    
+
     triggers {
-        pollSCM('H/5 * * * *')
+        pollSCM('* * * * *')  
     }
-    
+
     environment {
         MAVEN_OPTS = '-Xmx1024m'
         PROJECT_NAME = 'spring-petclinic'
         SONAR_PROJECT_KEY = 'spring-petclinic'
+        DOCKER_ARGS = '-v /var/run/docker.sock:/var/run/docker.sock'
     }
-    
+
     stages {
 
+        /*********************************************
+         * Checkout code
+         *********************************************/
         stage('Checkout') {
             steps {
                 echo 'Checking out code...'
@@ -30,112 +30,159 @@ pipeline {
         }
 
         /*********************************************
-         * All Maven steps must run using Java 25 Docker
+         * Build using Java 25
          *********************************************/
-        stage('Build + Test + Sonar Preparation (Java 25)') {
+        stage('Build (Java 25)') {
             agent {
                 docker {
                     image 'maven:3.9.5-eclipse-temurin-25'
-                    args '-v /var/run/docker.sock:/var/run/docker.sock'
+                    args "${DOCKER_ARGS}"
                 }
             }
-            stages {
-                stage('Build') {
-                    steps {
-                        echo 'Building project...'
-                        sh './mvnw clean compile -DskipTests'
-                    }
-                }
+            steps {
+                echo 'Building project with Java 25...'
+                sh 'chmod +x mvnw'
+                sh './mvnw clean compile -DskipTests'
+            }
+        }
 
-                stage('Test') {
-                    steps {
-                        echo 'Running unit tests...'
-                        sh './mvnw test -Dtest="!PostgresIntegrationTests"'
-                    }
-                    post {
-                        always {
-                            junit testResults: '**/target/surefire-reports/*.xml', allowEmptyResults: true
-                            jacoco(
-                                execPattern: '**/target/jacoco.exec',
-                                classPattern: '**/target/classes',
-                                sourcePattern: '**/src/main/java',
-                                exclusionPattern: '**/*Test*.class'
-                            )
-                        }
-                    }
-                }
 
-                stage('SonarQube Analysis') {
-                    steps {
-                        echo 'Running SonarQube analysis...'
-                        withSonarQubeEnv('SonarQubeServer') {
-                            sh """
-                                ./mvnw clean verify sonar:sonar \
-                                -DskipTests \
-                                -Dsonar.projectKey=${env.SONAR_PROJECT_KEY} \
-                                -Dsonar.projectName=${env.PROJECT_NAME} \
-                                -Dsonar.projectVersion=${env.BUILD_NUMBER} \
-                                -Dsonar.host.url=http://sonarqube:9000 \
-                                -Dsonar.token=${SONAR_AUTH_TOKEN}
-                            """
-                        }
-                    }
+        /*********************************************
+         * Unit Tests
+         *********************************************/
+        stage('Test (Java 25)') {
+            agent {
+                docker {
+                    image 'maven:3.9.5-eclipse-temurin-25'
+                    args "${DOCKER_ARGS}"
                 }
-
-                stage('Quality Gate') {
-                    steps {
-                        echo 'Waiting for SonarQube quality gate result...'
-                        sleep(15)
-                        timeout(time: 10, unit: 'MINUTES') {
-                            script {
-                                def qg = waitForQualityGate abortPipeline: true
-                                echo "Quality gate status: ${qg.status}"
-                            }
-                        }
-                    }
+            }
+            steps {
+                echo 'Running unit tests...'
+                sh './mvnw test -Dtest="!PostgresIntegrationTests"'
+            }
+            post {
+                always {
+                    junit testResults: '**/target/surefire-reports/*.xml', allowEmptyResults: true
+                    jacoco(
+                        execPattern: '**/target/jacoco.exec',
+                        classPattern: '**/target/classes',
+                        sourcePattern: '**/src/main/java',
+                        exclusionPattern: '**/*Test*.class'
+                    )
                 }
+            }
+        }
 
-                stage('Code Quality') {
-                    steps {
-                        echo 'Running Checkstyle analysis...'
-                        sh './mvnw checkstyle:checkstyle'
-                    }
-                    post {
-                        always {
-                            recordIssues(
-                                enabledForFailure: true,
-                                tool: checkStyle(pattern: '**/target/checkstyle-result.xml')
-                            )
-                        }
-                    }
+
+        /*********************************************
+         * SonarQube Analysis
+         *********************************************/
+        stage('SonarQube Analysis (Java 25)') {
+            agent {
+                docker {
+                    image 'maven:3.9.5-eclipse-temurin-25'
+                    args "${DOCKER_ARGS}"
                 }
+            }
+            steps {
+                echo 'Running SonarQube analysis...'
+                withSonarQubeEnv('SonarQubeServer') {
+                    sh """
+                        ./mvnw clean verify sonar:sonar \
+                        -DskipTests \
+                        -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
+                        -Dsonar.projectName=${PROJECT_NAME} \
+                        -Dsonar.projectVersion=${BUILD_NUMBER} \
+                        -Dsonar.host.url=http://sonarqube:9000 \
+                        -Dsonar.token=${SONAR_AUTH_TOKEN}
+                    """
+                }
+            }
+        }
 
-                stage('Package') {
-                    steps {
-                        echo 'Packaging application...'
-                        sh './mvnw package -DskipTests'
+
+        /*********************************************
+         * Wait for Quality Gate
+         *********************************************/
+        stage('Quality Gate') {
+            steps {
+                echo 'Waiting for SonarQube quality gate result...'
+                timeout(time: 10, unit: 'MINUTES') {
+                    script {
+                        def qg = waitForQualityGate abortPipeline: true
+                        echo "Quality gate status: ${qg.status}"
                     }
                 }
             }
         }
 
+
         /*********************************************
-         * Artifact / ZAP Scan (still outside Docker)
+         * Checkstyle
+         *********************************************/
+        stage('Checkstyle (Java 25)') {
+            agent {
+                docker {
+                    image 'maven:3.9.5-eclipse-temurin-25'
+                    args "${DOCKER_ARGS}"
+                }
+            }
+            steps {
+                echo 'Running Checkstyle analysis...'
+                sh './mvnw checkstyle:checkstyle'
+            }
+            post {
+                always {
+                    recordIssues(
+                        enabledForFailure: true,
+                        tool: checkStyle(pattern: '**/target/checkstyle-result.xml')
+                    )
+                }
+            }
+        }
+
+
+        /*********************************************
+         * Package JAR
+         *********************************************/
+        stage('Package (Java 25)') {
+            agent {
+                docker {
+                    image 'maven:3.9.5-eclipse-temurin-25'
+                    args "${DOCKER_ARGS}"
+                }
+            }
+            steps {
+                echo 'Packaging application...'
+                sh './mvnw package -DskipTests'
+            }
+        }
+
+        /*********************************************
+         * Archive artifacts
          *********************************************/
         stage('Archive') {
             steps {
                 echo 'Archiving artifacts...'
                 archiveArtifacts artifacts: '**/target/*.jar',
-                                    fingerprint: true,
-                                    allowEmptyArchive: false
+                    fingerprint: true,
+                    allowEmptyArchive: false
             }
         }
-        
+
+
+        /*********************************************
+         * OWASP ZAP Scan
+         *********************************************/
         stage('OWASP ZAP Scan') {
             steps {
                 echo 'Running OWASP ZAP Baseline Scan...'
                 sh """
-                docker run --rm -v \$(pwd):/zap/wrk owasp/zap2docker-stable zap-baseline.py \
+                docker run --rm \
+                    --network=spring-petclinic_devops-net \
+                    -v \$(pwd):/zap/wrk \
+                    owasp/zap2docker-stable zap-baseline.py \
                     -t http://petclinic:8080 \
                     -r zap_report.html \
                     -I
@@ -143,11 +190,15 @@ pipeline {
             }
         }
 
+
+        /*********************************************
+         * Publish ZAP HTML Report
+         *********************************************/
         stage('Publish ZAP Report') {
             steps {
-                echo 'Publishing OWASP ZAP HTML report...'
+                echo 'Publishing OWASP ZAP report...'
                 publishHTML target: [
-                    allowMissing: false,
+                    allowMissing: true,
                     reportDir: '.',
                     reportFiles: 'zap_report.html',
                     reportName: 'OWASP ZAP Security Report'
@@ -155,16 +206,14 @@ pipeline {
             }
         }
     }
-    
+
+
     post {
         success {
             echo 'Build successful!'
         }
         failure {
             echo 'Build failed!'
-        }
-        always {
-            echo 'Cleanup after build...'
         }
     }
 }
