@@ -93,9 +93,7 @@ pipeline {
                         -DskipTests \
                         -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
                         -Dsonar.projectName=${PROJECT_NAME} \
-                        -Dsonar.projectVersion=${BUILD_NUMBER} \
-                        -Dsonar.host.url=${SONAR_HOST_URL} \
-                        -Dsonar.token=${SONAR_AUTH_TOKEN}
+                        -Dsonar.projectVersion=${BUILD_NUMBER}
                     """
                 }
             }
