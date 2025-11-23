@@ -73,7 +73,7 @@ pipeline {
         stage('Quality Gate') {
             steps {
                 echo 'Waiting for SonarQube quality gate result...'
-                sleep(15)  // Wait 15 seconds
+                sleep(15)
                 timeout(time: 10, unit: 'MINUTES') {
                     script {
                         def qg = waitForQualityGate abortPipeline: true
@@ -82,7 +82,6 @@ pipeline {
                 }
             }
         }
-
 
         stage('Code Quality') {
             steps {
@@ -109,9 +108,33 @@ pipeline {
         stage('Archive') {
             steps {
                 echo 'Archiving artifacts...'
-                archiveArtifacts artifacts: '**/target/*.jar', 
+                archiveArtifacts artifacts: '**/target/*.jar',
                                 fingerprint: true,
                                 allowEmptyArchive: false
+            }
+        }
+        
+        stage('OWASP ZAP Scan') {
+            steps {
+                echo 'Running OWASP ZAP Baseline Scan...'
+                sh """
+                docker run --rm -v \$(pwd):/zap/wrk owasp/zap2docker-stable zap-baseline.py \
+                    -t http://localhost:8080 \
+                    -r zap_report.html \
+                    -I
+                """
+            }
+        }
+
+        stage('Publish ZAP Report') {
+            steps {
+                echo 'Publishing OWASP ZAP HTML report...'
+                publishHTML target: [
+                    allowMissing: false,
+                    reportDir: '.',
+                    reportFiles: 'zap_report.html',
+                    reportName: 'OWASP ZAP Security Report'
+                ]
             }
         }
     }
@@ -124,12 +147,7 @@ pipeline {
             echo 'Build failed!'
         }
         always {
-            cleanWs(
-                cleanWhenNotBuilt: false,
-                deleteDirs: true,
-                disableDeferredWipeout: true,
-                notFailBuild: true
-            )
+            echo 'Cleanup after build...'
         }
     }
 }

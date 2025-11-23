@@ -4,7 +4,7 @@ services:
     user: root
     container_name: jenkins
     ports:
-      - "8080:8080"
+      - "8082:8080"
       - "50000:50000"
     environment:
       - JENKINS_OPTS=--prefix=/jenkins
@@ -71,14 +71,22 @@ services:
         "-host",
         "0.0.0.0",
         "-port",
-        "8081",
+        "8083",
         "-config",
         "api.disablekey=true",
       ]
     ports:
-      - "8081:8081"
+      - "8083:8081"
     volumes:
       - ./zap/wrk:/zap/wrk
+    networks:
+      - devops-net
+
+  petclinic:
+    image: petclinic:latest
+    container_name: petclinic
+    ports:
+      - "8081:8080"
     networks:
       - devops-net
 
