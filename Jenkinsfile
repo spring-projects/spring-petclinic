@@ -7,10 +7,10 @@ pipeline {
     }
 
     environment {
-        MAVEN_OPTS = '-Xmx1024m'
+        MAVEN_OPTS = '-Xmx2048m'
         PROJECT_NAME = 'spring-petclinic'
         SONAR_PROJECT_KEY = 'spring-petclinic'
-        DOCKER_ARGS = '-v /var/run/docker.sock:/var/run/docker.sock --network spring-petclinic_devops-net'
+        DOCKER_ARGS = '-v /var/run/docker.sock:/var/run/docker.sock --network spring-petclinic_devops-net --memory=4g'
     }
 
     stages {
@@ -89,8 +89,7 @@ pipeline {
                 echo 'Running SonarQube analysis...'
                 withSonarQubeEnv('SonarQubeServer') {
                     sh """
-                        ./mvnw clean verify sonar:sonar \
-                        -DskipTests \
+                        ./mvnw sonar:sonar \
                         -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
                         -Dsonar.projectName=${PROJECT_NAME} \
                         -Dsonar.projectVersion=${BUILD_NUMBER}
