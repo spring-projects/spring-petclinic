@@ -10,7 +10,7 @@ pipeline {
         MAVEN_OPTS = '-Xmx1024m'
         PROJECT_NAME = 'spring-petclinic'
         SONAR_PROJECT_KEY = 'spring-petclinic'
-        DOCKER_ARGS = '-v /var/run/docker.sock:/var/run/docker.sock'
+        DOCKER_ARGS = '-v /var/run/docker.sock:/var/run/docker.sock --network spring-petclinic_devops-net'
     }
 
     stages {
