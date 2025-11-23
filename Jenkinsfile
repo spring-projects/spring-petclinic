@@ -89,12 +89,11 @@ pipeline {
                 echo 'Running SonarQube analysis...'
                 withSonarQubeEnv('SonarQubeServer') {
                     sh """
-                        ./mvnw clean verify sonar:sonar \
+                        mvn clean verify sonar:sonar \
                         -DskipTests \
                         -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
                         -Dsonar.projectName=${PROJECT_NAME} \
-                        -Dsonar.projectVersion=${BUILD_NUMBER} \
-                        -Dsonar.host.url=http://sonarqube:9000 \
+                        -Dsonar.host.url=${SONAR_HOST_URL} \
                         -Dsonar.token=${SONAR_AUTH_TOKEN}
                     """
                 }
