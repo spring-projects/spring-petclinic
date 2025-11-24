@@ -20,6 +20,16 @@ services:
       - devops-net
     depends_on:
       - sonarqube
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: petclinic
+      POSTGRES_USER: petclinic
+      POSTGRES_PASSWORD: petclinic
+    ports:
+      - "5432:5432"
+    networks:
+      - devops-net
 
   sonarqube:
     image: sonarqube:lts-community

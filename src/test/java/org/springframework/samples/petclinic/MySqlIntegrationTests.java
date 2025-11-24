@@ -60,8 +60,11 @@ class MySqlIntegrationTests {
 
 	@Test
 	void testFindAll() {
-		vets.findAll();
-		vets.findAll(); // served from cache
+		var firstCall = vets.findAll();
+		assertThat(firstCall).isNotEmpty();
+
+		var secondCall = vets.findAll(); // served from cache
+		assertThat(secondCall).hasSameSizeAs(firstCall);
 	}
 
 	@Test
