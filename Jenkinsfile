@@ -157,10 +157,21 @@ pipeline {
             steps {
                 echo 'Running OWASP ZAP Baseline Scan...'
                 sh """
+                set -e
+                ZAP_IMAGE="owasp/zap2docker-stable"
+                ZAP_FALLBACK_IMAGE="ghcr.io/zaproxy/zaproxy:stable"
+
+                echo "Pulling ZAP image: ${ZAP_IMAGE}"
+                if ! docker pull "${ZAP_IMAGE}"; then
+                    echo "Primary pull failed, trying fallback: ${ZAP_FALLBACK_IMAGE}"
+                    docker pull "${ZAP_FALLBACK_IMAGE}"
+                    ZAP_IMAGE="${ZAP_FALLBACK_IMAGE}"
+                fi
+
                 docker run --rm \
                     --network=spring-petclinic_devops-net \
                     -v \$(pwd):/zap/wrk \
-                    owasp/zap2docker-stable zap-baseline.py \
+                    "${ZAP_IMAGE}" zap-baseline.py \
                     -t http://petclinic:8080 \
                     -r zap_report.html \
                     -I
