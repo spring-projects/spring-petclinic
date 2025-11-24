@@ -171,6 +171,7 @@ pipeline {
                 docker run --rm \
                     --network=spring-petclinic_devops-net \
                     -v $(pwd):/zap/wrk \
+                    --user=$(id -u):$(id -g) \
                     "${ZAP_IMAGE}" zap-baseline.py \
                     -t http://petclinic:8080 \
                     -r zap_report.html \
@@ -181,13 +182,13 @@ pipeline {
                 else
                     echo "ZAP report not found; creating placeholder for visibility"
                     cat > zap_report.html <<'EOF'
-                    <html>
-                      <body>
-                        <h1>OWASP ZAP report missing</h1>
-                        <p>The ZAP container did not produce zap_report.html. Check ZAP stage logs for details.</p>
-                      </body>
-                    </html>
-                    EOF
+<html>
+  <body>
+    <h1>OWASP ZAP report missing</h1>
+    <p>The ZAP container did not produce zap_report.html. Check ZAP stage logs for details.</p>
+  </body>
+</html>
+EOF
                 fi
                 '''
             }
