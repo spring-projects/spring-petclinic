@@ -129,6 +129,11 @@ pipeline {
                 echo 'Packaging application...'
                 sh './mvnw package -DskipTests'
             }
+            post {
+                success {
+                    stash name: 'jar-artifacts', includes: 'target/*.jar', allowEmpty: false
+                }
+            }
         }
 
         /*********************************************
@@ -137,7 +142,8 @@ pipeline {
         stage('Archive') {
             steps {
                 echo 'Archiving artifacts...'
-                archiveArtifacts artifacts: '**/target/*.jar',
+                unstash 'jar-artifacts'
+                archiveArtifacts artifacts: 'target/*.jar',
                     fingerprint: true,
                     allowEmptyArchive: false
             }
