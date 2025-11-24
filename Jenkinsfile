@@ -175,6 +175,20 @@ pipeline {
                     -t http://petclinic:8080 \
                     -r zap_report.html \
                     -I
+
+                if [ -f zap_report.html ]; then
+                    echo "ZAP report generated at $(pwd)/zap_report.html"
+                else
+                    echo "ZAP report not found; creating placeholder for visibility"
+                    cat > zap_report.html <<'EOF'
+                    <html>
+                      <body>
+                        <h1>OWASP ZAP report missing</h1>
+                        <p>The ZAP container did not produce zap_report.html. Check ZAP stage logs for details.</p>
+                      </body>
+                    </html>
+                    EOF
+                fi
                 '''
             }
         }
