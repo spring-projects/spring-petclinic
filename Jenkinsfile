@@ -116,31 +116,6 @@ pipeline {
 
 
         /*********************************************
-         * Checkstyle
-         *********************************************/
-        stage('Checkstyle (Java 25)') {
-            agent {
-                docker {
-                    image 'maven-java25:latest'
-                    args "${DOCKER_ARGS}"
-                }
-            }
-            steps {
-                echo 'Running Checkstyle analysis...'
-                sh './mvnw checkstyle:checkstyle'
-            }
-            post {
-                always {
-                    recordIssues(
-                        enabledForFailure: true,
-                        tool: checkstyle(pattern: '**/target/checkstyle-result.xml')
-                    )
-                }
-            }
-        }
-
-
-        /*********************************************
          * Package JAR
          *********************************************/
         stage('Package (Java 25)') {

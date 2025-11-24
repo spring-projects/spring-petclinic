@@ -1,0 +1,55 @@
+jenkins:
+  systemMessage: "Automated Jenkins via JCasC"
+
+  nodes:
+    - permanent:
+        name: "master"
+        remoteFS: "/var/jenkins_home"
+        numExecutors: 2
+
+unclassified:
+  sonarGlobalConfiguration:
+    installations:
+      - name: "SonarQubeServer"
+        serverUrl: "http://sonarqube:9000"
+        credentialsId: "sonar-token"
+
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          - string:
+              id: "sonar-token"
+              description: "SonarQube Token"
+              secret: "${SONAR_AUTH_TOKEN}"
+
+tool:
+  maven:
+    installations:
+      - name: "Maven 3.9.5"
+        properties:
+          - installSource:
+              installers:
+                - maven:
+                    id: "3.9.5"
+
+  jdk:
+    installations:
+      - name: "JDK 25"
+        home: "/usr/lib/jvm/jdk-25"
+
+plugins:
+  required:
+    - git
+    - workflow-aggregator
+    - sonar
+    - jacoco
+    - pipeline-github-lib
+    - docker-workflow
+    - timestamper
+    - warnings-ng
+    - zap
+    - configuration-as-code
+    - blueocean
+    - prometheus
+    - htmlpublisher
