@@ -11,14 +11,18 @@ services:
       - "50000:50000"
     environment:
       - JENKINS_OPTS=--prefix=/jenkins
+      - CASC_JENKINS_CONFIG=/var/jenkins_home/casc_configs/jenkins.yaml
     volumes:
       - jenkins_home:/var/jenkins_home
+      - ./jenkins.yaml:/var/jenkins_home/casc_configs/jenkins.yaml
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - devops-net
+    depends_on:
+      - sonarqube
 
   sonarqube:
-    image: sonarqube:10.5.1-community
+    image: sonarqube:lts-community
     container_name: sonarqube
     ports:
       - "9000:9000"
