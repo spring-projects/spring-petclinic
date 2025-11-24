@@ -156,7 +156,7 @@ pipeline {
         stage('OWASP ZAP Scan') {
             steps {
                 echo 'Running OWASP ZAP Baseline Scan...'
-                sh """
+                sh '''
                 set -e
                 ZAP_IMAGE="owasp/zap2docker-stable"
                 ZAP_FALLBACK_IMAGE="ghcr.io/zaproxy/zaproxy:stable"
@@ -170,12 +170,12 @@ pipeline {
 
                 docker run --rm \
                     --network=spring-petclinic_devops-net \
-                    -v \$(pwd):/zap/wrk \
+                    -v $(pwd):/zap/wrk \
                     "${ZAP_IMAGE}" zap-baseline.py \
                     -t http://petclinic:8080 \
                     -r zap_report.html \
                     -I
-                """
+                '''
             }
         }
 

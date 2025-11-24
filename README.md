@@ -50,13 +50,54 @@ There is no `Dockerfile` in this project. You can build a container image (if yo
 ./mvnw spring-boot:build-image
 ```
 
-## Continuous Integration with Jenkins, SonarQube and Blue Ocean
+## Continuous Integration with Jenkins, SonarQube and Blue Ocean (Automated Setup)
 
-1. Install the Jenkins plugins **SonarQube Scanner for Jenkins**, **Pipeline Utility Steps**, **JaCoCo**, and **Blue Ocean**.
-2. In Jenkins, go to _Manage Jenkins → Configure System_ and add a SonarQube server named `SonarQubeServer`. Provide the Sonar URL and a token issued from your SonarQube instance. The Jenkins global configuration will expose `SONAR_HOST_URL` and `SONAR_AUTH_TOKEN` to the pipeline.
-3. Configure a Multibranch Pipeline or a Pipeline job that points at this repository. The provided `Jenkinsfile` now contains explicit stages for SonarQube analysis and the quality gate check; the `sonar-project.properties` file supplies project metadata and paths.
-4. Trigger a build. In Jenkins, switch to the **Blue Ocean** view to visualize the pipeline stages (`Checkout` → `Build` → `Test` → `SonarQube Analysis` → `Quality Gate` → `Code Quality` → `Package` → `Archive`) and inspect test results, code coverage, and quality gate status inline.
-5. Review the SonarQube dashboard after the build completes to explore issues, coverage, and maintainability metrics collected from the static analysis.
+This project uses **Jenkins Configuration as Code (JCasC)** to automatically configure all tools and plugins.
+
+### Quick Start
+
+1. **Generate SonarQube Token**:
+
+   - Start SonarQube: `docker compose up -d sonarqube`
+   - Open `http://localhost:9000` (login: admin/admin, change password on first login)
+   - Go to _My Account → Security → Generate Tokens_
+   - Copy the generated token
+
+2. **Configure Environment**:
+
+   ```bash
+   cp env.example .env
+   # Edit .env and paste your SonarQube token
+   ```
+
+3. **Start All Services**:
+
+   ```bash
+   docker compose up -d
+   ```
+
+4. **Access Jenkins**:
+
+   - Open `http://localhost:8082/jenkins`
+   - Jenkins is pre-configured with:
+     - SonarQube server connection (`SonarQubeServer`)
+     - Required plugins (SonarQube Scanner, JaCoCo, Blue Ocean, etc.)
+     - Maven and JDK tools
+
+5. **Create Pipeline**:
+
+   - In Jenkins, create a new Multibranch Pipeline or Pipeline job pointing to this repository
+   - The `Jenkinsfile` contains stages: `Checkout → Build → Test → SonarQube Analysis → Quality Gate → Checkstyle → Package → Archive`
+
+6. **View in Blue Ocean**:
+
+   - Click "Open Blue Ocean" in Jenkins sidebar
+   - Visualize pipeline stages, test results, and quality gate status
+
+7. **Review Results**:
+   - SonarQube dashboard: `http://localhost:9000`
+   - Prometheus metrics: `http://localhost:9090`
+   - Grafana dashboards: `http://localhost:3030` (admin/admin)
 
 ## In case you find a bug/suggested improvement for Spring Petclinic
 
