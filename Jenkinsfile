@@ -133,7 +133,7 @@ pipeline {
                 always {
                     recordIssues(
                         enabledForFailure: true,
-                        tool: checkStyle(pattern: '**/target/checkstyle-result.xml')
+                        tool: checkstyle(pattern: '**/target/checkstyle-result.xml')
                     )
                 }
             }
