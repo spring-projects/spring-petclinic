@@ -1,0 +1,6 @@
+- name: Push final image
+  run: |
+    docker push ${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.DOCKER_REPO_PATH }}:${{ github.sha }}
+    docker tag ${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.DOCKER_REPO_PATH }}:${{ github.sha }} \
+               ${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.DOCKER_REPO_PATH }}:latest
+    docker push ${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.DOCKER_REPO_PATH }}:latest
