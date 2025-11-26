@@ -1,5 +1,4 @@
-name: Java CI with Maven
-
+name: Push image
 on:
   push:
     branches: [ main ]
