@@ -56,8 +56,9 @@ public class I18nPropertiesSyncTest {
 				String line = lines.get(i).trim();
 
 				if (line.startsWith("//") || line.startsWith("@") || line.contains("log.")
-						|| line.contains("System.out"))
+						|| line.contains("System.out")) {
 					continue;
+				}
 
 				if (file.toString().endsWith(".html")) {
 					boolean hasLiteralText = HTML_TEXT_LITERAL.matcher(line).find();
@@ -115,8 +116,9 @@ public class I18nPropertiesSyncTest {
 			String fileName = entry.getKey();
 			// We use fallback logic to include english strings, hence messages_en is not
 			// populated.
-			if (fileName.equals(baseFile) || fileName.equals("messages_en.properties"))
+			if (fileName.equals(baseFile) || fileName.equals("messages_en.properties")) {
 				continue;
+			}
 
 			Properties props = entry.getValue();
 			Set<String> missingKeys = new TreeSet<>(baseKeys);

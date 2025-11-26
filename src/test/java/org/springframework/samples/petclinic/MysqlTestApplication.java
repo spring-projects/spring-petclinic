@@ -32,11 +32,15 @@ import org.testcontainers.utility.DockerImageName;
 @Configuration
 public class MysqlTestApplication {
 
+	private MysqlTestApplication() {
+		// prevent instantiation
+	}
+
 	@ServiceConnection
 	@Profile("mysql")
 	@Bean
-	static MySQLContainer container() {
-		return new MySQLContainer(DockerImageName.parse("mysql:9.5"));
+	static MySQLContainer<?> container() {
+		return new MySQLContainer<>(DockerImageName.parse("mysql:9.5"));
 	}
 
 	public static void main(String[] args) {
