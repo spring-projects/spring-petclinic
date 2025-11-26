@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ '25' ]
+        java: [ '17' ]
 
     steps:
       - uses: actions/checkout@v4
