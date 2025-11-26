@@ -27,10 +27,3 @@ jobs:
           cache: maven
       - name: Build with Maven Wrapper
         run: ./mvnw -B verify
-
-
-- name: Build builder image
-  run: docker build -f Dockerfile.build -t petclinic-builder .
-
-- name: Build runtime image
-  run: docker build -f Dockerfile.run -t ${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.DOCKER_REPO_PATH }}:${{ github.sha }} .

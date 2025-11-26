@@ -1,6 +1,24 @@
-- name: Push final image
-  run: |
-    docker push ${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.DOCKER_REPO_PATH }}:${{ github.sha }}
-    docker tag ${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.DOCKER_REPO_PATH }}:${{ github.sha }} \
-               ${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.DOCKER_REPO_PATH }}:latest
-    docker push ${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.DOCKER_REPO_PATH }}:latest
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ '25' ]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Push final image
+        run: |
+          docker push ${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.DOCKER_REPO_PATH }}:${{ github.sha }}
+          docker tag ${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.DOCKER_REPO_PATH }}:${{ github.sha }} \
+                    ${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.DOCKER_REPO_PATH }}:latest
+          docker push ${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.DOCKER_REPO_PATH }}:latest

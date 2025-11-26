@@ -1,5 +1,23 @@
-- name: Build builder image
-  run: docker build -f Dockerfile.build -t petclinic-builder .
+name: Java CI with Maven
 
-# - name: Build runtime image
-#   run: docker build -f Dockerfile.run -t ${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.DOCKER_REPO_PATH }}:${{ github.sha }} .
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ '25' ]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build builder image
+        run: docker build -f Dockerfile.build -t petclinic-builder .
+
+      # - name: Build runtime image
+      #   run: docker build -f Dockerfile.run -t ${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.DOCKER_REPO_PATH }}:${{ github.sha }} .
