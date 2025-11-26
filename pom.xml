@@ -19,6 +19,7 @@
 
     <!-- Generic properties -->
     <java.version>25</java.version>
+    <maven.compiler.release>17</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <!-- Important for reproducible builds. Update using e.g. ./mvnw versions:set -DnewVersion=... -->
@@ -289,10 +290,10 @@
         <executions>
           <execution>
             <id>default-compile</id>
+            <phase>compile</phase>
             <goals>
               <goal>compile</goal>
             </goals>
-            <phase>compile</phase>
             <configuration>
               <compilerArgs>
                 <arg>-XDcompilePolicy=simple</arg>
