@@ -110,7 +110,10 @@ public class PostgresIntegrationTests {
 
 		public void printProperties() {
 			for (EnumerablePropertySource<?> source : findPropertiesPropertySources()) {
-				log.info("PropertySource: " + source.getName());
+				if (log.isInfoEnabled()) {
+					log.info("PropertySource: " + source.getName());
+				}
+
 				String[] names = source.getPropertyNames();
 				Arrays.sort(names);
 				for (String name : names) {
@@ -125,11 +128,14 @@ public class PostgresIntegrationTests {
 					assertNotNull(sourceProperty.toString(), "source property toString() returned null.");
 
 					String value = sourceProperty.toString();
-					if (resolved.equals(value)) {
-						log.info(name + "=" + resolved);
-					}
-					else {
-						log.info(name + "=" + value + " OVERRIDDEN to " + resolved);
+
+					if (log.isInfoEnabled()) {
+						if (resolved.equals(value)) {
+							log.info(name + "=" + resolved);
+						}
+						else {
+							log.info(name + "=" + value + " OVERRIDDEN to " + resolved);
+						}
 					}
 				}
 			}
