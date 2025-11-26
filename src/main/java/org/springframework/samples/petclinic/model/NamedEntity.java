@@ -18,7 +18,6 @@ package org.springframework.samples.petclinic.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.NotBlank;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Simple JavaBean domain object adds a name property to <code>BaseEntity</code>. Used as
@@ -33,13 +32,13 @@ public class NamedEntity extends BaseEntity {
 
 	@Column(name = "name")
 	@NotBlank
-	private @Nullable String name;
+	private String name;
 
-	public @Nullable String getName() {
+	public String getName() {
 		return this.name;
 	}
 
-	public void setName(@Nullable String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 

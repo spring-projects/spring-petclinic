@@ -34,7 +34,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.validation.Valid;
-import org.jspecify.annotations.Nullable;
 
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -73,8 +72,8 @@ class PetController {
 	}
 
 	@ModelAttribute("pet")
-	public @Nullable Pet findPet(@PathVariable("ownerId") int ownerId,
-			@PathVariable(name = "petId", required = false) @Nullable Integer petId) {
+	public Pet findPet(@PathVariable("ownerId") int ownerId,
+			@PathVariable(name = "petId", required = false) Integer petId) {
 
 		if (petId == null) {
 			return new Pet();

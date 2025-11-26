@@ -20,7 +20,6 @@ import java.util.List;
 
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Simple domain object representing a list of veterinarians. Mostly here to be used for
@@ -31,7 +30,7 @@ import org.jspecify.annotations.Nullable;
 @XmlRootElement
 public class Vets {
 
-	private @Nullable List<Vet> vets;
+	private List<Vet> vets;
 
 	@XmlElement
 	public List<Vet> getVetList() {

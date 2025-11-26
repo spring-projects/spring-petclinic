@@ -33,7 +33,6 @@ import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.NotBlank;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Simple JavaBean domain object representing an owner.
@@ -51,43 +50,43 @@ public class Owner extends Person {
 
 	@Column(name = "address")
 	@NotBlank
-	private @Nullable String address;
+	private String address;
 
 	@Column(name = "city")
 	@NotBlank
-	private @Nullable String city;
+	private String city;
 
 	@Column(name = "telephone")
 	@NotBlank
 	@Pattern(regexp = "\\d{10}", message = "{telephone.invalid}")
-	private @Nullable String telephone;
+	private String telephone;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "owner_id")
 	@OrderBy("name")
 	private final List<Pet> pets = new ArrayList<>();
 
-	public @Nullable String getAddress() {
+	public String getAddress() {
 		return this.address;
 	}
 
-	public void setAddress(@Nullable String address) {
+	public void setAddress(String address) {
 		this.address = address;
 	}
 
-	public @Nullable String getCity() {
+	public String getCity() {
 		return this.city;
 	}
 
-	public void setCity(@Nullable String city) {
+	public void setCity(String city) {
 		this.city = city;
 	}
 
-	public @Nullable String getTelephone() {
+	public String getTelephone() {
 		return this.telephone;
 	}
 
-	public void setTelephone(@Nullable String telephone) {
+	public void setTelephone(String telephone) {
 		this.telephone = telephone;
 	}
 
@@ -106,7 +105,7 @@ public class Owner extends Person {
 	 * @param name to test
 	 * @return the Pet with the given name, or null if no such Pet exists for this Owner
 	 */
-	public @Nullable Pet getPet(String name) {
+	public Pet getPet(String name) {
 		return getPet(name, false);
 	}
 
@@ -115,7 +114,7 @@ public class Owner extends Person {
 	 * @param id to test
 	 * @return the Pet with the given id, or null if no such Pet exists for this Owner
 	 */
-	public @Nullable Pet getPet(Integer id) {
+	public Pet getPet(Integer id) {
 		for (Pet pet : getPets()) {
 			if (!pet.isNew()) {
 				Integer compId = pet.getId();
@@ -133,7 +132,7 @@ public class Owner extends Person {
 	 * @param ignoreNew whether to ignore new pets (pets that are not saved yet)
 	 * @return the Pet with the given name, or null if no such Pet exists for this Owner
 	 */
-	public @Nullable Pet getPet(String name, boolean ignoreNew) {
+	public Pet getPet(String name, boolean ignoreNew) {
 		for (Pet pet : getPets()) {
 			String compName = pet.getName();
 			if (compName != null && compName.equalsIgnoreCase(name)) {
