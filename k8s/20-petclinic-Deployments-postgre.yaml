@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: petclinic
+  namespace: petclinic-ns
+  labels:
+    app: petclinic
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: petclinic
+  template:
+    metadata:
+      labels:
+        app: petclinic
+    spec:
+      # 🔹 여기: service account 지정
+      serviceAccountName: petclinic-sa
+
+      nodeSelector:
+        role: "app"
+
+      tolerations:
+        - key: "role"
+          operator: "Equal"
+          value: "app"
+          effect: "NoSchedule"
+
+      containers:
+        - name: petclinic-container
+          image: insulin90/petclinic:v0.2
+
+          # DB 설정은 ConfigMap / Secret에서 그대로 가져오기
+          envFrom:
+            - configMapRef:
+                name: petclinic-db-config
+            - secretRef:
+                name: petclinic-db-secret
+
+          # 🔹 여기: Spring profile을 postgres용으로
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "postgres"
+
+          ports:
+            - name: http
+              containerPort: 8080
+
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: http
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            failureThreshold: 5
+
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: http
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            failureThreshold: 5
+
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"

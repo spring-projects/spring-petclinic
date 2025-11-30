@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: petclinic-db-config
+  namespace: petclinic-ns
+data:
+
+  SPRING_DATASOURCE_URL: "jdbc:postgresql://finalproj-dev-postgres.ctxvni2x7reb.ap-northeast-2.rds.amazonaws.com:5432/petclinic"
+
+  SPRING_DATASOURCE_DRIVER_CLASS_NAME: "org.postgresql.Driver"
+
+  # Hikari Pool Settings (그대로 사용)
+#  SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE: "20"
+#  SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE: "5"
+#  SPRING_DATASOURCE_HIKARI_IDLE_TIMEOUT: "600000"
+#  SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT: "30000"
+#  SPRING_DATASOURCE_HIKARI_VALIDATION_TIMEOUT: "5000"
