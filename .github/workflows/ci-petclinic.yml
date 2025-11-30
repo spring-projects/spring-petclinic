@@ -1,0 +1,98 @@
+name: CI - Petclinic EKS
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+# 공통 ENV (필요에 따라 GitHub Variables 대신 여기서 관리 가능)
+env:
+  AWS_REGION: ${{ vars.AWS_REGION || 'ap-northeast-2' }}
+  ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY || 'eks/petclinic' }}
+
+jobs:
+  # 1) Maven 빌드 + 테스트
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'
+
+      - name: Maven build & test
+        run: |
+          if [ -x "./mvnw" ]; then
+            ./mvnw -B clean test package
+          else
+            mvn -B clean test package
+          fi
+
+      - name: Archive built JAR (optional)
+        uses: actions/upload-artifact@v4
+        with:
+          name: petclinic-jar
+          path: target/*.jar
+
+  # 2) Docker 이미지 빌드 + ECR Push
+  build-and-push-image:
+    needs: build-test
+    runs-on: ubuntu-latest
+
+    # GitHub OIDC로 AWS Role Assume 하려면 필수
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC / Assume Role)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set image tag
+        id: vars
+        run: |
+          SHORT_SHA=${GITHUB_SHA::7}
+          echo "IMAGE_TAG=${SHORT_SHA}" >> $GITHUB_ENV
+          echo "IMAGE_TAG=${SHORT_SHA}"
+
+      - name: Build Docker image
+        run: |
+          ECR_REGISTRY=${{ steps.ecr-login.outputs.registry }}
+          IMAGE_URI="$ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:${IMAGE_TAG}"
+
+          echo "Building image: $IMAGE_URI"
+          # Dockerfile이 repo 루트에 있다고 가정, 위치 다르면 -f 경로 지정
+          docker build -t "$IMAGE_URI" .
+
+      - name: Push Docker image
+        run: |
+          ECR_REGISTRY=${{ steps.ecr-login.outputs.registry }}
+          IMAGE_URI="$ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:${IMAGE_TAG}"
+
+          docker push "$IMAGE_URI"
+
+      - name: Tag image as latest (only on main)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          ECR_REGISTRY=${{ steps.ecr-login.outputs.registry }}
+          IMAGE_BASE="$ECR_REGISTRY/${{ env.ECR_REPOSITORY }}"
+
+          docker tag "${IMAGE_BASE}:${IMAGE_TAG}" "${IMAGE_BASE}:latest"
+          docker push "${IMAGE_BASE}:latest"
