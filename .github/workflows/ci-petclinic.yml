@@ -24,7 +24,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '21'
+          java-version: '25'
           cache: 'maven'
 
       - name: Maven build & test
@@ -73,6 +73,8 @@ jobs:
           echo "IMAGE_TAG=${SHORT_SHA}"
 
       - name: Build Docker image
+        env:
+          DOCKER_BUILDKIT: 1  # Docker build Job에서 BuildKit 활성화
         run: |
           ECR_REGISTRY=${{ steps.ecr-login.outputs.registry }}
           IMAGE_URI="$ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:${IMAGE_TAG}"
