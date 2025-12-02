@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2025 the original author or authors.
+ * Copyright 2012-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,26 +16,33 @@
 
 package org.springframework.samples.petclinic.system;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.test.web.servlet.MockMvc;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Test class for {@link CrashController}
  *
  * @author Colin But
- * @author Alex Lutz
  */
-// Waiting https://github.com/spring-projects/spring-boot/issues/5574 ..good
-// luck ((plain(st) UNIT test)! :)
+// Waiting https://github.com/spring-projects/spring-boot/issues/5574
+@Disabled
+@WebMvcTest(controllers = CrashController.class)
 class CrashControllerTests {
 
-	final CrashController testee = new CrashController();
+	@Autowired
+	private MockMvc mockMvc;
 
 	@Test
-	void testTriggerException() {
-		assertThatExceptionOfType(RuntimeException.class).isThrownBy(() -> testee.triggerException())
-			.withMessageContaining("Expected: controller used to showcase what happens when an exception is thrown");
+	void testTriggerException() throws Exception {
+		mockMvc.perform(get("/oups")).andExpect(view().name("exception"))
+				.andExpect(model().attributeExists("exception")).andExpect(forwardedUrl("exception"))
+				.andExpect(status().isOk());
 	}
 
 }

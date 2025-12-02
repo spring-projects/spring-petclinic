@@ -1,88 +1,40 @@
 plugins {
+  id 'org.springframework.boot' version '2.7.3'
+  id 'io.spring.dependency-management' version '1.0.13.RELEASE'
   id 'java'
-  id 'checkstyle'
-  id 'org.springframework.boot' version '4.0.0'
-  id 'io.spring.dependency-management' version '1.1.7'
-  id 'org.graalvm.buildtools.native' version '0.11.1'
-  id 'org.cyclonedx.bom' version '3.0.2'
-  id 'io.spring.javaformat' version '0.0.47'
-  id "io.spring.nohttp" version "0.0.11"
 }
 
-gradle.startParameter.excludedTaskNames += [ "checkFormatAot", "checkFormatAotTest" ]
+apply plugin: 'java'
 
 group = 'org.springframework.samples'
-version = '4.0.0-SNAPSHOT'
-
-java {
-  toolchain {
-    languageVersion = JavaLanguageVersion.of(17)
-  }
-}
+version = '2.7.3'
+sourceCompatibility = '11'
 
 repositories {
   mavenCentral()
 }
 
-ext.checkstyleVersion = "12.1.2"
-ext.springJavaformatCheckstyleVersion = "0.0.47"
-ext.webjarsLocatorLiteVersion = "1.1.2"
 ext.webjarsFontawesomeVersion = "4.7.0"
-ext.webjarsBootstrapVersion = "5.3.8"
+ext.webjarsBootstrapVersion = "5.1.3"
 
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-cache'
   implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
   implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-  implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+  implementation 'org.springframework.boot:spring-boot-starter-web'
   implementation 'org.springframework.boot:spring-boot-starter-validation'
   implementation 'javax.cache:cache-api'
-  implementation 'jakarta.xml.bind:jakarta.xml.bind-api'
   runtimeOnly 'org.springframework.boot:spring-boot-starter-actuator'
-  runtimeOnly "org.webjars:webjars-locator-lite:${webjarsLocatorLiteVersion}"
   runtimeOnly "org.webjars.npm:bootstrap:${webjarsBootstrapVersion}"
   runtimeOnly "org.webjars.npm:font-awesome:${webjarsFontawesomeVersion}"
-  runtimeOnly 'com.github.ben-manes.caffeine:caffeine'
+  runtimeOnly 'org.ehcache:ehcache'
   runtimeOnly 'com.h2database:h2'
-  runtimeOnly 'com.mysql:mysql-connector-j'
+  runtimeOnly 'mysql:mysql-connector-java'
   runtimeOnly 'org.postgresql:postgresql'
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
-  testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
-  testImplementation 'org.springframework.boot:spring-boot-starter-restclient-test'
-  testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
-  testImplementation 'org.springframework.boot:spring-boot-testcontainers'
-  testImplementation 'org.springframework.boot:spring-boot-docker-compose'
-  testImplementation 'org.testcontainers:testcontainers-junit-jupiter'
-  testImplementation 'org.testcontainers:testcontainers-mysql'
-  checkstyle "io.spring.javaformat:spring-javaformat-checkstyle:${springJavaformatCheckstyleVersion}"
-  checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {
   useJUnitPlatform()
 }
-
-checkstyle {
-  configDirectory = project.file('src/checkstyle')
-  configFile = file('src/checkstyle/nohttp-checkstyle.xml')
-}
-
-checkstyleNohttp {
-  configDirectory = project.file('src/checkstyle')
-  configFile = file('src/checkstyle/nohttp-checkstyle.xml')
-}
-
-tasks.named("formatMain").configure { dependsOn("checkstyleMain") }
-tasks.named("formatMain").configure { dependsOn("checkstyleNohttp") }
-
-tasks.named("formatTest").configure { dependsOn("checkstyleTest") }
-tasks.named("formatTest").configure { dependsOn("checkstyleNohttp") }
-
-checkstyleAot.enabled = false
-checkstyleAotTest.enabled = false
-
-checkFormatAot.enabled = false
-checkFormatAotTest.enabled = false
-
-formatAot.enabled = false
-formatAotTest.enabled = false

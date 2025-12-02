@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2025 the original author or authors.
+ * Copyright 2012-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,22 +17,21 @@ package org.springframework.samples.petclinic.owner;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotEmpty;
 
 import org.springframework.core.style.ToStringCreator;
 import org.springframework.samples.petclinic.model.Person;
 import org.springframework.util.Assert;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OrderBy;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.NotBlank;
 
 /**
  * Simple JavaBean domain object representing an owner.
@@ -42,29 +41,28 @@ import jakarta.validation.constraints.NotBlank;
  * @author Sam Brannen
  * @author Michael Isvy
  * @author Oliver Drotbohm
- * @author Wick Dynex
  */
 @Entity
 @Table(name = "owners")
 public class Owner extends Person {
 
 	@Column(name = "address")
-	@NotBlank
+	@NotEmpty
 	private String address;
 
 	@Column(name = "city")
-	@NotBlank
+	@NotEmpty
 	private String city;
 
 	@Column(name = "telephone")
-	@NotBlank
-	@Pattern(regexp = "\\d{10}", message = "{telephone.invalid}")
+	@NotEmpty
+	@Digits(fraction = 0, integer = 10)
 	private String telephone;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "owner_id")
 	@OrderBy("name")
-	private final List<Pet> pets = new ArrayList<>();
+	private List<Pet> pets = new ArrayList<>();
 
 	public String getAddress() {
 		return this.address;
@@ -103,7 +101,7 @@ public class Owner extends Person {
 	/**
 	 * Return the Pet with the given name, or null if none found for this Owner.
 	 * @param name to test
-	 * @return the Pet with the given name, or null if no such Pet exists for this Owner
+	 * @return a pet if pet name is already in use
 	 */
 	public Pet getPet(String name) {
 		return getPet(name, false);
@@ -111,14 +109,14 @@ public class Owner extends Person {
 
 	/**
 	 * Return the Pet with the given id, or null if none found for this Owner.
-	 * @param id to test
-	 * @return the Pet with the given id, or null if no such Pet exists for this Owner
+	 * @param name to test
+	 * @return a pet if pet id is already in use
 	 */
 	public Pet getPet(Integer id) {
 		for (Pet pet : getPets()) {
 			if (!pet.isNew()) {
 				Integer compId = pet.getId();
-				if (Objects.equals(compId, id)) {
+				if (compId.equals(id)) {
 					return pet;
 				}
 			}
@@ -129,14 +127,15 @@ public class Owner extends Person {
 	/**
 	 * Return the Pet with the given name, or null if none found for this Owner.
 	 * @param name to test
-	 * @param ignoreNew whether to ignore new pets (pets that are not saved yet)
-	 * @return the Pet with the given name, or null if no such Pet exists for this Owner
+	 * @return a pet if pet name is already in use
 	 */
 	public Pet getPet(String name, boolean ignoreNew) {
+		name = name.toLowerCase();
 		for (Pet pet : getPets()) {
-			String compName = pet.getName();
-			if (compName != null && compName.equalsIgnoreCase(name)) {
-				if (!ignoreNew || !pet.isNew()) {
+			if (!ignoreNew || !pet.isNew()) {
+				String compName = pet.getName();
+				compName = compName == null ? "" : compName.toLowerCase();
+				if (compName.equals(name)) {
 					return pet;
 				}
 			}
@@ -146,14 +145,10 @@ public class Owner extends Person {
 
 	@Override
 	public String toString() {
-		return new ToStringCreator(this).append("id", this.getId())
-			.append("new", this.isNew())
-			.append("lastName", this.getLastName())
-			.append("firstName", this.getFirstName())
-			.append("address", this.address)
-			.append("city", this.city)
-			.append("telephone", this.telephone)
-			.toString();
+		return new ToStringCreator(this).append("id", this.getId()).append("new", this.isNew())
+				.append("lastName", this.getLastName()).append("firstName", this.getFirstName())
+				.append("address", this.address).append("city", this.city).append("telephone", this.telephone)
+				.toString();
 	}
 
 	/**
@@ -161,7 +156,7 @@ public class Owner extends Person {
 	 * @param petId the identifier of the {@link Pet}, must not be {@literal null}.
 	 * @param visit the visit to add, must not be {@literal null}.
 	 */
-	public void addVisit(Integer petId, Visit visit) {
+	public Owner addVisit(Integer petId, Visit visit) {
 
 		Assert.notNull(petId, "Pet identifier must not be null!");
 		Assert.notNull(visit, "Visit must not be null!");
@@ -171,6 +166,8 @@ public class Owner extends Person {
 		Assert.notNull(pet, "Invalid Pet identifier!");
 
 		pet.addVisit(visit);
+
+		return this;
 	}
 
 }

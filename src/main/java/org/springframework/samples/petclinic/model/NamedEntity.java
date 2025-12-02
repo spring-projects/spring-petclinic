@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2025 the original author or authors.
+ * Copyright 2012-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,8 @@
  */
 package org.springframework.samples.petclinic.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.validation.constraints.NotBlank;
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 
 /**
  * Simple JavaBean domain object adds a name property to <code>BaseEntity</code>. Used as
@@ -25,13 +24,11 @@ import jakarta.validation.constraints.NotBlank;
  *
  * @author Ken Krebs
  * @author Juergen Hoeller
- * @author Wick Dynex
  */
 @MappedSuperclass
 public class NamedEntity extends BaseEntity {
 
 	@Column(name = "name")
-	@NotBlank
 	private String name;
 
 	public String getName() {
@@ -44,8 +41,7 @@ public class NamedEntity extends BaseEntity {
 
 	@Override
 	public String toString() {
-		String name = this.getName();
-		return (name != null) ? name : "<null>";
+		return this.getName();
 	}
 
 }

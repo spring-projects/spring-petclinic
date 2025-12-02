@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2025 the original author or authors.
+ * Copyright 2012-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,13 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.Formatter;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.Locale;
-import java.util.Objects;
 
 /**
  * Instructs Spring MVC on how to parse and print elements of type 'PetType'. Starting
@@ -36,23 +36,23 @@ import java.util.Objects;
 @Component
 public class PetTypeFormatter implements Formatter<PetType> {
 
-	private final PetTypeRepository types;
+	private final OwnerRepository owners;
 
-	public PetTypeFormatter(PetTypeRepository types) {
-		this.types = types;
+	@Autowired
+	public PetTypeFormatter(OwnerRepository owners) {
+		this.owners = owners;
 	}
 
 	@Override
 	public String print(PetType petType, Locale locale) {
-		String name = petType.getName();
-		return (name != null) ? name : "<null>";
+		return petType.getName();
 	}
 
 	@Override
 	public PetType parse(String text, Locale locale) throws ParseException {
-		Collection<PetType> findPetTypes = this.types.findPetTypes();
+		Collection<PetType> findPetTypes = this.owners.findPetTypes();
 		for (PetType type : findPetTypes) {
-			if (Objects.equals(type.getName(), text)) {
+			if (type.getName().equals(text)) {
 				return type;
 			}
 		}

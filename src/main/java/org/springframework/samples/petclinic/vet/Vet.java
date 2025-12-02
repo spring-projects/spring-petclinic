@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2025 the original author or authors.
+ * Copyright 2012-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,22 +15,23 @@
  */
 package org.springframework.samples.petclinic.vet;
 
-import java.util.Comparator;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import org.springframework.samples.petclinic.model.NamedEntity;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlElement;
+
+import org.springframework.beans.support.MutableSortDefinition;
+import org.springframework.beans.support.PropertyComparator;
 import org.springframework.samples.petclinic.model.Person;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
-import jakarta.xml.bind.annotation.XmlElement;
 
 /**
  * Simple JavaBean domain object representing a veterinarian.
@@ -56,11 +57,15 @@ public class Vet extends Person {
 		return this.specialties;
 	}
 
+	protected void setSpecialtiesInternal(Set<Specialty> specialties) {
+		this.specialties = specialties;
+	}
+
 	@XmlElement
 	public List<Specialty> getSpecialties() {
-		return getSpecialtiesInternal().stream()
-			.sorted(Comparator.comparing(NamedEntity::getName))
-			.collect(Collectors.toList());
+		List<Specialty> sortedSpecs = new ArrayList<>(getSpecialtiesInternal());
+		PropertyComparator.sort(sortedSpecs, new MutableSortDefinition("name", true, true));
+		return Collections.unmodifiableList(sortedSpecs);
 	}
 
 	public int getNrOfSpecialties() {
