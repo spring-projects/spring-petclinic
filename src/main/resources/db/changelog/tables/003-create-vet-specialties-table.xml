@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.11.xsd">
+	<changeSet id="003-create-vet-specialties-table" author="Marina">
+		<createTable tableName="vet_specialties">
+			<column name="vet_id" type="INTEGER">
+				<constraints nullable="false"/>
+			</column>
+			<column name="specialty_id" type="INTEGER">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint
+			baseTableName="vet_specialties"
+			baseColumnNames="vet_id"
+			constraintName="fk_vet_specialties_vets"
+			referencedTableName="vets"
+			referencedColumnNames="id"/>
+
+		<addForeignKeyConstraint
+			baseTableName="vet_specialties"
+			baseColumnNames="specialty_id"
+			constraintName="fk_vet_specialties_specialties"
+			referencedTableName="specialties"
+			referencedColumnNames="id"/>
+
+	</changeSet>
+</databaseChangeLog>

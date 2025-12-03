@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.11.xsd">
+
+	<include file="db/changelog/tables/001-create-vets-table.xml"/>
+	<include file="db/changelog/tables/002-create-specialties-table.xml"/>
+	<include file="db/changelog/tables/003-create-vet-specialties-table.xml"/>
+	<include file="db/changelog/tables/004-create-types-table.xml"/>
+	<include file="db/changelog/tables/005-create-owners-table.xml"/>
+	<include file="db/changelog/tables/006-create-pets-table.xml"/>
+	<include file="db/changelog/tables/007-create-visits-table.xml"/>
+	<changeSet id="load-initial-data" author="Marina" context="dev">
+		<sqlFile path="db/h2/data.sql" relativeToChangelogFile="false"/>
+	</changeSet>
+</databaseChangeLog>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.11.xsd">
+	<changeSet id="001-create-vets-table" author="Marina">
+		<createTable tableName="vets">
+			<column name="id" type="INTEGER" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="first_name" type="VARCHAR(30)">
+			</column>
+			<column name="last_name" type="VARCHAR(30)">
+			</column>
+		</createTable>
+
+		<createIndex tableName="vets" indexName="vets_last_name">
+			<column name="last_name"/>
+		</createIndex>
+
+	</changeSet>
+</databaseChangeLog>

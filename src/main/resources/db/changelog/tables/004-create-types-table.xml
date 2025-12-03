@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.11.xsd">
+	<changeSet id="004-create-types-table" author="Marina">
+		<createTable tableName="types">
+			<column name="id" type="INTEGER" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="name" type="VARCHAR(80)">
+			</column>
+		</createTable>
+
+		<createIndex tableName="types" indexName="types_name">
+			<column name="name"/>
+		</createIndex>
+
+	</changeSet>
+</databaseChangeLog>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.11.xsd">
+	<changeSet id="006-create-pets-table" author="Marina">
+		<createTable tableName="pets">
+			<column name="id" type="INTEGER" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="name" type="VARCHAR(30)">
+			</column>
+			<column name="birth_date" type="DATE">
+			</column>
+			<column name="type_id" type="INTEGER">
+				<constraints nullable="false"/>
+			</column>
+			<column name="owner_id" type="INTEGER">
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint
+			baseTableName="pets"
+			baseColumnNames="type_id"
+			constraintName="fk_pets_types"
+			referencedTableName="types"
+			referencedColumnNames="id"/>
+
+		<addForeignKeyConstraint
+			baseTableName="pets"
+			baseColumnNames="owner_id"
+			constraintName="fk_pets_owners"
+			referencedTableName="owners"
+			referencedColumnNames="id"/>
+
+		<createIndex tableName="pets" indexName="pets_name">
+			<column name="name"/>
+		</createIndex>
+
+	</changeSet>
+</databaseChangeLog>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.11.xsd">
+	<changeSet id="005-create-owners-table" author="Marina">
+		<createTable tableName="owners">
+			<column name="id" type="INTEGER" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="first_name" type="VARCHAR(30)">
+			</column>
+			<column name="last_name" type="VARCHAR_IGNORECASE(30)">
+			</column>
+			<column name="address" type="VARCHAR(255)">
+			</column>
+			<column name="city" type="VARCHAR(80)">
+			</column>
+			<column name="telephone" type="VARCHAR(20)">
+			</column>
+		</createTable>
+
+		<createIndex tableName="owners" indexName="owners_last_name">
+			<column name="last_name"/>
+		</createIndex>
+
+	</changeSet>
+</databaseChangeLog>
