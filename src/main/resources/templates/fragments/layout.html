@@ -84,5 +84,7 @@
   <script th:src="@{/webjars/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
 
 </body>
-
+<div style="position: fixed; bottom: 10px; right: 10px; color: #aaa; font-size: 0.8em;">
+    Version: <span th:text="${@environment.getProperty('app.version')}"></span>
+</div>
 </html>

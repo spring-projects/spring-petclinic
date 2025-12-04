@@ -1,12 +1,16 @@
 name: CI - Petclinic EKS
 
+# 워크플로우 전체에서 Git push 허용
+permissions:
+  contents: write
+
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
-# 공통 ENV (필요에 따라 GitHub Variables 대신 여기서 관리 가능)
+# 공통 ENV
 env:
   AWS_REGION: ${{ vars.AWS_REGION || 'ap-northeast-2' }}
   ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY || 'eks/petclinic' }}
@@ -34,22 +38,21 @@ jobs:
           else
             mvn -B clean test package
           fi
-
       - name: Archive built JAR (optional)
         uses: actions/upload-artifact@v4
         with:
           name: petclinic-jar
           path: target/*.jar
 
-  # 2) Docker 이미지 빌드 + ECR Push
+  # 2) Docker 이미지 빌드 + ECR Push + k8s manifest 이미지 태그/앱 버전 업데이트
   build-and-push-image:
     needs: build-test
     runs-on: ubuntu-latest
 
-    # GitHub OIDC로 AWS Role Assume 하려면 필수
+    # 이 job에서 git push도 해야 하므로 contents: write 설정
     permissions:
       id-token: write
-      contents: read
+      contents: write
 
     steps:
       - name: Checkout
@@ -69,32 +72,56 @@ jobs:
         id: vars
         run: |
           SHORT_SHA=${GITHUB_SHA::7}
-          echo "IMAGE_TAG=${SHORT_SHA}" >> $GITHUB_ENV
+          echo "IMAGE_TAG=${SHORT_SHA}" >> "$GITHUB_ENV"
           echo "IMAGE_TAG=${SHORT_SHA}"
-
+      - name: Update application version (only on main)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          APP_VERSION="v-${IMAGE_TAG}"
+          echo "Set APP_VERSION: ${APP_VERSION}"
+          # app.version 라인은 항상 존재한다고 가정
+          sed -i "s/^app.version=.*/app.version=${APP_VERSION}/" src/main/resources/application.properties
       - name: Build Docker image
         env:
-          DOCKER_BUILDKIT: 1  # Docker build Job에서 BuildKit 활성화
+          DOCKER_BUILDKIT: 1
         run: |
           ECR_REGISTRY=${{ steps.ecr-login.outputs.registry }}
           IMAGE_URI="$ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:${IMAGE_TAG}"
-
           echo "Building image: $IMAGE_URI"
-          # Dockerfile이 repo 루트에 있다고 가정, 위치 다르면 -f 경로 지정
           docker build -t "$IMAGE_URI" .
-
       - name: Push Docker image
         run: |
           ECR_REGISTRY=${{ steps.ecr-login.outputs.registry }}
           IMAGE_URI="$ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:${IMAGE_TAG}"
-
           docker push "$IMAGE_URI"
-
       - name: Tag image as latest (only on main)
         if: github.ref == 'refs/heads/main'
         run: |
           ECR_REGISTRY=${{ steps.ecr-login.outputs.registry }}
           IMAGE_BASE="$ECR_REGISTRY/${{ env.ECR_REPOSITORY }}"
-
           docker tag "${IMAGE_BASE}:${IMAGE_TAG}" "${IMAGE_BASE}:latest"
           docker push "${IMAGE_BASE}:latest"
+      # app.version 업데이트 (commit/push는 아래에서 한 번에)
+      - name: Update Kubernetes manifest image tag (only on main)
+        if: github.ref == 'refs/heads/main'
+        env:
+          YAML_PATH: k8s/20-petclinic-Deployments-postgre.yaml
+        run: |
+          ECR_REGISTRY=${{ steps.ecr-login.outputs.registry }}
+          IMAGE_BASE="$ECR_REGISTRY/${{ env.ECR_REPOSITORY }}"
+          NEW_IMAGE="${IMAGE_BASE}:${IMAGE_TAG}"
+          echo "New image: $NEW_IMAGE"
+          echo "Updating $YAML_PATH"
+          sed -i "s#^\(\s*image:\s*\).*#\1${NEW_IMAGE}#" "$YAML_PATH"
+      # 위 두 파일을 한 번에 commit & push
+      - name: Commit and push changes (only on main)
+        if: github.ref == 'refs/heads/main'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name  "github-actions"
+          git config user.email "github-actions@github.com"
+          git status
+          git add src/main/resources/application.properties k8s/20-petclinic-Deployments-postgre.yaml
+          git commit -m "chore: update petclinic image to ${IMAGE_TAG}" || echo "No changes to commit"
+          git push
