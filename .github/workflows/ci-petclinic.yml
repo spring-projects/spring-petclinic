@@ -77,7 +77,7 @@ jobs:
       - name: Update application version (only on main)
         if: github.ref == 'refs/heads/main'
         run: |
-          APP_VERSION="v-${IMAGE_TAG}"
+          APP_VERSION="A-${IMAGE_TAG}"
           echo "Set APP_VERSION: ${APP_VERSION}"
           # app.version 라인은 항상 존재한다고 가정
           sed -i "s/^app.version=.*/app.version=${APP_VERSION}/" src/main/resources/application.properties
