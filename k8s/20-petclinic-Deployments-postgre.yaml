@@ -29,7 +29,7 @@ spec:
 
       containers:
         - name: petclinic-container
-          image: insulin90/petclinic:v0.2
+          image: 723926525504.dkr.ecr.ap-northeast-2.amazonaws.com/eks/petclinic:298b12d
 
           # DB 설정은 ConfigMap / Secret에서 그대로 가져오기
           envFrom:
