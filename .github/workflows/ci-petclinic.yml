@@ -67,20 +67,33 @@ jobs:
       - name: Login to Amazon ECR
         id: ecr-login
         uses: aws-actions/amazon-ecr-login@v2
-
       - name: Set image tag
         id: vars
         run: |
           SHORT_SHA=${GITHUB_SHA::7}
           echo "IMAGE_TAG=${SHORT_SHA}" >> "$GITHUB_ENV"
           echo "IMAGE_TAG=${SHORT_SHA}"
-      - name: Update application version (only on main)
-        if: github.ref == 'refs/heads/main'
+      - name: Read base version from pom.xml
         run: |
-          APP_VERSION="A-${IMAGE_TAG}"
-          echo "Set APP_VERSION: ${APP_VERSION}"
-          # app.version 라인은 항상 존재한다고 가정
+          POM_VERSION=$(./mvnw -q \
+            -Dexpression=project.version \
+            -DforceStdout help:evaluate)
+          echo "POM_VERSION=${POM_VERSION}"
+
+          # -SNAPSHOT suffix 제거
+          BASE_VERSION=${POM_VERSION%-SNAPSHOT}
+          echo "BASE_VERSION=${BASE_VERSION}"
+          echo "BASE_VERSION=${BASE_VERSION}" >> $GITHUB_ENV
+      - name: Build APP_VERSION (base + image tag)
+        run: |
+          APP_VERSION="A-${BASE_VERSION}-${IMAGE_TAG}"
+
+          echo "APP_VERSION=${APP_VERSION}"
+          echo "APP_VERSION=${APP_VERSION}" >> $GITHUB_ENV
+      - name: Update application version property
+        run: |
           sed -i "s/^app.version=.*/app.version=${APP_VERSION}/" src/main/resources/application.properties
+      
       - name: Build Docker image
         env:
           DOCKER_BUILDKIT: 1
@@ -123,5 +136,5 @@ jobs:
           git config user.email "github-actions@github.com"
           git status
           git add src/main/resources/application.properties k8s/20-petclinic-Deployments-postgre.yaml
-          git commit -m "chore: update petclinic image to ${IMAGE_TAG}" || echo "No changes to commit"
+          git commit -m "chore: update petclinic image to ${APP_VERSION}" || echo "No changes to commit"
           git push
