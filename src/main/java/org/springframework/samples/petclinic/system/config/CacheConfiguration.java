@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.samples.petclinic.system;
+package org.springframework.samples.petclinic.system.config;
 
 import org.springframework.boot.cache.autoconfigure.JCacheManagerCustomizer;
 import org.springframework.cache.annotation.EnableCaching;
@@ -27,6 +27,11 @@ import javax.cache.configuration.MutableConfiguration;
  * Cache configuration intended for caches providing the JCache API. This configuration
  * creates the used cache for the application and enables statistics that become
  * accessible via JMX.
+ *
+ * @author Nathan Dalbert
+ * @author Paulo Henrique
+ * @author Mickael de Albuquerque
+ * @author Igor Rego
  */
 @Configuration(proxyBeanMethods = false)
 @EnableCaching

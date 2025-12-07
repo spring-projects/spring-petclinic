@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.system;
+package org.springframework.samples.petclinic.system.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +18,10 @@ import java.util.Locale;
  * language changes via the URL parameter (e.g., <code>?lang=de</code>).
  * </p>
  *
- * @author Anuj Ashok Potdar
+ * @author Nathan Dalbert
+ * @author Paulo Henrique
+ * @author Mickael de Albuquerque
+ * @author Igor Rego
  */
 @Configuration
 @SuppressWarnings("unused")
