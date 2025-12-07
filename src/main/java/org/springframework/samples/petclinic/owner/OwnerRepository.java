@@ -20,6 +20,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 /**
  * Repository class for <code>Owner</code> domain objects. All method names are compliant
@@ -57,6 +58,7 @@ public interface OwnerRepository extends JpaRepository<Owner, Integer> {
 	 * @throws IllegalArgumentException if the id is null (assuming null is not a valid
 	 * input for id)
 	 */
+	@Query("SELECT DISTINCT owner FROM Owner owner LEFT JOIN FETCH owner.pets p LEFT JOIN FETCH p.visits WHERE owner.id = :id")
 	Optional<Owner> findById(Integer id);
 
 }
