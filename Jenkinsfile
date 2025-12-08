@@ -11,12 +11,12 @@ pipeline {
     DOCKERHUB_CREDENTIALS = credentials('Docker-token') 
   }
 
-  stages{
-    /*stage('Git Clone'){
-      steps {
-        git url: 'https://github.com/wodnr533/spring-petclinic.git', branch: 'main'
-      }
-    */}
+  stages {
+    //stage('Git Clone'){
+      //steps {
+        //git url: 'https://github.com/wodnr533/spring-petclinic.git', branch: 'main'
+      //}
+    //}
     stage('Maven Build'){
       agent {
         docker {
@@ -75,4 +75,4 @@ pipeline {
       }
     }
   }
-
+}
