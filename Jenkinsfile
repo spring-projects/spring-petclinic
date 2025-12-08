@@ -51,6 +51,7 @@ pipeline {
           sh 'kubectl apply -f petclinic-deployment.yaml'
           sh 'kubectl apply -f petclinic-service.yaml'
           sh "kubectl set image deployment/petclinic workload=wodnr8174/spring-petclinic:latest"
+        }
       }
     }
   }
