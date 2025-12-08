@@ -19,7 +19,7 @@ metadata:
   labels:
     app: petclinic
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: petclinic
@@ -30,7 +30,8 @@ spec:
     spec:
       containers:
         - name: workload
-          image: dsyer/petclinic
+          image: wodnr8174/spring-petclinic:latest
+          imagePullPolicy: Always
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: postgres
@@ -61,4 +62,4 @@ spec:
           projected:
             sources:
               - secret:
-                  name: demo-db
+                  name: petclinic-db
