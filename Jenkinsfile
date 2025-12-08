@@ -1,14 +1,10 @@
 pipeline {
-  agent {
-    docker {
-      image 'maven:3.9.5-openjdk-17-slim'
-      args '-v /var/run/docker.sock:/var/run/docker.sock'
-    }
+  agent any
+  
+  tools {
+    maven "M3"
+    jdk "JDK17"
   }
-  //tools {
-   // maven "M3"
-   // jdk "JDK17"
-  //}
 
   environment {
     DOCKERHUB_CREDENTIALS = credentials('Docker-token') 
