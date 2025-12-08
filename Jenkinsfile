@@ -18,9 +18,7 @@ pipeline {
     }
     stage('Maven Build'){
       steps {
-        withEnv(["JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64"]) {
           sh 'mvn -Dmaven.test.failure.ignore=true clean package'
-        }
       }
     }
     stage('Docker Image Create') {
