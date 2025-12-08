@@ -7,7 +7,7 @@ pipeline {
   }
 
   environment {
-    DOCKERHUB_CREDENTIALS = credentials('dockerCredentials') 
+    DOCKERHUB_CREDENTIALS = credentials('Docker-token') 
   }
 
   stages{
@@ -46,8 +46,11 @@ pipeline {
     }
     stage('Kubernetes Deploy') {
       steps {
-        sh "kubectl set image deployment/petclinic workload=wodnr8174/spring-petclinic:latest"
-        sh 'kubectl apply -f petclinic.yml'
+        withKubeConfig([credentialsId: 'kubeconfig']) {
+          sh 'kubectl apply -f postgres.yml'
+          sh 'kubectl apply -f petclinic-deployment.yaml'
+          sh 'kubectl apply -f petclinic-service.yaml'
+          sh "kubectl set image deployment/petclinic workload=wodnr8174/spring-petclinic:latest"
       }
     }
   }
