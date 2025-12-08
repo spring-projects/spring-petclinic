@@ -5,10 +5,10 @@ pipeline {
       args '-v /var/run/docker.sock:/var/run/docker.sock'
     }
   }
-  tools {
+  //tools {
    // maven "M3"
    // jdk "JDK17"
-  }
+  //}
 
   environment {
     DOCKERHUB_CREDENTIALS = credentials('Docker-token') 
