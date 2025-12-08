@@ -13,7 +13,7 @@ pipeline {
   stages{
     stage('Git Clone'){
       steps {
-        git url: 'https://github.com/sjh4616/spring-petclinic.git', branch: 'main'
+        git url: 'https://github.com/wodnr533/spring-petclinic.git'
       }
     }
     stage('Maven Build'){
@@ -44,27 +44,10 @@ pipeline {
         sh 'docker rmi wodnr8174/spring-petclinic:$BUILD_NUMBER wodnr8174/spring-petclinic:latest'
       }
     }
-    stage('Publish Over SSH') {
+    stage('Kubernetes Deploy') {
       steps {
-        sshPublisher(publishers: [sshPublisherDesc(configName: 'WEB01', 
-        transfers: [sshTransfer(cleanRemote: false, 
-        excludes: '', 
-        execCommand: '''
-        fuser -k 8080/tcp
-        export BUILD_ID=WEB01
-        nohup java -jar /home/web01/deploy/spring-petclinic-3.5.0-SNAPSHOT.jar >> nohup.out 2>&1 &''', 
-        execTimeout: 120000, 
-        flatten: false, 
-        makeEmptyDirs: false, 
-        noDefaultExcludes: false, 
-        patternSeparator: '[, ]+', 
-        remoteDirectory: '', 
-        remoteDirectorySDF: false, 
-        removePrefix: 'target', 
-        sourceFiles: 'target/*.jar')], 
-        usePromotionTimestamp: false, 
-        useWorkspaceInPromotion: false, 
-        verbose: false)])
+        sh "kubectl set image deployment/petclinic workload=wodnr8174/spring-petclinic:latest"
+        sh 'kubectl apply -f petclinic.yml'
       }
     }
   }
