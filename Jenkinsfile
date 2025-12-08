@@ -1,9 +1,13 @@
 pipeline {
-  agent any
-
+  agent {
+    docker {
+      image 'maven:3.9.5-openjdk-17-slim'
+      args '-v /var/run/docker.sock:/var/run/docker.sock'
+    }
+  }
   tools {
-    maven "M3"
-    jdk "JDK17"
+   // maven "M3"
+   // jdk "JDK17"
   }
 
   environment {
