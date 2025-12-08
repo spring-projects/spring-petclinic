@@ -1,0 +1,55 @@
+pipeline {
+    agent {
+        kubernetes {
+            label 'kaniko-maven'
+            defaultContainer 'maven'
+        }
+    }
+
+    environment {
+        IMAGE = "wodnr8174/spring-petclinic"
+        TAG = "${BUILD_NUMBER}"
+        KUBECONFIG_CRED = "kubeconfig"
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Maven Build') {
+            steps {
+                container('maven') {
+                    sh 'mvn clean package -DskipTests'
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                container('kaniko') {
+                    sh """
+                    /kaniko/executor \
+                      --dockerfile=Dockerfile \
+                      --context=`pwd` \
+                      --destination=$IMAGE:latest \
+                      --destination=$IMAGE:$TAG
+                    """
+                }
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                withCredentials([file(credentialsId: KUBECONFIG_CRED, variable: 'KUBECONFIG')]) {
+                    sh """
+                    kubectl --kubeconfig=$KUBECONFIG set image deployment/petclinic petclinic=$IMAGE:$TAG -n petclinic
+                    """
+                }
+            }
+        }
+    }
+}
