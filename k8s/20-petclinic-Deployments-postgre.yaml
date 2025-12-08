@@ -33,8 +33,6 @@ spec:
 
           # DB 설정은 ConfigMap / Secret에서 그대로 가져오기
           envFrom:
-            - configMapRef:
-                name: petclinic-db-config
             - secretRef:
                 name: petclinic-db-secret
 
@@ -42,6 +40,8 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "postgres"
+            - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
+              value: "org.postgresql.Driver"
 
           ports:
             - name: http
