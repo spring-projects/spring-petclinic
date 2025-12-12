@@ -31,7 +31,7 @@ public class Person extends BaseEntity {
 	@NotBlank
 	private String firstName;
 
-	@Column(name = "last_name")
+	@Column(name = "last_namesss")
 	@NotBlank
 	private String lastName;
 
