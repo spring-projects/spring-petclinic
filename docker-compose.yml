@@ -4,6 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
     image: spring-petclinic:latest
+    container_name: spring-petclinic-app
     ports:
       - "8080:8080"
     environment:
@@ -15,11 +16,20 @@ services:
       mysql:
         condition: service_healthy
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8080/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - petclinic-network
 
   mysql:
     image: mysql:9.2
+    container_name: spring-petclinic-mysql
     ports:
-      - "3306:3306"
+      - "${MYSQL_PORT:-3306}:3306"
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
       MYSQL_USER: ${SPRING_DATASOURCE_USERNAME:-petclinic}
@@ -27,27 +37,47 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE:-petclinic}
       MYSQL_ALLOW_EMPTY_PASSWORD: "false"
     volumes:
+      - mysql-data:/var/lib/mysql
       - "./conf.d:/etc/mysql/conf.d:ro"
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -p${MYSQL_ROOT_PASSWORD:-root}"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-root}"]
       interval: 10s
       timeout: 5s
       retries: 10
       start_period: 20s
+    restart: unless-stopped
+    networks:
+      - petclinic-network
 
   postgres:
     image: postgres:18.0
+    container_name: spring-petclinic-postgres
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     environment:
       POSTGRES_PASSWORD: ${SPRING_DATASOURCE_PASSWORD:-petclinic}
       POSTGRES_USER: ${SPRING_DATASOURCE_USERNAME:-petclinic}
       POSTGRES_DB: ${POSTGRES_DB:-petclinic}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${SPRING_DATASOURCE_USERNAME:-petclinic}"]
       interval: 10s
       timeout: 5s
       retries: 10
       start_period: 20s
+    restart: unless-stopped
     profiles:
       - postgres
+    networks:
+      - petclinic-network
+
+volumes:
+  mysql-data:
+    driver: local
+  postgres-data:
+    driver: local
+
+networks:
+  petclinic-network:
+    driver: bridge

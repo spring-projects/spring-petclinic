@@ -1,15 +1,77 @@
+# Build outputs
 /target
 /build
+*.jar
+*.war
+*.ear
+
+# Maven
 /.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
+
+# IDE
 /.idea
 /.vscode
+/.settings
+/.classpath
+/.project
+*.iml
+*.ipr
+*.iws
+
+# Version control
 /.git
 /.gitignore
+/.gitattributes
+
+# Documentation
 README.md
 LICENSE.txt
+*.md
+/docs
+
+# Docker
 docker-compose.yml
-k8s
+docker-compose.*.yml
+.dockerignore
+Dockerfile*
+
+# Kubernetes
+/k8s
+*.yaml
+!src/**/*.yml
+!src/**/*.yaml
+
+# CI/CD
+/.github
+/.gitlab-ci.yml
+/.travis.yml
+/.circleci
+
+# Dependencies
 node_modules
-*.iml
+/.gradle
+/.m2
+
+# Logs
 *.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Test files
+**/test/**
+**/*Test.java
+**/*Tests.java
+**/__tests__/
+
+# Temporary files
+*.tmp
+*.temp
+.cache
 
