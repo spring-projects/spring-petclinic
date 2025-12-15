@@ -4,7 +4,7 @@ pipeline {
        stage("BuildCode"){
           steps {
                 sh """
-                   cd spring-petclinic
+        
                    ./mvnw package
                    java -jar target/*.jar
                 """
