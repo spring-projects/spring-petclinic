@@ -1,0 +1,46 @@
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: petclinic-backendconfig
+  namespace: petclinic-ns
+spec:
+  healthCheck:
+    type: HTTP
+    requestPath: /actuator/health/liveness
+    port: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: petclinic
+  namespace: petclinic-ns
+  annotations:
+    beta.cloud.google.com/backend-config: '{"default":"petclinic-backendconfig"}'
+spec:
+  type: ClusterIP
+  selector:
+    app: petclinic
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: petclinic
+  namespace: petclinic-ns
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: petclinic
+                port:
+                  number: 80
+

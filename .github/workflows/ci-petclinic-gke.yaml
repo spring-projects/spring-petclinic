@@ -1,0 +1,147 @@
+name: CI - Petclinic GKE
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+  GAR_LOCATION: ${{ vars.GAR_LOCATION || 'asia-northeast3' }}
+  GAR_REPOSITORY: ${{ vars.GAR_REPOSITORY || 'petclinic' }}
+  IMAGE_NAME: ${{ vars.IMAGE_NAME || 'petclinic' }}
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "25"
+          cache: maven
+
+      - name: Maven build & test
+        run: |
+          if [ -x "./mvnw" ]; then
+            ./mvnw -B clean test package
+          else
+            mvn -B clean test package
+          fi
+
+      - name: Archive built JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: petclinic-jar
+          path: target/*.jar
+
+  build-and-push-image:
+    needs: build-test
+    runs-on: ubuntu-latest
+
+    if: github.event_name != 'pull_request' && github.actor != 'github-actions[bot]'
+
+    permissions:
+      contents: write
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "25"
+          cache: maven
+
+      - name: Auth to Google Cloud (WIF)
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_SA_EMAIL }}
+
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure docker for Artifact Registry
+        run: |
+          gcloud auth configure-docker ${GAR_LOCATION}-docker.pkg.dev --quiet
+
+      - name: Set image tag
+        run: |
+          SHORT_SHA=${GITHUB_SHA::7}
+          echo "IMAGE_TAG=${SHORT_SHA}" >> "$GITHUB_ENV"
+
+      - name: Read base version from pom.xml
+        run: |
+          if [ -x "./mvnw" ]; then
+            POM_VERSION=$(./mvnw -q -Dexpression=project.version -DforceStdout help:evaluate)
+          else
+            POM_VERSION=$(mvn -q -Dexpression=project.version -DforceStdout help:evaluate)
+          fi
+          BASE_VERSION=${POM_VERSION%-SNAPSHOT}
+          echo "BASE_VERSION=${BASE_VERSION}" >> "$GITHUB_ENV"
+
+      - name: Build APP_VERSION
+        run: |
+          APP_VERSION="G-${BASE_VERSION}-${IMAGE_TAG}"
+          echo "APP_VERSION=${APP_VERSION}" >> "$GITHUB_ENV"
+
+      - name: Update application version property
+        run: |
+          sed -i "s/^app.version=.*/app.version=${APP_VERSION}/" src/main/resources/application.properties
+
+      - name: Build Docker image
+        env:
+          DOCKER_BUILDKIT: 1
+        run: |
+          IMAGE_URI="${GAR_LOCATION}-docker.pkg.dev/${GCP_PROJECT_ID}/${GAR_REPOSITORY}/${IMAGE_NAME}:${IMAGE_TAG}"
+          echo "IMAGE_URI=${IMAGE_URI}" >> "$GITHUB_ENV"
+          docker build -t "$IMAGE_URI" .
+
+      - name: Push Docker image
+        run: |
+          docker push "$IMAGE_URI"
+
+      - name: Tag image as latest
+        if: github.ref == 'refs/heads/main'
+        run: |
+          IMAGE_BASE="${GAR_LOCATION}-docker.pkg.dev/${GCP_PROJECT_ID}/${GAR_REPOSITORY}/${IMAGE_NAME}"
+          docker tag "${IMAGE_BASE}:${IMAGE_TAG}" "${IMAGE_BASE}:latest"
+          docker push "${IMAGE_BASE}:latest"
+
+      - name: Update Kubernetes manifest image tag
+        if: github.ref == 'refs/heads/main'
+        env:
+          YAML_PATH: k8s/gcp/20-petclinic-Deployments-postgre.yaml
+        run: |
+          NEW_IMAGE="${GAR_LOCATION}-docker.pkg.dev/${GCP_PROJECT_ID}/${GAR_REPOSITORY}/${IMAGE_NAME}:${IMAGE_TAG}"
+          grep -n "image:" "$YAML_PATH"
+          sed -i "s#^\(\s*image:\s*\).*#\1${NEW_IMAGE}#" "$YAML_PATH"
+
+      - name: Commit and push changes
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add src/main/resources/application.properties k8s/gcp/20-petclinic-Deployments-postgre.yaml
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "chore: update petclinic image to ${IMAGE_TAG} [skip ci]"
+          git push
