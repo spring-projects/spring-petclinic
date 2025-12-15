@@ -29,15 +29,8 @@ spec:
 
       containers:
         - name: petclinic-container
-<<<<<<< HEAD
           image: 723926525504.dkr.ecr.ap-northeast-2.amazonaws.com/eks/petclinic:138ba75
-=======
-<<<<<<< HEAD:k8s/20-petclinic-Deployments-postgre.yaml
-          image: 723926525504.dkr.ecr.ap-northeast-2.amazonaws.com/eks/petclinic:211b94a
-=======
-          image: 723926525504.dkr.ecr.ap-northeast-2.amazonaws.com/eks/petclinic:e6690f6
->>>>>>> 138ba75 ( update eks CI yaml, k8s aws):k8s/aws/20-petclinic-Deployments-postgre.yaml
->>>>>>> 71b1873 (update)
+
 
           # DB 설정은 ConfigMap / Secret에서 그대로 가져오기
           envFrom:
