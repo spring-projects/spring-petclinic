@@ -8,8 +8,7 @@ pipeline {
                    ./mvnw package
                    java -jar target/*.jar
                 """
+            }
         }
-
-    }
-} 
+    } 
 } 
