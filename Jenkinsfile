@@ -43,7 +43,14 @@ pipeline {
                 }
             }
  
-
+         stage('Upload Artifacts') {
+             when {
+                 expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
+            }
+             steps {
+                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+            }
+        }
 
             
     }
