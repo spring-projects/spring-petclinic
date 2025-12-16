@@ -42,11 +42,12 @@ spec:
               value: "postgres"
             - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
               value: "org.postgresql.Driver"
+              # DR/Replica 안전장치: 앱이 schema.sql / Hibernate DDL로 테이블 생성 시도하지 않게 차단
             - name: SPRING_SQL_INIT_MODE
               value: "never"
             - name: SPRING_JPA_HIBERNATE_DDL_AUTO
               value: "none"
-              
+
           ports:
             - name: http
               containerPort: 8080
