@@ -10,5 +10,15 @@ pipeline {
                 """
             }
         }
+
+         stage("RunTests"){
+             steps {
+                 sh """
+          
+                     ./mvnw test
+          
+                 """
+                }
+          }
     } 
 } 
