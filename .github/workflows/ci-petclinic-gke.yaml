@@ -132,7 +132,7 @@ jobs:
           NEW_IMAGE="${GAR_LOCATION}-docker.pkg.dev/${GCP_PROJECT_ID}/${GAR_REPOSITORY}/${IMAGE_NAME}:${IMAGE_TAG}"
           grep -n "image:" "$YAML_PATH"
           sed -i "s#^\(\s*image:\s*\).*#\1${NEW_IMAGE}#" "$YAML_PATH"
-
+      
       - name: Commit and push changes
         if: github.ref == 'refs/heads/main'
         run: |

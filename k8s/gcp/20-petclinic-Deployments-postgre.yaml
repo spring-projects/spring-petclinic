@@ -42,7 +42,11 @@ spec:
               value: "postgres"
             - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
               value: "org.postgresql.Driver"
-
+            - name: SPRING_SQL_INIT_MODE
+              value: "never"
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              value: "none"
+              
           ports:
             - name: http
               containerPort: 8080
