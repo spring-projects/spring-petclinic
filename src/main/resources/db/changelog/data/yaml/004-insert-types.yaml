@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004-insert-types
+      author: vilar
+      context: dev
+      changes:
+        - insert: { tableName: types, columns: [ { column: { name: name, value: cat } } ] }
+        - insert: { tableName: types, columns: [ { column: { name: name, value: dog } } ] }
+        - insert: { tableName: types, columns: [ { column: { name: name, value: lizard } } ] }
+        - insert: { tableName: types, columns: [ { column: { name: name, value: snake } } ] }
+        - insert: { tableName: types, columns: [ { column: { name: name, value: bird } } ] }
+        - insert: { tableName: types, columns: [ { column: { name: name, value: hamster } } ] }

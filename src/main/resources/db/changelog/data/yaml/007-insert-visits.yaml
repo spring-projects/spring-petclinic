@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: 007-insert-visits
+      author: vilar
+      context: dev
+      changes:
+        - insert:
+            tableName: visits
+            columns:
+              - column: { name: pet_id, valueNumeric: 7 }
+              - column: { name: visit_date, valueDate: 2010-03-04 }
+              - column: { name: description, value: "rabies shot" }
+
+        - insert:
+            tableName: visits
+            columns:
+              - column: { name: pet_id, valueNumeric: 8 }
+              - column: { name: visit_date, valueDate: 2011-03-04 }
+              - column: { name: description, value: "rabies shot" }

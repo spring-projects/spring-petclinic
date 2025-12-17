@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-insert-vets
+      author: vilar
+      context: dev
+      changes:
+        - insert:
+            tableName: vets
+            columns:
+              - column: { name: first_name, value: James }
+              - column: { name: last_name, value: Carter }
+
+        - insert:
+            tableName: vets
+            columns:
+              - column: { name: first_name, value: Helen }
+              - column: { name: last_name, value: Leary }
+
+        - insert:
+            tableName: vets
+            columns:
+              - column: { name: first_name, value: Linda }
+              - column: { name: last_name, value: Douglas }
+
+        - insert:
+            tableName: vets
+            columns:
+              - column: { name: first_name, value: Rafael }
+              - column: { name: last_name, value: Ortega }
+
+        - insert:
+            tableName: vets
+            columns:
+              - column: { name: first_name, value: Henry }
+              - column: { name: last_name, value: Stevens }
+
+        - insert:
+            tableName: vets
+            columns:
+              - column: { name: first_name, value: Sharon }
+              - column: { name: last_name, value: Jenkins }

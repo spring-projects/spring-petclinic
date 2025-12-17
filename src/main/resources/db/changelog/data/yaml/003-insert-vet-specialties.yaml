@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-insert-vet-specialties
+      author: vilar
+      context: dev
+      changes:
+        - insert:
+            tableName: vet_specialties
+            columns:
+              - column: { name: vet_id, valueNumeric: 2 }
+              - column: { name: specialty_id, valueNumeric: 1 }
+
+        - insert:
+            tableName: vet_specialties
+            columns:
+              - column: { name: vet_id, valueNumeric: 3 }
+              - column: { name: specialty_id, valueNumeric: 2 }
+
+        - insert:
+            tableName: vet_specialties
+            columns:
+              - column: { name: vet_id, valueNumeric: 3 }
+              - column: { name: specialty_id, valueNumeric: 3 }
+
+        - insert:
+            tableName: vet_specialties
+            columns:
+              - column: { name: vet_id, valueNumeric: 4 }
+              - column: { name: specialty_id, valueNumeric: 2 }
+
+        - insert:
+            tableName: vet_specialties
+            columns:
+              - column: { name: vet_id, valueNumeric: 5 }
+              - column: { name: specialty_id, valueNumeric: 1 }

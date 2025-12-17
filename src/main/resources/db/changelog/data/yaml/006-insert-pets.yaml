@@ -1,0 +1,109 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006-insert-pets
+      author: vilar
+      context: dev
+      changes:
+        - insert:
+            tableName: pets
+            columns:
+              - column: { name: name, value: Leo }
+              - column: { name: birth_date, valueDate: 2000-09-07 }
+              - column: { name: type_id, valueNumeric: 1 }
+              - column: { name: owner_id, valueNumeric: 1 }
+
+        - insert:
+            tableName: pets
+            columns:
+              - column: { name: name, value: Basil }
+              - column: { name: birth_date, valueDate: 2002-08-06 }
+              - column: { name: type_id, valueNumeric: 6 }
+              - column: { name: owner_id, valueNumeric: 2 }
+
+        - insert:
+            tableName: pets
+            columns:
+              - column: { name: name, value: Rosy }
+              - column: { name: birth_date, valueDate: 2001-04-17 }
+              - column: { name: type_id, valueNumeric: 2 }
+              - column: { name: owner_id, valueNumeric: 3 }
+
+        - insert:
+            tableName: pets
+            columns:
+              - column: { name: name, value: Jewel }
+              - column: { name: birth_date, valueDate: 2000-03-07 }
+              - column: { name: type_id, valueNumeric: 2 }
+              - column: { name: owner_id, valueNumeric: 3 }
+
+        - insert:
+            tableName: pets
+            columns:
+              - column: { name: name, value: Iggy }
+              - column: { name: birth_date, valueDate: 2000-11-30 }
+              - column: { name: type_id, valueNumeric: 3 }
+              - column: { name: owner_id, valueNumeric: 4 }
+
+        - insert:
+            tableName: pets
+            columns:
+              - column: { name: name, value: George }
+              - column: { name: birth_date, valueDate: 2000-01-20 }
+              - column: { name: type_id, valueNumeric: 4 }
+              - column: { name: owner_id, valueNumeric: 5 }
+
+        - insert:
+            tableName: pets
+            columns:
+              - column: { name: name, value: Samantha }
+              - column: { name: birth_date, valueDate: 1995-09-04 }
+              - column: { name: type_id, valueNumeric: 1 }
+              - column: { name: owner_id, valueNumeric: 6 }
+
+        - insert:
+            tableName: pets
+            columns:
+              - column: { name: name, value: Max }
+              - column: { name: birth_date, valueDate: 1995-09-04 }
+              - column: { name: type_id, valueNumeric: 1 }
+              - column: { name: owner_id, valueNumeric: 6 }
+
+        - insert:
+            tableName: pets
+            columns:
+              - column: { name: name, value: Lucky }
+              - column: { name: birth_date, valueDate: 1999-08-06 }
+              - column: { name: type_id, valueNumeric: 5 }
+              - column: { name: owner_id, valueNumeric: 7 }
+
+        - insert:
+            tableName: pets
+            columns:
+              - column: { name: name, value: Mulligan }
+              - column: { name: birth_date, valueDate: 1997-02-24 }
+              - column: { name: type_id, valueNumeric: 2 }
+              - column: { name: owner_id, valueNumeric: 8 }
+
+        - insert:
+            tableName: pets
+            columns:
+              - column: { name: name, value: Freddy }
+              - column: { name: birth_date, valueDate: 2000-03-09 }
+              - column: { name: type_id, valueNumeric: 5 }
+              - column: { name: owner_id, valueNumeric: 9 }
+
+        - insert:
+            tableName: pets
+            columns:
+              - column: { name: name, value: Lucky }
+              - column: { name: birth_date, valueDate: 2000-06-24 }
+              - column: { name: type_id, valueNumeric: 2 }
+              - column: { name: owner_id, valueNumeric: 10 }
+
+        - insert:
+            tableName: pets
+            columns:
+              - column: { name: name, value: Sly }
+              - column: { name: birth_date, valueDate: 2002-06-08 }
+              - column: { name: type_id, valueNumeric: 1 }
+              - column: { name: owner_id, valueNumeric: 10 }

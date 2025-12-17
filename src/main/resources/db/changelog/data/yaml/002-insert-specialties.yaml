@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-insert-specialties
+      author: vilar
+      context: dev
+      changes:
+        - insert:
+            tableName: specialties
+            columns:
+              - column: { name: name, value: radiology }
+
+        - insert:
+            tableName: specialties
+            columns:
+              - column: { name: name, value: surgery }
+
+        - insert:
+            tableName: specialties
+            columns:
+              - column: { name: name, value: dentistry }
