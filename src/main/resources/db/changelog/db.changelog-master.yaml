@@ -1,0 +1,69 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-schema-h2
+      author: you
+      dbms: h2
+      changes:
+        - sqlFile:
+            path: db/h2/schema.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 002-schema-mysql
+      author: you
+      dbms: mysql
+      changes:
+        - sqlFile:
+            path: db/mysql/schema.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 003-schema-postgres
+      author: you
+      dbms: postgresql
+      changes:
+        - sqlFile:
+            path: db/postgres/schema.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 101-data-h2
+      author: you
+      dbms: h2
+      context: dev
+      changes:
+        - sqlFile:
+            path: db/h2/data.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 102-data-mysql
+      author: you
+      dbms: mysql
+      context: dev
+      changes:
+        - sqlFile:
+            path: db/mysql/data.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 103-data-postgres
+      author: you
+      dbms: postgresql
+      context: dev
+      changes:
+        - sqlFile:
+            path: db/postgres/data.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
