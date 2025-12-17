@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-init-vets-schema
+      author: vsevolodkolmogorov
+      changes:
+        - createTable:
+            tableName: vets
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: first_name
+                  type: varchar(30)
+              - column:
+                  name: last_name
+                  type: varchar(30)

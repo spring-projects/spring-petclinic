@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: 007-init-types-schema
+      author: vsevolodkolmogorov
+      changes:
+        - createTable:
+            tableName: types
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(30)

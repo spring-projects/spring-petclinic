@@ -1,0 +1,28 @@
+databaseChangeLog:
+  - changeSet:
+      id: 011-init-pets-schema
+      author: vsevolodkolmogorov
+      changes:
+        - createTable:
+            tableName: pets
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(30)
+              - column:
+                  name: birth_date
+                  type: date
+              - column:
+                  name: type_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: owner_id
+                  type: int

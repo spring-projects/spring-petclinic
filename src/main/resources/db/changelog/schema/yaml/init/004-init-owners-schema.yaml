@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: 009-init-owners-schema
+      author: vsevolodkolmogorov
+      changes:
+        - createTable:
+            tableName: owners
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: first_name
+                  type: varchar(30)
+              - column:
+                  name: last_name
+                  type: varchar(30)
+              - column:
+                  name: address
+                  type: varchar(50)
+              - column:
+                  name: city
+                  type: varchar(40)
+              - column:
+                  name: telephone
+                  type: varchar(10)

@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005-init-vet_specialties-schema
+      author: vsevolodkolmogorov
+      changes:
+        - createTable:
+            tableName: vet_specialties
+            columns:
+              - column:
+                  name: vet_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: specialty_id
+                  type: int
+                  constraints:
+                    nullable: false

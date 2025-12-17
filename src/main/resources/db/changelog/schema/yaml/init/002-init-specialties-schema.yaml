@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-init-specialties-schema
+      author: vsevolodkolmogorov
+      changes:
+        - createTable:
+            tableName: specialties
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(30)

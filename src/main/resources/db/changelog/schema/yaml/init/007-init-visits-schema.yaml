@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - changeSet:
+      id: 014-init-visits-schema
+      author: vsevolodkolmogorov
+      changes:
+        - createTable:
+            tableName: visits
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: pet_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: visit_date
+                  type: date
+              - column:
+                  name: description
+                  type: varchar(50)
