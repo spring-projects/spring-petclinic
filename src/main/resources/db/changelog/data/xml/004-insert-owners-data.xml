@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+       http://www.liquibase.org/xml/ns/dbchangelog
+       https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+	<changeSet id="004-insert-owners-data" author="vilar">
+		<insert tableName="owners">
+			<column name="first_name" value="George"/>
+			<column name="last_name" value="Franklin"/>
+			<column name="address" value="110 W. Liberty St."/>
+			<column name="city" value="Madison"/>
+			<column name="telephone" value="6085551023"/>
+		</insert>
+
+		<insert tableName="owners">
+			<column name="first_name" value="Betty"/>
+			<column name="last_name" value="Davis"/>
+			<column name="address" value="638 Cardinal Ave."/>
+			<column name="city" value="Sun Prairie"/>
+			<column name="telephone" value="6085551749"/>
+		</insert>
+
+		<insert tableName="owners">
+			<column name="first_name" value="Eduardo"/>
+			<column name="last_name" value="Rodriquez"/>
+			<column name="address" value="2693 Commerce St."/>
+			<column name="city" value="McFarland"/>
+			<column name="telephone" value="6085558763"/>
+		</insert>
+
+		<insert tableName="owners">
+			<column name="first_name" value="Harold"/>
+			<column name="last_name" value="Davis"/>
+			<column name="address" value="563 Friendly St."/>
+			<column name="city" value="Windsor"/>
+			<column name="telephone" value="6085553198"/>
+		</insert>
+
+		<insert tableName="owners">
+			<column name="first_name" value="Peter"/>
+			<column name="last_name" value="McTavish"/>
+			<column name="address" value="2387 S. Fair Way"/>
+			<column name="city" value="Madison"/>
+			<column name="telephone" value="6085552765"/>
+		</insert>
+
+		<insert tableName="owners">
+			<column name="first_name" value="Jean"/>
+			<column name="last_name" value="Coleman"/>
+			<column name="address" value="105 N. Lake St."/>
+			<column name="city" value="Monona"/>
+			<column name="telephone" value="6085552654"/>
+		</insert>
+
+		<insert tableName="owners">
+			<column name="first_name" value="Jeff"/>
+			<column name="last_name" value="Black"/>
+			<column name="address" value="1450 Oak Blvd."/>
+			<column name="city" value="Monona"/>
+			<column name="telephone" value="6085555387"/>
+		</insert>
+
+		<insert tableName="owners">
+			<column name="first_name" value="Maria"/>
+			<column name="last_name" value="Escobito"/>
+			<column name="address" value="345 Maple St."/>
+			<column name="city" value="Madison"/>
+			<column name="telephone" value="6085557683"/>
+		</insert>
+
+		<insert tableName="owners">
+			<column name="first_name" value="David"/>
+			<column name="last_name" value="Schroeder"/>
+			<column name="address" value="2749 Blackhawk Trail"/>
+			<column name="city" value="Madison"/>
+			<column name="telephone" value="6085559435"/>
+		</insert>
+
+		<insert tableName="owners">
+			<column name="first_name" value="Carlos"/>
+			<column name="last_name" value="Estaban"/>
+			<column name="address" value="2335 Independence La."/>
+			<column name="city" value="Waunakee"/>
+			<column name="telephone" value="6085555487"/>
+		</insert>
+	</changeSet>
+</databaseChangeLog>

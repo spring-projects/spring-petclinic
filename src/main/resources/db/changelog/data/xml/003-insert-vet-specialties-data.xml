@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+       http://www.liquibase.org/xml/ns/dbchangelog
+       https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+	<changeSet id="003-insert-vet-specialties-data" author="vilar">
+		<insert tableName="vet_specialties">
+			<column name="vet_id">2</column>
+			<column name="specialty_id">1</column>
+		</insert>
+		<insert tableName="vet_specialties">
+			<column name="vet_id">3</column>
+			<column name="specialty_id">2</column>
+		</insert>
+		<insert tableName="vet_specialties">
+			<column name="vet_id">3</column>
+			<column name="specialty_id">3</column>
+		</insert>
+		<insert tableName="vet_specialties">
+			<column name="vet_id">4</column>
+			<column name="specialty_id">2</column>
+		</insert>
+		<insert tableName="vet_specialties">
+			<column name="vet_id">5</column>
+			<column name="specialty_id">1</column>
+		</insert>
+	</changeSet>
+</databaseChangeLog>

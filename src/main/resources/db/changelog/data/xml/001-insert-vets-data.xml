@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+       http://www.liquibase.org/xml/ns/dbchangelog
+       https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+	<changeSet id="001-insert-vets-data" author="vilar">
+		<insert tableName="vets">
+			<column name="first_name">James</column>
+			<column name="last_name">Carter</column>
+		</insert>
+		<insert tableName="vets">
+			<column name="first_name">Helen</column>
+			<column name="last_name">Leary</column>
+		</insert>
+		<insert tableName="vets">
+			<column name="first_name">Linda</column>
+			<column name="last_name">Douglas</column>
+		</insert>
+		<insert tableName="vets">
+			<column name="first_name">Rafael</column>
+			<column name="last_name">Ortega</column>
+		</insert>
+		<insert tableName="vets">
+			<column name="first_name">Rafael</column>
+			<column name="last_name">Ortega</column>
+		</insert>
+		<insert tableName="vets">
+			<column name="first_name">Henry</column>
+			<column name="last_name">Stevens</column>
+		</insert>
+		<insert tableName="vets">
+			<column name="first_name">Sharon</column>
+			<column name="last_name">Jenkins</column>
+		</insert>
+	</changeSet>
+</databaseChangeLog>

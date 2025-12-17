@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+       http://www.liquibase.org/xml/ns/dbchangelog
+       https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+	<changeSet id="006-insert-types-data" author="vilar">
+		<insert tableName="types">
+			<column name="name">cat</column>
+		</insert>
+		<insert tableName="types">
+			<column name="name">dog</column>
+		</insert>
+		<insert tableName="types">
+			<column name="name">lizard</column>
+		</insert>
+		<insert tableName="types">
+			<column name="name">snake</column>
+		</insert>
+		<insert tableName="types">
+			<column name="name">bird</column>
+		</insert>
+		<insert tableName="types">
+			<column name="name">hamster</column>
+		</insert>
+	</changeSet>
+</databaseChangeLog>

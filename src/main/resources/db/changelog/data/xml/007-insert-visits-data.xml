@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+       http://www.liquibase.org/xml/ns/dbchangelog
+       https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+	<changeSet id="007-insert-visits-data" author="vilar">
+		<insert tableName="visits">
+			<column name="id" value="1"/>
+			<column name="pet_id" value="7"/>
+			<column name="visit_date" value="2010-03-04"/>
+			<column name="description" value="rabies shot"/>
+		</insert>
+
+		<insert tableName="visits">
+			<column name="id" value="2"/>
+			<column name="pet_id" value="8"/>
+			<column name="visit_date" value="2011-03-04"/>
+			<column name="description" value="rabies shot"/>
+		</insert>
+
+		<insert tableName="visits">
+			<column name="id" value="3"/>
+			<column name="pet_id" value="8"/>
+			<column name="visit_date" value="2009-06-04"/>
+			<column name="description" value="neutered"/>
+		</insert>
+
+		<insert tableName="visits">
+			<column name="id" value="4"/>
+			<column name="pet_id" value="7"/>
+			<column name="visit_date" value="2008-09-04"/>
+			<column name="description" value="spayed"/>
+		</insert>
+	</changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+       http://www.liquibase.org/xml/ns/dbchangelog
+       https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+	<changeSet id="005-insert-pets-data" author="vilar">
+		<insert tableName="pets">
+			<column name="id" value="1"/>
+			<column name="name" value="Leo"/>
+			<column name="birth_date" value="2000-09-07"/>
+			<column name="type_id" value="1"/>
+			<column name="owner_id" value="1"/>
+		</insert>
+
+		<insert tableName="pets">
+			<column name="id" value="2"/>
+			<column name="name" value="Basil"/>
+			<column name="birth_date" value="2002-08-06"/>
+			<column name="type_id" value="6"/>
+			<column name="owner_id" value="2"/>
+		</insert>
+
+		<insert tableName="pets">
+			<column name="id" value="3"/>
+			<column name="name" value="Rosy"/>
+			<column name="birth_date" value="2001-04-17"/>
+			<column name="type_id" value="2"/>
+			<column name="owner_id" value="3"/>
+		</insert>
+
+		<insert tableName="pets">
+			<column name="id" value="4"/>
+			<column name="name" value="Jewel"/>
+			<column name="birth_date" value="2000-03-07"/>
+			<column name="type_id" value="2"/>
+			<column name="owner_id" value="3"/>
+		</insert>
+
+		<insert tableName="pets">
+			<column name="id" value="5"/>
+			<column name="name" value="Iggy"/>
+			<column name="birth_date" value="2000-11-30"/>
+			<column name="type_id" value="3"/>
+			<column name="owner_id" value="4"/>
+		</insert>
+
+		<insert tableName="pets">
+			<column name="id" value="6"/>
+			<column name="name" value="George"/>
+			<column name="birth_date" value="2000-01-20"/>
+			<column name="type_id" value="4"/>
+			<column name="owner_id" value="5"/>
+		</insert>
+
+		<insert tableName="pets">
+			<column name="id" value="7"/>
+			<column name="name" value="Samantha"/>
+			<column name="birth_date" value="1995-09-04"/>
+			<column name="type_id" value="1"/>
+			<column name="owner_id" value="6"/>
+		</insert>
+
+		<insert tableName="pets">
+			<column name="id" value="8"/>
+			<column name="name" value="Max"/>
+			<column name="birth_date" value="1995-09-04"/>
+			<column name="type_id" value="1"/>
+			<column name="owner_id" value="6"/>
+		</insert>
+
+		<insert tableName="pets">
+			<column name="id" value="9"/>
+			<column name="name" value="Lucky"/>
+			<column name="birth_date" value="1999-08-06"/>
+			<column name="type_id" value="5"/>
+			<column name="owner_id" value="7"/>
+		</insert>
+
+		<insert tableName="pets">
+			<column name="id" value="10"/>
+			<column name="name" value="Mulligan"/>
+			<column name="birth_date" value="1997-02-24"/>
+			<column name="type_id" value="2"/>
+			<column name="owner_id" value="8"/>
+		</insert>
+
+		<insert tableName="pets">
+			<column name="id" value="11"/>
+			<column name="name" value="Freddy"/>
+			<column name="birth_date" value="2000-03-09"/>
+			<column name="type_id" value="5"/>
+			<column name="owner_id" value="9"/>
+		</insert>
+
+		<insert tableName="pets">
+			<column name="id" value="12"/>
+			<column name="name" value="Lucky"/>
+			<column name="birth_date" value="2000-06-24"/>
+			<column name="type_id" value="2"/>
+			<column name="owner_id" value="10"/>
+		</insert>
+
+		<insert tableName="pets">
+			<column name="id" value="13"/>
+			<column name="name" value="Sly"/>
+			<column name="birth_date" value="2002-06-08"/>
+			<column name="type_id" value="1"/>
+			<column name="owner_id" value="10"/>
+		</insert>
+	</changeSet>
+
+</databaseChangeLog>

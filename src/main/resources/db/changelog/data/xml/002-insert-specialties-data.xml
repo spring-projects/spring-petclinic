@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+       http://www.liquibase.org/xml/ns/dbchangelog
+       https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+	<changeSet id="002-insert-specialties-data" author="vilar">
+		<insert tableName="specialties">
+			<column name="name">radiology</column>
+		</insert>
+		<insert tableName="specialties">
+			<column name="name">surgery</column>
+		</insert>
+		<insert tableName="specialties">
+			<column name="name">dentistry</column>
+		</insert>
+	</changeSet>
+</databaseChangeLog>
