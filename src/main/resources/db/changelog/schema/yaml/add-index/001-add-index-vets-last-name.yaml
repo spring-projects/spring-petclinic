@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-add-index-vets-last-name
+      author: vsevolodkolmogorov
+      changes:
+        - createIndex:
+            indexName: idx_vets_last_name
+            tableName: vets
+            columns:
+              - column:
+                  name: last_name

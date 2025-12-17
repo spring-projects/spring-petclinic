@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004-add-index-specialties-name
+      author: vsevolodkolmogorov
+      changes:
+        - createIndex:
+            indexName: idx_specialties_name
+            tableName: specialties
+            columns:
+              - column:
+                  name: name

@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 008-add-index-types-schema
+      author: vsevolodkolmogorov
+      changes:
+        - createIndex:
+            indexName: idx_types_name
+            tableName: types
+            columns:
+              - column:
+                  name: name

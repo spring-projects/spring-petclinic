@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 015-add-index-visits-schema
+      author: vsevolodkolmogorov
+      changes:
+        - createIndex:
+            indexName: idx_visits_pet_id
+            tableName: visits
+            columns:
+              - column:
+                  name: pet_id

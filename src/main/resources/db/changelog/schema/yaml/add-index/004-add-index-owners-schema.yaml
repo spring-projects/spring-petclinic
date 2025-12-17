@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 010-add-index-owners-schema
+      author: vsevolodkolmogorov
+      changes:
+        - createIndex:
+            indexName: idx_owners_last_name
+            tableName: owners
+            columns:
+              - column:
+                  name: last_name

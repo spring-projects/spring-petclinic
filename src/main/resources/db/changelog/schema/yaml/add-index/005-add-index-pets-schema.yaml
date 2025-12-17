@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005-add-index-pets-schema.yaml
+      author: vsevolodkolmogorov
+      changes:
+        - createIndex:
+            indexName: idx_pets_name
+            tableName: pets
+            columns:
+              - column:
+                  name: name
+        - createIndex:
+            indexName: idx_pets_owner_id
+            tableName: pets
+            columns:
+              - column:
+                  name: owner_id
