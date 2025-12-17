@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - includeAll:
+      path: db/changelog/schema/yaml/init
+  - includeAll:
+      path: db/changelog/schema/yaml/add-fk
+  - includeAll:
+      path: db/changelog/schema/yaml/add-index
+  - includeAll:
+      path: db/changelog/data/yaml
+      context: dev
