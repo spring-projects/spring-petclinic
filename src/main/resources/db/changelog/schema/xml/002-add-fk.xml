@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+       http://www.liquibase.org/xml/ns/dbchangelog
+       https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+	<changeSet id="001-add-vets_specialties-fk" author="vilar">
+		<addForeignKeyConstraint baseTableName="vet_specialties" baseColumnNames="vet_id" constraintName="fk_vets_specialties_vet"
+								 referencedTableName="vets"
+								 referencedColumnNames="id"/>
+		<addForeignKeyConstraint baseTableName="vet_specialties" baseColumnNames="specialty_id" constraintName="fk_vets_specialties_specialty"
+								 referencedTableName="specialties"
+								 referencedColumnNames="id"/>
+	</changeSet>
+
+	<changeSet id="002-add-pets-fk" author="vilar">
+		<addForeignKeyConstraint baseTableName="pets" baseColumnNames="type_id" constraintName="fk_pets_types"
+								 referencedTableName="types"
+								 referencedColumnNames="id"/>
+		<addForeignKeyConstraint baseTableName="pets" baseColumnNames="owner_id" constraintName="fk_pets_owner"
+								 referencedTableName="owners"
+								 referencedColumnNames="id"/>
+	</changeSet>
+
+	<changeSet id="003-add-visits-fk" author="vilar">
+		<addForeignKeyConstraint baseTableName="visits" baseColumnNames="pet_id" constraintName="fk_visits_pet"
+								 referencedTableName="pets"
+								 referencedColumnNames="id"/>
+	</changeSet>
+
+</databaseChangeLog>

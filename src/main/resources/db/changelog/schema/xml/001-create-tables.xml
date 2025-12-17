@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+       http://www.liquibase.org/xml/ns/dbchangelog
+       https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+	<changeSet id="001-init-vets-schema" author="vilar">
+		<createTable tableName="vets">
+			<column name="id" type="INT" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="first_name" type="VARCHAR(50)"/>
+			<column name="last_name" type="VARCHAR(50)"/>
+		</createTable>
+	</changeSet>
+
+	<changeSet id="002-init-specialties-schema" author="vilar">
+		<createTable tableName="specialties">
+			<column name="id" type="INT" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="name" type="VARCHAR(50)"/>
+		</createTable>
+	</changeSet>
+
+	<changeSet id="003-init-types-schema" author="vilar">
+		<createTable tableName="types">
+			<column name="id" type="INT" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="name" type="VARCHAR(30)"/>
+		</createTable>
+	</changeSet>
+
+	<changeSet id="004-init-owners-schema" author="vilar">
+		<createTable tableName="owners">
+			<column name="id" type="INT" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="first_name" type="VARCHAR(30)"/>
+			<column name="last_name" type="VARCHAR(30)"/>
+			<column name="address" type="VARCHAR(50)"/>
+			<column name="city" type="VARCHAR(40)"/>
+			<column name="telephone" type="VARCHAR(10)"/>
+		</createTable>
+	</changeSet>
+
+	<changeSet id="005-init-vet-specialties-schema" author="vilar">
+		<createTable tableName="vet_specialties">
+			<column name="vet_id" type="int">
+				<constraints nullable="false"/>
+			</column>
+			<column name="specialty_id" type="int">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+	</changeSet>
+
+	<changeSet id="006-init-pets-schema" author="vilar">
+		<createTable tableName="pets">
+			<column name="id" type="INT" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="name" type="varchar"/>
+			<column name="birth_date" type="date"/>
+			<column name="type_id" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="owner_id" type="int"/>
+		</createTable>
+	</changeSet>
+
+	<changeSet id="007-init-visits-schema" author="vilar">
+		<createTable tableName="visits">
+			<column name="id" type="INT" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="pet_id" type="int">
+				<constraints nullable="true" />
+			</column>
+			<column name="visit_date" type="date"/>
+			<column name="description" type="varchar(50)"/>
+		</createTable>
+	</changeSet>
+
+</databaseChangeLog>

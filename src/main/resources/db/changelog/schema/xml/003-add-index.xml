@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+       http://www.liquibase.org/xml/ns/dbchangelog
+       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+	<changeSet id="001-add-index-vets-last-name" author="vilar">
+		<createIndex tableName="vets" indexName="idx_vets_last_name">
+			<column name="last_name"/>
+		</createIndex>
+	</changeSet>
+
+	<changeSet id="002-add-index-specialties-name" author="vilar">
+		<createIndex tableName="specialties" indexName="idx_specialties_name">
+			<column name="name"/>
+		</createIndex>
+	</changeSet>
+
+	<changeSet id="003-add-index-types-schema" author="vilar">
+		<createIndex tableName="types" indexName="idx_types_name">
+			<column name="name"/>
+		</createIndex>
+	</changeSet>
+
+	<changeSet id="004-add-index-owners-schema" author="vilar">
+		<createIndex tableName="owners" indexName="idx_owners_last_name">
+			<column name="last_name"/>
+		</createIndex>
+	</changeSet>
+
+	<changeSet id="005-add-index-pets-schema.yaml" author="vilar">
+		<createIndex tableName="pets" indexName="idx_pets_name">
+			<column name="name"/>
+		</createIndex>
+		<createIndex tableName="pets" indexName="idx_pets_owner_id">
+			<column name="owner_id"/>
+		</createIndex>
+	</changeSet>
+
+	<changeSet id="006-add-index-visits-schema" author="vilar">
+		<createIndex tableName="visits" indexName="idx_visits_pet_id">
+			<column name="pet_id"/>
+		</createIndex>
+	</changeSet>
+
+</databaseChangeLog>
