@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006-add-vet_specialties-fk
+      author: vsevolodkolmogorov
+      changes:
+        - addForeignKeyConstraint:
+            constraintName: fk_vets_specialties_vet
+            baseTableName: vet_specialties
+            baseColumnNames: vet_id
+            referencedTableName: vets
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            constraintName: fk_vets_specialties_specialty
+            baseTableName: vet_specialties
+            baseColumnNames: specialty_id
+            referencedTableName: specialties
+            referencedColumnNames: id
+
+        - addUniqueConstraint:
+            tableName: vet_specialties
+            columnNames: vet_id, specialty_id
+            constraintName: uq_vets_specialties_vet_specialty

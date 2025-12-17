@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 016-add-visits-fk
+      author: vsevolodkolmogorov
+      changes:
+        - addForeignKeyConstraint:
+            constraintName: fk_visits_pet
+            baseTableName: visits
+            baseColumnNames: pet_id
+            referencedTableName: pets
+            referencedColumnNames: id

@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: 012-add-pets-fk
+      author: vsevolodkolmogorov
+      changes:
+        - addForeignKeyConstraint:
+            constraintName: fk_pets_types
+            baseTableName: pets
+            baseColumnNames: type_id
+            referencedTableName: types
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            constraintName: fk_pets_owner
+            baseTableName: pets
+            baseColumnNames: owner_id
+            referencedTableName: owners
+            referencedColumnNames: id
