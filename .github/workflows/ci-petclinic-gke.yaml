@@ -46,7 +46,7 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
-          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+          service_account: ${{ secrets.GCP_SA_EMAIL }}
 
       - name: Set up gcloud
         if: github.event_name != 'pull_request'
