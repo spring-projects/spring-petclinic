@@ -70,7 +70,7 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
-          service_account: ${{ secrets.GCP_SA_EMAILT }}
+          service_account: ${{ secrets.GCP_SA_EMAIL }}
 
       - name: Set up gcloud
         uses: google-github-actions/setup-gcloud@v2
