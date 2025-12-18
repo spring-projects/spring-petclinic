@@ -46,3 +46,10 @@ out/
 _site/
 *.css
 !petclinic.css
+
+# --- Spring Boot static resources: allow tracking for CI build ---
+!src/main/resources/static/
+!src/main/resources/static/resources/
+!src/main/resources/static/resources/css/**
+!src/main/resources/static/resources/fonts/**
+!src/main/resources/static/resources/images/**
