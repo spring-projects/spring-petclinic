@@ -47,7 +47,9 @@ spec:
               value: "never"
             - name: SPRING_JPA_HIBERNATE_DDL_AUTO
               value: "none"
-
+            - name: APP_VERSION
+              value: "local"
+              
           ports:
             - name: http
               containerPort: 8080

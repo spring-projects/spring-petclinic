@@ -1,71 +1,27 @@
 name: CI - Petclinic EKS
 
-permissions:
-  contents: read
-
 on:
   push:
     branches: ["main"]
   pull_request:
     branches: ["main"]
 
-concurrency:
-  group: ci-${{ github.ref }}
-  cancel-in-progress: false
-
 env:
   AWS_REGION: ${{ vars.AWS_REGION || 'ap-northeast-2' }}
   ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY || 'eks/petclinic' }}
 
 jobs:
-  # 1) Maven 빌드 + 테스트 (PR 포함)
-  build-test:
+  build-and-push-eks:
+    runs-on: ubuntu-latest
     if: github.actor != 'github-actions[bot]'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: "25"
-          cache: maven
-
-      - name: Maven build & test
-        run: |
-          if [ -x "./mvnw" ]; then
-            ./mvnw -B clean test package
-          else
-            mvn -B clean test package
-          fi
-
-      - name: Archive built JAR
-        uses: actions/upload-artifact@v4
-        with:
-          name: petclinic-jar
-          path: target/*.jar
-
-  # 2) Docker 이미지 빌드 + ECR Push + k8s manifest 이미지 태그/앱 버전 업데이트 (main push만)
-  build-and-push-image:
-    needs: build-test
-    runs-on: ubuntu-latest
-
-    # PR에서는 push/commit 금지 + github-actions bot 커밋으로 재트리거 방지
-    if: github.event_name != 'pull_request' && github.actor != 'github-actions[bot]'
 
     permissions:
       id-token: write
-      contents: write
+      contents: read
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Set up JDK
         uses: actions/setup-java@v4
@@ -74,7 +30,15 @@ jobs:
           java-version: "25"
           cache: maven
 
-      - name: Configure AWS credentials (OIDC / Assume Role)
+      - name: Maven build
+        run: |
+          if [ -x "./mvnw" ]; then
+            ./mvnw -B clean package
+          else
+            mvn -B clean package
+          fi
+
+      - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
@@ -84,99 +48,27 @@ jobs:
         id: ecr-login
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Set image tag
+      - name: Build APP_VERSION (AWS)
         run: |
           SHORT_SHA=${GITHUB_SHA::7}
-          echo "IMAGE_TAG=${SHORT_SHA}" >> "$GITHUB_ENV"
-          echo "IMAGE_TAG=${SHORT_SHA}"
-
-      - name: Read base version from pom.xml
-        run: |
-          if [ -x "./mvnw" ]; then
-            POM_VERSION=$(./mvnw -q -Dexpression=project.version -DforceStdout help:evaluate)
-          else
-            POM_VERSION=$(mvn -q -Dexpression=project.version -DforceStdout help:evaluate)
-          fi
-          echo "POM_VERSION=${POM_VERSION}"
-          BASE_VERSION=${POM_VERSION%-SNAPSHOT}
-          echo "BASE_VERSION=${BASE_VERSION}" >> "$GITHUB_ENV"
-
-      - name: Build APP_VERSION (base + image tag)
-        run: |
-          APP_VERSION="A-${BASE_VERSION}-${IMAGE_TAG}"
+          BASE_VERSION=$(mvn -q -Dexpression=project.version -DforceStdout help:evaluate | sed 's/-SNAPSHOT//')
+          APP_VERSION="A-${BASE_VERSION}-${SHORT_SHA}"
           echo "APP_VERSION=${APP_VERSION}" >> "$GITHUB_ENV"
-          echo "APP_VERSION=${APP_VERSION}"
-
-      - name: Update application version property
-        run: |
-          sed -i "s/^app.version=.*/app.version=${APP_VERSION}/" src/main/resources/application.properties
 
       - name: Build image URI
         run: |
           ECR_REGISTRY="${{ steps.ecr-login.outputs.registry }}"
-          IMAGE_URI="${ECR_REGISTRY}/${{ env.ECR_REPOSITORY }}:${IMAGE_TAG}"
-          IMAGE_BASE="${ECR_REGISTRY}/${{ env.ECR_REPOSITORY }}"
+          IMAGE_URI="${ECR_REGISTRY}/${{ env.ECR_REPOSITORY }}:${GITHUB_SHA::7}"
           echo "IMAGE_URI=${IMAGE_URI}" >> "$GITHUB_ENV"
-          echo "IMAGE_BASE=${IMAGE_BASE}" >> "$GITHUB_ENV"
-          echo "IMAGE_URI=${IMAGE_URI}"
 
-      - name: Build Docker image
-        env:
-          DOCKER_BUILDKIT: 1
+      - name: Build & Push Docker image (ECR)
         run: |
           docker build -t "$IMAGE_URI" .
-
-      - name: Push Docker image
-        run: |
           docker push "$IMAGE_URI"
 
-      - name: Tag image as latest (only on main)
-        if: github.ref == 'refs/heads/main'
+      - name: Inject APP_VERSION into EKS Deployment
         run: |
-          docker tag "${IMAGE_BASE}:${IMAGE_TAG}" "${IMAGE_BASE}:latest"
-          docker push "${IMAGE_BASE}:latest"
-
-      - name: Update Kubernetes manifest image tag (only on main)
-        if: github.ref == 'refs/heads/main'
-        env:
-          YAML_PATH: k8s/aws/20-petclinic-Deployments-postgre.yaml
-        run: |
-          test -f "$YAML_PATH" || (echo "Missing manifest: $YAML_PATH" && exit 1)
-          echo "Updating $YAML_PATH -> ${IMAGE_URI}"
-          grep -n "image:" "$YAML_PATH" || (echo "No image field found in $YAML_PATH" && exit 1)
-          sed -i "s#^\(\s*image:\s*\).*#\1${IMAGE_URI}#" "$YAML_PATH"
-
-      - name: Commit and push changes (only on main)
-        if: github.ref == 'refs/heads/main'
-        run: |
-          git config user.name  "github-actions"
-          git config user.email "github-actions@github.com"
-          git add src/main/resources/application.properties k8s/aws/20-petclinic-Deployments-postgre.yaml
-
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-            exit 0
-          fi
-
-          git commit -m "chore: update petclinic image to ${APP_VERSION} [skip ci]"
-
-          # --- Sync with remote main then push (avoid non-fast-forward) ---
-          for i in 1 2 3; do
-            echo "Push attempt ${i}..."
-            git fetch origin main
-
-            # Rebase our commit on top of latest main
-            git rebase origin/main || { git rebase --abort; exit 1; }
-
-            # Push
-            if git push origin HEAD:main; then
-              echo "Push succeeded."
-              exit 0
-            fi
-
-            echo "Push failed; retrying after short delay..."
-            sleep 2
-          done
-
-          echo "Push failed after retries."
-          exit 1
+          yq -i '
+            (.spec.template.spec.containers[].env[] 
+             | select(.name == "APP_VERSION").value) = "'"${APP_VERSION}"'"
+          ' k8s/aws/20-petclinic-Deployments-postgre.yaml
