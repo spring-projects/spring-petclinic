@@ -133,7 +133,8 @@ jobs:
           yq -i '(.spec.template.spec.containers[] | select(.name == "petclinic-container") | .env[] | select(.name == "APP_VERSION").value) = strenv(APP_VERSION)' "$YAML_PATH"
 
           echo "Updated $YAML_PATH"
-          yq '.spec.template.spec.containers[] | select(.name == "petclinic-container") | {image, env}' "$YAML_PATH"
+          yq '.spec.template.spec.containers[] | select(.name == "petclinic-container") | .image' "$YAML_PATH"
+          yq '.spec.template.spec.containers[] | select(.name == "petclinic-container") | .env' "$YAML_PATH"
 
       - name: Commit & push GitOps change (GKE manifest only)
         run: |
