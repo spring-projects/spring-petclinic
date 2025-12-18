@@ -6,21 +6,23 @@ on:
   pull_request:
     branches: ["main"]
 
+# Queue (do not cancel) so EKS/GKE GitOps commits don't race each other
+concurrency:
+  group: gitops-main
+  cancel-in-progress: false
+
 env:
   GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
   GAR_LOCATION: ${{ vars.GAR_LOCATION || 'asia-northeast3' }}
   GAR_REPOSITORY: ${{ vars.GAR_REPOSITORY || 'petclinic' }}
   IMAGE_NAME: petclinic
+  YAML_PATH: k8s/gcp/20-petclinic-Deployments-postgre.yaml
 
 jobs:
-  build-and-push-gke:
+  build-test:
     runs-on: ubuntu-latest
-    if: github.actor != 'github-actions[bot]'
-
     permissions:
-      id-token: write
       contents: read
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -32,35 +34,58 @@ jobs:
           java-version: "25"
           cache: maven
 
-      - name: Maven build
+      - name: Maven build & test
         run: |
           if [ -x "./mvnw" ]; then
-            ./mvnw -B clean package
+            ./mvnw -B clean test package
           else
-            mvn -B clean package
+            mvn -B clean test package
           fi
 
-      # ---- Push-related steps: only on main pushes (not PR) ----
-      - name: Authenticate to Google Cloud
-        if: github.event_name != 'pull_request'
+  publish-and-gitops:
+    needs: build-test
+    runs-on: ubuntu-latest
+
+    # Only publish/commit on main pushes (never on PRs)
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.actor != 'github-actions[bot]'
+
+    permissions:
+      id-token: write
+      contents: write
+
+    steps:
+      - name: Checkout (with token for push)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "25"
+          cache: maven
+
+      - name: Authenticate to Google Cloud (WIF)
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
-          service_account: ${{ secrets.GCP_SA_EMAIL }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
       - name: Set up gcloud
-        if: github.event_name != 'pull_request'
         uses: google-github-actions/setup-gcloud@v2
 
       - name: Configure Docker for GAR
-        if: github.event_name != 'pull_request'
         run: |
           gcloud auth configure-docker ${GAR_LOCATION}-docker.pkg.dev --quiet
 
-      - name: Build APP_VERSION (GCP)
-        if: github.event_name != 'pull_request'
+      - name: Compute IMAGE_TAG / IMAGE_URI / APP_VERSION (GCP)
         run: |
-          SHORT_SHA=${GITHUB_SHA::7}
+          set -euo pipefail
+
+          IMAGE_TAG="${GITHUB_SHA::7}"
+          echo "IMAGE_TAG=${IMAGE_TAG}" >> "$GITHUB_ENV"
+
           BASE_VERSION=$(
             if [ -x "./mvnw" ]; then
               ./mvnw -q -Dexpression=project.version -DforceStdout help:evaluate
@@ -68,45 +93,75 @@ jobs:
               mvn -q -Dexpression=project.version -DforceStdout help:evaluate
             fi
           )
-          BASE_VERSION=${BASE_VERSION%-SNAPSHOT}
-          APP_VERSION="G-${BASE_VERSION}-${SHORT_SHA}"
+          BASE_VERSION="${BASE_VERSION%-SNAPSHOT}"
+          echo "BASE_VERSION=${BASE_VERSION}" >> "$GITHUB_ENV"
+
+          APP_VERSION="G-${BASE_VERSION}-${IMAGE_TAG}"
           echo "APP_VERSION=${APP_VERSION}" >> "$GITHUB_ENV"
 
-      - name: Build image URI
-        if: github.event_name != 'pull_request'
-        run: |
-          IMAGE_TAG="${GITHUB_SHA::7}"
-          IMAGE_URI="${GAR_LOCATION}-docker.pkg.dev/${GCP_PROJECT_ID}/${GAR_REPOSITORY}/${IMAGE_NAME}:${IMAGE_TAG}"
-          IMAGE_LATEST="${GAR_LOCATION}-docker.pkg.dev/${GCP_PROJECT_ID}/${GAR_REPOSITORY}/${IMAGE_NAME}:latest"
-          echo "IMAGE_TAG=${IMAGE_TAG}" >> "$GITHUB_ENV"
+          IMAGE_BASE="${GAR_LOCATION}-docker.pkg.dev/${GCP_PROJECT_ID}/${GAR_REPOSITORY}/${IMAGE_NAME}"
+          IMAGE_URI="${IMAGE_BASE}:${IMAGE_TAG}"
+          echo "IMAGE_BASE=${IMAGE_BASE}" >> "$GITHUB_ENV"
           echo "IMAGE_URI=${IMAGE_URI}" >> "$GITHUB_ENV"
-          echo "IMAGE_LATEST=${IMAGE_LATEST}" >> "$GITHUB_ENV"
 
-      - name: Build & Push Docker image (GAR)
-        if: github.event_name != 'pull_request'
+          echo "IMAGE_URI=${IMAGE_URI}"
+          echo "APP_VERSION=${APP_VERSION}"
+
+      - name: Build & Push image (GAR)
+        env:
+          DOCKER_BUILDKIT: 1
         run: |
+          set -euo pipefail
           docker build -t "$IMAGE_URI" .
           docker push "$IMAGE_URI"
 
       - name: Tag & Push latest (GAR)
-        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         run: |
-          docker tag "$IMAGE_URI" "$IMAGE_LATEST"
-          docker push "$IMAGE_LATEST"
+          set -euo pipefail
+          docker tag "${IMAGE_BASE}:${IMAGE_TAG}" "${IMAGE_BASE}:latest"
+          docker push "${IMAGE_BASE}:latest"
 
-      - name: Inject APP_VERSION into GKE Deployment
-        if: github.event_name != 'pull_request'
+      - name: Update GKE manifest (image + APP_VERSION)
         run: |
-          sudo snap install yq --channel=v4/stable
-          yq -i '
-            (.spec.template.spec.containers[].env[]
-             | select(.name == "APP_VERSION").value) = "'"${APP_VERSION}"'"
-          ' k8s/gcp/20-petclinic-Deployments-postgre.yaml
+          set -euo pipefail
+          test -f "$YAML_PATH" || { echo "Missing manifest: $YAML_PATH"; exit 1; }
 
-      - name: Inject image tag into GKE Deployment
-        if: github.event_name != 'pull_request'
-        run: |
           sudo snap install yq --channel=v4/stable
-          yq -i '
-            (.spec.template.spec.containers[].image) = "'"${IMAGE_URI}"'"
-          ' k8s/gcp/20-petclinic-Deployments-postgre.yaml
+
+          yq -i '(.spec.template.spec.containers[] | select(.name == "petclinic-container") | .image) = strenv(IMAGE_URI)' "$YAML_PATH"
+
+          yq -i '(.spec.template.spec.containers[] | select(.name == "petclinic-container") | .env[] | select(.name == "APP_VERSION").value) = strenv(APP_VERSION)' "$YAML_PATH"
+
+          echo "Updated $YAML_PATH"
+          yq '.spec.template.spec.containers[] | select(.name == "petclinic-container") | {image, env}' "$YAML_PATH"
+
+      - name: Commit & push GitOps change (GKE manifest only)
+        run: |
+          set -euo pipefail
+
+          git config user.name  "github-actions"
+          git config user.email "github-actions@github.com"
+
+          git add "$YAML_PATH"
+
+          if git diff --cached --quiet; then
+            echo "No manifest changes to commit."
+            exit 0
+          fi
+
+          git commit -m "chore(gke): deploy ${IMAGE_TAG} (APP_VERSION=${APP_VERSION}) [skip ci]"
+
+          for i in 1 2 3 4 5; do
+            echo "Push attempt ${i}..."
+            git fetch origin main
+            git rebase origin/main
+            if git push origin HEAD:main; then
+              echo "Push succeeded."
+              exit 0
+            fi
+            echo "Push failed; retrying..."
+            sleep 2
+          done
+
+          echo "Push failed after retries."
+          exit 1

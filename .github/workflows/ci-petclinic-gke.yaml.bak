@@ -1,17 +1,10 @@
 name: CI - Petclinic GKE
 
-permissions:
-  contents: read
-
 on:
   push:
     branches: ["main"]
   pull_request:
     branches: ["main"]
-
-concurrency:
-  group: ci-${{ github.ref }}
-  cancel-in-progress: false
 
 env:
   GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
@@ -20,51 +13,17 @@ env:
   IMAGE_NAME: ${{ vars.IMAGE_NAME || 'petclinic' }}
 
 jobs:
-  build-test:
+  build-and-push-gke:
+    runs-on: ubuntu-latest
     if: github.actor != 'github-actions[bot]'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: "25"
-          cache: maven
-
-      - name: Maven build & test
-        run: |
-          if [ -x "./mvnw" ]; then
-            ./mvnw -B clean test package
-          else
-            mvn -B clean test package
-          fi
-
-      - name: Archive built JAR
-        uses: actions/upload-artifact@v4
-        with:
-          name: petclinic-jar
-          path: target/*.jar
-
-  build-and-push-image:
-    needs: build-test
-    runs-on: ubuntu-latest
-
-    if: github.event_name != 'pull_request' && github.actor != 'github-actions[bot]'
 
     permissions:
-      contents: write
       id-token: write
+      contents: read
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Set up JDK
         uses: actions/setup-java@v4
@@ -73,100 +32,81 @@ jobs:
           java-version: "25"
           cache: maven
 
-      - name: Auth to Google Cloud (WIF)
+      - name: Maven build
+        run: |
+          if [ -x "./mvnw" ]; then
+            ./mvnw -B clean package
+          else
+            mvn -B clean package
+          fi
+
+      # ---- Push-related steps: only on main pushes (not PR) ----
+      - name: Authenticate to Google Cloud
+        if: github.event_name != 'pull_request'
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
           service_account: ${{ secrets.GCP_SA_EMAIL }}
 
       - name: Set up gcloud
+        if: github.event_name != 'pull_request'
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Configure docker for Artifact Registry
+      - name: Configure Docker for GAR
+        if: github.event_name != 'pull_request'
         run: |
           gcloud auth configure-docker ${GAR_LOCATION}-docker.pkg.dev --quiet
 
-      - name: Set image tag
+      - name: Build APP_VERSION (GCP)
+        if: github.event_name != 'pull_request'
         run: |
           SHORT_SHA=${GITHUB_SHA::7}
-          echo "IMAGE_TAG=${SHORT_SHA}" >> "$GITHUB_ENV"
-
-      - name: Read base version from pom.xml
-        run: |
-          if [ -x "./mvnw" ]; then
-            POM_VERSION=$(./mvnw -q -Dexpression=project.version -DforceStdout help:evaluate)
-          else
-            POM_VERSION=$(mvn -q -Dexpression=project.version -DforceStdout help:evaluate)
-          fi
-          BASE_VERSION=${POM_VERSION%-SNAPSHOT}
-          echo "BASE_VERSION=${BASE_VERSION}" >> "$GITHUB_ENV"
-
-      - name: Build APP_VERSION
-        run: |
-          APP_VERSION="G-${BASE_VERSION}-${IMAGE_TAG}"
+          BASE_VERSION=$(
+            if [ -x "./mvnw" ]; then
+              ./mvnw -q -Dexpression=project.version -DforceStdout help:evaluate
+            else
+              mvn -q -Dexpression=project.version -DforceStdout help:evaluate
+            fi
+          )
+          BASE_VERSION=${BASE_VERSION%-SNAPSHOT}
+          APP_VERSION="G-${BASE_VERSION}-${SHORT_SHA}"
           echo "APP_VERSION=${APP_VERSION}" >> "$GITHUB_ENV"
 
-      - name: Update application version property
+      - name: Build image URI
+        if: github.event_name != 'pull_request'
         run: |
-          sed -i "s/^app.version=.*/app.version=${APP_VERSION}/" src/main/resources/application.properties
-
-      - name: Build Docker image
-        env:
-          DOCKER_BUILDKIT: 1
-        run: |
+          IMAGE_TAG="${GITHUB_SHA::7}"
           IMAGE_URI="${GAR_LOCATION}-docker.pkg.dev/${GCP_PROJECT_ID}/${GAR_REPOSITORY}/${IMAGE_NAME}:${IMAGE_TAG}"
+          IMAGE_LATEST="${GAR_LOCATION}-docker.pkg.dev/${GCP_PROJECT_ID}/${GAR_REPOSITORY}/${IMAGE_NAME}:latest"
+          echo "IMAGE_TAG=${IMAGE_TAG}" >> "$GITHUB_ENV"
           echo "IMAGE_URI=${IMAGE_URI}" >> "$GITHUB_ENV"
-          docker build -t "$IMAGE_URI" .
+          echo "IMAGE_LATEST=${IMAGE_LATEST}" >> "$GITHUB_ENV"
 
-      - name: Push Docker image
+      - name: Build & Push Docker image (GAR)
+        if: github.event_name != 'pull_request'
         run: |
+          docker build -t "$IMAGE_URI" .
           docker push "$IMAGE_URI"
 
-      - name: Tag image as latest
-        if: github.ref == 'refs/heads/main'
+      - name: Tag & Push latest (GAR)
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         run: |
-          IMAGE_BASE="${GAR_LOCATION}-docker.pkg.dev/${GCP_PROJECT_ID}/${GAR_REPOSITORY}/${IMAGE_NAME}"
-          docker tag "${IMAGE_BASE}:${IMAGE_TAG}" "${IMAGE_BASE}:latest"
-          docker push "${IMAGE_BASE}:latest"
+          docker tag "$IMAGE_URI" "$IMAGE_LATEST"
+          docker push "$IMAGE_LATEST"
 
-      - name: Update Kubernetes manifest image tag
-        if: github.ref == 'refs/heads/main'
-        env:
-          YAML_PATH: k8s/gcp/20-petclinic-Deployments-postgre.yaml
+      - name: Inject APP_VERSION into GKE Deployment
+        if: github.event_name != 'pull_request'
         run: |
-          NEW_IMAGE="${GAR_LOCATION}-docker.pkg.dev/${GCP_PROJECT_ID}/${GAR_REPOSITORY}/${IMAGE_NAME}:${IMAGE_TAG}"
-          grep -n "image:" "$YAML_PATH"
-          sed -i "s#^\(\s*image:\s*\).*#\1${NEW_IMAGE}#" "$YAML_PATH"
-      
-      - name: Commit and push changes
-        if: github.ref == 'refs/heads/main'
+          sudo snap install yq --channel=v4/stable
+          yq -i '
+            (.spec.template.spec.containers[].env[]
+             | select(.name == "APP_VERSION").value) = "'"${APP_VERSION}"'"
+          ' k8s/gcp/20-petclinic-Deployments-postgre.yaml
+
+      - name: Inject image tag into GKE Deployment
+        if: github.event_name != 'pull_request'
         run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add src/main/resources/application.properties k8s/gcp/20-petclinic-Deployments-postgre.yaml
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-            exit 0
-          fi
-          git commit -m "chore: update petclinic image to ${IMAGE_TAG} [skip ci]"
-           
-          # --- Sync with remote main then push (avoid non-fast-forward) ---
-          for i in 1 2 3; do
-            echo "Push attempt ${i}..."
-            git fetch origin main
-
-            # Rebase our commit on top of latest main
-            git rebase origin/main || { git rebase --abort; exit 1; }
-
-            # Push
-            if git push origin HEAD:main; then
-              echo "Push succeeded."
-              exit 0
-            fi
-
-            echo "Push failed; retrying after short delay..."
-            sleep 2
-          done
-
-          echo "Push failed after retries."
-          exit 1
+          sudo snap install yq --channel=v4/stable
+          yq -i '
+            (.spec.template.spec.containers[].image) = "'"${IMAGE_URI}"'"
+          ' k8s/gcp/20-petclinic-Deployments-postgre.yaml
