@@ -40,36 +40,73 @@ jobs:
             mvn -B clean package
           fi
 
+      # ---- Push-related steps: only on main pushes (not PR) ----
       - name: Authenticate to Google Cloud
+        if: github.event_name != 'pull_request'
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
+      - name: Set up gcloud
+        if: github.event_name != 'pull_request'
+        uses: google-github-actions/setup-gcloud@v2
+
       - name: Configure Docker for GAR
+        if: github.event_name != 'pull_request'
         run: |
           gcloud auth configure-docker ${GAR_LOCATION}-docker.pkg.dev --quiet
 
       - name: Build APP_VERSION (GCP)
+        if: github.event_name != 'pull_request'
         run: |
           SHORT_SHA=${GITHUB_SHA::7}
-          BASE_VERSION=$(mvn -q -Dexpression=project.version -DforceStdout help:evaluate | sed 's/-SNAPSHOT//')
+          BASE_VERSION=$(
+            if [ -x "./mvnw" ]; then
+              ./mvnw -q -Dexpression=project.version -DforceStdout help:evaluate
+            else
+              mvn -q -Dexpression=project.version -DforceStdout help:evaluate
+            fi
+          )
+          BASE_VERSION=${BASE_VERSION%-SNAPSHOT}
           APP_VERSION="G-${BASE_VERSION}-${SHORT_SHA}"
           echo "APP_VERSION=${APP_VERSION}" >> "$GITHUB_ENV"
 
       - name: Build image URI
+        if: github.event_name != 'pull_request'
         run: |
-          IMAGE_URI="${GAR_LOCATION}-docker.pkg.dev/${GCP_PROJECT_ID}/${GAR_REPOSITORY}/${IMAGE_NAME}:${GITHUB_SHA::7}"
+          IMAGE_TAG="${GITHUB_SHA::7}"
+          IMAGE_URI="${GAR_LOCATION}-docker.pkg.dev/${GCP_PROJECT_ID}/${GAR_REPOSITORY}/${IMAGE_NAME}:${IMAGE_TAG}"
+          IMAGE_LATEST="${GAR_LOCATION}-docker.pkg.dev/${GCP_PROJECT_ID}/${GAR_REPOSITORY}/${IMAGE_NAME}:latest"
+          echo "IMAGE_TAG=${IMAGE_TAG}" >> "$GITHUB_ENV"
           echo "IMAGE_URI=${IMAGE_URI}" >> "$GITHUB_ENV"
+          echo "IMAGE_LATEST=${IMAGE_LATEST}" >> "$GITHUB_ENV"
 
       - name: Build & Push Docker image (GAR)
+        if: github.event_name != 'pull_request'
         run: |
           docker build -t "$IMAGE_URI" .
           docker push "$IMAGE_URI"
 
-      - name: Inject APP_VERSION into GKE Deployment
+      - name: Tag & Push latest (GAR)
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         run: |
+          docker tag "$IMAGE_URI" "$IMAGE_LATEST"
+          docker push "$IMAGE_LATEST"
+
+      - name: Inject APP_VERSION into GKE Deployment
+        if: github.event_name != 'pull_request'
+        run: |
+          sudo snap install yq --channel=v4/stable
           yq -i '
-            (.spec.template.spec.containers[].env[] 
+            (.spec.template.spec.containers[].env[]
              | select(.name == "APP_VERSION").value) = "'"${APP_VERSION}"'"
+          ' k8s/gcp/20-petclinic-Deployments-postgre.yaml
+
+      - name: Inject image tag into GKE Deployment
+        if: github.event_name != 'pull_request'
+        run: |
+          sudo snap install yq --channel=v4/stable
+          yq -i '
+            (.spec.template.spec.containers[].image) = "'"${IMAGE_URI}"'"
           ' k8s/gcp/20-petclinic-Deployments-postgre.yaml

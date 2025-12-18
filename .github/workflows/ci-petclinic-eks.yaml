@@ -38,37 +38,73 @@ jobs:
             mvn -B clean package
           fi
 
+      # ---- Push-related steps: only on main pushes (not PR) ----
       - name: Configure AWS credentials (OIDC)
+        if: github.event_name != 'pull_request'
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
+        if: github.event_name != 'pull_request'
         id: ecr-login
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build APP_VERSION (AWS)
+        if: github.event_name != 'pull_request'
         run: |
           SHORT_SHA=${GITHUB_SHA::7}
-          BASE_VERSION=$(mvn -q -Dexpression=project.version -DforceStdout help:evaluate | sed 's/-SNAPSHOT//')
+          BASE_VERSION=$(
+            if [ -x "./mvnw" ]; then
+              ./mvnw -q -Dexpression=project.version -DforceStdout help:evaluate
+            else
+              mvn -q -Dexpression=project.version -DforceStdout help:evaluate
+            fi
+          )
+          BASE_VERSION=${BASE_VERSION%-SNAPSHOT}
           APP_VERSION="A-${BASE_VERSION}-${SHORT_SHA}"
           echo "APP_VERSION=${APP_VERSION}" >> "$GITHUB_ENV"
 
       - name: Build image URI
+        if: github.event_name != 'pull_request'
         run: |
           ECR_REGISTRY="${{ steps.ecr-login.outputs.registry }}"
-          IMAGE_URI="${ECR_REGISTRY}/${{ env.ECR_REPOSITORY }}:${GITHUB_SHA::7}"
+          IMAGE_TAG="${GITHUB_SHA::7}"
+          IMAGE_URI="${ECR_REGISTRY}/${{ env.ECR_REPOSITORY }}:${IMAGE_TAG}"
+          IMAGE_BASE="${ECR_REGISTRY}/${{ env.ECR_REPOSITORY }}"
+          echo "IMAGE_TAG=${IMAGE_TAG}" >> "$GITHUB_ENV"
           echo "IMAGE_URI=${IMAGE_URI}" >> "$GITHUB_ENV"
+          echo "IMAGE_BASE=${IMAGE_BASE}" >> "$GITHUB_ENV"
 
       - name: Build & Push Docker image (ECR)
+        if: github.event_name != 'pull_request'
         run: |
           docker build -t "$IMAGE_URI" .
           docker push "$IMAGE_URI"
 
-      - name: Inject APP_VERSION into EKS Deployment
+      - name: Tag & Push latest (ECR)
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         run: |
+          docker tag "${IMAGE_BASE}:${IMAGE_TAG}" "${IMAGE_BASE}:latest"
+          docker push "${IMAGE_BASE}:latest"
+
+      - name: Inject APP_VERSION into EKS Deployment
+        if: github.event_name != 'pull_request'
+        run: |
+          # Assumes your Deployment already contains:
+          # - name: APP_VERSION
+          #   value: "local"
+          sudo snap install yq --channel=v4/stable
           yq -i '
-            (.spec.template.spec.containers[].env[] 
+            (.spec.template.spec.containers[].env[]
              | select(.name == "APP_VERSION").value) = "'"${APP_VERSION}"'"
+          ' k8s/aws/20-petclinic-Deployments-postgre.yaml
+
+      - name: Inject image tag into EKS Deployment
+        if: github.event_name != 'pull_request'
+        run: |
+          sudo snap install yq --channel=v4/stable
+          yq -i '
+            (.spec.template.spec.containers[].image) = "'"${IMAGE_URI}"'"
           ' k8s/aws/20-petclinic-Deployments-postgre.yaml
