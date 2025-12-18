@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lb-health
+  namespace: petclinic-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lb-health
+  template:
+    metadata:
+      labels:
+        app: lb-health
+    spec:
+      containers:
+      - name: echo
+        image: hashicorp/http-echo
+        args:
+          - "-text=OK"
+        ports:
+        - containerPort: 5678
+        resources:
+          requests:
+            cpu: "5m"
+            memory: "16Mi"
+          limits:
+            cpu: "10m"
+            memory: "32Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lb-health
+  namespace: petclinic-ns
+spec:
+  selector:
+    app: lb-health
+  ports:
+  - port: 80
+    targetPort: 5678

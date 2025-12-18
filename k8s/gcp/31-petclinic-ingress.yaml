@@ -1,6 +1,17 @@
 apiVersion: cloud.google.com/v1
 kind: BackendConfig
 metadata:
+  name: lb-health-backendconfig
+  namespace: petclinic-ns
+spec:
+  healthCheck:
+    type: HTTP
+    requestPath: /healthz-lb
+    port: 80
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
   name: petclinic-backendconfig
   namespace: petclinic-ns
 spec:
@@ -8,6 +19,20 @@ spec:
     type: HTTP
     requestPath: /actuator/health/liveness
     port: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lb-health
+  namespace: petclinic-ns
+  annotations:
+    beta.cloud.google.com/backend-config: '{"default":"lb-health-backendconfig"}'
+spec:
+  selector:
+    app: lb-health
+  ports:
+  - port: 80
+    targetPort: 5678
 ---
 apiVersion: v1
 kind: Service
@@ -36,6 +61,14 @@ spec:
   rules:
     - http:
         paths:
+            # LB 헬스체크 전용
+          - path: /healthz-lb
+            pathType: Prefix
+            backend:
+              service:
+                name: lb-health
+                port:
+                  number: 80
           - path: /
             pathType: Prefix
             backend:
