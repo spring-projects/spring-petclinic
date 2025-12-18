@@ -15,7 +15,7 @@ env:
   GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
   GAR_LOCATION: ${{ vars.GAR_LOCATION || 'asia-northeast3' }}
   GAR_REPOSITORY: ${{ vars.GAR_REPOSITORY || 'petclinic' }}
-  IMAGE_NAME: petclinic
+  IMAGE_NAME: ${{ vars.IMAGE_NAME || 'petclinic' }}
   YAML_PATH: k8s/gcp/20-petclinic-Deployments-postgre.yaml
 
 jobs:
