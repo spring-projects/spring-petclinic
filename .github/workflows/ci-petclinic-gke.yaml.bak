@@ -1,4 +1,4 @@
-name: CI - Petclinic EKS
+name: CI - Petclinic GKE
 
 permissions:
   contents: read
@@ -14,13 +14,13 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  AWS_REGION: ${{ vars.AWS_REGION || 'ap-northeast-2' }}
-  ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY || 'eks/petclinic' }}
+  GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+  GAR_LOCATION: ${{ vars.GAR_LOCATION || 'asia-northeast3' }}
+  GAR_REPOSITORY: ${{ vars.GAR_REPOSITORY || 'petclinic' }}
+  IMAGE_NAME: ${{ vars.IMAGE_NAME || 'petclinic' }}
 
 jobs:
-  # 1) Maven 빌드 + 테스트 (PR 포함)
   build-test:
-    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -49,23 +49,19 @@ jobs:
           name: petclinic-jar
           path: target/*.jar
 
-  # 2) Docker 이미지 빌드 + ECR Push + k8s manifest 이미지 태그/앱 버전 업데이트 (main push만)
   build-and-push-image:
     needs: build-test
     runs-on: ubuntu-latest
 
-    # PR에서는 push/commit 금지 + github-actions bot 커밋으로 재트리거 방지
     if: github.event_name != 'pull_request' && github.actor != 'github-actions[bot]'
 
     permissions:
-      id-token: write
       contents: write
+      id-token: write
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Set up JDK
         uses: actions/setup-java@v4
@@ -74,21 +70,23 @@ jobs:
           java-version: "25"
           cache: maven
 
-      - name: Configure AWS credentials (OIDC / Assume Role)
-        uses: aws-actions/configure-aws-credentials@v4
+      - name: Auth to Google Cloud (WIF)
+        uses: google-github-actions/auth@v2
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-          aws-region: ${{ env.AWS_REGION }}
+          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_SA_EMAIL }}
 
-      - name: Login to Amazon ECR
-        id: ecr-login
-        uses: aws-actions/amazon-ecr-login@v2
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure docker for Artifact Registry
+        run: |
+          gcloud auth configure-docker ${GAR_LOCATION}-docker.pkg.dev --quiet
 
       - name: Set image tag
         run: |
           SHORT_SHA=${GITHUB_SHA::7}
           echo "IMAGE_TAG=${SHORT_SHA}" >> "$GITHUB_ENV"
-          echo "IMAGE_TAG=${SHORT_SHA}"
 
       - name: Read base version from pom.xml
         run: |
@@ -97,69 +95,58 @@ jobs:
           else
             POM_VERSION=$(mvn -q -Dexpression=project.version -DforceStdout help:evaluate)
           fi
-          echo "POM_VERSION=${POM_VERSION}"
           BASE_VERSION=${POM_VERSION%-SNAPSHOT}
           echo "BASE_VERSION=${BASE_VERSION}" >> "$GITHUB_ENV"
 
-      - name: Build APP_VERSION (base + image tag)
+      - name: Build APP_VERSION
         run: |
-          APP_VERSION="A-${BASE_VERSION}-${IMAGE_TAG}"
+          APP_VERSION="G-${BASE_VERSION}-${IMAGE_TAG}"
           echo "APP_VERSION=${APP_VERSION}" >> "$GITHUB_ENV"
-          echo "APP_VERSION=${APP_VERSION}"
 
       - name: Update application version property
         run: |
           sed -i "s/^app.version=.*/app.version=${APP_VERSION}/" src/main/resources/application.properties
 
-      - name: Build image URI
-        run: |
-          ECR_REGISTRY="${{ steps.ecr-login.outputs.registry }}"
-          IMAGE_URI="${ECR_REGISTRY}/${{ env.ECR_REPOSITORY }}:${IMAGE_TAG}"
-          IMAGE_BASE="${ECR_REGISTRY}/${{ env.ECR_REPOSITORY }}"
-          echo "IMAGE_URI=${IMAGE_URI}" >> "$GITHUB_ENV"
-          echo "IMAGE_BASE=${IMAGE_BASE}" >> "$GITHUB_ENV"
-          echo "IMAGE_URI=${IMAGE_URI}"
-
       - name: Build Docker image
         env:
           DOCKER_BUILDKIT: 1
         run: |
+          IMAGE_URI="${GAR_LOCATION}-docker.pkg.dev/${GCP_PROJECT_ID}/${GAR_REPOSITORY}/${IMAGE_NAME}:${IMAGE_TAG}"
+          echo "IMAGE_URI=${IMAGE_URI}" >> "$GITHUB_ENV"
           docker build -t "$IMAGE_URI" .
 
       - name: Push Docker image
         run: |
           docker push "$IMAGE_URI"
 
-      - name: Tag image as latest (only on main)
+      - name: Tag image as latest
         if: github.ref == 'refs/heads/main'
         run: |
+          IMAGE_BASE="${GAR_LOCATION}-docker.pkg.dev/${GCP_PROJECT_ID}/${GAR_REPOSITORY}/${IMAGE_NAME}"
           docker tag "${IMAGE_BASE}:${IMAGE_TAG}" "${IMAGE_BASE}:latest"
           docker push "${IMAGE_BASE}:latest"
 
-      - name: Update Kubernetes manifest image tag (only on main)
+      - name: Update Kubernetes manifest image tag
         if: github.ref == 'refs/heads/main'
         env:
-          YAML_PATH: k8s/aws/20-petclinic-Deployments-postgre.yaml
+          YAML_PATH: k8s/gcp/20-petclinic-Deployments-postgre.yaml
         run: |
-          test -f "$YAML_PATH" || (echo "Missing manifest: $YAML_PATH" && exit 1)
-          echo "Updating $YAML_PATH -> ${IMAGE_URI}"
-          grep -n "image:" "$YAML_PATH" || (echo "No image field found in $YAML_PATH" && exit 1)
-          sed -i "s#^\(\s*image:\s*\).*#\1${IMAGE_URI}#" "$YAML_PATH"
-
-      - name: Commit and push changes (only on main)
+          NEW_IMAGE="${GAR_LOCATION}-docker.pkg.dev/${GCP_PROJECT_ID}/${GAR_REPOSITORY}/${IMAGE_NAME}:${IMAGE_TAG}"
+          grep -n "image:" "$YAML_PATH"
+          sed -i "s#^\(\s*image:\s*\).*#\1${NEW_IMAGE}#" "$YAML_PATH"
+      
+      - name: Commit and push changes
         if: github.ref == 'refs/heads/main'
         run: |
-          git config user.name  "github-actions"
+          git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add src/main/resources/application.properties k8s/aws/20-petclinic-Deployments-postgre.yaml
-
+          git add src/main/resources/application.properties k8s/gcp/20-petclinic-Deployments-postgre.yaml
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0
           fi
-
-          git commit -m "chore: update petclinic image to ${APP_VERSION} [skip ci]"
-
+          git commit -m "chore: update petclinic image to ${IMAGE_TAG} [skip ci]"
+           
           # --- Sync with remote main then push (avoid non-fast-forward) ---
           for i in 1 2 3; do
             echo "Push attempt ${i}..."

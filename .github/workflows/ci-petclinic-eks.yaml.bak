@@ -20,7 +20,6 @@ env:
 jobs:
   # 1) Maven 빌드 + 테스트 (PR 포함)
   build-test:
-    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -64,8 +63,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Set up JDK
         uses: actions/setup-java@v4

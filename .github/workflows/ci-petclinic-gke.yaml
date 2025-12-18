@@ -21,10 +21,13 @@ env:
 
 jobs:
   build-test:
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up JDK
         uses: actions/setup-java@v4
@@ -60,6 +63,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up JDK
         uses: actions/setup-java@v4
@@ -144,4 +149,24 @@ jobs:
             exit 0
           fi
           git commit -m "chore: update petclinic image to ${IMAGE_TAG} [skip ci]"
-          git push
+           
+          # --- Sync with remote main then push (avoid non-fast-forward) ---
+          for i in 1 2 3; do
+            echo "Push attempt ${i}..."
+            git fetch origin main
+
+            # Rebase our commit on top of latest main
+            git rebase origin/main || { git rebase --abort; exit 1; }
+
+            # Push
+            if git push origin HEAD:main; then
+              echo "Push succeeded."
+              exit 0
+            fi
+
+            echo "Push failed; retrying after short delay..."
+            sleep 2
+          done
+
+          echo "Push failed after retries."
+          exit 1
