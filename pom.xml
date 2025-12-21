@@ -8,7 +8,7 @@
   </parent>
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
-  <version>4.0.0-SNAPSHOT</version>
+  <version>5.0.0</version>
   <name>petclinic</name>
 
   <properties>
@@ -17,7 +17,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <!-- Important for reproducible builds. Update using e.g. ./mvnw versions:set -DnewVersion=... -->
-    <project.build.outputTimestamp>2024-11-28T14:37:52Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2025-12-21T22:05:10Z</project.build.outputTimestamp>
 
     <!-- Web dependencies -->
     <webjars-locator.version>1.1.2</webjars-locator.version>
@@ -43,7 +43,7 @@
     <connection>scm:git:https://github.com/anna-ishkhanyan/spring-petclinic.git</connection>
     <developerConnection>scm:git:git@github.com:anna-ishkhanyan/spring-petclinic.git</developerConnection>
     <url>https://github.com/anna-ishkhanyan/spring-petclinic</url>
-    <tag>HEAD</tag>
+    <tag>release-5.0.0</tag>
   </scm>
 
   <dependencies>
@@ -376,7 +376,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore></ignore>
+                        <ignore />
                       </action>
                     </pluginExecution>
                     <pluginExecution>
@@ -389,7 +389,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore></ignore>
+                        <ignore />
                       </action>
                     </pluginExecution>
                     <pluginExecution>
@@ -402,7 +402,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore></ignore>
+                        <ignore />
                       </action>
                     </pluginExecution>
                   </pluginExecutions>
