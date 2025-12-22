@@ -42,9 +42,6 @@ out/
 ### VS Code ###
 .vscode/
 
-### SDK Man ###
-.sdkmanrc
-
 ### CSS ###
 _site/
 *.css

@@ -30,7 +30,7 @@ import jakarta.validation.constraints.NotBlank;
 @MappedSuperclass
 public class NamedEntity extends BaseEntity {
 
-	@Column(name = "name")
+	@Column
 	@NotBlank
 	private String name;
 
@@ -44,7 +44,8 @@ public class NamedEntity extends BaseEntity {
 
 	@Override
 	public String toString() {
-		return this.getName();
+		String name = this.getName();
+		return (name != null) ? name : "<null>";
 	}
 
 }

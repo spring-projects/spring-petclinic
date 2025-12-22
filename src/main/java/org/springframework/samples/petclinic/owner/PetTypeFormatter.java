@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * Instructs Spring MVC on how to parse and print elements of type 'PetType'. Starting
@@ -43,14 +44,15 @@ public class PetTypeFormatter implements Formatter<PetType> {
 
 	@Override
 	public String print(PetType petType, Locale locale) {
-		return petType.getName();
+		String name = petType.getName();
+		return (name != null) ? name : "<null>";
 	}
 
 	@Override
 	public PetType parse(String text, Locale locale) throws ParseException {
 		Collection<PetType> findPetTypes = this.types.findPetTypes();
 		for (PetType type : findPetTypes) {
-			if (type.getName().equals(text)) {
+			if (Objects.equals(type.getName(), text)) {
 				return type;
 			}
 		}
