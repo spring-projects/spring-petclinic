@@ -26,15 +26,6 @@ spec:
           value: "app"
           effect: "NoSchedule"
 
-      # ✅ (추가) paramkey.txt를 Secret에서 파일로 마운트하기 위한 볼륨
-      volumes:
-        - name: whatap-paramkey
-          secret:
-            secretName: whatap-apm-secret
-            items:
-              - key: paramkey.txt
-                path: paramkey.txt
-
       containers:
         - name: petclinic-container
           image: 723926525504.dkr.ecr.ap-northeast-2.amazonaws.com/eks/petclinic:138ba75
@@ -60,17 +51,11 @@ spec:
                 -Dwhatap.server.host=$(WHATAP_SERVER_HOST)
                 -Dlicense=$(WHATAP_LICENSE)
                 -Dwhatap.micro.enabled=$(WHATAP_MICRO_ENABLED)
-                -Dwhatap.paramkey=/whatap-conf/paramkey.txt
+                -Dwhatap.paramkey=/whatap/paramkey.txt
                 -XX:+UseContainerSupport
                 -XX:MaxRAMPercentage=75
                 -XX:+ExitOnOutOfMemoryError
                 -XX:+AlwaysActAsServerClassMachine
-
-          # ✅ (위치 중요) containers[] 내부에 있어야 함
-          volumeMounts:
-            - name: whatap-paramkey
-              mountPath: /whatap-conf
-              readOnly: true
 
           ports:
             - name: http
