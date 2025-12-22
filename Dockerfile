@@ -85,6 +85,7 @@ ENV WHATAP_HOME=/whatap
 ENV JAVA_TOOL_OPTIONS="\
 -javaagent:/whatap/whatap.agent.jar \
 -Dwhatap.paramkey=/whatap/paramkey.txt \
+--add-opens=java.base/java.lang=ALL-UNNAMED \
 -XX:+UseContainerSupport \
 -XX:MaxRAMPercentage=75 \
 -XX:+ExitOnOutOfMemoryError \

@@ -43,6 +43,12 @@ spec:
               value: "org.postgresql.Driver"
             - name: APP_VERSION
               value: "local"
+            - name: NODE_IP
+              valueFrom: {fieldRef: {fieldPath: status.hostIP}}
+            - name: NODE_NAME
+              valueFrom: {fieldRef: {fieldPath: spec.nodeName}}
+            - name: POD_NAME
+              valueFrom: {fieldRef: {fieldPath: metadata.name}}
 
             # ✅ Whatap + 기존 JVM 옵션 (덮어쓰기 주의 OK)
             - name: JAVA_TOOL_OPTIONS
