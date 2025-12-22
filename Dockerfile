@@ -37,15 +37,13 @@ RUN set -eux; \
     mkdir -p /whatap; \
     tar -xzf /tmp/whatap.agent.java.tar.gz -C /whatap; \
     rm -f /tmp/whatap.agent.java.tar.gz; \
+    # agent jar 찾기
     AGENT_JAR="$(find /whatap -maxdepth 6 -type f \
-      \( -name 'whatap.agent*.jar' -o -name '*whatap*agent*.jar' \) \
-      | head -n 1)"; \
+      \( -name 'whatap.agent*.jar' -o -name '*whatap*agent*.jar' \) | head -n 1)"; \
     test -n "$AGENT_JAR"; \
     cp -f "$AGENT_JAR" /whatap/whatap.agent.jar; \
     cp -f /tmp/paramkey.txt /whatap/paramkey.txt; \
-    # 파일은 읽기 가능(0644)로 두고, 디렉토리는 나중에 런타임에서 쓰기 가능하게
-    chmod 0644 /whatap/whatap.agent.jar /whatap/paramkey.txt; \
-    chmod 0755 /whatap
+    chmod -R a=rX /whatap
 
 # =========================
 # 3) jlink Slim JRE
