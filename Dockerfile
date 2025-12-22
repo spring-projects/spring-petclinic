@@ -64,7 +64,7 @@ WORKDIR /jrebuild
 COPY --from=builder /app/app.jar ./app.jar
 
 RUN set -eux; \
-    DEPS="$(jdeps --ignore-missing-deps --multi-release=${JAVA_VERSION} --print-module-deps app.jar)"; \
+    DEPS="$(jdeps --ignore-missing-deps --multi-release=21 --print-module-deps app.jar)"; \
     # Spring/Tomcat/Whatap가 건드릴 수 있는 모듈을 보강
     jlink --strip-debug --no-man-pages --no-header-files --compress=2 \
       --add-modules "$DEPS,\
