@@ -16,57 +16,41 @@ spec:
         app: petclinic
     spec:
       serviceAccountName: petclinic-sa
-
       nodeSelector:
         role: "app"
-
       tolerations:
         - key: "role"
           operator: "Equal"
           value: "app"
           effect: "NoSchedule"
-
       containers:
         - name: petclinic-container
-          image: 723926525504.dkr.ecr.ap-northeast-2.amazonaws.com/eks/petclinic:138ba75
-
+          image: 723926525504.dkr.ecr.ap-northeast-2.amazonaws.com/eks/petclinic:49c6082
           envFrom:
             - secretRef:
                 name: petclinic-db-secret
             - secretRef:
                 name: whatap-apm-secret
-
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "postgres"
             - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
               value: "org.postgresql.Driver"
             - name: APP_VERSION
-              value: "local"
+              value: "A-4.0.0-49c6082"
             - name: NODE_IP
               valueFrom: {fieldRef: {fieldPath: status.hostIP}}
             - name: NODE_NAME
               valueFrom: {fieldRef: {fieldPath: spec.nodeName}}
             - name: POD_NAME
               valueFrom: {fieldRef: {fieldPath: metadata.name}}
-
             # ✅ Whatap + 기존 JVM 옵션 (덮어쓰기 주의 OK)
             - name: JAVA_TOOL_OPTIONS
               value: >-
-                -javaagent:/whatap/whatap.agent.jar
-                -Dwhatap.server.host=$(WHATAP_SERVER_HOST)
-                -Dlicense=$(WHATAP_LICENSE)
-                -Dwhatap.micro.enabled=$(WHATAP_MICRO_ENABLED)
-                -Dwhatap.paramkey=/whatap/paramkey.txt
-                -XX:+UseContainerSupport
-                -XX:MaxRAMPercentage=75
-                -XX:+ExitOnOutOfMemoryError
-                -XX:+AlwaysActAsServerClassMachine
-
+                -javaagent:/whatap/whatap.agent.jar -Dwhatap.server.host=$(WHATAP_SERVER_HOST) -Dlicense=$(WHATAP_LICENSE) -Dwhatap.micro.enabled=$(WHATAP_MICRO_ENABLED) -Dwhatap.paramkey=/whatap/paramkey.txt -XX:+UseContainerSupport -XX:MaxRAMPercentage=75 -XX:+ExitOnOutOfMemoryError -XX:+AlwaysActAsServerClassMachine
           ports:
             - name: http
               containerPort: 8080
-
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
@@ -74,7 +58,6 @@ spec:
             initialDelaySeconds: 60
             periodSeconds: 10
             failureThreshold: 5
-
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
@@ -82,7 +65,6 @@ spec:
             initialDelaySeconds: 60
             periodSeconds: 10
             failureThreshold: 5
-
           resources:
             requests:
               cpu: "250m"
