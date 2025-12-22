@@ -35,6 +35,8 @@ spec:
           envFrom:
             - secretRef:
                 name: petclinic-db-secret
+            - secretRef:
+                name: whatap-apm-secret
 
           # 🔹 여기: Spring profile을 postgres용으로
           env:
@@ -48,7 +50,9 @@ spec:
             - name: SPRING_JPA_HIBERNATE_DDL_AUTO
               value: "none"
             - name: APP_VERSION
-              value: "local"
+              value: "A-3.2.x"
+            - name: ENABLE_WHATAP
+              value: "false"
               
           ports:
             - name: http

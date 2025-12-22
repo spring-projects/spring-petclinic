@@ -1,9 +1,9 @@
 # syntax=docker/dockerfile:1.6
 
 ARG JAVA_VERSION=21
-ARG MAVEN_IMAGE=maven:3.9-eclipse-temurin-21
-ARG JDK_IMAGE=eclipse-temurin:21-jdk
-ARG DISTROLESS_IMAGE=gcr.io/distroless/base-debian12:nonroot
+ARG MAVEN_IMAGE=maven:3.9-eclipse-temurin-${JAVA_VERSION}
+ARG JDK_IMAGE=eclipse-temurin:${JAVA_VERSION}-jdk
+ARG RUNTIME_IMAGE=eclipse-temurin:${JAVA_VERSION}-jre
 
 # =========================
 # 1) Build
@@ -17,7 +17,7 @@ RUN --mount=type=cache,target=/root/.m2 \
 
 COPY . .
 RUN --mount=type=cache,target=/root/.m2 \
-    mvn -q -DskipTests package
+    mvn -q -DskipTests clean package
 
 RUN set -eux; \
     JAR="$(ls -1 target/*.jar | head -n 1)"; \
@@ -37,7 +37,6 @@ RUN set -eux; \
     mkdir -p /whatap; \
     tar -xzf /tmp/whatap.agent.java.tar.gz -C /whatap; \
     rm -f /tmp/whatap.agent.java.tar.gz; \
-    # agent jar 찾기
     AGENT_JAR="$(find /whatap -maxdepth 6 -type f \
       \( -name 'whatap.agent*.jar' -o -name '*whatap*agent*.jar' \) | head -n 1)"; \
     test -n "$AGENT_JAR"; \
@@ -46,48 +45,44 @@ RUN set -eux; \
     chmod -R a=rX /whatap
 
 # =========================
-# 3) jlink Slim JRE
+# 3) Runtime (fallback-first: temurin JRE)
 # =========================
-FROM ${JDK_IMAGE} AS jre
-WORKDIR /jrebuild
-
-COPY --from=builder /app/app.jar ./app.jar
-
-RUN set -eux; \
-    DEPS="$(jdeps --ignore-missing-deps --multi-release=21 --print-module-deps app.jar)"; \
-    jlink --strip-debug --no-man-pages --no-header-files --compress=2 \
-      --add-modules "$DEPS,\
-java.desktop,java.management,jdk.management,java.sql,java.naming,\
-java.logging,java.security.jgss,jdk.security.auth,java.security.sasl,java.instrument,\
-jdk.crypto.ec,jdk.unsupported,java.xml" \
-      --output /opt/jre
-
-# =========================
-# 4) Runtime (Distroless)
-# =========================
-FROM ${DISTROLESS_IMAGE}
+# 기본 목표는 “정상 기동”이므로 디버깅이 용이한 eclipse-temurin JRE를 사용한다.
+# distroless/jlink 최적화는 별도 커밋에서 재적용한다.
+FROM ${RUNTIME_IMAGE}
 WORKDIR /app
 
-COPY --from=jre     /opt/jre    /opt/jre
-COPY --from=builder /app/app.jar ./app.jar
+COPY --from=builder /app/app.jar /app/app.jar
+COPY --from=whatap_agent /whatap /whatap
 
-# ✅ 핵심: /whatap 을 nonroot(65532)가 소유하도록 복사
-COPY --from=whatap_agent --chown=65532:65532 /whatap /whatap
+ENV JAVA_TOOL_OPTIONS="" \
+    JAVA_OPTS="" \
+ENABLE_WHATAP=false \
+WHATAP_HOME=/whatap
 
-ENV JAVA_HOME=/opt/jre
-ENV PATH="/opt/jre/bin:${PATH}"
+# ENTRYPOINT wrapper: ENABLE_WHATAP=true 일 때만 agent 옵션을 추가한다.
+COPY <<'EOF' /entrypoint.sh
+#!/bin/sh
+set -eu
 
-# ✅ whatap home 명시(에이전트가 내부 파일 쓸 때 경로 확정)
-ENV WHATAP_HOME=/whatap
+JAVA_ARGS=${JAVA_OPTS:-}
+case "${ENABLE_WHATAP:-false}" in
+  true|TRUE|True)
+  JAVA_ARGS="$JAVA_ARGS -javaagent:/whatap/whatap.agent.jar"
+  JAVA_ARGS="$JAVA_ARGS -Dwhatap.paramkey=/whatap/paramkey.txt"
+  JAVA_ARGS="$JAVA_ARGS -Dwhatap.server.host=${WHATAP_SERVER_HOST:-}"
+  JAVA_ARGS="$JAVA_ARGS -Dlicense=${WHATAP_LICENSE:-}"
+  JAVA_ARGS="$JAVA_ARGS -Dwhatap.micro.enabled=${WHATAP_MICRO_ENABLED:-}"
+  JAVA_ARGS="$JAVA_ARGS --add-opens=java.base/java.lang=ALL-UNNAMED"
+  ;;
+esac
 
-ENV JAVA_TOOL_OPTIONS="\
--javaagent:/whatap/whatap.agent.jar \
--Dwhatap.paramkey=/whatap/paramkey.txt \
---add-opens=java.base/java.lang=ALL-UNNAMED \
--XX:+UseContainerSupport \
--XX:MaxRAMPercentage=75 \
--XX:+ExitOnOutOfMemoryError \
--XX:+AlwaysActAsServerClassMachine"
+exec java $JAVA_ARGS -XX:+UseContainerSupport -XX:MaxRAMPercentage=75 \
+  -XX:+ExitOnOutOfMemoryError -XX:+AlwaysActAsServerClassMachine \
+  -jar /app/app.jar
+EOF
+
+RUN chmod +x /entrypoint.sh
 
 EXPOSE 8080
-ENTRYPOINT ["/opt/jre/bin/java", "-jar", "/app/app.jar"]
+ENTRYPOINT ["/entrypoint.sh"]

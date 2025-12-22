@@ -37,17 +37,15 @@ spec:
             - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
               value: "org.postgresql.Driver"
             - name: APP_VERSION
-              value: "A-4.0.0-49c6082"
+              value: "A-3.2.x"
             - name: NODE_IP
               valueFrom: {fieldRef: {fieldPath: status.hostIP}}
             - name: NODE_NAME
               valueFrom: {fieldRef: {fieldPath: spec.nodeName}}
             - name: POD_NAME
               valueFrom: {fieldRef: {fieldPath: metadata.name}}
-            # ✅ Whatap + 기존 JVM 옵션 (덮어쓰기 주의 OK)
-            - name: JAVA_TOOL_OPTIONS
-              value: >-
-                -javaagent:/whatap/whatap.agent.jar -Dwhatap.server.host=$(WHATAP_SERVER_HOST) -Dlicense=$(WHATAP_LICENSE) -Dwhatap.micro.enabled=$(WHATAP_MICRO_ENABLED) -Dwhatap.paramkey=/whatap/paramkey.txt -XX:+UseContainerSupport -XX:MaxRAMPercentage=75 -XX:+ExitOnOutOfMemoryError -XX:+AlwaysActAsServerClassMachine
+            - name: ENABLE_WHATAP
+              value: "false"
           ports:
             - name: http
               containerPort: 8080

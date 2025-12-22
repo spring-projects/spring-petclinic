@@ -1,0 +1,10 @@
+target
+.mvn
+.git
+.github
+.idea
+*.iml
+Dockerfile*
+node_modules
+build
+out
