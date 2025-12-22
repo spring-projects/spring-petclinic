@@ -31,8 +31,7 @@ RUN set -eux; \
     test -n "$AGENT_JAR"; \
     echo "Found agent jar: $AGENT_JAR"; \
     cp -f "$AGENT_JAR" /whatap/whatap.agent.jar; \
-    ls -ալ /whatap
-
+    ls -al /whatap
 
 # =========================
 # 2) jlink로 Slim JRE 생성
