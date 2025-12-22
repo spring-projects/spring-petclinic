@@ -25,11 +25,14 @@ RUN set -eux; \
     mkdir -p /whatap; \
     tar -xzf /tmp/whatap.agent.java.tar.gz -C /whatap; \
     rm -f /tmp/whatap.agent.java.tar.gz; \
-    ls -al /whatap; \
-    # 버전이 붙은 jar명을 고정 파일명으로 링크/복사해두면 운영이 편함
-    AGENT_JAR="$(ls -1 /whatap/whatap.agent*.jar 2>/dev/null | head -n 1)"; \
+    echo "== whatap extracted tree =="; \
+    find /whatap -maxdepth 3 -type f -print; \
+    AGENT_JAR="$(find /whatap -maxdepth 3 -type f \( -name 'whatap.agent*.jar' -o -name '*whatap*agent*.jar' \) | head -n 1)"; \
     test -n "$AGENT_JAR"; \
-    cp -f "$AGENT_JAR" /whatap/whatap.agent.jar
+    echo "Found agent jar: $AGENT_JAR"; \
+    cp -f "$AGENT_JAR" /whatap/whatap.agent.jar; \
+    ls -ալ /whatap
+
 
 # =========================
 # 2) jlink로 Slim JRE 생성
