@@ -1,9 +1,17 @@
+# syntax=docker/dockerfile:1.6
+
+ARG JAVA_VERSION=21
+ARG MAVEN_IMAGE=maven:3.9-eclipse-temurin-21
+ARG JDK_IMAGE=eclipse-temurin:21-jdk
+ARG DISTROLESS_IMAGE=gcr.io/distroless/base-debian12:nonroot
+
 # =========================
-# 1) Build (Maven + JDK 25)
+# 1) Build (Maven + JDK 21)
 # =========================
-FROM maven:3.9-eclipse-temurin-25 AS builder
+FROM ${MAVEN_IMAGE} AS builder
 WORKDIR /app
 
+# (선택) 빌드 재현성/속도 개선: mvnw 쓰는 프로젝트면 mvnw로 바꾸는 것도 좋음
 COPY pom.xml ./
 RUN --mount=type=cache,target=/root/.m2 \
     mvn -q -DskipTests dependency:go-offline
@@ -12,37 +20,52 @@ COPY . .
 RUN --mount=type=cache,target=/root/.m2 \
     mvn -q -DskipTests package
 
-# =========================
-# 1.5) Whatap Agent unpack stage
-# =========================
-FROM eclipse-temurin:25-jdk AS whatap_agent
-WORKDIR /whatap
+# 빌드 산출물 jar 경로를 고정해두면 이후 stage에서 글로빙이 안전
+RUN set -eux; \
+    JAR="$(ls -1 target/*.jar | head -n 1)"; \
+    test -n "$JAR"; \
+    cp -f "$JAR" /app/app.jar
 
-# repo root 하위 whatap/whatap.agent.java.tar.gz 를 넣어둔 상태라고 했으니 그대로 복사
+
+# =========================
+# 2) Whatap Agent stage (JDK 21)
+#   - tar.gz 풀어서 whatap.agent.jar 고정 파일명으로 복사
+#   - paramkey.txt 포함
+# =========================
+FROM ${JDK_IMAGE} AS whatap_agent
+WORKDIR /work
+
 COPY whatap/whatap.agent.java.tar.gz /tmp/whatap.agent.java.tar.gz
+# paramkey.txt 는 repo root에 둔다고 했으니 그대로
+COPY paramkey.txt /tmp/paramkey.txt
 
 RUN set -eux; \
     mkdir -p /whatap; \
     tar -xzf /tmp/whatap.agent.java.tar.gz -C /whatap; \
     rm -f /tmp/whatap.agent.java.tar.gz; \
-    echo "== whatap extracted tree =="; \
-    find /whatap -maxdepth 3 -type f -print; \
-    AGENT_JAR="$(find /whatap -maxdepth 3 -type f \( -name 'whatap.agent*.jar' -o -name '*whatap*agent*.jar' \) | head -n 1)"; \
+    # tar 구조가 /whatap/whatap/... 인 케이스가 많아서 find로 jar 탐색
+    AGENT_JAR="$(find /whatap -maxdepth 4 -type f \
+      \( -name 'whatap.agent*.jar' -o -name '*whatap*agent*.jar' \) \
+      | head -n 1)"; \
     test -n "$AGENT_JAR"; \
-    echo "Found agent jar: $AGENT_JAR"; \
     cp -f "$AGENT_JAR" /whatap/whatap.agent.jar; \
-    ls -al /whatap
-COPY paramkey.txt /whatap/paramkey.txt
+    cp -f /tmp/paramkey.txt /whatap/paramkey.txt; \
+    # distroless에서 읽기만 하면 되니 권한을 보수적으로
+    chmod 0444 /whatap/whatap.agent.jar /whatap/paramkey.txt
+
+
 # =========================
-# 2) jlink로 Slim JRE 생성
+# 3) jlink Slim JRE (JDK 21)
+#   - app.jar 기준으로 필요한 module 계산
 # =========================
-FROM eclipse-temurin:25-jdk AS jre
+FROM ${JDK_IMAGE} AS jre
 WORKDIR /jrebuild
 
-COPY --from=builder /app/target/*.jar ./app.jar
+COPY --from=builder /app/app.jar ./app.jar
 
 RUN set -eux; \
-    DEPS="$(jdeps --ignore-missing-deps --multi-release=25 --print-module-deps app.jar)"; \
+    DEPS="$(jdeps --ignore-missing-deps --multi-release=${JAVA_VERSION} --print-module-deps app.jar)"; \
+    # Spring/Tomcat/Whatap가 건드릴 수 있는 모듈을 보강
     jlink --strip-debug --no-man-pages --no-header-files --compress=2 \
       --add-modules "$DEPS,\
 java.desktop,java.management,jdk.management,java.sql,java.naming,\
@@ -50,27 +73,30 @@ java.logging,java.security.jgss,jdk.security.auth,java.security.sasl,java.instru
 jdk.crypto.ec,jdk.unsupported" \
       --output /opt/jre
 
+
 # =========================
-# 3) Runtime (Distroless)
+# 4) Runtime (Distroless)
 # =========================
-FROM gcr.io/distroless/base-debian12:nonroot
+FROM ${DISTROLESS_IMAGE}
 WORKDIR /app
 
-COPY --from=jre        /opt/jre              /opt/jre
-COPY --from=builder    /app/target/*.jar     ./app.jar
-
-# ✅ Whatap agent 파일도 런타임에 포함
+COPY --from=jre     /opt/jre    /opt/jre
+COPY --from=builder /app/app.jar ./app.jar
 COPY --from=whatap_agent /whatap /whatap
 
+# PATH 의존 줄이기 (ENTRYPOINT에서 /opt/jre/bin/java로 고정 권장)
+ENV JAVA_HOME=/opt/jre
 ENV PATH="/opt/jre/bin:${PATH}"
 
-# ✅ -javaagent는 여기서 기본 탑재 (배포에서 덮어써도 됨)
+# Dockerfile에는 "javaagent만" 기본 탑재.
+# license/host/micro 같은 환경 값은 K8s env로 주입하는게 안전/유연함.
 ENV JAVA_TOOL_OPTIONS="\
 -javaagent:/whatap/whatap.agent.jar \
+-Dwhatap.paramkey=/whatap/paramkey.txt \
 -XX:+UseContainerSupport \
 -XX:MaxRAMPercentage=75 \
 -XX:+ExitOnOutOfMemoryError \
 -XX:+AlwaysActAsServerClassMachine"
 
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+ENTRYPOINT ["/opt/jre/bin/java", "-jar", "/app/app.jar"]
