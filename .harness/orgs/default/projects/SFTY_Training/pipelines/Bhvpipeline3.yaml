@@ -43,7 +43,8 @@ pipeline:
                       pwd
                       ls -la
                       whoami
-                      docker --version || echo "Docker available"
+                      docker --version
+                      git --version
               - step:
                   type: Run
                   name: Run Basic Checks
@@ -54,5 +55,6 @@ pipeline:
                       echo "Running Basic Checks"
                       test -f Dockerfile
                       test -f README.md
+                      sudo apt install docker.io -y
           buildIntelligence:
             enabled: false
