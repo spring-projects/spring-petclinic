@@ -43,3 +43,10 @@ pipeline:
                       type: branch
                       spec:
                         branch: main
+              - step:
+                  type: Run
+                  name: Run Tests
+                  identifier: Run_Tests
+                  spec:
+                    shell: Sh
+                    command: mvn test
