@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+          http://www.liquibase.org/xml/ns/dbchangelog
+          https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+	<changeSet id="002-01-types" author="petclinic" context="dev">
+		<insert tableName="types">
+			<column name="id" valueNumeric="1"/>
+			<column name="name" value="cat"/>
+		</insert>
+		<insert tableName="types">
+			<column name="id" valueNumeric="2"/>
+			<column name="name" value="dog"/>
+		</insert>
+		<insert tableName="types">
+			<column name="id" valueNumeric="3"/>
+			<column name="name" value="lizard"/>
+		</insert>
+		<insert tableName="types">
+			<column name="id" valueNumeric="4"/>
+			<column name="name" value="snake"/>
+		</insert>
+		<insert tableName="types">
+			<column name="id" valueNumeric="5"/>
+			<column name="name" value="bird"/>
+		</insert>
+		<insert tableName="types">
+			<column name="id" valueNumeric="6"/>
+			<column name="name" value="hamster"/>
+		</insert>
+	</changeSet>
+
+	<changeSet id="002-02-owners" author="petclinic" context="dev">
+		<insert tableName="owners">
+			<column name="id" valueNumeric="1"/>
+			<column name="first_name" value="George"/>
+			<column name="last_name" value="Franklin"/>
+			<column name="address" value="110 W. Liberty St."/>
+			<column name="city" value="Madison"/>
+			<column name="telephone" value="6085551023"/>
+		</insert>
+		<insert tableName="owners">
+			<column name="id" valueNumeric="2"/>
+			<column name="first_name" value="Betty"/>
+			<column name="last_name" value="Davis"/>
+			<column name="address" value="638 Cardinal Ave."/>
+			<column name="city" value="Sun Prairie"/>
+			<column name="telephone" value="6085551749"/>
+		</insert>
+		<insert tableName="owners">
+			<column name="id" valueNumeric="3"/>
+			<column name="first_name" value="Eduardo"/>
+			<column name="last_name" value="Rodriquez"/>
+			<column name="address" value="2693 Commerce St."/>
+			<column name="city" value="McFarland"/>
+			<column name="telephone" value="6085558763"/>
+		</insert>
+		<insert tableName="owners">
+			<column name="id" valueNumeric="4"/>
+			<column name="first_name" value="Harold"/>
+			<column name="last_name" value="Davis"/>
+			<column name="address" value="3675 Prairie Lane"/>
+			<column name="city" value="Madison"/>
+			<column name="telephone" value="6085553198"/>
+		</insert>
+		<insert tableName="owners">
+			<column name="id" valueNumeric="5"/>
+			<column name="first_name" value="Peter"/>
+			<column name="last_name" value="McTavish"/>
+			<column name="address" value="1266 St. James St."/>
+			<column name="city" value="Madison"/>
+			<column name="telephone" value="6085552674"/>
+		</insert>
+		<insert tableName="owners">
+			<column name="id" valueNumeric="6"/>
+			<column name="first_name" value="Jean"/>
+			<column name="last_name" value="Coleman"/>
+			<column name="address" value="5643 N. Raven Rd."/>
+			<column name="city" value="Sun Prairie"/>
+			<column name="telephone" value="6085555474"/>
+		</insert>
+		<insert tableName="owners">
+			<column name="id" valueNumeric="7"/>
+			<column name="first_name" value="Jeff"/>
+			<column name="last_name" value="Black"/>
+			<column name="address" value="4289 S. Lakeview Ave."/>
+			<column name="city" value="Madison"/>
+			<column name="telephone" value="6085555346"/>
+		</insert>
+		<insert tableName="owners">
+			<column name="id" valueNumeric="8"/>
+			<column name="first_name" value="Maria"/>
+			<column name="last_name" value="Escobito"/>
+			<column name="address" value="563 Friendly Dr."/>
+			<column name="city" value="Windsor"/>
+			<column name="telephone" value="6085555487"/>
+		</insert>
+		<insert tableName="owners">
+			<column name="id" valueNumeric="9"/>
+			<column name="first_name" value="David"/>
+			<column name="last_name" value="Schroeder"/>
+			<column name="address" value="1843 Oak Circle"/>
+			<column name="city" value="Madison"/>
+			<column name="telephone" value="6085556432"/>
+		</insert>
+		<insert tableName="owners">
+			<column name="id" valueNumeric="10"/>
+			<column name="first_name" value="Carlos"/>
+			<column name="last_name" value="Estaban"/>
+			<column name="address" value="1024 Adams St."/>
+			<column name="city" value="Madison"/>
+			<column name="telephone" value="6085559053"/>
+		</insert>
+	</changeSet>
+
+	<changeSet id="002-03-pets" author="petclinic" context="dev">
+		<insert tableName="pets">
+			<column name="id" valueNumeric="1"/>
+			<column name="name" value="Leo"/>
+			<column name="birth_date" valueDate="2010-09-07"/>
+			<column name="type_id" valueNumeric="1"/>
+			<column name="owner_id" valueNumeric="1"/>
+		</insert>
+		<insert tableName="pets">
+			<column name="id" valueNumeric="2"/>
+			<column name="name" value="Basil"/>
+			<column name="birth_date" valueDate="2012-08-06"/>
+			<column name="type_id" valueNumeric="6"/>
+			<column name="owner_id" valueNumeric="2"/>
+		</insert>
+		<insert tableName="pets">
+			<column name="id" valueNumeric="3"/>
+			<column name="name" value="Rosy"/>
+			<column name="birth_date" valueDate="2011-04-17"/>
+			<column name="type_id" valueNumeric="2"/>
+			<column name="owner_id" valueNumeric="3"/>
+		</insert>
+		<insert tableName="pets">
+			<column name="id" valueNumeric="4"/>
+			<column name="name" value="Jewel"/>
+			<column name="birth_date" valueDate="2010-03-07"/>
+			<column name="type_id" valueNumeric="2"/>
+			<column name="owner_id" valueNumeric="3"/>
+		</insert>
+		<insert tableName="pets">
+			<column name="id" valueNumeric="5"/>
+			<column name="name" value="Iggy"/>
+			<column name="birth_date" valueDate="2010-11-30"/>
+			<column name="type_id" valueNumeric="3"/>
+			<column name="owner_id" valueNumeric="4"/>
+		</insert>
+		<insert tableName="pets">
+			<column name="id" valueNumeric="6"/>
+			<column name="name" value="George"/>
+			<column name="birth_date" valueDate="2010-01-20"/>
+			<column name="type_id" valueNumeric="4"/>
+			<column name="owner_id" valueNumeric="5"/>
+		</insert>
+		<insert tableName="pets">
+			<column name="id" valueNumeric="7"/>
+			<column name="name" value="Samantha"/>
+			<column name="birth_date" valueDate="2012-09-04"/>
+			<column name="type_id" valueNumeric="1"/>
+			<column name="owner_id" valueNumeric="6"/>
+		</insert>
+		<insert tableName="pets">
+			<column name="id" valueNumeric="8"/>
+			<column name="name" value="Max"/>
+			<column name="birth_date" valueDate="2012-09-04"/>
+			<column name="type_id" valueNumeric="1"/>
+			<column name="owner_id" valueNumeric="6"/>
+		</insert>
+		<insert tableName="pets">
+			<column name="id" valueNumeric="9"/>
+			<column name="name" value="Lucky"/>
+			<column name="birth_date" valueDate="2011-08-06"/>
+			<column name="type_id" valueNumeric="5"/>
+			<column name="owner_id" valueNumeric="7"/>
+		</insert>
+		<insert tableName="pets">
+			<column name="id" valueNumeric="10"/>
+			<column name="name" value="Mulligan"/>
+			<column name="birth_date" valueDate="2007-02-24"/>
+			<column name="type_id" valueNumeric="2"/>
+			<column name="owner_id" valueNumeric="8"/>
+		</insert>
+		<insert tableName="pets">
+			<column name="id" valueNumeric="11"/>
+			<column name="name" value="Freddy"/>
+			<column name="birth_date" valueDate="2010-03-09"/>
+			<column name="type_id" valueNumeric="5"/>
+			<column name="owner_id" valueNumeric="9"/>
+		</insert>
+		<insert tableName="pets">
+			<column name="id" valueNumeric="12"/>
+			<column name="name" value="Lucky"/>
+			<column name="birth_date" valueDate="2010-06-24"/>
+			<column name="type_id" valueNumeric="2"/>
+			<column name="owner_id" valueNumeric="10"/>
+		</insert>
+		<insert tableName="pets">
+			<column name="id" valueNumeric="13"/>
+			<column name="name" value="Sly"/>
+			<column name="birth_date" valueDate="2012-06-08"/>
+			<column name="type_id" valueNumeric="1"/>
+			<column name="owner_id" valueNumeric="10"/>
+		</insert>
+	</changeSet>
+
+	<changeSet id="002-04-visits" author="petclinic" context="dev">
+		<insert tableName="visits">
+			<column name="id" valueNumeric="1"/>
+			<column name="pet_id" valueNumeric="7"/>
+			<column name="visit_date" valueDate="2013-01-01"/>
+			<column name="description" value="rabies shot"/>
+		</insert>
+		<insert tableName="visits">
+			<column name="id" valueNumeric="2"/>
+			<column name="pet_id" valueNumeric="8"/>
+			<column name="visit_date" valueDate="2013-01-02"/>
+			<column name="description" value="rabies shot"/>
+		</insert>
+		<insert tableName="visits">
+			<column name="id" valueNumeric="3"/>
+			<column name="pet_id" valueNumeric="8"/>
+			<column name="visit_date" valueDate="2013-01-03"/>
+			<column name="description" value="neutered"/>
+		</insert>
+		<insert tableName="visits">
+			<column name="id" valueNumeric="4"/>
+			<column name="pet_id" valueNumeric="7"/>
+			<column name="visit_date" valueDate="2013-01-04"/>
+			<column name="description" value="spayed"/>
+		</insert>
+	</changeSet>
+
+	<changeSet id="002-05-specialties" author="petclinic" context="dev">
+		<insert tableName="specialties">
+			<column name="id" valueNumeric="1"/>
+			<column name="name" value="radiology"/>
+		</insert>
+		<insert tableName="specialties">
+			<column name="id" valueNumeric="2"/>
+			<column name="name" value="surgery"/>
+		</insert>
+		<insert tableName="specialties">
+			<column name="id" valueNumeric="3"/>
+			<column name="name" value="dentistry"/>
+		</insert>
+	</changeSet>
+
+	<changeSet id="002-06-vets" author="petclinic" context="dev">
+		<insert tableName="vets">
+			<column name="id" valueNumeric="1"/>
+			<column name="first_name" value="James"/>
+			<column name="last_name" value="Carter"/>
+		</insert>
+		<insert tableName="vets">
+			<column name="id" valueNumeric="2"/>
+			<column name="first_name" value="Helen"/>
+			<column name="last_name" value="Leary"/>
+		</insert>
+		<insert tableName="vets">
+			<column name="id" valueNumeric="3"/>
+			<column name="first_name" value="Linda"/>
+			<column name="last_name" value="Douglas"/>
+		</insert>
+		<insert tableName="vets">
+			<column name="id" valueNumeric="4"/>
+			<column name="first_name" value="Rafael"/>
+			<column name="last_name" value="Ortega"/>
+		</insert>
+		<insert tableName="vets">
+			<column name="id" valueNumeric="5"/>
+			<column name="first_name" value="Henry"/>
+			<column name="last_name" value="Stevens"/>
+		</insert>
+		<insert tableName="vets">
+			<column name="id" valueNumeric="6"/>
+			<column name="first_name" value="Sharon"/>
+			<column name="last_name" value="Jenkins"/>
+		</insert>
+	</changeSet>
+
+	<changeSet id="002-07-vet-specialties" author="petclinic" context="dev">
+		<insert tableName="vet_specialties">
+			<column name="vet_id" valueNumeric="2"/>
+			<column name="specialty_id" valueNumeric="1"/>
+		</insert>
+		<insert tableName="vet_specialties">
+			<column name="vet_id" valueNumeric="3"/>
+			<column name="specialty_id" valueNumeric="2"/>
+		</insert>
+		<insert tableName="vet_specialties">
+			<column name="vet_id" valueNumeric="3"/>
+			<column name="specialty_id" valueNumeric="3"/>
+		</insert>
+		<insert tableName="vet_specialties">
+			<column name="vet_id" valueNumeric="4"/>
+			<column name="specialty_id" valueNumeric="2"/>
+		</insert>
+		<insert tableName="vet_specialties">
+			<column name="vet_id" valueNumeric="5"/>
+			<column name="specialty_id" valueNumeric="1"/>
+		</insert>
+	</changeSet>
+
+</databaseChangeLog>
