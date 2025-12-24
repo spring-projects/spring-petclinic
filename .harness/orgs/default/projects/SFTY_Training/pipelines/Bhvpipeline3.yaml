@@ -1,0 +1,45 @@
+pipeline:
+  name: Bhv-pipeline3
+  identifier: Bhvpipeline3
+  projectIdentifier: SFTY_Training
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: bhavanagithub
+        repoName: springpetclinic-work
+        build: <+input>
+  stages:
+    - stage:
+        name: ci
+        identifier: ci
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          caching:
+            enabled: true
+            override: false
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec:
+              size: flex
+              imageSpec:
+                imageName: ubuntu-24
+          execution:
+            steps:
+              - step:
+                  type: GitClone
+                  name: GitClone_1
+                  identifier: GitClone_1
+                  spec:
+                    connectorRef: bhavanagithub
+                    repoName: springpetclinic-work
+                    build:
+                      type: branch
+                      spec:
+                        branch: main
