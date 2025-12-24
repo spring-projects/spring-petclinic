@@ -34,17 +34,6 @@ pipeline:
           execution:
             steps:
               - step:
-                  type: GitClone
-                  name: GitClone_1
-                  identifier: GitClone_1
-                  spec:
-                    connectorRef: bhavanagithub
-                    repoName: springpetclinic-work
-                    build:
-                      type: branch
-                      spec:
-                        branch: main
-              - step:
                   type: Run
                   name: Run Tests
                   identifier: Run_Tests
