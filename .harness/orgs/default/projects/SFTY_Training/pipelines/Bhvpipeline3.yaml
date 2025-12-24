@@ -55,5 +55,14 @@ pipeline:
                       echo "Running Basic Checks"
                       test -f Dockerfile
                       test -f README.md
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: BuildAndPushDockerRegistry_1
+                  identifier: BuildAndPushDockerRegistry_1
+                  spec:
+                    connectorRef: bhvdocker
+                    repo: bhavanab2312/springpetclinic-work
+                    tags:
+                      - latest
           buildIntelligence:
             enabled: false
