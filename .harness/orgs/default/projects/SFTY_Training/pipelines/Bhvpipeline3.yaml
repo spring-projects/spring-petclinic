@@ -55,6 +55,5 @@ pipeline:
                       echo "Running Basic Checks"
                       test -f Dockerfile
                       test -f README.md
-                      sudo apt install docker.io -y
           buildIntelligence:
             enabled: false
