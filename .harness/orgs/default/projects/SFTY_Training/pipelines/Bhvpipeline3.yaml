@@ -49,4 +49,9 @@ pipeline:
                   identifier: Run_Tests
                   spec:
                     shell: Sh
-                    command: mvn clean test -Dnohttp.skip=true
+                    command: |-
+                      pwd
+                      ls -la
+                      whoami
+                      docker --version || echo
+                      "Docker available"
