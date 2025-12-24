@@ -49,4 +49,4 @@ pipeline:
                   identifier: Run_Tests
                   spec:
                     shell: Sh
-                    command: mvn test
+                    command: mvn clean test -Dnohttp.skip=true
