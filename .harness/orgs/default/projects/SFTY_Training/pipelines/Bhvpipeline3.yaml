@@ -63,6 +63,6 @@ pipeline:
                     connectorRef: bhvdocker
                     repo: bhavanab2312/springpetclinic-work
                     tags:
-                      - <+Bhvpipeline3.sequenceId>
+                      - <+pipeline.sequenceId>
           buildIntelligence:
             enabled: false
