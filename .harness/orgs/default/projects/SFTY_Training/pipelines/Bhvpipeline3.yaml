@@ -19,8 +19,9 @@ pipeline:
         spec:
           cloneCodebase: true
           caching:
-            enabled: true
+            enabled: false
             override: false
+            paths: []
           platform:
             os: Linux
             arch: Amd64
@@ -54,3 +55,15 @@ pipeline:
                       ls -la
                       whoami
                       docker --version || echo "Docker available"
+              - step:
+                  type: Run
+                  name: Run Basic Checks
+                  identifier: Run_Basic_Checks
+                  spec:
+                    shell: Sh
+                    command: |-
+                      echo "Running Basic Checks"
+                      test -f Dockerfile
+                      test -f README.md
+          buildIntelligence:
+            enabled: false
