@@ -53,5 +53,4 @@ pipeline:
                       pwd
                       ls -la
                       whoami
-                      docker --version || echo
-                      "Docker available"
+                      docker --version || echo "Docker available"
