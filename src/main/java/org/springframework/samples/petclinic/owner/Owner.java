@@ -82,6 +82,9 @@ public class Owner extends Person {
 		this.city = city;
 	}
 
+	@NotBlank
+	@Pattern(regexp = "\\d{10}", message = "Telephone must be a 10-digit number")
+	@Column(name = "telephone")
 	public String getTelephone() {
 		return this.telephone;
 	}
