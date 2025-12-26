@@ -37,6 +37,15 @@ Or you can run it from Maven directly using the Spring Boot Maven plugin. If you
 
 > NOTE: If you prefer to use Gradle, you can build the app using `./gradlew build` and look for the jar file in `build/libs`.
 
+## Validation
+
+### Owner Telephone Validation
+
+The owner telephone field is validated to ensure it contains exactly 10 digits.
+This validation is implemented using `@Pattern` in `Owner.java` and uses the
+`telephone.invalid` message defined in `messages.properties`.
+
+
 ## Building a Container
 
 There is no `Dockerfile` in this project. You can build a container image (if you have a docker daemon) using the Spring Boot build plugin:
