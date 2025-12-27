@@ -12,13 +12,10 @@ pipeline {
 
         stage('Notify GitHub Pending') {
             steps {
-                githubNotify context: 'Jenkins CI', status: 'PENDING'
-            }
-        }
-
-        stage('List Workspace') {
-            steps {
-                sh 'ls -l'
+                setGitHubPullRequestStatus(
+                    context: 'Jenkins CI',
+                    status: 'PENDING'
+                )
             }
         }
 
@@ -53,10 +50,16 @@ pipeline {
 
     post {
         success {
-            githubNotify context: 'Jenkins CI', status: 'SUCCESS'
+            setGitHubPullRequestStatus(
+                context: 'Jenkins CI',
+                status: 'SUCCESS'
+            )
         }
         failure {
-            githubNotify context: 'Jenkins CI', status: 'FAILURE'
+            setGitHubPullRequestStatus(
+                context: 'Jenkins CI',
+                status: 'FAILURE'
+            )
         }
     }
 }
