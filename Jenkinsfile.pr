@@ -15,6 +15,14 @@ pipeline {
 
     stages {
 
+        stage('Notify GitHub Pending') {
+            steps {
+                script {
+                    githubNotify context: 'Jenkins CI', status: 'PENDING'
+                }
+            }
+        }
+
         stage('List Workspace') {
             steps {
                 sh 'ls -l'
@@ -65,6 +73,19 @@ pipeline {
                         sh "docker rm ${APP_NAME}-test || true"
                     }
                 }
+            }
+        }
+    }
+
+    post {
+        success {
+            script {
+                githubNotify context: 'Jenkins CI', status: 'SUCCESS'
+            }
+        }
+        failure {
+            script {
+                githubNotify context: 'Jenkins CI', status: 'FAILURE'
             }
         }
     }
