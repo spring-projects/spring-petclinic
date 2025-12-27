@@ -10,15 +10,6 @@ pipeline {
 
     stages {
 
-        stage('Notify GitHub Pending') {
-            steps {
-                setGitHubPullRequestStatus(
-                    context: 'Jenkins CI',
-                    state: 'PENDING'
-                )
-            }
-        }
-
         stage('List Workspace') {
             steps {
                 sh 'ls -l'
@@ -51,21 +42,6 @@ pipeline {
                     }
                 }
             }
-        }
-    }
-
-    post {
-        success {
-            setGitHubPullRequestStatus(
-                context: 'Jenkins CI',
-                state: 'SUCCESS'
-            )
-        }
-        failure {
-            setGitHubPullRequestStatus(
-                context: 'Jenkins CI',
-                state: 'FAILURE'
-            )
         }
     }
 }
