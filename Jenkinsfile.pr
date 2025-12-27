@@ -33,9 +33,9 @@ pipeline {
             steps {
                 script {
                     try {
-                        sh "docker run -d --name ${APP_NAME}-test -p 8080:8080 ${IMAGE_NAME}"
+                        sh "docker run -d --name ${APP_NAME}-test -p 18080:8080 ${IMAGE_NAME}"
                         sh "sleep 15"
-                        sh "curl -f http://localhost:8080/actuator/health"
+                        sh "curl -f http://localhost:18080/actuator/health"
                     } finally {
                         sh "docker stop ${APP_NAME}-test || true"
                         sh "docker rm ${APP_NAME}-test || true"
