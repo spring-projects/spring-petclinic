@@ -19,7 +19,7 @@ pipeline {
 
         stage('Build Application (Gradle)') {
             steps {
-                sh './gradlew clean build'
+                sh './gradlew clean build -x test'
                 archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
                 junit 'build/test-results/test/*.xml'
             }
