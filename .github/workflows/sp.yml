@@ -1,19 +1,33 @@
-name: spring-petclinic
-on: 
-    push: 
-        branches: 
-            main
-    workflow_dispatch: 
+name : github workflow_spring-petclinic
+on : 
+  pull_request:
+    branches:
+      - main
+
 jobs:
-    job1:
-        runs-on: ubuntu-22.04
-        steps:
-            - name: copycode
-              uses: actions/checkout@v5
-            - uses: actions/setup-java@v5
-              with:
-                 distribution: 'temurin' 
-                 java-version: '21'
-            - name: junit tests
-              run : mvn clean install
-            
+  runners:
+     runs-on: ubuntu-latest
+     steps:
+       - name: checkout code in repo
+         uses: actions/checkout@v6
+
+       - name: java installation
+         uses: actions/setup-java@v5
+         with:
+           distribution: 'temurin' 
+           java-version: '21'
+
+       - name: maven repository
+         uses: advanced-security/maven-dependency-submission-action@v3
+         
+       - name: download dependencies
+         run: mvn validate
+      
+       - name: compile code 
+         run: mvn compile
+        
+       - name: test
+         run: mvn test
+        
+       - name: package code
+         run: mvn package
