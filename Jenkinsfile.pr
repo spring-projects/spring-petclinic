@@ -1,0 +1,71 @@
+pipeline {
+    agent any
+
+    environment {
+        APP_NAME    = "petclinic"
+        DOCKER_USER = "rizjosel"
+        IMAGE_TAG   = "${BUILD_NUMBER}"
+        IMAGE_NAME  = "${DOCKER_USER}/${APP_NAME}:${IMAGE_TAG}"
+    }
+
+    triggers {
+        // Triggered by GitHub Pull Requests
+        githubPullRequest()
+    }
+
+    stages {
+
+        stage('List Workspace') {
+            steps {
+                sh 'ls -l'
+            }
+        }
+
+        stage('CI / Unit Tests') {
+            steps {
+                script {
+                    try {
+                        // Run Gradle unit tests
+                        sh './gradlew clean build -x test'
+                        junit 'build/test-results/test/*.xml'
+                    } catch (err) {
+                        error "Unit tests failed!"
+                    }
+                }
+            }
+        }
+
+        stage('CI / Docker Build') {
+            steps {
+                script {
+                    try {
+                        sh "docker build -t ${IMAGE_NAME} ."
+                    } catch (err) {
+                        error "Docker build failed!"
+                    }
+                }
+            }
+        }
+
+        stage('CI / Docker Integration') {
+            steps {
+                script {
+                    try {
+                        // Start Docker container
+                        sh "docker run -d --name ${APP_NAME}-test -p 8080:8080 ${IMAGE_NAME}"
+                        sh "sleep 15" // wait for app to start
+
+                        // Health check
+                        sh "curl -f http://localhost:8080/actuator/health"
+                    } catch (err) {
+                        error "Docker integration tests failed!"
+                    } finally {
+                        // Clean up container
+                        sh "docker stop ${APP_NAME}-test || true"
+                        sh "docker rm ${APP_NAME}-test || true"
+                    }
+                }
+            }
+        }
+    }
+}
