@@ -74,7 +74,7 @@ pipeline:
         spec:
           deploymentType: Kubernetes
           service:
-            serviceRef: ServicekubernetesB
+            serviceRef: ServicekubernetesBhv
             failureStrategies:
               - onFailure:
                   errors:
