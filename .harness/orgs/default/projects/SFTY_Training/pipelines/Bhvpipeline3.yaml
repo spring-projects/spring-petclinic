@@ -66,3 +66,47 @@ pipeline:
                       - <+pipeline.sequenceId>
           buildIntelligence:
             enabled: false
+    - stage:
+        name: CD
+        identifier: CD
+        description: ""
+        type: Deployment
+        spec:
+          deploymentType: Kubernetes
+          service:
+            serviceRef: ServicekubernetesB
+            failureStrategies:
+              - onFailure:
+                  errors:
+                    - AllErrors
+                  action:
+                    type: MarkAsFailure
+          environment:
+            environmentRef: EnvBhv
+            deployToAll: false
+            infrastructureDefinitions:
+              - identifier: InfraBhv
+            failureStrategies:
+              - onFailure:
+                  errors:
+                    - AllErrors
+                  action:
+                    type: MarkAsFailure
+          execution:
+            steps:
+              - step:
+                  type: K8sRollingDeploy
+                  name: K8sRollingDeploy_1
+                  identifier: K8sRollingDeploy_1
+                  spec:
+                    skipDryRun: false
+                    pruningEnabled: false
+                  timeout: 10m
+            rollbackSteps: []
+        tags: {}
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: MarkAsFailure
