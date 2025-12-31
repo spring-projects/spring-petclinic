@@ -160,13 +160,10 @@ jobs:
     needs: [build-binary-and-image-and-scan]
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
       - name: Download binary
         uses: actions/download-artifact@v4
         with:
-          name: app-binary-${{ needs.checkout-and-version.outputs.version }}
+          name: ${{ needs.checkout-and-version.outputs.artifact_id }}-${{ needs.checkout-and-version.outputs.version }}
 
       - name: Push to artifact repository
         run: |
@@ -177,9 +174,6 @@ jobs:
     needs: [build-binary-and-image-and-scan]
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
       - name: Login to Docker Hub
         run: |
           echo "Login image repository..."
