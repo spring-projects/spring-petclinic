@@ -30,9 +30,15 @@ jobs:
       - name: Extract version from pom.xml
         id: extract-version
         run: |
-          VERSION=$(./mvnw org.apache.maven.plugins:maven-help-plugin:3.5.1:evaluate -Dexpression=project.version -q -DforceStdout)
+          VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo $VERSION
           echo "version=$VERSION" >> $GITHUB_ENV
           echo "version=$VERSION" >> $GITHUB_OUTPUT
+          ARTIFACT_ID=$(./mvnw help:evaluate -Dexpression=project.artifactId -q -DforceStdout)
+          echo $ARTIFACT_ID
+          echo "artifact_id=$ARTIFACT_ID" >> $GITHUB_ENV
+          echo "artifact_id=$ARTIFACT_ID" >> $GITHUB_OUTPUT
+          
 
   # Job 2.1: linting
   linting:
@@ -152,12 +158,12 @@ jobs:
       - name: Download binary
         uses: actions/download-artifact@v4
         with:
-          name: app-binary-${{ needs.checkout-and-version.outputs.version }}
+          name: ${{ needs.checkout-and-version.outputs.artfiact_id }}-${{ needs.checkout-and-version.outputs.version }}
 
       - name: Build Docker image
         run: |
-          docker build -t myapp:${{ needs.checkout-and-version.outputs.version }} .
-          docker tag myapp:${{ needs.checkout-and-version.outputs.version }} myapp:latest
+          docker build -t ${{ needs.checkout-and-version.outputs.artfiact_id }}:${{ needs.checkout-and-version.outputs.version }} .
+          docker tag ${{ needs.checkout-and-version.outputs.artfiact_id }}:${{ needs.checkout-and-version.outputs.version }} ${{ needs.checkout-and-version.outputs.artfiact_id }}:latest
 
   # Job 5: image-scan
   image-scan:
