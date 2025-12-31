@@ -1,0 +1,210 @@
+name: CI Pipeline for Develop Brranch
+
+on:
+  push:
+    branches:
+      - develop
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+
+  # Job 1: checkout-and-version
+  checkout-and-version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.extract-version.outputs.version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Extract version from pom.xml
+        id: extract-version
+        run: |
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "version=$VERSION" >> $GITHUB_ENV
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+  # Job 2.1: linting
+  linting:
+    needs: checkout-and-version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Run Checkstyle (Code Linting)
+        run: mvn checkstyle:check
+
+  # Job 2.2: unit-tests
+  unit-tests:
+    needs: checkout-and-version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Run Unit Tests
+        run: mvn -B test
+
+  # Job 2.3: secret-scan
+  secret-scan:
+    needs: checkout-and-version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Scan for hardcoded secrets
+        run: |
+          echo "Run secrets scan..."
+
+  # Job 2.4: sast-scan
+  sast-scan:
+    needs: checkout-and-version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Run OWASP Dependency-Check (SAST)
+        run: mvn -B org.owasp:dependency-check-maven:check
+
+  # Job 3: build-binary
+  build-binary:
+    needs: [linting, unit-tests, secret-scan, sast-scan, checkout-and-version]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Build JAR
+        run: mvn -B clean package
+
+      - name: Archive binary
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-binary-${{ needs.checkout-and-version.outputs.version }}
+          path: target/*.jar
+          retention-days: 30
+
+  # Job 4: build-image
+  build-image:
+    needs: build-binary
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Download binary
+        uses: actions/download-artifact@v3
+        with:
+          name: app-binary-${{ needs.checkout-and-version.outputs.version }}
+
+      - name: Build Docker image
+        run: |
+          docker build -t myapp:${{ needs.checkout-and-version.outputs.version }} .
+          docker tag myapp:${{ needs.checkout-and-version.outputs.version }} myapp:latest
+
+  # Job 5: image-scan
+  image-scan:
+    needs: build-image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Scan Docker image with Trivy
+        run: |
+          echo "Run image scan..."
+
+  # Job 6.1: push-binary
+  push-binary:
+    needs: [build-binary, image-scan]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Download binary
+        uses: actions/download-artifact@v3
+        with:
+          name: app-binary-${{ needs.checkout-and-version.outputs.version }}
+
+      - name: Push to artifact repository
+        run: |
+          echo "Push artifact: ${{ needs.checkout-and-version.outputs.version }}/app.jar"
+
+  # Job 6.2: push-image
+  push-image:
+    needs: [build-image, image-scan]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        run: |
+          echo "Login image repository..."
+
+      - name: Push Docker image
+        run: |
+          echo "Push image: docker push myapp:${{ needs.checkout-and-version.outputs.version }}""
+
+  # Job 7: notify-status (Always runs)
+  notify-status:
+    needs: [push-binary, push-image]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Send email notification
+        run: |
+          echo "Send Email notifacation: CI Status: ${{ job.status }}"
+
+  # Job 8: trigger-cd (Only on full success)
+  trigger-cd:
+    needs: [push-binary, push-image, notify-status]
+    runs-on: ubuntu-latest
+    if: ${{ needs.push-binary.result == 'success' && needs.push-image.result == 'success' && needs.notify-status.result == 'success' }}
+    steps:
+      - name: Trigger CD Pipeline
+        run: |
+          echo "Trigger CD pipeline..."
