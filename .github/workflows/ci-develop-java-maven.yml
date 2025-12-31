@@ -82,7 +82,11 @@ jobs:
           fetch-depth: 0
 
       - name: Scan for hardcoded secrets
-        uses: gitleaks/gitleaks-action@v2
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          # Do NOT provide 'base' or 'head' here to ensure it scans everything
+          extra_args: --only-verified --results=verified
 
   # Job 2.4: sast-scan
   sast-scan:
