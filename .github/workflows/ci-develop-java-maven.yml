@@ -58,7 +58,6 @@ jobs:
 
   # Job 2.2: unit-tests
   unit-tests:
-    if: true == false #TODO skip
     needs: checkout-and-version
     runs-on: ubuntu-latest
     steps:
@@ -95,7 +94,6 @@ jobs:
 
   # Job 2.4: sast-scan
   sast-scan:
-    if: true == false #TODO skip
     needs: checkout-and-version
     runs-on: ubuntu-latest
     steps:
