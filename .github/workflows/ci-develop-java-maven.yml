@@ -134,9 +134,10 @@ jobs:
         run: |
           APP_NAME=${{ needs.checkout-and-version.outputs.artifact_id }}
           APP_VERSION=${{ needs.checkout-and-version.outputs.version }}
+          APP_JAR="target/${APP_NAME}-${APP_VERSION}.jar"
           
           docker build \
-            --build-arg APP_JAR=${APP_NAME}-${APP_VERSION}.jar \
+            --build-arg APP_JAR=${APP_JAR} \
             --build-arg COMMIT_SHA=${{ github.sha }} \
             --build-arg VERSION=${APP_VERSION} \
             -t ${APP_NAME}:${APP_VERSION} .
