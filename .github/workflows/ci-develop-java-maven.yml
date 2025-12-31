@@ -103,8 +103,10 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Run OWASP Dependency-Check (SAST)
-        run: mvn -B org.owasp:dependency-check-maven:check
+      - name: Scan for vulnerabilities
+        uses: AppThreat/sast-scan-action@master
+        with:
+          type: "java"
 
   # Job 3: build-binary
   build-binary:
