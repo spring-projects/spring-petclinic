@@ -77,10 +77,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        # IMPORTANT: fetch-depth 0 is required to scan the entire history
+        with:
+          fetch-depth: 0
 
       - name: Scan for hardcoded secrets
-        run: |
-          echo "Run secrets scan..."
+        uses: gitleaks/gitleaks-action@v2
 
   # Job 2.4: sast-scan
   sast-scan:
