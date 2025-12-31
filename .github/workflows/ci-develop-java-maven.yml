@@ -135,12 +135,18 @@ jobs:
 
       - name: Build Container image
         run: |
-          docker build -t ${{ needs.checkout-and-version.outputs.artfiact_id }}:${{ needs.checkout-and-version.outputs.version }} .
-          docker tag ${{ needs.checkout-and-version.outputs.artfiact_id }}:${{ needs.checkout-and-version.outputs.version }} ${{ needs.checkout-and-version.outputs.artfiact_id }}:latest
+          docker build -t ${{ needs.checkout-and-version.outputs.artifact_id }}:${{ needs.checkout-and-version.outputs.version }} .
+          docker tag ${{ needs.checkout-and-version.outputs.artifact_id }}:${{ needs.checkout-and-version.outputs.version }} ${{ needs.checkout-and-version.outputs.artfiact_id }}:latest
 
       - name: Scan Container image
         run: |
           echo "Run image scan..."
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ needs.checkout-and-version.outputs.artifact_id }}-${{ needs.checkout-and-version.outputs.version }}
+          path: target/*.jar
 
 
   # Job 4.1: push-binary
