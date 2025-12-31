@@ -41,6 +41,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          # super-linter needs the full git history to get the
+          # list of files that changed across commits
+          fetch-depth: 0
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -49,8 +53,8 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Run Checkstyle (Code Linting)
-        run: mvn checkstyle:check
+      - name: Code Linting
+        uses: super-linter/super-linter@v8.3.2
 
   # Job 2.2: unit-tests
   unit-tests:
