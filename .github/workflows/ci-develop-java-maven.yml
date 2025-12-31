@@ -32,12 +32,8 @@ jobs:
         id: extract-info
         run: |
           VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
-          echo $VERSION
-          echo "version=$VERSION" >> $GITHUB_ENV
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           ARTIFACT_ID=$(./mvnw help:evaluate -Dexpression=project.artifactId -q -DforceStdout)
-          echo $ARTIFACT_ID
-          echo "artifact_id=$ARTIFACT_ID" >> $GITHUB_ENV
           echo "artifact_id=$ARTIFACT_ID" >> $GITHUB_OUTPUT
           
 
@@ -136,8 +132,17 @@ jobs:
 
       - name: Build Container image
         run: |
-          docker build -t ${{ needs.checkout-and-version.outputs.artifact_id }}:${{ needs.checkout-and-version.outputs.version }} .
-          docker tag ${{ needs.checkout-and-version.outputs.artifact_id }}:${{ needs.checkout-and-version.outputs.version }} ${{ needs.checkout-and-version.outputs.artfiact_id }}:latest
+          APP_NAME=${{ needs.checkout-and-version.outputs.artifact_id }}
+          APP_VERSION=${{ needs.checkout-and-version.outputs.version }}
+          APP_JAR=${APP_NAME}-${APP_VERSION}.jar
+          
+          docker build \
+            --build-arg APP_JAR=${APP_JAR}
+            --build-arg COMMIT_SHA=${{ github.sha }} \
+            --build-arg VERSION=${APP_VERSION} \
+            -t ${APP_NAME}:${APP_VERSION} .
+          
+          docker tag ${APP_NAME}:${APP_VERSION} ${APP_NAME}:latest
 
       - name: Scan Container image
         run: |
