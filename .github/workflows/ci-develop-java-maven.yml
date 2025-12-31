@@ -115,8 +115,8 @@ jobs:
         with:
           type: "java"
 
-  # Job 3: build-binary
-  build-binary:
+  # Job 3:
+  build-binary-and-image-and-scan:
     needs: [linting, unit-tests, secret-scan, sast-scan, checkout-and-version]
     runs-on: ubuntu-latest
     steps:
@@ -133,53 +133,19 @@ jobs:
       - name: Build JAR
         run: ./mvnw -B clean package -DskipTests
 
-      - name: Archive binary
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ needs.checkout-and-version.outputs.artfiact_id }}-${{ needs.checkout-and-version.outputs.version }}
-          path: target/*.jar
-          retention-days: 5
-
-  # Job 4: build-image
-  build-image:
-    needs: build-binary
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: maven
-
-      - name: Download binary
-        uses: actions/download-artifact@v4
-        with:
-          name: ${{ needs.checkout-and-version.outputs.artfiact_id }}-${{ needs.checkout-and-version.outputs.version }}
-
-      - name: Build Docker image
+      - name: Build Container image
         run: |
           docker build -t ${{ needs.checkout-and-version.outputs.artfiact_id }}:${{ needs.checkout-and-version.outputs.version }} .
           docker tag ${{ needs.checkout-and-version.outputs.artfiact_id }}:${{ needs.checkout-and-version.outputs.version }} ${{ needs.checkout-and-version.outputs.artfiact_id }}:latest
 
-  # Job 5: image-scan
-  image-scan:
-    needs: build-image
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Scan Docker image with Trivy
+      - name: Scan Container image
         run: |
           echo "Run image scan..."
 
-  # Job 6.1: push-binary
+
+  # Job 4.1: push-binary
   push-binary:
-    needs: [build-binary, image-scan]
+    needs: [build-binary-and-image-and-scan]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -194,9 +160,9 @@ jobs:
         run: |
           echo "Push artifact: ${{ needs.checkout-and-version.outputs.version }}/app.jar"
 
-  # Job 6.2: push-image
+  # Job 4.2: push-image
   push-image:
-    needs: [build-image, image-scan]
+    needs: [build-binary-and-image-and-scan]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -210,7 +176,7 @@ jobs:
         run: |
           echo "Push image: docker push myapp:${{ needs.checkout-and-version.outputs.version }}""
 
-  # Job 7: notify-status (Always runs)
+  # Job 5: notify-status (Always runs)
   notify-status:
     needs: [push-binary, push-image]
     runs-on: ubuntu-latest
@@ -220,7 +186,7 @@ jobs:
         run: |
           echo "Send Email notifacation: CI Status: ${{ job.status }}"
 
-  # Job 8: trigger-cd (Only on full success)
+  # Job 6: trigger-cd (Only on full success)
   trigger-cd:
     needs: [push-binary, push-image, notify-status]
     runs-on: ubuntu-latest
