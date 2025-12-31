@@ -1,4 +1,4 @@
-name: CI Pipeline for Develop Brranch
+name: CI Pipeline for Develop Branch
 
 on:
   push:
@@ -56,8 +56,7 @@ jobs:
       - name: Code Linting
         uses: super-linter/super-linter@v8.3.2
         env:
-          # To report GitHub Actions status checks
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          STATUS_REPORTER: false
 
   # Job 2.2: unit-tests
   unit-tests:
