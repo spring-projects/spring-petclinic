@@ -15,7 +15,8 @@ jobs:
   checkout-and-version:
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.extract-version.outputs.version }}
+      version: ${{ steps.extract-info.outputs.version }}
+      artifact_id: ${{ steps.extract-info.outputs.artifact_id }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -27,8 +28,8 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Extract version and artifact id from pom.xml
-        id: extract-version
+      - name: Extract info from pom.xml
+        id: extract-info
         run: |
           VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
           echo $VERSION
