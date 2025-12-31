@@ -131,7 +131,7 @@ jobs:
           cache: maven
 
       - name: Build JAR
-        run: ./mvnw -B clean package
+        run: ./mvnw -B clean package -DskipTests
 
       - name: Archive binary
         uses: actions/upload-artifact@v4
