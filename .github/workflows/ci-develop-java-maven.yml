@@ -30,9 +30,7 @@ jobs:
       - name: Extract version from pom.xml
         id: extract-version
         run: |
-          VERSION=$(mvn help:evaluate -Dexpression=project.version -DforceStdout)
-          # echo "version=$VERSION" >> $GITHUB_ENV
-          # echo "version=$VERSION" >> $GITHUB_OUTPUT
+          mvn help:evaluate -Dexpression=project.version -DforceStdout
 
   # Job 2.1: linting
   linting:
