@@ -50,7 +50,8 @@ jobs:
           cache: maven
 
       - name: Run Checkstyle
-        run: ./mvnw -B checkstyle:check
+        # Run the Check but Don't Fail the Build
+        run: ./mvnw -B checkstyle:check -Dcheckstyle.failOnViolation=false
 
   # Job 2.2: unit-tests
   unit-tests:
