@@ -27,7 +27,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Extract version from pom.xml
+      - name: Extract version and artifact id from pom.xml
         id: extract-version
         run: |
           VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
@@ -136,9 +136,9 @@ jobs:
       - name: Archive binary
         uses: actions/upload-artifact@v4
         with:
-          name: app-binary-${{ needs.checkout-and-version.outputs.version }}
+          name: ${{ needs.checkout-and-version.outputs.artfiact_id }}-${{ needs.checkout-and-version.outputs.version }}
           path: target/*.jar
-          retention-days: 30
+          retention-days: 5
 
   # Job 4: build-image
   build-image:
