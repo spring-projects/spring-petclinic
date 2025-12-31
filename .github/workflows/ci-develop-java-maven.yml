@@ -30,7 +30,7 @@ jobs:
       - name: Extract version from pom.xml
         id: extract-version
         run: |
-          mvn help:evaluate -Dexpression=project.version -DforceStdout
+          mvn org.apache.maven.plugins:maven-help-plugin:3.4.0:evaluate -Dexpression=project.version -DforceStdout
 
   # Job 2.1: linting
   linting:
