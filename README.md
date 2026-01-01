@@ -35,7 +35,15 @@ Or you can run it from Maven directly using the Spring Boot Maven plugin. If you
 ./mvnw spring-boot:run
 ```
 
+
 > NOTE: If you prefer to use Gradle, you can build the app using `./gradlew build` and look for the jar file in `build/libs`.
+>
+> You can also run the application directly using Gradle:
+>
+> ```bash
+> ./gradlew bootRun
+> ```
+
 
 ## Building a Container
 
@@ -98,7 +106,7 @@ There is a `petclinic.css` in `src/main/resources/static/resources/css`. It was 
 
 The following items should be installed in your system:
 
-- Java 25 or newer (full JDK, not a JRE)
+- Java 17 or newer (LTS recommended, full JDK required)
 - [Git command line tool](https://help.github.com/articles/set-up-git)
 - Your preferred IDE
   - Eclipse with the m2e plugin. Note: when m2e is available, there is a m2 icon in `Help -> About` dialog. If m2e is
