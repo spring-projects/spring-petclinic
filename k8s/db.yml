@@ -23,6 +23,7 @@ spec:
     - port: 5432
   selector:
     app: demo-db
+  version: 'v1'
 
 ---
 apiVersion: apps/v1
