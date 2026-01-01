@@ -1,17 +1,19 @@
 ---
+name: manual ci for maven-release
 on:
-    push:
+    pull_request:
         branches:
             - main
-    workflow_dispatch:
 jobs:
-    build:
-        runs-on: ubuntu-latest
+    manual:
+        runs-on: ububtu-latest
         steps:
-            - name: Checkout repository
-              uses: actions/checkout@v4
-            - name: build package
-              run: mvn package
-            
+            - uses: actions/checkout@v5
+            - uses: actions/setup-java@v5
+              with:
+                  distribution: 'temurin'
+                  java-version: '21'
+            - name: Build with Maven
+              run: mvn clan package
             
             
