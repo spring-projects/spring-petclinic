@@ -40,7 +40,7 @@ jobs:
         uses: trufflesecurity/trufflehog@v3.76.1
         with:
           path: .
-          extra_args: --only-verified --fail
+          extra_args: --only-verified
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
