@@ -76,9 +76,17 @@ jobs:
           name: test-reports
           path: |
             **/target/surefire-reports/**
-            **/target/failsafe-reports/**
           if-no-files-found: ignore
           retention-days: 7
+      - name: Publish test summary
+        if: always()
+        uses: dorny/test-reporter@v2.4.0
+        with:
+          name: Maven tests
+          reporter: java-junit
+          path: |
+            **/target/surefire-reports/*.xml
+          fail-on-empty: false
       - name: Package application
         run: mvn -B -DskipTests --no-transfer-progress package
       - name: Deploy jar to repository
