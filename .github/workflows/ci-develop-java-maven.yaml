@@ -62,6 +62,9 @@ jobs:
           echo "version_id=$VERSION_ID" >> $GITHUB_OUTPUT
       - name: Set project version to VERSION_ID
         run: mvn -B versions:set -DnewVersion="$VERSION_ID" -DgenerateBackupPoms=false --no-transfer-progress
+      # Lint: compile + bound checks (e.g., checkstyle/spotless/enforcer) without tests
+      - name: Lint (verify without tests)
+        run: mvn -B -DskipTests --no-transfer-progress verify
       - name: Run unit tests
         run: mvn -B --no-transfer-progress test
       - name: Package application
@@ -126,9 +129,12 @@ jobs:
           file: ${{ env.BUILD_FILE }}
           push: true
           platforms: linux/amd64,linux/arm64
+          # tags:
+          # - immutable per build (includes short SHA, SNAPSHOT on develop)
+          # - snapshot moves to latest CI build
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION_ID }}   # immutable tag per build (includes short SHA, SNAPSHOT on develop)
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:snapshot                # moving tag pointing to latest CI build
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION_ID }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:snapshot
           build-args: |
             APP_JAR=target/app.jar
             VERSION=${{ env.VERSION_ID }}
