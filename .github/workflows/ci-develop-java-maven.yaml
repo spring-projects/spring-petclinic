@@ -36,19 +36,12 @@ jobs:
       version_id: ${{ steps.set-version.outputs.version_id }}
     steps:
       - uses: actions/checkout@v4
-      - name: Secret scan (gitleaks)
-        run: |
-          set -euo pipefail
-          OS=$(uname -s | tr '[:upper:]' '[:lower:]')
-          ARCH=$(uname -m)
-          case "$ARCH" in
-            x86_64) ARCH="x64" ;;
-            aarch64|arm64) ARCH="arm64" ;;
-          esac
-          URL="https://github.com/gitleaks/gitleaks/releases/latest/download/gitleaks_${OS}_${ARCH}.tar.gz"
-          curl -sSL "$URL" -o gitleaks.tar.gz
-          tar -xzf gitleaks.tar.gz gitleaks
-          ./gitleaks detect --source .
+      - name: Secret scan (trufflehog)
+        uses: trufflesecurity/trufflehog@v3
+        with:
+          scan: filesystem
+          path: .
+          extra_args: --no-update --fail
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
