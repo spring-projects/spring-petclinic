@@ -30,6 +30,10 @@ import org.springframework.context.annotation.ImportRuntimeHints;
 public class PetClinicApplication {
 
 	public static void main(String[] args) {
+
+		// Launch the application
+		//Log the start time
+		System.out.println("Starting PetClinicApplication at " + System.currentTimeMillis());
 		SpringApplication.run(PetClinicApplication.class, args);
 	}
 
