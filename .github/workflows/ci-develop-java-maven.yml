@@ -1,203 +1,132 @@
-name: CI Pipeline for Develop Branch
+name: CI - Spring Boot Container Image (Java 17)
 
 on:
   push:
-    branches:
-      - develop
+    branches: [ develop ]
+    paths:
+      - 'pom.xml'
+      - 'src/**'
+      - 'Containerfile'
+      - 'Dockerfile'
+      - '.github/workflows/ci-develop-java-maven.yaml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}          # includes owner/repo, used for GHCR image naming
+  ARTIFACT_NAME: ${{ github.event.repository.name }}-jar  # repo name only, used for uploading/downloading jar artifact
+  JAVA_VERSION: 17                              # set to 17 or 21 to match this application
+
 jobs:
-
-  # Job 1: checkout-and-version
-  checkout-and-version:
+  build-jar:
+    name: Build jar artifact (Java ${{ env.JAVA_VERSION }})
     runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.extract-info.outputs.version }}
-      artifact_id: ${{ steps.extract-info.outputs.artifact_id }}
+    env:
+      ARTIFACT_NAME: ${{ env.ARTIFACT_NAME }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
         with:
-          java-version: '17'
-          distribution: 'temurin'
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
           cache: maven
-
-      - name: Extract info from pom.xml
-        id: extract-info
+          server-id: github
+          server-username: GITHUB_ACTOR
+          server-password: GITHUB_TOKEN
+      - name: Compute Version ID from pom.xml
+        id: set-version
         run: |
-          VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-          ARTIFACT_ID=$(./mvnw help:evaluate -Dexpression=project.artifactId -q -DforceStdout)
-          echo "artifact_id=$ARTIFACT_ID" >> $GITHUB_OUTPUT
-          
-
-  # Job 2.1: linting
-  linting:
-    needs: checkout-and-version
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: maven
-
-      - name: Run Checkstyle
-        # Run the Check but Don't Fail the Build
-        run: ./mvnw -B checkstyle:check -Dcheckstyle.failOnViolation=false
-
-  # Job 2.2: unit-tests
-  unit-tests:
-    needs: checkout-and-version
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: maven
-
-      - name: Run Unit Tests
-        run: ./mvnw -B test
-
-  # Job 2.3: secret-scan
-  secret-scan:
-    needs: checkout-and-version
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        # IMPORTANT: fetch-depth 0 is required to scan the entire history
-        with:
-          fetch-depth: 0
-
-      - name: Scan for hardcoded secrets
-        uses: trufflesecurity/trufflehog@main
-        with:
-          path: ./
-          # Do NOT provide 'base' or 'head' here to ensure it scans everything
-          extra_args: --only-verified --results=verified
-
-  # Job 2.4: sast-scan
-  sast-scan:
-    needs: checkout-and-version
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: maven
-
-      - name: Scan for vulnerabilities
-        uses: AppThreat/sast-scan-action@master
-        with:
-          type: "java"
-
-  # Job 3:
-  build-binary-and-image-and-scan:
-    needs: [linting, unit-tests, secret-scan, sast-scan, checkout-and-version]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: maven
-
-      - name: Build JAR
-        run: ./mvnw -B clean package -DskipTests
-
-      - name: Build Container image
+          PROJECT_VERSION=$(mvn -q -DforceStdout -Dexpression=project.version --no-transfer-progress help:evaluate | tail -1)
+          PROJECT_VERSION=${PROJECT_VERSION:-0.0.0}
+          CLEAN_VERSION=$(echo "$PROJECT_VERSION" | sed 's/-SNAPSHOT$//')
+          VERSION_ID="${CLEAN_VERSION}-SNAPSHOT-${GITHUB_SHA::12}"
+          echo "VERSION_ID=$VERSION_ID" >> $GITHUB_ENV
+      - name: Set project version to VERSION_ID
+        run: mvn -B versions:set -DnewVersion="$VERSION_ID" -DgenerateBackupPoms=false --no-transfer-progress
+      - name: Package application
+        run: mvn -B -DskipTests --no-transfer-progress package
+      - name: Deploy jar to GitHub Packages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
         run: |
-          APP_NAME=${{ needs.checkout-and-version.outputs.artifact_id }}
-          APP_VERSION=${{ needs.checkout-and-version.outputs.version }}
-          APP_JAR="target/${APP_NAME}-${APP_VERSION}.jar"
-          
-          docker build \
-            --build-arg APP_JAR=${APP_JAR} \
-            --build-arg COMMIT_SHA=${{ github.sha }} \
-            --build-arg VERSION=${APP_VERSION} \
-            -t ${APP_NAME}:${APP_VERSION} .
-          
-          docker tag ${APP_NAME}:${APP_VERSION} ${APP_NAME}:latest
-
-      - name: Scan Container image
+          mvn -B -DskipTests --no-transfer-progress \
+            -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/${{ github.repository }} \
+            deploy
+      - name: Rename jar for image build
         run: |
-          echo "Run image scan..."
-
-      - name: Upload Build Artifact
+          mkdir -p target
+          JAR_FILE=$(ls target/*.jar | head -n 1)
+          mv "$JAR_FILE" target/app.jar
+      - name: Upload jar artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ needs.checkout-and-version.outputs.artifact_id }}-${{ needs.checkout-and-version.outputs.version }}
-          path: target/*.jar
+          name: ${{ env.ARTIFACT_NAME }}
+          path: target/app.jar
+          retention-days: 7
 
-
-  # Job 4.1: push-binary
-  push-binary:
-    needs: [build-binary-and-image-and-scan]
+  build-image:
+    name: Build & push container image (Java ${{ env.JAVA_VERSION }})
     runs-on: ubuntu-latest
+    needs: [build-jar]
+    env:
+      JAVA_VERSION: ${{ env.JAVA_VERSION }}
+      ARTIFACT_NAME: ${{ env.ARTIFACT_NAME }}
     steps:
-      - name: Download binary
+      - uses: actions/checkout@v4
+      - name: Select container build file
+        run: |
+          if [ -f Containerfile ]; then
+            echo "BUILD_FILE=Containerfile" >> $GITHUB_ENV
+          elif [ -f Dockerfile ]; then
+            echo "BUILD_FILE=Dockerfile" >> $GITHUB_ENV
+          else
+            echo "No Containerfile or Dockerfile found" >&2
+            exit 1
+          fi
+      - name: Compute Version ID from pom.xml
+        run: |
+          PROJECT_VERSION=$(mvn -q -DforceStdout -Dexpression=project.version --no-transfer-progress help:evaluate | tail -1)
+          PROJECT_VERSION=${PROJECT_VERSION:-0.0.0}
+          CLEAN_VERSION=$(echo "$PROJECT_VERSION" | sed 's/-SNAPSHOT$//')
+          VERSION_ID="${CLEAN_VERSION}-SNAPSHOT-${GITHUB_SHA::12}"
+          echo "VERSION_ID=$VERSION_ID" >> $GITHUB_ENV
+      - name: Download jar
         uses: actions/download-artifact@v4
         with:
-          name: ${{ needs.checkout-and-version.outputs.artifact_id }}-${{ needs.checkout-and-version.outputs.version }}
+          name: ${{ env.ARTIFACT_NAME }}
+          path: target
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build & push image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ${{ env.BUILD_FILE }}
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION_ID }}-j${{ env.JAVA_VERSION }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:snapshot-j${{ env.JAVA_VERSION }}
+          build-args: |
+            APP_JAR=target/app.jar
+            VERSION=${{ env.VERSION_ID }}
+            COMMIT_SHA=${{ github.sha }}
+          labels: |
+            org.opencontainers.image.version=${{ env.VERSION_ID }}
+            org.opencontainers.image.revision=${{ github.sha }}
 
-      - name: Push to artifact repository
-        run: |
-          echo "Push artifact: ${{ needs.checkout-and-version.outputs.version }}/app.jar"
-
-  # Job 4.2: push-image
-  push-image:
-    needs: [build-binary-and-image-and-scan]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Login to Docker Hub
-        run: |
-          echo "Login image repository..."
-
-      - name: Push Docker image
-        run: |
-          echo "Push image: docker push myapp:${{ needs.checkout-and-version.outputs.version }}""
-
-  # Job 5: notify-status (Always runs)
-  notify-status:
-    needs: [push-binary, push-image]
-    runs-on: ubuntu-latest
-    if: always()
-    steps:
-      - name: Send email notification
-        run: |
-          echo "Send Email notifacation: CI Status: ${{ job.status }}"
-
-  # Job 6: trigger-cd (Only on full success)
-  trigger-cd:
-    needs: [push-binary, push-image, notify-status]
-    runs-on: ubuntu-latest
-    if: ${{ needs.push-binary.result == 'success' && needs.push-image.result == 'success' && needs.notify-status.result == 'success' }}
-    steps:
-      - name: Trigger CD Pipeline
-        run: |
-          echo "Trigger CD pipeline..."
