@@ -68,10 +68,8 @@ jobs:
       - name: Set project version to VERSION_ID
         run: mvn -B versions:set -DnewVersion="$VERSION_ID" -DgenerateBackupPoms=false --no-transfer-progress
       # Lint: compile + bound checks (e.g., checkstyle/spotless/enforcer) without tests
-      - name: Lint (verify without tests)
-        run: mvn -B -DskipTests --no-transfer-progress verify
-      - name: Run unit tests
-        run: mvn -B --no-transfer-progress test
+      - name: Lint & Test
+        run: mvn -B --no-transfer-progress verify
       - name: Upload test reports
         if: always()
         uses: actions/upload-artifact@v4
