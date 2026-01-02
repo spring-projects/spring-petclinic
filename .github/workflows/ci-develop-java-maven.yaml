@@ -72,6 +72,24 @@ jobs:
         run: mvn -B -DskipTests --no-transfer-progress verify
       - name: Run unit tests
         run: mvn -B --no-transfer-progress test
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: |
+            target/surefire-reports/**
+            target/failsafe-reports/**
+          retention-days: 7
+      - name: Publish test summary
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: Maven tests
+          reporter: java-junit
+          path: |
+            target/surefire-reports/*.xml
+            target/failsafe-reports/*.xml
       - name: Package application
         run: mvn -B -DskipTests --no-transfer-progress package
       - name: Deploy jar to repository
