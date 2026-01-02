@@ -67,8 +67,7 @@ jobs:
           echo "version_id=$VERSION_ID" >> $GITHUB_OUTPUT
       - name: Set project version to VERSION_ID
         run: mvn -B versions:set -DnewVersion="$VERSION_ID" -DgenerateBackupPoms=false --no-transfer-progress
-      # Lint: compile + bound checks (e.g., checkstyle/spotless/enforcer) without tests
-      - name: Lint & Test
+      - name: Lint & tests (verify)
         run: mvn -B --no-transfer-progress verify
       - name: Upload test reports
         if: always()
@@ -76,18 +75,19 @@ jobs:
         with:
           name: test-reports
           path: |
-            target/surefire-reports/**
-            target/failsafe-reports/**
+            **/target/surefire-reports/**
+            **/target/failsafe-reports/**
           retention-days: 7
       - name: Publish test summary
         if: always()
-        uses: dorny/test-reporter@v1
+        uses: dorny/test-reporter@v2.4.0
         with:
           name: Maven tests
           reporter: java-junit
           path: |
-            target/surefire-reports/*.xml
-            target/failsafe-reports/*.xml
+            **/target/surefire-reports/*.xml
+            **/target/failsafe-reports/*.xml
+          fail-on-empty: false
       - name: Package application
         run: mvn -B -DskipTests --no-transfer-progress package
       - name: Deploy jar to repository
