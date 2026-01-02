@@ -40,7 +40,7 @@ jobs:
         uses: trufflesecurity/trufflehog@v3.76.1
         with:
           path: .
-          extra_args: --no-update --only-verified --fail --max-file-size=2000000
+          extra_args: --no-update --only-verified --fail
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
