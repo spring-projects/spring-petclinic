@@ -62,7 +62,8 @@ jobs:
             VERSION_SUFFIX=""
           fi
 
-          VERSION_ID="${CLEAN_VERSION}${VERSION_SUFFIX:+$VERSION_SUFFIX}-${GITHUB_SHA::7}"
+          RUN_SUFFIX="-b${GITHUB_RUN_NUMBER:-0}"
+          VERSION_ID="${CLEAN_VERSION}${VERSION_SUFFIX:+$VERSION_SUFFIX}-${GITHUB_SHA::7}${RUN_SUFFIX}"
           echo "VERSION_ID=$VERSION_ID" >> $GITHUB_ENV
           echo "version_id=$VERSION_ID" >> $GITHUB_OUTPUT
       - name: Set project version to VERSION_ID
