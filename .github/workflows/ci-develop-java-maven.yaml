@@ -36,8 +36,8 @@ jobs:
       version_id: ${{ steps.set-version.outputs.version_id }}
     steps:
       - uses: actions/checkout@v4
-      - name: Secret scan (trufflehog)
-        uses: trufflesecurity/trufflehog@v3.76.1
+      - name: Secret scan
+        uses: trufflesecurity/trufflehog@v3.92.4
         with:
           path: .
           extra_args: --only-verified
