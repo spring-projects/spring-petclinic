@@ -25,11 +25,15 @@ env:
   IMAGE_NAME: ${{ github.repository }}          # includes owner/repo, used for GHCR image naming
   ARTIFACT_NAME: ${{ github.event.repository.name }}-jar  # repo name only, used for uploading/downloading jar artifact
   JAVA_VERSION: 17                              # set to 17 or 21 to match this application
+  MAVEN_REPO_ID: github                         # default to GitHub Packages (matches setup-java server-id); change to your internal repo server id
+  MAVEN_REPO_URL: https://maven.pkg.github.com/${{ github.repository }}  # change to your internal repo URL (e.g., Nexus/Artifactory release/snapshot URL)
 
 jobs:
   build-jar:
     name: Build jar artifact
     runs-on: ubuntu-latest
+    outputs:
+      version_id: ${{ steps.set-version.outputs.version_id }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -46,19 +50,27 @@ jobs:
           PROJECT_VERSION=$(mvn -q -DforceStdout -Dexpression=project.version --no-transfer-progress help:evaluate | tail -1)
           PROJECT_VERSION=${PROJECT_VERSION:-0.0.0}
           CLEAN_VERSION=$(echo "$PROJECT_VERSION" | sed 's/-SNAPSHOT$//')
-          VERSION_ID="${CLEAN_VERSION}-SNAPSHOT-${GITHUB_SHA::12}"
+
+          if [ "${GITHUB_REF}" = "refs/heads/develop" ]; then
+            VERSION_SUFFIX="-SNAPSHOT"
+          else
+            VERSION_SUFFIX=""
+          fi
+
+          VERSION_ID="${CLEAN_VERSION}${VERSION_SUFFIX:+$VERSION_SUFFIX}-${GITHUB_SHA::7}"
           echo "VERSION_ID=$VERSION_ID" >> $GITHUB_ENV
+          echo "version_id=$VERSION_ID" >> $GITHUB_OUTPUT
       - name: Set project version to VERSION_ID
         run: mvn -B versions:set -DnewVersion="$VERSION_ID" -DgenerateBackupPoms=false --no-transfer-progress
       - name: Package application
         run: mvn -B -DskipTests --no-transfer-progress package
-      - name: Deploy jar to GitHub Packages
+      - name: Deploy jar to repository
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_ACTOR: ${{ github.actor }}
         run: |
           mvn -B -DskipTests --no-transfer-progress \
-            -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/${{ github.repository }} \
+            -DaltDeploymentRepository=${{ env.MAVEN_REPO_ID }}::default::${{ env.MAVEN_REPO_URL }} \
             deploy
       - name: Rename jar for image build
         run: |
@@ -76,6 +88,8 @@ jobs:
     name: Build & push container image
     runs-on: ubuntu-latest
     needs: [build-jar]
+    env:
+      VERSION_ID: ${{ needs.build-jar.outputs.version_id }}
     steps:
       - uses: actions/checkout@v4
       - name: Select container build file
@@ -88,13 +102,6 @@ jobs:
             echo "No Containerfile or Dockerfile found" >&2
             exit 1
           fi
-      - name: Compute Version ID from pom.xml
-        run: |
-          PROJECT_VERSION=$(mvn -q -DforceStdout -Dexpression=project.version --no-transfer-progress help:evaluate | tail -1)
-          PROJECT_VERSION=${PROJECT_VERSION:-0.0.0}
-          CLEAN_VERSION=$(echo "$PROJECT_VERSION" | sed 's/-SNAPSHOT$//')
-          VERSION_ID="${CLEAN_VERSION}-SNAPSHOT-${GITHUB_SHA::12}"
-          echo "VERSION_ID=$VERSION_ID" >> $GITHUB_ENV
       - name: Download jar
         uses: actions/download-artifact@v4
         with:
