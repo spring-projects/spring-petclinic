@@ -125,8 +125,8 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION_ID }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:snapshot
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION_ID }}   # immutable tag per build (includes short SHA, SNAPSHOT on develop)
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:snapshot                # moving tag pointing to latest CI build
           build-args: |
             APP_JAR=target/app.jar
             VERSION=${{ env.VERSION_ID }}
