@@ -62,6 +62,8 @@ jobs:
           echo "version_id=$VERSION_ID" >> $GITHUB_OUTPUT
       - name: Set project version to VERSION_ID
         run: mvn -B versions:set -DnewVersion="$VERSION_ID" -DgenerateBackupPoms=false --no-transfer-progress
+      - name: Run unit tests
+        run: mvn -B --no-transfer-progress test
       - name: Package application
         run: mvn -B -DskipTests --no-transfer-progress package
       - name: Deploy jar to repository
