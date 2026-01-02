@@ -122,8 +122,8 @@ jobs:
           file: ${{ env.BUILD_FILE }}
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION_ID }}-j${{ env.JAVA_VERSION }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:snapshot-j${{ env.JAVA_VERSION }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION_ID }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:snapshot
           build-args: |
             APP_JAR=target/app.jar
             VERSION=${{ env.VERSION_ID }}
