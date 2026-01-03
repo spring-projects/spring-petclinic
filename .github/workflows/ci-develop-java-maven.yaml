@@ -159,13 +159,13 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build image archive (cacheable)
+      - name: Build image archive (cacheable, amd64 for scan)
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ${{ env.BUILD_FILE }}
           push: false
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           outputs: type=oci,dest=/tmp/image.tar
           cache-from: type=gha
           cache-to: type=gha,mode=max
