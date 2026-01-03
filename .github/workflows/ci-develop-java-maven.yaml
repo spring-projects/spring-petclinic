@@ -181,6 +181,9 @@ jobs:
             org.opencontainers.image.revision=${{ github.sha }}
       - name: Scan built image for vulnerabilities
         uses: aquasecurity/trivy-action@0.24.0
+        env:
+          TRIVY_USERNAME: ${{ github.actor }}
+          TRIVY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
         with:
           scan-type: image
           image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION_ID }}
