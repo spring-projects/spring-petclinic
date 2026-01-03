@@ -42,7 +42,7 @@ jobs:
           path: .
           extra_args: --only-verified
       - name: Scan for CVEs
-        uses: aquasecurity/trivy-action@0.33.1
+        uses: aquasecurity/trivy-action@0.24.0
         with:
           scan-type: fs
           scan-ref: .
@@ -179,4 +179,20 @@ jobs:
           labels: |
             org.opencontainers.image.version=${{ env.VERSION_ID }}
             org.opencontainers.image.revision=${{ github.sha }}
+      - name: Scan built image for vulnerabilities
+        uses: aquasecurity/trivy-action@0.24.0
+        with:
+          scan-type: image
+          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION_ID }}
+          ignore-unfixed: true
+          severity: CRITICAL,HIGH
+          format: sarif
+          output: trivy-image.sarif
+      - name: Upload image scan report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: image-scan-report
+          path: trivy-image.sarif
+          retention-days: 7
 
