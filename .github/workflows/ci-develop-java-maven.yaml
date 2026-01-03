@@ -42,7 +42,7 @@ jobs:
           path: .
           extra_args: --only-verified
       - name: Scan for CVEs
-        uses: aquasecurity/trivy-action@0.24.0
+        uses: aquasecurity/trivy-action@0.33.1
         with:
           scan-type: fs
           scan-ref: .
