@@ -159,14 +159,15 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build image archive (cacheable, amd64 for scan)
+      - name: Build image locally for scan (cacheable, amd64)
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ${{ env.BUILD_FILE }}
           push: false
+          load: true
           platforms: linux/amd64
-          outputs: type=oci,dest=/tmp/image.tar
+          tags: localbuild:${{ env.VERSION_ID }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
@@ -180,7 +181,7 @@ jobs:
         uses: aquasecurity/trivy-action@0.24.0
         with:
           scan-type: image
-          input: /tmp/image.tar
+          image-ref: localbuild:${{ env.VERSION_ID }}
           ignore-unfixed: true
           severity: CRITICAL,HIGH
           format: sarif
