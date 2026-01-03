@@ -194,6 +194,7 @@ jobs:
           path: trivy-image.sarif
           retention-days: 7
       - name: Build & push image (reuse cache)
+        id: push-image
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -216,4 +217,10 @@ jobs:
           labels: |
             org.opencontainers.image.version=${{ env.VERSION_ID }}
             org.opencontainers.image.revision=${{ github.sha }}
+      - name: Attest image provenance
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          subject-digest: ${{ steps.push-image.outputs.digest }}
+          push-to-registry: true
 
