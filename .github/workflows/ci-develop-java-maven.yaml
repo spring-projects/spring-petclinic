@@ -41,6 +41,22 @@ jobs:
         with:
           path: .
           extra_args: --only-verified
+      - name: Scan for CVEs
+        uses: aquasecurity/trivy-action@0.24.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          ignore-unfixed: true
+          severity: CRITICAL,HIGH
+          format: sarif
+          output: trivy-code.sarif
+      - name: Upload CVE scan report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cve-scan-report
+          path: trivy-code.sarif
+          retention-days: 7
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
