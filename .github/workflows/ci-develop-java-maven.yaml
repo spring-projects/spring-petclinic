@@ -202,6 +202,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          provenance: true
           # tags:
           # - immutable per build (includes short SHA, SNAPSHOT on develop)
           # - snapshot moves to latest CI build
