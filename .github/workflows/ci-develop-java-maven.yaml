@@ -159,13 +159,48 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build & push image
+      - name: Build image archive (cacheable)
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ${{ env.BUILD_FILE }}
+          push: false
+          platforms: linux/amd64,linux/arm64
+          outputs: type=oci,dest=/tmp/image.tar
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            APP_JAR=target/app.jar
+            VERSION=${{ env.VERSION_ID }}
+            COMMIT_SHA=${{ github.sha }}
+          labels: |
+            org.opencontainers.image.version=${{ env.VERSION_ID }}
+            org.opencontainers.image.revision=${{ github.sha }}
+      - name: Scan built image for vulnerabilities
+        uses: aquasecurity/trivy-action@0.24.0
+        with:
+          scan-type: image
+          input: /tmp/image.tar
+          ignore-unfixed: true
+          severity: CRITICAL,HIGH
+          format: sarif
+          output: trivy-image.sarif
+      - name: Upload image scan report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: image-scan-report
+          path: trivy-image.sarif
+          retention-days: 7
+      - name: Build & push image (reuse cache)
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ${{ env.BUILD_FILE }}
           push: true
           platforms: linux/amd64,linux/arm64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           # tags:
           # - immutable per build (includes short SHA, SNAPSHOT on develop)
           # - snapshot moves to latest CI build
@@ -179,23 +214,4 @@ jobs:
           labels: |
             org.opencontainers.image.version=${{ env.VERSION_ID }}
             org.opencontainers.image.revision=${{ github.sha }}
-      - name: Scan built image for vulnerabilities
-        uses: aquasecurity/trivy-action@0.24.0
-        env:
-          TRIVY_USERNAME: ${{ github.actor }}
-          TRIVY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          scan-type: image
-          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION_ID }}
-          ignore-unfixed: true
-          severity: CRITICAL,HIGH
-          format: sarif
-          output: trivy-image.sarif
-      - name: Upload image scan report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: image-scan-report
-          path: trivy-image.sarif
-          retention-days: 7
 
