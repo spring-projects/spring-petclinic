@@ -122,11 +122,17 @@ jobs:
           mvn -B -DskipTests --no-transfer-progress \
             -DaltDeploymentRepository=${{ env.MAVEN_REPO_ID }}::default::${{ env.MAVEN_REPO_URL }} \
             deploy
-      - name: Rename jar for image build
+      - name: Prepare jar path for image build
         run: |
           mkdir -p target
-          JAR_FILE=$(ls target/*.jar | head -n 1)
-          mv "$JAR_FILE" target/app.jar
+          FINAL_NAME=$(mvn -q -DforceStdout -Dexpression=project.build.finalName --no-transfer-progress help:evaluate | tail -1)
+          FINAL_NAME=${FINAL_NAME:-app}
+          SRC_JAR="target/${FINAL_NAME}.jar"
+          if [ ! -f "$SRC_JAR" ]; then
+            echo "Jar not found: $SRC_JAR" >&2
+            exit 1
+          fi
+          cp "$SRC_JAR" target/app.jar
       - name: Upload jar artifact
         uses: actions/upload-artifact@v4
         with:
@@ -140,6 +146,7 @@ jobs:
     needs: [build-jar]
     env:
       VERSION_ID: ${{ needs.build-jar.outputs.version_id }}
+      IMAGE_ARCHIVE: /tmp/image-oci.tar
     steps:
       - uses: actions/checkout@v4
       - name: Select container build file
@@ -167,17 +174,18 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build image locally for scan (cacheable, amd64)
+      - name: Build image to OCI archive (no push)
+        id: build-image
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ${{ env.BUILD_FILE }}
           push: false
-          load: true
-          platforms: linux/amd64
-          tags: localbuild:${{ env.VERSION_ID }}
+          platforms: linux/amd64,linux/arm64
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          provenance: true
+          outputs: type=oci,dest=${{ env.IMAGE_ARCHIVE }}
           build-args: |
             APP_JAR=target/app.jar
             VERSION=${{ env.VERSION_ID }}
@@ -189,7 +197,7 @@ jobs:
         uses: aquasecurity/trivy-action@0.24.0
         with:
           scan-type: image
-          image-ref: localbuild:${{ env.VERSION_ID }}
+          image-ref: oci-archive:${{ env.IMAGE_ARCHIVE }}
           ignore-unfixed: true
           severity: CRITICAL,HIGH
           format: sarif
@@ -201,34 +209,26 @@ jobs:
           name: image-scan-report
           path: trivy-image.sarif
           retention-days: 7
-      - name: Build & push image (reuse cache)
-        id: push-image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ${{ env.BUILD_FILE }}
-          push: true
-          platforms: linux/amd64,linux/arm64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          provenance: true
-          # tags:
-          # - immutable per build (includes short SHA, SNAPSHOT on develop)
-          # - develop is the rolling tag for latest develop build
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION_ID }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:develop
-          build-args: |
-            APP_JAR=target/app.jar
-            VERSION=${{ env.VERSION_ID }}
-            COMMIT_SHA=${{ github.sha }}
-          labels: |
-            org.opencontainers.image.version=${{ env.VERSION_ID }}
-            org.opencontainers.image.revision=${{ github.sha }}
+      - name: Push image to GHCR (version + develop)
+        env:
+          IMAGE_VERSION_TAG: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION_ID }}
+          IMAGE_DEVELOP_TAG: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:develop
+        run: |
+          docker buildx imagetools create \
+            --tag "${IMAGE_VERSION_TAG}" \
+            --tag "${IMAGE_DEVELOP_TAG}" \
+            oci-archive:${IMAGE_ARCHIVE}
+      - name: Get pushed digest
+        id: image-digest
+        env:
+          IMAGE_VERSION_TAG: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION_ID }}
+        run: |
+          DIGEST=$(docker buildx imagetools inspect "${IMAGE_VERSION_TAG}" --format '{{ .Digest }}')
+          echo "digest=$DIGEST" >> $GITHUB_OUTPUT
       - name: Attest image provenance
         uses: actions/attest-build-provenance@v1
         with:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          subject-digest: ${{ steps.push-image.outputs.digest }}
+          subject-digest: ${{ steps.image-digest.outputs.digest }}
           push-to-registry: true
 
