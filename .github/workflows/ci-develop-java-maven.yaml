@@ -197,7 +197,7 @@ jobs:
         uses: aquasecurity/trivy-action@0.24.0
         with:
           scan-type: image
-          image-ref: oci-archive:${{ env.IMAGE_ARCHIVE }}
+          input: ${{ env.IMAGE_ARCHIVE }}
           ignore-unfixed: true
           severity: CRITICAL,HIGH
           format: sarif
