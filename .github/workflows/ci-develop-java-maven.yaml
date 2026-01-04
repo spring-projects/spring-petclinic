@@ -187,10 +187,6 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION_ID }}
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:develop
-          build-args: |
-            APP_JAR=target/app.jar
-            VERSION=${{ env.VERSION_ID }}
-            COMMIT_SHA=${{ github.sha }}
           labels: |
             org.opencontainers.image.version=${{ env.VERSION_ID }}
             org.opencontainers.image.revision=${{ github.sha }}
