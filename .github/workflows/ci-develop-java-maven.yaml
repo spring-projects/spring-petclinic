@@ -24,7 +24,6 @@ concurrency:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}          # includes owner/repo, used for GHCR image naming
-  ARTIFACT_NAME: ${{ github.event.repository.name }}-jar  # repo name only, used for uploading/downloading jar artifact
   JAVA_VERSION: 17                              # set to 17 or 21 to match this application
   MAVEN_REPO_ID: github                         # default to GitHub Packages (matches setup-java server-id); change to your internal repo server id
   MAVEN_REPO_URL: https://maven.pkg.github.com/${{ github.repository }}  # change to your internal repo URL (e.g., Nexus/Artifactory release/snapshot URL)
@@ -35,6 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version_id: ${{ steps.set-version.outputs.version_id }}
+      artifact_name: ${{ steps.set-version.outputs.artifact_name }}
     steps:
       - uses: actions/checkout@v4
       - name: Secret scan
@@ -81,8 +81,15 @@ jobs:
 
           RUN_SUFFIX="-b${GITHUB_RUN_NUMBER:-0}"
           VERSION_ID="${CLEAN_VERSION}${VERSION_SUFFIX:+$VERSION_SUFFIX}-${GITHUB_SHA::7}${RUN_SUFFIX}"
+
+          ARTIFACT_ID=$(mvn -q -DforceStdout -Dexpression=project.artifactId --no-transfer-progress help:evaluate | tail -1)
+          ARTIFACT_ID=${ARTIFACT_ID:-app}
+          SAFE_ARTIFACT=$(echo "$ARTIFACT_ID" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9._-]/-/g')
+          ARTIFACT_VERSIONED="${SAFE_ARTIFACT}-jar-${VERSION_ID}"
+
           echo "VERSION_ID=$VERSION_ID" >> $GITHUB_ENV
           echo "version_id=$VERSION_ID" >> $GITHUB_OUTPUT
+          echo "artifact_name=$ARTIFACT_VERSIONED" >> $GITHUB_OUTPUT
       - name: Set project version to VERSION_ID
         run: mvn -B versions:set -DnewVersion="$VERSION_ID" -DgenerateBackupPoms=false --no-transfer-progress
       - name: Run project checks and tests
@@ -123,7 +130,7 @@ jobs:
       - name: Upload jar artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.ARTIFACT_NAME }}
+          name: ${{ steps.set-version.outputs.artifact_name }}
           path: target/app.jar
           retention-days: 7
 
@@ -148,7 +155,7 @@ jobs:
       - name: Download jar
         uses: actions/download-artifact@v4
         with:
-          name: ${{ env.ARTIFACT_NAME }}
+          name: ${{ needs.build-jar.outputs.artifact_name }}
           path: target
       - name: Setup QEMU
         uses: docker/setup-qemu-action@v3
