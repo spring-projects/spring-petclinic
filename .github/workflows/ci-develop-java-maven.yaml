@@ -146,7 +146,6 @@ jobs:
     needs: [build-jar]
     env:
       VERSION_ID: ${{ needs.build-jar.outputs.version_id }}
-      IMAGE_ARCHIVE: /tmp/image-oci-layout
     steps:
       - uses: actions/checkout@v4
       - name: Select container build file
@@ -174,18 +173,20 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build image to OCI layout (no push)
-        id: build-image
+      - name: Build image (load, no push, single arch)
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ${{ env.BUILD_FILE }}
           push: false
-          platforms: linux/amd64,linux/arm64
+          load: true
+          platforms: linux/amd64
           cache-from: type=gha
           cache-to: type=gha,mode=max
           provenance: true
-          outputs: type=oci,dest=${{ env.IMAGE_ARCHIVE }}
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION_ID }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:develop
           build-args: |
             APP_JAR=target/app.jar
             VERSION=${{ env.VERSION_ID }}
@@ -197,7 +198,7 @@ jobs:
         uses: aquasecurity/trivy-action@0.24.0
         with:
           scan-type: image
-          input: ${{ env.IMAGE_ARCHIVE }}
+          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION_ID }}
           ignore-unfixed: true
           severity: CRITICAL,HIGH
           format: sarif
@@ -209,15 +210,13 @@ jobs:
           name: image-scan-report
           path: trivy-image.sarif
           retention-days: 7
-      - name: Push image to GHCR (version + develop)
+      - name: Push image tags to GHCR
         env:
           IMAGE_VERSION_TAG: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION_ID }}
           IMAGE_DEVELOP_TAG: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:develop
         run: |
-          docker buildx imagetools create \
-            --tag "${IMAGE_VERSION_TAG}" \
-            --tag "${IMAGE_DEVELOP_TAG}" \
-            oci-layout:${IMAGE_ARCHIVE}
+          docker push "${IMAGE_VERSION_TAG}"
+          docker push "${IMAGE_DEVELOP_TAG}"
       - name: Get pushed digest
         id: image-digest
         env:
