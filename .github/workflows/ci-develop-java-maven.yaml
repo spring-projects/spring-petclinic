@@ -207,10 +207,10 @@ jobs:
           provenance: true
           # tags:
           # - immutable per build (includes short SHA, SNAPSHOT on develop)
-          # - snapshot moves to latest CI build
+          # - develop is the rolling tag for latest develop build
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION_ID }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:snapshot
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:develop
           build-args: |
             APP_JAR=target/app.jar
             VERSION=${{ env.VERSION_ID }}
