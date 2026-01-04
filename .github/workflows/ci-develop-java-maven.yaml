@@ -146,7 +146,7 @@ jobs:
     needs: [build-jar]
     env:
       VERSION_ID: ${{ needs.build-jar.outputs.version_id }}
-      IMAGE_ARCHIVE: /tmp/image-oci.tar
+      IMAGE_ARCHIVE: /tmp/image-oci-layout
     steps:
       - uses: actions/checkout@v4
       - name: Select container build file
@@ -174,7 +174,7 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build image to OCI archive (no push)
+      - name: Build image to OCI layout (no push)
         id: build-image
         uses: docker/build-push-action@v5
         with:
@@ -217,7 +217,7 @@ jobs:
           docker buildx imagetools create \
             --tag "${IMAGE_VERSION_TAG}" \
             --tag "${IMAGE_DEVELOP_TAG}" \
-            oci-archive:${IMAGE_ARCHIVE}
+            oci-layout:${IMAGE_ARCHIVE}
       - name: Get pushed digest
         id: image-digest
         env:
