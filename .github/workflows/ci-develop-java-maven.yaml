@@ -122,17 +122,11 @@ jobs:
           mvn -B -DskipTests --no-transfer-progress \
             -DaltDeploymentRepository=${{ env.MAVEN_REPO_ID }}::default::${{ env.MAVEN_REPO_URL }} \
             deploy
-      - name: Prepare jar path for image build
+      - name: Rename jar for image build
         run: |
           mkdir -p target
-          FINAL_NAME=$(mvn -q -DforceStdout -Dexpression=project.build.finalName --no-transfer-progress help:evaluate | tail -1)
-          FINAL_NAME=${FINAL_NAME:-app}
-          SRC_JAR="target/${FINAL_NAME}.jar"
-          if [ ! -f "$SRC_JAR" ]; then
-            echo "Jar not found: $SRC_JAR" >&2
-            exit 1
-          fi
-          cp "$SRC_JAR" target/app.jar
+          JAR_FILE=$(ls target/*.jar | head -n 1)
+          mv "$JAR_FILE" target/app.jar
       - name: Upload jar artifact
         uses: actions/upload-artifact@v4
         with:
