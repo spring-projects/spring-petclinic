@@ -1,7 +1,7 @@
 name: petclinic-ci-pipeline
 
 on: 
-  workflow_run:
+  workflow_dispatch:
   push:
     branches:
       - feature/*
@@ -114,7 +114,7 @@ jobs:
         path: |
           target/surefire-reports/
           target/failsafe-reports/
-          
+
   docker-stage:
     name: Docker stage to build docker image
     runs-on: ubuntu-latest
