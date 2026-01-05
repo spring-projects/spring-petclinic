@@ -1,0 +1,133 @@
+name: petclinic-ci-pipeline
+
+on: 
+  workflow_run:
+  push:
+    branches:
+      - feature/*
+      - hotfix/*
+
+jobs:
+  checkout-validate:
+    name: Checkout code & Validate Maven Setup
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+      
+      - name: Validate project structure
+        run: |
+           ./mvnw validate --batch-mode --no-transfer-progress
+      
+      - name: Run Trivy vulnerability scanner in fs mode
+        uses: aquasecurity/trivy-action@0.33.1
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+
+  security-scanning-testing:
+    name: Security scanning and testing
+    runs-on: ubuntu-latest
+    needs: checkout-validate
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+      
+    - name: Setup Java ${{ matrix.java-version }}
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: 17
+        cache: 'maven'
+        
+    - name: Cache Maven Wrapper
+      uses: actions/cache@v4
+      with:
+        path: ~/.m2/wrapper
+        key: ${{ runner.os }}-maven-wrapper-${{ hashFiles('.mvn/wrapper/maven-wrapper.properties') }}
+        restore-keys: |
+            ${{ runner.os }}-maven-wrapper-
+
+    - name: Install Dependencies mvn wrapper
+      run: |
+          ./mvnw dependency:go-offline --batch-mode --no-transfer-progress
+
+    - name: Build Application with Maven Wrapper
+      run: |
+        ./mvnw clean compile ${{ env.MAVEN_CLI_OPTS }} \
+          -P${{ matrix.maven-profile }}
+
+    - name: Run Unit Tests
+      run: |
+        ./mvnw test ${{ env.MAVEN_CLI_OPTS }} \
+          -P${{ matrix.maven-profile }} \
+          -Dtest=!*IntegrationTest,!*IT,!*E2ETest
+
+    - name: Run Integration Tests
+      run: |
+        # Start test containers if needed
+        if [ -f "docker-compose-test.yml" ]; then
+          docker-compose -f docker-compose-test.yml up -d
+        fi
+        
+        ./mvnw verify ${{ env.MAVEN_CLI_OPTS }} \
+          -P${{ matrix.maven-profile }} \
+          -Dit.test=*IntegrationTest,*IT \
+          -DskipUnitTests=true
+        
+        # Cleanup test containers
+        if [ -f "docker-compose-test.yml" ]; then
+          docker-compose -f docker-compose-test.yml down
+        fi
+        
+    - name: Generate Test Coverage Report
+      run: |
+        ./mvnw jacoco:report ${{ env.MAVEN_CLI_OPTS }} \
+          -P${{ matrix.maven-profile }}
+
+    - name: Build JAR Package
+      run: |
+        ./mvnw package ${{ env.MAVEN_CLI_OPTS }} \
+          -P${{ matrix.maven-profile }} \
+          -DskipTests
+        
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: springboot-app-java-17
+        path: target/*.jar
+        retention-days: 7
+      
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v4
+      if: success() || failure()
+      with:
+        name: test-results-17
+        path: |
+          target/surefire-reports/
+          target/failsafe-reports/
+          
+  docker-stage:
+    name: Docker stage to build docker image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Docker login
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/petclinic-app:${{ github.sha }}
