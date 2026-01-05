@@ -98,6 +98,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: [checkout-validate,security-scanning-testing ]
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
       - name: Docker login
         uses: docker/login-action@v3
         with:
