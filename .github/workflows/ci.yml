@@ -118,6 +118,7 @@ jobs:
   docker-stage:
     name: Docker stage to build docker image
     runs-on: ubuntu-latest
+    needs: [checkout-validate,security-scanning-testing ]
     steps:
       - name: Docker login
         uses: docker/login-action@v3
