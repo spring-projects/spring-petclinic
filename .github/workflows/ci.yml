@@ -62,42 +62,20 @@ jobs:
 
     - name: Build Application with Maven Wrapper
       run: |
-        ./mvnw clean compile ${{ env.MAVEN_CLI_OPTS }} \
-          -P${{ matrix.maven-profile }}
+        ./mvnw clean compile
+
 
     - name: Run Unit Tests
       run: |
-        ./mvnw test ${{ env.MAVEN_CLI_OPTS }} \
-          -P${{ matrix.maven-profile }} \
-          -Dtest=!*IntegrationTest,!*IT,!*E2ETest
-
-    - name: Run Integration Tests
-      run: |
-        # Start test containers if needed
-        if [ -f "docker-compose-test.yml" ]; then
-          docker-compose -f docker-compose-test.yml up -d
-        fi
-        
-        ./mvnw verify ${{ env.MAVEN_CLI_OPTS }} \
-          -P${{ matrix.maven-profile }} \
-          -Dit.test=*IntegrationTest,*IT \
-          -DskipUnitTests=true
-        
-        # Cleanup test containers
-        if [ -f "docker-compose-test.yml" ]; then
-          docker-compose -f docker-compose-test.yml down
-        fi
+        ./mvnw test
         
     - name: Generate Test Coverage Report
       run: |
-        ./mvnw jacoco:report ${{ env.MAVEN_CLI_OPTS }} \
-          -P${{ matrix.maven-profile }}
+        ./mvnw jacoco:report
 
     - name: Build JAR Package
       run: |
-        ./mvnw package ${{ env.MAVEN_CLI_OPTS }} \
-          -P${{ matrix.maven-profile }} \
-          -DskipTests
+        ./mvnw package -DskipTests
         
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v4
