@@ -102,6 +102,8 @@ pipeline:
                   spec:
                     skipDryRun: false
                     pruningEnabled: false
+                    delegateSelectors:
+                      - bhv-delegate
                   timeout: 10m
             rollbackSteps: []
         tags: {}
