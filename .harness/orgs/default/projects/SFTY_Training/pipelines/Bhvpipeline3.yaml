@@ -10,6 +10,7 @@ pipeline:
         connectorRef: bhavanagithub
         repoName: springpetclinic-work
         build: <+input>
+        sparseCheckout: []
   stages:
     - stage:
         name: CI
