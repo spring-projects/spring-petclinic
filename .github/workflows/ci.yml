@@ -112,6 +112,12 @@ jobs:
           context: .
           push: true
           tags: ${{ vars.DOCKERHUB_USERNAME }}/petclinic-app:${{ github.sha }}
+      
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.PET_CLINIC_PEM_FILE }}" > ~/.ssh/id_rsa
+          chmod 400 ~/.ssh/id_rsa
 
       - name: Remote exec on EC2
         run: |
@@ -119,10 +125,10 @@ jobs:
             docker --version
             if [ $(docker ps -a -q -f name=petclinic-petclinic-container) ]; then
               echo "Container exists. Stopping and removing..."
-              docker stop petclinic-petclinic-container
-              docker rm petclinic-petclinic-container
+              sudo docker stop petclinic-petclinic-container
+              sudo docker rm petclinic-petclinic-container
             else
               echo "Container does not exist. Skipping removal."
             fi
-            docker run -p 8080:8080 -d --name petclinic-petclinic-container ${{ vars.DOCKERHUB_USERNAME }}/petclinic-app:${{ github.sha }}
+            sudo docker run -p 8080:8080 -d --name petclinic-petclinic-container ${{ vars.DOCKERHUB_USERNAME }}/petclinic-app:${{ github.sha }}
           EOF
