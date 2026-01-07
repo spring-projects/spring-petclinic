@@ -121,7 +121,7 @@ jobs:
   infra-terraform-steps:
     needs: [checkout-validate,security-scanning-testing, docker-stage, filter ]
     if: ${{ needs.filter.outputs.terraform == 'true' }}
-    runs-on: ubuntu-ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Configure AWS
         uses: aws-actions/configure-aws-credentials@v4
