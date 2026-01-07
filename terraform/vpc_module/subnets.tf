@@ -19,7 +19,3 @@ resource "aws_subnet" "private_subnet_1_a" {
     Created_by = "Terraform"
   }
 }
-
-output "public_subnet_ids" {
-  value = aws_subnet.public_subnet_1_a.id
-}

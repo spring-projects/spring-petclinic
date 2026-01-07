@@ -1,7 +1,7 @@
 resource "aws_security_group" "web_sg" {
   name        = "web-sg"
   description = "Allow HTTP and SSH"
-  vpc_id      = aws_vpc.petclinic_vpc.id
+  vpc_id      = var.vpc_id
 
   ingress {
     description = "HTTP"

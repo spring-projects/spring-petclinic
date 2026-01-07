@@ -14,3 +14,7 @@ variable "instance_type" {
   }
   description = "Instance type pf ec2 instance"
 }
+
+variable "vpc_id" {
+  description = "VPC ID"
+}
