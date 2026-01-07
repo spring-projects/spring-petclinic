@@ -123,6 +123,9 @@ jobs:
     if: ${{ needs.filter.outputs.terraform == 'true' }}
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
       - name: Configure AWS
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -135,36 +138,45 @@ jobs:
 
       - name: Terraform fmt
         id: fmt
+        working-directory: terraform
         run: terraform fmt -check
         continue-on-error: true
 
       - name: Terraform Init
         id: init
-        run: terraform init -input=false
+        working-directory: terraform
+        run: |
+           cd terraform
+           terraform init -input=false
       
       - name: Select or create workspace
         run: |
           WORKSPACE=dev
           # Check if workspace exists
+          cd terraform
           if terraform workspace list | grep -q "^${WORKSPACE}$"; then
             echo "Workspace ${WORKSPACE} exists. Selecting..."
             terraform workspace select $WORKSPACE
           else
             echo "Workspace ${WORKSPACE} does not exist. Creating..."
+            cd terraform
             terraform workspace new $WORKSPACE
           fi
 
       - name: Terraform Validate
         id: validate
+        working-directory: terraform
         run: terraform validate -no-color
 
       - name: Terraform Plan
         id: plan
+        working-directory: terraform
         run: terraform plan -no-color -input=false
         continue-on-error: false
 
       - name: Terraform Apply
         id: apply
+        working-directory: terraform
         run: terraform apply -auto-approve
         continue-on-error: false     
       
