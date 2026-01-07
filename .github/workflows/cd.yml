@@ -1,0 +1,100 @@
+name: CD Pipeline for petclinic project
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  filter:
+    runs-on: ubuntu-latest
+    outputs:
+      terraform: ${{ steps.filter.outputs.terraform }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Filter changes
+        id: filter
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            terraform:
+              - 'terraform/**'
+
+  deploy-infra-on-prod:
+      runs-on: ubuntu-latest
+      name: Deploy Terraform Infra changs to Prod 
+      if: ${{ needs.filter.outputs.terraform == 'true' }}
+      steps:
+      - name: Setup terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
+
+      - name: Terraform Init
+        id: init
+        run: terraform init -input=false
+      
+      - name: Select or create workspace
+        run: |
+          WORKSPACE=prod
+          # Check if workspace exists
+          if terraform workspace list | grep -q "^${WORKSPACE}$"; then
+            echo "Workspace ${WORKSPACE} exists. Selecting..."
+            terraform workspace select $WORKSPACE
+          else
+            echo "Workspace ${WORKSPACE} does not exist. Creating..."
+            terraform workspace new $WORKSPACE
+          fi
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color -input=false
+        continue-on-error: false
+
+      - name: Terraform Apply
+        id: apply
+        run: terraform apply -auto-approve
+        continue-on-error: false    
+
+  deploy-to-prod:
+      name: Deply to Production
+      runs-on: ubuntu-latest
+      steps:
+
+        - name: Download Docker image info
+          uses: actions/download-artifact@v3
+          with:
+            name: docker-image-info
+            path: .
+
+        - name: Read image SHA
+          run: |
+            IMAGE_SHA=$(cat image_sha.txt)
+            echo "IMAGE_SHA=$IMAGE_SHA" >> $GITHUB_ENV
+
+        - name: Setup SSH
+          run: |
+            mkdir -p ~/.ssh
+            echo "${{ secrets.PET_CLINIC_PEM_FILE }}" > ~/.ssh/id_rsa
+            chmod 400 ~/.ssh/id_rsa
+
+        - name: Remote exec on EC2
+          run: |
+            ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ vars.EC2_HOST }} << 'EOF'
+              docker --version
+              if [ $(docker ps -a -q -f name=petclinic-petclinic-container) ]; then
+                echo "Container exists. Stopping and removing..."
+                sudo docker stop petclinic-petclinic-container
+                sudo docker rm petclinic-petclinic-container
+              else
+                echo "Container does not exist. Skipping removal."
+              fi
+              sudo docker run -p 8080:8080 -d --name petclinic-petclinic-container ${{ vars.DOCKERHUB_USERNAME }}/petclinic-app:$IMAGE_SHA
+            EOF
