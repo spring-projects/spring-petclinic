@@ -41,7 +41,10 @@ out/
 
 ### VS Code ###
 .vscode/
-
+.lock.hcl
+.modules.json
+LICENSE.txt
+terraform/.terraform
 ### CSS ###
 _site/
 *.css
