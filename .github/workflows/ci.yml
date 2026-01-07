@@ -93,7 +93,7 @@ jobs:
         run: echo "${GITHUB_SHA::8}" > image_sha.txt
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: docker-image-info
           path: image_sha.txt
