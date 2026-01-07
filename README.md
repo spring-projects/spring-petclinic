@@ -40,6 +40,40 @@ You can then access the Petclinic at <http://localhost:8080/>.
 You can, of course, run Petclinic in your favorite IDE.
 See below for more details.
 
+## Building images manually
+Create a Dockerfile containing this configuration:
+```bash
+FROM maven:3.8-openjdk-17 AS builder
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
+```
+
+Update docker compose to use docker image configuration
+```bash
+  app:
+    build: .
+    container_name: petclinic-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/petclinic
+      SPRING_DATASOURCE_USERNAME: petclinic
+      SPRING_DATASOURCE_PASSWORD: petclinic
+```
+
+Then run the command to build image:
+```bash
+docker build -t petclinic-app:1.0 .
+```
+Check the image was created:
+```bash
+docker image ps
+```
+
 ## Building a Container
 
 There is no `Dockerfile` in this project. You can build a container image (if you have a docker daemon) using the Spring Boot build plugin:
@@ -104,11 +138,11 @@ The following items should be installed in your system:
 - Java 17 or newer (full JDK, not a JRE)
 - [Git command line tool](https://help.github.com/articles/set-up-git)
 - Your preferred IDE
-  - Eclipse with the m2e plugin. Note: when m2e is available, there is a m2 icon in `Help -> About` dialog. If m2e is
-  not there, follow the installation process [here](https://www.eclipse.org/m2e/)
-  - [Spring Tools Suite](https://spring.io/tools) (STS)
-  - [IntelliJ IDEA](https://www.jetbrains.com/idea/)
-  - [VS Code](https://code.visualstudio.com)
+    - Eclipse with the m2e plugin. Note: when m2e is available, there is a m2 icon in `Help -> About` dialog. If m2e is
+      not there, follow the installation process [here](https://www.eclipse.org/m2e/)
+    - [Spring Tools Suite](https://spring.io/tools) (STS)
+    - [IntelliJ IDEA](https://www.jetbrains.com/idea/)
+    - [VS Code](https://code.visualstudio.com)
 
 ### Steps
 
@@ -120,13 +154,13 @@ The following items should be installed in your system:
 
 1. Inside Eclipse or STS:
 
-    Open the project via `File -> Import -> Maven -> Existing Maven project`, then select the root directory of the cloned repo.
+   Open the project via `File -> Import -> Maven -> Existing Maven project`, then select the root directory of the cloned repo.
 
-    Then either build on the command line `./mvnw generate-resources` or use the Eclipse launcher (right-click on project and `Run As -> Maven install`) to generate the CSS. Run the application's main method by right-clicking on it and choosing `Run As -> Java Application`.
+   Then either build on the command line `./mvnw generate-resources` or use the Eclipse launcher (right-click on project and `Run As -> Maven install`) to generate the CSS. Run the application's main method by right-clicking on it and choosing `Run As -> Java Application`.
 
 1. Inside IntelliJ IDEA:
 
-    In the main menu, choose `File -> Open` and select the Petclinic [pom.xml](pom.xml). Click on the `Open` button.
+   In the main menu, choose `File -> Open` and select the Petclinic [pom.xml](pom.xml). Click on the `Open` button.
 
     - CSS files are generated from the Maven build. You can build them on the command line `./mvnw generate-resources` or right-click on the `spring-petclinic` project then `Maven -> Generates sources and Update Folders`.
 
@@ -134,7 +168,7 @@ The following items should be installed in your system:
 
 1. Navigate to the Petclinic
 
-    Visit [http://localhost:8080](http://localhost:8080) in your browser.
+   Visit [http://localhost:8080](http://localhost:8080) in your browser.
 
 ## Looking for something in particular?
 
