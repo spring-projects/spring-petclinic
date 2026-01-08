@@ -1,21 +1,73 @@
+version: '3.9'
+
 services:
+  petclinic:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: petclinic:local
+    container_name: petclinic-app
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=postgres
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/petclinic
+      - SPRING_DATASOURCE_USERNAME=petclinic
+      - SPRING_DATASOURCE_PASSWORD=petclinic
+      - JAVA_OPTS=-XX:MaxRAMPercentage=75.0
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - petclinic-network
+
+  # MySQL Database
   mysql:
-    image: mysql:9.5
+    image: mysql:9.2
+    container_name: petclinic-mysql
     ports:
       - "3306:3306"
     environment:
-      - MYSQL_ROOT_PASSWORD=
-      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_ROOT_PASSWORD=root
       - MYSQL_USER=petclinic
       - MYSQL_PASSWORD=petclinic
       - MYSQL_DATABASE=petclinic
     volumes:
       - "./conf.d:/etc/mysql/conf.d:ro"
+      - mysql-data:/var/lib/mysql
+    networks:
+      - petclinic-network
+
+  # PostgreSQL Database 
   postgres:
-    image: postgres:18.1
+    image: postgres:15-alpine
+    container_name: petclinic-postgres
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_PASSWORD=petclinic
-      - POSTGRES_USER=petclinic
       - POSTGRES_DB=petclinic
+      - POSTGRES_USER=petclinic
+      - POSTGRES_PASSWORD=petclinic
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U petclinic -d petclinic"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - petclinic-network
+
+networks:
+  petclinic-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
+  postgres-data:
