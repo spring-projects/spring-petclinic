@@ -13,3 +13,8 @@ override.tf
 *.key
 .env
 .env.local
+
+# IDE
+.vscode/
+.idea/
+*.iml
