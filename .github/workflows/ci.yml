@@ -151,7 +151,6 @@ jobs:
             terraform workspace select $WORKSPACE
           else
             echo "Workspace ${WORKSPACE} does not exist. Creating..."
-            cd terraform
             terraform workspace new $WORKSPACE
           fi
 
