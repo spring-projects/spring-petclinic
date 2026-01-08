@@ -30,7 +30,7 @@ jobs:
 
       - name: Terraform Select Workflow
         working-directory: terraform
-        run: terraform workflow select ${{ inputs.environment }}
+        run: terraform workspace select ${{ inputs.environment }}
       
       - name: Terraform destroy command
         working-directory: terraform
