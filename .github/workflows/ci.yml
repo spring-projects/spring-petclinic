@@ -136,18 +136,10 @@ jobs:
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v3
 
-      - name: Terraform fmt
-        id: fmt
-        working-directory: terraform
-        run: terraform fmt -check
-        continue-on-error: true
-
       - name: Terraform Init
         id: init
         working-directory: terraform
-        run: |
-           cd terraform
-           terraform init -input=false
+        run: terraform init -input=false
       
       - name: Select or create workspace
         run: |
