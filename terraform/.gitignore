@@ -1,0 +1,15 @@
+# Terraform
+*.tfstate
+*.tfstate.*
+*.tfvars
+.terraform/
+.terraform.lock.hcl
+crash.log
+override.tf
+*.tfplan
+
+# Secrets
+*.pem
+*.key
+.env
+.env.local
