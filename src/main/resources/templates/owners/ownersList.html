@@ -9,22 +9,29 @@
   <table id="owners" class="table table-striped">
     <thead>
       <tr>
+        <th>ID</th>
         <th th:text="#{name}" style="width: 150px;">Name</th>
         <th th:text="#{address}" style="width: 200px;">Address</th>
         <th th:text="#{city}">City</th>
         <th th:text="#{telephone}" style="width: 120px">Telephone</th>
+        <th>Pet Count</th>
         <th th:text="#{pets}">Pets</th>
       </tr>
     </thead>
     <tbody>
       <tr th:each="owner : ${listOwners}">
+        <td th:text="${owner.id}"></td>
         <td>
           <a th:href="@{/owners/__${owner.id}__}" th:text="${owner.firstName + ' ' + owner.lastName}" /></a>
         </td>
         <td th:text="${owner.address}" />
         <td th:text="${owner.city}" />
         <td th:text="${owner.telephone}" />
-        <td><span th:text="${#strings.listJoin(owner.pets, ', ')}" /></td>
+        <td th:text="${owner.pets.size()}"></td>
+        <td>
+          <span th:text="${#strings.listJoin(owner.pets, ', ')}"></span>
+        </td>
+
       </tr>
     </tbody>
   </table>
