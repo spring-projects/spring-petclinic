@@ -87,6 +87,50 @@ or
 docker compose up postgres
 ```
 
+## 🆕 Alternative YAML configuration for PostgreSQL
+By default, Petclinic uses `application.properties` for configuration. For developers who prefer YAML, an equivalent configuration is available in `application-postgres.yml`. This version improves readability and aligns with other Petclinic modules that already use YAML:
+
+```yaml
+spring:
+  application:
+    # Logical name for the app, useful in logs and monitoring tools
+    name: spring-petclinic
+
+  datasource:
+    # Connection URL, defaults to local Postgres if POSTGRES_URL env var not set
+    url: ${POSTGRES_URL:jdbc:postgresql://localhost/petclinic}
+    # Database username, defaults to 'petclinic' if POSTGRES_USER not set
+    username: ${POSTGRES_USER:petclinic}
+    # Database password, defaults to 'petclinic' if POSTGRES_PASS not set
+    password: ${POSTGRES_PASS:petclinic}
+    # Explicit driver class for PostgreSQL
+    driver-class-name: org.postgresql.Driver
+
+  sql:
+    init:
+      # Always run schema/data scripts at startup; safe because scripts are idempotent
+      mode: always
+
+  jpa:
+    hibernate:
+      # Auto-update schema based on entity definitions (convenient for dev, risky in production)
+      ddl-auto: update
+    # Log SQL statements for debugging
+    show-sql: true
+    properties:
+      hibernate:
+        # Dialect ensures Hibernate generates SQL optimized for PostgreSQL
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        # Pretty-print SQL in logs for readability
+        format_sql: true
+```
+
+To use this configuration, activate the `postgres` profile:
+
+```bash
+./mvnw spring-boot:run -Dspring.profiles.active=postgres
+```
+
 ## Test Applications
 
 At development time we recommend you use the test applications set up as `main()` methods in `PetClinicIntegrationTests` (using the default H2 database and also adding Spring Boot Devtools), `MySqlTestApplication` and `PostgresIntegrationTests`. These are set up so that you can run the apps in your IDE to get fast feedback and also run the same classes as integration tests against the respective database. The MySql integration tests use Testcontainers to start the database in a Docker container, and the Postgres tests use Docker Compose to do the same thing.
