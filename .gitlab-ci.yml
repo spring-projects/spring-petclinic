@@ -12,7 +12,7 @@ checkstyle:
   stage: checkstyle
   image: maven:3.8.5-openjdk-17
   script:
-      - mvn checkstyle:checkstyle || true
+    - mvn checkstyle:checkstyle -Dcheckstyle.failOnViolation=false
   artifacts:
     when: always
     paths:
