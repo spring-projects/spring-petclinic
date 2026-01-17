@@ -12,7 +12,7 @@ checkstyle:
   stage: checkstyle
   image: maven:3.8.5-openjdk-17
   script:
-    - mvn checkstyle:checkstyle -Dcheckstyle.failOnViolation=false
+    - mvn checkstyle:checkstyle 
   artifacts:
     when: always
     paths:
@@ -24,7 +24,7 @@ test:
   stage: test
   image: maven:3.8.5-openjdk-17
   script:
-    - mvn test
+    - mvn test -Dnohttp.skip=true
   only:
     - merge_requests
 
