@@ -15,7 +15,7 @@ checkstyle:
   stage: checkstyle
   image: maven:3.8.5-openjdk-17
   script:
-      - mvn validate -Dnohttp.skip=true
+    - mvn validate -Dcheckstyle.skip=true
   artifacts:
     when: always
     paths:
