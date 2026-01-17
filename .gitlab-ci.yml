@@ -1,0 +1,80 @@
+stages:
+  - checkstyle
+  - test
+  - build
+  - docker
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+  DOCKER_TLS_CERTDIR: ""
+
+# --------------------
+# CHECKSTYLE
+# --------------------
+checkstyle:
+  stage: checkstyle
+  image: maven:3.8.5-openjdk-17
+  script:
+    - mvn validate
+  artifacts:
+    when: always
+    paths:
+      - target/checkstyle-result.xml
+  rules:
+    - if: $CI_MERGE_REQUEST_ID
+
+# --------------------
+# TEST
+# --------------------
+test:
+  stage: test
+  image: maven:3.8.5-openjdk-17
+  script:
+    - mvn test
+  rules:
+    - if: $CI_MERGE_REQUEST_ID
+
+# --------------------
+# BUILD (NO TESTS)
+# --------------------
+build:
+  stage: build
+  image: maven:3.8.5-openjdk-17
+  script:
+    - mvn package -DskipTests
+  rules:
+    - if: $CI_MERGE_REQUEST_ID
+
+# --------------------
+# DOCKER IMAGE FOR MERGE REQUEST
+# --------------------
+docker-mr:
+  stage: docker
+  image: docker:25
+  services:
+    - docker:25-dind
+  variables:
+    IMAGE_NAME: registry.gitlab.com/$CI_PROJECT_PATH/mr
+  script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker build -t $IMAGE_NAME:$CI_COMMIT_SHORT_SHA .
+    - docker push $IMAGE_NAME:$CI_COMMIT_SHORT_SHA
+  rules:
+    - if: $CI_MERGE_REQUEST_ID
+
+# --------------------
+# DOCKER IMAGE FOR MAIN
+# --------------------
+docker-main:
+  stage: docker
+  image: docker:25
+  services:
+    - docker:25-dind
+  variables:
+    IMAGE_NAME: registry.gitlab.com/$CI_PROJECT_PATH/main
+  script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker build -t $IMAGE_NAME:latest .
+    - docker push $IMAGE_NAME:latest
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
