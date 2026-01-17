@@ -6,76 +6,50 @@ stages:
 
 variables:
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
-  DOCKER_TLS_CERTDIR: ""
+  IMAGE_MR: "$CI_REGISTRY_IMAGE/mr:$CI_COMMIT_SHORT_SHA"
 
-# --------------------
-# CHECKSTYLE (allowed to fail)
-# --------------------
 checkstyle:
   stage: checkstyle
   image: maven:3.8.5-openjdk-17
   script:
-    - mvn validate
+    - mvn checkstyle:checkstyle
   artifacts:
     when: always
     paths:
       - target/checkstyle-result.xml
-  allow_failure: true
-  rules:
-    - if: $CI_MERGE_REQUEST_ID
+  only:
+    - merge_requests
 
-# --------------------
-# TEST
-# --------------------
 test:
   stage: test
   image: maven:3.8.5-openjdk-17
   script:
-    - mvn test -DskipITs
-  rules:
-    - if: $CI_MERGE_REQUEST_ID
+    - mvn test
+  only:
+    - merge_requests
 
-# --------------------
-# BUILD (NO TESTS)
-# --------------------
 build:
   stage: build
   image: maven:3.8.5-openjdk-17
   script:
     - mvn package -DskipTests
-  rules:
-    - if: $CI_MERGE_REQUEST_ID
+  artifacts:
+    paths:
+      - target/*.jar
+  only:
+    - merge_requests
 
-# --------------------
-# DOCKER IMAGE FOR MERGE REQUEST
-# --------------------
-docker-mr:
+docker-build-mr:
   stage: docker
-  image: docker:25
+  image: docker:24
   services:
-    - docker:25-dind
+    - docker:24-dind
   variables:
-    IMAGE_NAME: registry.gitlab.com/$CI_PROJECT_PATH/mr
+    DOCKER_TLS_CERTDIR: ""
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
-    - docker build -t "$IMAGE_NAME:$CI_COMMIT_SHORT_SHA" .
-    - docker push "$IMAGE_NAME:$CI_COMMIT_SHORT_SHA"
-  rules:
-    - if: $CI_MERGE_REQUEST_ID
-
-# --------------------
-# DOCKER IMAGE FOR MAIN
-# --------------------
-docker-main:
-  stage: docker
-  image: docker:25
-  services:
-    - docker:25-dind
-  variables:
-    IMAGE_NAME: registry.gitlab.com/$CI_PROJECT_PATH/main
-  script:
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
-    - docker build -t "$IMAGE_NAME:latest" .
-    - docker push "$IMAGE_NAME:latest"
-  rules:
-    - if: $CI_COMMIT_BRANCH == "main"
+    - docker build -t $IMAGE_MR .
+    - docker push $IMAGE_MR
+  only:
+    - merge_requests
