@@ -1,43 +1,60 @@
-name: PetClinic JFrog CI
+name: PetClinic to Artifactory
 
 on:
   push:
-    branches: [ "main" ]  # Triggers on every push to main
-  workflow_dispatch:      # Adds a "Run workflow" button in the GitHub UIjobs:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
   build-and-publish:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write  # MANDATORY: Required to request the JWT from GitHub
+      id-token: write
     
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # Setup JFrog CLI using OIDC instead of Secrets
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      # Setup JFrog CLI using OIDC
       - name: Set up JFrog CLI
         uses: jfrog/setup-jfrog-cli@v4
         env:
-          JF_URL: ${{ secrets.JF_URL }} # Still need the URL, but no token needed!
+          JF_URL: ${{ secrets.JF_URL }}
         with:
           version: latest
-          oidc-provider-name: github-oidc-provider # Must match name in JFrog
-          oidc-audience: jfrog-github              # Must match audience in JFrog
+          oidc-provider-name: github-oidc-provider
+          oidc-audience: jfrog-github
 
-     # 1. Configure the build tool (Example for a Node.js project)
-      - name: Configure NPM
-        run: |
-          jf npm-config --repo-resolve=npm-virtual --repo-deploy=npm-local
+      # 1 & 2: Compile and Run Tests
+      - name: Compile and Test
+        run: ./mvnw clean test
 
-      # 2. Run the build and collect "Build-Info"
-      # The 'jf' wrapper automatically records dependencies and environment variables
-      - name: Build and Collect Info
+      # 3: Package as Docker image
+      - name: Build Docker Image
         run: |
-          jf npm install --build-name=petclinic-ci --build-number=${{ github.run_number }}
-          jf npm publish --build-name=petclinic-ci --build-number=${{ github.run_number }}
+          ./mvnw spring-boot:build-image \
+          -Dspring-boot.build-image.imageName=petclinic-app:${{ github.run_number }}
 
-      # 3. Publish the Build-Info to Artifactory
-      # This is the command that makes the build appear in the "Builds" tab
-      - name: Publish Build Info
+      # 4: Publish to Artifactory
+      - name: Publish to Artifactory
         run: |
-          jf rt bp petclinic-ci ${{ github.run_number }}
+          # Extract hostname (e.g., myinstance.jfrog.io)
+          JF_HOST=$(echo ${{ secrets.JF_URL }} | sed 's|https://||')
+          DOCKER_REPO="docker-local"
+          
+          # Tag and Push
+          REMOTE_TAG=$JF_HOST/$DOCKER_REPO/petclinic-app:${{ github.run_number }}
+          docker tag petclinic-app:${{ github.run_number }} $REMOTE_TAG
+          
+          jf docker push $REMOTE_TAG --build-name=petclinic --build-number=${{ github.run_number }}
+          
+          # Publish Build Info
+          jf rt bp petclinic ${{ github.run_number }}
