@@ -29,7 +29,7 @@ jobs:
           JF_URL: ${{ secrets.JF_URL }}
         with:
           version: latest
-          oidc-provider-name: github-oidc-provider
+          oidc-provider-name: github-oidc
           oidc-audience: jfrog-github
 
       - name: Build and Test
