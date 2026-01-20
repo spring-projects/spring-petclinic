@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write
+      id-token: write 
     
     steps:
       - name: Checkout Code
@@ -23,7 +23,6 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
-      # Setup JFrog CLI using OIDC
       - name: Set up JFrog CLI
         uses: jfrog/setup-jfrog-cli@v4
         env:
@@ -33,42 +32,26 @@ jobs:
           oidc-provider-name: github-oidc-provider
           oidc-audience: jfrog-github
 
-      # 1 & 2: Compile and Run Tests
-      - name: Compile and Test
+      - name: Build and Test
         run: ./mvnw clean test
 
-      # 3: Package as Docker image
       - name: Build Docker Image
         run: |
           ./mvnw spring-boot:build-image \
           -Dspring-boot.build-image.imageName=petclinic-app:${{ github.run_number }}
 
-      - name: Publish to Artifactory
+      - name: Publish to JFrog
         run: |
-          # 1. Capture the URL from secrets into a local shell variable
-          # We use a fallback to 'MISSING' to catch empty secrets
-          RAW_URL="${{ secrets.JF_URL }}"
-          
-          # 2. Extract the hostname (remove https:// and any trailing slashes)
-          JF_HOST=$(echo "$RAW_URL" | sed 's|https://||' | sed 's|/||g')
-
-          # 3. SAFETY CHECK: Stop the build if the hostname is missing
-          if [ -z "$JF_HOST" ]; then
-            echo "::error::JF_URL is empty! Check your GitHub Repository Secrets."
-            exit 1
-          fi
-
-          echo "Targeting JFrog Host: $JF_HOST"
+          # Clean URL to get Hostname (e.g., myinstance.jfrog.io)
+          JF_HOST=$(echo "${{ secrets.JF_URL }}" | sed 's|https://||' | sed 's|/||g')
           
           DOCKER_REPO="docker-local"
-          IMAGE_TAG="petclinic-app:${{ github.run_number }}"
-          REMOTE_TAG="$JF_HOST/$DOCKER_REPO/$IMAGE_TAG"
+          IMAGE_NAME="petclinic-app:${{ github.run_number }}"
+          REMOTE_TAG="$JF_HOST/$DOCKER_REPO/$IMAGE_NAME"
           
-          # 4. Perform the Tag and Push
-          docker tag "petclinic-app:${{ github.run_number }}" "$REMOTE_TAG"
+          # Tag, Push, and Publish Build Info
+          docker tag "$IMAGE_NAME" "$REMOTE_TAG"
           
-          # Use the 'jf' command which handles OIDC authentication automatically
-          jf docker push "$REMOTE_TAG" --build-name=petclinic --build-number=${{ github.run_number }}
+          jf docker push "$REMOTE_TAG" --build-name=petclinic-trial --build-number=${{ github.run_number }}
           
-          # 5. Publish Build Info for full traceability
-          jf rt bp petclinic ${{ github.run_number }}
+          jf rt bp petclinic-trial ${{ github.run_number }}
