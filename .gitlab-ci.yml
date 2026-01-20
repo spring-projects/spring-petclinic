@@ -7,6 +7,8 @@ stages:
 variables:
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
   IMAGE_MR: "$CI_REGISTRY_IMAGE/mr:$CI_COMMIT_SHORT_SHA"
+  IMAGE_MAIN: "$CI_REGISTRY_IMAGE/main:latest"
+
 
 checkstyle:
   stage: checkstyle
@@ -53,3 +55,18 @@ docker-build-mr:
     - docker push $IMAGE_MR
   only:
     - merge_requests
+  
+docker-build-main:
+  stage: docker
+  image: docker:24
+  services:
+    - docker:24-dind
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build -t $IMAGE_MAIN .
+    - docker push $IMAGE_MAIN
+  only:
+    - main
