@@ -19,5 +19,20 @@ jobs:
           oidc-provider-name: github-oidc-provider # Must match name in JFrog
           oidc-audience: jfrog-github              # Must match audience in JFrog
 
-      - name: Run JFrog Command
-        run: jf rt ping # This now works without any manual JF_ACCESS_TOKEN
+     # 1. Configure the build tool (Example for a Node.js project)
+      - name: Configure NPM
+        run: |
+          jf npm-config --repo-resolve=npm-virtual --repo-deploy=npm-local
+
+      # 2. Run the build and collect "Build-Info"
+      # The 'jf' wrapper automatically records dependencies and environment variables
+      - name: Build and Collect Info
+        run: |
+          jf npm install --build-name=petclinic-ci --build-number=${{ github.run_number }}
+          jf npm publish --build-name=petclinic-ci --build-number=${{ github.run_number }}
+
+      # 3. Publish the Build-Info to Artifactory
+      # This is the command that makes the build appear in the "Builds" tab
+      - name: Publish Build Info
+        run: |
+          jf rt bp petclinic-ci ${{ github.run_number }}
