@@ -43,18 +43,32 @@ jobs:
           ./mvnw spring-boot:build-image \
           -Dspring-boot.build-image.imageName=petclinic-app:${{ github.run_number }}
 
-      # 4: Publish to Artifactory
       - name: Publish to Artifactory
         run: |
-          # Extract hostname (e.g., myinstance.jfrog.io)
-          JF_HOST=$(echo ${{ secrets.JF_URL }} | sed 's|https://||')
+          # 1. Capture the URL from secrets into a local shell variable
+          # We use a fallback to 'MISSING' to catch empty secrets
+          RAW_URL="${{ secrets.JF_URL }}"
+          
+          # 2. Extract the hostname (remove https:// and any trailing slashes)
+          JF_HOST=$(echo "$RAW_URL" | sed 's|https://||' | sed 's|/||g')
+
+          # 3. SAFETY CHECK: Stop the build if the hostname is missing
+          if [ -z "$JF_HOST" ]; then
+            echo "::error::JF_URL is empty! Check your GitHub Repository Secrets."
+            exit 1
+          fi
+
+          echo "Targeting JFrog Host: $JF_HOST"
+          
           DOCKER_REPO="docker-local"
+          IMAGE_TAG="petclinic-app:${{ github.run_number }}"
+          REMOTE_TAG="$JF_HOST/$DOCKER_REPO/$IMAGE_TAG"
           
-          # Tag and Push
-          REMOTE_TAG=$JF_HOST/$DOCKER_REPO/petclinic-app:${{ github.run_number }}
-          docker tag petclinic-app:${{ github.run_number }} $REMOTE_TAG
+          # 4. Perform the Tag and Push
+          docker tag "petclinic-app:${{ github.run_number }}" "$REMOTE_TAG"
           
-          jf docker push $REMOTE_TAG --build-name=petclinic --build-number=${{ github.run_number }}
+          # Use the 'jf' command which handles OIDC authentication automatically
+          jf docker push "$REMOTE_TAG" --build-name=petclinic --build-number=${{ github.run_number }}
           
-          # Publish Build Info
+          # 5. Publish Build Info for full traceability
           jf rt bp petclinic ${{ github.run_number }}
