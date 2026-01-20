@@ -1,0 +1,23 @@
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write  # MANDATORY: Required to request the JWT from GitHub
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Setup JFrog CLI using OIDC instead of Secrets
+      - name: Set up JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4
+        env:
+          JF_URL: ${{ secrets.JF_URL }} # Still need the URL, but no token needed!
+        with:
+          version: latest
+          oidc-provider-name: github-oidc-provider # Must match name in JFrog
+          oidc-audience: jfrog-github              # Must match audience in JFrog
+
+      - name: Run JFrog Command
+        run: jf rt ping # This now works without any manual JF_ACCESS_TOKEN
