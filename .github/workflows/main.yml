@@ -1,4 +1,9 @@
-jobs:
+name: PetClinic JFrog CI
+
+on:
+  push:
+    branches: [ "main" ]  # Triggers on every push to main
+  workflow_dispatch:      # Adds a "Run workflow" button in the GitHub UIjobs:
   build-and-publish:
     runs-on: ubuntu-latest
     permissions:
