@@ -42,6 +42,7 @@
 
   <dependencies>
     <!-- Spring and Spring Boot dependencies -->
+    <!-- test change by yamin -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
