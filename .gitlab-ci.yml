@@ -23,8 +23,8 @@ checkstyle:
     - merge_requests
 
 test:
-  stage: test1
-  
+  stage: test
+
   image: maven:3.8.5-openjdk-17
   script:
     - mvn test -Dcheckstyle.skip=true -Dnohttp.skip=true
