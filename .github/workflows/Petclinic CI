@@ -1,4 +1,4 @@
-name: PetClinic to Artifactory
+name: PetClinic CI
 
 on:
   push:
