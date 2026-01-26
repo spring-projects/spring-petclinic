@@ -15,8 +15,7 @@
  */
 package org.springframework.samples.petclinic.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
 /**
@@ -27,6 +26,10 @@ import jakarta.validation.constraints.NotBlank;
 @MappedSuperclass
 public class Person extends BaseEntity {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+
 	@Column
 	@NotBlank
 	private String firstName;
@@ -34,6 +37,10 @@ public class Person extends BaseEntity {
 	@Column
 	@NotBlank
 	private String lastName;
+
+	public Integer getId() {
+		return id;
+	}
 
 	public String getFirstName() {
 		return this.firstName;

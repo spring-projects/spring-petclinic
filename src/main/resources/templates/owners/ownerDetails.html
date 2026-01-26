@@ -31,13 +31,25 @@
       <th th:text="#{telephone}">Telephone</th>
       <td th:text="*{telephone}"></td>
     </tr>
+    <tr>
+      <th>Number of Pets</th>
+      <td th:text="*{petCount}"></td>
+    </tr>
   </table>
 
   <a th:href="@{__${owner.id}__/edit}" class="btn btn-primary" th:text="#{editOwner}">Edit
     Owner</a>
   <a th:href="@{__${owner.id}__/pets/new}" class="btn btn-primary" th:text="#{addNewPet}">Add
     New Pet</a>
-
+  <form th:action="@{__${owner.id}__/delete}"
+        method="post"
+        style="display:inline">
+    <a href="#"
+       onclick="if(confirm('Are you sure you want to delete this owner?')) this.closest('form').submit(); return false;"
+       th:style="${owner.petCount > 0} ? 'pointer-events:none;color:gray;' : ''">
+      Delete Owner
+    </a>
+  </form>
   <br />
   <br />
   <br />
