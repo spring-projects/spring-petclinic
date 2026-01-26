@@ -173,4 +173,37 @@ class OwnerController {
 		return mav;
 	}
 
+	/**
+	 * Deletes an owner if and only if the owner has no pets.
+	 * <p>
+	 * If the owner still has pets associated, the deletion is blocked and
+	 * an error message is shown to the user.
+	 *
+	 * @param ownerId the ID of the owner to be deleted
+	 * @param redirectAttributes used to pass success or error messages after redirect
+	 * @return a redirect to the owners list page or back to the owner details page
+	 */
+	@PostMapping("/owners/{ownerId}/delete")
+	public String deleteOwner(
+		@PathVariable("ownerId") int ownerId,
+		RedirectAttributes redirectAttributes) {
+
+		Owner owner = owners.findById(ownerId)
+			.orElseThrow(() -> new IllegalArgumentException(
+				"Owner not found with id: " + ownerId));
+
+		if (owner.getPetCount() > 0) {
+			redirectAttributes.addFlashAttribute(
+				"error", "Owner cannot be deleted while pets exist.");
+			return "redirect:/owners/" + ownerId;
+		}
+
+		owners.delete(owner);
+		redirectAttributes.addFlashAttribute(
+			"message", "Owner deleted successfully.");
+
+		return "redirect:/owners";
+	}
+
+
 }
