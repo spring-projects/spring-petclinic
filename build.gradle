@@ -31,6 +31,10 @@ ext.webjarsFontawesomeVersion = "4.7.0"
 ext.webjarsBootstrapVersion = "5.3.8"
 
 dependencies {
+  implementation 'org.springframework.boot:spring-boot-starter-security'
+  implementation 'com.h2database:h2'
+  implementation 'org.liquibase:liquibase-core'
+  implementation 'org.springframework.boot:spring-boot-starter-liquibase'
   implementation 'org.springframework.boot:spring-boot-starter-cache'
   implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
   implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
@@ -70,6 +74,13 @@ checkstyle {
 checkstyleNohttp {
   configDirectory = project.file('src/checkstyle')
   configFile = file('src/checkstyle/nohttp-checkstyle.xml')
+}
+
+bootRun {
+  systemProperty "spring.profiles.active", "dev"
+  // отключаем AOT
+  dependsOn.removeAll { it.name.startsWith("processAot") }
+  dependsOn.removeAll { it.name.startsWith("compileAot") }
 }
 
 tasks.named("formatMain").configure { dependsOn("checkstyleMain") }

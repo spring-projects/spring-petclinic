@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+          http://www.liquibase.org/xml/ns/dbchangelog
+          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+	<!-- VETS -->
+	<changeSet id="001-create-vets" author="arman">
+		<createTable tableName="vets">
+			<column name="id" type="INT" autoIncrement="true">
+				<constraints primaryKey="true"/>
+			</column>
+			<column name="first_name" type="VARCHAR(30)"/>
+			<column name="last_name" type="VARCHAR(30)"/>
+		</createTable>
+		<createIndex tableName="vets" indexName="idx_vets_last_name">
+			<column name="last_name"/>
+		</createIndex>
+	</changeSet>
+
+	<!-- SPECIALTIES -->
+	<changeSet id="002-create-specialties" author="arman">
+		<createTable tableName="specialties">
+			<column name="id" type="INT" autoIncrement="true">
+				<constraints primaryKey="true"/>
+			</column>
+			<column name="name" type="VARCHAR(80)"/>
+		</createTable>
+		<createIndex tableName="specialties" indexName="idx_specialties_name">
+			<column name="name"/>
+		</createIndex>
+	</changeSet>
+
+	<!-- VET_SPECIALTIES -->
+	<changeSet id="003-create-vet-specialties" author="arman">
+		<createTable tableName="vet_specialties">
+			<column name="vet_id" type="INT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="specialty_id" type="INT">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint
+			baseTableName="vet_specialties"
+			baseColumnNames="vet_id"
+			referencedTableName="vets"
+			referencedColumnNames="id"
+			constraintName="fk_vet_specialties_vets"/>
+
+		<addForeignKeyConstraint
+			baseTableName="vet_specialties"
+			baseColumnNames="specialty_id"
+			referencedTableName="specialties"
+			referencedColumnNames="id"
+			constraintName="fk_vet_specialties_specialties"/>
+
+		<addUniqueConstraint
+			tableName="vet_specialties"
+			columnNames="vet_id,specialty_id"
+			constraintName="uk_vet_specialties"/>
+	</changeSet>
+
+	<!-- TYPES -->
+	<changeSet id="004-create-types" author="arman">
+		<createTable tableName="types">
+			<column name="id" type="INT" autoIncrement="true">
+				<constraints primaryKey="true"/>
+			</column>
+			<column name="name" type="VARCHAR(80)"/>
+		</createTable>
+		<createIndex tableName="types" indexName="idx_types_name">
+			<column name="name"/>
+		</createIndex>
+	</changeSet>
+
+	<!-- OWNERS -->
+	<changeSet id="005-create-owners" author="arman">
+		<createTable tableName="owners">
+			<column name="id" type="INT" autoIncrement="true">
+				<constraints primaryKey="true"/>
+			</column>
+			<column name="first_name" type="VARCHAR(30)"/>
+			<column name="last_name" type="VARCHAR(30)"/>
+			<column name="address" type="VARCHAR(255)"/>
+			<column name="city" type="VARCHAR(80)"/>
+			<column name="telephone" type="VARCHAR(20)"/>
+		</createTable>
+		<createIndex tableName="owners" indexName="idx_owners_last_name">
+			<column name="last_name"/>
+		</createIndex>
+	</changeSet>
+
+	<!-- PETS -->
+	<changeSet id="006-create-pets" author="arman">
+		<createTable tableName="pets">
+			<column name="id" type="INT" autoIncrement="true">
+				<constraints primaryKey="true"/>
+			</column>
+			<column name="name" type="VARCHAR(30)"/>
+			<column name="birth_date" type="DATE"/>
+			<column name="type_id" type="INT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="owner_id" type="INT"/>
+		</createTable>
+
+		<addForeignKeyConstraint
+			baseTableName="pets"
+			baseColumnNames="type_id"
+			referencedTableName="types"
+			referencedColumnNames="id"
+			constraintName="fk_pets_types"/>
+
+		<addForeignKeyConstraint
+			baseTableName="pets"
+			baseColumnNames="owner_id"
+			referencedTableName="owners"
+			referencedColumnNames="id"
+			constraintName="fk_pets_owners"/>
+
+		<createIndex tableName="pets" indexName="idx_pets_name">
+			<column name="name"/>
+		</createIndex>
+	</changeSet>
+
+	<!-- VISITS -->
+	<changeSet id="007-create-visits" author="arman">
+		<createTable tableName="visits">
+			<column name="id" type="INT" autoIncrement="true">
+				<constraints primaryKey="true"/>
+			</column>
+			<column name="pet_id" type="INT"/>
+			<column name="visit_date" type="DATE"/>
+			<column name="description" type="VARCHAR(255)"/>
+		</createTable>
+
+		<addForeignKeyConstraint
+			baseTableName="visits"
+			baseColumnNames="pet_id"
+			referencedTableName="pets"
+			referencedColumnNames="id"
+			constraintName="fk_visits_pets"/>
+
+		<createIndex tableName="visits" indexName="idx_visits_pet_id">
+			<column name="pet_id"/>
+		</createIndex>
+	</changeSet>
+
+</databaseChangeLog>

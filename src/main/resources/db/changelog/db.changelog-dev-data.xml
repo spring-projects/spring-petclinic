@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+	<!-- ===================== -->
+	<!-- VETS -->
+	<!-- ===================== -->
+	<changeSet id="100-insert-vets" author="arman">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">SELECT COUNT(*) FROM vets</sqlCheck>
+		</preConditions>
+
+		<insert tableName="vets"><column name="first_name" value="James"/><column name="last_name" value="Carter"/></insert>
+		<insert tableName="vets"><column name="first_name" value="Helen"/><column name="last_name" value="Leary"/></insert>
+		<insert tableName="vets"><column name="first_name" value="Linda"/><column name="last_name" value="Douglas"/></insert>
+		<insert tableName="vets"><column name="first_name" value="Rafael"/><column name="last_name" value="Ortega"/></insert>
+		<insert tableName="vets"><column name="first_name" value="Henry"/><column name="last_name" value="Stevens"/></insert>
+		<insert tableName="vets"><column name="first_name" value="Sharon"/><column name="last_name" value="Jenkins"/></insert>
+	</changeSet>
+
+	<!-- ===================== -->
+	<!-- SPECIALTIES -->
+	<!-- ===================== -->
+	<changeSet id="101-insert-specialties" author="arman">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">SELECT COUNT(*) FROM specialties</sqlCheck>
+		</preConditions>
+
+		<insert tableName="specialties"><column name="name" value="radiology"/></insert>
+		<insert tableName="specialties"><column name="name" value="surgery"/></insert>
+		<insert tableName="specialties"><column name="name" value="dentistry"/></insert>
+	</changeSet>
+
+	<!-- ===================== -->
+	<!-- VET_SPECIALTIES -->
+	<!-- ===================== -->
+	<changeSet id="102-insert-vet-specialties" author="arman">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">SELECT COUNT(*) FROM vet_specialties</sqlCheck>
+		</preConditions>
+
+		<insert tableName="vet_specialties"><column name="vet_id" valueNumeric="2"/><column name="specialty_id" valueNumeric="1"/></insert>
+		<insert tableName="vet_specialties"><column name="vet_id" valueNumeric="3"/><column name="specialty_id" valueNumeric="2"/></insert>
+		<insert tableName="vet_specialties"><column name="vet_id" valueNumeric="3"/><column name="specialty_id" valueNumeric="3"/></insert>
+		<insert tableName="vet_specialties"><column name="vet_id" valueNumeric="4"/><column name="specialty_id" valueNumeric="2"/></insert>
+		<insert tableName="vet_specialties"><column name="vet_id" valueNumeric="5"/><column name="specialty_id" valueNumeric="1"/></insert>
+	</changeSet>
+
+	<!-- ===================== -->
+	<!-- TYPES -->
+	<!-- ===================== -->
+	<changeSet id="103-insert-types" author="arman">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">SELECT COUNT(*) FROM types</sqlCheck>
+		</preConditions>
+
+		<insert tableName="types"><column name="name" value="cat"/></insert>
+		<insert tableName="types"><column name="name" value="dog"/></insert>
+		<insert tableName="types"><column name="name" value="lizard"/></insert>
+		<insert tableName="types"><column name="name" value="snake"/></insert>
+		<insert tableName="types"><column name="name" value="bird"/></insert>
+		<insert tableName="types"><column name="name" value="hamster"/></insert>
+	</changeSet>
+
+	<!-- ===================== -->
+	<!-- OWNERS -->
+	<!-- ===================== -->
+	<changeSet id="104-insert-owners" author="arman">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">SELECT COUNT(*) FROM owners</sqlCheck>
+		</preConditions>
+
+		<insert tableName="owners">
+			<column name="first_name" value="George"/>
+			<column name="last_name" value="Franklin"/>
+			<column name="address" value="110 W. Liberty St."/>
+			<column name="city" value="Madison"/>
+			<column name="telephone" value="6085551023"/>
+		</insert>
+
+		<insert tableName="owners">
+			<column name="first_name" value="Betty"/>
+			<column name="last_name" value="Davis"/>
+			<column name="address" value="638 Cardinal Ave."/>
+			<column name="city" value="Sun Prairie"/>
+			<column name="telephone" value="6085551749"/>
+		</insert>
+
+		<insert tableName="owners">
+			<column name="first_name" value="Eduardo"/>
+			<column name="last_name" value="Rodriquez"/>
+			<column name="address" value="2693 Commerce St."/>
+			<column name="city" value="McFarland"/>
+			<column name="telephone" value="6085558763"/>
+		</insert>
+
+		<insert tableName="owners">
+			<column name="first_name" value="Harold"/>
+			<column name="last_name" value="Davis"/>
+			<column name="address" value="563 Friendly St."/>
+			<column name="city" value="Windsor"/>
+			<column name="telephone" value="6085553198"/>
+		</insert>
+
+		<insert tableName="owners">
+			<column name="first_name" value="Peter"/>
+			<column name="last_name" value="McTavish"/>
+			<column name="address" value="2387 S. Fair Way"/>
+			<column name="city" value="Madison"/>
+			<column name="telephone" value="6085552765"/>
+		</insert>
+
+		<insert tableName="owners">
+			<column name="first_name" value="Jean"/>
+			<column name="last_name" value="Coleman"/>
+			<column name="address" value="105 N. Lake St."/>
+			<column name="city" value="Monona"/>
+			<column name="telephone" value="6085552654"/>
+		</insert>
+
+		<insert tableName="owners">
+			<column name="first_name" value="Jeff"/>
+			<column name="last_name" value="Black"/>
+			<column name="address" value="1450 Oak Blvd."/>
+			<column name="city" value="Monona"/>
+			<column name="telephone" value="6085555387"/>
+		</insert>
+
+		<insert tableName="owners">
+			<column name="first_name" value="Maria"/>
+			<column name="last_name" value="Escobito"/>
+			<column name="address" value="345 Maple St."/>
+			<column name="city" value="Madison"/>
+			<column name="telephone" value="6085557683"/>
+		</insert>
+
+		<insert tableName="owners">
+			<column name="first_name" value="David"/>
+			<column name="last_name" value="Schroeder"/>
+			<column name="address" value="2749 Blackhawk Trail"/>
+			<column name="city" value="Madison"/>
+			<column name="telephone" value="6085559435"/>
+		</insert>
+
+		<insert tableName="owners">
+			<column name="first_name" value="Carlos"/>
+			<column name="last_name" value="Estaban"/>
+			<column name="address" value="2335 Independence La."/>
+			<column name="city" value="Waunakee"/>
+			<column name="telephone" value="6085555487"/>
+		</insert>
+	</changeSet>
+
+	<!-- ===================== -->
+	<!-- PETS -->
+	<!-- ===================== -->
+	<changeSet id="105-insert-pets" author="arman">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">SELECT COUNT(*) FROM pets</sqlCheck>
+		</preConditions>
+
+		<insert tableName="pets"><column name="name" value="Leo"/><column name="birth_date" valueDate="2000-09-07"/><column name="type_id" valueNumeric="1"/><column name="owner_id" valueNumeric="1"/></insert>
+		<insert tableName="pets"><column name="name" value="Basil"/><column name="birth_date" valueDate="2002-08-06"/><column name="type_id" valueNumeric="6"/><column name="owner_id" valueNumeric="2"/></insert>
+		<insert tableName="pets"><column name="name" value="Rosy"/><column name="birth_date" valueDate="2001-04-17"/><column name="type_id" valueNumeric="2"/><column name="owner_id" valueNumeric="3"/></insert>
+		<insert tableName="pets"><column name="name" value="Jewel"/><column name="birth_date" valueDate="2000-03-07"/><column name="type_id" valueNumeric="2"/><column name="owner_id" valueNumeric="3"/></insert>
+		<insert tableName="pets"><column name="name" value="Iggy"/><column name="birth_date" valueDate="2000-11-30"/><column name="type_id" valueNumeric="3"/><column name="owner_id" valueNumeric="4"/></insert>
+		<insert tableName="pets"><column name="name" value="George"/><column name="birth_date" valueDate="2000-01-20"/><column name="type_id" valueNumeric="4"/><column name="owner_id" valueNumeric="5"/></insert>
+		<insert tableName="pets"><column name="name" value="Samantha"/><column name="birth_date" valueDate="1995-09-04"/><column name="type_id" valueNumeric="1"/><column name="owner_id" valueNumeric="6"/></insert>
+		<insert tableName="pets"><column name="name" value="Max"/><column name="birth_date" valueDate="1995-09-04"/><column name="type_id" valueNumeric="1"/><column name="owner_id" valueNumeric="6"/></insert>
+		<insert tableName="pets"><column name="name" value="Lucky"/><column name="birth_date" valueDate="1999-08-06"/><column name="type_id" valueNumeric="5"/><column name="owner_id" valueNumeric="7"/></insert>
+		<insert tableName="pets"><column name="name" value="Mulligan"/><column name="birth_date" valueDate="1997-02-24"/><column name="type_id" valueNumeric="2"/><column name="owner_id" valueNumeric="8"/></insert>
+		<insert tableName="pets"><column name="name" value="Freddy"/><column name="birth_date" valueDate="2000-03-09"/><column name="type_id" valueNumeric="5"/><column name="owner_id" valueNumeric="9"/></insert>
+		<insert tableName="pets"><column name="name" value="Lucky"/><column name="birth_date" valueDate="2000-06-24"/><column name="type_id" valueNumeric="2"/><column name="owner_id" valueNumeric="10"/></insert>
+		<insert tableName="pets"><column name="name" value="Sly"/><column name="birth_date" valueDate="2002-06-08"/><column name="type_id" valueNumeric="1"/><column name="owner_id" valueNumeric="10"/></insert>
+	</changeSet>
+
+	<!-- ===================== -->
+	<!-- VISITS -->
+	<!-- ===================== -->
+	<changeSet id="106-insert-visits" author="arman">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">SELECT COUNT(*) FROM visits</sqlCheck>
+		</preConditions>
+
+		<insert tableName="visits"><column name="pet_id" valueNumeric="7"/><column name="visit_date" valueDate="2010-03-04"/><column name="description" value="rabies shot"/></insert>
+		<insert tableName="visits"><column name="pet_id" valueNumeric="8"/><column name="visit_date" valueDate="2011-03-04"/><column name="description" value="rabies shot"/></insert>
+		<insert tableName="visits"><column name="pet_id" valueNumeric="8"/><column name="visit_date" valueDate="2009-06-04"/><column name="description" value="neutered"/></insert>
+		<insert tableName="visits"><column name="pet_id" valueNumeric="7"/><column name="visit_date" valueDate="2008-09-04"/><column name="description" value="spayed"/></insert>
+	</changeSet>
+
+</databaseChangeLog>
+
