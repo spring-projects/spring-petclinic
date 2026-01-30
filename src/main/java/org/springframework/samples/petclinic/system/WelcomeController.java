@@ -18,6 +18,8 @@ package org.springframework.samples.petclinic.system;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 
 @Controller
 class WelcomeController {
@@ -25,6 +27,11 @@ class WelcomeController {
 	@GetMapping("/")
 	public String welcome() {
 		return "welcome";
+	}
+	@GetMapping("/status")
+@ResponseBody
+	public String welcome() {
+		return "Application is running";
 	}
 
 }
