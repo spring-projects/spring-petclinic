@@ -26,5 +26,8 @@ jobs:
 
         # [Mandatory if using OIDC authentication protocol instead of JF_ACCESS_TOKEN]
         with:
-          oidc-provider-name: yanirw/CI-demo@github
+         # oidc-provider-name: yanirw/CI-demo@github
+         version: latest
+         oidc-provider-name: github-oidc
+         oidc-audience: jfrog-github
 
