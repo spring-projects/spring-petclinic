@@ -20,7 +20,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
 @Controller
 class WelcomeController {
 
@@ -28,9 +27,10 @@ class WelcomeController {
 	public String welcome() {
 		return "welcome";
 	}
+
 	@GetMapping("/status")
-@ResponseBody
-	public String welcome() {
+	@ResponseBody
+	public String status() {
 		return "Application is running";
 	}
 
