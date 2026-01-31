@@ -1,33 +1,71 @@
-name: "Frogbot Scan Pull Request"
+name: build-publish-scan
+
 on:
-  pull_request_target:
-    types: [opened, synchronize]
+  push:
+    branches:
+      - feature/test-change
+  workflow_dispatch: {}
+
 permissions:
-  pull-requests: write
   contents: read
-  id-token: write
+  pull-requests: write
+  id-token: write # Required for OIDC authentication
+
 jobs:
-  scan-pull-request:
+  build-and-scan:
+    name: Build, Publish, and Scan
     runs-on: ubuntu-latest
+    
+    # Setting environment variables at the job level for consistency
+    env:
+      JF_URL: ${{ secrets.JF_URL }}
+      JF_REPO: ${{ secrets.JF_REPO }}
+      BUILD_NAME: "maven-build-scan"
+      BUILD_NUMBER: ${{ github.run_number }}
+
     steps:
-      - uses: jfrog/frogbot@v2
-        env:
-          # [Mandatory]
-          JF_URL: ${{ secrets.JF_URL }}
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-          # [Mandatory]
-          JF_GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-          # [Optional] Xray Watches to apply
-          JF_WATCHES: "build-watch"
-
-          # [Optional] Show all vulnerabilities, not just the ones introduced in the PR
-          JF_INCLUDE_ALL_VULNERABILITIES: "true"
-
-        # [Mandatory if using OIDC authentication protocol instead of JF_ACCESS_TOKEN]
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
         with:
-         # oidc-provider-name: yanirw/CI-demo@github
-         version: latest
-         oidc-provider-name: github-oidc
-         oidc-audience: jfrog-github
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
 
+      # 1. Setup JFrog CLI using OIDC
+      - name: Set up JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4
+        with:
+          oidc-provider-name: github-oidc
+          oidc-audience: jfrog-github
+
+      - name: Build with Maven
+        run: ./mvnw -B -DskipTests package
+
+      # 2. Upload Artifacts (Fixes the 405 error by using clean paths)
+      - name: Publish artifact to Artifactory
+        run: |
+          # Note: Ensure JF_URL does not have a trailing slash or '/artifactory'
+          jf rt upload "target/*.jar" "${{ env.JF_REPO }}/" \
+            --build-name="${{ env.BUILD_NAME }}" \
+            --build-number="${{ env.BUILD_NUMBER }}" \
+            --flat=false
+
+      # 3. Publish Build Info (Tells Xray exactly what to scan)
+      - name: Publish Build Info
+        run: |
+          jf rt build-collect-env ${{ env.BUILD_NAME }} ${{ env.BUILD_NUMBER }}
+          jf rt bp ${{ env.BUILD_NAME }} ${{ env.BUILD_NUMBER }}
+
+      # 4. Trigger Frogbot Scan
+      # This will scan the PR/Branch and post security findings
+      - name: Run Frogbot Scan
+        uses: jfrog/frogbot@v2
+        env:
+          JF_URL: ${{ env.JF_URL }}
+          JF_GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          oidc-provider-name: github-oidc
+          oidc-audience: jfrog-github
