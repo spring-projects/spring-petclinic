@@ -33,6 +33,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasItem;
@@ -121,6 +122,20 @@ class OwnerControllerTests {
 	}
 
 	@Test
+	void testProcessCreationFormEmptyLastName() throws Exception {
+		mockMvc
+			.perform(post("/owners/new").param("firstName", "Joe")
+					.param("lastName", "")
+					.param("address", "123 Caramel Street")
+					.param("city", "London")
+					.param("telephone", "1234567890"))
+			.andExpect(status().isOk())
+			.andExpect(model().attributeHasFieldErrors("owner", "lastName"))
+			.andExpect(content().string(containsString("Last name is required")))
+			.andExpect(view().name("owners/createOrUpdateOwnerForm"));
+	}
+
+	@Test
 	void testProcessCreationFormHasErrors() throws Exception {
 		mockMvc
 			.perform(post("/owners/new").param("firstName", "Joe").param("lastName", "Bloggs").param("city", "London"))
@@ -197,6 +212,20 @@ class OwnerControllerTests {
 		mockMvc.perform(post("/owners/{ownerId}/edit", TEST_OWNER_ID))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(view().name("redirect:/owners/{ownerId}"));
+	}
+
+	@Test
+	void testProcessUpdateOwnerFormEmptyLastName() throws Exception {
+		mockMvc
+			.perform(post("/owners/{ownerId}/edit", TEST_OWNER_ID).param("firstName", "Joe")
+					.param("lastName", "")
+					.param("address", "123 Caramel Street")
+					.param("city", "London")
+					.param("telephone", "1234567890"))
+			.andExpect(status().isOk())
+			.andExpect(model().attributeHasFieldErrors("owner", "lastName"))
+			.andExpect(content().string(containsString("Last name is required")))
+			.andExpect(view().name("owners/createOrUpdateOwnerForm"));
 	}
 
 	@Test

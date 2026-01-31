@@ -32,7 +32,7 @@ public class Person extends BaseEntity {
 	private String firstName;
 
 	@Column
-	@NotBlank
+	@NotBlank(message = "Last name is required")
 	private String lastName;
 
 	public String getFirstName() {
