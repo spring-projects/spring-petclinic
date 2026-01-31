@@ -18,7 +18,7 @@ jobs:
     
     env:
       JF_URL: ${{ secrets.JF_URL }}
-      JF_REPO: "maven-repo" # Using your newly created repo
+      JF_REPO: "maven-repo-virtual" # Using your newly created repo
       BUILD_NAME: "spring-petclinic-build"
       BUILD_NUMBER: ${{ github.run_number }}
 
