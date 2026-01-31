@@ -9,15 +9,21 @@ on:
 permissions:
   contents: read
   pull-requests: write
-  id-token: write # Required for OIDC
+  id-token: write # Required for OIDC handshake
 
 jobs:
-  build-publish-scan: # Combined into one job for better OIDC context and speed
+  build-and-scan:
     name: Build, Publish, and Scan
     runs-on: ubuntu-latest
     
+    env:
+      JF_URL: ${{ secrets.JF_URL }}
+      JF_REPO: "maven-repo" # Using your newly created repo
+      BUILD_NAME: "spring-petclinic-build"
+      BUILD_NUMBER: ${{ github.run_number }}
+
     steps:
-      - name: Checkout
+      - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Set up JDK 17
@@ -27,34 +33,37 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      # 1. Setup CLI with OIDC
+      # 1. Setup JFrog CLI with OIDC
       - name: Set up JFrog CLI
-        uses: jfrog/setup-jfrog-cli@v4 # Use v4 for better OIDC support
-        env:
-          JF_URL: ${{ secrets.JF_URL }}
+        uses: jfrog/setup-jfrog-cli@v4
         with:
           oidc-provider-name: github-oidc
           oidc-audience: jfrog-github
 
+      # 2. Build Project
       - name: Build with Maven
         run: ./mvnw -B -DskipTests package
 
-      # 2. Upload using the modern 'jf' command
+      # 3. Publish Artifact (Fixes the 405 error by using the explicit repo key)
       - name: Publish artifact to Artifactory
         run: |
-          # Use 'jf rt upload' which uses the OIDC config automatically
-          jf rt u "target/*.jar" "${{ secrets.JF_REPO }}/${{ github.run_number }}/" --build-name=maven-build --build-number=${{ github.run_number }}
-          
-          # Publish Build Info so Xray knows what to scan
-          jf rt bp maven-build ${{ github.run_number }}
+          jf rt upload "target/*.jar" "${{ env.JF_REPO }}/petclinic/${{ env.BUILD_NUMBER }}/" \
+            --build-name="${{ env.BUILD_NAME }}" \
+            --build-number="${{ env.BUILD_NUMBER }}" \
+            --flat=false
 
-      # 3. Trigger the Scan via Frogbot
+      # 4. Publish Build Info (Required for Xray to scan the build)
+      - name: Publish Build Info
+        run: |
+          jf rt build-collect-env ${{ env.BUILD_NAME }} ${{ env.BUILD_NUMBER }}
+          jf rt bp ${{ env.BUILD_NAME }} ${{ env.BUILD_NUMBER }}
+
+      # 5. Run Frogbot Xray Scan
       - name: Run Frogbot Scan
         uses: jfrog/frogbot@v2
         env:
-          JF_URL: ${{ secrets.JF_URL }}
+          JF_URL: ${{ env.JF_URL }}
           JF_GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Frogbot will pick up the OIDC configuration from the 'with' block below
         with:
           oidc-provider-name: github-oidc
           oidc-audience: jfrog-github
