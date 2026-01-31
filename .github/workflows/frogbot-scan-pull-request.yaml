@@ -47,8 +47,10 @@ jobs:
       # 2. Upload Artifacts (Fixes the 405 error by using clean paths)
       - name: Publish artifact to Artifactory
         run: |
-          # Note: Ensure JF_URL does not have a trailing slash or '/artifactory'
-          jf rt upload "target/*.jar" "${{ env.JF_REPO }}/" \
+          # We use jf rt upload. 
+          # The target path should be: REPO_NAME/FOLDER_NAME/
+          # If JF_REPO is "maven-dev-local", this uploads to maven-dev-local/builds/3/
+          jf rt upload "target/*.jar" "${{ secrets.JF_REPO }}/builds/${{ github.run_number }}/" \
             --build-name="${{ env.BUILD_NAME }}" \
             --build-number="${{ env.BUILD_NUMBER }}" \
             --flat=false
