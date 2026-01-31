@@ -1,0 +1,80 @@
+name: build-publish-scan
+
+on:
+  push:
+    branches:
+      - feature/test-change
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  build-publish:
+    name: Build and Publish
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ '17' ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ matrix.java }}
+          distribution: temurin
+          cache: maven
+
+      - name: Build with Maven
+        run: ./mvnw -B -DskipTests package
+
+      - name: Set up JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v2
+        with:
+          version: latest
+
+      - name: Configure JFrog CLI
+        env:
+          JF_URL: ${{ secrets.JF_URL }}
+          JF_USER: ${{ secrets.JF_USER }}
+          JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
+        run: |
+          jfrog rt config --url "$JF_URL" --user "$JF_USER" --password "$JF_PASSWORD" --interactive=false
+
+      - name: Publish artifact to Artifactory
+        env:
+          JF_REPO: ${{ secrets.JF_REPO }}
+        run: |
+          # Upload built artifacts (adjust path/pattern if needed)
+          jfrog rt u "target/*.jar" "$JF_REPO/{{ github.repository }}-${{ github.run_number }}/" --flat=false
+          # Publish build-info so Xray can scan the published build
+          jfrog rt bp build-publish-scan ${{ github.run_number }}
+
+  frogbot-scan:
+    name: Run Frogbot Xray Scan
+    needs: build-publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Frogbot
+        uses: jfrog/frogbot@v2
+        env:
+          # Mandatory: JFrog platform URL
+          JF_URL: ${{ secrets.JF_URL }}
+
+          # Mandatory: token to allow Frogbot to post PR comments (use built-in GITHUB_TOKEN)
+          JF_GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+          # Optional: Xray Watches to apply
+          JF_WATCHES: "build-watch"
+
+          # Optional: Show all vulnerabilities
+          JF_INCLUDE_ALL_VULNERABILITIES: "true"
+
+        with:
+         version: latest
+         oidc-provider-name: github-oidc
+         oidc-audience: jfrog-github
