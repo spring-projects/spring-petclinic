@@ -9,72 +9,52 @@ on:
 permissions:
   contents: read
   pull-requests: write
+  id-token: write # Required for OIDC
 
 jobs:
-  build-publish:
-    name: Build and Publish
+  build-publish-scan: # Combined into one job for better OIDC context and speed
+    name: Build, Publish, and Scan
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        java: [ '17' ]
-
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up JDK ${{ matrix.java }}
+      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          java-version: ${{ matrix.java }}
-          distribution: temurin
+          java-version: '17'
+          distribution: 'temurin'
           cache: maven
+
+      # 1. Setup CLI with OIDC
+      - name: Set up JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4 # Use v4 for better OIDC support
+        env:
+          JF_URL: ${{ secrets.JF_URL }}
+        with:
+          oidc-provider-name: github-oidc
+          oidc-audience: jfrog-github
 
       - name: Build with Maven
         run: ./mvnw -B -DskipTests package
 
-      - name: Set up JFrog CLI
-        uses: jfrog/setup-jfrog-cli@v2
-        with:
-          version: latest
-
-      - name: Configure JFrog CLI
-        env:
-          JF_URL: ${{ secrets.JF_URL }}
-          JF_USER: ${{ secrets.JF_USER }}
-          JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
-        run: |
-          jfrog rt config --url "$JF_URL" --user "$JF_USER" --password "$JF_PASSWORD" --interactive=false
-
+      # 2. Upload using the modern 'jf' command
       - name: Publish artifact to Artifactory
-        env:
-          JF_REPO: ${{ secrets.JF_REPO }}
         run: |
-          # Upload built artifacts (adjust path/pattern if needed)
-          jfrog rt u "target/*.jar" "$JF_REPO/{{ github.repository }}-${{ github.run_number }}/" --flat=false
-          # Publish build-info so Xray can scan the published build
-          jfrog rt bp build-publish-scan ${{ github.run_number }}
+          # Use 'jf rt upload' which uses the OIDC config automatically
+          jf rt u "target/*.jar" "${{ secrets.JF_REPO }}/${{ github.run_number }}/" --build-name=maven-build --build-number=${{ github.run_number }}
+          
+          # Publish Build Info so Xray knows what to scan
+          jf rt bp maven-build ${{ github.run_number }}
 
-  frogbot-scan:
-    name: Run Frogbot Xray Scan
-    needs: build-publish
-    runs-on: ubuntu-latest
-    steps:
-      - name: Run Frogbot
+      # 3. Trigger the Scan via Frogbot
+      - name: Run Frogbot Scan
         uses: jfrog/frogbot@v2
         env:
-          # Mandatory: JFrog platform URL
           JF_URL: ${{ secrets.JF_URL }}
-
-          # Mandatory: token to allow Frogbot to post PR comments (use built-in GITHUB_TOKEN)
           JF_GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-          # Optional: Xray Watches to apply
-          JF_WATCHES: "build-watch"
-
-          # Optional: Show all vulnerabilities
-          JF_INCLUDE_ALL_VULNERABILITIES: "true"
-
+          # Frogbot will pick up the OIDC configuration from the 'with' block below
         with:
-         version: latest
-         oidc-provider-name: github-oidc
-         oidc-audience: jfrog-github
+          oidc-provider-name: github-oidc
+          oidc-audience: jfrog-github
