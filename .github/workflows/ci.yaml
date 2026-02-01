@@ -17,4 +17,7 @@ jobs:
             - name: first_step
               uses: actions/checkout@v4
             - name: second_step
-              run: mvn package
+              run: mvn clean
+                   mvn compile
+                   mvn package
+
