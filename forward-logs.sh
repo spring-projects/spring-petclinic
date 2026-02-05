@@ -16,8 +16,13 @@ tail -F "$LOGFILE" | while read line; do
     JSON=$(printf '{"timestamp":"%s","message":%s,"source":"petclinic","location":"tallinn"}' \
            "$TIMESTAMP" "$(printf '%s' "$line" | jq -Rs)")
 
-    curl -s -X POST "$INGEST_URL" \
-        -H "Authorization: Api-Token $TOKEN" \
-        -H "Content-Type: application/json" \
-        -d "$JSON" > /dev/null
+   # curl -s -X POST "$INGEST_URL" \
+   #     -H "Authorization: Api-Token $TOKEN" \
+    #    -H "Content-Type: application/json" \
+    #    -d "$JSON" > /dev/null
+        
+        curl -v -X POST "$INGEST_URL" \
+    -H "Authorization: Api-Token $TOKEN" \
+    -H "Content-Type: application/json" \
+    -d "$JSON"
 done
