@@ -52,6 +52,13 @@ ENV OTEL_LOGS_EXPORTER=none
 # JVM options: attach the OTel Java agent
 ENV JAVA_TOOL_OPTIONS="-javaagent:/otel/otel-agent.jar"
 
+# Copy log forwarder
+COPY forward-logs.sh /app/forward-logs.sh
+RUN chmod +x /app/forward-logs.sh
+
+# Run PetClinic and log forwarder in same container
+ENTRYPOINT ["bash", "-c", "java -jar app.jar & /app/forward-logs.sh"]
+
 # Expose PetClinic default port (usually 8080)
 EXPOSE 8080
 
