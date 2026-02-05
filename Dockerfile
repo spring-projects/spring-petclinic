@@ -24,6 +24,8 @@ RUN mkdir -p /out && cp target/*.jar /out/app.jar
 # ---------- 2) RUNTIME STAGE: Run the app with OpenTelemetry agent ----------
 FROM eclipse-temurin:17-jre as runtime
 
+RUN apt-get update && apt-get install -y jq && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
 # ---- OpenTelemetry Java Agent version (editable) ----
