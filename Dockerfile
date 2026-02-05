@@ -67,4 +67,15 @@ EXPOSE 8080
 #   CMD curl -fsS http://localhost:8080/ || exit 1
 
 # Start the app
-ENTRYPOINT ["java", "-jar", "app.jar"]
+
+# ---------- ADDITIONS FOR OPTION 2 LOG FORWARDING ----------
+
+# Copy log-forwarding script into container
+COPY forward-logs.sh /app/forward-logs.sh
+
+# Make the script executable
+RUN chmod +x /app/forward-logs.sh
+
+# Run both PetClinic and log forwarder in same container
+ENTRYPOINT ["bash", "-c", "java -jar app.jar & /app/forward-logs.sh"]
+
