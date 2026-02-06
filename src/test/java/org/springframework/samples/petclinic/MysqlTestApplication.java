@@ -21,7 +21,7 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.testcontainers.containers.MySQLContainer;
+//import org.testcontainers.containers.MySQLContainer;
 
 /**
  * PetClinic Spring Boot Application.
