@@ -21,6 +21,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -63,6 +64,7 @@ class PetController {
 		return this.types.findPetTypes();
 	}
 
+	@Transactional(readOnly = true)
 	@ModelAttribute("owner")
 	public Owner findOwner(@PathVariable("ownerId") int ownerId) {
 		Optional<Owner> optionalOwner = this.owners.findById(ownerId);

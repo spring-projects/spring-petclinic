@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,6 +60,7 @@ class VisitController {
 	 * @param petId
 	 * @return Pet
 	 */
+	@Transactional(readOnly = true)
 	@ModelAttribute("visit")
 	public Visit loadPetWithVisit(@PathVariable("ownerId") int ownerId, @PathVariable("petId") int petId,
 			Map<String, Object> model) {
