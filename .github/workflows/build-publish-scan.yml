@@ -39,9 +39,11 @@ jobs:
       # FIX: Manually install Maven 3.8.8 to bypass the 3.9.x NullPointerException
       - name: Install Maven 3.8.8
         run: |
+          # Download to the home directory (outside of the workspace)
           wget -q https://archive.apache.org/dist/maven/maven-3/3.8.8/binaries/apache-maven-3.8.8-bin.tar.gz
-          tar -xzf apache-maven-3.8.8-bin.tar.gz
-          echo "$(pwd)/apache-maven-3.8.8/bin" >> $GITHUB_PATH
+          tar -xzf apache-maven-3.8.8-bin.tar.gz -C /home/runner/
+          # Update the path to point to the new location
+          echo "/home/runner/apache-maven-3.8.8/bin" >> $GITHUB_PATH
 
       - name: Set up JFrog CLI
         uses: jfrog/setup-jfrog-cli@v4
