@@ -21,7 +21,8 @@ jobs:
     
     env:
       JF_URL: ${{ secrets.JF_URL }}
-      JF_REPO: ${{ secrets.JF_REPO }}
+      # We now use your specific local repository
+      JF_REPO: "maven-petclinic-dev-local"
       BUILD_NAME: "maven-build-scan"
       BUILD_NUMBER: ${{ github.run_number }}
 
@@ -42,30 +43,30 @@ jobs:
           oidc-provider-name: github-oidc
           oidc-audience: jfrog-github
 
-      - name: Build with Maven
-        run: ./mvnw -B -DskipTests package
-
-      - name: Publish artifact to Artifactory
+      # 1. Configure Maven to use your JFrog local repo for deployment
+      - name: Configure JFrog Maven
         run: |
-          jf rt upload "target/*.jar" "${{ env.JF_REPO }}/builds/${{ github.run_number }}/" \
-            --build-name="${{ env.BUILD_NAME }}" \
-            --build-number="${{ env.BUILD_NUMBER }}" \
-            --flat=false
+          jf mvn-config --repo-deploy-releases ${{ env.JF_REPO }} --repo-deploy-snapshots ${{ env.JF_REPO }}
 
+      # 2. Build and Deploy in one step (Includes Build Info collection)
+      - name: Build and Publish with Maven
+        run: |
+          jf mvn clean install -DskipTests --build-name=${{ env.BUILD_NAME }} --build-number=${{ env.BUILD_NUMBER }}
+
+      # 3. Finalize Build Info and Publish to Artifactory
       - name: Publish Build Info
         run: |
           jf rt build-collect-env ${{ env.BUILD_NAME }} ${{ env.BUILD_NUMBER }}
           jf rt bp ${{ env.BUILD_NAME }} ${{ env.BUILD_NUMBER }}
 
+      # 4. Run Frogbot Scan (Optimized for Maven only)
       - name: Run Frogbot Scan
         uses: jfrog/frogbot@v2
         env:
           JF_URL: ${{ env.JF_URL }}
           JF_GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # FIX: Explicitly set technology to avoid Gradle timeout
           JF_RELEVANT_TECHNOLOGIES: "maven"
-          # FIX: If "build-watch" doesn't exist in Xray UI, Frogbot will fail. 
-          # Remove the next line if you haven't created that specific Watch.
+          # Ensure "build-watch" is configured in Xray UI to watch "maven-petclinic-dev-local"
           JF_WATCHES: "build-watch"
           JF_INCLUDE_ALL_VULNERABILITIES: "true"
         with:
