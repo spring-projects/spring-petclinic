@@ -21,7 +21,6 @@ jobs:
     
     env:
       JF_URL: ${{ secrets.JF_URL }}
-      # We now use your specific local repository
       JF_REPO: "maven-petclinic-dev-local"
       BUILD_NAME: "maven-build-scan"
       BUILD_NUMBER: ${{ github.run_number }}
@@ -37,6 +36,13 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+      # FIX: Manually install Maven 3.8.8 to bypass the 3.9.x NullPointerException
+      - name: Install Maven 3.8.8
+        run: |
+          wget -q https://archive.apache.org/dist/maven/maven-3/3.8.8/binaries/apache-maven-3.8.8-bin.tar.gz
+          tar -xzf apache-maven-3.8.8-bin.tar.gz
+          echo "$(pwd)/apache-maven-3.8.8/bin" >> $GITHUB_PATH
+
       - name: Set up JFrog CLI
         uses: jfrog/setup-jfrog-cli@v4
         with:
@@ -48,7 +54,7 @@ jobs:
         run: |
           jf mvn-config --repo-deploy-releases ${{ env.JF_REPO }} --repo-deploy-snapshots ${{ env.JF_REPO }}
 
-      # 2. Build and Deploy in one step (Includes Build Info collection)
+      # 2. Build and Deploy (Using the now-fixed Maven 3.8.8)
       - name: Build and Publish with Maven
         run: |
           jf mvn clean install -DskipTests --build-name=${{ env.BUILD_NAME }} --build-number=${{ env.BUILD_NUMBER }}
@@ -59,14 +65,13 @@ jobs:
           jf rt build-collect-env ${{ env.BUILD_NAME }} ${{ env.BUILD_NUMBER }}
           jf rt bp ${{ env.BUILD_NAME }} ${{ env.BUILD_NUMBER }}
 
-      # 4. Run Frogbot Scan (Optimized for Maven only)
+      # 4. Run Frogbot Scan
       - name: Run Frogbot Scan
         uses: jfrog/frogbot@v2
         env:
           JF_URL: ${{ env.JF_URL }}
           JF_GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           JF_RELEVANT_TECHNOLOGIES: "maven"
-          # Ensure "build-watch" is configured in Xray UI to watch "maven-petclinic-dev-local"
           JF_WATCHES: "build-watch"
           JF_INCLUDE_ALL_VULNERABILITIES: "true"
         with:
