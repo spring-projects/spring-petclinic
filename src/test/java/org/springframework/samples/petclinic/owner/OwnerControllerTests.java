@@ -89,16 +89,25 @@ class OwnerControllerTests {
 
 	@BeforeEach
 	void setup() {
-
 		Owner george = george();
-		given(this.owners.findByLastNameStartingWith(eq("Franklin"), any(Pageable.class)))
-			.willReturn(new PageImpl<>(List.of(george)));
 
+		// Mock the optimized search method with DTOs
+		OwnerSearchResult georgeSearchResult = new OwnerSearchResult(TEST_OWNER_ID, "George", "Franklin",
+				"110 W. Liberty St.", "Madison", "6085551023", "Max");
+
+		given(this.owners.findOwnerSearchResultsByLastName(eq("Franklin"), any(Pageable.class)))
+			.willReturn(new PageImpl<>(List.of(georgeSearchResult)));
+
+		// Mock EntityGraph methods for edit/detail views
+		given(this.owners.findByIdWithPets(TEST_OWNER_ID)).willReturn(Optional.of(george));
+		given(this.owners.findByIdWithPetsAndVisits(TEST_OWNER_ID)).willReturn(Optional.of(george));
+
+		// Keep old method for backward compatibility
 		given(this.owners.findById(TEST_OWNER_ID)).willReturn(Optional.of(george));
+
 		Visit visit = new Visit();
 		visit.setDate(LocalDate.now());
 		george.getPet("Max").getVisits().add(visit);
-
 	}
 
 	@Test
@@ -141,15 +150,27 @@ class OwnerControllerTests {
 
 	@Test
 	void testProcessFindFormSuccess() throws Exception {
-		Page<Owner> tasks = new PageImpl<>(List.of(george(), new Owner()));
-		when(this.owners.findByLastNameStartingWith(anyString(), any(Pageable.class))).thenReturn(tasks);
+		// Create search results using DTOs
+		OwnerSearchResult result1 = new OwnerSearchResult(1, "George", "Franklin", "110 W. Liberty St.", "Madison",
+				"6085551023", "Max");
+		OwnerSearchResult result2 = new OwnerSearchResult(2, "Betty", "Davis", "638 Cardinal Ave.", "Sun Prairie",
+				"6085551749", "Basil");
+
+		Page<OwnerSearchResult> tasks = new PageImpl<>(List.of(result1, result2));
+		when(this.owners.findOwnerSearchResultsByLastName(anyString(), any(Pageable.class))).thenReturn(tasks);
+
 		mockMvc.perform(get("/owners?page=1")).andExpect(status().isOk()).andExpect(view().name("owners/ownersList"));
 	}
 
 	@Test
 	void testProcessFindFormByLastName() throws Exception {
-		Page<Owner> tasks = new PageImpl<>(List.of(george()));
-		when(this.owners.findByLastNameStartingWith(eq("Franklin"), any(Pageable.class))).thenReturn(tasks);
+		// Single result - should redirect
+		OwnerSearchResult result = new OwnerSearchResult(TEST_OWNER_ID, "George", "Franklin", "110 W. Liberty St.",
+				"Madison", "6085551023", "Max");
+
+		Page<OwnerSearchResult> tasks = new PageImpl<>(List.of(result));
+		when(this.owners.findOwnerSearchResultsByLastName(eq("Franklin"), any(Pageable.class))).thenReturn(tasks);
+
 		mockMvc.perform(get("/owners?page=1").param("lastName", "Franklin"))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
@@ -157,14 +178,15 @@ class OwnerControllerTests {
 
 	@Test
 	void testProcessFindFormNoOwnersFound() throws Exception {
-		Page<Owner> tasks = new PageImpl<>(List.of());
-		when(this.owners.findByLastNameStartingWith(eq("Unknown Surname"), any(Pageable.class))).thenReturn(tasks);
+		Page<OwnerSearchResult> tasks = new PageImpl<>(List.of());
+		when(this.owners.findOwnerSearchResultsByLastName(eq("Unknown Surname"), any(Pageable.class)))
+			.thenReturn(tasks);
+
 		mockMvc.perform(get("/owners?page=1").param("lastName", "Unknown Surname"))
 			.andExpect(status().isOk())
 			.andExpect(model().attributeHasFieldErrors("owner", "lastName"))
 			.andExpect(model().attributeHasFieldErrorCode("owner", "lastName", "notFound"))
 			.andExpect(view().name("owners/findOwners"));
-
 	}
 
 	@Test
@@ -240,7 +262,7 @@ class OwnerControllerTests {
 		owner.setCity("New York");
 		owner.setTelephone("0123456789");
 
-		when(owners.findById(pathOwnerId)).thenReturn(Optional.of(owner));
+		when(owners.findByIdWithPets(pathOwnerId)).thenReturn(Optional.of(owner));
 
 		mockMvc.perform(MockMvcRequestBuilders.post("/owners/{ownerId}/edit", pathOwnerId).flashAttr("owner", owner))
 			.andExpect(status().is3xxRedirection())

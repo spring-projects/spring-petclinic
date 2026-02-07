@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.hibernate.annotations.BatchSize;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.model.NamedEntity;
 
@@ -49,13 +50,18 @@ public class Pet extends NamedEntity {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate birthDate;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	// PetType can remain EAGER as it's a simple lookup entity
+	// and won't cause performance issues
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "type_id")
 	private PetType type;
 
+	// Changed from EAGER to LAZY to avoid cascading N+1 queries
+	// Added @BatchSize to optimize when visits are loaded
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "pet_id")
 	@OrderBy("date ASC")
+	@BatchSize(size = 10)
 	private final Set<Visit> visits = new LinkedHashSet<>();
 
 	public void setBirthDate(LocalDate birthDate) {

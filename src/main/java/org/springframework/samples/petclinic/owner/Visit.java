@@ -40,7 +40,7 @@ public class Visit extends BaseEntity {
 	@NotBlank
 	private String description;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "pet_id")
 	private Pet pet;
 
