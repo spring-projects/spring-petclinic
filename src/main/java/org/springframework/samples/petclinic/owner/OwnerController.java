@@ -22,16 +22,13 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import jakarta.validation.Valid;
@@ -46,6 +43,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * @author Wick Dynex
  */
 @Controller
+@Transactional(readOnly = true)
 class OwnerController {
 
 	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
@@ -64,7 +62,7 @@ class OwnerController {
 	@ModelAttribute("owner")
 	public Owner findOwner(@PathVariable(name = "ownerId", required = false) Integer ownerId) {
 		return ownerId == null ? new Owner()
-				: this.owners.findById(ownerId)
+				: this.owners.findByIdWithPets(ownerId)
 					.orElseThrow(() -> new IllegalArgumentException("Owner not found with id: " + ownerId
 							+ ". Please ensure the ID is correct " + "and the owner exists in the database."));
 	}
@@ -91,6 +89,15 @@ class OwnerController {
 		return "owners/findOwners";
 	}
 
+	/**
+	 * Optimized owner search using DTO projection to avoid N+1 queries. This method now
+	 * executes only 2 queries total: 1. A single query with GROUP_CONCAT to fetch all
+	 * owner data with aggregated pet names 2. A count query for pagination
+	 * <p>
+	 * Previously, this executed 1 + N + M queries where N = number of owners and M =
+	 * total number of pets.
+	 * </p>
+	 */
 	@GetMapping("/owners")
 	public String processFindForm(@RequestParam(defaultValue = "1") int page, Owner owner, BindingResult result,
 			Model model) {
@@ -100,8 +107,8 @@ class OwnerController {
 			lastName = ""; // empty string signifies broadest possible search
 		}
 
-		// find owners by last name
-		Page<Owner> ownersResults = findPaginatedForOwnersLastName(page, lastName);
+		// find owners by last name using optimized DTO projection
+		Page<OwnerSearchResult> ownersResults = findPaginatedForOwnersLastName(page, lastName);
 		if (ownersResults.isEmpty()) {
 			// no owners found
 			result.rejectValue("lastName", "notFound", "not found");
@@ -109,17 +116,17 @@ class OwnerController {
 		}
 
 		if (ownersResults.getTotalElements() == 1) {
-			// 1 owner found
-			owner = ownersResults.iterator().next();
-			return "redirect:/owners/" + owner.getId();
+			// 1 owner found - redirect to detail view
+			OwnerSearchResult ownerResult = ownersResults.iterator().next();
+			return "redirect:/owners/" + ownerResult.getId();
 		}
 
 		// multiple owners found
 		return addPaginationModel(page, model, ownersResults);
 	}
 
-	private String addPaginationModel(int page, Model model, Page<Owner> paginated) {
-		List<Owner> listOwners = paginated.getContent();
+	private String addPaginationModel(int page, Model model, Page<OwnerSearchResult> paginated) {
+		List<OwnerSearchResult> listOwners = paginated.getContent();
 		model.addAttribute("currentPage", page);
 		model.addAttribute("totalPages", paginated.getTotalPages());
 		model.addAttribute("totalItems", paginated.getTotalElements());
@@ -127,10 +134,10 @@ class OwnerController {
 		return "owners/ownersList";
 	}
 
-	private Page<Owner> findPaginatedForOwnersLastName(int page, String lastname) {
+	private Page<OwnerSearchResult> findPaginatedForOwnersLastName(int page, String lastname) {
 		int pageSize = 5;
 		Pageable pageable = PageRequest.of(page - 1, pageSize);
-		return owners.findByLastNameStartingWith(lastname, pageable);
+		return owners.findOwnerSearchResultsByLastName(lastname, pageable);
 	}
 
 	@GetMapping("/owners/{ownerId}/edit")
@@ -139,6 +146,7 @@ class OwnerController {
 	}
 
 	@PostMapping("/owners/{ownerId}/edit")
+	@Transactional
 	public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result, @PathVariable("ownerId") int ownerId,
 			RedirectAttributes redirectAttributes) {
 		if (result.hasErrors()) {
@@ -159,18 +167,36 @@ class OwnerController {
 	}
 
 	/**
-	 * Custom handler for displaying an owner.
+	 * Custom handler for displaying an owner. Uses EntityGraph to efficiently load pets
+	 * and visits in a single query.
 	 * @param ownerId the ID of the owner to display
 	 * @return a ModelMap with the model attributes for the view
 	 */
-	@GetMapping("/owners/{ownerId}")
+	@GetMapping("/owners/{ownerId}.html")
 	public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
 		ModelAndView mav = new ModelAndView("owners/ownerDetails");
-		Optional<Owner> optionalOwner = this.owners.findById(ownerId);
+		// Use EntityGraph to load owner with pets and visits in one query
+		Optional<Owner> optionalOwner = this.owners.findByIdWithPetsAndVisits(ownerId);
 		Owner owner = optionalOwner.orElseThrow(() -> new IllegalArgumentException(
 				"Owner not found with id: " + ownerId + ". Please ensure the ID is correct "));
 		mav.addObject(owner);
 		return mav;
+	}
+
+	/**
+	 * REST endpoint for owner resource. Uses EntityGraph to efficiently load all related
+	 * data in a single query instead of relying on manual initialization.
+	 */
+	@GetMapping("/owners/{ownerId}")
+	@ResponseBody
+	@Transactional(readOnly = true)
+	public Owner showOwnerResource(@PathVariable("ownerId") int ownerId) {
+		// Use EntityGraph to load owner with all related data efficiently
+		Owner owner = this.owners.findByIdWithPetsAndVisits(ownerId)
+			.orElseThrow(() -> new IllegalArgumentException("Owner not found with id: " + ownerId));
+
+		// No need for manual initialization - EntityGraph already loaded everything
+		return owner;
 	}
 
 }
