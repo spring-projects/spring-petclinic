@@ -34,8 +34,9 @@ public class FeatureFlagController {
 
 	@PutMapping("/{id}")
 	public ResponseEntity<FeatureFlag> updateFeatureFlag(@PathVariable Long id, @RequestBody FeatureFlag flag) {
-		return service.updateFeatureFlag(id, flag).map(ResponseEntity::ok)
-				.orElseGet(() -> ResponseEntity.notFound().build());
+		return service.updateFeatureFlag(id, flag)
+			.map(ResponseEntity::ok)
+			.orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
 	@DeleteMapping("/{id}")

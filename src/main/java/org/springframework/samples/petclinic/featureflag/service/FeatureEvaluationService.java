@@ -6,9 +6,8 @@ import org.springframework.samples.petclinic.featureflag.repository.FeatureFlagR
 import org.springframework.stereotype.Service;
 
 /**
- * Service responsible for evaluating feature flags.
- * Supports global enable/disable, whitelist, blacklist,
- * and percentage rollout strategies.
+ * Service responsible for evaluating feature flags. Supports global enable/disable,
+ * whitelist, blacklist, and percentage rollout strategies.
  */
 @Service
 public class FeatureEvaluationService {
@@ -19,11 +18,8 @@ public class FeatureEvaluationService {
 	/**
 	 * Determines whether a feature is enabled for a given user.
 	 *
-	 * Evaluation order:
-	 * 1. Global disable check
-	 * 2. Blacklist override
-	 * 3. Whitelist override
-	 * 4. Percentage rollout
+	 * Evaluation order: 1. Global disable check 2. Blacklist override 3. Whitelist
+	 * override 4. Percentage rollout
 	 */
 	public boolean isFlagEnabledForUser(String flagName, String userId) {
 		FeatureFlag flag = featureFlagRepository.findByFlagName(flagName).orElse(null);
