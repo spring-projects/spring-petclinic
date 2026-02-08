@@ -23,7 +23,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +36,10 @@ import org.springframework.web.servlet.ModelAndView;
 import jakarta.validation.Valid;
 
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.samples.petclinic.feature.FeatureFlagService;
+import org.springframework.ui.Model;
 
 /**
  * @author Juergen Hoeller
@@ -52,8 +55,11 @@ class OwnerController {
 
 	private final OwnerRepository owners;
 
-	public OwnerController(OwnerRepository owners) {
+	private final FeatureFlagService featureFlagService;
+
+	public OwnerController(OwnerRepository owners, FeatureFlagService featureFlagService) {
 		this.owners = owners;
+		this.featureFlagService = featureFlagService;
 	}
 
 	@InitBinder
@@ -92,30 +98,24 @@ class OwnerController {
 	}
 
 	@GetMapping("/owners")
-	public String processFindForm(@RequestParam(defaultValue = "1") int page, Owner owner, BindingResult result,
-			Model model) {
-		// allow parameterless GET request for /owners to return all records
-		String lastName = owner.getLastName();
-		if (lastName == null) {
-			lastName = ""; // empty string signifies broadest possible search
+	public String processFindForm(Owner owner, BindingResult result, Model model) {
+
+		if (!featureFlagService.isEnabled("OWNER_SEARCH", "anonymous")) {
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Owner search feature is disabled");
 		}
 
-		// find owners by last name
-		Page<Owner> ownersResults = findPaginatedForOwnersLastName(page, lastName);
-		if (ownersResults.isEmpty()) {
-			// no owners found
+		if (owner.getLastName() == null) {
+			owner.setLastName("");
+		}
+
+		List<Owner> results = this.owners.findByLastNameContaining(owner.getLastName());
+		if (results.isEmpty()) {
 			result.rejectValue("lastName", "notFound", "not found");
 			return "owners/findOwners";
 		}
 
-		if (ownersResults.getTotalElements() == 1) {
-			// 1 owner found
-			owner = ownersResults.iterator().next();
-			return "redirect:/owners/" + owner.getId();
-		}
-
-		// multiple owners found
-		return addPaginationModel(page, model, ownersResults);
+		model.addAttribute("selections", results);
+		return "owners/ownersList";
 	}
 
 	private String addPaginationModel(int page, Model model, Page<Owner> paginated) {

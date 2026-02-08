@@ -51,3 +51,10 @@ INSERT INTO visits VALUES (default, 7, '2013-01-01', 'rabies shot');
 INSERT INTO visits VALUES (default, 8, '2013-01-02', 'rabies shot');
 INSERT INTO visits VALUES (default, 8, '2013-01-03', 'neutered');
 INSERT INTO visits VALUES (default, 7, '2013-01-04', 'spayed');
+
+INSERT INTO feature_flags (name, enabled, strategy, percentage, user_list, description)
+VALUES
+('ADD_PET', true, 'BOOLEAN', 100, NULL, 'Enable add pet feature'),
+('ADD_VISIT', true, 'BOOLEAN', 100, NULL, 'Enable add visit feature'),
+('OWNER_SEARCH', true, 'BOOLEAN', 100, NULL, 'Enable owner search');
+

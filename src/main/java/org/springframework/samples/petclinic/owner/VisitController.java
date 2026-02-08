@@ -29,6 +29,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import jakarta.validation.Valid;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.samples.petclinic.feature.FeatureToggle;
+import org.springframework.samples.petclinic.feature.FeatureFlagService;
 
 /**
  * @author Juergen Hoeller
@@ -88,16 +92,21 @@ class VisitController {
 
 	// Spring MVC calls method loadPetWithVisit(...) before processNewVisitForm is
 	// called
+	@FeatureToggle("ADD_VISIT")
 	@PostMapping("/owners/{ownerId}/pets/{petId}/visits/new")
-	public String processNewVisitForm(@ModelAttribute Owner owner, @PathVariable int petId, @Valid Visit visit,
-			BindingResult result, RedirectAttributes redirectAttributes) {
+	public String processNewVisitForm(@PathVariable("ownerId") int ownerId, @PathVariable("petId") int petId,
+			@Valid Visit visit, BindingResult result) {
+
 		if (result.hasErrors()) {
 			return "pets/createOrUpdateVisitForm";
 		}
 
+		Owner owner = this.owners.findById(ownerId)
+			.orElseThrow(() -> new IllegalArgumentException("Owner not found with id: " + ownerId));
+
 		owner.addVisit(petId, visit);
 		this.owners.save(owner);
-		redirectAttributes.addFlashAttribute("message", "Your visit has been booked");
+
 		return "redirect:/owners/{ownerId}";
 	}
 
