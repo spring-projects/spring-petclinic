@@ -28,7 +28,7 @@ public class FeatureFlagController {
 	}
 
 	/**
-	 * GET /api/feature-flags Get all feature flags
+	 * GET /feature-flags Get all feature flags
 	 */
 	@GetMapping
 	public ResponseEntity<List<FeatureFlagResponse>> getAllFlags() {
@@ -40,7 +40,7 @@ public class FeatureFlagController {
 	}
 
 	/**
-	 * GET /api/feature-flags/{id} Get a specific feature flag by ID
+	 * GET /feature-flags/{id} Get a specific feature flag by ID
 	 */
 	@GetMapping("/{id}")
 	public ResponseEntity<FeatureFlagResponse> getFlagById(@PathVariable Long id) {
@@ -51,7 +51,7 @@ public class FeatureFlagController {
 	}
 
 	/**
-	 * GET /api/feature-flags/key/{flagKey} Get a specific feature flag by key
+	 * GET /feature-flags/key/{flagKey} Get a specific feature flag by key
 	 */
 	@GetMapping("/key/{flagKey}")
 	public ResponseEntity<FeatureFlagResponse> getFlagByKey(@PathVariable String flagKey) {
@@ -62,7 +62,7 @@ public class FeatureFlagController {
 	}
 
 	/**
-	 * POST /api/feature-flags Create a new feature flag
+	 * POST /feature-flags Create a new feature flag
 	 */
 	@PostMapping
 	public ResponseEntity<?> createFlag(@RequestBody FeatureFlagRequest request) {
@@ -77,7 +77,7 @@ public class FeatureFlagController {
 	}
 
 	/**
-	 * PUT /api/feature-flags/{id} Update an existing feature flag
+	 * PUT /feature-flags/{id} Update an existing feature flag
 	 */
 	@PutMapping("/{id}")
 	public ResponseEntity<?> updateFlag(@PathVariable Long id, @RequestBody FeatureFlagRequest request) {
@@ -92,7 +92,7 @@ public class FeatureFlagController {
 	}
 
 	/**
-	 * DELETE /api/feature-flags/{id} Delete a feature flag
+	 * DELETE /feature-flags/{id} Delete a feature flag
 	 */
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteFlag(@PathVariable Long id) {
@@ -120,7 +120,7 @@ public class FeatureFlagController {
 	}
 
 	/**
-	 * POST /api/feature-flags/check Check if a feature is enabled for a given context
+	 * POST /feature-flags/check Check if a feature is enabled for a given context
 	 */
 	@PostMapping("/check")
 	public ResponseEntity<FeatureCheckResponse> checkFeature(@RequestBody FeatureCheckRequest request) {

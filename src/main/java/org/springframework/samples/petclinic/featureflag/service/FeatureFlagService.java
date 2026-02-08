@@ -148,7 +148,7 @@ public class FeatureFlagService {
 			return true;
 		}
 
-		// Use consistent hashing to ensure same context always gets same result
+		// Using custom consistent hashing to ensure same context always gets same result
 		String hashInput = flag.getFlagKey() + (context != null ? context : "");
 		int hash = Math.abs(hashInput.hashCode());
 		int bucket = hash % 100;
