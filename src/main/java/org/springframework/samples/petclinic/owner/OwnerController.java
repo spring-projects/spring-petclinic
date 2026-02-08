@@ -186,9 +186,12 @@ class OwnerController {
 
 		// displaying add pet button based on feature toggle
 		boolean addNewPetEnabled = featureFlagService.isFeatureEnabled("ADD_NEW_PET", "addNewPetEnabled");
+		mav.addObject("addNewPetEnabled", addNewPetEnabled);
+
+
+		// displaying new visit button based on feature toggle
 		boolean addVisitEnabled = featureFlagService.isFeatureEnabled("ADD_VISIT", "addVisitEnabled");
 		mav.addObject("addVisitEnabled", addVisitEnabled);
-		mav.addObject("addNewPetEnabled", addNewPetEnabled);
 		return mav;
 	}
 
