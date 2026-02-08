@@ -29,10 +29,12 @@ public class Person extends BaseEntity {
 
 	@Column
 	@NotBlank
+	@jakarta.validation.constraints.Pattern(regexp = "^[a-zA-Z\\s'-]+$", message = "must contain only letters, spaces, hyphens, or apostrophes")
 	private String firstName;
 
 	@Column
 	@NotBlank
+	@jakarta.validation.constraints.Pattern(regexp = "^[a-zA-Z\\s'-]+$", message = "must contain only letters, spaces, hyphens, or apostrophes")
 	private String lastName;
 
 	public String getFirstName() {

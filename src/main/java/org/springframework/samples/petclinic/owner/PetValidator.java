@@ -22,7 +22,8 @@ import org.springframework.validation.Validator;
 /**
  * <code>Validator</code> for <code>Pet</code> forms.
  * <p>
- * We're not using Bean Validation annotations here because it is easier to define such
+ * We're not using Bean Validation annotations here because it is easier to
+ * define such
  * validation rule in Java.
  * </p>
  *
@@ -38,8 +39,22 @@ public class PetValidator implements Validator {
 		Pet pet = (Pet) obj;
 		String name = pet.getName();
 		// name validation
+
 		if (!StringUtils.hasText(name)) {
 			errors.rejectValue("name", REQUIRED, REQUIRED);
+		}
+		// Edge Case: Check for leading/trailing spaces if trimmed but not null
+		else if (!name.equals(name.trim())) {
+			errors.rejectValue("name", "leadingTrailingSpace", "cannot start or end with spaces");
+		}
+		// Edge Case: Max length
+		else if (name.length() > 30) {
+			errors.rejectValue("name", "maxLength", "must be 30 characters or less");
+		}
+		// Edge Case: Symbols/Special Chars
+		else if (!name.matches("^[a-zA-Z0-9\\s'-]+$")) {
+			errors.rejectValue("name", "invalidCharacters",
+					"contains invalid characters (only letters, numbers, spaces, hyphens allowed)");
 		}
 
 		// type validation
