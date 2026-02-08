@@ -53,6 +53,7 @@ class OwnerController {
 	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
 
 	private final OwnerRepository owners;
+
 	private final FeatureFlagService featureFlagService;
 
 	public OwnerController(OwnerRepository owners, FeatureFlagService featureFlagService) {
@@ -94,24 +95,18 @@ class OwnerController {
 	public String initFindForm(Model model) {
 		model.addAttribute("owner", new Owner());
 
-    boolean ownerSearchEnabled =
-            featureFlagService.isFeatureEnabled("OWNER_SEARCH", null);
+		boolean ownerSearchEnabled = featureFlagService.isFeatureEnabled("OWNER_SEARCH", null);
 
-    model.addAttribute("ownerSearchEnabled", ownerSearchEnabled);
+		model.addAttribute("ownerSearchEnabled", ownerSearchEnabled);
 		return "owners/findOwners";
 	}
 
-	@FeatureToggle(
-    key = "OWNER_SEARCH",
-    disabledMessage = "Owner search is restricted",
-    disabledRedirect = "/owners/find"
-	)
+	@FeatureToggle(key = "OWNER_SEARCH", disabledMessage = "Owner search is restricted",
+			disabledRedirect = "/owners/find")
 	@GetMapping("/owners")
 	public String processFindForm(@RequestParam(defaultValue = "1") int page, Owner owner, BindingResult result,
 			Model model) {
 
-		
-		
 		// allow parameterless GET request for /owners to return all records
 		String lastName = owner.getLastName();
 		if (lastName == null) {
@@ -190,8 +185,8 @@ class OwnerController {
 		mav.addObject(owner);
 
 		// displaying add pet button based on feature toggle
-		boolean addNewPetEnabled = featureFlagService.isFeatureEnabled("ADD_NEW_PET","addNewPetEnabled");
-		boolean addVisitEnabled = featureFlagService.isFeatureEnabled("ADD_VISIT","addVisitEnabled");
+		boolean addNewPetEnabled = featureFlagService.isFeatureEnabled("ADD_NEW_PET", "addNewPetEnabled");
+		boolean addVisitEnabled = featureFlagService.isFeatureEnabled("ADD_VISIT", "addVisitEnabled");
 		mav.addObject("addVisitEnabled", addVisitEnabled);
 		mav.addObject("addNewPetEnabled", addNewPetEnabled);
 		return mav;

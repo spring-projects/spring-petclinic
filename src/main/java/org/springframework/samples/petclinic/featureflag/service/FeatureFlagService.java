@@ -106,9 +106,9 @@ public class FeatureFlagService {
 
 			case PERCENTAGE:
 				return evaluatePercentage(flag, context);
-			
+
 			case GLOBAL_DISABLE:
-            	return false;
+				return false;
 
 			default:
 				logger.warn("Unknown flag type for '{}': {}", flag.getFlagKey(), flag.getFlagType());

@@ -82,7 +82,8 @@ class VisitController {
 
 	// Spring MVC calls method loadPetWithVisit(...) before initNewVisitForm is
 	// called
-	@FeatureToggle(key = "ADD_VISIT", disabledMessage = "Adding visits is currently disabled", disabledRedirect = "/owners/{ownerId}")
+	@FeatureToggle(key = "ADD_VISIT", disabledMessage = "Adding visits is currently disabled",
+			disabledRedirect = "/owners/{ownerId}")
 	@GetMapping("/owners/{ownerId}/pets/{petId}/visits/new")
 	public String initNewVisitForm() {
 		return "pets/createOrUpdateVisitForm";
@@ -90,7 +91,8 @@ class VisitController {
 
 	// Spring MVC calls method loadPetWithVisit(...) before processNewVisitForm is
 	// called
-	@FeatureToggle(key = "ADD_VISIT", disabledMessage = "Adding visits is currently disabled", disabledRedirect = "/owners/{ownerId}")
+	@FeatureToggle(key = "ADD_VISIT", disabledMessage = "Adding visits is currently disabled",
+			disabledRedirect = "/owners/{ownerId}")
 	@PostMapping("/owners/{ownerId}/pets/{petId}/visits/new")
 	public String processNewVisitForm(@ModelAttribute Owner owner, @PathVariable int petId, @Valid Visit visit,
 			BindingResult result, RedirectAttributes redirectAttributes) {
