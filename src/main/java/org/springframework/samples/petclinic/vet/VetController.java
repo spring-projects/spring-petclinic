@@ -18,6 +18,7 @@ package org.springframework.samples.petclinic.vet;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.samples.petclinic.system.FeatureFlagEnabled;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -41,6 +42,7 @@ class VetController {
 		this.vetRepository = vetRepository;
 	}
 
+	@FeatureFlagEnabled("VIEW_VETS")
 	@GetMapping("/vets.html")
 	public String showVetList(@RequestParam(defaultValue = "1") int page, Model model) {
 		// Here we are returning an object of type 'Vets' rather than a collection of Vet
@@ -66,6 +68,7 @@ class VetController {
 		return vetRepository.findAll(pageable);
 	}
 
+	@FeatureFlagEnabled("VIEW_VETS")
 	@GetMapping({ "/vets" })
 	public @ResponseBody Vets showResourcesVetList() {
 		// Here we are returning an object of type 'Vets' rather than a collection of Vet

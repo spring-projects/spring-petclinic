@@ -21,6 +21,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.samples.petclinic.system.FeatureFlagEnabled;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -95,6 +96,7 @@ class PetController {
 		dataBinder.setValidator(new PetValidator());
 	}
 
+	@FeatureFlagEnabled("ADD_PET")
 	@GetMapping("/pets/new")
 	public String initCreationForm(Owner owner, ModelMap model) {
 		Pet pet = new Pet();
@@ -103,6 +105,7 @@ class PetController {
 	}
 
 	@PostMapping("/pets/new")
+	@FeatureFlagEnabled("ADD_PET")
 	public String processCreationForm(Owner owner, @Valid Pet pet, BindingResult result,
 			RedirectAttributes redirectAttributes) {
 
@@ -124,11 +127,13 @@ class PetController {
 		return "redirect:/owners/{ownerId}";
 	}
 
+	@FeatureFlagEnabled("EDIT_PET")
 	@GetMapping("/pets/{petId}/edit")
 	public String initUpdateForm() {
 		return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 	}
 
+	@FeatureFlagEnabled("EDIT_PET")
 	@PostMapping("/pets/{petId}/edit")
 	public String processUpdateForm(Owner owner, @Valid Pet pet, BindingResult result,
 			RedirectAttributes redirectAttributes) {

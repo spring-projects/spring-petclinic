@@ -51,3 +51,18 @@ INSERT INTO visits VALUES (default, 7, '2013-01-01', 'rabies shot');
 INSERT INTO visits VALUES (default, 8, '2013-01-02', 'rabies shot');
 INSERT INTO visits VALUES (default, 8, '2013-01-03', 'neutered');
 INSERT INTO visits VALUES (default, 7, '2013-01-04', 'spayed');
+
+INSERT INTO feature_flags (flag_key, is_enabled, globally_disabled, description) VALUES ('ADD_PET', false, false, 'Allows adding new pets');
+INSERT INTO feature_flags (flag_key, is_enabled, globally_disabled, description) VALUES ('EDIT_PET', true, false, 'Allows editing existing pets');
+INSERT INTO feature_flags (flag_key, is_enabled, globally_disabled, description) VALUES ('ADD_VISIT', true, false, 'Allows adding new visits');
+INSERT INTO feature_flags (flag_key, is_enabled, globally_disabled, description) VALUES ('OWNER_SEARCH', true, false, 'Allows searching for owners');
+INSERT INTO feature_flags (flag_key, is_enabled, globally_disabled, description) VALUES ('OWNER_EDIT', true, false, 'Allows editing owner information');
+INSERT INTO feature_flags (flag_key, is_enabled, globally_disabled, description) VALUES ('OWNER_ADD', true, false, 'Allows adding new owners');
+INSERT INTO feature_flags (flag_key, is_enabled, globally_disabled, description) VALUES ('VIEW_VETS', true, false, 'Allows viewing vet information');
+
+-- id 5 can't edit owners
+INSERT INTO feature_flag_blacklist (feature_flag_id, owner_id) VALUES (1, 5);
+
+-- only id 1 can add pets and owners
+INSERT INTO feature_flag_whitelist (feature_flag_id, owner_id) VALUES (1, 1);
+INSERT INTO feature_flag_whitelist (feature_flag_id, owner_id) VALUES (6, 1);

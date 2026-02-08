@@ -172,3 +172,74 @@ For additional details, please refer to the blog post [Hello DCO, Goodbye CLA: S
 ## License
 
 The Spring PetClinic sample application is released under version 2.0 of the [Apache License](https://www.apache.org/licenses/LICENSE-2.0).
+
+# PetClinic Feature Flags
+- This project adds feature flags to the PetClinic app so that we can control the features to certain users.
+
+# How it works:
+- Enable/Disable:
+    Each feature can be enabled/disabled for the users based on if they are whitelisted or blacklisted. There is also a global disability which shuts down the specified feature until enabled.
+- Whitelist:
+    Only users listed in the whitelist can access the feature specified.
+- Blacklist:
+    Users listed in the blacklist will be blocked from the feature even if the feature is enabled.
+- Rollout Percentage:
+    You can release a feature gradually instead of a global release. For example, if rollout_percentage = 50, roughly 50% of users get access (deterministic by user ID).
+
+# Example:
+    | Feature Key  | Enabled | Blacklist | Whitelist | Rollout % |
+    | ------------ | ------- | --------- | --------- | --------- |
+    | ADD_PET      | true    | 4         | 1         | 100       |
+    | OWNER_SEARCH | true    | -         | -         | 50        |
+
+    Owner with id 4 is blacklisted i.e. they cannot add pets.
+    Owner with id 1 is whiteliste i.e. they can addpets.
+    The rollout percentage of OWNER_SEARCH key is 50% i.e. roughly half the users can search for owners.
+
+# Using Feature Flags in Code:
+    @FeatureFlagEnabled("ADD_PET")
+    @GetMapping("/owners/{ownerId}/pets/new")
+    public String newPetForm(@PathVariable int ownerId) {
+        return "pets/createPetForm";
+    }
+
+    The Aspect intercepts the method and checks if the feature i.e. ADD_PET is:
+    1. Enabled
+    2. If user is whitelisted/blacklisted
+    3. Rollout percentage
+    If access is denied, the user gets HTTP 403 Forbidden.
+
+# Database Setup:
+- Tables
+    CREATE TABLE feature_flags (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        flag_key VARCHAR(100) UNIQUE,
+        is_enabled BOOLEAN,
+        globally_disabled BOOLEAN,
+        description VARCHAR(255),
+        rollout_percentage INT
+    );
+
+    CREATE TABLE feature_flag_blacklist (
+        feature_flag_id INT,
+        owner_id INT
+    );
+
+    CREATE TABLE feature_flag_whitelist (
+        feature_flag_id INT,
+        owner_id INT
+    );
+
+- Example Data
+    INSERT INTO feature_flags (flag_key, is_enabled, globally_disabled, description, rollout_percentage)
+    VALUES ('ADD_PET', true, false, 'Allows adding pets', 100);
+
+    INSERT INTO feature_flag_blacklist (feature_flag_id, owner_id) VALUES (1, 4);
+    INSERT INTO feature_flag_whitelist (feature_flag_id, owner_id) VALUES (1, 1);
+
+# Why Feature Flags?
+- Roll out features gradually.
+- Access control i.e. privilege to users.
+- Feature blocking whenever needed i.e. internal errors or data corruption.
+- Avoid frequent code redeployment for feature changes. 
+
