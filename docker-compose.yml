@@ -1,6 +1,6 @@
 services:
   mysql:
-    image: mysql:9.5
+    image: mysql:9.6
     ports:
       - "3306:3306"
     environment:
