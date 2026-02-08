@@ -46,6 +46,7 @@ public class FeatureToggleAspect {
 		}
 
 		// Check if feature is enabled
+		logger.debug("Checking feature toggle '{}' with context '{}'", flagKey, context);
 		boolean isEnabled = featureFlagService.isFeatureEnabled(flagKey, context);
 
 		logger.debug("Feature toggle '{}' check: enabled={}, context={}", flagKey, isEnabled, context);

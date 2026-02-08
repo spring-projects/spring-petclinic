@@ -106,6 +106,9 @@ public class FeatureFlagService {
 
 			case PERCENTAGE:
 				return evaluatePercentage(flag, context);
+			
+			case GLOBAL_DISABLE:
+            	return false;
 
 			default:
 				logger.warn("Unknown flag type for '{}': {}", flag.getFlagKey(), flag.getFlagType());
@@ -121,7 +124,8 @@ public class FeatureFlagService {
 			logger.debug("Whitelist flag '{}' requires context, got null/empty", flag.getFlagKey());
 			return false;
 		}
-
+		logger.debug("Whitelist flag '{}' - checking if context '{}' is in whitelist: {}", flag.getFlagKey(), context,
+				flag.getWhitelist());
 		boolean inWhitelist = flag.getWhitelist().contains(context.trim());
 		logger.debug("Whitelist flag '{}' for context '{}': {}", flag.getFlagKey(), context, inWhitelist);
 		return inWhitelist;

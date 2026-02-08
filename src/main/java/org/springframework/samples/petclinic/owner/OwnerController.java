@@ -22,6 +22,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.samples.petclinic.featureflag.annotation.FeatureToggle;
 import org.springframework.samples.petclinic.featureflag.service.FeatureFlagService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -90,13 +91,27 @@ class OwnerController {
 	}
 
 	@GetMapping("/owners/find")
-	public String initFindForm() {
+	public String initFindForm(Model model) {
+		model.addAttribute("owner", new Owner());
+
+    boolean ownerSearchEnabled =
+            featureFlagService.isFeatureEnabled("OWNER_SEARCH", null);
+
+    model.addAttribute("ownerSearchEnabled", ownerSearchEnabled);
 		return "owners/findOwners";
 	}
 
+	@FeatureToggle(
+    key = "OWNER_SEARCH",
+    disabledMessage = "Owner search is restricted",
+    disabledRedirect = "/owners/find"
+	)
 	@GetMapping("/owners")
 	public String processFindForm(@RequestParam(defaultValue = "1") int page, Owner owner, BindingResult result,
 			Model model) {
+
+		
+		
 		// allow parameterless GET request for /owners to return all records
 		String lastName = owner.getLastName();
 		if (lastName == null) {
@@ -176,6 +191,8 @@ class OwnerController {
 
 		// displaying add pet button based on feature toggle
 		boolean addNewPetEnabled = featureFlagService.isFeatureEnabled("ADD_NEW_PET","addNewPetEnabled");
+		boolean addVisitEnabled = featureFlagService.isFeatureEnabled("ADD_VISIT","addVisitEnabled");
+		mav.addObject("addVisitEnabled", addVisitEnabled);
 		mav.addObject("addNewPetEnabled", addNewPetEnabled);
 		return mav;
 	}

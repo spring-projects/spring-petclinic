@@ -106,7 +106,7 @@ public class FeatureFlagController {
 	}
 
 	/**
-	 * POST /api/feature-flags/{flagKey}/toggle Toggle a feature flag on/off
+	 * POST /feature-flags/{flagKey}/toggle Toggle a feature flag on/off
 	 */
 	@PostMapping("/{flagKey}/toggle")
 	public ResponseEntity<?> toggleFlag(@PathVariable String flagKey) {
@@ -130,7 +130,7 @@ public class FeatureFlagController {
 	}
 
 	/**
-	 * GET /api/feature-flags/check/{flagKey} Check if a feature is enabled (simple check
+	 * GET /feature-flags/check/{flagKey} Check if a feature is enabled (simple check
 	 * without context)
 	 */
 	@GetMapping("/check/{flagKey}")

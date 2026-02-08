@@ -65,14 +65,14 @@ VALUES ('ADD_VISIT', 'Controls whether users can add new visits for pets', 'SIMP
 
 -- 3. WHITELIST flag: Owner Search (only specific users can search)
 INSERT IGNORE  INTO feature_flags (flag_key, description, flag_type, enabled, percentage, created_at, updated_at)
-VALUES ('OWNER_SEARCH', 'Controls who can search for owners', 'WHITELIST', TRUE, NULL, NOW(), NOW());
+VALUES ('OWNER_SEARCH', 'Controls who can search for owners', 'SIMPLE', TRUE, NULL, NOW(), NOW());
 
 -- Add whitelist items for owner-search (example user contexts)
-INSERT IGNORE INTO feature_flag_whitelist (feature_flag_id, whitelist)
-SELECT id, 'admin' FROM feature_flags WHERE flag_key = 'OWNER_SEARCH';
+-- INSERT IGNORE INTO feature_flag_whitelist (feature_flag_id, whitelist)
+-- SELECT id, 'admin' FROM feature_flags WHERE flag_key = 'OWNER_SEARCH';
 
-INSERT IGNORE INTO feature_flag_whitelist (feature_flag_id, whitelist)
-SELECT id, 'Ramprakash' FROM feature_flags WHERE flag_key = 'OWNER_SEARCH';
+-- INSERT IGNORE INTO feature_flag_whitelist (feature_flag_id, whitelist)
+-- SELECT id, 'Ramprakash' FROM feature_flags WHERE flag_key = 'OWNER_SEARCH';
 
 -- 4. PERCENTAGE flag: New UI Theme (gradually roll out to 50% of users)
 INSERT IGNORE INTO feature_flags (flag_key, description, flag_type, enabled, percentage, created_at, updated_at)
