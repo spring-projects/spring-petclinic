@@ -35,7 +35,7 @@
 
   <a th:href="@{__${owner.id}__/edit}" class="btn btn-primary" th:text="#{editOwner}">Edit
     Owner</a>
-  <a th:href="@{__${owner.id}__/pets/new}" class="btn btn-primary" th:text="#{addNewPet}">Add
+  <a th:if="${addNewPetEnabled}" th:href="@{__${owner.id}__/pets/new}" class="btn btn-primary" th:text="#{addNewPet}">Add
     New Pet</a>
 
   <br />

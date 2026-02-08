@@ -10,13 +10,13 @@ import org.springframework.samples.petclinic.featureflag.entity.FlagType;
 import org.springframework.samples.petclinic.featureflag.repository.FeatureFlagRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 /**
  * Feature Flag Service - Core service for managing and evaluating feature flags
- * 
- * This service provides:
- * - CRUD operations for feature flags
- * - Advanced flag evaluation with multiple strategies
- * - Helper methods for easy integration anywhere in the application
+ *
+ * This service provides: - CRUD operations for feature flags - Advanced flag evaluation
+ * with multiple strategies - Helper methods for easy integration anywhere in the
+ * application
  */
 @Service
 @Transactional
@@ -31,9 +31,8 @@ public class FeatureFlagService {
 	}
 
 	/**
-	 * Main helper function to check if a feature is enabled
-	 * Can be called from anywhere in the application
-	 * 
+	 * Main helper function to check if a feature is enabled Can be called from anywhere
+	 * in the application
 	 * @param flagKey The unique identifier for the feature flag
 	 * @return true if feature is enabled, false otherwise
 	 */
@@ -43,7 +42,6 @@ public class FeatureFlagService {
 
 	/**
 	 * Check if feature is enabled for a specific context/user
-	 * 
 	 * @param flagKey The unique identifier for the feature flag
 	 * @param context Context identifier (e.g., userId, sessionId, email)
 	 * @return true if feature is enabled for this context, false otherwise
@@ -69,12 +67,10 @@ public class FeatureFlagService {
 	}
 
 	/**
-	 * Evaluate a feature flag based on its type and configuration
-	 * Evaluation order (highest to lowest priority):
-	 * 1. GLOBAL_DISABLE - always returns false
-	 * 2. Blacklist - if context is blacklisted, return false
-	 * 3. Enabled check - if not enabled, return false
-	 * 4. Type-specific evaluation (WHITELIST, PERCENTAGE, SIMPLE)
+	 * Evaluate a feature flag based on its type and configuration Evaluation order
+	 * (highest to lowest priority): 1. GLOBAL_DISABLE - always returns false 2. Blacklist
+	 * - if context is blacklisted, return false 3. Enabled check - if not enabled, return
+	 * false 4. Type-specific evaluation (WHITELIST, PERCENTAGE, SIMPLE)
 	 */
 	private boolean evaluateFlag(FeatureFlag flag, String context) {
 		// GLOBAL_DISABLE always returns false
@@ -154,8 +150,8 @@ public class FeatureFlagService {
 		int bucket = hash % 100;
 
 		boolean enabled = bucket < flag.getPercentage();
-		logger.debug("Percentage flag '{}' for context '{}': bucket={}, percentage={}, enabled={}",
-				flag.getFlagKey(), context, bucket, flag.getPercentage(), enabled);
+		logger.debug("Percentage flag '{}' for context '{}': bucket={}, percentage={}, enabled={}", flag.getFlagKey(),
+				context, bucket, flag.getPercentage(), enabled);
 		return enabled;
 	}
 

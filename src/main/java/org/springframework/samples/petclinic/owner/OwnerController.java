@@ -22,6 +22,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.samples.petclinic.featureflag.service.FeatureFlagService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -51,9 +52,11 @@ class OwnerController {
 	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
 
 	private final OwnerRepository owners;
+	private final FeatureFlagService featureFlagService;
 
-	public OwnerController(OwnerRepository owners) {
+	public OwnerController(OwnerRepository owners, FeatureFlagService featureFlagService) {
 		this.owners = owners;
+		this.featureFlagService = featureFlagService;
 	}
 
 	@InitBinder
@@ -170,6 +173,10 @@ class OwnerController {
 		Owner owner = optionalOwner.orElseThrow(() -> new IllegalArgumentException(
 				"Owner not found with id: " + ownerId + ". Please ensure the ID is correct "));
 		mav.addObject(owner);
+
+		// displaying add pet button based on feature toggle
+		boolean addNewPetEnabled = featureFlagService.isFeatureEnabled("ADD_NEW_PET","addNewPetEnabled");
+		mav.addObject("addNewPetEnabled", addNewPetEnabled);
 		return mav;
 	}
 
