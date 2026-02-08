@@ -2,7 +2,9 @@ package org.springframework.samples.petclinic.featureflag.dto;
 
 public class FeatureCheckResponse {
     private String flagKey;
+
     private Boolean enabled;
+
     private String context;
 
     public FeatureCheckResponse(String flagKey, Boolean enabled, String context) {

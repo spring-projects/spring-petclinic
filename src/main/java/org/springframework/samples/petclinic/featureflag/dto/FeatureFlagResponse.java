@@ -7,111 +7,121 @@ import org.springframework.samples.petclinic.featureflag.entity.FlagType;
 
 public class FeatureFlagResponse {
 
-    private Long id;
-    private String flagKey;
-    private String description;
-    private FlagType flagType;
-    private Boolean enabled;
-    private Integer percentage;
-    private Set<String> whitelist;
-    private Set<String> blacklist;
-    private String createdAt;
-    private String updatedAt;
+  private Long id;
 
-    public static FeatureFlagResponse fromEntity(FeatureFlag flag) {
-        FeatureFlagResponse response = new FeatureFlagResponse();
-        response.setId(flag.getId());
-        response.setFlagKey(flag.getFlagKey());
-        response.setDescription(flag.getDescription());
-        response.setFlagType(flag.getFlagType());
-        response.setEnabled(flag.isEnabled());
-        response.setPercentage(flag.getPercentage());
-        response.setWhiteList(flag.getWhitelist());
-        response.setBlackList(flag.getBlacklist());
-        response.setCreatedAt(flag.getCreatedAt().toString());
-        response.setUpdatedAt(flag.getUpdatedAt().toString());
-        return response;
-    }
+		private String flagKey;
 
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
+		private String description;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+		private FlagType flagType;
 
-    public String getFlagKey() {
-        return flagKey;
-    }
+		private Boolean enabled;
 
-    public void setFlagKey(String flagKey) {
-        this.flagKey = flagKey;
-    }
+		private Integer percentage;
 
-    public String getDescription() {
-        return description;
-    }
+		private Set<String> whitelist;
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+		private Set<String> blacklist;
 
-    public FlagType getFlagType() {
-        return flagType;
-    }
+		private String createdAt;
 
-    public void setFlagType(FlagType flagType) {
-        this.flagType = flagType;
-    }
+		private String updatedAt;
 
-    public Boolean getEnabled() {
-        return enabled;
-    }
+		public static FeatureFlagResponse fromEntity(FeatureFlag flag) {
+			FeatureFlagResponse response = new FeatureFlagResponse();
+			response.setId(flag.getId());
+			response.setFlagKey(flag.getFlagKey());
+			response.setDescription(flag.getDescription());
+			response.setFlagType(flag.getFlagType());
+			response.setEnabled(flag.isEnabled());
+			response.setPercentage(flag.getPercentage());
+			response.setWhitelist(flag.getWhitelist());
+			response.setBlacklist(flag.getBlacklist());
+			response.setCreatedAt(flag.getCreatedAt().toString());
+			response.setUpdatedAt(flag.getUpdatedAt().toString());
+			return response;
+		}
 
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
+		// Getters and Setters
+		public Long getId() {
+			return id;
+		}
 
-    public Integer getPercentage() {
-        return percentage;
-    }
+		public void setId(Long id) {
+			this.id = id;
+		}
 
-    public void setPercentage(Integer percentage) {
-        this.percentage = percentage;
-    }
+		public String getFlagKey() {
+			return flagKey;
+		}
 
-    public Set<String> getWhiteList() {
-        return whitelist;
-    }
+		public void setFlagKey(String flagKey) {
+			this.flagKey = flagKey;
+		}
 
-    public void setWhiteList(Set<String> listItems) {
-        this.whitelist = listItems;
-    }
+		public String getDescription() {
+			return description;
+		}
 
-    public Set<String> getBlackList() {
-        return blacklist;
-    }
+		public void setDescription(String description) {
+			this.description = description;
+		}
 
-    public void setBlackList(Set<String> listItems) {
-        this.blacklist = listItems;
-    }
+		public FlagType getFlagType() {
+			return flagType;
+		}
 
-    public String getCreatedAt() {
-        return createdAt;
-    }
+		public void setFlagType(FlagType flagType) {
+			this.flagType = flagType;
+		}
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
+		public Boolean getEnabled() {
+			return enabled;
+		}
 
-    public String getUpdatedAt() {
-        return updatedAt;
-    }
+		public void setEnabled(Boolean enabled) {
+			this.enabled = enabled;
+		}
 
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
-    }
+		public Integer getPercentage() {
+			return percentage;
+		}
+
+		public void setPercentage(Integer percentage) {
+			this.percentage = percentage;
+		}
+
+		public Set<String> getWhitelist() {
+			return whitelist;
+		}
+
+		public void setWhitelist(Set<String> whitelist) {
+			this.whitelist = whitelist;
+		}
+
+		public Set<String> getBlacklist() {
+			return blacklist;
+		}
+
+		public void setBlacklist(Set<String> blacklist) {
+			this.blacklist = blacklist;
+		}
+
+		public String getCreatedAt() {
+			return createdAt;
+		}
+
+		public void setCreatedAt(String createdAt) {
+			this.createdAt = createdAt;
+		}
+
+		public String getUpdatedAt() {
+			return updatedAt;
+		}
+
+		public void setUpdatedAt(String updatedAt) {
+			this.updatedAt = updatedAt;
+		}
+
 
 }

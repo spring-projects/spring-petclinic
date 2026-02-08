@@ -51,3 +51,44 @@ INSERT IGNORE INTO visits VALUES (1, 7, '2010-03-04', 'rabies shot');
 INSERT IGNORE INTO visits VALUES (2, 8, '2011-03-04', 'rabies shot');
 INSERT IGNORE INTO visits VALUES (3, 8, '2009-06-04', 'neutered');
 INSERT IGNORE INTO visits VALUES (4, 7, '2008-09-04', 'spayed');
+
+
+-- Sample data for feature flags
+
+-- 1. SIMPLE flag: Add New Pet (enabled by default)
+INSERT IGNORE INTO feature_flags (flag_key, description, flag_type, enabled, percentage, created_at, updated_at)
+VALUES ('ADD_NEW_PET', 'Controls whether users can add new pets to an owner', 'SIMPLE', TRUE, NULL, NOW(), NOW());
+
+-- 2. SIMPLE flag: Add Visit (enabled by default)
+INSERT IGNORE INTO feature_flags (flag_key, description, flag_type, enabled, percentage, created_at, updated_at)
+VALUES ('ADD_VISIT', 'Controls whether users can add new visits for pets', 'SIMPLE', TRUE, NULL, NOW(), NOW());
+
+-- 3. WHITELIST flag: Owner Search (only specific users can search)
+INSERT IGNORE  INTO feature_flags (flag_key, description, flag_type, enabled, percentage, created_at, updated_at)
+VALUES ('OWNER_SEARCH', 'Controls who can search for owners', 'WHITELIST', TRUE, NULL, NOW(), NOW());
+
+-- Add whitelist items for owner-search (example user contexts)
+INSERT IGNORE INTO feature_flag_whitelist (feature_flag_id, whitelist)
+SELECT id, 'admin' FROM feature_flags WHERE flag_key = 'OWNER_SEARCH';
+
+INSERT IGNORE INTO feature_flag_whitelist (feature_flag_id, whitelist)
+SELECT id, 'Ramprakash' FROM feature_flags WHERE flag_key = 'OWNER_SEARCH';
+
+-- 4. PERCENTAGE flag: New UI Theme (gradually roll out to 50% of users)
+INSERT IGNORE INTO feature_flags (flag_key, description, flag_type, enabled, percentage, created_at, updated_at)
+VALUES ('NEW_UI_THEME', 'Gradually roll out new UI theme', 'PERCENTAGE', TRUE, 50, NOW(), NOW());
+
+-- 5. BLACKLIST flag: Delete Owner (block specific users from deleting)
+INSERT IGNORE INTO feature_flags (flag_key, description, flag_type, enabled, percentage, created_at, updated_at)
+VALUES ('DELETE_OWNER', 'Controls who can delete owners', 'BLACKLIST', TRUE, NULL, NOW(), NOW());
+
+-- Add blacklist items
+INSERT IGNORE INTO feature_flag_blacklist (feature_flag_id, blacklist)
+SELECT id, 'guest' FROM feature_flags WHERE flag_key = 'DELETE_OWNER';
+
+INSERT IGNORE INTO feature_flag_blacklist (feature_flag_id, blacklist)
+SELECT id, 'readonly_user' FROM feature_flags WHERE flag_key = 'DELETE_OWNER';
+
+-- 6. GLOBAL_DISABLE flag: Emergency shutdown example
+INSERT IGNORE INTO feature_flags (flag_key, description, flag_type, enabled, percentage, created_at, updated_at)
+VALUES ('EMERGENCY_SHUTDOWN', 'Emergency feature kill switch', 'GLOBAL_DISABLE', FALSE, NULL, NOW(), NOW());

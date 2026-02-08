@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.featureflag.dto;
 public class FeatureCheckRequest {
 
     private String flagKey;
+
     private String context;
 
     public String getFlagKey() {

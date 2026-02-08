@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Custom annotation to mark methods protected by feature flags
+ * Custom annotation to mark methods protected by feature toggle
  * 
  * Usage:
  * @FeatureToggle(key = "add-new-pet")

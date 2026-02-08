@@ -53,3 +53,28 @@ CREATE TABLE IF NOT EXISTS visits (
   description VARCHAR(255),
   FOREIGN KEY (pet_id) REFERENCES pets(id)
 ) engine=InnoDB;
+
+
+CREATE TABLE IF NOT EXISTS feature_flags (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  flag_key VARCHAR(255) NOT NULL UNIQUE,
+  description VARCHAR(500) NOT NULL,
+  flag_type VARCHAR(50) NOT NULL,
+  enabled BOOLEAN NOT NULL DEFAULT FALSE,
+  percentage INT,
+  created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL,
+  INDEX(flag_key)
+) engine=InnoDB;
+
+CREATE TABLE IF NOT EXISTS feature_flag_whitelist (
+  feature_flag_id BIGINT NOT NULL,
+  whitelist VARCHAR(255),
+  FOREIGN KEY (feature_flag_id) REFERENCES feature_flags(id) ON DELETE CASCADE
+) engine=InnoDB;
+
+CREATE TABLE IF NOT EXISTS feature_flag_blacklist (
+  feature_flag_id BIGINT NOT NULL,
+  blacklist VARCHAR(255),
+  FOREIGN KEY (feature_flag_id) REFERENCES feature_flags(id) ON DELETE CASCADE
+) engine=InnoDB;

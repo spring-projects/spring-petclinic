@@ -7,71 +7,89 @@ import org.springframework.samples.petclinic.featureflag.entity.FlagType;
 
 public class FeatureFlagRequest {
 
-     private String flagKey;
-        private String description;
-        private FlagType flagType;
-        private Boolean enabled;
-        private Integer percentage;
-        private Set<String> listItems;
+    private String flagKey;
 
-        // Getters and Setters
-        public String getFlagKey() {
-            return flagKey;
-        }
+    private String description;
 
-        public void setFlagKey(String flagKey) {
-            this.flagKey = flagKey;
-        }
+    private FlagType flagType;
 
-        public String getDescription() {
-            return description;
-        }
+    private Boolean enabled;
 
-        public void setDescription(String description) {
-            this.description = description;
-        }
+    private Integer percentage;
 
-        public FlagType getFlagType() {
-            return flagType;
-        }
+    private Set<String> whitelist;
 
-        public void setFlagType(FlagType flagType) {
-            this.flagType = flagType;
-        }
+    private Set<String> blacklist;
 
-        public Boolean getEnabled() {
-            return enabled;
-        }
+    // Getters and Setters
+    public String getFlagKey() {
+        return flagKey;
+    }
 
-        public void setEnabled(Boolean enabled) {
-            this.enabled = enabled;
-        }
+    public void setFlagKey(String flagKey) {
+        this.flagKey = flagKey;
+    }
 
-        public Integer getPercentage() {
-            return percentage;
-        }
+    public String getDescription() {
+        return description;
+    }
 
-        public void setPercentage(Integer percentage) {
-            this.percentage = percentage;
-        }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-        public Set<String> getListItems() {
-            return listItems;
-        }
+    public FlagType getFlagType() {
+        return flagType;
+    }
 
-        public void setListItems(Set<String> listItems) {
-            this.listItems = listItems;
-        }
+    public void setFlagType(FlagType flagType) {
+        this.flagType = flagType;
+    }
 
-        public FeatureFlag toEntity() {
-            FeatureFlag flag = new FeatureFlag();
-            flag.setFlagKey(this.flagKey);
-            flag.setDescription(this.description);
-            flag.setFlagType(this.flagType != null ? this.flagType : FlagType.SIMPLE);
-            flag.setEnabled(this.enabled != null ? this.enabled : false);
-            flag.setPercentage(this.percentage);
-            flag.setBlacklist(this.listItems != null ? this.listItems : Set.of());
-            flag.setWhitelist(this.listItems != null ? this.listItems : Set.of());
-            return flag;
-        }
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public Integer getPercentage() {
+        return percentage;
+    }
+
+    public void setPercentage(Integer percentage) {
+        this.percentage = percentage;
+    }
+
+    public Set<String> getWhitelist() {
+        return whitelist;
+    }
+
+    public void setWhitelist(Set<String> whitelist) {
+        this.whitelist = whitelist;
+    }
+
+    public Set<String> getBlacklist() {
+        return blacklist;
+    }
+
+    public void setBlacklist(Set<String> blacklist) {
+        this.blacklist = blacklist;
+    }
+
+    /**
+     * Convert DTO to Entity
+     */
+    public FeatureFlag toEntity() {
+        FeatureFlag flag = new FeatureFlag();
+        flag.setFlagKey(this.flagKey);
+        flag.setDescription(this.description);
+        flag.setFlagType(this.flagType != null ? this.flagType : FlagType.SIMPLE);
+        flag.setEnabled(this.enabled != null ? this.enabled : false);
+        flag.setPercentage(this.percentage);
+        flag.setWhitelist(this.whitelist != null ? this.whitelist : Set.of());
+        flag.setBlacklist(this.blacklist != null ? this.blacklist : Set.of());
+        return flag;
+    }
 }
