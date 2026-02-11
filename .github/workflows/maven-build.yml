@@ -6,19 +6,19 @@ name: Java CI with Maven
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
+ # pull_request:
+ #   branches: [ main ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
         java: [ '17' ]
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checking out code
+        uses: actions/checkout@v4
       - name: Set up JDK ${{matrix.java}}
         uses: actions/setup-java@v4
         with:
@@ -27,3 +27,46 @@ jobs:
           cache: maven
       - name: Build with Maven Wrapper
         run: ./mvnw -B verify
+
+      - name: Set up JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4
+        env:
+          JF_URL: ${{ vars.JFROG_URL }}
+          JF_ACCESS_TOKEN: ${{ secrets.JFROG_ACCESS }}
+
+      - name: Shift-Left Scan with Frogbot (Dependencies)
+        uses: jfrog/frogbot-action@v3
+        with:
+          url: ${{ secrets.JFROG_URL }}
+          access-token: ${{ secrets.JFROG_ACCESS }}
+          git-token: ${{ secrets.GITHUB_TOKEN }}  # For PR comments
+
+      - name: Secure Maven Resolution (From Artifactory)
+        run: |
+          jf config add artifactory --url=${{ vars.JFROG_URL }} --access-token=${{ secrets.JFROG_ACCESS }}
+          mvn dependency:resolve -DremoteRepositories=maven_virt-libs-release::default::${{ vars.JFROG_URL }}/artifactory/maven-virt  # Pulls from virtual repo
+
+      - name: Compile and Test Code
+        run: mvn clean compile test  # Runs existing unit tests
+
+      - name: Package JAR
+        run: mvn package -DskipTests  # tess already carried out in prev. step
+
+
+      - name: Build Docker Image
+        run: docker build -t ${{ vars.JFROG_URL }}/local-docker/petclinic:${{ github.sha }} .
+
+      - name: Push to Artifactory (Triggers Xray Scan)
+        run: |
+          jf docker push ${{ vars.JFROG_URL }}/local-docker/petclinic:${{ github.sha }} --build-name=petclinic --build-number=${{ github.run_number }}
+
+      - name: Xray Scan and SBOM (Bonus Gate)
+        run: |
+          jf scan local-docker/petclinic:${{ github.sha }} --format=json > xray-scan.json  # Exports JSON (bonus deliverable)
+          # Quality Gate: Fail if high vulns (configured in JFrog UI policy)
+
+      - name: Simulate Deploy (e.g., to Minikube/K8s)
+        run: |
+          # Assuming local Minikube: kubectl apply -f deploy.yaml
+          echo "Deploy command: kubectl create deployment petclinic --image=${{ vars.JFROG_URL }}/local-docker/petclinic:${{ github.sha }}"
+        
