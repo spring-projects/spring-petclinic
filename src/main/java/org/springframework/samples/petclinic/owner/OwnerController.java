@@ -37,6 +37,7 @@ import org.springframework.web.servlet.ModelAndView;
 import jakarta.validation.Valid;
 
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Juergen Hoeller
@@ -65,8 +66,8 @@ class OwnerController {
 	public Owner findOwner(@PathVariable(name = "ownerId", required = false) Integer ownerId) {
 		return ownerId == null ? new Owner()
 				: this.owners.findById(ownerId)
-					.orElseThrow(() -> new IllegalArgumentException("Owner not found with id: " + ownerId
-							+ ". Please ensure the ID is correct " + "and the owner exists in the database."));
+						.orElseThrow(() -> new IllegalArgumentException("Owner not found with id: " + ownerId
+								+ ". Please ensure the ID is correct " + "and the owner exists in the database."));
 	}
 
 	@GetMapping("/owners/new")
@@ -92,6 +93,7 @@ class OwnerController {
 	}
 
 	@GetMapping("/owners")
+	@Transactional(readOnly = true)
 	public String processFindForm(@RequestParam(defaultValue = "1") int page, Owner owner, BindingResult result,
 			Model model) {
 		// allow parameterless GET request for /owners to return all records
@@ -115,6 +117,9 @@ class OwnerController {
 		}
 
 		// multiple owners found
+		// Initialize pets for the list view
+		ownersResults.forEach(o -> o.getPets().size());
+
 		return addPaginationModel(page, model, ownersResults);
 	}
 
@@ -160,15 +165,24 @@ class OwnerController {
 
 	/**
 	 * Custom handler for displaying an owner.
+	 * 
 	 * @param ownerId the ID of the owner to display
 	 * @return a ModelMap with the model attributes for the view
 	 */
 	@GetMapping("/owners/{ownerId}")
+	@Transactional(readOnly = true)
 	public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
 		ModelAndView mav = new ModelAndView("owners/ownerDetails");
 		Optional<Owner> optionalOwner = this.owners.findById(ownerId);
 		Owner owner = optionalOwner.orElseThrow(() -> new IllegalArgumentException(
 				"Owner not found with id: " + ownerId + ". Please ensure the ID is correct "));
+		// Initialize lazy collections
+		owner.getPets().forEach(pet -> {
+			pet.getVisits().size();
+			if (pet.getType() != null) {
+				pet.getType().getName();
+			}
+		});
 		mav.addObject(owner);
 		return mav;
 	}
