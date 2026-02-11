@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import jakarta.validation.Valid;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Juergen Hoeller
@@ -53,13 +54,17 @@ class VisitController {
 	}
 
 	/**
-	 * Called before each and every @RequestMapping annotated method. 2 goals: - Make sure
-	 * we always have fresh data - Since we do not use the session scope, make sure that
+	 * Called before each and every @RequestMapping annotated method. 2 goals: -
+	 * Make sure
+	 * we always have fresh data - Since we do not use the session scope, make sure
+	 * that
 	 * Pet object always has an id (Even though id is not part of the form fields)
+	 * 
 	 * @param petId
 	 * @return Pet
 	 */
 	@ModelAttribute("visit")
+	@Transactional(readOnly = true)
 	public Visit loadPetWithVisit(@PathVariable("ownerId") int ownerId, @PathVariable("petId") int petId,
 			Map<String, Object> model) {
 		Optional<Owner> optionalOwner = owners.findById(ownerId);
