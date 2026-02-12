@@ -3,11 +3,11 @@ pipeline {
 
   stages {
 
-    stage('Checkout') {
+/*    stage('Checkout') {
       steps {
         git 'https://github.com/Guru911/spring-petclinic.git'
       }
-    }
+  */  }
 
     stage('Build') {
       steps {
