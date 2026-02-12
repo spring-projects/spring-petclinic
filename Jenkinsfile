@@ -7,8 +7,8 @@ pipeline {
       steps {
         git 'https://github.com/Guru911/spring-petclinic.git'
       }
-  */  }
-
+    }
+*/
     stage('Build') {
       steps {
         sh 'mvn clean package -DskipTests'
