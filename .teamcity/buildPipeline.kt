@@ -1,37 +1,37 @@
 import jetbrains.buildServer.configs.kotlin.*
 import jetbrains.buildServer.configs.kotlin.buildSteps.script
-import jetbrains.buildServer.configs.kotlin.vcs.*
-
 
 class StandardPipeline(
-    projectId: String,
-    repoUrl: String
+    private val prefix: String
 ) {
 
-    val vcsRoot = GitVcsRoot {
-        id("${projectId}_Vcs")
-        name = "$projectId VCS"
-        url = repoUrl
-        branch = "refs/heads/main"
-    }
-
     val build = BuildType {
-        id("${projectId}_Build")
-        name = "Build"
-        templates(CommonBuildTemplate)
+        id("${prefix}_Build")
+        name = "$prefix :: Build"
 
         vcs {
-            root(vcsRoot)
+            root(DslContext.settingsRoot)
+        }
+
+        steps {
+            script {
+                name = "Build"
+                scriptContent = "./gradlew clean build"
+            }
         }
     }
 
     val test = BuildType {
-        id("${projectId}_Test")
-        name = "Test"
+        id("${prefix}_Test")
+        name = "$prefix :: Test"
+
+        vcs {
+            root(DslContext.settingsRoot)
+        }
 
         steps {
             script {
-                name = "Run Tests"
+                name = "Test"
                 scriptContent = "./gradlew test"
             }
         }
@@ -42,8 +42,13 @@ class StandardPipeline(
     }
 
     val deploy = BuildType {
-        id("${projectId}_Deploy")
-        name = "Deploy"
+        id("${prefix}_Deploy")
+        name = "$prefix :: Deploy"
+        type = BuildTypeSettings.Type.DEPLOYMENT
+
+        vcs {
+            root(DslContext.settingsRoot)
+        }
 
         steps {
             script {
