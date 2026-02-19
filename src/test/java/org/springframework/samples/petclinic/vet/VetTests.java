@@ -38,4 +38,23 @@ class VetTests {
 		assertThat(other.getId()).isEqualTo(vet.getId());
 	}
 
+    @Test
+    void testAddSpecialty() {
+        Vet vet = new Vet();
+        Specialty radiology = new Specialty();
+        radiology.setName("Radiology");
+        Specialty surgery = new Specialty();
+        surgery.setName("Surgery");
+
+        assertThat(vet.getNrOfSpecialties()).isEqualTo(0);
+
+        vet.addSpecialty(radiology);
+        assertThat(vet.getNrOfSpecialties()).isEqualTo(1);
+        assertThat(vet.getSpecialties()).containsExactly(radiology);
+
+        vet.addSpecialty(surgery);
+        assertThat(vet.getNrOfSpecialties()).isEqualTo(2);
+        assertThat(vet.getSpecialties()).containsExactlyInAnyOrder(radiology, surgery);
+    }
+
 }

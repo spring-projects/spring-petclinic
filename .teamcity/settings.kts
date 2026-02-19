@@ -27,18 +27,12 @@ version = "2025.11"
 
 project {
 
-    buildType(Build)
+    val pipeline = StandardPipeline(
+        projectId = "MyService",
+        repoUrl = "git@gitlab.com:company/my-service.git"
+    )
+
+    buildType(pipeline.build)
+    buildType(pipeline.test)
+    buildType(pipeline.deploy)
 }
-
-object Build : BuildType({
-    name = "Build"
-
-    vcs {
-        root(DslContext.settingsRoot)
-    }
-
-    features {
-        perfmon {
-        }
-    }
-})

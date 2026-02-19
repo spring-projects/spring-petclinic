@@ -45,11 +45,30 @@ import jakarta.xml.bind.annotation.XmlElement;
 @Table(name = "vets")
 public class Vet extends Person {
 
+	/**
+	 * Represents the specialties associated with a veterinarian. A many-to-many relationship
+	 * is established between the {@code Vet} and {@code Specialty} entities, where each
+	 * veterinarian can have multiple specialties and each specialty can be shared among
+	 * multiple veterinarians.
+	 *
+	 * This relationship is eagerly fetched, meaning all data related to the specialties
+	 * of a veterinarian is loaded immediately along with the veterinarian entity.
+	 *
+	 * The mapping is performed using a join table named {@code vet_specialties}, with
+	 * {@code vet_id} referencing the veterinarian and {@code specialty_id} referencing
+	 * the specialty.
+	 */
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "vet_specialties", joinColumns = @JoinColumn(name = "vet_id"),
 			inverseJoinColumns = @JoinColumn(name = "specialty_id"))
 	private Set<Specialty> specialties;
 
+	/**
+	 * Returns the internal set of specialties associated with a veterinarian.
+	 * If the set is null, it initializes and returns an empty set.
+	 *
+	 * @return a potentially initialized set of {@code Specialty} objects associated with the veterinarian
+	 */
 	protected Set<Specialty> getSpecialtiesInternal() {
 		if (this.specialties == null) {
 			this.specialties = new HashSet<>();

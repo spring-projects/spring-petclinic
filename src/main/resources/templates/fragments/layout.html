@@ -55,6 +55,11 @@
             <span>Find owners</span>
           </li>
 
+          <li th:replace="~{::menuItem ('/pets','pets','pets','paw','Pets')}">
+            <span class="fa fa-paw" aria-hidden="true"></span>
+            <span>Pets</span>
+          </li>
+
           <li th:replace="~{::menuItem ('/vets.html','vets','veterinarians','th-list','Veterinarians')}">
             <span class="fa fa-th-list" aria-hidden="true"></span>
             <span>Veterinarians</span>
