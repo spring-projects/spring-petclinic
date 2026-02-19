@@ -8,18 +8,20 @@ class StandardPipeline(
     repoUrl: String
 ) {
 
+    val vcsRoot = GitVcsRoot {
+        id("${projectId}_Vcs")
+        name = "$projectId VCS"
+        url = repoUrl
+        branch = "refs/heads/main"
+    }
+
     val build = BuildType {
         id("${projectId}_Build")
         name = "Build"
         templates(CommonBuildTemplate)
 
         vcs {
-            root(GitVcsRoot {
-                id("${projectId}_Vcs")
-                name = "$projectId VCS"
-                url = repoUrl
-                branch = "refs/heads/main"
-            })
+            root(vcsRoot)
         }
     }
 
