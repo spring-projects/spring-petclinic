@@ -235,6 +235,13 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
         <executions>
           <execution>
+            <id>repackage</id>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>build-info</id>
             <!-- Spring Boot Actuator displays build-related information
               if a META-INF/build-info.properties file is present -->
             <goals>
