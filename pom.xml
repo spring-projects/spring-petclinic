@@ -34,6 +34,7 @@
 
     <sonar.organization>solivalle</sonar.organization>
     <sonar.projectKey>solivalle_spring-petclinic</sonar.projectKey>
+    <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
   </properties>
 
   <licenses>
