@@ -21,13 +21,31 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
       - name: Set up JDK ${{matrix.java}}
         uses: actions/setup-java@v4
         with:
           java-version: ${{matrix.java}}
-          distribution: 'adopt'
+          distribution: 'temurin'
           cache: maven
+
+      - name: Print Commit Timestamp (Lead Time Start)
+        run: echo "COMMIT_TIME=${{ github.event.head_commit.timestamp }}"
+
       - name: Build with Maven Wrapper
-        run: ./mvnw -B verify
+        run: ./mvnw -B clean verify
+
       - name: SonarCloud Scan
         run: mvn sonar:sonar -Dsonar.token=${{ secrets.SONAR_TOKEN }} -Dsonar.host.url=https://sonarcloud.io
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Simulated Deploy
+        run: |
+          echo "Deploying to production..."
+          sleep 5
+          echo "DEPLOY_TIME=$(date -u)"
