@@ -71,8 +71,8 @@
             <td th:text="${visit?.description}"></td>
           </tr>
           <tr>
-            <td><a th:href="@{__${owner.id}__/pets/__${pet.id}__/edit}" th:text="#{editPet}">Edit Pet</a></td>
-            <td><a th:href="@{__${owner.id}__/pets/__${pet.id}__/visits/new}" th:text="#{addVisit}">Add Visit</a></td>
+            <td><a th:href="@{__${owner.id}__/pets/__${pet.id}__/edit}" class="btn btn-primary" th:text="#{editPet}">Edit Pet</a></td>
+            <td><a th:href="@{__${owner.id}__/pets/__${pet.id}__/visits/new}" class="btn btn-primary" th:text="#{addVisit}">Add Visit</a></td>
           </tr>
         </table>
       </td>
