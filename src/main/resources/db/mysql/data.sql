@@ -33,19 +33,19 @@ INSERT IGNORE INTO owners VALUES (8, 'Maria', 'Escobito', '345 Maple St.', 'Madi
 INSERT IGNORE INTO owners VALUES (9, 'David', 'Schroeder', '2749 Blackhawk Trail', 'Madison', '6085559435');
 INSERT IGNORE INTO owners VALUES (10, 'Carlos', 'Estaban', '2335 Independence La.', 'Waunakee', '6085555487');
 
-INSERT IGNORE INTO pets VALUES (1, 'Leo', '2000-09-07', 1, 1);
-INSERT IGNORE INTO pets VALUES (2, 'Basil', '2002-08-06', 6, 2);
-INSERT IGNORE INTO pets VALUES (3, 'Rosy', '2001-04-17', 2, 3);
-INSERT IGNORE INTO pets VALUES (4, 'Jewel', '2000-03-07', 2, 3);
-INSERT IGNORE INTO pets VALUES (5, 'Iggy', '2000-11-30', 3, 4);
-INSERT IGNORE INTO pets VALUES (6, 'George', '2000-01-20', 4, 5);
-INSERT IGNORE INTO pets VALUES (7, 'Samantha', '1995-09-04', 1, 6);
-INSERT IGNORE INTO pets VALUES (8, 'Max', '1995-09-04', 1, 6);
-INSERT IGNORE INTO pets VALUES (9, 'Lucky', '1999-08-06', 5, 7);
-INSERT IGNORE INTO pets VALUES (10, 'Mulligan', '1997-02-24', 2, 8);
-INSERT IGNORE INTO pets VALUES (11, 'Freddy', '2000-03-09', 5, 9);
-INSERT IGNORE INTO pets VALUES (12, 'Lucky', '2000-06-24', 2, 10);
-INSERT IGNORE INTO pets VALUES (13, 'Sly', '2002-06-08', 1, 10);
+INSERT IGNORE INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (1, 'Leo', '2000-09-07', 'Maine Coon', 1, 1);
+INSERT IGNORE INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (2, 'Basil', '2002-08-06', 'Syrian Hamster', 6, 2);
+INSERT IGNORE INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (3, 'Rosy', '2001-04-17', 'Labrador Retriever', 2, 3);
+INSERT IGNORE INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (4, 'Jewel', '2000-03-07', 'Beagle', 2, 3);
+INSERT IGNORE INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (5, 'Iggy', '2000-11-30', 'Green Iguana', 3, 4);
+INSERT IGNORE INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (6, 'George', '2000-01-20', 'Ball Python', 4, 5);
+INSERT IGNORE INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (7, 'Samantha', '1995-09-04', 'Siamese', 1, 6);
+INSERT IGNORE INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (8, 'Max', '1995-09-04', 'Persian', 1, 6);
+INSERT IGNORE INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (9, 'Lucky', '1999-08-06', 'Cockatiel', 5, 7);
+INSERT IGNORE INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (10, 'Mulligan', '1997-02-24', 'Bulldog', 2, 8);
+INSERT IGNORE INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (11, 'Freddy', '2000-03-09', 'Parakeet', 5, 9);
+INSERT IGNORE INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (12, 'Lucky', '2000-06-24', 'Golden Retriever', 2, 10);
+INSERT IGNORE INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (13, 'Sly', '2002-06-08', 'Bengal', 1, 10);
 
 INSERT IGNORE INTO visits VALUES (1, 7, '2010-03-04', 'rabies shot');
 INSERT IGNORE INTO visits VALUES (2, 8, '2011-03-04', 'rabies shot');
