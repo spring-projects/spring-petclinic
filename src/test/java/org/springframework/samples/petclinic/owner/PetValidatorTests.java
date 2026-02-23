@@ -54,6 +54,8 @@ public class PetValidatorTests {
 
 	private static final LocalDate petBirthDate = LocalDate.of(1990, 1, 1);
 
+	private static final String petBreed = "Labrador";
+
 	@BeforeEach
 	void setUp() {
 		petValidator = new PetValidator();
@@ -68,6 +70,7 @@ public class PetValidatorTests {
 		pet.setName(petName);
 		pet.setType(petType);
 		pet.setBirthDate(petBirthDate);
+		pet.setBreed(petBreed);
 
 		petValidator.validate(pet, errors);
 
@@ -83,6 +86,7 @@ public class PetValidatorTests {
 			pet.setName("");
 			pet.setType(petType);
 			pet.setBirthDate(petBirthDate);
+			pet.setBreed(petBreed);
 
 			petValidator.validate(pet, errors);
 
@@ -94,6 +98,7 @@ public class PetValidatorTests {
 			pet.setName(petName);
 			pet.setType(null);
 			pet.setBirthDate(petBirthDate);
+			pet.setBreed(petBreed);
 
 			petValidator.validate(pet, errors);
 
@@ -101,10 +106,24 @@ public class PetValidatorTests {
 		}
 
 		@Test
+		void testValidateWithInvalidBreed() {
+			petType.setName(petTypeName);
+			pet.setName(petName);
+			pet.setType(petType);
+			pet.setBreed("  ");
+			pet.setBirthDate(petBirthDate);
+
+			petValidator.validate(pet, errors);
+
+			assertTrue(errors.hasFieldErrors("breed"));
+		}
+
+		@Test
 		void testValidateWithInvalidBirthDate() {
 			petType.setName(petTypeName);
 			pet.setName(petName);
 			pet.setType(petType);
+			pet.setBreed(petBreed);
 			pet.setBirthDate(null);
 
 			petValidator.validate(pet, errors);
