@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS pets (
   id INT(4) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(30),
   birth_date DATE,
+  breed VARCHAR(80),
   type_id INT(4) UNSIGNED NOT NULL,
   owner_id INT(4) UNSIGNED,
   INDEX(name),

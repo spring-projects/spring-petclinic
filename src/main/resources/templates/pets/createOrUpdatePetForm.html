@@ -19,6 +19,7 @@
       </div>
       <input th:replace="~{fragments/inputField :: input ('Name', 'name', 'text')}" />
       <input th:replace="~{fragments/inputField :: input ('Birth Date', 'birthDate', 'date')}" />
+      <input th:replace="~{fragments/inputField :: input ('Breed', 'breed', 'text')}" />
       <input th:replace="~{fragments/selectField :: select ('Type', 'type', ${types})}" />
     </div>
     <div class="form-group">

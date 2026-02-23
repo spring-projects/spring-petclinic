@@ -49,6 +49,9 @@ public class Pet extends NamedEntity {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate birthDate;
 
+	@Column
+	private String breed;
+
 	@ManyToOne
 	@JoinColumn(name = "type_id")
 	private PetType type;
@@ -64,6 +67,14 @@ public class Pet extends NamedEntity {
 
 	public LocalDate getBirthDate() {
 		return this.birthDate;
+	}
+
+	public String getBreed() {
+		return this.breed;
+	}
+
+	public void setBreed(String breed) {
+		this.breed = breed;
 	}
 
 	public PetType getType() {
