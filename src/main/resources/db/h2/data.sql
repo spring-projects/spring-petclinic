@@ -33,19 +33,19 @@ INSERT INTO owners VALUES (default, 'Maria', 'Escobito', '345 Maple St.', 'Madis
 INSERT INTO owners VALUES (default, 'David', 'Schroeder', '2749 Blackhawk Trail', 'Madison', '6085559435');
 INSERT INTO owners VALUES (default, 'Carlos', 'Estaban', '2335 Independence La.', 'Waunakee', '6085555487');
 
-INSERT INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (default, 'Leo', '2010-09-07', null, 1, 1);
-INSERT INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (default, 'Basil', '2012-08-06', null, 6, 2);
-INSERT INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (default, 'Rosy', '2011-04-17', null, 2, 3);
-INSERT INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (default, 'Jewel', '2010-03-07', null, 2, 3);
-INSERT INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (default, 'Iggy', '2010-11-30', null, 3, 4);
-INSERT INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (default, 'George', '2010-01-20', null, 4, 5);
-INSERT INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (default, 'Samantha', '2012-09-04', null, 1, 6);
-INSERT INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (default, 'Max', '2012-09-04', null, 1, 6);
-INSERT INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (default, 'Lucky', '2011-08-06', null, 5, 7);
-INSERT INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (default, 'Mulligan', '2007-02-24', null, 2, 8);
-INSERT INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (default, 'Freddy', '2010-03-09', null, 5, 9);
-INSERT INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (default, 'Lucky', '2010-06-24', null, 2, 10);
-INSERT INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (default, 'Sly', '2012-06-08', null, 1, 10);
+INSERT INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (default, 'Leo', '2010-09-07', 'Maine Coon', 1, 1);
+INSERT INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (default, 'Basil', '2012-08-06', 'Syrian Hamster', 6, 2);
+INSERT INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (default, 'Rosy', '2011-04-17', 'Labrador Retriever', 2, 3);
+INSERT INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (default, 'Jewel', '2010-03-07', 'Beagle', 2, 3);
+INSERT INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (default, 'Iggy', '2010-11-30', 'Green Iguana', 3, 4);
+INSERT INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (default, 'George', '2010-01-20', 'Ball Python', 4, 5);
+INSERT INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (default, 'Samantha', '2012-09-04', 'Siamese', 1, 6);
+INSERT INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (default, 'Max', '2012-09-04', 'Persian', 1, 6);
+INSERT INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (default, 'Lucky', '2011-08-06', 'Cockatiel', 5, 7);
+INSERT INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (default, 'Mulligan', '2007-02-24', 'Bulldog', 2, 8);
+INSERT INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (default, 'Freddy', '2010-03-09', 'Parakeet', 5, 9);
+INSERT INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (default, 'Lucky', '2010-06-24', 'Golden Retriever', 2, 10);
+INSERT INTO pets (id, name, birth_date, breed, type_id, owner_id) VALUES (default, 'Sly', '2012-06-08', 'Bengal', 1, 10);
 
 INSERT INTO visits VALUES (default, 7, '2013-01-01', 'rabies shot');
 INSERT INTO visits VALUES (default, 8, '2013-01-02', 'rabies shot');
