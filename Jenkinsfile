@@ -35,19 +35,10 @@ pipeline {
             }
             post {
                 always {
-                    // Publish JaCoCo coverage report in Jenkins UI
-                    jacoco(
-                        execPattern: '**/target/jacoco.exec',
-                        classPattern: '**/target/classes',
-                        sourcePattern: '**/src/main/java',
-                        exclusionPattern: '**/src/test*',
-                        changeBuildStatus: false,
-                        minimumInstructionCoverage: '0',
-                        minimumBranchCoverage: '0',
-                        minimumComplexityCoverage: '0',
-                        minimumLineCoverage: '0',
-                        minimumMethodCoverage: '0',
-                        minimumClassCoverage: '0'
+                    // Publish coverage using the modern Coverage plugin (replaces deprecated JaCoCo plugin)
+                    recordCoverage(
+                        tools: [[parser: 'JACOCO', pattern: '**/target/site/jacoco/jacoco.xml']],
+                        sourceCodeRetention: 'EVERY_BUILD'
                     )
                 }
             }
