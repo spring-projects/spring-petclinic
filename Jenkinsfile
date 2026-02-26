@@ -7,7 +7,6 @@ pipeline {
     }
 
     tools {
-        // Ensure Maven and JDK are configured in Jenkins Global Tool Configuration
         maven 'Maven'
         jdk 'JDK25'
     }
@@ -24,18 +23,23 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building the project...'
-                sh 'mvn clean compile -DskipTests'
+                bat 'mvn clean compile -DskipTests'
             }
         }
 
         stage('Test & Code Coverage (JaCoCo)') {
             steps {
                 echo 'Running tests and generating JaCoCo coverage report...'
-                sh 'mvn test jacoco:report'
+                bat 'mvn test jacoco:report'
             }
             post {
                 always {
-                    // Publish coverage using the modern Coverage plugin (replaces deprecated JaCoCo plugin)
+                    // Publish JUnit test results
+                    junit(
+                        testResults: '**/target/surefire-reports/*.xml',
+                        allowEmptyResults: true
+                    )
+                    // Publish coverage using the Coverage plugin with JaCoCo parser
                     recordCoverage(
                         tools: [[parser: 'JACOCO', pattern: '**/target/site/jacoco/jacoco.xml']],
                         sourceCodeRetention: 'EVERY_BUILD'
@@ -47,7 +51,7 @@ pipeline {
         stage('Package') {
             steps {
                 echo 'Packaging the application artifact...'
-                sh 'mvn package -DskipTests'
+                bat 'mvn package -DskipTests'
             }
             post {
                 success {
@@ -62,8 +66,6 @@ pipeline {
     post {
         always {
             echo 'Pipeline execution complete.'
-            // Publish JUnit test results
-            junit '**/target/surefire-reports/*.xml'
         }
         success {
             echo 'Build succeeded!'
