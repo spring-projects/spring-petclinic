@@ -12,6 +12,8 @@
   <name>petclinic</name>
 
   <properties>
+    <allure.version>2.24.0</allure.version>
+    <aspectj.version>1.9.22.1</aspectj.version>
     <!-- Generic properties -->
     <java.version>17</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -41,6 +43,12 @@
   </licenses>
 
   <dependencies>
+    <dependency>
+        <groupId>io.qameta.allure</groupId>
+        <artifactId>allure-junit5</artifactId>
+        <version>${allure.version}</version>
+        <scope>test</scope>
+    </dependency>
     <!-- Spring and Spring Boot dependencies -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -160,6 +168,28 @@
 
   <build>
     <plugins>
+      <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>3.2.5</version>
+          <configuration>
+              <systemPropertyVariables>
+                   <!-- Указываем путь, куда сохранять результаты -->
+                  <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
+              </systemPropertyVariables>
+              <argLine>
+                  -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+              </argLine>
+          </configuration>
+          <dependencies>
+              <dependency>
+                  <groupId>org.aspectj</groupId>
+                  <artifactId>aspectjweaver</artifactId>
+                  <version>${aspectj.version}</version>
+              </dependency>
+          </dependencies>
+      </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
