@@ -1,0 +1,15 @@
+---
+on:
+    push:
+      branches:
+        - main
+    workflow_dispatch: #manual trigger
+
+jobs:
+    maven:
+        runs-on: [ 'ubuntu-latest' ]
+        steps:
+          - name: checkout the code
+            uses: actions/checkout@v4
+          - name: build code
+            run: mvn package
