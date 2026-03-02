@@ -5,25 +5,46 @@ pipeline {
         maven 'Maven'
     }
 
+    environment {
+        APP_NAME = "spring-petclinic"
+    }
+
     stages {
 
-        stage('Clone Repository') {
+        stage('Checkout Code') {
             steps {
-                git 'https://github.com/PipelineNinja/spring-petclinic.git'
+                checkout scm
             }
         }
 
         stage('Build Application') {
             steps {
-                sh 'mvn clean package'
+                sh 'mvn clean package -DskipTests'
             }
         }
 
-        stage('Verify Build') {
+        stage('Run Tests') {
             steps {
-                sh 'ls target'
+                sh 'mvn test'
             }
         }
 
+        stage('Archive Artifacts') {
+            steps {
+                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "✅ Build Successful!"
+        }
+        failure {
+            echo "❌ Build Failed!"
+        }
+        always {
+            cleanWs()
+        }
     }
 }
