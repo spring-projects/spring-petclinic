@@ -59,7 +59,7 @@ pipeline {
                 docker pull kishormore123/spring-petclinic:latest
                 docker stop spring-petclinic || true
                 docker rm spring-petclinic || true
-                docker run -d --name spring-petclinic -p 8080:8080 kishormore123/spring-petclinic:latest
+                docker run -d --name spring-petclinic -p 8081:8080 kishormore123/spring-petclinic:latest
                 '
                 """
             }
