@@ -1,78 +1,68 @@
 pipeline {
     agent any
 
-    tools {
-        maven 'Maven'
-    }
-
     environment {
-        APP_NAME = "spring-petclinic"
-        DOCKER_IMAGE = "kishormore123/petclinic-app"
-        DOCKER_TAG = "v1"
+        // Ensure Jenkins can find docker and docker-compose
+        PATH = "/usr/bin:/usr/local/bin:/usr/local/sbin:/usr/sbin:${env.PATH}"
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds') // Add your DockerHub credentials in Jenkins
     }
 
     stages {
-
         stage('Checkout Code') {
             steps {
-                checkout scm
+                git branch: 'main',
+                    url: 'https://github.com/PipelineNinja/spring-petclinic.git'
             }
         }
 
         stage('Build Application') {
             steps {
-                sh 'mvn clean package -DskipTests'
+                sh 'mvn clean install -DskipTests'
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'mvn test'
+                sh 'mvn test'  // Testcontainers will start Postgres automatically
             }
         }
 
         stage('Archive Artifacts') {
             steps {
-                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+                archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $DOCKER_IMAGE:$DOCKER_TAG .'
+                sh '''
+                    docker build -t kishormore123/spring-petclinic:latest .
+                '''
             }
         }
 
         stage('Login to DockerHub') {
             steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub-creds',
-                    usernameVariable: 'DOCKER_USER',
-                    passwordVariable: 'DOCKER_PASS'
-                )]) {
-                    sh '''
-                    echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-                    '''
-                }
+                sh "echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin"
             }
         }
 
         stage('Push Docker Image') {
             steps {
-                sh 'docker push $DOCKER_IMAGE:$DOCKER_TAG'
+                sh 'docker push kishormore123/spring-petclinic:latest'
             }
         }
     }
 
     post {
-        success {
-            echo "✅ Build, Docker Build & Push Successful!"
-        }
-        failure {
-            echo "❌ Pipeline Failed!"
-        }
         always {
             cleanWs()
+        }
+        success {
+            echo "✅ Pipeline completed successfully!"
+        }
+        failure {
+            echo "❌ Pipeline failed!"
         }
     }
 }
