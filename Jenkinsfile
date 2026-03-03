@@ -2,16 +2,17 @@ pipeline {
     agent any
 
     environment {
-        // Ensure Jenkins can find docker and docker-compose
         PATH = "/usr/bin:/usr/local/bin:/usr/local/sbin:/usr/sbin:${env.PATH}"
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds') // Add your DockerHub credentials in Jenkins
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds')
+        APP_SERVER = "ec2-user@100.48.19.188"
     }
 
     stages {
+
         stage('Checkout Code') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/PipelineNinja/spring-petclinic.git'
+                url: 'https://github.com/PipelineNinja/spring-petclinic.git'
             }
         }
 
@@ -23,7 +24,7 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                sh 'mvn test'  // Testcontainers will start Postgres automatically
+                sh 'mvn test'
             }
         }
 
@@ -35,21 +36,32 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh '''
-                    docker build -t kishormore123/spring-petclinic:latest .
-                '''
+                sh 'docker build -t kishormore123/spring-petclinic:latest .'
             }
         }
 
         stage('Login to DockerHub') {
             steps {
-                sh "echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin"
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
             }
         }
 
         stage('Push Docker Image') {
             steps {
                 sh 'docker push kishormore123/spring-petclinic:latest'
+            }
+        }
+
+        stage('Deploy to Application Server') {
+            steps {
+                sh """
+                ssh -o StrictHostKeyChecking=no $APP_SERVER '
+                docker pull kishormore123/spring-petclinic:latest
+                docker stop spring-petclinic || true
+                docker rm spring-petclinic || true
+                docker run -d --name spring-petclinic -p 8080:8080 kishormore123/spring-petclinic:latest
+                '
+                """
             }
         }
     }
