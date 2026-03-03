@@ -75,4 +75,11 @@ class VetController {
 		return vets;
 	}
 
+	@GetMapping("/vets/by-specialty")
+	public @ResponseBody Vets showVetsBySpecialty(@RequestParam String specialty) {
+		Vets vets = new Vets();
+		vets.getVetList().addAll(this.vetRepository.findBySpecialtiesName(specialty));
+		return vets;
+	}
+
 }

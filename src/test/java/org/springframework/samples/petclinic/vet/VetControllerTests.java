@@ -76,7 +76,7 @@ class VetControllerTests {
 		given(this.vets.findAll()).willReturn(Lists.newArrayList(james(), helen()));
 		given(this.vets.findAll(any(Pageable.class)))
 			.willReturn(new PageImpl<Vet>(Lists.newArrayList(james(), helen())));
-
+		given(this.vets.findBySpecialtiesName("radiology")).willReturn(Lists.newArrayList(helen()));
 	}
 
 	@Test
@@ -95,6 +95,15 @@ class VetControllerTests {
 			.andExpect(status().isOk());
 		actions.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 			.andExpect(jsonPath("$.vetList[0].id").value(1));
+	}
+
+	@Test
+	void testShowVetsBySpecialty() throws Exception {
+		mockMvc.perform(get("/vets/by-specialty").param("specialty", "radiology").accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+			.andExpect(jsonPath("$.vetList.length()").value(1))
+			.andExpect(jsonPath("$.vetList[0].id").value(2));
 	}
 
 }

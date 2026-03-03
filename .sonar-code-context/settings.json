@@ -1,0 +1,163 @@
+{
+  "log_level": "INFO",
+  "init": {
+    "force": false,
+    "skip_gitignore_edit": false
+  },
+  "download_issues": {
+    "sq_url": "http://localhost:9000",
+    "sq_token": null,
+    "sq_project_key": null,
+    "sq_org": null,
+    "sq_branch": null,
+    "output": ".sonar-code-context/issues.json"
+  },
+  "download_metrics": {
+    "sq_url": "http://localhost:9000",
+    "sq_token": null,
+    "sq_project_key": null,
+    "sq_org": null,
+    "sq_branch": null,
+    "output": ".sonar-code-context/metrics.json"
+  },
+  "generate_md": {
+    "output": ".sonar-code-context/SONAR.md",
+    "include_guidelines": true,
+    "include_architecture": false,
+    "include_dependencies": false
+  },
+  "generate_md_dependencies": {
+    "repository": ".",
+    "build_system": "maven",
+    "output_file": ".sonar-code-context/SONAR_DEPENDENCIES.md",
+    "include_transitive": false,
+    "max_depth": 3
+  },
+  "merge_md": {
+    "guidelines_file": ".sonar-code-context/SONAR_GUIDELINES.md",
+    "architecture_file": ".sonar-code-context/SONAR_ARCHITECTURE.md",
+    "dependencies_file": ".sonar-code-context/SONAR_DEPENDENCIES.md",
+    "output": ".sonar-code-context/SONAR.md"
+  },
+  "generate_md_architecture": {
+    "repository": ".",
+    "architecture_strategy": "functions-outline",
+    "llm_provider": "openai",
+    "llm_model": "gpt-4",
+    "llm_temperature": 1.0,
+    "llm_max_parallelism": 20,
+    "llm_enable_ssl": true,
+    "output_file": ".sonar-code-context/SONAR_ARCHITECTURE.md",
+    "working_dir": null,
+    "force": true,
+    "timeout_seconds": 300
+  },
+  "generate_md_guidelines": {
+    "rule_selection_strategy": "last-analysis",
+    "rule_count": 20,
+    "rule_ids": null,
+    "rule_exclusions": [
+      "S1134",
+      "S1135",
+      "S124",
+      "S1914",
+      "S2222",
+      "S2253",
+      "S2259",
+      "S2260",
+      "S2583",
+      "S2589",
+      "S3417",
+      "S3518",
+      "S3546",
+      "S3655",
+      "S3688",
+      "S3938",
+      "S3949",
+      "S3966",
+      "S4011",
+      "S4158",
+      "S4654",
+      "S5639",
+      "S6548",
+      "S6950",
+      "S6951",
+      "S7130",
+      "S7131"
+    ],
+    "repository": ".",
+    "sq_url": "http://localhost:9000",
+    "sq_token": null,
+    "sq_project_key": null,
+    "sq_org": null,
+    "sq_branch": null,
+    "md_strategy": "TITLE",
+    "output_file": ".sonar-code-context/SONAR_GUIDELINES.md"
+  },
+  "install": {
+    "repository": ".",
+    "cursor_mdc_enabled": false,
+    "cursor_mdc_file": "sonar_code_context.mdc",
+    "claude_md_enabled": false,
+    "claude_md_file": "CLAUDE.md",
+    "agents_md_enabled": false,
+    "agents_md_file": "AGENTS.md",
+    "force": false
+  },
+  "run_analysis": {
+    "repository": ".",
+    "sq_url": "http://localhost:9000",
+    "sq_token": null,
+    "sq_project_key": null,
+    "sq_org": null,
+    "sq_branch": null,
+    "output_dir": ".sonar-code-context/analysis-results",
+    "logs_output_dir": ".sonar-code-context/analysis-logs",
+    "show_metrics": false
+  },
+  "uninstall": {
+    "repository": ".",
+    "cursor_mdc_enabled": false,
+    "cursor_mdc_file": "sonar_code_context.mdc",
+    "claude_md_enabled": false,
+    "claude_md_file": "CLAUDE.md",
+    "agents_md_enabled": false,
+    "agents_md_file": "AGENTS.md"
+  },
+  "embed_rspec": {
+    "force": false,
+    "rspec_branch": "master",
+    "rspec_repository": "https://github.com/SonarSource/rspec"
+  },
+  "index_repository": {
+    "path": null,
+    "chunk_size": 800,
+    "clear": false,
+    "db_path": ".chromadb",
+    "collection": "code_chunks",
+    "model": "text-embedding-3-small",
+    "dump": null
+  },
+  "semantic_search": {
+    "query": null,
+    "model": "text-embedding-3-small",
+    "db_path": ".chromadb",
+    "collection": "code_chunks",
+    "results": 5
+  },
+  "generate_mermaid": {},
+  "generate_prompt_guidelines": {
+    "model_name": "gpt-5",
+    "model_api_key": null,
+    "md_strategy": "TITLE"
+  },
+  "sonarqube_settings": {
+    "sq_url": "https://sonarcloud.io",
+    "sq_token": null,
+    "sq_project_key": null,
+    "sq_org": null,
+    "sq_branch": null,
+    "sq_file_paths": null,
+    "sq_filters": null
+  }
+}
