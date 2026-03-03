@@ -1,0 +1,27 @@
+{
+  "mcpServers": {
+    "sonarqube-mcp-with-cag": {
+      "command": "docker",
+      "args": [
+        "run", "-i", "--rm",
+        "-e", "SONARQUBE_URL",
+        "-e", "SONARQUBE_TOKEN",
+        "-e", "SONARQUBE_ORG",
+        "-e", "SONAR_SQ_PROJECT_KEY",
+        "-e", "SONAR_SQ_BRANCH",
+        "-e", "SONARQUBE_TOOLSETS",
+        "-e", "SONARQUBE_ADVANCED_ANALYSIS_ENABLED",
+        "-v", "/Users/killian.carlsenphelan/dev/cag-playground-petclinic:/app/mcp-workspace:rw",
+        "sq-mcp-cag-alpha:20260217-204d6ce-arm64"
+      ],
+      "env": {
+        "SONARQUBE_URL": "https://sonarcloud.io",
+        "SONARQUBE_ORG": "kcarlsen-sonarsource",
+        "SONAR_SQ_PROJECT_KEY": "kcarlsen-sonarsource_cag-playground-petclinic",
+        "SONAR_SQ_BRANCH": "main",
+        "SONARQUBE_TOOLSETS": "cag,projects,analysis",
+        "SONARQUBE_ADVANCED_ANALYSIS_ENABLED": "true"
+      }
+    }
+  }
+}

@@ -1,0 +1,32 @@
+name: SonarQube Cloud analysis
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  sonar:
+    name: Analyze
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # required for accurate blame and new code detection
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build, test, and analyze
+        run: ./gradlew test jacocoTestReport sonar
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
