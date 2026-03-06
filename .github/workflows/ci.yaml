@@ -1,0 +1,36 @@
+name: Java CI - Tests & Coverage
+
+on:
+  push:
+    branches: [ 'main' ,'dev']
+  pull_request:
+    branches: [ 'main', 'dev' ]
+  
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Run unit tests
+        run: mvn -B test
+
+      - name: Run integration tests
+        run: mvn verify -Pintegration
+
+      - name: Run coverage report
+        run: mvn jacoco:report
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-report
+          path: target/site/jacoco

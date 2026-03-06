@@ -1,0 +1,61 @@
+name: Deploy to Environment Pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: "Docker image tag to deploy"
+        required: true
+
+env:
+  IMAGE_NAME: petclinic-app
+  AWS_REGION: us-east-1
+  EC2_HOST: 13.221.40.129
+
+jobs:
+  deploy-dev:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-ansible
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Retrieve secrets from AWS Secrets Manager
+        run: |
+          SECRET=$(aws secretsmanager get-secret-value --secret-id petclinic/env --query SecretString --output text)
+          echo "$SECRET" > .env
+          cat .env >> $GITHUB_ENV
+
+      - name: Set up EC2 SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ env.EC2_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Run Ansible Playbook (Dev)
+        run: ansible-playbook -i infra/ansible/inventory/dev.ini infra/ansible/playbook-dev.yaml --extra-vars "docker_image=${{ github.event.inputs.image_tag }}"
+
+  deploy-stage:
+    runs-on: ubuntu-latest
+    needs: deploy-dev
+    environment: stage
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-ansible
+      - run: ansible-playbook -i infra/ansible/inventory/stage.ini infra/ansible/playbook-stage.yaml --extra-vars "docker_image=${{ github.event.inputs.image_tag }}"
+
+  deploy-prod:
+    runs-on: ubuntu-latest
+    needs: deploy-stage
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-ansible
+      - run: ansible-playbook -i infra/ansible/inventory/prod.ini infra/ansible/playbook-prod.yaml --extra-vars "docker_image=${{ github.event.inputs.image_tag }}"

@@ -1,0 +1,34 @@
+name: "Setup Ansible"
+description: "Prepare Python, Ansible, and collections with caching"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Cache pip dependencies
+      uses: actions/cache@v4
+      with:
+        path: ${{ env.HOME }}/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install Ansible & linting tools
+      run: pip install ansible ansible-lint detect-secrets
+      shell: bash
+
+    - name: Cache Ansible collections
+      uses: actions/cache@v4
+      with:
+        path: ${{ env.HOME }}/.ansible/collections
+        key: ${{ runner.os }}-ansible-${{ hashFiles('requirements.yml') }}
+        restore-keys: |
+          ${{ runner.os }}-ansible-
+
+    - name: Install Ansible collections
+      run: ansible-galaxy install -r infra/ansible/requirements.yaml
+      shell: bash

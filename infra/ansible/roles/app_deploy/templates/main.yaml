@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  app:
+    image: "{{ docker_image }}"
+    ports:
+      - "{{ app_port }}:{{ app_port }}"
+    env_file:
+      - .env
+    restart: always

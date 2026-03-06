@@ -1,0 +1,44 @@
+name: Flyway Migrations
+
+on:
+  workflow_dispatch:
+    branches:
+      - main
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    env:
+      FLYWAY_VERSION: 10.20.0
+      DB_HOST: dbhost
+      DB_PORT: 5432
+      DB_NAME: mydb
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASS }}
+
+    steps:
+      # 1️⃣ Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2️⃣ Set up Java
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      # 3️⃣ Install Flyway CLI
+      - name: Install Flyway CLI
+        run: |
+          curl -L https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/${FLYWAY_VERSION}/flyway-commandline-${FLYWAY_VERSION}-linux-x64.tar.gz -o flyway.tar.gz
+          tar -xzf flyway.tar.gz
+          sudo ln -s $PWD/flyway-${FLYWAY_VERSION}/flyway /usr/local/bin/flyway
+          flyway -v
+
+      # 4️⃣ Run Flyway migrations
+      - name: Run Flyway migrations
+        run: |
+          flyway -url=jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME} \
+                 -user=${DB_USER} \
+                 -password=${DB_PASSWORD} migrate

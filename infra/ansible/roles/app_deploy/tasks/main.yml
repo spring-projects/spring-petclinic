@@ -1,0 +1,46 @@
+---
+# tasks file for app_deploy
+- name: Install Docker engine
+  ansible.builtin.apt:
+    name: docker.io
+    state: present
+    update_cache: yes
+
+- name: Install Docker Compose v2
+  get_url:
+    url: https://github.com/docker/compose/releases/download/v2.27.0/docker-compose-linux-x86_64
+    dest: /usr/local/bin/docker-compose
+    mode: '0755'
+
+
+- name: Log into DockerHub
+  community.docker.docker_login:
+    username: "{{ dockerhub_username }}"
+    password: "{{ dockerhub_token }}"
+
+- name: Pull application image
+  community.docker.docker_image:
+    name: "{{ docker_image }}"   # 👈 dynamic tag from pipeline
+    source: pull
+    platform: amd64
+
+- name: Copy .env file
+  ansible.builtin.copy:
+    src: .env
+    dest: /home/{{ ansible_user }}/project/.env
+    mode: '0600'
+  notify: Restart docker-compose stack
+
+- name: Render docker-compose.yml
+  ansible.builtin.template:
+    src: templates/docker-compose.yaml
+    dest: /home/{{ ansible_user }}/project/docker-compose.yml
+    mode: '0644'
+  notify: Restart docker-compose stack
+
+- name: Run application with Docker Compose
+  community.docker.docker_compose_v2:
+    project_src: /home/{{ ansible_user }}/project
+    state: present
+
+
