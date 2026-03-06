@@ -1,0 +1,77 @@
+name: Build, SonarQube, Docker Push
+
+on:
+  workflow_dispatch:   # manual trigger only
+
+env:
+  IMAGE_NAME: petclinic-app
+  DOCKER_REGISTRY: docker.io
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      image_tag: ${{ steps.set-tag.outputs.tag }}
+    steps:
+      # 1️⃣ Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2️⃣ Set up Java
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      # 3️⃣ Set Docker image tag (build number + 7-char SHA)
+      - name: Set Docker Image Tag
+        id: set-tag
+        run: |
+          echo "tag=${GITHUB_RUN_NUMBER}-${GITHUB_SHA::7}" >> $GITHUB_ENV
+          echo "tag=${GITHUB_RUN_NUMBER}-${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+
+      # 4️⃣ Build Java application & run tests
+      - name: Build and Test
+        run: mvn clean verify
+
+      # 5️⃣ DockerHub Login
+      - name: DockerHub Login
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # 6️⃣ Build & Push Docker image
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.tag }} .
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.tag }}
+
+      # 7️⃣ Display tag summary
+      - name: Docker Tag Summary
+        run: |
+          echo "### :label: Docker Image Tag"
+          echo "- Build Number: ${{ github.run_number }}"
+          echo "- Commit SHA: ${{ github.sha::7 }}"
+          echo "- Full Tag: ${{ env.tag }}"
+          echo "- Pull/See Image: https://hub.docker.com/r/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}/tags"
+
+  sonar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: SonarQube Scan
+        run: |
+          mvn sonar:sonar \
+            -Dsonar.projectKey=${{ env.IMAGE_NAME }} \
+            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
