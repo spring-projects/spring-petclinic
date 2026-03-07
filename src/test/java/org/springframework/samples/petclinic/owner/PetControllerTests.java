@@ -84,7 +84,7 @@ class PetControllerTests {
 	}
 
 	@Test
-	void testInitCreationForm() throws Exception {
+	void initCreationForm() throws Exception {
 		mockMvc.perform(get("/owners/{ownerId}/pets/new", TEST_OWNER_ID))
 			.andExpect(status().isOk())
 			.andExpect(view().name("pets/createOrUpdatePetForm"))
@@ -92,7 +92,7 @@ class PetControllerTests {
 	}
 
 	@Test
-	void testProcessCreationFormSuccess() throws Exception {
+	void processCreationFormSuccess() throws Exception {
 		mockMvc
 			.perform(post("/owners/{ownerId}/pets/new", TEST_OWNER_ID).param("name", "Betty")
 				.param("type", "hamster")
@@ -105,7 +105,7 @@ class PetControllerTests {
 	class ProcessCreationFormHasErrors {
 
 		@Test
-		void testProcessCreationFormWithBlankName() throws Exception {
+		void processCreationFormWithBlankName() throws Exception {
 			mockMvc
 				.perform(post("/owners/{ownerId}/pets/new", TEST_OWNER_ID).param("name", "\t \n")
 					.param("birthDate", "2015-02-12"))
@@ -118,7 +118,7 @@ class PetControllerTests {
 		}
 
 		@Test
-		void testProcessCreationFormWithDuplicateName() throws Exception {
+		void processCreationFormWithDuplicateName() throws Exception {
 			mockMvc
 				.perform(post("/owners/{ownerId}/pets/new", TEST_OWNER_ID).param("name", "petty")
 					.param("birthDate", "2015-02-12"))
@@ -131,7 +131,7 @@ class PetControllerTests {
 		}
 
 		@Test
-		void testProcessCreationFormWithMissingPetType() throws Exception {
+		void processCreationFormWithMissingPetType() throws Exception {
 			mockMvc
 				.perform(post("/owners/{ownerId}/pets/new", TEST_OWNER_ID).param("name", "Betty")
 					.param("birthDate", "2015-02-12"))
@@ -144,7 +144,7 @@ class PetControllerTests {
 		}
 
 		@Test
-		void testProcessCreationFormWithInvalidBirthDate() throws Exception {
+		void processCreationFormWithInvalidBirthDate() throws Exception {
 			LocalDate currentDate = LocalDate.now();
 			String futureBirthDate = currentDate.plusMonths(1).toString();
 
@@ -160,7 +160,7 @@ class PetControllerTests {
 		}
 
 		@Test
-		void testInitUpdateForm() throws Exception {
+		void initUpdateForm() throws Exception {
 			mockMvc.perform(get("/owners/{ownerId}/pets/{petId}/edit", TEST_OWNER_ID, TEST_PET_ID))
 				.andExpect(status().isOk())
 				.andExpect(model().attributeExists("pet"))
@@ -170,7 +170,7 @@ class PetControllerTests {
 	}
 
 	@Test
-	void testProcessUpdateFormSuccess() throws Exception {
+	void processUpdateFormSuccess() throws Exception {
 		mockMvc
 			.perform(post("/owners/{ownerId}/pets/{petId}/edit", TEST_OWNER_ID, TEST_PET_ID).param("name", "Betty")
 				.param("type", "hamster")
@@ -183,7 +183,7 @@ class PetControllerTests {
 	class ProcessUpdateFormHasErrors {
 
 		@Test
-		void testProcessUpdateFormWithInvalidBirthDate() throws Exception {
+		void processUpdateFormWithInvalidBirthDate() throws Exception {
 			mockMvc
 				.perform(post("/owners/{ownerId}/pets/{petId}/edit", TEST_OWNER_ID, TEST_PET_ID).param("name", " ")
 					.param("birthDate", "2015/02/12"))
@@ -195,7 +195,7 @@ class PetControllerTests {
 		}
 
 		@Test
-		void testProcessUpdateFormWithBlankName() throws Exception {
+		void processUpdateFormWithBlankName() throws Exception {
 			mockMvc
 				.perform(post("/owners/{ownerId}/pets/{petId}/edit", TEST_OWNER_ID, TEST_PET_ID).param("name", "  ")
 					.param("birthDate", "2015-02-12"))
