@@ -29,7 +29,6 @@ import org.springframework.context.annotation.ImportRuntimeHints;
 @ImportRuntimeHints(PetClinicRuntimeHints.class)
 public class PetClinicApplication {
 
-	//TODO: Refactorizar para usar SpringApplicationBuilder y configurar el banner, el log y el perfil activo
 	public static void main(String[] args) {
 		SpringApplication.run(PetClinicApplication.class, args);
 	}
