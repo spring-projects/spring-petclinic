@@ -27,7 +27,8 @@
     <webjars-bootstrap.version>5.3.8</webjars-bootstrap.version>
     <webjars-font-awesome.version>4.7.0</webjars-font-awesome.version>
 
-    <checkstyle.version>13.3.0</checkstyle.version>
+    <!-- Checkstyle needs to stay on v12 since v13 sets minimal jdk to 21 - https://checkstyle.org/releasenotes.html#Release_13.0.0 -->
+    <checkstyle.version>12.3.1</checkstyle.version>
     <jacoco.version>0.8.14</jacoco.version>
     <libsass.version>0.3.4</libsass.version>
     <lifecycle-mapping>1.0.0</lifecycle-mapping>
