@@ -36,7 +36,7 @@ public class MysqlTestApplication {
 	@Profile("mysql")
 	@Bean
 	static MySQLContainer container() {
-		return new MySQLContainer(DockerImageName.parse("mysql:9.5"));
+		return new MySQLContainer(DockerImageName.parse("mysql:9.6"));
 	}
 
 	public static void main(String[] args) {
