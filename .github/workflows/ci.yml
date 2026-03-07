@@ -29,3 +29,12 @@ jobs:
 
     - name: Run tests
       run: mvn test
+      
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-artifact
+        path: |
+          **/target/*.jar
+          **/target/*.war
+          **/target/*.zip
