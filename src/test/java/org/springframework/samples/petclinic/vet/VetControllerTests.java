@@ -80,7 +80,7 @@ class VetControllerTests {
 	}
 
 	@Test
-	void testShowVetListHtml() throws Exception {
+	void showVetListHtml() throws Exception {
 
 		mockMvc.perform(MockMvcRequestBuilders.get("/vets.html?page=1"))
 			.andExpect(status().isOk())
@@ -90,7 +90,7 @@ class VetControllerTests {
 	}
 
 	@Test
-	void testShowResourcesVetList() throws Exception {
+	void showResourcesVetList() throws Exception {
 		ResultActions actions = mockMvc.perform(get("/vets").accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk());
 		actions.andExpect(content().contentType(MediaType.APPLICATION_JSON))
