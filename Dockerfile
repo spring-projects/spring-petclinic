@@ -5,7 +5,7 @@ FROM openjdk:17
 WORKDIR /app
 
 # Copy Maven-built jar into container
-COPY target/spring-petclinic-4.0.0-SNAPSHOT.jar app.jar
+COPY target/*.jar app.jar
 
 # Expose the port your app will run on
 EXPOSE 9090
