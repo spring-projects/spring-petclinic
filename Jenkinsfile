@@ -5,7 +5,7 @@ pipeline {
 
         stage('Clone Code') {
             steps {
-                git 'https://github.com/your-repo/java-app.git'
+                git 'https://github.com/ashishj7744/spring-petclinic.git'
             }
         }
 
