@@ -1,0 +1,657 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-seed-data
+      author: kaddlz
+      context: "@dev"
+      changes:
+        - insert:
+            tableName: vets
+            columns:
+              - column:
+                  name: first_name
+                  value: James
+              - column:
+                  name: last_name
+                  value: Carter
+        - insert:
+            tableName: vets
+            columns:
+              - column:
+                  name: first_name
+                  value: Helen
+              - column:
+                  name: last_name
+                  value: Leary
+        - insert:
+            tableName: vets
+            columns:
+              - column:
+                  name: first_name
+                  value: Linda
+              - column:
+                  name: last_name
+                  value: Douglas
+        - insert:
+            tableName: vets
+            columns:
+              - column:
+                  name: first_name
+                  value: Rafael
+              - column:
+                  name: last_name
+                  value: Ortega
+        - insert:
+            tableName: vets
+            columns:
+              - column:
+                  name: first_name
+                  value: Henry
+              - column:
+                  name: last_name
+                  value: Stevens
+        - insert:
+            tableName: vets
+            columns:
+              - column:
+                  name: first_name
+                  value: Sharon
+              - column:
+                  name: last_name
+                  value: Jenkins
+
+        - insert:
+            tableName: specialties
+            columns:
+              - column:
+                  name: name
+                  value: radiology
+        - insert:
+            tableName: specialties
+            columns:
+              - column:
+                  name: name
+                  value: surgery
+        - insert:
+            tableName: specialties
+            columns:
+              - column:
+                  name: name
+                  value: dentistry
+
+        - insert:
+            tableName: vet_specialties
+            columns:
+              - column:
+                  name: vet_id
+                  valueNumeric: "2"
+              - column:
+                  name: specialty_id
+                  valueNumeric: "1"
+        - insert:
+            tableName: vet_specialties
+            columns:
+              - column:
+                  name: vet_id
+                  valueNumeric: "3"
+              - column:
+                  name: specialty_id
+                  valueNumeric: "2"
+        - insert:
+            tableName: vet_specialties
+            columns:
+              - column:
+                  name: vet_id
+                  valueNumeric: "3"
+              - column:
+                  name: specialty_id
+                  valueNumeric: "3"
+        - insert:
+            tableName: vet_specialties
+            columns:
+              - column:
+                  name: vet_id
+                  valueNumeric: "4"
+              - column:
+                  name: specialty_id
+                  valueNumeric: "2"
+        - insert:
+            tableName: vet_specialties
+            columns:
+              - column:
+                  name: vet_id
+                  valueNumeric: "5"
+              - column:
+                  name: specialty_id
+                  valueNumeric: "1"
+        - insert:
+            tableName: types
+            columns:
+              - column:
+                  name: name
+                  value: cat
+        - insert:
+            tableName: types
+            columns:
+              - column:
+                  name: name
+                  value: dog
+        - insert:
+            tableName: types
+            columns:
+              - column:
+                  name: name
+                  value: lizard
+        - insert:
+            tableName: types
+            columns:
+              - column:
+                  name: name
+                  value: snake
+        - insert:
+            tableName: types
+            columns:
+              - column:
+                  name: name
+                  value: bird
+        - insert:
+            tableName: types
+            columns:
+              - column:
+                  name: name
+                  value: hamster
+
+        - insert:
+            tableName: owners
+            columns:
+              - column:
+                  name: first_name
+                  value: George
+              - column:
+                  name: last_name
+                  value: Franklin
+              - column:
+                  name: address
+                  value: 110 W. Liberty St.
+              - column:
+                  name: city
+                  value: Madison
+              - column:
+                  name: telephone
+                  value: "6085551023"
+        - insert:
+            tableName: owners
+            columns:
+              - column:
+                  name: first_name
+                  value: Betty
+              - column:
+                  name: last_name
+                  value: Davis
+              - column:
+                  name: address
+                  value: 638 Cardinal Ave.
+              - column:
+                  name: city
+                  value: Sun Prairie
+              - column:
+                  name: telephone
+                  value: "6085551749"
+        - insert:
+            tableName: owners
+            columns:
+              - column:
+                  name: first_name
+                  value: Eduardo
+              - column:
+                  name: last_name
+                  value: Rodriquez
+              - column:
+                  name: address
+                  value: 2693 Commerce St.
+              - column:
+                  name: city
+                  value: McFarland
+              - column:
+                  name: telephone
+                  value: "6085558763"
+        - insert:
+            tableName: owners
+            columns:
+              - column:
+                  name: first_name
+                  value: Harold
+              - column:
+                  name: last_name
+                  value: Davis
+              - column:
+                  name: address
+                  value: 563 Friendly St.
+              - column:
+                  name: city
+                  value: Windsor
+              - column:
+                  name: telephone
+                  value: "6085553198"
+        - insert:
+            tableName: owners
+            columns:
+              - column:
+                  name: first_name
+                  value: Peter
+              - column:
+                  name: last_name
+                  value: McTavish
+              - column:
+                  name: address
+                  value: 2387 S. Fair Way
+              - column:
+                  name: city
+                  value: Madison
+              - column:
+                  name: telephone
+                  value: "6085552765"
+        - insert:
+            tableName: owners
+            columns:
+              - column:
+                  name: first_name
+                  value: Jean
+              - column:
+                  name: last_name
+                  value: Coleman
+              - column:
+                  name: address
+                  value: 105 N. Lake St.
+              - column:
+                  name: city
+                  value: Monona
+              - column:
+                  name: telephone
+                  value: "6085552654"
+        - insert:
+            tableName: owners
+            columns:
+              - column:
+                  name: first_name
+                  value: Jeff
+              - column:
+                  name: last_name
+                  value: Black
+              - column:
+                  name: address
+                  value: 1450 Oak Blvd.
+              - column:
+                  name: city
+                  value: Monona
+              - column:
+                  name: telephone
+                  value: "6085555387"
+        - insert:
+            tableName: owners
+            columns:
+              - column:
+                  name: first_name
+                  value: Maria
+              - column:
+                  name: last_name
+                  value: Escobito
+              - column:
+                  name: address
+                  value: 345 Maple St.
+              - column:
+                  name: city
+                  value: Madison
+              - column:
+                  name: telephone
+                  value: "6085557683"
+        - insert:
+            tableName: owners
+            columns:
+              - column:
+                  name: first_name
+                  value: David
+              - column:
+                  name: last_name
+                  value: Schroeder
+              - column:
+                  name: address
+                  value: 2749 Blackhawk Trail
+              - column:
+                  name: city
+                  value: Madison
+              - column:
+                  name: telephone
+                  value: "6085559435"
+        - insert:
+            tableName: owners
+            columns:
+              - column:
+                  name: first_name
+                  value: Carlos
+              - column:
+                  name: last_name
+                  value: Estaban
+              - column:
+                  name: address
+                  value: 2335 Independence La.
+              - column:
+                  name: city
+                  value: Waunakee
+              - column:
+                  name: telephone
+                  value: "6085555487"
+
+        - insert:
+            tableName: pets
+            columns:
+              - column:
+                  name: name
+                  value: Leo
+              - column:
+                  name: birth_date
+                  value: "2000-09-07"
+              - column:
+                  name: type_id
+                  valueNumeric: "1"
+              - column:
+                  name: owner_id
+                  valueNumeric: "1"
+        - insert:
+            tableName: pets
+            columns:
+              - column:
+                  name: name
+                  value: Basil
+              - column:
+                  name: birth_date
+                  value: "2002-08-06"
+              - column:
+                  name: type_id
+                  valueNumeric: "6"
+              - column:
+                  name: owner_id
+                  valueNumeric: "2"
+        - insert:
+            tableName: pets
+            columns:
+              - column:
+                  name: name
+                  value: Rosy
+              - column:
+                  name: birth_date
+                  value: "2001-04-17"
+              - column:
+                  name: type_id
+                  valueNumeric: "2"
+              - column:
+                  name: owner_id
+                  valueNumeric: "3"
+        - insert:
+            tableName: pets
+            columns:
+              - column:
+                  name: name
+                  value: Jewel
+              - column:
+                  name: birth_date
+                  value: "2000-03-07"
+              - column:
+                  name: type_id
+                  valueNumeric: "2"
+              - column:
+                  name: owner_id
+                  valueNumeric: "3"
+        - insert:
+            tableName: pets
+            columns:
+              - column:
+                  name: name
+                  value: Iggy
+              - column:
+                  name: birth_date
+                  value: "2000-11-30"
+              - column:
+                  name: type_id
+                  valueNumeric: "3"
+              - column:
+                  name: owner_id
+                  valueNumeric: "4"
+        - insert:
+            tableName: pets
+            columns:
+              - column:
+                  name: name
+                  value: George
+              - column:
+                  name: birth_date
+                  value: "2000-01-20"
+              - column:
+                  name: type_id
+                  valueNumeric: "4"
+              - column:
+                  name: owner_id
+                  valueNumeric: "5"
+        - insert:
+            tableName: pets
+            columns:
+              - column:
+                  name: name
+                  value: Samantha
+              - column:
+                  name: birth_date
+                  value: "1995-09-04"
+              - column:
+                  name: type_id
+                  valueNumeric: "1"
+              - column:
+                  name: owner_id
+                  valueNumeric: "6"
+        - insert:
+            tableName: pets
+            columns:
+              - column:
+                  name: name
+                  value: Max
+              - column:
+                  name: birth_date
+                  value: "1995-09-04"
+              - column:
+                  name: type_id
+                  valueNumeric: "1"
+              - column:
+                  name: owner_id
+                  valueNumeric: "6"
+        - insert:
+            tableName: pets
+            columns:
+              - column:
+                  name: name
+                  value: Lucky
+              - column:
+                  name: birth_date
+                  value: "1999-08-06"
+              - column:
+                  name: type_id
+                  valueNumeric: "5"
+              - column:
+                  name: owner_id
+                  valueNumeric: "7"
+        - insert:
+            tableName: pets
+            columns:
+              - column:
+                  name: name
+                  value: Mulligan
+              - column:
+                  name: birth_date
+                  value: "1997-02-24"
+              - column:
+                  name: type_id
+                  valueNumeric: "2"
+              - column:
+                  name: owner_id
+                  valueNumeric: "8"
+        - insert:
+            tableName: pets
+            columns:
+              - column:
+                  name: name
+                  value: Freddy
+              - column:
+                  name: birth_date
+                  value: "2000-03-09"
+              - column:
+                  name: type_id
+                  valueNumeric: "5"
+              - column:
+                  name: owner_id
+                  valueNumeric: "9"
+        - insert:
+            tableName: pets
+            columns:
+              - column:
+                  name: name
+                  value: Lucky
+              - column:
+                  name: birth_date
+                  value: "2000-06-24"
+              - column:
+                  name: type_id
+                  valueNumeric: "2"
+              - column:
+                  name: owner_id
+                  valueNumeric: "10"
+        - insert:
+            tableName: pets
+            columns:
+              - column:
+                  name: name
+                  value: Sly
+              - column:
+                  name: birth_date
+                  value: "2002-06-08"
+              - column:
+                  name: type_id
+                  valueNumeric: "1"
+              - column:
+                  name: owner_id
+                  valueNumeric: "10"
+
+        - insert:
+            tableName: visits
+            columns:
+              - column:
+                  name: pet_id
+                  valueNumeric: "7"
+              - column:
+                  name: visit_date
+                  value: "2010-03-04"
+              - column:
+                  name: description
+                  value: rabies shot
+        - insert:
+            tableName: visits
+            columns:
+              - column:
+                  name: pet_id
+                  valueNumeric: "8"
+              - column:
+                  name: visit_date
+                  value: "2011-03-04"
+              - column:
+                  name: description
+                  value: rabies shot
+        - insert:
+            tableName: visits
+            columns:
+              - column:
+                  name: pet_id
+                  valueNumeric: "8"
+              - column:
+                  name: visit_date
+                  value: "2009-06-04"
+              - column:
+                  name: description
+                  value: neutered
+        - insert:
+            tableName: visits
+            columns:
+              - column:
+                  name: pet_id
+                  valueNumeric: "7"
+              - column:
+                  name: visit_date
+                  value: "2008-09-04"
+              - column:
+                  name: description
+                  value: spayed
+      rollback:
+        - delete:
+            tableName: visits
+            where: >
+              (pet_id = 7 and visit_date = '2008-09-04') or
+              (pet_id = 8 and visit_date = '2009-06-04') or
+              (pet_id = 8 and visit_date = '2011-03-04') or
+              (pet_id = 7 and visit_date = '2010-03-04')
+        
+        - delete: 
+            tableName: pets
+            where: >
+              (name = 'Sly' and birth_date = '2002-06-08') or
+              (name = 'Lucky' and birth_date = '2000-06-24') or
+              (name = 'Freddy' and birth_date = '2000-03-09') or
+              (name = 'Mulligan' and birth_date = '1997-02-24') or
+              (name = 'Lucky' and birth_date = '1999-08-06') or
+              (name = 'Max' and birth_date = '1995-09-04') or
+              (name = 'Samantha' and birth_date = '1995-09-04') or
+              (name = 'George' and birth_date = '2000-01-20') or
+              (name = 'Iggy' and birth_date = '2000-11-30') or
+              (name = 'Jewel' and birth_date = '2000-03-07') or
+              (name = 'Rosy' and birth_date = '2001-04-17') or
+              (name = 'Basil' and birth_date = '2002-08-06') or
+              (name = 'Leo' and birth_date = '2000-09-07')
+              
+        - delete: 
+            tableName: owners
+            where: >
+              (telephone = '6085555487') or
+              (telephone = '6085559435') or
+              (telephone = '6085557683') or
+              (telephone = '6085555387') or
+              (telephone = '6085552654') or
+              (telephone = '6085552765') or
+              (telephone = '6085553198') or
+              (telephone = '6085558763') or
+              (telephone = '6085551749') or
+              (telephone = '6085551023')
+
+        - delete:
+            tableName: types
+            where: >
+              name in ('cat', 'dog', 'lizard', 'snake', 'bird', 'hamster')
+
+        - delete:
+            tableName: vet_specialties
+            where: >
+              (vet_id = 2 and specialty_id = 1) or
+              (vet_id = 3 and specialty_id = 2) or
+              (vet_id = 3 and specialty_id = 3) or
+              (vet_id = 4 and specialty_id = 2) or
+              (vet_id = 5 and specialty_id = 1)
+
+        - delete:
+            tableName: specialties
+            where: >
+              name in ('radiology', 'surgery', 'dentistry')
+
+        - delete:
+            tableName: vets
+            where: >
+              (first_name = 'James' and last_name = 'Carter') or
+              (first_name = 'Helen' and last_name = 'Leary') or
+              (first_name = 'Linda' and last_name = 'Douglas') or
+              (first_name = 'Rafael' and last_name = 'Ortega') or
+              (first_name = 'Henry' and last_name = 'Stevens') or
+              (first_name = 'Sharon' and last_name = 'Jenkins')
+              
+              

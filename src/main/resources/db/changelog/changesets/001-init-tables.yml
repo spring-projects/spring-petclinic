@@ -1,0 +1,194 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 001-init-tables
+      author: kaddlz
+      changes:
+        - createTable:
+            tableName: vets
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  constraints:
+                    primaryKey: true
+                  autoIncrement: true
+              - column:
+                  name: first_name
+                  type: varchar(80)
+              - column:
+                  name: last_name
+                  type: varchar(80)
+
+        - createIndex:
+            indexName: vets_last_name_index
+            tableName: vets
+            columns:
+              - column:
+                  name: last_name
+
+        - createTable:
+            tableName: specialties
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  constraints:
+                    primaryKey: true
+                  autoIncrement: true
+              - column:
+                  name: name
+                  type: varchar(80)
+
+        - createIndex:
+            indexName: specialties_name_index
+            tableName: specialties
+            columns:
+              - column:
+                  name: name
+
+        - createTable:
+            tableName: vet_specialties
+            columns:
+              - column:
+                  name: vet_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    references: vets(id)
+                    foreignKeyName: vet_specialties_vet_id_fk
+              - column:
+                  name: specialty_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    references: specialties(id)
+                    foreignKeyName: vet_specialties_specialty_id_fk
+        - addUniqueConstraint:
+            tableName: vet_specialties
+            columnNames: vet_id, specialty_id
+            constraintName: vet_specialties_ved_id_specialty_id_uk
+
+        - createTable:
+            tableName: types
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  constraints:
+                    primaryKey: true
+                  autoIncrement: true
+              - column:
+                  name: name
+                  type: varchar(80)
+
+        - createIndex:
+            indexName: types_name_index
+            tableName: types
+            columns:
+              - column:
+                  name: name
+
+        - createTable:
+            tableName: owners
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: first_name
+                  type: varchar(80)
+              - column:
+                  name: last_name
+                  type: varchar(80)
+              - column:
+                  name: address
+                  type: varchar(255)
+              - column:
+                  name: city
+                  type: varchar(80)
+              - column:
+                  name: telephone
+                  type: varchar(80)
+
+        - createIndex:
+            tableName: owners
+            indexName: owners_last_name_index
+            columns:
+              - column:
+                  name: last_name
+
+        - createTable:
+            tableName: pets
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(80)
+              - column:
+                  name: birth_date
+                  type: date
+              - column:
+                  name: type_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    references: types(id)
+                    foreignKeyName: pet_type_id_fk
+              - column:
+                  name: owner_id
+                  type: int
+                  constraints:
+                    references: owners(id)
+                    foreignKeyName: pet_owner_id_fk
+
+        - createIndex:
+            tableName: pets
+            indexName: pets_name_index
+            columns:
+              - column:
+                  name: name
+
+        - createIndex:
+            tableName: pets
+            indexName: pets_owner_id_index
+            columns:
+              - column:
+                  name: owner_id
+
+        - createTable:
+            tableName: visits
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: pet_id
+                  type: int
+                  constraints:
+                    references: pets(id)
+                    foreignKeyName: visit_pet_id_fk
+              - column:
+                  name: visit_date
+                  type: date
+              - column:
+                  name: description
+                  type: varchar(255)
+
+        - createIndex:
+            tableName: visits
+            indexName: visits_pet_id_index
+            columns:
+              - column:
+                  name: pet_id

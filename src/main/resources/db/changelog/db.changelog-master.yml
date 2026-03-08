@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      relativeToChangelogFile: true
+      file: changesets/001-init-tables.yml
+  - include:
+      relativeToChangelogFile: true
+      file: changesets/002-seed-data.yml
