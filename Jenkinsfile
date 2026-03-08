@@ -26,7 +26,7 @@ pipeline {
                 sh '''
                 docker stop java-container || true
                 docker rm java-container || true
-                docker run -d -p 9090:9090 --name java-container java-app
+                docker run -d -p 9090:8080 --name java-container java-app
                 '''
             }
         }
