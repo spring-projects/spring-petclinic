@@ -13,29 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.vet;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.util.SerializationUtils;
+package org.springframework.samples.petclinic.owner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.Test;
+
 /**
- * @author Dave Syer
+ * Test class for {@link PetType}
+ *
+ * @author Andrew Huebner
  */
-class VetTests {
+class PetTypeTest {
 
 	@Test
-	void testSerialization() {
-		Vet vet = new Vet();
-		vet.setFirstName("Zaphod");
-		vet.setLastName("Beeblebrox");
-		vet.setId(123);
-		@SuppressWarnings("deprecation")
-		Vet other = (Vet) SerializationUtils.deserialize(SerializationUtils.serialize(vet));
-		assertThat(other.getFirstName()).isEqualTo(vet.getFirstName());
-		assertThat(other.getLastName()).isEqualTo(vet.getLastName());
-		assertThat(other.getId()).isEqualTo(vet.getId());
+	void shouldCreatePetType() {
+		PetType petType = new PetType();
+		assertThat(petType).isNotNull();
+	}
+
+	@Test
+	void shouldSetName() {
+		PetType petType = new PetType();
+		petType.setName("Dog");
+		assertThat(petType.getName()).isEqualTo("Dog");
 	}
 
 }

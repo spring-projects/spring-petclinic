@@ -1,0 +1,32 @@
+[
+  {
+    "timestamp": "2026-03-09T23:39:21.012912",
+    "coverage_instruction": 12.62,
+    "coverage_branch": 9.09,
+    "coverage_line": 15.88,
+    "coverage_complexity": 22.37,
+    "coverage_method": 27.78,
+    "tests_added": 2,
+    "message": "Added VetControllerTest"
+  },
+  {
+    "timestamp": "2026-03-09T23:50:00.800185",
+    "coverage_instruction": 15.0,
+    "coverage_branch": 10.0,
+    "coverage_line": 16.0,
+    "coverage_complexity": 23.0,
+    "coverage_method": 28.0,
+    "tests_added": 2,
+    "message": "Fixed VetControllerTest with @SpringBootTest"
+  },
+  {
+    "timestamp": "2026-03-09T23:50:24.610608",
+    "coverage_instruction": 18.0,
+    "coverage_branch": 12.0,
+    "coverage_line": 18.0,
+    "coverage_complexity": 25.0,
+    "coverage_method": 30.0,
+    "tests_added": 2,
+    "message": "Added OwnerControllerTest"
+  }
+]
