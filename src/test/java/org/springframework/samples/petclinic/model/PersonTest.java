@@ -13,29 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.springframework.samples.petclinic.model;
 
-package org.springframework.samples.petclinic.system;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-
 /**
- * Test class for {@link CrashController}
+ * Test class for {@link Person}
  *
- * @author Colin But
- * @author Alex Lutz
+ * @author Andrew Huebner
  */
-// Waiting https://github.com/spring-projects/spring-boot/issues/5574 ..good
-// luck ((plain(st) UNIT test)! :)
-class CrashControllerTests {
-
-	final CrashController testee = new CrashController();
+class PersonTest {
 
 	@Test
-	void testTriggerException() {
-		assertThatExceptionOfType(RuntimeException.class).isThrownBy(() -> testee.triggerException())
-			.withMessageContaining("Expected: controller used to showcase what happens when an exception is thrown");
+	void shouldReturnFirstName() {
+		Person person = new Person();
+		person.setFirstName("John");
+		assertThat(person.getFirstName()).isEqualTo("John");
+	}
+
+	@Test
+	void shouldReturnLastName() {
+		Person person = new Person();
+		person.setLastName("Doe");
+		assertThat(person.getLastName()).isEqualTo("Doe");
 	}
 
 }

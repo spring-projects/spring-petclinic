@@ -267,6 +267,11 @@
               <goal>report</goal>
             </goals>
             <phase>prepare-package</phase>
+            <configuration>
+              <formats>
+                <format>XML</format>
+              </formats>
+            </configuration>
           </execution>
         </executions>
       </plugin>
