@@ -77,4 +77,42 @@ class OwnerTest {
 		assertThat(owner.getPets()).doesNotContain(pet);
 	}
 
+	@Test
+	void shouldGetPetByName() {
+		Owner owner = new Owner();
+		Pet pet = new Pet();
+		pet.setName("Fluffy");
+		owner.addPet(pet);
+		assertThat(owner.getPet("Fluffy")).isEqualTo(pet);
+	}
+
+	@Test
+	void shouldGetPetById() {
+		Owner owner = new Owner();
+		Pet pet = new Pet();
+		pet.setId(1);
+		pet.setName("Fluffy");
+		owner.addPet(pet);
+		assertThat(owner.getPet(1)).isEqualTo(pet);
+	}
+
+	@Test
+	void shouldReturnNullForNonExistentPet() {
+		Owner owner = new Owner();
+		assertThat(owner.getPet("NonExistent")).isNull();
+		assertThat(owner.getPet(999)).isNull();
+	}
+
+	@Test
+	void shouldAddVisitToPet() {
+		Owner owner = new Owner();
+		Pet pet = new Pet();
+		pet.setId(1);
+		pet.setName("Fluffy");
+		owner.addPet(pet);
+		Visit visit = new Visit();
+		owner.addVisit(1, visit);
+		assertThat(pet.getVisits()).contains(visit);
+	}
+
 }
