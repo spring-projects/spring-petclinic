@@ -120,6 +120,12 @@
       <artifactId>spring-boot-devtools</artifactId>
       <optional>true</optional>
     </dependency>
+    <dependency>
+      <groupId>com.github.spotbugs</groupId>
+      <artifactId>spotbugs-maven-plugin</artifactId>
+      <version>4.9.8.2</version>
+      <scope>compile</scope>
+    </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
