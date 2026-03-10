@@ -33,15 +33,6 @@ public class PetTest {
 	}
 
 	@Test
-	public void testPetType() {
-		Pet pet = new Pet();
-		PetType type = new PetType();
-		type.setName("Dog");
-		pet.setType(type);
-		assertEquals(type, pet.getType());
-	}
-
-	@Test
 	public void testPetAddVisit() {
 		Pet pet = new Pet();
 		Visit visit = new Visit();

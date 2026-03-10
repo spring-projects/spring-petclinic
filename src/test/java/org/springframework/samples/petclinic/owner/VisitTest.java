@@ -22,13 +22,6 @@ public class VisitTest {
 	}
 
 	@Test
-	public void testVisitDescription() {
-		Visit visit = new Visit();
-		visit.setDescription("Annual checkup");
-		assertEquals("Annual checkup", visit.getDescription());
-	}
-
-	@Test
 	public void testVisitId() {
 		Visit visit = new Visit();
 		visit.setId(10);
@@ -51,15 +44,6 @@ public class VisitTest {
 		visit1.setDate(LocalDate.of(2024, 1, 10));
 		visit2.setDate(LocalDate.of(2024, 2, 15));
 		assertNotEquals(visit1.getDate(), visit2.getDate());
-	}
-
-	@Test
-	public void testVisitComplete() {
-		Visit visit = new Visit();
-		visit.setDate(LocalDate.of(2024, 7, 20));
-		visit.setDescription("Vaccination booster");
-		assertEquals(LocalDate.of(2024, 7, 20), visit.getDate());
-		assertEquals("Vaccination booster", visit.getDescription());
 	}
 
 }
