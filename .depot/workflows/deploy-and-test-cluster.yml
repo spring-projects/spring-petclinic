@@ -9,6 +9,7 @@ on:
     branches: [main]
     paths:
       - 'k8s/**'
+  workflow_dispatch:
 
 jobs:
   deploy-and-test-cluster:
