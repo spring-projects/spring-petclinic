@@ -1,0 +1,69 @@
+2026.03.09 21:23:33 INFO  Started: Metals version 1.6.6 in folders 'C:\DePaul\Winter 25-26\SE 333\spring-petclinic' for client Visual Studio Code 1.111.0.
+2026.03.09 21:23:33 INFO  Memory monitor started
+2026.03.09 21:23:36 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
+2026.03.09 21:23:38 INFO  no build target found for C:\DePaul\Winter 25-26\SE 333\spring-petclinic\src\test\java\org\springframework\samples\petclinic\PlaceholderTest.java. Using fallback presentation compiler.
+Mar 09, 2026 9:23:38 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4
+Mar 09, 2026 9:23:38 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 2
+Mar 09, 2026 9:23:38 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 1
+2026.03.09 21:23:38 INFO  no build target found for C:\DePaul\Winter 25-26\SE 333\spring-petclinic\src\test\java\org\springframework\samples\petclinic\PlaceholderTest.java. Using fallback presentation compiler.
+Mar 09, 2026 9:23:39 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 6
+2026.03.09 21:23:39 INFO  no build target found for C:\DePaul\Winter 25-26\SE 333\spring-petclinic\src\test\java\org\springframework\samples\petclinic\PlaceholderTest.java. Using fallback presentation compiler.
+Mar 09, 2026 9:23:39 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 9
+2026.03.09 21:23:39 INFO  no build target found for C:\DePaul\Winter 25-26\SE 333\spring-petclinic\src\test\java\org\springframework\samples\petclinic\PlaceholderTest.java. Using fallback presentation compiler.
+2026.03.09 21:25:20 INFO  no build target found for C:\DePaul\Winter 25-26\SE 333\spring-petclinic\src\test\java\org\springframework\samples\petclinic\PlaceholderTest.java. Using fallback presentation compiler.
+2026.03.09 21:25:20 INFO  no build target found for C:\DePaul\Winter 25-26\SE 333\spring-petclinic\src\test\java\org\springframework\samples\petclinic\PlaceholderTest.java. Using fallback presentation compiler.
+2026.03.09 21:28:19 INFO  no build target found for C:\DePaul\Winter 25-26\SE 333\spring-petclinic\src\test\java\org\springframework\samples\petclinic\PlaceholderTest.java. Using fallback presentation compiler.
+2026.03.09 21:28:19 WARN  no build target for: C:\DePaul\Winter 25-26\SE 333\spring-petclinic\src\test\java\org\springframework\samples\petclinic\PlaceholderTest.java
+2026.03.09 21:28:19 INFO  no build target found for C:\DePaul\Winter 25-26\SE 333\spring-petclinic\src\test\java\org\springframework\samples\petclinic\PlaceholderTest.java. Using fallback presentation compiler.
+2026.03.09 21:28:19 INFO  no build target found for C:\DePaul\Winter 25-26\SE 333\spring-petclinic\src\test\java\org\springframework\samples\petclinic\PlaceholderTest.java. Using fallback presentation compiler.
+2026.03.09 21:35:16 INFO  Shutting down server
+2026.03.09 21:35:16 INFO  Memory monitor stopped
+2026.03.09 21:35:16 INFO  shutting down Metals
+2026.03.09 21:35:16 INFO  Exiting server
+2026.03.09 21:35:17 ERROR Unexpected error initializing server: 
+org.eclipse.lsp4j.jsonrpc.ResponseErrorException: Request window/showMessageRequest failed with message: Canceled
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.handleResponse(RemoteEndpoint.java:214)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.consume(RemoteEndpoint.java:198)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage(StreamMessageProducer.java:189)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen(StreamMessageProducer.java:97)
+	at org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run(ConcurrentMessageProcessor.java:97)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.lang.Thread.run(Thread.java:1575)
+
+2026.03.10 13:42:04 INFO  Started: Metals version 1.6.6 in folders 'C:\DePaul\Winter 25-26\SE 333\finalActual\spring-petclinic' for client Visual Studio Code 1.111.0.
+2026.03.10 13:42:04 INFO  Memory monitor started
+2026.03.10 13:42:05 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
+2026.03.10 13:42:05 INFO  no build target found for C:\DePaul\Winter 25-26\SE 333\finalActual\spring-petclinic\src\test\java\org\springframework\samples\petclinic\PlaceholderTest.java. Using fallback presentation compiler.
+2026.03.10 13:44:03 INFO  no build target found for C:\DePaul\Winter 25-26\SE 333\finalActual\spring-petclinic\src\test\java\org\springframework\samples\petclinic\PlaceholderTest.java. Using fallback presentation compiler.
+Mar 10, 2026 1:44:03 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2026.03.10 13:44:03 INFO  no build target found for C:\DePaul\Winter 25-26\SE 333\finalActual\spring-petclinic\src\test\java\org\springframework\samples\petclinic\PlaceholderTest.java. Using fallback presentation compiler.
+Mar 10, 2026 1:44:05 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2026.03.10 13:44:05 INFO  no build target found for C:\DePaul\Winter 25-26\SE 333\finalActual\spring-petclinic\src\test\java\org\springframework\samples\petclinic\PlaceholderTest.java. Using fallback presentation compiler.
+2026.03.10 13:49:49 INFO  no build target found for C:\DePaul\Winter 25-26\SE 333\finalActual\spring-petclinic\src\test\java\org\springframework\samples\petclinic\PlaceholderTest.java. Using fallback presentation compiler.
+2026.03.10 13:49:58 INFO  Shutting down server
+2026.03.10 13:49:58 INFO  Memory monitor stopped
+2026.03.10 13:49:58 INFO  shutting down Metals
+2026.03.10 13:49:58 INFO  Exiting server
+2026.03.10 13:49:58 ERROR Unexpected error initializing server: 
+org.eclipse.lsp4j.jsonrpc.ResponseErrorException: Request window/showMessageRequest failed with message: Canceled
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.handleResponse(RemoteEndpoint.java:214)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.consume(RemoteEndpoint.java:198)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage(StreamMessageProducer.java:189)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen(StreamMessageProducer.java:97)
+	at org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run(ConcurrentMessageProcessor.java:97)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.lang.Thread.run(Thread.java:1575)
+
