@@ -1,0 +1,2 @@
+timestamp,instructions_pct,branches_pct,lines_pct,methods_pct,classes_pct,notes
+2026-03-05T04:55:59Z,99.27,93.18,98.97,98.11,100.00,"Added by agent on branch agent-tests from jacoco-summary.json"
