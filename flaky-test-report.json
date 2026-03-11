@@ -1,0 +1,11 @@
+{
+  "summary": {
+    "total_tests": 70,
+    "flaky_count": 0,
+    "stable_passing": 70,
+    "stable_failing": 0,
+    "runs_performed": 5
+  },
+  "flaky_tests": [],
+  "stable_failing_tests": []
+}
