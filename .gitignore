@@ -46,3 +46,8 @@ out/
 _site/
 *.css
 !petclinic.css
+
+### Environment files ###
+.env
+.env.local
+.env.*.local
