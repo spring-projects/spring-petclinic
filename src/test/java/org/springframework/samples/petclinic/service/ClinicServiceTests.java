@@ -16,12 +16,11 @@
 
 package org.springframework.samples.petclinic.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Optional;
 
+import org.hibernate.Hibernate;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
@@ -38,6 +37,8 @@ import org.springframework.samples.petclinic.owner.Visit;
 import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.samples.petclinic.vet.VetRepository;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Integration test of the Service and the Repository layer.
@@ -246,6 +247,17 @@ class ClinicServiceTests {
 			.element(0)
 			.extracting(Visit::getDate)
 			.isNotNull();
+	}
+
+	@Test
+	void shouldEagerLoadPetsWhenFindingOwnerById() {
+		Optional<Owner> optionalOwner = this.owners.findById(1);
+		assertThat(optionalOwner).isPresent();
+
+		Owner owner = optionalOwner.get();
+
+		assertThat(Hibernate.isInitialized(owner.getPets())).isTrue();
+		assertThat(owner.getPets()).hasSize(1);
 	}
 
 }

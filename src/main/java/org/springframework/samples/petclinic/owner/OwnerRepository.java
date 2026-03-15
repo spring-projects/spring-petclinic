@@ -19,6 +19,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -57,6 +58,7 @@ public interface OwnerRepository extends JpaRepository<Owner, Integer> {
 	 * @throws IllegalArgumentException if the id is null (assuming null is not a valid
 	 * input for id)
 	 */
+	@EntityGraph(attributePaths = {"pets"}, type = EntityGraph.EntityGraphType.LOAD)
 	Optional<Owner> findById(Integer id);
 
 }
