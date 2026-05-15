@@ -13,25 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.system;
+package org.springframework.samples.petclinic.mvc.vet;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 /**
- * Controller used to showcase what happens when an exception is thrown
+ * Simple domain object representing a list of veterinarians. Mostly here to be used for
+ * the 'vets' {@link org.springframework.web.servlet.view.xml.MarshallingView}.
  *
- * @author Michael Isvy
- * <p/>
- * Also see how a view that resolves to "error" has been added ("error.html").
+ * @author Arjen Poutsma
  */
-@Controller
-class CrashController {
+@XmlRootElement
+public class Vets {
 
-	@GetMapping("/oups")
-	public String triggerException() {
-		throw new RuntimeException(
-				"Expected: controller used to showcase what " + "happens when an exception is thrown");
+	private List<Vet> vets;
+
+	@XmlElement
+	public List<Vet> getVetList() {
+		if (vets == null) {
+			vets = new ArrayList<>();
+		}
+		return vets;
 	}
 
 }

@@ -13,4 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.vet;
+
+/**
+ * The classes in this package represent utilities used by the domain.
+ */
+package org.springframework.samples.petclinic.mvc.model;

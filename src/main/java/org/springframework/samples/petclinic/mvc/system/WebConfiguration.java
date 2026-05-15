@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.system;
+package org.springframework.samples.petclinic.mvc.system;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

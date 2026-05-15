@@ -13,18 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.springframework.samples.petclinic.mvc.vet;
 
-package org.springframework.samples.petclinic.system;
+import org.springframework.samples.petclinic.mvc.model.NamedEntity;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
-@Controller
-class WelcomeController {
-
-	@GetMapping("/")
-	public String welcome() {
-		return "welcome";
-	}
+/**
+ * Models a {@link Vet Vet's} specialty (for example, dentistry).
+ *
+ * @author Juergen Hoeller
+ */
+@Entity
+@Table(name = "specialties")
+public class Specialty extends NamedEntity {
 
 }

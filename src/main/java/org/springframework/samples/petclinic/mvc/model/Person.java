@@ -13,39 +13,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.model;
+package org.springframework.samples.petclinic.mvc.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.NotBlank;
 
 /**
- * Simple JavaBean domain object adds a name property to <code>BaseEntity</code>. Used as
- * a base class for objects needing these properties.
+ * Simple JavaBean domain object representing an person.
  *
  * @author Ken Krebs
- * @author Juergen Hoeller
- * @author Wick Dynex
  */
 @MappedSuperclass
-public class NamedEntity extends BaseEntity {
+public class Person extends BaseEntity {
 
 	@Column
 	@NotBlank
-	private String name;
+	private String firstName;
 
-	public String getName() {
-		return this.name;
+	@Column
+	@NotBlank
+	private String lastName;
+
+	public String getFirstName() {
+		return this.firstName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	@Override
-	public String toString() {
-		String name = this.getName();
-		return name != null ? name : "<null>";
+	public String getLastName() {
+		return this.lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 }
