@@ -27,8 +27,8 @@ import static com.tngtech.archunit.library.Architectures.onionArchitecture;
  *
  * <p>
  * <b>Pacotes alvo ainda inexistentes</b> usam {@code allowEmptyShould(true)} para não
- * falhar antes de serem criados na refatoração. À medida que cada módulo for refatorado, o
- * {@code allowEmptyShould} pode ser removido.
+ * falhar antes de serem criados na refatoração. À medida que cada módulo for refatorado,
+ * o {@code allowEmptyShould} pode ser removido.
  *
  */
 @AnalyzeClasses(packages = "org.springframework.samples.petclinic",
