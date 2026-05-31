@@ -1,5 +1,8 @@
-package org.springframework.samples.petclinic.adapters.entities.vet;
+package org.springframework.samples.petclinic.adapters.entities.owner;
 
+import java.time.LocalDate;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,15 +12,18 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "specialties")
+@Table(name = "visits")
 @Getter
 @Setter
-public class SpecialtyEntity {
+public class VisitJpaEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	private String name;
+	@Column(name = "visit_date")
+	private LocalDate date;
+
+	private String description;
 
 }

@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.adapters.entities.vet;
+package org.springframework.samples.petclinic.adapters.entities.owner;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,10 +9,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "specialties")
+@Table(name = "types")
 @Getter
 @Setter
-public class SpecialtyEntity {
+public class PetTypeJpaEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
