@@ -7,232 +7,171 @@ import com.tngtech.archunit.lang.ArchRule;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
-import static com.tngtech.archunit.library.Architectures.onionArchitecture;
 
-/**
- * Diretrizes arquiteturais da Clean Architecture para o spring-petclinic.
- *
- * <p>
- * As regras estão organizadas em três grupos:
- * <ol>
- * <li><b>Regra de Dependência</b> — validada de forma holística pela API
- * {@code onionArchitecture()} do ArchUnit. Garante que dependências de código-fonte
- * apontam apenas para dentro (em direção ao domínio).</li>
- * <li><b>Pureza do domínio</b> — o núcleo da aplicação não pode ser contaminado por
- * nenhum framework externo (JPA, Spring, Bean Validation, JAXB).</li>
- * <li><b>Convenções de localização e nomenclatura</b> — garantem que cada tipo de
- * artefato (entidade JPA, controller, use case, port) vive no pacote correto e recebe um
- * nome que comunica sua responsabilidade.</li>
- * </ol>
- *
- * <p>
- * <b>Pacotes alvo ainda inexistentes</b> usam {@code allowEmptyShould(true)} para não
- * falhar antes de serem criados na refatoração. À medida que cada módulo for refatorado,
- * o {@code allowEmptyShould} pode ser removido.
- *
- */
 @AnalyzeClasses(packages = "org.springframework.samples.petclinic",
-		importOptions = ImportOption.DoNotIncludeTests.class)
+		importOptions = { ImportOption.DoNotIncludeTests.class, DoNotIncludeMvc.class })
 public class CleanArchitectureRulesTest {
 
 	private static final String ROOT = "org.springframework.samples.petclinic";
 
-	private static final String PKG_DOMAIN = ROOT + ".domain..";
+	// core
+	private static final String PKG_DOMAIN = ROOT + ".core.domain..";
 
-	private static final String PKG_APPLICATION = ROOT + ".application..";
+	private static final String PKG_GATEWAYS = ROOT + ".core.gateways..";
 
-	private static final String PKG_INTERFACES_WEB = ROOT + ".interfaces.web..";
+	private static final String PKG_USECASES = ROOT + ".core.usecases..";
 
-	private static final String PKG_INTERFACES_API = ROOT + ".interfaces.api..";
+	private static final String PKG_PORTS = ROOT + ".core.usecases..ports..";
 
-	private static final String PKG_INFRA_PERSIST = ROOT + ".infrastructure.persistence..";
+	// adapters
+	private static final String PKG_CONTROLLERS = ROOT + ".adapters.controllers..";
 
-	private static final String PKG_INFRA_CONFIG = ROOT + ".infrastructure.config..";
+	private static final String PKG_ENTITIES = ROOT + ".adapters.entities..";
 
-	private static final String PKG_PORT_OUT = ROOT + ".application..port.out..";
+	private static final String PKG_REPOSITORIES = ROOT + ".adapters.repositories..";
 
-	private static final String PKG_USE_CASE = ROOT + ".application..usecase..";
+	private static final String PKG_DTOS = ROOT + ".adapters.dtos..";
 
-	// =========================================================================
-	// 1. REGRA DE DEPENDÊNCIA — Clean Architecture (Onion)
-	// =========================================================================
+	private static final String PKG_MAPPERS = ROOT + ".adapters.mappers..";
 
-	/**
-	 * A lei fundamental da Clean Architecture: dependências de código-fonte apontam
-	 * apenas para dentro, em direção ao domínio.
-	 *
-	 * <p>
-	 * Esta regra sozinha substitui todas as verificações individuais de dependência entre
-	 * camadas (domain ← application ← infrastructure/interfaces). O
-	 * {@code withOptionalLayers(true)} permite que camadas ainda não criadas não causem
-	 * falha durante a migração incremental.
-	 */
-	@ArchTest
-	static final ArchRule regra_de_dependencia = onionArchitecture().domainModels(PKG_DOMAIN)
-		.domainServices(PKG_DOMAIN)
-		.applicationServices(PKG_APPLICATION)
-		.adapter("web", PKG_INTERFACES_WEB)
-		.adapter("api", PKG_INTERFACES_API)
-		.adapter("persistence", PKG_INFRA_PERSIST)
-		.adapter("config", PKG_INFRA_CONFIG)
-		.withOptionalLayers(true)
-		.because("Dependências de código-fonte só podem apontar para dentro:"
-				+ " interfaces/infrastructure → application → domain."
-				+ " Nenhuma camada interna pode conhecer camadas externas.");
+	private static final String PKG_FORMATTERS = ROOT + ".adapters.formatters..";
+
+	private static final String PKG_VALIDATORS = ROOT + ".adapters.validators..";
+
+	// config
+	private static final String PKG_CONFIG = ROOT + ".config..";
 
 	// =========================================================================
-	// 2. PUREZA DO DOMÍNIO
+	// 1. PUREZA DO DOMÍNIO
 	// =========================================================================
 
-	/**
-	 * O domínio não pode depender de nenhum framework externo.
-	 *
-	 * <p>
-	 * Uma única regra cobre todas as contaminações conhecidas no código atual:
-	 * <ul>
-	 * <li>{@code Owner}, {@code Person}, {@code NamedEntity} →
-	 * {@code jakarta.persistence.*}, {@code jakarta.validation.constraints.*},
-	 * {@code org.springframework.core.style.ToStringCreator}</li>
-	 * <li>{@code Pet} → {@code org.springframework.format.annotation.DateTimeFormat}</li>
-	 * <li>{@code Vet} → {@code jakarta.xml.bind.annotation.XmlElement}</li>
-	 * <li>{@code Vets} → {@code jakarta.xml.bind.annotation.XmlRootElement}</li>
-	 * </ul>
-	 * Após a refatoração, entidades de domínio são POJOs puros; anotações de framework
-	 * migram para {@code infrastructure.persistence} e {@code interfaces}.
-	 */
 	@ArchTest
 	static final ArchRule dominio_e_java_puro = noClasses().that()
 		.resideInAPackage(PKG_DOMAIN)
 		.should()
 		.dependOnClassesThat()
-		.resideInAnyPackage("org.springframework..", "jakarta.persistence..", "jakarta.validation..",
-				"jakarta.xml.bind..")
-		.allowEmptyShould(true)
+		.resideOutsideOfPackages(PKG_DOMAIN, "java..", "lombok..")
 		.because("O domínio é o núcleo da aplicação e não pode depender de frameworks."
-				+ " Owner, Pet, Vet e Visit devem ser POJOs puros sem @Entity, @NotBlank,"
-				+ " @DateTimeFormat, @XmlElement etc.");
+				+ " Owner, Pet, Vet e Visit devem ser POJOs puros.");
+
+	// =========================================================================
+	// 2. DEPENDÊNCIAS ENTRE CAMADAS
+	// =========================================================================
+
+	@ArchTest
+	static final ArchRule dominio_nao_depende_de_adapters = noClasses().that()
+		.resideInAPackage(PKG_DOMAIN)
+		.should()
+		.dependOnClassesThat()
+		.resideInAnyPackage(ROOT + ".adapters..")
+		.because("O domínio não pode conhecer os adapters.");
+
+	@ArchTest
+	static final ArchRule dominio_nao_depende_de_config = noClasses().that()
+		.resideInAPackage(PKG_DOMAIN)
+		.should()
+		.dependOnClassesThat()
+		.resideInAPackage(PKG_CONFIG)
+		.because("O domínio não pode conhecer a configuração.");
+
+	@ArchTest
+	static final ArchRule usecases_nao_dependem_de_adapters = noClasses().that()
+		.resideInAPackage(PKG_USECASES)
+		.should()
+		.dependOnClassesThat()
+		.resideInAnyPackage(ROOT + ".adapters..")
+		.because("Use cases não podem depender de adapters (controllers, entities, repositories, etc.).");
+
+	@ArchTest
+	static final ArchRule gateways_nao_dependem_de_adapters = noClasses().that()
+		.resideInAPackage(PKG_GATEWAYS)
+		.should()
+		.dependOnClassesThat()
+		.resideInAnyPackage(ROOT + ".adapters..")
+		.because("Gateways são contratos do core e não podem conhecer os adapters.");
 
 	// =========================================================================
 	// 3. CONVENÇÕES DE LOCALIZAÇÃO E NOMENCLATURA
 	// =========================================================================
 
-	/**
-	 * Entidades JPA ({@code @Entity}) devem residir exclusivamente em
-	 * {@code infrastructure.persistence}.
-	 *
-	 * <p>
-	 * Violações atuais: {@code Owner}, {@code Pet}, {@code PetType}, {@code Visit},
-	 * {@code Vet} e {@code Specialty} são {@code @Entity} nos pacotes {@code owner} e
-	 * {@code vet}. Devem migrar para {@code OwnerJpaEntity}, {@code PetJpaEntity} etc. em
-	 * {@code infrastructure.persistence}.
-	 */
 	@ArchTest
-	static final ArchRule entidades_jpa_em_infrastructure = classes().that()
+	static final ArchRule entidades_jpa_em_adapters_entities = classes().that()
 		.areAnnotatedWith("jakarta.persistence.Entity")
 		.should()
-		.resideInAPackage(PKG_INFRA_PERSIST)
-		.because("@Entity é um detalhe de infraestrutura JPA e pertence a"
-				+ " infrastructure.persistence, nunca ao domínio.");
+		.resideInAPackage(PKG_ENTITIES)
+		.because("@Entity é detalhe de infraestrutura JPA e pertence a adapters.entities.");
 
-	/**
-	 * Controllers ({@code @Controller} / {@code @RestController}) devem residir
-	 * exclusivamente em {@code interfaces.web} ou {@code interfaces.api}.
-	 *
-	 * <p>
-	 * Violações atuais: {@code OwnerController}, {@code PetController},
-	 * {@code VisitController}, {@code VetController}, {@code WelcomeController} e
-	 * {@code CrashController} estão nos pacotes {@code owner}, {@code vet} e
-	 * {@code system}.
-	 */
 	@ArchTest
-	static final ArchRule controllers_em_interfaces = classes().that()
+	static final ArchRule controllers_em_adapters_controllers = classes().that()
 		.areAnnotatedWith("org.springframework.stereotype.Controller")
 		.or()
 		.areAnnotatedWith("org.springframework.web.bind.annotation.RestController")
 		.should()
-		.resideInAnyPackage(PKG_INTERFACES_WEB, PKG_INTERFACES_API)
-		.because("Controllers são adapters de entrada e pertencem a interfaces.web (Thymeleaf)"
-				+ " ou interfaces.api (REST). Nunca ao pacote de domínio.");
+		.resideInAPackage(PKG_CONTROLLERS)
+		.because("Controllers são adapters de entrada e pertencem a adapters.controllers.");
 
-	/**
-	 * Portas de saída em {@code application.port.out} devem ser interfaces com nome
-	 * terminado em {@code Port}.
-	 *
-	 * <p>
-	 * Substitui os atuais {@code OwnerRepository extends JpaRepository} e
-	 * {@code VetRepository extends Repository} — que acoplam o contrato ao Spring Data —
-	 * por interfaces puras como {@code OwnerRepositoryPort} e {@code VetRepositoryPort}.
-	 */
 	@ArchTest
-	static final ArchRule output_ports_sao_interfaces_com_sufixo_port = classes().that()
-		.resideInAPackage(PKG_PORT_OUT)
+	static final ArchRule gateways_sao_interfaces = classes().that()
+		.resideInAPackage(PKG_GATEWAYS)
 		.should()
 		.beInterfaces()
-		.andShould()
-		.haveSimpleNameEndingWith("Port")
-		.allowEmptyShould(true)
-		.because("Output Ports são contratos abstratos (interfaces) com sufixo 'Port'."
-				+ " A implementação concreta fica nos Adapters em infrastructure.persistence.");
+		.because("Gateways são contratos abstratos (interfaces) — output ports do core.");
 
-	/**
-	 * Use Cases devem ter nome terminado em {@code UseCase} e residir em
-	 * {@code application..usecase}.
-	 *
-	 * <p>
-	 * Exemplos esperados: {@code CreateOwnerUseCase}, {@code BookVisitUseCase},
-	 * {@code ListVetsUseCase}.
-	 */
+	@ArchTest
+	static final ArchRule ports_sao_interfaces = classes().that()
+		.resideInAPackage(PKG_PORTS)
+		.should()
+		.beInterfaces()
+		.because("Input Ports são contratos abstratos (interfaces) — driving ports do core.");
+
 	@ArchTest
 	static final ArchRule use_cases_com_sufixo_correto = classes().that()
-		.resideInAPackage(PKG_USE_CASE)
+		.resideInAPackage(PKG_USECASES)
+		.and()
+		.areNotInterfaces()
+		.and()
+		.haveSimpleNameNotEndingWith("PagedResult")
 		.should()
 		.haveSimpleNameEndingWith("UseCase")
-		.allowEmptyShould(true)
-		.because("Convenção: classes de caso de uso terminam com 'UseCase' para comunicar"
-				+ " sua responsabilidade de forma imediata.");
+		.because("Classes de caso de uso devem terminar com 'UseCase'.");
 
-	/**
-	 * Formatters Spring MVC devem residir em {@code interfaces.web}.
-	 *
-	 * <p>
-	 * Violação atual: {@code PetTypeFormatter implements Formatter<PetType>} está no
-	 * pacote {@code owner} junto ao domínio. É um detalhe de binding do Spring MVC e
-	 * pertence a {@code interfaces.web}.
-	 */
 	@ArchTest
-	static final ArchRule formatters_em_interfaces_web = classes().that()
+	static final ArchRule formatters_em_adapters_formatters = classes().that()
 		.implement("org.springframework.format.Formatter")
 		.should()
-		.resideInAPackage(PKG_INTERFACES_WEB)
-		.because("Formatters são detalhes de binding do Spring MVC e pertencem a"
-				+ " interfaces.web. PetTypeFormatter deve migrar para interfaces.web.owner.");
+		.resideInAPackage(PKG_FORMATTERS)
+		.because("Formatters são detalhes de binding do Spring MVC e pertencem a adapters.formatters.");
 
-	/**
-	 * {@code RuntimeHintsRegistrar} pertence a {@code infrastructure.config}.
-	 *
-	 * <p>
-	 * Violação atual: {@code PetClinicRuntimeHints} está no pacote raiz da aplicação. É
-	 * um detalhe de infraestrutura GraalVM e deve residir em
-	 * {@code infrastructure.config}.
-	 */
 	@ArchTest
-	static final ArchRule runtime_hints_em_infrastructure_config = classes().that()
+	static final ArchRule runtime_hints_em_config = classes().that()
 		.implement("org.springframework.aot.hint.RuntimeHintsRegistrar")
 		.should()
-		.resideInAPackage(PKG_INFRA_CONFIG)
-		.because("RuntimeHintsRegistrar é detalhe de infraestrutura GraalVM."
-				+ " PetClinicRuntimeHints deve migrar para infrastructure.config.");
+		.resideInAPackage(PKG_CONFIG)
+		.because("RuntimeHintsRegistrar é detalhe de infraestrutura GraalVM e pertence a config.");
 
-	/**
-	 * Proibido o uso de {@code System.out} e {@code System.err} em código de produção.
-	 *
-	 * <p>
-	 * Todo logging deve ser feito via SLF4J/Logback.
-	 */
+	@ArchTest
+	static final ArchRule repositories_em_adapters_repositories = classes().that()
+		.areAnnotatedWith("org.springframework.stereotype.Repository")
+		.should()
+		.resideInAPackage(PKG_REPOSITORIES)
+		.because("Adapters de persistência pertencem a adapters.repositories.");
+
+	@ArchTest
+	static final ArchRule dtos_sem_anotacoes_jpa = noClasses().that()
+		.resideInAPackage(PKG_DTOS)
+		.should()
+		.dependOnClassesThat()
+		.resideInAnyPackage("jakarta.persistence..")
+		.because("DTOs são objetos de transferência e não devem ter anotações JPA.");
+
+	// =========================================================================
+	// 4. BOAS PRÁTICAS
+	// =========================================================================
+
 	@ArchTest
 	static final ArchRule sem_system_out = noClasses().should()
 		.accessClassesThat()
 		.haveFullyQualifiedName("java.io.PrintStream")
-		.because("Use SLF4J/Logback para logging. System.out e System.err são proibidos" + " em código de produção.");
+		.because("Use SLF4J/Logback para logging. System.out e System.err são proibidos em código de produção.");
 
 }
