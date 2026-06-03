@@ -1,11 +1,11 @@
-package org.springframework.samples.petclinic.adapters.controllers.owner;
+package org.springframework.samples.petclinic.adapters.validators.owner;
 
 import org.springframework.samples.petclinic.adapters.dtos.owner.PetDto;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-class PetValidator implements Validator {
+public class PetValidator implements Validator {
 
 	private static final String REQUIRED = "required";
 

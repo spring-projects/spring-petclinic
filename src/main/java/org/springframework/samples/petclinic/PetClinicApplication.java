@@ -18,15 +18,15 @@ package org.springframework.samples.petclinic;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.ImportRuntimeHints;
+import org.springframework.samples.petclinic.config.PetClinicRuntimeHints;
 
-/**
- * PetClinic Spring Boot Application.
- *
- * @author Dave Syer
- */
 @SpringBootApplication
 @ImportRuntimeHints(PetClinicRuntimeHints.class)
+@ComponentScan(excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX,
+		pattern = "org\\.springframework\\.samples\\.petclinic\\.mvc\\..*"))
 public class PetClinicApplication {
 
 	public static void main(String[] args) {

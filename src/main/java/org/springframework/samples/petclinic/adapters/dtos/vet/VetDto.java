@@ -15,4 +15,8 @@ public class VetDto {
 
 	private final List<SpecialtyDto> specialties;
 
+	public int getNrOfSpecialties() {
+		return specialties != null ? specialties.size() : 0;
+	}
+
 }

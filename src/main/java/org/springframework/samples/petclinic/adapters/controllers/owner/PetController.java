@@ -7,6 +7,7 @@ import java.util.Objects;
 import jakarta.validation.Valid;
 
 import org.springframework.samples.petclinic.adapters.dtos.owner.OwnerDto;
+import org.springframework.samples.petclinic.adapters.validators.owner.PetValidator;
 import org.springframework.samples.petclinic.adapters.dtos.owner.PetDto;
 import org.springframework.samples.petclinic.adapters.dtos.owner.PetTypeDto;
 import org.springframework.samples.petclinic.adapters.mappers.owner.OwnerMapper;

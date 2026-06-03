@@ -1,8 +1,10 @@
-package org.springframework.samples.petclinic.adapters.controllers.owner;
+package org.springframework.samples.petclinic.adapters.formatters.owner;
 
 import java.text.ParseException;
 import java.util.List;
 import java.util.Locale;
+
+import lombok.RequiredArgsConstructor;
 
 import org.springframework.format.Formatter;
 import org.springframework.samples.petclinic.adapters.dtos.owner.PetTypeDto;
@@ -11,13 +13,10 @@ import org.springframework.samples.petclinic.core.usecases.owner.ports.FindPetTy
 import org.springframework.stereotype.Component;
 
 @Component
-class PetTypeFormatter implements Formatter<PetTypeDto> {
+@RequiredArgsConstructor
+public class PetTypeFormatter implements Formatter<PetTypeDto> {
 
 	private final FindPetTypePort findPetTypePort;
-
-	PetTypeFormatter(FindPetTypePort findPetTypePort) {
-		this.findPetTypePort = findPetTypePort;
-	}
 
 	@Override
 	public String print(PetTypeDto petType, Locale locale) {
