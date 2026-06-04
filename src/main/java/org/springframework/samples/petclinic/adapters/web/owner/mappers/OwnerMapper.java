@@ -1,12 +1,12 @@
-package org.springframework.samples.petclinic.adapters.mappers.owner;
+package org.springframework.samples.petclinic.adapters.web.owner.mappers;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import org.springframework.samples.petclinic.adapters.dtos.owner.OwnerDto;
-import org.springframework.samples.petclinic.adapters.dtos.owner.PetDto;
-import org.springframework.samples.petclinic.adapters.dtos.owner.PetTypeDto;
-import org.springframework.samples.petclinic.adapters.dtos.owner.VisitDto;
+import org.springframework.samples.petclinic.adapters.web.owner.dtos.OwnerDto;
+import org.springframework.samples.petclinic.adapters.web.owner.dtos.PetDto;
+import org.springframework.samples.petclinic.adapters.web.owner.dtos.PetTypeDto;
+import org.springframework.samples.petclinic.adapters.web.owner.dtos.VisitDto;
 import org.springframework.samples.petclinic.core.domain.owner.Owner;
 import org.springframework.samples.petclinic.core.domain.owner.Pet;
 import org.springframework.samples.petclinic.core.domain.owner.PetType;

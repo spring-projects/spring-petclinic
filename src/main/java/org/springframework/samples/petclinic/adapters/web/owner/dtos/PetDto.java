@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.adapters.dtos.owner;
+package org.springframework.samples.petclinic.adapters.web.owner.dtos;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -32,6 +32,11 @@ public class PetDto {
 
 	public void addVisit(VisitDto visit) {
 		this.visits.add(visit);
+	}
+
+	@Override
+	public String toString() {
+		return name != null ? name : "<null>";
 	}
 
 }

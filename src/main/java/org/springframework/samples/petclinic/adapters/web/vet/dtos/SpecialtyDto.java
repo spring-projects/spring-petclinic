@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.adapters.dtos.vet;
+package org.springframework.samples.petclinic.adapters.web.vet.dtos;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

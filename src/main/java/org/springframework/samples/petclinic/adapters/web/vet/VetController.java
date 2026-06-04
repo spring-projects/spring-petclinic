@@ -1,10 +1,12 @@
-package org.springframework.samples.petclinic.adapters.controllers.vet;
+package org.springframework.samples.petclinic.adapters.web.vet;
 
 import java.util.List;
 
-import org.springframework.samples.petclinic.adapters.dtos.vet.VetDto;
-import org.springframework.samples.petclinic.adapters.dtos.vet.VetsResponse;
-import org.springframework.samples.petclinic.adapters.mappers.vet.VetMapper;
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.samples.petclinic.adapters.web.vet.dtos.VetDto;
+import org.springframework.samples.petclinic.adapters.web.vet.dtos.VetsResponse;
+import org.springframework.samples.petclinic.adapters.web.vet.mappers.VetMapper;
 import org.springframework.samples.petclinic.core.domain.vet.Vet;
 import org.springframework.samples.petclinic.core.usecases.vet.ports.ListVetsPort;
 import org.springframework.samples.petclinic.core.usecases.vet.PagedResult;
@@ -15,15 +17,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
+@RequiredArgsConstructor
 class VetController {
 
 	private static final int PAGE_SIZE = 5;
 
 	private final ListVetsPort listVetsPort;
-
-	VetController(ListVetsPort listVetsPort) {
-		this.listVetsPort = listVetsPort;
-	}
 
 	@GetMapping("/vets.html")
 	public String showVetList(@RequestParam(defaultValue = "1") int page, Model model) {

@@ -1,15 +1,17 @@
-package org.springframework.samples.petclinic.adapters.controllers.owner;
+package org.springframework.samples.petclinic.adapters.web.owner;
 
 import java.util.List;
 import java.util.Objects;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
-import org.springframework.samples.petclinic.adapters.dtos.owner.OwnerDto;
-import org.springframework.samples.petclinic.adapters.mappers.owner.OwnerMapper;
+import org.springframework.samples.petclinic.adapters.web.owner.dtos.OwnerDto;
+import org.springframework.samples.petclinic.adapters.web.owner.dtos.OwnerSearchDto;
+import org.springframework.samples.petclinic.adapters.web.owner.mappers.OwnerMapper;
 import org.springframework.samples.petclinic.core.domain.owner.Owner;
-import org.springframework.samples.petclinic.core.usecases.owner.ports.FindOwnerPort;
 import org.springframework.samples.petclinic.core.usecases.owner.PagedResult;
+import org.springframework.samples.petclinic.core.usecases.owner.ports.FindOwnerPort;
 import org.springframework.samples.petclinic.core.usecases.owner.ports.SaveOwnerPort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
+@RequiredArgsConstructor
 class OwnerController {
 
 	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
@@ -32,11 +35,6 @@ class OwnerController {
 	private final FindOwnerPort findOwnerPort;
 
 	private final SaveOwnerPort saveOwnerPort;
-
-	OwnerController(FindOwnerPort findOwnerPort, SaveOwnerPort saveOwnerPort) {
-		this.findOwnerPort = findOwnerPort;
-		this.saveOwnerPort = saveOwnerPort;
-	}
 
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
@@ -108,13 +106,7 @@ class OwnerController {
 	public String processUpdateOwnerForm(@Valid OwnerDto ownerDto, BindingResult result,
 			@PathVariable("ownerId") int ownerId, RedirectAttributes redirectAttributes) {
 		if (result.hasErrors()) {
-			redirectAttributes.addFlashAttribute("error", "There was an error in updating the owner.");
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
-		}
-		if (!Objects.equals(ownerDto.getId(), ownerId)) {
-			result.rejectValue("id", "mismatch", "The owner ID in the form does not match the URL.");
-			redirectAttributes.addFlashAttribute("error", "Owner ID mismatch. Please try again.");
-			return "redirect:/owners/{ownerId}/edit";
 		}
 		ownerDto.setId(ownerId);
 		saveOwnerPort.save(OwnerMapper.toDomain(ownerDto));

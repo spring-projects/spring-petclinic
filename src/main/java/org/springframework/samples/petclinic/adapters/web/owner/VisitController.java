@@ -1,11 +1,12 @@
-package org.springframework.samples.petclinic.adapters.controllers.owner;
+package org.springframework.samples.petclinic.adapters.web.owner;
 
 import java.util.Map;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
-import org.springframework.samples.petclinic.adapters.dtos.owner.VisitDto;
-import org.springframework.samples.petclinic.adapters.mappers.owner.OwnerMapper;
+import org.springframework.samples.petclinic.adapters.web.owner.dtos.VisitDto;
+import org.springframework.samples.petclinic.adapters.web.owner.mappers.OwnerMapper;
 import org.springframework.samples.petclinic.core.domain.owner.Owner;
 import org.springframework.samples.petclinic.core.domain.owner.Visit;
 import org.springframework.samples.petclinic.core.usecases.owner.ports.FindOwnerPort;
@@ -21,16 +22,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
+@RequiredArgsConstructor
 class VisitController {
 
 	private final FindOwnerPort findOwnerPort;
 
 	private final SaveOwnerPort saveOwnerPort;
-
-	VisitController(FindOwnerPort findOwnerPort, SaveOwnerPort saveOwnerPort) {
-		this.findOwnerPort = findOwnerPort;
-		this.saveOwnerPort = saveOwnerPort;
-	}
 
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
@@ -43,19 +40,15 @@ class VisitController {
 		Owner owner = findOwnerPort.findById(ownerId)
 			.orElseThrow(() -> new IllegalArgumentException(
 					"Owner not found with id: " + ownerId + ". Please ensure the ID is correct."));
-
 		org.springframework.samples.petclinic.core.domain.owner.Pet pet = owner.getPet(petId);
 		if (pet == null) {
 			throw new IllegalArgumentException(
 					"Pet with id " + petId + " not found for owner with id " + ownerId + ".");
 		}
-
 		model.put("pet", OwnerMapper.petToDto(pet));
 		model.put("owner", OwnerMapper.toDto(owner));
-
-		VisitDto visit = new VisitDto();
 		pet.addVisit(new Visit());
-		return visit;
+		return new VisitDto();
 	}
 
 	@GetMapping("/owners/{ownerId}/pets/{petId}/visits/new")
@@ -69,12 +62,9 @@ class VisitController {
 		if (result.hasErrors()) {
 			return "pets/createOrUpdateVisitForm";
 		}
-
 		Owner owner = findOwnerPort.findById(ownerId)
 			.orElseThrow(() -> new IllegalArgumentException("Owner not found with id: " + ownerId));
-
-		Visit visit = OwnerMapper.visitToDomain(visitDto);
-		owner.addVisit(petId, visit);
+		owner.addVisit(petId, OwnerMapper.visitToDomain(visitDto));
 		saveOwnerPort.save(owner);
 		redirectAttributes.addFlashAttribute("message", "Your visit has been booked");
 		return "redirect:/owners/" + ownerId;

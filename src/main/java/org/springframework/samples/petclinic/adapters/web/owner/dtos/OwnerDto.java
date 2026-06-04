@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.adapters.dtos.owner;
+package org.springframework.samples.petclinic.adapters.web.owner.dtos;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,10 +43,8 @@ public class OwnerDto {
 
 	public PetDto getPet(Integer id) {
 		for (PetDto pet : getPets()) {
-			if (!pet.isNew()) {
-				if (Objects.equals(pet.getId(), id)) {
-					return pet;
-				}
+			if (!pet.isNew() && Objects.equals(pet.getId(), id)) {
+				return pet;
 			}
 		}
 		return null;

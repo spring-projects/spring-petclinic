@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.adapters.formatters.owner;
+package org.springframework.samples.petclinic.adapters.web.owner.formatters;
 
 import java.text.ParseException;
 import java.util.List;
@@ -7,8 +7,8 @@ import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.format.Formatter;
-import org.springframework.samples.petclinic.adapters.dtos.owner.PetTypeDto;
-import org.springframework.samples.petclinic.adapters.mappers.owner.OwnerMapper;
+import org.springframework.samples.petclinic.adapters.web.owner.dtos.PetTypeDto;
+import org.springframework.samples.petclinic.adapters.web.owner.mappers.OwnerMapper;
 import org.springframework.samples.petclinic.core.usecases.owner.ports.FindPetTypePort;
 import org.springframework.stereotype.Component;
 

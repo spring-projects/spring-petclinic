@@ -1,16 +1,17 @@
-package org.springframework.samples.petclinic.adapters.controllers.owner;
+package org.springframework.samples.petclinic.adapters.web.owner;
 
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Objects;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
-import org.springframework.samples.petclinic.adapters.dtos.owner.OwnerDto;
-import org.springframework.samples.petclinic.adapters.validators.owner.PetValidator;
-import org.springframework.samples.petclinic.adapters.dtos.owner.PetDto;
-import org.springframework.samples.petclinic.adapters.dtos.owner.PetTypeDto;
-import org.springframework.samples.petclinic.adapters.mappers.owner.OwnerMapper;
+import org.springframework.samples.petclinic.adapters.web.owner.dtos.OwnerDto;
+import org.springframework.samples.petclinic.adapters.web.owner.dtos.PetDto;
+import org.springframework.samples.petclinic.adapters.web.owner.dtos.PetTypeDto;
+import org.springframework.samples.petclinic.adapters.web.owner.mappers.OwnerMapper;
+import org.springframework.samples.petclinic.adapters.web.owner.validators.PetValidator;
 import org.springframework.samples.petclinic.core.domain.owner.Owner;
 import org.springframework.samples.petclinic.core.usecases.owner.ports.FindOwnerPort;
 import org.springframework.samples.petclinic.core.usecases.owner.ports.FindPetTypePort;
@@ -30,6 +31,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/owners/{ownerId}")
+@RequiredArgsConstructor
 class PetController {
 
 	private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = "pets/createOrUpdatePetForm";
@@ -39,12 +41,6 @@ class PetController {
 	private final SaveOwnerPort saveOwnerPort;
 
 	private final FindPetTypePort findPetTypePort;
-
-	PetController(FindOwnerPort findOwnerPort, SaveOwnerPort saveOwnerPort, FindPetTypePort findPetTypePort) {
-		this.findOwnerPort = findOwnerPort;
-		this.saveOwnerPort = saveOwnerPort;
-		this.findPetTypePort = findPetTypePort;
-	}
 
 	@ModelAttribute("types")
 	public Collection<PetTypeDto> populatePetTypes() {
@@ -86,22 +82,18 @@ class PetController {
 	}
 
 	@PostMapping("/pets/new")
-	public String processCreationForm(OwnerDto ownerDto, @Valid PetDto pet, BindingResult result,
-			RedirectAttributes redirectAttributes) {
+	public String processCreationForm(@PathVariable("ownerId") int ownerId, OwnerDto ownerDto, @Valid PetDto pet,
+			BindingResult result, RedirectAttributes redirectAttributes) {
 		if (StringUtils.hasText(pet.getName()) && pet.isNew() && ownerDto.getPet(pet.getName(), true) != null) {
 			result.rejectValue("name", "duplicate", "already exists");
 		}
-
-		LocalDate currentDate = LocalDate.now();
-		if (pet.getBirthDate() != null && pet.getBirthDate().isAfter(currentDate)) {
+		if (pet.getBirthDate() != null && pet.getBirthDate().isAfter(LocalDate.now())) {
 			result.rejectValue("birthDate", "typeMismatch.birthDate");
 		}
-
 		if (result.hasErrors()) {
 			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 		}
-
-		Owner owner = findOwnerPort.findById(ownerDto.getId())
+		Owner owner = findOwnerPort.findById(ownerId)
 			.orElseThrow(() -> new IllegalArgumentException("Owner not found"));
 		owner.addPet(OwnerMapper.petToDomain(pet));
 		saveOwnerPort.save(owner);
@@ -115,25 +107,21 @@ class PetController {
 	}
 
 	@PostMapping("/pets/{petId}/edit")
-	public String processUpdateForm(OwnerDto ownerDto, @Valid PetDto pet, BindingResult result,
-			RedirectAttributes redirectAttributes) {
+	public String processUpdateForm(@PathVariable("ownerId") int ownerId, OwnerDto ownerDto, @Valid PetDto pet,
+			BindingResult result, RedirectAttributes redirectAttributes) {
 		if (StringUtils.hasText(pet.getName())) {
 			PetDto existingPet = ownerDto.getPet(pet.getName(), false);
 			if (existingPet != null && !Objects.equals(existingPet.getId(), pet.getId())) {
 				result.rejectValue("name", "duplicate", "already exists");
 			}
 		}
-
-		LocalDate currentDate = LocalDate.now();
-		if (pet.getBirthDate() != null && pet.getBirthDate().isAfter(currentDate)) {
+		if (pet.getBirthDate() != null && pet.getBirthDate().isAfter(LocalDate.now())) {
 			result.rejectValue("birthDate", "typeMismatch.birthDate");
 		}
-
 		if (result.hasErrors()) {
 			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 		}
-
-		Owner owner = findOwnerPort.findById(ownerDto.getId())
+		Owner owner = findOwnerPort.findById(ownerId)
 			.orElseThrow(() -> new IllegalArgumentException("Owner not found"));
 		org.springframework.samples.petclinic.core.domain.owner.Pet existingPet = owner.getPet(pet.getId());
 		if (existingPet != null) {
