@@ -24,19 +24,15 @@ public class CleanArchitectureRulesTest {
 	private static final String PKG_PORTS = ROOT + ".core.usecases..ports..";
 
 	// adapters
-	private static final String PKG_CONTROLLERS = ROOT + ".adapters.controllers..";
+	private static final String PKG_CONTROLLERS = ROOT + ".adapters.web..";
 
 	private static final String PKG_ENTITIES = ROOT + ".adapters.entities..";
 
 	private static final String PKG_REPOSITORIES = ROOT + ".adapters.repositories..";
 
-	private static final String PKG_DTOS = ROOT + ".adapters.dtos..";
+	private static final String PKG_DTOS = ROOT + ".adapters.web..dtos..";
 
-	private static final String PKG_MAPPERS = ROOT + ".adapters.mappers..";
-
-	private static final String PKG_FORMATTERS = ROOT + ".adapters.formatters..";
-
-	private static final String PKG_VALIDATORS = ROOT + ".adapters.validators..";
+	private static final String PKG_FORMATTERS = ROOT + ".adapters.web..";
 
 	// config
 	private static final String PKG_CONFIG = ROOT + ".config..";
