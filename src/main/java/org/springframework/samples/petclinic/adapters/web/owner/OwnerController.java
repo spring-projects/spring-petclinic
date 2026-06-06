@@ -85,8 +85,7 @@ class OwnerController {
 		}
 
 		if (ownersResults.getTotalElements() == 1) {
-			Owner found = ownersResults.getContent().get(0);
-			return "redirect:/owners/" + found.getId();
+			return "redirect:/owners/" + ownersResults.getContent().get(0).getId();
 		}
 
 		List<OwnerDto> listOwners = ownersResults.getContent().stream().map(OwnerMapper::toDto).toList();
@@ -114,7 +113,7 @@ class OwnerController {
 		return "redirect:/owners/{ownerId}";
 	}
 
-	@GetMapping("/owners/{ownerId}")
+	@GetMapping("/owners/{*ownerId}")
 	public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
 		ModelAndView mav = new ModelAndView("owners/ownerDetails");
 		Owner owner = findOwnerPort.findById(ownerId)

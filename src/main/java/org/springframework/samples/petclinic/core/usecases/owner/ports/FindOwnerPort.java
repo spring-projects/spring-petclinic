@@ -11,4 +11,6 @@ public interface FindOwnerPort {
 
 	PagedResult<Owner> findByLastName(String lastName, int page);
 
+	Optional<Owner> findUniqueByLastName(String lastName);
+
 }

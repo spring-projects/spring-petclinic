@@ -28,4 +28,14 @@ public class FindOwnerUseCase implements FindOwnerPort {
 		return ownerRepositoryGateway.findByLastNameStartingWith(search, page - 1, PAGE_SIZE);
 	}
 
+	@Override
+	public Optional<Owner> findUniqueByLastName(String lastName) {
+		String search = (lastName == null) ? "" : lastName;
+		PagedResult<Owner> result = ownerRepositoryGateway.findByLastNameStartingWith(search, 0, PAGE_SIZE);
+		if (result.getTotalElements() == 1) {
+			return Optional.of(result.getContent().get(0));
+		}
+		return Optional.empty();
+	}
+
 }
