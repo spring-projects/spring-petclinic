@@ -113,7 +113,7 @@ class OwnerController {
 		return "redirect:/owners/{ownerId}";
 	}
 
-	@GetMapping("/owners/{*ownerId}")
+	@GetMapping("/owners/{ownerId}")
 	public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
 		ModelAndView mav = new ModelAndView("owners/ownerDetails");
 		Owner owner = findOwnerPort.findById(ownerId)
