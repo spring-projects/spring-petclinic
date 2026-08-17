@@ -4,12 +4,14 @@ pipeline {
         DOCKERHUB_CREDENTIALS=credentials('dockerhub')
     }
     stages {
+/*
         stage ('clone the repo') 
         {
             steps {
                 sh 'git clone https://github.com/saurabhgore-code/spring-petclinic.git'
             }
         }
+*/
         stage ('build the image') 
         {
             steps {
@@ -39,7 +41,7 @@ pipeline {
             stage ('run the k8s pod externally')
             {
                 steps {
-                    sh 'kubectl create -f springboot-petclinic.yml'
+                    sh 'kubectl create -f springboot-petclinic-service.yml'
                 }
             }
           }
