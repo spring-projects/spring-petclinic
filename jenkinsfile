@@ -13,8 +13,7 @@ pipeline {
         stage('BUILD'){
             steps {
                  sh 'mvn --version'
-                 sh 'mvn validate'
-                
+                 sh 'mvn validate'     
             }
            
         }
