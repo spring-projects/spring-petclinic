@@ -46,3 +46,4 @@ out/
 _site/
 *.css
 !petclinic.css
+.env
