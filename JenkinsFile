@@ -35,13 +35,13 @@ pipeline {
           stage ('Deploy using k8s')
           {
             steps {
-                sh 'kubectl create -f springboot-petclinic.yml'
+                sh 'kubectl apply -f springboot-petclinic.yml'
             }
           }
             stage ('run the k8s pod externally')
             {
                 steps {
-                    sh 'kubectl create -f springboot-petclinic-service.yml'
+                    sh 'kubectl apply -f springboot-petclinic-service.yml'
                 }
             }
           }

@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: petclinic
+  name: mypetclinic
 spec:
   replicas: 2
   selector:
