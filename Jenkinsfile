@@ -3,20 +3,10 @@ pipeline {
     agent any
 
     environment {
-        SONARQUBE_SERVER = 'SonarQube'
+        SONARQUBE = 'SonarQube'
     }
 
     stages {
-
-        stage('Checkout') {
-            steps {
-                echo 'Checking out source code...'
-
-                git branch: 'devops-project',
-                    credentialsId: 'git-cred',
-                    url: 'https://github.com/HarshithaLYadav/spring-petclinic.git'
-            }
-        }
 
         stage('Environment') {
             steps {
@@ -37,18 +27,11 @@ pipeline {
 
         stage('Build & Test') {
             steps {
-                echo 'Building application and running tests...'
+                echo 'Building Spring PetClinic and running tests...'
 
                 sh '''
-                    ./mvnw clean verify
+                    mvn clean verify
                 '''
-            }
-
-            post {
-                always {
-                    junit testResults: '**/target/surefire-reports/*.xml',
-                          allowEmptyResults: true
-                }
             }
         }
 
@@ -56,10 +39,10 @@ pipeline {
             steps {
                 echo 'Running SonarQube analysis...'
 
-                withSonarQubeEnv("${SONARQUBE_SERVER}") {
+                withSonarQubeEnv("${SONARQUBE}") {
                     sh '''
-                        ./mvnw sonar:sonar \
-                          -Dsonar.projectKey=Spring-Petclinic \
+                        mvn sonar:sonar \
+                          -Dsonar.projectKey=spring-petclinic \
                           -Dsonar.projectName=Spring-Petclinic
                     '''
                 }
@@ -70,7 +53,7 @@ pipeline {
             steps {
                 echo 'Waiting for SonarQube Quality Gate...'
 
-                timeout(time: 10, unit: 'MINUTES') {
+                timeout(time: 5, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
                 }
             }
@@ -78,17 +61,17 @@ pipeline {
 
         stage('Package') {
             steps {
-                echo 'Packaging application...'
+                echo 'Creating application package...'
 
                 sh '''
-                    ./mvnw package -DskipTests
+                    mvn package -DskipTests
                 '''
             }
         }
 
         stage('Archive Artifact') {
             steps {
-                echo 'Archiving JAR artifact...'
+                echo 'Archiving build artifacts...'
 
                 archiveArtifacts artifacts: 'target/*.jar',
                                  fingerprint: true
@@ -97,23 +80,29 @@ pipeline {
     }
 
     post {
-
         success {
-            echo '========================================'
-            echo 'PIPELINE SUCCESSFUL'
-            echo 'Build, Tests, SonarQube and Packaging passed.'
-            echo '========================================'
+            echo '''
+========================================
+PIPELINE SUCCESS
+========================================
+Spring PetClinic build completed successfully.
+Artifact has been archived.
+========================================
+'''
         }
 
         failure {
-            echo '========================================'
-            echo 'PIPELINE FAILED'
-            echo 'Check the failed stage in Jenkins.'
-            echo '========================================'
+            echo '''
+========================================
+PIPELINE FAILED
+========================================
+Check the failed stage in Jenkins.
+========================================
+'''
         }
 
         always {
-            echo "Build completed: ${currentBuild.currentResult}"
+            echo 'Pipeline execution completed.'
         }
     }
 }
