@@ -14,7 +14,7 @@ services:
   postgres:
     image: postgres:18.4
     ports:
-      - "5432:5432"
+      - "5433:5432"
     environment:
       - POSTGRES_PASSWORD=petclinic
       - POSTGRES_USER=petclinic
