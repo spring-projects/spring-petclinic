@@ -4,138 +4,218 @@ pipeline {
         label 'built-in'
     }
 
+    environment {
+
+        // Maven
+        MAVEN_OPTS = '-Xms256m -Xmx768m'
+
+        // SonarQube
+        SONAR_PROJECT_KEY = 'spring-petclinic'
+        SONAR_PROJECT_NAME = 'Spring PetClinic'
+        SONAR_PLUGIN_VERSION = '5.5.0.6356'
+
+        // Application artifact
+        ARTIFACT_PATH = 'target/spring-petclinic-4.0.0-SNAPSHOT.jar'
+
+        // Docker/Testcontainers
+        DOCKER_HOST = 'unix:///var/run/docker.sock'
+    }
+
     options {
-        skipDefaultCheckout(true)
-        disableConcurrentBuilds()
+
         timestamps()
+
+        disableConcurrentBuilds()
 
         buildDiscarder(
             logRotator(
-                numToKeepStr: '10',
+                numToKeepStr: '5',
                 artifactNumToKeepStr: '5'
             )
         )
 
-        timeout(time: 30, unit: 'MINUTES')
-    }
-
-    environment {
-        MAVEN_OPTS = '-Xms256m -Xmx768m'
-        MAVEN_USER_HOME = '/var/jenkins_home/.m2'
-
-        SONARQUBE_SERVER = 'SonarQube'
-        SONAR_PROJECT_KEY = 'spring-petclinic'
-
-        APP_VERSION = '4.0.0-SNAPSHOT'
+        timeout(
+            time: 60,
+            unit: 'MINUTES'
+        )
     }
 
     stages {
 
-        stage('Checkout') {
-            steps {
-                echo '===== CHECKOUT ====='
-
-                checkout([
-                    $class: 'GitSCM',
-                    branches: [[name: '*/devops-project']],
-                    userRemoteConfigs: [[
-                        url: 'https://github.com/HarshithaLYadav/spring-petclinic.git',
-                        credentialsId: 'git-token'
-                    ]]
-                ])
-
-                sh '''
-                    echo "Branch:"
-                    git branch --show-current || true
-
-                    echo "Commit:"
-                    git log -1 --oneline
-                '''
-            }
-        }
-
         stage('Environment') {
+
             steps {
-                echo '===== ENVIRONMENT ====='
 
                 sh '''
                     set -e
 
-                    echo "Java:"
-                    java -version
+                    echo "=========================================="
+                    echo "        ENVIRONMENT INFORMATION"
+                    echo "=========================================="
 
                     echo ""
-                    echo "Maven:"
-                    mvn -version
+                    echo "===== SYSTEM ====="
+                    uname -a
 
                     echo ""
-                    echo "Git:"
-                    git --version
+                    echo "===== CPU ====="
+                    nproc
 
                     echo ""
-                    echo "Memory:"
+                    echo "===== MEMORY ====="
                     free -h
 
                     echo ""
-                    echo "Disk:"
+                    echo "===== DISK ====="
                     df -h .
+
+                    echo ""
+                    echo "===== JAVA ====="
+                    java -version
+
+                    echo ""
+                    echo "===== MAVEN ====="
+                    mvn -version
+
+                    echo ""
+                    echo "===== DOCKER ====="
+
+                    if command -v docker >/dev/null 2>&1; then
+                        docker version
+                    else
+                        echo "WARNING: Docker CLI not found."
+                    fi
+
+                    echo ""
+                    echo "===== DOCKER SOCKET ====="
+
+                    if [ -S /var/run/docker.sock ]; then
+                        ls -l /var/run/docker.sock
+                    else
+                        echo "WARNING: /var/run/docker.sock is not available."
+                    fi
+
+                    echo ""
+                    echo "===== SONAR TOKEN ====="
+                    if [ -n "$SONAR_TOKEN" ]; then
+                        echo "SONAR_TOKEN is available."
+                    else
+                        echo "ERROR: SONAR_TOKEN is not available."
+                        exit 1
+                    fi
+
+                    echo "=========================================="
                 '''
             }
         }
 
-        stage('Build & Test') {
-            options {
-                timeout(time: 15, unit: 'MINUTES')
-            }
+        stage('Clean') {
 
             steps {
-                echo '===== BUILD & TEST ====='
 
                 sh '''
                     set -e
 
-                    export MAVEN_OPTS="-Xms256m -Xmx768m"
+                    echo "=========================================="
+                    echo "             MAVEN CLEAN"
+                    echo "=========================================="
 
-                    mvn -B clean verify
+                    mvn -B clean
+
+                    echo "Maven clean completed."
+                '''
+            }
+        }
+
+        stage('Compile') {
+
+            steps {
+
+                sh '''
+                    set -e
+
+                    echo "=========================================="
+                    echo "             MAVEN COMPILE"
+                    echo "=========================================="
+
+                    mvn -B compile
+
+                    echo "Compilation completed successfully."
+                '''
+            }
+        }
+
+        stage('Test') {
+
+            steps {
+
+                sh '''
+                    set -e
+
+                    echo "=========================================="
+                    echo "              RUNNING TESTS"
+                    echo "=========================================="
+
+                    mvn -B test
+
+                    echo "=========================================="
+                    echo "              TESTS PASSED"
+                    echo "=========================================="
                 '''
             }
 
             post {
+
                 always {
+
                     junit(
-                        testResults: 'target/surefire-reports/*.xml',
-                        allowEmptyResults: true
+                        allowEmptyResults: true,
+                        testResults: 'target/surefire-reports/*.xml'
                     )
                 }
             }
         }
 
         stage('SonarQube Analysis') {
-            options {
-                timeout(time: 10, unit: 'MINUTES')
-            }
 
             steps {
-                echo '===== SONARQUBE ANALYSIS ====='
 
-                withSonarQubeEnv("${SONARQUBE_SERVER}") {
+                timeout(
+                    time: 10,
+                    unit: 'MINUTES'
+                ) {
 
-                    withCredentials([
-                        string(
-                            credentialsId: 'sonar-token',
-                            variable: 'SONAR_TOKEN'
-                        )
-                    ]) {
+                    echo "=========================================="
+                    echo "          SONARQUBE ANALYSIS"
+                    echo "=========================================="
+
+                    withSonarQubeEnv('SonarQube') {
 
                         sh '''
                             set -e
 
-                            export MAVEN_OPTS="-Xms256m -Xmx768m"
+                            echo "Starting SonarQube analysis..."
 
-                            mvn -B sonar:sonar \
-                                -Dsonar.projectKey="${SONAR_PROJECT_KEY}" \
-                                -Dsonar.projectName="Spring PetClinic" \
-                                -Dsonar.token="${SONAR_TOKEN}"
+                            mvn -B \
+                              org.sonarsource.scanner.maven:sonar-maven-plugin:${SONAR_PLUGIN_VERSION}:sonar \
+                              -Dsonar.projectKey="${SONAR_PROJECT_KEY}" \
+                              -Dsonar.projectName="${SONAR_PROJECT_NAME}" \
+                              -Dsonar.token="${SONAR_TOKEN}"
+
+                            echo ""
+                            echo "Checking SonarQube report-task.txt..."
+
+                            if [ -f target/sonar/report-task.txt ]; then
+                                echo "SonarQube report-task.txt found."
+                                cat target/sonar/report-task.txt
+                            else
+                                echo "ERROR: target/sonar/report-task.txt was not generated."
+                                exit 1
+                            fi
+
+                            echo "=========================================="
+                            echo "       SONARQUBE ANALYSIS COMPLETE"
+                            echo "=========================================="
                         '''
                     }
                 }
@@ -143,46 +223,93 @@ pipeline {
         }
 
         stage('Quality Gate') {
-            options {
-                timeout(time: 10, unit: 'MINUTES')
-            }
 
             steps {
-                echo '===== QUALITY GATE ====='
 
-                waitForQualityGate(
-                    abortPipeline: true
-                )
+                echo "=========================================="
+                echo "       WAITING FOR QUALITY GATE"
+                echo "=========================================="
+
+                timeout(
+                    time: 5,
+                    unit: 'MINUTES'
+                ) {
+
+                    waitForQualityGate(
+                        abortPipeline: true
+                    )
+                }
+
+                echo "=========================================="
+                echo "      SONARQUBE QUALITY GATE PASSED"
+                echo "=========================================="
             }
         }
 
         stage('Package') {
+
             steps {
-                echo '===== PACKAGE ====='
 
                 sh '''
                     set -e
 
-                    export MAVEN_OPTS="-Xms256m -Xmx768m"
+                    echo "=========================================="
+                    echo "              PACKAGING JAR"
+                    echo "=========================================="
 
                     mvn -B package -DskipTests
 
+                    echo "=========================================="
+                    echo "              PACKAGE COMPLETE"
+                    echo "=========================================="
+                '''
+            }
+        }
+
+        stage('Verify Artifact') {
+
+            steps {
+
+                sh '''
+                    set -e
+
+                    echo "=========================================="
+                    echo "           VERIFYING ARTIFACT"
+                    echo "=========================================="
+
+                    if [ ! -f "$ARTIFACT_PATH" ]; then
+                        echo "ERROR: JAR was not generated."
+                        echo "Expected:"
+                        echo "$ARTIFACT_PATH"
+                        exit 1
+                    fi
+
                     echo ""
-                    echo "Generated JAR:"
-                    ls -lh target/*.jar
+                    echo "Artifact generated successfully:"
+                    ls -lh "$ARTIFACT_PATH"
+
+                    echo ""
+                    echo "Absolute path:"
+                    realpath "$ARTIFACT_PATH"
+
+                    echo "=========================================="
+                    echo "             ARTIFACT READY"
+                    echo "=========================================="
                 '''
             }
         }
 
         stage('Archive Artifact') {
+
             steps {
-                echo '===== ARCHIVE ARTIFACT ====='
 
                 archiveArtifacts(
-                    artifacts: 'target/*.jar',
+                    artifacts: "${ARTIFACT_PATH}",
                     fingerprint: true,
-                    allowEmptyArchive: false
+                    onlyIfSuccessful: true
                 )
+
+                echo "JAR archived successfully."
             }
         }
     }
@@ -190,42 +317,60 @@ pipeline {
     post {
 
         success {
+
             echo '''
-========================================
-       PIPELINE SUCCESS
-========================================
-Checkout
-Environment
-Build & Test
-SonarQube Analysis
-Quality Gate
-Package
-Archive Artifact
-========================================
+==========================================
+          PIPELINE SUCCESSFUL
+==========================================
+Tests: PASSED
+SonarQube Analysis: PASSED
+Quality Gate: PASSED
+Application JAR: BUILT
+Artifact: ARCHIVED
+==========================================
 '''
         }
 
         failure {
+
             echo '''
-========================================
-       PIPELINE FAILED
-========================================
-Check the failed stage above.
-========================================
+==========================================
+            PIPELINE FAILED
+==========================================
+Check the stage that failed.
+
+Possible blockers:
+1. Maven compilation
+2. Unit/integration tests
+3. Testcontainers Docker access
+4. SonarQube analysis
+5. SonarQube Quality Gate
+6. Packaging
+7. Artifact verification
+==========================================
 '''
         }
 
         always {
-            echo 'Pipeline execution completed.'
+
+            echo "Pipeline completed: BUILD ${env.BUILD_NUMBER}"
 
             sh '''
                 echo ""
-                echo "Final disk usage:"
-                df -h . || true
+                echo "=========================================="
+                echo "        FINAL RESOURCE STATUS"
+                echo "=========================================="
 
                 echo ""
-                echo "Final memory:"
-                free -h || true
+                echo "===== DISK ====="
+                df -h .
+
+                echo ""
+                echo "===== MEMORY ====="
+                free -h
+
+                echo ""
+                echo "=========================================="
             '''
         }
     }
