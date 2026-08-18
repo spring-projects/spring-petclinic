@@ -6,8 +6,14 @@ pipeline {
 
     options {
         skipDefaultCheckout(true)
-        timeout(time: 30, unit: 'MINUTES')
+
+        timeout(
+            time: 30,
+            unit: 'MINUTES'
+        )
+
         timestamps()
+
         disableConcurrentBuilds()
 
         buildDiscarder(
@@ -19,78 +25,129 @@ pipeline {
     }
 
     environment {
+
+        // Maven memory - important because VM has 4 GB RAM
         MAVEN_OPTS = '-Xms256m -Xmx768m'
-        SONARQUBE_SERVER = 'SonarQube'
-        SONAR_PROJECT_KEY = 'spring-petclinic'
+
+        // Maven local repository
         MAVEN_USER_HOME = '/var/jenkins_home/.m2'
+
+        // SonarQube Jenkins server configuration
+        SONARQUBE_SERVER = 'SonarQube'
+
+        // SonarQube project
+        SONAR_PROJECT_KEY = 'spring-petclinic'
+
+        SONAR_PROJECT_NAME = 'Spring PetClinic'
+
+        // Application version
         APP_VERSION = '4.0.0-SNAPSHOT'
+
+        // Generated JAR
         JAR_FILE = 'target/petclinic-4.0.0-SNAPSHOT.jar'
     }
 
     stages {
 
-        stage('Checkout') {
-            steps {
-                echo '========================================'
-                echo 'CHECKOUT SOURCE CODE'
-                echo '========================================'
+        /*
+         * ============================================================
+         * 1. CHECKOUT
+         * ============================================================
+         */
 
+        stage('Checkout') {
+
+            steps {
+
+                echo '''
+========================================
+CHECKOUT SOURCE CODE
+========================================
+'''
+
+                // Jenkins automatically uses the SCM configuration
+                // and the configured git-token credential.
                 checkout scm
 
                 sh '''
-                    echo "Current branch:"
+                    echo "Branch:"
                     git branch --show-current || true
 
                     echo ""
-                    echo "Current commit:"
+                    echo "Commit:"
                     git log -1 --oneline
 
                     echo ""
-                    echo "Git version:"
+                    echo "Git:"
                     git --version
                 '''
             }
         }
 
+
+        /*
+         * ============================================================
+         * 2. ENVIRONMENT
+         * ============================================================
+         */
+
         stage('Environment') {
+
             steps {
-                echo '========================================'
-                echo 'BUILD ENVIRONMENT'
-                echo '========================================'
+
+                echo '''
+========================================
+BUILD ENVIRONMENT
+========================================
+'''
 
                 sh '''
-                    echo "Java version:"
+                    echo "JAVA:"
                     java -version
 
                     echo ""
-                    echo "Maven version:"
+                    echo "MAVEN:"
                     mvn -version
 
                     echo ""
-                    echo "Git version:"
+                    echo "GIT:"
                     git --version
 
                     echo ""
-                    echo "Memory:"
+                    echo "MEMORY:"
                     free -h
 
                     echo ""
-                    echo "Disk:"
+                    echo "DISK:"
                     df -h .
                 '''
             }
         }
 
+
+        /*
+         * ============================================================
+         * 3. BUILD AND TEST
+         * ============================================================
+         */
+
         stage('Build & Test') {
 
             options {
-                timeout(time: 15, unit: 'MINUTES')
+
+                timeout(
+                    time: 15,
+                    unit: 'MINUTES'
+                )
             }
 
             steps {
-                echo '========================================'
-                echo 'BUILD & TEST'
-                echo '========================================'
+
+                echo '''
+========================================
+BUILD & TEST
+========================================
+'''
 
                 sh '''
                     set -e
@@ -99,12 +156,19 @@ pipeline {
 
                     echo "MAVEN_OPTS=$MAVEN_OPTS"
 
+                    echo ""
+                    echo "Starting Maven build..."
+
                     mvn -B clean verify
                 '''
             }
 
             post {
+
                 always {
+
+                    echo "Publishing JUnit test results..."
+
                     junit(
                         testResults: 'target/surefire-reports/*.xml',
                         allowEmptyResults: true
@@ -113,16 +177,30 @@ pipeline {
             }
         }
 
+
+        /*
+         * ============================================================
+         * 4. SONARQUBE ANALYSIS
+         * ============================================================
+         */
+
         stage('SonarQube Analysis') {
 
             options {
-                timeout(time: 10, unit: 'MINUTES')
+
+                timeout(
+                    time: 10,
+                    unit: 'MINUTES'
+                )
             }
 
             steps {
-                echo '========================================'
-                echo 'SONARQUBE ANALYSIS'
-                echo '========================================'
+
+                echo '''
+========================================
+SONARQUBE ANALYSIS
+========================================
+'''
 
                 withSonarQubeEnv("${SONARQUBE_SERVER}") {
 
@@ -131,25 +209,47 @@ pipeline {
 
                         export MAVEN_OPTS="-Xms256m -Xmx768m"
 
+                        echo "SonarQube URL:"
+                        echo "$SONAR_HOST_URL"
+
+                        echo ""
+                        echo "Running SonarQube analysis..."
+
                         mvn -B sonar:sonar \
                             -Dsonar.projectKey="${SONAR_PROJECT_KEY}" \
-                            -Dsonar.projectName="Spring PetClinic" \
+                            -Dsonar.projectName="${SONAR_PROJECT_NAME}" \
                             -Dsonar.host.url="${SONAR_HOST_URL}"
                     '''
                 }
             }
         }
 
+
+        /*
+         * ============================================================
+         * 5. QUALITY GATE
+         * ============================================================
+         */
+
         stage('Quality Gate') {
 
             options {
-                timeout(time: 10, unit: 'MINUTES')
+
+                timeout(
+                    time: 10,
+                    unit: 'MINUTES'
+                )
             }
 
             steps {
-                echo '========================================'
-                echo 'SONARQUBE QUALITY GATE'
-                echo '========================================'
+
+                echo '''
+========================================
+SONARQUBE QUALITY GATE
+========================================
+'''
+
+                echo "Waiting for SonarQube Quality Gate..."
 
                 waitForQualityGate(
                     abortPipeline: true
@@ -157,31 +257,56 @@ pipeline {
             }
         }
 
+
+        /*
+         * ============================================================
+         * 6. PACKAGE
+         * ============================================================
+         */
+
         stage('Package') {
+
             steps {
-                echo '========================================'
-                echo 'PACKAGE APPLICATION'
-                echo '========================================'
+
+                echo '''
+========================================
+PACKAGE APPLICATION
+========================================
+'''
 
                 sh '''
                     set -e
 
                     export MAVEN_OPTS="-Xms256m -Xmx768m"
 
+                    echo "Packaging application..."
+
                     mvn -B package -DskipTests
 
                     echo ""
-                    echo "Generated JAR:"
+                    echo "Generated artifacts:"
+
                     ls -lh target/*.jar
                 '''
             }
         }
 
+
+        /*
+         * ============================================================
+         * 7. ARCHIVE ARTIFACT
+         * ============================================================
+         */
+
         stage('Archive Artifact') {
+
             steps {
-                echo '========================================'
-                echo 'ARCHIVE ARTIFACT'
-                echo '========================================'
+
+                echo '''
+========================================
+ARCHIVE ARTIFACT
+========================================
+'''
 
                 archiveArtifacts(
                     artifacts: 'target/*.jar',
@@ -194,51 +319,77 @@ pipeline {
         }
     }
 
+
+    /*
+     * ================================================================
+     * POST ACTIONS
+     * ================================================================
+     */
+
     post {
 
         success {
+
             echo '''
 ========================================
 PIPELINE SUCCESS
 ========================================
 
-Spring PetClinic pipeline completed successfully.
+Spring PetClinic CI Pipeline
+completed successfully.
 
-Checkout
-Environment
-Build & Test
-SonarQube Analysis
-Quality Gate
-Package
-Archive Artifact
+Stages completed:
+
+1. Checkout
+2. Environment
+3. Build & Test
+4. SonarQube Analysis
+5. Quality Gate
+6. Package
+7. Archive Artifact
 
 ========================================
 '''
         }
 
+
         failure {
+
             echo '''
 ========================================
 PIPELINE FAILED
 ========================================
 
-Check the failed stage above.
+One of the pipeline stages failed.
+
+Check the Jenkins console output
+above to identify the failed stage.
 
 ========================================
 '''
         }
 
+
         always {
-            echo 'Pipeline execution completed.'
+
+            echo '''
+========================================
+PIPELINE COMPLETED
+========================================
+'''
 
             sh '''
                 echo ""
-                echo "Final disk usage:"
-                df -h . || true
+                echo "Final Memory:"
+                free -h || true
 
                 echo ""
-                echo "Final memory:"
-                free -h || true
+                echo "Final Swap:"
+                swapon --show || true
+
+                echo ""
+                echo "Final Disk:"
+                df -h . || true
             '''
         }
     }
