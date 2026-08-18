@@ -1,29 +1,36 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/use-cases-and-examples/building-and-testing/building-and-testing-java-with-maven
-
-name: Java CI with Maven
+name: CI Maven
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
+
+permissions:
+  contents: read
 
 jobs:
-  build:
+  test:
+    name: Maven verify - Java 17
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
 
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        java: [ '17' ]
+    env:
+      POSTGRES_DB: petclinic
+      POSTGRES_USER: petclinic
+      POSTGRES_PASSWORD: petclinic
 
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK ${{matrix.java}}
-        uses: actions/setup-java@v4
+      - name: Récupérer le code
+        uses: actions/checkout@v7
+
+      - name: Installer Java 17
+        uses: actions/setup-java@v5
         with:
-          java-version: ${{matrix.java}}
-          distribution: 'adopt'
+          java-version: '17'
+          distribution: temurin
           cache: maven
-      - name: Build with Maven Wrapper
-        run: ./mvnw -B verify
+
+      - name: Compiler et exécuter les tests
+        run: ./mvnw --batch-mode --no-transfer-progress verify
+        
