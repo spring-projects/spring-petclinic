@@ -4,7 +4,7 @@ trigger:
       - devops-project
 
 pool:
-  name: demo-pool
+  name: Azure Pipelines
 
 variables:
   # SonarQube running on VmHarsh1
