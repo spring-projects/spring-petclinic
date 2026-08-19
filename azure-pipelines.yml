@@ -114,6 +114,7 @@ stages:
         set -e
 
         echo "=========================================="
+        echo "=========================================="
         echo "GITLEAKS SECRET SCAN"
         echo "=========================================="
 
@@ -124,17 +125,40 @@ stages:
           -o /tmp/gitleaks.tar.gz
 
         tar -xzf /tmp/gitleaks.tar.gz -C /tmp gitleaks
-
         sudo mv /tmp/gitleaks /usr/local/bin/gitleaks
 
         gitleaks version
 
-        echo "Running Gitleaks..."
+        echo "=========================================="
+        echo "GIT INFORMATION"
+        echo "=========================================="
+
+        echo "Git commit:"
+        git rev-parse HEAD
+
+        echo "Git branch:"
+        git branch --show-current
+
+        echo "Git commit count:"
+        git rev-list --all --count
+
+        echo "=========================================="
+        echo "RUNNING GITLEAKS"
+        echo "=========================================="
 
         gitleaks detect \
           --source . \
           --no-banner \
-          --redact
+          --redact \
+          --verbose \
+          --report-format json \
+          --report-path "$(Build.ArtifactStagingDirectory)/gitleaks-report.json"
+
+        echo "=========================================="
+        echo "GITLEAKS REPORT"
+        echo "=========================================="
+
+        cat "$(Build.ArtifactStagingDirectory)/gitleaks-report.json"
 
       displayName: 'Gitleaks Secret Scan'
 
