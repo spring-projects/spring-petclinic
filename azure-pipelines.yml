@@ -11,13 +11,23 @@ variables:
   IMAGE_NAME: 'spring-petclinic'
   IMAGE_TAG: '$(Build.BuildId)'
 
+  # Actual Azure resources
+  ACR_NAME: 'springpetclinicacr87345'
+  AKS_RESOURCE_GROUP: 'Harsh'
+  AKS_CLUSTER_NAME: 'k8-demo'
+
+  # DEV Container App
+  DEV_CONTAINER_APP: 'spring-petclinic-dev'
+  DEV_RESOURCE_GROUP: 'spring-petclinic-devops-rg'
+
 stages:
 
 # ============================================================
-# 1. BUILD + TEST + LINT + GITLEAKS + SONARQUBE
+# 1. CI - BUILD + TEST + GITLEAKS + LINT + SONARQUBE
 # ============================================================
+
 - stage: CI
-  displayName: 'CI - Maven, Shell, Gitleaks, Lint, SonarQube'
+  displayName: 'CI - Build, Test, Gitleaks, Lint, SonarQube'
 
   jobs:
   - job: Build
@@ -37,28 +47,45 @@ stages:
 
     - bash: |
         set -e
-        echo "=== JAVA ==="
+
+        echo "=========================================="
+        echo "JAVA VERSION"
+        echo "=========================================="
         java -version
 
-        echo "=== MAVEN ==="
+        echo "=========================================="
+        echo "MAVEN VERSION"
+        echo "=========================================="
         ./mvnw -version
 
-        echo "=== SHELL CI CHECK ==="
+        echo "=========================================="
+        echo "SHELL CI CHECK"
+        echo "=========================================="
+
         if [ -f ci-check.sh ]; then
           chmod +x ci-check.sh
           ./ci-check.sh || true
+        else
+          echo "ci-check.sh not found - continuing"
         fi
       displayName: 'Shell and Environment Check'
 
     - bash: |
         set -e
+
+        echo "=========================================="
+        echo "MAVEN CLEAN VERIFY"
+        echo "=========================================="
+
         ./mvnw clean verify
       displayName: 'Maven Build and Tests'
 
     - bash: |
         set -e
 
-        echo "Installing Gitleaks"
+        echo "=========================================="
+        echo "GITLEAKS SECRET SCAN"
+        echo "=========================================="
 
         GITLEAKS_VERSION="8.24.2"
 
@@ -67,11 +94,10 @@ stages:
           -o /tmp/gitleaks.tar.gz
 
         tar -xzf /tmp/gitleaks.tar.gz -C /tmp gitleaks
+
         sudo mv /tmp/gitleaks /usr/local/bin/gitleaks
 
         gitleaks version
-
-        echo "Running Gitleaks..."
 
         gitleaks detect \
           --source . \
@@ -82,15 +108,19 @@ stages:
     - bash: |
         set -e
 
-        echo "=== LINT / CHECKSTYLE ==="
+        echo "=========================================="
+        echo "LINT / STATIC VALIDATION"
+        echo "=========================================="
 
-        if [ -x ./mvnw ]; then
-          ./mvnw validate
-        fi
+        ./mvnw validate
       displayName: 'Lint / Static Validation'
 
     - bash: |
-        echo "=== SONARQUBE ==="
+        set -e
+
+        echo "=========================================="
+        echo "SONARQUBE ANALYSIS"
+        echo "=========================================="
 
         ./mvnw sonar:sonar \
           -Dsonar.host.url="$(SONAR_HOST_URL)" \
@@ -103,6 +133,7 @@ stages:
 # ============================================================
 # 2. TERRAFORM
 # ============================================================
+
 - stage: Terraform
   displayName: 'Terraform Infrastructure'
 
@@ -110,7 +141,7 @@ stages:
 
   jobs:
   - job: Terraform
-    displayName: 'Terraform Init Validate Plan'
+    displayName: 'Terraform Validate and Plan'
 
     steps:
 
@@ -124,22 +155,28 @@ stages:
     - bash: |
         set -e
 
+        echo "=========================================="
+        echo "TERRAFORM"
+        echo "=========================================="
+
         cd terraform
 
         terraform init
         terraform validate
         terraform plan -out=tfplan
-
       displayName: 'Terraform Init Validate Plan'
 
 
 # ============================================================
 # 3. DOCKER BUILD + ACR PUSH
 # ============================================================
+
 - stage: Docker
   displayName: 'Docker Build and Push to ACR'
 
   dependsOn: Terraform
+
+  condition: succeeded()
 
   jobs:
   - job: Docker
@@ -150,33 +187,69 @@ stages:
     - checkout: self
 
     - task: AzureCLI@2
-      displayName: 'Login and Push Image to ACR'
+      displayName: 'Build and Push Docker Image to ACR'
       inputs:
         azureSubscription: 'pet-clinic-connection'
         scriptType: bash
         scriptLocation: inlineScript
+
         inlineScript: |
 
           set -e
 
-          ACR_NAME="springpetclinicacr"
+          echo "=========================================="
+          echo "AZURE / ACR"
+          echo "=========================================="
+
+          ACR_NAME="$(ACR_NAME)"
+          IMAGE_NAME="$(IMAGE_NAME)"
+          IMAGE_TAG="$(IMAGE_TAG)"
+
+          echo "ACR       : $ACR_NAME"
+          echo "Image     : $IMAGE_NAME"
+          echo "Tag       : $IMAGE_TAG"
+
+          echo "=========================================="
+          echo "ACR LOGIN"
+          echo "=========================================="
 
           az acr login --name "$ACR_NAME"
 
+          echo "=========================================="
+          echo "DOCKER BUILD"
+          echo "=========================================="
+
           docker build \
-            -t "$ACR_NAME.azurecr.io/$(IMAGE_NAME):$(IMAGE_TAG)" \
+            -t "$ACR_NAME.azurecr.io/$IMAGE_NAME:$IMAGE_TAG" \
             .
 
+          echo "=========================================="
+          echo "DOCKER PUSH"
+          echo "=========================================="
+
           docker push \
-            "$ACR_NAME.azurecr.io/$(IMAGE_NAME):$(IMAGE_TAG)"
+            "$ACR_NAME.azurecr.io/$IMAGE_NAME:$IMAGE_TAG"
 
-          echo "Image pushed:"
-          echo "$ACR_NAME.azurecr.io/$(IMAGE_NAME):$(IMAGE_TAG)"
+          echo "=========================================="
+          echo "IMAGE PUSHED"
+          echo "=========================================="
+
+          echo "$ACR_NAME.azurecr.io/$IMAGE_NAME:$IMAGE_TAG"
+
+          echo "=========================================="
+          echo "ACR TAGS"
+          echo "=========================================="
+
+          az acr repository show-tags \
+            --name "$ACR_NAME" \
+            --repository "$IMAGE_NAME" \
+            -o table
 
 
 # ============================================================
-# 4. DEV → AZURE CONTAINER APPS
+# 4. DEV - AZURE CONTAINER APPS
 # ============================================================
+
 - stage: DEV
   displayName: 'DEV - Azure Container Apps'
 
@@ -193,22 +266,64 @@ stages:
     strategy:
       runOnce:
         deploy:
+
           steps:
 
           - checkout: self
 
-          - task: AzureContainerApps@1
+          - task: AzureCLI@2
             displayName: 'Deploy DEV Container App'
             inputs:
               azureSubscription: 'pet-clinic-connection'
-              containerAppName: 'spring-petclinic-dev'
-              resourceGroup: 'spring-petclinic-rg'
-              imageToDeploy: 'springpetclinicacr.azurecr.io/spring-petclinic:$(IMAGE_TAG)'
+              scriptType: bash
+              scriptLocation: inlineScript
+
+              inlineScript: |
+
+                set -e
+
+                echo "=========================================="
+                echo "DEV - AZURE CONTAINER APPS"
+                echo "=========================================="
+
+                ACR_NAME="$(ACR_NAME)"
+                IMAGE_NAME="$(IMAGE_NAME)"
+                IMAGE_TAG="$(IMAGE_TAG)"
+
+                echo "Resource Group : $(DEV_RESOURCE_GROUP)"
+                echo "Container App  : $(DEV_CONTAINER_APP)"
+                echo "Image          : $ACR_NAME.azurecr.io/$IMAGE_NAME:$IMAGE_TAG"
+
+                az containerapp update \
+                  --name "$(DEV_CONTAINER_APP)" \
+                  --resource-group "$(DEV_RESOURCE_GROUP)" \
+                  --image "$ACR_NAME.azurecr.io/$IMAGE_NAME:$IMAGE_TAG"
+
+                echo "=========================================="
+                echo "DEV DEPLOYMENT COMPLETE"
+                echo "=========================================="
+
+                az containerapp show \
+                  --name "$(DEV_CONTAINER_APP)" \
+                  --resource-group "$(DEV_RESOURCE_GROUP)" \
+                  --query "properties.template.containers[0].image" \
+                  -o tsv
+
+                echo "=========================================="
+                echo "DEV FQDN"
+                echo "=========================================="
+
+                az containerapp show \
+                  --name "$(DEV_CONTAINER_APP)" \
+                  --resource-group "$(DEV_RESOURCE_GROUP)" \
+                  --query "properties.configuration.ingress.fqdn" \
+                  -o tsv
 
 
 # ============================================================
-# 5. UAT → AKS
+# 5. UAT - AKS
 # ============================================================
+
 - stage: UAT
   displayName: 'UAT - AKS'
 
@@ -225,6 +340,7 @@ stages:
     strategy:
       runOnce:
         deploy:
+
           steps:
 
           - checkout: self
@@ -235,25 +351,76 @@ stages:
               azureSubscription: 'pet-clinic-connection'
               scriptType: bash
               scriptLocation: inlineScript
+
               inlineScript: |
 
                 set -e
 
+                echo "=========================================="
+                echo "UAT - AKS"
+                echo "=========================================="
+
                 az aks get-credentials \
-                  --resource-group spring-petclinic-rg \
-                  --name spring-petclinic-aks \
+                  --resource-group "$(AKS_RESOURCE_GROUP)" \
+                  --name "$(AKS_CLUSTER_NAME)" \
                   --overwrite-existing
 
-                kubectl apply -f k8s/petclinic.yml
+                echo "=========================================="
+                echo "AKS CLUSTER"
+                echo "=========================================="
+
+                kubectl get nodes
+
+                echo "=========================================="
+                echo "UAT NAMESPACE"
+                echo "=========================================="
+
+                kubectl get namespace petclinic-uat
+
+                echo "=========================================="
+                echo "APPLY UAT MANIFEST"
+                echo "=========================================="
+
+                kubectl apply \
+                  -f k8s/petclinic-uat.yml
+
+                echo "=========================================="
+                echo "WAIT FOR UAT ROLLOUT"
+                echo "=========================================="
 
                 kubectl rollout status \
                   deployment/spring-petclinic \
+                  -n petclinic-uat \
                   --timeout=180s
 
+                echo "=========================================="
+                echo "UAT PODS"
+                echo "=========================================="
+
+                kubectl get pods \
+                  -n petclinic-uat \
+                  -o wide
+
+                echo "=========================================="
+                echo "UAT SERVICE"
+                echo "=========================================="
+
+                kubectl get svc \
+                  -n petclinic-uat
+
+                echo "=========================================="
+                echo "UAT ENDPOINTS"
+                echo "=========================================="
+
+                kubectl get endpoints \
+                  spring-petclinic \
+                  -n petclinic-uat
+
 
 # ============================================================
-# 6. PROD → AKS
+# 6. PROD - AKS
 # ============================================================
+
 - stage: PROD
   displayName: 'PROD - AKS'
 
@@ -270,6 +437,7 @@ stages:
     strategy:
       runOnce:
         deploy:
+
           steps:
 
           - checkout: self
@@ -280,27 +448,78 @@ stages:
               azureSubscription: 'pet-clinic-connection'
               scriptType: bash
               scriptLocation: inlineScript
+
               inlineScript: |
 
                 set -e
 
+                echo "=========================================="
+                echo "PROD - AKS"
+                echo "=========================================="
+
                 az aks get-credentials \
-                  --resource-group spring-petclinic-rg \
-                  --name spring-petclinic-aks \
+                  --resource-group "$(AKS_RESOURCE_GROUP)" \
+                  --name "$(AKS_CLUSTER_NAME)" \
                   --overwrite-existing
 
-                kubectl apply -f k8s/petclinic.yml
+                echo "=========================================="
+                echo "AKS CLUSTER"
+                echo "=========================================="
+
+                kubectl get nodes
+
+                echo "=========================================="
+                echo "PROD NAMESPACE"
+                echo "=========================================="
+
+                kubectl get namespace petclinic-prod
+
+                echo "=========================================="
+                echo "APPLY PROD MANIFEST"
+                echo "=========================================="
+
+                kubectl apply \
+                  -f k8s/petclinic-prod.yml
+
+                echo "=========================================="
+                echo "WAIT FOR PROD ROLLOUT"
+                echo "=========================================="
 
                 kubectl rollout status \
                   deployment/spring-petclinic \
+                  -n petclinic-prod \
                   --timeout=180s
+
+                echo "=========================================="
+                echo "PROD PODS"
+                echo "=========================================="
+
+                kubectl get pods \
+                  -n petclinic-prod \
+                  -o wide
+
+                echo "=========================================="
+                echo "PROD SERVICE"
+                echo "=========================================="
+
+                kubectl get svc \
+                  -n petclinic-prod
+
+                echo "=========================================="
+                echo "PROD ENDPOINTS"
+                echo "=========================================="
+
+                kubectl get endpoints \
+                  spring-petclinic \
+                  -n petclinic-prod
 
 
 # ============================================================
 # 7. FINAL VALIDATION
 # ============================================================
+
 - stage: Validation
-  displayName: 'E2E Validation'
+  displayName: 'Final E2E Validation'
 
   dependsOn:
     - DEV
@@ -311,28 +530,36 @@ stages:
 
   jobs:
   - job: Validate
-    displayName: 'Validate Deployment'
+    displayName: 'Validate Complete Deployment'
 
     steps:
 
     - bash: |
-        echo "=========================================="
-        echo " SPRING PETCLINIC E2E PIPELINE COMPLETE"
-        echo "=========================================="
+
+        set -e
+
         echo ""
-        echo "Git             : PASS"
-        echo "Maven           : PASS"
-        echo "Shell           : PASS"
-        echo "Gitleaks        : PASS"
-        echo "Lint            : PASS"
-        echo "SonarQube       : PASS"
-        echo "Terraform       : PASS"
-        echo "Docker          : PASS"
-        echo "ACR             : PASS"
-        echo "DEV ContainerApp: PASS"
-        echo "UAT AKS         : PASS"
-        echo "PROD AKS        : PASS"
+        echo "=============================================="
+        echo "       SPRING PETCLINIC E2E PIPELINE"
+        echo "=============================================="
         echo ""
-        echo "E2E PIPELINE SUCCESS"
-        echo "=========================================="
+
+        echo "Git              : PASS"
+        echo "Maven            : PASS"
+        echo "Tests            : PASS"
+        echo "Gitleaks         : PASS"
+        echo "Lint             : PASS"
+        echo "SonarQube        : PASS"
+        echo "Terraform        : PASS"
+        echo "Docker           : PASS"
+        echo "ACR              : PASS"
+        echo "DEV ContainerApp : PASS"
+        echo "UAT AKS          : PASS"
+        echo "PROD AKS         : PASS"
+        echo ""
+
+        echo "=============================================="
+        echo "       E2E PIPELINE SUCCESS"
+        echo "=============================================="
+
       displayName: 'Final E2E Summary'
