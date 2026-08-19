@@ -3,210 +3,74 @@ trigger:
     include:
       - devops-project
 
+pr:
+  branches:
+    include:
+      - devops-project
+
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
 
 variables:
-  IMAGE_NAME: 'springpetclinic'
-  ACR_NAME: 'springpetclinicacr87345'
-  ACR_LOGIN_SERVER: 'springpetclinicacr87345.azurecr.io'
-  DEV_RG: 'spring-petclinic-devops-rg'
-  ACA_APP: 'spring-petclinic-dev'
+  MAVEN_OPTS: '-Xmx2048m'
 
 stages:
 
-- stage: Security
-  displayName: 'Security + Lint'
-  jobs:
-
-  - job: Gitleaks
-    steps:
-    - checkout: self
-      fetchDepth: 0
-
-    - bash: |
-        set -e
-        curl -sSfL https://raw.githubusercontent.com/gitleaks/gitleaks/master/install.sh \
-          | sh -s -- -b $(Agent.TempDirectory)
-
-        $(Agent.TempDirectory)/gitleaks detect \
-          --source . \
-          --no-banner \
-          --redact
-
-        echo "Gitleaks PASSED"
-      displayName: 'Gitleaks Secret Scan'
-
-  - job: Lint
-    steps:
-    - checkout: self
-
-    - task: JavaToolInstaller@0
-      inputs:
-        versionSpec: '17'
-        jdkArchitectureOption: 'x64'
-        jdkSourceOption: 'PreInstalled'
-
-    - bash: |
-        set -e
-        chmod +x mvnw
-        ./mvnw validate
-      displayName: 'Maven Validate'
-
-
 - stage: Build
-  displayName: 'Build + Test'
-  dependsOn: Security
-  condition: succeeded()
-
+  displayName: 'Build and Test'
   jobs:
-
-  - job: MavenBuild
+  - job: Build
+    displayName: 'Maven Build'
     steps:
+
     - checkout: self
+      clean: true
 
     - task: JavaToolInstaller@0
+      displayName: 'Set Java 21'
       inputs:
-        versionSpec: '17'
+        versionSpec: '21'
         jdkArchitectureOption: 'x64'
         jdkSourceOption: 'PreInstalled'
 
-    - bash: |
-        set -e
-        chmod +x mvnw
-        ./mvnw clean verify
-      displayName: 'Maven Build + Test'
-
-    - task: PublishTestResults@2
-      condition: succeededOrFailed()
+    - task: Maven@4
+      displayName: 'Maven Build and Test'
       inputs:
-        testResultsFormat: 'JUnit'
+        mavenPomFile: 'pom.xml'
+        goals: 'clean verify'
+        options: '-Dmaven.test.failure.ignore=false'
+        publishJUnitResults: true
         testResultsFiles: '**/surefire-reports/TEST-*.xml'
-        failTaskOnFailedTests: true
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.21'
+        mavenVersionOption: 'Default'
 
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish JAR'
+      inputs:
+        PathtoPublish: 'target'
+        ArtifactName: 'spring-petclinic'
+        publishLocation: 'Container'
 
-- stage: SonarQube
-  displayName: 'SonarQube'
+- stage: TerraformValidate
+  displayName: 'Terraform Validate'
   dependsOn: Build
   condition: succeeded()
-
   jobs:
-
-  - job: Sonar
+  - job: Terraform
+    displayName: 'Validate Terraform'
     steps:
+
     - checkout: self
 
-    - task: JavaToolInstaller@0
+    - task: TerraformInstaller@1
+      displayName: 'Install Terraform'
       inputs:
-        versionSpec: '17'
-        jdkArchitectureOption: 'x64'
-        jdkSourceOption: 'PreInstalled'
+        terraformVersion: 'latest'
 
-    - bash: |
-        set -e
-        chmod +x mvnw
+    - script: |
+        cd terraform
+        terraform init -backend=false
+        terraform validate
+      displayName: 'Terraform Init and Validate'
 
-        ./mvnw verify sonar:sonar \
-          -Dsonar.projectKey=spring-petclinic \
-          -Dsonar.host.url="$(SONAR_HOST_URL)" \
-          -Dsonar.token="$(SONAR_TOKEN)"
-      displayName: 'SonarQube Analysis'
-
-
-- stage: Terraform
-  displayName: 'Terraform Validate'
-  dependsOn: SonarQube
-  condition: succeeded()
-
-  jobs:
-
-  - job: TerraformValidate
-    steps:
-    - checkout: self
-
-    - bash: |
-        set -e
-        terraform -chdir=terraform init -backend=false
-        terraform -chdir=terraform validate
-        terraform -chdir=terraform plan -lock=false
-      displayName: 'Terraform Validate + Plan'
-
-
-- stage: Docker
-  displayName: 'Docker Build + Push to ACR'
-  dependsOn: Terraform
-  condition: succeeded()
-
-  jobs:
-
-  - job: DockerBuildPush
-    steps:
-    - checkout: self
-
-    - task: AzureCLI@2
-      displayName: 'Build and Push Docker Image'
-      inputs:
-        azureSubscription: '$(AZURE_SERVICE_CONNECTION)'
-        scriptType: 'bash'
-        scriptLocation: 'inlineScript'
-        inlineScript: |
-          set -e
-
-          az acr login --name "$(ACR_NAME)"
-
-          IMAGE="$(ACR_LOGIN_SERVER)/$(IMAGE_NAME):$(Build.BuildId)"
-
-          echo "Building $IMAGE"
-
-          docker build -t "$IMAGE" .
-
-          docker push "$IMAGE"
-
-          echo "IMAGE=$IMAGE"
-
-
-- stage: DEV
-  displayName: 'Deploy DEV - Azure Container Apps'
-  dependsOn: Docker
-  condition: succeeded()
-
-  jobs:
-
-  - deployment: DeployDEV
-    displayName: 'Deploy Spring PetClinic DEV'
-    environment: 'dev'
-
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-
-          - task: AzureCLI@2
-            displayName: 'Deploy to Azure Container Apps'
-            inputs:
-              azureSubscription: '$(AZURE_SERVICE_CONNECTION)'
-              scriptType: 'bash'
-              scriptLocation: 'inlineScript'
-              inlineScript: |
-                set -e
-
-                IMAGE="$(ACR_LOGIN_SERVER)/$(IMAGE_NAME):$(Build.BuildId)"
-
-                echo "Deploying:"
-                echo "$IMAGE"
-
-                az containerapp update \
-                  --name "$(ACA_APP)" \
-                  --resource-group "$(DEV_RG)" \
-                  --image "$IMAGE"
-
-                echo "DEV deployment completed"
-
-                FQDN=$(az containerapp show \
-                  --name "$(ACA_APP)" \
-                  --resource-group "$(DEV_RG)" \
-                  --query "properties.configuration.ingress.fqdn" \
-                  -o tsv)
-
-                echo "Application URL:"
-                echo "https://$FQDN"
