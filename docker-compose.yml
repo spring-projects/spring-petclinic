@@ -1,21 +1,38 @@
 services:
+
   mysql:
-    image: mysql:9.7
+    image: mysql:8.0.46@sha256:7dcddc01f13bab2f15cde676d44d01f61fc9f99fe7785e86196dfc07d358ae2b
     ports:
-      - "3306:3306"
+      # Loopback only: these credentials are committed, so the port must not be
+      # reachable from the local network.
+      - "127.0.0.1:3306:3306"
     environment:
-      - MYSQL_ROOT_PASSWORD=
-      - MYSQL_ALLOW_EMPTY_PASSWORD=true
-      - MYSQL_USER=petclinic
-      - MYSQL_PASSWORD=petclinic
-      - MYSQL_DATABASE=petclinic
+      MYSQL_ROOT_PASSWORD: local-root-not-a-secret
+      MYSQL_DATABASE: petclinic
+      MYSQL_USER: petclinic
+      MYSQL_PASSWORD: local-only-petclinic-password
+    healthcheck:
+      test: ["CMD-SHELL", "mysql -h 127.0.0.1 -u \"$$MYSQL_USER\" -p\"$$MYSQL_PASSWORD\" -e 'SELECT 1' \"$$MYSQL_DATABASE\" >/dev/null 2>&1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
     volumes:
-      - "./conf.d:/etc/mysql/conf.d:ro"
-  postgres:
-    image: postgres:18.4
+      - /var/lib/mysql
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: spring-petclinic:local
     ports:
-      - "5432:5432"
+      - "8080:8080"
     environment:
-      - POSTGRES_PASSWORD=petclinic
-      - POSTGRES_USER=petclinic
-      - POSTGRES_DB=petclinic
+      SPRING_PROFILES_ACTIVE: mysql
+      MYSQL_URL: jdbc:mysql://mysql:3306/petclinic
+      MYSQL_USER: petclinic
+      MYSQL_PASS: local-only-petclinic-password
+    depends_on:
+      mysql:
+        condition: service_healthy
+    mem_limit: 1500m

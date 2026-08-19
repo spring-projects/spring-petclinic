@@ -1,7 +1,5 @@
 # Spring PetClinic Sample Application [![Build Status](https://github.com/spring-projects/spring-petclinic/actions/workflows/maven-build.yml/badge.svg)](https://github.com/spring-projects/spring-petclinic/actions/workflows/maven-build.yml)[![Build Status](https://github.com/spring-projects/spring-petclinic/actions/workflows/gradle-build.yml/badge.svg)](https://github.com/spring-projects/spring-petclinic/actions/workflows/gradle-build.yml)
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/spring-projects/spring-petclinic) [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=7517918)
-
 ## Understanding the Spring Petclinic application with a few diagrams
 
 See the presentation here:  
@@ -42,7 +40,8 @@ See below for more details.
 
 ## Building a Container
 
-There is no `Dockerfile` in this project. You can build a container image (if you have a docker daemon) using the Spring Boot build plugin:
+This fork ships an explicit `Dockerfile` - see [Container](#container) below. Upstream instead builds
+the image with the Spring Boot build plugin:
 
 ## Running the Container Image
 
@@ -51,6 +50,61 @@ There is no `Dockerfile` in this project. You can build a container image (if yo
 docker images | grep petclinic
 docker run -p 8080:8080 docker.io/library/spring-petclinic:latest
 ```
+
+## Container
+
+### Build
+
+```bash
+docker build -t spring-petclinic:local .
+
+# CI builds for the deploy target (GCE VMs are linux/amd64)
+docker build --platform linux/amd64 \
+  --build-arg BUILD_REVISION="$(git rev-parse HEAD)" \
+  --build-arg BUILD_VERSION="<semver tag>" \
+  -t spring-petclinic:amd64 .
+```
+
+An image built on an arm64 Mac without `--platform linux/amd64` will not run on the VMs.
+
+### Run locally
+
+`docker-compose.yml` is a local development harness, not a deployment descriptor. Its credentials are
+throwaway values for a container on your own machine and are never reused in the cloud.
+
+```bash
+docker compose up -d --build
+docker compose down -v
+```
+
+```bash
+curl http://localhost:8080/
+curl http://localhost:8080/actuator/health
+curl http://localhost:8080/actuator/prometheus
+```
+
+Note that `"db":{"status":"UP"}` alone does not prove MySQL - H2 reports the same. To confirm:
+`docker compose logs app | grep "Database dialect"`.
+
+### Environment variables
+
+The image is configured entirely through environment variables, so the same artefact runs everywhere.
+Two spellings reach the same properties: this repo uses the app's `MYSQL_*` placeholders, the Ansible
+deploy role uses Spring's `SPRING_DATASOURCE_*`, which take precedence.
+
+| Spring property | Local | Cloud | Cloud value |
+| --- | --- | --- | --- |
+| - | `SPRING_PROFILES_ACTIVE` | `SPRING_PROFILES_ACTIVE` | `mysql` |
+| `spring.datasource.url` | `MYSQL_URL` | `SPRING_DATASOURCE_URL` | Cloud SQL private IP |
+| `spring.datasource.username` | `MYSQL_USER` | `SPRING_DATASOURCE_USERNAME` | Cloud SQL app user |
+| `spring.datasource.password` | `MYSQL_PASS` | `SPRING_DATASOURCE_PASSWORD` | GCP Secret Manager, at deploy time |
+
+The container listens on 8080.
+
+### Actuator
+
+Only `/actuator/health` (load balancer health check) and `/actuator/prometheus` (monitoring) are
+exposed. Everything else returns 404.
 
 ## In case you find a bug/suggested improvement for Spring Petclinic
 
@@ -62,38 +116,25 @@ In its default configuration, Petclinic uses an in-memory database (H2) which
 gets populated at startup with data. The h2 console is exposed at `http://localhost:8080/h2-console`,
 and it is possible to inspect the content of the database using the `jdbc:h2:mem:<uuid>` URL. The UUID is printed at startup to the console.
 
-A similar setup is provided for MySQL and PostgreSQL if a persistent database configuration is needed. Note that whenever the database type changes, the app needs to run with a different profile: `spring.profiles.active=mysql` for MySQL or `spring.profiles.active=postgres` for PostgreSQL. See the [Spring Boot documentation](https://docs.spring.io/spring-boot/how-to/properties-and-configuration.html#howto.properties-and-configuration.set-active-spring-profiles) for more detail on how to set the active profile.
+A similar setup is provided for MySQL if a persistent database configuration is needed. Note that whenever the database type changes, the app needs to run with a different profile: `spring.profiles.active=mysql` for MySQL. See the [Spring Boot documentation](https://docs.spring.io/spring-boot/how-to/properties-and-configuration.html#howto.properties-and-configuration.set-active-spring-profiles) for more detail on how to set the active profile.
 
-You can start MySQL or PostgreSQL locally with whatever installer works for your OS or use docker:
-
-```bash
-docker run -e MYSQL_USER=petclinic -e MYSQL_PASSWORD=petclinic -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=petclinic -p 3306:3306 mysql:9.7
-```
-
-or
+You can start MySQL locally with whatever installer works for your OS or use docker:
 
 ```bash
-docker run -e POSTGRES_USER=petclinic -e POSTGRES_PASSWORD=petclinic -e POSTGRES_DB=petclinic -p 5432:5432 postgres:18.4
+docker run -e MYSQL_USER=petclinic -e MYSQL_PASSWORD=petclinic -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=petclinic -p 3306:3306 mysql:8.0
 ```
 
-Further documentation is provided for [MySQL](https://github.com/spring-projects/spring-petclinic/blob/main/src/main/resources/db/mysql/petclinic_db_setup_mysql.txt)
-and [PostgreSQL](https://github.com/spring-projects/spring-petclinic/blob/main/src/main/resources/db/postgres/petclinic_db_setup_postgres.txt).
+Further documentation is provided for [MySQL](https://github.com/spring-projects/spring-petclinic/blob/main/src/main/resources/db/mysql/petclinic_db_setup_mysql.txt).
 
-Instead of vanilla `docker` you can also use the provided `docker-compose.yml` file to start the database containers. Each one has a service named after the Spring profile:
+Instead of vanilla `docker` you can also use the provided `docker-compose.yml` file to start the database container:
 
 ```bash
 docker compose up mysql
 ```
 
-or
-
-```bash
-docker compose up postgres
-```
-
 ## Test Applications
 
-At development time we recommend you use the test applications set up as `main()` methods in `PetClinicIntegrationTests` (using the default H2 database and also adding Spring Boot Devtools), `MySqlTestApplication` and `PostgresIntegrationTests`. These are set up so that you can run the apps in your IDE to get fast feedback and also run the same classes as integration tests against the respective database. The MySql integration tests use Testcontainers to start the database in a Docker container, and the Postgres tests use Docker Compose to do the same thing.
+At development time we recommend you use the test applications set up as `main()` methods in `PetClinicIntegrationTests` (using the default H2 database and also adding Spring Boot Devtools) and `MySqlTestApplication`. These are set up so that you can run the apps in your IDE to get fast feedback and also run the same classes as integration tests against the respective database. The MySql integration tests use Testcontainers to start the database in a Docker container.
 
 ## Compiling the CSS
 
