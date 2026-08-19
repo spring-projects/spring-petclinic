@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: petclinic
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
     - port: 80
       targetPort: 8080
@@ -30,10 +30,16 @@ spec:
     spec:
       containers:
         - name: workload
-          image: dsyer/petclinic
+          image: springpetclinicacr87345.azurecr.io/springpetclinic:latest
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: postgres
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://demo-db:5432/petclinic
+            - name: SPRING_DATASOURCE_USERNAME
+              value: user
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: pass
             - name: SERVICE_BINDING_ROOT
               value: /bindings
             - name: SPRING_APPLICATION_JSON
@@ -44,14 +50,27 @@ spec:
           ports:
             - name: http
               containerPort: 8080
+          startupProbe:
+            httpGet:
+              path: /livez
+              port: http
+            periodSeconds: 10
+            failureThreshold: 12
+            timeoutSeconds: 3
           livenessProbe:
             httpGet:
               path: /livez
               port: http
+            periodSeconds: 10
+            failureThreshold: 3
+            timeoutSeconds: 3
           readinessProbe:
             httpGet:
               path: /readyz
               port: http
+            periodSeconds: 10
+            failureThreshold: 3
+            timeoutSeconds: 3
           volumeMounts:
             - mountPath: /bindings/secret
               name: binding
