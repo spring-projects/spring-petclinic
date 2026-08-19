@@ -152,7 +152,7 @@ stages:
     - task: AzureCLI@2
       displayName: 'Login and Push Image to ACR'
       inputs:
-        azureSubscription: 'azure-service-connection'
+        azureSubscription: 'pet-clinic-connection'
         scriptType: bash
         scriptLocation: inlineScript
         inlineScript: |
@@ -200,7 +200,7 @@ stages:
           - task: AzureContainerApps@1
             displayName: 'Deploy DEV Container App'
             inputs:
-              azureSubscription: 'azure-service-connection'
+              azureSubscription: 'pet-clinic-connection'
               containerAppName: 'spring-petclinic-dev'
               resourceGroup: 'spring-petclinic-rg'
               imageToDeploy: 'springpetclinicacr.azurecr.io/spring-petclinic:$(IMAGE_TAG)'
@@ -232,7 +232,7 @@ stages:
           - task: AzureCLI@2
             displayName: 'Deploy UAT to AKS'
             inputs:
-              azureSubscription: 'azure-service-connection'
+              azureSubscription: 'pet-clinic-connection'
               scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |
@@ -277,7 +277,7 @@ stages:
           - task: AzureCLI@2
             displayName: 'Deploy PROD to AKS'
             inputs:
-              azureSubscription: 'azure-service-connection'
+              azureSubscription: 'pet-clinic-connection'
               scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |
