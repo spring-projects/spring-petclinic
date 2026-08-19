@@ -55,3 +55,11 @@ target/
 
 # Local backup files
 *.backup
+
+# Terraform
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/*.tfplan
+terraform/tfplan*
+terraform/terraform.tfvars
