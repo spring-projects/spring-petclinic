@@ -1,0 +1,12 @@
+.git
+.github
+target/*
+!target/spring-petclinic-4.0.0-SNAPSHOT.jar
+.idea
+.vscode
+.gradle
+node_modules
+*.log
+Jenkinsfile
+docker-compose.yml
+k8s

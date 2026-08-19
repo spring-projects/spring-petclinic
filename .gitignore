@@ -46,3 +46,12 @@ out/
 _site/
 *.css
 !petclinic.css
+
+# Maven build output
+target/
+
+# Local logs
+*.log
+
+# Local backup files
+*.backup
