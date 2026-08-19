@@ -1,0 +1,10 @@
+title = "Spring Petclinic Gitleaks Configuration"
+
+[allowlist]
+description = "Known false positive: SonarQube token environment variable passed to curl"
+
+regexTarget = "match"
+
+regexes = [
+  '''-u\s+"\$\{SONAR_TOKEN\}:"'''
+]

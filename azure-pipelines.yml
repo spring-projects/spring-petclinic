@@ -151,6 +151,7 @@ stages:
           --no-banner \
           --redact \
           --verbose \
+          --config .gitleaks.toml \
           --report-format json \
           --report-path "$(Build.ArtifactStagingDirectory)/gitleaks-report.json"
 
