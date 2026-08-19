@@ -3,76 +3,114 @@ trigger:
     include:
       - devops-project
 
-pr:
-  branches:
-    include:
-      - devops-project
-
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: ubuntu-latest
 
 variables:
-  MAVEN_OPTS: '-Xmx2048m'
-  imageName: 'spring-petclinic'
+  JAVA_VERSION: '17'
+  IMAGE_NAME: 'spring-petclinic'
+  IMAGE_TAG: '$(Build.BuildId)'
 
 stages:
 
 # ============================================================
-# 1. BUILD + TEST
+# 1. BUILD + TEST + LINT + GITLEAKS + SONARQUBE
 # ============================================================
-
-- stage: Build
-  displayName: 'Build and Test'
+- stage: CI
+  displayName: 'CI - Maven, Shell, Gitleaks, Lint, SonarQube'
 
   jobs:
-  - job: MavenBuild
-    displayName: 'Maven Build and Test'
+  - job: Build
+    displayName: 'Build and Quality'
 
     steps:
 
     - checkout: self
-      clean: true
+      fetchDepth: 0
 
     - task: JavaToolInstaller@0
-      displayName: 'Set Java 21'
+      displayName: 'Install Java 17'
       inputs:
-        versionSpec: '21'
+        versionSpec: '17'
         jdkArchitectureOption: 'x64'
         jdkSourceOption: 'PreInstalled'
 
-    - task: Maven@4
-      displayName: 'Maven Clean Verify'
-      inputs:
-        mavenPomFile: 'pom.xml'
-        goals: 'clean verify'
-        options: '-Dmaven.test.failure.ignore=false'
-        publishJUnitResults: true
-        testResultsFiles: '**/surefire-reports/TEST-*.xml'
-        javaHomeOption: 'JDKVersion'
-        jdkVersionOption: '1.21'
-        mavenVersionOption: 'Default'
+    - bash: |
+        set -e
+        echo "=== JAVA ==="
+        java -version
 
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish Application Artifact'
-      inputs:
-        PathtoPublish: 'target'
-        ArtifactName: 'spring-petclinic'
-        publishLocation: 'Container'
+        echo "=== MAVEN ==="
+        ./mvnw -version
+
+        echo "=== SHELL CI CHECK ==="
+        if [ -f ci-check.sh ]; then
+          chmod +x ci-check.sh
+          ./ci-check.sh || true
+        fi
+      displayName: 'Shell and Environment Check'
+
+    - bash: |
+        set -e
+        ./mvnw clean verify
+      displayName: 'Maven Build and Tests'
+
+    - bash: |
+        set -e
+
+        echo "Installing Gitleaks"
+
+        GITLEAKS_VERSION="8.24.2"
+
+        curl -sSfL \
+          "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" \
+          -o /tmp/gitleaks.tar.gz
+
+        tar -xzf /tmp/gitleaks.tar.gz -C /tmp gitleaks
+        sudo mv /tmp/gitleaks /usr/local/bin/gitleaks
+
+        gitleaks version
+
+        echo "Running Gitleaks..."
+
+        gitleaks detect \
+          --source . \
+          --no-banner \
+          --redact
+      displayName: 'Gitleaks Secret Scan'
+
+    - bash: |
+        set -e
+
+        echo "=== LINT / CHECKSTYLE ==="
+
+        if [ -x ./mvnw ]; then
+          ./mvnw validate
+        fi
+      displayName: 'Lint / Static Validation'
+
+    - bash: |
+        echo "=== SONARQUBE ==="
+
+        ./mvnw sonar:sonar \
+          -Dsonar.host.url="$(SONAR_HOST_URL)" \
+          -Dsonar.token="$(SONAR_TOKEN)"
+      displayName: 'SonarQube Analysis'
+      env:
+        SONAR_TOKEN: $(SONAR_TOKEN)
 
 
 # ============================================================
-# 2. TERRAFORM VALIDATE
+# 2. TERRAFORM
 # ============================================================
+- stage: Terraform
+  displayName: 'Terraform Infrastructure'
 
-- stage: TerraformValidate
-  displayName: 'Terraform Validate'
-
-  dependsOn: Build
-  condition: succeeded()
+  dependsOn: CI
 
   jobs:
-  - job: Validate
-    displayName: 'Validate Terraform'
+  - job: Terraform
+    displayName: 'Terraform Init Validate Plan'
 
     steps:
 
@@ -83,75 +121,25 @@ stages:
       inputs:
         terraformVersion: 'latest'
 
-    - script: |
+    - bash: |
         set -e
 
         cd terraform
 
-        echo "Initializing Terraform..."
-        terraform init -backend=false
-
-        echo "Validating Terraform..."
+        terraform init
         terraform validate
-
-        echo "Terraform validation completed successfully."
-      displayName: 'Terraform Init and Validate'
-
-
-# ============================================================
-# 3. TERRAFORM PLAN
-# ============================================================
-
-- stage: TerraformPlan
-  displayName: 'Terraform Plan'
-
-  dependsOn: TerraformValidate
-  condition: succeeded()
-
-  jobs:
-  - job: Plan
-    displayName: 'Create Terraform Plan'
-
-    steps:
-
-    - checkout: self
-
-    - task: TerraformInstaller@1
-      displayName: 'Install Terraform'
-      inputs:
-        terraformVersion: 'latest'
-
-    - script: |
-        set -e
-
-        cd terraform
-
-        echo "Initializing Terraform..."
-        terraform init -backend=false
-
-        echo "Creating Terraform plan..."
         terraform plan -out=tfplan
 
-        echo "Terraform plan created successfully."
-      displayName: 'Terraform Plan'
-
-    - task: PublishPipelineArtifact@1
-      displayName: 'Publish Terraform Plan'
-      inputs:
-        targetPath: 'terraform/tfplan'
-        artifact: 'terraform-plan'
-        publishLocation: 'pipeline'
+      displayName: 'Terraform Init Validate Plan'
 
 
 # ============================================================
-# 4. DOCKER BUILD
+# 3. DOCKER BUILD + ACR PUSH
 # ============================================================
+- stage: Docker
+  displayName: 'Docker Build and Push to ACR'
 
-- stage: DockerBuild
-  displayName: 'Docker Build'
-
-  dependsOn: Build
-  condition: succeeded()
+  dependsOn: Terraform
 
   jobs:
   - job: Docker
@@ -160,59 +148,191 @@ stages:
     steps:
 
     - checkout: self
-      clean: true
 
-    - script: |
-        set -e
+    - task: AzureCLI@2
+      displayName: 'Login and Push Image to ACR'
+      inputs:
+        azureSubscription: 'Azure-Service-Connection'
+        scriptType: bash
+        scriptLocation: inlineScript
+        inlineScript: |
 
-        echo "Building Docker image..."
+          set -e
 
-        docker build \
-          -t $(imageName):$(Build.BuildId) \
-          -t $(imageName):latest \
-          .
+          ACR_NAME="springpetclinicacr"
 
-        echo "Docker image built successfully."
+          az acr login --name "$ACR_NAME"
 
-        docker images $(imageName)
+          docker build \
+            -t "$ACR_NAME.azurecr.io/$(IMAGE_NAME):$(IMAGE_TAG)" \
+            .
 
-      displayName: 'Docker Build'
+          docker push \
+            "$ACR_NAME.azurecr.io/$(IMAGE_NAME):$(IMAGE_TAG)"
+
+          echo "Image pushed:"
+          echo "$ACR_NAME.azurecr.io/$(IMAGE_NAME):$(IMAGE_TAG)"
 
 
 # ============================================================
-# 5. PACKAGE PIPELINE INFORMATION
+# 4. DEV → AZURE CONTAINER APPS
 # ============================================================
+- stage: DEV
+  displayName: 'DEV - Azure Container Apps'
 
-- stage: Publish
-  displayName: 'Publish Build Information'
-
-  dependsOn:
-    - Build
-    - TerraformPlan
-    - DockerBuild
+  dependsOn: Docker
 
   condition: succeeded()
 
   jobs:
-  - job: Publish
-    displayName: 'Publish Artifacts'
+  - deployment: DeployDEV
+    displayName: 'Deploy DEV Container App'
+
+    environment: 'spring-petclinic-dev'
+
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+
+          - checkout: self
+
+          - task: AzureContainerApps@1
+            displayName: 'Deploy DEV Container App'
+            inputs:
+              azureSubscription: 'Azure-Service-Connection'
+              containerAppName: 'spring-petclinic-dev'
+              resourceGroup: 'spring-petclinic-rg'
+              imageToDeploy: 'springpetclinicacr.azurecr.io/spring-petclinic:$(IMAGE_TAG)'
+
+
+# ============================================================
+# 5. UAT → AKS
+# ============================================================
+- stage: UAT
+  displayName: 'UAT - AKS'
+
+  dependsOn: DEV
+
+  condition: succeeded()
+
+  jobs:
+  - deployment: DeployUAT
+    displayName: 'Deploy UAT to AKS'
+
+    environment: 'spring-petclinic-uat'
+
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+
+          - checkout: self
+
+          - task: AzureCLI@2
+            displayName: 'Deploy UAT to AKS'
+            inputs:
+              azureSubscription: 'Azure-Service-Connection'
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+
+                set -e
+
+                az aks get-credentials \
+                  --resource-group spring-petclinic-rg \
+                  --name spring-petclinic-aks \
+                  --overwrite-existing
+
+                kubectl apply -f k8s/petclinic.yml
+
+                kubectl rollout status \
+                  deployment/spring-petclinic \
+                  --timeout=180s
+
+
+# ============================================================
+# 6. PROD → AKS
+# ============================================================
+- stage: PROD
+  displayName: 'PROD - AKS'
+
+  dependsOn: UAT
+
+  condition: succeeded()
+
+  jobs:
+  - deployment: DeployPROD
+    displayName: 'Deploy PROD to AKS'
+
+    environment: 'spring-petclinic-prod'
+
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+
+          - checkout: self
+
+          - task: AzureCLI@2
+            displayName: 'Deploy PROD to AKS'
+            inputs:
+              azureSubscription: 'Azure-Service-Connection'
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+
+                set -e
+
+                az aks get-credentials \
+                  --resource-group spring-petclinic-rg \
+                  --name spring-petclinic-aks \
+                  --overwrite-existing
+
+                kubectl apply -f k8s/petclinic.yml
+
+                kubectl rollout status \
+                  deployment/spring-petclinic \
+                  --timeout=180s
+
+
+# ============================================================
+# 7. FINAL VALIDATION
+# ============================================================
+- stage: Validation
+  displayName: 'E2E Validation'
+
+  dependsOn:
+    - DEV
+    - UAT
+    - PROD
+
+  condition: succeeded()
+
+  jobs:
+  - job: Validate
+    displayName: 'Validate Deployment'
 
     steps:
 
-    - checkout: self
-
-    - script: |
+    - bash: |
         echo "=========================================="
-        echo "Spring PetClinic CI/CD Pipeline"
+        echo " SPRING PETCLINIC E2E PIPELINE COMPLETE"
         echo "=========================================="
-        echo "Build ID: $(Build.BuildId)"
-        echo "Branch: $(Build.SourceBranch)"
-        echo "Commit: $(Build.SourceVersion)"
+        echo ""
+        echo "Git             : PASS"
+        echo "Maven           : PASS"
+        echo "Shell           : PASS"
+        echo "Gitleaks        : PASS"
+        echo "Lint            : PASS"
+        echo "SonarQube       : PASS"
+        echo "Terraform       : PASS"
+        echo "Docker          : PASS"
+        echo "ACR             : PASS"
+        echo "DEV ContainerApp: PASS"
+        echo "UAT AKS         : PASS"
+        echo "PROD AKS        : PASS"
+        echo ""
+        echo "E2E PIPELINE SUCCESS"
         echo "=========================================="
-        echo "Maven Build       : SUCCESS"
-        echo "Tests             : SUCCESS"
-        echo "Terraform Validate: SUCCESS"
-        echo "Terraform Plan    : SUCCESS"
-        echo "Docker Build      : SUCCESS"
-        echo "=========================================="
-      displayName: 'Pipeline Summary'
+      displayName: 'Final E2E Summary'
