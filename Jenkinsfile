@@ -14,7 +14,6 @@ pipeline {
     environment {
         // SonarQube
         SONAR_PROJECT_KEY = 'spring-petclinic'
-        SONAR_HOST_URL    = 'http://host.docker.internal:9000'
 
         // Docker
         DOCKER_IMAGE = 'spring-petclinic:4.0.0'
@@ -195,7 +194,6 @@ pipeline {
 
                         ./mvnw sonar:sonar \
                             -Dsonar.projectKey="${SONAR_PROJECT_KEY}" \
-                            -Dsonar.host.url="${SONAR_HOST_URL}" \
                             -Dsonar.token="${SONAR_TOKEN}"
                     '''
                 }
