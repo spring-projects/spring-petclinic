@@ -4,9 +4,11 @@ trigger:
       - devops-project
 
 pool:
-  vmImage: ubuntu-latest
+  name: demo-pool
 
 variables:
+  # SonarQube running on VmHarsh1
+  SONAR_HOST_URL: 'http://localhost:9000'
   JAVA_VERSION: '17'
 
   IMAGE_NAME: 'spring-petclinic'
@@ -189,9 +191,30 @@ stages:
         echo "SONARQUBE ANALYSIS"
         echo "=========================================="
 
-        ./mvnw sonar:sonar \
+        echo "SonarQube URL: $(SONAR_HOST_URL)"
+
+        if [ -z "$SONAR_TOKEN" ]; then
+          echo "ERROR: SONAR_TOKEN is empty"
+          exit 1
+        fi
+
+        echo "SonarQube token is configured"
+
+        echo "Checking SonarQube server..."
+
+        curl -fsS "$(SONAR_HOST_URL)/api/system/status"
+
+        echo ""
+        echo "Starting SonarQube analysis..."
+
+        ./mvnw org.sonarsource.scanner.maven:sonar-maven-plugin:5.1.0.4751:sonar \
           -Dsonar.host.url="$(SONAR_HOST_URL)" \
-          -Dsonar.token="$(SONAR_TOKEN)"
+          -Dsonar.token="$SONAR_TOKEN" \
+          -Dsonar.coverage.jacoco.xmlReportPaths="target/site/jacoco/jacoco.xml"
+
+        echo "=========================================="
+        echo "SONARQUBE ANALYSIS SUCCESSFUL"
+        echo "=========================================="
 
       displayName: 'SonarQube Analysis'
 
