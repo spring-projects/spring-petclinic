@@ -32,7 +32,7 @@ metadata:
   name: spring-petclinic
   namespace: petclinic-uat
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: spring-petclinic
   ports:
