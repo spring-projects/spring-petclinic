@@ -13,14 +13,21 @@ pool:
 
 variables:
   MAVEN_OPTS: '-Xmx2048m'
+  imageName: 'spring-petclinic'
 
 stages:
 
+# ============================================================
+# 1. BUILD + TEST
+# ============================================================
+
 - stage: Build
   displayName: 'Build and Test'
+
   jobs:
-  - job: Build
-    displayName: 'Maven Build'
+  - job: MavenBuild
+    displayName: 'Maven Build and Test'
+
     steps:
 
     - checkout: self
@@ -34,7 +41,7 @@ stages:
         jdkSourceOption: 'PreInstalled'
 
     - task: Maven@4
-      displayName: 'Maven Build and Test'
+      displayName: 'Maven Clean Verify'
       inputs:
         mavenPomFile: 'pom.xml'
         goals: 'clean verify'
@@ -46,19 +53,27 @@ stages:
         mavenVersionOption: 'Default'
 
     - task: PublishBuildArtifacts@1
-      displayName: 'Publish JAR'
+      displayName: 'Publish Application Artifact'
       inputs:
         PathtoPublish: 'target'
         ArtifactName: 'spring-petclinic'
         publishLocation: 'Container'
 
+
+# ============================================================
+# 2. TERRAFORM VALIDATE
+# ============================================================
+
 - stage: TerraformValidate
   displayName: 'Terraform Validate'
+
   dependsOn: Build
   condition: succeeded()
+
   jobs:
-  - job: Terraform
+  - job: Validate
     displayName: 'Validate Terraform'
+
     steps:
 
     - checkout: self
@@ -69,8 +84,135 @@ stages:
         terraformVersion: 'latest'
 
     - script: |
+        set -e
+
         cd terraform
+
+        echo "Initializing Terraform..."
         terraform init -backend=false
+
+        echo "Validating Terraform..."
         terraform validate
+
+        echo "Terraform validation completed successfully."
       displayName: 'Terraform Init and Validate'
 
+
+# ============================================================
+# 3. TERRAFORM PLAN
+# ============================================================
+
+- stage: TerraformPlan
+  displayName: 'Terraform Plan'
+
+  dependsOn: TerraformValidate
+  condition: succeeded()
+
+  jobs:
+  - job: Plan
+    displayName: 'Create Terraform Plan'
+
+    steps:
+
+    - checkout: self
+
+    - task: TerraformInstaller@1
+      displayName: 'Install Terraform'
+      inputs:
+        terraformVersion: 'latest'
+
+    - script: |
+        set -e
+
+        cd terraform
+
+        echo "Initializing Terraform..."
+        terraform init -backend=false
+
+        echo "Creating Terraform plan..."
+        terraform plan -out=tfplan
+
+        echo "Terraform plan created successfully."
+      displayName: 'Terraform Plan'
+
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish Terraform Plan'
+      inputs:
+        targetPath: 'terraform/tfplan'
+        artifact: 'terraform-plan'
+        publishLocation: 'pipeline'
+
+
+# ============================================================
+# 4. DOCKER BUILD
+# ============================================================
+
+- stage: DockerBuild
+  displayName: 'Docker Build'
+
+  dependsOn: Build
+  condition: succeeded()
+
+  jobs:
+  - job: Docker
+    displayName: 'Build Docker Image'
+
+    steps:
+
+    - checkout: self
+      clean: true
+
+    - script: |
+        set -e
+
+        echo "Building Docker image..."
+
+        docker build \
+          -t $(imageName):$(Build.BuildId) \
+          -t $(imageName):latest \
+          .
+
+        echo "Docker image built successfully."
+
+        docker images $(imageName)
+
+      displayName: 'Docker Build'
+
+
+# ============================================================
+# 5. PACKAGE PIPELINE INFORMATION
+# ============================================================
+
+- stage: Publish
+  displayName: 'Publish Build Information'
+
+  dependsOn:
+    - Build
+    - TerraformPlan
+    - DockerBuild
+
+  condition: succeeded()
+
+  jobs:
+  - job: Publish
+    displayName: 'Publish Artifacts'
+
+    steps:
+
+    - checkout: self
+
+    - script: |
+        echo "=========================================="
+        echo "Spring PetClinic CI/CD Pipeline"
+        echo "=========================================="
+        echo "Build ID: $(Build.BuildId)"
+        echo "Branch: $(Build.SourceBranch)"
+        echo "Commit: $(Build.SourceVersion)"
+        echo "=========================================="
+        echo "Maven Build       : SUCCESS"
+        echo "Tests             : SUCCESS"
+        echo "Terraform Validate: SUCCESS"
+        echo "Terraform Plan    : SUCCESS"
+        echo "Docker Build      : SUCCESS"
+        echo "=========================================="
+      displayName: 'Pipeline Summary'
