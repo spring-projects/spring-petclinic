@@ -44,10 +44,13 @@ See below for more details.
 
 There is no `Dockerfile` in this project. You can build a container image (if you have a docker daemon) using the Spring Boot build plugin:
 
+```bash
+./mvnw spring-boot:build-image
+```
+
 ## Running the Container Image
 
 ```bash
-./mvnw spring-boot:build-image
 docker images | grep petclinic
 docker run -p 8080:8080 docker.io/library/spring-petclinic:latest
 ```
