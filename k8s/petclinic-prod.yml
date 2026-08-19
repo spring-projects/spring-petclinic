@@ -4,7 +4,7 @@ metadata:
   name: spring-petclinic
   namespace: petclinic-prod
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: spring-petclinic
@@ -20,8 +20,8 @@ spec:
         - containerPort: 8080
         resources:
           requests:
-            cpu: 250m
-            memory: 512Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
             cpu: 500m
             memory: 1Gi
@@ -32,7 +32,7 @@ metadata:
   name: spring-petclinic
   namespace: petclinic-prod
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: spring-petclinic
   ports:
