@@ -8,17 +8,26 @@ pool:
 
 variables:
   JAVA_VERSION: '17'
+
   IMAGE_NAME: 'spring-petclinic'
   IMAGE_TAG: '$(Build.BuildId)'
 
-  # Actual Azure resources
+  # ============================================================
+  # ACTUAL AZURE RESOURCES
+  # ============================================================
+
   ACR_NAME: 'springpetclinicacr87345'
+
   AKS_RESOURCE_GROUP: 'Harsh'
   AKS_CLUSTER_NAME: 'k8-demo'
 
-  # DEV Container App
+  # ============================================================
+  # DEV CONTAINER APP
+  # ============================================================
+
   DEV_CONTAINER_APP: 'spring-petclinic-dev'
   DEV_RESOURCE_GROUP: 'spring-petclinic-devops-rg'
+
 
 stages:
 
@@ -30,6 +39,7 @@ stages:
   displayName: 'CI - Build, Test, Gitleaks, Lint, SonarQube'
 
   jobs:
+
   - job: Build
     displayName: 'Build and Quality'
 
@@ -38,6 +48,10 @@ stages:
     - checkout: self
       fetchDepth: 0
 
+    # --------------------------------------------------------
+    # JAVA
+    # --------------------------------------------------------
+
     - task: JavaToolInstaller@0
       displayName: 'Install Java 17'
       inputs:
@@ -45,17 +59,23 @@ stages:
         jdkArchitectureOption: 'x64'
         jdkSourceOption: 'PreInstalled'
 
+    # --------------------------------------------------------
+    # ENVIRONMENT + SHELL CHECK
+    # --------------------------------------------------------
+
     - bash: |
         set -e
 
         echo "=========================================="
         echo "JAVA VERSION"
         echo "=========================================="
+
         java -version
 
         echo "=========================================="
         echo "MAVEN VERSION"
         echo "=========================================="
+
         ./mvnw -version
 
         echo "=========================================="
@@ -68,7 +88,12 @@ stages:
         else
           echo "ci-check.sh not found - continuing"
         fi
+
       displayName: 'Shell and Environment Check'
+
+    # --------------------------------------------------------
+    # MAVEN BUILD + TESTS
+    # --------------------------------------------------------
 
     - bash: |
         set -e
@@ -78,7 +103,12 @@ stages:
         echo "=========================================="
 
         ./mvnw clean verify
+
       displayName: 'Maven Build and Tests'
+
+    # --------------------------------------------------------
+    # GITLEAKS
+    # --------------------------------------------------------
 
     - bash: |
         set -e
@@ -99,11 +129,18 @@ stages:
 
         gitleaks version
 
+        echo "Running Gitleaks..."
+
         gitleaks detect \
           --source . \
           --no-banner \
           --redact
+
       displayName: 'Gitleaks Secret Scan'
+
+    # --------------------------------------------------------
+    # LINT / STATIC VALIDATION
+    # --------------------------------------------------------
 
     - bash: |
         set -e
@@ -113,7 +150,12 @@ stages:
         echo "=========================================="
 
         ./mvnw validate
+
       displayName: 'Lint / Static Validation'
+
+    # --------------------------------------------------------
+    # SONARQUBE
+    # --------------------------------------------------------
 
     - bash: |
         set -e
@@ -125,7 +167,9 @@ stages:
         ./mvnw sonar:sonar \
           -Dsonar.host.url="$(SONAR_HOST_URL)" \
           -Dsonar.token="$(SONAR_TOKEN)"
+
       displayName: 'SonarQube Analysis'
+
       env:
         SONAR_TOKEN: $(SONAR_TOKEN)
 
@@ -138,8 +182,10 @@ stages:
   displayName: 'Terraform Infrastructure'
 
   dependsOn: CI
+  condition: succeeded()
 
   jobs:
+
   - job: Terraform
     displayName: 'Terraform Validate and Plan'
 
@@ -162,8 +208,11 @@ stages:
         cd terraform
 
         terraform init
+
         terraform validate
+
         terraform plan -out=tfplan
+
       displayName: 'Terraform Init Validate Plan'
 
 
@@ -175,10 +224,10 @@ stages:
   displayName: 'Docker Build and Push to ACR'
 
   dependsOn: Terraform
-
   condition: succeeded()
 
   jobs:
+
   - job: Docker
     displayName: 'Build Docker Image'
 
@@ -188,6 +237,7 @@ stages:
 
     - task: AzureCLI@2
       displayName: 'Build and Push Docker Image to ACR'
+
       inputs:
         azureSubscription: 'pet-clinic-connection'
         scriptType: bash
@@ -254,17 +304,19 @@ stages:
   displayName: 'DEV - Azure Container Apps'
 
   dependsOn: Docker
-
   condition: succeeded()
 
   jobs:
+
   - deployment: DeployDEV
     displayName: 'Deploy DEV Container App'
 
     environment: 'spring-petclinic-dev'
 
     strategy:
+
       runOnce:
+
         deploy:
 
           steps:
@@ -273,6 +325,7 @@ stages:
 
           - task: AzureCLI@2
             displayName: 'Deploy DEV Container App'
+
             inputs:
               azureSubscription: 'pet-clinic-connection'
               scriptType: bash
@@ -293,6 +346,10 @@ stages:
                 echo "Resource Group : $(DEV_RESOURCE_GROUP)"
                 echo "Container App  : $(DEV_CONTAINER_APP)"
                 echo "Image          : $ACR_NAME.azurecr.io/$IMAGE_NAME:$IMAGE_TAG"
+
+                echo "=========================================="
+                echo "DEPLOY DEV IMAGE"
+                echo "=========================================="
 
                 az containerapp update \
                   --name "$(DEV_CONTAINER_APP)" \
@@ -328,17 +385,19 @@ stages:
   displayName: 'UAT - AKS'
 
   dependsOn: DEV
-
   condition: succeeded()
 
   jobs:
+
   - deployment: DeployUAT
     displayName: 'Deploy UAT to AKS'
 
     environment: 'spring-petclinic-uat'
 
     strategy:
+
       runOnce:
+
         deploy:
 
           steps:
@@ -347,6 +406,7 @@ stages:
 
           - task: AzureCLI@2
             displayName: 'Deploy UAT to AKS'
+
             inputs:
               azureSubscription: 'pet-clinic-connection'
               scriptType: bash
@@ -358,6 +418,18 @@ stages:
 
                 echo "=========================================="
                 echo "UAT - AKS"
+                echo "=========================================="
+
+                ACR_NAME="$(ACR_NAME)"
+                IMAGE_NAME="$(IMAGE_NAME)"
+                IMAGE_TAG="$(IMAGE_TAG)"
+
+                echo "ACR       : $ACR_NAME"
+                echo "Image     : $IMAGE_NAME"
+                echo "Tag       : $IMAGE_TAG"
+
+                echo "=========================================="
+                echo "GET AKS CREDENTIALS"
                 echo "=========================================="
 
                 az aks get-credentials \
@@ -383,6 +455,14 @@ stages:
 
                 kubectl apply \
                   -f k8s/petclinic-uat.yml
+
+                echo "=========================================="
+                echo "SET UAT IMAGE"
+                echo "=========================================="
+
+                kubectl set image deployment/spring-petclinic \
+                  spring-petclinic="$ACR_NAME.azurecr.io/$IMAGE_NAME:$IMAGE_TAG" \
+                  -n petclinic-uat
 
                 echo "=========================================="
                 echo "WAIT FOR UAT ROLLOUT"
@@ -416,6 +496,16 @@ stages:
                   spring-petclinic \
                   -n petclinic-uat
 
+                echo "=========================================="
+                echo "UAT IMAGE"
+                echo "=========================================="
+
+                kubectl get deployment spring-petclinic \
+                  -n petclinic-uat \
+                  -o jsonpath='{.spec.template.spec.containers[0].image}'
+
+                echo ""
+
 
 # ============================================================
 # 6. PROD - AKS
@@ -425,17 +515,19 @@ stages:
   displayName: 'PROD - AKS'
 
   dependsOn: UAT
-
   condition: succeeded()
 
   jobs:
+
   - deployment: DeployPROD
     displayName: 'Deploy PROD to AKS'
 
     environment: 'spring-petclinic-prod'
 
     strategy:
+
       runOnce:
+
         deploy:
 
           steps:
@@ -444,6 +536,7 @@ stages:
 
           - task: AzureCLI@2
             displayName: 'Deploy PROD to AKS'
+
             inputs:
               azureSubscription: 'pet-clinic-connection'
               scriptType: bash
@@ -455,6 +548,18 @@ stages:
 
                 echo "=========================================="
                 echo "PROD - AKS"
+                echo "=========================================="
+
+                ACR_NAME="$(ACR_NAME)"
+                IMAGE_NAME="$(IMAGE_NAME)"
+                IMAGE_TAG="$(IMAGE_TAG)"
+
+                echo "ACR       : $ACR_NAME"
+                echo "Image     : $IMAGE_NAME"
+                echo "Tag       : $IMAGE_TAG"
+
+                echo "=========================================="
+                echo "GET AKS CREDENTIALS"
                 echo "=========================================="
 
                 az aks get-credentials \
@@ -480,6 +585,14 @@ stages:
 
                 kubectl apply \
                   -f k8s/petclinic-prod.yml
+
+                echo "=========================================="
+                echo "SET PROD IMAGE"
+                echo "=========================================="
+
+                kubectl set image deployment/spring-petclinic \
+                  spring-petclinic="$ACR_NAME.azurecr.io/$IMAGE_NAME:$IMAGE_TAG" \
+                  -n petclinic-prod
 
                 echo "=========================================="
                 echo "WAIT FOR PROD ROLLOUT"
@@ -513,6 +626,16 @@ stages:
                   spring-petclinic \
                   -n petclinic-prod
 
+                echo "=========================================="
+                echo "PROD IMAGE"
+                echo "=========================================="
+
+                kubectl get deployment spring-petclinic \
+                  -n petclinic-prod \
+                  -o jsonpath='{.spec.template.spec.containers[0].image}'
+
+                echo ""
+
 
 # ============================================================
 # 7. FINAL VALIDATION
@@ -529,6 +652,7 @@ stages:
   condition: succeeded()
 
   jobs:
+
   - job: Validate
     displayName: 'Validate Complete Deployment'
 
