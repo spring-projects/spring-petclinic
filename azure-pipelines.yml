@@ -8,7 +8,8 @@ pool:
 
 variables:
   # SonarQube running on VmHarsh1
-  SONAR_HOST_URL: 'http://135.235.220.22:9000'
+  SONAR_HOST_IP: '135.235.220.22'
+  SONAR_HOST_PORT: '9000'
   JAVA_VERSION: '17'
 
   IMAGE_NAME: 'spring-petclinic'
@@ -191,7 +192,8 @@ stages:
         echo "SONARQUBE ANALYSIS"
         echo "=========================================="
 
-        echo "SonarQube URL: $(SONAR_HOST_URL)"
+        SONAR_HOST_URL="http://${SONAR_HOST_IP}:${SONAR_HOST_PORT}"
+        echo "SonarQube URL: ${SONAR_HOST_URL}"
 
         if [ -z "$SONAR_TOKEN" ]; then
           echo "ERROR: SONAR_TOKEN is empty"
@@ -202,13 +204,13 @@ stages:
 
         echo "Checking SonarQube server..."
 
-        curl -fsS "$(SONAR_HOST_URL)/api/system/status"
+        curl -fsS "${SONAR_HOST_URL}/api/system/status"
 
         echo ""
         echo "Starting SonarQube analysis..."
 
         ./mvnw org.sonarsource.scanner.maven:sonar-maven-plugin:5.1.0.4751:sonar \
-          -Dsonar.host.url="$(SONAR_HOST_URL)" \
+          -Dsonar.host.url="${SONAR_HOST_URL}" \
           -Dsonar.token="$SONAR_TOKEN" \
           -Dsonar.coverage.jacoco.xmlReportPaths="target/site/jacoco/jacoco.xml"
 
