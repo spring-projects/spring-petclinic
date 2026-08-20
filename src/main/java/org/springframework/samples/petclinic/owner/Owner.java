@@ -58,6 +58,7 @@ public class Owner extends Person {
 
 	@Column
 	@NotBlank
+	// phone number must be valid
 	@Pattern(regexp = "\\d{10}", message = "{telephone.invalid}")
 	private String telephone;
 
