@@ -1,0 +1,187 @@
+
+name: pull request
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+env:
+  JAVA_VERSION: "17"
+
+  REGISTRY: europe-west3-docker.pkg.dev
+  IMAGE_REPO: europe-west3-docker.pkg.dev/petclinic-capstone/petclinic/petclinic-app
+
+  WIF_PROVIDER: projects/923128095631/locations/global/workloadIdentityPools/github-pool/providers/github-provider
+  WIF_SERVICE_ACCOUNT: sa-cicd@petclinic-capstone.iam.gserviceaccount.com
+
+jobs:
+  verify:
+    name: Static analysis + tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+
+      - uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: temurin
+          cache: maven
+
+      - name: Format check + tests (mvnw verify)
+        run: ./mvnw -ntp -B verify
+
+      - name: Upload test reports
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: surefire-reports
+          path: target/surefire-reports/
+          retention-days: 5
+          if-no-files-found: warn
+
+  hadolint:
+    name: Dockerfile lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+
+      - uses: hadolint/hadolint-action@2a66e89f53d0771bb131a7fa31f3136336094aa6 # v3.4.0
+        with:
+          dockerfile: Dockerfile
+          failure-threshold: warning
+
+  image:
+    name: Build, scan, push image
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: [verify, hadolint]
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+
+      - name: Derive image reference
+        id: ref
+        env:
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          SHORT="${HEAD_SHA:0:7}"
+          echo "short_sha=${SHORT}"                >> "$GITHUB_OUTPUT"
+          echo "image=${IMAGE_REPO}:sha-${SHORT}"  >> "$GITHUB_OUTPUT"
+          echo "Image: ${IMAGE_REPO}:sha-${SHORT}" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Decide whether this build may push
+        id: gate
+        env:
+          HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+        run: |
+          if [ "$HEAD_REPO" = "$GITHUB_REPOSITORY" ]; then
+            echo "push=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "push=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Fork PR from ${HEAD_REPO} - build and scan only, no push."
+          fi
+
+      - uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4.3.0
+
+      - name: Build image
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          load: true
+          platforms: linux/amd64
+          tags: ${{ steps.ref.outputs.image }}
+          build-args: |
+            BUILD_REVISION=${{ github.event.pull_request.head.sha }}
+            BUILD_VERSION=sha-${{ steps.ref.outputs.short_sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Scan image for vulnerabilities (Trivy)
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: image
+          image-ref: ${{ steps.ref.outputs.image }}
+          scanners: vuln
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: 1
+          format: table
+          output: trivy-report.txt
+
+      - name: Trivy findings
+        if: always()
+        run: |
+          if [ -f trivy-report.txt ]; then
+            cat trivy-report.txt
+          else
+            echo "No Trivy report produced - the scan step did not run or errored before writing one."
+          fi
+
+      - name: Upload Trivy report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: trivy-report
+          path: trivy-report.txt
+          retention-days: 5
+          if-no-files-found: warn
+
+      - name: Authenticate to GCP
+        if: steps.gate.outputs.push == 'true'
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
+        with:
+          workload_identity_provider: ${{ env.WIF_PROVIDER }}
+          service_account: ${{ env.WIF_SERVICE_ACCOUNT }}
+
+      - name: Configure Docker for Artifact Registry
+        if: steps.gate.outputs.push == 'true'
+        run: gcloud auth configure-docker "${REGISTRY}" --quiet
+
+      - name: Push image to Artifact Registry
+        if: steps.gate.outputs.push == 'true'
+        env:
+          IMAGE: ${{ steps.ref.outputs.image }}
+        run: |
+          docker push "$IMAGE"
+
+          DIGEST="$(docker inspect --format='{{index .RepoDigests 0}}' "$IMAGE" 2>/dev/null || true)"
+          {
+            echo "Pushed \`${IMAGE}\`"
+            echo
+            echo "Digest: \`${DIGEST:-unavailable}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Skipped push (fork PR)
+        if: steps.gate.outputs.push != 'true'
+        run: |
+          echo "Fork pull requests are built and scanned but not pushed." \
+            >> "$GITHUB_STEP_SUMMARY"
