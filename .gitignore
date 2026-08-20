@@ -63,3 +63,25 @@ terraform/*.tfstate.*
 terraform/*.tfplan
 terraform/tfplan*
 terraform/terraform.tfvars
+
+# Terraform
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/tfplan
+terraform/*.tfplan
+terraform/terraform.tfvars
+terraform/.terraform.lock.hcl
+
+# Local backup files
+*.backup
+*.backup*
+*.before*
+*.bak
+
+# Terraform local files
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log

@@ -15,6 +15,10 @@ provider "azurerm" {
   subscription_id = var.subscription_id
 }
 
+# ============================================================
+# RESOURCE GROUP
+# ============================================================
+
 resource "azurerm_resource_group" "main" {
   name     = var.resource_group_name
   location = var.location
@@ -69,7 +73,3 @@ module "acr" {
   resource_group_name = azurerm_resource_group.main.name
   location            = azurerm_resource_group.main.location
 }
-
-# ============================================================
-# VM
-# ============================================================

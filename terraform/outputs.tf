@@ -1,28 +1,25 @@
-# ============================================================
-# RESOURCE GROUP
-# ============================================================
-
 output "resource_group_name" {
-  description = "Resource group name"
+  description = "Name of the Spring PetClinic resource group"
   value       = azurerm_resource_group.main.name
 }
 
 output "resource_group_location" {
-  description = "Resource group location"
+  description = "Location of the Spring PetClinic resource group"
   value       = azurerm_resource_group.main.location
 }
 
-# ============================================================
-# NETWORKING
-# ============================================================
-
 output "vnet_name" {
-  description = "Virtual network name"
+  description = "Name of the Spring PetClinic virtual network"
   value       = module.networking.vnet_name
 }
 
+output "vnet_id" {
+  description = "Resource ID of the Spring PetClinic virtual network"
+  value       = module.networking.vnet_id
+}
+
 output "aca_subnet_id" {
-  description = "Azure Container Apps subnet ID"
+  description = "Container Apps subnet ID"
   value       = module.networking.aca_subnet_id
 }
 
@@ -31,9 +28,10 @@ output "aks_subnet_id" {
   value       = module.networking.aks_subnet_id
 }
 
-# ============================================================
-# STORAGE
-# ============================================================
+output "storage_account_id" {
+  description = "Storage account resource ID"
+  value       = module.storage.id
+}
 
 output "storage_account_name" {
   description = "Storage account name"
@@ -45,9 +43,10 @@ output "storage_container_name" {
   value       = module.storage.container_name
 }
 
-# ============================================================
-# ACR
-# ============================================================
+output "acr_id" {
+  description = "Azure Container Registry resource ID"
+  value       = module.acr.id
+}
 
 output "acr_name" {
   description = "Azure Container Registry name"
@@ -58,7 +57,3 @@ output "acr_login_server" {
   description = "Azure Container Registry login server"
   value       = module.acr.login_server
 }
-
-# ============================================================
-# VM
-# ============================================================

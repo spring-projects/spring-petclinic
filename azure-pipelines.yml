@@ -7,19 +7,30 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  # SonarQube running on VmHarsh1
+
+  # ============================================================
+  # SONARQUBE
+  # ============================================================
+
   SONAR_HOST_IP: '135.235.220.22'
   SONAR_HOST_PORT: '9000'
-  JAVA_VERSION: '17'
+
+  # ============================================================
+  # APPLICATION
+  # ============================================================
 
   IMAGE_NAME: 'spring-petclinic'
   IMAGE_TAG: '$(Build.BuildId)'
 
   # ============================================================
-  # ACTUAL AZURE RESOURCES
+  # AZURE CONTAINER REGISTRY
   # ============================================================
 
   ACR_NAME: 'springpetclinicacr87345'
+
+  # ============================================================
+  # AKS
+  # ============================================================
 
   AKS_RESOURCE_GROUP: 'Harsh'
   AKS_CLUSTER_NAME: 'k8-demo'
@@ -35,7 +46,8 @@ variables:
 stages:
 
 # ============================================================
-# 1. CI - BUILD + TEST + GITLEAKS + LINT + SONARQUBE
+# 1. CI
+# BUILD + TEST + GITLEAKS + LINT + SONARQUBE
 # ============================================================
 
 - stage: CI
@@ -51,9 +63,9 @@ stages:
     - checkout: self
       fetchDepth: 0
 
-    # --------------------------------------------------------
+    # ========================================================
     # JAVA
-    # --------------------------------------------------------
+    # ========================================================
 
     - task: JavaToolInstaller@0
       displayName: 'Install Java 17'
@@ -62,9 +74,9 @@ stages:
         jdkArchitectureOption: 'x64'
         jdkSourceOption: 'PreInstalled'
 
-    # --------------------------------------------------------
-    # ENVIRONMENT + SHELL CHECK
-    # --------------------------------------------------------
+    # ========================================================
+    # ENVIRONMENT CHECK
+    # ========================================================
 
     - bash: |
         set -e
@@ -75,28 +87,30 @@ stages:
 
         java -version
 
+        echo ""
         echo "=========================================="
         echo "MAVEN VERSION"
         echo "=========================================="
 
         ./mvnw -version
 
+        echo ""
         echo "=========================================="
         echo "SHELL CI CHECK"
         echo "=========================================="
 
         if [ -f ci-check.sh ]; then
           chmod +x ci-check.sh
-          ./ci-check.sh || true
+          ./ci-check.sh
         else
           echo "ci-check.sh not found - continuing"
         fi
 
       displayName: 'Shell and Environment Check'
 
-    # --------------------------------------------------------
+    # ========================================================
     # MAVEN BUILD + TESTS
-    # --------------------------------------------------------
+    # ========================================================
 
     - bash: |
         set -e
@@ -105,18 +119,33 @@ stages:
         echo "MAVEN CLEAN VERIFY"
         echo "=========================================="
 
+        chmod +x mvnw
+
         ./mvnw clean verify
+
+        echo ""
+        echo "Maven build and tests completed successfully."
+
+        echo ""
+        echo "=========================================="
+        echo "JACOCO REPORT"
+        echo "=========================================="
+
+        if [ -f target/site/jacoco/jacoco.xml ]; then
+          ls -lh target/site/jacoco/jacoco.xml
+        else
+          echo "WARNING: JaCoCo XML report not found."
+        fi
 
       displayName: 'Maven Build and Tests'
 
-    # --------------------------------------------------------
+    # ========================================================
     # GITLEAKS
-    # --------------------------------------------------------
+    # ========================================================
 
     - bash: |
         set -e
 
-        echo "=========================================="
         echo "=========================================="
         echo "GITLEAKS SECRET SCAN"
         echo "=========================================="
@@ -128,47 +157,65 @@ stages:
           -o /tmp/gitleaks.tar.gz
 
         tar -xzf /tmp/gitleaks.tar.gz -C /tmp gitleaks
+
         sudo mv /tmp/gitleaks /usr/local/bin/gitleaks
 
         gitleaks version
 
-        echo "=========================================="
-        echo "GIT INFORMATION"
-        echo "=========================================="
-
+        echo ""
         echo "Git commit:"
         git rev-parse HEAD
 
+        echo ""
         echo "Git branch:"
         git branch --show-current
 
+        echo ""
         echo "Git commit count:"
         git rev-list --all --count
 
+        echo ""
         echo "=========================================="
         echo "RUNNING GITLEAKS"
         echo "=========================================="
 
-        gitleaks detect \
-          --source . \
-          --no-banner \
-          --redact \
-          --verbose \
-          --config .gitleaks.toml \
-          --report-format json \
-          --report-path "$(Build.ArtifactStagingDirectory)/gitleaks-report.json"
+        if [ -f .gitleaks.toml ]; then
 
+          gitleaks detect \
+            --source . \
+            --no-banner \
+            --redact \
+            --verbose \
+            --config .gitleaks.toml \
+            --report-format json \
+            --report-path "$(Build.ArtifactStagingDirectory)/gitleaks-report.json"
+
+        else
+
+          gitleaks detect \
+            --source . \
+            --no-banner \
+            --redact \
+            --verbose \
+            --report-format json \
+            --report-path "$(Build.ArtifactStagingDirectory)/gitleaks-report.json"
+
+        fi
+
+        echo ""
         echo "=========================================="
         echo "GITLEAKS REPORT"
         echo "=========================================="
 
-        cat "$(Build.ArtifactStagingDirectory)/gitleaks-report.json"
+        if [ -f "$(Build.ArtifactStagingDirectory)/gitleaks-report.json" ]; then
+          cat "$(Build.ArtifactStagingDirectory)/gitleaks-report.json"
+        fi
 
       displayName: 'Gitleaks Secret Scan'
 
-    # --------------------------------------------------------
+    # ========================================================
     # LINT / STATIC VALIDATION
-    # --------------------------------------------------------
+    # ========================================================
 
     - bash: |
         set -e
@@ -179,11 +226,14 @@ stages:
 
         ./mvnw validate
 
+        echo ""
+        echo "Lint / static validation completed successfully."
+
       displayName: 'Lint / Static Validation'
 
-    # --------------------------------------------------------
+    # ========================================================
     # SONARQUBE
-    # --------------------------------------------------------
+    # ========================================================
 
     - bash: |
         set -e
@@ -193,15 +243,17 @@ stages:
         echo "=========================================="
 
         SONAR_HOST_URL="http://${SONAR_HOST_IP}:${SONAR_HOST_PORT}"
+
         echo "SonarQube URL: ${SONAR_HOST_URL}"
 
         if [ -z "$SONAR_TOKEN" ]; then
-          echo "ERROR: SONAR_TOKEN is empty"
+          echo "ERROR: SONAR_TOKEN is empty."
           exit 1
         fi
 
-        echo "SonarQube token is configured"
+        echo "SonarQube token is configured."
 
+        echo ""
         echo "Checking SonarQube server..."
 
         curl -fsS "${SONAR_HOST_URL}/api/system/status"
@@ -209,7 +261,8 @@ stages:
         echo ""
         echo "Starting SonarQube analysis..."
 
-        ./mvnw org.sonarsource.scanner.maven:sonar-maven-plugin:5.1.0.4751:sonar \
+        ./mvnw \
+          org.sonarsource.scanner.maven:sonar-maven-plugin:5.1.0.4751:sonar \
           -Dsonar.host.url="${SONAR_HOST_URL}" \
           -Dsonar.token="$SONAR_TOKEN" \
           -Dsonar.coverage.jacoco.xmlReportPaths="target/site/jacoco/jacoco.xml"
@@ -227,10 +280,18 @@ stages:
 
 # ============================================================
 # 2. TERRAFORM
+# VALIDATE ONLY
+#
+# IMPORTANT:
+# The current Terraform state exists on the VM.
+# Azure DevOps hosted agents do not have that state.
+#
+# Therefore we intentionally DO NOT run terraform plan here.
+# Remote backend can be added later.
 # ============================================================
 
 - stage: Terraform
-  displayName: 'Terraform Infrastructure'
+  displayName: 'Terraform Validation'
 
   dependsOn: CI
   condition: succeeded()
@@ -238,7 +299,7 @@ stages:
   jobs:
 
   - job: Terraform
-    displayName: 'Terraform Validate and Plan'
+    displayName: 'Terraform Format and Validate'
 
     steps:
 
@@ -247,25 +308,53 @@ stages:
     - task: TerraformInstaller@1
       displayName: 'Install Terraform'
       inputs:
-        terraformVersion: 'latest'
+        terraformVersion: '1.13.3'
 
-    - bash: |
-        set -e
+    - task: AzureCLI@2
+      displayName: 'Terraform Init Format Validate'
+      inputs:
+        azureSubscription: 'pet-clinic-connection'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          set -e
 
-        echo "=========================================="
-        echo "TERRAFORM"
-        echo "=========================================="
+          echo "=========================================="
+          echo "TERRAFORM VALIDATION"
+          echo "=========================================="
 
-        cd terraform
+          cd terraform
 
-        terraform init
+          echo ""
+          echo "Terraform version:"
+          terraform version
 
-        terraform validate
+          echo ""
+          echo "Azure subscription:"
+          export TF_VAR_subscription_id="$(az account show --query id -o tsv)"
+          echo "Subscription ID obtained from Azure service connection."
 
-        terraform plan -out=tfplan
+          echo ""
+          echo "Terraform initialization:"
+          terraform init -input=false
 
-      displayName: 'Terraform Init Validate Plan'
+          echo ""
+          echo "Terraform formatting check:"
+          terraform fmt -check -recursive
 
+          echo ""
+          echo "Terraform validation:"
+          terraform validate
+
+          echo ""
+          echo "=========================================="
+          echo "TERRAFORM VALIDATION SUCCESSFUL"
+          echo "=========================================="
+
+          echo ""
+          echo "Terraform plan is intentionally skipped."
+          echo "Remote backend can be configured later for full"
+          echo "Terraform plan/apply from Azure DevOps."
 
 # ============================================================
 # 3. DOCKER BUILD + ACR PUSH
@@ -310,12 +399,14 @@ stages:
           echo "Image     : $IMAGE_NAME"
           echo "Tag       : $IMAGE_TAG"
 
+          echo ""
           echo "=========================================="
           echo "ACR LOGIN"
           echo "=========================================="
 
           az acr login --name "$ACR_NAME"
 
+          echo ""
           echo "=========================================="
           echo "DOCKER BUILD"
           echo "=========================================="
@@ -324,6 +415,7 @@ stages:
             -t "$ACR_NAME.azurecr.io/$IMAGE_NAME:$IMAGE_TAG" \
             .
 
+          echo ""
           echo "=========================================="
           echo "DOCKER PUSH"
           echo "=========================================="
@@ -331,12 +423,14 @@ stages:
           docker push \
             "$ACR_NAME.azurecr.io/$IMAGE_NAME:$IMAGE_TAG"
 
+          echo ""
           echo "=========================================="
           echo "IMAGE PUSHED"
           echo "=========================================="
 
           echo "$ACR_NAME.azurecr.io/$IMAGE_NAME:$IMAGE_TAG"
 
+          echo ""
           echo "=========================================="
           echo "ACR TAGS"
           echo "=========================================="
@@ -398,6 +492,7 @@ stages:
                 echo "Container App  : $(DEV_CONTAINER_APP)"
                 echo "Image          : $ACR_NAME.azurecr.io/$IMAGE_NAME:$IMAGE_TAG"
 
+                echo ""
                 echo "=========================================="
                 echo "DEPLOY DEV IMAGE"
                 echo "=========================================="
@@ -407,6 +502,7 @@ stages:
                   --resource-group "$(DEV_RESOURCE_GROUP)" \
                   --image "$ACR_NAME.azurecr.io/$IMAGE_NAME:$IMAGE_TAG"
 
+                echo ""
                 echo "=========================================="
                 echo "DEV DEPLOYMENT COMPLETE"
                 echo "=========================================="
@@ -417,6 +513,7 @@ stages:
                   --query "properties.template.containers[0].image" \
                   -o tsv
 
+                echo ""
                 echo "=========================================="
                 echo "DEV FQDN"
                 echo "=========================================="
@@ -479,6 +576,7 @@ stages:
                 echo "Image     : $IMAGE_NAME"
                 echo "Tag       : $IMAGE_TAG"
 
+                echo ""
                 echo "=========================================="
                 echo "GET AKS CREDENTIALS"
                 echo "=========================================="
@@ -488,18 +586,21 @@ stages:
                   --name "$(AKS_CLUSTER_NAME)" \
                   --overwrite-existing
 
+                echo ""
                 echo "=========================================="
                 echo "AKS CLUSTER"
                 echo "=========================================="
 
                 kubectl get nodes
 
+                echo ""
                 echo "=========================================="
                 echo "UAT NAMESPACE"
                 echo "=========================================="
 
                 kubectl get namespace petclinic-uat
 
+                echo ""
                 echo "=========================================="
                 echo "APPLY UAT MANIFEST"
                 echo "=========================================="
@@ -507,6 +608,7 @@ stages:
                 kubectl apply \
                   -f k8s/petclinic-uat.yml
 
+                echo ""
                 echo "=========================================="
                 echo "SET UAT IMAGE"
                 echo "=========================================="
@@ -515,6 +617,7 @@ stages:
                   spring-petclinic="$ACR_NAME.azurecr.io/$IMAGE_NAME:$IMAGE_TAG" \
                   -n petclinic-uat
 
+                echo ""
                 echo "=========================================="
                 echo "WAIT FOR UAT ROLLOUT"
                 echo "=========================================="
@@ -524,6 +627,7 @@ stages:
                   -n petclinic-uat \
                   --timeout=180s
 
+                echo ""
                 echo "=========================================="
                 echo "UAT PODS"
                 echo "=========================================="
@@ -532,6 +636,7 @@ stages:
                   -n petclinic-uat \
                   -o wide
 
+                echo ""
                 echo "=========================================="
                 echo "UAT SERVICE"
                 echo "=========================================="
@@ -539,14 +644,7 @@ stages:
                 kubectl get svc \
                   -n petclinic-uat
 
-                echo "=========================================="
-                echo "UAT ENDPOINTS"
-                echo "=========================================="
-
-                kubectl get endpoints \
-                  spring-petclinic \
-                  -n petclinic-uat
-
+                echo ""
                 echo "=========================================="
                 echo "UAT IMAGE"
                 echo "=========================================="
@@ -609,6 +707,7 @@ stages:
                 echo "Image     : $IMAGE_NAME"
                 echo "Tag       : $IMAGE_TAG"
 
+                echo ""
                 echo "=========================================="
                 echo "GET AKS CREDENTIALS"
                 echo "=========================================="
@@ -618,18 +717,21 @@ stages:
                   --name "$(AKS_CLUSTER_NAME)" \
                   --overwrite-existing
 
+                echo ""
                 echo "=========================================="
                 echo "AKS CLUSTER"
                 echo "=========================================="
 
                 kubectl get nodes
 
+                echo ""
                 echo "=========================================="
                 echo "PROD NAMESPACE"
                 echo "=========================================="
 
                 kubectl get namespace petclinic-prod
 
+                echo ""
                 echo "=========================================="
                 echo "APPLY PROD MANIFEST"
                 echo "=========================================="
@@ -637,6 +739,7 @@ stages:
                 kubectl apply \
                   -f k8s/petclinic-prod.yml
 
+                echo ""
                 echo "=========================================="
                 echo "SET PROD IMAGE"
                 echo "=========================================="
@@ -645,6 +748,7 @@ stages:
                   spring-petclinic="$ACR_NAME.azurecr.io/$IMAGE_NAME:$IMAGE_TAG" \
                   -n petclinic-prod
 
+                echo ""
                 echo "=========================================="
                 echo "WAIT FOR PROD ROLLOUT"
                 echo "=========================================="
@@ -654,6 +758,7 @@ stages:
                   -n petclinic-prod \
                   --timeout=180s
 
+                echo ""
                 echo "=========================================="
                 echo "PROD PODS"
                 echo "=========================================="
@@ -662,6 +767,7 @@ stages:
                   -n petclinic-prod \
                   -o wide
 
+                echo ""
                 echo "=========================================="
                 echo "PROD SERVICE"
                 echo "=========================================="
@@ -669,14 +775,7 @@ stages:
                 kubectl get svc \
                   -n petclinic-prod
 
-                echo "=========================================="
-                echo "PROD ENDPOINTS"
-                echo "=========================================="
-
-                kubectl get endpoints \
-                  spring-petclinic \
-                  -n petclinic-prod
-
+                echo ""
                 echo "=========================================="
                 echo "PROD IMAGE"
                 echo "=========================================="
@@ -738,4 +837,3 @@ stages:
         echo "=============================================="
 
       displayName: 'Final E2E Summary'
-
