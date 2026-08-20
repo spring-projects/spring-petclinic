@@ -12,6 +12,8 @@
       <input th:replace="~{fragments/inputField :: input (#{address}, 'address', 'text')}" />
       <input th:replace="~{fragments/inputField :: input (#{city}, 'city', 'text')}" />
       <input th:replace="~{fragments/inputField :: input (#{telephone}, 'telephone', 'text')}" />
+      <!-- Find the telephone input and add placeholder -->
+      <input ... placeholder="10 digits, no spaces" .../>
     </div>
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
