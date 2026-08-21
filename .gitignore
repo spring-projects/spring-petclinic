@@ -46,3 +46,8 @@ out/
 _site/
 *.css
 !petclinic.css
+
+### Python ###
+__pycache__/
+*.py[cod]
+.venv/
