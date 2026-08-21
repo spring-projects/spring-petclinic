@@ -1,0 +1,238 @@
+name: release
+
+on:
+  push:
+    branches: [main]
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+env:
+  JAVA_VERSION: "17"
+  PYTHON_VERSION: "3.13"
+
+  REGISTRY: europe-west3-docker.pkg.dev
+  IMAGE_REPO: europe-west3-docker.pkg.dev/petclinic-capstone/petclinic/petclinic-app
+
+  WIF_PROVIDER: projects/923128095631/locations/global/workloadIdentityPools/github-pool/providers/github-provider
+  WIF_SERVICE_ACCOUNT: sa-cicd@petclinic-capstone.iam.gserviceaccount.com
+
+jobs:
+  test:
+    name: Static analysis + tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: temurin
+          cache: maven
+
+      - name: Format check + tests (mvnw verify)
+        run: ./mvnw -ntp -B verify
+
+      - name: Upload test reports
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: surefire-reports
+          path: target/surefire-reports/
+          retention-days: 5
+          if-no-files-found: warn
+
+  hadolint:
+    name: Dockerfile lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+
+      - uses: hadolint/hadolint-action@2a66e89f53d0771bb131a7fa31f3136336094aa6 # v3.4.0
+        with:
+          dockerfile: Dockerfile
+          failure-threshold: warning
+
+  release:
+    name: Build, scan, push image, tag release
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: [test, hadolint]
+
+    permissions:
+      contents: write
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Fetch tags
+        run: git fetch --tags --force
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: scripts/requirements.txt
+
+      - name: Install release tooling
+        run: python -m pip install --disable-pip-version-check -r scripts/requirements.txt
+
+      - name: Compute the release version
+        id: version
+        run: |
+          NEW_TAG="$(python scripts/bump_version.py --from-git)"
+          if [[ ! "$NEW_TAG" =~ ^v[0-9]+\.[0-9]+\.0$ ]]; then
+            echo "::error::bump_version.py produced an unusable tag: '${NEW_TAG}'"
+            exit 1
+          fi
+          echo "tag=${NEW_TAG}" >> "$GITHUB_OUTPUT"
+          echo "::notice::Releasing ${NEW_TAG}"
+
+      - name: Derive image references
+        id: ref
+        env:
+          NEW_TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          SHORT="${GITHUB_SHA:0:7}"
+          {
+            echo "short_sha=${SHORT}"
+            echo "image_version=${IMAGE_REPO}:${NEW_TAG}"
+            echo "image_sha=${IMAGE_REPO}:sha-${SHORT}"
+          } >> "$GITHUB_OUTPUT"
+
+      - uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4.3.0
+
+      - name: Build image
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          load: true
+          platforms: linux/amd64
+          tags: |
+            ${{ steps.ref.outputs.image_version }}
+            ${{ steps.ref.outputs.image_sha }}
+          build-args: |
+            BUILD_REVISION=${{ github.sha }}
+            BUILD_VERSION=${{ steps.version.outputs.tag }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Scan image for vulnerabilities (Trivy)
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: image
+          image-ref: ${{ steps.ref.outputs.image_version }}
+          scanners: vuln
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: 1
+          format: table
+          output: trivy-report.txt
+
+      - name: Trivy findings
+        if: always()
+        run: |
+          if [ -f trivy-report.txt ]; then
+            cat trivy-report.txt
+          else
+            echo "No Trivy report produced - the scan step did not run or errored before writing one."
+          fi
+
+      - name: Upload Trivy report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: trivy-report
+          path: trivy-report.txt
+          retention-days: 5
+          if-no-files-found: warn
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
+        with:
+          workload_identity_provider: ${{ env.WIF_PROVIDER }}
+          service_account: ${{ env.WIF_SERVICE_ACCOUNT }}
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker "${REGISTRY}" --quiet
+
+      - name: Push image to Artifact Registry
+        id: push
+        env:
+          IMAGE_VERSION: ${{ steps.ref.outputs.image_version }}
+          IMAGE_SHA: ${{ steps.ref.outputs.image_sha }}
+        run: |
+          docker push "$IMAGE_VERSION"
+          docker push "$IMAGE_SHA"
+
+          DIGEST="$(docker inspect --format='{{index .RepoDigests 0}}' "$IMAGE_VERSION" 2>/dev/null | cut -d@ -f2 || true)"
+          echo "digest=${DIGEST}" >> "$GITHUB_OUTPUT"
+
+          {
+            echo "### Image pushed"
+            echo
+            echo "- \`${IMAGE_VERSION}\`"
+            echo "- \`${IMAGE_SHA}\`"
+            echo "- Digest: \`${DIGEST:-unavailable}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Tag the release
+        env:
+          NEW_TAG: ${{ steps.version.outputs.tag }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git tag -a "$NEW_TAG" -m "release $NEW_TAG"
+
+          git push "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" \
+            "refs/tags/${NEW_TAG}"
+
+      - name: Release summary
+        env:
+          NEW_TAG: ${{ steps.version.outputs.tag }}
+          DIGEST: ${{ steps.push.outputs.digest }}
+          IMAGE_VERSION: ${{ steps.ref.outputs.image_version }}
+          IMAGE_SHA: ${{ steps.ref.outputs.image_sha }}
+        run: |
+          {
+            echo "### Released ${NEW_TAG}"
+            echo
+            echo "| | |"
+            echo "| --- | --- |"
+            echo "| Version | \`${NEW_TAG}\` |"
+            echo "| Commit | [\`${GITHUB_SHA:0:7}\`](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}) |"
+            echo "| Git tag | [${NEW_TAG}](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/tree/${NEW_TAG}) |"
+            echo "| Digest | \`${DIGEST:-unavailable}\` |"
+            echo
+            echo "Image tags, both on that digest:"
+            echo
+            echo "- \`${IMAGE_VERSION}\`"
+            echo "- \`${IMAGE_SHA}\`"
+            echo
+            echo "[Artifact Registry](https://console.cloud.google.com/artifacts/docker/petclinic-capstone/europe-west3/petclinic/petclinic-app)"
+            echo
+            echo "Deploy with the version tag: \`docker pull ${IMAGE_VERSION}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
