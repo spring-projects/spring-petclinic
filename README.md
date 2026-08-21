@@ -144,6 +144,33 @@ gcloud artifacts docker images list \
   --include-tags
 ```
 
+## Deploying
+
+A push to `main` runs `release.yml`: bumps the minor version, builds and scans
+the image, pushes it to Artifact Registry as `vX.Y.0` and `sha-<short>`, then
+pushes the git tag.
+
+Deploying is manual — Actions → **deploy** → Run workflow, or:
+
+```sh
+gh workflow run deploy.yml -f version=v1.2.0 -f environment=dev
+```
+
+It verifies the tag exists here and in Artifact Registry, resolves it to a
+digest, and deploys that digest. The job summary has the application URL,
+the digest and per-instance health.
+
+**Rollback is redeploy** — dispatch the same workflow with an older version.
+
+**One-time setup:** Settings → Environments → New environment named **`dev`**,
+with yourself under Required reviewers. The name must match the `environment`
+input.
+
+The job runs on the self-hosted runner on the ops VM, because no VM in the
+project has a public IP. It is `workflow_dispatch`-only, and the Ansible tree it
+runs lives in
+[petclinic-infra](https://github.com/tomasevicnikola/petclinic-infra).
+
 ## In case you find a bug/suggested improvement for Spring Petclinic
 
 Our issue tracker is available [here](https://github.com/spring-projects/spring-petclinic/issues).

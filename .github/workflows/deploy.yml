@@ -1,0 +1,345 @@
+name: deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release tag, e.g. v1.2.0"
+        type: string
+        required: true
+      environment:
+        description: Target environment
+        type: choice
+        options:
+          - dev
+        default: dev
+        required: true
+
+permissions: {}
+
+concurrency:
+  group: deploy-${{ inputs.environment }}
+  cancel-in-progress: false
+
+env:
+  CLOUDSDK_CORE_PROJECT: petclinic-capstone
+  IMAGE_REPO: europe-west3-docker.pkg.dev/petclinic-capstone/petclinic/petclinic-app
+
+  INFRA_REPO: tomasevicnikola/petclinic-infra
+  INFRA_DIR: infra
+
+  APP_PORT: "8080"
+  HEALTH_PATH: /actuator/health
+
+  LB_ADDRESS_NAME: petclinic-dev-lb-ip
+  LB_BACKEND_SERVICE: petclinic-dev-lb-backend
+  APP_ZONES: europe-west3-a,europe-west3-b,europe-west3-c
+
+jobs:
+  deploy:
+    name: Deploy ${{ inputs.version }} to ${{ inputs.environment }}
+    runs-on: [self-hosted, gcp, ops]
+    if: github.event_name == 'workflow_dispatch'
+    environment: ${{ inputs.environment }}
+
+    timeout-minutes: 30
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Validate the version input
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          if [[ ! "$VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::'${VERSION}' is not a release tag. Expected vMAJOR.MINOR.PATCH, for example v1.2.0."
+            exit 1
+          fi
+          echo "Deploying version ${VERSION}."
+
+      - name: Put the gcloud CLI on PATH
+        run: echo "/snap/bin" >> "$GITHUB_PATH"
+
+      - name: Checkout this repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+
+      - name: Checkout the infrastructure repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          repository: ${{ env.INFRA_REPO }}
+          ref: main
+          path: ${{ env.INFRA_DIR }}
+          persist-credentials: false
+
+      - name: Confirm the runner's GCP identity
+        run: |
+          set -euo pipefail
+          gcloud auth list
+          echo "Project: $(gcloud config get-value project 2>/dev/null)"
+
+      - name: Resolve the version to an image digest
+        id: resolve
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+
+          echo "::group::Git tag"
+          if ! git ls-remote --tags --exit-code \
+                 "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}.git" \
+                 "refs/tags/${VERSION}"; then
+            echo "::error::Git tag '${VERSION}' does not exist in ${GITHUB_REPOSITORY}."
+            exit 1
+          fi
+          echo "::endgroup::"
+
+          echo "::group::Artifact Registry image"
+          if ! DIGEST="$(gcloud artifacts docker images describe \
+                           "${IMAGE_REPO}:${VERSION}" \
+                           --format='value(image_summary.digest)' \
+                           2>"${RUNNER_TEMP}/ar-describe.err")"; then
+            echo "::error::No image tagged '${VERSION}' in ${IMAGE_REPO}."
+            cat "${RUNNER_TEMP}/ar-describe.err" >&2
+            exit 1
+          fi
+          DIGEST="$(echo "$DIGEST" | tr -d '[:space:]')"
+          echo "${IMAGE_REPO}:${VERSION} -> ${DIGEST}"
+          echo "::endgroup::"
+
+          if [[ ! "$DIGEST" =~ ^sha256:[0-9a-f]{64}$ ]]; then
+            echo "::error::Artifact Registry returned something that is not a digest: '${DIGEST}'"
+            exit 1
+          fi
+
+          {
+            echo "digest=${DIGEST}"
+            echo "image=${IMAGE_REPO}@${DIGEST}"
+            echo "image_tag=${IMAGE_REPO}:${VERSION}"
+          } >> "$GITHUB_OUTPUT"
+
+          echo "::notice::${VERSION} resolves to ${IMAGE_REPO}@${DIGEST}"
+
+      - name: Install the Ansible collections
+        working-directory: ${{ env.INFRA_DIR }}/ansible
+        run: |
+          set -euo pipefail
+          ansible-galaxy collection install -r requirements.yml
+          ansible --version
+
+      - name: Prepare an OS Login key for this run
+        id: oslogin
+        run: |
+          set -euo pipefail
+          KEY="${RUNNER_TEMP}/oslogin_${GITHUB_RUN_ID}"
+          ssh-keygen -t ed25519 -N '' -C "deploy-${GITHUB_RUN_ID}" -f "$KEY" >/dev/null
+          gcloud compute os-login ssh-keys add --key-file="${KEY}.pub" --ttl=45m >/dev/null
+
+          OSLOGIN_USER="$(gcloud compute os-login describe-profile \
+                            --format='value(posixAccounts[0].username)')"
+          if [ -z "$OSLOGIN_USER" ]; then
+            echo "::error::sa-ops-vm has no OS Login POSIX profile; cannot resolve ansible_user."
+            exit 1
+          fi
+
+          {
+            echo "key=${KEY}"
+            echo "user=${OSLOGIN_USER}"
+          } >> "$GITHUB_OUTPUT"
+          echo "OS Login user: ${OSLOGIN_USER}"
+
+      - name: Deploy the application with Ansible
+        working-directory: ${{ env.INFRA_DIR }}/ansible
+        env:
+          IMAGE: ${{ steps.resolve.outputs.image }}
+          OSLOGIN_USER: ${{ steps.oslogin.outputs.user }}
+          ANSIBLE_SSH_PRIVATE_KEY_FILE: ${{ steps.oslogin.outputs.key }}
+          ANSIBLE_FORCE_COLOR: "1"
+        run: |
+          set -euo pipefail
+          ansible-playbook playbooks/app.yml \
+            --tags common,docker,app_deploy \
+            -e app_deploy_image="${IMAGE}" \
+            -e app_deploy_placeholder=false \
+            -e ansible_ssh_private_key_file="${ANSIBLE_SSH_PRIVATE_KEY_FILE}"
+
+      - name: Verify each instance directly
+        id: vms
+        run: |
+          set -euo pipefail
+
+          mapfile -t INSTANCES < <(
+            gcloud compute instances list \
+              --zones="$APP_ZONES" \
+              --filter='tags.items=app AND status=RUNNING' \
+              --format='value(name,networkInterfaces[0].networkIP)'
+          )
+
+          if [ "${#INSTANCES[@]}" -eq 0 ]; then
+            echo "::error::No RUNNING instances tagged 'app'. The managed instance group is empty."
+            exit 1
+          fi
+
+          : > vm-health.md
+          FAILED=0
+
+          for row in "${INSTANCES[@]}"; do
+            NAME="$(echo "$row" | awk '{print $1}')"
+            IP="$(echo "$row" | awk '{print $2}')"
+            URL="http://${IP}:${APP_PORT}${HEALTH_PATH}"
+
+            STATUS="unreachable"
+            DB="-"
+
+            for _ in $(seq 1 12); do
+              if BODY="$(curl -fsS --max-time 5 "$URL" 2>/dev/null)"; then
+                STATUS="$(echo "$BODY" | jq -r '.status // "unknown"')"
+                DB="$(echo "$BODY" | jq -r '.components.db.status // "absent"')"
+                [ "$STATUS" = "UP" ] && [ "$DB" = "UP" ] && break
+              fi
+              sleep 5
+            done
+
+            if [ "$STATUS" = "UP" ] && [ "$DB" = "UP" ]; then
+              echo "| \`${NAME}\` | ${IP}:${APP_PORT} |  ${STATUS} |  ${DB} |" >> vm-health.md
+              echo "${NAME} (${IP}): status=${STATUS} db=${DB}"
+            else
+              echo "| \`${NAME}\` | ${IP}:${APP_PORT} |  ${STATUS} |  ${DB} |" >> vm-health.md
+              echo "::error::${NAME} (${IP}) is not serving: status=${STATUS} db=${DB}"
+              FAILED=1
+            fi
+          done
+
+          echo "count=${#INSTANCES[@]}" >> "$GITHUB_OUTPUT"
+          exit "$FAILED"
+
+      - name: Verify through the load balancer
+        id: lb
+        continue-on-error: true
+        if: always()
+        run: |
+          set -euo pipefail
+
+          LB_IP="$(gcloud compute addresses describe "$LB_ADDRESS_NAME" \
+                     --global --format='value(address)')"
+          LB_URL="https://${LB_IP}.sslip.io"
+          echo "url=${LB_URL}" >> "$GITHUB_OUTPUT"
+
+          PROJECT_NUMBER="$(curl -sf -H 'Metadata-Flavor: Google' \
+            http://metadata.google.internal/computeMetadata/v1/project/numeric-project-id)"
+          BACKEND_ID="$(gcloud compute backend-services describe "$LB_BACKEND_SERVICE" \
+                          --global --format='value(id)')"
+          AUDIENCE="/projects/${PROJECT_NUMBER}/global/backendServices/${BACKEND_ID}"
+
+          TOKEN="$(curl -sf -H 'Metadata-Flavor: Google' \
+            "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/identity?audience=${AUDIENCE}")"
+
+          CODE="$(curl -s -o /dev/null -w '%{http_code}' -k --max-time 20 \
+                    -H "Authorization: Bearer ${TOKEN}" "${LB_URL}/" || echo 000)"
+
+          echo "code=${CODE}" >> "$GITHUB_OUTPUT"
+
+          if [ "$CODE" = "200" ]; then
+            echo "result=ok" >> "$GITHUB_OUTPUT"
+            echo "::notice::Load balancer answered 200 for ${LB_URL}"
+          elif [ "$CODE" = "403" ] || [ "$CODE" = "401" ]; then
+            echo "result=forbidden" >> "$GITHUB_OUTPUT"
+            echo "::warning::IAP refused the runner's identity (HTTP ${CODE}). The application is verified healthy on every instance."
+          else
+            echo "result=unexpected" >> "$GITHUB_OUTPUT"
+            echo "::warning::Load balancer returned HTTP ${CODE} for ${LB_URL}."
+          fi
+
+      - name: Deployment summary
+        if: always()
+        env:
+          VERSION: ${{ inputs.version }}
+          ENVIRONMENT: ${{ inputs.environment }}
+          DIGEST: ${{ steps.resolve.outputs.digest }}
+          IMAGE: ${{ steps.resolve.outputs.image }}
+          IMAGE_TAG: ${{ steps.resolve.outputs.image_tag }}
+          VM_COUNT: ${{ steps.vms.outputs.count }}
+          LB_URL: ${{ steps.lb.outputs.url }}
+          LB_CODE: ${{ steps.lb.outputs.code }}
+          LB_RESULT: ${{ steps.lb.outputs.result }}
+        run: |
+          set -euo pipefail
+
+          {
+            echo "## Deployed ${VERSION:-?} to ${ENVIRONMENT:-?}"
+            echo
+
+            if [ -n "${LB_URL:-}" ]; then
+              echo "### 🔗 ${LB_URL}"
+              echo
+              echo "Sign in with a Google identity on the IAP allow-list. The certificate is self-signed, so a browser warns once."
+            else
+              echo "### Application link"
+              echo
+              echo "Not resolved."
+            fi
+            echo
+
+            echo "| | |"
+            echo "| --- | --- |"
+            echo "| Version | \`${VERSION:-?}\` |"
+            echo "| Environment | \`${ENVIRONMENT:-?}\` |"
+            echo "| Image tag | \`${IMAGE_TAG:-unresolved}\` |"
+            echo "| Digest | \`${DIGEST:-unresolved}\` |"
+            echo "| Deployed reference | \`${IMAGE:-unresolved}\` |"
+            echo "| Instances | ${VM_COUNT:-0} |"
+            echo
+
+            echo "### Per-instance health"
+            echo
+            echo "| Instance | Endpoint | Status | Database |"
+            echo "| --- | --- | --- | --- |"
+            if [ -f vm-health.md ]; then
+              cat vm-health.md
+            else
+              echo "| - | - | not reached | - |"
+            fi
+            echo
+            echo "Checked against each internal IP, not through the load balancer. \`Database: UP\` is the Actuator \`db\` component."
+            echo
+
+            echo "### Load balancer"
+            echo
+            case "${LB_RESULT:-none}" in
+              ok)         echo " HTTP ${LB_CODE} through IAP." ;;
+              forbidden)  echo " HTTP ${LB_CODE} — IAP refused the runner's identity. \`sa-ops-vm\` is not on the backend service's accessor list. The link above works for a human on the allow-list." ;;
+              unexpected) echo " HTTP ${LB_CODE} — unexpected. Check the backend service health." ;;
+              *)          echo "Not checked." ;;
+            esac
+            echo
+
+            echo "### Rollback"
+            echo
+            echo "Rollback is redeploy — dispatch this workflow with an older version:"
+            echo
+            echo '```sh'
+            echo "gh workflow run deploy.yml -R ${GITHUB_REPOSITORY} \\"
+            echo "  -f version=<previous-version> \\"
+            echo "  -f environment=${ENVIRONMENT:-dev}"
+            echo '```'
+            echo
+            echo "[Artifact Registry](https://console.cloud.google.com/artifacts/docker/petclinic-capstone/europe-west3/petclinic/petclinic-app) · [tags](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/tags)"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Revoke the run's OS Login key
+        if: always()
+        env:
+          KEY: ${{ steps.oslogin.outputs.key }}
+        run: |
+          set -euo pipefail
+          if [ -n "${KEY:-}" ] && [ -f "${KEY}.pub" ]; then
+            gcloud compute os-login ssh-keys remove --key-file="${KEY}.pub" >/dev/null 2>&1 \
+              || echo "::warning::Could not remove the run's OS Login key; it expires within 45 minutes."
+            rm -f "${KEY}" "${KEY}.pub"
+            echo "Run key revoked."
+          else
+            echo "No run key to revoke."
+          fi
