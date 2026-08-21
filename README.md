@@ -51,6 +51,8 @@ docker images | grep petclinic
 docker run -p 8080:8080 docker.io/library/spring-petclinic:latest
 ```
 
+That is a local buildpack image, unrelated to the releases below.
+
 ## Container
 
 ### Build
@@ -105,6 +107,42 @@ The container listens on 8080.
 
 Only `/actuator/health` (load balancer health check) and `/actuator/prometheus` (monitoring) are
 exposed. Everything else returns 404.
+
+### Releases
+
+Every commit on `main` is a release. `.github/workflows/release.yml` bumps the minor version, builds,
+scans, pushes, then tags: `v1.0.0`, `v1.1.0`, and so on. PATCH stays `0`; a major bump is a manual
+tag, and the next run continues from it.
+
+One image, two tags, one digest:
+
+```
+europe-west3-docker.pkg.dev/petclinic-capstone/petclinic/petclinic-app:v1.1.0
+europe-west3-docker.pkg.dev/petclinic-capstone/petclinic/petclinic-app:sha-a1b2c3d
+```
+
+Deploys name a version. There is no `latest`.
+
+The image is pushed before the git tag, so every tag has an image behind it. If a run dies between
+those two steps, re-run it (the version is recomputed) or drop the orphan:
+
+```bash
+gcloud artifacts docker images delete \
+  europe-west3-docker.pkg.dev/petclinic-capstone/petclinic/petclinic-app:v1.1.0 --delete-tags
+```
+
+Releases are serialized, and a run waiting behind another can be dropped, so a commit may ship under
+the next version rather than its own.
+
+What a version contains, and what is in the registry:
+
+```bash
+git show v1.1.0
+
+gcloud artifacts docker images list \
+  europe-west3-docker.pkg.dev/petclinic-capstone/petclinic/petclinic-app \
+  --include-tags
+```
 
 ## In case you find a bug/suggested improvement for Spring Petclinic
 
