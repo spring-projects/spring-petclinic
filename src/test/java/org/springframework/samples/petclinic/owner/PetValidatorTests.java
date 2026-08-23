@@ -100,6 +100,18 @@ class PetValidatorTests {
 		}
 
 		@Test
+		void validateWithPetNameLongerThan30Characters() {
+			petType.setName(petTypeName);
+			pet.setName("ThisPetNameIsDefinitelyLongerThanThirtyCharacters");
+			pet.setType(petType);
+			pet.setBirthDate(petBirthDate);
+
+			petValidator.validate(pet, errors);
+
+			assertTrue(errors.hasFieldErrors("name"));
+		}
+
+		@Test
 		void validateWithInvalidPetType() {
 			pet.setName(petName);
 			pet.setType(null);

@@ -33,6 +33,8 @@ public class PetValidator implements Validator {
 
 	private static final String REQUIRED = "required";
 
+	private static final int MAX_NAME_LENGTH = 30;
+
 	@Override
 	public void validate(Object obj, Errors errors) {
 		Pet pet = (Pet) obj;
@@ -40,6 +42,9 @@ public class PetValidator implements Validator {
 		// name validation
 		if (!StringUtils.hasText(name)) {
 			errors.rejectValue("name", REQUIRED, REQUIRED);
+		}
+		else if (name.length() > MAX_NAME_LENGTH) {
+			errors.rejectValue("name", "maxlength", "Name must be 30 characters or less");
 		}
 
 		// type validation
