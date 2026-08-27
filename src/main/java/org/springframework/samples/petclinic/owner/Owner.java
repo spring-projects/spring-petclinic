@@ -182,4 +182,21 @@ public class Owner extends Person {
 		pet.addVisit(visit);
 	}
 
+	/**
+	 * Adds the given {@link Vaccination} to the {@link Pet} with the given identifier.
+	 * @param petId the identifier of the {@link Pet}, must not be {@literal null}.
+	 * @param vaccination the vaccination to add, must not be {@literal null}.
+	 */
+	public void addVaccination(Integer petId, Vaccination vaccination) {
+
+		Assert.notNull(petId, "Pet identifier must not be null!");
+		Assert.notNull(vaccination, "Vaccination must not be null!");
+
+		Pet pet = getPet(petId);
+
+		Assert.notNull(pet, "Invalid Pet identifier!");
+
+		pet.addVaccination(vaccination);
+	}
+
 }
