@@ -1,1 +1,22 @@
-rootProject.name = 'spring-petclinic'
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        maven {
+            name = "nexusProxy"
+            url = "http://localhost:8081/repository/maven-group/"
+            allowInsecureProtocol = true
+        }
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        maven {
+            name = "nexusProxy"
+            url = "http://localhost:8081/repository/maven-group/"
+            allowInsecureProtocol = true
+        }
+    }
+}
+rootProject.name = 'ana-petclinic'
