@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'owners')}">
+
+<body>
+
+<h2>
+  <th:block th:if="${vaccination['new']}" th:text="#{new}">New</th:block>
+  Vaccination
+</h2>
+
+<b th:text="#{pet}">Pet</b>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th th:text="#{name}">Name</th>
+    <th th:text="#{birthDate}">Birth Date</th>
+    <th th:text="#{type}">Type</th>
+    <th th:text="#{owner}">Owner</th>
+  </tr>
+  </thead>
+  <tr>
+    <td th:text="${pet.name}"></td>
+    <td th:text="${#temporals.format(pet.birthDate, 'yyyy-MM-dd')}"></td>
+    <td th:text="${pet.type}"></td>
+    <td th:text="${owner?.firstName + ' ' + owner?.lastName}"></td>
+  </tr>
+</table>
+
+<form th:object="${vaccination}" class="form-horizontal" method="post">
+  <div class="form-group has-feedback">
+    <input th:replace="~{fragments/inputField :: input ('Vaccine Name', 'vaccineName', 'text')}" />
+    <input th:replace="~{fragments/inputField :: input ('Vaccination Date', 'vaccinationDate', 'date')}" />
+    <input th:replace="~{fragments/inputField :: input ('Next Due Date', 'nextDueDate', 'date')}" />
+    <input th:replace="~{fragments/inputField :: input ('Notes', 'notes', 'text')}" />
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <input type="hidden" name="petId" th:value="${pet.id}" />
+      <button class="btn btn-primary" type="submit" th:text="#{addVaccination}">
+        Add Vaccination
+      </button>
+    </div>
+  </div>
+</form>
+
+<br />
+<b th:text="#{previousVaccinations}">Previous Vaccinations</b>
+<table class="table table-striped">
+  <tr>
+    <th th:text="#{vaccineName}">Vaccine Name</th>
+    <th th:text="#{vaccinationDate}">Vaccination Date</th>
+    <th th:text="#{nextDueDate}">Next Due Date</th>
+    <th th:text="#{notes}">Notes</th>
+  </tr>
+  <tr th:each="vaccination : ${pet.vaccinations}">
+    <td th:text="${vaccination.vaccineName}"></td>
+    <td th:text="${#temporals.format(vaccination.vaccinationDate, 'yyyy-MM-dd')}"></td>
+    <td th:text="${#temporals.format(vaccination.nextDueDate, 'yyyy-MM-dd')}"></td>
+    <td th:text="${vaccination.notes}"></td>
+  </tr>
+</table>
+
+</body>
+
+</html>

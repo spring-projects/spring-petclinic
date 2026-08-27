@@ -73,6 +73,28 @@
             <td><a th:href="@{__${owner.id}__/pets/__${pet.id}__/visits/new}" th:text="#{addVisit}">Add Visit</a></td>
           </tr>
         </table>
+        <table class="table-condensed">
+          <thead>
+          <tr>
+            <th th:text="#{vaccineName}">Vaccine</th>
+            <th th:text="#{vaccinationDate}">Vaccination Date</th>
+            <th th:text="#{nextDueDate}">Next Due Date</th>
+            <th th:text="#{notes}">Notes</th>
+          </tr>
+          </thead>
+          <tr th:each="vaccination : ${pet.vaccinations}">
+            <td th:text="${vaccination.vaccineName}"></td>
+            <td th:text="${#temporals.format(vaccination.vaccinationDate, 'yyyy-MM-dd')}"></td>
+            <td th:text="${#temporals.format(vaccination.nextDueDate, 'yyyy-MM-dd')}"></td>
+            <td th:text="${vaccination.notes}"></td>
+          </tr>
+          <tr>
+            <td colspan="4">
+              <a th:href="@{__${owner.id}__/pets/__${pet.id}__/vaccinations/new}"
+                 th:text="#{addVaccination}">Add Vaccination</a>
+            </td>
+          </tr>
+        </table>
       </td>
     </tr>
 
