@@ -42,6 +42,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -146,6 +147,35 @@ class OwnerControllerTests {
 		Page<Owner> tasks = new PageImpl<>(List.of(george(), new Owner()));
 		when(this.owners.findByLastNameStartingWith(anyString(), any(Pageable.class))).thenReturn(tasks);
 		mockMvc.perform(get("/owners?page=1")).andExpect(status().isOk()).andExpect(view().name("owners/ownersList"));
+	}
+
+	@Test
+	void processFindFormTreatsNonPositivePageAsFirstPage() throws Exception {
+		Page<Owner> tasks = new PageImpl<>(List.of(george(), new Owner()));
+		when(this.owners.findByLastNameStartingWith(anyString(), any(Pageable.class))).thenReturn(tasks);
+
+		for (String page : List.of("0", "-1")) {
+			mockMvc.perform(get("/owners").param("page", page))
+				.andExpect(status().isOk())
+				.andExpect(model().attribute("currentPage", 1))
+				.andExpect(view().name("owners/ownersList"));
+		}
+
+		verify(this.owners, times(2)).findByLastNameStartingWith(eq(""),
+				argThat(pageable -> pageable.getPageNumber() == 0));
+	}
+
+	@Test
+	void processFindFormKeepsPositivePage() throws Exception {
+		Page<Owner> tasks = new PageImpl<>(List.of(george(), new Owner()));
+		when(this.owners.findByLastNameStartingWith(anyString(), any(Pageable.class))).thenReturn(tasks);
+
+		mockMvc.perform(get("/owners?page=2"))
+			.andExpect(status().isOk())
+			.andExpect(model().attribute("currentPage", 2))
+			.andExpect(view().name("owners/ownersList"));
+
+		verify(this.owners).findByLastNameStartingWith(eq(""), argThat(pageable -> pageable.getPageNumber() == 1));
 	}
 
 	@Test
