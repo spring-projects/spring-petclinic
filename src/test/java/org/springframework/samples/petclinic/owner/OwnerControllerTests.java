@@ -254,6 +254,8 @@ class OwnerControllerTests {
 			.andExpect(model().attribute("owner",
 					hasProperty("pets", hasItem(hasProperty("visits", hasSize(greaterThan(0)))))))
 			.andExpect(view().name("owners/ownerDetails"));
+
+		verify(this.owners, times(1)).findById(TEST_OWNER_ID);
 	}
 
 	@Test

@@ -17,7 +17,6 @@ package org.springframework.samples.petclinic.owner;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -165,15 +164,12 @@ class OwnerController {
 
 	/**
 	 * Custom handler for displaying an owner.
-	 * @param ownerId the ID of the owner to display
+	 * @param owner the owner to display
 	 * @return a ModelMap with the model attributes for the view
 	 */
 	@GetMapping("/owners/{ownerId}")
-	public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
+	public ModelAndView showOwner(@ModelAttribute("owner") Owner owner) {
 		ModelAndView mav = new ModelAndView("owners/ownerDetails");
-		Optional<Owner> optionalOwner = this.owners.findById(ownerId);
-		Owner owner = optionalOwner.orElseThrow(() -> new IllegalArgumentException(
-				"Owner not found with id: " + ownerId + ". Please ensure the ID is correct "));
 		mav.addObject(owner);
 		return mav;
 	}
