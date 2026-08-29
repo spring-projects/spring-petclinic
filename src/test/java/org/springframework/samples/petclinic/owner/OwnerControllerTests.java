@@ -45,6 +45,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -124,6 +125,23 @@ class OwnerControllerTests {
 	}
 
 	@Test
+	void processCreationFormRejectsDuplicateTelephone() throws Exception {
+		given(this.owners.existsByTelephone("6085551023")).willReturn(true);
+
+		mockMvc
+			.perform(post("/owners/new").param("firstName", "Joe")
+				.param("lastName", "Bloggs")
+				.param("address", "123 Caramel Street")
+				.param("city", "London")
+				.param("telephone", "6085551023"))
+			.andExpect(status().isOk())
+			.andExpect(model().attributeHasFieldErrors("owner", "telephone"))
+			.andExpect(view().name("owners/createOrUpdateOwnerForm"));
+
+		verify(this.owners, never()).save(any(Owner.class));
+	}
+
+	@Test
 	void processCreationFormHasErrors() throws Exception {
 		mockMvc
 			.perform(post("/owners/new").param("firstName", "Joe").param("lastName", "Bloggs").param("city", "London"))
@@ -132,6 +150,8 @@ class OwnerControllerTests {
 			.andExpect(model().attributeHasFieldErrors("owner", "address"))
 			.andExpect(model().attributeHasFieldErrors("owner", "telephone"))
 			.andExpect(view().name("owners/createOrUpdateOwnerForm"));
+
+		verify(this.owners, never()).existsByTelephone(anyString());
 	}
 
 	@Test
@@ -255,6 +275,25 @@ class OwnerControllerTests {
 		mockMvc.perform(post("/owners/{ownerId}/edit", TEST_OWNER_ID))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(view().name("redirect:/owners/{ownerId}"));
+
+		verify(this.owners).existsByTelephoneAndIdNot("6085551023", TEST_OWNER_ID);
+	}
+
+	@Test
+	void processUpdateOwnerFormRejectsAnotherOwnersTelephone() throws Exception {
+		given(this.owners.existsByTelephoneAndIdNot("1316761638", TEST_OWNER_ID)).willReturn(true);
+
+		mockMvc
+			.perform(post("/owners/{ownerId}/edit", TEST_OWNER_ID).param("firstName", "George")
+				.param("lastName", "Franklin")
+				.param("address", "110 W. Liberty St.")
+				.param("city", "Madison")
+				.param("telephone", "1316761638"))
+			.andExpect(status().isOk())
+			.andExpect(model().attributeHasFieldErrors("owner", "telephone"))
+			.andExpect(view().name("owners/createOrUpdateOwnerForm"));
+
+		verify(this.owners, never()).save(any(Owner.class));
 	}
 
 	@Test

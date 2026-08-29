@@ -44,6 +44,10 @@ public interface OwnerRepository extends JpaRepository<Owner, Integer> {
 	 */
 	Page<Owner> findByLastNameStartingWith(String lastName, Pageable pageable);
 
+	boolean existsByTelephone(String telephone);
+
+	boolean existsByTelephoneAndIdNot(String telephone, Integer id);
+
 	/**
 	 * Retrieve an {@link Owner} from the data store by id.
 	 * <p>
