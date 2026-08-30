@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+  <!-- Credentials are read from the environment; nothing secret is committed.
+       JFROG_URL      e.g. https://mycompany.jfrog.io
+       JFROG_REPO     virtual Maven repo name, e.g. petclinic-libs-snapshot
+       JFROG_USER     JFrog username / email
+       JFROG_PASSWORD JFrog identity or access token -->
+
+  <servers>
+    <server>
+      <id>jfrog</id>
+      <username>${env.JFROG_USER}</username>
+      <password>${env.JFROG_PASSWORD}</password>
+    </server>
+  </servers>
+
+  <mirrors>
+    <!-- mirrorOf *  forces every artifact, plugin and parent POM through
+         JFrog. Nothing falls back to Maven Central. -->
+    <mirror>
+      <id>jfrog</id>
+      <name>JFrog Cloud</name>
+      <url>${env.JFROG_URL}/artifactory/${env.JFROG_REPO}</url>
+      <mirrorOf>*</mirrorOf>
+    </mirror>
+  </mirrors>
+
+</settings>
