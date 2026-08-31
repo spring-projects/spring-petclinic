@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import jakarta.validation.constraints.Min;
+
 /**
  * @author Juergen Hoeller
  * @author Mark Fisher
@@ -42,7 +44,7 @@ class VetController {
 	}
 
 	@GetMapping("/vets.html")
-	public String showVetList(@RequestParam(defaultValue = "1") int page, Model model) {
+	public String showVetList(@RequestParam(defaultValue = "1") @Min(1) int page, Model model) {
 		Page<Vet> paginated = findPaginated(page);
 		return addPaginationModel(page, paginated, model);
 	}

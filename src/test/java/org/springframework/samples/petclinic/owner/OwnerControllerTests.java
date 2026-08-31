@@ -149,6 +149,11 @@ class OwnerControllerTests {
 	}
 
 	@Test
+	void processFindFormWithInvalidPage() throws Exception {
+		mockMvc.perform(get("/owners?page=0")).andExpect(status().isBadRequest());
+	}
+
+	@Test
 	void processFindFormByLastName() throws Exception {
 		Page<Owner> tasks = new PageImpl<>(List.of(george()));
 		when(this.owners.findByLastNameStartingWith(eq("Franklin"), any(Pageable.class))).thenReturn(tasks);
@@ -254,6 +259,11 @@ class OwnerControllerTests {
 			.andExpect(model().attribute("owner",
 					hasProperty("pets", hasItem(hasProperty("visits", hasSize(greaterThan(0)))))))
 			.andExpect(view().name("owners/ownerDetails"));
+	}
+
+	@Test
+	void showOwnerNotFound() throws Exception {
+		mockMvc.perform(get("/owners/{ownerId}", 999)).andExpect(status().isNotFound());
 	}
 
 	@Test

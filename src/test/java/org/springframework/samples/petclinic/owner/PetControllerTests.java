@@ -95,6 +95,17 @@ class PetControllerTests {
 	}
 
 	@Test
+	void initCreationFormWithUnknownOwner() throws Exception {
+		mockMvc.perform(get("/owners/{ownerId}/pets/new", 999)).andExpect(status().isNotFound());
+	}
+
+	@Test
+	void initUpdateFormWithUnknownPet() throws Exception {
+		mockMvc.perform(get("/owners/{ownerId}/pets/{petId}/edit", TEST_OWNER_ID, 999))
+			.andExpect(status().isNotFound());
+	}
+
+	@Test
 	void processCreationFormSuccess() throws Exception {
 		mockMvc
 			.perform(post("/owners/{ownerId}/pets/new", TEST_OWNER_ID).param("name", "Betty")
