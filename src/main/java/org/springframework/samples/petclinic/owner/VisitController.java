@@ -17,7 +17,6 @@ package org.springframework.samples.petclinic.owner;
 
 import java.time.LocalDate;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -63,14 +62,11 @@ class VisitController {
 	@ModelAttribute("visit")
 	public Visit loadPetWithVisit(@PathVariable("ownerId") int ownerId, @PathVariable("petId") int petId,
 			Map<String, Object> model) {
-		Optional<Owner> optionalOwner = owners.findById(ownerId);
-		Owner owner = optionalOwner.orElseThrow(() -> new IllegalArgumentException(
-				"Owner not found with id: " + ownerId + ". Please ensure the ID is correct "));
+		Owner owner = findOwnerById(ownerId);
 
 		Pet pet = owner.getPet(petId);
 		if (pet == null) {
-			throw new IllegalArgumentException(
-					"Pet with id " + petId + " not found for owner with id " + ownerId + ".");
+			throw new ResourceNotFoundException("Pet", petId);
 		}
 		model.put("pet", pet);
 		model.put("owner", owner);
@@ -78,6 +74,10 @@ class VisitController {
 		Visit visit = new Visit();
 		pet.addVisit(visit);
 		return visit;
+	}
+
+	private Owner findOwnerById(int ownerId) {
+		return this.owners.findById(ownerId).orElseThrow(() -> new ResourceNotFoundException("Owner", ownerId));
 	}
 
 	@ModelAttribute("minVisitDate")

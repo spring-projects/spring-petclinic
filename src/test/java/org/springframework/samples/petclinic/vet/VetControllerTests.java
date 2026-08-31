@@ -90,6 +90,11 @@ class VetControllerTests {
 	}
 
 	@Test
+	void showVetListHtmlWithInvalidPage() throws Exception {
+		mockMvc.perform(get("/vets.html?page=0")).andExpect(status().isBadRequest());
+	}
+
+	@Test
 	void showResourcesVetList() throws Exception {
 		ResultActions actions = mockMvc.perform(get("/vets").accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk());
