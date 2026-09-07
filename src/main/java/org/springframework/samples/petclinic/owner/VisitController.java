@@ -97,6 +97,11 @@ class VisitController {
 	@PostMapping("/owners/{ownerId}/pets/{petId}/visits/new")
 	public String processNewVisitForm(@ModelAttribute Owner owner, @PathVariable int petId, @Valid Visit visit,
 			BindingResult result, RedirectAttributes redirectAttributes) {
+		if (owner.getPet(petId) == null) {
+			throw new IllegalArgumentException(
+					"Pet with id " + petId + " does not belong to owner with id " + owner.getId() + ".");
+		}
+
 		if (visit.getDate() != null && !visit.getDate().isAfter(LocalDate.now())) {
 			result.rejectValue("date", "typeMismatch.visitDate");
 		}
