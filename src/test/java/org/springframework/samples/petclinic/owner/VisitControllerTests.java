@@ -106,4 +106,21 @@ class VisitControllerTests {
 			.andExpect(view().name("pets/createOrUpdateVisitForm"));
 	}
 
+	@Test
+	void initNewVisitFormReturnsNotFoundWhenOwnerIsMissing() throws Exception {
+		int missingOwnerId = 999;
+		given(this.owners.findById(missingOwnerId)).willReturn(Optional.empty());
+
+		mockMvc.perform(get("/owners/{ownerId}/pets/{petId}/visits/new", missingOwnerId, TEST_PET_ID))
+			.andExpect(status().isNotFound());
+	}
+
+	@Test
+	void initNewVisitFormReturnsNotFoundWhenPetIsMissing() throws Exception {
+		int missingPetId = 999;
+
+		mockMvc.perform(get("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, missingPetId))
+			.andExpect(status().isNotFound());
+	}
+
 }
