@@ -65,4 +65,14 @@ public class Visit extends BaseEntity {
 		this.description = description;
 	}
 
+	/**
+	 * Business rule for this visit: a date is considered invalid when it is set
+	 * (non-null) but is not strictly after the current date. A {@code null} date is not
+	 * considered invalid by this rule.
+	 * @return {@code true} if the visit date is set but not in the future
+	 */
+	public boolean isDateInvalid() {
+		return this.date != null && !this.date.isAfter(LocalDate.now());
+	}
+
 }
