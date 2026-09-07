@@ -21,6 +21,8 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -51,6 +53,7 @@ class VisitController {
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
 		dataBinder.setDisallowedFields("id", "*.id");
+		dataBinder.addValidators(new VisitDateValidator());
 	}
 
 	/**
@@ -97,10 +100,6 @@ class VisitController {
 	@PostMapping("/owners/{ownerId}/pets/{petId}/visits/new")
 	public String processNewVisitForm(@ModelAttribute Owner owner, @PathVariable int petId, @Valid Visit visit,
 			BindingResult result, RedirectAttributes redirectAttributes) {
-		if (visit.getDate() != null && !visit.getDate().isAfter(LocalDate.now())) {
-			result.rejectValue("date", "typeMismatch.visitDate");
-		}
-
 		if (result.hasErrors()) {
 			return "pets/createOrUpdateVisitForm";
 		}
@@ -109,6 +108,30 @@ class VisitController {
 		this.owners.save(owner);
 		redirectAttributes.addFlashAttribute("message", "Your visit has been booked");
 		return "redirect:/owners/{ownerId}";
+	}
+
+}
+
+/**
+ * Dedicated {@link Validator} for the {@link Visit#getDate() visit date} business rule,
+ * kept separate from {@link VisitController} so that validation logic is not mixed with
+ * request handling logic. It is registered on the {@link WebDataBinder} in
+ * {@link VisitController#setAllowedFields(WebDataBinder)} and runs automatically as part
+ * of the {@code @Valid} validation triggered for the {@link Visit} model attribute.
+ */
+class VisitDateValidator implements Validator {
+
+	@Override
+	public boolean supports(Class<?> clazz) {
+		return Visit.class.isAssignableFrom(clazz);
+	}
+
+	@Override
+	public void validate(Object target, Errors errors) {
+		Visit visit = (Visit) target;
+		if (visit.isDateInvalid()) {
+			errors.rejectValue("date", "typeMismatch.visitDate");
+		}
 	}
 
 }
