@@ -30,6 +30,17 @@ ext.webjarsLocatorLiteVersion = "1.1.3"
 ext.webjarsFontawesomeVersion = "4.7.0"
 ext.webjarsBootstrapVersion = "5.3.8"
 
+// Security fixes: pin past the versions the Spring Boot BOM (via
+// io.spring.dependency-management) currently resolves to, each a real,
+// current CVE (GHSA-qv9r-c865-cp47, GHSA-9xv2-5v5q-p794/-gcx9-497g-6cp6/
+// -h3x4-894j-xpx5, GHSA-j92g-9f8w-j867, GHSA-5gvw-p9qm-jgwh) — see the
+// matching pom.xml <properties> overrides for how each was confirmed
+// via `mvn dependency:tree` against this exact commit.
+ext['log4j2.version'] = '2.25.5'
+ext['tomcat.version'] = '11.0.25'
+ext['postgresql.version'] = '42.7.12'
+ext['jackson-bom.version'] = '3.1.5'
+
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-cache'
   implementation 'org.springframework.boot:spring-boot-starter-data-jpa'

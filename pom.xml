@@ -27,6 +27,17 @@
     <webjars-bootstrap.version>5.3.8</webjars-bootstrap.version>
     <webjars-font-awesome.version>4.7.0</webjars-font-awesome.version>
 
+    <!-- Security fixes: pin past the versions spring-boot-starter-parent
+         4.1.0's own BOM currently resolves to, each a real, current CVE
+         (GHSA-qv9r-c865-cp47, GHSA-9xv2-5v5q-p794/-gcx9-497g-6cp6/-h3x4-894j-xpx5,
+         GHSA-j92g-9f8w-j867, GHSA-5gvw-p9qm-jgwh) confirmed via
+         `mvn dependency:tree` against this exact pom.xml, not assumed
+         from the BOM version alone. -->
+    <log4j2.version>2.25.5</log4j2.version>
+    <tomcat.version>11.0.25</tomcat.version>
+    <postgresql.version>42.7.12</postgresql.version>
+    <jackson-bom.version>3.1.5</jackson-bom.version>
+
     <!-- Checkstyle needs to stay on v12 since v13 sets minimal jdk to 21 - https://checkstyle.org/releasenotes.html#Release_13.0.0 -->
     <checkstyle.version>12.3.1</checkstyle.version>
     <jacoco.version>0.8.15</jacoco.version>
