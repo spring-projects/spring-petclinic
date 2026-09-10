@@ -7,12 +7,14 @@ plugins {
   id 'org.cyclonedx.bom' version '3.2.4'
   id 'io.spring.javaformat' version '0.0.47'
   id "io.spring.nohttp" version "0.0.11"
+  id 'pl.allegro.tech.build.axion-release' version '1.21.3'
+  id 'maven-publish'
 }
 
 gradle.startParameter.excludedTaskNames += [ "checkFormatAot", "checkFormatAotTest" ]
 
 group = 'org.springframework.samples'
-version = '4.0.0-SNAPSHOT'
+version = scmVersion.version
 
 java {
   toolchain {
@@ -20,9 +22,27 @@ java {
   }
 }
 
-repositories {
-  mavenCentral()
+publishing {
+  publications {
+    bootJava(MavenPublication) {
+      artifact bootJar
+    }
+  }
+  repositories {
+    maven {
+      name = "nexus"
+      url = version.endsWith('-SNAPSHOT')
+          ? "http://localhost:8081/repository/maven-snapshots/"
+          : "http://localhost:8081/repository/maven-releases/"
+      allowInsecureProtocol = true
+      credentials {
+        username = "admin"
+        password = project.findProperty("nexusPassword")
+      }
+    }
+  }
 }
+
 
 ext.checkstyleVersion = "12.3.1"
 ext.springJavaformatCheckstyleVersion = "0.0.47"
@@ -91,3 +111,26 @@ checkFormatAotTest.enabled = false
 
 formatAot.enabled = false
 formatAotTest.enabled = false
+
+tasks.register('uploadArtifact') {
+    dependsOn 'publishBootJavaPublicationToNexusRepository'
+}
+
+tasks.register('openTestReport') {
+    dependsOn build
+    doLast {
+        def reportFile = file("${buildDir}/reports/tests/test/index.html")
+        if (reportFile.exists()) {
+            def os = System.getProperty("os.name").toLowerCase()
+            if (os.contains("mac")) {
+                "open ${reportFile}".execute()
+            } else if (os.contains("windows")) {
+                "cmd /c start ${reportFile}".execute()
+            } else {
+                "xdg-open ${reportFile}".execute()
+            }
+        } else {
+            println "Test report not found at ${reportFile}"
+        }
+    }
+}

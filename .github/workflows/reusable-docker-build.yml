@@ -1,0 +1,42 @@
+name: Reusable docker build
+
+
+on:
+  workflow_call:
+    inputs:
+      dockerHubRepo:
+        description: Target repo for docker image push
+        required: true
+        type: string
+      githubSha:
+        description: Github SHA for image being built and pushed
+        required: true
+        type: string
+    secrets:
+      dockerHubUsername:
+        description: Username for docker hub
+        required: true
+      dockerHubToken:
+        description: Token for docker hub
+        required: true
+
+jobs:
+  docker-image-main:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Docker login
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.dockerHubUsername }}
+          password: ${{ secrets.dockerHubToken }}
+
+      - name: Build & Push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ secrets.dockerHubUsername }}/petclinic-${{ inputs.dockerHubRepo }}:${{ inputs.githubSha }}
+            ${{ secrets.dockerHubUsername }}/petclinic-${{ inputs.dockerHubRepo }}:latest

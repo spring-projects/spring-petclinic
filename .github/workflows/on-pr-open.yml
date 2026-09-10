@@ -1,0 +1,83 @@
+name: Petclinic Workflow
+run-name: "Petclinic static checks and build (id: ${{ github.run_id }})(branch: ${{ github.head_ref || github.ref_name }})(commit: ${{ github.sha }})"
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+    branches:
+      - main
+
+jobs:
+  checkstyle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Run checkstyle
+        shell: bash
+        run: |
+          mvn checkstyle:checkstyle
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: checkstyle-report
+          path: target/checkstyle-result.xml
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Running tests
+        shell: bash
+        run: |
+          mvn test -Dtest='!PostgresIntegrationTests,!MySqlIntegrationTests'
+
+      - name: Upload test report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: target/surefire-reports/*.xml
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Package application
+        shell: bash
+        run: |
+          mvn package -DskipTests
+
+  docker-image-mr:
+    needs: [checkstyle, test]
+    uses: ./.github/workflows/reusable-docker-build.yml
+    with:
+      dockerHubRepo: mr
+      githubSha: ${{ github.sha }}
+    secrets:
+      dockerHubUsername: ${{ secrets.DOCKERHUB_USERNAME }}
+      dockerHubToken: ${{ secrets.DOCKERHUB_TOKEN }}

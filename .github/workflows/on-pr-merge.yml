@@ -1,0 +1,17 @@
+name: Petclinic Merge to Main worklow
+run-name: "Petclinic build (id: ${{ github.run_id }})(commit: ${{ github.sha }})"
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  docker-image-main:
+    uses: ./.github/workflows/reusable-docker-build.yml
+    with:
+      dockerHubRepo: main
+      githubSha: ${{ github.sha }}
+    secrets:
+      dockerHubUsername: ${{ secrets.DOCKERHUB_USERNAME }}
+      dockerHubToken: ${{ secrets.DOCKERHUB_TOKEN }}

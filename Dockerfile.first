@@ -1,0 +1,14 @@
+
+FROM eclipse-temurin:17-jre-jammy
+
+RUN addgroup --system group && adduser --system --ingroup group user
+
+WORKDIR /app
+
+COPY --chown=user:group target/spring-petclinic-*.jar app.jar
+
+USER user
+
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "app.jar"] 

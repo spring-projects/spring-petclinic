@@ -1,0 +1,23 @@
+# Build outputs (don't need source-built artifacts other than the one you COPY)
+target/*.jar.original
+build/
+.gradle/
+
+# Git
+.git
+.gitignore
+
+# IDE / editor
+.idea/
+.vscode/
+*.iml
+
+# OS files
+.DS_Store
+
+# Docs (not needed inside the image)
+*.md
+docs/
+
+# Nexus/local config, secrets — just in case
+.env
