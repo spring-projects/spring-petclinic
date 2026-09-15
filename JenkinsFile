@@ -1,0 +1,75 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
+        DOCKERHUB_USER        = "${env.DOCKERHUB_CREDENTIALS_USR}"
+        SHORT_COMMIT          = "${env.GIT_COMMIT.take(7)}"
+    }
+
+    stages {
+        stage('Checkstyle Report') {
+            when {
+                changeRequest()
+            }
+            steps {
+                sh './mvnw checkstyle:checkstyle'
+                archiveArtifacts artifacts: '**/target/checkstyle-result.xml', allowEmptyArchive: true
+            }
+        }
+
+        stage('Test') {
+            when {
+                changeRequest()
+            }
+            steps {
+                sh './mvnw test'
+            }
+        }
+
+        stage('Build Artifact') {
+            when {
+                changeRequest()
+            }
+            steps {
+                sh './mvnw package -DskipTests'
+            }
+        }
+
+        stage('Build & Push MR Docker Image') {
+            when {
+                changeRequest()
+            }
+            steps {
+                script {
+                    def mrImage = docker.build("${DOCKERHUB_USER}/mr:${SHORT_COMMIT}")
+                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials') {
+                        mrImage.push()
+                    }
+                }
+            }
+        }
+
+        stage('Build & Push Main Docker Image') {
+            when {
+                branch 'main'
+            }
+            steps {
+                script {
+                    def mainImage = docker.build("${DOCKERHUB_USER}/main:${SHORT_COMMIT}")
+                    def latestImage = docker.build("${DOCKERHUB_USER}/main:latest")
+                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials') {
+                        mainImage.push()
+                        latestImage.push()
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
+        }
+    }
+}
