@@ -24,6 +24,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 /**
  * Simple JavaBean domain object representing a visit.
@@ -40,6 +41,7 @@ public class Visit extends BaseEntity {
 	private LocalDate date;
 
 	@NotBlank
+	@Size(max = 255)
 	private String description;
 
 	/**
