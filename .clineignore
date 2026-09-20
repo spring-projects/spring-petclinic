@@ -1,0 +1,8 @@
+target/
+build/
+.git/
+.idea/
+.mvn/
+*.md
+src/test/
+src/main/resources/static/
