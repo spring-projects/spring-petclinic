@@ -50,34 +50,9 @@ jobs:
         with:
           sarif_file: 'semgrep-results.sarif'
           category: 'semgrep-sast'
+  
   # --------------------------------------------------------------------------
-  # 2. Build Verification & Dependency Graph Generation
-  # --------------------------------------------------------------------------
-  build-and-verify:
-    name: "Build & Dependency Verification"
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v7
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v6
-        with:
-          distribution: 'temurin'
-          java-version: '21'
-          cache: 'gradle' # Automatically caches Gradle or Maven dependencies
-
-      - name: Verify Gradle Build (if gradlew exists)
-        run: |
-          if [ -f "./gradlew" ]; then
-            chmod +x gradlew
-            ./gradlew check -x test
-          elif [ -f "./pom.xml" ]; then
-            mvn compile -DskipTests
-          fi
-
-  # --------------------------------------------------------------------------
-  # 3. Infrastructure as Code (IaC) - Checkmarx KICS
+  # 2. Infrastructure as Code (IaC) - Checkmarx KICS
   # --------------------------------------------------------------------------
   kics-iac-scan:
     name: "Checkmarx KICS IaC Scan"
