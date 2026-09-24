@@ -59,4 +59,14 @@ public interface OwnerRepository extends JpaRepository<Owner, Integer> {
 	 */
 	Optional<Owner> findById(Integer id);
 
+	/**
+	 * Deletes the given {@link Owner} from the data store. Because {@code Owner.pets}
+	 * is mapped with {@code CascadeType.ALL}, this also cascades the delete to all
+	 * {@link org.springframework.samples.petclinic.owner.Pet}s (and their
+	 * {@link org.springframework.samples.petclinic.owner.Visit}s) belonging to this
+	 * owner.
+	 * @param owner the {@link Owner} to delete; must not be {@code null}
+	 */
+	void delete(Owner owner);
+
 }
