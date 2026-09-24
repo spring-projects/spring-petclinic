@@ -176,4 +176,26 @@ class OwnerController {
 		return mav;
 	}
 
+	/**
+	 * Deletes an existing {@link Owner} identified by the given id, along with all
+	 * {@link org.springframework.samples.petclinic.owner.Pet}s and visits associated
+	 * with that owner (cascade delete).
+	 * @param ownerId the id of the owner to delete
+	 * @param redirectAttributes used to pass a flash success message to the redirected
+	 * view
+	 * @return a redirect to the owners find page
+	 * @throws IllegalArgumentException if no owner exists with the given id
+	 */
+	@PostMapping("/owners/{ownerId}/delete")
+	public String deleteOwner(@PathVariable("ownerId") int ownerId, RedirectAttributes redirectAttributes) {
+		Owner owner = this.owners.findById(ownerId)
+			.orElseThrow(() -> new IllegalArgumentException(
+					"Owner not found with id: " + ownerId + ". Please ensure the ID is correct."));
+
+		this.owners.delete(owner);
+		redirectAttributes.addFlashAttribute("message", "Owner " + owner.getFirstName() + " " + owner.getLastName()
+				+ " has been deleted, along with " + owner.getPets().size() + " associated pet(s)");
+		return "redirect:/owners/find";
+	}
+
 }
