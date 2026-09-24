@@ -16,9 +16,15 @@
 
 package org.springframework.samples.petclinic.owner;
 
+import jakarta.servlet.ServletException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledInNativeImage;
+import org.mockito.ArgumentCaptor;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.never;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.data.domain.Page;
@@ -274,6 +280,48 @@ class OwnerControllerTests {
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("/owners/" + pathOwnerId + "/edit"))
 			.andExpect(flash().attributeExists("error"));
+	}
+
+	@Test
+	void shouldDeleteOwnerAndRedirectToFindPage() throws Exception {
+		mockMvc.perform(post("/owners/{ownerId}/delete", TEST_OWNER_ID))
+			.andExpect(status().is3xxRedirection())
+			.andExpect(view().name("redirect:/owners/find"))
+			.andExpect(flash().attributeExists("message"));
+
+		ArgumentCaptor<Owner> ownerCaptor = ArgumentCaptor.forClass(Owner.class);
+		verify(this.owners).delete(ownerCaptor.capture());
+		assertThat(ownerCaptor.getValue().getId()).isEqualTo(TEST_OWNER_ID);
+	}
+
+	@Test
+	void shouldIncludeOwnerNameInDeleteSuccessMessage() throws Exception {
+		mockMvc.perform(post("/owners/{ownerId}/delete", TEST_OWNER_ID))
+			.andExpect(status().is3xxRedirection())
+			.andExpect(flash().attribute("message", containsString("George Franklin")));
+	}
+
+	@Test
+	void shouldPassOwnerWithPetsToDeleteSoCascadeCanApply() throws Exception {
+		mockMvc.perform(post("/owners/{ownerId}/delete", TEST_OWNER_ID)).andExpect(status().is3xxRedirection());
+		ArgumentCaptor<Owner> ownerCaptor = ArgumentCaptor.forClass(Owner.class);
+		verify(this.owners).delete(ownerCaptor.capture());
+		assertThat(ownerCaptor.getValue().getPets()).hasSize(1);
+		assertThat(ownerCaptor.getValue().getPets().get(0).getName()).isEqualTo("Max");
+	}
+
+	@Test
+	void shouldThrowExceptionWhenDeletingNonExistentOwner() throws Exception {
+		int nonExistentOwnerId = 999;
+		given(this.owners.findById(nonExistentOwnerId)).willReturn(Optional.empty());
+		assertThrows(ServletException.class,
+			() -> mockMvc.perform(post("/owners/{ownerId}/delete", nonExistentOwnerId)));
+		verify(this.owners, never()).delete(any(Owner.class));
+	}
+
+	@Test
+	void shouldRejectDeleteViaGetRequest() throws Exception {
+		mockMvc.perform(get("/owners/{ownerId}/delete", TEST_OWNER_ID)).andExpect(status().isMethodNotAllowed());
 	}
 
 }
