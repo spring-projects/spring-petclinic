@@ -132,7 +132,8 @@ class OwnerController {
 
 	private Page<Owner> findPaginatedForOwnersLastName(int page, String lastname) {
 		int pageSize = 5;
-		Pageable pageable = PageRequest.of(page - 1, pageSize);
+		int validatedPage = Math.max(page, 1);
+		Pageable pageable = PageRequest.of(validatedPage - 1, pageSize);
 		return owners.findByLastNameStartingWith(lastname, pageable);
 	}
 
