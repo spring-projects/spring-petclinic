@@ -58,7 +58,8 @@ class VetController {
 
 	private Page<Vet> findPaginated(int page) {
 		int pageSize = 5;
-		Pageable pageable = PageRequest.of(page - 1, pageSize);
+		int safePage = Math.max(page, 1);
+		Pageable pageable = PageRequest.of(safePage - 1, pageSize);
 		return vetRepository.findAll(pageable);
 	}
 
