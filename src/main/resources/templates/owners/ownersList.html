@@ -5,7 +5,7 @@
 <body>
 
   <h2 th:text="#{owners}">Owners</h2>
-
+  <p id="owner-count" th:text="${totalItems} + ' owners found'">0 owners found</p>
   <table id="owners" class="table table-striped">
     <thead>
       <tr>
