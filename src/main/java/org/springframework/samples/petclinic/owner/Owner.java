@@ -31,8 +31,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 /**
  * Simple JavaBean domain object representing an owner.
@@ -50,10 +51,12 @@ public class Owner extends Person {
 
 	@Column
 	@NotBlank
+	@Size(max = 255)
 	private String address;
 
 	@Column
 	@NotBlank
+	@Size(max = 80)
 	private String city;
 
 	@Column
