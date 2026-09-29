@@ -147,6 +147,15 @@ class OwnerControllerTests {
 	}
 
 	@Test
+	void processFindFormRedirectsOutOfBoundsPageToFirstPage() throws Exception {
+		for (int page : List.of(0, 2)) {
+			mockMvc.perform(get("/owners").param("page", Integer.toString(page)).param("lastName", "Franklin"))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/owners?page=1&lastName=Franklin"));
+		}
+	}
+
+	@Test
 	void processFindFormByLastName() throws Exception {
 		Page<Owner> tasks = new PageImpl<>(List.of(george()));
 		when(this.owners.findByLastNameStartingWith(eq("Franklin"), any(Pageable.class))).thenReturn(tasks);
