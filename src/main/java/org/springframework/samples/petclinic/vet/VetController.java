@@ -25,6 +25,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * @author Juergen Hoeller
@@ -42,8 +43,13 @@ class VetController {
 	}
 
 	@GetMapping("/vets.html")
-	public String showVetList(@RequestParam(defaultValue = "1") int page, Model model) {
+	public String showVetList(@RequestParam(defaultValue = "1") int page, Model model,
+			RedirectAttributes redirectAttributes) {
 		Page<Vet> paginated = findPaginated(page);
+		if (page < 1 || page > Math.max(paginated.getTotalPages(), 1)) {
+			redirectAttributes.addAttribute("page", 1);
+			return "redirect:/vets.html";
+		}
 		return addPaginationModel(page, paginated, model);
 	}
 
