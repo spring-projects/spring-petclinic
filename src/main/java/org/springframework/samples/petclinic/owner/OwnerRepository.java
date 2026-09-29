@@ -42,7 +42,7 @@ public interface OwnerRepository extends JpaRepository<Owner, Integer> {
 	 * @return a Collection of matching {@link Owner}s (or an empty Collection if none
 	 * found)
 	 */
-	Page<Owner> findByLastNameStartingWith(String lastName, Pageable pageable);
+	Page<Owner> findByLastNameStartingWithIgnoreCase(String lastName, Pageable pageable);
 
 	/**
 	 * Retrieve an {@link Owner} from the data store by id.
