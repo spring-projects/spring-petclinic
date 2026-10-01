@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>4.1.0</version>
+    <version>4.1.1</version>
   </parent>
 
   <groupId>org.springframework.samples</groupId>
@@ -26,6 +26,19 @@
     <webjars-locator.version>1.1.3</webjars-locator.version>
     <webjars-bootstrap.version>5.3.8</webjars-bootstrap.version>
     <webjars-font-awesome.version>4.7.0</webjars-font-awesome.version>
+
+    <!-- Security fix: spring-boot-starter-parent 4.1.1's own BOM (per
+         Maven Central) already resolves log4j2/postgresql/jackson-bom
+         past their advisories (GHSA-qv9r-c865-cp47, GHSA-j92g-9f8w-j867,
+         GHSA-5gvw-p9qm-jgwh) on its own — no override needed for those
+         three now that the parent is 4.1.1. Tomcat is the one exception:
+         4.1.1's BOM still resolves tomcat.version to 11.0.24, one patch
+         short of 11.0.25, which is the fixed version for all three real,
+         current Tomcat advisories below (confirmed via `gh api
+         /advisories/<id>`, not assumed from the BOM bump alone) — so this
+         override stays until upstream's own BOM catches up.
+         (GHSA-9xv2-5v5q-p794, GHSA-gcx9-497g-6cp6, GHSA-h3x4-894j-xpx5) -->
+    <tomcat.version>11.0.25</tomcat.version>
 
     <!-- Checkstyle needs to stay on v12 since v13 sets minimal jdk to 21 - https://checkstyle.org/releasenotes.html#Release_13.0.0 -->
     <checkstyle.version>12.3.1</checkstyle.version>
