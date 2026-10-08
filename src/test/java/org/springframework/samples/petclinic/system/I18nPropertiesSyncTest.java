@@ -1,7 +1,5 @@
 package org.springframework.samples.petclinic.system;
 
-import org.junit.jupiter.api.Test;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -12,6 +10,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
+
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.fail;
 

@@ -16,6 +16,10 @@
 
 package org.springframework.samples.petclinic.owner;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledInNativeImage;
@@ -28,10 +32,6 @@ import org.springframework.test.context.aot.DisabledInAotMode;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
 
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.greaterThan;

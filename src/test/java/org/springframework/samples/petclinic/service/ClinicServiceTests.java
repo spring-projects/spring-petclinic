@@ -16,10 +16,6 @@
 
 package org.springframework.samples.petclinic.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import org.springframework.dao.DataIntegrityViolationException;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Optional;
@@ -29,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase.Replace;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.samples.petclinic.owner.Owner;
@@ -40,6 +37,9 @@ import org.springframework.samples.petclinic.owner.Visit;
 import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.samples.petclinic.vet.VetRepository;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Integration test of the Service and the Repository layer.
@@ -102,8 +102,8 @@ class ClinicServiceTests {
 		Owner owner = optionalOwner.get();
 		assertThat(owner.getLastName()).startsWith("Franklin");
 		assertThat(owner.getPets()).hasSize(1);
-		assertThat(owner.getPets().get(0).getType()).isNotNull();
-		assertThat(owner.getPets().get(0).getType().getName()).isEqualTo("cat");
+		assertThat(owner.getPets().getFirst().getType()).isNotNull();
+		assertThat(owner.getPets().getFirst().getType().getName()).isEqualTo("cat");
 	}
 
 	@Test
@@ -210,7 +210,7 @@ class ClinicServiceTests {
 		Vet vet = EntityUtils.getById(vets, Vet.class, 3);
 		assertThat(vet.getLastName()).isEqualTo("Douglas");
 		assertThat(vet.getNrOfSpecialties()).isEqualTo(2);
-		assertThat(vet.getSpecialties().get(0).getName()).isEqualTo("dentistry");
+		assertThat(vet.getSpecialties().getFirst().getName()).isEqualTo("dentistry");
 		assertThat(vet.getSpecialties().get(1).getName()).isEqualTo("surgery");
 	}
 
@@ -271,9 +271,7 @@ class ClinicServiceTests {
 		pet2.setBirthDate(LocalDate.now());
 		owner.addPet(pet2);
 
-		assertThrows(DataIntegrityViolationException.class, () -> {
-			this.owners.saveAndFlush(owner);
-		});
+		assertThrows(DataIntegrityViolationException.class, () -> this.owners.saveAndFlush(owner));
 	}
 
 	@Test

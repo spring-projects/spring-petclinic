@@ -16,9 +16,6 @@
 
 package org.springframework.samples.petclinic.owner;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
-
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,6 +29,9 @@ import org.junit.jupiter.api.condition.DisabledInNativeImage;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 
 /**
  * Test class for {@link PetTypeFormatter}
@@ -70,9 +70,7 @@ class PetTypeFormatterTests {
 	@Test
 	void shouldThrowParseException() {
 		given(types.findPetTypes()).willReturn(makePetTypes());
-		Assertions.assertThrows(ParseException.class, () -> {
-			petTypeFormatter.parse("Fish", Locale.ENGLISH);
-		});
+		Assertions.assertThrows(ParseException.class, () -> petTypeFormatter.parse("Fish", Locale.ENGLISH));
 	}
 
 	/**

@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 
+import jakarta.validation.Valid;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -33,9 +34,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import jakarta.validation.Valid;
-
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -67,9 +65,8 @@ class PetController {
 	@ModelAttribute("owner")
 	public Owner findOwner(@PathVariable("ownerId") int ownerId) {
 		Optional<Owner> optionalOwner = this.owners.findById(ownerId);
-		Owner owner = optionalOwner.orElseThrow(() -> new IllegalArgumentException(
+		return optionalOwner.orElseThrow(() -> new IllegalArgumentException(
 				"Owner not found with id: " + ownerId + ". Please ensure the ID is correct "));
-		return owner;
 	}
 
 	@ModelAttribute("pet")
