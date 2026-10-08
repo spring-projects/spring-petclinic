@@ -16,10 +16,6 @@
 
 package org.springframework.samples.petclinic;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
-
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,6 +43,10 @@ import org.springframework.samples.petclinic.vet.VetRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
 import org.testcontainers.DockerClientFactory;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, properties = { "spring.docker.compose.skip.in-tests=false", //
 		"spring.docker.compose.start.arguments=--force-recreate,--renew-anon-volumes,postgres" })
