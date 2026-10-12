@@ -27,3 +27,18 @@ jobs:
           cache: maven
       - name: Build with Maven Wrapper
         run: ./mvnw -B verify
+
+      - name: Simulate build failure for RCA demo
+        run: |
+          echo "Simulating a CI build failure"
+          exit 1
+    
+  analyze:
+    needs: build
+    if: ${{ needs.build.result == 'failure' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: RCA placeholder
+        run: echo "Build failed - RCA analysis would start here"
+
