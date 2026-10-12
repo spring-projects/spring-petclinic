@@ -10,7 +10,7 @@ permissions:
  
 jobs:
   ai-review:
-    uses: 7391997393/ai-review-agentt/.github/workflows/reusable-ai-review.yml@features/resolve-review-threads
+    uses: 7391997393/ai-review-agentt/.github/workflows/reusable-ai-review.yml@feature/resolve-review-threads
     with:
       cg_model: ${{ vars.CG_MODEL }}
       cg_base_url: ${{ vars.CG_BASE_URL }}
