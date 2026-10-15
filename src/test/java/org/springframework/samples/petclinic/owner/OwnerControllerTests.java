@@ -315,4 +315,14 @@ class OwnerControllerTests {
 			.andExpect(flash().attributeExists("error"));
 	}
 
+	@Test
+	void showOwnerReturnsNotFoundForUnknownOwner() throws Exception {
+		mockMvc.perform(get("/owners/{ownerId}", 99999)).andExpect(status().isNotFound());
+	}
+
+	@Test
+	void initUpdateOwnerFormReturnsNotFoundForUnknownOwner() throws Exception {
+		mockMvc.perform(get("/owners/{ownerId}/edit", 99999)).andExpect(status().isNotFound());
+	}
+
 }
