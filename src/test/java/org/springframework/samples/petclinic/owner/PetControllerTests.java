@@ -271,4 +271,24 @@ class PetControllerTests {
 
 	}
 
+	@Test
+	void initCreationFormReturnsNotFoundForUnknownOwner() throws Exception {
+		mockMvc.perform(get("/owners/{ownerId}/pets/new", 99999)).andExpect(status().isNotFound());
+	}
+
+	@Test
+	void initUpdateFormReturnsNotFoundForUnknownPet() throws Exception {
+		mockMvc.perform(get("/owners/{ownerId}/pets/{petId}/edit", TEST_OWNER_ID, 99999))
+			.andExpect(status().isNotFound());
+	}
+
+	@Test
+	void processUpdateFormReturnsNotFoundForUnknownPet() throws Exception {
+		mockMvc
+			.perform(post("/owners/{ownerId}/pets/{petId}/edit", TEST_OWNER_ID, 99999).param("name", "Betty")
+				.param("type", "hamster")
+				.param("birthDate", "2015-02-12"))
+			.andExpect(status().isNotFound());
+	}
+
 }
