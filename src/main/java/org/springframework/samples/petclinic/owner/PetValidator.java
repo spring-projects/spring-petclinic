@@ -56,6 +56,9 @@ public class PetValidator implements Validator {
 		if (pet.getBirthDate() == null) {
 			errors.rejectValue("birthDate", REQUIRED, REQUIRED);
 		}
+		else if (pet.getBirthDate().isAfter(java.time.LocalDate.now())) {
+			errors.rejectValue("birthDate", "invalid", "Birth date cannot be in the future");
+		}
 	}
 
 	/**
