@@ -5,6 +5,11 @@ pipeline {
     tools {
         maven 'Maven'
     }
+    environment {
+        DOCKER_HOST = 'tcp://docker:2376'
+        DOCKER_TLS_VERIFY = '1'
+        DOCKER_CERT_PATH = '/certs/client'
+    }
     stages {
         stage('Check Docker') {
             steps {

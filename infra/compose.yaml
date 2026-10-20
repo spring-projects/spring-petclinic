@@ -1,0 +1,41 @@
+services:
+  docker:
+    image: docker:dind
+    container_name: devops-docker
+    privileged: true
+    restart: unless-stopped
+    environment:
+      DOCKER_TLS_CERTDIR: /certs
+    volumes:
+      - docker-certs:/certs/client
+      - docker-data:/var/lib/docker
+    networks:
+      jenkins:
+        aliases:
+          - docker
+  agent:
+    build:
+      context: ./jenkins-agent
+    image: devops-maven-agent:0.1.0
+    container_name: maven-agent-docker
+    restart: unless-stopped
+    environment:
+      JENKINS_AGENT_SSH_PUBKEY: ${JENKINS_AGENT_SSH_PUBKEY:?Public SSH key is required}
+      DOCKER_HOST: tcp://docker:2376
+      DOCKER_TLS_VERIFY: "1"
+      DOCKER_CERT_PATH: /certs/client
+    volumes:
+      - docker-certs:/certs/client:ro
+      - agent-home:/home/jenkins
+    networks:
+      - jenkins
+    depends_on:
+      - docker
+volumes:
+  docker-certs:
+  docker-data:
+  agent-home:
+networks:
+  jenkins:
+    external: true
+    name: jenkins
