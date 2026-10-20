@@ -1,0 +1,31 @@
+pipeline {
+    agent {
+        label 'maven'
+    }
+    tools {
+        maven 'Maven'
+    }
+    stages {
+        stage('Build') {
+            steps {
+                sh 'mvn -B clean package -DskipTests'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'mvn -B test'
+            }
+        }
+    }
+    post {
+        always {
+            junit testResults: 'target/surefire-reports/*.xml',
+                  allowEmptyResults: true
+        }
+        success {
+            archiveArtifacts artifacts: 'target/spring-petclinic-*.jar',
+                             fingerprint: true
+        }
+    }
+}
