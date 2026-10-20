@@ -178,6 +178,49 @@ class PetControllerTests {
 				.andExpect(view().name("pets/createOrUpdatePetForm"));
 		}
 
+		
+		@Test
+		void processCreationFormWithDuplicateConstraintInNestedCause() throws Exception {
+		    SQLException cause = new SQLException(
+		            "Unique constraint violation: unique_owner_pet_name");
+		
+		    DataIntegrityViolationException exception =
+		            new DataIntegrityViolationException(
+		                    "Database integrity violation", cause);
+		
+		    given(owners.saveAndFlush(any(Owner.class))).willThrow(exception);
+		
+		    mockMvc.perform(post("/owners/{ownerId}/pets/new", TEST_OWNER_ID)
+		            .param("name", "Betty")
+		            .param("type", "hamster")
+		            .param("birthDate", "2015-02-12"))
+		        .andExpect(model().attributeHasErrors("pet"))
+		        .andExpect(model().attributeHasFieldErrors("pet", "name"))
+		        .andExpect(model().attributeHasFieldErrorCode("pet", "name", "duplicate"))
+		        .andExpect(status().isOk())
+		        .andExpect(view().name("pets/createOrUpdatePetForm"));
+		}
+		
+		@Test
+		void processCreationFormWithUnrelatedDataIntegrityViolation() throws Exception {
+		    SQLException cause = new SQLException("Some unrelated database constraint");
+		
+		    DataIntegrityViolationException exception =
+		            new DataIntegrityViolationException(
+		                    "Database integrity violation", cause);
+		
+		    given(owners.saveAndFlush(any(Owner.class))).willThrow(exception);
+		
+		    org.junit.jupiter.api.Assertions.assertThrows(
+		            jakarta.servlet.ServletException.class,
+		            () -> mockMvc.perform(post("/owners/{ownerId}/pets/new", TEST_OWNER_ID)
+		                    .param("name", "Betty")
+		                    .param("type", "hamster")
+		                    .param("birthDate", "2015-02-12"))
+		                .andReturn());
+		}
+
+
 		@Test
 		void initUpdateForm() throws Exception {
 			mockMvc.perform(get("/owners/{ownerId}/pets/{petId}/edit", TEST_OWNER_ID, TEST_PET_ID))
