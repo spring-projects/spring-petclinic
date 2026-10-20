@@ -199,9 +199,22 @@ class PetController {
 		this.owners.saveAndFlush(owner);
 	}
 
+	
 	private boolean isDuplicatePetNameViolation(DataIntegrityViolationException ex) {
-		String message = ex.getMessage();
-		return message != null && message.toLowerCase().contains("unique_owner_pet_name");
+	    Throwable cause = ex;
+	
+	    while (cause != null) {
+	        String message = cause.getMessage();
+	        if (message != null
+	                && message.toLowerCase(java.util.Locale.ROOT)
+	                    .contains("unique_owner_pet_name")) {
+	            return true;
+	        }
+	        cause = cause.getCause();
+	    }
+	
+	    return false;
 	}
+
 
 }
