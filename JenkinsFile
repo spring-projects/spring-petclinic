@@ -6,6 +6,14 @@ pipeline {
         maven 'Maven'
     }
     stages {
+        stage('Check Docker') {
+            steps {
+                sh '''
+                    command -v docker
+                    docker version
+                '''
+            }
+        }
         stage('Build') {
             steps {
                 sh 'mvn -B clean package -DskipTests'
