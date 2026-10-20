@@ -39,7 +39,7 @@ jobs:
         run: |
           smart-tests record session --build ${{ github.run_id }} --test-suite my-test-suite > session.txt
           cat session.txt
-          smart-tests subset maven --session @session.txt --use-case one-commit --get-tests-from-guess > smart-tests-subset.txt
+          smart-tests subset maven --session @session.txt --use-case one-commit --get-tests-from-guess --target 50% > smart-tests-subset.txt
           cat smart-tests-subset.txt
       - name: Test
         run: mvn test -DincludesFile=smart-tests-subset.txt
