@@ -39,6 +39,31 @@ pipeline {
                 sh 'docker build -t petclinic:$IMAGE_TAG .'
             }
         }
+        stage('Push Docker Image') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub',
+                    usernameVariable: 'DOCKERHUB_USER',
+                    passwordVariable: 'DOCKERHUB_TOKEN'
+                )]) {
+                    sh '''
+                        set +x
+                        export DOCKER_CONFIG="$(mktemp -d)"
+                        trap 'rm -rf "$DOCKER_CONFIG"' EXIT
+        
+                        printf '%s' "$DOCKERHUB_TOKEN" |
+                            docker login docker.io \
+                                --username "$DOCKERHUB_USER" \
+                                --password-stdin
+        
+                        docker tag "petclinic:$IMAGE_TAG" \
+                            "anxlime/petclinic:$IMAGE_TAG"
+        
+                        docker push "anxlime/petclinic:$IMAGE_TAG"
+                    '''
+                }
+            }
+        }
     }
     post {
         always {
