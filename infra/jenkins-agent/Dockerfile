@@ -1,4 +1,4 @@
 FROM jenkins/ssh-agent:alpine-jdk17
 
 USER root
-RUN apk add --no-cache docker-cli
+RUN apk add --no-cache docker-cli docker-cli-compose
