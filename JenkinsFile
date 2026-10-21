@@ -1,0 +1,78 @@
+pipeline {
+    agent {
+        label 'maven'
+    }
+    tools {
+        maven 'Maven'
+    }
+    environment {
+        DOCKER_HOST = 'tcp://docker:2376'
+        DOCKER_TLS_VERIFY = '1'
+        DOCKER_CERT_PATH = '/certs/client'
+    }
+    stages {
+        stage('Check Docker') {
+            steps {
+                sh '''
+                    command -v docker
+                    docker version
+                '''
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'mvn -B clean package -DskipTests'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'mvn -B test'
+            }
+        }
+	
+	stage('Build Docker Image') {
+            steps {
+                script {
+                    env.IMAGE_TAG = "sha-${env.GIT_COMMIT.take(12)}"
+                }
+                sh 'docker build -t petclinic:$IMAGE_TAG .'
+            }
+        }
+        stage('Push Docker Image') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub',
+                    usernameVariable: 'DOCKERHUB_USER',
+                    passwordVariable: 'DOCKERHUB_TOKEN'
+                )]) {
+                    sh '''
+                        set +x
+                        export DOCKER_CONFIG="$(mktemp -d)"
+                        trap 'rm -rf "$DOCKER_CONFIG"' EXIT
+        
+                        printf '%s' "$DOCKERHUB_TOKEN" |
+                            docker login docker.io \
+                                --username "$DOCKERHUB_USER" \
+                                --password-stdin
+        
+                        docker tag "petclinic:$IMAGE_TAG" \
+                            "anxlime/petclinic:$IMAGE_TAG"
+        
+                        docker push "anxlime/petclinic:$IMAGE_TAG"
+                    '''
+                }
+            }
+        }
+    }
+    post {
+        always {
+            junit testResults: 'target/surefire-reports/*.xml',
+                  allowEmptyResults: true
+        }
+        success {
+            archiveArtifacts artifacts: 'target/spring-petclinic-*.jar',
+                             fingerprint: true
+        }
+    }
+}
