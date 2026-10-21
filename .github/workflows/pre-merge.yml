@@ -1,0 +1,48 @@
+name: Smart Tests Demo
+
+env:
+  SMART_TESTS_TOKEN: ${{ secrets.SMART_TESTS_TOKEN }}
+  SMART_TESTS_TOKEN_DEBUG: 1
+  SMART_TESTS_TOKEN_ERROR: 1
+  SMART_TESTS_ORGANIZATION: "cloudbees"
+  SMART_TESTS_WORKSPACE: "pts-v2-workshop-klee"
+
+on:
+  pull_request:
+    branches:
+      - main
+      
+jobs:
+  PreMergeTest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: 21
+          distribution: "adopt"
+      - name: Install dependencies
+        run: pip install --user --upgrade smart-tests-cli~=2.0
+      - name: Smart Tests verify
+        run: smart-tests verify
+      - name: Record commits and build
+        run: smart-tests record build --build ${{ github.run_id }}
+      - name: Compile
+        run: mvn compile
+      - name: Smart Tests subset
+        run: |
+          smart-tests record session --build ${{ github.run_id }} --test-suite my-test-suite > session.txt
+          cat session.txt
+          smart-tests subset maven --session @session.txt --use-case one-commit --get-tests-from-guess --target 50% > smart-tests-subset.txt
+          cat smart-tests-subset.txt
+      - name: Test
+        run: mvn test -DincludesFile=smart-tests-subset.txt
+      - name: Smart Tests record tests
+        if: always()
+        run: smart-tests record tests --allow-test-before-build --session $(cat session.txt) maven ./**/target/surefire-reports
