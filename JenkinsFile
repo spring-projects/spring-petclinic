@@ -30,6 +30,15 @@ pipeline {
                 sh 'mvn -B test'
             }
         }
+	
+	stage('Build Docker Image') {
+            steps {
+                script {
+                    env.IMAGE_TAG = "sha-${env.GIT_COMMIT.take(12)}"
+                }
+                sh 'docker build -t petclinic:$IMAGE_TAG .'
+            }
+        }
     }
     post {
         always {
