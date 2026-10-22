@@ -9,6 +9,7 @@ pipeline {
         DOCKER_HOST = 'tcp://docker:2376'
         DOCKER_TLS_VERIFY = '1'
         DOCKER_CERT_PATH = '/certs/client'
+        DEPLOY_HOST = '178.154.250.190'
     }
     stages {
         stage('Check Docker') {
@@ -60,6 +61,42 @@ pipeline {
                             "anxlime/petclinic:$IMAGE_TAG"
         
                         docker push "anxlime/petclinic:$IMAGE_TAG"
+                    '''
+                }
+            }
+        }
+        stage('Deploy') {
+            when {
+                branch 'main'
+            }
+        
+            steps {
+                sshagent(credentials: ['yandex-vm']) {
+                    sh '''
+                        set -eu
+        
+                        DEPLOY_MANIFEST="$(mktemp)"
+                        trap 'rm -f "$DEPLOY_MANIFEST"' EXIT
+        
+                        sed "s|image: anxlime/petclinic:.*|image: anxlime/petclinic:$IMAGE_TAG|" \
+                            deploy/manifests/petclinic.yaml > "$DEPLOY_MANIFEST"
+        
+                        scp \
+                            -o BatchMode=yes \
+                            -o StrictHostKeyChecking=yes \
+                            -o UserKnownHostsFile=infra/known_hosts \
+                            "$DEPLOY_MANIFEST" \
+                            "ubuntu@$DEPLOY_HOST:/tmp/petclinic-$IMAGE_TAG.yaml"
+        
+                        ssh \
+                            -o BatchMode=yes \
+                            -o StrictHostKeyChecking=yes \
+                            -o UserKnownHostsFile=infra/known_hosts \
+                            "ubuntu@$DEPLOY_HOST" \
+                            "sudo k3s kubectl apply -f /tmp/petclinic-$IMAGE_TAG.yaml &&
+                             sudo k3s kubectl -n petclinic rollout status deployment/petclinic --timeout=300s &&
+                             curl --fail --silent --show-error http://127.0.0.1/ >/dev/null &&
+                             rm -f /tmp/petclinic-$IMAGE_TAG.yaml"
                     '''
                 }
             }

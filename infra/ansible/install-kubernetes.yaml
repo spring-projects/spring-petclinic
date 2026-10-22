@@ -1,0 +1,92 @@
+---
+- name: Install single-node Kubernetes
+  hosts: kubernetes
+  become: true
+
+  vars:
+    k3s_version: "v1.34.12+k3s1"
+
+  tasks:
+    - name: Install required packages
+      ansible.builtin.apt:
+        name:
+          - curl
+          - ca-certificates
+        state: present
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Create K3s configuration directory
+      ansible.builtin.file:
+        path: /etc/rancher/k3s
+        state: directory
+        mode: "0755"
+
+    - name: Configure K3s and container log rotation
+      ansible.builtin.copy:
+        dest: /etc/rancher/k3s/config.yaml
+        mode: "0600"
+        content: |
+          write-kubeconfig-mode: "0600"
+          kubelet-arg:
+            - "container-log-max-size=10Mi"
+            - "container-log-max-files=2"
+      notify: Restart K3s
+
+    - name: Download K3s installation script
+      ansible.builtin.get_url:
+        url: https://get.k3s.io
+        dest: /usr/local/src/install-k3s.sh
+        mode: "0700"
+
+    - name: Install K3s
+      ansible.builtin.command:
+        cmd: /bin/sh /usr/local/src/install-k3s.sh
+        creates: /etc/systemd/system/k3s.service
+      environment:
+        INSTALL_K3S_VERSION: "{{ k3s_version }}"
+        INSTALL_K3S_EXEC: "server"
+
+    - name: Enable and start K3s
+      ansible.builtin.systemd:
+        name: k3s
+        enabled: true
+        state: started
+
+    - name: Apply configuration changes
+      ansible.builtin.meta: flush_handlers
+
+    - name: Wait for Kubernetes node to become Ready
+      ansible.builtin.command:
+        cmd: /usr/local/bin/k3s kubectl wait --for=condition=Ready node --all --timeout=180s
+      register: node_ready
+      retries: 5
+      delay: 10
+      until: node_ready.rc == 0
+      changed_when: false
+
+    - name: Get Kubernetes nodes
+      ansible.builtin.command:
+        cmd: /usr/local/bin/k3s kubectl get nodes -o wide
+      register: cluster_nodes
+      changed_when: false
+
+    - name: Show Kubernetes nodes
+      ansible.builtin.debug:
+        var: cluster_nodes.stdout_lines
+
+    - name: Check remaining disk space
+      ansible.builtin.command:
+        cmd: df -h /
+      register: disk_space
+      changed_when: false
+
+    - name: Show remaining disk space
+      ansible.builtin.debug:
+        var: disk_space.stdout_lines
+
+  handlers:
+    - name: Restart K3s
+      ansible.builtin.systemd:
+        name: k3s
+        state: restarted
