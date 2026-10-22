@@ -95,8 +95,12 @@ pipeline {
                             "ubuntu@$DEPLOY_HOST" \
                             "sudo k3s kubectl apply -f /tmp/petclinic-$IMAGE_TAG.yaml &&
                              sudo k3s kubectl -n petclinic rollout status deployment/petclinic --timeout=300s &&
-                             curl --fail --silent --show-error http://127.0.0.1/ >/dev/null &&
-                             rm -f /tmp/petclinic-$IMAGE_TAG.yaml"
+                             curl --fail --silent --show-error \
+                                 --connect-timeout 5 --max-time 10 \
+                                 --retry 12 --retry-delay 5 --retry-max-time 120 \
+                                 --retry-connrefused \
+                                 http://127.0.0.1/ >/dev/null &&
+			     rm -f /tmp/petclinic-$IMAGE_TAG.yaml"
                     '''
                 }
             }
