@@ -114,11 +114,11 @@ public class PetClinicConcurrencyTests {
 		Owner updatedOwner = ownerRepository.findById(ownerId).get();
 		int newPetCount = updatedOwner.getPets().size();
 
-		System.out.println("--- Concurrency Test Assertions ---");
-		System.out.println("Successful additions: " + successCount.get());
-		System.out.println("Failed additions: " + failureCount.get());
-		System.out.println("Original Pet Count: " + initialPetCount);
-		System.out.println("Final Pet Count: " + newPetCount);
+		IO.println("--- Concurrency Test Assertions ---");
+		IO.println("Successful additions: " + successCount.get());
+		IO.println("Failed additions: " + failureCount.get());
+		IO.println("Original Pet Count: " + initialPetCount);
+		IO.println("Final Pet Count: " + newPetCount);
 
 		// With the fix, exactly ONE concurrent request must succeed
 		assertThat(successCount.get()).isEqualTo(1);
