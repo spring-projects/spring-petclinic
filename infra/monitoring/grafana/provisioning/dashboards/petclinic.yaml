@@ -1,0 +1,12 @@
+apiVersion: 1
+
+providers:
+  - name: petclinic
+    orgId: 1
+    folder: DevOps Diploma
+    type: file
+    disableDeletion: true
+    updateIntervalSeconds: 30
+    allowUiUpdates: true
+    options:
+      path: /var/lib/grafana/dashboards
