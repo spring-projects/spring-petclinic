@@ -14,6 +14,7 @@ ExecStart=/usr/bin/ssh -T \
     -o ServerAliveCountMax=3 \
     -i %h/.ssh/devops_project \
     -L 127.0.0.1:19090:127.0.0.1:9090 \
+    -R 127.0.0.1:19200:127.0.0.1:9200 \
     ubuntu@178.154.250.190 \
     sudo -n /usr/local/bin/k3s kubectl -n petclinic port-forward \
     --address=127.0.0.1 deployment/petclinic 9090:9090

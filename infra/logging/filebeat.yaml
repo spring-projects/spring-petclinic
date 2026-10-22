@@ -1,0 +1,104 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: filebeat-config
+  namespace: petclinic
+data:
+  filebeat.yaml: |
+    filebeat.inputs:
+      - type: filestream
+        id: petclinic-container-logs
+        enabled: true
+        prospector.scanner.symlinks: true
+        paths:
+          - /var/log/containers/petclinic-*_petclinic_petclinic-*.log
+        parsers:
+          - container:
+              stream: all
+              format: cri
+          - multiline:
+              type: pattern
+              pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}T'
+              negate: true
+              match: after
+              max_lines: 500
+              timeout: 5s
+        fields:
+          service:
+            name: petclinic
+          environment: diploma
+        fields_under_root: true
+
+    output.elasticsearch:
+      hosts: ["http://127.0.0.1:19200"]
+
+    setup.template.settings:
+      index.number_of_shards: 1
+      index.number_of_replicas: 0
+
+    setup.ilm.enabled: true
+
+    queue.mem:
+      events: 1024
+      flush.min_events: 128
+
+    logging.level: info
+    logging.to_files: false
+    logging.metrics.enabled: false
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: filebeat
+  namespace: petclinic
+spec:
+  selector:
+    matchLabels:
+      app: filebeat
+  template:
+    metadata:
+      labels:
+        app: filebeat
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: filebeat
+          image: docker.elastic.co/beats/filebeat:8.19.23
+          args:
+            - "-e"
+            - "-c"
+            - "/etc/filebeat-config/filebeat.yaml"
+          securityContext:
+            runAsUser: 0
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
+          volumeMounts:
+            - name: config
+              mountPath: /etc/filebeat-config
+              readOnly: true
+            - name: logs
+              mountPath: /var/log
+              readOnly: true
+            - name: data
+              mountPath: /usr/share/filebeat/data
+      volumes:
+        - name: config
+          configMap:
+            name: filebeat-config
+            defaultMode: 0644
+        - name: logs
+          hostPath:
+            path: /var/log
+            type: Directory
+        - name: data
+          hostPath:
+            path: /var/lib/filebeat-petclinic
+            type: DirectoryOrCreate
