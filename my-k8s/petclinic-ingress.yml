@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+
+metadata:
+  name: petclinic-ingress
+
+spec:
+  rules:
+  - host: petclinic.local
+
+
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+
+        backend:
+          service:
+            name: petclinic-service
+            port:
+              number: 8080

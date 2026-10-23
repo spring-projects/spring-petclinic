@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: petclinic-config
+
+data:
+  SPRING_PROFILES_ACTIVE: postgres
+  POSTGRES_URL: jdbc:postgresql://postgres-service:5432/petclinic
+  POSTGRES_USER: petclinic
+  POSTGRES_PASS: sivatest
+
