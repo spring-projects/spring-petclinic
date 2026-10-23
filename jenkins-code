@@ -1,0 +1,75 @@
+pipeline {
+    agent any
+    
+    environment {
+        DOCKER_IMAGE = "sivakumar1207/petclinic:v1"
+        KUBECONFIG = "/var/lib/jenkins/.kube/config"
+    }
+    
+    stages {
+        stage ('Checkout') {
+            steps {
+                git(
+                    branch: 'dev',
+                    url: 'https://github.com/Siva-Kumar10/spring-petclinic.git'
+                )
+            }
+        }
+        
+        stage ('Build') {
+            steps {
+                sh 'mvn clean package -DskipTests'
+            }
+        }
+        
+        stage ('Docker Build') {
+            steps {
+                sh '''
+                docker build -t sivakumar1207/petclinic:v1 .
+                '''
+            }
+        }
+        
+        stage ('Docker Push') {
+            steps {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'dockerhub-cred',
+                        usernameVariable: 'DOCKER_USER',
+                        passwordVariable: 'DOCKER_PASS'
+                    )
+                ]) { 
+                    sh '''
+                    echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                    docker push $DOCKER_IMAGE
+                    '''
+                }
+            }
+        }
+        
+        stage ('Verfiy Kubernetes') {
+            steps {
+                sh '''
+                export KUBECONFIG=/var/lib/jenkins/.kube/config
+                
+                kubectl get nodes
+                kubectl get pods
+                '''
+            }
+        }
+        
+        stage ('Deploy to Kubernetes') {
+            steps {
+                sh '''
+                export KUBECONFIG=/var/lib/jenkins/.kube/config
+                
+                kubectl apply -f my-k8s/
+                
+                kubectl rollout restart deployment petclinic
+                
+                kubectl get pods
+                '''
+            }
+        }
+    }
+}
