@@ -46,3 +46,4 @@ out/
 _site/
 *.css
 !petclinic.css
+my-k8s/minikube-linux-amd64
