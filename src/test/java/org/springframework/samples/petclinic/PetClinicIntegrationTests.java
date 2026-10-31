@@ -63,6 +63,24 @@ public class PetClinicIntegrationTests {
 		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
 
+	@Test
+	void petFormLocalization() {
+		RestTemplate template = builder.baseUri("http://localhost:" + port).build();
+		ResponseEntity<String> result = template.exchange(RequestEntity.get("/owners/1/pets/new?lang=es").build(),
+				String.class);
+		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(result.getBody()).contains("Nombre", "Fecha de nacimiento", "Tipo", "Agregar nueva mascota");
+	}
+
+	@Test
+	void visitFormLocalization() {
+		RestTemplate template = builder.baseUri("http://localhost:" + port).build();
+		ResponseEntity<String> result = template
+			.exchange(RequestEntity.get("/owners/1/pets/1/visits/new?lang=es").build(), String.class);
+		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(result.getBody()).contains("Fecha", "Descripción");
+	}
+
 	public static void main(String[] args) {
 		SpringApplication.run(PetClinicApplication.class, "--spring.docker.compose.lifecycle-management=NONE");
 	}
