@@ -17,13 +17,13 @@
           <span th:text="${owner?.firstName + ' ' + owner?.lastName}" />
         </div>
       </div>
-      <input th:replace="~{fragments/inputField :: input ('Name', 'name', 'text')}" />
-      <input th:replace="~{fragments/inputField :: input ('Birth Date', 'birthDate', 'date')}" />
-      <input th:replace="~{fragments/selectField :: select ('Type', 'type', ${types})}" />
+      <input th:replace="~{fragments/inputField :: input (#{name}, 'name', 'text')}" />
+      <input th:replace="~{fragments/inputField :: input (#{birthDate}, 'birthDate', 'date')}" />
+      <input th:replace="~{fragments/selectField :: select (#{type}, 'type', ${types})}" />
     </div>
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
-        <button th:with="text=${pet['new']} ? 'Add Pet' : 'Update Pet'" class="btn btn-primary" type="submit"
+        <button th:with="text=${pet['new']} ? #{addNewPet} : #{editPet}" class="btn btn-primary" type="submit"
           th:text="${text}">Add Pet</button>
       </div>
     </div>
