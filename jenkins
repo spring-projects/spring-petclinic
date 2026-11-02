@@ -1,0 +1,50 @@
+
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                echo 'Checking out source code'
+                git branch: 'main',
+                    url: 'https://github.com/sumitepam08/spring-petclinic.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo 'Building Java application'
+                bat 'mvnw.cmd clean compile'
+            }
+        }
+
+        stage('Unit Tests') {
+            steps {
+                echo 'Executing unit tests'
+                bat 'mvnw.cmd test'
+            }
+        }
+
+        stage('Publish Test Results') {
+            steps {
+                junit '**/target/surefire-reports/*.xml'
+            }
+        }
+
+    }
+
+    post {
+        success {
+            echo 'CI Pipeline completed successfully!'
+        }
+
+        failure {
+            echo 'CI Pipeline failed!'
+        }
+
+        always {
+            echo 'Pipeline execution finished.'
+        }
+    }
+}
