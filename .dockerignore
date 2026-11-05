@@ -1,0 +1,8 @@
+.git
+target
+build
+.gradle
+.idea
+.vscode
+*.md
+k8s
