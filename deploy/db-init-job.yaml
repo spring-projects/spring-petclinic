@@ -1,0 +1,63 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: petclinic-db-init
+  namespace: petclinic
+  labels:
+    app: petclinic-db-init
+spec:
+  backoffLimit: 3
+  ttlSecondsAfterFinished: 3600
+  template:
+    metadata:
+      labels:
+        app: petclinic-db-init
+        postgres-client: "true"
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+        runAsGroup: 999
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: db-init
+          image: petclinic:dev
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: petclinic-config
+          env:
+            - name: SPRING_SQL_INIT_MODE
+              value: always
+            - name: SPRING_MAIN_WEB_APPLICATION_TYPE
+              value: none
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: petclinic-db
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: petclinic-db
+                  key: POSTGRES_PASSWORD
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              memory: 768Mi
+      volumes:
+        - name: tmp
+          emptyDir: {}

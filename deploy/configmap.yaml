@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: petclinic-config
+  namespace: petclinic
+  labels:
+    app: petclinic
+data:
+  SPRING_PROFILES_ACTIVE: postgres
+  POSTGRES_URL: jdbc:postgresql://postgres:5432/petclinic

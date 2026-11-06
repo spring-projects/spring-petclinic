@@ -14,7 +14,15 @@ spec:
     metadata:
       labels:
         app: petclinic
+        postgres-client: "true"
     spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+        runAsGroup: 999
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: petclinic
           image: petclinic:dev
@@ -22,6 +30,30 @@ spec:
           ports:
             - name: http
               containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: petclinic-config
+          env:
+            - name: SPRING_SQL_INIT_MODE
+              value: never
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: petclinic-db
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: petclinic-db
+                  key: POSTGRES_PASSWORD
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
           resources:
             requests:
               cpu: 250m
@@ -44,3 +76,6 @@ spec:
               path: /actuator/health/liveness
               port: http
             periodSeconds: 10
+      volumes:
+        - name: tmp
+          emptyDir: {}
