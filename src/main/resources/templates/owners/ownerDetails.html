@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+
+<html xmlns:th="https://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'owners')}">
+
+<body>
+
+  <h2 th:text="#{ownerInformation}">Owner Information</h2>
+
+  <div th:if="${message}" class="alert alert-success" id="success-message">
+    <span th:text="${message}"></span>
+  </div>
+
+  <div th:if="${error}" class="alert alert-danger" id="error-message">
+    <span th:text="${error}"></span>
+  </div>
+
+  <table class="table table-striped" th:object="${owner}">
+    <tr>
+      <th th:text="#{name}">Name</th>
+      <td><b th:text="*{firstName + ' ' + lastName}"></b></td>
+    </tr>
+    <tr>
+      <th th:text="#{address}">Address</th>
+      <td th:text="*{address}"></td>
+    </tr>
+    <tr>
+      <th th:text="#{city}">City</th>
+      <td th:text="*{city}"></td>
+    </tr>
+    <tr>
+      <th th:text="#{telephone}">Telephone</th>
+      <td th:text="*{telephone}"></td>
+    </tr>
+  </table>
+
+  <a th:href="@{__${owner.id}__/edit}" class="btn btn-primary" th:text="#{editOwner}">Edit
+    Owner</a>
+  <a th:href="@{__${owner.id}__/pets/new}" class="btn btn-primary" th:text="#{addNewPet}">Add
+    New Pet</a>
+
+  <br />
+  <br />
+  <br />
+  <h2 th:text="#{petsAndVisits}">Pets and Visits</h2>
+
+  <table class="table table-striped">
+
+    <tr th:each="pet : ${owner.pets}">
+      <td valign="top">
+        <dl class="dl-horizontal">
+          <dt th:text="#{name}">Name</dt>
+          <dd th:text="${pet.name}"></dd>
+          <dt th:text="#{birthDate}">Birth Date</dt>
+          <dd th:text="${#temporals.format(pet.birthDate, 'yyyy-MM-dd')}"></dd>
+          <dt th:text="#{type}">Type</dt>
+          <dd th:text="${pet.type}"></dd>
+        </dl>
+      </td>
+      <td valign="top">
+        <table class="table-condensed">
+          <thead>
+            <tr>
+              <th th:text="#{visitDate}">Visit Date</th>
+              <th th:text="#{description}">Description</th>
+            </tr>
+          </thead>
+          <tr th:each="visit : ${pet.visits}">
+            <td th:text="${#temporals.format(visit.date, 'yyyy-MM-dd')}"></td>
+            <td th:text="${visit?.description}"></td>
+          </tr>
+          <tr>
+            <td><a th:href="@{__${owner.id}__/pets/__${pet.id}__/edit}" th:text="#{editPet}">Edit Pet</a></td>
+            <td><a th:href="@{__${owner.id}__/pets/__${pet.id}__/visits/new}" th:text="#{addVisit}">Add Visit</a></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+  </table>
+  <script>
+    // Function to hide the success and error messages after 3 seconds
+    function hideMessages() {
+      setTimeout(function () {
+        document.getElementById("success-message").style.display = "none";
+        document.getElementById("error-message").style.display = "none";
+      }, 3000); // 3000 milliseconds (3 seconds)
+    }
+
+    // Call the function to hide messages
+    hideMessages();
+  </script>
+
+</body>
+
+
+</html>
