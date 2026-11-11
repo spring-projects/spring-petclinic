@@ -99,22 +99,15 @@ jobs:
         run: |
           mkdir -p reports
           # Target Gradle explicitly and output standard CycloneDX JSON
-          npx @cdxgen/cdxgen \
-            -t gradle \
-            --include-formulation \
-            --bom-audit \ 
-            -o reports/sbom.petclinic.cdxgen.json
+          npx @cdxgen/cdxgen -t gradle -o reports/sbom.petclinic.cdxgen.json --include-formulation --bom-audit
 
       # Step 2: AI/ML BOM (or Python AI microservice)
       - name: Generate AI BOM with cdxgen
         run: |
           # Use -t ai (or target the ai-service directory)
           npx @cdxgen/cdxgen \
-            -t ai \
-            --include-formulation \
-            --bom-audit \
-            --bom-audit-categories ai-bom \
-            -o reports/aibom.cdxgen.json
+            -t ai -o reports/aibom.cdxgen.json --include-formulation --bom-audit --bom-audit-categories ai-bom
+            
 
       # Step 3: Upload Artifacts
       - name: Upload cdxgen SBOM Artifacts
