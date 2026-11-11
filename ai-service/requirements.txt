@@ -1,5 +1,5 @@
-fastapi==0.110.0
-uvicorn==0.28.0
-onnxruntime==1.17.1
-pillow==10.2.0
-pydantic==2.6.4
+fastapi>=0.115.0
+uvicorn>=0.30.0
+onnxruntime>=1.20.0
+pillow>=10.4.0
+pydantic>=2.9.0

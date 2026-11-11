@@ -169,3 +169,61 @@ jobs:
           test -s "${{ steps.ai-bom.outputs.warning-report-path }}"
           test -s "${{ steps.ai-bom.outputs.summary-path }}"
           test "${{ steps.ai-bom.outputs.status }}" = "success"
+
+  # --------------------------------------------------------------------------
+  # Software & AI BOM Generation via cdxgen
+  # --------------------------------------------------------------------------
+  generate-cdxgen-boms:
+    name: "Generate SBOM & AI BOM (cdxgen)"
+    runs-on: ubuntu-latest
+    permissions:
+        contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # Pin to v7.0.2 (Immutable SHA)
+        with:
+          fetch-depth: 1
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78 # Pin to v6.2.0
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # Pin to v7.1.0
+        with:
+          python-version: '3.11'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # Pin to v7.1.0
+        with:
+          node-version: '24'
+
+      # Step 1: Software SBOM for Spring PetClinic (Gradle)
+      - name: Generate Software CycloneDX SBOM with cdxgen
+        run: |
+          mkdir -p reports
+          # Target Gradle explicitly and output standard CycloneDX JSON[cite: 2]
+          npx @cdxgen/cdxgen -t gradle -o reports/sbom.petclinic.cdxgen.json
+
+      # Step 2: AI/ML BOM (or Python AI microservice)
+      - name: Generate AI BOM with cdxgen
+        run: |
+          # Use -t ai (or target the ai-service directory)
+          npx @cdxgen/cdxgen \
+            -t ai \
+            --include-formulation \
+            --bom-audit \
+            --bom-audit-categories ai-bom \
+            -o reports/aibom.cdxgen.json
+
+      # Step 3: Upload Artifacts
+      - name: Upload cdxgen SBOM Artifacts
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # Pin to v7.0.2
+        with:
+          name: cdxgen-bom-artifacts
+          path: reports/*.json
+          retention-days: 30
