@@ -139,3 +139,33 @@ jobs:
           name: ai-bill-of-materials
           path: aibom-artifacts/aibom.cyclonedx.json
           retention-days: 30
+
+  # --------------------------------------------------------------------------
+  # 3. AI BOM Generation using 0disoft CycloneDX ML BOM Generator (Optional)
+  # --------------------------------------------------------------------------
+  0disoft-ai-bom:
+    name: "Generate AI BOM (0disoft CycloneDX ML)"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # Pin to v7.0.2 (Immutable SHA)
+        with:
+          fetch-depth: 1
+
+      - name: "0disoft AI BOM"
+        uses: 0disoft/ai-bom-generator@d2748ee82a1c72ada257e5d583b337fd53db87fc # Pin to v0.8.2 (Immutable SHA)
+        with:
+          model-directory: .
+          warnings: allow
+
+      - name: "Verify AI-BOM outputs"
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s "${{ steps.ai-bom.outputs.bom-path }}"
+          test -s "${{ steps.ai-bom.outputs.warning-report-path }}"
+          test -s "${{ steps.ai-bom.outputs.summary-path }}"
+          test "${{ steps.ai-bom.outputs.status }}" = "success"
