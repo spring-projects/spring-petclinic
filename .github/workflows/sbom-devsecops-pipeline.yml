@@ -100,7 +100,7 @@ jobs:
           mkdir -p reports
           # Target Gradle explicitly and output standard CycloneDX JSON
           npx @cdxgen/cdxgen \
-            -t gradle 
+            -t gradle \
             --include-formulation \
             --bom-audit \ 
             -o reports/sbom.petclinic.cdxgen.json
