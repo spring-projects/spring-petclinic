@@ -18,6 +18,7 @@ base_model: google/vit-base-patch16-224
 # Pet Breed Classification Model
 
 ## Model Details
+
 * **Architecture:** Vision Transformer (ViT-B/16) exported to ONNX Runtime
 * **Task:** Multi-class classification (Dog & Cat Breeds)
 * **Intended Use:** Assist intake desk staff with automated breed identification in Spring PetClinic.
