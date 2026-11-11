@@ -61,117 +61,9 @@ jobs:
           path: sbom-artifacts/*.json
           retention-days: 30
 
-  # --------------------------------------------------------------------------
-  # 2. AI BOM Extraction & Packaging (Model Card + Checkpoint Hashes)
-  # --------------------------------------------------------------------------
-  generate-ai-bom:
-    name: "Generate AI BOM (CycloneDX 1.6 ML)"
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # Pin to v7.0.1 (Immutable SHA)
-        with:
-          fetch-depth: 1
-
-      - name: Set up Python
-        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # Pin to v5.4.0
-        with:
-          python-version: "3.11"
-
-      - name: Extract Model Checksum and Generate AI BOM Manifest
-        run: |
-          mkdir -p aibom-artifacts
-
-          # Inspect model file or use fallback mock digest
-          MODEL_PATH="models/classifier.onnx"
-          if [ -f "$MODEL_PATH" ]; then
-            MODEL_SHA256=$(sha256sum "$MODEL_PATH" | awk '{print $1}')
-          else
-            MODEL_SHA256="simulated-8f4b23b10b01ce4598a28723c914bf6"
-          fi
-
-          # Output CycloneDX 1.6 ML-BOM manifest
-          cat <<EOF > aibom-artifacts/aibom.cyclonedx.json
-          {
-            "\$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
-            "bomFormat": "CycloneDX",
-            "specVersion": "1.6",
-            "serialNumber": "urn:uuid:$(uuidgen)",
-            "version": 1,
-            "components": [
-              {
-                "type": "machine-learning-model",
-                "name": "pet-breed-classifier",
-                "version": "1.0.0",
-                "hashes": [
-                  {
-                    "alg": "SHA-256",
-                    "content": "${MODEL_SHA256}"
-                  }
-                ],
-                "modelCard": {
-                  "modelParameters": {
-                    "approach": {
-                      "type": "supervised"
-                    },
-                    "task": "image-classification",
-                    "architectureFamily": "Vision-Transformer",
-                    "modelArchitecture": "ViT-B/16-ONNX"
-                  },
-                  "considerations": {
-                    "users": ["Clinic Intake Staff"],
-                    "useCases": ["Auto-suggesting pet breed categories during intake"],
-                    "limitations": ["Not intended for clinical medical diagnosis"]
-                  }
-                }
-              }
-            ]
-          }
-          EOF
-          echo "AI BOM generated successfully."
-
-      - name: Upload AI BOM Artifact
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # Pin to v7.0.2
-        with:
-          name: ai-bill-of-materials
-          path: aibom-artifacts/aibom.cyclonedx.json
-          retention-days: 30
 
   # --------------------------------------------------------------------------
-  # 3. AI BOM Generation using 0disoft CycloneDX ML BOM Generator (Optional)
-  # --------------------------------------------------------------------------
-  ai-bom:
-    name: "Generate AI BOM (0disoft CycloneDX ML)"
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-
-    steps:
-      - name: "Checkout repository"
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # Pin to v7.0.2 (Immutable SHA)
-        with:
-          fetch-depth: 1
-
-      - name: "0disoft AI BOM"
-        uses: 0disoft/ai-bom-generator@d2748ee82a1c72ada257e5d583b337fd53db87fc # Pin to v0.8.2 (Immutable SHA)
-        with:
-          model-directory: .
-          warnings: allow
-
-      - name: "Verify AI-BOM outputs"
-        shell: bash
-        run: |
-          set -euo pipefail
-          test -s "${{ steps.ai-bom.outputs.bom-path }}"
-          test -s "${{ steps.ai-bom.outputs.warning-report-path }}"
-          test -s "${{ steps.ai-bom.outputs.summary-path }}"
-          test "${{ steps.ai-bom.outputs.status }}" = "success"
-
-  # --------------------------------------------------------------------------
-  # Software & AI BOM Generation via cdxgen
+  # 2.Software & AI BOM Generation via cdxgen
   # --------------------------------------------------------------------------
   generate-cdxgen-boms:
     name: "Generate SBOM & AI BOM (cdxgen)"
@@ -206,8 +98,12 @@ jobs:
       - name: Generate Software CycloneDX SBOM with cdxgen
         run: |
           mkdir -p reports
-          # Target Gradle explicitly and output standard CycloneDX JSON[cite: 2]
-          npx @cdxgen/cdxgen -t gradle -o reports/sbom.petclinic.cdxgen.json
+          # Target Gradle explicitly and output standard CycloneDX JSON
+          npx @cdxgen/cdxgen \
+            -t gradle 
+            --include-formulation \
+            --bom-audit \ 
+            -o reports/sbom.petclinic.cdxgen.json
 
       # Step 2: AI/ML BOM (or Python AI microservice)
       - name: Generate AI BOM with cdxgen
