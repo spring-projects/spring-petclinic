@@ -23,3 +23,8 @@ steps:
       testResultsFormat: 'JUnit'
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
       failTaskOnFailedTests: true
+
+  - task: PublishCodeCoverageResults@2
+    condition: succeededOrFailed()
+    inputs:
+      summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/jacoco.xml'
