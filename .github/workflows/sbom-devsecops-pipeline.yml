@@ -1,0 +1,118 @@
+name: "SBOM & AI BOM Generation Pipeline"
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - master
+      - main
+  schedule:
+    # Weekly audit run (Mondays at 05:00 UTC)
+    - cron: '0 5 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  # --------------------------------------------------------------------------
+  # 1. Dual Software SBOM Generation (Gradle Native + Anchore Syft)
+  # --------------------------------------------------------------------------
+  generate-software-sboms:
+    name: "Generate Software SBOMs (Gradle + Syft)"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # Pin to v7.0.2 (Immutable SHA)
+        with:
+          fetch-depth: 1
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78 # Pin to v6.2.0
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+
+      # Approach 1: Build-Native Gradle CycloneDX Plugin (from build.gradle)
+      - name: Generate Gradle Native CycloneDX SBOM
+        run: |
+          chmod +x gradlew
+          ./gradlew cyclonedxDirectBom -x test
+          mkdir -p sbom-artifacts
+          if [ -f "build/reports/bom.json" ]; then
+            cp build/reports/bom.json sbom-artifacts/sbom.gradle-native.cyclonedx.json
+          fi
+
+      # Approach 2: Universal CLI Scanner (Anchore Syft)
+      - name: Generate Syft CycloneDX SBOM
+        uses: anchore/sbom-action@66cbf4bc1f1c0d2edc94016e65bc221b6bb0ad6c # Pin to v0.24.3
+        with:
+          path: "./"
+          format: "cyclonedx-json"
+          output-file: "sbom-artifacts/sbom.syft.cyclonedx.json"
+
+      - name: Upload Software SBOM Artifacts
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # Pin to v7.0.2
+        with:
+          name: software-bill-of-materials
+          path: sbom-artifacts/*.json
+          retention-days: 30
+
+
+  # --------------------------------------------------------------------------
+  # 2.Software & AI BOM Generation via cdxgen
+  # --------------------------------------------------------------------------
+  generate-cdxgen-boms:
+    name: "Generate SBOM & AI BOM (cdxgen)"
+    runs-on: ubuntu-latest
+    permissions:
+        contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # Pin to v7.0.2 (Immutable SHA)
+        with:
+          fetch-depth: 1
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78 # Pin to v6.2.0
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # Pin to v7.1.0
+        with:
+          python-version: '3.11'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # Pin to v7.1.0
+        with:
+          node-version: '24'
+
+      # Step 1: Software SBOM for Spring PetClinic (Gradle)
+      - name: Generate Software CycloneDX SBOM with cdxgen
+        run: |
+          mkdir -p reports
+          # Target Gradle explicitly and output standard CycloneDX JSON
+          npx @cdxgen/cdxgen -t gradle -o reports/sbom.petclinic.cdxgen.json --include-formulation --bom-audit
+
+      # Step 2: AI/ML BOM (or Python AI microservice)
+      - name: Generate AI BOM with cdxgen
+        run: |
+          # Use -t ai (or target the ai-service directory)
+          npx @cdxgen/cdxgen \
+            -t ai -o reports/aibom.cdxgen.json --include-formulation --bom-audit --bom-audit-categories ai-bom
+            
+
+      # Step 3: Upload Artifacts
+      - name: Upload cdxgen SBOM Artifacts
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # Pin to v7.0.2
+        with:
+          name: cdxgen-bom-artifacts
+          path: reports/*.json
+          retention-days: 30
