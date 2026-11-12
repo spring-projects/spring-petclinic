@@ -42,8 +42,8 @@ jobs:
           chmod +x gradlew
           ./gradlew cyclonedxDirectBom -x test
           mkdir -p sbom-artifacts
-          if [ -f "build/reports/bom.json" ]; then
-            cp build/reports/bom.json sbom-artifacts/sbom.gradle-native.cyclonedx.json
+          if [ -f "build/reports/cyclonedx-direct/bom.json" ]; then
+            cp build/reports/cyclonedx-direct/bom.json sbom-artifacts/sbom.gradle-native.cyclonedx.json
           fi
 
       # Approach 2: Universal CLI Scanner (Anchore Syft)
@@ -54,22 +54,21 @@ jobs:
           format: "cyclonedx-json"
           output-file: "sbom-artifacts/sbom.syft.cyclonedx.json"
 
-      - name: Upload Software SBOM Artifacts
+      - name: Upload Software SBOM Artifacts to GitHub
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # Pin to v7.0.2
         with:
           name: software-bill-of-materials
           path: sbom-artifacts/*.json
           retention-days: 30
 
-
-  # --------------------------------------------------------------------------
-  # 2.Software & AI BOM Generation via cdxgen
+# --------------------------------------------------------------------------
+  # 2. Software & AI BOM Generation via cdxgen (Merged + Single DT Upload)
   # --------------------------------------------------------------------------
   generate-cdxgen-boms:
-    name: "Generate SBOM & AI BOM (cdxgen)"
+    name: "Generate & Merge SBOM + AI BOM (cdxgen)"
     runs-on: ubuntu-latest
     permissions:
-        contents: read
+      contents: read
 
     steps:
       - name: Checkout repository
@@ -94,22 +93,51 @@ jobs:
         with:
           node-version: '24'
 
-      # Step 1: Software SBOM for Spring PetClinic (Gradle)
+      # Step 1: Generate Software CycloneDX SBOM (Gradle)
       - name: Generate Software CycloneDX SBOM with cdxgen
         run: |
           mkdir -p reports
-          # Target Gradle explicitly and output standard CycloneDX JSON
-          npx @cdxgen/cdxgen -t gradle -o reports/sbom.petclinic.cdxgen.json --include-formulation --bom-audit
+          npx @cdxgen/cdxgen \
+            -t gradle \
+            -o reports/sbom.petclinic.cdxgen.json \
+            --include-formulation \
+            --bom-audit
 
-      # Step 2: AI/ML BOM (or Python AI microservice)
+      # Step 2: Generate AI/ML BOM
       - name: Generate AI BOM with cdxgen
         run: |
-          # Use -t ai (or target the ai-service directory)
           npx @cdxgen/cdxgen \
-            -t ai -o reports/aibom.cdxgen.json --include-formulation --bom-audit --bom-audit-categories ai-bom
-            
+            -t ai \
+            -o reports/aibom.cdxgen.json \
+            --include-formulation \
+            --bom-audit \
+            --bom-audit-categories ai-bom
 
-      # Step 3: Upload Artifacts
+      # Step 3: Merge Software SBOM and AI BOM into a single CycloneDX file
+      - name: Merge SBOM and AI BOM via CycloneDX CLI
+        run: |
+          curl -sSL https://github.com/CycloneDX/cyclonedx-cli/releases/latest/download/cyclonedx-linux-x64 -o /tmp/cyclonedx
+          chmod +x /tmp/cyclonedx
+          /tmp/cyclonedx merge \
+            --input-files reports/sbom.petclinic.cdxgen.json reports/aibom.cdxgen.json \
+            --input-format json \
+            --output-format json \
+            --output-file reports/merged.petclinic-ai.cdxgen.json
+
+      # Step 4: Single Upload to Dependency-Track
+      - name: Upload Merged BOM to Dependency-Track
+        id: upload-merged-bom
+        uses: DependencyTrack/gh-upload-sbom@331f980a6eba119842052f447c54b09e4888b4c6 # Pin to v4.3.0
+        with:
+          protocol: ${{ vars.DEPENDENCYTRACK_PROTOCOL }}
+          server-hostname: ${{ vars.DEPENDENCYTRACK_HOSTNAME }}
+          port: ${{ vars.DEPENDENCYTRACK_PORT }}
+          api-key: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
+          project: ${{ secrets.DEPENDENCYTRACK_PROJECT }}
+          bom-filename: "reports/merged.petclinic-ai.cdxgen.json"
+          auto-create: false
+
+      # Step 5: Upload All Artifacts (Individual + Merged) to GitHub Actions
       - name: Upload cdxgen SBOM Artifacts
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # Pin to v7.0.2
         with:
