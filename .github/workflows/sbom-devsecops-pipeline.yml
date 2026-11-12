@@ -101,39 +101,7 @@ jobs:
           # Target Gradle explicitly and output standard CycloneDX JSON
           npx @cdxgen/cdxgen -t gradle -o reports/sbom.petclinic.cdxgen.json --include-formulation --bom-audit
 
-      # Step 2: AI/ML BOM (or Python AI microservice)
-      - name: Generate AI BOM with cdxgen
-        run: |
-          # Use -t ai (or target the ai-service directory)
-          npx @cdxgen/cdxgen \
-            -t ai -o reports/aibom.cdxgen.json --include-formulation --bom-audit --bom-audit-categories ai-bom
-            
-
-      # Step 3: Upload Artifacts
-      - name: Upload cdxgen SBOM Artifacts
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # Pin to v7.0.2
-        with:
-          name: cdxgen-bom-artifacts
-          path: reports/*.json
-          retention-days: 30
-
-  # --------------------------------------------------------------------------
-  # 3.Send SBOM & AI BOM Artifacts to External Repository (e.g., S3, Nexus, Artifactory)
-  #
-  upload-to-dependency-track:
-    name: "Upload SBOM & AI BOM to Dependency-Track"
-    runs-on: ubuntu-latest
-    needs: [generate-software-sboms, generate-cdxgen-boms]
-    permissions:
-      contents: read
-
-    steps:
-      - name: Download SBOM Artifacts from Previous Jobs
-        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # Pin to v8.0.2
-      
-      - name: Display structure of downloaded files
-        run: ls -R
-      
+      # Step 2: Upload SBOM to Dependency-Track
       - name: Upload to Dependency-Track
         id: upload
         uses: DependencyTrack/gh-upload-sbom@331f980a6eba119842052f447c54b09e4888b4c6 # Pin to v4.3.0
@@ -142,7 +110,34 @@ jobs:
           server-hostname: ${{ vars.DEPENDENCYTRACK_HOSTNAME }}
           port: ${{ vars.DEPENDENCYTRACK_PORT }}
           api-key: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
-          project-name: 'spring-petclinic'
-          project-version: '4.0.0'
-          bom-filename: "/path/to/bom.xml"
+          project: ${{ secrets.DEPENDENCYTRACK_PROJECT }}
+          bom-filename: "reports/sbom.petclinic.cdxgen.json"
           auto-create: false
+
+      # Step 3: AI/ML BOM (or Python AI microservice)
+      - name: Generate AI BOM with cdxgen
+        run: |
+          # Use -t ai (or target the ai-service directory)
+          npx @cdxgen/cdxgen \
+            -t ai -o reports/aibom.cdxgen.json --include-formulation --bom-audit --bom-audit-categories ai-bom        
+
+      # Step 4: Upload AI BOM to Dependency-Track
+      - name: Upload to Dependency-Track
+        id: upload
+        uses: DependencyTrack/gh-upload-sbom@331f980a6eba119842052f447c54b09e4888b4c6 # Pin to v4.3.0
+        with:
+          protocol: ${{ vars.DEPENDENCYTRACK_PROTOCOL }}
+          server-hostname: ${{ vars.DEPENDENCYTRACK_HOSTNAME }}
+          port: ${{ vars.DEPENDENCYTRACK_PORT }}
+          api-key: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
+          project: ${{ secrets.DEPENDENCYTRACK_PROJECT }}
+          bom-filename: "reports/aibom.cdxgen.json"
+          auto-create: false
+
+      # Step 5: Upload Artifacts to GitHub Actions
+      - name: Upload cdxgen SBOM Artifacts
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # Pin to v7.0.2
+        with:
+          name: cdxgen-bom-artifacts
+          path: reports/*.json
+          retention-days: 30
