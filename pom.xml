@@ -22,6 +22,11 @@
     <!-- Important for reproducible builds. Update using e.g. ./mvnw versions:set -DnewVersion=... -->
     <project.build.outputTimestamp>2024-11-28T14:37:52Z</project.build.outputTimestamp>
 
+    <!-- SonarQube Cloud -->
+    <sonar.organization>sebastian-villarraga</sonar.organization>
+    <sonar.projectKey>Sebastian-villarraga_spring-petclinic</sonar.projectKey>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+
     <!-- Web dependencies -->
     <webjars-locator.version>1.1.3</webjars-locator.version>
     <webjars-bootstrap.version>5.3.8</webjars-bootstrap.version>
