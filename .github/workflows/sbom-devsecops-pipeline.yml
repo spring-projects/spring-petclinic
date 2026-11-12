@@ -103,7 +103,7 @@ jobs:
 
       # Step 2: Upload SBOM to Dependency-Track
       - name: Upload to Dependency-Track
-        id: upload
+        id: upload-sbom
         uses: DependencyTrack/gh-upload-sbom@331f980a6eba119842052f447c54b09e4888b4c6 # Pin to v4.3.0
         with:
           protocol: ${{ vars.DEPENDENCYTRACK_PROTOCOL }}
@@ -123,7 +123,7 @@ jobs:
 
       # Step 4: Upload AI BOM to Dependency-Track
       - name: Upload to Dependency-Track
-        id: upload
+        id: upload-aibom
         uses: DependencyTrack/gh-upload-sbom@331f980a6eba119842052f447c54b09e4888b4c6 # Pin to v4.3.0
         with:
           protocol: ${{ vars.DEPENDENCYTRACK_PROTOCOL }}
