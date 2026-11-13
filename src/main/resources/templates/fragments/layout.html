@@ -66,6 +66,13 @@
   <div class="container-fluid">
     <div class="container xd-container">
 
+      <div th:if="${successMessage}" class="alert alert-success" id="flash-success">
+        <span th:text="${successMessage}"></span>
+      </div>
+      <div th:if="${errorMessage}" class="alert alert-danger" id="flash-error">
+        <span th:text="${errorMessage}"></span>
+      </div>
+
       <th:block th:insert="${template}" />
 
       <br />

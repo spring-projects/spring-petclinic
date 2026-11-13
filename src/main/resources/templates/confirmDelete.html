@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+<html xmlns:th="https://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'owners')}">
+
+<body>
+
+  <h2 th:text="#{confirmDelete}">Confirm Deletion</h2>
+
+  <div class="alert alert-warning">
+    <span th:text="${warningMessage}"></span>
+  </div>
+
+  <p th:text="${entityName} + ' #' + ${entityId}"></p>
+
+  <form th:action="@{${postUrl}}" method="post">
+    <button type="submit" class="btn btn-danger" th:text="#{delete}">Delete</button>
+    <a th:href="@{${cancelUrl}}" class="btn btn-secondary" th:text="#{cancel}">Cancel</a>
+  </form>
+
+</body>
+
+</html>
