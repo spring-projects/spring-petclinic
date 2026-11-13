@@ -1,25 +1,21 @@
 {
-  "name": "Java",
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-  "features": {
-    "ghcr.io/devcontainers/features/java:1": {
-      "version": "21-oracle",
-      "jdkDistro": "oracle"
+    "name": "Java with SonarQube Cloud",
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+        "ghcr.io/devcontainers/features/java:1": {
+            "version": "21"
+        },
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+        "ghcr.io/devcontainers/features/github-cli:1": {}
     },
-    "ghcr.io/devcontainers/features/azure-cli:1": {},
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
-    "ghcr.io/devcontainers/features/github-cli:1": {}
-  },
-
-  "customizations": {
-    "vscode": {
-      "settings": {},
-      "extensions": [
-        "redhat.vscode-xml",
-        "visualstudioexptteam.vscodeintellicode",
-        "vscjava.vscode-java-pack"
-      ]
-    }
-  },
-  "remoteUser": "vscode"
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "vscjava.vscode-java-pack",
+                "redhat.vscode-xml",
+                "SonarSource.sonarlint-vscode"
+            ]
+        }
+    },
+    "remoteUser": "vscode"
 }
