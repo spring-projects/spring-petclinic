@@ -1,7 +1,7 @@
 
 {
     "name": "Java with SonarQube Cloud",
-    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
     "features": {
         "ghcr.io/devcontainers/features/java:1": {
             "version": "21"
