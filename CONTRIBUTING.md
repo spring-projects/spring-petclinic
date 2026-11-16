@@ -15,7 +15,7 @@ Este repositório é o fork `petclinic-cicd` do Spring PetClinic, usado no Traba
 4. Rode localmente antes de abrir o PR: `./mvnw verify`.
 5. Envie a branch (`git push -u origin <branch>`) e abra um **Pull Request** para a `main`, preenchendo o template.
 6. O PR só é integrado com **1 aprovação** de outra pessoa do grupo e com build e testes passando.
-7. Use "Squash and merge" ou "Rebase and merge" para manter o histórico linear.
+7. Use **"Rebase and merge"** (não "Squash"), para manter o histórico linear e um commit por passo, o que preserva a autoria por pessoa.
 
 **Nunca** faça commit ou push direto na `main`.
 
@@ -44,6 +44,8 @@ Exemplo: `test: adiciona IT de cadastro de dono`.
 
 Testes novos do grupo devem usar esses sufixos. Os testes que já vinham no PetClinic usam `*Tests.java` e não devem ser apagados.
 `PostgresIntegrationTests` e `MySqlIntegrationTests` ficam fora do pipeline (exigem Docker e outros bancos).
+
+Regras para os `*IT`: estendem `IntegrationTestSupport`, criam os próprios dados com sobrenome único e **nunca** fazem asserção sobre totais globais de donos (o H2 é compartilhado entre as classes de teste do mesmo contexto).
 
 ## Dono de cada área
 
