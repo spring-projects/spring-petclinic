@@ -41,7 +41,7 @@ Ordem: P1 e P2 primeiro (todos dependem do repo e do Jenkins); depois P3, P4 e P
 | Rodar a aplicação | `./mvnw spring-boot:run` ou `java -jar target/*.jar` |
 | Só testes de unidade | `./mvnw test` |
 | Unidade + integração | `./mvnw verify` |
-| Só integração (`*IT`) | `./mvnw verify -Dtest=NoSuchTest -Dsurefire.failIfNoSpecifiedTests=false` (pula os de unidade; será validado após configurar o failsafe) |
+| Só integração (`*IT`) | `./mvnw verify -Dtest=NoSuchTest -Dsurefire.failIfNoSpecifiedTests=false` (pula os de unidade) |
 
 > O build já roda `spring-javaformat:validate` e checkstyle (nohttp) na fase `validate`. Se falhar por formatação, rode `./mvnw spring-javaformat:apply`.
 
