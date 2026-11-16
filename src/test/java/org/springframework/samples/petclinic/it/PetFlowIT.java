@@ -12,7 +12,7 @@ import org.springframework.samples.petclinic.owner.Pet;
 /**
  * Integration tests for the Pet flows (add and edit a pet of an owner).
  */
-class PetFlowIT extends AbstractIntegrationTest {
+class PetFlowIT extends IntegrationTestSupport {
 
 	@Test
 	void shouldAddPetToOwner() throws Exception {

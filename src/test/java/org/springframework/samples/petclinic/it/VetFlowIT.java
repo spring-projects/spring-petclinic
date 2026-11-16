@@ -15,9 +15,9 @@ import org.springframework.samples.petclinic.vet.VetRepository;
 
 /**
  * Integration tests for the Vet listing (HTML and JSON). Expected counts come from the
- * repository, so they do not depend on how many vets the seed data has.
+ * repository; the name checks (James, Carter) rely on the seed data in db/h2/data.sql.
  */
-class VetFlowIT extends AbstractIntegrationTest {
+class VetFlowIT extends IntegrationTestSupport {
 
 	@Autowired
 	private VetRepository vets;

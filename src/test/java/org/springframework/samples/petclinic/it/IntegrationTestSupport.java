@@ -12,11 +12,13 @@ import org.springframework.test.web.servlet.MockMvc;
 /**
  * Base class for the group's integration tests (*IT). Boots the full application context
  * with the in-memory H2 database and exposes MockMvc. Every test creates its own data
- * with a unique last name, so tests do not depend on order or on each other.
+ * with a unique last name, so tests do not depend on order or on each other. The H2
+ * database is shared by the test classes, so tests must never assert on global totals of
+ * owners.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
-abstract class AbstractIntegrationTest {
+abstract class IntegrationTestSupport {
 
 	@Autowired
 	protected MockMvc mockMvc;

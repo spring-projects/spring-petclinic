@@ -15,7 +15,7 @@ import org.springframework.samples.petclinic.owner.Pet;
 /**
  * Integration tests for the Visit flow (book a visit for a pet).
  */
-class VisitFlowIT extends AbstractIntegrationTest {
+class VisitFlowIT extends IntegrationTestSupport {
 
 	private Pet addPet(Owner owner) throws Exception {
 		this.mockMvc

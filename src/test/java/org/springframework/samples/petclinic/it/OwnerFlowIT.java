@@ -20,7 +20,7 @@ import org.springframework.samples.petclinic.owner.Owner;
 /**
  * Integration tests for the Owner flows (create, search, edit, validation).
  */
-class OwnerFlowIT extends AbstractIntegrationTest {
+class OwnerFlowIT extends IntegrationTestSupport {
 
 	@Test
 	void shouldCreateOwnerAndPersistIt() throws Exception {
