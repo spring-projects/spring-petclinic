@@ -42,7 +42,18 @@ Público-alvo: os cinco integrantes do grupo, o professor da disciplina e quem f
 | RUP | Rational Unified Process |
 | DATASUS | Departamento de Informática do SUS, cujo modelo de plano de GC é a referência |
 
-## 1.4 Visão geral do documento
+## 1.4 Referências
+
+1. Spring PetClinic — https://github.com/spring-projects/spring-petclinic
+2. Plano de Gerenciamento de Configuração — modelo RUP/DATASUS.
+3. IEEE Std 828 — Configuration Management in Systems and Software Engineering.
+4. Versionamento Semântico 2.0.0 — https://semver.org/lang/pt-BR/
+5. Conventional Commits 1.0.0 — https://www.conventionalcommits.org/pt-br/
+6. Documentação do Jenkins — https://www.jenkins.io/doc/
+7. `CONTRIBUTING.md` e `CLAUDE.md` deste repositório (fluxo de branches, commits e convenção de testes).
+8. `docs/inventario-testes.md` (testes existentes e do grupo).
+
+## 1.5 Visão geral do documento
 
 | Seção | Conteúdo | Responsável |
 |---|---|---|
@@ -53,14 +64,3 @@ Público-alvo: os cinco integrantes do grupo, o professor da disciplina e quem f
 | 5 | Controle de mudanças | P3 |
 | 6 | Relatório de status e auditorias | P4 |
 | 7 | Gestão de releases, marcos e cronograma | P5 |
-
-## 1.5 Referências
-
-1. Spring PetClinic — https://github.com/spring-projects/spring-petclinic
-2. Plano de Gerenciamento de Configuração — modelo RUP/DATASUS.
-3. IEEE Std 828 — Configuration Management in Systems and Software Engineering.
-4. Versionamento Semântico 2.0.0 — https://semver.org/lang/pt-BR/
-5. Conventional Commits 1.0.0 — https://www.conventionalcommits.org/pt-br/
-6. Documentação do Jenkins — https://www.jenkins.io/doc/
-7. `CONTRIBUTING.md` e `CLAUDE.md` deste repositório (fluxo de branches, commits e convenção de testes).
-8. `docs/inventario-testes.md` (testes existentes e do grupo).

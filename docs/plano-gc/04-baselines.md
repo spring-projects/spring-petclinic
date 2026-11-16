@@ -15,7 +15,7 @@ O fluxo segue a progressão Desenvolvimento → Teste → Produção, alinhada a
 | BL-0 | Base do upstream | Código original do PetClinic no momento do fork | Fork criado | commit `500158f`; tag `v0.0.0-upstream` *(opcional)* |
 | BL-1 | **Desenvolvimento** | Estado da `main` após cada merge de PR | PR aprovado (1 revisão) e estágio *Commit* verde (build + testes de unidade + integração) | commit na `main`; sem tag (rastreado pelo build do Jenkins) |
 | BL-2 | **Teste** (candidata a release) | Conjunto de ICs que passou no teste de aceitação | Estágio *Teste de Aceitação* verde sobre a imagem/container gerado | tag `vX.Y.Z-rc.N` |
-| BL-3 | **Produção** | Release entregue ao usuário | BL-2 aprovada pelo gerente de configuração e estágio *Lançamento* concluído | tag `vX.Y.Z` + imagem Docker `X.Y.Z` |
+| BL-3 | **Produção** | Release entregue ao usuário | BL-2 aprovada pela responsável pela GC (P1, administradora do repositório) e pelo grupo | tag `vX.Y.Z` + imagem Docker `X.Y.Z` |
 
 Marco adicional: **BL-D (documentação)** é a versão final do Plano de GC e dos slides, marcada junto à release final (`vX.Y.Z`), pois os PDFs entregues referenciam essa versão.
 
@@ -30,7 +30,8 @@ Marco adicional: **BL-D (documentação)** é a versão final do Plano de GC e d
 Regras:
 - Tags só na `main`, nunca em branches de trabalho; **tag publicada não é movida nem apagada**. Se houver erro, cria-se uma nova versão.
 - Toda tag `vX.Y.Z` atualiza o `CHANGELOG.md` (seção da versão e data) no mesmo PR que antecede a tag.
-- A versão do `pom.xml` acompanha a tag (`X.Y.Z`); entre releases fica `X.Y.Z-SNAPSHOT`.
+- **Versão do `pom.xml`:** fica `X.Y.Z-SNAPSHOT` durante o desenvolvimento. Antes da tag final, um PR de release (P1) troca para `X.Y.Z` e atualiza o `CHANGELOG.md`; a tag `vX.Y.Z` é criada sobre o commit desse PR, e outro PR volta o `pom.xml` para o próximo `-SNAPSHOT`. As tags `-rc.N` são criadas sobre o `-SNAPSHOT` e não geram imagem de produção.
+- **Ordem na release:** (1) PR de release mergeado; (2) tag `vX.Y.Z` na `main`; (3) o estágio *Lançamento* roda **somente em build de tag `vX.Y.Z`**, gera a imagem `X.Y.Z` e faz o deploy. Commits comuns na `main` executam apenas build, testes e aceitação. Se o Lançamento falhar, a tag permanece e a correção sai numa nova versão PATCH.
 
 ## 4.4 Esquema de versões
 
@@ -52,8 +53,8 @@ Proposta de linha do tempo:
 | Baseline | Aprova | Evidência |
 |---|---|---|
 | BL-1 | Revisor do PR (outra pessoa do grupo) | aprovação no PR + build verde no Jenkins |
-| BL-2 | Gerente de configuração (P1) com ciência do grupo | relatório do estágio de aceitação + tag `-rc` |
-| BL-3 | Grupo, em consenso, registrado em ata/PR da release | tag `vX.Y.Z`, imagem Docker, `CHANGELOG.md` |
+| BL-2 | Responsável pela GC (P1) com ciência do grupo | relatório do estágio de aceitação + tag `-rc` |
+| BL-3 | Grupo, em consenso, registrado no PR da release | tag `vX.Y.Z`, imagem Docker, `CHANGELOG.md` |
 
 ## 4.6 Rollback
 
