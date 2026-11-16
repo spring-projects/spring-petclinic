@@ -202,6 +202,36 @@
           </execution>
         </executions>
       </plugin>
+      <!-- Unit tests (*Test, *Tests): phase "test". Tests that need external
+        databases (Docker/Testcontainers) are not part of the CI pipeline, which uses H2. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>**/PostgresIntegrationTests.java</exclude>
+            <exclude>**/MySqlIntegrationTests.java</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+      <!-- Integration tests (*IT): phases "integration-test"/"verify" -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <includes>
+            <include>**/*IT.java</include>
+          </includes>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>io.spring.javaformat</groupId>
         <artifactId>spring-javaformat-maven-plugin</artifactId>
