@@ -9,19 +9,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.samples.petclinic.vet.VetRepository;
 
 /**
- * Integration tests for the Vet listing (HTML and JSON), using the seed data.
+ * Integration tests for the Vet listing (HTML and JSON). Expected counts come from the
+ * repository, so they do not depend on how many vets the seed data has.
  */
 class VetFlowIT extends AbstractIntegrationTest {
+
+	@Autowired
+	private VetRepository vets;
 
 	@Test
 	void shouldListVetsAsHtml() throws Exception {
 		this.mockMvc.perform(get("/vets.html").param("page", "1"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("vets/vetList"))
-			.andExpect(model().attribute("totalItems", 6L))
+			.andExpect(model().attribute("totalItems", (long) this.vets.findAll().size()))
 			.andExpect(content().string(containsString("James")));
 	}
 
@@ -30,7 +36,7 @@ class VetFlowIT extends AbstractIntegrationTest {
 		this.mockMvc.perform(get("/vets").accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-			.andExpect(jsonPath("$.vetList.length()").value(6))
+			.andExpect(jsonPath("$.vetList.length()").value(this.vets.findAll().size()))
 			.andExpect(jsonPath("$.vetList[?(@.lastName == 'Carter')]").exists());
 	}
 
