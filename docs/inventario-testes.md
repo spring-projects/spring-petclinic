@@ -9,12 +9,12 @@ Levantamento feito em 16/11/2026 sobre o fork, antes das contribuições do grup
 | `model/ValidatorTests` | Unidade | Bean Validation | 2 | Nome e sobrenome vazios não validam (`Person`) |
 | `owner/OwnerTests` | Unidade | JUnit | 2 | `Owner.addPet`: adiciona pet persistido e não duplica |
 | `owner/PetTypeFormatterTests` | Unidade | Mockito | 3 | Conversão texto ↔ `PetType` |
-| `owner/PetValidatorTests` | Unidade | Mockito | classes aninhadas | `PetValidator`: nome, tipo e data de nascimento inválidos |
+| `owner/PetValidatorTests` | Unidade | Mockito | 7 (3 + 4 aninhados) | `PetValidator`: nome, tipo e data de nascimento inválidos |
 | `vet/VetTests` | Unidade | JUnit | 1 | Serialização de `Vet` |
 | `system/CrashControllerTests` | Unidade | JUnit | 1 | `CrashController` lança exceção de propósito |
 | `system/I18nPropertiesSyncTest` | Unidade | JUnit | 2 | Arquivos `messages_*.properties` sincronizados e sem textos não internacionalizados |
 | `owner/OwnerControllerTests` | Fatia web (unidade) | `@WebMvcTest` + mocks | 18 | `OwnerController` |
-| `owner/PetControllerTests` | Fatia web (unidade) | `@WebMvcTest` + mocks | classes aninhadas | `PetController` |
+| `owner/PetControllerTests` | Fatia web (unidade) | `@WebMvcTest` + mocks | 14 (com aninhados) | `PetController` |
 | `owner/VisitControllerTests` | Fatia web (unidade) | `@WebMvcTest` + mocks | 5 | `VisitController` |
 | `vet/VetControllerTests` | Fatia web (unidade) | `@WebMvcTest` + mocks | 3 | `VetController` |
 | `system/WelcomeControllerTests` | Fatia web (unidade) | `@WebMvcTest` | 1 | Página inicial |
@@ -26,8 +26,9 @@ Levantamento feito em 16/11/2026 sobre o fork, antes das contribuições do grup
 | `PostgresIntegrationTests` | Integração (**excluído**) | Docker Compose + PostgreSQL | 2 | Aplicação com PostgreSQL |
 
 Observações:
+- Exceção à regra de sufixos: `system/I18nPropertiesSyncTest` é do upstream, mas termina em `*Test`. Para separar autoria, use também o pacote e o histórico do Git.
 - Os testes do upstream usam o sufixo `*Tests` e rodam todos no surefire (`./mvnw test`), inclusive os que são de integração.
-- `MySqlIntegrationTests` e `PostgresIntegrationTests` foram excluídos do surefire no `pom.xml`: precisam de Docker, o do Postgres falhou no `docker compose up` e o do MySQL leva cerca de 3 minutos. O pipeline usa H2.
+- `MySqlIntegrationTests` e `PostgresIntegrationTests` foram excluídos do surefire no `pom.xml`: precisam de Docker. No levantamento (16/11/2026, Windows com Docker Desktop), o do Postgres falhou no `docker compose up` (exit code 1) e o do MySQL passou em cerca de 3 minutos (Testcontainers; sem Docker ele é pulado). O pipeline usa H2.
 - Total do upstream que roda no pipeline: **77 testes**.
 
 ## Testes escritos pelo grupo
@@ -42,7 +43,7 @@ Em 16/11/2026: **12 testes `*IT`** da P1 (`OwnerFlowIT` 6, `PetFlowIT` 2, `Visit
 
 ## Como mostrar na apresentação o que é do grupo
 
-1. **Sufixos distintos**: tudo que o grupo escreve termina em `*Test` (unidade) ou `*IT` (integração), enquanto o upstream usa `*Tests`. Um `find . -name "*IT.java"` já mostra a autoria.
+1. **Sufixos distintos**: tudo que o grupo escreve termina em `*Test` (unidade) ou `*IT` (integração), enquanto o upstream usa `*Tests` (exceção: `I18nPropertiesSyncTest`). Um `find . -name "*IT.java"` já mostra a autoria.
 2. **Pacote próprio**: os `*IT` ficam em `.../petclinic/it/`.
 3. **Relatório separado**: o Jenkins publica surefire (unidade) e failsafe (integração) em estágios distintos, e o JaCoCo mostra a cobertura antes e depois.
 4. **Comparativo no slide**: "upstream: 77 testes → grupo: +12 IT +N unidade +M aceitação", obtido do `git log --diff-filter=A --name-only` sobre `src/test`.
