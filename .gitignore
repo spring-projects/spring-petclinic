@@ -46,3 +46,8 @@ out/
 _site/
 *.css
 !petclinic.css
+
+# Docker environment variables
+.env
+.env.*
+!.env.example

@@ -1,21 +1,61 @@
+
 services:
-  mysql:
-    image: mysql:9.7
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
     ports:
-      - "3306:3306"
+      - "8080:8080"
+
     environment:
-      - MYSQL_ROOT_PASSWORD=
-      - MYSQL_ALLOW_EMPTY_PASSWORD=true
-      - MYSQL_USER=petclinic
-      - MYSQL_PASSWORD=petclinic
-      - MYSQL_DATABASE=petclinic
-    volumes:
-      - "./conf.d:/etc/mysql/conf.d:ro"
+      SPRING_PROFILES_ACTIVE: postgres
+      POSTGRES_URL: jdbc:postgresql://postgres:5432/petclinic
+      POSTGRES_USER: petclinic
+      POSTGRES_PASS: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+    restart: on-failure
+
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -fsS
+        - http://localhost:8080/actuator/health
+      interval: 15s
+      timeout: 5s
+      retries: 8
+      start_period: 60s
+
   postgres:
     image: postgres:18.4
+
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
+
     environment:
-      - POSTGRES_PASSWORD=petclinic
-      - POSTGRES_USER=petclinic
-      - POSTGRES_DB=petclinic
+      POSTGRES_DB: petclinic
+      POSTGRES_USER: petclinic
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -h 127.0.0.1 -U $$POSTGRES_USER -d $$POSTGRES_DB
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+    restart: on-failure
+
+volumes:
+  postgres_data:
