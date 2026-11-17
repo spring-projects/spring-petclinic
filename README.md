@@ -180,5 +180,8 @@ For additional details, please refer to the blog post [Hello DCO, Goodbye CLA: S
 
 The Spring PetClinic sample application is released under version 2.0 of the [Apache License](https://www.apache.org/licenses/LICENSE-2.0).
 
-## Software Dependability - Lab 1
-* [Report CI/CD (Pipeline, Reproducibility e Code Quality)](./CICD.md)
+
+## Software Dependability - Laboratory Reports
+
+- [Lab1 - CI/CD Report](CICD.md)
+- [Lab2 - Docker Containerization Report](Docker.md)

@@ -1,0 +1,11 @@
+
+.git
+.github
+.idea
+.vscode
+*.log
+
+# Docker environment variables
+.env
+.env.*
+!.env.example
