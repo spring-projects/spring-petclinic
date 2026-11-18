@@ -28,4 +28,6 @@
 
 En `fix/actuator-exposure` se cambió el valor de `management.endpoints.web.exposure.include` de `*` a `health,info` en [`application.properties`](../src/main/resources/application.properties#L20). Con este cambio, la exposición web de Actuator se limita a los endpoints de salud e información.
 
-**Evidencia pendiente.** En la próxima corrida del PR, verificar que `sast` complete el análisis sin el hallazgo de Actuator y guardar la captura del resultado. La captura del paso 2 documenta el resultado anterior a la corrección.
+**Resultado observado.** En la corrida #5 del workflow DevSecOps para el PR #2 hacia `develop`, `secretos` y `sast` pasaron. El workflow terminó en 20 segundos. El resultado de `sast` confirma que la regla de Actuator ya no generó el hallazgo bloqueante documentado en el paso 2.
+
+![Corrida 5 del workflow DevSecOps con secretos y sast en verde](fix_actuator.png)
