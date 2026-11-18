@@ -83,3 +83,11 @@ Grype genera `grype.sarif` y mantiene la tabla en el log del job `sca`. En los P
 **Resultado observado.** El job `sca` terminó en verde en 1 minuto y 37 segundos. Grype mostró `No vulnerabilities found` con la configuración de esa corrida y el paso **Publicar SARIF de Grype en GitHub Code scanning** confirmó la carga con `Successfully uploaded results`.
 
 ![Publicación exitosa del SARIF de Grype en GitHub Actions](Publicar%20SARIF%20de%20Grype.png)
+
+## Paso 10 · Evidencia de Semgrep en VS Code
+
+Para capturar el hallazgo en el editor, se usa una copia local de la regla de Semgrep y de `application.properties` del commit anterior a `abb5c6d`, que todavía contiene `include=*`. La extensión usa la regla del repositorio como configuración local y el análisis completo del espacio de trabajo incluye la línea aunque no tenga cambios locales. [Documentación de la extensión Semgrep](https://github.com/semgrep/semgrep-vscode/blob/develop/README.md)
+
+**Resultado observado.** Semgrep reportó en el panel **Problems** de VS Code que Spring Boot Actuator estaba completamente habilitado. La captura muestra el hallazgo y la configuración subrayada en la línea 21 de `application.properties`.
+
+![Hallazgo de Spring Boot Actuator detectado por Semgrep en VS Code](semgrep-vscode.png)
