@@ -59,6 +59,12 @@ pipeline {
 					maximumLineCoverage: '85',
 					changeBuildStatus: true
 				)
+				// O plugin só marca o build; aqui o estágio fica vermelho e os seguintes não rodam.
+				script {
+					if (currentBuild.currentResult == 'FAILURE') {
+						error('Cobertura JaCoCo abaixo do mínimo configurado')
+					}
+				}
 			}
 		}
 
