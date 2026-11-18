@@ -9,6 +9,8 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e
 - `CLAUDE.md`, `CONTRIBUTING.md` e template de Pull Request.
 - Testes de integração (`*IT`) para donos, pets, visitas e veterinários, executados pelo maven-failsafe-plugin.
 - Rascunhos do Plano de Gerência de Configuração em `docs/plano-gc/`.
+- 34 testes de unidade (`*Test`) para `BaseEntity`, `NamedEntity`/`Person`, `Owner`, `Pet`, `Visit`, `Vet`, `Vets` e `WebConfiguration`.
+- `Jenkinsfile`: o estágio *Cobertura* falha o build se o JaCoCo ficar abaixo de 85% de instruções, 75% de branches ou 85% de linhas.
 
 ### Alterado
 - Versão do projeto: `4.0.0-SNAPSHOT` (upstream) → `1.0.0-SNAPSHOT`.
