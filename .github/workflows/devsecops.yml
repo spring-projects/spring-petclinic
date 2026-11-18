@@ -1,0 +1,114 @@
+name: DevSecOps
+
+on:
+  pull_request:
+    branches: [develop, main]
+
+permissions:
+  contents: read
+
+jobs:
+  secretos:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el repositorio con su historial
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Escanear el historial con Gitleaks
+        run: |
+          docker run --rm \
+            --user "$(id -u):$(id -g)" \
+            --volume "$GITHUB_WORKSPACE:/repo:ro" \
+            ghcr.io/gitleaks/gitleaks@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f \
+            git --redact /repo
+
+  sast:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Analizar la configuración con Semgrep
+        id: semgrep
+        shell: bash
+        run: |
+          report_dir=$(mktemp -d "$RUNNER_TEMP/semgrep.XXXXXX")
+          status=0
+          docker run --rm \
+            --network none \
+            --volume "$GITHUB_WORKSPACE:/src:ro" \
+            --volume "$report_dir:/reports" \
+            --workdir /src \
+            semgrep/semgrep:1.185.0 \
+            semgrep scan --config .semgrep/petclinic-rules.yml --metrics=off \
+              --disable-version-check --severity ERROR --error --strict \
+              --sarif-output /reports/semgrep.sarif src/main/resources || status=$?
+          if [[ -s "$report_dir/semgrep.sarif" ]]; then
+            printf 'sarif=%s\n' "$report_dir/semgrep.sarif" >> "$GITHUB_OUTPUT"
+          fi
+          exit "$status"
+
+      - name: Publicar SARIF en GitHub Code scanning
+        if: ${{ !cancelled() && steps.semgrep.outputs.sarif != '' && github.event.pull_request.head.repo.full_name == github.repository }}
+        uses: github/codeql-action/upload-sarif@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
+        with:
+          sarif_file: ${{ steps.semgrep.outputs.sarif }}
+          category: semgrep
+
+  sca:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Configurar Java 17
+        uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Empaquetar PetClinic e identificar el JAR
+        id: package
+        shell: bash
+        run: |
+          ./mvnw --batch-mode -DskipTests package
+          shopt -s nullglob
+          jars=(target/spring-petclinic-*.jar)
+          if [[ ${#jars[@]} -ne 1 ]]; then
+            echo "::error::Se esperaba exactamente un JAR de PetClinic en target/."
+            exit 1
+          fi
+          printf 'jar=%s\n' "${jars[0]}" >> "$GITHUB_OUTPUT"
+
+      - name: Generar y publicar el SBOM con Syft
+        uses: anchore/sbom-action@66cbf4bc1f1c0d2edc94016e65bc221b6bb0ad6c # v0.24.3
+        with:
+          file: ${{ steps.package.outputs.jar }}
+          format: cyclonedx-json
+          output-file: sbom.cdx.json
+          artifact-name: sbom.cdx.json
+          upload-release-assets: false
+
+      - name: Instalar Grype
+        id: grype
+        uses: anchore/scan-action/download-grype@27805bf3b4e84b4a5c980df22ed233c00390a439 # v7.4.2
+        with:
+          grype-version: v0.121.3
+
+      - name: Analizar el SBOM y aplicar la política de bloqueo
+        env:
+          GRYPE_BIN: ${{ steps.grype.outputs.cmd }}
+        run: |
+          "$GRYPE_BIN" sbom:sbom.cdx.json --only-fixed --fail-on high \
+            --output table --show-suppressed
