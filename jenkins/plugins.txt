@@ -1,0 +1,10 @@
+workflow-aggregator
+git
+github
+github-branch-source
+credentials-binding
+junit
+jacoco
+pipeline-stage-view
+timestamper
+ws-cleanup
