@@ -45,7 +45,16 @@ pipeline {
 		stage('Cobertura') {
 			steps {
 				sh './mvnw -B --no-transfer-progress jacoco:report'
-				jacoco(execPattern: 'target/jacoco.exec')
+				// Abaixo do mínimo o build é marcado como falho (changeBuildStatus).
+				jacoco(
+					execPattern: 'target/jacoco.exec',
+					classPattern: 'target/classes',
+					sourcePattern: 'src/main/java',
+					minimumInstructionCoverage: '85',
+					minimumBranchCoverage: '75',
+					minimumLineCoverage: '85',
+					changeBuildStatus: true
+				)
 			}
 		}
 
