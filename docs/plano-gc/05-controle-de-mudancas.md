@@ -115,4 +115,47 @@ Esses registros alimentam o relatório de status e as auditorias (seção 6, P4)
 2. **Branch:** `feature/p3-testes-unidade`, criada a partir da `main`.
 3. **Implementação:** um commit `test:` por classe testada (34 testes em `BaseEntityTest`, `NamedEntityTest`, `OwnerTest`, `PetTest`, `VisitTest`, `VetTest`, `VetsTest` e `WebConfigurationTest`), mais um commit `ci:` para o limite de cobertura e um `docs:` para o `CHANGELOG.md` e o inventário.
 4. **PR:** aberto para a `main`, marcando P1 e P2 por tocar IC-09, IC-16 e IC-19.
-5. **Validação e revisão:** pipeline verde no Jenkins. Revisão e aprovação por outro integrante. Integração por "Rebase and merge".
+5. **Validação:** ao rodar no Jenkins, a validação encontrou dois defeitos no limite de cobertura. O plugin ignorava o mínimo sem um máximo e, quando reprovava, não interrompia o pipeline. Os dois foram corrigidos no mesmo PR com commits `fix:`, sem reescrever o histórico. Esse é o fluxo da seção 5.3 em funcionamento: o pipeline aponta o problema antes de a mudança chegar à `main`.
+6. **Revisão e integração:** aprovação por outro integrante e integração por "Rebase and merge".
+
+## 5.10 Evidências no Jenkins
+
+As capturas abaixo foram feitas numa instância local do Jenkins, criada com a mesma configuração versionada pela P2 (`docker-compose.jenkins.yml`) e o mesmo `Jenkinsfile`. As branches `demo/*` existem apenas num clone local, usado para provocar as falhas. Elas nunca foram enviadas ao GitHub nem integradas.
+
+### Figura 7 — Pipeline da branch `feature/p3-testes-unidade`
+
+Build, testes de unidade, testes de integração e cobertura passaram. O teste de aceitação falha porque `ci/acceptance.sh` (P4) ainda não existe. O lançamento só roda em tags `vX.Y.Z`.
+
+![Estágios do pipeline da branch da P3](imagens/jenkins-p3-estagios-verde.png)
+
+---
+
+### Figura 8 — Resultados de teste publicados (JUnit)
+
+123 testes passando: 111 de unidade (77 do upstream e 34 da P3) e 12 de integração (P1).
+
+![Resultados de teste no Jenkins](imagens/jenkins-p3-resultados-testes.png)
+
+---
+
+### Figura 9 — Cobertura publicada (JaCoCo)
+
+Cobertura de 90% das instruções, 87% dos branches e 95% das linhas, acima dos mínimos de 85%, 75% e 85%.
+
+![Relatório JaCoCo no Jenkins](imagens/jenkins-p3-cobertura-jacoco.png)
+
+---
+
+### Figura 10 — Um teste quebrado bloqueia a mudança
+
+Na branch `demo/teste-quebrado`, uma asserção de `VetsTest` foi alterada de propósito. O estágio *Testes de unidade* falha e os estágios seguintes são pulados.
+
+![Pipeline interrompido por teste quebrado](imagens/jenkins-p3-teste-quebrado.png)
+
+---
+
+### Figura 11 — Cobertura abaixo do mínimo bloqueia a mudança
+
+Na branch `demo/cobertura-baixa`, o mínimo de instruções foi elevado para 99%. Nos builds #3 e #4, o estágio *Cobertura* falha e interrompe o pipeline. O build #2 é anterior à correção descrita no item 5 da seção 5.9: nele a cobertura ainda não bloqueava o pipeline.
+
+![Pipeline interrompido por cobertura baixa](imagens/jenkins-p3-cobertura-baixa.png)
