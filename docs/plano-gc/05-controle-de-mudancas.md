@@ -89,10 +89,10 @@ O Jenkins é o "portão" automático do controle de mudanças. Ele recusa qualqu
 | Build | Erro de compilação, formatação (`spring-javaformat`) ou checkstyle | `./mvnw package` termina com erro e o estágio fica vermelho. |
 | Testes de unidade | Qualquer teste `*Test`/`*Tests` falhando | `./mvnw test` termina com erro. O relatório JUnit é publicado mesmo assim (`post { always }`), mostrando qual teste quebrou. |
 | Testes de integração | Qualquer teste `*IT` falhando | O objetivo `failsafe:verify` termina com erro. |
-| Cobertura | Cobertura abaixo do mínimo | O plugin JaCoCo, com `changeBuildStatus: true`, marca o build como falho. |
+| Cobertura | Cobertura abaixo do mínimo (85% de instruções, 75% de branches, 85% de linhas) | O plugin JaCoCo marca o build como falho (`changeBuildStatus: true`) e o estágio interrompe o pipeline com erro. |
 | Teste de aceitação | Falha no teste Selenium (P4) | Script `ci/acceptance.sh` termina com erro. |
 
-Quando um estágio falha, os seguintes não executam. Assim, uma mudança que quebra testes nunca chega ao aceite nem ao lançamento.
+Quando um estágio falha, os seguintes são pulados ("skipped due to earlier failure"). Isso foi comprovado no Jenkins com duas branches de demonstração: um teste quebrado (o pipeline para em *Testes de unidade*) e uma exigência de 99% de cobertura (o pipeline para em *Cobertura*). Assim, uma mudança que quebra testes nunca chega ao aceite nem ao lançamento.
 
 ## 5.8 Registro e rastreabilidade
 
