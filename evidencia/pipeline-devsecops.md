@@ -18,4 +18,8 @@
 
 **Qué revisa esta primera regla.** Busca la propiedad `management.endpoints.web.exposure.include=*` en los archivos `application*.properties` de `src/main/resources`. El asterisco permite exponer por HTTP todos los endpoints de monitoreo y diagnóstico disponibles de Spring Boot Actuator. La regla reporta esta configuración con severidad `ERROR` y el job falla si la detecta.
 
-**Evidencia pendiente.** La configuración actual ya contiene esa línea en [`application.properties`](../src/main/resources/application.properties#L21). En la primera corrida del PR se espera que el log de `sast` muestre la línea y el identificador `petclinic-actuator-wildcard-exposure`. Aquí se agregará la captura cuando se confirme el resultado en GitHub Actions.
+**Resultado observado.** En la corrida #3 del workflow DevSecOps para el PR #1, `secretos` pasó y `sast` falló. Semgrep ejecutó una regla sobre tres archivos y reportó un hallazgo bloqueante, `semgrep.petclinic-actuator-wildcard-exposure`, en la [línea 21 de `application.properties`](../src/main/resources/application.properties#L21). El análisis se completó y el código de salida `1` hizo que GitHub Actions marcara el job en rojo.
+
+![Corrida 3 del workflow DevSecOps con secretos en verde y sast en rojo](semgrep.png)
+
+**Aviso de la regla.** Semgrep recomendó indicar que la ruta de los archivos se cuenta desde la raíz del repositorio. Se agregó `/` al inicio del patrón. Queda pendiente comprobar el ajuste en la próxima corrida.
