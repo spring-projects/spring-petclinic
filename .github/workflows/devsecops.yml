@@ -42,3 +42,40 @@ jobs:
             semgrep/semgrep:1.185.0 \
             semgrep scan --config .semgrep/petclinic-rules.yml --metrics=off \
               --disable-version-check --severity ERROR --error --strict src/main/resources
+
+  sca:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Configurar Java 17
+        uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Empaquetar PetClinic e identificar el JAR
+        id: package
+        shell: bash
+        run: |
+          ./mvnw --batch-mode -DskipTests package
+          shopt -s nullglob
+          jars=(target/spring-petclinic-*.jar)
+          if [[ ${#jars[@]} -ne 1 ]]; then
+            echo "::error::Se esperaba exactamente un JAR de PetClinic en target/."
+            exit 1
+          fi
+          printf 'jar=%s\n' "${jars[0]}" >> "$GITHUB_OUTPUT"
+
+      - name: Generar y publicar el SBOM con Syft
+        uses: anchore/sbom-action@66cbf4bc1f1c0d2edc94016e65bc221b6bb0ad6c # v0.24.3
+        with:
+          file: ${{ steps.package.outputs.jar }}
+          format: cyclonedx-json
+          output-file: sbom.cdx.json
+          artifact-name: sbom.cdx.json
+          upload-release-assets: false

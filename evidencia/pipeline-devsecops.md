@@ -31,3 +31,9 @@ En `fix/actuator-exposure` se cambió el valor de `management.endpoints.web.expo
 **Resultado observado.** En la corrida #5 del workflow DevSecOps para el PR #2 hacia `develop`, `secretos` y `sast` pasaron. El workflow terminó en 20 segundos. El resultado de `sast` confirma que la regla de Actuator ya no generó el hallazgo bloqueante documentado en el paso 2.
 
 ![Corrida 5 del workflow DevSecOps con secretos y sast en verde](fix_actuator.png)
+
+## Paso 4 · Inventario de dependencias con Syft
+
+**Entregable.** El job `sca` empaqueta PetClinic con Maven y ejecuta Syft sobre el JAR generado. Syft identifica los componentes incluidos en el paquete y publica su inventario en formato CycloneDX JSON como artefacto `sbom.cdx.json`. El job usa Java 17, que es la versión declarada en el POM, y omite las pruebas en esta compilación dedicada al inventario.
+
+**Evidencia pendiente.** En el PR hacia `develop`, comprobar que `sca` quede en verde y que `sbom.cdx.json` esté disponible en **Actions → Summary → Artifacts**. Descargarlo y verificar que su campo `bomFormat` sea `CycloneDX` y que `components` contenga dependencias de PetClinic. Tras confirmar el inventario, el siguiente cambio será aplicar el análisis de vulnerabilidades con Grype.
