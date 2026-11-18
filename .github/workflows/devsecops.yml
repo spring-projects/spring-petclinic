@@ -79,3 +79,16 @@ jobs:
           output-file: sbom.cdx.json
           artifact-name: sbom.cdx.json
           upload-release-assets: false
+
+      - name: Instalar Grype
+        id: grype
+        uses: anchore/scan-action/download-grype@27805bf3b4e84b4a5c980df22ed233c00390a439 # v7.4.2
+        with:
+          grype-version: v0.121.3
+
+      - name: Analizar el SBOM y aplicar la política de bloqueo
+        env:
+          GRYPE_BIN: ${{ steps.grype.outputs.cmd }}
+        run: |
+          "$GRYPE_BIN" sbom:sbom.cdx.json --only-fixed --fail-on high \
+            --output table --show-suppressed

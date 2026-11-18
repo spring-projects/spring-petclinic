@@ -40,4 +40,10 @@ En `fix/actuator-exposure` se cambió el valor de `management.endpoints.web.expo
 
 ![Checks del PR en verde, incluido el job sca](SCA.png)
 
-La generación del inventario queda validada. El análisis de vulnerabilidades con Grype queda pendiente.
+## Paso 5 · Análisis de vulnerabilidades con Grype
+
+**Entregable.** El job `sca` ejecuta Grype sobre el SBOM que Syft genera en la misma corrida. Grype compara los componentes con la base de vulnerabilidades de Anchore sin usar `NVD_API_KEY`.
+
+**Política de bloqueo.** `--only-fixed` limita el bloqueo a hallazgos con corrección disponible y `--fail-on high` hace fallar el job cuando alguno tiene severidad `High` o `Critical`. La tabla del log muestra también hallazgos filtrados, como los que todavía no tienen corrección.
+
+**Evidencia pendiente.** En el PR hacia `develop`, abrir el paso de Grype del job `sca` y guardar el resultado. Si el job falla, revisar si la causa es un hallazgo que supera el umbral o un error de ejecución.
