@@ -56,4 +56,8 @@ En `fix/actuator-exposure` se cambió el valor de `management.endpoints.web.expo
 
 Spring Boot se actualizó de `4.1.0` a `4.1.2` en Maven y Gradle. La versión reúne las actualizaciones de Tomcat embebido `11.0.27`, Spring MVC `7.0.10`, Jackson `3.1.7` y PostgreSQL JDBC `42.7.14`. [Versiones gestionadas por Spring Boot](https://docs.spring.io/spring-boot/appendix/dependency-versions/coordinates.html)
 
-**Evidencia pendiente.** Verificar los checks de Maven y Gradle en el PR hacia `develop`, descargar el SBOM nuevo y comprobar el resultado de Grype con el mismo umbral de bloqueo. El SBOM del paso 4 conserva el inventario anterior a la actualización.
+**Resultado observado.** En la corrida DevSecOps #12 del PR #3, `secretos`, `sast` y `sca` pasaron. `sca` tardó 1 minuto y 21 segundos e incluyó el empaquetado, la publicación del SBOM y el análisis de Grype. Con el mismo umbral, Grype no detectó hallazgos bloqueantes en esa corrida.
+
+![Corrida DevSecOps 12 con el análisis de Grype en verde](sbom%20y%20politica%20de%20bloqueo%20solucionada.png)
+
+**Verificación pendiente.** Confirmar los checks independientes de Maven y Gradle en el PR. El SBOM del paso 4 conserva el inventario anterior a la actualización. El inventario actualizado está disponible como artefacto de la corrida #12.
