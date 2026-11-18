@@ -2,7 +2,7 @@ name: DevSecOps
 
 on:
   pull_request:
-    branches: [main]
+    branches: [develop, main]
 
 permissions:
   contents: read
