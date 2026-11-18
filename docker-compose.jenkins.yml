@@ -1,0 +1,43 @@
+services:
+  jenkins:
+    build:
+      context: ./jenkins
+    container_name: petclinic-jenkins
+    restart: unless-stopped
+    depends_on:
+      docker:
+        condition: service_healthy
+    environment:
+      DOCKER_HOST: tcp://docker:2376
+      DOCKER_TLS_CERTDIR: /certs
+      DOCKER_CERT_PATH: /certs/client
+      DOCKER_TLS_VERIFY: "1"
+    ports:
+      - "8081:8080"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - docker_certs_client:/certs/client:ro
+
+  docker:
+    image: docker:27-dind
+    container_name: petclinic-docker
+    privileged: true
+    restart: unless-stopped
+    environment:
+      DOCKER_TLS_CERTDIR: /certs
+    volumes:
+      - docker_data:/var/lib/docker
+      - docker_certs_ca:/certs/ca
+      - docker_certs_client:/certs/client
+    healthcheck:
+      test: ["CMD", "docker", "info"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 5s
+
+volumes:
+  jenkins_home:
+  docker_data:
+  docker_certs_ca:
+  docker_certs_client:
