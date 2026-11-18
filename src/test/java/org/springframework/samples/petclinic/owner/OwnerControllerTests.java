@@ -315,4 +315,9 @@ class OwnerControllerTests {
 			.andExpect(flash().attributeExists("error"));
 	}
 
+	@Test
+	void showOwnerNotFound() throws Exception {
+		mockMvc.perform(get("/owners/{ownerId}", 999999)).andExpect(status().isNotFound());
+	}
+
 }
