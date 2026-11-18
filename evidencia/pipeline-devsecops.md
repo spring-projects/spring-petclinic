@@ -47,3 +47,5 @@ En `fix/actuator-exposure` se cambió el valor de `management.endpoints.web.expo
 **Política de bloqueo.** `--only-fixed` limita el bloqueo a hallazgos con corrección disponible y `--fail-on high` hace fallar el job cuando alguno tiene severidad `High` o `Critical`. La tabla del log muestra también hallazgos filtrados, como los que todavía no tienen corrección.
 
 **Evidencia pendiente.** En el PR hacia `develop`, abrir el paso de Grype del job `sca` y guardar el resultado. Si el job falla, revisar si la causa es un hallazgo que supera el umbral o un error de ejecución.
+
+**Primera corrida con Grype.** El empaquetado se detuvo antes del análisis porque `NoHttp` detectó seis URLs del esquema y de licencias en la copia generada `evidencia/sbom.cdx.json`. La configuración compartida de Checkstyle incorpora una excepción para ese archivo y esa regla. Así se conserva el SBOM original como evidencia y se mantiene `NoHttp` para el resto del proyecto. La próxima corrida debe confirmar que el empaquetado llega al paso de Grype.

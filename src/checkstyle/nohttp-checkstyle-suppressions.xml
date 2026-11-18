@@ -7,5 +7,7 @@
 	<suppress files="node[\\/].*" checks=".*"/>
 	<suppress files="build[\\/].*" checks=".*"/>
 	<suppress files="target[\\/].*" checks=".*"/>
+	<!-- Syft preserves source URLs in this generated SBOM snapshot. -->
+	<suppress files="(^|[\\/])evidencia[\\/]sbom\.cdx\.json$" checks="^NoHttp$"/>
 	<suppress files=".+\.(jar|git|ico|p12|gif|jks|jpg|svg|log)" checks="NoHttp"/>
 </suppressions>
