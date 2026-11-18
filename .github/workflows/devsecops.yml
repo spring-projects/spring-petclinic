@@ -24,3 +24,21 @@ jobs:
             --volume "$GITHUB_WORKSPACE:/repo:ro" \
             ghcr.io/gitleaks/gitleaks@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f \
             git --redact /repo
+
+  sast:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Analizar la configuración con Semgrep
+        run: |
+          docker run --rm \
+            --network none \
+            --volume "$GITHUB_WORKSPACE:/src:ro" \
+            --workdir /src \
+            semgrep/semgrep:1.185.0 \
+            semgrep scan --config .semgrep/petclinic-rules.yml --metrics=off \
+              --disable-version-check --severity ERROR --error --strict src/main/resources
