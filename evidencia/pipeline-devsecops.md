@@ -46,6 +46,14 @@ En `fix/actuator-exposure` se cambió el valor de `management.endpoints.web.expo
 
 **Política de bloqueo.** `--only-fixed` limita el bloqueo a hallazgos con corrección disponible y `--fail-on high` hace fallar el job cuando alguno tiene severidad `High` o `Critical`. La tabla del log muestra también hallazgos filtrados, como los que todavía no tienen corrección.
 
-**Evidencia pendiente.** En el PR hacia `develop`, abrir el paso de Grype del job `sca` y guardar el resultado. Si el job falla, revisar si la causa es un hallazgo que supera el umbral o un error de ejecución.
+**Incidencia de empaquetado.** El primer intento se detuvo antes del análisis porque `NoHttp` detectó seis URLs del esquema y de licencias en la copia generada `evidencia/sbom.cdx.json`. Maven y Gradle excluyen específicamente esa copia de la entrada de `NoHttp` para conservar el artefacto original.
 
-**Primera corrida con Grype.** El empaquetado se detuvo antes del análisis porque `NoHttp` detectó seis URLs del esquema y de licencias en la copia generada `evidencia/sbom.cdx.json`. Maven y Gradle excluyen específicamente esa copia de la entrada de `NoHttp` para conservar el artefacto original. La próxima corrida debe confirmar que el empaquetado llega al paso de Grype.
+**Resultado observado.** Tras el ajuste, `sca` completó el empaquetado y la generación del SBOM. Grype analizó el inventario en 53 segundos y devolvió el código de salida `2` porque encontró dependencias con hallazgos `High` o `Critical` y correcciones disponibles. El log reportó hallazgos bloqueantes en Tomcat embebido, Spring MVC, Jackson y el controlador JDBC de PostgreSQL. Este resultado documenta que la política de bloqueo se aplicó. La remediación se comprobará con un SBOM nuevo y otra corrida del mismo check.
+
+![Evidencia de la corrida de SCA](sbom%20y%20politica%20de%20bloqueo.png)
+
+## Paso 6 · Actualización de dependencias
+
+Spring Boot se actualizó de `4.1.0` a `4.1.2` en Maven y Gradle. La versión reúne las actualizaciones de Tomcat embebido `11.0.27`, Spring MVC `7.0.10`, Jackson `3.1.7` y PostgreSQL JDBC `42.7.14`. [Versiones gestionadas por Spring Boot](https://docs.spring.io/spring-boot/appendix/dependency-versions/coordinates.html)
+
+**Evidencia pendiente.** Verificar los checks de Maven y Gradle en el PR hacia `develop`, descargar el SBOM nuevo y comprobar el resultado de Grype con el mismo umbral de bloqueo. El SBOM del paso 4 conserva el inventario anterior a la actualización.
