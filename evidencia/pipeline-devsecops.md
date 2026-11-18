@@ -106,4 +106,4 @@ La captura de GitHub muestra **7 checks exitosos** y ningún conflicto con la ra
 | Java CI with Gradle / build (17) | Exitoso en 1 min |
 | Java CI with Maven / build (17) | Exitoso en 1 min |
 
-![Siete checks exitosos y ningún conflicto en el PR hacia main](pr%20a%20main.png)
+![Siete checks exitosos y ningún conflicto en el PR hacia main](PR%20a%20main.png)
