@@ -61,3 +61,9 @@ Spring Boot se actualizó de `4.1.0` a `4.1.2` en Maven y Gradle. La versión re
 ![Corrida DevSecOps 12 con el análisis de Grype en verde](sbom%20y%20politica%20de%20bloqueo%20solucionada.png)
 
 **Verificación pendiente.** Confirmar los checks independientes de Maven y Gradle en el PR. El SBOM del paso 4 conserva el inventario anterior a la actualización. El inventario actualizado está disponible como artefacto de la corrida #12.
+
+## Paso 7 · Publicación de Semgrep en Code scanning
+
+Semgrep escribe sus resultados en `semgrep.sarif`. GitHub Actions publica ese reporte en Code scanning para los PR con origen y destino en el mismo repositorio. Si Semgrep genera el reporte y detecta un hallazgo bloqueante, el job conserva el código de salida y publica el SARIF de esa corrida. El permiso `security-events: write` se concede al job `sast`.
+
+**Evidencia pendiente.** Verificar que el paso **Publicar SARIF en GitHub Code scanning** termine en verde en el PR hacia `develop`. Guardar una captura de la carga y comprobar que GitHub registra el análisis de Semgrep. Con la configuración corregida de Actuator, se espera un reporte sin alertas para esa regla.

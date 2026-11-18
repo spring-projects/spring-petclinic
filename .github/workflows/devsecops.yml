@@ -27,6 +27,9 @@ jobs:
 
   sast:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
     steps:
       - name: Descargar el repositorio
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -34,14 +37,31 @@ jobs:
           persist-credentials: false
 
       - name: Analizar la configuración con Semgrep
+        id: semgrep
+        shell: bash
         run: |
+          report_dir=$(mktemp -d "$RUNNER_TEMP/semgrep.XXXXXX")
+          status=0
           docker run --rm \
             --network none \
             --volume "$GITHUB_WORKSPACE:/src:ro" \
+            --volume "$report_dir:/reports" \
             --workdir /src \
             semgrep/semgrep:1.185.0 \
             semgrep scan --config .semgrep/petclinic-rules.yml --metrics=off \
-              --disable-version-check --severity ERROR --error --strict src/main/resources
+              --disable-version-check --severity ERROR --error --strict \
+              --sarif-output /reports/semgrep.sarif src/main/resources || status=$?
+          if [[ -s "$report_dir/semgrep.sarif" ]]; then
+            printf 'sarif=%s\n' "$report_dir/semgrep.sarif" >> "$GITHUB_OUTPUT"
+          fi
+          exit "$status"
+
+      - name: Publicar SARIF en GitHub Code scanning
+        if: ${{ !cancelled() && steps.semgrep.outputs.sarif != '' && github.event.pull_request.head.repo.full_name == github.repository }}
+        uses: github/codeql-action/upload-sarif@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
+        with:
+          sarif_file: ${{ steps.semgrep.outputs.sarif }}
+          category: semgrep
 
   sca:
     runs-on: ubuntu-latest
