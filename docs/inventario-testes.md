@@ -41,10 +41,35 @@ Observações:
 
 Em 16/11/2026: **12 testes `*IT`** da P1 (`OwnerFlowIT` 6, `PetFlowIT` 2, `VisitFlowIT` 2, `VetFlowIT` 2).
 
+Em 17/11/2026: **34 testes de unidade `*Test`** da P3. Eles são JUnit puro, sem subir o Spring, e por isso rodam em milissegundos:
+
+| Classe | Nº de testes | O que testa |
+|---|---|---|
+| `model/BaseEntityTest` | 3 | `isNew()` conforme o `id` |
+| `model/NamedEntityTest` | 3 | `toString()` de `NamedEntity` (com e sem nome) e dados de `Person` |
+| `owner/OwnerTest` | 13 | `getPet` por nome (sem diferenciar maiúsculas), por id e ignorando pets novos; `addPet` (nulo e id repetido); `addVisit` e suas validações; `toString()` |
+| `owner/PetTest` | 4 | Data de nascimento, tipo e lista de visitas (ordem e sem duplicar) |
+| `owner/VisitTest` | 2 | Data padrão (dia seguinte) e descrição |
+| `vet/VetTest` | 4 | Especialidades ordenadas por nome, contagem, sem duplicar e cópia defensiva |
+| `vet/VetsTest` | 2 | Lista de veterinários inicializada sob demanda |
+| `system/WebConfigurationTest` | 3 | Idioma padrão inglês e troca pelo parâmetro `lang` |
+
+Resultado (`./mvnw clean verify`, Java 17): **111 testes de unidade** (77 do upstream + 34 da P3) e **12 de integração**, todos passando.
+
+Cobertura JaCoCo (unidade + integração, mesmo arquivo `target/jacoco.exec` usado pelo Jenkins):
+
+| Métrica | Antes (`main`, só upstream + IT) | Depois (com os testes da P3) |
+|---|---|---|
+| Instruções | 89,7% | 90,4% |
+| Branches | 82,8% | 87,7% |
+| Linhas | 94,0% | 94,9% |
+
+O estágio *Cobertura* do `Jenkinsfile` exige no mínimo 85% de instruções, 75% de branches e 85% de linhas. Abaixo disso, o build falha.
+
 ## Como mostrar na apresentação o que é do grupo
 
 1. **Sufixos distintos**: tudo que o grupo escreve termina em `*Test` (unidade) ou `*IT` (integração), enquanto o upstream usa `*Tests` (exceção: `I18nPropertiesSyncTest`). Um `find . -name "*IT.java"` já mostra a autoria.
 2. **Pacote próprio**: os `*IT` ficam em `.../petclinic/it/`.
 3. **Relatório separado**: o Jenkins publica surefire (unidade) e failsafe (integração) em estágios distintos, e o JaCoCo mostra a cobertura antes e depois.
-4. **Comparativo no slide**: "upstream: 77 testes → grupo: +12 IT +N unidade +M aceitação", obtido do `git log --diff-filter=A --name-only` sobre `src/test`.
+4. **Comparativo no slide**: "upstream: 77 testes → grupo: +12 IT +34 unidade +M aceitação", obtido do `git log --diff-filter=A --name-only` sobre `src/test`.
 5. **Histórico**: commits `test:` por pessoa (`git shortlog -sn --grep='^test'`).
