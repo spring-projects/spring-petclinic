@@ -242,7 +242,7 @@
               <configLocation>src/checkstyle/nohttp-checkstyle.xml</configLocation>
               <sourceDirectories>${basedir}</sourceDirectories>
               <includes>**/*</includes>
-              <excludes>**/.git/**/*,**/.idea/**/*,**/target/**/,**/.flattened-pom.xml,**/*.class</excludes>
+              <excludes>**/.git/**/*,**/.idea/**/*,**/target/**/,**/.flattened-pom.xml,**/*.class,evidencia/sbom.cdx.json</excludes>
               <propertyExpansion>config_loc=${basedir}/src/checkstyle/</propertyExpansion>
             </configuration>
           </execution>
