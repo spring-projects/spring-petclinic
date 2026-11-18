@@ -72,10 +72,13 @@ checkstyle {
   configFile = file('src/checkstyle/nohttp-checkstyle.xml')
 }
 
+nohttp {
+  source.exclude 'evidencia/sbom.cdx.json'
+}
+
 checkstyleNohttp {
   configDirectory = project.file('src/checkstyle')
   configFile = file('src/checkstyle/nohttp-checkstyle.xml')
-  exclude 'evidencia/sbom.cdx.json'
 }
 
 tasks.named("formatMain").configure { dependsOn("checkstyleMain") }

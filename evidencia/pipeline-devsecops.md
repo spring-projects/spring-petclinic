@@ -66,4 +66,6 @@ Spring Boot se actualizó de `4.1.0` a `4.1.2` en Maven y Gradle. La versión re
 
 Semgrep escribe sus resultados en `semgrep.sarif`. GitHub Actions publica ese reporte en Code scanning para los PR con origen y destino en el mismo repositorio. Si Semgrep genera el reporte y detecta un hallazgo bloqueante, el job conserva el código de salida y publica el SARIF de esa corrida. El permiso `security-events: write` se concede al job `sast`.
 
-**Evidencia pendiente.** Verificar que el paso **Publicar SARIF en GitHub Code scanning** termine en verde en el PR hacia `develop`. Guardar una captura de la carga y comprobar que GitHub registra el análisis de Semgrep. Con la configuración corregida de Actuator, se espera un reporte sin alertas para esa regla.
+**Resultado observado.** En la corrida DevSecOps #14 del PR #3 hacia `develop`, el job `sast` terminó en verde en 25 segundos. El paso **Publicar SARIF en GitHub Code scanning** validó `semgrep.sarif` y completó la carga de resultados.
+
+**Evidencia pendiente.** Incorporar al repositorio la captura de la corrida #14 y comprobar el análisis en la pestaña **Security → Code scanning**. Con la configuración corregida de Actuator, se espera que esa regla no genere una alerta en esta corrida.
