@@ -1,0 +1,9 @@
+rules:
+  - id: petclinic-actuator-wildcard-exposure
+    languages: [generic]
+    severity: ERROR
+    message: Limita la exposición web de Spring Boot Actuator a los endpoints necesarios.
+    paths:
+      include:
+        - '/src/main/resources/application*.properties'
+    pattern-regex: '(?m)^[ \t]*management\.endpoints\.web\.exposure\.include[ \t]*[=:][ \t]*\*[ \t]*\r?$'
