@@ -36,4 +36,8 @@ En `fix/actuator-exposure` se cambió el valor de `management.endpoints.web.expo
 
 **Entregable.** El job `sca` empaqueta PetClinic con Maven y ejecuta Syft sobre el JAR generado. Syft identifica los componentes incluidos en el paquete y publica su inventario en formato CycloneDX JSON como artefacto `sbom.cdx.json`. El job usa Java 17, que es la versión declarada en el POM, y omite las pruebas en esta compilación dedicada al inventario.
 
-**Evidencia pendiente.** En el PR hacia `develop`, comprobar que `sca` quede en verde y que `sbom.cdx.json` esté disponible en **Actions → Summary → Artifacts**. Descargarlo y verificar que su campo `bomFormat` sea `CycloneDX` y que `components` contenga dependencias de PetClinic. Tras confirmar el inventario, el siguiente cambio será aplicar el análisis de vulnerabilidades con Grype.
+**Resultado observado.** El job `sca` pasó en 55 segundos. El [SBOM descargado](sbom.cdx.json) se pudo leer como JSON y declara el formato CycloneDX 1.7. El inventario contiene 94 componentes, de los cuales 93 están clasificados como bibliotecas. Entre ellas figuran Spring Boot 4.1.0, Tomcat embebido 11.0.22 y H2 2.4.240.
+
+![Checks del PR en verde, incluido el job sca](SCA.png)
+
+La generación del inventario queda validada. El análisis de vulnerabilidades con Grype queda pendiente.
