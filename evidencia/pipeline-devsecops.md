@@ -80,4 +80,6 @@ La [política de bloqueo](../security/politica-de-bloqueo.md) describe cuándo f
 
 Grype genera `grype.sarif` y mantiene la tabla en el log del job `sca`. En los PR que se originan en el mismo repositorio, GitHub Actions publica el reporte en la categoría `grype` si se generó. Si Grype devuelve código `2` por un hallazgo que supera el umbral, `sca` conserva ese fallo y el paso de publicación aún puede ejecutarse.
 
-**Evidencia pendiente.** En el PR hacia `develop`, comprobar que **Publicar SARIF de Grype en GitHub Code scanning** termine correctamente y guardar la captura de la corrida.
+**Resultado observado.** El job `sca` terminó en verde en 1 minuto y 37 segundos. Grype mostró `No vulnerabilities found` con la configuración de esa corrida y el paso **Publicar SARIF de Grype en GitHub Code scanning** confirmó la carga con `Successfully uploaded results`.
+
+![Publicación exitosa del SARIF de Grype en GitHub Actions](Publicar%20SARIF%20de%20Grype.png)
