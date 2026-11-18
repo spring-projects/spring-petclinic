@@ -271,4 +271,10 @@ class PetControllerTests {
 
 	}
 
+	@Test
+	void initUpdateFormWithNonExistentPet() throws Exception {
+		mockMvc.perform(get("/owners/{ownerId}/pets/{petId}/edit", TEST_OWNER_ID, 999999))
+			.andExpect(status().isNotFound());
+	}
+
 }
