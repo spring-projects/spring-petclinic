@@ -23,3 +23,9 @@
 ![Corrida 3 del workflow DevSecOps con secretos en verde y sast en rojo](semgrep.png)
 
 **Aviso de la regla.** Semgrep recomendó indicar que la ruta de los archivos se cuenta desde la raíz del repositorio. Se agregó `/` al inicio del patrón. Queda pendiente comprobar el ajuste en la próxima corrida.
+
+## Paso 3 · Corrección de la exposición de Actuator
+
+En `fix/actuator-exposure` se cambió el valor de `management.endpoints.web.exposure.include` de `*` a `health,info` en [`application.properties`](../src/main/resources/application.properties#L20). Con este cambio, la exposición web de Actuator se limita a los endpoints de salud e información.
+
+**Evidencia pendiente.** En la próxima corrida del PR, verificar que `sast` complete el análisis sin el hallazgo de Actuator y guardar la captura del resultado. La captura del paso 2 documenta el resultado anterior a la corrección.
