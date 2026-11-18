@@ -46,13 +46,17 @@ pipeline {
 			steps {
 				sh './mvnw -B --no-transfer-progress jacoco:report'
 				// Abaixo do mínimo o build é marcado como falho (changeBuildStatus).
+				// O plugin limita o mínimo ao máximo (padrão 0), por isso os dois são informados.
 				jacoco(
 					execPattern: 'target/jacoco.exec',
 					classPattern: 'target/classes',
 					sourcePattern: 'src/main/java',
 					minimumInstructionCoverage: '85',
+					maximumInstructionCoverage: '85',
 					minimumBranchCoverage: '75',
+					maximumBranchCoverage: '75',
 					minimumLineCoverage: '85',
+					maximumLineCoverage: '85',
 					changeBuildStatus: true
 				)
 			}
