@@ -91,3 +91,19 @@ Para capturar el hallazgo en el editor, se usa una copia local de la regla de Se
 **Resultado observado.** Semgrep reportó en el panel **Problems** de VS Code que Spring Boot Actuator estaba completamente habilitado. La captura muestra el hallazgo y la configuración subrayada en la línea 21 de `application.properties`.
 
 ![Hallazgo de Spring Boot Actuator detectado por Semgrep en VS Code](semgrep-vscode.png)
+
+## Paso 11 · Validación del PR hacia main
+
+La captura de GitHub muestra **7 checks exitosos** y ningún conflicto con la rama base.
+
+| Check | Resultado |
+| --- | --- |
+| DevSecOps / secretos | Exitoso en 10 s |
+| DevSecOps / sast | Exitoso en 27 s |
+| DevSecOps / sca | Exitoso en 1 min |
+| Code scanning / grype | Exitoso en 3 s, sin alertas nuevas en los cambios del PR |
+| Code scanning / Semgrep OSS | Exitoso en 4 s, sin alertas nuevas en los cambios del PR |
+| Java CI with Gradle / build (17) | Exitoso en 1 min |
+| Java CI with Maven / build (17) | Exitoso en 1 min |
+
+![Siete checks exitosos y ningún conflicto en el PR hacia main](PR%20a%20main.png)
