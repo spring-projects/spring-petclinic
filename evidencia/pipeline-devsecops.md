@@ -68,4 +68,10 @@ Semgrep escribe sus resultados en `semgrep.sarif`. GitHub Actions publica ese re
 
 **Resultado observado.** En la corrida DevSecOps #14 del PR #3 hacia `develop`, el job `sast` terminó en verde en 25 segundos. El paso **Publicar SARIF en GitHub Code scanning** validó `semgrep.sarif` y completó la carga de resultados.
 
-**Evidencia pendiente.** Incorporar al repositorio la captura de la corrida #14 y comprobar el análisis en la pestaña **Security → Code scanning**. Con la configuración corregida de Actuator, se espera que esa regla no genere una alerta en esta corrida.
+![Publicación del SARIF en la corrida DevSecOps #14](publicar%20SARIF.png)
+
+**Verificación en GitHub.** En **Security → Code scanning**, el filtro **Semgrep OSS** muestra `0` alertas en la vista consultada. El resultado es consistente con la corrección de Actuator documentada en el paso 3.
+
+## Paso 8 · Política de bloqueo
+
+La [política de bloqueo](../security/politica-de-bloqueo.md) describe cuándo falla cada check y qué configuración requiere GitHub para impedir el merge. La aplicación de checks obligatorios se verifica en la protección de la rama destino.
