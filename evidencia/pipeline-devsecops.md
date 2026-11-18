@@ -75,3 +75,9 @@ Semgrep escribe sus resultados en `semgrep.sarif`. GitHub Actions publica ese re
 ## Paso 8 · Política de bloqueo
 
 La [política de bloqueo](../security/politica-de-bloqueo.md) describe cuándo falla cada check y qué configuración requiere GitHub para impedir el merge. La aplicación de checks obligatorios se verifica en la protección de la rama destino.
+
+## Paso 9 · Publicación de Grype en Code scanning
+
+Grype genera `grype.sarif` y mantiene la tabla en el log del job `sca`. En los PR que se originan en el mismo repositorio, GitHub Actions publica el reporte en la categoría `grype` si se generó. Si Grype devuelve código `2` por un hallazgo que supera el umbral, `sca` conserva ese fallo y el paso de publicación aún puede ejecutarse.
+
+**Evidencia pendiente.** En el PR hacia `develop`, comprobar que **Publicar SARIF de Grype en GitHub Code scanning** termine correctamente y guardar la captura de la corrida.
