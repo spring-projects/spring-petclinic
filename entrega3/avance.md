@@ -42,7 +42,7 @@ Aplicación monolítica en Spring Boot 4.1.2 y Java 17, con vistas Thymeleaf y p
 
 ### 3.2 DFD y límites de confianza
 
-Cuatro límites de confianza: Internet y usuario, aplicación, base de datos y GitHub. El DFD tiene 10 flujos y es la base del modelo STRIDE de la Fase 2. Los controles actuales en el límite cliente a aplicación son Bean Validation y los binders que bloquean el campo `id`. Faltan autenticación, TLS, CSRF y cabeceras de seguridad. Ver `security/diseño/dfd.md`.
+Cuatro límites de confianza: Internet y usuario, aplicación, base de datos y GitHub. El DFD tiene 11 flujos y es la base del modelo STRIDE de la Fase 2. Los controles actuales en el límite cliente a aplicación son Bean Validation y los binders que bloquean el campo `id`. Faltan autenticación, TLS, CSRF y cabeceras de seguridad. Ver `security/diseño/dfd.md`.
 
 ### 3.3 Clasificación de datos
 
