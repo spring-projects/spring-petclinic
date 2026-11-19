@@ -11,7 +11,7 @@
 |---|---|---|---|
 | Gobernanza | 3 | 0.3 | 1.3 |
 | Diseño | 3 | 0.0 | 1.7 |
-| Implementación | 3 | 1.3 | 2.0 |
+| Implementación | 3 | 1.7 | 2.0 |
 | Verificación | 3 | 1.0 | 1.7 |
 | Operaciones | 3 | 0.3 | 1.0 |
 
@@ -37,7 +37,7 @@
 |---|---|---|---|
 | Construcción segura (SB) | 2 | 2 | El workflow `devsecops.yml` genera SBOM CycloneDX, escanea con Grype y falla con High o Critical con corrección. |
 | Despliegue seguro (SD) | 1 | 2 | El pipeline usa permisos mínimos y acciones fijadas por SHA. Los manifiestos k8s y docker-compose tienen contraseñas en claro y no tienen `securityContext`. |
-| Gestión de defectos (DM) | 1 | 2 | Los hallazgos de Semgrep y Grype se publican en Code scanning. Falta priorización con CVSS, EPSS y KEV, y un tablero central (DefectDojo). |
+| Gestión de defectos (DM) | 2 | 2 | Los hallazgos de Semgrep y Grype se publican en Code scanning y se corrigen por PR (#2 Actuator, #3 Spring Boot 4.1.2), con evidencia en `evidencia/`. Falta priorización con CVSS, EPSS y KEV, y un tablero central (DefectDojo), que se tratarán como mejora dentro del mismo nivel. |
 
 ## Verificación
 
@@ -45,7 +45,7 @@
 |---|---|---|---|
 | Evaluación de arquitectura (AA) | 0 | 1 | No se ha revisado la arquitectura. El DFD y el modelo STRIDE servirán como primera revisión. |
 | Pruebas basadas en requisitos (RT) | 1 | 2 | Hay pruebas unitarias y de integración del código de negocio, pero ninguna prueba de seguridad ligada a requisitos. Se añadirán pruebas para los requisitos ASVS de validación de entrada. |
-| Pruebas de seguridad (ST) | 2 | 2 | SAST (Semgrep con una regla propia contra la exposición de Actuator) y SCA corren en cada PR. Se añadirán DAST (ZAP) e IaC. |
+| Pruebas de seguridad (ST) | 2 | 2 | SAST (Semgrep con una regla propia contra la exposición de Actuator) y SCA (Grype) corren en cada PR hacia `develop` y `main`, y publican SARIF en Code scanning. Se añadirán DAST (ZAP) e IaC. |
 
 ## Operaciones
 
