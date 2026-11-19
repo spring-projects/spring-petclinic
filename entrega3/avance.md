@@ -40,9 +40,15 @@ La mayor brecha está en **Diseño**: no existía modelo de amenazas ni requisit
 
 Aplicación monolítica en Spring Boot 4.1.2 y Java 17, con vistas Thymeleaf y persistencia JPA sobre H2, MySQL o PostgreSQL. **No incluye Spring Security**: no hay autenticación, autorización ni protección CSRF integrada. Se despliega con `docker-compose.yml` para desarrollo y con los manifiestos de `k8s/`. Los diagramas de componentes y de despliegue están en `security/diseño/arquitectura.md`.
 
+![Diagrama de componentes](../security/diseño/img/arquitectura-componentes.png)
+
+![Diagrama de despliegue](../security/diseño/img/arquitectura-despliegue.png)
+
 ### 3.2 DFD y límites de confianza
 
 Cuatro límites de confianza: Internet y usuario, aplicación, base de datos y GitHub. El DFD tiene 11 flujos y es la base del modelo STRIDE de la Fase 2. Los controles actuales en el límite cliente a aplicación son Bean Validation y los binders que bloquean el campo `id`. Faltan autenticación, TLS, CSRF y cabeceras de seguridad. Ver `security/diseño/dfd.md`.
+
+![DFD con límites de confianza](../security/diseño/img/dfd.png)
 
 ### 3.3 Clasificación de datos
 

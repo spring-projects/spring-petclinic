@@ -4,6 +4,11 @@ Aplicación web monolítica en Spring Boot 4.1.2 y Java 17. Genera HTML en el se
 
 ## Componentes
 
+![Diagrama de componentes de PetClinic](img/arquitectura-componentes.png)
+
+<details>
+<summary>Código fuente Mermaid</summary>
+
 ```mermaid
 flowchart LR
     U["Navegador<br/>(usuario del personal)"]
@@ -27,6 +32,8 @@ flowchart LR
     R -- "JDBC" --> DB
 ```
 
+</details>
+
 ## Perfiles de base de datos
 
 | Perfil | Base de datos | Dónde se configura | Credenciales |
@@ -38,6 +45,11 @@ flowchart LR
 El esquema y los datos de ejemplo se cargan al arrancar (`spring.sql.init.mode=always`).
 
 ## Despliegue
+
+![Diagrama de despliegue de PetClinic](img/arquitectura-despliegue.png)
+
+<details>
+<summary>Código fuente Mermaid</summary>
 
 ```mermaid
 flowchart TB
@@ -70,6 +82,8 @@ flowchart TB
     CI --> SEC
     DEV -. "desarrollo" .-> LOCAL
 ```
+
+</details>
 
 ## Observaciones de seguridad
 

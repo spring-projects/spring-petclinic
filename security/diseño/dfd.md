@@ -17,6 +17,11 @@
 
 ## Diagrama
 
+![DFD de PetClinic con límites de confianza](img/dfd.png)
+
+<details>
+<summary>Código fuente Mermaid</summary>
+
 ```mermaid
 flowchart LR
     E1(["E1 Usuario"])
@@ -56,6 +61,8 @@ flowchart LR
     D3 -- "F9 Código en cada PR" --> P4
     P4 -- "F10 Resultados SARIF y SBOM" --> D3
 ```
+
+</details>
 
 ## Flujos de datos
 
