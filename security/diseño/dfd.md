@@ -19,50 +19,9 @@
 
 ![DFD de PetClinic con límites de confianza](img/dfd.png)
 
-<details>
-<summary>Código fuente Mermaid</summary>
+Captura del DFD en OWASP Threat Dragon. La imagen muestra TB1 a TB3; el límite TB4 (GitHub: E3, P4, D3 y los flujos F8 a F10) está en el modelo y en las tablas de abajo. Los elementos en rojo tienen amenazas abiertas.
 
-```mermaid
-flowchart LR
-    E1(["E1 Usuario"])
-    E2(["E2 Atacante"])
-    E3(["E3 Desarrollador"])
-
-    subgraph TB1["Límite de confianza 1: Internet / red del usuario"]
-        E1
-        E2
-    end
-
-    subgraph TB2["Límite de confianza 2: aplicación (JVM)"]
-        P1["P1 Controladores y vistas"]
-        P2["P2 Persistencia JPA"]
-        P3["P3 Actuator"]
-        D2[("D2 Caché de vets")]
-    end
-
-    subgraph TB3["Límite de confianza 3: red de datos"]
-        D1[("D1 Base de datos")]
-    end
-
-    subgraph TB4["Límite de confianza 4: GitHub"]
-        D3[("D3 Repositorio Git")]
-        P4["P4 Pipeline de CI"]
-    end
-
-    E1 -- "F1 Peticiones HTTP: formularios y búsquedas" --> P1
-    E2 -- "F1b Peticiones HTTP manipuladas" --> P1
-    P1 -- "F2 HTML con datos de dueños, mascotas y visitas" --> E1
-    E1 -- "F3 GET /actuator/health, /info" --> P3
-    P1 -- "F4 Entidades validadas" --> P2
-    P2 -- "F5 Consultas SQL por JDBC" --> D1
-    D1 -- "F6 Registros" --> P2
-    P2 <-- "F7 Lectura y escritura de veterinarios" --> D2
-    E3 -- "F8 Pull request" --> D3
-    D3 -- "F9 Código en cada PR" --> P4
-    P4 -- "F10 Resultados SARIF y SBOM" --> D3
-```
-
-</details>
+Fuente editable: [`modelo-threat-dragon.json`](../threat-model/modelo-threat-dragon.json). Las amenazas están en [`amenazas.md`](../threat-model/amenazas.md).
 
 ## Flujos de datos
 
