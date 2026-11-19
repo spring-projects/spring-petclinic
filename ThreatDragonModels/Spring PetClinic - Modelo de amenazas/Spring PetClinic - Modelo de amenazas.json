@@ -1,11 +1,11 @@
 {
   "version": "2.6.2",
-  "release_version": "",
-  "released_at": "",
+  "release_version": "1.0",
+  "released_at": "2026-11-18",
   "summary": {
     "title": "Spring PetClinic - Modelo de amenazas",
     "owner": "",
-    "description": "",
+    "description": "Aplicación web monolítica de gestión de una clínica veterinaria (Spring Boot 4.1.2, Java 17, Thymeleaf y JPA sobre H2, MySQL o PostgreSQL). No tiene autenticación ni servicios externos. Maneja datos personales de dueños (nombre, dirección y teléfono), mascotas y visitas. Se despliega con docker-compose para desarrollo y con manifiestos de Kubernetes. El modelo cubre el DFD de security/diseño/dfd.md, con 4 límites de confianza.",
     "id": 0
   },
   "detail": {
@@ -13,12 +13,1116 @@
     "diagrams": [
       {
         "id": 0,
-        "title": "Spring petclinic",
+        "title": "DFD - Spring PetClinic",
         "diagramType": "STRIDE",
         "placeholder": "Descripción de nuevo diagrama STRIDE",
         "thumbnail": "./public/content/images/thumbnail.stride.jpg",
         "version": "2.6.2",
-        "cells": []
+        "cells": [
+          {
+            "position": {
+              "x": 20,
+              "y": 170
+            },
+            "size": {
+              "width": 210,
+              "height": 340
+            },
+            "attrs": {
+              "label": {
+                "text": "TB1 Internet / red del usuario"
+              },
+              "body": {
+                "stroke": "#b85450",
+                "strokeWidth": 3,
+                "strokeDasharray": "10 5"
+              }
+            },
+            "visible": true,
+            "shape": "trust-boundary-box",
+            "id": "2b231101-e711-5306-bd73-750647f442a7",
+            "zIndex": -50,
+            "data": {
+              "type": "tm.BoundaryBox",
+              "name": "TB1 Internet / red del usuario",
+              "description": "Cliente no confiable: navegador del usuario o del atacante.",
+              "isTrustBoundary": true,
+              "hasOpenThreats": false,
+              "crossingFlows": [],
+              "containedElements": []
+            }
+          },
+          {
+            "position": {
+              "x": 380,
+              "y": 170
+            },
+            "size": {
+              "width": 520,
+              "height": 340
+            },
+            "attrs": {
+              "label": {
+                "text": "TB2 Aplicación (JVM)"
+              },
+              "body": {
+                "stroke": "#b85450",
+                "strokeWidth": 3,
+                "strokeDasharray": "10 5"
+              }
+            },
+            "visible": true,
+            "shape": "trust-boundary-box",
+            "id": "d21726d2-626c-5781-b397-3cfec9cf3306",
+            "zIndex": -50,
+            "data": {
+              "type": "tm.BoundaryBox",
+              "name": "TB2 Aplicación (JVM)",
+              "description": "Proceso Spring Boot con controladores, persistencia y caché.",
+              "isTrustBoundary": true,
+              "hasOpenThreats": false,
+              "crossingFlows": [],
+              "containedElements": []
+            }
+          },
+          {
+            "position": {
+              "x": 940,
+              "y": 250
+            },
+            "size": {
+              "width": 220,
+              "height": 190
+            },
+            "attrs": {
+              "label": {
+                "text": "TB3 Red de datos"
+              },
+              "body": {
+                "stroke": "#b85450",
+                "strokeWidth": 3,
+                "strokeDasharray": "10 5"
+              }
+            },
+            "visible": true,
+            "shape": "trust-boundary-box",
+            "id": "d887c217-8eaf-5901-ba21-b116ebcf136c",
+            "zIndex": -50,
+            "data": {
+              "type": "tm.BoundaryBox",
+              "name": "TB3 Red de datos",
+              "description": "Base de datos H2, MySQL o PostgreSQL.",
+              "isTrustBoundary": true,
+              "hasOpenThreats": false,
+              "crossingFlows": [],
+              "containedElements": []
+            }
+          },
+          {
+            "position": {
+              "x": 380,
+              "y": 570
+            },
+            "size": {
+              "width": 520,
+              "height": 200
+            },
+            "attrs": {
+              "label": {
+                "text": "TB4 GitHub"
+              },
+              "body": {
+                "stroke": "#b85450",
+                "strokeWidth": 3,
+                "strokeDasharray": "10 5"
+              }
+            },
+            "visible": true,
+            "shape": "trust-boundary-box",
+            "id": "1b2470d1-189d-553f-8e43-b245183fe02b",
+            "zIndex": -50,
+            "data": {
+              "type": "tm.BoundaryBox",
+              "name": "TB4 GitHub",
+              "description": "Repositorio y pipeline de CI en GitHub Actions.",
+              "isTrustBoundary": true,
+              "hasOpenThreats": false,
+              "crossingFlows": [],
+              "containedElements": []
+            }
+          },
+          {
+            "position": {
+              "x": 45,
+              "y": 205
+            },
+            "size": {
+              "width": 160,
+              "height": 80
+            },
+            "attrs": {
+              "text": {
+                "text": "E1 Usuario"
+              },
+              "body": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": null
+              }
+            },
+            "visible": true,
+            "shape": "actor",
+            "id": "7e18ec22-3e58-5552-b196-ddcb90bd57dd",
+            "zIndex": 1,
+            "data": {
+              "type": "tm.Actor",
+              "name": "E1 Usuario",
+              "description": "Personal de la clínica. No se autentica.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "threats": [],
+              "hasOpenThreats": false,
+              "providesAuthentication": false
+            }
+          },
+          {
+            "position": {
+              "x": 45,
+              "y": 395
+            },
+            "size": {
+              "width": 160,
+              "height": 80
+            },
+            "attrs": {
+              "text": {
+                "text": "E2 Atacante"
+              },
+              "body": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": null
+              }
+            },
+            "visible": true,
+            "shape": "actor",
+            "id": "383546a2-3183-57f2-a5c0-b62075862e06",
+            "zIndex": 1,
+            "data": {
+              "type": "tm.Actor",
+              "name": "E2 Atacante",
+              "description": "Mismo acceso que el usuario, con intención maliciosa.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "threats": [],
+              "hasOpenThreats": false,
+              "providesAuthentication": false
+            }
+          },
+          {
+            "position": {
+              "x": 40,
+              "y": 640
+            },
+            "size": {
+              "width": 160,
+              "height": 80
+            },
+            "attrs": {
+              "text": {
+                "text": "E3 Desarrollador"
+              },
+              "body": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": null
+              }
+            },
+            "visible": true,
+            "shape": "actor",
+            "id": "0f7298f8-3ce2-5e92-9b85-e52bbc7c1c43",
+            "zIndex": 1,
+            "data": {
+              "type": "tm.Actor",
+              "name": "E3 Desarrollador",
+              "description": "Cambia código y manifiestos mediante pull requests.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "threats": [],
+              "hasOpenThreats": false,
+              "providesAuthentication": false
+            }
+          },
+          {
+            "position": {
+              "x": 410,
+              "y": 235
+            },
+            "size": {
+              "width": 110,
+              "height": 110
+            },
+            "attrs": {
+              "text": {
+                "text": "P1 Controladores\ny vistas"
+              },
+              "body": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": null
+              }
+            },
+            "visible": true,
+            "shape": "process",
+            "id": "ead0f8e2-ff81-5bb5-99c0-42c61387eac6",
+            "zIndex": 2,
+            "data": {
+              "type": "tm.Process",
+              "name": "P1 Controladores\ny vistas",
+              "description": "OwnerController, PetController, VisitController, VetController y plantillas Thymeleaf.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "threats": [],
+              "hasOpenThreats": false
+            }
+          },
+          {
+            "position": {
+              "x": 620,
+              "y": 235
+            },
+            "size": {
+              "width": 110,
+              "height": 110
+            },
+            "attrs": {
+              "text": {
+                "text": "P2 Persistencia\nJPA"
+              },
+              "body": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": null
+              }
+            },
+            "visible": true,
+            "shape": "process",
+            "id": "588ae0e9-f75b-5e21-964a-332d7c35785d",
+            "zIndex": 2,
+            "data": {
+              "type": "tm.Process",
+              "name": "P2 Persistencia\nJPA",
+              "description": "Repositorios Spring Data JPA.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "threats": [],
+              "hasOpenThreats": false
+            }
+          },
+          {
+            "position": {
+              "x": 410,
+              "y": 375
+            },
+            "size": {
+              "width": 110,
+              "height": 110
+            },
+            "attrs": {
+              "text": {
+                "text": "P3 Actuator"
+              },
+              "body": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": null
+              }
+            },
+            "visible": true,
+            "shape": "process",
+            "id": "32d52ff4-f17e-56f7-bca0-764bd6cc9382",
+            "zIndex": 2,
+            "data": {
+              "type": "tm.Process",
+              "name": "P3 Actuator",
+              "description": "Endpoints /actuator/health y /actuator/info.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "threats": [],
+              "hasOpenThreats": false
+            }
+          },
+          {
+            "position": {
+              "x": 640,
+              "y": 625
+            },
+            "size": {
+              "width": 110,
+              "height": 110
+            },
+            "attrs": {
+              "text": {
+                "text": "P4 Pipeline\nde CI"
+              },
+              "body": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": null
+              }
+            },
+            "visible": true,
+            "shape": "process",
+            "id": "724a3431-7ad7-557f-84e7-9d0f98bc729b",
+            "zIndex": 2,
+            "data": {
+              "type": "tm.Process",
+              "name": "P4 Pipeline\nde CI",
+              "description": "GitHub Actions: secretos, sast, sca y build.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "threats": [],
+              "hasOpenThreats": false
+            }
+          },
+          {
+            "position": {
+              "x": 970,
+              "y": 300
+            },
+            "size": {
+              "width": 160,
+              "height": 80
+            },
+            "attrs": {
+              "text": {
+                "text": "D1 Base de datos"
+              },
+              "topLine": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": null
+              },
+              "bottomLine": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": null
+              }
+            },
+            "visible": true,
+            "shape": "store",
+            "id": "60f66eeb-667a-581d-96a3-183af67fd34f",
+            "zIndex": 3,
+            "data": {
+              "type": "tm.Store",
+              "name": "D1 Base de datos",
+              "description": "Tablas owners, pets, visits, vets, specialties y types. Contiene datos personales de los dueños.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "threats": [],
+              "hasOpenThreats": false,
+              "isALog": false,
+              "isEncrypted": false,
+              "isSigned": false,
+              "storesCredentials": false
+            }
+          },
+          {
+            "position": {
+              "x": 700,
+              "y": 390
+            },
+            "size": {
+              "width": 160,
+              "height": 80
+            },
+            "attrs": {
+              "text": {
+                "text": "D2 Caché de vets"
+              },
+              "topLine": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": null
+              },
+              "bottomLine": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": null
+              }
+            },
+            "visible": true,
+            "shape": "store",
+            "id": "29b4bfa7-09ae-56c5-90df-d9ca7f0f1274",
+            "zIndex": 3,
+            "data": {
+              "type": "tm.Store",
+              "name": "D2 Caché de vets",
+              "description": "Caché JCache en memoria de veterinarios.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "threats": [],
+              "hasOpenThreats": false,
+              "isALog": false,
+              "isEncrypted": false,
+              "isSigned": false,
+              "storesCredentials": false
+            }
+          },
+          {
+            "position": {
+              "x": 400,
+              "y": 650
+            },
+            "size": {
+              "width": 160,
+              "height": 80
+            },
+            "attrs": {
+              "text": {
+                "text": "D3 Repositorio Git"
+              },
+              "topLine": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": null
+              },
+              "bottomLine": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": null
+              }
+            },
+            "visible": true,
+            "shape": "store",
+            "id": "7751cb5f-1d4d-5499-8c36-fba7ac72335a",
+            "zIndex": 3,
+            "data": {
+              "type": "tm.Store",
+              "name": "D3 Repositorio Git",
+              "description": "Código, configuración y manifiestos.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "threats": [],
+              "hasOpenThreats": false,
+              "isALog": false,
+              "isEncrypted": false,
+              "isSigned": false,
+              "storesCredentials": false
+            }
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": null
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "F1 Peticiones HTTP",
+              "description": "Formularios y búsquedas de dueños, mascotas y visitas.",
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "protocol": "HTTP",
+              "isEncrypted": false,
+              "isPublicNetwork": true,
+              "hasOpenThreats": false,
+              "threats": [],
+              "isTrustBoundary": false
+            },
+            "id": "1a6b91c2-399f-5ba0-ba64-e953f432ce45",
+            "labels": [
+              {
+                "position": 0.5,
+                "attrs": {
+                  "label": {
+                    "text": "F1 Peticiones HTTP"
+                  }
+                }
+              }
+            ],
+            "source": {
+              "cell": "7e18ec22-3e58-5552-b196-ddcb90bd57dd"
+            },
+            "target": {
+              "cell": "ead0f8e2-ff81-5bb5-99c0-42c61387eac6"
+            },
+            "vertices": [
+              {
+                "x": 305,
+                "y": 205
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": null
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "F1b Peticiones manipuladas",
+              "description": "Peticiones HTTP manipuladas por un atacante.",
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "protocol": "HTTP",
+              "isEncrypted": false,
+              "isPublicNetwork": true,
+              "hasOpenThreats": false,
+              "threats": [],
+              "isTrustBoundary": false
+            },
+            "id": "8e6027f4-25d4-580e-83ff-02a6b9b92a6a",
+            "labels": [
+              {
+                "position": 0.5,
+                "attrs": {
+                  "label": {
+                    "text": "F1b Peticiones manipuladas"
+                  }
+                }
+              }
+            ],
+            "source": {
+              "cell": "383546a2-3183-57f2-a5c0-b62075862e06"
+            },
+            "target": {
+              "cell": "ead0f8e2-ff81-5bb5-99c0-42c61387eac6"
+            },
+            "vertices": [
+              {
+                "x": 305,
+                "y": 350
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": null
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "F2 HTML con datos",
+              "description": "Páginas con datos de dueños, mascotas y visitas.",
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "protocol": "HTTP",
+              "isEncrypted": false,
+              "isPublicNetwork": true,
+              "hasOpenThreats": false,
+              "threats": [],
+              "isTrustBoundary": false
+            },
+            "id": "5bf47699-166b-5a3a-a306-a8a9479d7f71",
+            "labels": [
+              {
+                "position": 0.5,
+                "attrs": {
+                  "label": {
+                    "text": "F2 HTML con datos"
+                  }
+                }
+              }
+            ],
+            "source": {
+              "cell": "ead0f8e2-ff81-5bb5-99c0-42c61387eac6"
+            },
+            "target": {
+              "cell": "7e18ec22-3e58-5552-b196-ddcb90bd57dd"
+            },
+            "vertices": [
+              {
+                "x": 305,
+                "y": 300
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": null
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "F3 GET /actuator",
+              "description": "Consulta de /actuator/health e /info.",
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "protocol": "HTTP",
+              "isEncrypted": false,
+              "isPublicNetwork": true,
+              "hasOpenThreats": false,
+              "threats": [],
+              "isTrustBoundary": false
+            },
+            "id": "2db4b973-de95-511f-89d6-9cfde51c34bd",
+            "labels": [
+              {
+                "position": 0.5,
+                "attrs": {
+                  "label": {
+                    "text": "F3 GET /actuator"
+                  }
+                }
+              }
+            ],
+            "source": {
+              "cell": "7e18ec22-3e58-5552-b196-ddcb90bd57dd"
+            },
+            "target": {
+              "cell": "32d52ff4-f17e-56f7-bca0-764bd6cc9382"
+            },
+            "vertices": [
+              {
+                "x": 305,
+                "y": 430
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": null
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "F4 Entidades validadas",
+              "description": "Entidades Owner, Pet y Visit validadas. Llamada en proceso.",
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "protocol": "En proceso",
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "hasOpenThreats": false,
+              "threats": [],
+              "isTrustBoundary": false
+            },
+            "id": "e76a8b19-e991-5720-a8a3-7b0b01833407",
+            "labels": [
+              {
+                "position": 0.5,
+                "attrs": {
+                  "label": {
+                    "text": "F4 Entidades validadas"
+                  }
+                }
+              }
+            ],
+            "source": {
+              "cell": "ead0f8e2-ff81-5bb5-99c0-42c61387eac6"
+            },
+            "target": {
+              "cell": "588ae0e9-f75b-5e21-964a-332d7c35785d"
+            },
+            "vertices": []
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": null
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "F5 Consultas SQL",
+              "description": "Consultas SQL por JDBC.",
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "protocol": "JDBC",
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "hasOpenThreats": false,
+              "threats": [],
+              "isTrustBoundary": false
+            },
+            "id": "054db2d4-b574-56af-b5be-d39f8a645ae5",
+            "labels": [
+              {
+                "position": 0.5,
+                "attrs": {
+                  "label": {
+                    "text": "F5 Consultas SQL"
+                  }
+                }
+              }
+            ],
+            "source": {
+              "cell": "588ae0e9-f75b-5e21-964a-332d7c35785d"
+            },
+            "target": {
+              "cell": "60f66eeb-667a-581d-96a3-183af67fd34f"
+            },
+            "vertices": [
+              {
+                "x": 830,
+                "y": 240
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": null
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "F6 Registros",
+              "description": "Registros devueltos con datos personales.",
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "protocol": "JDBC",
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "hasOpenThreats": false,
+              "threats": [],
+              "isTrustBoundary": false
+            },
+            "id": "9b1472f5-0f9c-50f1-aa3d-1820b2ccc286",
+            "labels": [
+              {
+                "position": 0.5,
+                "attrs": {
+                  "label": {
+                    "text": "F6 Registros"
+                  }
+                }
+              }
+            ],
+            "source": {
+              "cell": "60f66eeb-667a-581d-96a3-183af67fd34f"
+            },
+            "target": {
+              "cell": "588ae0e9-f75b-5e21-964a-332d7c35785d"
+            },
+            "vertices": [
+              {
+                "x": 830,
+                "y": 345
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": "block"
+                },
+                "strokeDasharray": null
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "F7 Lectura y escritura de vets",
+              "description": "Lectura y escritura de veterinarios en la caché.",
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "protocol": "En memoria",
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "hasOpenThreats": false,
+              "threats": [],
+              "isTrustBoundary": false
+            },
+            "id": "86aced06-2e87-5cb6-9eda-b3cd68c9c96e",
+            "labels": [
+              {
+                "position": 0.5,
+                "attrs": {
+                  "label": {
+                    "text": "F7 Lectura y escritura de vets"
+                  }
+                }
+              }
+            ],
+            "source": {
+              "cell": "588ae0e9-f75b-5e21-964a-332d7c35785d"
+            },
+            "target": {
+              "cell": "29b4bfa7-09ae-56c5-90df-d9ca7f0f1274"
+            },
+            "vertices": []
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": null
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "F8 Pull request",
+              "description": "Código, workflows y manifiestos.",
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "protocol": "HTTPS",
+              "isEncrypted": true,
+              "isPublicNetwork": true,
+              "hasOpenThreats": false,
+              "threats": [],
+              "isTrustBoundary": false
+            },
+            "id": "73b80ed7-5e27-5db2-8a43-ce5e299410e7",
+            "labels": [
+              {
+                "position": 0.5,
+                "attrs": {
+                  "label": {
+                    "text": "F8 Pull request"
+                  }
+                }
+              }
+            ],
+            "source": {
+              "cell": "0f7298f8-3ce2-5e92-9b85-e52bbc7c1c43"
+            },
+            "target": {
+              "cell": "7751cb5f-1d4d-5499-8c36-fba7ac72335a"
+            },
+            "vertices": []
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": null
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "F9 Código en cada PR",
+              "description": "Código fuente que revisa el pipeline.",
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "protocol": "HTTPS",
+              "isEncrypted": true,
+              "isPublicNetwork": false,
+              "hasOpenThreats": false,
+              "threats": [],
+              "isTrustBoundary": false
+            },
+            "id": "bcd513cc-81a3-5907-9f9d-4c35cec1ff3d",
+            "labels": [
+              {
+                "position": 0.5,
+                "attrs": {
+                  "label": {
+                    "text": "F9 Código en cada PR"
+                  }
+                }
+              }
+            ],
+            "source": {
+              "cell": "7751cb5f-1d4d-5499-8c36-fba7ac72335a"
+            },
+            "target": {
+              "cell": "724a3431-7ad7-557f-84e7-9d0f98bc729b"
+            },
+            "vertices": [
+              {
+                "x": 570,
+                "y": 650
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": null
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "F10 SARIF y SBOM",
+              "description": "Resultados SARIF y SBOM publicados.",
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "protocol": "HTTPS",
+              "isEncrypted": true,
+              "isPublicNetwork": false,
+              "hasOpenThreats": false,
+              "threats": [],
+              "isTrustBoundary": false
+            },
+            "id": "f8c670e4-c7f3-55f7-824f-b39e340b5c09",
+            "labels": [
+              {
+                "position": 0.5,
+                "attrs": {
+                  "label": {
+                    "text": "F10 SARIF y SBOM"
+                  }
+                }
+              }
+            ],
+            "source": {
+              "cell": "724a3431-7ad7-557f-84e7-9d0f98bc729b"
+            },
+            "target": {
+              "cell": "7751cb5f-1d4d-5499-8c36-fba7ac72335a"
+            },
+            "vertices": [
+              {
+                "x": 570,
+                "y": 735
+              }
+            ]
+          }
+        ]
       }
     ],
     "diagramTop": 1,
