@@ -1,4 +1,3 @@
-
 name: Spring PetClinic CI/CD Pipeline
 
 on:
@@ -34,6 +33,14 @@ jobs:
 
       - name: Run Maven Build and Tests
         run: ./mvnw -B clean test
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: target/surefire-reports/
+          retention-days: 7
 
       - name: Package Application
         run: ./mvnw -B package -DskipTests
