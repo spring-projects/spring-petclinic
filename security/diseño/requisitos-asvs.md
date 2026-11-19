@@ -23,11 +23,13 @@ Cada requisito se aplica a Spring PetClinic con una verificación concreta y se 
 | 13 | V14.2.5 | L1 | Existe un inventario (SBOM) de los componentes y sus versiones. | Cumple | SBOM CycloneDX generado por Syft en el pipeline. | Job `sca` |
 | 14 | V14.1.1 | L2 | El pipeline de construcción es seguro: permisos mínimos, acciones fijadas por SHA y gates que fallan de verdad. | Cumple | `permissions: contents: read` en `devsecops.yml`; acciones fijadas por SHA. | Revisión de `devsecops.yml` |
 | 15 | V7.1.1 / V7.1.2 | L1 | Los registros no contienen datos personales (nombre, teléfono, dirección) ni credenciales. | Pendiente de verificar | El código de la aplicación no escribe logs propios; falta revisar los logs que genera Spring con `logging.level`. | Revisión manual |
-| 16 | V1.1.2 | L2 | El diseño tiene un modelo de amenazas actualizado con cada cambio de arquitectura. | No cumple | Planeado para la Fase 2 (STRIDE). | Revisión de PR |
+| 16 | V1.1.2 | L2 | El diseño tiene un modelo de amenazas actualizado con cada cambio de arquitectura. | Parcial | Modelo STRIDE inicial con 16 amenazas en `ThreatDragonModels/` y `security/threat-model/`. Falta mantenerlo con cada cambio. | Revisión de PR |
 | 17 | V5.1.3 / V5.1.4 | L1 | Las rutas con parámetros (`ownerId`, `petId`) y la paginación validan el rango y no desbordan enteros. | Parcial | Commits recientes añadieron mitigaciones de desbordamiento y redirección de páginas fuera de rango. Falta cubrir `petId` y `ownerId` inexistentes. | Pruebas unitarias; ZAP |
 | 18 | V8.3.4 | L2 | Los datos personales se clasifican y se protegen según su nivel. | Parcial | Clasificación en `clasificacion-datos.md`; los controles técnicos (TLS y acceso) siguen pendientes. | Revisión de diseño |
 | 19 | V2.1.1 | L1 | La aplicación autentica a los usuarios y exige contraseñas de al menos 12 caracteres. | No cumple | PetClinic no tiene cuentas ni inicio de sesión. Es la base del requisito 5. | Modelo de amenazas (STRIDE); ZAP |
 | 20 | V3.4.1 / V3.4.2 / V3.4.3 | L1 | La cookie de sesión lleva los atributos `Secure`, `HttpOnly` y `SameSite`. | Parcial | La aplicación crea sesión para los mensajes flash de las redirecciones. Spring Boot activa `HttpOnly` por defecto; `Secure` requiere TLS y `SameSite` no está configurado. Pendiente de confirmar con ZAP. | ZAP baseline (`.zap/rules.tsv`) |
+| 21 | V7.2.2 | L1 | Las decisiones de control de acceso, y en especial las fallidas, se registran en un log de auditoría sin datos personales. | No cumple | No hay autenticación ni auditoría de quién cambia los datos (amenaza T6). | Revisión manual |
+| 22 | V11.1.4 | L1 | La aplicación limita el abuso automatizado (límite de tasa y tamaño de página) para evitar la denegación de servicio. | No cumple | Solo se valida el tamaño de página; no hay límite de tasa (amenazas T12 y T13). | ZAP full scan local (pendiente) |
 
 ## Requisitos que aporta la Persona 3
 
@@ -38,8 +40,8 @@ Pendiente: se completarán en la reunión de integración. Los requisitos 7, 11,
 | Estado | Cantidad |
 |---|---|
 | Cumple | 7 |
-| Parcial | 5 |
-| No cumple | 6 |
+| Parcial | 6 |
+| No cumple | 7 |
 | Pendiente de verificar | 2 |
 
-Los 6 requisitos que **no cumplen** (autenticación, acceso, CSRF, TLS, cabeceras y modelo de amenazas) son el origen de la remediación y del modelo de amenazas de las fases siguientes.
+Los 7 requisitos que **no cumplen** (autenticación, acceso, CSRF, TLS, cabeceras, auditoría y control de abuso) son el origen de la remediación y del modelo de amenazas de las fases siguientes.

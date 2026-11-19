@@ -1,0 +1,1354 @@
+{
+  "version": "2.6.2",
+  "release_version": "1.0",
+  "released_at": "2026-11-18",
+  "summary": {
+    "title": "Spring PetClinic - Modelo de amenazas",
+    "owner": "",
+    "description": "Aplicación web monolítica de gestión de una clínica veterinaria (Spring Boot 4.1.2, Java 17, Thymeleaf y JPA sobre H2, MySQL o PostgreSQL). No tiene autenticación ni servicios externos. Maneja datos personales de dueños (nombre, dirección y teléfono), mascotas y visitas. Se despliega con docker-compose para desarrollo y con manifiestos de Kubernetes. El modelo cubre el DFD de security/diseño/dfd.md, con 4 límites de confianza.",
+    "id": 0
+  },
+  "detail": {
+    "contributors": [],
+    "diagrams": [
+      {
+        "id": 0,
+        "title": "DFD - Spring PetClinic",
+        "diagramType": "STRIDE",
+        "placeholder": "Descripción de nuevo diagrama STRIDE",
+        "thumbnail": "./public/content/images/thumbnail.stride.jpg",
+        "version": "2.6.2",
+        "cells": [
+          {
+            "position": {
+              "x": 20,
+              "y": 170
+            },
+            "size": {
+              "width": 220,
+              "height": 400
+            },
+            "attrs": {
+              "label": {
+                "text": "TB1 Internet / red del usuario"
+              },
+              "body": {
+                "stroke": "#b85450",
+                "strokeWidth": 3,
+                "strokeDasharray": "10 5"
+              }
+            },
+            "visible": true,
+            "shape": "trust-boundary-box",
+            "id": "2b231101-e711-5306-bd73-750647f442a7",
+            "zIndex": -50,
+            "data": {
+              "type": "tm.BoundaryBox",
+              "name": "TB1 Internet / red del usuario",
+              "description": "Cliente no confiable: navegador del usuario o del atacante.",
+              "isTrustBoundary": true,
+              "hasOpenThreats": false,
+              "crossingFlows": [],
+              "containedElements": []
+            }
+          },
+          {
+            "position": {
+              "x": 400,
+              "y": 170
+            },
+            "size": {
+              "width": 640,
+              "height": 400
+            },
+            "attrs": {
+              "label": {
+                "text": "TB2 Aplicación (JVM)"
+              },
+              "body": {
+                "stroke": "#b85450",
+                "strokeWidth": 3,
+                "strokeDasharray": "10 5"
+              }
+            },
+            "visible": true,
+            "shape": "trust-boundary-box",
+            "id": "d21726d2-626c-5781-b397-3cfec9cf3306",
+            "zIndex": -50,
+            "data": {
+              "type": "tm.BoundaryBox",
+              "name": "TB2 Aplicación (JVM)",
+              "description": "Proceso Spring Boot con controladores, persistencia y caché.",
+              "isTrustBoundary": true,
+              "hasOpenThreats": false,
+              "crossingFlows": [],
+              "containedElements": []
+            }
+          },
+          {
+            "position": {
+              "x": 1180,
+              "y": 240
+            },
+            "size": {
+              "width": 230,
+              "height": 220
+            },
+            "attrs": {
+              "label": {
+                "text": "TB3 Red de datos"
+              },
+              "body": {
+                "stroke": "#b85450",
+                "strokeWidth": 3,
+                "strokeDasharray": "10 5"
+              }
+            },
+            "visible": true,
+            "shape": "trust-boundary-box",
+            "id": "d887c217-8eaf-5901-ba21-b116ebcf136c",
+            "zIndex": -50,
+            "data": {
+              "type": "tm.BoundaryBox",
+              "name": "TB3 Red de datos",
+              "description": "Base de datos H2, MySQL o PostgreSQL.",
+              "isTrustBoundary": true,
+              "hasOpenThreats": false,
+              "crossingFlows": [],
+              "containedElements": []
+            }
+          },
+          {
+            "position": {
+              "x": 400,
+              "y": 650
+            },
+            "size": {
+              "width": 640,
+              "height": 240
+            },
+            "attrs": {
+              "label": {
+                "text": "TB4 GitHub"
+              },
+              "body": {
+                "stroke": "#b85450",
+                "strokeWidth": 3,
+                "strokeDasharray": "10 5"
+              }
+            },
+            "visible": true,
+            "shape": "trust-boundary-box",
+            "id": "1b2470d1-189d-553f-8e43-b245183fe02b",
+            "zIndex": -50,
+            "data": {
+              "type": "tm.BoundaryBox",
+              "name": "TB4 GitHub",
+              "description": "Repositorio y pipeline de CI en GitHub Actions.",
+              "isTrustBoundary": true,
+              "hasOpenThreats": false,
+              "crossingFlows": [],
+              "containedElements": []
+            }
+          },
+          {
+            "position": {
+              "x": 50,
+              "y": 215
+            },
+            "size": {
+              "width": 160,
+              "height": 80
+            },
+            "attrs": {
+              "text": {
+                "text": "E1 Usuario"
+              },
+              "body": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": null
+              }
+            },
+            "visible": true,
+            "shape": "actor",
+            "id": "7e18ec22-3e58-5552-b196-ddcb90bd57dd",
+            "zIndex": 1,
+            "data": {
+              "type": "tm.Actor",
+              "name": "E1 Usuario",
+              "description": "Personal de la clínica. No se autentica.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "threats": [],
+              "hasOpenThreats": false,
+              "providesAuthentication": false
+            }
+          },
+          {
+            "position": {
+              "x": 50,
+              "y": 430
+            },
+            "size": {
+              "width": 160,
+              "height": 80
+            },
+            "attrs": {
+              "text": {
+                "text": "E2 Atacante"
+              },
+              "body": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": null
+              }
+            },
+            "visible": true,
+            "shape": "actor",
+            "id": "383546a2-3183-57f2-a5c0-b62075862e06",
+            "zIndex": 1,
+            "data": {
+              "type": "tm.Actor",
+              "name": "E2 Atacante",
+              "description": "Mismo acceso que el usuario, con intención maliciosa.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "threats": [],
+              "hasOpenThreats": false,
+              "providesAuthentication": false
+            }
+          },
+          {
+            "position": {
+              "x": 50,
+              "y": 740
+            },
+            "size": {
+              "width": 160,
+              "height": 80
+            },
+            "attrs": {
+              "text": {
+                "text": "E3 Desarrollador"
+              },
+              "body": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": null
+              }
+            },
+            "visible": true,
+            "shape": "actor",
+            "id": "0f7298f8-3ce2-5e92-9b85-e52bbc7c1c43",
+            "zIndex": 1,
+            "data": {
+              "type": "tm.Actor",
+              "name": "E3 Desarrollador",
+              "description": "Cambia código y manifiestos mediante pull requests.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "threats": [],
+              "hasOpenThreats": false,
+              "providesAuthentication": false
+            }
+          },
+          {
+            "position": {
+              "x": 430,
+              "y": 240
+            },
+            "size": {
+              "width": 130,
+              "height": 130
+            },
+            "attrs": {
+              "text": {
+                "text": "P1\nControladores\ny vistas"
+              },
+              "body": {
+                "stroke": "red",
+                "strokeWidth": 3,
+                "strokeDasharray": null
+              }
+            },
+            "visible": true,
+            "shape": "process",
+            "id": "ead0f8e2-ff81-5bb5-99c0-42c61387eac6",
+            "zIndex": 2,
+            "data": {
+              "type": "tm.Process",
+              "name": "P1\nControladores\ny vistas",
+              "description": "OwnerController, PetController, VisitController, VetController y plantillas Thymeleaf.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "threats": [
+                {
+                  "id": "be4da3cd-bc05-5efe-a94c-b2672da30a04",
+                  "title": "Suplantación de personal de la clínica",
+                  "status": "Open",
+                  "severity": "High",
+                  "type": "Spoofing",
+                  "modelType": "STRIDE",
+                  "new": false,
+                  "number": 1,
+                  "score": "",
+                  "description": "La aplicación no autentica a nadie: cualquier visitante puede hacerse pasar por personal de la clínica y operar sobre datos de dueños. Impacto: Alto. Probabilidad: Alta. Prioridad: Alta.",
+                  "mitigation": "Añadir autenticación con Spring Security (formulario de acceso, contraseñas de al menos 12 caracteres y hash adaptativo) y exigir sesión en todas las rutas con datos. Trazabilidad: ASVS #19 (V2.1.1), #5 (V4.1.1). Control: Revisión manual del diseño; DAST autenticado con ZAP (pendiente)."
+                },
+                {
+                  "id": "5433d51a-33f5-57f3-9c01-47a8c00f4d84",
+                  "title": "Mensajes de error con detalles internos",
+                  "status": "Open",
+                  "severity": "Low",
+                  "type": "Information disclosure",
+                  "modelType": "STRIDE",
+                  "new": false,
+                  "number": 9,
+                  "score": "",
+                  "description": "Una página de error con traza de pila o rutas internas revela la tecnología y la estructura. La ruta /oups provoca un error a propósito. Impacto: Bajo. Probabilidad: Media. Prioridad: Baja.",
+                  "mitigation": "Mantener un error.html genérico, no habilitar server.error.include-stacktrace y verificar el comportamiento de /oups. Trazabilidad: ASVS #9 (V7.4.1). Control: ZAP baseline (pendiente)."
+                },
+                {
+                  "id": "e0d95ece-c03a-535e-8ca7-8dc0fe15baff",
+                  "title": "Contenedor sin límites de recursos",
+                  "status": "Open",
+                  "severity": "Medium",
+                  "type": "Denial of service",
+                  "modelType": "STRIDE",
+                  "new": false,
+                  "number": 13,
+                  "score": "",
+                  "description": "k8s/petclinic.yml no define límites de CPU ni de memoria ni securityContext. Un pico de carga o una explotación puede agotar el nodo. Impacto: Medio. Probabilidad: Media. Prioridad: Media.",
+                  "mitigation": "Definir resources.requests y limits, y un securityContext sin root y con sistema de archivos de solo lectura. Trazabilidad: ASVS #14 (V14.1.1), #22 (V11.1.4). Control: IaC con Checkov o Trivy (pendiente); Semgrep detecta la falta de securityContext."
+                },
+                {
+                  "id": "6afdc9c0-c9bc-5ae9-80a3-2e5e68bb0b9a",
+                  "title": "Acceso sin autorización a cualquier registro (IDOR)",
+                  "status": "Open",
+                  "severity": "High",
+                  "type": "Elevation of privilege",
+                  "modelType": "STRIDE",
+                  "new": false,
+                  "number": 14,
+                  "score": "",
+                  "description": "Cualquier visitante puede ver y editar cualquier dueño cambiando el identificador en /owners/{ownerId}/edit. No hay roles ni verificación de pertenencia. Impacto: Alto. Probabilidad: Alta. Prioridad: Alta.",
+                  "mitigation": "Definir roles (por ejemplo recepción y veterinario) y autorizar cada operación en el servidor con Spring Security. Trazabilidad: ASVS #5 (V4.1.1), #19 (V2.1.1). Control: DAST autenticado con ZAP (pendiente); revisión manual."
+                }
+              ],
+              "hasOpenThreats": true
+            }
+          },
+          {
+            "position": {
+              "x": 760,
+              "y": 240
+            },
+            "size": {
+              "width": 130,
+              "height": 130
+            },
+            "attrs": {
+              "text": {
+                "text": "P2\nPersistencia\nJPA"
+              },
+              "body": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": null
+              }
+            },
+            "visible": true,
+            "shape": "process",
+            "id": "588ae0e9-f75b-5e21-964a-332d7c35785d",
+            "zIndex": 2,
+            "data": {
+              "type": "tm.Process",
+              "name": "P2\nPersistencia\nJPA",
+              "description": "Repositorios Spring Data JPA.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "threats": [
+                {
+                  "id": "bc53bd4d-b2de-5f09-a0a6-95565c270430",
+                  "title": "Explotación de una dependencia vulnerable",
+                  "status": "Mitigated",
+                  "severity": "High",
+                  "type": "Elevation of privilege",
+                  "modelType": "STRIDE",
+                  "new": false,
+                  "number": 15,
+                  "score": "",
+                  "description": "Una librería con CVE conocida (Tomcat, Spring MVC, Jackson o el controlador JDBC de PostgreSQL) podría permitir ejecutar código o saltarse controles. Grype bloqueó un PR por esto y se corrigió al pasar a Spring Boot 4.1.2. Impacto: Alto. Probabilidad: Media. Prioridad: Alta.",
+                  "mitigation": "Gate de Grype (High o Critical con corrección), SBOM en cada build y Dependabot para las actualizaciones. Trazabilidad: ASVS #12 (V14.2.1), #13 (V14.2.5). Control: SCA con Syft y Grype (job sca, activo); Dependabot (pendiente)."
+                }
+              ],
+              "hasOpenThreats": false
+            }
+          },
+          {
+            "position": {
+              "x": 430,
+              "y": 410
+            },
+            "size": {
+              "width": 130,
+              "height": 130
+            },
+            "attrs": {
+              "text": {
+                "text": "P3\nActuator"
+              },
+              "body": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": null
+              }
+            },
+            "visible": true,
+            "shape": "process",
+            "id": "32d52ff4-f17e-56f7-bca0-764bd6cc9382",
+            "zIndex": 2,
+            "data": {
+              "type": "tm.Process",
+              "name": "P3\nActuator",
+              "description": "Endpoints /actuator/health y /actuator/info.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "threats": [
+                {
+                  "id": "4aaa3222-065d-57dd-aa82-db4abe2a2dcf",
+                  "title": "Exposición de endpoints de administración (Actuator)",
+                  "status": "Mitigated",
+                  "severity": "Medium",
+                  "type": "Information disclosure",
+                  "modelType": "STRIDE",
+                  "new": false,
+                  "number": 10,
+                  "score": "",
+                  "description": "Con management.endpoints.web.exposure.include=* se publicarían endpoints como env, heapdump o beans. Se detectó en el PR #1 y se corrigió en el PR #2. Impacto: Alto. Probabilidad: Baja. Prioridad: Media.",
+                  "mitigation": "Se limitó la exposición a health e info en application.properties. Trazabilidad: ASVS #10 (V14.3.2). Control: Semgrep con regla propia petclinic-actuator-wildcard-exposure (job sast, activa)."
+                }
+              ],
+              "hasOpenThreats": false
+            }
+          },
+          {
+            "position": {
+              "x": 800,
+              "y": 705
+            },
+            "size": {
+              "width": 130,
+              "height": 130
+            },
+            "attrs": {
+              "text": {
+                "text": "P4\nPipeline\nde CI"
+              },
+              "body": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": null
+              }
+            },
+            "visible": true,
+            "shape": "process",
+            "id": "724a3431-7ad7-557f-84e7-9d0f98bc729b",
+            "zIndex": 2,
+            "data": {
+              "type": "tm.Process",
+              "name": "P4\nPipeline\nde CI",
+              "description": "GitHub Actions: secretos, sast, sca y build.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "threats": [
+                {
+                  "id": "0ff58fa7-7300-56ac-acb7-7cb5c8f61b57",
+                  "title": "Acción de terceros comprometida en el pipeline",
+                  "status": "Mitigated",
+                  "severity": "Medium",
+                  "type": "Elevation of privilege",
+                  "modelType": "STRIDE",
+                  "new": false,
+                  "number": 16,
+                  "score": "",
+                  "description": "Una acción de GitHub Actions modificada podría ejecutar código con el token del CI y alterar el repositorio. Impacto: Alto. Probabilidad: Baja. Prioridad: Media.",
+                  "mitigation": "Permisos mínimos (contents: read), acciones fijadas por SHA y revisión de los workflows. Trazabilidad: ASVS #14 (V14.1.1). Control: Revisión de devsecops.yml; permisos y SHA verificados en el workflow."
+                }
+              ],
+              "hasOpenThreats": false
+            }
+          },
+          {
+            "position": {
+              "x": 1215,
+              "y": 310
+            },
+            "size": {
+              "width": 160,
+              "height": 80
+            },
+            "attrs": {
+              "text": {
+                "text": "D1\nBase de datos"
+              },
+              "topLine": {
+                "stroke": "red",
+                "strokeWidth": 3,
+                "strokeDasharray": null
+              },
+              "bottomLine": {
+                "stroke": "red",
+                "strokeWidth": 3,
+                "strokeDasharray": null
+              }
+            },
+            "visible": true,
+            "shape": "store",
+            "id": "60f66eeb-667a-581d-96a3-183af67fd34f",
+            "zIndex": 3,
+            "data": {
+              "type": "tm.Store",
+              "name": "D1\nBase de datos",
+              "description": "Tablas owners, pets, visits, vets, specialties y types. Contiene datos personales de los dueños.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "threats": [
+                {
+                  "id": "15fa0c9d-ebbc-5b00-a31c-c58c6ae7ea00",
+                  "title": "Cambios en datos personales sin registro del autor",
+                  "status": "Open",
+                  "severity": "Medium",
+                  "type": "Repudiation",
+                  "modelType": "STRIDE",
+                  "new": false,
+                  "number": 6,
+                  "score": "",
+                  "description": "Como no hay autenticación ni auditoría, no se puede saber quién creó o modificó un dueño, una mascota o una visita. Impacto: Medio. Probabilidad: Media. Prioridad: Media.",
+                  "mitigation": "Tras autenticar, registrar usuario, acción, identificador del registro y hora en un log de auditoría, sin incluir datos personales. Trazabilidad: ASVS #21 (V7.2.2), #15 (V7.1.1), #19 (V2.1.1). Control: Revisión manual."
+                },
+                {
+                  "id": "6f1554c1-436e-5d68-a511-120baebb5224",
+                  "title": "Credenciales de la base de datos en claro en el repositorio",
+                  "status": "Open",
+                  "severity": "High",
+                  "type": "Information disclosure",
+                  "modelType": "STRIDE",
+                  "new": false,
+                  "number": 11,
+                  "score": "",
+                  "description": "docker-compose.yml y k8s/db.yml guardan usuario y contraseña de desarrollo (petclinic y pass) y MySQL admite root sin contraseña. Quien acceda al repositorio o al clúster podría conectarse a la base. Impacto: Alto. Probabilidad: Media. Prioridad: Alta.",
+                  "mitigation": "Mover las credenciales a secretos del CI y a un Secret de Kubernetes real, sin valores en el repositorio, y retirar MYSQL_ALLOW_EMPTY_PASSWORD. Trazabilidad: ASVS #11 (V2.10.4). Control: Gitleaks (job secretos); IaC con Checkov (pendiente)."
+                }
+              ],
+              "hasOpenThreats": true,
+              "isALog": false,
+              "isEncrypted": false,
+              "isSigned": false,
+              "storesCredentials": false
+            }
+          },
+          {
+            "position": {
+              "x": 800,
+              "y": 420
+            },
+            "size": {
+              "width": 160,
+              "height": 80
+            },
+            "attrs": {
+              "text": {
+                "text": "D2\nCaché de vets"
+              },
+              "topLine": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": null
+              },
+              "bottomLine": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": null
+              }
+            },
+            "visible": true,
+            "shape": "store",
+            "id": "29b4bfa7-09ae-56c5-90df-d9ca7f0f1274",
+            "zIndex": 3,
+            "data": {
+              "type": "tm.Store",
+              "name": "D2\nCaché de vets",
+              "description": "Caché JCache en memoria de veterinarios.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "threats": [],
+              "hasOpenThreats": false,
+              "isALog": false,
+              "isEncrypted": false,
+              "isSigned": false,
+              "storesCredentials": false
+            }
+          },
+          {
+            "position": {
+              "x": 440,
+              "y": 740
+            },
+            "size": {
+              "width": 160,
+              "height": 80
+            },
+            "attrs": {
+              "text": {
+                "text": "D3\nRepositorio Git"
+              },
+              "topLine": {
+                "stroke": "red",
+                "strokeWidth": 3,
+                "strokeDasharray": null
+              },
+              "bottomLine": {
+                "stroke": "red",
+                "strokeWidth": 3,
+                "strokeDasharray": null
+              }
+            },
+            "visible": true,
+            "shape": "store",
+            "id": "7751cb5f-1d4d-5499-8c36-fba7ac72335a",
+            "zIndex": 3,
+            "data": {
+              "type": "tm.Store",
+              "name": "D3\nRepositorio Git",
+              "description": "Código, configuración y manifiestos.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "threats": [
+                {
+                  "id": "2e88d346-37d0-5ec5-ad82-3e71e824f1c6",
+                  "title": "Cambios en el código sin revisión ni autoría verificable",
+                  "status": "Open",
+                  "severity": "Medium",
+                  "type": "Repudiation",
+                  "modelType": "STRIDE",
+                  "new": false,
+                  "number": 7,
+                  "score": "",
+                  "description": "Si main no tiene protección de rama, cualquiera con permiso de escritura puede subir cambios sin pull request ni revisión. Impacto: Medio. Probabilidad: Media. Prioridad: Media.",
+                  "mitigation": "Proteger main: solo cambios por PR con revisión obligatoria y checks requeridos (secretos, sast y sca). Valorar commits firmados. Trazabilidad: ASVS #14 (V14.1.1). Control: Protección de rama (guardrail, pendiente de verificar en GitHub)."
+                }
+              ],
+              "hasOpenThreats": true,
+              "isALog": false,
+              "isEncrypted": false,
+              "isSigned": false,
+              "storesCredentials": false
+            }
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "red",
+                "strokeWidth": 3,
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": null
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "F1 HTTP",
+              "description": "F1 Peticiones HTTP: formularios y búsquedas de dueños, mascotas y visitas.",
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "protocol": "HTTP",
+              "isEncrypted": false,
+              "isPublicNetwork": true,
+              "hasOpenThreats": true,
+              "threats": [
+                {
+                  "id": "4821aed7-0f63-5dbf-a6d8-6ca0db6046bb",
+                  "title": "Falsificación de petición en sitios cruzados (CSRF)",
+                  "status": "Open",
+                  "severity": "High",
+                  "type": "Tampering",
+                  "modelType": "STRIDE",
+                  "new": false,
+                  "number": 4,
+                  "score": "",
+                  "description": "Los formularios POST de alta y edición de dueños, mascotas y visitas no llevan token CSRF. Una página externa puede hacer que el navegador del personal modifique datos. Impacto: Medio. Probabilidad: Alta. Prioridad: Alta.",
+                  "mitigation": "Incorporar Spring Security con protección CSRF y token en los formularios Thymeleaf, junto con SameSite en la cookie. Trazabilidad: ASVS #6 (V4.2.2). Control: ZAP baseline (pendiente)."
+                },
+                {
+                  "id": "ee227826-2896-5e4f-ab01-f0970790923b",
+                  "title": "Datos personales expuestos en tránsito por HTTP",
+                  "status": "Open",
+                  "severity": "High",
+                  "type": "Information disclosure",
+                  "modelType": "STRIDE",
+                  "new": false,
+                  "number": 8,
+                  "score": "",
+                  "description": "Nombre, dirección y teléfono de los dueños viajan sin cifrar entre el navegador y la aplicación. Un atacante en la red puede leerlos. Impacto: Alto. Probabilidad: Media. Prioridad: Alta.",
+                  "mitigation": "Terminar TLS en un Ingress o en el servidor, redirigir HTTP a HTTPS y enviar la cabecera HSTS. Trazabilidad: ASVS #7 (V9.1.1), #8 (V14.4.5), #18 (V8.3.4). Control: IaC con Checkov o Trivy sobre k8s (pendiente); ZAP."
+                },
+                {
+                  "id": "921259d1-7aa8-581f-a059-f3b19702aefd",
+                  "title": "Peticiones abusivas que saturan la aplicación",
+                  "status": "Open",
+                  "severity": "Medium",
+                  "type": "Denial of service",
+                  "modelType": "STRIDE",
+                  "new": false,
+                  "number": 12,
+                  "score": "",
+                  "description": "Sin límite de tasa, un atacante puede lanzar muchas búsquedas o paginaciones para consumir CPU y conexiones de la base de datos. Impacto: Medio. Probabilidad: Media. Prioridad: Media.",
+                  "mitigation": "Mantener acotado el tamaño de página (ya validado), aplicar límite de tasa en el Ingress y fijar un máximo de conexiones del pool. Trazabilidad: ASVS #22 (V11.1.4), #17 (V5.1.3). Control: ZAP full scan local (pendiente); IaC (pendiente)."
+                }
+              ],
+              "isTrustBoundary": false
+            },
+            "id": "1a6b91c2-399f-5ba0-ba64-e953f432ce45",
+            "labels": [
+              {
+                "position": 0.5,
+                "attrs": {
+                  "label": {
+                    "text": "F1 HTTP"
+                  }
+                }
+              }
+            ],
+            "source": {
+              "cell": "7e18ec22-3e58-5552-b196-ddcb90bd57dd"
+            },
+            "target": {
+              "cell": "ead0f8e2-ff81-5bb5-99c0-42c61387eac6"
+            },
+            "vertices": [
+              {
+                "x": 320,
+                "y": 225
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": null
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "F1b HTTP manipulado",
+              "description": "F1b Peticiones HTTP manipuladas por un atacante.",
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "protocol": "HTTP",
+              "isEncrypted": false,
+              "isPublicNetwork": true,
+              "hasOpenThreats": false,
+              "threats": [
+                {
+                  "id": "d7043344-9aef-5575-97db-c770abd3de97",
+                  "title": "Asignación masiva de campos (id) en los formularios",
+                  "status": "Mitigated",
+                  "severity": "Medium",
+                  "type": "Tampering",
+                  "modelType": "STRIDE",
+                  "new": false,
+                  "number": 3,
+                  "score": "",
+                  "description": "Un atacante envía campos adicionales, como id, para sobrescribir registros de otra entidad. Impacto: Alto. Probabilidad: Baja. Prioridad: Media.",
+                  "mitigation": "Los binders de OwnerController, PetController y VisitController rechazan los campos id y *.id con setDisallowedFields. Trazabilidad: ASVS #4 (V5.1.2). Control: Semgrep con regla propia @InitBinder (pendiente de añadir); pruebas unitarias."
+                }
+              ],
+              "isTrustBoundary": false
+            },
+            "id": "8e6027f4-25d4-580e-83ff-02a6b9b92a6a",
+            "labels": [
+              {
+                "position": 0.5,
+                "attrs": {
+                  "label": {
+                    "text": "F1b HTTP manipulado"
+                  }
+                }
+              }
+            ],
+            "source": {
+              "cell": "383546a2-3183-57f2-a5c0-b62075862e06"
+            },
+            "target": {
+              "cell": "ead0f8e2-ff81-5bb5-99c0-42c61387eac6"
+            },
+            "vertices": [
+              {
+                "x": 320,
+                "y": 420
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "red",
+                "strokeWidth": 3,
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": null
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "F2 HTML",
+              "description": "F2 Páginas HTML con datos de dueños, mascotas y visitas.",
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "protocol": "HTTP",
+              "isEncrypted": false,
+              "isPublicNetwork": true,
+              "hasOpenThreats": true,
+              "threats": [
+                {
+                  "id": "d6397c90-3297-5f69-a31e-99fe76bf7989",
+                  "title": "Robo de sesión por cookie sin atributos de protección",
+                  "status": "Open",
+                  "severity": "Medium",
+                  "type": "Spoofing",
+                  "modelType": "STRIDE",
+                  "new": false,
+                  "number": 2,
+                  "score": "",
+                  "description": "La aplicación crea sesión para los mensajes de las redirecciones. Sin TLS ni los atributos Secure y SameSite, un atacante en la red puede capturar la cookie JSESSIONID y reutilizarla. Impacto: Medio. Probabilidad: Media. Prioridad: Media.",
+                  "mitigation": "Servir solo por HTTPS, configurar server.servlet.session.cookie.secure=true y same-site=lax, y regenerar la sesión al autenticar. Trazabilidad: ASVS #20 (V3.4.1 a V3.4.3), #7 (V9.1.1). Control: ZAP baseline (pendiente); IaC con Checkov sobre k8s (pendiente)."
+                }
+              ],
+              "isTrustBoundary": false
+            },
+            "id": "5bf47699-166b-5a3a-a306-a8a9479d7f71",
+            "labels": [
+              {
+                "position": 0.5,
+                "attrs": {
+                  "label": {
+                    "text": "F2 HTML"
+                  }
+                }
+              }
+            ],
+            "source": {
+              "cell": "ead0f8e2-ff81-5bb5-99c0-42c61387eac6"
+            },
+            "target": {
+              "cell": "7e18ec22-3e58-5552-b196-ddcb90bd57dd"
+            },
+            "vertices": [
+              {
+                "x": 320,
+                "y": 320
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": null
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "F3 GET /actuator",
+              "description": "F3 Consulta de /actuator/health e /info.",
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "protocol": "HTTP",
+              "isEncrypted": false,
+              "isPublicNetwork": true,
+              "hasOpenThreats": false,
+              "threats": [],
+              "isTrustBoundary": false
+            },
+            "id": "2db4b973-de95-511f-89d6-9cfde51c34bd",
+            "labels": [
+              {
+                "position": 0.5,
+                "attrs": {
+                  "label": {
+                    "text": "F3 GET /actuator"
+                  }
+                }
+              }
+            ],
+            "source": {
+              "cell": "7e18ec22-3e58-5552-b196-ddcb90bd57dd"
+            },
+            "target": {
+              "cell": "32d52ff4-f17e-56f7-bca0-764bd6cc9382"
+            },
+            "vertices": [
+              {
+                "x": 260,
+                "y": 530
+              },
+              {
+                "x": 360,
+                "y": 530
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": null
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "F4 Entidades",
+              "description": "F4 Entidades Owner, Pet y Visit validadas. Llamada en proceso.",
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "protocol": "En proceso",
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "hasOpenThreats": false,
+              "threats": [],
+              "isTrustBoundary": false
+            },
+            "id": "e76a8b19-e991-5720-a8a3-7b0b01833407",
+            "labels": [
+              {
+                "position": 0.5,
+                "attrs": {
+                  "label": {
+                    "text": "F4 Entidades"
+                  }
+                }
+              }
+            ],
+            "source": {
+              "cell": "ead0f8e2-ff81-5bb5-99c0-42c61387eac6"
+            },
+            "target": {
+              "cell": "588ae0e9-f75b-5e21-964a-332d7c35785d"
+            },
+            "vertices": []
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": null
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "F5 SQL (JDBC)",
+              "description": "F5 Consultas SQL por JDBC.",
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "protocol": "JDBC",
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "hasOpenThreats": false,
+              "threats": [
+                {
+                  "id": "680471b6-da0e-5a18-94fc-9d70e7808a6e",
+                  "title": "Inyección SQL por los parámetros de búsqueda",
+                  "status": "Mitigated",
+                  "severity": "Medium",
+                  "type": "Tampering",
+                  "modelType": "STRIDE",
+                  "new": false,
+                  "number": 5,
+                  "score": "",
+                  "description": "Parámetros como el apellido de la búsqueda podrían alterar las consultas que llegan a la base de datos. Impacto: Alto. Probabilidad: Baja. Prioridad: Media.",
+                  "mitigation": "Las consultas usan Spring Data JPA con parámetros enlazados y no concatenan SQL. Trazabilidad: ASVS #2 (V5.3.4). Control: Semgrep con regla propia contra concatenación (pendiente de añadir); ZAP."
+                }
+              ],
+              "isTrustBoundary": false
+            },
+            "id": "054db2d4-b574-56af-b5be-d39f8a645ae5",
+            "labels": [
+              {
+                "position": 0.5,
+                "attrs": {
+                  "label": {
+                    "text": "F5 SQL (JDBC)"
+                  }
+                }
+              }
+            ],
+            "source": {
+              "cell": "588ae0e9-f75b-5e21-964a-332d7c35785d"
+            },
+            "target": {
+              "cell": "60f66eeb-667a-581d-96a3-183af67fd34f"
+            },
+            "vertices": [
+              {
+                "x": 1110,
+                "y": 270
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": null
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "F6 Registros",
+              "description": "F6 Registros devueltos con datos personales.",
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "protocol": "JDBC",
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "hasOpenThreats": false,
+              "threats": [],
+              "isTrustBoundary": false
+            },
+            "id": "9b1472f5-0f9c-50f1-aa3d-1820b2ccc286",
+            "labels": [
+              {
+                "position": 0.5,
+                "attrs": {
+                  "label": {
+                    "text": "F6 Registros"
+                  }
+                }
+              }
+            ],
+            "source": {
+              "cell": "60f66eeb-667a-581d-96a3-183af67fd34f"
+            },
+            "target": {
+              "cell": "588ae0e9-f75b-5e21-964a-332d7c35785d"
+            },
+            "vertices": [
+              {
+                "x": 1110,
+                "y": 400
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": "block"
+                },
+                "strokeDasharray": null
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "F7 Caché vets",
+              "description": "F7 Lectura y escritura de veterinarios en la caché.",
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "protocol": "En memoria",
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "hasOpenThreats": false,
+              "threats": [],
+              "isTrustBoundary": false
+            },
+            "id": "86aced06-2e87-5cb6-9eda-b3cd68c9c96e",
+            "labels": [
+              {
+                "position": 0.5,
+                "attrs": {
+                  "label": {
+                    "text": "F7 Caché vets"
+                  }
+                }
+              }
+            ],
+            "source": {
+              "cell": "588ae0e9-f75b-5e21-964a-332d7c35785d"
+            },
+            "target": {
+              "cell": "29b4bfa7-09ae-56c5-90df-d9ca7f0f1274"
+            },
+            "vertices": []
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": null
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "F8 Pull request",
+              "description": "F8 Código, workflows y manifiestos enviados por pull request.",
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "protocol": "HTTPS",
+              "isEncrypted": true,
+              "isPublicNetwork": true,
+              "hasOpenThreats": false,
+              "threats": [],
+              "isTrustBoundary": false
+            },
+            "id": "73b80ed7-5e27-5db2-8a43-ce5e299410e7",
+            "labels": [
+              {
+                "position": 0.5,
+                "attrs": {
+                  "label": {
+                    "text": "F8 Pull request"
+                  }
+                }
+              }
+            ],
+            "source": {
+              "cell": "0f7298f8-3ce2-5e92-9b85-e52bbc7c1c43"
+            },
+            "target": {
+              "cell": "7751cb5f-1d4d-5499-8c36-fba7ac72335a"
+            },
+            "vertices": []
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": null
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "F9 Código",
+              "description": "F9 Código fuente que revisa el pipeline en cada PR.",
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "protocol": "HTTPS",
+              "isEncrypted": true,
+              "isPublicNetwork": false,
+              "hasOpenThreats": false,
+              "threats": [],
+              "isTrustBoundary": false
+            },
+            "id": "bcd513cc-81a3-5907-9f9d-4c35cec1ff3d",
+            "labels": [
+              {
+                "position": 0.5,
+                "attrs": {
+                  "label": {
+                    "text": "F9 Código"
+                  }
+                }
+              }
+            ],
+            "source": {
+              "cell": "7751cb5f-1d4d-5499-8c36-fba7ac72335a"
+            },
+            "target": {
+              "cell": "724a3431-7ad7-557f-84e7-9d0f98bc729b"
+            },
+            "vertices": [
+              {
+                "x": 680,
+                "y": 700
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": null
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "F10 SARIF y SBOM",
+              "description": "F10 Resultados SARIF y SBOM publicados.",
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "protocol": "HTTPS",
+              "isEncrypted": true,
+              "isPublicNetwork": false,
+              "hasOpenThreats": false,
+              "threats": [],
+              "isTrustBoundary": false
+            },
+            "id": "f8c670e4-c7f3-55f7-824f-b39e340b5c09",
+            "labels": [
+              {
+                "position": 0.5,
+                "attrs": {
+                  "label": {
+                    "text": "F10 SARIF y SBOM"
+                  }
+                }
+              }
+            ],
+            "source": {
+              "cell": "724a3431-7ad7-557f-84e7-9d0f98bc729b"
+            },
+            "target": {
+              "cell": "7751cb5f-1d4d-5499-8c36-fba7ac72335a"
+            },
+            "vertices": [
+              {
+                "x": 680,
+                "y": 850
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "diagramTop": 1,
+    "reviewer": "",
+    "threatTop": 16
+  }
+}

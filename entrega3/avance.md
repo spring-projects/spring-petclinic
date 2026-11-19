@@ -13,7 +13,7 @@ El avance cubre tres puntos: madurez inicial (Fase 0), diseño (Fase 1) y un pip
 | Arquitectura | Hecho | [`security/diseño/arquitectura.md`](../security/diseño/arquitectura.md) |
 | DFD con límites de confianza | Hecho | [`security/diseño/dfd.md`](../security/diseño/dfd.md) |
 | Clasificación de datos | Hecho | [`security/diseño/clasificacion-datos.md`](../security/diseño/clasificacion-datos.md) |
-| 10 o más requisitos ASVS | Hecho (20 requisitos) | [`security/diseño/requisitos-asvs.md`](../security/diseño/requisitos-asvs.md) |
+| 10 o más requisitos ASVS | Hecho (22 requisitos) | [`security/diseño/requisitos-asvs.md`](../security/diseño/requisitos-asvs.md) |
 | Pipeline con `secretos`, `sast` y `sca` | Hecho, en verde en PR hacia `main` | [`.github/workflows/devsecops.yml`](../.github/workflows/devsecops.yml) |
 | Política de bloqueo | Hecho | [`security/politica-de-bloqueo.md`](../security/politica-de-bloqueo.md) |
 | SBOM CycloneDX | Hecho (artefacto del job `sca`) | [`evidencia/sbom.cdx.json`](../evidencia/sbom.cdx.json) |
@@ -64,16 +64,20 @@ PetClinic no maneja pagos ni credenciales de usuarios.
 
 ### 3.4 Requisitos ASVS
 
-20 requisitos de ASVS 4.0.3 (nivel 1 y 2) aplicados a PetClinic.
+22 requisitos de ASVS 4.0.3 (nivel 1 y 2) aplicados a PetClinic.
 
 | Estado | Cantidad |
 |---|---|
 | Cumple | 7 |
-| Parcial | 5 |
-| No cumple | 6 |
+| Parcial | 6 |
+| No cumple | 7 |
 | Pendiente de verificar | 2 |
 
-Los que no cumplen son autenticación, control de acceso, CSRF, TLS, cabeceras de seguridad y modelo de amenazas. Alimentan la remediación y la Fase 2.
+Los que no cumplen son autenticación, control de acceso, CSRF, TLS, cabeceras de seguridad, auditoría y control de abuso. Alimentan la remediación y el modelo de amenazas.
+
+### 3.5 Modelo de amenazas (adelanto de la Fase 2)
+
+Modelo STRIDE en OWASP Threat Dragon sobre el DFD, con 16 amenazas (al menos una por categoría), cada una con componente, impacto, probabilidad, prioridad, mitigación y trazabilidad a un requisito ASVS y a un control del pipeline. Hay 11 abiertas y 5 mitigadas con evidencia del repositorio. Ver [`security/threat-model/amenazas.md`](../security/threat-model/amenazas.md) y el modelo editable en [`modelo-threat-dragon.json`](../security/threat-model/modelo-threat-dragon.json).
 
 ## 4. Pipeline DevSecOps
 
@@ -124,7 +128,7 @@ El detalle de cada corrida está en [`evidencia/pipeline-devsecops.md`](../evide
 ## 5. Pendiente para la entrega final (2-dic)
 
 - Configurar Dependabot y verificar que los checks `secretos`, `sast` y `sca` sean obligatorios en la protección de `main`.
-- Modelo de amenazas STRIDE (12 o más amenazas) con trazabilidad a ASVS y al pipeline.
+- Modelo de amenazas: ya hay 16 amenazas modeladas; falta revisarlo con el equipo y cerrar la trazabilidad de los controles pendientes (DAST, IaC, Dependabot).
 - IaC (Dockerfile y manifiestos endurecidos), DAST con ZAP, Dependency-Track y DefectDojo.
 - Remediación de los 5 hallazgos con PR (van 2: Actuator y Spring Boot 4.1.2).
 - Plan de pentest y madurez final para comparar contra este diagnóstico.
