@@ -33,7 +33,7 @@ flowchart TB
 
     subgraph GH["GitHub"]
         REPO["Repositorio<br/>f-magdiel/spring-petclinic"]
-        CI["GitHub Actions<br/>devsecops.yml<br/>(secretos, sast, sca, build)"]
+        CI["GitHub Actions<br/>devsecops.yml<br/>(secretos, sast, sca)"]
         SEC["Code scanning<br/>(resultados SARIF)"]
     end
 
