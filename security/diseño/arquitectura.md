@@ -6,33 +6,7 @@ Aplicación web monolítica en Spring Boot 4.1.2 y Java 17. Genera HTML en el se
 
 ![Diagrama de componentes de PetClinic](img/arquitectura-componentes.png)
 
-<details>
-<summary>Código fuente Mermaid</summary>
-
-```mermaid
-flowchart LR
-    U["Navegador<br/>(usuario del personal)"]
-
-    subgraph APP["Aplicación Spring Boot (puerto 8080)"]
-        direction TB
-        W["Controladores MVC<br/>OwnerController, PetController,<br/>VisitController, VetController"]
-        T["Vistas Thymeleaf<br/>(HTML y mensajes i18n)"]
-        R["Repositorios Spring Data JPA<br/>OwnerRepository, VetRepository,<br/>PetTypeRepository"]
-        C["Caché JCache (vets)"]
-        A["Actuator<br/>/actuator/health, /actuator/info"]
-        W --> T
-        W --> R
-        R --> C
-    end
-
-    DB[("Base de datos<br/>H2 (por defecto)<br/>MySQL o PostgreSQL (perfiles)")]
-
-    U -- "HTTP" --> W
-    U -- "HTTP" --> A
-    R -- "JDBC" --> DB
-```
-
-</details>
+Fuente editable: [`arquitectura.drawio`](img/arquitectura.drawio), página "Componentes".
 
 **Servicios externos:** ninguno. La aplicación no llama a APIs de terceros. Sus únicas dependencias de ejecución son la base de datos y, en k8s, el Secret con las credenciales.
 
