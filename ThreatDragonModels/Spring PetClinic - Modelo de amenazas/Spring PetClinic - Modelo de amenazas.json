@@ -25,8 +25,8 @@
               "y": 170
             },
             "size": {
-              "width": 210,
-              "height": 340
+              "width": 220,
+              "height": 400
             },
             "attrs": {
               "label": {
@@ -54,12 +54,12 @@
           },
           {
             "position": {
-              "x": 380,
+              "x": 400,
               "y": 170
             },
             "size": {
-              "width": 520,
-              "height": 340
+              "width": 640,
+              "height": 400
             },
             "attrs": {
               "label": {
@@ -87,12 +87,12 @@
           },
           {
             "position": {
-              "x": 940,
-              "y": 250
+              "x": 1180,
+              "y": 240
             },
             "size": {
-              "width": 220,
-              "height": 190
+              "width": 230,
+              "height": 220
             },
             "attrs": {
               "label": {
@@ -120,12 +120,12 @@
           },
           {
             "position": {
-              "x": 380,
-              "y": 570
+              "x": 400,
+              "y": 650
             },
             "size": {
-              "width": 520,
-              "height": 200
+              "width": 640,
+              "height": 240
             },
             "attrs": {
               "label": {
@@ -153,8 +153,8 @@
           },
           {
             "position": {
-              "x": 45,
-              "y": 205
+              "x": 50,
+              "y": 215
             },
             "size": {
               "width": 160,
@@ -188,8 +188,8 @@
           },
           {
             "position": {
-              "x": 45,
-              "y": 395
+              "x": 50,
+              "y": 430
             },
             "size": {
               "width": 160,
@@ -223,8 +223,8 @@
           },
           {
             "position": {
-              "x": 40,
-              "y": 640
+              "x": 50,
+              "y": 740
             },
             "size": {
               "width": 160,
@@ -258,16 +258,16 @@
           },
           {
             "position": {
-              "x": 410,
-              "y": 235
+              "x": 430,
+              "y": 240
             },
             "size": {
-              "width": 110,
-              "height": 110
+              "width": 130,
+              "height": 130
             },
             "attrs": {
               "text": {
-                "text": "P1 Controladores\ny vistas"
+                "text": "P1\nControladores\ny vistas"
               },
               "body": {
                 "stroke": "#333333",
@@ -281,7 +281,7 @@
             "zIndex": 2,
             "data": {
               "type": "tm.Process",
-              "name": "P1 Controladores\ny vistas",
+              "name": "P1\nControladores\ny vistas",
               "description": "OwnerController, PetController, VisitController, VetController y plantillas Thymeleaf.",
               "isTrustBoundary": false,
               "outOfScope": false,
@@ -292,16 +292,16 @@
           },
           {
             "position": {
-              "x": 620,
-              "y": 235
+              "x": 760,
+              "y": 240
             },
             "size": {
-              "width": 110,
-              "height": 110
+              "width": 130,
+              "height": 130
             },
             "attrs": {
               "text": {
-                "text": "P2 Persistencia\nJPA"
+                "text": "P2\nPersistencia\nJPA"
               },
               "body": {
                 "stroke": "#333333",
@@ -315,7 +315,7 @@
             "zIndex": 2,
             "data": {
               "type": "tm.Process",
-              "name": "P2 Persistencia\nJPA",
+              "name": "P2\nPersistencia\nJPA",
               "description": "Repositorios Spring Data JPA.",
               "isTrustBoundary": false,
               "outOfScope": false,
@@ -326,16 +326,16 @@
           },
           {
             "position": {
-              "x": 410,
-              "y": 375
+              "x": 430,
+              "y": 410
             },
             "size": {
-              "width": 110,
-              "height": 110
+              "width": 130,
+              "height": 130
             },
             "attrs": {
               "text": {
-                "text": "P3 Actuator"
+                "text": "P3\nActuator"
               },
               "body": {
                 "stroke": "#333333",
@@ -349,7 +349,7 @@
             "zIndex": 2,
             "data": {
               "type": "tm.Process",
-              "name": "P3 Actuator",
+              "name": "P3\nActuator",
               "description": "Endpoints /actuator/health y /actuator/info.",
               "isTrustBoundary": false,
               "outOfScope": false,
@@ -360,16 +360,16 @@
           },
           {
             "position": {
-              "x": 640,
-              "y": 625
+              "x": 800,
+              "y": 705
             },
             "size": {
-              "width": 110,
-              "height": 110
+              "width": 130,
+              "height": 130
             },
             "attrs": {
               "text": {
-                "text": "P4 Pipeline\nde CI"
+                "text": "P4\nPipeline\nde CI"
               },
               "body": {
                 "stroke": "#333333",
@@ -383,7 +383,7 @@
             "zIndex": 2,
             "data": {
               "type": "tm.Process",
-              "name": "P4 Pipeline\nde CI",
+              "name": "P4\nPipeline\nde CI",
               "description": "GitHub Actions: secretos, sast, sca y build.",
               "isTrustBoundary": false,
               "outOfScope": false,
@@ -394,8 +394,8 @@
           },
           {
             "position": {
-              "x": 970,
-              "y": 300
+              "x": 1215,
+              "y": 310
             },
             "size": {
               "width": 160,
@@ -403,7 +403,7 @@
             },
             "attrs": {
               "text": {
-                "text": "D1 Base de datos"
+                "text": "D1\nBase de datos"
               },
               "topLine": {
                 "stroke": "#333333",
@@ -422,7 +422,7 @@
             "zIndex": 3,
             "data": {
               "type": "tm.Store",
-              "name": "D1 Base de datos",
+              "name": "D1\nBase de datos",
               "description": "Tablas owners, pets, visits, vets, specialties y types. Contiene datos personales de los dueños.",
               "isTrustBoundary": false,
               "outOfScope": false,
@@ -437,8 +437,8 @@
           },
           {
             "position": {
-              "x": 700,
-              "y": 390
+              "x": 800,
+              "y": 420
             },
             "size": {
               "width": 160,
@@ -446,7 +446,7 @@
             },
             "attrs": {
               "text": {
-                "text": "D2 Caché de vets"
+                "text": "D2\nCaché de vets"
               },
               "topLine": {
                 "stroke": "#333333",
@@ -465,7 +465,7 @@
             "zIndex": 3,
             "data": {
               "type": "tm.Store",
-              "name": "D2 Caché de vets",
+              "name": "D2\nCaché de vets",
               "description": "Caché JCache en memoria de veterinarios.",
               "isTrustBoundary": false,
               "outOfScope": false,
@@ -480,8 +480,8 @@
           },
           {
             "position": {
-              "x": 400,
-              "y": 650
+              "x": 440,
+              "y": 740
             },
             "size": {
               "width": 160,
@@ -489,7 +489,7 @@
             },
             "attrs": {
               "text": {
-                "text": "D3 Repositorio Git"
+                "text": "D3\nRepositorio Git"
               },
               "topLine": {
                 "stroke": "#333333",
@@ -508,7 +508,7 @@
             "zIndex": 3,
             "data": {
               "type": "tm.Store",
-              "name": "D3 Repositorio Git",
+              "name": "D3\nRepositorio Git",
               "description": "Código, configuración y manifiestos.",
               "isTrustBoundary": false,
               "outOfScope": false,
@@ -542,8 +542,8 @@
             "connector": "smooth",
             "data": {
               "type": "tm.Flow",
-              "name": "F1 Peticiones HTTP",
-              "description": "Formularios y búsquedas de dueños, mascotas y visitas.",
+              "name": "F1 HTTP",
+              "description": "F1 Peticiones HTTP: formularios y búsquedas de dueños, mascotas y visitas.",
               "outOfScope": false,
               "reasonOutOfScope": "",
               "protocol": "HTTP",
@@ -559,7 +559,7 @@
                 "position": 0.5,
                 "attrs": {
                   "label": {
-                    "text": "F1 Peticiones HTTP"
+                    "text": "F1 HTTP"
                   }
                 }
               }
@@ -572,8 +572,8 @@
             },
             "vertices": [
               {
-                "x": 305,
-                "y": 205
+                "x": 320,
+                "y": 225
               }
             ]
           },
@@ -598,8 +598,8 @@
             "connector": "smooth",
             "data": {
               "type": "tm.Flow",
-              "name": "F1b Peticiones manipuladas",
-              "description": "Peticiones HTTP manipuladas por un atacante.",
+              "name": "F1b HTTP manipulado",
+              "description": "F1b Peticiones HTTP manipuladas por un atacante.",
               "outOfScope": false,
               "reasonOutOfScope": "",
               "protocol": "HTTP",
@@ -615,7 +615,7 @@
                 "position": 0.5,
                 "attrs": {
                   "label": {
-                    "text": "F1b Peticiones manipuladas"
+                    "text": "F1b HTTP manipulado"
                   }
                 }
               }
@@ -628,8 +628,8 @@
             },
             "vertices": [
               {
-                "x": 305,
-                "y": 350
+                "x": 320,
+                "y": 420
               }
             ]
           },
@@ -654,8 +654,8 @@
             "connector": "smooth",
             "data": {
               "type": "tm.Flow",
-              "name": "F2 HTML con datos",
-              "description": "Páginas con datos de dueños, mascotas y visitas.",
+              "name": "F2 HTML",
+              "description": "F2 Páginas HTML con datos de dueños, mascotas y visitas.",
               "outOfScope": false,
               "reasonOutOfScope": "",
               "protocol": "HTTP",
@@ -671,7 +671,7 @@
                 "position": 0.5,
                 "attrs": {
                   "label": {
-                    "text": "F2 HTML con datos"
+                    "text": "F2 HTML"
                   }
                 }
               }
@@ -684,8 +684,8 @@
             },
             "vertices": [
               {
-                "x": 305,
-                "y": 300
+                "x": 320,
+                "y": 320
               }
             ]
           },
@@ -711,7 +711,7 @@
             "data": {
               "type": "tm.Flow",
               "name": "F3 GET /actuator",
-              "description": "Consulta de /actuator/health e /info.",
+              "description": "F3 Consulta de /actuator/health e /info.",
               "outOfScope": false,
               "reasonOutOfScope": "",
               "protocol": "HTTP",
@@ -740,8 +740,12 @@
             },
             "vertices": [
               {
-                "x": 305,
-                "y": 430
+                "x": 260,
+                "y": 530
+              },
+              {
+                "x": 360,
+                "y": 530
               }
             ]
           },
@@ -766,8 +770,8 @@
             "connector": "smooth",
             "data": {
               "type": "tm.Flow",
-              "name": "F4 Entidades validadas",
-              "description": "Entidades Owner, Pet y Visit validadas. Llamada en proceso.",
+              "name": "F4 Entidades",
+              "description": "F4 Entidades Owner, Pet y Visit validadas. Llamada en proceso.",
               "outOfScope": false,
               "reasonOutOfScope": "",
               "protocol": "En proceso",
@@ -783,7 +787,7 @@
                 "position": 0.5,
                 "attrs": {
                   "label": {
-                    "text": "F4 Entidades validadas"
+                    "text": "F4 Entidades"
                   }
                 }
               }
@@ -817,8 +821,8 @@
             "connector": "smooth",
             "data": {
               "type": "tm.Flow",
-              "name": "F5 Consultas SQL",
-              "description": "Consultas SQL por JDBC.",
+              "name": "F5 SQL (JDBC)",
+              "description": "F5 Consultas SQL por JDBC.",
               "outOfScope": false,
               "reasonOutOfScope": "",
               "protocol": "JDBC",
@@ -834,7 +838,7 @@
                 "position": 0.5,
                 "attrs": {
                   "label": {
-                    "text": "F5 Consultas SQL"
+                    "text": "F5 SQL (JDBC)"
                   }
                 }
               }
@@ -847,8 +851,8 @@
             },
             "vertices": [
               {
-                "x": 830,
-                "y": 240
+                "x": 1110,
+                "y": 270
               }
             ]
           },
@@ -874,7 +878,7 @@
             "data": {
               "type": "tm.Flow",
               "name": "F6 Registros",
-              "description": "Registros devueltos con datos personales.",
+              "description": "F6 Registros devueltos con datos personales.",
               "outOfScope": false,
               "reasonOutOfScope": "",
               "protocol": "JDBC",
@@ -903,8 +907,8 @@
             },
             "vertices": [
               {
-                "x": 830,
-                "y": 345
+                "x": 1110,
+                "y": 400
               }
             ]
           },
@@ -929,8 +933,8 @@
             "connector": "smooth",
             "data": {
               "type": "tm.Flow",
-              "name": "F7 Lectura y escritura de vets",
-              "description": "Lectura y escritura de veterinarios en la caché.",
+              "name": "F7 Caché vets",
+              "description": "F7 Lectura y escritura de veterinarios en la caché.",
               "outOfScope": false,
               "reasonOutOfScope": "",
               "protocol": "En memoria",
@@ -946,7 +950,7 @@
                 "position": 0.5,
                 "attrs": {
                   "label": {
-                    "text": "F7 Lectura y escritura de vets"
+                    "text": "F7 Caché vets"
                   }
                 }
               }
@@ -981,7 +985,7 @@
             "data": {
               "type": "tm.Flow",
               "name": "F8 Pull request",
-              "description": "Código, workflows y manifiestos.",
+              "description": "F8 Código, workflows y manifiestos enviados por pull request.",
               "outOfScope": false,
               "reasonOutOfScope": "",
               "protocol": "HTTPS",
@@ -1031,8 +1035,8 @@
             "connector": "smooth",
             "data": {
               "type": "tm.Flow",
-              "name": "F9 Código en cada PR",
-              "description": "Código fuente que revisa el pipeline.",
+              "name": "F9 Código",
+              "description": "F9 Código fuente que revisa el pipeline en cada PR.",
               "outOfScope": false,
               "reasonOutOfScope": "",
               "protocol": "HTTPS",
@@ -1048,7 +1052,7 @@
                 "position": 0.5,
                 "attrs": {
                   "label": {
-                    "text": "F9 Código en cada PR"
+                    "text": "F9 Código"
                   }
                 }
               }
@@ -1061,8 +1065,8 @@
             },
             "vertices": [
               {
-                "x": 570,
-                "y": 650
+                "x": 680,
+                "y": 700
               }
             ]
           },
@@ -1088,7 +1092,7 @@
             "data": {
               "type": "tm.Flow",
               "name": "F10 SARIF y SBOM",
-              "description": "Resultados SARIF y SBOM publicados.",
+              "description": "F10 Resultados SARIF y SBOM publicados.",
               "outOfScope": false,
               "reasonOutOfScope": "",
               "protocol": "HTTPS",
@@ -1117,8 +1121,8 @@
             },
             "vertices": [
               {
-                "x": 570,
-                "y": 735
+                "x": 680,
+                "y": 850
               }
             ]
           }
