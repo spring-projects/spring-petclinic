@@ -1,0 +1,54 @@
+
+# Configuración de Dependabot para Spring PetClinic.
+version: 2
+
+# Ecosistemas que serán supervisados.
+updates:
+
+  # Dependencias del proyecto Maven.
+  - package-ecosystem: "maven"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "08:00"
+      timezone: "America/Guatemala"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+
+  # Dependencias del proyecto Gradle.
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "08:00"
+      timezone: "America/Guatemala"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+
+  # Versiones de las acciones de GitHub.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "08:00"
+      timezone: "America/Guatemala"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+
+  # Imágenes base del Dockerfile de desarrollo.
+  - package-ecosystem: "docker"
+    directory: "/.devcontainer"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "08:00"
+      timezone: "America/Guatemala"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
