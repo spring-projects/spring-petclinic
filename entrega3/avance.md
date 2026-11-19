@@ -50,7 +50,7 @@ Cuatro límites de confianza: Internet y usuario, aplicación, base de datos y G
 
 ![DFD con límites de confianza](../security/diseño/img/dfd.png)
 
-Los elementos en rojo tienen amenazas abiertas. La captura muestra TB1 a TB3; el límite TB4 (GitHub y pipeline) está en el modelo de Threat Dragon.
+Los elementos en rojo tienen amenazas abiertas.
 
 ### 3.3 Clasificación de datos
 

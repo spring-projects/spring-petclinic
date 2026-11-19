@@ -19,7 +19,7 @@
 
 ![DFD de PetClinic con límites de confianza](img/dfd.png)
 
-Captura del DFD en OWASP Threat Dragon. La imagen muestra TB1 a TB3; el límite TB4 (GitHub: E3, P4, D3 y los flujos F8 a F10) está en el modelo y en las tablas de abajo. Los elementos en rojo tienen amenazas abiertas.
+Captura del DFD en OWASP Threat Dragon, con los 4 límites de confianza. Los elementos en rojo tienen amenazas abiertas.
 
 Fuente editable: [`modelo-threat-dragon.json`](../threat-model/modelo-threat-dragon.json). Las amenazas están en [`amenazas.md`](../threat-model/amenazas.md).
 
