@@ -13,7 +13,7 @@ El avance cubre tres puntos: madurez inicial (Fase 0), diseño (Fase 1) y un pip
 | Arquitectura | Hecho | [`security/diseño/arquitectura.md`](../security/diseño/arquitectura.md) |
 | DFD con límites de confianza | Hecho | [`security/diseño/dfd.md`](../security/diseño/dfd.md) |
 | Clasificación de datos | Hecho | [`security/diseño/clasificacion-datos.md`](../security/diseño/clasificacion-datos.md) |
-| 10 o más requisitos ASVS | Hecho (18 requisitos) | [`security/diseño/requisitos-asvs.md`](../security/diseño/requisitos-asvs.md) |
+| 10 o más requisitos ASVS | Hecho (20 requisitos) | [`security/diseño/requisitos-asvs.md`](../security/diseño/requisitos-asvs.md) |
 | Pipeline con `secretos`, `sast` y `sca` | Hecho, en verde en PR hacia `main` | [`.github/workflows/devsecops.yml`](../.github/workflows/devsecops.yml) |
 | Política de bloqueo | Hecho | [`security/politica-de-bloqueo.md`](../security/politica-de-bloqueo.md) |
 | SBOM CycloneDX | Hecho (artefacto del job `sca`) | [`evidencia/sbom.cdx.json`](../evidencia/sbom.cdx.json) |
@@ -38,7 +38,7 @@ La mayor brecha está en **Diseño**: no existía modelo de amenazas ni requisit
 
 ### 3.1 Arquitectura
 
-Aplicación monolítica en Spring Boot 4.1.2 y Java 17, con vistas Thymeleaf y persistencia JPA sobre H2, MySQL o PostgreSQL. **No incluye Spring Security**: no hay autenticación, autorización ni protección CSRF integrada. Se despliega con `docker-compose.yml` para desarrollo y con los manifiestos de `k8s/`. Los diagramas de componentes y de despliegue están en `security/diseño/arquitectura.md`.
+Aplicación monolítica en Spring Boot 4.1.2 y Java 17, con vistas Thymeleaf y persistencia JPA sobre H2, MySQL o PostgreSQL. **No incluye Spring Security**: no hay autenticación, autorización ni protección CSRF integrada. No usa servicios externos. Se despliega con `docker-compose.yml` para desarrollo y con los manifiestos de `k8s/`. Los diagramas de componentes y de despliegue están en `security/diseño/arquitectura.md`.
 
 ![Diagrama de componentes](../security/diseño/img/arquitectura-componentes.png)
 
@@ -60,18 +60,20 @@ Cuatro límites de confianza: Internet y usuario, aplicación, base de datos y G
 | Veterinarios y especialidades | Público |
 | Credenciales de base de datos | Restringido |
 
+PetClinic no maneja pagos ni credenciales de usuarios.
+
 ### 3.4 Requisitos ASVS
 
-18 requisitos de ASVS 4.0.3 (nivel 1 y 2) aplicados a PetClinic.
+20 requisitos de ASVS 4.0.3 (nivel 1 y 2) aplicados a PetClinic.
 
 | Estado | Cantidad |
 |---|---|
 | Cumple | 7 |
-| Parcial | 4 |
-| No cumple | 5 |
+| Parcial | 5 |
+| No cumple | 6 |
 | Pendiente de verificar | 2 |
 
-Los que no cumplen son control de acceso, CSRF, TLS, cabeceras de seguridad y modelo de amenazas. Alimentan la remediación y la Fase 2.
+Los que no cumplen son autenticación, control de acceso, CSRF, TLS, cabeceras de seguridad y modelo de amenazas. Alimentan la remediación y la Fase 2.
 
 ## 4. Pipeline DevSecOps
 

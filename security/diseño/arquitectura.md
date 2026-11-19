@@ -34,6 +34,8 @@ flowchart LR
 
 </details>
 
+**Servicios externos:** ninguno. La aplicación no llama a APIs de terceros. Sus únicas dependencias de ejecución son la base de datos y, en k8s, el Secret con las credenciales.
+
 ## Perfiles de base de datos
 
 | Perfil | Base de datos | Dónde se configura | Credenciales |

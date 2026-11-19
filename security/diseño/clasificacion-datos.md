@@ -9,6 +9,11 @@
 | **Confidencial** | Datos personales que identifican a una persona. Su fuga causa daño y obligaciones legales. | Nombre, dirección y teléfono de dueños |
 | **Restringido** | Secretos que dan acceso a otros sistemas. | Credenciales de base de datos |
 
+## Datos que PetClinic no maneja
+
+- **Pagos:** no procesa ni guarda datos de tarjetas ni de facturación.
+- **Credenciales de usuarios:** no hay cuentas ni contraseñas de usuario, porque la aplicación no tiene inicio de sesión. Las únicas credenciales son las de la base de datos.
+
 ## Datos de la aplicación
 
 Los campos salen de `db/h2/schema.sql` y de las entidades en `src/main/java/.../owner/` y `.../vet/`.
