@@ -24,42 +24,7 @@ El esquema y los datos de ejemplo se cargan al arrancar (`spring.sql.init.mode=a
 
 ![Diagrama de despliegue de PetClinic](img/arquitectura-despliegue.png)
 
-<details>
-<summary>Código fuente Mermaid</summary>
-
-```mermaid
-flowchart TB
-    DEV["Desarrollador<br/>(Git + Pull Request)"]
-
-    subgraph GH["GitHub"]
-        REPO["Repositorio<br/>f-magdiel/spring-petclinic"]
-        CI["GitHub Actions<br/>devsecops.yml<br/>(secretos, sast, sca)"]
-        SEC["Code scanning<br/>(resultados SARIF)"]
-    end
-
-    subgraph LOCAL["Entorno local (docker-compose.yml)"]
-        DCM[("mysql:9.7<br/>puerto 3306")]
-        DCP[("postgres:18.4<br/>puerto 5432")]
-    end
-
-    subgraph K8S["Clúster Kubernetes (k8s/)"]
-        SVC["Service petclinic<br/>NodePort 80 → 8080"]
-        POD["Deployment petclinic<br/>imagen dsyer/petclinic"]
-        PGD["Deployment db<br/>postgres:18.4"]
-        SECR["Secret db<br/>(usuario y contraseña)"]
-        SVC --> POD
-        POD -- "5432" --> PGD
-        SECR -. "variables de entorno" .-> PGD
-        SECR -. "/bindings/secret" .-> POD
-    end
-
-    DEV --> REPO
-    REPO --> CI
-    CI --> SEC
-    DEV -. "desarrollo" .-> LOCAL
-```
-
-</details>
+Fuente editable: [`arquitectura.drawio`](img/arquitectura.drawio), página "Despliegue".
 
 ## Observaciones de seguridad
 
