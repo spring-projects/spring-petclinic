@@ -465,7 +465,7 @@
             "data": {
               "type": "tm.Process",
               "name": "P4\nPipeline\nde CI",
-              "description": "GitHub Actions: secretos, sast, sca y build.",
+              "description": "GitHub Actions: secretos, sast y sca.",
               "isTrustBoundary": false,
               "outOfScope": false,
               "reasonOutOfScope": "",

@@ -10,7 +10,7 @@
 | P1 | Proceso | Controladores MVC y vistas | `OwnerController`, `PetController`, `VisitController`, `VetController` y plantillas Thymeleaf. |
 | P2 | Proceso | Capa de persistencia | Repositorios Spring Data JPA. |
 | P3 | Proceso | Actuator | Endpoints `/actuator/health` y `/actuator/info`. |
-| P4 | Proceso | Pipeline de CI | GitHub Actions: secretos, SAST, SCA y build. |
+| P4 | Proceso | Pipeline de CI | GitHub Actions: secretos, SAST y SCA. |
 | D1 | Almacén | Base de datos | H2, MySQL o PostgreSQL con las tablas `owners`, `pets`, `visits`, `vets`, `specialties`, `types`. |
 | D2 | Almacén | Caché de veterinarios | JCache en memoria. |
 | D3 | Almacén | Repositorio Git | Código, configuración y manifiestos. |
