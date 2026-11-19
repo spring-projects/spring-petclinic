@@ -31,9 +31,36 @@ Cada requisito se aplica a Spring PetClinic con una verificación concreta y se 
 | 21 | V7.2.2 | L1 | Las decisiones de control de acceso, y en especial las fallidas, se registran en un log de auditoría sin datos personales. | No cumple | No hay autenticación ni auditoría de quién cambia los datos (amenaza T6). | Revisión manual |
 | 22 | V11.1.4 | L1 | La aplicación limita el abuso automatizado (límite de tasa y tamaño de página) para evitar la denegación de servicio. | No cumple | Solo se valida el tamaño de página; no hay límite de tasa (amenazas T12 y T13). | ZAP full scan local (pendiente) |
 
-## Requisitos que aporta la Persona 3
+### Aporte de Persona 3: configuración, dependencias y registros
 
-Pendiente: se completarán en la reunión de integración. Los requisitos 7, 11, 12, 13 y 14 ya cubren configuración, dependencias e IaC y sirven de borrador. Los de logs (15) y de manifiestos de k8s pueden ampliarse.
+Los siguientes requisitos complementan la evaluación de OWASP ASVS 4.0.3 para Spring PetClinic. Se han seleccionado considerando los mecanismos de seguridad existentes y las mejoras pendientes del proyecto.
+
+**R-P3-01 — Gestión segura de dependencias (V14.2.1 y V14.2.5).**
+
+La aplicación debe disponer de un inventario actualizado de componentes de terceros y de mecanismos automatizados para detectar vulnerabilidades conocidas. El pipeline utiliza Syft para generar un SBOM CycloneDX y Grype para detectar vulnerabilidades. Dependabot permitirá proponer actualizaciones de dependencias.
+
+- Estado: Parcial.
+- Evidencia: `security/sbom/sbom.cdx.json`, `.github/dependabot.yml` y job `sca`.
+- Verificación: comprobar la generación del SBOM y que Grype aplique el umbral de bloqueo documentado.
+- Mejora pendiente: integrar Dependabot en `main` y verificar sus actualizaciones.
+
+**R-P3-02 — Seguridad del proceso de construcción (V14.1.1).**
+
+El pipeline debe aplicar privilegios mínimos, fijar las versiones de las acciones utilizadas e impedir que se integren cambios que incumplan los controles de seguridad definidos.
+
+- Estado: Parcial.
+- Evidencia: `.github/workflows/devsecops.yml` y `security/politica-de-bloqueo.md`.
+- Verificación: inspeccionar permisos del workflow y comprobar que un hallazgo bloqueante provoca el fallo del job.
+- Mejora pendiente: verificar que los checks de seguridad sean obligatorios en la protección de `main`.
+
+**R-P3-03 — Registro seguro de eventos (V7.2.2).**
+
+La aplicación debe registrar los eventos de seguridad relevantes para facilitar auditorías e investigaciones, evitando incluir credenciales o datos personales innecesarios en los registros.
+
+- Estado: No cumple.
+- Evidencia: evaluación inicial de los mecanismos de auditoría de Spring PetClinic.
+- Verificación: revisión manual de los eventos registrados y pruebas funcionales de operaciones sensibles.
+- Mejora pendiente: definir eventos auditables, implementar su registro y verificar que los logs no expongan información sensible.
 
 ## Resumen
 
