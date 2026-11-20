@@ -103,6 +103,24 @@ class PetControllerTests {
 			.andExpect(status().is3xxRedirection())
 			.andExpect(view().name("redirect:/owners/{ownerId}"));
 	}
+	
+	@Test
+	void initCreationFormWithNonExistingOwner() throws Exception {
+	    mockMvc.perform(get("/owners/{ownerId}/pets/new", 999))
+	        .andExpect(status().isNotFound());
+	}
+	
+	@Test
+	void initUpdateFormWithNonExistingOwner() throws Exception {
+	    mockMvc.perform(get("/owners/{ownerId}/pets/{petId}/edit", 999, TEST_PET_ID))
+	        .andExpect(status().isNotFound());
+	}
+	
+	@Test
+	void initUpdateFormWithNonExistingPet() throws Exception {
+	    mockMvc.perform(get("/owners/{ownerId}/pets/{petId}/edit", TEST_OWNER_ID, 999))
+	        .andExpect(status().isNotFound());
+	}
 
 	@Nested
 	class ProcessCreationFormHasErrors {
