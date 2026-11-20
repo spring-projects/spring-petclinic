@@ -35,6 +35,9 @@
     <maven-checkstyle.version>3.6.0</maven-checkstyle.version>
     <nohttp-checkstyle.version>0.0.11</nohttp-checkstyle.version>
     <spring-format.version>0.0.47</spring-format.version>
+    <!-- Aggiunta per la terza sessione di laboratorio -->
+    <junit-jupiter.version>6.1.3</junit-jupiter.version>
+    <mockito.version>5.24.0</mockito.version>
   </properties>
 
   <dependencies>
@@ -178,6 +181,19 @@
       <artifactId>testcontainers-mysql</artifactId>
       <scope>test</scope>
     </dependency>
+    <!-- Aggiunta per la terza sessione di laboratorio -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>${junit-jupiter.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-junit-jupiter</artifactId>
+      <version>${mockito.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -288,10 +304,86 @@
             <goals>
               <goal>report</goal>
             </goals>
-            <phase>prepare-package</phase>
+            <phase>test</phase>
           </execution>
+
+          <execution>
+              <id>check</id>
+              <phase>verify</phase>
+              <goals>
+                  <goal>check</goal>
+              </goals>
+              <configuration>
+                  <rules>
+                      <rule>
+                          <element>PACKAGE</element>
+                          <limits>
+                              <limit>
+                                  <counter>LINE</counter>
+                                  <value>COVEREDRATIO</value>
+                                  <minimum>0.80</minimum>
+                              </limit>
+                              <limit>
+                                  <counter>BRANCH</counter>
+                                  <value>COVEREDRATIO</value>
+                                  <minimum>0.75</minimum>
+                              </limit>
+                              <limit>
+                                  <counter>CLASS</counter>
+                                  <value>COVEREDRATIO</value>
+                                  <minimum>1.0</minimum>
+                              </limit>
+                          </limits>
+                      </rule>
+                  </rules>
+              </configuration>
+          </execution>
+
         </executions>
       </plugin>
+
+
+      <plugin>
+          <groupId>org.pitest</groupId>
+          <artifactId>pitest-maven</artifactId>
+          <version>1.30.2</version>
+
+          <dependencies>
+              <dependency>
+                  <groupId>org.pitest</groupId>
+                  <artifactId>pitest-junit5-plugin</artifactId>
+                  <version>1.2.3</version>
+              </dependency>
+          </dependencies>
+
+          <configuration>
+              
+              <targetClasses>
+                  <param>org.springframework.samples.petclinic.*</param>
+              </targetClasses>
+
+              <targetTests>
+                  <param>org.springframework.samples.petclinic.*</param>
+              </targetTests>
+
+
+              <!-- PITest Quality Gates -->
+              <mutationThreshold>80</mutationThreshold>
+              <coverageThreshold>80</coverageThreshold>
+
+              <!-- Mutation execution timeout -->
+              <timeoutConstant>5000</timeoutConstant>
+              <timeoutFactor>1.5</timeoutFactor>
+
+              <outputFormats>
+                  <outputFormat>HTML</outputFormat>
+                  <outputFormat>XML</outputFormat>
+              </outputFormats>
+
+              <verbose>true</verbose>
+          </configuration>
+      </plugin>
+
 
       <!-- Spring Boot Actuator displays build-related information if a git.properties file is
       present at the classpath -->
