@@ -90,4 +90,17 @@ class PetValidatorUnitTest {
 		assertTrue(errors.hasFieldErrors("birthDate"));
 	}
 
+	@Test
+	void validate_WhenNameHasExactly30Characters_DoesNotRejectNameField() {
+		// Arrange
+		validPet.setName("A".repeat(30));
+		Errors errors = new BeanPropertyBindingResult(validPet, "pet");
+
+		// Act
+		validator.validate(validPet, errors);
+
+		// Assert
+		assertFalse(errors.hasErrors());
+	}
+
 }

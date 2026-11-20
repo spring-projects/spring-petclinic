@@ -13,12 +13,14 @@ permissions:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    name: Build and Test with Java 17
+    name: Build, Test and Coverage with Java 17
 
     steps:
+      # 1. Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 2. Configure Java 17 and Maven cache
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -26,21 +28,53 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
+      # 3. Prepare PostgreSQL credentials
       - name: Prepare PostgreSQL test credentials
         run: |
           PASSWORD="$(openssl rand -hex 24)"
           echo "::add-mask::$PASSWORD"
           printf 'POSTGRES_PASSWORD=%s\n' "$PASSWORD" > .env
 
-      - name: Run Maven Build and Tests
-        run: ./mvnw -B clean test
+      # 4. Build, test and enforce JaCoCo quality gates
+      - name: Run Maven Build, Tests and JaCoCo Quality Gates
+        run: ./mvnw -B clean verify
 
-      - name: Package Application
-        run: ./mvnw -B package -DskipTests
+      # 5. Upload JaCoCo coverage report to Codecov
+      - name: Upload JaCoCo Coverage to Codecov
+        if: ${{ !cancelled() && (github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository) }}
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./target/site/jacoco/jacoco.xml
+          flags: unittests
+          name: spring-petclinic-coverage
+          fail_ci_if_error: true
 
-      - name: Upload JAR artifact
+      # 6. Upload JUnit test results to Codecov
+      - name: Upload JUnit Test Results to Codecov
+        if: ${{ !cancelled() && (github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository) }}
+        uses: codecov/test-results-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: ./target/surefire-reports
+          fail_ci_if_error: false
+
+      # 7. Save test and JaCoCo reports
+      - name: Upload Test and Coverage Reports
+        if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
+        with:
+          name: spring-petclinic-test-coverage-reports
+          path: |
+            target/surefire-reports/
+            target/site/jacoco/
+          if-no-files-found: warn
+          retention-days: 7
+
+      # 8. Upload packaged application
+      - name: Upload JAR artifact
         if: success()
+        uses: actions/upload-artifact@v4
         with:
           name: spring-petclinic-artifact
           path: target/*.jar

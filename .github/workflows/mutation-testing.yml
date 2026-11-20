@@ -1,0 +1,48 @@
+
+name: Spring PetClinic Mutation Testing
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mutation-testing:
+    name: PITest Mutation Testing
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      # 1. Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Configure Java 17 and Maven cache
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      # 3. Prepare PostgreSQL credentials
+      - name: Prepare PostgreSQL test credentials
+        run: |
+          PASSWORD="$(openssl rand -hex 24)"
+          echo "::add-mask::$PASSWORD"
+          printf 'POSTGRES_PASSWORD=%s\n' "$PASSWORD" > .env
+
+      # 4. Execute PITest with quality gates
+      - name: Run PITest Mutation Testing
+        run: ./mvnw -B -ntp test-compile pitest:mutationCoverage
+
+      # 5. Upload mutation testing reports
+      - name: Upload PITest Reports
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: spring-petclinic-mutation-report
+          path: target/pit-reports/
+          if-no-files-found: warn
+          retention-days: 7
