@@ -1,6 +1,101 @@
 # Spring PetClinic Sample Application [![Build Status](https://github.com/spring-projects/spring-petclinic/actions/workflows/maven-build.yml/badge.svg)](https://github.com/spring-projects/spring-petclinic/actions/workflows/maven-build.yml)[![Build Status](https://github.com/spring-projects/spring-petclinic/actions/workflows/gradle-build.yml/badge.svg)](https://github.com/spring-projects/spring-petclinic/actions/workflows/gradle-build.yml)
 
+## DevOps Platform Implementation
+
+This repository extends the open-source [Spring PetClinic](https://github.com/spring-projects/spring-petclinic) application with a hands-on DevOps implementation.
+
+The goal is to build a reproducible, automated, and observable deployment platform using industry-standard DevOps practices.
+
+### Implemented Features
+
+- **Docker:** Multi-stage Dockerfile with Java 17 and non-root runtime execution.
+- **Docker Compose:** Multi-container application deployment with PostgreSQL.
+- **Networking:** Internal Docker networking for application-to-database communication.
+- **Persistent Storage:** PostgreSQL data stored in a named Docker volume.
+- **Health Checks:** Automated health monitoring for the application and database.
+- **Configuration Management:** Environment-based configuration using `.env` and `.env.example`.
+- **Automation:** Bash startup script for local environment initialization.
+- **Database Recovery:** PostgreSQL backup and restore procedures tested locally.
+
+### Project Attribution
+
+The Spring PetClinic application is maintained by the original Spring PetClinic contributors. This repository focuses on the DevOps infrastructure, containerization, automation, and operational improvements built around that application.
+
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/spring-projects/spring-petclinic) [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=7517918)
+## DevOps Quick Start
+
+### Prerequisites
+
+- Git
+- Docker Engine
+- Docker Compose v2
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/Giovanni-73-Kamel/spring-petclinic.git
+cd spring-petclinic
+```
+
+### 2. Configure Environment Variables
+
+Copy the environment template:
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env` and set a local PostgreSQL password before starting the database.
+
+**Security:** Never commit `.env` or production credentials to Git.
+
+### 3. Start the Application
+
+Run the automated startup script:
+
+```bash
+./scripts/start.sh
+```
+
+The script prepares the Docker volume if necessary, builds the application image, and starts Spring Petclinic and PostgreSQL using Docker Compose.
+
+### 4. Verify Deployment
+
+Check container status:
+
+```bash
+docker compose ps
+```
+
+Both `app` and `postgres` should report a healthy status.
+
+Verify application health:
+
+```bash
+curl http://localhost:8082/actuator/health
+```
+
+Expected response:
+
+```json
+{"status":"UP"}
+```
+
+### 5. Access the Application
+
+Open:
+
+http://localhost:8082
+
+### 6. Stop the Application
+
+```bash
+docker compose down
+```
+
+The PostgreSQL named volume is preserved, allowing data to persist across container recreation.
+
+**Warning:** Do not manually delete the PostgreSQL volume unless you intend to remove the stored database data.
 
 ## Understanding the Spring Petclinic application with a few diagrams
 
@@ -31,11 +126,17 @@ Or you can run it from Maven directly using the Spring Boot Maven plugin. If you
 
 ## Building a Container
 
-There is no `Dockerfile` in this project. You can build a container image (if you have a docker daemon) using the Spring Boot build plugin:
+This project includes a multi-stage Dockerfile that builds the Spring Boot application using Java 17 JDK and runs it using Java 17 JRE.
+
+Build the Docker image:
 
 ```bash
-./mvnw spring-boot:build-image
+docker build -t spring-petclinic:local .
 ```
+
+For the complete application stack with PostgreSQL, use the provided Docker Compose configuration and startup script.
+
+See the **DevOps Quick Start** section for setup instructions.
 
 ## In case you find a bug/suggested improvement for Spring Petclinic
 
