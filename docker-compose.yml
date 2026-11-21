@@ -10,6 +10,7 @@ services:
       POSTGRES_URL: jdbc:postgresql://postgres:5432/petclinic
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASS: ${POSTGRES_PASSWORD}
+      MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "health,info"
     depends_on:
       postgres:
         condition: service_healthy
