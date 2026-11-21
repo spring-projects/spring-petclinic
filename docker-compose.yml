@@ -1,8 +1,11 @@
+
 services:
 
   postgres:
     image: postgres:18.4
     container_name: petclinic-postgres
+    ports:
+      - "5432:5432"
     environment:
       POSTGRES_USER: petclinic
       POSTGRES_PASSWORD: petclinic
