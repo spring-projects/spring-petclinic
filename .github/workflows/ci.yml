@@ -38,10 +38,26 @@ jobs:
         shell: powershell
         run: java -version
 
+      - name: Check SonarQube is reachable
+        shell: powershell
+        run: |
+          $status = (Invoke-RestMethod -Uri http://localhost:9000/api/system/status -TimeoutSec 10).status
+          if ($status -ne 'UP') { throw "SonarQube is $status, not UP" }        
+
       - name: Build and test PetClinic
         shell: powershell
         run: |
           .\mvnw.cmd -B clean verify
+
+      - name: Check SonarQube token is valid
+        shell: powershell
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          if (-not $env:SONAR_TOKEN) { throw "SONAR_TOKEN secret is empty or missing" }
+          $pair = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("$($env:SONAR_TOKEN):"))
+          $r = Invoke-RestMethod -Uri http://localhost:9000/api/authentication/validate -Headers @{Authorization="Basic $pair"} -TimeoutSec 10
+          if (-not $r.valid) { throw "SONAR_TOKEN is not valid for this SonarQube server" }          
 
       - name: SonarQube analysis
         shell: powershell
