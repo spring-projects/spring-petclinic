@@ -1,8 +1,6 @@
 services:
   app:
-    build:
-      context: .
-    image: spring-petclinic:local
+    image: ${PETCLINIC_IMAGE:-ghcr.io/giovanni-73-kamel/spring-petclinic:sha-b9c6c210cec3}
     ports:
       - "127.0.0.1:8082:8080"
     environment:
