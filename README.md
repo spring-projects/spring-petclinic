@@ -57,7 +57,7 @@ Run the automated startup script:
 ./scripts/start.sh
 ```
 
-The script prepares the Docker volume if necessary, builds the application image, and starts Spring Petclinic and PostgreSQL using Docker Compose.
+The script prepares the Docker volume if necessary and starts Spring Petclinic and PostgreSQL using Docker Compose. The application image is pulled from GHCR when needed instead of being built locally.
 
 ### 4. Verify Deployment
 
@@ -96,6 +96,56 @@ docker compose down
 The PostgreSQL named volume is preserved, allowing data to persist across container recreation.
 
 **Warning:** Do not manually delete the PostgreSQL volume unless you intend to remove the stored database data.
+
+
+### Deploy a Specific Image Version
+
+The application image is published to GitHub Container Registry (GHCR).
+
+Select the image version:
+
+```bash
+export PETCLINIC_IMAGE="ghcr.io/giovanni-73-kamel/spring-petclinic:sha-b9c6c210cec3"
+```
+
+Pull and deploy the application:
+
+```bash
+docker compose pull app
+docker compose up -d --no-deps --no-build app
+```
+
+Verify deployment:
+
+```bash
+docker compose ps
+curl -f http://127.0.0.1:8082/actuator/health
+```
+
+### Rollback to a Previous Version
+
+Select a previously published image using its immutable digest:
+
+```bash
+export PETCLINIC_IMAGE="ghcr.io/giovanni-73-kamel/spring-petclinic@sha256:ba12ee021359096120bac044018fe7d99a351fc4ab5f9210ea5fd9ff40254db9"
+```
+
+Deploy the previous version:
+
+```bash
+docker compose pull app
+docker compose up -d --no-deps --no-build app
+curl -f http://127.0.0.1:8082/actuator/health
+```
+
+To restore the default image configured in Compose:
+
+```bash
+unset PETCLINIC_IMAGE
+docker compose up -d --no-deps --no-build app
+```
+
+**Important:** These commands recreate only the application container. PostgreSQL and its persistent volume are preserved. Application downtime may occur briefly. Before production rollbacks, verify database migration compatibility and maintain database backups.
 
 ## Understanding the Spring Petclinic application with a few diagrams
 
