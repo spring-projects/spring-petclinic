@@ -31,6 +31,11 @@ jobs:
       - name: Push Docker Image to GHCR
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
-          IMAGE="ghcr.io/${GITHUB_REPOSITORY,,}:latest"
-          docker tag spring-petclinic:ci "$IMAGE"
-          docker push "$IMAGE"
+          IMAGE="ghcr.io/${GITHUB_REPOSITORY,,}"
+          SHA_TAG="sha-${GITHUB_SHA::12}"
+
+          docker tag spring-petclinic:ci "$IMAGE:$SHA_TAG"
+          docker tag spring-petclinic:ci "$IMAGE:latest"
+
+          docker push "$IMAGE:$SHA_TAG"
+          docker push "$IMAGE:latest"
