@@ -28,6 +28,17 @@ jobs:
       - name: Build Docker Image
         run: docker build -t spring-petclinic:ci .
 
+      - name: Scan Docker Image with Trivy
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25
+        with:
+          scan-type: image
+          image-ref: spring-petclinic:ci
+          scanners: vuln
+          severity: HIGH,CRITICAL
+          format: table
+          exit-code: '0'
+          timeout: 15m
+          version: v0.76.2
       - name: Push Docker Image to GHCR
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
