@@ -35,10 +35,18 @@ jobs:
           image-ref: spring-petclinic:ci
           scanners: vuln
           severity: HIGH,CRITICAL
-          format: table
+          format: json
+          output: trivy-report.json
           exit-code: '0'
           timeout: 15m
           version: v0.76.2
+      - name: Upload Trivy Security Report
+        uses: actions/upload-artifact@v7
+        with:
+          name: trivy-security-report
+          path: trivy-report.json
+          if-no-files-found: error
+          retention-days: 7
       - name: Push Docker Image to GHCR
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
