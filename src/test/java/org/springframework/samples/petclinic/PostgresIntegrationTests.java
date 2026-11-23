@@ -32,7 +32,6 @@ import org.junit.jupiter.api.condition.DisabledInNativeImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.event.ApplicationPreparedEvent;
-import org.springframework.boot.restclient.RestTemplateBuilder;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -41,11 +40,10 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.PropertySource;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.samples.petclinic.vet.VetRepository;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 import org.testcontainers.DockerClientFactory;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, properties = { "spring.docker.compose.skip.in-tests=false", //
@@ -59,9 +57,6 @@ public class PostgresIntegrationTests {
 
 	@Autowired
 	private VetRepository vets;
-
-	@Autowired
-	private RestTemplateBuilder builder;
 
 	@BeforeAll
 	static void available() {
@@ -86,8 +81,8 @@ public class PostgresIntegrationTests {
 
 	@Test
 	void ownerDetails() {
-		RestTemplate template = builder.baseUri("http://localhost:" + port).build();
-		ResponseEntity<String> result = template.exchange(RequestEntity.get("/owners/1").build(), String.class);
+		RestClient restClient = RestClient.builder().baseUrl("http://localhost:" + port).build();
+		ResponseEntity<String> result = restClient.get().uri("/owners/1").retrieve().toEntity(String.class);
 		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
 

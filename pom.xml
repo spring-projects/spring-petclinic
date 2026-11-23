@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>4.1.0</version>
+    <version>4.2.0</version>
   </parent>
 
   <groupId>org.springframework.samples</groupId>
@@ -255,6 +255,15 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <image>
+            <env>
+              <!-- Spring Cloud Bindings 2.x is incompatible with Spring Boot 4.2. -->
+              <!-- https://github.com/paketo-buildpacks/spring-boot/issues/690 -->
+              <BP_SPRING_CLOUD_BINDINGS_DISABLED>true</BP_SPRING_CLOUD_BINDINGS_DISABLED>
+            </env>
+          </image>
+        </configuration>
         <executions>
           <execution>
             <!-- Spring Boot Actuator displays build-related information
