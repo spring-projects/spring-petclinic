@@ -47,6 +47,30 @@ jobs:
           path: trivy-report.json
           if-no-files-found: error
           retention-days: 7
+      - name: Generate Security Summary
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from collections import Counter
+
+          with open("trivy-report.json") as f:
+              report = json.load(f)
+
+          counts = Counter(
+              vuln["Severity"]
+              for result in report.get("Results", [])
+              for vuln in result.get("Vulnerabilities", [])
+          )
+
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as f:
+              f.write("## Container Security Summary\n\n")
+              f.write("| Severity | Findings |\n")
+              f.write("|---|---:|\n")
+              f.write(f"| CRITICAL | {counts['CRITICAL']} |\n")
+              f.write(f"| HIGH | {counts['HIGH']} |\n")
+              f.write("\n**Policy:** Report Only\n")
+          PY
       - name: Push Docker Image to GHCR
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
