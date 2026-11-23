@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.boot.restclient.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -23,7 +22,7 @@ import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.owner.OwnerRepository;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class PetClinicConcurrencyTests {
@@ -33,9 +32,6 @@ public class PetClinicConcurrencyTests {
 
 	@Autowired
 	private OwnerRepository ownerRepository;
-
-	@Autowired
-	private RestTemplateBuilder restTemplateBuilder;
 
 	@Test
 	public void testDuplicatePetNameRaceConditionIsBlocked() throws Exception {
@@ -50,7 +46,7 @@ public class PetClinicConcurrencyTests {
 		// Ensure duplicate pet name does not exist yet
 		assertThat(owner.getPet(duplicatePetName)).isNull();
 
-		RestTemplate template = restTemplateBuilder.baseUri("http://localhost:" + port).build();
+		RestClient restClient = RestClient.builder().baseUrl("http://localhost:" + port).build();
 
 		int threadCount = 2;
 		ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
@@ -75,16 +71,21 @@ public class PetClinicConcurrencyTests {
 					map.add("birthDate", "2020-01-01");
 					map.add("type", "cat");
 
-					HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-
-					ResponseEntity<String> response = template.postForEntity("/owners/" + ownerId + "/pets/new",
-							request, String.class);
+					ResponseEntity<String> response = restClient.post()
+						.uri("/owners/" + ownerId + "/pets/new")
+						.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+						.body(map)
+						.exchange((req, res) -> ResponseEntity.status(res.getStatusCode())
+							.headers(res.getHeaders())
+							.body(res.bodyTo(String.class)));
 
 					String body = response.getBody();
-					// If the response page contains the duplicate validation error, it
-					// was blocked
-					if (response.getStatusCode().is2xxSuccessful()
-							&& (body == null || !body.contains("is already in use"))) {
+					// Successful form POST redirects to owner page (3xx) or returns owner
+					// page (2xx).
+					// Validation failures re-render the form with "is already in use".
+					boolean validationFailure = body != null && body.contains("is already in use");
+					if (!validationFailure && (response.getStatusCode().is2xxSuccessful()
+							|| response.getStatusCode().is3xxRedirection())) {
 						successCount.incrementAndGet();
 					}
 					else {
