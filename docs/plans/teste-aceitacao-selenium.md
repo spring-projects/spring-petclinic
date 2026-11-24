@@ -30,7 +30,7 @@
 
 ---
 
-### Tarefa 1: Profile `acceptance` e teste `OwnerRegistrationAT` (CA01, CA02, CA07, RN01, RN02)
+### Task 1: Profile `acceptance` e teste `OwnerRegistrationAT` (CA01, CA02, CA07, RN01, RN02)
 
 **Files:**
 - Modify: `pom.xml` (dependência em `<dependencies>`; profile novo em `<profiles>`)
@@ -72,7 +72,7 @@
 
 ---
 
-### Tarefa 2: Dockerfile provisório e `ci/acceptance.sh` (CA01–CA05, CA08)
+### Task 2: Dockerfile provisório e `ci/acceptance.sh` (CA01–CA05, CA08)
 
 **Files:**
 - Create: `ci/acceptance.Dockerfile`
@@ -125,7 +125,7 @@
 
 ---
 
-### Tarefa 3: Publicação no Jenkins e registro (CA03, CA06)
+### Task 3: Publicação no Jenkins e registro (CA03, CA06)
 
 **Files:**
 - Modify: `Jenkinsfile` (estágio `Teste de aceitação`)
