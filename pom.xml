@@ -178,6 +178,11 @@
       <artifactId>testcontainers-mysql</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-java</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -350,6 +355,34 @@
   </licenses>
 
   <profiles>
+    <!-- Acceptance tests (*AT, Selenium): run only with -Pacceptance -->
+    <profile>
+      <id>acceptance</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>acceptance-tests</id>
+                <goals>
+                  <goal>integration-test</goal>
+                  <goal>verify</goal>
+                </goals>
+                <configuration>
+                  <includes>
+                    <include>**/*AT.java</include>
+                  </includes>
+                  <reportsDirectory>${project.build.directory}/acceptance-reports</reportsDirectory>
+                  <summaryFile>${project.build.directory}/acceptance-reports/failsafe-summary.xml</summaryFile>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     <profile>
       <id>css</id>
       <build>
