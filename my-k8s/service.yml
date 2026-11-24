@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: petclinic-service
+  namespace: petclinic
+
+spec:
+  selector:
+    app: petclinic
+
+  type: NodePort
+
+  ports:
+  - port: 8080
+    targetPort: 8080
+    nodePort: 30080

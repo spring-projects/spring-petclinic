@@ -437,4 +437,14 @@
       </build>
     </profile>
   </profiles>
+
+  <distributionManagement>
+      <repository>
+          <id>nexus</id>
+          <name>Nexus Releases</name>
+          <url>
+              https://18.61.219.242:8081/repository/maven-snapshots/
+          </url>
+      </repository>
+  </distributionManagement>
 </project>
