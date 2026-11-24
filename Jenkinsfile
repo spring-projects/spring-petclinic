@@ -5,7 +5,7 @@ pipeline {
     environment {
         REGISTRY = "18.61.219.242:8082"
         IMAGE_NAME = "spring-petclinic"
-        IMAGE-TAG = "${BUILD_NUMBER}"
+        IMAGE_TAG = "${BUILD_NUMBER}"
     }
     
     stages {
@@ -60,7 +60,7 @@ pipeline {
                 sh '''
                 docker tag \
                 ${IMAGE_NAME}:${BUILD_NUMBER} \
-                $REGISTRY}/${IMAGE_NAME}:${BUILD_NUMBER}
+                ${REGISTRY}/${IMAGE_NAME}:${BUILD_NUMBER}
                 '''
             }
         }
