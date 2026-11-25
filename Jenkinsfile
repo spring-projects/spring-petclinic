@@ -14,7 +14,7 @@ pipeline {
             steps {
                 git credentialsId: 'github-creds',
                     branch: 'dev',
-                    url: 'https//github.com/Siva-Kumar10/spring-petclinic.git'
+                    url: 'https://github.com/Siva-Kumar10/spring-petclinic.git'
             }
         }
         
