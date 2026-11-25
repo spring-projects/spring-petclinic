@@ -6,6 +6,7 @@ pipeline {
         REGISTRY = "16.113.140.183:8082"
         IMAGE_NAME = "spring-petclinic"
         IMAGE_TAG = "${BUILD_NUMBER}"
+	SONAR_HOST = "16.113.140.183:900"
     }
     
     stages {
@@ -37,7 +38,7 @@ pipeline {
                     sh '''
                     mvn clean verify \
 		    org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-                    -Dsonar.host.url=http://16.113.140.183:900 \
+                    -Dsonar.host.url=http://$SONAR_HOST \
                     -Dsonar.token=\$SONAR_TOKEN
                     '''
                 }
