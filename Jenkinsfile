@@ -55,21 +55,21 @@ pipeline {
         stage('Docker Build') {
             steps {
                 
-                sh '''
+                sh """
                 docker build \
                 -t spring-petclinic:${BUILD_NUMBER} .
-                '''
+                """
             }
         }
         
         stage('Docker Tag') {
             steps {
                 
-                sh '''
+                sh """
                 docker tag \
                 spring-petclinic:$(BUILD_NUMBER) \
                 ${REGISTRY}/spring-petclinic:${BUILD_NUMBER}
-                '''
+                """
             }
         }
         
@@ -84,14 +84,14 @@ pipeline {
                     )
                 ])  {
                     
-                    sh '''
+                    sh """
                     echo \$NEXUS_PASS | docker login ${REGISTRY} \
                     -u \$NEXUS_USER \
                     --password-stdin
                     
                     docker push \
                     ${REGISTRY}/${IMAGE_NAME}:${BUILD_NUMBER}
-                    '''
+                    """
                 }
             }
         }
@@ -99,14 +99,14 @@ pipeline {
         stage('Deploy To Kubernetes') {
             steps {
                 
-                sh '''
+                sh """
                 kubectl set image deployment/petclinic \
        		 petclinic=16.113.140.183:8082/spring-petclinic:${BUILD_NUMBER} \
         	-n petclinic
 
        		 kubectl rollout status deployment/petclinic \
 	        -n petclini
-                '''
+                """
             }
         }
     }
