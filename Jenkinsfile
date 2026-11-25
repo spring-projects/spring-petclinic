@@ -92,6 +92,9 @@ pipeline {
             steps {
                 
                 sh """
+
+                export KUBECONFIG=/var/lib/jenkins/.kube/config
+
                 kubectl set image deployment/petclinic \
        	        petclinic=16.113.140.183:8082/spring-petclinic:${BUILD_NUMBER} \
         	-n petclinic
