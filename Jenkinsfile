@@ -30,7 +30,7 @@ pipeline {
                     sh """
                     mvn clean verify \
 		    org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-                    -Dsonar.host.url=http://$SONAR_HOST \
+                    -Dsonar.host.url=http://${SONAR_HOST} \
                     -Dsonar.token=\$SONAR_TOKEN
                     """
                 }
@@ -78,8 +78,8 @@ pipeline {
                 ])  {
                     
                     sh """
-                    echo $NEXUS_PASS | docker login ${REGISTRY} \
-                    -u $NEXUS_USER \
+                    echo \$NEXUS_PASS | docker login ${REGISTRY} \
+                    -u \$NEXUS_USER \
                     --password-stdin
                     
                     docker push \
