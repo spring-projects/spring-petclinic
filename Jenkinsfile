@@ -59,7 +59,7 @@ pipeline {
                 
                 sh """
                 docker tag \
-                spring-petclinic:$(BUILD_NUMBER) \
+                spring-petclinic:${BUILD_NUMBER} \
                 ${REGISTRY}/spring-petclinic:${BUILD_NUMBER}
                 """
             }
