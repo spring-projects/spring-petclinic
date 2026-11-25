@@ -4,7 +4,7 @@ plugins {
   id 'org.springframework.boot' version '4.2.0'
   id 'io.spring.dependency-management' version '1.1.7'
   id 'org.graalvm.buildtools.native' version '1.1.2'
-  id 'org.cyclonedx.bom' version '3.2.4'
+  id 'org.cyclonedx.bom' version '3.3.0'
   id 'io.spring.javaformat' version '0.0.47'
   id "io.spring.nohttp" version "0.0.11"
 }
