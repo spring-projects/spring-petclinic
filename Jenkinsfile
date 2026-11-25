@@ -34,12 +34,12 @@ pipeline {
                     )
                 ])  {
                     
-                    sh '''
+                    sh """
                     mvn clean verify \
 		    org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
                     -Dsonar.host.url=http://$SONAR_HOST \
                     -Dsonar.token=\$SONAR_TOKEN
-                    '''
+                    """
                 }
             }
         }
