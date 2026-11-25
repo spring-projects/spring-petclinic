@@ -24,10 +24,18 @@ app="petclinic-at-app-$id"
 selenium="petclinic-at-selenium-$id"
 image="petclinic-at:$id"
 
+# Uso: cleanup [código]. Com código (sinal), pula o log e remove tudo primeiro:
+# o Jenkins manda SIGKILL poucos segundos depois do SIGTERM.
 cleanup() {
 	local code=$?
-	trap - EXIT INT TERM
-	if [[ $code -ne 0 ]] && docker container inspect "$app" >/dev/null 2>&1; then
+	local signaled=false
+	if [[ $# -gt 0 ]]; then
+		code=$1
+		signaled=true
+	fi
+	trap - EXIT
+	trap '' INT TERM
+	if [[ $code -ne 0 && $signaled != true ]] && docker container inspect "$app" >/dev/null 2>&1; then
 		echo "---- últimas 200 linhas do log da aplicação ----"
 		docker logs --tail 200 "$app" || true
 	fi
@@ -36,7 +44,9 @@ cleanup() {
 	docker rmi "$image" >/dev/null 2>&1 || true
 	exit "$code"
 }
-trap cleanup EXIT INT TERM
+trap cleanup EXIT
+trap 'cleanup 130' INT
+trap 'cleanup 143' TERM
 
 echo "Construindo a imagem $image"
 docker build -f ci/acceptance.Dockerfile -t "$image" target
@@ -59,13 +69,18 @@ port="${port_lines%%$'\n'*}"
 port="${port##*:}"
 echo "Selenium em http://$host:$port"
 
+# Esperas limitadas por relógio ($SECONDS), não por número de tentativas.
 echo "Aguardando a aplicação (até $WAIT_SECONDS s)"
 app_up=false
-for ((elapsed = 0; elapsed < WAIT_SECONDS; elapsed += 2)); do
-	if health="$(docker exec "$selenium" curl -fs http://petclinic:8080/actuator/health 2>/dev/null)" \
-		&& [[ "$health" == *'"UP"'* ]]; then
+deadline=$((SECONDS + WAIT_SECONDS))
+while ((SECONDS < deadline)); do
+	if health="$(docker exec "$selenium" curl -fs --max-time 5 http://petclinic:8080/actuator/health 2>/dev/null)" 		&& [[ "$health" == *'"UP"'* ]]; then
 		app_up=true
 		break
+	fi
+	if [[ "$(docker container inspect -f '{{.State.Running}}' "$selenium" 2>/dev/null)" != true ]]; then
+		echo "ERRO: Selenium não subiu em $WAIT_SECONDS s"
+		exit 1
 	fi
 	sleep 2
 done
@@ -76,9 +91,9 @@ fi
 
 echo "Aguardando o Selenium (até $WAIT_SECONDS s)"
 selenium_up=false
-for ((elapsed = 0; elapsed < WAIT_SECONDS; elapsed += 2)); do
-	if status="$(curl -fs "http://$host:$port/status" 2>/dev/null)" \
-		&& [[ "$status" == *'"ready":true'* || "$status" == *'"ready": true'* ]]; then
+deadline=$((SECONDS + WAIT_SECONDS))
+while ((SECONDS < deadline)); do
+	if status="$(curl -fs --connect-timeout 5 --max-time 5 "http://$host:$port/status" 2>/dev/null)" 		&& [[ "$status" == *'"ready":true'* || "$status" == *'"ready": true'* ]]; then
 		selenium_up=true
 		break
 	fi
