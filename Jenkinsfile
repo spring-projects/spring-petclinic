@@ -10,14 +10,7 @@ pipeline {
     
     stages {
         
-        stage('Checkout') {
-            steps {
-                git credentialsId: 'github-creds',
-                    branch: 'dev',
-                    url: 'https://github.com/Siva-Kumar10/spring-petclinic.git'
-            }
-        }
-        
+                
         stage('Build') {
             steps {
                 sh 'mvn clean package -DskipTests'
@@ -85,12 +78,12 @@ pipeline {
                 ])  {
                     
                     sh """
-                    echo \$NEXUS_PASS | docker login ${REGISTRY} \
-                    -u \$NEXUS_USER \
+                    echo $NEXUS_PASS | docker login ${REGISTRY} \
+                    -u $NEXUS_USER \
                     --password-stdin
                     
                     docker push \
-                    ${REGISTRY}/${IMAGE_NAME}:${BUILD_NUMBER}
+                    16.113.140.183:8082/spring-petclinic:'${BUILD_NUMBER}'
                     """
                 }
             }
@@ -101,10 +94,10 @@ pipeline {
                 
                 sh """
                 kubectl set image deployment/petclinic \
-       		 petclinic=16.113.140.183:8082/spring-petclinic:${BUILD_NUMBER} \
+       	        petclinic=16.113.140.183:8082/spring-petclinic:${BUILD_NUMBER} \
         	-n petclinic
 
-       		 kubectl rollout status deployment/petclinic \
+       		kubectl rollout status deployment/petclinic \
 	        -n petclini
                 """
             }
