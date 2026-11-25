@@ -36,7 +36,7 @@ pipeline {
                     
                     sh '''
                     mvn clean verify \
-		    org.sonarsource.scanner.maven:sonar-maven-plugins:sonar \
+		    org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
                     -Dsonar.host.url=http:16.113.140.183:900 \
                     -Dsonar.token=\$SONAR_TOKEN
                     '''
