@@ -100,7 +100,7 @@ pipeline {
         	-n petclinic
 
        		kubectl rollout status deployment/petclinic \
-	        -n petclini
+	        -n petclinic
                 """
             }
         }
