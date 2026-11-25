@@ -3,7 +3,7 @@ pipeline {
     agent any
     
     environment {
-        REGISTRY = "18.61.219.242:8082"
+        REGISTRY = "16.113.140.183:8082"
         IMAGE_NAME = "spring-petclinic"
         IMAGE_TAG = "${BUILD_NUMBER}"
     }
@@ -36,7 +36,7 @@ pipeline {
                     
                     sh '''
                     mvn sonar:sonar \
-                    -Dsonar.host.url=http:18.61.219.242:900 \
+                    -Dsonar.host.url=http:16.113.140.183:900 \
                     -Dsonar.token=\$SONAR_TOKEN
                     '''
                 }
@@ -93,7 +93,7 @@ pipeline {
                 
                 sh '''
                 kubectl set image deployment/petclinic \
-       		 petclinic=18.61.219.242:8082/spring-petclinic:${BUILD_NUMBER} \
+       		 petclinic=16.113.140.183:8082/spring-petclinic:${BUILD_NUMBER} \
         	-n petclinic
 
        		 kubectl rollout status deployment/petclinic \
