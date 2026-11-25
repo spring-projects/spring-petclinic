@@ -44,14 +44,21 @@ pipeline {
                 }
             }
         }
+
+	stage('Debug') {
+	    steps {
+		sh 'echo BUILD_NUMBER=${BUILD_NUMBER}'
+		sh 'docker images | grep spring-petclinic || true'
+	    }
+	}
+
         
         stage('Docker Build') {
             steps {
                 
                 sh '''
-                docker tag \
-                ${IMAGE_NAME}:${BUILD_NUMBER} \
-                ${REGISTRY}/${IMAGE_NAME}:${BUILD_NUMBER}
+                docker build \
+                -t spring-petclinic:${BUILD_NUMBER} .
                 '''
             }
         }
@@ -61,8 +68,8 @@ pipeline {
                 
                 sh '''
                 docker tag \
-                ${IMAGE_NAME}:${BUILD_NUMBER} \
-                ${REGISTRY}/${IMAGE_NAME}:${BUILD_NUMBER}
+                spring-petclinic:$(BUILD_NUMBER) \
+                ${REGISTRY}/spring-petclinic:${BUILD_NUMBER}
                 '''
             }
         }
