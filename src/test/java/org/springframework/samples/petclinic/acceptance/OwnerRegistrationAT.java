@@ -83,9 +83,9 @@ class OwnerRegistrationAT {
 	@Test
 	void shouldListBothOwners_whenTwoOwnersShareTheSearchedLastName() {
 		registerOwner("Ana", "Acceptance", "3199990001");
-		wait.until(ExpectedConditions.urlMatches("/owners/\\d+$"));
+		wait.until(ExpectedConditions.urlMatches("/owners/\\d+(;jsessionid=[^/?#]*)?$"));
 		registerOwner("Bruno", "Acceptance", "3199990002");
-		wait.until(ExpectedConditions.urlMatches("/owners/\\d+$"));
+		wait.until(ExpectedConditions.urlMatches("/owners/\\d+(;jsessionid=[^/?#]*)?$"));
 
 		searchOwners("Acceptance");
 
