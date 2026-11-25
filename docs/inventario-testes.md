@@ -37,7 +37,7 @@ Observações:
 |---|---|---|---|
 | P1 | Integração | `*IT.java` | `src/test/java/.../petclinic/it/` |
 | P3 | Unidade | `*Test.java` | `src/test/java/...` |
-| P4 | Aceitação | a definir pela P4 | a definir pela P4 |
+| P4 | Aceitação | `*AT.java` | `src/test/java/.../petclinic/acceptance/` |
 
 Em 16/11/2026: **12 testes `*IT`** da P1 (`OwnerFlowIT` 6, `PetFlowIT` 2, `VisitFlowIT` 2, `VetFlowIT` 2).
 
@@ -66,10 +66,12 @@ Cobertura JaCoCo (unidade + integração, mesmo arquivo `target/jacoco.exec` usa
 
 O estágio *Cobertura* do `Jenkinsfile` exige no mínimo 85% de instruções, 75% de branches e 85% de linhas. Abaixo disso, o build falha.
 
+Em 24/11/2026: **2 testes de aceitação `*AT`** da P4 em `acceptance/OwnerRegistrationAT`, com Selenium e Chrome em container: cadastro de dois donos com o mesmo sobrenome aparecendo na lista da busca, e cadastro recusado com telefone inválido. Rodam só pelo `ci/acceptance.sh` (profile Maven `acceptance`), fora de `./mvnw test` e `./mvnw verify`.
+
 ## Como mostrar na apresentação o que é do grupo
 
 1. **Sufixos distintos**: tudo que o grupo escreve termina em `*Test` (unidade) ou `*IT` (integração), enquanto o upstream usa `*Tests` (exceção: `I18nPropertiesSyncTest`). Um `find . -name "*IT.java"` já mostra a autoria.
 2. **Pacote próprio**: os `*IT` ficam em `.../petclinic/it/`.
 3. **Relatório separado**: o Jenkins publica surefire (unidade) e failsafe (integração) em estágios distintos, e o JaCoCo mostra a cobertura antes e depois.
-4. **Comparativo no slide**: "upstream: 77 testes → grupo: +12 IT +34 unidade +M aceitação", obtido do `git log --diff-filter=A --name-only` sobre `src/test`.
+4. **Comparativo no slide**: "upstream: 77 testes → grupo: +12 IT +34 unidade +2 aceitação", obtido do `git log --diff-filter=A --name-only` sobre `src/test`.
 5. **Histórico**: commits `test:` por pessoa (`git shortlog -sn --grep='^test'`).

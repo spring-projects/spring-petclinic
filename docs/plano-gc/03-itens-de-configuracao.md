@@ -27,7 +27,7 @@ Armazenamento de todos os ICs: repositório Git `github.com/VitorCostaVianna/pet
 | IC-04 | Maven Wrapper | Build | `mvnw`, `mvnw.cmd`, `.mvn/**` | versão do Maven fixada no wrapper | P1 |
 | IC-05 | Testes de unidade do grupo | Teste | `src/test/**/*Test.java` (exceção: `I18nPropertiesSyncTest` é do upstream) | `*Test.java` | P3 |
 | IC-06 | Testes de integração do grupo | Teste | `src/test/java/**/petclinic/it/*IT.java` | `*IT.java` | P1 |
-| IC-07 | Testes de aceitação (Selenium) *(previsto)* | Teste | definido pela P4 | definido pela P4 | P4 |
+| IC-07 | Testes de aceitação (Selenium) | Teste | `src/test/java/**/petclinic/acceptance/*AT.java`, `ci/acceptance.sh`, `ci/acceptance.Dockerfile` | `*AT.java` | P4 |
 | IC-08 | Testes do upstream | Teste | `src/test/**/*Tests.java` e `I18nPropertiesSyncTest.java` | `*Tests.java`; não alterar | Upstream |
 | IC-09 | Pipeline Jenkins *(previsto)* | Pipeline | `Jenkinsfile` | um arquivo na raiz | P2 |
 | IC-10 | Configuração do Jenkins *(previsto)* | Infra | repositório/pasta definida pela P2 (ex.: `docker-compose` do Jenkins) | definido pela P2 | P2 |

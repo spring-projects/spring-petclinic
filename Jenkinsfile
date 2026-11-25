@@ -72,6 +72,13 @@ pipeline {
 			steps {
 				sh 'test -x ci/acceptance.sh && ci/acceptance.sh'
 			}
+			post {
+				always {
+					// Sem relatório quando a aplicação não sobe; o erro real é o do script.
+					junit testResults: 'target/acceptance-reports/TEST-*.xml', allowEmptyResults: true
+					archiveArtifacts artifacts: 'target/acceptance-screenshots/*.png', allowEmptyArchive: true
+				}
+			}
 		}
 
 		stage('Lançamento') {
