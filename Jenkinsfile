@@ -5,7 +5,6 @@ pipeline {
     environment {
         REGISTRY = "16.113.140.183:8082"
         IMAGE_NAME = "spring-petclinic"
-        IMAGE_TAG = "${BUILD_NUMBER}"
 	SONAR_HOST = "16.113.140.183:900"
     }
     
