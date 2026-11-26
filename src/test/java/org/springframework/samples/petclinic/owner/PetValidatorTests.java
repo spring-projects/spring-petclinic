@@ -121,6 +121,43 @@ class PetValidatorTests {
 
 			assertTrue(errors.hasFieldErrors("birthDate"));
 		}
+		
+		@Test
+		void validateWithFutureBirthDate() {
+			petType.setName(petTypeName);
+			pet.setName(petName);
+			pet.setType(petType);
+			pet.setBirthDate(LocalDate.now().plusDays(1));
+
+			petValidator.validate(pet, errors);
+
+			assertTrue(errors.hasFieldErrors("birthDate"));
+		}
+
+		@Test
+		void validateWithTodaysBirthDate() {
+			petType.setName(petTypeName);
+			pet.setName(petName);
+			pet.setType(petType);
+			pet.setBirthDate(LocalDate.now());
+
+			petValidator.validate(pet, errors);
+
+			assertFalse(errors.hasFieldErrors("birthDate"));
+		}
+
+		@Test
+		void validateWithPastBirthDate() {
+			petType.setName(petTypeName);
+			pet.setName(petName);
+			pet.setType(petType);
+			pet.setBirthDate(LocalDate.now().minusDays(1));
+
+			petValidator.validate(pet, errors);
+
+			assertFalse(errors.hasFieldErrors("birthDate"));
+		}
+
 
 		@Test
 		void validateWithLongPetName() {
