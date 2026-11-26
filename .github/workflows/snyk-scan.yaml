@@ -1,0 +1,75 @@
+name: Snyk Security Scan
+
+on:
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  snyk:
+    name: Snyk Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js (for Snyk CLI)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Snyk CLI
+        run: npm install -g snyk
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Cache Maven repository
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-m2-
+
+      - name: Cache Gradle
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/build.gradle', '**/build.gradle.kts', '**/settings.gradle') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Prepare project dependencies
+        run: |
+          if [ -f pom.xml ]; then
+            mvn -B -DskipTests package
+          elif [ -f build.gradle ] || [ -f build.gradle.kts ]; then
+            ./gradlew -s assemble || true
+          else
+            echo "No Maven or Gradle build detected; continuing"
+          fi
+
+      - name: Run Snyk test and monitor
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: |
+          if [ -z "$SNYK_TOKEN" ]; then
+            echo "SNYK_TOKEN is not set; skipping Snyk scan"
+            exit 0
+          fi
+          snyk auth $SNYK_TOKEN || true
+          if [ -f pom.xml ]; then
+            snyk test --all-projects
+            snyk monitor --all-projects || true
+          elif [ -f build.gradle ] || [ -f build.gradle.kts ]; then
+            snyk test --all-projects
+            snyk monitor --all-projects || true
+          else
+            snyk test --all-projects || true
+          fi
