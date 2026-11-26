@@ -4,3 +4,5 @@
 
 /gradlew        text eol=lf
 *.bat           text eol=crlf
+
+src/main/resources/static/resources/css/petclinic.css linguist-generated=true
