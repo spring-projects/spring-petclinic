@@ -16,11 +16,19 @@
 
 package org.springframework.samples.petclinic;
 
+import java.time.temporal.Temporal;
+import java.util.List;
+
+import org.springframework.aot.hint.ExecutableMode;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
+import org.springframework.aot.hint.TypeReference;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.model.Person;
 import org.springframework.samples.petclinic.vet.Vet;
+import org.thymeleaf.expression.Numbers;
+import org.thymeleaf.expression.Strings;
+import org.thymeleaf.expression.Temporals;
 
 public class PetClinicRuntimeHints implements RuntimeHintsRegistrar {
 
@@ -33,6 +41,15 @@ public class PetClinicRuntimeHints implements RuntimeHintsRegistrar {
 		hints.reflection().registerType(BaseEntity.class, typeHint -> typeHint.withJavaSerialization(true));
 		hints.reflection().registerType(Person.class, typeHint -> typeHint.withJavaSerialization(true));
 		hints.reflection().registerType(Vet.class, typeHint -> typeHint.withJavaSerialization(true));
+		hints.reflection()
+			.registerType(TypeReference.of(Temporals.class), typeHint -> typeHint.withMethod("format",
+					List.of(TypeReference.of(Temporal.class), TypeReference.of(String.class)), ExecutableMode.INVOKE));
+		hints.reflection()
+			.registerType(TypeReference.of(Strings.class), typeHint -> typeHint.withMethod("listJoin",
+					List.of(TypeReference.of(List.class), TypeReference.of(String.class)), ExecutableMode.INVOKE));
+		hints.reflection()
+			.registerType(TypeReference.of(Numbers.class), typeHint -> typeHint.withMethod("sequence",
+					List.of(TypeReference.of(Integer.class), TypeReference.of(Integer.class)), ExecutableMode.INVOKE));
 	}
 
 }

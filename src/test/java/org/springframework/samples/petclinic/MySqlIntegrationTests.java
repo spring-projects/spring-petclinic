@@ -45,7 +45,7 @@ class MySqlIntegrationTests {
 
 	@ServiceConnection
 	@Container
-	static MySQLContainer container = new MySQLContainer(DockerImageName.parse("mysql:9.7"));
+	static MySQLContainer container = new MySQLContainer(DockerImageName.parse("mysql:26.10"));
 
 	@LocalServerPort
 	int port;

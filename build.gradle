@@ -1,11 +1,12 @@
 plugins {
   id 'java'
+  id 'jacoco'
   id 'checkstyle'
   id 'org.springframework.boot' version '4.2.0'
   id 'io.spring.dependency-management' version '1.1.7'
-  id 'org.graalvm.buildtools.native' version '1.1.2'
-  id 'org.cyclonedx.bom' version '3.3.0'
-  id 'io.spring.javaformat' version '0.0.47'
+  id 'org.graalvm.buildtools.native' version '1.1.20'
+  id 'org.cyclonedx.bom' version '3.6.1'
+  id 'io.spring.javaformat' version '0.0.48'
   id "io.spring.nohttp" version "0.0.11"
 }
 
@@ -24,11 +25,12 @@ repositories {
   mavenCentral()
 }
 
+// Checkstyle 13+ requires JDK 21; v12 is the newest release that supports Java 17.
 ext.checkstyleVersion = "12.3.1"
-ext.springJavaformatCheckstyleVersion = "0.0.47"
-ext.webjarsLocatorLiteVersion = "1.1.3"
+ext.jacocoVersion = "0.8.16"
+ext.springJavaformatCheckstyleVersion = "0.0.48"
 ext.webjarsFontawesomeVersion = "4.7.0"
-ext.webjarsBootstrapVersion = "5.3.8"
+ext.webjarsBootstrapVersion = "5.3.9"
 
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-cache'
@@ -39,7 +41,7 @@ dependencies {
   implementation 'javax.cache:cache-api'
   implementation 'jakarta.xml.bind:jakarta.xml.bind-api'
   runtimeOnly 'org.springframework.boot:spring-boot-starter-actuator'
-  runtimeOnly "org.webjars:webjars-locator-lite:${webjarsLocatorLiteVersion}"
+  runtimeOnly 'org.webjars:webjars-locator-lite'
   runtimeOnly "org.webjars.npm:bootstrap:${webjarsBootstrapVersion}"
   runtimeOnly "org.webjars.npm:font-awesome:${webjarsFontawesomeVersion}"
   runtimeOnly 'com.github.ben-manes.caffeine:caffeine'
@@ -48,7 +50,6 @@ dependencies {
   runtimeOnly 'org.postgresql:postgresql'
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
   testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
-  testImplementation 'org.springframework.boot:spring-boot-starter-restclient-test'
   testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
   testImplementation 'org.springframework.boot:spring-boot-testcontainers'
   testImplementation 'org.springframework.boot:spring-boot-docker-compose'
@@ -58,8 +59,19 @@ dependencies {
   checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
 }
 
+jacoco {
+  toolVersion = jacocoVersion
+}
+
 tasks.named('test') {
   useJUnitPlatform()
+  finalizedBy tasks.named('jacocoTestReport')
+}
+
+tasks.named('bootJar') {
+  // AOT processing is enabled by the native plugin, but ordinary container images
+  // should stay on the Java 17 JVM rather than triggering a Paketo native build.
+  manifest.attributes['Spring-Boot-Native-Processed'] = 'false'
 }
 
 tasks.named('bootBuildImage') {
@@ -71,14 +83,32 @@ tasks.named("cyclonedxDirectBom").configure {
   skipConfigs = [".*[Tt]est.*"]
 }
 
+def checkstyleConfigDir = new File(rootDir, 'src/checkstyle')
+def checkstyleConfigFile = new File(checkstyleConfigDir, 'nohttp-checkstyle.xml')
+
 checkstyle {
-  configDirectory = project.file('src/checkstyle')
-  configFile = file('src/checkstyle/nohttp-checkstyle.xml')
+  configDirectory = checkstyleConfigDir
+  configFile = checkstyleConfigFile
 }
 
 checkstyleNohttp {
-  configDirectory = project.file('src/checkstyle')
-  configFile = file('src/checkstyle/nohttp-checkstyle.xml')
+  configDirectory = checkstyleConfigDir
+  configFile = checkstyleConfigFile
+  setSource(fileTree(rootDir) {
+    exclude 'build/**'
+    exclude 'target/**'
+    exclude '.git/**'
+    exclude '.gradle/**'
+    exclude '.idea/**'
+    exclude '**/*.class'
+    exclude '**/*.hprof'
+    exclude '**/*.jar'
+    exclude '**/*.jpg'
+    exclude '**/*.jks'
+    exclude '**/spring.handlers'
+    exclude '**/spring.schemas'
+    exclude '**/spring.tooling'
+  })
 }
 
 tasks.named("formatMain").configure { dependsOn("checkstyleMain") }

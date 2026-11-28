@@ -41,7 +41,7 @@ spec:
         app: demo-db
     spec:
       containers:
-        - image: postgres:18.4
+        - image: postgres:19.0
           name: postgresql
           env:
             - name: POSTGRES_USER
