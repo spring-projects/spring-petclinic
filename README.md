@@ -179,3 +179,7 @@ For additional details, please refer to the blog post [Hello DCO, Goodbye CLA: S
 ## License
 
 The Spring PetClinic sample application is released under version 2.0 of the [Apache License](https://www.apache.org/licenses/LICENSE-2.0).
+## Development Notes
+
+This project demonstrates a Spring Boot application
+with Java, Maven, and automated tests.
