@@ -46,3 +46,7 @@ out/
 _site/
 *.css
 !petclinic.css
+
+### JMeter ###
+jmeter.log
+*.jtl
